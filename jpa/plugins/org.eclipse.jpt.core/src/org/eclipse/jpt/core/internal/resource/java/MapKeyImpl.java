@@ -61,7 +61,7 @@ public class MapKeyImpl extends AbstractResourceAnnotation<Attribute> implements
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
-	public TextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(NAME_ADAPTER, astRoot);
 	}
 
@@ -74,7 +74,7 @@ public class MapKeyImpl extends AbstractResourceAnnotation<Attribute> implements
 	}
 	
 	protected String name(CompilationUnit astRoot) {
-		return this.nameAdapter.value(astRoot);
+		return this.nameAdapter.getValue(astRoot);
 	}
 	
 	// ********** static methods **********

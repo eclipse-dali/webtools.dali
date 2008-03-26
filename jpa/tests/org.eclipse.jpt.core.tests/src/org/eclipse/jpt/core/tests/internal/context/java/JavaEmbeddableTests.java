@@ -58,7 +58,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		assertTrue(javaPersistentType().getMapping() instanceof Entity);
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		assertNull(typeResource.mappingAnnotation(EmbeddableAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getMappingAnnotation(EmbeddableAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToMappedSuperclass() throws Exception {
@@ -69,7 +69,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		assertTrue(javaPersistentType().getMapping() instanceof MappedSuperclass);
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		assertNull(typeResource.mappingAnnotation(EmbeddableAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getMappingAnnotation(EmbeddableAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToNull() throws Exception {
@@ -80,7 +80,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		assertTrue(javaPersistentType().getMapping() instanceof JavaNullTypeMapping);
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		assertNull(typeResource.mappingAnnotation(EmbeddableAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getMappingAnnotation(EmbeddableAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testEmbeddable() throws Exception {

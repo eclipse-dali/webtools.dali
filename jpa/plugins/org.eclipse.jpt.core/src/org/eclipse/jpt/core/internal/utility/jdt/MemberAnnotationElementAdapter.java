@@ -39,32 +39,32 @@ public class MemberAnnotationElementAdapter<T>
 
 	// ********** AnnotationElementAdapter implementation **********
 
-	public T value() {
-		return this.daea.value(this.member.modifiedDeclaration());
+	public T getValue() {
+		return this.daea.getValue(this.member.getModifiedDeclaration());
 	}
 
-	public T value(CompilationUnit astRoot) {
-		return this.daea.value(this.member.modifiedDeclaration(astRoot));
+	public T getValue(CompilationUnit astRoot) {
+		return this.daea.getValue(this.member.getModifiedDeclaration(astRoot));
 	}
 
 	public void setValue(T value) {
 		this.edit(this.buildSetValueEditor(value));
 	}
 
-	public Expression expression() {
-		return this.daea.expression(this.member.modifiedDeclaration());
+	public Expression getExpression() {
+		return this.daea.getExpression(this.member.getModifiedDeclaration());
 	}
 
-	public Expression expression(CompilationUnit astRoot) {
-		return this.daea.expression(this.member.modifiedDeclaration(astRoot));
+	public Expression getExpression(CompilationUnit astRoot) {
+		return this.daea.getExpression(this.member.getModifiedDeclaration(astRoot));
 	}
 
-	public ASTNode astNode() {
-		return this.daea.astNode(this.member.modifiedDeclaration());
+	public ASTNode getAstNode() {
+		return this.daea.getAstNode(this.member.getModifiedDeclaration());
 	}
 
-	public ASTNode astNode(CompilationUnit astRoot) {
-		return this.daea.astNode(this.member.modifiedDeclaration(astRoot));
+	public ASTNode getAstNode(CompilationUnit astRoot) {
+		return this.daea.getAstNode(this.member.getModifiedDeclaration(astRoot));
 	}
 
 	@Override

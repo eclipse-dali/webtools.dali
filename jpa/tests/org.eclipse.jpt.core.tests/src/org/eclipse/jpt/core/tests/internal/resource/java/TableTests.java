@@ -109,7 +109,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestTableWithName();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		assertNotNull(table);
 		assertEquals(TABLE_NAME, table.getName());
 	}
@@ -118,7 +118,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestTable();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		assertNotNull(table);
 		assertNull(table.getName());
 		assertNull(table.getCatalog());
@@ -129,7 +129,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestTable();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		assertNotNull(table);
 		assertNull(table.getName());
 
@@ -143,7 +143,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestTableWithName();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		assertEquals(TABLE_NAME, table.getName());
 		
 		table.setName(null);
@@ -156,7 +156,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestTableWithCatalog();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		assertNotNull(table);
 		assertEquals(CATALOG_NAME, table.getCatalog());
 	}
@@ -165,7 +165,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestTable();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		assertNotNull(table);
 		assertNull(table.getCatalog());
 
@@ -179,7 +179,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestTableWithCatalog();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		assertEquals(CATALOG_NAME, table.getCatalog());
 		
 		table.setCatalog(null);
@@ -192,7 +192,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestTableWithSchema();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		assertNotNull(table);
 		assertEquals(SCHEMA_NAME, table.getSchema());
 	}
@@ -201,7 +201,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestTable();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		assertNotNull(table);
 		assertNull(table.getSchema());
 
@@ -215,7 +215,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestTableWithSchema();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		assertEquals(SCHEMA_NAME, table.getSchema());
 		
 		table.setSchema(null);
@@ -227,7 +227,7 @@ public class TableTests extends JavaResourceModelTestCase {
 	public void testUniqueConstraints() throws Exception {
 		IType testType = this.createTestTable();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		assertEquals(0, table.uniqueConstraintsSize());
 	}
@@ -235,7 +235,7 @@ public class TableTests extends JavaResourceModelTestCase {
 	public void testUniqueConstraints2() throws Exception {
 		IType testType = this.createTestTable();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		table.addUniqueConstraint(0);
 		table.addUniqueConstraint(1);
@@ -246,7 +246,7 @@ public class TableTests extends JavaResourceModelTestCase {
 	public void testUniqueConstraints3() throws Exception {
 		IType testType = this.createTestTableWithUniqueConstraints();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 				
 		assertEquals(3, table.uniqueConstraintsSize());
 	}
@@ -254,7 +254,7 @@ public class TableTests extends JavaResourceModelTestCase {
 	public void testAddUniqueConstraint() throws Exception {
 		IType testType = this.createTestTable();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		table.addUniqueConstraint(0).addColumnName("FOO");
 		table.addUniqueConstraint(1);
@@ -270,7 +270,7 @@ public class TableTests extends JavaResourceModelTestCase {
 	public void testAddUniqueConstraint2() throws Exception {
 		IType testType = this.createTestTable();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		table.addUniqueConstraint(0).addColumnName("FOO");
 		table.addUniqueConstraint(0);
@@ -282,7 +282,7 @@ public class TableTests extends JavaResourceModelTestCase {
 	public void testRemoveUniqueConstraint() throws Exception {
 		IType testType = this.createTestTableWithUniqueConstraints();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		table.removeUniqueConstraint(1);
 		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"BAZ\"})})");
@@ -297,7 +297,7 @@ public class TableTests extends JavaResourceModelTestCase {
 	public void testRemoveUniqueConstraint2() throws Exception {
 		IType testType = this.createTestTable();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		table.addUniqueConstraint(0).addColumnName("FOO");
 		table.addUniqueConstraint(1).addColumnName("BAR");
 		table.addUniqueConstraint(2).addColumnName("BAZ");
@@ -316,7 +316,7 @@ public class TableTests extends JavaResourceModelTestCase {
 	public void testRemoveUniqueConstraint3() throws Exception {
 		IType testType = this.createTestTable();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		table.addUniqueConstraint(0).addColumnName("FOO");
 		table.addUniqueConstraint(1).addColumnName("BAR");
 		table.addUniqueConstraint(2).addColumnName("BAZ");
@@ -335,7 +335,7 @@ public class TableTests extends JavaResourceModelTestCase {
 	public void testMoveUniqueConstraint() throws Exception {
 		IType testType = this.createTestTableWithUniqueConstraints();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		table.moveUniqueConstraint(2, 0);
 		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"})})");
@@ -344,7 +344,7 @@ public class TableTests extends JavaResourceModelTestCase {
 	public void testMoveUniqueConstraint2() throws Exception {
 		IType testType = this.createTestTableWithUniqueConstraints();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		table.moveUniqueConstraint(0, 2);
 		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"})})");

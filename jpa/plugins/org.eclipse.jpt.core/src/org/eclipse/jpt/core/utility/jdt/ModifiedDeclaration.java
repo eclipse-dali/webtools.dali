@@ -36,18 +36,18 @@ public interface ModifiedDeclaration {
 	/**
 	 * Return the "declaration" AST node.
 	 */
-	ASTNode declaration();
+	ASTNode getDeclaration();
 
 	/**
 	 * Return the "declaration" AST.
 	 */
-	AST ast();
+	AST getAst();
 
 	/**
 	 * Return the *first* annotation with the specified name.
 	 * Return null if the declaration has no such annotation.
 	 */
-	Annotation annotationNamed(String annotationName);
+	Annotation getAnnotationNamed(String annotationName);
 
 	/**
 	 * Remove the *first* annotation with the specified name from the declaration.

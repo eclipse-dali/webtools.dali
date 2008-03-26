@@ -45,7 +45,7 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	 * {@link org.eclipse.jpt.core.internal.platform.GenericJpaPlatform#attributeMappingAnnotationDefinitions()}
 	 * @return
 	 */
-	JavaResourceNode mappingAnnotation();
+	JavaResourceNode getMappingAnnotation();
 
 	/**
 	 * Returns the <code>JavaResource</code> with this fully qualifed annotation name. 
@@ -56,7 +56,7 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	 * @return
 	 */
 	//TODO not sure we need this API, first 2 seem sufficient
-	JavaResourceNode mappingAnnotation(String annotationName);
+	JavaResourceNode getMappingAnnotation(String annotationName);
 
 	/**
 	 * Use this to change the type mapping annotation.  This will only remove
@@ -95,7 +95,7 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	 * @param annotationName
 	 * @return
 	 */
-	JavaResourceNode annotation(String annotationName);
+	JavaResourceNode getAnnotation(String annotationName);
 	
 	/**
 	 * Returns the <code>JavaResource</code> with this fully qualifed annotation name. 
@@ -104,7 +104,7 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	 * @param annotationName
 	 * @return
 	 */
-	JavaResourceNode nonNullAnnotation(String annotationName);
+	JavaResourceNode getNonNullAnnotation(String annotationName);
 
 	/**
 	 * Return a null implementation of <code>JavaResourceNode</code> with this fully qualifed annotation name.
@@ -113,7 +113,7 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	 * @param annotationName
 	 * @return
 	 */
-	JavaResourceNode nullMappingAnnotation(String annotationName);
+	JavaResourceNode getNullMappingAnnotation(String annotationName);
 
 	/**
 	 * Add an annotation for the given fully qualified annotation name
@@ -164,6 +164,6 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	/**
 	 * return the text range for the name of the persistent resource
 	 */
-	TextRange nameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange(CompilationUnit astRoot);
 
 }

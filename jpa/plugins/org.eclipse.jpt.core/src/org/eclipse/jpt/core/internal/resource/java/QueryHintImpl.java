@@ -102,11 +102,11 @@ public class QueryHintImpl extends AbstractResourceAnnotation<Type>
 		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 
-	public TextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 	
-	public TextRange valueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.valueDeclarationAdapter, astRoot);
 	}
 
@@ -116,11 +116,11 @@ public class QueryHintImpl extends AbstractResourceAnnotation<Type>
 	}
 	
 	protected String name(CompilationUnit astRoot) {
-		return this.nameAdapter.value(astRoot);
+		return this.nameAdapter.getValue(astRoot);
 	}
 	
 	protected String value(CompilationUnit astRoot) {
-		return this.valueAdapter.value(astRoot);
+		return this.valueAdapter.getValue(astRoot);
 	}
 
 	// ********** persistence model -> java annotations **********

@@ -47,7 +47,7 @@ public abstract class JDTAttribute
 	 * resolved unambiguously.
 	 */
 	public String resolvedTypeName(CompilationUnit astRoot) {
-		ITypeBinding typeBinding = typeBinding(astRoot);
+		ITypeBinding typeBinding = getTypeBinding(astRoot);
 		if (typeBinding != null) {
 			return typeBinding.getQualifiedName();
 		}
@@ -59,18 +59,6 @@ public abstract class JDTAttribute
 	 */
 	TypeDeclaration declaringTypeDeclaration(CompilationUnit astRoot) {
 		//assume no enums or annotation types since they have no field or method declarations
-		return (TypeDeclaration) this.declaringType().bodyDeclaration(astRoot);
+		return (TypeDeclaration) this.declaringType().getBodyDeclaration(astRoot);
 	}
-
-
-	// ********** abstract methods **********
-
-	/**
-	 * Return the type binding for the attribute's declared type,
-	 * as opposed to its declaring type.
-	 */
-	public abstract ITypeBinding typeBinding(CompilationUnit astRoot);
-
-	public abstract String attributeName();
-
 }

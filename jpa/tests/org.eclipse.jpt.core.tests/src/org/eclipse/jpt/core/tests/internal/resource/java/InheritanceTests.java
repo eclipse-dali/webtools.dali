@@ -57,7 +57,7 @@ public class InheritanceTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestInheritance();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		Inheritance inheritance = (Inheritance) typeResource.annotation(JPA.INHERITANCE);
+		Inheritance inheritance = (Inheritance) typeResource.getAnnotation(JPA.INHERITANCE);
 		assertNotNull(inheritance);
 	}
 	
@@ -65,7 +65,7 @@ public class InheritanceTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestInheritanceWithStrategy();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		Inheritance inheritance = (Inheritance) typeResource.annotation(JPA.INHERITANCE);
+		Inheritance inheritance = (Inheritance) typeResource.getAnnotation(JPA.INHERITANCE);
 		assertEquals(InheritanceType.JOINED, inheritance.getStrategy());
 	}
 	
@@ -73,7 +73,7 @@ public class InheritanceTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestInheritance();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 
-		Inheritance inheritance = (Inheritance) typeResource.annotation(JPA.INHERITANCE);
+		Inheritance inheritance = (Inheritance) typeResource.getAnnotation(JPA.INHERITANCE);
 		inheritance.setStrategy(InheritanceType.TABLE_PER_CLASS);
 		
 		assertSourceContains("@Inheritance(strategy=TABLE_PER_CLASS)");

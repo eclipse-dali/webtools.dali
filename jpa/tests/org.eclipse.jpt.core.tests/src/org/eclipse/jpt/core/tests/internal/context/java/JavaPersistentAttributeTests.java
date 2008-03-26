@@ -154,8 +154,8 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNotNull(attributeResource.mappingAnnotation());
-		assertTrue(attributeResource.mappingAnnotation() instanceof Embedded);
+		assertNotNull(attributeResource.getMappingAnnotation());
+		assertTrue(attributeResource.getMappingAnnotation() instanceof Embedded);
 		
 		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 		assertTrue(persistentAttribute.getSpecifiedMapping() instanceof JavaEmbeddedMapping);
@@ -172,8 +172,8 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNotNull(attributeResource.mappingAnnotation());
-		assertTrue(attributeResource.mappingAnnotation() instanceof Embedded);
+		assertNotNull(attributeResource.getMappingAnnotation());
+		assertTrue(attributeResource.getMappingAnnotation() instanceof Embedded);
 		
 		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 		assertTrue(persistentAttribute.getSpecifiedMapping() instanceof JavaEmbeddedMapping);
@@ -190,8 +190,8 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation());
-		assertNull(attributeResource.mappingAnnotation(Id.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation());
+		assertNull(attributeResource.getMappingAnnotation(Id.ANNOTATION_NAME));
 		
 		assertNull(persistentAttribute.getSpecifiedMapping());
 	}

@@ -139,17 +139,17 @@ public interface XmlBaseTable extends JpaEObject
 	 * Return the {@link TextRange} for the name attibute.  If the name attibute 
 	 * does not exist return the {@link TextRange} for the *table element.
 	 */
-	TextRange nameTextRange();
+	TextRange getNameTextRange();
 	
 	/**
 	 * Return the {@link TextRange} for the schema attibute.  If the schema attibute 
 	 * does not exist return the {@link TextRange} for the *table element.
 	 */
-	TextRange schemaTextRange();
+	TextRange getSchemaTextRange();
 	
 	/**
 	 * Return the {@link TextRange} for the catalog attibute.  If the catalog attibute 
 	 * does not exist return the {@link TextRange} for the *table element.
 	 */
-	TextRange catalogTextRange();
+	TextRange getCatalogTextRange();
 } // XmlBaseTable

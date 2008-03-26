@@ -247,7 +247,7 @@ public class SecondaryTableImpl extends AbstractResourceTable implements Nestabl
 
 		public NestablePrimaryKeyJoinColumn nestedAnnotationFor(org.eclipse.jdt.core.dom.Annotation jdtAnnotation) {
 			for (NestablePrimaryKeyJoinColumn pkJoinColumn : CollectionTools.iterable(nestedAnnotations())) {
-				if (jdtAnnotation == pkJoinColumn.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
+				if (jdtAnnotation == pkJoinColumn.getJdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
 					return pkJoinColumn;
 				}
 			}
@@ -262,8 +262,8 @@ public class SecondaryTableImpl extends AbstractResourceTable implements Nestabl
 			SecondaryTableImpl.this.removePkJoinColumn(pkJoinColumn);
 		}
 
-		public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
-			return SecondaryTableImpl.this.jdtAnnotation(astRoot);
+		public org.eclipse.jdt.core.dom.Annotation getJdtAnnotation(CompilationUnit astRoot) {
+			return SecondaryTableImpl.this.getJdtAnnotation(astRoot);
 		}
 
 		public void newAnnotation() {
@@ -278,8 +278,8 @@ public class SecondaryTableImpl extends AbstractResourceTable implements Nestabl
 			SecondaryTableImpl.this.updateFromJava(astRoot);
 		}
 		
-		public TextRange textRange(CompilationUnit astRoot) {
-			return SecondaryTableImpl.this.textRange(astRoot);
+		public TextRange getTextRange(CompilationUnit astRoot) {
+			return SecondaryTableImpl.this.getTextRange(astRoot);
 		}
 		
 		public String getElementName() {

@@ -51,7 +51,7 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 
 	@Override
 	protected DiscriminatorColumnAnnotation columnResource() {
-		return (DiscriminatorColumnAnnotation) this.persistenceResource.nonNullAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
+		return (DiscriminatorColumnAnnotation) this.persistenceResource.getNonNullAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
 	}
 	
 	public DiscriminatorType getDiscriminatorType() {
@@ -122,7 +122,7 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = columnResource().textRange(astRoot);
+		TextRange textRange = columnResource().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);	
 	}
 

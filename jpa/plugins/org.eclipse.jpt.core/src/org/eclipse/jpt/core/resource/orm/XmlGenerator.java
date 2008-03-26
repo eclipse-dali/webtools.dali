@@ -117,5 +117,5 @@ public interface XmlGenerator extends JpaEObject
 	 */
 	void setAllocationSize(Integer value);
 	
-	public TextRange nameTextRange();
+	public TextRange getNameTextRange();
 }

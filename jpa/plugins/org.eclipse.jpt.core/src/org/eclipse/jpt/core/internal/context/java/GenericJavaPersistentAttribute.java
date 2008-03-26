@@ -207,7 +207,7 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 
 
 	public TextRange fullTextRange(CompilationUnit astRoot) {
-		return this.resourcePersistentAttribute.textRange(astRoot);
+		return this.resourcePersistentAttribute.getTextRange(astRoot);
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
@@ -215,11 +215,11 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	}
 
 	public TextRange selectionTextRange(CompilationUnit astRoot) {
-		return this.resourcePersistentAttribute.nameTextRange(astRoot);
+		return this.resourcePersistentAttribute.getNameTextRange(astRoot);
 	}
 	
 	public TextRange getSelectionTextRange() {
-		return selectionTextRange(this.resourcePersistentAttribute.getMember().astRoot());
+		return selectionTextRange(this.resourcePersistentAttribute.getMember().getAstRoot());
 	}
 	
 
@@ -264,7 +264,7 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	}
 	
 	protected String javaMappingAnnotationName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		Annotation mappingAnnotation = (Annotation) resourcePersistentAttribute.mappingAnnotation();
+		Annotation mappingAnnotation = (Annotation) resourcePersistentAttribute.getMappingAnnotation();
 		if (mappingAnnotation != null) {
 			return mappingAnnotation.getAnnotationName();
 		}

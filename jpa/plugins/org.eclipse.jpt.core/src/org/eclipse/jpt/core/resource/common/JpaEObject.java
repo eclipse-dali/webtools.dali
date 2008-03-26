@@ -27,17 +27,17 @@ public interface JpaEObject extends EObject
 	/**
 	 * Return the resource that most directly contains this object
 	 */
-	IResource platformResource();
+	IResource getPlatformResource();
 	
 	/**
 	 * Return the JpaXmlResource containing this object.
 	 */
-	JpaXmlResource resource();
+	JpaXmlResource getResource();
 	
 	/**
 	 * Return the root object of the model
 	 */
-	JpaEObject root();
+	JpaEObject getRoot();
 	
 	/**
 	 * Return true if this object's text representation contains the text offset
@@ -48,13 +48,13 @@ public interface JpaEObject extends EObject
 	 * Return the text range to be used for validation.  This is the source
 	 * range that will be highlighted for a validation error.
 	 */
-	TextRange validationTextRange();
+	TextRange getValidationTextRange();
 	
 	/**
 	 * Return the text range to be used for selection.  This is the source
 	 * range that will be highlighted when selecting in the structure view.
 	 */
-	TextRange selectionTextRange();
+	TextRange getSelectionTextRange();
 	
 	
 	boolean isAllFeaturesUnset();

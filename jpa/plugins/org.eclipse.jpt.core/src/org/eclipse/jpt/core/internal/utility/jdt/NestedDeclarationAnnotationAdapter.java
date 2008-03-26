@@ -55,7 +55,7 @@ public class NestedDeclarationAnnotationAdapter extends AbstractNestedDeclaratio
 	// ********** AbstractNestedDeclarationAnnotationAdapter implementation **********
 
 	@Override
-	protected Annotation annotation(Expression value) {
+	protected Annotation getAnnotation(Expression value) {
 		return this.annotationValue(value);
 	}
 

@@ -89,11 +89,11 @@ public class GenericJavaGeneratedValue extends AbstractJavaJpaContextNode implem
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.generatedValueResource.textRange(astRoot);
+		return this.generatedValueResource.getTextRange(astRoot);
 	}
 
 	public TextRange getGeneratorTextRange(CompilationUnit astRoot) {
-		return this.generatedValueResource.generatorTextRange(astRoot);
+		return this.generatedValueResource.getGeneratorTextRange(astRoot);
 	}
 
 	// ********** resource model -> java context model **********

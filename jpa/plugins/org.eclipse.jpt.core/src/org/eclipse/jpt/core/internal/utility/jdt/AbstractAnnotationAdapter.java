@@ -37,12 +37,12 @@ public abstract class AbstractAnnotationAdapter implements AnnotationAdapter {
 
 	// ********** AnnotationAdapter implementation **********
 
-	public Annotation annotation() {
-		return this.daa.annotation(this.member.modifiedDeclaration());
+	public Annotation getAnnotation() {
+		return this.daa.getAnnotation(this.member.getModifiedDeclaration());
 	}
 
-	public Annotation annotation(CompilationUnit astRoot) {
-		return this.daa.annotation(this.member.modifiedDeclaration(astRoot));
+	public Annotation getAnnotation(CompilationUnit astRoot) {
+		return this.daa.getAnnotation(this.member.getModifiedDeclaration(astRoot));
 	}
 
 	public void newMarkerAnnotation() {
@@ -61,12 +61,12 @@ public abstract class AbstractAnnotationAdapter implements AnnotationAdapter {
 		this.edit(this.buildRemoveAnnotationEditor());
 	}
 
-	public ASTNode astNode() {
-		return this.daa.astNode(this.member.modifiedDeclaration());
+	public ASTNode getAstNode() {
+		return this.daa.getAstNode(this.member.getModifiedDeclaration());
 	}
 
-	public ASTNode astNode(CompilationUnit astRoot) {
-		return this.daa.astNode(this.member.modifiedDeclaration(astRoot));
+	public ASTNode getAstNode(CompilationUnit astRoot) {
+		return this.daa.getAstNode(this.member.getModifiedDeclaration(astRoot));
 	}
 
 	@Override

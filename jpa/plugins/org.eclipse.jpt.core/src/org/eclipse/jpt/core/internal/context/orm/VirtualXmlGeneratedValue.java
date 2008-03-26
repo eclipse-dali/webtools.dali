@@ -51,7 +51,7 @@ public class VirtualXmlGeneratedValue extends AbstractJpaEObject implements XmlG
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
 	}
 
-	public TextRange generatorTextRange() {
+	public TextRange getGeneratorTextRange() {
 		return null;
 	}
 

@@ -327,15 +327,15 @@ public class JoinTableImpl extends AbstractResourceTable implements JoinTableAnn
 
 		public NestableJoinColumn nestedAnnotationFor(org.eclipse.jdt.core.dom.Annotation jdtAnnotation) {
 			for (NestableJoinColumn joinColumn : CollectionTools.iterable(nestedAnnotations())) {
-				if (jdtAnnotation == joinColumn.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
+				if (jdtAnnotation == joinColumn.getJdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
 					return joinColumn;
 				}
 			}
 			return null;
 		}
 
-		public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
-			return JoinTableImpl.this.jdtAnnotation(astRoot);
+		public org.eclipse.jdt.core.dom.Annotation getJdtAnnotation(CompilationUnit astRoot) {
+			return JoinTableImpl.this.getJdtAnnotation(astRoot);
 		}
 
 		public void newAnnotation() {
@@ -350,8 +350,8 @@ public class JoinTableImpl extends AbstractResourceTable implements JoinTableAnn
 			JoinTableImpl.this.updateFromJava(astRoot);
 		}
 		
-		public TextRange textRange(CompilationUnit astRoot) {
-			return JoinTableImpl.this.textRange(astRoot);
+		public TextRange getTextRange(CompilationUnit astRoot) {
+			return JoinTableImpl.this.getTextRange(astRoot);
 		}
 	}
 	public static class JoinTableAnnotationDefinition implements AnnotationDefinition

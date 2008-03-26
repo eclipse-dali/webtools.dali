@@ -81,11 +81,11 @@ public class GeneratedValueImpl extends AbstractResourceAnnotation<Member> imple
 		firePropertyChanged(GENERATOR_PROPERTY, oldGenerator, newGenerator);
 	}
 
-	public TextRange strategyTextRange(CompilationUnit astRoot) {
+	public TextRange getStrategyTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(STRATEGY_ADAPTER, astRoot);
 	}
 	
-	public TextRange generatorTextRange(CompilationUnit astRoot) {
+	public TextRange getGeneratorTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(GENERATOR_ADAPTER, astRoot);
 	}
 
@@ -96,11 +96,11 @@ public class GeneratedValueImpl extends AbstractResourceAnnotation<Member> imple
 	}
 
 	protected GenerationType strategy(CompilationUnit astRoot) {
-		return GenerationType.fromJavaAnnotationValue(this.strategyAdapter.value(astRoot));
+		return GenerationType.fromJavaAnnotationValue(this.strategyAdapter.getValue(astRoot));
 	}
 	
 	protected String generator(CompilationUnit astRoot) {
-		return this.generatorAdapter.value(astRoot);
+		return this.generatorAdapter.getValue(astRoot);
 	}
 	
 	// ********** static methods **********

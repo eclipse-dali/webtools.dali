@@ -131,8 +131,8 @@ public abstract class JpaXmlResource extends TranslatorResourceImpl
 	
 	public abstract void javaElementChanged(ElementChangedEvent event);
 	
-	public JpaXmlResourceModel resourceModel() {
-		return resourceModel;
+	public JpaXmlResourceModel getResourceModel() {
+		return this.resourceModel;
 	}
 	
 	public void setResourceModel(JpaXmlResourceModel resourceModel) {

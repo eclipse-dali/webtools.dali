@@ -91,21 +91,21 @@ public interface RelationshipMappingAnnotation extends JavaResourceNode
 
 	
 	/**
-	 * Return the ITextRange for the targetEntity element.  If the targetEntity element 
-	 * does not exist return the ITextRange for the mapping annotation.
+	 * Return the {@link TextRange} for the targetEntity element.  If the targetEntity element 
+	 * does not exist return the {@link TextRange} for the mapping annotation.
 	 */
-	TextRange targetEntityTextRange(CompilationUnit astRoot);
+	TextRange getTargetEntityTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the fetch element.  If the fetch element 
-	 * does not exist return the ITextRange for the mapping annotation.
+	 * Return the {@link TextRange} for the fetch element.  If the fetch element 
+	 * does not exist return the {@link TextRange} for the mapping annotation.
 	 */
-	TextRange fetchTextRange(CompilationUnit astRoot);
+	TextRange getFetchTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the cascade element.  If the cascade element 
-	 * does not exist return the ITextRange for the mapping annotation.
+	 * Return the {@link TextRange} for the cascade element.  If the cascade element 
+	 * does not exist return the {@link TextRange} for the mapping annotation.
 	 */
-	TextRange cascadeTextRange(CompilationUnit astRoot);
+	TextRange getCascadeTextRange(CompilationUnit astRoot);
 
 }

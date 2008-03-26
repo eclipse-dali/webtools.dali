@@ -52,15 +52,15 @@ public interface QueryHintAnnotation extends JavaResourceNode
 		String VALUE_PROPERTY = "valueProperty";
 
 	/**
-	 * Return the ITextRange for the name element.  If the name element 
-	 * does not exist return the ITextRange for the QueryHint annotation.
+	 * Return the {@link TextRange} for the name element.  If the name element 
+	 * does not exist return the {@link TextRange} for the QueryHint annotation.
 	 */
-	TextRange nameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the value element.  If the value element 
-	 * does not exist return the ITextRange for the QueryHint annotation.
+	 * Return the {@link TextRange} for the value element.  If the value element 
+	 * does not exist return the {@link TextRange} for the QueryHint annotation.
 	 */
-	TextRange valueTextRange(CompilationUnit astRoot);
+	TextRange getValueTextRange(CompilationUnit astRoot);
 
 }

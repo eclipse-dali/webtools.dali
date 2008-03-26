@@ -61,7 +61,7 @@ public class TemporalImpl extends AbstractResourceAnnotation<Attribute> implemen
 		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 	
-	public TextRange valueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(VALUE_ADAPTER, astRoot);
 	}
 
@@ -70,7 +70,7 @@ public class TemporalImpl extends AbstractResourceAnnotation<Attribute> implemen
 	}
 	
 	protected TemporalType value(CompilationUnit astRoot) {
-		return TemporalType.fromJavaAnnotationValue(this.valueAdapter.value(astRoot));
+		return TemporalType.fromJavaAnnotationValue(this.valueAdapter.getValue(astRoot));
 	}
 	
 	// ********** static methods **********

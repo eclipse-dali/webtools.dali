@@ -99,11 +99,11 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 	}
 	
 	protected Temporal temporalResource() {
-		return (Temporal) getResourcePersistentAttribute().nonNullAnnotation(Temporal.ANNOTATION_NAME);
+		return (Temporal) getResourcePersistentAttribute().getNonNullAnnotation(Temporal.ANNOTATION_NAME);
 	}
 	
 	public ColumnAnnotation columnResource() {
-		return (ColumnAnnotation) getResourcePersistentAttribute().nonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+		return (ColumnAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	//************** IJavaAttributeMapping implementation ***************
@@ -333,15 +333,15 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 	}
 	
 	protected TableGeneratorAnnotation tableGenerator(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		return (TableGeneratorAnnotation) resourcePersistentAttribute.annotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+		return (TableGeneratorAnnotation) resourcePersistentAttribute.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected SequenceGeneratorAnnotation sequenceGenerator(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		return (SequenceGeneratorAnnotation) resourcePersistentAttribute.annotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+		return (SequenceGeneratorAnnotation) resourcePersistentAttribute.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected GeneratedValueAnnotation generatedValue(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		return (GeneratedValueAnnotation) resourcePersistentAttribute.annotation(GeneratedValueAnnotation.ANNOTATION_NAME);
+		return (GeneratedValueAnnotation) resourcePersistentAttribute.getAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void updatePersistenceUnitGenerators() {

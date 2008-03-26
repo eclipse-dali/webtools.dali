@@ -178,15 +178,15 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 	
 	protected abstract NestableUniqueConstraint createUniqueConstraint(int index);
 
-	public TextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return elementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 	
-	public TextRange schemaTextRange(CompilationUnit astRoot) {
+	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
 		return elementTextRange(this.schemaDeclarationAdapter, astRoot);
 	}
 	
-	public TextRange catalogTextRange(CompilationUnit astRoot) {
+	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
 		return elementTextRange(this.catalogDeclarationAdapter, astRoot);
 	}
 	
@@ -210,15 +210,15 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 	}
 	
 	protected String name(CompilationUnit astRoot) {
-		return this.nameAdapter.value(astRoot);
+		return this.nameAdapter.getValue(astRoot);
 	}
 	
 	protected String schema(CompilationUnit astRoot) {
-		return this.schemaAdapter.value(astRoot);
+		return this.schemaAdapter.getValue(astRoot);
 	}
 	
 	protected String catalog(CompilationUnit astRoot) {
-		return this.catalogAdapter.value(astRoot);
+		return this.catalogAdapter.getValue(astRoot);
 	}
 	
 	/**
@@ -279,7 +279,7 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 
 		public NestableUniqueConstraint nestedAnnotationFor(Annotation jdtAnnotation) {
 			for (NestableUniqueConstraint uniqueConstraint : CollectionTools.iterable(nestedAnnotations())) {
-				if (jdtAnnotation == uniqueConstraint.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
+				if (jdtAnnotation == uniqueConstraint.getJdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
 					return uniqueConstraint;
 				}
 			}
@@ -302,8 +302,8 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 			this.remove(nestedAnnotationAt(index));
 		}
 
-		public Annotation jdtAnnotation(CompilationUnit astRoot) {
-			return AbstractResourceTable.this.jdtAnnotation(astRoot);
+		public Annotation getJdtAnnotation(CompilationUnit astRoot) {
+			return AbstractResourceTable.this.getJdtAnnotation(astRoot);
 		}
 
 		public void newAnnotation() {
@@ -318,8 +318,8 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 			AbstractResourceTable.this.updateFromJava(astRoot);
 		}
 		
-		public TextRange textRange(CompilationUnit astRoot) {
-			return AbstractResourceTable.this.textRange(astRoot);
+		public TextRange getTextRange(CompilationUnit astRoot) {
+			return AbstractResourceTable.this.getTextRange(astRoot);
 		}
 		
 		public String getElementName() {

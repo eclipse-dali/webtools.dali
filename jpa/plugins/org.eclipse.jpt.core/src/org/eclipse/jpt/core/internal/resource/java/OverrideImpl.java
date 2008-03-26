@@ -71,7 +71,7 @@ public abstract class OverrideImpl
 		firePropertyChanged(OverrideAnnotation.NAME_PROPERTY, oldName, newName);
 	}
 
-	public TextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
@@ -84,6 +84,6 @@ public abstract class OverrideImpl
 	}
 	
 	protected String name(CompilationUnit astRoot) {
-		return this.nameAdapter.value(astRoot);
+		return this.nameAdapter.getValue(astRoot);
 	}
 }

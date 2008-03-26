@@ -32,7 +32,7 @@ public class NullInheritance extends AbstractJavaResourceNode implements Inherit
 		//null, nothing to initialize
 	}
 
-	public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
+	public org.eclipse.jdt.core.dom.Annotation getJdtAnnotation(CompilationUnit astRoot) {
 		return null;
 	}
 	
@@ -68,11 +68,11 @@ public class NullInheritance extends AbstractJavaResourceNode implements Inherit
 	
 	}
 
-	public TextRange strategyTextRange(CompilationUnit astRoot) {
+	public TextRange getStrategyTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public TextRange textRange(CompilationUnit astRoot) {
+	public TextRange getTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 

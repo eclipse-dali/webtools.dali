@@ -56,16 +56,16 @@ public interface NamedNativeQueryAnnotation extends QueryAnnotation
 	String FULLY_QUALIFIED_RESULT_CLASS_PROPERTY = "fullyQualifiedResultClassProperty";
 	
 	/**
-	 * Return the ITextRange for the resultClass element. If resultClass element
-	 * does not exist return the ITextRange for the NamedNativeQuery annotation.
+	 * Return the {@link TextRange} for the resultClass element. If resultClass element
+	 * does not exist return the {@link TextRange} for the NamedNativeQuery annotation.
 	 */
-	TextRange resultClassTextRange(CompilationUnit astRoot);
+	TextRange getResultClassTextRange(CompilationUnit astRoot);
 
 	
 	/**
-	 * Return the ITextRange for the resultSetMapping element. If resultSetMapping element
-	 * does not exist return the ITextRange for the NamedNativeQuery annotation.
+	 * Return the {@link TextRange} for the resultSetMapping element. If resultSetMapping element
+	 * does not exist return the {@link TextRange} for the NamedNativeQuery annotation.
 	 */
-	TextRange resultSetMappingTextRange(CompilationUnit astRoot);
+	TextRange getResultSetMappingTextRange(CompilationUnit astRoot);
 
 }

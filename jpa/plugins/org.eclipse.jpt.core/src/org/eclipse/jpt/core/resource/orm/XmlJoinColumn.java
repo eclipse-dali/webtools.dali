@@ -62,6 +62,6 @@ public interface XmlJoinColumn extends XmlAbstractColumn
 	 */
 	void setReferencedColumnName(String value);
 	
-	TextRange referencedColumnNameTextRange();
+	TextRange getReferencedColumnNameTextRange();
 
 } // JoinColumn

@@ -114,10 +114,10 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 			else {
 				setEntityMappings(buildEntityMappings(ormResource.getEntityMappings()));
 			}
-			ormResource.resourceModel().addRootStructureNode(getEntityMappings());
+			ormResource.getResourceModel().addRootStructureNode(getEntityMappings());
 		}
 		else {
-			ormResource.resourceModel().removeRootStructureNode(getEntityMappings());
+			ormResource.getResourceModel().removeRootStructureNode(getEntityMappings());
 			setEntityMappings(null);
 		}
 	}

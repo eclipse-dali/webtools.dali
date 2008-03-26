@@ -94,6 +94,6 @@ public interface XmlNamedColumn extends JpaEObject
 	 * Return the {@link TextRange} for the name attibute.  If the name attibute 
 	 * does not exist return the {@link TextRange} for the *table element.
 	 */
-	TextRange nameTextRange();
+	TextRange getNameTextRange();
 
 } // NamedColumn

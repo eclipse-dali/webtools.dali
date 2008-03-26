@@ -49,8 +49,8 @@ public abstract class AbstractResourceAnnotation<E extends Member>
 		return this.annotationAdapter;
 	}
 	
-	public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
-		return getAnnotationAdapter().annotation(astRoot);
+	public org.eclipse.jdt.core.dom.Annotation getJdtAnnotation(CompilationUnit astRoot) {
+		return getAnnotationAdapter().getAnnotation(astRoot);
 	}
 	
 	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
@@ -65,8 +65,8 @@ public abstract class AbstractResourceAnnotation<E extends Member>
 		getAnnotationAdapter().newMarkerAnnotation();
 	}
 	
-	public TextRange textRange(CompilationUnit astRoot) {
-		return getMember().annotationTextRange(this.daa, astRoot);
+	public TextRange getTextRange(CompilationUnit astRoot) {
+		return getMember().getAnnotationTextRange(this.daa, astRoot);
 	}
 
 	/**
@@ -74,7 +74,7 @@ public abstract class AbstractResourceAnnotation<E extends Member>
 	 * return the member's text range instead.
 	 */
 	protected TextRange elementTextRange(DeclarationAnnotationElementAdapter<?> elementAdapter, CompilationUnit astRoot) {
-		return this.elementTextRange(this.member.annotationElementTextRange(elementAdapter, astRoot), astRoot);
+		return this.elementTextRange(this.member.getAnnotationElementTextRange(elementAdapter, astRoot), astRoot);
 	}
 	
 	/**
@@ -82,7 +82,7 @@ public abstract class AbstractResourceAnnotation<E extends Member>
 	 * return the member's text range instead.
 	 */
 	protected TextRange elementTextRange(TextRange elementTextRange, CompilationUnit astRoot) {
-		return (elementTextRange != null) ? elementTextRange : this.textRange(astRoot);
+		return (elementTextRange != null) ? elementTextRange : this.getTextRange(astRoot);
 	}
 	
 	/**
@@ -90,7 +90,7 @@ public abstract class AbstractResourceAnnotation<E extends Member>
 	 * Returns false if the element does not exist
 	 */
 	protected boolean elementTouches(DeclarationAnnotationElementAdapter<?> elementAdapter, int pos, CompilationUnit astRoot) {
-		return this.elementTouches(this.member.annotationElementTextRange(elementAdapter, astRoot), pos);
+		return this.elementTouches(this.member.getAnnotationElementTextRange(elementAdapter, astRoot), pos);
 	}
 	
 	/**

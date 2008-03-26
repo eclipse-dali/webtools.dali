@@ -128,7 +128,7 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = columnResource().textRange(astRoot);
+		TextRange textRange = columnResource().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);	
 	}
 	

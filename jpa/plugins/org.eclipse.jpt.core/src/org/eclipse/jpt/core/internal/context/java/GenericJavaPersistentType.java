@@ -61,7 +61,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	
 	@Override
 	public IResource getResource() {
-		return this.resourcePersistentType.resourceModel().getResource().getCompilationUnit().getResource();
+		return this.resourcePersistentType.getResourceModel().getResource().getCompilationUnit().getResource();
 	}
 
 	//****************** JpaStructureNode implementation *******************
@@ -218,7 +218,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	
 	public JpaStructureNode structureNode(int offset) {
 		//TODO astRoot, possibly get this instead of rebuilding it
-		CompilationUnit astRoot = this.resourcePersistentType.getMember().astRoot(); 
+		CompilationUnit astRoot = this.resourcePersistentType.getMember().getAstRoot(); 
 		
 		for (Iterator<JavaPersistentAttribute> i = attributes(); i.hasNext();) {
 			JavaPersistentAttribute persistentAttribute = i.next();
@@ -246,7 +246,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 
 
 	public TextRange fullTextRange(CompilationUnit astRoot) {
-		return this.resourcePersistentType.textRange(astRoot);
+		return this.resourcePersistentType.getTextRange(astRoot);
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
@@ -254,11 +254,11 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 
 	public TextRange selectionTextRange(CompilationUnit astRoot) {
-		return this.resourcePersistentType.nameTextRange(astRoot);
+		return this.resourcePersistentType.getNameTextRange(astRoot);
 	}
 	
 	public TextRange getSelectionTextRange() {
-		return this.selectionTextRange(this.resourcePersistentType.getMember().astRoot());
+		return this.selectionTextRange(this.resourcePersistentType.getMember().getAstRoot());
 	}
 	
 	
@@ -311,7 +311,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 
 	public void update(JavaResourcePersistentType resourcePersistentType) {
 		this.resourcePersistentType = resourcePersistentType;
-		this.resourcePersistentType.resourceModel().addRootStructureNode(this);
+		this.resourcePersistentType.getResourceModel().addRootStructureNode(this);
 		updateParentPersistentType(resourcePersistentType);
 		updateAccess(resourcePersistentType);
 		updateName(resourcePersistentType);
@@ -394,7 +394,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 
 	protected String javaMappingAnnotationName(JavaResourcePersistentType resourcePersistentType) {
-		Annotation mappingAnnotation = (Annotation) resourcePersistentType.mappingAnnotation();
+		Annotation mappingAnnotation = (Annotation) resourcePersistentType.getMappingAnnotation();
 		if (mappingAnnotation != null) {
 			return mappingAnnotation.getAnnotationName();
 		}
@@ -473,7 +473,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	//*************** Validation ******************************************
 	public void addToMessages(List<IMessage> messages) {
 		//get astRoot here to pass down
-		addToMessages(messages, this.resourcePersistentType.getMember().astRoot());	
+		addToMessages(messages, this.resourcePersistentType.getMember().getAstRoot());	
 	}
 	
 	@Override

@@ -24,6 +24,6 @@ import org.eclipse.jdt.core.dom.IVariableBinding;
  */
 public interface FieldAttribute extends Attribute {
 
-	IVariableBinding binding(CompilationUnit astRoot);
+	IVariableBinding getBinding(CompilationUnit astRoot);
 
 }

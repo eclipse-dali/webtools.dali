@@ -91,7 +91,7 @@ public class AssociationOverridesImpl extends AbstractResourceAnnotation<Member>
 	
 	public NestableAssociationOverride nestedAnnotationFor(Annotation jdtAnnotation) {
 		for (NestableAssociationOverride associationOverride : this.associationOverrides) {
-			if (jdtAnnotation == associationOverride.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
+			if (jdtAnnotation == associationOverride.getJdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
 				return associationOverride;
 			}
 		}

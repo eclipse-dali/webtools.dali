@@ -195,9 +195,9 @@ public abstract class AbstractXmlAttributeMapping extends AbstractJpaEObject imp
 		return result.toString();
 	}
 	
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		IDOMNode nameNode = (IDOMNode) DOMUtilities.childAttributeNode(this.node, OrmXmlMapper.NAME);
-		return (nameNode != null) ? this.buildTextRange(nameNode) : this.validationTextRange();
+		return (nameNode != null) ? this.buildTextRange(nameNode) : this.getValidationTextRange();
 	}
 
 } // AbstractXmlAttributeMapping

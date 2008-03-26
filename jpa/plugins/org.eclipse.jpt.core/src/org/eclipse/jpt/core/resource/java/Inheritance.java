@@ -31,9 +31,9 @@ public interface Inheritance extends JavaResourceNode
 		String STRATEGY_PROPERTY = "strategyProperty";
 		
 	/**
-	 * Return the ITextRange for the strategy element.  If the strategy element 
-	 * does not exist return the ITextRange for the Inheritance annotation.
+	 * Return the {@link TextRange} for the strategy element.  If the strategy element 
+	 * does not exist return the {@link TextRange} for the Inheritance annotation.
 	 */
-	TextRange strategyTextRange(CompilationUnit astRoot);
+	TextRange getStrategyTextRange(CompilationUnit astRoot);
 
 }

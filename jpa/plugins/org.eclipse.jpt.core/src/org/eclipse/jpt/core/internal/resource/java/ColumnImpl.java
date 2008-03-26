@@ -156,15 +156,15 @@ public class ColumnImpl extends BaseColumnImpl implements ColumnAnnotation, Nest
 		firePropertyChanged(SCALE_PROPERTY, oldScale, newScale);
 	}
 	
-	public TextRange lengthTextRange(CompilationUnit astRoot) {
+	public TextRange getLengthTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.lengthDeclarationAdapter, astRoot);
 	}
 	
-	public TextRange precisionTextRange(CompilationUnit astRoot) {
+	public TextRange getPrecisionTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.precisionDeclarationAdapter, astRoot);
 	}
 	
-	public TextRange scaleTextRange(CompilationUnit astRoot) {
+	public TextRange getScaleTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.scaleDeclarationAdapter, astRoot);
 	}
 
@@ -177,15 +177,15 @@ public class ColumnImpl extends BaseColumnImpl implements ColumnAnnotation, Nest
 	}
 
 	protected Integer length(CompilationUnit astRoot) {
-		return this.lengthAdapter.value(astRoot);
+		return this.lengthAdapter.getValue(astRoot);
 	}	
 	
 	protected Integer precision(CompilationUnit astRoot) {
-		return this.precisionAdapter.value(astRoot);
+		return this.precisionAdapter.getValue(astRoot);
 	}	
 	
 	protected Integer scale(CompilationUnit astRoot) {
-		return this.scaleAdapter.value(astRoot);
+		return this.scaleAdapter.getValue(astRoot);
 	}
 	
 	// ********** static methods **********

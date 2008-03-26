@@ -88,7 +88,7 @@ public class ContainerAnnotationTools
 	}	
 	
 	private static void addAnnotationsFromSource(CompilationUnit astRoot, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
-		containerAnnotation.jdtAnnotation(astRoot).accept(initialJavaMemberAnnotationAstVisitor(astRoot, containerAnnotation));
+		containerAnnotation.getJdtAnnotation(astRoot).accept(initialJavaMemberAnnotationAstVisitor(astRoot, containerAnnotation));
 	}
 	
 	/**
@@ -138,12 +138,12 @@ public class ContainerAnnotationTools
 	}
 
 	private static void addOrUpdateAnnotationInSource(CompilationUnit astRoot, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
-		containerAnnotation.jdtAnnotation(astRoot).accept(javaMemberAnnotationAstVisitor(astRoot, containerAnnotation));
+		containerAnnotation.getJdtAnnotation(astRoot).accept(javaMemberAnnotationAstVisitor(astRoot, containerAnnotation));
 	}
 	
 	private static void removeAnnotationsNotInSource(CompilationUnit astRoot, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
 		for (NestableAnnotation annotation : CollectionTools.iterable(containerAnnotation.nestedAnnotations())) {
-			if (annotation.jdtAnnotation(astRoot) == null) {
+			if (annotation.getJdtAnnotation(astRoot) == null) {
 				containerAnnotation.remove(annotation);
 			}
 		}		

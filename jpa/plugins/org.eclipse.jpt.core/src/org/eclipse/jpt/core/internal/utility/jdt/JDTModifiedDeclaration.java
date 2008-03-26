@@ -64,7 +64,7 @@ public class JDTModifiedDeclaration
 
 	// ********** public methods **********
 
-	public ASTNode declaration() {
+	public ASTNode getDeclaration() {
 		return this.adapter.declaration();
 	}
 
@@ -76,20 +76,20 @@ public class JDTModifiedDeclaration
 		return this.adapter.modifiers();
 	}
 
-	public AST ast() {
-		return this.declaration().getAST();
+	public AST getAst() {
+		return this.getDeclaration().getAST();
 	}
 
-	public CompilationUnit compilationUnit() {
-		return (CompilationUnit) this.declaration().getRoot();
+	public CompilationUnit getCompilationUnit() {
+		return (CompilationUnit) this.getDeclaration().getRoot();
 	}
 
-	public ICompilationUnit iCompilationUnit() {
-		return (ICompilationUnit) this.compilationUnit().getJavaElement();
+	public ICompilationUnit getICompilationUnit() {
+		return (ICompilationUnit) this.getCompilationUnit().getJavaElement();
 	}
 
-	public IType type() {
-		return this.compilationUnit().getTypeRoot().findPrimaryType();
+	public IType getType() {
+		return this.getCompilationUnit().getTypeRoot().findPrimaryType();
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class JDTModifiedDeclaration
 		};
 	}
 
-	public Annotation annotationNamed(String annotationName) {
+	public Annotation getAnnotationNamed(String annotationName) {
 		for (Iterator<Annotation> stream = this.annotations(); stream.hasNext(); ) {
 			Annotation annotation = stream.next();
 			if (this.annotationIsNamed(annotation, annotationName)) {
@@ -118,7 +118,7 @@ public class JDTModifiedDeclaration
 	 * Return whether the declaration has an annotation with the specified name.
 	 */
 	public boolean containsAnnotationNamed(String annotationName) {
-		return this.annotationNamed(annotationName) != null;
+		return this.getAnnotationNamed(annotationName) != null;
 	}
 
 	/**
@@ -196,24 +196,24 @@ public class JDTModifiedDeclaration
 
 	public void addImport(String importName, boolean static_) {
 		if (importName.indexOf('.') != -1) {
-			this.addImportTo(this.compilationUnit(), importName, static_);
+			this.addImportTo(this.getCompilationUnit(), importName, static_);
 		}
 	}
 
-	public String importFor(String shortName) {
-		return this.importFor(shortName, false);
+	public String getImportFor(String shortName) {
+		return this.getImportFor(shortName, false);
 	}
 
-	public String staticImportFor(String shortName) {
-		return this.importFor(shortName, true);
+	public String getStaticImportFor(String shortName) {
+		return this.getImportFor(shortName, true);
 	}
 
 	// TODO handle wildcards
-	public String importFor(String shortName, boolean static_) {
+	public String getImportFor(String shortName, boolean static_) {
 		if (shortName.indexOf('.') != -1) {
 			return shortName;
 		}
-		List<ImportDeclaration> imports = this.imports(this.compilationUnit());
+		List<ImportDeclaration> imports = this.imports(this.getCompilationUnit());
 		for (ImportDeclaration importDeclaration : imports) {
 			if (this.importIsFor(importDeclaration, shortName, static_)) {
 				return importDeclaration.getName().getFullyQualifiedName();
@@ -256,7 +256,7 @@ public class JDTModifiedDeclaration
 		// annotation to its container in CombinationIndexedDeclarationAnnotationAdapter
 		// the container's import is added but then it won't "resolve" upon
 		// subsequent lookups... :-(
-		return this.importFor(annotation.getTypeName().getFullyQualifiedName());  // look for a matching import
+		return this.getImportFor(annotation.getTypeName().getFullyQualifiedName());  // look for a matching import
 
 		// OLD METHOD SOURCE:
 //		String name = annotation.getTypeName().getFullyQualifiedName();

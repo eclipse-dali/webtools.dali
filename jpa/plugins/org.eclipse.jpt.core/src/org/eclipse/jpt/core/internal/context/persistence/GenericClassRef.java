@@ -205,14 +205,14 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 		if (isVirtual()) {
 			return null;
 		}
-		return this.xmlJavaClassRef.selectionTextRange();
+		return this.xmlJavaClassRef.getSelectionTextRange();
 	}
 	
 	public TextRange getValidationTextRange() {
 		if (isVirtual()) {
 			return null;
 		}
-		return this.xmlJavaClassRef.validationTextRange();
+		return this.xmlJavaClassRef.getValidationTextRange();
 	}
 	
 	@Override

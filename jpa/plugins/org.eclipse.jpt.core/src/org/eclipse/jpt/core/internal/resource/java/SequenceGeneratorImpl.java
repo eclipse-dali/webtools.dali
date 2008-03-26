@@ -88,7 +88,7 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 		firePropertyChanged(SEQUENCE_NAME_PROPERTY, oldSequenceName, newSequenceName);
 	}
 	
-	public TextRange sequenceNameTextRange(CompilationUnit astRoot) {
+	public TextRange getSequenceNameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(SEQUENCE_NAME_ADAPTER, astRoot);
 	}
 
@@ -100,7 +100,7 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 	}
 	
 	protected String sequenceName(CompilationUnit astRoot) {
-		return this.sequenceNameAdapter.value(astRoot);
+		return this.sequenceNameAdapter.getValue(astRoot);
 	}
 
 	// ********** static methods **********

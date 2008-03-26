@@ -108,5 +108,5 @@ public interface XmlQuery extends JpaEObject
 	 */
 	EList<XmlQueryHint> getHints();
 	
-	public TextRange nameTextRange();
+	public TextRange getNameTextRange();
 }

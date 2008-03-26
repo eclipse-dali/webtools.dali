@@ -82,7 +82,7 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 	}
 	
 	public TextRange mappedByTextRange(CompilationUnit astRoot) {
-		return this.mappingResource().mappedByTextRange(astRoot);
+		return this.mappingResource().getMappedByTextRange(astRoot);
 	}
 
 	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {

@@ -39,9 +39,9 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 	@SuppressWarnings("unchecked")
 	protected T mappingResource() {
 		if (isDefault()) {
-			return (T) this.resourcePersistentAttribute.nullMappingAnnotation(getAnnotationName());
+			return (T) this.resourcePersistentAttribute.getNullMappingAnnotation(getAnnotationName());
 		}
-		return (T) this.resourcePersistentAttribute.mappingAnnotation(getAnnotationName());
+		return (T) this.resourcePersistentAttribute.getMappingAnnotation(getAnnotationName());
 	}
 	
 	public GenericJavaPersistentAttribute getPersistentAttribute() {
@@ -81,7 +81,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.mappingResource().textRange(astRoot);
+		TextRange textRange = this.mappingResource().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getPersistentAttribute().getValidationTextRange(astRoot);
 	}
 	
@@ -138,7 +138,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 			int flags;
 			
 			try {
-				flags = this.resourcePersistentAttribute.getMember().jdtMember().getFlags();
+				flags = this.resourcePersistentAttribute.getMember().getJdtMember().getFlags();
 			} catch (JavaModelException jme) { 
 				/* no error to log, in that case */ 
 				return;

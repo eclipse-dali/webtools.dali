@@ -43,7 +43,7 @@ public class GenericJavaTable extends AbstractJavaTable implements JavaTable
 	@Override
 	protected TableAnnotation tableResource() {
 		//TODO get the NullTable from the resource model or build it here in the context model??
-		return (TableAnnotation) this.persistentResource.nonNullAnnotation(annotationName());
+		return (TableAnnotation) this.persistentResource.getNonNullAnnotation(annotationName());
 	}
 
 	@Override

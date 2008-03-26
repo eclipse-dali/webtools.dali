@@ -116,5 +116,5 @@ public interface XmlMultiRelationshipMapping extends XmlRelationshipMapping
 	 */
 	void setMappedBy(String value);
 
-	TextRange mappedByTextRange();
+	TextRange getMappedByTextRange();
 } // MultiRelationshipMapping

@@ -50,16 +50,16 @@ public interface NamedColumnAnnotation extends JavaResourceNode
 		String COLUMN_DEFINITION_PROPERTY = "columnDefinitionPropety";
 
 	/**
-	 * Return the ITextRange for the name element. If the name element
-	 * does not exist return the ITextRange for the *Column annotation.
+	 * Return the {@link TextRange} for the name element. If the name element
+	 * does not exist return the {@link TextRange} for the *Column annotation.
 	 */
-	TextRange nameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the columnDefinition element. If the columnDefinition 
-	 * element does not exist return the ITextRange for the *Column annotation.
+	 * Return the {@link TextRange} for the columnDefinition element. If the columnDefinition 
+	 * element does not exist return the {@link TextRange} for the *Column annotation.
 	 */
-	TextRange columnDefinitionTextRange(CompilationUnit astRoot);
+	TextRange getColumnDefinitionTextRange(CompilationUnit astRoot);
 
 	/**
 	 * Return whether the specified postition touches the name element.

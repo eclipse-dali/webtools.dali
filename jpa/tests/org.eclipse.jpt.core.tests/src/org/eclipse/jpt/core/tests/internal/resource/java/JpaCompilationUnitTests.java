@@ -71,7 +71,7 @@ public class JpaCompilationUnitTests extends AnnotationTestCase {
 		ICompilationUnit compilationUnit = this.createTestCompilationUnit();
 		JpaCompilationUnit jpaCompilationUnit = getJpaCompilationUnitResource(compilationUnit);
 		
-		assertTrue(jpaCompilationUnit.getPersistentType().mappingAnnotation() instanceof EntityAnnotation);
+		assertTrue(jpaCompilationUnit.getPersistentType().getMappingAnnotation() instanceof EntityAnnotation);
 	}
 
 }

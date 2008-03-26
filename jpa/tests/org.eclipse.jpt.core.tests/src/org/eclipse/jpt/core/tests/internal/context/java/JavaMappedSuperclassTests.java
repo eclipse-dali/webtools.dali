@@ -62,8 +62,8 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		assertTrue(javaPersistentType().getMapping() instanceof Entity);
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		assertNull(typeResource.mappingAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME));
-		assertNotNull(typeResource.annotation(IdClassAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getMappingAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME));
+		assertNotNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToEmbeddable() throws Exception {
@@ -77,8 +77,8 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		assertTrue(javaPersistentType().getMapping() instanceof Embeddable);
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		assertNull(typeResource.mappingAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME));
-		assertNull(typeResource.annotation(IdClassAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getMappingAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToNull() throws Exception {
@@ -92,8 +92,8 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		assertTrue(javaPersistentType().getMapping() instanceof JavaNullTypeMapping);
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		assertNull(typeResource.mappingAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME));
-		assertNull(typeResource.annotation(IdClassAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getMappingAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 	}
 
 	
@@ -206,20 +206,20 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 
 		assertNull(mappedSuperclass.getIdClass());
-		assertNull(typeResource.annotation(IdClassAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 		
 		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.addAnnotation(IdClassAnnotation.ANNOTATION_NAME);	
 		assertNull(mappedSuperclass.getIdClass());
-		assertNotNull(typeResource.annotation(IdClassAnnotation.ANNOTATION_NAME));
+		assertNotNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 		
 		idClass.setValue("model.Foo");
 		assertEquals("model.Foo", mappedSuperclass.getIdClass());
-		assertEquals("model.Foo", ((IdClassAnnotation) typeResource.annotation(IdClassAnnotation.ANNOTATION_NAME)).getValue());
+		assertEquals("model.Foo", ((IdClassAnnotation) typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME)).getValue());
 		
 		//test setting  @IdClass value to null, IdClass annotation is removed
 		idClass.setValue(null);
 		assertNull(mappedSuperclass.getIdClass());
-		assertNull(typeResource.annotation(IdClassAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 		
 		//reset @IdClass value and then remove @IdClass
 		idClass = (IdClassAnnotation) typeResource.addAnnotation(IdClassAnnotation.ANNOTATION_NAME);	
@@ -227,7 +227,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		typeResource.removeAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 		
 		assertNull(mappedSuperclass.getIdClass());
-		assertNull(typeResource.annotation(IdClassAnnotation.ANNOTATION_NAME));		
+		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));		
 	}
 	
 	public void testModifyIdClass() throws Exception {
@@ -238,15 +238,15 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 
 		assertNull(mappedSuperclass.getIdClass());
-		assertNull(typeResource.annotation(IdClassAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 			
 		mappedSuperclass.setIdClass("model.Foo");
-		assertEquals("model.Foo", ((IdClassAnnotation) typeResource.annotation(IdClassAnnotation.ANNOTATION_NAME)).getValue());
+		assertEquals("model.Foo", ((IdClassAnnotation) typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME)).getValue());
 		assertEquals("model.Foo", mappedSuperclass.getIdClass());
 		
 		mappedSuperclass.setIdClass(null);
 		assertNull(mappedSuperclass.getIdClass());
-		assertNull(typeResource.annotation(IdClassAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 	}
 
 }

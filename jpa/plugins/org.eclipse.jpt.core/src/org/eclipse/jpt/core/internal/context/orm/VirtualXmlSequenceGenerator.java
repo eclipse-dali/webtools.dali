@@ -75,7 +75,7 @@ public class VirtualXmlSequenceGenerator extends AbstractJpaEObject implements X
 		this.javaSequenceGenerator = javaSequenceGenerator;
 	}
 	
-	public TextRange nameTextRange() {
-		return validationTextRange();
+	public TextRange getNameTextRange() {
+		return getValidationTextRange();
 	}
 }

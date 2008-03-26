@@ -160,23 +160,23 @@ public abstract class BaseColumnImpl extends AbstractNamedColumn implements Base
 		firePropertyChanged(UPDATABLE_PROPERTY, oldUpdatable, newUpdatable);
 	}
 
-	public TextRange nullableTextRange(CompilationUnit astRoot) {
+	public TextRange getNullableTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.nullableDeclarationAdapter, astRoot);
 	}
 	
-	public TextRange insertableTextRange(CompilationUnit astRoot) {
+	public TextRange getInsertableTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.insertableDeclarationAdapter, astRoot);
 	}
 	
-	public TextRange uniqueTextRange(CompilationUnit astRoot) {
+	public TextRange getUniqueTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.uniqueDeclarationAdapter, astRoot);
 	}
 	
-	public TextRange updatableTextRange(CompilationUnit astRoot) {
+	public TextRange getUpdatableTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.updatableDeclarationAdapter, astRoot);
 	}
 	
-	public TextRange tableTextRange(CompilationUnit astRoot) {
+	public TextRange getTableTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.tableDeclarationAdapter, astRoot);
 	}
 	
@@ -196,23 +196,23 @@ public abstract class BaseColumnImpl extends AbstractNamedColumn implements Base
 	}
 	
 	protected String table(CompilationUnit astRoot) {
-		return this.tableAdapter.value(astRoot);
+		return this.tableAdapter.getValue(astRoot);
 	}
 	
 	protected Boolean unique(CompilationUnit astRoot) {
-		return this.uniqueAdapter.value(astRoot);
+		return this.uniqueAdapter.getValue(astRoot);
 	}
 	
 	protected Boolean nullable(CompilationUnit astRoot) {
-		return this.nullableAdapter.value(astRoot);
+		return this.nullableAdapter.getValue(astRoot);
 	}
 	
 	protected Boolean insertable(CompilationUnit astRoot) {
-		return this.insertableAdapter.value(astRoot);
+		return this.insertableAdapter.getValue(astRoot);
 	}
 	
 	protected Boolean updatable(CompilationUnit astRoot) {
-		return this.updatableAdapter.value(astRoot);
+		return this.updatableAdapter.getValue(astRoot);
 	}
 
 }

@@ -174,6 +174,6 @@ public interface XmlAbstractColumn extends XmlNamedColumn
 	 * Return the {@link TextRange} for the table attibute.  If the table attibute 
 	 * does not exist return the {@link TextRange} for the *table element.
 	 */
-	TextRange tableTextRange();
+	TextRange getTableTextRange();
 
 } // AbstractColumn

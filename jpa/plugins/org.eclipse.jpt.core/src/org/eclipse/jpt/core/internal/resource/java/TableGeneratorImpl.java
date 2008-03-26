@@ -259,27 +259,27 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 		return UniqueConstraintImpl.createTableGeneratorUniqueConstraint(this, this.getMember(), index);
 	}
 
-	public TextRange tableTextRange(CompilationUnit astRoot) {
+	public TextRange getTableTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(TABLE_ADAPTER, astRoot);
 	}
 	
-	public TextRange catalogTextRange(CompilationUnit astRoot) {
+	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(CATALOG_ADAPTER, astRoot);
 	}
 	
-	public TextRange schemaTextRange(CompilationUnit astRoot) {
+	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(SCHEMA_ADAPTER, astRoot);
 	}
 	
-	public TextRange pkColumnNameTextRange(CompilationUnit astRoot) {
+	public TextRange getPkColumnNameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(PK_COLUMN_NAME_ADAPTER, astRoot);
 	}
 	
-	public TextRange pkColumnValueTextRange(CompilationUnit astRoot) {
+	public TextRange getPkColumnValueTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(PK_COLUMN_VALUE_ADAPTER, astRoot);
 	}
 	
-	public TextRange valueColumnNameTextRange(CompilationUnit astRoot) {
+	public TextRange getValueColumnNameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(VALUE_COLUMN_NAME_ADAPTER, astRoot);
 	}
 
@@ -297,22 +297,22 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 	}
 
 	protected String table(CompilationUnit astRoot) {
-		return this.tableAdapter.value(astRoot);
+		return this.tableAdapter.getValue(astRoot);
 	}
 	protected String catalog(CompilationUnit astRoot) {
-		return this.catalogAdapter.value(astRoot);
+		return this.catalogAdapter.getValue(astRoot);
 	}
 	protected String schema(CompilationUnit astRoot) {
-		return this.schemaAdapter.value(astRoot);
+		return this.schemaAdapter.getValue(astRoot);
 	}
 	protected String pkColumnName(CompilationUnit astRoot) {
-		return this.pkColumnNameAdapter.value(astRoot);
+		return this.pkColumnNameAdapter.getValue(astRoot);
 	}
 	protected String valueColumnName(CompilationUnit astRoot) {
-		return this.valueColumnNameAdapter.value(astRoot);
+		return this.valueColumnNameAdapter.getValue(astRoot);
 	}
 	protected String pkColumnValue(CompilationUnit astRoot) {
-		return this.pkColumnValueAdapter.value(astRoot);
+		return this.pkColumnValueAdapter.getValue(astRoot);
 	}
 	
 	/**
@@ -382,7 +382,7 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 
 		public NestableUniqueConstraint nestedAnnotationFor(org.eclipse.jdt.core.dom.Annotation jdtAnnotation) {
 			for (NestableUniqueConstraint uniqueConstraint : CollectionTools.iterable(nestedAnnotations())) {
-				if (jdtAnnotation == uniqueConstraint.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
+				if (jdtAnnotation == uniqueConstraint.getJdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
 					return uniqueConstraint;
 				}
 			}
@@ -405,8 +405,8 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 			this.remove(nestedAnnotationAt(index));
 		}
 
-		public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
-			return TableGeneratorImpl.this.jdtAnnotation(astRoot);
+		public org.eclipse.jdt.core.dom.Annotation getJdtAnnotation(CompilationUnit astRoot) {
+			return TableGeneratorImpl.this.getJdtAnnotation(astRoot);
 		}
 
 		public void newAnnotation() {
@@ -421,8 +421,8 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 			TableGeneratorImpl.this.updateFromJava(astRoot);
 		}
 		
-		public TextRange textRange(CompilationUnit astRoot) {
-			return TableGeneratorImpl.this.textRange(astRoot);
+		public TextRange getTextRange(CompilationUnit astRoot) {
+			return TableGeneratorImpl.this.getTextRange(astRoot);
 		}
 		
 		public String getElementName() {

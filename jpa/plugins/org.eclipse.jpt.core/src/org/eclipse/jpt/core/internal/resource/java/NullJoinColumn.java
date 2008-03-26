@@ -40,7 +40,7 @@ public class NullJoinColumn extends NullBaseColumn implements JoinColumnAnnotati
 		throw new UnsupportedOperationException();
 	}
 
-	public TextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
+	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	

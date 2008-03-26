@@ -115,7 +115,7 @@ public class VirtualXmlBasic extends AbstractJpaEObject implements XmlBasic
 		this.column.update(javaBasicMapping.getColumn());
 	}
 	
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		return null;
 	}
 }

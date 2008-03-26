@@ -87,7 +87,7 @@ public class OneToManyImpl extends AbstractRelationshipMappingAnnotation impleme
 		firePropertyChanged(MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
 	}
 	
-	public TextRange mappedByTextRange(CompilationUnit astRoot) {
+	public TextRange getMappedByTextRange(CompilationUnit astRoot) {
 		return elementTextRange(MAPPED_BY_ADAPTER, astRoot);
 	}
 
@@ -102,7 +102,7 @@ public class OneToManyImpl extends AbstractRelationshipMappingAnnotation impleme
 	}
 
 	protected String mappedBy(CompilationUnit astRoot) {
-		return this.mappedByAdapter.value(astRoot);
+		return this.mappedByAdapter.getValue(astRoot);
 	}
 	
 	// ********** static methods **********

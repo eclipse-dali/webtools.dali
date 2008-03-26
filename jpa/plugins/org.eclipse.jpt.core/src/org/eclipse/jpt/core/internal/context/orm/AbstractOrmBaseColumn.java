@@ -250,7 +250,7 @@ public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends
 
 	public TextRange getTableTextRange() {
 		if (columnResource() != null) {
-			TextRange textRange = columnResource().tableTextRange();
+			TextRange textRange = columnResource().getTableTextRange();
 			if (textRange != null) {
 				return textRange;
 			}

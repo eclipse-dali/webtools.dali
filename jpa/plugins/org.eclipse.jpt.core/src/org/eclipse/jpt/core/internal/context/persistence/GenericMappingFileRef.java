@@ -183,14 +183,14 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 		if (isVirtual()) {
 			return null;
 		}
-		return this.xmlMappingFileRef.selectionTextRange();
+		return this.xmlMappingFileRef.getSelectionTextRange();
 	}
 	
 	public TextRange getValidationTextRange() {
 		if (isVirtual()) {
 			return getPersistenceUnit().getValidationTextRange();
 		}
-		return this.xmlMappingFileRef.validationTextRange();
+		return this.xmlMappingFileRef.getValidationTextRange();
 	}
 	
 	//**************** Validation *************************

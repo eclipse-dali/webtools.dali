@@ -296,7 +296,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 	}
 	
 	public TextRange getSelectionTextRange() {
-		return this.typeMapping.selectionTextRange();
+		return this.typeMapping.getSelectionTextRange();
 	}
 	
 	public TextRange classTextRange() {
@@ -352,6 +352,6 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.typeMapping.validationTextRange();
+		return this.typeMapping.getValidationTextRange();
 	}
 }

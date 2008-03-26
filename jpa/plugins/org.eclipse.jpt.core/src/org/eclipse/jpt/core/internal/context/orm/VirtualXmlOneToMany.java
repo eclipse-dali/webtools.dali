@@ -179,11 +179,11 @@ public class VirtualXmlOneToMany extends AbstractJpaEObject implements XmlOneToM
 //		}
 //	}
 	
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		return null;
 	}
 	
-	public TextRange mappedByTextRange() {
+	public TextRange getMappedByTextRange() {
 		return null;
 	}
 }

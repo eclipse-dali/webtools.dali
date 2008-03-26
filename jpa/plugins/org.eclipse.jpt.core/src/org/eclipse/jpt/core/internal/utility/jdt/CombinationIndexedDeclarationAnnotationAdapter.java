@@ -139,15 +139,15 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 
 	// ********** DeclarationAnnotationAdapter implementation **********
 
-	public Annotation annotation(ModifiedDeclaration declaration) {
-		if (this.index() == 0) {
+	public Annotation getAnnotation(ModifiedDeclaration declaration) {
+		if (this.getIndex() == 0) {
 			// check for the stand-alone annotation
-			Annotation standAloneAnnotation = this.standAloneAnnotation(declaration);
+			Annotation standAloneAnnotation = this.getStandAloneAnnotation(declaration);
 			if (standAloneAnnotation != null) {
 				return standAloneAnnotation;
 			}
 		}
-		return this.nestedAnnotation(declaration);
+		return this.getNestedAnnotation(declaration);
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	}
 
 	public void removeAnnotation(ModifiedDeclaration declaration) {
-		if (this.index() == 0) {
+		if (this.getIndex() == 0) {
 			// check for the stand-alone annotation
 			if (this.standAloneAnnotationIsPresent(declaration)) {
 				this.removeStandAloneAnnotation(declaration);
@@ -192,31 +192,31 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 		}
 	}
 
-	public ASTNode astNode(ModifiedDeclaration declaration) {
+	public ASTNode getAstNode(ModifiedDeclaration declaration) {
 		// if the annotation is missing, delegate to the nested annotation adapter
-		Annotation annotation = this.annotation(declaration);
-		return (annotation != null) ? annotation : this.nestedAnnotationAdapter.astNode(declaration);
+		Annotation annotation = this.getAnnotation(declaration);
+		return (annotation != null) ? annotation : this.nestedAnnotationAdapter.getAstNode(declaration);
 	}
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.annotationName());
+		return StringTools.buildToStringFor(this, this.getAnnotationName());
 	}
 
 
 	// ********** IndexedDeclarationAnnotationAdapter implementation **********
 
-	public int index() {
-		return this.nestedAnnotationAdapter.index();
+	public int getIndex() {
+		return this.nestedAnnotationAdapter.getIndex();
 	}
 
 	public void moveAnnotation(int newIndex, ModifiedDeclaration declaration) {
-		int oldIndex = this.index();
+		int oldIndex = this.getIndex();
 		if (newIndex == oldIndex) {
 			return;
 		}
 
-		Annotation standAloneAnnotation = this.standAloneAnnotation(declaration);
+		Annotation standAloneAnnotation = this.getStandAloneAnnotation(declaration);
 		if (standAloneAnnotation == null) {
 			this.moveNestedAnnotation(newIndex, declaration);
 			if (this.nestedElementCanBeConvertedToStandAlone(declaration)) {
@@ -244,7 +244,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	 * which may require moving the 0th annotation from "stand-alone" to "nested"
 	 */
 	private Annotation newAnnotation(AnnotationFactory annotationFactory, ModifiedDeclaration declaration) {
-		if (this.index() ==  0) {
+		if (this.getIndex() ==  0) {
 			return this.newZeroAnnotation(annotationFactory, declaration);
 		}
 		if (this.zeroNestedAnnotationIsPresent(declaration)) {
@@ -284,7 +284,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	 * move the stand-alone annotation to the container annotation at index=0
 	 */
 	private void moveStandAloneAnnotationToContainerAnnotation(ModifiedDeclaration declaration) {
-		Annotation standAloneAnnotation = this.standAloneAnnotation(declaration);
+		Annotation standAloneAnnotation = this.getStandAloneAnnotation(declaration);
 		if (standAloneAnnotation == null) {
 			throw new IllegalStateException("the stand-alone annotation is missing");
 		}
@@ -326,7 +326,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	 * </pre>
 	 */
 	private boolean nestedElementCanBeConvertedToStandAlone(ModifiedDeclaration declaration) {
-		Annotation containerAnnotation = this.containerAnnotation(declaration);
+		Annotation containerAnnotation = this.getContainerAnnotation(declaration);
 		if (containerAnnotation == null) {
 			return false;
 		}
@@ -334,9 +334,9 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 			return false;
 		}
 		if (containerAnnotation.isSingleMemberAnnotation()) {
-			if (this.elementName().equals("value")) {
+			if (this.getElementName().equals("value")) {
 				return (((SingleMemberAnnotation) containerAnnotation).getValue().getNodeType() != ASTNode.ARRAY_INITIALIZER)
-						&& (this.zeroNestedAnnotationAdapter.annotation(declaration) != null);
+						&& (this.zeroNestedAnnotationAdapter.getAnnotation(declaration) != null);
 			}
 			return false;
 		}
@@ -349,9 +349,9 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 				return false;  // there are other elements present - leave them all alone
 			}
 			MemberValuePair pair = (MemberValuePair) na.values().get(0);
-			if (this.elementName().equals(pair.getName().getFullyQualifiedName())) {
+			if (this.getElementName().equals(pair.getName().getFullyQualifiedName())) {
 				return (pair.getValue().getNodeType() != ASTNode.ARRAY_INITIALIZER)
-						&& (this.zeroNestedAnnotationAdapter.annotation(declaration) != null);
+						&& (this.zeroNestedAnnotationAdapter.getAnnotation(declaration) != null);
 			}
 			return false;
 		}
@@ -363,7 +363,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	 * to the stand-alone annotation
 	 */
 	private void convertLastElementAnnotationToStandAloneAnnotation(ModifiedDeclaration declaration) {
-		Annotation last = this.zeroNestedAnnotationAdapter.annotation(declaration);
+		Annotation last = this.zeroNestedAnnotationAdapter.getAnnotation(declaration);
 		if (last == null) {
 			throw new IllegalStateException("the last nested annotation is missing");
 		} else if (last.isMarkerAnnotation()) {
@@ -385,11 +385,11 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	}
 
 	private boolean standAloneAnnotationIsPresent(ModifiedDeclaration declaration) {
-		return this.standAloneAnnotation(declaration) != null;
+		return this.getStandAloneAnnotation(declaration) != null;
 	}
 
-	private Annotation standAloneAnnotation(ModifiedDeclaration declaration) {
-		return this.standAloneAnnotationAdapter.annotation(declaration);
+	private Annotation getStandAloneAnnotation(ModifiedDeclaration declaration) {
+		return this.standAloneAnnotationAdapter.getAnnotation(declaration);
 	}
 
 	private MarkerAnnotation newStandAloneMarkerAnnotation(ModifiedDeclaration declaration) {
@@ -408,8 +408,8 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 		this.standAloneAnnotationAdapter.removeAnnotation(declaration);
 	}
 
-	private Annotation nestedAnnotation(ModifiedDeclaration declaration) {
-		return this.nestedAnnotationAdapter.annotation(declaration);
+	private Annotation getNestedAnnotation(ModifiedDeclaration declaration) {
+		return this.nestedAnnotationAdapter.getAnnotation(declaration);
 	}
 
 	private void moveNestedAnnotation(int newIndex, ModifiedDeclaration declaration) {
@@ -421,27 +421,27 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	}
 
 	private boolean containerAnnotationIsPresent(ModifiedDeclaration declaration) {
-		return this.containerAnnotation(declaration) != null;
+		return this.getContainerAnnotation(declaration) != null;
 	}
 
-	private Annotation containerAnnotation(ModifiedDeclaration declaration) {
-		return this.nestedAnnotationAdapter.outerAnnotationAdapter().annotation(declaration);
+	private Annotation getContainerAnnotation(ModifiedDeclaration declaration) {
+		return this.nestedAnnotationAdapter.getOuterAnnotationAdapter().getAnnotation(declaration);
 	}
 
 	private boolean zeroNestedAnnotationIsPresent(ModifiedDeclaration declaration) {
-		return this.zeroNestedAnnotation(declaration) != null;
+		return this.getZeroNestedAnnotation(declaration) != null;
 	}
 
-	private Annotation zeroNestedAnnotation(ModifiedDeclaration declaration) {
-		return this.zeroNestedAnnotationAdapter.annotation(declaration);
+	private Annotation getZeroNestedAnnotation(ModifiedDeclaration declaration) {
+		return this.zeroNestedAnnotationAdapter.getAnnotation(declaration);
 	}
 
-	private String annotationName() {
-		return this.nestedAnnotationAdapter.annotationName();
+	private String getAnnotationName() {
+		return this.nestedAnnotationAdapter.getAnnotationName();
 	}
 
-	private String elementName() {
-		return this.nestedAnnotationAdapter.elementName();
+	private String getElementName() {
+		return this.nestedAnnotationAdapter.getElementName();
 	}
 
 	@SuppressWarnings("unchecked")

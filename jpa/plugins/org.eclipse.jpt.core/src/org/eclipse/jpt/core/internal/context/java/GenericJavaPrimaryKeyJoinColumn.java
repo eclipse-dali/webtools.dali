@@ -141,11 +141,11 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 	}
 
 	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
-		return this.columnResource().referencedColumnNameTextRange(astRoot);
+		return this.columnResource().getReferencedColumnNameTextRange(astRoot);
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = columnResource().textRange(astRoot);
+		TextRange textRange = columnResource().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);	
 	}
 

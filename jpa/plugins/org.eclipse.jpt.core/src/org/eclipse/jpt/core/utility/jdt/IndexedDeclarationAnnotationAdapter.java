@@ -26,7 +26,7 @@ public interface IndexedDeclarationAnnotationAdapter extends DeclarationAnnotati
 	/**
 	 * Return the the index at which the annotation is situated.
 	 */
-	int index();
+	int getIndex();
 
 	/**
 	 * Move the annotation to the specified index, leaving its original

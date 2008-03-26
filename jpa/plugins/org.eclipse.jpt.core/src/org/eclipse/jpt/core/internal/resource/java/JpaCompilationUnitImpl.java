@@ -95,12 +95,12 @@ public class JpaCompilationUnitImpl
 	}
 
 	@Override
-	public JpaAnnotationProvider annotationProvider() {
+	public JpaAnnotationProvider getAnnotationProvider() {
 		return this.annotationProvider;
 	}
 	
 	@Override
-	public CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
+	public CommandExecutorProvider getModifySharedDocumentCommandExecutorProvider() {
 		return this.modifySharedDocumentCommandExecutorProvider;
 	}
 	
@@ -110,7 +110,7 @@ public class JpaCompilationUnitImpl
 	}
 	
 	@Override
-	public JavaResourceModel resourceModel() {
+	public JavaResourceModel getResourceModel() {
 		return this.javaResourceModel;
 	}
 	
@@ -123,7 +123,7 @@ public class JpaCompilationUnitImpl
 	
 	public JavaResourcePersistentType getJavaPersistentTypeResource(String fullyQualifiedTypeName) {
 		if (getPersistentType() != null) {
-			return getPersistentType().javaPersistentTypeResource(fullyQualifiedTypeName);
+			return getPersistentType().getJavaPersistentTypeResource(fullyQualifiedTypeName);
 		} 
 		return null;
 	}
@@ -165,7 +165,7 @@ public class JpaCompilationUnitImpl
 		return 
 			JavaResourcePersistentTypeImpl.buildJavaResourcePersistentType(this, 
 				iType, 
-				modifySharedDocumentCommandExecutorProvider(), 
+				getModifySharedDocumentCommandExecutorProvider(), 
 				getAnnotationEditFormatter(), 
 				astRoot);
 	}
@@ -186,7 +186,7 @@ public class JpaCompilationUnitImpl
 	}
 	
 	
-	public TextRange textRange(CompilationUnit astRoot) {
+	public TextRange getTextRange(CompilationUnit astRoot) {
 		return null;//this.selectionTextRange();
 	}
 

@@ -206,10 +206,10 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(ManyToMany.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(Basic.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(Basic.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToDefault() throws Exception {
@@ -228,9 +228,9 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 	
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(ManyToMany.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToVersionMapping() throws Exception {
@@ -249,10 +249,10 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(ManyToMany.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(Version.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(Version.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToIdMapping() throws Exception {
@@ -271,10 +271,10 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(ManyToMany.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(Id.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(Id.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToEmbeddedMapping() throws Exception {
@@ -293,10 +293,10 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(ManyToMany.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToEmbeddedIdMapping() throws Exception {
@@ -315,10 +315,10 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(ManyToMany.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(EmbeddedId.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(EmbeddedId.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToTransientMapping() throws Exception {
@@ -337,10 +337,10 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(ManyToMany.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(Transient.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(Transient.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToOneToOneMapping() throws Exception {
@@ -359,10 +359,10 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(ManyToMany.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(OneToOne.ANNOTATION_NAME));
-		assertNotNull(attributeResource.annotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(OneToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToOneToManyMapping() throws Exception {
@@ -381,10 +381,10 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(ManyToMany.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(OneToMany.ANNOTATION_NAME));
-		assertNotNull(attributeResource.annotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(OneToMany.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToManyToOneMapping() throws Exception {
@@ -403,10 +403,10 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(ManyToMany.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(ManyToOne.ANNOTATION_NAME));
-		assertNotNull(attributeResource.annotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(ManyToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 	}
 
 	public void testUpdateSpecifiedTargetEntity() throws Exception {
@@ -418,7 +418,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		ManyToMany manyToMany = (ManyToMany) attributeResource.mappingAnnotation();
+		ManyToMany manyToMany = (ManyToMany) attributeResource.getMappingAnnotation();
 		
 		assertNull(manyToManyMapping.getSpecifiedTargetEntity());
 		assertNull(manyToMany.getTargetEntity());
@@ -443,7 +443,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		ManyToMany manyToMany = (ManyToMany) attributeResource.mappingAnnotation();
+		ManyToMany manyToMany = (ManyToMany) attributeResource.getMappingAnnotation();
 		
 		assertNull(manyToManyMapping.getSpecifiedTargetEntity());
 		assertNull(manyToMany.getTargetEntity());
@@ -468,7 +468,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		ManyToMany manyToMany = (ManyToMany) attributeResource.mappingAnnotation();
+		ManyToMany manyToMany = (ManyToMany) attributeResource.getMappingAnnotation();
 		
 		assertNull(manyToManyMapping.getSpecifiedFetch());
 		assertNull(manyToMany.getFetch());
@@ -498,7 +498,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		ManyToMany manyToMany = (ManyToMany) attributeResource.mappingAnnotation();
+		ManyToMany manyToMany = (ManyToMany) attributeResource.getMappingAnnotation();
 		
 		assertNull(manyToManyMapping.getSpecifiedFetch());
 		assertNull(manyToMany.getFetch());
@@ -528,7 +528,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		ManyToMany manyToMany = (ManyToMany) attributeResource.mappingAnnotation();
+		ManyToMany manyToMany = (ManyToMany) attributeResource.getMappingAnnotation();
 		
 		assertNull(manyToManyMapping.getMappedBy());
 		assertNull(manyToMany.getMappedBy());
@@ -553,7 +553,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		ManyToMany manyToMany = (ManyToMany) attributeResource.mappingAnnotation();
+		ManyToMany manyToMany = (ManyToMany) attributeResource.getMappingAnnotation();
 		
 		assertNull(manyToManyMapping.getMappedBy());
 		assertNull(manyToMany.getMappedBy());
@@ -713,12 +713,12 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		
 		assertNull(manyToManyMapping.getMapKey());
-		assertNull(attributeResource.annotation(MapKey.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(MapKey.ANNOTATION_NAME));
 		
 		//set mapKey in the resource model, verify context model does not change
 		attributeResource.addAnnotation(MapKey.ANNOTATION_NAME);
 		assertNull(manyToManyMapping.getMapKey());
-		MapKey mapKey = (MapKey) attributeResource.annotation(MapKey.ANNOTATION_NAME);
+		MapKey mapKey = (MapKey) attributeResource.getAnnotation(MapKey.ANNOTATION_NAME);
 		assertNotNull(mapKey);
 				
 		//set mapKey name in the resource model, verify context model updated
@@ -734,7 +734,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		mapKey.setName("myMapKey");
 		attributeResource.removeAnnotation(MapKey.ANNOTATION_NAME);
 		assertNull(manyToManyMapping.getMapKey());
-		assertNull(attributeResource.annotation(MapKey.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(MapKey.ANNOTATION_NAME));
 	}
 	
 	public void testModifyMapKey() throws Exception {
@@ -748,18 +748,18 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		
 		assertNull(manyToManyMapping.getMapKey());
-		assertNull(attributeResource.annotation(MapKey.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(MapKey.ANNOTATION_NAME));
 					
 		//set mapKey  in the context model, verify resource model updated
 		manyToManyMapping.setMapKey("myMapKey");
-		MapKey mapKey = (MapKey) attributeResource.annotation(MapKey.ANNOTATION_NAME);
+		MapKey mapKey = (MapKey) attributeResource.getAnnotation(MapKey.ANNOTATION_NAME);
 		assertEquals("myMapKey", manyToManyMapping.getMapKey());
 		assertEquals("myMapKey", mapKey.getName());
 	
 		//set mapKey to null in the context model
 		manyToManyMapping.setMapKey(null);
 		assertNull(manyToManyMapping.getMapKey());
-		assertNull(attributeResource.annotation(MapKey.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(MapKey.ANNOTATION_NAME));
 	}
 
 	public void testUpdateOrderBy() throws Exception {
@@ -773,11 +773,11 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		
 		assertNull(manyToManyMapping.getOrderBy());
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 				
 		//set orderBy in the resource model, verify context model updated
 		attributeResource.addAnnotation(OrderBy.ANNOTATION_NAME);
-		OrderBy orderBy = (OrderBy) attributeResource.annotation(OrderBy.ANNOTATION_NAME);
+		OrderBy orderBy = (OrderBy) attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME);
 		orderBy.setValue("newOrderBy");
 		assertEquals("newOrderBy", manyToManyMapping.getOrderBy());
 		assertEquals("newOrderBy", orderBy.getValue());
@@ -785,7 +785,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		//set orderBy to null in the resource model
 		attributeResource.removeAnnotation(OrderBy.ANNOTATION_NAME);
 		assertNull(manyToManyMapping.getOrderBy());
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 	}
 	
 	public void testModifyOrderBy() throws Exception {
@@ -799,18 +799,18 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		
 		assertNull(manyToManyMapping.getOrderBy());
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 				
 		//set mappedBy in the context model, verify resource model updated
 		manyToManyMapping.setOrderBy("newOrderBy");
 		assertEquals("newOrderBy", manyToManyMapping.getOrderBy());
-		OrderBy orderBy = (OrderBy) attributeResource.annotation(OrderBy.ANNOTATION_NAME);
+		OrderBy orderBy = (OrderBy) attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME);
 		assertEquals("newOrderBy", orderBy.getValue());
 	
 		//set mappedBy to null in the context model
 		manyToManyMapping.setOrderBy(null);
 		assertNull(manyToManyMapping.getOrderBy());
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 	}
 	
 	public void testUpdateNoOrdering()  throws Exception {
@@ -824,20 +824,20 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		
 		assertTrue(manyToManyMapping.isNoOrdering());
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 				
 		//set orderBy in the resource model, verify context model updated
 		attributeResource.addAnnotation(OrderBy.ANNOTATION_NAME);
 		assertFalse(manyToManyMapping.isNoOrdering());
 		
-		OrderBy orderBy = (OrderBy) attributeResource.annotation(OrderBy.ANNOTATION_NAME);
+		OrderBy orderBy = (OrderBy) attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME);
 		orderBy.setValue("newOrderBy");
 		assertFalse(manyToManyMapping.isNoOrdering());
 	
 		//set orderBy to null in the resource model
 		attributeResource.removeAnnotation(OrderBy.ANNOTATION_NAME);
 		assertTrue(manyToManyMapping.isNoOrdering());
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 	}
 	
 	public void testModifyNoOrdering() throws Exception {
@@ -851,7 +851,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		
 		assertTrue(manyToManyMapping.isNoOrdering());
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 				
 //		manyToManyMapping.setNoOrdering(false); //this does nothing
 //		//set mappedBy in the context model, verify resource model updated
@@ -877,20 +877,20 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		
 		assertFalse(manyToManyMapping.isPkOrdering());
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 				
 		//set orderBy in the resource model, verify context model updated
 		attributeResource.addAnnotation(OrderBy.ANNOTATION_NAME);
 		assertTrue(manyToManyMapping.isPkOrdering());
 		
-		OrderBy orderBy = (OrderBy) attributeResource.annotation(OrderBy.ANNOTATION_NAME);
+		OrderBy orderBy = (OrderBy) attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME);
 		orderBy.setValue("newOrderBy");
 		assertFalse(manyToManyMapping.isPkOrdering());
 	
 		//set orderBy to null in the resource model
 		attributeResource.removeAnnotation(OrderBy.ANNOTATION_NAME);
 		assertFalse(manyToManyMapping.isPkOrdering());
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 	}
 
 	public void testUpdateCustomOrdering()  throws Exception {
@@ -904,20 +904,20 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		
 		assertFalse(manyToManyMapping.isCustomOrdering());
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 				
 		//set orderBy in the resource model, verify context model updated
 		attributeResource.addAnnotation(OrderBy.ANNOTATION_NAME);
 		assertFalse(manyToManyMapping.isCustomOrdering());
 		
-		OrderBy orderBy = (OrderBy) attributeResource.annotation(OrderBy.ANNOTATION_NAME);
+		OrderBy orderBy = (OrderBy) attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME);
 		orderBy.setValue("newOrderBy");
 		assertTrue(manyToManyMapping.isCustomOrdering());
 	
 		//set orderBy to null in the resource model
 		attributeResource.removeAnnotation(OrderBy.ANNOTATION_NAME);
 		assertFalse(manyToManyMapping.isCustomOrdering());
-		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(OrderBy.ANNOTATION_NAME));
 	}
 
 }

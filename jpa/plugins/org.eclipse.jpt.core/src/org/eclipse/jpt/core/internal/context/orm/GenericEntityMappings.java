@@ -763,7 +763,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	public TextRange getSelectionTextRange() {
-		return this.xmlEntityMappings.selectionTextRange();
+		return this.xmlEntityMappings.getSelectionTextRange();
 	}
 	
 	public TextRange getValidationTextRange() {

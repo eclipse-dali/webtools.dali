@@ -41,10 +41,10 @@ public interface SequenceGeneratorAnnotation extends GeneratorAnnotation
 		String SEQUENCE_NAME_PROPERTY = "sequenceNameProperty";
 		
 	/**
-	 * Return the ITextRange for the sequenceName element.  If the sequenceName element 
-	 * does not exist return the ITextRange for the SequenceGenerator annotation.
+	 * Return the {@link TextRange} for the sequenceName element.  If the sequenceName element 
+	 * does not exist return the {@link TextRange} for the SequenceGenerator annotation.
 	 */
-	TextRange sequenceNameTextRange(CompilationUnit astRoot);
+	TextRange getSequenceNameTextRange(CompilationUnit astRoot);
 
 
 }

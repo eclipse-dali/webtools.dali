@@ -134,7 +134,7 @@ public class VirtualXmlOneToOne extends AbstractJpaEObject implements XmlOneToOn
 		this.virtualCascadeType.update(javaOneToOneMapping.getCascade());
 	}
 	
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		return null;
 	}
 }

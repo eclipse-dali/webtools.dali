@@ -27,29 +27,32 @@ import org.eclipse.jpt.core.utility.TextRange;
  */
 public interface Member {
 
-	IMember jdtMember();
+	IMember getJdtMember();
 
 	boolean wraps(IMember member);
 
-	Type topLevelDeclaringType();
+	Type getTopLevelDeclaringType();
 
-	CompilationUnit astRoot();
+	CompilationUnit getAstRoot();
 
-	BodyDeclaration bodyDeclaration(CompilationUnit astRoot);
+	/**
+	 * Return the member's body declaration.
+	 */
+	BodyDeclaration getBodyDeclaration(CompilationUnit astRoot);
 
-	IBinding binding(CompilationUnit astRoot);
+	IBinding getBinding(CompilationUnit astRoot);
 
-	ModifiedDeclaration modifiedDeclaration();
+	ModifiedDeclaration getModifiedDeclaration();
 
-	ModifiedDeclaration modifiedDeclaration(CompilationUnit astRoot);
+	ModifiedDeclaration getModifiedDeclaration(CompilationUnit astRoot);
 
-	TextRange textRange(CompilationUnit astRoot);
+	TextRange getTextRange(CompilationUnit astRoot);
 
-	TextRange nameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange(CompilationUnit astRoot);
 
-	TextRange annotationTextRange(DeclarationAnnotationAdapter adapter, CompilationUnit astRoot);
+	TextRange getAnnotationTextRange(DeclarationAnnotationAdapter adapter, CompilationUnit astRoot);
 
-	TextRange annotationElementTextRange(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot);
+	TextRange getAnnotationElementTextRange(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot);
 
 	void newMarkerAnnotation(DeclarationAnnotationAdapter adapter);
 

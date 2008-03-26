@@ -84,11 +84,11 @@ public class BasicImpl extends AbstractResourceAnnotation<Attribute> implements 
 		firePropertyChanged(FETCH_PROPERTY, oldFetch, newFetch);
 	}
 	
-	public TextRange fetchTextRange(CompilationUnit astRoot) {
+	public TextRange getFetchTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(FETCH_ADAPTER, astRoot);
 	}
 	
-	public TextRange optionalTextRange(CompilationUnit astRoot) {
+	public TextRange getOptionalTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(OPTIONAL_ADAPTER, astRoot);
 	}
 
@@ -98,11 +98,11 @@ public class BasicImpl extends AbstractResourceAnnotation<Attribute> implements 
 	}
 	
 	protected FetchType fetch(CompilationUnit astRoot) {
-		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.value(astRoot));
+		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot));
 	}
 	
 	protected Boolean optional(CompilationUnit astRoot) {
-		return this.optionalAdapter.value(astRoot);
+		return this.optionalAdapter.getValue(astRoot);
 	}
 	
 	// ********** static methods **********

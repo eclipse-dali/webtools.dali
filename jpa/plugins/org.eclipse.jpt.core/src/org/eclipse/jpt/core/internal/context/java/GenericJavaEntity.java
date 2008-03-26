@@ -188,7 +188,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	@Override
 	public void initializeFromResource(JavaResourcePersistentType resourcePersistentType) {
 		super.initializeFromResource(resourcePersistentType);
-		this.entityResource = (EntityAnnotation) resourcePersistentType.mappingAnnotation(EntityAnnotation.ANNOTATION_NAME);
+		this.entityResource = (EntityAnnotation) resourcePersistentType.getMappingAnnotation(EntityAnnotation.ANNOTATION_NAME);
 		
 		this.specifiedName = this.specifiedName(this.entityResource);
 		this.defaultName = this.defaultName(resourcePersistentType);
@@ -311,15 +311,15 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	//You could call more than one setter before this object has received any notification
 	//from the java resource model
 	protected Inheritance inheritanceResource() {
-		return (Inheritance) this.javaResourcePersistentType.nonNullAnnotation(Inheritance.ANNOTATION_NAME);
+		return (Inheritance) this.javaResourcePersistentType.getNonNullAnnotation(Inheritance.ANNOTATION_NAME);
 	}
 	
 	protected DiscriminatorValue discriminatorValueResource() {
-		return (DiscriminatorValue) this.javaResourcePersistentType.nonNullAnnotation(DiscriminatorValue.ANNOTATION_NAME);
+		return (DiscriminatorValue) this.javaResourcePersistentType.getNonNullAnnotation(DiscriminatorValue.ANNOTATION_NAME);
 	}
 
 	protected void initializeIdClass(JavaResourcePersistentType typeResource) {
-		IdClassAnnotation idClassResource = (IdClassAnnotation) typeResource.annotation(IdClassAnnotation.ANNOTATION_NAME);
+		IdClassAnnotation idClassResource = (IdClassAnnotation) typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 		if (idClassResource != null) {
 			this.idClass = idClassResource.getValue();
 		}
@@ -1129,7 +1129,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	protected IdClassAnnotation idClassResource() {
-		return (IdClassAnnotation) this.javaResourcePersistentType.annotation(IdClassAnnotation.ANNOTATION_NAME);
+		return (IdClassAnnotation) this.javaResourcePersistentType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void addIdClassResource() {
@@ -1291,7 +1291,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	@Override
 	public void update(JavaResourcePersistentType resourcePersistentType) {
 		super.update(resourcePersistentType);
-		this.entityResource = (EntityAnnotation) resourcePersistentType.mappingAnnotation(EntityAnnotation.ANNOTATION_NAME);
+		this.entityResource = (EntityAnnotation) resourcePersistentType.getMappingAnnotation(EntityAnnotation.ANNOTATION_NAME);
 		
 		this.setSpecifiedName(this.specifiedName(this.entityResource));
 		this.setDefaultName(this.defaultName(resourcePersistentType));
@@ -1430,7 +1430,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected TableGeneratorAnnotation tableGenerator(JavaResourcePersistentType persistentTypeResource) {
-		return (TableGeneratorAnnotation) persistentTypeResource.annotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+		return (TableGeneratorAnnotation) persistentTypeResource.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 	}
 
 	protected void updateSequenceGenerator(JavaResourcePersistentType persistentTypeResource) {
@@ -1457,7 +1457,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected SequenceGeneratorAnnotation sequenceGenerator(JavaResourcePersistentType persistentTypeResource) {
-		return (SequenceGeneratorAnnotation) persistentTypeResource.annotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+		return (SequenceGeneratorAnnotation) persistentTypeResource.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 	}
 
 	
@@ -1656,7 +1656,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	protected void updateIdClass(JavaResourcePersistentType resourcePersistentType) {
-		IdClassAnnotation idClass = (IdClassAnnotation) resourcePersistentType.annotation(IdClassAnnotation.ANNOTATION_NAME);
+		IdClassAnnotation idClass = (IdClassAnnotation) resourcePersistentType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 		if (idClass != null) {
 			setIdClass_(idClass.getValue());
 		}

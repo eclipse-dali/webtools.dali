@@ -139,7 +139,7 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		this.javaTableGenerator = javaTableGenerator;
 	}
 	
-	public TextRange nameTextRange() {
-		return validationTextRange();
+	public TextRange getNameTextRange() {
+		return getValidationTextRange();
 	}
 }

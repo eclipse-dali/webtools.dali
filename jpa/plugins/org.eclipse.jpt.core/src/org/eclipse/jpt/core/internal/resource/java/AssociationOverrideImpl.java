@@ -218,15 +218,15 @@ public class AssociationOverrideImpl
 
 		public NestableJoinColumn nestedAnnotationFor(org.eclipse.jdt.core.dom.Annotation jdtAnnotation) {
 			for (NestableJoinColumn pkJoinColumn : CollectionTools.iterable(nestedAnnotations())) {
-				if (jdtAnnotation == pkJoinColumn.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
+				if (jdtAnnotation == pkJoinColumn.getJdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
 					return pkJoinColumn;
 				}
 			}
 			return null;
 		}
 
-		public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
-			return AssociationOverrideImpl.this.jdtAnnotation(astRoot);
+		public org.eclipse.jdt.core.dom.Annotation getJdtAnnotation(CompilationUnit astRoot) {
+			return AssociationOverrideImpl.this.getJdtAnnotation(astRoot);
 		}
 
 		public void newAnnotation() {
@@ -241,8 +241,8 @@ public class AssociationOverrideImpl
 			AssociationOverrideImpl.this.updateFromJava(astRoot);
 		}
 		
-		public TextRange textRange(CompilationUnit astRoot) {
-			return AssociationOverrideImpl.this.textRange(astRoot);
+		public TextRange getTextRange(CompilationUnit astRoot) {
+			return AssociationOverrideImpl.this.getTextRange(astRoot);
 		}
 		
 		public String getElementName() {

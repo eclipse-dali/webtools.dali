@@ -44,7 +44,7 @@ public final class NullDeclarationAnnotationAdapter
 
 	// ********** DeclarationAnnotationAdapter implementation **********
 
-	public Annotation annotation(ModifiedDeclaration declaration) {
+	public Annotation getAnnotation(ModifiedDeclaration declaration) {
 		return null;
 	}
 
@@ -64,14 +64,14 @@ public final class NullDeclarationAnnotationAdapter
 		// do nothing
 	}
 
-	public ASTNode astNode(ModifiedDeclaration declaration) {
-		return declaration.declaration();
+	public ASTNode getAstNode(ModifiedDeclaration declaration) {
+		return declaration.getDeclaration();
 	}
 
 
 	// ********** IndexedDeclarationAnnotationAdapter implementation **********
 
-	public int index() {
+	public int getIndex() {
 		return -1;
 	}
 

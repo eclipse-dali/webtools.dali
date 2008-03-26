@@ -96,7 +96,7 @@ public class PrimaryKeyJoinColumnsImpl extends AbstractResourceAnnotation<Member
 	
 	public NestablePrimaryKeyJoinColumn nestedAnnotationFor(Annotation jdtAnnotation) {
 		for (NestablePrimaryKeyJoinColumn pkJoinColumn : this.pkJoinColumns) {
-			if (jdtAnnotation == pkJoinColumn.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
+			if (jdtAnnotation == pkJoinColumn.getJdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
 				return pkJoinColumn;
 			}
 		}

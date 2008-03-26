@@ -112,15 +112,15 @@ public abstract class GeneratorImpl extends AbstractResourceAnnotation<Member> i
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
-	public TextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 	
-	public TextRange initialValueTextRange(CompilationUnit astRoot) {
+	public TextRange getInitialValueTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.initialValueDeclarationAdapter, astRoot);
 	}
 	
-	public TextRange allocationSizeTextRange(CompilationUnit astRoot) {
+	public TextRange getAllocationSizeTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.allocationSizeDeclarationAdapter, astRoot);
 	}
 
@@ -132,15 +132,15 @@ public abstract class GeneratorImpl extends AbstractResourceAnnotation<Member> i
 	}
 
 	protected String name(CompilationUnit astRoot) {
-		return this.nameAdapter.value(astRoot);
+		return this.nameAdapter.getValue(astRoot);
 	}
 	
 	protected Integer allocationSize(CompilationUnit astRoot) {
-		return this.allocationSizeAdapter.value(astRoot);
+		return this.allocationSizeAdapter.getValue(astRoot);
 	}
 	
 	protected Integer initialValue(CompilationUnit astRoot) {
-		return this.initialValueAdapter.value(astRoot);
+		return this.initialValueAdapter.getValue(astRoot);
 	}
 	
 	// ********** static methods **********

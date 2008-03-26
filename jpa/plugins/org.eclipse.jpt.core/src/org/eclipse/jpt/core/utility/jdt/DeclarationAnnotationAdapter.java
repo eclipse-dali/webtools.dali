@@ -34,7 +34,7 @@ public interface DeclarationAnnotationAdapter {
 	/**
 	 * Given the specified declaration, return the annotation.
 	 */
-	Annotation annotation(ModifiedDeclaration declaration);
+	Annotation getAnnotation(ModifiedDeclaration declaration);
 
 	/**
 	 * Given the specified declaration, modify it with
@@ -67,6 +67,6 @@ public interface DeclarationAnnotationAdapter {
 	 * corresponding to the annotation.
 	 * If the annotation is missing, return its parent node.
 	 */
-	ASTNode astNode(ModifiedDeclaration declaration);
+	ASTNode getAstNode(ModifiedDeclaration declaration);
 
 }

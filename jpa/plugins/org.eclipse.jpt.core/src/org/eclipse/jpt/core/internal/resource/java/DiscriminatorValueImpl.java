@@ -60,7 +60,7 @@ public class DiscriminatorValueImpl extends AbstractResourceAnnotation<Type> imp
 		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 	
-	public TextRange valueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(VALUE_ADAPTER, astRoot);
 	}
 	
@@ -69,7 +69,7 @@ public class DiscriminatorValueImpl extends AbstractResourceAnnotation<Type> imp
 	}
 	
 	protected String value(CompilationUnit astRoot) {
-		return this.valueAdapter.value(astRoot);
+		return this.valueAdapter.getValue(astRoot);
 	}
 	
 	// ********** static methods **********

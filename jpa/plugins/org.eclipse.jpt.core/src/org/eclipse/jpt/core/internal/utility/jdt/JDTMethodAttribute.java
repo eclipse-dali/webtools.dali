@@ -47,25 +47,23 @@ public class JDTMethodAttribute
 	}
 
 	@Override
-	public IMethod jdtMember() {
-		return (IMethod) super.jdtMember();
+	public IMethod getJdtMember() {
+		return (IMethod) super.getJdtMember();
 	}
 	
 
 	// ********** Member implementation **********
 
-	@Override
-	public MethodDeclaration bodyDeclaration(CompilationUnit astRoot) {
+	public MethodDeclaration getBodyDeclaration(CompilationUnit astRoot) {
 		try {
-			return ASTNodeSearchUtil.getMethodDeclarationNode(jdtMember(), astRoot);
+			return ASTNodeSearchUtil.getMethodDeclarationNode(getJdtMember(), astRoot);
 		} catch(JavaModelException e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
-	@Override
-	public IMethodBinding binding(CompilationUnit astRoot) {
-		return bodyDeclaration(astRoot).resolveBinding();
+	public IMethodBinding getBinding(CompilationUnit astRoot) {
+		return getBodyDeclaration(astRoot).resolveBinding();
 	}
 
 	// ********** Attribute implementation **********
@@ -78,8 +76,7 @@ public class JDTMethodAttribute
 	/**
 	 * "foo" returned for a method named "getFoo" or "isFoo"
 	 */
-	@Override
-	public String attributeName() {
+	public String getAttributeName() {
 		String methodName = super.name();
 		int beginIndex = 0;
 		if (methodName.startsWith("get")) {
@@ -90,9 +87,8 @@ public class JDTMethodAttribute
 		return Introspector.decapitalize(methodName.substring(beginIndex));
 	}
 	
-	@Override
-	public ITypeBinding typeBinding(CompilationUnit astRoot) {
-		IMethodBinding methodBinding = bodyDeclaration(astRoot).resolveBinding();
+	public ITypeBinding getTypeBinding(CompilationUnit astRoot) {
+		IMethodBinding methodBinding = getBodyDeclaration(astRoot).resolveBinding();
 		if (methodBinding != null) {
 			return methodBinding.getReturnType();
 		}

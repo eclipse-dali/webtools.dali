@@ -141,7 +141,7 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 
 	public TextRange getNameTextRange() {
 		if (columnResource() != null) {
-			TextRange textRange = columnResource().nameTextRange();
+			TextRange textRange = columnResource().getNameTextRange();
 			if (textRange != null) {
 				return textRange;
 			}
@@ -150,7 +150,7 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 	}
 
 	public TextRange getValidationTextRange() {
-		TextRange textRange = columnResource().validationTextRange();
+		TextRange textRange = columnResource().getValidationTextRange();
 		if (textRange != null) {
 			return textRange;
 		}

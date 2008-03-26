@@ -39,7 +39,7 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.createTestType("@annot.Foo");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.annotation();
+		Annotation annotation = aa.getAnnotation();
 		assertNotNull(annotation);
 		assertEquals("annot.Foo", annotation.getTypeName().getFullyQualifiedName());
 		assertTrue(annotation.isMarkerAnnotation());
@@ -50,7 +50,7 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.createTestType("@annot.Foo(1) @annot.Foo(2)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.annotation();
+		Annotation annotation = aa.getAnnotation();
 		assertNotNull(annotation);
 		assertEquals("annot.Foo", annotation.getTypeName().getFullyQualifiedName());
 		assertTrue(annotation.isSingleMemberAnnotation());
@@ -64,7 +64,7 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.createTestType("annot.Foo", "@Foo");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.annotation();
+		Annotation annotation = aa.getAnnotation();
 		assertNotNull(annotation);
 		assertEquals("Foo", annotation.getTypeName().getFullyQualifiedName());
 		assertTrue(annotation.isMarkerAnnotation());
@@ -75,7 +75,7 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.createTestType();
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.annotation();
+		Annotation annotation = aa.getAnnotation();
 		assertNull(annotation);
 	}
 
@@ -85,7 +85,7 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.createTestType("@annot.Fop");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.annotation();
+		Annotation annotation = aa.getAnnotation();
 		assertNull(annotation);
 		this.assertSourceContains("@annot.Fop");
 	}
@@ -96,7 +96,7 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		// un-qualified name
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("Foo");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.annotation();
+		Annotation annotation = aa.getAnnotation();
 		assertNull(annotation);
 		this.assertSourceContains("@annot.Foo");
 	}
@@ -107,7 +107,7 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.assertSourceContains("@annot.Foo");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.annotation();
+		Annotation annotation = aa.getAnnotation();
 		assertNotNull(annotation);
 
 		aa.removeAnnotation();
@@ -120,7 +120,7 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.assertSourceContains("@annot.Foo(1) @annot.Foo(2)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.annotation();
+		Annotation annotation = aa.getAnnotation();
 		assertNotNull(annotation);
 
 		aa.removeAnnotation();
@@ -134,7 +134,7 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.assertSourceDoesNotContain("@annot.Foo");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.annotation();
+		Annotation annotation = aa.getAnnotation();
 		assertNull(annotation);
 
 		aa.newMarkerAnnotation();
@@ -147,7 +147,7 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.createTestType("@annot.Foo(88)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.annotation();
+		Annotation annotation = aa.getAnnotation();
 		assertNotNull(annotation);
 
 		aa.newMarkerAnnotation();
@@ -171,7 +171,7 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 	void editNewSingleMemberAnnotation(ModifiedDeclaration declaration) {
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		SingleMemberAnnotation annotation = (SingleMemberAnnotation) daa.annotation(declaration);
+		SingleMemberAnnotation annotation = (SingleMemberAnnotation) daa.getAnnotation(declaration);
 		assertNull(annotation);
 		annotation = daa.newSingleMemberAnnotation(declaration);
 		StringLiteral stringLiteral = annotation.getAST().newStringLiteral();
@@ -194,7 +194,7 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 	void editNewNormalAnnotation(ModifiedDeclaration declaration) {
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		NormalAnnotation annotation = (NormalAnnotation) daa.annotation(declaration);
+		NormalAnnotation annotation = (NormalAnnotation) daa.getAnnotation(declaration);
 		assertNull(annotation);
 		annotation = daa.newNormalAnnotation(declaration);
 		MemberValuePair mvp = this.newMemberValuePair(annotation.getAST(), "bar", "test string literal");

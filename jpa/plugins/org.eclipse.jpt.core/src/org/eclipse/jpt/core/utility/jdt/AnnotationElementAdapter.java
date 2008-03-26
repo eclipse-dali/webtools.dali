@@ -31,17 +31,17 @@ public interface AnnotationElementAdapter<T> {
 	 * Return null if the element is not present.
 	 * If the compilation unit is available, #value(CompilationUnit)
 	 * might be more performant.
-	 * @see #value(org.eclipse.jdt.core.dom.CompilationUnit)
+	 * @see #getValue(org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
-	T value();
+	T getValue();
 
 	/**
 	 * Given the specified compilation unit, return the value of the
 	 * adapter's annotation element.
 	 * Return null if the element is not present.
-	 * @see #value()
+	 * @see #getValue()
 	 */
-	T value(CompilationUnit astRoot);
+	T getValue(CompilationUnit astRoot);
 
 	/**
 	 * Set the value of the adapter's annotation element.
@@ -55,32 +55,32 @@ public interface AnnotationElementAdapter<T> {
 	 * Return null if the element is not present.
 	 * If the compilation unit is available, #expression(CompilationUnit)
 	 * might be more performant.
-	 * @see #expression(org.eclipse.jdt.core.dom.CompilationUnit)
+	 * @see #getExpression(org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
-	Expression expression();
+	Expression getExpression();
 
 	/**
 	 * Given the specified compilation unit, return the expression value of the
 	 * adapter's annotation element.
 	 * Return null if the element is not present.
-	 * @see #expression()
+	 * @see #getExpression()
 	 */
-	Expression expression(CompilationUnit astRoot);
+	Expression getExpression(CompilationUnit astRoot);
 
 	/**
 	 * Return the AST node corresponding to the element.
 	 * If the element is missing, return the annotation's node.
 	 * If the compilation unit is available, #astNode(CompilationUnit)
 	 * might be more performant.
-	 * @see #astNode(org.eclipse.jdt.core.dom.CompilationUnit)
+	 * @see #getAstNode(org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
-	ASTNode astNode();
+	ASTNode getAstNode();
 
 	/**
 	 * Return the AST node corresponding to the element.
 	 * If the element is missing, return the annotation's node.
-	 * @see #astNode()
+	 * @see #getAstNode()
 	 */
-	ASTNode astNode(CompilationUnit astRoot);
+	ASTNode getAstNode(CompilationUnit astRoot);
 
 }

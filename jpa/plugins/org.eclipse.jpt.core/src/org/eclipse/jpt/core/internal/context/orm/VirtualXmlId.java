@@ -129,7 +129,7 @@ public class VirtualXmlId extends AbstractJpaEObject implements XmlId
 		this.virtualSequenceGenerator.update(javaIdMapping.getSequenceGenerator());
 	}
 	
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		return null;
 	}
 

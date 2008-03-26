@@ -179,11 +179,11 @@ public class VirtualXmlManyToMany extends AbstractJpaEObject implements XmlManyT
 //		}
 //	}
 	
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		return null;
 	}
 
-	public TextRange mappedByTextRange() {
+	public TextRange getMappedByTextRange() {
 		return null;
 	}
 }

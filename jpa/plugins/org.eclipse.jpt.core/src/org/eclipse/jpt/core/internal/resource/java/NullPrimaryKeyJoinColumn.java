@@ -40,7 +40,7 @@ public class NullPrimaryKeyJoinColumn extends NullNamedColumn implements Primary
 		throw new UnsupportedOperationException();
 	}
 
-	public TextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
+	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	

@@ -132,15 +132,15 @@ public class VirtualAttributeOverrideColumn extends NullBaseColumn implements Co
 		}
 	}
 	
-	public TextRange scaleTextRange(CompilationUnit astRoot) {
+	public TextRange getScaleTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	
-	public TextRange lengthTextRange(CompilationUnit astRoot) {
+	public TextRange getLengthTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	
-	public TextRange precisionTextRange(CompilationUnit astRoot) {
+	public TextRange getPrecisionTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 }

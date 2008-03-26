@@ -74,7 +74,7 @@ public class EntityTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestEntityWithName();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		EntityAnnotation entity = (EntityAnnotation) typeResource.mappingAnnotation(JPA.ENTITY);
+		EntityAnnotation entity = (EntityAnnotation) typeResource.getMappingAnnotation(JPA.ENTITY);
 		assertTrue(entity != null);
 		assertEquals(ENTITY_NAME, entity.getName());
 	}
@@ -83,7 +83,7 @@ public class EntityTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestEntity();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		EntityAnnotation entity = (EntityAnnotation) typeResource.mappingAnnotation(JPA.ENTITY);
+		EntityAnnotation entity = (EntityAnnotation) typeResource.getMappingAnnotation(JPA.ENTITY);
 		assertTrue(entity != null);
 		assertNull(entity.getName());
 	}
@@ -92,7 +92,7 @@ public class EntityTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestEntity();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		EntityAnnotation entity = (EntityAnnotation) typeResource.mappingAnnotation(JPA.ENTITY);
+		EntityAnnotation entity = (EntityAnnotation) typeResource.getMappingAnnotation(JPA.ENTITY);
 		assertNull(entity.getName());
 		entity.setName("Foo");
 		assertEquals("Foo", entity.getName());
@@ -104,7 +104,7 @@ public class EntityTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestEntityWithName();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		EntityAnnotation entity = (EntityAnnotation) typeResource.mappingAnnotation(JPA.ENTITY);
+		EntityAnnotation entity = (EntityAnnotation) typeResource.getMappingAnnotation(JPA.ENTITY);
 		assertEquals(ENTITY_NAME, entity.getName());
 		
 		entity.setName(null);
@@ -118,10 +118,10 @@ public class EntityTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestMappedSuperclassAndEntity();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		JavaResourceNode mappingAnnotation = typeResource.mappingAnnotation();
+		JavaResourceNode mappingAnnotation = typeResource.getMappingAnnotation();
 		assertTrue(mappingAnnotation instanceof EntityAnnotation);
 		
-		MappedSuperclassAnnotation mappedSuperclass = (MappedSuperclassAnnotation) typeResource.mappingAnnotation(JPA.MAPPED_SUPERCLASS);
+		MappedSuperclassAnnotation mappedSuperclass = (MappedSuperclassAnnotation) typeResource.getMappingAnnotation(JPA.MAPPED_SUPERCLASS);
 		assertNotNull(mappedSuperclass);
 	}
 

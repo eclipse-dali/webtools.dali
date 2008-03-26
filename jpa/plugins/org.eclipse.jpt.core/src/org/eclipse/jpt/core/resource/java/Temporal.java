@@ -39,9 +39,9 @@ public interface Temporal extends JavaResourceNode
 		String VALUE_PROPERTY = "valueProperty";
 	
 	/**
-	 * Return the ITextRange for the value element.  If the value element 
-	 * does not exist return the ITextRange for the Temporal annotation.
+	 * Return the {@link TextRange} for the value element.  If the value element 
+	 * does not exist return the {@link TextRange} for the Temporal annotation.
 	 */
-	TextRange valueTextRange(CompilationUnit astRoot);
+	TextRange getValueTextRange(CompilationUnit astRoot);
 
 }

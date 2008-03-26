@@ -97,42 +97,42 @@ public class JavaResourcePersistentTypeImpl
 
 	@Override
 	protected Annotation buildMappingAnnotation(String mappingAnnotationName) {
-		return annotationProvider().buildTypeMappingAnnotation(this, getMember(), mappingAnnotationName);
+		return getAnnotationProvider().buildTypeMappingAnnotation(this, getMember(), mappingAnnotationName);
 	}
 	
 	@Override
 	protected Annotation buildNullMappingAnnotation(String annotationName) {
-		return annotationProvider().buildNullTypeMappingAnnotation(this, getMember(), annotationName);
+		return getAnnotationProvider().buildNullTypeMappingAnnotation(this, getMember(), annotationName);
 	}
 
 	@Override
 	protected Annotation buildAnnotation(String annotationName) {
-		return annotationProvider().buildTypeAnnotation(this, getMember(), annotationName);
+		return getAnnotationProvider().buildTypeAnnotation(this, getMember(), annotationName);
 	}
 	
 	@Override
 	protected Annotation buildNullAnnotation(String annotationName) {
-		return annotationProvider().buildNullTypeAnnotation(this, getMember(), annotationName);
+		return getAnnotationProvider().buildNullTypeAnnotation(this, getMember(), annotationName);
 	}
 	
 	@Override
 	protected ListIterator<String> possibleMappingAnnotationNames() {
-		return annotationProvider().typeMappingAnnotationNames();
+		return getAnnotationProvider().typeMappingAnnotationNames();
 	}
 	
 	@Override
 	protected boolean isPossibleAnnotation(String annotationName) {
-		return CollectionTools.contains(annotationProvider().typeAnnotationNames(), annotationName);
+		return CollectionTools.contains(getAnnotationProvider().typeAnnotationNames(), annotationName);
 	}
 	
 	@Override
 	protected boolean isPossibleMappingAnnotation(String annotationName) {
-		return CollectionTools.contains(annotationProvider().typeMappingAnnotationNames(), annotationName);
+		return CollectionTools.contains(getAnnotationProvider().typeMappingAnnotationNames(), annotationName);
 	}
 	
 	@Override
 	protected boolean calculatePersistability(CompilationUnit astRoot) {
-		return JPTTools.typeIsPersistable(getMember().binding(astRoot));
+		return JPTTools.typeIsPersistable(getMember().getBinding(astRoot));
 	}
 
 
@@ -159,7 +159,7 @@ public class JavaResourcePersistentTypeImpl
 
 	
 	// ******** JavaPersistentTypeResource implementation ********
-	public JavaResourcePersistentType javaPersistentTypeResource(String fullyQualifiedTypeName) {
+	public JavaResourcePersistentType getJavaPersistentTypeResource(String fullyQualifiedTypeName) {
 		if (getQualifiedName().equals(fullyQualifiedTypeName)) {
 			return this;
 		}
@@ -206,7 +206,7 @@ public class JavaResourcePersistentTypeImpl
 	}
 	
 	protected JavaResourcePersistentType buildJavaResourcePersistentType(IType nestedType, CompilationUnit astRoot) {
-		return buildJavaResourcePersistentType(this, nestedType, modifySharedDocumentCommandExecutorProvider(), getAnnotationEditFormatter(), astRoot);
+		return buildJavaResourcePersistentType(this, nestedType, getModifySharedDocumentCommandExecutorProvider(), getAnnotationEditFormatter(), astRoot);
 	}
 
 	public static JavaResourcePersistentType buildJavaResourcePersistentType(
@@ -264,10 +264,10 @@ public class JavaResourcePersistentTypeImpl
 	protected JavaResourcePersistentAttribute createJavaPersistentAttribute(IMember member, CompilationUnit astRoot) {
 		Attribute attribute = null;
 		if (member instanceof IField) {
-			attribute = new JDTFieldAttribute((IField) member, this.modifySharedDocumentCommandExecutorProvider(), this.getAnnotationEditFormatter());
+			attribute = new JDTFieldAttribute((IField) member, this.getModifySharedDocumentCommandExecutorProvider(), this.getAnnotationEditFormatter());
 		}
 		else if (member instanceof IMethod) {
-			attribute = new JDTMethodAttribute((IMethod) member, this.modifySharedDocumentCommandExecutorProvider(), this.getAnnotationEditFormatter());
+			attribute = new JDTMethodAttribute((IMethod) member, this.getModifySharedDocumentCommandExecutorProvider(), this.getAnnotationEditFormatter());
 		}
 		else {
 			throw new IllegalArgumentException();
@@ -372,15 +372,15 @@ public class JavaResourcePersistentTypeImpl
 	}
 	
 	protected boolean isAbstract(CompilationUnit astRoot) {
-		return JPTTools.typeIsAbstract(getMember().binding(astRoot));
+		return JPTTools.typeIsAbstract(getMember().getBinding(astRoot));
 	}
 
 	protected String qualifiedName(CompilationUnit astRoot) {
-		return getMember().binding(astRoot).getQualifiedName();
+		return getMember().getBinding(astRoot).getQualifiedName();
 	}
 	
 	protected String name(CompilationUnit astRoot) {
-		return getMember().binding(astRoot).getName();
+		return getMember().getBinding(astRoot).getName();
 	}
 	
 	protected void updateNestedTypes(CompilationUnit astRoot) {
@@ -477,7 +477,7 @@ public class JavaResourcePersistentTypeImpl
 	}
 	
 	private String superClassQualifiedName(CompilationUnit astRoot) {
-		ITypeBinding typeBinding = getMember().binding(astRoot);
+		ITypeBinding typeBinding = getMember().getBinding(astRoot);
 		if (typeBinding == null) {
 			return null;
 		}

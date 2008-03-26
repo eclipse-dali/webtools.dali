@@ -34,7 +34,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	}
 	
 	protected JavaResourceNode mappingResource() {
-		return this.javaResourcePersistentType.mappingAnnotation(getAnnotationName());
+		return this.javaResourcePersistentType.getMappingAnnotation(getAnnotationName());
 	}
 
 	//***************** ITypeMapping implementation *****************
@@ -123,7 +123,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	//******************** validation *********************
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.mappingResource().textRange(astRoot);
+		TextRange textRange = this.mappingResource().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getPersistentType().getValidationTextRange(astRoot);
 	}
 }

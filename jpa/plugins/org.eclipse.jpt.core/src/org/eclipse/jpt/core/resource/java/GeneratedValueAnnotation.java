@@ -53,15 +53,15 @@ public interface GeneratedValueAnnotation extends JavaResourceNode
 	
 	
 	/**
-	 * Return the ITextRange for the generator element.  If the generator element 
-	 * does not exist return the ITextRange for the Enumerated annotation.
+	 * Return the {@link TextRange} for the generator element.  If the generator element 
+	 * does not exist return the {@link TextRange} for the GeneratedValue annotation.
 	 */
-	TextRange generatorTextRange(CompilationUnit astRoot);
+	TextRange getGeneratorTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the strategy element.  If the strategy element 
-	 * does not exist return the ITextRange for the Enumerated annotation.
+	 * Return the {@link TextRange} for the strategy element.  If the strategy element 
+	 * does not exist return the {@link TextRange} for the GeneratedValue annotation.
 	 */
-	TextRange strategyTextRange(CompilationUnit astRoot);
+	TextRange getStrategyTextRange(CompilationUnit astRoot);
 
 }

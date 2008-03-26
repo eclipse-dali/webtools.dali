@@ -24,6 +24,6 @@ import org.eclipse.jdt.core.dom.IMethodBinding;
  */
 public interface MethodAttribute extends Attribute {
 
-	IMethodBinding binding(CompilationUnit astRoot);
+	IMethodBinding getBinding(CompilationUnit astRoot);
 
 }

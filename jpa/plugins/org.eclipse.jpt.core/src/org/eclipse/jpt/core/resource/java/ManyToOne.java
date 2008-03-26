@@ -39,9 +39,9 @@ public interface ManyToOne extends RelationshipMappingAnnotation
 		String OPTIONAL_PROPERTY = "optionalProperty";
 
 	/**
-	 * Return the ITextRange for the optional element.  If the optional element 
-	 * does not exist return the ITextRange for the ManyToOne annotation.
+	 * Return the {@link TextRange} for the optional element.  If the optional element 
+	 * does not exist return the {@link TextRange} for the ManyToOne annotation.
 	 */
-	TextRange optionalTextRange(CompilationUnit astRoot);
+	TextRange getOptionalTextRange(CompilationUnit astRoot);
 
 }

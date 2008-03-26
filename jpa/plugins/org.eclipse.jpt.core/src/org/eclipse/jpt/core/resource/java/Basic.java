@@ -53,15 +53,15 @@ public interface Basic extends JavaResourceNode
 		String OPTIONAL_PROPERTY = "optionalProperty";
 	
 	/**
-	 * Return the ITextRange for the fetch element.  If the fetch element 
-	 * does not exist return the ITextRange for the Basic annotation.
+	 * Return the {@link TextRange} for the fetch element.  If the fetch element 
+	 * does not exist return the {@link TextRange} for the Basic annotation.
 	 */
-	TextRange fetchTextRange(CompilationUnit astRoot);
+	TextRange getFetchTextRange(CompilationUnit astRoot);
 	
 	/**
-	 * Return the ITextRange for the optional element.  If the optional element 
-	 * does not exist return the ITextRange for the Basic annotation.
+	 * Return the {@link TextRange} for the optional element.  If the optional element 
+	 * does not exist return the {@link TextRange} for the Basic annotation.
 	 */
-	TextRange optionalTextRange(CompilationUnit astRoot);
+	TextRange getOptionalTextRange(CompilationUnit astRoot);
 
 }

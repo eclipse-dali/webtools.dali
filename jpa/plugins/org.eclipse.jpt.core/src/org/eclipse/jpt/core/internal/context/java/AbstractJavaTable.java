@@ -166,7 +166,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 	// ********** ITable implementation **********
 
 	public TextRange nameTextRange(CompilationUnit astRoot) {
-		TextRange textRange = tableResource().nameTextRange(astRoot);
+		TextRange textRange = tableResource().getNameTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
@@ -175,7 +175,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 	}
 
 	public TextRange schemaTextRange(CompilationUnit astRoot) {
-		TextRange textRange = tableResource().schemaTextRange(astRoot);
+		TextRange textRange = tableResource().getSchemaTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
@@ -184,7 +184,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 	}
 
 	public TextRange catalogTextRange(CompilationUnit astRoot) {
-		return tableResource().catalogTextRange(astRoot);
+		return tableResource().getCatalogTextRange(astRoot);
 	}
 
 	public boolean catalogTouches(int pos, CompilationUnit astRoot) {
@@ -292,7 +292,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = tableResource().textRange(astRoot);
+		TextRange textRange = tableResource().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 

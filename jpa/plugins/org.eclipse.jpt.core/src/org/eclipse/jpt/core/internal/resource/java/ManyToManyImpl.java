@@ -96,10 +96,10 @@ public class ManyToManyImpl extends AbstractRelationshipMappingAnnotation implem
 	}
 	
 	protected String mappedBy(CompilationUnit astRoot) {
-		return this.mappedByAdapter.value(astRoot);
+		return this.mappedByAdapter.getValue(astRoot);
 	}
 
-	public TextRange mappedByTextRange(CompilationUnit astRoot) {
+	public TextRange getMappedByTextRange(CompilationUnit astRoot) {
 		return elementTextRange(MAPPED_BY_ADAPTER, astRoot);
 	}
 

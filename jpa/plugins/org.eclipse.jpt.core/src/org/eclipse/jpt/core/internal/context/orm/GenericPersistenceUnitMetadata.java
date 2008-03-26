@@ -88,8 +88,8 @@ public class GenericPersistenceUnitMetadata extends AbstractOrmJpaContextNode
 	
 	public TextRange getValidationTextRange() {
 		if (persistenceUnitMetadata() != null) {
-			return persistenceUnitMetadata().validationTextRange();
+			return persistenceUnitMetadata().getValidationTextRange();
 		}
-		return this.entityMappings.validationTextRange();
+		return this.entityMappings.getValidationTextRange();
 	}
 }

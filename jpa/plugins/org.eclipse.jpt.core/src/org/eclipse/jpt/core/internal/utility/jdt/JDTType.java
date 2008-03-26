@@ -38,18 +38,18 @@ public class JDTType
 	}
 
 	@Override
-	public IType jdtMember() {
-		return (IType) super.jdtMember();
+	public IType getJdtMember() {
+		return (IType) super.getJdtMember();
 	}
 
 	@Override
-	public Type topLevelDeclaringType() {
-		return (this.declaringType() == null) ? this : super.topLevelDeclaringType();
+	public Type getTopLevelDeclaringType() {
+		return (this.declaringType() == null) ? this : super.getTopLevelDeclaringType();
 	}
 
 	public IType[] jdtTypes() {
 		try {
-			return jdtMember().getTypes();
+			return getJdtMember().getTypes();
 		}
 		catch(JavaModelException e) {
 			throw new RuntimeException(e);
@@ -58,7 +58,7 @@ public class JDTType
 	
 	public IField[] jdtFields() {
 		try {
-			return jdtMember().getFields();
+			return getJdtMember().getFields();
 		}
 		catch(JavaModelException e) {
 			throw new RuntimeException(e);
@@ -67,7 +67,7 @@ public class JDTType
 	
 	public IMethod[] jdtMethods() {
 		try {
-			return jdtMember().getMethods();
+			return getJdtMember().getMethods();
 		}
 		catch(JavaModelException e) {
 			throw new RuntimeException(e);
@@ -76,20 +76,19 @@ public class JDTType
 	
 	// ********** Member implementation **********
 
-	@Override
-	public AbstractTypeDeclaration bodyDeclaration(CompilationUnit astRoot) {
+	public AbstractTypeDeclaration getBodyDeclaration(CompilationUnit astRoot) {
 		Type declaringType = this.declaringType();
 		if (declaringType != null) {
-			return this.typeDeclaration(declaringType.bodyDeclaration(astRoot));
+			return this.getTypeDeclaration(declaringType.getBodyDeclaration(astRoot));
 		}
-		return this.typeDeclaration(this.types(astRoot));
+		return this.getTypeDeclaration(this.types(astRoot));
 	}
 	
-	public AbstractTypeDeclaration typeDeclaration(AbstractTypeDeclaration declaringTypeDeclaration) {
-		return typeDeclaration(this.types(declaringTypeDeclaration));
+	public AbstractTypeDeclaration getTypeDeclaration(AbstractTypeDeclaration declaringTypeDeclaration) {
+		return getTypeDeclaration(this.types(declaringTypeDeclaration));
 	}
 	
-	private AbstractTypeDeclaration typeDeclaration(List<AbstractTypeDeclaration> typeDeclarations) {
+	private AbstractTypeDeclaration getTypeDeclaration(List<AbstractTypeDeclaration> typeDeclarations) {
 		String name = this.name();
 		for (AbstractTypeDeclaration typeDeclaration : typeDeclarations) {
 			if (typeDeclaration.getName().getFullyQualifiedName().equals(name)) {
@@ -99,9 +98,8 @@ public class JDTType
 		return null;
 	}
 
-	@Override
-	public ITypeBinding binding(CompilationUnit astRoot) {
-		return bodyDeclaration(astRoot).resolveBinding();
+	public ITypeBinding getBinding(CompilationUnit astRoot) {
+		return getBodyDeclaration(astRoot).resolveBinding();
 	}
 
 	// ********** miscellaneous **********

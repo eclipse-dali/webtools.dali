@@ -33,7 +33,7 @@ public abstract class NullBaseTable extends AbstractJavaResourceNode implements 
 		//null, nothing to initialize
 	}
 	
-	public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
+	public org.eclipse.jdt.core.dom.Annotation getJdtAnnotation(CompilationUnit astRoot) {
 		return null;
 	}
 	
@@ -106,19 +106,19 @@ public abstract class NullBaseTable extends AbstractJavaResourceNode implements 
 		return 0;
 	}
 
-	public TextRange textRange(CompilationUnit astRoot) {
+	public TextRange getTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public TextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public TextRange catalogTextRange(CompilationUnit astRoot) {
+	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public TextRange schemaTextRange(CompilationUnit astRoot) {
+	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 

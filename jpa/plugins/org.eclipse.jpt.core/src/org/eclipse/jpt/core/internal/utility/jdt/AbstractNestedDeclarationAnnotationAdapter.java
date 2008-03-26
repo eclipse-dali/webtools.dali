@@ -57,11 +57,10 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 	}
 
 
-	// ********** AbstractDeclarationAnnotationAdapter implementation **********
+	// ********** DeclarationAnnotationAdapter implementation **********
 
-	@Override
-	public Annotation annotation(ModifiedDeclaration declaration) {
-		Annotation outer = this.outerAnnotationAdapter.annotation(declaration);
+	public Annotation getAnnotation(ModifiedDeclaration declaration) {
+		Annotation outer = this.outerAnnotationAdapter.getAnnotation(declaration);
 		if (outer == null) {
 			return null;
 		}
@@ -69,7 +68,7 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 		if (value == null) {
 			return null;
 		}
-		Annotation inner = this.annotation(value);
+		Annotation inner = this.getAnnotation(value);
 		if (inner == null) {
 			return null;
 		}
@@ -77,9 +76,8 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 		return this.nameMatches(declaration, inner) ? inner : null;
 	}
 
-	@Override
 	public void removeAnnotation(ModifiedDeclaration declaration) {
-		Annotation outer = this.outerAnnotationAdapter.annotation(declaration);
+		Annotation outer = this.outerAnnotationAdapter.getAnnotation(declaration);
 		if (outer == null) {
 			return;
 		}
@@ -101,16 +99,15 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 		}
 	}
 
-	@Override
-	public ASTNode astNode(ModifiedDeclaration declaration) {
+	public ASTNode getAstNode(ModifiedDeclaration declaration) {
 		// if the annotation is missing, return the outer annotation's node
-		Annotation annotation = this.annotation(declaration);
-		return (annotation != null) ? annotation : this.outerAnnotationAdapter.astNode(declaration);
+		Annotation annotation = this.getAnnotation(declaration);
+		return (annotation != null) ? annotation : this.outerAnnotationAdapter.getAstNode(declaration);
 	}
 
 	@Override
 	protected void addAnnotation(ModifiedDeclaration declaration, Annotation inner) {
-		Annotation outer = this.outerAnnotationAdapter.annotation(declaration);
+		Annotation outer = this.outerAnnotationAdapter.getAnnotation(declaration);
 		if (outer == null) {
 			this.buildNewOuterAnnotation(declaration, inner);
 		} else if (outer.isMarkerAnnotation()) {
@@ -131,7 +128,7 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 	 * Return an annotation extracted from the specified expression,
 	 * which is the value of the adapter's element.
 	 */
-	protected abstract Annotation annotation(Expression value);
+	protected abstract Annotation getAnnotation(Expression value);
 
 	/**
 	 * Remove the annotation from the specified expression,
@@ -155,11 +152,11 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 
 	// ********** public methods **********
 
-	public DeclarationAnnotationAdapter outerAnnotationAdapter() {
+	public DeclarationAnnotationAdapter getOuterAnnotationAdapter() {
 		return this.outerAnnotationAdapter;
 	}
 
-	public String elementName() {
+	public String getElementName() {
 		return this.elementName;
 	}
 

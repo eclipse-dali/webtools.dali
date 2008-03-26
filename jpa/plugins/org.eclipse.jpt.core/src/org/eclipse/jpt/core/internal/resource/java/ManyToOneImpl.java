@@ -89,7 +89,7 @@ public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation impleme
 		firePropertyChanged(OPTIONAL_PROPERTY, oldOptional, newOptional);
 	}
 
-	public TextRange optionalTextRange(CompilationUnit astRoot) {
+	public TextRange getOptionalTextRange(CompilationUnit astRoot) {
 		return elementTextRange(OPTIONAL_ADAPTER, astRoot);
 	}
 
@@ -100,7 +100,7 @@ public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation impleme
 	}
 	
 	protected Boolean optional(CompilationUnit astRoot) {
-		return this.optionalAdapter.value(astRoot);
+		return this.optionalAdapter.getValue(astRoot);
 	}
 
 	// ********** static methods **********

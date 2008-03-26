@@ -37,9 +37,9 @@ public interface PrimaryKeyJoinColumnAnnotation extends NamedColumnAnnotation
 	boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the referencedColumnName element. If the referencedColumnName 
-	 * element does not exist return the ITextRange for the PrimaryKeyJoinColumn annotation.
+	 * Return the {@link TextRange} for the referencedColumnName element. If the referencedColumnName 
+	 * element does not exist return the {@link TextRange} for the PrimaryKeyJoinColumn annotation.
 	 */
-	TextRange referencedColumnNameTextRange(CompilationUnit astRoot);
+	TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot);
 
 }

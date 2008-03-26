@@ -250,7 +250,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 
 	protected TextRange nameTextRange() {
 		if (table() != null) {
-			TextRange textRange = table().nameTextRange();
+			TextRange textRange = table().getNameTextRange();
 			if (textRange != null) {
 				return textRange;
 			}
@@ -260,7 +260,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	
 	protected TextRange catalogTextRange() {
 		if (table() != null) {
-			TextRange textRange = table().catalogTextRange();
+			TextRange textRange = table().getCatalogTextRange();
 			if (textRange != null) {
 				return textRange;
 			}
@@ -270,7 +270,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	
 	protected TextRange schemaTextRange() {
 		if (table() != null) {
-			TextRange textRange = table().schemaTextRange();
+			TextRange textRange = table().getSchemaTextRange();
 			if (textRange != null) {
 				return textRange;
 			}
@@ -280,7 +280,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	
 	public TextRange getValidationTextRange() {
 		if (table() != null) {
-			TextRange textRange = this.table().validationTextRange();
+			TextRange textRange = this.table().getValidationTextRange();
 			if (textRange != null) {
 				return textRange;
 			}

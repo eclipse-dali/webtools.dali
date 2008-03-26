@@ -512,7 +512,7 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 		if (classNode != null) {
 			return buildTextRange(classNode);
 		}
-		return validationTextRange();
+		return getValidationTextRange();
 	}
 
 	public TextRange attributesTextRange() {
@@ -520,7 +520,7 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 		if (attributesNode != null) {
 			return buildTextRange(attributesNode);
 		}
-		return validationTextRange();
+		return getValidationTextRange();
 	}
 
 } // TypeMapping

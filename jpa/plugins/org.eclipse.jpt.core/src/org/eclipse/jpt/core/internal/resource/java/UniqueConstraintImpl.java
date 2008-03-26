@@ -54,7 +54,7 @@ public class UniqueConstraintImpl extends AbstractResourceAnnotation<Member> imp
 	}
 
 	public void initialize(CompilationUnit astRoot) {
-		String[] javaColumnNames = this.columnNamesAdapter.value(astRoot);
+		String[] javaColumnNames = this.columnNamesAdapter.getValue(astRoot);
 		for (int i = 0; i < javaColumnNames.length; i++) {
 			this.columnNames.add(javaColumnNames[i]);
 		}
@@ -115,7 +115,7 @@ public class UniqueConstraintImpl extends AbstractResourceAnnotation<Member> imp
 	}
 
 	protected void updateColumnNamesFromJava(CompilationUnit astRoot) {
-		String[] javaColumnNames = this.columnNamesAdapter.value(astRoot);
+		String[] javaColumnNames = this.columnNamesAdapter.getValue(astRoot);
 		//TODO hmm, seems we need change notification for this
 		CollectionTools.retainAll(this.columnNames, javaColumnNames);
 		for (int i = 0; i < javaColumnNames.length; i++) {

@@ -61,7 +61,7 @@ public class EnumeratedImpl extends AbstractResourceAnnotation<Attribute> implem
 		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 	
-	public TextRange valueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(VALUE_ADAPTER, astRoot);
 	}
 	
@@ -70,7 +70,7 @@ public class EnumeratedImpl extends AbstractResourceAnnotation<Attribute> implem
 	}
 	
 	protected EnumType value(CompilationUnit astRoot) {
-		return EnumType.fromJavaAnnotationValue(this.valueAdapter.value(astRoot));
+		return EnumType.fromJavaAnnotationValue(this.valueAdapter.getValue(astRoot));
 	}
 	
 	// ********** static methods **********

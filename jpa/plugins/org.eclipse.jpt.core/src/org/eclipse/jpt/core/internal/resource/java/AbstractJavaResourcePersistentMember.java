@@ -58,7 +58,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	}
 
 	public void initialize(CompilationUnit astRoot) {
-		getMember().bodyDeclaration(astRoot).accept(initializeAnnotationVisitor(astRoot));
+		getMember().getBodyDeclaration(astRoot).accept(initializeAnnotationVisitor(astRoot));
 		this.persistable = calculatePersistability(astRoot);		
 	}
 	
@@ -80,7 +80,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 			}
 			
 			private boolean visit(org.eclipse.jdt.core.dom.Annotation node) {
-				if (node.getParent() != getMember().bodyDeclaration(astRoot)) {
+				if (node.getParent() != getMember().getBodyDeclaration(astRoot)) {
 					//we don't want to look at annotations for child members, only this member
 					return false;
 				}
@@ -96,14 +96,14 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 			return;
 		}
 		if (isPossibleAnnotation(qualifiedAnnotationName)) {
-			if (annotation(qualifiedAnnotationName) == null) { //don't want duplicates
+			if (getAnnotation(qualifiedAnnotationName) == null) { //don't want duplicates
 				Annotation annotation = buildAnnotation(qualifiedAnnotationName);
 				annotation.initialize(astRoot);
 				this.annotations.add(annotation);
 			}
 		}
 		else if (isPossibleMappingAnnotation(qualifiedAnnotationName)) {
-			if (mappingAnnotation(qualifiedAnnotationName) == null) { //don't want duplicates
+			if (getMappingAnnotation(qualifiedAnnotationName) == null) { //don't want duplicates
 				Annotation annotation = buildMappingAnnotation(qualifiedAnnotationName);
 				annotation.initialize(astRoot);
 				this.mappingAnnotations.add(annotation);
@@ -131,7 +131,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	
 	protected abstract boolean calculatePersistability(CompilationUnit astRoot);
 
-	public Annotation annotation(String annotationName) {
+	public Annotation getAnnotation(String annotationName) {
 		for (Iterator<Annotation> i = annotations(); i.hasNext(); ) {
 			Annotation annotation = i.next();
 			if (annotation.getAnnotationName().equals(annotationName)) {
@@ -141,15 +141,15 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 		return null;
 	}
 	
-	public JavaResourceNode nonNullAnnotation(String annotationName) {
-		Annotation annotation = annotation(annotationName);
+	public JavaResourceNode getNonNullAnnotation(String annotationName) {
+		Annotation annotation = getAnnotation(annotationName);
 		if (annotation == null) {
 			return buildNullAnnotation(annotationName);	
 		}
 		return annotation;
 	}
 	
-	public Annotation mappingAnnotation(String annotationName) {
+	public Annotation getMappingAnnotation(String annotationName) {
 		for (Iterator<Annotation> i = mappingAnnotations(); i.hasNext(); ) {
 			Annotation mappingAnnotation = i.next();
 			if (mappingAnnotation.getAnnotationName().equals(annotationName)) {
@@ -159,7 +159,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 		return null;
 	}
 
-	public JavaResourceNode nullMappingAnnotation(String annotationName) {
+	public JavaResourceNode getNullMappingAnnotation(String annotationName) {
 		return buildNullMappingAnnotation(annotationName);	
 	}
 	
@@ -201,11 +201,11 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	
 	@SuppressWarnings("unchecked")
 	protected ContainerAnnotation<NestableAnnotation> containerAnnotation(String containerAnnotationName) {
-		return (ContainerAnnotation<NestableAnnotation>) annotation(containerAnnotationName);
+		return (ContainerAnnotation<NestableAnnotation>) getAnnotation(containerAnnotationName);
 	}
 	
 	protected NestableAnnotation nestableAnnotation(String nestableAnnotationName) {
-		return (NestableAnnotation) annotation(nestableAnnotationName);
+		return (NestableAnnotation) getAnnotation(nestableAnnotationName);
 	}
 	
 	protected NestableAnnotation addNestableAnnotation(String nestableAnnotationName) {
@@ -214,7 +214,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	
 	//TODO it seems we should be firing one change notification here, that a new nestable annotation was added.
 	public NestableAnnotation addAnnotation(int index, String nestableAnnotationName, String containerAnnotationName) {
-		NestableAnnotation nestedAnnotation = (NestableAnnotation) annotation(nestableAnnotationName);
+		NestableAnnotation nestedAnnotation = (NestableAnnotation) getAnnotation(nestableAnnotationName);
 		
 		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
 		
@@ -264,7 +264,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	}
 	
 	protected void addMappingAnnotation(String mappingAnnotationName) {
-		if (mappingAnnotation(mappingAnnotationName) != null) {
+		if (getMappingAnnotation(mappingAnnotationName) != null) {
 			return;
 		}
 		Annotation mappingAnnotation = buildMappingAnnotation(mappingAnnotationName);
@@ -296,7 +296,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	}
 	
 	public void removeAnnotation(String annotationName) {
-		Annotation annotation = annotation(annotationName);
+		Annotation annotation = getAnnotation(annotationName);
 		if (annotation != null) {
 			removeAnnotation(annotation);
 		}
@@ -305,7 +305,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	public void removeAnnotation(int index, String nestableAnnotationName, String containerAnnotationName) {
 		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
 		if (containerAnnotation == null) {
-			Annotation annotation = annotation(nestableAnnotationName);
+			Annotation annotation = getAnnotation(nestableAnnotationName);
 			removeAnnotation(annotation);
 		}
 		else {
@@ -345,16 +345,16 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	// mapping annotations (which is a validation error condition) then calling this api would not work
 	// because the new mapping annotatio would be added to the end of the list of annotations.
 	public void setMappingAnnotation(String annotationName) {
-		if (mappingAnnotation(annotationName) != null) {
+		if (getMappingAnnotation(annotationName) != null) {
 			throw new IllegalStateException("The mapping annotation named " + annotationName + " already exists.");
 		}
-		Annotation oldMapping = mappingAnnotation();
+		Annotation oldMapping = getMappingAnnotation();
 		Annotation newMapping = null;
 		if (oldMapping != null) {
 			removeUnnecessaryAnnotations(annotationName);
 		}
 		if (annotationName != null) {
-			if (mappingAnnotation(annotationName) != null) {
+			if (getMappingAnnotation(annotationName) != null) {
 				return;
 			}
 			newMapping = buildMappingAnnotation(annotationName);
@@ -375,7 +375,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 		for (ListIterator<String> i = possibleMappingAnnotationNames(); i.hasNext(); ) {
 			String mappingAnnotationName = i.next();
 			if (mappingAnnotationName != newMappingAnnotationName) {
-				Annotation mappingAnnotation = mappingAnnotation(mappingAnnotationName);
+				Annotation mappingAnnotation = getMappingAnnotation(mappingAnnotationName);
 				if (mappingAnnotation != null) {
 					this.mappingAnnotations.remove(mappingAnnotation);
 					mappingAnnotation.removeAnnotation();
@@ -387,7 +387,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	//TODO need property change notification on this mappingAnnotation changing
 	//from the context model we don't really care if their are multiple mapping annotations,
 	//just which one we need to use
-	public Annotation mappingAnnotation() {
+	public Annotation getMappingAnnotation() {
 		for (ListIterator<String> i = possibleMappingAnnotationNames(); i.hasNext(); ) {
 			String mappingAnnotationName = i.next();
 			for (Iterator<Annotation> j = mappingAnnotations(); j.hasNext(); ) {
@@ -425,14 +425,14 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	}
 	
 	protected void updateAnnotations(CompilationUnit astRoot) {
-		getMember().bodyDeclaration(astRoot).accept(annotationVisitor(astRoot));
+		getMember().getBodyDeclaration(astRoot).accept(annotationVisitor(astRoot));
 		removeMappingAnnotationsNotInSource(astRoot);
 		removeAnnotationsNotInSource(astRoot);
 	}
 	
 	protected void removeAnnotationsNotInSource(CompilationUnit astRoot) {
 		for (Annotation annotation : CollectionTools.iterable(annotations())) {
-			if (annotation.jdtAnnotation(astRoot) == null) {
+			if (annotation.getJdtAnnotation(astRoot) == null) {
 				removeAnnotation_(annotation);
 			}
 		}		
@@ -440,7 +440,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	
 	protected void removeMappingAnnotationsNotInSource(CompilationUnit astRoot) {
 		for (Annotation mappingAnnotation : CollectionTools.iterable(mappingAnnotations())) {
-			if (mappingAnnotation.jdtAnnotation(astRoot) == null) {
+			if (mappingAnnotation.getJdtAnnotation(astRoot) == null) {
 				removeMappingAnnotation_(mappingAnnotation);
 			}
 		}	
@@ -464,7 +464,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 			}
 			
 			private boolean visit(org.eclipse.jdt.core.dom.Annotation node) {
-				if (node.getParent() != getMember().bodyDeclaration(astRoot)) {
+				if (node.getParent() != getMember().getBodyDeclaration(astRoot)) {
 					//we don't want to look at annotations for child members, only this member
 					return false;
 				}
@@ -480,7 +480,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 			return;
 		}
 		if (isPossibleAnnotation(qualifiedAnnotationName)) {
-			Annotation annotation = annotation(qualifiedAnnotationName);
+			Annotation annotation = getAnnotation(qualifiedAnnotationName);
 			if (annotation != null) {
 				annotation.updateFromJava(astRoot);
 			}
@@ -491,7 +491,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 			}
 		}
 		else if (isPossibleMappingAnnotation(qualifiedAnnotationName)) {
-			Annotation annotation = mappingAnnotation(qualifiedAnnotationName);
+			Annotation annotation = getMappingAnnotation(qualifiedAnnotationName);
 			if (annotation != null) {
 				annotation.updateFromJava(astRoot);
 			}
@@ -521,20 +521,20 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	}
 	
 	public boolean isPersisted() {
-		return mappingAnnotation() != null;
+		return getMappingAnnotation() != null;
 	}
 	
 
 	public TextRange fullTextRange(CompilationUnit astRoot) {
-		return this.getMember().textRange(astRoot);
+		return this.getMember().getTextRange(astRoot);
 	}
 
-	public TextRange textRange(CompilationUnit astRoot) {
+	public TextRange getTextRange(CompilationUnit astRoot) {
 		return this.fullTextRange(astRoot);
 	}
 
-	public TextRange nameTextRange(CompilationUnit astRoot) {
-		return this.getMember().nameTextRange(astRoot);
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		return this.getMember().getNameTextRange(astRoot);
 	}
 
 }

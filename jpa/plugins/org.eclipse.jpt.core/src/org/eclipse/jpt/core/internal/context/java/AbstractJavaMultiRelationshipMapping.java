@@ -97,7 +97,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 	
 	protected OrderBy orderByResource() {
-		return (OrderBy) getResourcePersistentAttribute().annotation(OrderBy.ANNOTATION_NAME);
+		return (OrderBy) getResourcePersistentAttribute().getAnnotation(OrderBy.ANNOTATION_NAME);
 	}
 	
 	protected OrderBy addOrderByResource() {
@@ -255,7 +255,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 	
 	protected MapKey mapKeyResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		return (MapKey) resourcePersistentAttribute.annotation(MapKey.ANNOTATION_NAME);
+		return (MapKey) resourcePersistentAttribute.getAnnotation(MapKey.ANNOTATION_NAME);
 	}
 
 	public Iterator<String> candidateMapKeyNames() {

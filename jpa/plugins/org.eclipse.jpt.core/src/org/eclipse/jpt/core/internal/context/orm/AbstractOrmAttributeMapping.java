@@ -224,15 +224,15 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 	
 	public TextRange getSelectionTextRange() {
-		return this.attributeMapping.selectionTextRange();
+		return this.attributeMapping.getSelectionTextRange();
 	}	
 	
 	public TextRange getValidationTextRange() {
-		return (this.getPersistentAttribute().isVirtual()) ? this.getTypeMapping().getAttributesTextRange() : this.attributeMapping.validationTextRange();
+		return (this.getPersistentAttribute().isVirtual()) ? this.getTypeMapping().getAttributesTextRange() : this.attributeMapping.getValidationTextRange();
 	}
 	
 	public TextRange nameTextRange() {
-		return this.attributeMapping.nameTextRange();
+		return this.attributeMapping.getNameTextRange();
 	}
 	
 	@Override
@@ -290,7 +290,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		if (resourcePersistentAttribute.isForField()) {
 			int flags;
 			try {
-				flags = resourcePersistentAttribute.getMember().jdtMember().getFlags();
+				flags = resourcePersistentAttribute.getMember().getJdtMember().getFlags();
 			} catch (JavaModelException jme) { 
 				/* no error to log, in that case */ 
 				return;

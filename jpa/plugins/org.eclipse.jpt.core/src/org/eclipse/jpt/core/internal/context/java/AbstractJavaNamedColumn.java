@@ -119,7 +119,7 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.columnResource().nameTextRange(astRoot);
+		TextRange textRange = this.columnResource().getNameTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);
 	}
 

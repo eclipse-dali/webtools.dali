@@ -69,22 +69,22 @@ public interface GeneratorAnnotation extends JavaResourceNode
 		String ALLOCATION_SIZE_PROPERTY = "allocationSizeProperty";
 	
 	/**
-	 * Return the ITextRange for the name element.  If the name element 
-	 * does not exist return the ITextRange for the *Generator annotation.
+	 * Return the {@link TextRange} for the name element.  If the name element 
+	 * does not exist return the {@link TextRange} for the *Generator annotation.
 	 */
-	TextRange nameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the initialValue element.  If the initialValue element 
-	 * does not exist return the ITextRange for the *Generator annotation.
+	 * Return the {@link TextRange} for the initialValue element.  If the initialValue element 
+	 * does not exist return the {@link TextRange} for the *Generator annotation.
 	 */
-	TextRange initialValueTextRange(CompilationUnit astRoot);
+	TextRange getInitialValueTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the allocationSize element.  If the allocationSize element 
-	 * does not exist return the ITextRange for the *Generator annotation.
+	 * Return the {@link TextRange} for the allocationSize element.  If the allocationSize element 
+	 * does not exist return the {@link TextRange} for the *Generator annotation.
 	 */
-	TextRange allocationSizeTextRange(CompilationUnit astRoot);
+	TextRange getAllocationSizeTextRange(CompilationUnit astRoot);
 
 
 }

@@ -69,7 +69,7 @@ public class VirtualXmlVersion extends AbstractJpaEObject implements XmlVersion
 	}
 	
 	
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		return null;
 	}
 

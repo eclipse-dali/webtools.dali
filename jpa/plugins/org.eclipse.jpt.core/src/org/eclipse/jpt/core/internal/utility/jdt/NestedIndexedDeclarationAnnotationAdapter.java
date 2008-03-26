@@ -68,7 +68,7 @@ public class NestedIndexedDeclarationAnnotationAdapter
 	// ********** AbstractNestedDeclarationAnnotationAdapter implementation **********
 
 	@Override
-	protected Annotation annotation(Expression value) {
+	protected Annotation getAnnotation(Expression value) {
 		if (value.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
 			return this.annotation((ArrayInitializer) value);
 		}
@@ -126,7 +126,7 @@ public class NestedIndexedDeclarationAnnotationAdapter
 
 	// ********** IndexedDeclarationAnnotationAdapter implementation **********
 
-	public int index() {
+	public int getIndex() {
 		return this.index;
 	}
 
@@ -140,7 +140,7 @@ public class NestedIndexedDeclarationAnnotationAdapter
 			return;
 		}
 
-		Annotation original = this.annotation(declaration);
+		Annotation original = this.getAnnotation(declaration);
 		if (original == null) {
 			this.index = newIndex;
 			this.removeAnnotation(declaration);  // clear out the new location (?)

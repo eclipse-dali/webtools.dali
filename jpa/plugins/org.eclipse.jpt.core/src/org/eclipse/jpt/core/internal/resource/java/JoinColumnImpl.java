@@ -128,7 +128,7 @@ public class JoinColumnImpl extends BaseColumnImpl implements NestableJoinColumn
 		firePropertyChanged(REFERENCED_COLUMN_NAME_PROPERTY, oldReferencedColumnName, newReferencedColumnName);
 	}
 	
-	public TextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
+	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.referencedColumnNameDeclarationAdapter, astRoot);
 	}
 
@@ -143,7 +143,7 @@ public class JoinColumnImpl extends BaseColumnImpl implements NestableJoinColumn
 	}
 	
 	protected String referencedColumnName(CompilationUnit astRoot) {
-		return this.referencedColumnNameAdapter.value(astRoot);
+		return this.referencedColumnNameAdapter.getValue(astRoot);
 	}
 	
 	// ********** static methods **********

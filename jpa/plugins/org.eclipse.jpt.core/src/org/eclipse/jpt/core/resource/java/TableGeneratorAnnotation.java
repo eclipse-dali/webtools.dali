@@ -133,39 +133,39 @@ public interface TableGeneratorAnnotation extends GeneratorAnnotation
 		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraintsList";
 
 	/**
-	 * Return the ITextRange for the table element.  If the table element 
-	 * does not exist return the ITextRange for the TableGenerator annotation.
+	 * Return the {@link TextRange} for the table element.  If the table element 
+	 * does not exist return the {@link TextRange} for the TableGenerator annotation.
 	 */
-	TextRange tableTextRange(CompilationUnit astRoot);
+	TextRange getTableTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the catalog element.  If the catalog element 
-	 * does not exist return the ITextRange for the TableGenerator annotation.
+	 * Return the {@link TextRange} for the catalog element.  If the catalog element 
+	 * does not exist return the {@link TextRange} for the TableGenerator annotation.
 	 */
-	TextRange catalogTextRange(CompilationUnit astRoot);
+	TextRange getCatalogTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the schema element.  If the schema element 
-	 * does not exist return the ITextRange for the TableGenerator annotation.
+	 * Return the {@link TextRange} for the schema element.  If the schema element 
+	 * does not exist return the {@link TextRange} for the TableGenerator annotation.
 	 */
-	TextRange schemaTextRange(CompilationUnit astRoot);
+	TextRange getSchemaTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the pkColumnName element.  If the pkColumnName element 
-	 * does not exist return the ITextRange for the TableGenerator annotation.
+	 * Return the {@link TextRange} for the pkColumnName element.  If the pkColumnName element 
+	 * does not exist return the {@link TextRange} for the TableGenerator annotation.
 	 */
-	TextRange pkColumnNameTextRange(CompilationUnit astRoot);
+	TextRange getPkColumnNameTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the valueColumnName element.  If the valueColumnName element 
-	 * does not exist return the ITextRange for the TableGenerator annotation.
+	 * Return the {@link TextRange} for the valueColumnName element.  If the valueColumnName element 
+	 * does not exist return the {@link TextRange} for the TableGenerator annotation.
 	 */
-	TextRange valueColumnNameTextRange(CompilationUnit astRoot);
+	TextRange getValueColumnNameTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the pkColumnValue element.  If the pkColumnValue element 
-	 * does not exist return the ITextRange for the TableGenerator annotation.
+	 * Return the {@link TextRange} for the pkColumnValue element.  If the pkColumnValue element 
+	 * does not exist return the {@link TextRange} for the TableGenerator annotation.
 	 */
-	TextRange pkColumnValueTextRange(CompilationUnit astRoot);
+	TextRange getPkColumnValueTextRange(CompilationUnit astRoot);
 
 }

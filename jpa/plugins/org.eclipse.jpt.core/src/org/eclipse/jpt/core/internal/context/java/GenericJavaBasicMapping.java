@@ -76,15 +76,15 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 	}
 	
 	protected Enumerated enumeratedResource() {
-		return (Enumerated) getResourcePersistentAttribute().nonNullAnnotation(Enumerated.ANNOTATION_NAME);
+		return (Enumerated) getResourcePersistentAttribute().getNonNullAnnotation(Enumerated.ANNOTATION_NAME);
 	}
 	
 	protected Temporal temporalResource() {
-		return (Temporal) getResourcePersistentAttribute().nonNullAnnotation(Temporal.ANNOTATION_NAME);
+		return (Temporal) getResourcePersistentAttribute().getNonNullAnnotation(Temporal.ANNOTATION_NAME);
 	}
 
 	public ColumnAnnotation columnResource() {
-		return (ColumnAnnotation) getResourcePersistentAttribute().nonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+		return (ColumnAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 	
 	//************** IJavaAttributeMapping implementation ***************
@@ -280,7 +280,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 	}
 	
 	protected Lob lobResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		return (Lob) resourcePersistentAttribute.annotation(Lob.ANNOTATION_NAME);
+		return (Lob) resourcePersistentAttribute.getAnnotation(Lob.ANNOTATION_NAME);
 	}
 	
 	protected TemporalType temporal(Temporal temporal) {

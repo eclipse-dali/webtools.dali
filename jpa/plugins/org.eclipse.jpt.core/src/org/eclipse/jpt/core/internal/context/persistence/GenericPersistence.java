@@ -167,11 +167,11 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 	}
 	
 	public TextRange getSelectionTextRange() {
-		return xmlPersistence.selectionTextRange();
+		return xmlPersistence.getSelectionTextRange();
 	}
 	
 	public TextRange getValidationTextRange() {
-		return xmlPersistence.validationTextRange();
+		return xmlPersistence.getValidationTextRange();
 	}
 
 

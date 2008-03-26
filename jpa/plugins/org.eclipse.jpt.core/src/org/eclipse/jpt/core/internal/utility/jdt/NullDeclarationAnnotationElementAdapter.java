@@ -41,7 +41,7 @@ public class NullDeclarationAnnotationElementAdapter<T>
 		super();
 	}
 
-	public T value(ModifiedDeclaration declaration) {
+	public T getValue(ModifiedDeclaration declaration) {
 		return null;
 	}
 
@@ -49,11 +49,11 @@ public class NullDeclarationAnnotationElementAdapter<T>
 		// do nothing
 	}
 
-	public ASTNode astNode(ModifiedDeclaration declaration) {
-		return declaration.declaration();
+	public ASTNode getAstNode(ModifiedDeclaration declaration) {
+		return declaration.getDeclaration();
 	}
 
-	public Expression expression(ModifiedDeclaration declaration) {
+	public Expression getExpression(ModifiedDeclaration declaration) {
 		return null;
 	}
 

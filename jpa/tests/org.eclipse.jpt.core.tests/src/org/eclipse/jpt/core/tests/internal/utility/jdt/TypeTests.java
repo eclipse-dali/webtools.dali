@@ -38,11 +38,11 @@ public class TypeTests extends AnnotationTestCase {
 	}
 
 	public void testJdtMember() throws Exception {
-		assertEquals(this.jdtType, this.testType.jdtMember());
+		assertEquals(this.jdtType, this.testType.getJdtMember());
 	}
 
 	public void testTopLevelDeclaringType() throws Exception {
-		assertEquals(this.testType, this.testType.topLevelDeclaringType());
+		assertEquals(this.testType, this.testType.getTopLevelDeclaringType());
 	}
 
 	public void testDeclaringType() throws Exception {

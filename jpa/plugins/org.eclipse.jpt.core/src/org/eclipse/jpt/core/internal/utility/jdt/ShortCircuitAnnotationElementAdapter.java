@@ -42,32 +42,32 @@ public class ShortCircuitAnnotationElementAdapter<T>
 
 	// ********** AnnotationElementAdapter implementation **********
 
-	public T value() {
-		return this.adapter.value();
+	public T getValue() {
+		return this.adapter.getValue();
 	}
 
-	public T value(CompilationUnit astRoot) {
-		return this.adapter.value(astRoot);
+	public T getValue(CompilationUnit astRoot) {
+		return this.adapter.getValue(astRoot);
 	}
 
 	public void setValue(T value) {
-		this.setValue(this.adapter.value(), value);
+		this.setValue(this.adapter.getValue(), value);
 	}
 
-	public Expression expression() {
-		return this.adapter.expression();
+	public Expression getExpression() {
+		return this.adapter.getExpression();
 	}
 
-	public Expression expression(CompilationUnit astRoot) {
-		return this.adapter.expression(astRoot);
+	public Expression getExpression(CompilationUnit astRoot) {
+		return this.adapter.getExpression(astRoot);
 	}
 
-	public ASTNode astNode() {
-		return this.adapter.astNode();
+	public ASTNode getAstNode() {
+		return this.adapter.getAstNode();
 	}
 
-	public ASTNode astNode(CompilationUnit astRoot) {
-		return this.adapter.astNode(astRoot);
+	public ASTNode getAstNode(CompilationUnit astRoot) {
+		return this.adapter.getAstNode(astRoot);
 	}
 
 	@Override

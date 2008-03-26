@@ -97,7 +97,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 
 	public TextRange getReferencedColumnNameTextRange() {
 		if (columnResource() != null) {
-			TextRange textRange = columnResource().referencedColumnNameTextRange();
+			TextRange textRange = columnResource().getReferencedColumnNameTextRange();
 			if (textRange != null) {
 				return textRange;
 			}

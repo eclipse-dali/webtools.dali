@@ -33,7 +33,7 @@ public class NullAssociationOverride extends AbstractJavaResourceNode implements
 		//null, nothing to initialize
 	}
 
-	public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
+	public org.eclipse.jdt.core.dom.Annotation getJdtAnnotation(CompilationUnit astRoot) {
 		return null;
 	}
 	
@@ -105,11 +105,11 @@ public class NullAssociationOverride extends AbstractJavaResourceNode implements
 		return false;
 	}
 	
-	public TextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public TextRange textRange(CompilationUnit astRoot) {
+	public TextRange getTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 

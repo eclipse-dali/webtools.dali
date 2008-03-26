@@ -38,10 +38,10 @@ public interface OverrideAnnotation extends JavaResourceNode
 		String NAME_PROPERTY = "nameProperty";
 
 	/**
-	 * Return the ITextRange for the name element. If name element
-	 * does not exist return the ITextRange for the AttributeOverride annotation.
+	 * Return the {@link TextRange} for the name element. If name element
+	 * does not exist return the {@link TextRange} for the AttributeOverride annotation.
 	 */
-	TextRange nameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange(CompilationUnit astRoot);
 
 	/**
 	 * Return whether the specified postition touches the table element.

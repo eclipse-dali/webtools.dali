@@ -101,7 +101,7 @@ public class VirtualXmlEmbeddedId extends AbstractJpaEObject implements XmlEmbed
 		}
 	}
 	
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		return null;
 	}
 

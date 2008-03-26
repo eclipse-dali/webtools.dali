@@ -133,7 +133,7 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	}
 
 	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
-		TextRange textRange = columnResource().referencedColumnNameTextRange(astRoot);
+		TextRange textRange = columnResource().getReferencedColumnNameTextRange(astRoot);
 		return (textRange != null) ? textRange : getOwner().getValidationTextRange(astRoot);
 	}
 

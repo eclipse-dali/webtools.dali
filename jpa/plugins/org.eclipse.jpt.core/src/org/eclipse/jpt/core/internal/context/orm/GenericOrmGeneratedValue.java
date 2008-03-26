@@ -87,7 +87,7 @@ public class GenericOrmGeneratedValue extends AbstractOrmJpaContextNode implemen
 	}
 
 	public TextRange getGeneratorTextRange() {
-		return this.generatedValue.generatorTextRange();
+		return this.generatedValue.getGeneratorTextRange();
 	}
 
 	
@@ -118,6 +118,6 @@ public class GenericOrmGeneratedValue extends AbstractOrmJpaContextNode implemen
 	}
 	
 	public TextRange getValidationTextRange() {
-		return this.generatedValue.validationTextRange();
+		return this.generatedValue.getValidationTextRange();
 	}
 }

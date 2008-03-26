@@ -58,20 +58,20 @@ public class EnumDeclarationAnnotationElementAdapter
 
 	// ********** DeclarationAnnotationElementAdapter implementation **********
 
-	public String value(ModifiedDeclaration declaration) {
-		return this.resolve(this.adapter.expression(declaration));
+	public String getValue(ModifiedDeclaration declaration) {
+		return this.resolve(this.adapter.getExpression(declaration));
 	}
 
 	public void setValue(String value, ModifiedDeclaration declaration) {
 		this.adapter.setValue(this.convertToShortName(value, declaration), declaration);
 	}
 
-	public Expression expression(ModifiedDeclaration declaration) {
-		return this.adapter.expression(declaration);
+	public Expression getExpression(ModifiedDeclaration declaration) {
+		return this.adapter.getExpression(declaration);
 	}
 
-	public ASTNode astNode(ModifiedDeclaration declaration) {
-		return this.adapter.astNode(declaration);
+	public ASTNode getAstNode(ModifiedDeclaration declaration) {
+		return this.adapter.getAstNode(declaration);
 	}
 
 

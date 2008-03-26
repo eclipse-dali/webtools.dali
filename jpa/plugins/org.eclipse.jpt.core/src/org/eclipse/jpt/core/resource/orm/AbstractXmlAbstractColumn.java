@@ -511,8 +511,8 @@ public abstract class AbstractXmlAbstractColumn extends AbstractXmlNamedColumn i
 		return result.toString();
 	}
 
-	public TextRange tableTextRange() {
+	public TextRange getTableTextRange() {
 		IDOMNode tableNode = (IDOMNode) DOMUtilities.childAttributeNode(this.node, OrmXmlMapper.TABLE);
-		return (tableNode == null) ? validationTextRange() : buildTextRange(tableNode);
+		return (tableNode == null) ? getValidationTextRange() : buildTextRange(tableNode);
 	}
 } // AbstractXmlAbstractColumn

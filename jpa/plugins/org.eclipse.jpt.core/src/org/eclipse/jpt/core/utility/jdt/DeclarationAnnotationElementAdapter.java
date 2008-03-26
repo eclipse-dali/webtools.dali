@@ -32,7 +32,7 @@ public interface DeclarationAnnotationElementAdapter<T> {
 	 * annotation element. Return null or an empty array
 	 * if the element is not present.
 	 */
-	T value(ModifiedDeclaration declaration);
+	T getValue(ModifiedDeclaration declaration);
 
 	/**
 	 * Given the specified declaration, set the value of the
@@ -46,13 +46,13 @@ public interface DeclarationAnnotationElementAdapter<T> {
 	 * Given the specified declaration, return the element's value expression.
 	 * Return null if the element is not present.
 	 */
-	Expression expression(ModifiedDeclaration declaration);
+	Expression getExpression(ModifiedDeclaration declaration);
 
 	/**
 	 * Given the specified declaration, return the AST node
 	 * corresponding to the element's value.
 	 * If the element is missing, return the annotation's node.
 	 */
-	ASTNode astNode(ModifiedDeclaration declaration);
+	ASTNode getAstNode(ModifiedDeclaration declaration);
 
 }

@@ -53,11 +53,11 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	}
 	
 	protected Temporal temporalResource() {
-		return (Temporal) getResourcePersistentAttribute().nonNullAnnotation(Temporal.ANNOTATION_NAME);
+		return (Temporal) getResourcePersistentAttribute().getNonNullAnnotation(Temporal.ANNOTATION_NAME);
 	}
 	
 	public ColumnAnnotation columnResource() {
-		return (ColumnAnnotation) getResourcePersistentAttribute().nonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+		return (ColumnAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	//************** IJavaAttributeMapping implementation ***************

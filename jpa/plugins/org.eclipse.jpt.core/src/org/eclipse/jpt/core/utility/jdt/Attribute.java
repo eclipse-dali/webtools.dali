@@ -24,9 +24,13 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
  */
 public interface Attribute extends Member {
 
-	String attributeName();
+	String getAttributeName();
 
-	ITypeBinding typeBinding(CompilationUnit astRoot);
+	/**
+	 * Return the type binding for the attribute's declared type,
+	 * as opposed to its declaring type.
+	 */
+	ITypeBinding getTypeBinding(CompilationUnit astRoot);
 
 	boolean isField();
 

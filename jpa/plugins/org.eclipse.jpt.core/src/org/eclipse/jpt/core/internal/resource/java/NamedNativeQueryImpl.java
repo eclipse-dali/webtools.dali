@@ -141,11 +141,11 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 		firePropertyChanged(RESULT_SET_MAPPING_PROPERTY, oldResultSetMapping, newResultSetMapping);
 	}
 
-	public TextRange resultClassTextRange(CompilationUnit astRoot) {
+	public TextRange getResultClassTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.resultClassDeclarationAdapter, astRoot);
 	}
 	
-	public TextRange resultSetMappingTextRange(CompilationUnit astRoot) {
+	public TextRange getResultSetMappingTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.resultSetMappingDeclarationAdapter, astRoot);
 	}
 	
@@ -158,18 +158,18 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 	}
 
 	protected String resultClass(CompilationUnit astRoot) {
-		return this.resultClassAdapter.value(astRoot);
+		return this.resultClassAdapter.getValue(astRoot);
 	}
 	
 	protected String resultSetMapping(CompilationUnit astRoot) {
-		return this.resultSetMappingAdapter.value(astRoot);
+		return this.resultSetMappingAdapter.getValue(astRoot);
 	}
 	
 	protected String fullyQualifiedResultClass(CompilationUnit astRoot) {
 		if (getResultClass() == null) {
 			return null;
 		}
-		return JDTTools.resolveFullyQualifiedName(this.resultClassAdapter.expression(astRoot));
+		return JDTTools.resolveFullyQualifiedName(this.resultClassAdapter.getExpression(astRoot));
 	}
 
 	@Override

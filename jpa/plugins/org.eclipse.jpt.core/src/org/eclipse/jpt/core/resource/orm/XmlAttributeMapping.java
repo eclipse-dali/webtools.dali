@@ -63,6 +63,6 @@ public interface XmlAttributeMapping extends JpaEObject
 	 */
 	void setName(String value);
 
-	TextRange nameTextRange();
+	TextRange getNameTextRange();
 	
 } // AttributeMapping

@@ -135,9 +135,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(Basic.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(Basic.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToDefault() throws Exception {
@@ -157,8 +157,8 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		assertTrue(((EmbeddedMapping) persistentAttribute.getMapping()).attributeOverrides().hasNext());
 		assertTrue(persistentAttribute.getMapping().isDefault());
 	
-		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
-		assertNotNull(attributeResource.annotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testDefaultEmbeddedMapping() throws Exception {
@@ -194,9 +194,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof VersionMapping);
 	
-		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(Version.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(Version.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToTransientMapping() throws Exception {
@@ -214,9 +214,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof TransientMapping);
 		
-		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(Transient.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(Transient.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToIdMapping() throws Exception {
@@ -234,9 +234,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof IdMapping);
 		
-		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(Id.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(Id.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToEmbeddedIdMapping() throws Exception {
@@ -254,9 +254,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedIdMapping);
 		
-		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(EmbeddedId.ANNOTATION_NAME));
-		assertNotNull(attributeResource.annotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(EmbeddedId.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToOneToOneMapping() throws Exception {
@@ -274,9 +274,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof OneToOneMapping);
 		
-		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(OneToOne.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(OneToOne.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToOneToManyMapping() throws Exception {
@@ -294,9 +294,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof OneToManyMapping);
 		
-		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(OneToMany.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(OneToMany.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToManyToOneMapping() throws Exception {
@@ -314,9 +314,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof ManyToOneMapping);
 		
-		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(ManyToOne.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(ManyToOne.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToManyToManyMapping() throws Exception {
@@ -334,9 +334,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof ManyToManyMapping);
 		
-		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(ManyToMany.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testSpecifiedAttributeOverrides() throws Exception {
@@ -413,8 +413,8 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertEquals("myEmbedded", attributeResource.getName());
-		assertNull(attributeResource.annotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(AttributeOverrides.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(AttributeOverrides.ANNOTATION_NAME));
 		
 		assertEquals(2, embeddedMapping.virtualAttributeOverridesSize());
 		AttributeOverride defaultAttributeOverride = embeddedMapping.virtualAttributeOverrides().next();
@@ -432,8 +432,8 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		cityMapping.getColumn().setSpecifiedTable("BAR");
 		
 		assertEquals("myEmbedded", attributeResource.getName());
-		assertNull(attributeResource.annotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(AttributeOverrides.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(AttributeOverrides.ANNOTATION_NAME));
 
 		assertEquals(2, embeddedMapping.virtualAttributeOverridesSize());
 		defaultAttributeOverride = embeddedMapping.virtualAttributeOverrides().next();

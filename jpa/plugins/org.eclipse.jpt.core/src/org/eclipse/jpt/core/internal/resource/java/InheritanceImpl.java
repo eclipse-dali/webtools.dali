@@ -60,7 +60,7 @@ public class InheritanceImpl extends AbstractResourceAnnotation<Type> implements
 		firePropertyChanged(STRATEGY_PROPERTY, oldStrategy, newStrategy);
 	}
 
-	public TextRange strategyTextRange(CompilationUnit astRoot) {
+	public TextRange getStrategyTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(STRATEGY_ADAPTER, astRoot);
 	}
 	
@@ -69,7 +69,7 @@ public class InheritanceImpl extends AbstractResourceAnnotation<Type> implements
 	}
 	
 	protected InheritanceType strategy(CompilationUnit astRoot) {
-		return InheritanceType.fromJavaAnnotationValue(this.strategyAdapter.value(astRoot));
+		return InheritanceType.fromJavaAnnotationValue(this.strategyAdapter.getValue(astRoot));
 	}
 	
 	// ********** static methods **********

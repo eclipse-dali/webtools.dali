@@ -38,28 +38,25 @@ public class SimpleDeclarationAnnotationAdapter extends AbstractDeclarationAnnot
 	}
 
 
-	// ********** AbstractAnnotationAdapter implementation **********
+	// ********** DeclarationAnnotationAdapter implementation **********
 
-	@Override
-	public Annotation annotation(ModifiedDeclaration declaration) {
-		return declaration.annotationNamed(this.annotationName());
+	public Annotation getAnnotation(ModifiedDeclaration declaration) {
+		return declaration.getAnnotationNamed(this.getAnnotationName());
 	}
 
-	@Override
 	public void removeAnnotation(ModifiedDeclaration declaration) {
-		declaration.removeAnnotationNamed(this.annotationName());
+		declaration.removeAnnotationNamed(this.getAnnotationName());
 	}
 
 	@Override
 	protected void addAnnotation(ModifiedDeclaration declaration, Annotation annotation) {
-		declaration.replaceAnnotationNamed(this.annotationName(), annotation);
+		declaration.replaceAnnotationNamed(this.getAnnotationName(), annotation);
 	}
 
-	@Override
-	public ASTNode astNode(ModifiedDeclaration declaration) {
+	public ASTNode getAstNode(ModifiedDeclaration declaration) {
 		// if the annotation is missing, return the declaration
-		Annotation annotation = this.annotation(declaration);
-		return (annotation != null) ? annotation : declaration.declaration();
+		Annotation annotation = this.getAnnotation(declaration);
+		return (annotation != null) ? annotation : declaration.getDeclaration();
 	}
 
 }

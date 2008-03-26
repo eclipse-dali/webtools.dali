@@ -160,10 +160,10 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.queryResource().validationTextRange();
+		return this.queryResource().getValidationTextRange();
 	}
 	
 	public TextRange getNameTextRange() {
-		return this.queryResource().nameTextRange();
+		return this.queryResource().getNameTextRange();
 	}
 }

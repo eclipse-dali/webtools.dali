@@ -89,7 +89,7 @@ public class JavaCascade extends AbstractJavaJpaContextNode implements Cascade
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.relationshipMapping.cascadeTextRange(astRoot);
+		return this.relationshipMapping.getCascadeTextRange(astRoot);
 	}
 	
 	public void initialize(RelationshipMappingAnnotation relationshipMapping) {

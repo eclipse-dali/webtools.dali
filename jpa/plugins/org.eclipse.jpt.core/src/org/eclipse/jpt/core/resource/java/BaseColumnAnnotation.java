@@ -91,34 +91,34 @@ public interface BaseColumnAnnotation extends NamedColumnAnnotation
 
 	
 	/**
-	 * Return the ITextRange for the unique element. If the unique element
-	 * does not exist return the ITextRange for the *Column annotation.
+	 * Return the {@link TextRange} for the unique element. If the unique element
+	 * does not exist return the {@link TextRange} for the *Column annotation.
 	 */
-	TextRange uniqueTextRange(CompilationUnit astRoot);
+	TextRange getUniqueTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the nullable element. If the nullable element
-	 * does not exist return the ITextRange for the *Column annotation.
+	 * Return the {@link TextRange} for the nullable element. If the nullable element
+	 * does not exist return the {@link TextRange} for the *Column annotation.
 	 */
-	TextRange nullableTextRange(CompilationUnit astRoot);
+	TextRange getNullableTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the insertable element. If the insertable element
-	 * does not exist return the ITextRange for the *Column annotation.
+	 * Return the {@link TextRange} for the insertable element. If the insertable element
+	 * does not exist return the {@link TextRange} for the *Column annotation.
 	 */
-	TextRange insertableTextRange(CompilationUnit astRoot);
+	TextRange getInsertableTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the updatable element. If the updatable element
-	 * does not exist return the ITextRange for the *Column annotation.
+	 * Return the {@link TextRange} for the updatable element. If the updatable element
+	 * does not exist return the {@link TextRange} for the *Column annotation.
 	 */
-	TextRange updatableTextRange(CompilationUnit astRoot);
+	TextRange getUpdatableTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the table element. If the table element
-	 * does not exist return the ITextRange for the *Column annotation.
+	 * Return the {@link TextRange} for the table element. If the table element
+	 * does not exist return the {@link TextRange} for the *Column annotation.
 	 */
-	TextRange tableTextRange(CompilationUnit astRoot);
+	TextRange getTableTextRange(CompilationUnit astRoot);
 
 	/**
 	 * Return whether the specified postition touches the table element.

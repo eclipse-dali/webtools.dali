@@ -57,7 +57,7 @@ public class VirtualXmlPrimaryKeyJoinColumn extends AbstractJpaEObject implement
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
 	}
 	
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		return null;
 	}
 	

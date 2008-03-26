@@ -75,7 +75,7 @@ public class IdClassImpl extends AbstractResourceAnnotation<Type> implements IdC
 		firePropertyChanged(IdClassAnnotation.FULLY_QUALIFIED_CLASS_PROPERTY, oldQualifiedClass, newQualifiedClass);
 	}
 
-	public TextRange valueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(VALUE_ADAPTER, astRoot);
 	}
 
@@ -85,14 +85,14 @@ public class IdClassImpl extends AbstractResourceAnnotation<Type> implements IdC
 	}
 
 	protected String value(CompilationUnit astRoot) {
-		return this.valueAdapter.value(astRoot);
+		return this.valueAdapter.getValue(astRoot);
 	}
 	
 	private String fullyQualifiedClass(CompilationUnit astRoot) {
 		if (getValue() == null) {
 			return null;
 		}
-		return JDTTools.resolveFullyQualifiedName(this.valueAdapter.expression(astRoot));
+		return JDTTools.resolveFullyQualifiedName(this.valueAdapter.getExpression(astRoot));
 	}
 	
 	// ********** static methods **********

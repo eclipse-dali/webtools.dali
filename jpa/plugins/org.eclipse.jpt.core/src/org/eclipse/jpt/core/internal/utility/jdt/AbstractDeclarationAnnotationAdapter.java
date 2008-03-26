@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.utility.jdt;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
@@ -39,19 +38,19 @@ public abstract class AbstractDeclarationAnnotationAdapter implements Declaratio
 	// ********** DeclarationAnnotationAdapter implementation **********
 
 	public MarkerAnnotation newMarkerAnnotation(ModifiedDeclaration declaration) {
-		MarkerAnnotation annotation = this.newMarkerAnnotation(declaration.ast());
+		MarkerAnnotation annotation = this.newMarkerAnnotation(declaration.getAst());
 		this.addAnnotationAndImport(declaration, annotation);
 		return annotation;
 	}
 
 	public SingleMemberAnnotation newSingleMemberAnnotation(ModifiedDeclaration declaration) {
-		SingleMemberAnnotation annotation = this.newSingleMemberAnnotation(declaration.ast());
+		SingleMemberAnnotation annotation = this.newSingleMemberAnnotation(declaration.getAst());
 		this.addAnnotationAndImport(declaration, annotation);
 		return annotation;
 	}
 
 	public NormalAnnotation newNormalAnnotation(ModifiedDeclaration declaration) {
-		NormalAnnotation annotation = this.newNormalAnnotation(declaration.ast());
+		NormalAnnotation annotation = this.newNormalAnnotation(declaration.getAst());
 		this.addAnnotationAndImport(declaration, annotation);
 		return annotation;
 	}
@@ -62,7 +61,7 @@ public abstract class AbstractDeclarationAnnotationAdapter implements Declaratio
 	 */
 	protected void addAnnotationAndImport(ModifiedDeclaration declaration, Annotation annotation) {
 		declaration.addImport(this.annotationName);
-		annotation.setTypeName(declaration.ast().newName(this.shortAnnotationName()));
+		annotation.setTypeName(declaration.getAst().newName(this.shortAnnotationName()));
 		this.addAnnotation(declaration, annotation);
 	}
 
@@ -70,15 +69,6 @@ public abstract class AbstractDeclarationAnnotationAdapter implements Declaratio
 	public String toString() {
 		return StringTools.buildToStringFor(this, this.annotationName);
 	}
-
-
-	// ********** abstract methods **********
-
-	public abstract Annotation annotation(ModifiedDeclaration declaration);
-
-	public abstract void removeAnnotation(ModifiedDeclaration declaration);
-
-	public abstract ASTNode astNode(ModifiedDeclaration declaration);
 
 	/**
 	 * Add the specified annotation to the specified declaration,
@@ -89,7 +79,7 @@ public abstract class AbstractDeclarationAnnotationAdapter implements Declaratio
 
 	// ********** public methods **********
 
-	public String annotationName() {
+	public String getAnnotationName() {
 		return this.annotationName;
 	}
 

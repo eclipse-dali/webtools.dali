@@ -13,7 +13,6 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -67,19 +66,19 @@ public abstract class AbstractJpaEObject extends EObjectImpl implements JpaEObje
 	
 	// **************** IJpaEObject implementation *****************************
 		
-	public IResource platformResource() {
-		return resource().getFile();
+	public IResource getPlatformResource() {
+		return getResource().getFile();
 	}
 	
-	public JpaXmlResource resource() {
+	public JpaXmlResource getResource() {
 		return (JpaXmlResource) eResource();
 	}
 	
 	/*
 	 * Must be overridden by actual root object to return itself
 	 */
-	public JpaEObject root() {
-		return ((JpaEObject) eContainer()).root();
+	public JpaEObject getRoot() {
+		return ((JpaEObject) eContainer()).getRoot();
 		
 	}
 	
@@ -99,7 +98,7 @@ public abstract class AbstractJpaEObject extends EObjectImpl implements JpaEObje
 	
 	protected void featureChanged(int featureId) {
 		if (this.featureIsSignificant(featureId)) { 
-			resource().resourceChanged();
+			getResource().resourceChanged();
 		}
 	}
 	
@@ -199,15 +198,15 @@ public abstract class AbstractJpaEObject extends EObjectImpl implements JpaEObje
 		}
 	}
 	
-	public TextRange validationTextRange() {
-		return fullTextRange();
+	public TextRange getValidationTextRange() {
+		return getFullTextRange();
 	}
 	
-	public TextRange selectionTextRange() {
-		return fullTextRange();
+	public TextRange getSelectionTextRange() {
+		return getFullTextRange();
 	}
 	
-	public TextRange fullTextRange() {
+	public TextRange getFullTextRange() {
 		return buildTextRange(this.node);
 	}
 	

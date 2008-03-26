@@ -56,9 +56,9 @@ public interface IdClassAnnotation extends JavaResourceNode
 		String FULLY_QUALIFIED_CLASS_PROPERTY = "fullyQualifiedClassProperty";
 
 	/**
-	 * Return the ITextRange for the value element.  If the value element 
-	 * does not exist return the ITextRange for the IdClass annotation.
+	 * Return the {@link TextRange} for the value element.  If the value element 
+	 * does not exist return the {@link TextRange} for the IdClass annotation.
 	 */
-	TextRange valueTextRange(CompilationUnit astRoot);
+	TextRange getValueTextRange(CompilationUnit astRoot);
 
 }

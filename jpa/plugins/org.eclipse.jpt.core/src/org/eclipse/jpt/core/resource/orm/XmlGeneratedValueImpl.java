@@ -262,8 +262,8 @@ public class XmlGeneratedValueImpl extends AbstractJpaEObject implements XmlGene
 		return result.toString();
 	}
 
-	public TextRange generatorTextRange() {
+	public TextRange getGeneratorTextRange() {
 		IDOMNode generatorNode = (IDOMNode) DOMUtilities.childAttributeNode(this.node, OrmXmlMapper.GENERATOR);
-		return (generatorNode == null) ? validationTextRange() : buildTextRange(generatorNode);
+		return (generatorNode == null) ? getValidationTextRange() : buildTextRange(generatorNode);
 	}
 } // GeneratedValue

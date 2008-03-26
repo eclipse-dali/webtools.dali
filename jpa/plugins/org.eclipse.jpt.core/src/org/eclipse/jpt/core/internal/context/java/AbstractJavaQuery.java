@@ -167,11 +167,11 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.queryResource.textRange(astRoot);
+		return this.queryResource.getTextRange(astRoot);
 	}
 	
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.queryResource.nameTextRange(astRoot);
+		return this.queryResource.getNameTextRange(astRoot);
 	}
 	
 	public boolean overrides(Query query) {

@@ -158,11 +158,11 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		this.javaColumn = javaColumn;
 	}
 	
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		return null;
 	}
 	
-	public TextRange tableTextRange() {
+	public TextRange getTableTextRange() {
 		return null;
 	}
 }

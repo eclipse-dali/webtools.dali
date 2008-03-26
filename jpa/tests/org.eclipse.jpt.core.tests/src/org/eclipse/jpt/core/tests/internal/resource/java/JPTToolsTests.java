@@ -232,7 +232,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testFieldIsPersistable1() throws Exception {
 		IType testType = createTestTypeFieldWithModifier("private");
 		FieldAttribute fieldAttribute = fooField();
-		IVariableBinding variableBinding = fieldAttribute.binding(JDTTools.buildASTRoot(testType));
+		IVariableBinding variableBinding = fieldAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertTrue(JPTTools.fieldIsPersistable(variableBinding));
 	}
 	
@@ -240,7 +240,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testFieldIsPersistable2() throws Exception {
 		IType testType = createTestTypeFieldWithModifier("private static");
 		FieldAttribute fieldAttribute = fooField();
-		IVariableBinding variableBinding = fieldAttribute.binding(JDTTools.buildASTRoot(testType));
+		IVariableBinding variableBinding = fieldAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertFalse(JPTTools.fieldIsPersistable(variableBinding));
 	}
 	
@@ -248,7 +248,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testFieldIsPersistable3() throws Exception {
 		IType testType = createTestTypeFieldWithModifier("private transient");
 		FieldAttribute fieldAttribute = fooField();
-		IVariableBinding variableBinding = fieldAttribute.binding(JDTTools.buildASTRoot(testType));
+		IVariableBinding variableBinding = fieldAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertFalse(JPTTools.fieldIsPersistable(variableBinding));
 	}
 	
@@ -256,7 +256,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testFieldIsPersistable4() throws Exception {
 		IType testType = createTestTypeFieldWithModifier("private final");
 		FieldAttribute fieldAttribute = fooField();
-		IVariableBinding variableBinding = fieldAttribute.binding(JDTTools.buildASTRoot(testType));
+		IVariableBinding variableBinding = fieldAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertTrue(JPTTools.fieldIsPersistable(variableBinding));
 	}
 	
@@ -264,7 +264,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testFieldIsPersistable5() throws Exception {
 		IType testType = createTestTypeFieldWithModifier("public");
 		FieldAttribute fieldAttribute = fooField();
-		IVariableBinding variableBinding = fieldAttribute.binding(JDTTools.buildASTRoot(testType));
+		IVariableBinding variableBinding = fieldAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertTrue(JPTTools.fieldIsPersistable(variableBinding));
 	}
 	
@@ -273,7 +273,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testMethodIsPersistablePropertyGetter1() throws Exception {
 		IType testType = createTestTypeGetMethodWithModifier("public");
 		MethodAttribute methodAttribute = fooMethod();
-		IMethodBinding methodBinding = methodAttribute.binding(JDTTools.buildASTRoot(testType));
+		IMethodBinding methodBinding = methodAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertTrue(JPTTools.methodIsPersistablePropertyGetter(methodBinding));
 		
 	}
@@ -282,7 +282,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testMethodIsPersistablePropertyGetter2() throws Exception {
 		IType testType = createTestTypeGetMethodWithModifier("protected");
 		MethodAttribute methodAttribute = fooMethod();
-		IMethodBinding methodBinding = methodAttribute.binding(JDTTools.buildASTRoot(testType));
+		IMethodBinding methodBinding = methodAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertTrue(JPTTools.methodIsPersistablePropertyGetter(methodBinding));
 	}
 	
@@ -290,7 +290,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testMethodIsPersistablePropertyGetter3() throws Exception {
 		IType testType = createTestTypeGetMethodWithModifier("");
 		MethodAttribute methodAttribute = fooMethod();
-		IMethodBinding methodBinding = methodAttribute.binding(JDTTools.buildASTRoot(testType));
+		IMethodBinding methodBinding = methodAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertFalse(JPTTools.methodIsPersistablePropertyGetter(methodBinding));
 	}
 	
@@ -298,7 +298,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testMethodIsPersistablePropertyGetter4() throws Exception {
 		IType testType = createTestTypeGetMethodWithModifier("private");
 		MethodAttribute methodAttribute = fooMethod();
-		IMethodBinding methodBinding = methodAttribute.binding(JDTTools.buildASTRoot(testType));
+		IMethodBinding methodBinding = methodAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertFalse(JPTTools.methodIsPersistablePropertyGetter(methodBinding));
 	}
 	
@@ -306,7 +306,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testMethodIsPersistablePropertyGetter5() throws Exception {
 		IType testType = createTestTypeGetMethodWithModifier("public static");
 		MethodAttribute methodAttribute = fooMethod();
-		IMethodBinding methodBinding = methodAttribute.binding(JDTTools.buildASTRoot(testType));
+		IMethodBinding methodBinding = methodAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertFalse(JPTTools.methodIsPersistablePropertyGetter(methodBinding));
 	}
 
@@ -314,7 +314,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testMethodIsPersistablePropertyGetter6() throws Exception {
 		IType testType = createTestTypeGetMethodWithModifier("public final");
 		MethodAttribute methodAttribute = fooMethod();
-		IMethodBinding methodBinding = methodAttribute.binding(JDTTools.buildASTRoot(testType));
+		IMethodBinding methodBinding = methodAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertFalse(JPTTools.methodIsPersistablePropertyGetter(methodBinding));
 	}
 
@@ -322,7 +322,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testMethodIsPersistablePropertyGetter7() throws Exception {
 		IType testType = createTestTypeSetMethodWithModifier("public");
 		MethodAttribute methodAttribute = fooMethod();
-		IMethodBinding methodBinding = methodAttribute.binding(JDTTools.buildASTRoot(testType));
+		IMethodBinding methodBinding = methodAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertTrue(JPTTools.methodIsPersistablePropertyGetter(methodBinding));
 		
 	}
@@ -331,7 +331,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testMethodIsPersistablePropertyGetter8() throws Exception {
 		IType testType = createTestTypeSetMethodWithModifier("protected");
 		MethodAttribute methodAttribute = fooMethod();
-		IMethodBinding methodBinding = methodAttribute.binding(JDTTools.buildASTRoot(testType));
+		IMethodBinding methodBinding = methodAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertTrue(JPTTools.methodIsPersistablePropertyGetter(methodBinding));
 	}
 	
@@ -339,7 +339,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testMethodIsPersistablePropertyGetter9() throws Exception {
 		IType testType = createTestTypeSetMethodWithModifier("");
 		MethodAttribute methodAttribute = fooMethod();
-		IMethodBinding methodBinding = methodAttribute.binding(JDTTools.buildASTRoot(testType));
+		IMethodBinding methodBinding = methodAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertFalse(JPTTools.methodIsPersistablePropertyGetter(methodBinding));
 	}
 	
@@ -347,7 +347,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testMethodIsPersistablePropertyGetter10() throws Exception {
 		IType testType =  createTestTypeSetMethodWithModifier("private");
 		MethodAttribute methodAttribute = fooMethod();
-		IMethodBinding methodBinding = methodAttribute.binding(JDTTools.buildASTRoot(testType));
+		IMethodBinding methodBinding = methodAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertFalse(JPTTools.methodIsPersistablePropertyGetter(methodBinding));
 	}
 	
@@ -355,7 +355,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testMethodIsPersistablePropertyGetter11() throws Exception {
 		IType testType = createTestTypeSetMethodWithModifier("public static");
 		MethodAttribute methodAttribute = fooMethod();
-		IMethodBinding methodBinding = methodAttribute.binding(JDTTools.buildASTRoot(testType));
+		IMethodBinding methodBinding = methodAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertFalse(JPTTools.methodIsPersistablePropertyGetter(methodBinding));
 	}
 
@@ -363,7 +363,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testMethodIsPersistablePropertyGetter12() throws Exception {
 		IType testType = createTestTypeSetMethodWithModifier("public final");
 		MethodAttribute methodAttribute = fooMethod();
-		IMethodBinding methodBinding = methodAttribute.binding(JDTTools.buildASTRoot(testType));
+		IMethodBinding methodBinding = methodAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertFalse(JPTTools.methodIsPersistablePropertyGetter(methodBinding));
 	}
 
@@ -371,7 +371,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testMethodIsPersistablePropertyGetter13() throws Exception {
 		IType testType = createTestTypeIsMethod();
 		MethodAttribute methodAttribute =  this.methodNamed("isFoo");
-		IMethodBinding methodBinding = methodAttribute.binding(JDTTools.buildASTRoot(testType));
+		IMethodBinding methodBinding = methodAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertTrue(JPTTools.methodIsPersistablePropertyGetter(methodBinding));
 		
 	}
@@ -380,7 +380,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	public void testMethodIsPersistablePropertyGetter14() throws Exception {
 		IType testType = createTestTypeIsMethodReturnInt();
 		MethodAttribute methodAttribute =  this.methodNamed("isFoo");
-		IMethodBinding methodBinding = methodAttribute.binding(JDTTools.buildASTRoot(testType));
+		IMethodBinding methodBinding = methodAttribute.getBinding(JDTTools.buildASTRoot(testType));
 		assertFalse(JPTTools.methodIsPersistablePropertyGetter(methodBinding));
 		
 	}
@@ -393,8 +393,8 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		MethodAttribute getFooMethod =  this.methodNamed("getFoo");
 		
 		CompilationUnit astRoot = JDTTools.buildASTRoot(testType);
-		assertTrue(JPTTools.methodIsPersistablePropertyGetter(isFooMethod.binding(astRoot)));
-		assertFalse(JPTTools.methodIsPersistablePropertyGetter(getFooMethod.binding(astRoot)));
+		assertTrue(JPTTools.methodIsPersistablePropertyGetter(isFooMethod.getBinding(astRoot)));
+		assertFalse(JPTTools.methodIsPersistablePropertyGetter(getFooMethod.getBinding(astRoot)));
 	}
 	
 	//public int foo() {} - not persistable
@@ -403,7 +403,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		MethodAttribute fooMethod =  this.methodNamed("foo");
 		
 		CompilationUnit astRoot = JDTTools.buildASTRoot(testType);
-		assertFalse(JPTTools.methodIsPersistablePropertyGetter(fooMethod.binding(astRoot)));
+		assertFalse(JPTTools.methodIsPersistablePropertyGetter(fooMethod.getBinding(astRoot)));
 	}
 
 	//public void getFoo() {} - not persistable - void return type
@@ -412,7 +412,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		MethodAttribute fooMethod =  this.methodNamed("getFoo");
 		
 		CompilationUnit astRoot = JDTTools.buildASTRoot(testType);
-		assertFalse(JPTTools.methodIsPersistablePropertyGetter(fooMethod.binding(astRoot)));
+		assertFalse(JPTTools.methodIsPersistablePropertyGetter(fooMethod.getBinding(astRoot)));
 	}
 	
 	//TODO
@@ -433,7 +433,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		MethodAttribute setIdMethod =  idSetMethod();
 		
 		CompilationUnit astRoot = JDTTools.buildASTRoot(testType);
-		assertFalse(JPTTools.methodIsPersistablePropertyGetter(setIdMethod.binding(astRoot)));
+		assertFalse(JPTTools.methodIsPersistablePropertyGetter(setIdMethod.getBinding(astRoot)));
 	}
 	
 	//constructor - not persistable
@@ -442,7 +442,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		MethodAttribute constructor =  methodNamed(TYPE_NAME);
 		
 		CompilationUnit astRoot = JDTTools.buildASTRoot(testType);
-		assertFalse(JPTTools.methodIsPersistablePropertyGetter(constructor.binding(astRoot)));
+		assertFalse(JPTTools.methodIsPersistablePropertyGetter(constructor.getBinding(astRoot)));
 	}
 	
 	//no corresponding set method - not persistable
@@ -451,7 +451,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		MethodAttribute getNameMethod =  nameGetMethod();
 		
 		CompilationUnit astRoot = JDTTools.buildASTRoot(testType);
-		assertFalse(JPTTools.methodIsPersistablePropertyGetter(getNameMethod.binding(astRoot)));
+		assertFalse(JPTTools.methodIsPersistablePropertyGetter(getNameMethod.getBinding(astRoot)));
 	}
 	
 	//public class AnnotationTestType
@@ -459,7 +459,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		IType testType = createTestType();
 		Type type = buildType(testType);
 		CompilationUnit astRoot = JDTTools.buildASTRoot(testType);
-		assertTrue(JPTTools.typeIsPersistable(type.binding(astRoot)));
+		assertTrue(JPTTools.typeIsPersistable(type.getBinding(astRoot)));
 	}
 	
 	//public final class MyFinal
@@ -467,7 +467,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		IType testType = this.javaProject.createType("finals", "MyFinal.java", "public final class MyFinal { }");
 		Type type = buildType(testType);
 		CompilationUnit astRoot = JDTTools.buildASTRoot(testType);
-		assertFalse(JPTTools.typeIsPersistable(type.binding(astRoot)));
+		assertFalse(JPTTools.typeIsPersistable(type.getBinding(astRoot)));
 	}
 	
 	//public interface AnnotationTestType
@@ -475,7 +475,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		IType testType = this.javaProject.createType("interfaces", "MyInterface.java", "public interface MyInterface { }");
 		Type type = buildType(testType);
 		CompilationUnit astRoot = JDTTools.buildASTRoot(testType);
-		assertFalse(JPTTools.typeIsPersistable(type.binding(astRoot)));
+		assertFalse(JPTTools.typeIsPersistable(type.getBinding(astRoot)));
 	}
 	
 	//enum not persistable
@@ -483,7 +483,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		IType testType = this.createEnumAndMembers("TestEnum", "FOO, BAR, BAZ");
 		Type type = buildType(testType);
 		CompilationUnit astRoot = JDTTools.buildASTRoot(testType);
-		assertFalse(JPTTools.typeIsPersistable(type.binding(astRoot)));
+		assertFalse(JPTTools.typeIsPersistable(type.getBinding(astRoot)));
 	}
 	
 	//annotation not persistable
@@ -491,7 +491,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		IType testType = this.createAnnotationAndMembers("TestAnnotation", "TestEnum foo();");
 		Type type = buildType(testType);
 		CompilationUnit astRoot = JDTTools.buildASTRoot(testType);
-		assertFalse(JPTTools.typeIsPersistable(type.binding(astRoot)));
+		assertFalse(JPTTools.typeIsPersistable(type.getBinding(astRoot)));
 	}
 	
 	//public static member type is persistable
@@ -500,7 +500,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		IType staticType = testType.getType("FooStatic");
 		Type type = buildType(staticType);
 		CompilationUnit astRoot = JDTTools.buildASTRoot(testType);
-		assertTrue(JPTTools.typeIsPersistable(type.binding(astRoot)));
+		assertTrue(JPTTools.typeIsPersistable(type.getBinding(astRoot)));
 	}
 	
 	//non-static member type is not persistable
@@ -509,7 +509,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		IType staticType = testType.getType("FooNotStatic");
 		Type type = buildType(staticType);
 		CompilationUnit astRoot = JDTTools.buildASTRoot(testType);
-		assertFalse(JPTTools.typeIsPersistable(type.binding(astRoot)));
+		assertFalse(JPTTools.typeIsPersistable(type.getBinding(astRoot)));
 	}
 	//TODO still need to test typeIsPersistable() returns false for local and anonymous classes
 
@@ -520,7 +520,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		Type type = buildType(testType);
 		CompilationUnit astRoot = JDTTools.buildASTRoot(testType);
 	
-		assertFalse(JPTTools.typeIsAbstract(type.binding(astRoot)));
+		assertFalse(JPTTools.typeIsAbstract(type.getBinding(astRoot)));
 	}
 
 }

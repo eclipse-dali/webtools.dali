@@ -27,7 +27,7 @@ public class NullBasic extends AbstractJavaResourceNode implements Basic, Annota
 		//null, nothing to initialize
 	}
 
-	public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
+	public org.eclipse.jdt.core.dom.Annotation getJdtAnnotation(CompilationUnit astRoot) {
 		return null;
 	}
 	
@@ -50,7 +50,7 @@ public class NullBasic extends AbstractJavaResourceNode implements Basic, Annota
 	
 	protected Basic createBasicResource() {
 		getParent().setMappingAnnotation(getAnnotationName());
-		return (Basic) getParent().mappingAnnotation();
+		return (Basic) getParent().getMappingAnnotation();
 	}
 
 	public FetchType getFetch() {
@@ -77,15 +77,15 @@ public class NullBasic extends AbstractJavaResourceNode implements Basic, Annota
 		throw new UnsupportedOperationException();
 	}
 
-	public TextRange textRange(CompilationUnit astRoot) {
+	public TextRange getTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public TextRange fetchTextRange(CompilationUnit astRoot) {
+	public TextRange getFetchTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	
-	public TextRange optionalTextRange(CompilationUnit astRoot) {
+	public TextRange getOptionalTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 }

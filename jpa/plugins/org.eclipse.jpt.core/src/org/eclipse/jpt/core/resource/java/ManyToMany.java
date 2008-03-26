@@ -39,10 +39,10 @@ public interface ManyToMany extends RelationshipMappingAnnotation
 		String MAPPED_BY_PROPERTY = "mappedByProperty";
 		
 	/**
-	 * Return the ITextRange for the mappedBy element.  If the mappedBy element 
-	 * does not exist return the ITextRange for the ManyToMany annotation.
+	 * Return the {@link TextRange} for the mappedBy element.  If the mappedBy element 
+	 * does not exist return the {@link TextRange} for the ManyToMany annotation.
 	 */
-	TextRange mappedByTextRange(CompilationUnit astRoot);
+	TextRange getMappedByTextRange(CompilationUnit astRoot);
 
 	/**
 	 * Return whether the specified postition touches the mappedBy element.

@@ -113,7 +113,7 @@ public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode im
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.overrideResource.textRange(astRoot);
+		TextRange textRange = this.overrideResource.getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 	

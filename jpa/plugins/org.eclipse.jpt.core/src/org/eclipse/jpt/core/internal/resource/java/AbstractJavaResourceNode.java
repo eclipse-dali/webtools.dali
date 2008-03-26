@@ -68,20 +68,20 @@ public abstract class AbstractJavaResourceNode
 	
 	// **************** JavaResource implementation ****************************
 	
-	public JpaAnnotationProvider annotationProvider() {
-		return this.getJpaCompilationUnit().annotationProvider();
+	public JpaAnnotationProvider getAnnotationProvider() {
+		return this.getJpaCompilationUnit().getAnnotationProvider();
 	}
 	
-	public CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
-		return this.getJpaCompilationUnit().modifySharedDocumentCommandExecutorProvider();
+	public CommandExecutorProvider getModifySharedDocumentCommandExecutorProvider() {
+		return this.getJpaCompilationUnit().getModifySharedDocumentCommandExecutorProvider();
 	}
 	
 	public AnnotationEditFormatter getAnnotationEditFormatter()  {
 		return this.getJpaCompilationUnit().getAnnotationEditFormatter();
 	}
 
-	public JavaResourceModel resourceModel() {
-		return this.getJpaCompilationUnit().resourceModel();
+	public JavaResourceModel getResourceModel() {
+		return this.getJpaCompilationUnit().getResourceModel();
 	}
 	
 	public void resolveTypes(CompilationUnit astRoot) {

@@ -98,5 +98,5 @@ public interface XmlGeneratedValue extends JpaEObject
 	 * Return the {@link TextRange} for the generator attibute.  If the generator attibute 
 	 * does not exist return the {@link TextRange} for the generated-value element.
 	 */
-	TextRange generatorTextRange();
+	TextRange getGeneratorTextRange();
 } // GeneratedValue

@@ -31,17 +31,17 @@ public interface BooleanAnnotationAdapter {
 	 * Return true if the annotation is present; otherwise return false.
 	 * If the compilation unit is available, #value(CompilationUnit)
 	 * might be more performant.
-	 * @see #value(org.eclipse.jdt.core.dom.CompilationUnit)
+	 * @see #getValue(org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
-	boolean value();
+	boolean getValue();
 
 	/**
 	 * Given the specified compilation unit, return the "boolean" value of the
 	 * adapter's annotation.
 	 * Return true if the annotation is present; otherwise return false.
-	 * @see #value()
+	 * @see #getValue()
 	 */
-	boolean value(CompilationUnit astRoot);
+	boolean getValue(CompilationUnit astRoot);
 
 	/**
 	 * Set the "boolean" value of the adapter's annotation.
@@ -55,31 +55,31 @@ public interface BooleanAnnotationAdapter {
 	 * Return the value of the adapter's annotation.
 	 * If the compilation unit is available, #annotation(CompilationUnit)
 	 * might be more performant.
-	 * @see #annotation(org.eclipse.jdt.core.dom.CompilationUnit)
+	 * @see #getAnnotation(org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
-	Annotation annotation();
+	Annotation getAnnotation();
 
 	/**
 	 * Given the specified compilation unit, return the value of the
 	 * adapter's annotation.
-	 * @see #annotation()
+	 * @see #getAnnotation()
 	 */
-	Annotation annotation(CompilationUnit astRoot);
+	Annotation getAnnotation(CompilationUnit astRoot);
 
 	/**
 	 * Return the AST node corresponding to the annotation.
 	 * If the annotation is missing, return the annotation's parent's node.
 	 * If the compilation unit is available, #astNode(CompilationUnit)
 	 * might be more performant.
-	 * @see #astNode(org.eclipse.jdt.core.dom.CompilationUnit)
+	 * @see #getAstNode(org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
-	ASTNode astNode();
+	ASTNode getAstNode();
 
 	/**
 	 * Return the AST node corresponding to the annotation.
 	 * If the annotation is missing, return the annotation's parent node.
-	 * @see #astNode()
+	 * @see #getAstNode()
 	 */
-	ASTNode astNode(CompilationUnit astRoot);
+	ASTNode getAstNode(CompilationUnit astRoot);
 
 }

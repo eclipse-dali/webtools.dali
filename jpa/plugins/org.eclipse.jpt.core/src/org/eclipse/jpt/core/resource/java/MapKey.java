@@ -30,10 +30,10 @@ public interface MapKey extends JavaResourceNode
 		String NAME_PROPERTY = "nameProperty";
 		
 	/**
-	 * Return the ITextRange for the name element.  If the name element 
-	 * does not exist return the ITextRange for the MapKey annotation.
+	 * Return the {@link TextRange} for the name element.  If the name element 
+	 * does not exist return the {@link TextRange} for the MapKey annotation.
 	 */
-	TextRange nameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange(CompilationUnit astRoot);
 
 	/**
 	 * Return whether the specified postition touches the name element.

@@ -260,8 +260,8 @@ public class GenericPersistenceUnitDefaults extends AbstractOrmJpaContextNode
 
 	public TextRange getValidationTextRange() {
 		if (persistenceUnitDefaults() != null) {
-			return persistenceUnitDefaults().validationTextRange();
+			return persistenceUnitDefaults().getValidationTextRange();
 		}
-		return this.entityMappings.validationTextRange();
+		return this.entityMappings.getValidationTextRange();
 	}
 }

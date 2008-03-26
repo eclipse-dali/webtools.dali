@@ -1203,11 +1203,11 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	public TextRange getSelectionTextRange() {
-		return xmlPersistenceUnit.selectionTextRange();
+		return xmlPersistenceUnit.getSelectionTextRange();
 	}
 	
 	public TextRange getValidationTextRange() {
-		return xmlPersistenceUnit.validationTextRange();
+		return xmlPersistenceUnit.getValidationTextRange();
 	}
 	
 	@Override

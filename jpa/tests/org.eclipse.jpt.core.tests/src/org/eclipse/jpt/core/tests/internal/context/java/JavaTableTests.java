@@ -206,7 +206,7 @@ public class JavaTableTests extends ContextModelTestCase
 		assertEquals("foo", javaEntity().getTable().getSpecifiedName());
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		assertEquals("foo", table.getName());
 	}
@@ -220,7 +220,7 @@ public class JavaTableTests extends ContextModelTestCase
 		assertNull(javaEntity().getTable().getSpecifiedName());
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 	
 		assertNull(table);
 	}
@@ -230,7 +230,7 @@ public class JavaTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		table.setName("foo");
 		
 		assertEquals("foo", javaEntity().getTable().getSpecifiedName());
@@ -244,7 +244,7 @@ public class JavaTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		table.setCatalog("myCatalog");
 		
@@ -307,12 +307,12 @@ public class JavaTableTests extends ContextModelTestCase
 		table.setSpecifiedCatalog("myCatalog");
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		TableAnnotation tableResource = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation tableResource = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		assertEquals("myCatalog", tableResource.getCatalog());
 		
 		table.setSpecifiedCatalog(null);
-		assertNull(typeResource.annotation(JPA.TABLE));
+		assertNull(typeResource.getAnnotation(JPA.TABLE));
 	}
 	
 	public void testGetSchema() throws Exception {
@@ -320,7 +320,7 @@ public class JavaTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		table.setSchema("mySchema");
 		
@@ -346,12 +346,12 @@ public class JavaTableTests extends ContextModelTestCase
 		table.setSpecifiedSchema("mySchema");
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		TableAnnotation tableResource = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation tableResource = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		assertEquals("mySchema", tableResource.getSchema());
 		
 		table.setSpecifiedSchema(null);
-		assertNull(typeResource.annotation(JPA.TABLE));
+		assertNull(typeResource.getAnnotation(JPA.TABLE));
 	}
 
 }

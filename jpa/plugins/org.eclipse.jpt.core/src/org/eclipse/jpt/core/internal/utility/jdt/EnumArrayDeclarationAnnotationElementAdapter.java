@@ -74,21 +74,21 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 
 	// ********** DeclarationAnnotationElementAdapter implementation **********
 
-	public String[] value(ModifiedDeclaration declaration) {
+	public String[] getValue(ModifiedDeclaration declaration) {
 		// ignore the adapter's getValue() - we want the expression
-		return this.resolve(this.adapter.expression(declaration), declaration);
+		return this.resolve(this.adapter.getExpression(declaration), declaration);
 	}
 
 	public void setValue(String[] value, ModifiedDeclaration declaration) {
 		this.adapter.setValue(this.convertToShortNames(value, declaration), declaration);
 	}
 
-	public Expression expression(ModifiedDeclaration declaration) {
-		return this.adapter.expression(declaration);
+	public Expression getExpression(ModifiedDeclaration declaration) {
+		return this.adapter.getExpression(declaration);
 	}
 
-	public ASTNode astNode(ModifiedDeclaration declaration) {
-		return this.adapter.astNode(declaration);
+	public ASTNode getAstNode(ModifiedDeclaration declaration) {
+		return this.adapter.getAstNode(declaration);
 	}
 
 

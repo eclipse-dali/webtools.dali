@@ -54,22 +54,22 @@ public interface TableAnnotation extends JavaResourceNode
 		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraintsList";
 
 	/**
-	 * Return the ITextRange for the name element.  If the name element 
-	 * does not exist return the ITextRange for the *Table annotation.
+	 * Return the {@link TextRange} for the name element.  If the name element 
+	 * does not exist return the {@link TextRange} for the *Table annotation.
 	 */
-	TextRange nameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the catalog element.  If the catalog element 
-	 * does not exist return the ITextRange for the *Table annotation.
+	 * Return the {@link TextRange} for the catalog element.  If the catalog element 
+	 * does not exist return the {@link TextRange} for the *Table annotation.
 	 */
-	TextRange catalogTextRange(CompilationUnit astRoot);
+	TextRange getCatalogTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the schema element.  If the schema element 
-	 * does not exist return the ITextRange for the *Table annotation.
+	 * Return the {@link TextRange} for the schema element.  If the schema element 
+	 * does not exist return the {@link TextRange} for the *Table annotation.
 	 */
-	TextRange schemaTextRange(CompilationUnit astRoot);
+	TextRange getSchemaTextRange(CompilationUnit astRoot);
 	
 	/**
 	 * Return whether the specified postition touches the name element.

@@ -788,8 +788,8 @@ public class XmlOneToManyImpl extends AbstractXmlAttributeMapping implements Xml
 		return result.toString();
 	}
 	
-	public TextRange mappedByTextRange() {
+	public TextRange getMappedByTextRange() {
 		IDOMNode mappedByNode = (IDOMNode) DOMUtilities.childAttributeNode(getNode(), OrmXmlMapper.MAPPED_BY);
-		return (mappedByNode == null) ? validationTextRange() : buildTextRange(mappedByNode);
+		return (mappedByNode == null) ? getValidationTextRange() : buildTextRange(mappedByNode);
 	}
 } // OneToMany

@@ -211,9 +211,9 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(OneToOne.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(Basic.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(OneToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(Basic.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToDefault() throws Exception {
@@ -231,8 +231,8 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 	
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(OneToOne.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(OneToOne.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToVersionMapping() throws Exception {
@@ -250,9 +250,9 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(OneToOne.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(Version.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(OneToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(Version.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToIdMapping() throws Exception {
@@ -270,9 +270,9 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(OneToOne.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(Id.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(OneToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(Id.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToEmbeddedMapping() throws Exception {
@@ -290,9 +290,9 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(OneToOne.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(OneToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToEmbeddedIdMapping() throws Exception {
@@ -310,9 +310,9 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(OneToOne.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(EmbeddedId.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(OneToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(EmbeddedId.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToTransientMapping() throws Exception {
@@ -330,9 +330,9 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(OneToOne.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(Transient.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(OneToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(Transient.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToManyToOneMapping() throws Exception {
@@ -350,9 +350,9 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(OneToOne.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(ManyToOne.ANNOTATION_NAME));
-		assertNotNull(attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(OneToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(ManyToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToOneToManyMapping() throws Exception {
@@ -370,9 +370,9 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(OneToOne.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(OneToMany.ANNOTATION_NAME));
-		assertNotNull(attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(OneToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(OneToMany.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToManyToManyMapping() throws Exception {
@@ -390,9 +390,9 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(OneToOne.ANNOTATION_NAME));
-		assertNotNull(attributeResource.mappingAnnotation(ManyToMany.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(OneToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 
 	
@@ -405,7 +405,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation();
+		OneToOne oneToOne = (OneToOne) attributeResource.getMappingAnnotation();
 		
 		assertNull(oneToOneMapping.getSpecifiedTargetEntity());
 		assertNull(oneToOne.getTargetEntity());
@@ -430,7 +430,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation();
+		OneToOne oneToOne = (OneToOne) attributeResource.getMappingAnnotation();
 		
 		assertNull(oneToOneMapping.getSpecifiedTargetEntity());
 		assertNull(oneToOne.getTargetEntity());
@@ -455,7 +455,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation();
+		OneToOne oneToOne = (OneToOne) attributeResource.getMappingAnnotation();
 		
 		assertNull(oneToOneMapping.getMappedBy());
 		assertNull(oneToOne.getMappedBy());
@@ -480,7 +480,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation();
+		OneToOne oneToOne = (OneToOne) attributeResource.getMappingAnnotation();
 		
 		assertNull(oneToOneMapping.getMappedBy());
 		assertNull(oneToOne.getMappedBy());
@@ -505,7 +505,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation();
+		OneToOne oneToOne = (OneToOne) attributeResource.getMappingAnnotation();
 		
 		assertNull(oneToOneMapping.getSpecifiedOptional());
 		assertNull(oneToOne.getOptional());
@@ -535,7 +535,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation();
+		OneToOne oneToOne = (OneToOne) attributeResource.getMappingAnnotation();
 		
 		assertNull(oneToOneMapping.getSpecifiedOptional());
 		assertNull(oneToOne.getOptional());
@@ -565,7 +565,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation();
+		OneToOne oneToOne = (OneToOne) attributeResource.getMappingAnnotation();
 		
 		assertNull(oneToOneMapping.getSpecifiedFetch());
 		assertNull(oneToOne.getFetch());
@@ -595,7 +595,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation();
+		OneToOne oneToOne = (OneToOne) attributeResource.getMappingAnnotation();
 		
 		assertNull(oneToOneMapping.getSpecifiedFetch());
 		assertNull(oneToOne.getFetch());
@@ -808,7 +808,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		joinColumns = oneToOneMapping.specifiedJoinColumns();
 		assertFalse(joinColumns.hasNext());
 
-		assertNull(attributeResource.annotation(JoinColumns.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(JoinColumns.ANNOTATION_NAME));
 	}
 	
 	public void testMoveSpecifiedJoinColumn() throws Exception {

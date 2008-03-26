@@ -43,7 +43,7 @@ public class VirtualXmlTransient extends AbstractJpaEObject implements XmlTransi
 	}
 	
 	
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		return null;
 	}
 

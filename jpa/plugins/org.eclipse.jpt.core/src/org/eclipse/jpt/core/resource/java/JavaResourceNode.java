@@ -28,13 +28,13 @@ public interface JavaResourceNode extends Model
 {
 	void initialize(CompilationUnit astRoot);
 	
-	JavaResourceModel resourceModel();
+	JavaResourceModel getResourceModel();
 	
 	JpaCompilationUnit getJpaCompilationUnit();
 	
-	JpaAnnotationProvider annotationProvider();
+	JpaAnnotationProvider getAnnotationProvider();
 	
-	CommandExecutorProvider modifySharedDocumentCommandExecutorProvider();
+	CommandExecutorProvider getModifySharedDocumentCommandExecutorProvider();
 	
 	void updateFromJava(CompilationUnit astRoot);
 	
@@ -46,5 +46,5 @@ public interface JavaResourceNode extends Model
 	/**
 	 * Return the ITextRange 
 	 */
-	TextRange textRange(CompilationUnit astRoot);
+	TextRange getTextRange(CompilationUnit astRoot);
 }

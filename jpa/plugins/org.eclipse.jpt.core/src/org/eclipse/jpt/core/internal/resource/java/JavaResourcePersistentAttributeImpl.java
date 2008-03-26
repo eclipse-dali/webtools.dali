@@ -55,49 +55,49 @@ public class JavaResourcePersistentAttributeImpl
 	}
 	
 	public String getName() {
-		return getMember().attributeName();
+		return getMember().getAttributeName();
 	}
 
 	// ******** AbstractJavaPersistentResource implementation ********
 	
 	@Override
 	protected Annotation buildMappingAnnotation(String mappingAnnotationName) {
-		return annotationProvider().buildAttributeMappingAnnotation(this, getMember(), mappingAnnotationName);
+		return getAnnotationProvider().buildAttributeMappingAnnotation(this, getMember(), mappingAnnotationName);
 	}
 
 	@Override
 	protected Annotation buildAnnotation(String annotationName) {
-		return annotationProvider().buildAttributeAnnotation(this, getMember(), annotationName);
+		return getAnnotationProvider().buildAttributeAnnotation(this, getMember(), annotationName);
 	}
 		
 	@Override
 	protected Annotation buildNullAnnotation(String annotationName) {
-		return annotationProvider().buildNullAttributeAnnotation(this, getMember(), annotationName);
+		return getAnnotationProvider().buildNullAttributeAnnotation(this, getMember(), annotationName);
 	}
 	
 	@Override
 	protected Annotation buildNullMappingAnnotation(String annotationName) {
-		return annotationProvider().buildNullAttributeMappingAnnotation(this, getMember(), annotationName);
+		return getAnnotationProvider().buildNullAttributeMappingAnnotation(this, getMember(), annotationName);
 	}
 	
 	@Override
 	protected ListIterator<String> possibleMappingAnnotationNames() {
-		return annotationProvider().attributeMappingAnnotationNames();
+		return getAnnotationProvider().attributeMappingAnnotationNames();
 	}
 		
 	@Override
 	protected boolean isPossibleAnnotation(String annotationName) {
-		return CollectionTools.contains(annotationProvider().attributeAnnotationNames(), annotationName);
+		return CollectionTools.contains(getAnnotationProvider().attributeAnnotationNames(), annotationName);
 	}
 	
 	@Override
 	protected boolean isPossibleMappingAnnotation(String annotationName) {
-		return CollectionTools.contains(annotationProvider().attributeMappingAnnotationNames(), annotationName);
+		return CollectionTools.contains(getAnnotationProvider().attributeMappingAnnotationNames(), annotationName);
 	}
 
 	@Override
 	protected boolean calculatePersistability(CompilationUnit astRoot) {
-		IBinding binding = getMember().binding(astRoot);
+		IBinding binding = getMember().getBinding(astRoot);
 		if (binding == null) {
 			return false;
 		}
@@ -219,11 +219,11 @@ public class JavaResourcePersistentAttributeImpl
 	}
 
 	protected boolean typeIsBasic(CompilationUnit astRoot) {
-		return typeIsBasic(getMember().typeBinding(astRoot), astRoot.getAST());
+		return typeIsBasic(getMember().getTypeBinding(astRoot), astRoot.getAST());
 	}
 	
 	protected String qualifiedReferenceEntityTypeName(CompilationUnit astRoot) {
-		ITypeBinding typeBinding = getMember().typeBinding(astRoot);
+		ITypeBinding typeBinding = getMember().getTypeBinding(astRoot);
 		if (typeBinding == null) {
 			return null;
 		}
@@ -238,7 +238,7 @@ public class JavaResourcePersistentAttributeImpl
 	}
 	
 	protected String qualifiedReferenceEntityElementTypeName(CompilationUnit astRoot) {
-		ITypeBinding typeBinding = getMember().typeBinding(astRoot);
+		ITypeBinding typeBinding = getMember().getTypeBinding(astRoot);
 		if (typeBinding == null) {
 			return null;
 		}
@@ -254,7 +254,7 @@ public class JavaResourcePersistentAttributeImpl
 
 	
 	protected boolean typeIsContainer(CompilationUnit astRoot) {
-		String typeName = buildReferenceEntityTypeName(getMember().typeBinding(astRoot));
+		String typeName = buildReferenceEntityTypeName(getMember().getTypeBinding(astRoot));
 		return typeName == null ? false : typeNamedIsContainer(typeName);
 	}
 	
@@ -274,7 +274,7 @@ public class JavaResourcePersistentAttributeImpl
 	};
 	
 	protected String qualifiedTypeName(CompilationUnit astRoot) {
-		ITypeBinding typeBinding = getMember().typeBinding(astRoot);
+		ITypeBinding typeBinding = getMember().getTypeBinding(astRoot);
 		if (typeBinding == null) {
 			return null;
 		}

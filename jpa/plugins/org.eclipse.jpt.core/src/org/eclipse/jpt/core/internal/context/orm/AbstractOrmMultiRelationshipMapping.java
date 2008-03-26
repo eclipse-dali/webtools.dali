@@ -244,7 +244,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 //	}
 	
 	public TextRange mappedByTextRange() {
-		return attributeMapping().mappedByTextRange();
+		return attributeMapping().getMappedByTextRange();
 	}
 	
 	public boolean mappedByIsValid(AttributeMapping mappedByMapping) {

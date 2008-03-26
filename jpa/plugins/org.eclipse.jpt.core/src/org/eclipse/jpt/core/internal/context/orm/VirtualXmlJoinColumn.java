@@ -118,15 +118,15 @@ public class VirtualXmlJoinColumn extends AbstractJpaEObject implements XmlJoinC
 		this.javaJoinColumn = javaJoinColumn;
 	}
 
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		return null;
 	}
 	
-	public TextRange tableTextRange() {
+	public TextRange getTableTextRange() {
 		return null;
 	}
 	
-	public TextRange referencedColumnNameTextRange() {
+	public TextRange getReferencedColumnNameTextRange() {
 		return null;
 	}
 	

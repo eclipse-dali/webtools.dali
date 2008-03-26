@@ -98,7 +98,7 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractReso
 	}
 	
 	protected void initializeCascadeTypes(CompilationUnit astRoot) {
-		String[] javaValue = this.cascadeAdapter.value(astRoot);
+		String[] javaValue = this.cascadeAdapter.getValue(astRoot);
 		this.cascadeTypes = CascadeType.fromJavaAnnotationValue(javaValue);	
 	}
 	
@@ -216,15 +216,15 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractReso
 		}
 	}
 	
-	public TextRange targetEntityTextRange(CompilationUnit astRoot) {
+	public TextRange getTargetEntityTextRange(CompilationUnit astRoot) {
 		return elementTextRange(this.targetEntityDeclarationAdapter, astRoot);
 	}
 	
-	public TextRange fetchTextRange(CompilationUnit astRoot) {
+	public TextRange getFetchTextRange(CompilationUnit astRoot) {
 		return elementTextRange(this.fetchDeclarationAdapter, astRoot);
 	}
 	
-	public TextRange cascadeTextRange(CompilationUnit astRoot) {
+	public TextRange getCascadeTextRange(CompilationUnit astRoot) {
 		return elementTextRange(this.cascadeDeclarationAdapter, astRoot);
 	}
 	
@@ -236,15 +236,15 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractReso
 	}
 	
 	protected FetchType fetch(CompilationUnit astRoot) {
-		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.value(astRoot));
+		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot));
 	}
 	
 	protected String targetEntity(CompilationUnit astRoot) {
-		return this.targetEntityAdapter.value(astRoot);
+		return this.targetEntityAdapter.getValue(astRoot);
 	}
 	
 	private void updateCascadeFromJava(CompilationUnit astRoot) {
-		String[] javaValue = this.cascadeAdapter.value(astRoot);
+		String[] javaValue = this.cascadeAdapter.getValue(astRoot);
 		CascadeType[] cascadeTypes = CascadeType.fromJavaAnnotationValue(javaValue);
 		//TODO need to test this, i think it might result in incorrect java
 		setCascadeAll(CollectionTools.contains(cascadeTypes, CascadeType.ALL));
@@ -258,7 +258,7 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractReso
 		if (getTargetEntity() == null) {
 			return null;
 		}
-		return JDTTools.resolveFullyQualifiedName(this.targetEntityAdapter.expression(astRoot));
+		return JDTTools.resolveFullyQualifiedName(this.targetEntityAdapter.getExpression(astRoot));
 	}
 
 	// ********** static methods **********

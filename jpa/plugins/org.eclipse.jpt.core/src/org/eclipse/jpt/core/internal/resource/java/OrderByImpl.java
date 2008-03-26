@@ -61,7 +61,7 @@ public class OrderByImpl extends AbstractResourceAnnotation<Attribute> implement
 		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 	
-	public TextRange valueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(VALUE_ADAPTER, astRoot);
 	}
 
@@ -70,7 +70,7 @@ public class OrderByImpl extends AbstractResourceAnnotation<Attribute> implement
 	}
 	
 	protected String value(CompilationUnit astRoot) {
-		return this.valueAdapter.value(astRoot);
+		return this.valueAdapter.getValue(astRoot);
 	}
 	
 	// ********** static methods **********

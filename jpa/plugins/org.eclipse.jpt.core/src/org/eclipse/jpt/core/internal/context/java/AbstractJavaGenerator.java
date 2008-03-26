@@ -124,11 +124,11 @@ public abstract class AbstractJavaGenerator extends AbstractJavaJpaContextNode
 	}
 
 	public TextRange selectionTextRange(CompilationUnit astRoot) {
-		return this.generatorResource.textRange(astRoot);
+		return this.generatorResource.getTextRange(astRoot);
 	}
 	
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.generatorResource.nameTextRange(astRoot);
+		return this.generatorResource.getNameTextRange(astRoot);
 	}
 
 	protected void update(GeneratorAnnotation generatorResource) {

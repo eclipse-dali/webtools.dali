@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.resource.java;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
@@ -55,7 +54,7 @@ public interface JavaResourcePersistentType extends JavaResourcePersistentMember
 	 */
 	Iterator<JavaResourcePersistentAttribute> properties();
 	
-	JavaResourcePersistentType javaPersistentTypeResource(String fullyQualifiedTypeName);
+	JavaResourcePersistentType getJavaPersistentTypeResource(String fullyQualifiedTypeName);
 
 	/**
 	 * Return the fully qualified type name

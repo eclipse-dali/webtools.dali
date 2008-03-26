@@ -510,20 +510,20 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 	public void testJavaTypeAnnotation() throws Exception {
 		IType testType = this.createTestEntityWithTable();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
-		assertNotNull(typeResource.annotation(JPA.TABLE));
+		assertNotNull(typeResource.getAnnotation(JPA.TABLE));
 	}
 
 	public void testJavaTypeAnnotationNull() throws Exception {
 		IType testType = this.createTestEntity();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
-		assertNull(typeResource.annotation(JPA.TABLE));
+		assertNull(typeResource.getAnnotation(JPA.TABLE));
 	}
 
 	//This will result in a compilation error, but we assume the first table found
 	public void testDuplicateAnnotations() throws Exception {
 		IType testType = this.createTestEntityMultipleTables();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
-		TableAnnotation tableResource = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation tableResource = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		assertEquals("FOO", tableResource.getName());
 	}
 
@@ -539,14 +539,14 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestEntityWithTable();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 
-		TableAnnotation tableResource = (TableAnnotation) typeResource.annotation(JPA.TABLE);
+		TableAnnotation tableResource = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		tableResource.setSchema(null);
 		assertSourceContains("@Table(name=\"FOO\")");
 
 		tableResource.setName(null);
 		assertSourceDoesNotContain("@Table");
 		
-		assertNull(typeResource.annotation(JPA.TABLE));
+		assertNull(typeResource.getAnnotation(JPA.TABLE));
 	}
 	
 	public void testMultipleTypeMappings() throws Exception {
@@ -557,17 +557,17 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		
 		assertEquals(2, typeResource.mappingAnnotationsSize());
 		assertEquals(0, typeResource.annotationsSize());
-		assertNotNull(typeResource.mappingAnnotation(JPA.EMBEDDABLE));
-		assertNotNull(typeResource.mappingAnnotation(JPA.ENTITY));
+		assertNotNull(typeResource.getMappingAnnotation(JPA.EMBEDDABLE));
+		assertNotNull(typeResource.getMappingAnnotation(JPA.ENTITY));
 		
-		JavaResourceNode javaTypeMappingAnnotation = typeResource.mappingAnnotation();
+		JavaResourceNode javaTypeMappingAnnotation = typeResource.getMappingAnnotation();
 		assertTrue(javaTypeMappingAnnotation instanceof EmbeddableAnnotation);
 		assertSourceContains("@Entity");
 		assertSourceContains("@Embeddable");
 		
 		typeResource.setMappingAnnotation(JPA.MAPPED_SUPERCLASS);
 		assertEquals(1, typeResource.mappingAnnotationsSize());
-		javaTypeMappingAnnotation = typeResource.mappingAnnotation();
+		javaTypeMappingAnnotation = typeResource.getMappingAnnotation();
 		assertTrue(javaTypeMappingAnnotation instanceof MappedSuperclassAnnotation);
 		assertSourceDoesNotContain("@Entity");
 		assertSourceContains("@MappedSuperclass");
@@ -581,7 +581,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		assertEquals(0, typeResource.mappingAnnotationsSize());
 		
 		typeResource.setMappingAnnotation(JPA.ENTITY);
-		assertTrue(typeResource.mappingAnnotation() instanceof EntityAnnotation);
+		assertTrue(typeResource.getMappingAnnotation() instanceof EntityAnnotation);
 		assertSourceContains("@Entity");
 	}
 
@@ -589,10 +589,10 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		IType testType = createTestEntityWithTable();
 		createEmbeddableAnnotation();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
-		assertTrue(typeResource.mappingAnnotation() instanceof EntityAnnotation);
+		assertTrue(typeResource.getMappingAnnotation() instanceof EntityAnnotation);
 		
 		typeResource.setMappingAnnotation(JPA.EMBEDDABLE);
-		assertTrue(typeResource.mappingAnnotation() instanceof EmbeddableAnnotation);
+		assertTrue(typeResource.getMappingAnnotation() instanceof EmbeddableAnnotation);
 		
 		assertSourceDoesNotContain("@Entity");
 		assertSourceContains("@Table");
@@ -622,16 +622,16 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		IType jdtType = createTestEntityWithTable();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
 		
-		testType().removeAnnotation(((EntityImpl) typeResource.mappingAnnotation()).getDeclarationAnnotationAdapter());
+		testType().removeAnnotation(((EntityImpl) typeResource.getMappingAnnotation()).getDeclarationAnnotationAdapter());
 
 		this.createAnnotationAndMembers("Embeddable", "String name();");
 		jdtType.getCompilationUnit().createImport("javax.persistence.Embeddable", null, new NullProgressMonitor());
 		
 		testType().newMarkerAnnotation(EmbeddableImpl.DECLARATION_ANNOTATION_ADAPTER);
 		
-		assertNotNull(typeResource.annotation(JPA.TABLE));
-		assertNull(typeResource.mappingAnnotation(JPA.ENTITY));
-		assertNotNull(typeResource.mappingAnnotation(JPA.EMBEDDABLE));
+		assertNotNull(typeResource.getAnnotation(JPA.TABLE));
+		assertNull(typeResource.getMappingAnnotation(JPA.ENTITY));
+		assertNotNull(typeResource.getMappingAnnotation(JPA.EMBEDDABLE));
 		assertSourceContains("@Table");
 	}
 	
@@ -664,8 +664,8 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		IType jdtType = createTestEntityWithSecondaryTableAndSecondaryTables();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
 		
-		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLE));
-		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLES));
+		assertNotNull(typeResource.getAnnotation(JPA.SECONDARY_TABLE));
+		assertNotNull(typeResource.getAnnotation(JPA.SECONDARY_TABLES));
 		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
 
 		SecondaryTableAnnotation secondaryTableResource = (SecondaryTableAnnotation) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();	
@@ -693,8 +693,8 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		secondaryTableResource.setName("BAR");
 		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\"),@SecondaryTable(name=\"BAR\")})");
 		
-		assertNull(typeResource.annotation(JPA.SECONDARY_TABLE));
-		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLES));
+		assertNull(typeResource.getAnnotation(JPA.SECONDARY_TABLE));
+		assertNotNull(typeResource.getAnnotation(JPA.SECONDARY_TABLES));
 		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
 	}
 	
@@ -712,8 +712,8 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		secondaryTableResource.setName("BAR");
 		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\"),@SecondaryTable(name=\"BAR\")})");
 		
-		assertNull(typeResource.annotation(JPA.SECONDARY_TABLE));
-		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLES));
+		assertNull(typeResource.getAnnotation(JPA.SECONDARY_TABLE));
+		assertNotNull(typeResource.getAnnotation(JPA.SECONDARY_TABLES));
 		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
 	}
 	
@@ -725,8 +725,8 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		secondaryTableResource.setName("BAR");
 		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAR\"),@SecondaryTable(name=\"FOO\")})");
 		
-		assertNull(typeResource.annotation(JPA.SECONDARY_TABLE));
-		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLES));
+		assertNull(typeResource.getAnnotation(JPA.SECONDARY_TABLE));
+		assertNotNull(typeResource.getAnnotation(JPA.SECONDARY_TABLES));
 		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
 	}
 
@@ -738,8 +738,8 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		secondaryTableResource.setName("BAR");
 		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAR\"),@SecondaryTable(name=\"FOO\")})");
 		
-		assertNull(typeResource.annotation(JPA.SECONDARY_TABLE));
-		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLES));
+		assertNull(typeResource.getAnnotation(JPA.SECONDARY_TABLE));
+		assertNotNull(typeResource.getAnnotation(JPA.SECONDARY_TABLES));
 		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
 
 		secondaryTableResource = (SecondaryTableAnnotation) typeResource.addAnnotation(0, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
@@ -761,16 +761,16 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		IType jdtType = createTestEntityWithSecondaryTableAndSecondaryTables();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
 		
-		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLE));
-		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLES));
+		assertNotNull(typeResource.getAnnotation(JPA.SECONDARY_TABLE));
+		assertNotNull(typeResource.getAnnotation(JPA.SECONDARY_TABLES));
 		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
 
 		SecondaryTableAnnotation secondaryTableResource = (SecondaryTableAnnotation) typeResource.addAnnotation(2, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\"), @SecondaryTable})");
 		secondaryTableResource.setName("BOO");
 		
-		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLE));
-		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLES));
+		assertNotNull(typeResource.getAnnotation(JPA.SECONDARY_TABLE));
+		assertNotNull(typeResource.getAnnotation(JPA.SECONDARY_TABLES));
 		assertEquals(3, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
 
 		Iterator<JavaResourceNode> secondaryTableAnnotations = typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
@@ -871,12 +871,12 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		IType jdtType = createTestEntityDuplicates();
 		JavaResourcePersistentType persistentType = buildJavaTypeResource(jdtType);
 		
-		EntityAnnotation javaTypeMappingAnnotation = (EntityAnnotation) persistentType.mappingAnnotation(JPA.ENTITY);
+		EntityAnnotation javaTypeMappingAnnotation = (EntityAnnotation) persistentType.getMappingAnnotation(JPA.ENTITY);
 		assertEquals("FirstEntity", javaTypeMappingAnnotation.getName());
 		
 		assertEquals(1, persistentType.mappingAnnotationsSize());
 		
-		javaTypeMappingAnnotation = (EntityAnnotation) persistentType.mappingAnnotation();
+		javaTypeMappingAnnotation = (EntityAnnotation) persistentType.getMappingAnnotation();
 		assertEquals("FirstEntity", javaTypeMappingAnnotation.getName());
 		
 	}
@@ -967,12 +967,12 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 	public void testAnnotatedMemberType() throws Exception {
 		IType testType = this.createTestEntityWithMemberEmbeddable();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
-		assertNotNull(typeResource.mappingAnnotation(JPA.ENTITY));
-		assertNull(typeResource.mappingAnnotation(JPA.EMBEDDABLE));
+		assertNotNull(typeResource.getMappingAnnotation(JPA.ENTITY));
+		assertNull(typeResource.getMappingAnnotation(JPA.EMBEDDABLE));
 		
 		JavaResourcePersistentType nestedType = typeResource.nestedTypes().next();
-		assertNull(nestedType.mappingAnnotation(JPA.ENTITY));
-		assertNotNull(nestedType.mappingAnnotation(JPA.EMBEDDABLE));	
+		assertNull(nestedType.getMappingAnnotation(JPA.ENTITY));
+		assertNotNull(nestedType.getMappingAnnotation(JPA.EMBEDDABLE));	
 	}
 	
 	public void testInvalidAnnotations() throws Exception {

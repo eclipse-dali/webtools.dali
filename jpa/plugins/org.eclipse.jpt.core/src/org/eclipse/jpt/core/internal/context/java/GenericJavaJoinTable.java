@@ -101,7 +101,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	
 	@Override
 	protected JoinTableAnnotation tableResource() {
-		return (JoinTableAnnotation) this.attributeResource.nonNullAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		return (JoinTableAnnotation) this.attributeResource.getNonNullAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 	
 	/**
@@ -109,7 +109,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	 * Use tableResource() if you want a non null implementation
 	 */
 	protected JoinTableAnnotation joinTableResource() {
-		return (JoinTableAnnotation) this.attributeResource.annotation(JoinTableAnnotation.ANNOTATION_NAME);
+		return (JoinTableAnnotation) this.attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void addJoinTableResource() {

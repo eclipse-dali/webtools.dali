@@ -40,9 +40,9 @@ public interface EntityAnnotation extends JavaResourceNode
 	String NAME_PROPERTY = "nameProperty";
 	
 	/**
-	 * Return the ITextRange for the name element.  If the name element 
-	 * does not exist return the ITextRange for the Entity annotation.
+	 * Return the {@link TextRange} for the name element.  If the name element 
+	 * does not exist return the {@link TextRange} for the Entity annotation.
 	 */
-	TextRange nameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange(CompilationUnit astRoot);
 
 }

@@ -95,7 +95,7 @@ public class SecondaryTablesImpl extends AbstractResourceAnnotation<Member> impl
 	
 	public NestableSecondaryTable nestedAnnotationFor(org.eclipse.jdt.core.dom.Annotation jdtAnnotation) {
 		for (NestableSecondaryTable secondaryTable : this.secondaryTables) {
-			if (jdtAnnotation == secondaryTable.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
+			if (jdtAnnotation == secondaryTable.getJdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
 				return secondaryTable;
 			}
 		}

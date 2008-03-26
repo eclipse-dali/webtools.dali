@@ -39,11 +39,11 @@ public interface JoinColumnAnnotation extends BaseColumnAnnotation
 		String REFERENCED_COLUMN_NAME_PROPERTY = "referencedColumnNameProperty";
 	
 	/**
-	 * Return the ITextRange for the referencedColumnName element. If the 
-	 * referencedColumnName element does not exist return the ITextRange 
+	 * Return the {@link TextRange} for the referencedColumnName element. If the 
+	 * referencedColumnName element does not exist return the {@link TextRange} 
 	 * for the JoinColumn annotation.
 	 */
-	TextRange referencedColumnNameTextRange(CompilationUnit astRoot);
+	TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot);
 
 	/**
 	 * Return whether the specified postition touches the  referencedColumnName element.

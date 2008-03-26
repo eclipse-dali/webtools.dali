@@ -92,7 +92,7 @@ public class JoinColumnsImpl extends AbstractResourceAnnotation<Member> implemen
 	
 	public NestableJoinColumn nestedAnnotationFor(Annotation jdtAnnotation) {
 		for (NestableJoinColumn joinColumn : this.joinColumns) {
-			if (jdtAnnotation == joinColumn.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
+			if (jdtAnnotation == joinColumn.getJdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
 				return joinColumn;
 			}
 		}

@@ -97,7 +97,7 @@ public class NamedNativeQueriesImpl extends AbstractResourceAnnotation<Type> imp
 	
 	public NestableNamedNativeQuery nestedAnnotationFor(org.eclipse.jdt.core.dom.Annotation jdtAnnotation) {
 		for (NestableNamedNativeQuery namedQuery : this.namedNativeQueries) {
-			if (jdtAnnotation == namedQuery.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
+			if (jdtAnnotation == namedQuery.getJdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
 				return namedQuery;
 			}
 		}

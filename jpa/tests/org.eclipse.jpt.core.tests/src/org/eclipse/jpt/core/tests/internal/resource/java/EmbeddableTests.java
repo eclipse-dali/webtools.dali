@@ -58,7 +58,7 @@ public class EmbeddableTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestEmbeddable();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		JavaResourceNode mappingAnnotation = typeResource.mappingAnnotation();
+		JavaResourceNode mappingAnnotation = typeResource.getMappingAnnotation();
 		assertTrue(mappingAnnotation instanceof EmbeddableAnnotation);
 	}
 	
@@ -66,10 +66,10 @@ public class EmbeddableTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestEmbeddableAndEntity();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		JavaResourceNode mappingAnnotation = typeResource.mappingAnnotation();
+		JavaResourceNode mappingAnnotation = typeResource.getMappingAnnotation();
 		assertTrue(mappingAnnotation instanceof EmbeddableAnnotation);
 		
-		EntityAnnotation entity = (EntityAnnotation) typeResource.mappingAnnotation(JPA.ENTITY);
+		EntityAnnotation entity = (EntityAnnotation) typeResource.getMappingAnnotation(JPA.ENTITY);
 		assertNotNull(entity);
 	}
 

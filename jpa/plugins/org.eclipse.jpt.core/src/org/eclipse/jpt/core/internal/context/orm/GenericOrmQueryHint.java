@@ -64,6 +64,6 @@ public class GenericOrmQueryHint extends AbstractOrmJpaContextNode implements Or
 	}
 	
 	public TextRange getValidationTextRange() {
-		return this.queryHint.validationTextRange();
+		return this.queryHint.getValidationTextRange();
 	}
 }

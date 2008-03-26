@@ -28,7 +28,7 @@ public interface Annotation extends JavaResourceNode
 	 */
 	String getAnnotationName();
 	
-	org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot);
+	org.eclipse.jdt.core.dom.Annotation getJdtAnnotation(CompilationUnit astRoot);
 	
 	/**
 	 * Removing the underyling Java annotation

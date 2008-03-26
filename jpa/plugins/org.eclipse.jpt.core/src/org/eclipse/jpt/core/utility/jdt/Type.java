@@ -28,7 +28,7 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
  */
 public interface Type extends Member {
 
-	ITypeBinding binding(CompilationUnit astRoot);
+	ITypeBinding getBinding(CompilationUnit astRoot);
 
 	IType[] jdtTypes();
 
@@ -36,6 +36,6 @@ public interface Type extends Member {
 
 	IMethod[] jdtMethods();
 
-	AbstractTypeDeclaration bodyDeclaration(CompilationUnit astRoot);
+	AbstractTypeDeclaration getBodyDeclaration(CompilationUnit astRoot);
 
 }

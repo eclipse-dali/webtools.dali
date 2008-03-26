@@ -241,6 +241,6 @@ public class OrmCascade extends AbstractOrmJpaContextNode implements Cascade, Or
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.cascadeResource().validationTextRange();
+		return this.cascadeResource().getValidationTextRange();
 	}
 }

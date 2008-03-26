@@ -48,15 +48,15 @@ public interface QueryAnnotation extends JavaResourceNode
 		String HINTS_LIST = "hintsList";
 
 	/**
-	 * Return the ITextRange for the name element. If name element
-	 * does not exist return the ITextRange for the *Query annotation.
+	 * Return the {@link TextRange} for the name element. If name element
+	 * does not exist return the {@link TextRange} for the *Query annotation.
 	 */
-	TextRange nameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the query element. If query element
-	 * does not exist return the ITextRange for the *Query annotation.
+	 * Return the {@link TextRange} for the query element. If query element
+	 * does not exist return the {@link TextRange} for the *Query annotation.
 	 */
-	TextRange queryTextRange(CompilationUnit astRoot);
+	TextRange getQueryTextRange(CompilationUnit astRoot);
 
 }

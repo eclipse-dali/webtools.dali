@@ -65,21 +65,21 @@ public interface ColumnAnnotation extends BaseColumnAnnotation
 		String SCALE_PROPERTY = "scaleProperty";
 
 	/**
-	 * Return the ITextRange for the length element. If length element
-	 * does not exist return the ITextRange for the Column annotation.
+	 * Return the {@link TextRange} for the length element. If length element
+	 * does not exist return the {@link TextRange} for the Column annotation.
 	 */
-	TextRange lengthTextRange(CompilationUnit astRoot);
+	TextRange getLengthTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the precision element. If precision element
-	 * does not exist return the ITextRange for the Column annotation.
+	 * Return the {@link TextRange} for the precision element. If precision element
+	 * does not exist return the {@link TextRange} for the Column annotation.
 	 */
-	TextRange precisionTextRange(CompilationUnit astRoot);
+	TextRange getPrecisionTextRange(CompilationUnit astRoot);
 	
 	/**
-	 * Return the ITextRange for the scale element. If scale element
-	 * does not exist return the ITextRange for the Column annotation.
+	 * Return the {@link TextRange} for the scale element. If scale element
+	 * does not exist return the {@link TextRange} for the Column annotation.
 	 */
-	TextRange scaleTextRange(CompilationUnit astRoot);
+	TextRange getScaleTextRange(CompilationUnit astRoot);
 
 }

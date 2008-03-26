@@ -79,15 +79,15 @@ public class VirtualXmlSecondaryTable extends AbstractJpaEObject implements XmlS
 		return new EObjectContainmentEList<UniqueConstraint>(UniqueConstraint.class, this, OrmPackage.XML_SECONDARY_TABLE_IMPL__UNIQUE_CONSTRAINTS);
 	}
 	
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		return null;
 	}
 	
-	public TextRange catalogTextRange() {
+	public TextRange getCatalogTextRange() {
 		return null;
 	}
 	
-	public TextRange schemaTextRange() {
+	public TextRange getSchemaTextRange() {
 		return null;
 	}
 		

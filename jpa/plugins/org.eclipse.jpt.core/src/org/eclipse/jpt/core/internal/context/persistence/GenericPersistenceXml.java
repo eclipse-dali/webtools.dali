@@ -102,7 +102,7 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 	public void update(PersistenceResource persistenceResource) {
 		if (! persistenceResource.equals(this.persistenceResource)) {
 			this.persistenceResource = persistenceResource;
-			this.persistenceResource.resourceModel().removeRootStructureNode(this);
+			this.persistenceResource.getResourceModel().removeRootStructureNode(this);
 		}
 		if (persistenceResource.getPersistence() != null) {
 			if (this.persistence != null) {
@@ -111,7 +111,7 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 			else {
 				setPersistence_(buildPersistence(persistenceResource.getPersistence()));
 			}
-			persistenceResource.resourceModel().addRootStructureNode(getPersistence());
+			persistenceResource.getResourceModel().addRootStructureNode(getPersistence());
 		}
 		else {
 			setPersistence_(null);

@@ -1073,7 +1073,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	}
 	
 	@Override
-	public JpaEObject root() {
+	public JpaEObject getRoot() {
 		return this;
 	}
 }

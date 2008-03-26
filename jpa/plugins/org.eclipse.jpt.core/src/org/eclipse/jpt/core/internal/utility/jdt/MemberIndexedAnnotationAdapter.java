@@ -35,8 +35,8 @@ public class MemberIndexedAnnotationAdapter
 
 	// ********** IndexedAnnotationAdapter implementation **********
 
-	public int index() {
-		return this.idaa.index();
+	public int getIndex() {
+		return this.idaa.getIndex();
 	}
 
 	public void moveAnnotation(int newIndex) {

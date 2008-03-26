@@ -31,7 +31,7 @@ public class NullDiscriminatorValue extends AbstractJavaResourceNode implements 
 		//null, nothing to initialize
 	}
 
-	public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
+	public org.eclipse.jdt.core.dom.Annotation getJdtAnnotation(CompilationUnit astRoot) {
 		return null;
 	}
 	
@@ -66,11 +66,11 @@ public class NullDiscriminatorValue extends AbstractJavaResourceNode implements 
 	
 	}
 
-	public TextRange valueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public TextRange textRange(CompilationUnit astRoot) {
+	public TextRange getTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 

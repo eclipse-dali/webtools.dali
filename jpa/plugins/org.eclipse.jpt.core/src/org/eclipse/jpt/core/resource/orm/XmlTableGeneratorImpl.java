@@ -798,8 +798,8 @@ public class XmlTableGeneratorImpl extends AbstractJpaEObject implements XmlTabl
 		return result.toString();
 	}
 	
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		IDOMNode nameNode = (IDOMNode) DOMUtilities.childAttributeNode(getNode(), OrmXmlMapper.NAME);
-		return (nameNode == null) ? validationTextRange() : buildTextRange(nameNode);
+		return (nameNode == null) ? getValidationTextRange() : buildTextRange(nameNode);
 	}
 }

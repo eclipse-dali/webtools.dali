@@ -39,15 +39,14 @@ public class JDTFieldAttribute
 	}
 
 	@Override
-	public IField jdtMember() {
-		return (IField) super.jdtMember();
+	public IField getJdtMember() {
+		return (IField) super.getJdtMember();
 	}
 
 
 	// ********** Member implementation **********
 
-	@Override
-	public FieldDeclaration bodyDeclaration(CompilationUnit astRoot) {
+	public FieldDeclaration getBodyDeclaration(CompilationUnit astRoot) {
 		String fieldName = this.name();
 		for (FieldDeclaration fieldDeclaration : this.declaringTypeDeclaration(astRoot).getFields()) {
 			// handle multiple fields declared in a single statement:
@@ -61,8 +60,8 @@ public class JDTFieldAttribute
 		return null;		
 	}
 
-	private VariableDeclarationFragment fragment(CompilationUnit astRoot) {
-		FieldDeclaration fieldDeclaration = bodyDeclaration(astRoot);
+	private VariableDeclarationFragment getFragment(CompilationUnit astRoot) {
+		FieldDeclaration fieldDeclaration = getBodyDeclaration(astRoot);
 		for (VariableDeclarationFragment fragment : this.fragments(fieldDeclaration)) {
 			if (fragment.getName().getFullyQualifiedName().equals(name())) {
 				return fragment;
@@ -72,9 +71,8 @@ public class JDTFieldAttribute
 		return null;
 	}
 	
-	@Override
-	public IVariableBinding binding(CompilationUnit astRoot) {
-		return fragment(astRoot).resolveBinding();
+	public IVariableBinding getBinding(CompilationUnit astRoot) {
+		return getFragment(astRoot).resolveBinding();
 	}
 	
 	// ********** Attribute implementation **********
@@ -84,14 +82,12 @@ public class JDTFieldAttribute
 		return true;
 	}
 
-	@Override
-	public String attributeName() {
+	public String getAttributeName() {
 		return this.name();
 	}
 
-	@Override
-	public ITypeBinding typeBinding(CompilationUnit astRoot) {
-		return bodyDeclaration(astRoot).getType().resolveBinding();
+	public ITypeBinding getTypeBinding(CompilationUnit astRoot) {
+		return getBodyDeclaration(astRoot).getType().resolveBinding();
 	}
 
 	// ********** miscellaneous **********

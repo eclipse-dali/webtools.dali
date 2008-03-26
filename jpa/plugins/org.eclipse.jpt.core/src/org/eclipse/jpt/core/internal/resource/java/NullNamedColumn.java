@@ -26,7 +26,7 @@ public abstract class NullNamedColumn extends AbstractJavaResourceNode implement
 		//null, nothing to initialize
 	}
 
-	public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
+	public org.eclipse.jdt.core.dom.Annotation getJdtAnnotation(CompilationUnit astRoot) {
 		return null;
 	}
 	
@@ -64,15 +64,15 @@ public abstract class NullNamedColumn extends AbstractJavaResourceNode implement
 		throw new UnsupportedOperationException();
 	}
 
-	public TextRange textRange(CompilationUnit astRoot) {
+	public TextRange getTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public TextRange columnDefinitionTextRange(CompilationUnit astRoot) {
+	public TextRange getColumnDefinitionTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public TextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 

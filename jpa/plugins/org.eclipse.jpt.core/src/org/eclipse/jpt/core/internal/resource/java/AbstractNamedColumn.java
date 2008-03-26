@@ -112,11 +112,11 @@ public abstract class AbstractNamedColumn extends AbstractResourceAnnotation<Mem
 		firePropertyChanged(COLUMN_DEFINITION_PROPERTY, oldColumnDefinition, newColumnDefinition);
 	}	
 
-	public TextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
-	public TextRange columnDefinitionTextRange(CompilationUnit astRoot) {
+	public TextRange getColumnDefinitionTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.columnDefinitionDeclarationAdapter, astRoot);
 	}
 	
@@ -130,11 +130,11 @@ public abstract class AbstractNamedColumn extends AbstractResourceAnnotation<Mem
 	}
 	
 	protected String name(CompilationUnit astRoot) {
-		return this.nameAdapter.value(astRoot);
+		return this.nameAdapter.getValue(astRoot);
 	}
 	
 	protected String columnDefinition(CompilationUnit astRoot) {
-		return this.columnDefinitionAdapter.value(astRoot);
+		return this.columnDefinitionAdapter.getValue(astRoot);
 	}
 
 }

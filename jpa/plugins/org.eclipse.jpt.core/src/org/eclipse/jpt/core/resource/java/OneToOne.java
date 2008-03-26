@@ -52,16 +52,16 @@ public interface OneToOne extends RelationshipMappingAnnotation
 		String MAPPED_BY_PROPERTY = "mappedByProperty";
 	
 	/**
-	 * Return the ITextRange for the mappedBy element.  If the mappedBy element 
-	 * does not exist return the ITextRange for the OneToOne annotation.
+	 * Return the {@link TextRange} for the mappedBy element.  If the mappedBy element 
+	 * does not exist return the {@link TextRange} for the OneToOne annotation.
 	 */
-	TextRange mappedByTextRange(CompilationUnit astRoot);
+	TextRange getMappedByTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the ITextRange for the optional element.  If the optional element 
-	 * does not exist return the ITextRange for the OneToOne annotation.
+	 * Return the {@link TextRange} for the optional element.  If the optional element 
+	 * does not exist return the {@link TextRange} for the OneToOne annotation.
 	 */
-	TextRange optionalTextRange(CompilationUnit astRoot);
+	TextRange getOptionalTextRange(CompilationUnit astRoot);
 
 	/**
 	 * Return whether the specified postition touches the mappedBy element.

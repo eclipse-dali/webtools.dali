@@ -117,7 +117,7 @@ public class VirtualXmlManyToOne extends AbstractJpaEObject implements XmlManyTo
 		this.virtualCascadeType.update(javaManyToOneMapping.getCascade());
 	}
 	
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		return null;
 	}
 }

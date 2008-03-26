@@ -63,7 +63,7 @@ public class EntityImpl extends AbstractResourceAnnotation<Type> implements Enti
 		firePropertyChanged(EntityAnnotation.NAME_PROPERTY, oldName, newName);
 	}
 
-	public TextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(NAME_ADAPTER, astRoot);
 	}
 	
@@ -73,7 +73,7 @@ public class EntityImpl extends AbstractResourceAnnotation<Type> implements Enti
 	}
 
 	protected String name(CompilationUnit astRoot) {
-		return this.nameAdapter.value(astRoot);
+		return this.nameAdapter.getValue(astRoot);
 	}
 
 	//*********** static methods ****************

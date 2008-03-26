@@ -84,22 +84,22 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 
 	// ********** DeclarationAnnotationElementAdapter implementation **********
 
-	public E value(ModifiedDeclaration declaration) {
+	public E getValue(ModifiedDeclaration declaration) {
 		// return the expression unmodified
-		return this.expression(declaration);
+		return this.getExpression(declaration);
 	}
 
 	public void setValue(E value, ModifiedDeclaration declaration) {
-		this.setValue(value, this.annotationAdapter.annotation(declaration), declaration);
+		this.setValue(value, this.annotationAdapter.getAnnotation(declaration), declaration);
 	}
 
-	public E expression(ModifiedDeclaration declaration) {
-		return this.expression(this.annotationAdapter.annotation(declaration));
+	public E getExpression(ModifiedDeclaration declaration) {
+		return this.expression(this.annotationAdapter.getAnnotation(declaration));
 	}
 
-	public ASTNode astNode(ModifiedDeclaration declaration) {
-		Expression exp = this.expression(declaration);
-		return (exp != null) ? exp : this.annotationAdapter.astNode(declaration);
+	public ASTNode getAstNode(ModifiedDeclaration declaration) {
+		Expression exp = this.getExpression(declaration);
+		return (exp != null) ? exp : this.annotationAdapter.getAstNode(declaration);
 	}
 
 	@Override

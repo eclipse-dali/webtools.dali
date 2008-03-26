@@ -39,9 +39,9 @@ public interface DiscriminatorValue extends JavaResourceNode
 		String VALUE_PROPERTY = "valueProperty";
 
 	/**
-	 * Return the ITextRange for the value element. If value element
-	 * does not exist return the ITextRange for the DisriminatorValue annotation.
+	 * Return the {@link TextRange} for the value element. If value element
+	 * does not exist return the {@link TextRange} for the DisriminatorValue annotation.
 	 */
-	TextRange valueTextRange(CompilationUnit astRoot);
+	TextRange getValueTextRange(CompilationUnit astRoot);
 
 }

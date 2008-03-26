@@ -75,23 +75,23 @@ public abstract class NullBaseColumn extends NullNamedColumn implements BaseColu
 		}
 	}
 	
-	public TextRange tableTextRange(CompilationUnit astRoot) {
+	public TextRange getTableTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	
-	public TextRange uniqueTextRange(CompilationUnit astRoot) {
+	public TextRange getUniqueTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	
-	public TextRange updatableTextRange(CompilationUnit astRoot) {
+	public TextRange getUpdatableTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	
-	public TextRange insertableTextRange(CompilationUnit astRoot) {
+	public TextRange getInsertableTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	
-	public TextRange nullableTextRange(CompilationUnit astRoot) {
+	public TextRange getNullableTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	

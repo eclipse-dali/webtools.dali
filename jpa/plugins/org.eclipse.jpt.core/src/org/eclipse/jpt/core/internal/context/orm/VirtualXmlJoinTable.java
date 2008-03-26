@@ -110,15 +110,15 @@ public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTa
 		this.javaJoinTable = javaJoinTable;
 	}
 	
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		return null;
 	}
 	
-	public TextRange catalogTextRange() {
+	public TextRange getCatalogTextRange() {
 		return null;
 	}
 	
-	public TextRange schemaTextRange() {
+	public TextRange getSchemaTextRange() {
 		return null;
 	}
 

@@ -399,8 +399,8 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 		joinColumn.setName("FOO");
 		assertSourceContains("@JoinColumns({@JoinColumn(name=\"BAR\", columnDefinition = \"COLUMN_DEF\", table = \"TABLE\", unique = false, nullable = false, insertable = false, updatable = false, referencedColumnName = \"REF_NAME\"),@JoinColumn(name=\"FOO\")})");
 		
-		assertNull(attributeResource.annotation(JPA.JOIN_COLUMN));
-		assertNotNull(attributeResource.annotation(JPA.JOIN_COLUMNS));
+		assertNull(attributeResource.getAnnotation(JPA.JOIN_COLUMN));
+		assertNotNull(attributeResource.getAnnotation(JPA.JOIN_COLUMNS));
 		assertEquals(2, CollectionTools.size(attributeResource.annotations(JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS)));
 	}
 	
@@ -422,8 +422,8 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 		assertEquals("BAR", ((JoinColumnAnnotation) joinColumns.next()).getName());
 		assertEquals("FOO", ((JoinColumnAnnotation) joinColumns.next()).getName());
 		
-		assertNull(attributeResource.annotation(JPA.JOIN_COLUMN));
-		assertNotNull(attributeResource.annotation(JPA.JOIN_COLUMNS));
+		assertNull(attributeResource.getAnnotation(JPA.JOIN_COLUMN));
+		assertNotNull(attributeResource.getAnnotation(JPA.JOIN_COLUMNS));
 		assertEquals(3, CollectionTools.size(attributeResource.annotations(JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS)));
 	}
 

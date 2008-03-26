@@ -91,7 +91,7 @@ public class AttributeOverridesImpl extends AbstractResourceAnnotation<Member> i
 	
 	public NestableAttributeOverride nestedAnnotationFor(Annotation jdtAnnotation) {
 		for (NestableAttributeOverride attributeOverride : this.attributesOverrides) {
-			if (jdtAnnotation == attributeOverride.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
+			if (jdtAnnotation == attributeOverride.getJdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
 				return attributeOverride;
 			}
 		}
