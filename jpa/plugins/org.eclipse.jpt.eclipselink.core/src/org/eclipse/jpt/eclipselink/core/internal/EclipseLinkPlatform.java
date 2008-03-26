@@ -35,7 +35,7 @@ public class EclipseLinkPlatform extends GenericJpaPlatform
 
 	// ********* java annotation support *********
 	@Override
-	public JpaAnnotationProvider annotationProvider() {
-		return super.annotationProvider();
+	public JpaAnnotationProvider getAnnotationProvider() {
+		return super.getAnnotationProvider();
 	}
 }
