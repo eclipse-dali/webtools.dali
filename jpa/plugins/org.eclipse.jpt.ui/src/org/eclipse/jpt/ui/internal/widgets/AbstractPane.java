@@ -31,7 +31,6 @@ import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.TransformationWritablePropertyValueModel;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
@@ -40,8 +39,6 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -392,6 +389,11 @@ public abstract class AbstractPane<T extends Model>
 		if (helpId != null) {
 			helpSystem().setHelp(button, helpId);
 		}
+
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = false;
+		gridData.horizontalAlignment       = GridData.FILL;
+		button.setLayoutData(gridData);
 
 		return button;
 	}
@@ -1333,24 +1335,24 @@ public abstract class AbstractPane<T extends Model>
 		// Right control
 		if (rightControl == null) {
 			Composite spacer = this.buildPane(container);
-			spacer.setLayout(buildSpacerLayout());
-			this.rightControlAligner.add(spacer);
+			spacer.setLayout(this.buildSpacerLayout());
+			rightControl = spacer;
 		}
 		else {
-			gridData = new GridData();
-			gridData.horizontalAlignment       = GridData.FILL_HORIZONTAL;
-			gridData.grabExcessHorizontalSpace = false;
-
-			rightControl.setLayoutData(gridData);
 			rightControl.setParent(container);
-
-			this.rightControlAligner.add(rightControl);
 
 			// Register the help id for the right control
 			if (helpId != null) {
 				helpSystem().setHelp(rightControl, helpId);
 			}
 		}
+
+		gridData = new GridData();
+		gridData.horizontalAlignment       = GridData.FILL_HORIZONTAL;
+		gridData.grabExcessHorizontalSpace = false;
+
+		rightControl.setLayoutData(gridData);
+		this.rightControlAligner.add(rightControl);
 
 		return container;
 	}
@@ -1532,11 +1534,9 @@ public abstract class AbstractPane<T extends Model>
 	                                                Control rightCentrol,
 	                                                String helpId) {
 
-		Label label = this.buildLabel(container, labelText);
-
 		return this.buildLabeledComposite(
 			container,
-			label,
+			this.buildLabel(container, labelText),
 			centerControl,
 			rightCentrol,
 			helpId
@@ -2223,8 +2223,121 @@ public abstract class AbstractPane<T extends Model>
 			labelText,
 			numberHolder,
 			defaultValue,
+			0,
+			Integer.MAX_VALUE,
+			null,
 			null
 		);
+	}
+
+	/**
+	 * Creates a new spinner.
+	 *
+	 * @param parent The parent container
+	 * @param labelText The label's text
+	 * @param numberHolder The holder of the integer value
+	 * @param defaultValue The value shown when the holder has <code>null</code>
+	 * @param rightControl The widget to be placed to the right of spinner
+	 * @return The newly created <code>Spinner</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Spinner buildLabeledSpinner(Composite parent,
+	                                            String labelText,
+	                                            WritablePropertyValueModel<Integer> numberHolder,
+	                                            int defaultValue,
+	                                            Control rightControl) {
+
+		return this.buildLabeledSpinner(
+			container,
+			labelText,
+			numberHolder,
+			defaultValue,
+			0,
+			Integer.MAX_VALUE,
+			rightControl,
+			null
+		);
+	}
+
+	/**
+	 * Creates a new spinner.
+	 *
+	 * @param parent The parent container
+	 * @param labelText The label's text
+	 * @param numberHolder The holder of the integer value
+	 * @param defaultValue The value shown when the holder has <code>null</code>
+	 * @param minimumValue The minimum value that the spinner will allow
+	 * @param maximumValue The maximum value that the spinner will allow
+	 * @param rightControl The widget to be placed to the right of spinner
+	 * @return The newly created <code>Spinner</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Spinner buildLabeledSpinner(Composite parent,
+	                                            String labelText,
+	                                            WritablePropertyValueModel<Integer> numberHolder,
+	                                            int defaultValue,
+	                                            int minimumValue,
+	                                            int maximumValue,
+	                                            Control rightControl) {
+
+		return this.buildLabeledSpinner(
+			parent,
+			labelText,
+			numberHolder,
+			defaultValue,
+			minimumValue,
+			maximumValue,
+			rightControl,
+			null
+		);
+	}
+
+	/**
+	 * Creates a new spinner.
+	 *
+	 * @param parent The parent container
+	 * @param labelText The label's text
+	 * @param numberHolder The holder of the integer value
+	 * @param defaultValue The value shown when the holder has <code>null</code>
+	 * @param minimumValue The minimum value that the spinner will allow
+	 * @param maximumValue The maximum value that the spinner will allow
+	 * @param rightControl The widget to be placed to the right of spinner
+	 * @param helpId The topic help ID to be registered for the spinner
+	 * @return The newly created <code>Spinner</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Spinner buildLabeledSpinner(Composite parent,
+	                                            String labelText,
+	                                            WritablePropertyValueModel<Integer> numberHolder,
+	                                            int defaultValue,
+	                                            int minimumValue,
+	                                            int maximumValue,
+	                                            Control rightControl,
+	                                            String helpId) {
+
+		Spinner spinner = this.buildSpinner(
+			parent,
+			numberHolder,
+			defaultValue,
+			minimumValue,
+			maximumValue
+		);
+
+		buildLabeledComposite(
+			parent,
+			labelText,
+			(spinner.getParent() != parent) ? spinner.getParent() : spinner,
+			rightControl,
+			helpId
+		);
+
+		GridData gridData = (GridData) spinner.getLayoutData();
+		gridData.horizontalAlignment = GridData.BEGINNING;
+
+		return spinner;
 	}
 
 	/**
@@ -2249,25 +2362,16 @@ public abstract class AbstractPane<T extends Model>
 	                                            int maximumValue,
 	                                            String helpId) {
 
-		Spinner spinner = this.buildSpinner(
-			parent,
-			numberHolder,
-			defaultValue,
-			minimumValue,
-			maximumValue
-		);
-
-		buildLabeledComposite(
+		return this.buildLabeledSpinner(
 			parent,
 			labelText,
-			(spinner.getParent() != parent) ? spinner.getParent() : spinner,
+			numberHolder,
+			defaultValue,
+			0,
+			Integer.MAX_VALUE,
+			null,
 			helpId
 		);
-
-		GridData gridData = (GridData) spinner.getLayoutData();
-		gridData.horizontalAlignment = GridData.BEGINNING;
-
-		return spinner;
 	}
 
 	/**
@@ -2295,118 +2399,8 @@ public abstract class AbstractPane<T extends Model>
 			defaultValue,
 			0,
 			Integer.MAX_VALUE,
+			null,
 			null
-		);
-	}
-
-	/**
-	 * Creates a new spinner.
-	 *
-	 * @param parent The parent container
-	 * @param labelText The label's text
-	 * @param numberHolder The holder of the integer value
-	 * @param defaultValue The value shown when the holder has <code>null</code>
-	 * @param minimumValue The minimum value that the spinner will allow
-	 * @param maximumValue The maximum value that the spinner will allow
-	 * @return The newly created <code>Spinner</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Spinner buildLabeledSpinnerWithDefault(Composite parent,
-	                                                       String labelText,
-	                                                       WritablePropertyValueModel<Integer> numberHolder,
-	                                                       int defaultValue,
-	                                                       int minimumValue,
-	                                                       int maximumValue) {
-
-		return this.buildLabeledSpinnerWithDefault(
-			parent,
-			labelText,
-			numberHolder,
-			defaultValue,
-			minimumValue,
-			maximumValue,
-			null
-		);
-	}
-
-	/**
-	 * Creates a new spinner.
-	 *
-	 * @param parent The parent container
-	 * @param labelText The label's text
-	 * @param numberHolder The holder of the integer value
-	 * @param defaultValue The value shown when the holder has <code>null</code>
-	 * @param minimumValue The minimum value that the spinner will allow
-	 * @param maximumValue The maximum value that the spinner will allow
-	 * @param helpId The topic help ID to be registered for the spinner
-	 * @return The newly created <code>Spinner</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Spinner buildLabeledSpinnerWithDefault(Composite parent,
-	                                                       String labelText,
-	                                                       WritablePropertyValueModel<Integer> numberHolder,
-	                                                       int defaultValue,
-	                                                       int minimumValue,
-	                                                       int maximumValue,
-	                                                       String helpId) {
-
-		WritablePropertyValueModel<Integer> numberHolderWrapper = new TransformationWritablePropertyValueModel<Integer, Integer>(numberHolder) {
-			@Override
-			protected Integer reverseTransform_(Integer value) {
-				return (value == -1) ? null : value;
-			}
-
-			@Override
-			protected Integer transform(Integer value) {
-				return (value == null) ? -1 : value;
-			}
-		};
-
-		Spinner spinner = this.buildLabeledSpinner(
-			parent,
-			labelText,
-			numberHolderWrapper,
-			defaultValue,
-			-1,
-			maximumValue,
-			helpId
-		);
-
-		spinner.setData("defaultValue", defaultValue);
-		spinner.setData("usingDefault", numberHolder.value() == null);
-		spinner.addFocusListener(buildSpinnerFocusListener());
-
-		return spinner;
-	}
-
-	/**
-	 * Creates a new spinner.
-	 *
-	 * @param parent The parent container
-	 * @param labelText The label's text
-	 * @param numberHolder The holder of the integer value
-	 * @param defaultValue The value shown when the holder has <code>null</code>
-	 * @param helpId The topic help ID to be registered for the spinner
-	 * @return The newly created <code>Spinner</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Spinner buildLabeledSpinnerWithDefault(Composite parent,
-	                                                       String labelText,
-	                                                       WritablePropertyValueModel<Integer> numberHolder,
-	                                                       int defaultValue,
-	                                                       String helpId) {
-
-		return this.buildLabeledSpinnerWithDefault(
-			parent,
-			labelText,
-			numberHolder,
-			defaultValue,
-			0,
-			Integer.MAX_VALUE,
-			helpId
 		);
 	}
 
@@ -3029,16 +3023,14 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates the layout responsible to compute the size of the
-	 * <code>Composite</code> created for the right widget, it helps to align all
-	 * the center widgets.
+	 * Creates the layout responsible to compute the size of the spacer created
+	 * for the right control when none was given. The spacer helps to align all
+	 * the right controls.
 	 *
 	 * @category Layout
 	 */
 	private Layout buildSpacerLayout() {
-
 		return new Layout() {
-
 			@Override
 			protected Point computeSize(Composite composite,
 			                            int widthHint,
@@ -3139,67 +3131,6 @@ public abstract class AbstractPane<T extends Model>
 		}
 
 		return spinner;
-	}
-
-	/**
-	 * Creates the listener responsible to show the default value in the spinner
-	 * when the focus is lost and the value is -1. If the spinner gains the focus
-	 * and the default
-	 *
-	 * @return
-	 *
-	 * @category Layout
-	 */
-	private FocusListener buildSpinnerFocusListener() {
-
-		return new FocusListener() {
-
-			public void focusGained(FocusEvent e) {
-
-				if (!isPopulating()) {
-					Spinner spinner = (Spinner) e.widget;
-					Boolean usingDefault = (Boolean) spinner.getData("usingDefault");
-
-					if (usingDefault) {
-						setPopulating(true);
-
-						try {
-							spinner.setSelection(-1);
-							spinner.setData("usingDefault", Boolean.TRUE);
-						}
-						finally {
-							setPopulating(false);
-						}
-					}
-					else {
-						spinner.setData("usingDefault", Boolean.FALSE);
-					}
-				}
-			}
-
-			public void focusLost(FocusEvent e) {
-
-				if (!isPopulating()) {
-					Spinner spinner = (Spinner) e.widget;
-
-					if (spinner.getSelection() == -1) {
-						setPopulating(true);
-
-						try {
-							Integer defaultValue = (Integer) spinner.getData("defaultValue");
-							spinner.setSelection(defaultValue);
-							spinner.setData("usingDefault", Boolean.TRUE);
-						}
-						finally {
-							setPopulating(false);
-						}
-					}
-					else {
-						spinner.setData("usingDefault", Boolean.FALSE);
-					}
-				}
-			}
-		};
 	}
 
 	private PropertyChangeListener buildSubjectChangeListener() {
@@ -3755,6 +3686,9 @@ public abstract class AbstractPane<T extends Model>
 	 */
 	protected void doDispose() {
 		this.log(Tracing.UI_LAYOUT, "   ->doDispose()");
+
+		this.leftControlAligner.dispose();
+		this.rightControlAligner.dispose();
 	}
 
 	/**

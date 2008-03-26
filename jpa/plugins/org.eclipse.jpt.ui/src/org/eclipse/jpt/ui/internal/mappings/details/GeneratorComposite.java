@@ -12,11 +12,20 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.GeneratorHolder;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
+import org.eclipse.jpt.ui.internal.util.LabeledLabel;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Spinner;
 
 /**
  * This is the generic pane for a generator.
@@ -29,6 +38,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
+@SuppressWarnings("nls")
 public abstract class GeneratorComposite<T extends Generator> extends AbstractPane<GeneratorHolder>
 {
 	/**
@@ -41,6 +51,139 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
                              Composite parent) {
 
 		super(parentPane, parent);
+	}
+
+	private WritablePropertyValueModel<Integer> buildAllocationSizeHolder() {
+		return new PropertyAspectAdapter<Generator, Integer>(buildGeneratorHolder(), Generator.SPECIFIED_ALLOCATION_SIZE_PROPERTY) {
+			@Override
+			protected Integer buildValue_() {
+				Integer value = subject.getSpecifiedAllocationSize();
+				if (value == null) {
+					return -1;
+				}
+				return value;
+			}
+
+			@Override
+			public void setValue(Integer value) {
+				if ((subject == null) && (value == -1)) {
+					return;
+				}
+				setValue_(value);
+			}
+
+			@Override
+			protected void setValue_(Integer value) {
+				if (value == -1) {
+					value = null;
+				}
+				retrieveGenerator(subject()).setSpecifiedAllocationSize(value);
+			}
+		};
+	}
+
+	private WritablePropertyValueModel<Integer> buildDefaultAllocationSizeHolder() {
+		return new PropertyAspectAdapter<Generator, Integer>(buildGeneratorHolder(), Generator.DEFAULT_ALLOCATION_SIZE_PROPERTY) {
+			@Override
+			protected Integer buildValue_() {
+				return subject.getDefaultAllocationSize();
+			}
+
+			@Override
+			protected void subjectChanged() {
+				Object oldValue = this.value();
+				super.subjectChanged();
+				Object newValue = this.value();
+
+				// Make sure the default value is appended to the text
+				if (oldValue == newValue && newValue == null) {
+					this.fireAspectChange(Integer.MIN_VALUE, newValue);
+				}
+			}
+		};
+	}
+
+	private Control buildDefaultAllocationSizeLabel(Composite container) {
+
+		Label label = buildLabel(
+			container,
+			JptUiMappingsMessages.DefaultWithoutValue
+		);
+
+		new LabeledControlUpdater(
+			new LabeledLabel(label),
+			buildDefaultAllocationSizeLabelHolder()
+		);
+
+		return label;
+	}
+
+	private PropertyValueModel<String> buildDefaultAllocationSizeLabelHolder() {
+
+		return new TransformationPropertyValueModel<Integer, String>(buildDefaultAllocationSizeHolder()) {
+
+			@Override
+			protected String transform(Integer value) {
+
+				if (value != null) {
+					return NLS.bind(JptUiMappingsMessages.DefaultWithValue, value);
+				}
+
+				return "";
+			}
+		};
+	}
+
+	private WritablePropertyValueModel<Integer> buildDefaultInitialValueHolder() {
+		return new PropertyAspectAdapter<Generator, Integer>(buildGeneratorHolder(), Generator.DEFAULT_INITIAL_VALUE_PROPERTY) {
+			@Override
+			protected Integer buildValue_() {
+				return subject.getDefaultInitialValue();
+			}
+
+			@Override
+			protected void subjectChanged() {
+				Object oldValue = this.value();
+				super.subjectChanged();
+				Object newValue = this.value();
+
+				// Make sure the default value is appended to the text
+				if (oldValue == newValue && newValue == null) {
+					this.fireAspectChange(Integer.MIN_VALUE, newValue);
+				}
+			}
+		};
+	}
+
+	private Control buildDefaultInitialValueLabel(Composite container) {
+
+		Label label = buildLabel(
+			container,
+			JptUiMappingsMessages.DefaultWithoutValue
+		);
+
+		new LabeledControlUpdater(
+			new LabeledLabel(label),
+			buildDefaultInitialValueLabelHolder()
+		);
+
+		return label;
+	}
+
+	private PropertyValueModel<String> buildDefaultInitialValueLabelHolder() {
+
+		return new TransformationPropertyValueModel<Integer, String>(buildDefaultInitialValueHolder()) {
+
+			@Override
+			protected String transform(Integer value) {
+
+				if (value != null) {
+					return NLS.bind(JptUiMappingsMessages.DefaultWithValue, value);
+				}
+
+				return "";
+			}
+		};
 	}
 
 	/**
@@ -69,9 +212,51 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 
 			@Override
 			public void setValue(String value) {
-				if ((subject != null) || (value.length() != 0)) {
-					retrieveGenerator(subject()).setName(value);
+				if ((subject == null) && (value.length() == 0)) {
+					return;
 				}
+				setValue_(value);
+			}
+
+			@Override
+			protected void setValue_(String value) {
+				if (value.length() == 0) {
+					value = null;
+				}
+				retrieveGenerator(subject()).setName(value);
+			}
+		};
+	}
+
+	private WritablePropertyValueModel<Integer> buildInitialValueHolder() {
+		return new PropertyAspectAdapter<Generator, Integer>(buildGeneratorHolder(), Generator.SPECIFIED_INITIAL_VALUE_PROPERTY) {
+			@Override
+			protected Integer buildValue_() {
+				Integer value = subject.getSpecifiedInitialValue();
+
+				if (value == null) {
+					return -1;
+				}
+
+				return value;
+			}
+
+			@Override
+			public void setValue(Integer value) {
+				if ((subject == null) && (value == -1)) {
+					return;
+				}
+				setValue_(value);
+			}
+
+			@Override
+			protected void setValue_(Integer value) {
+
+				if (value == -1) {
+					value = null;
+				}
+
+				retrieveGenerator(subject()).setSpecifiedInitialValue(value);
 			}
 		};
 	}
@@ -94,6 +279,51 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 	 * exists
 	 */
 	protected abstract T generator(GeneratorHolder subject);
+
+	/**
+	 * Creates the labeled spinner responsible to edit the allocation size. The
+	 * default value will be shown after the spinner. A value of -1 means the
+	 * default value and the model has <code>null</code>.
+	 *
+	 * @param container The parent container
+	 */
+	protected void initializeAllocationSizeWidgets(Composite container) {
+
+		Spinner spinner = buildLabeledSpinner(
+			container,
+			JptUiMappingsMessages.GeneratorComposite_allocationSize,
+			buildAllocationSizeHolder(),
+			-1,
+			-1,
+			Integer.MAX_VALUE,
+			buildDefaultAllocationSizeLabel(container)
+		);
+
+		updateGridData(container, spinner);
+	}
+
+	/**
+	 * Creates the labeled spinner responsible to edit the initial value. The
+	 * default value will be shown after the spinner. A value of -1 means the
+	 * default value and the model has <code>null</code>.
+	 *
+	 * @param container The parent container
+	 */
+	protected void initializeInitialValueWidgets(Composite container) {
+
+		Spinner spinner = buildLabeledSpinner(
+			container,
+			JptUiMappingsMessages.GeneratorComposite_initialValue,
+			buildInitialValueHolder(),
+			-1,
+			-1,
+			Integer.MAX_VALUE,
+			buildDefaultInitialValueLabel(container)
+		);
+
+
+		updateGridData(container, spinner);
+	}
 
 	/**
 	 * Retrieves the JPA project.
@@ -127,5 +357,36 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 		}
 
 		return generator;
+	}
+
+	/**
+	 * Changes the layout of the given container by changing which widget will
+	 * grab the excess of horizontal space. By default, the center control grabs
+	 * the excess space, we change it to be the right control.
+	 *
+	 * @param container The container containing the controls needing their
+	 * <code>GridData</code> to be modified from the default values
+	 * @param spinner The spinner that got created
+	 */
+	private void updateGridData(Composite container, Spinner spinner) {
+
+		// It is possible the spinner's parent is not the container of the
+		// label, spinner and right control (a pane is sometimes required for
+		// painting the spinner's border)
+		Composite paneContainer = spinner.getParent();
+
+		while (container != paneContainer.getParent()) {
+			paneContainer = paneContainer.getParent();
+		}
+
+		Control[] controls = paneContainer.getChildren();
+
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = false;
+		gridData.horizontalAlignment       = GridData.BEGINNING;
+		controls[1].setLayoutData(gridData);
+
+		controls[2].setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		removeAlignRight(controls[2]);
 	}
 }

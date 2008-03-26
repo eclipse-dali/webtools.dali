@@ -3,16 +3,14 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
-import java.util.Iterator;
 import org.eclipse.jpt.core.context.Table;
-import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -20,7 +18,6 @@ import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -157,6 +154,11 @@ public class TableComposite extends AbstractFormPane<Table>
 			}
 
 			@Override
+			protected String schemaName() {
+				return subject().getSchema();
+			}
+
+			@Override
 			protected void setValue(String value) {
 				subject().setSpecifiedName(value);
 			}
@@ -166,24 +168,9 @@ public class TableComposite extends AbstractFormPane<Table>
 				return subject().getDbTable();
 			}
 
-			private Schema tableSchema() {
-				return database().schemaNamed(subject().getSchema());
-			}
-
 			@Override
 			protected String value() {
 				return subject().getSpecifiedName();
-			}
-
-			@Override
-			protected Iterator<String> values() {
-				Schema schema = tableSchema();
-
-				if (schema != null) {
-					return schema.tableNames();
-				}
-
-				return EmptyIterator.instance();
 			}
 		};
 	}

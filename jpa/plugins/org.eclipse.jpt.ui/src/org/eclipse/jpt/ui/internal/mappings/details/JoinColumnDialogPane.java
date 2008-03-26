@@ -29,9 +29,12 @@ import org.eclipse.swt.widgets.Composite;
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
- * |        ------------------------------------------------------------------ |
- * | Table: | TableCombo                                                   |v| |
- * |        ------------------------------------------------------------------ |
+ * |                    ------------------------------------------------------ |
+ * | Table:             | TableCombo                                       |v| |
+ * |                    ------------------------------------------------------ |
+ * |                    ------------------------------------------------------ |
+ * | Column Definition: | I                                                  | |
+ * |                    ------------------------------------------------------ |
  * |                                                                           |
  * | x Insertable                                                              |
  * |                                                                           |
@@ -73,6 +76,23 @@ public class JoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinColumnSta
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
 		propertyNames.add(JoinColumnStateObject.TABLE_PROPERTY);
+	}
+
+	private WritablePropertyValueModel<String> buildColumnDefinitionHolder() {
+		return new PropertyAspectAdapter<JoinColumnStateObject, String>(getSubjectHolder(), JoinColumnStateObject.COLUMN_DEFINITION_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+				return subject.getColumnDefinition();
+			}
+
+			@Override
+			protected void setValue_(String value) {
+				if (value.length() == 0) {
+					value = null;
+				}
+				subject.setColumnDefinition(value);
+			}
+		};
 	}
 
 	/*
@@ -338,6 +358,13 @@ public class JoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinColumnSta
 	}
 
 	private void initializeDetailsPane(Composite container) {
+
+		// Column Definition widgets
+		buildLabeledText(
+			container,
+			JptUiMappingsMessages.ColumnComposite_columnDefinition,
+			buildColumnDefinitionHolder()
+		);
 
 		// Insertable check box
 		buildTriStateCheckBoxWithDefault(

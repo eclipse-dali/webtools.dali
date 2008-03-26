@@ -19,7 +19,8 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * This database object combo handles showing a table's columns.
+ * This database object combo handles showing a single or multiple tables'
+ * columns.
  *
  * @version 2.0
  * @since 2.0
@@ -66,6 +67,11 @@ public abstract class ColumnCombo<T extends JpaNode> extends AbstractDatabaseObj
 		super(subjectHolder, parent, widgetFactory);
 	}
 
+	/**
+	 * Returns the databas tables that is used to retrieve the column names.
+	 *
+	 * @return The table of which its columns are displayed in the combo
+	 */
 	protected abstract Table table();
 
 	/*
@@ -75,8 +81,8 @@ public abstract class ColumnCombo<T extends JpaNode> extends AbstractDatabaseObj
 	protected void tableChanged(Table table) {
 		super.tableChanged(table);
 
-		if (table == table()) {
-			this.doPopulate();
+		if ((subject() != null) && (table() == table)) {
+			doPopulate();
 		}
 	}
 
@@ -86,12 +92,16 @@ public abstract class ColumnCombo<T extends JpaNode> extends AbstractDatabaseObj
 	@Override
 	protected Iterator<String> values() {
 
+		if (subject() == null) {
+			return EmptyIterator.instance();
+		}
+
 		Table table = table();
 
 		if (table != null) {
 			return table.columnNames();
 		}
 
-		return EmptyIterator.instance();
+		return EmptyIterator.<String>instance();
 	}
 }

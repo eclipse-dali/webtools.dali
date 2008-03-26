@@ -10,19 +10,17 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
-import java.util.Iterator;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.GeneratorHolder;
 import org.eclipse.jpt.core.context.TableGenerator;
-import org.eclipse.jpt.db.Database;
-import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
+import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -35,22 +33,38 @@ import org.eclipse.swt.widgets.Composite;
  * | Name:                     | I                                           | |
  * |                           ----------------------------------------------- |
  * |                           ----------------------------------------------- |
- * | Table:                    | I                                         |v| |
+ * | Table:                    | TableCombo                                  | |
  * |                           ----------------------------------------------- |
  * |                           ----------------------------------------------- |
- * | Primary Key Column:       | I                                         |v| |
+ * | Catalog:                  | CatalogCombo                                | |
  * |                           ----------------------------------------------- |
  * |                           ----------------------------------------------- |
- * | Value Column:             | I                                         |v| |
+ * | Schema:                   | SchemaCombo                                 | |
  * |                           ----------------------------------------------- |
  * |                           ----------------------------------------------- |
- * | Primary Key Column Value: | I                                         |v| |
+ * | Primary Key Column:       | ColumnCombo                                 | |
  * |                           ----------------------------------------------- |
+ * |                           ----------------------------------------------- |
+ * | Value Column:             | ColumnCombo                                 | |
+ * |                           ----------------------------------------------- |
+ * |                           ----------------------------------------------- |
+ * | Primary Key Column Value: | ColumnCombo                                 | |
+ * |                           ----------------------------------------------- |
+ * |                           -------------                                   |
+ * | Allocation Size:          | I       |I|  Default (XXX)                    |
+ * |                           -------------                                   |
+ * |                           -------------                                   |
+ * | Initial Value:            | I       |I|  Default (XXX)                    |
+ * |                           -------------                                   |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see IdMapping
  * @see TableGenerator
  * @see GenerationComposite - The parent container
+ * @see CatalogCombo
+ * @see ColumnCombo
+ * @see SchemaCombo
+ * @see TableCombo
  *
  * @version 2.0
  * @since 1.0
@@ -67,6 +81,51 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	                               Composite parent) {
 
 		super(parentPane, parent);
+	}
+
+	private CatalogCombo<TableGenerator> buildCatalogCombo(Composite container) {
+
+		return new CatalogCombo<TableGenerator>(this, buildTableGeneratorHolder(), container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(TableGenerator.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(TableGenerator.SPECIFIED_CATALOG_PROPERTY);
+			}
+
+			@Override
+			protected void buildSubject() {
+				TableGeneratorComposite.this.buildGenerator(
+					TableGeneratorComposite.this.subject()
+				);
+			}
+
+			@Override
+			protected String defaultValue() {
+				return subject().getDefaultCatalog();
+			}
+
+			@Override
+			protected boolean isBuildSubjectAllowed() {
+				return true;
+			}
+
+			@Override
+			protected JpaProject jpaProject() {
+				return TableGeneratorComposite.this.jpaProject();
+			}
+
+			@Override
+			protected void setValue(String value) {
+				subject().setSpecifiedCatalog(value);
+			}
+
+			@Override
+			protected String value() {
+				return subject().getSpecifiedCatalog();
+			}
+		};
 	}
 
 	/*
@@ -124,14 +183,6 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			protected String value() {
 				return subject().getSpecifiedPkColumnName();
 			}
-
-			@Override
-			protected Iterator<String> values() {
-				if ((subject() == null) || (table() == null)) {
-					return EmptyIterator.instance();
-				}
-				return table().columnNames();
-			}
 		};
 	}
 
@@ -182,13 +233,50 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			protected String value() {
 				return subject().getSpecifiedPkColumnValue();
 			}
+		};
+	}
+
+	private SchemaCombo<TableGenerator> buildSchemaCombo(Composite container) {
+
+		return new SchemaCombo<TableGenerator>(this, buildTableGeneratorHolder(), container) {
 
 			@Override
-			protected Iterator<String> values() {
-				if ((subject() == null) || (table() == null)) {
-					return EmptyIterator.instance();
-				}
-				return table().columnNames();
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(TableGenerator.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(TableGenerator.SPECIFIED_SCHEMA_PROPERTY);
+			}
+
+			@Override
+			protected void buildSubject() {
+				TableGeneratorComposite.this.buildGenerator(
+					TableGeneratorComposite.this.subject()
+				);
+			}
+
+			@Override
+			protected String defaultValue() {
+				return subject().getDefaultSchema();
+			}
+
+			@Override
+			protected boolean isBuildSubjectAllowed() {
+				return true;
+			}
+
+			@Override
+			protected JpaProject jpaProject() {
+				return TableGeneratorComposite.this.jpaProject();
+			}
+
+			@Override
+			protected void setValue(String value) {
+				subject().setSpecifiedSchema(value);
+			}
+
+			@Override
+			protected String value() {
+				return subject().getSpecifiedSchema();
 			}
 		};
 	}
@@ -236,6 +324,11 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			}
 
 			@Override
+			protected String schemaName() {
+				return subject().getSchema();
+			}
+
+			@Override
 			protected void setValue(String value) {
 				subject().setSpecifiedTable(value);
 			}
@@ -248,27 +341,6 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			@Override
 			protected String value() {
 				return subject().getSpecifiedTable();
-			}
-
-			@Override
-			protected Iterator<String> values() {
-
-				if (subject() == null) {
-					return EmptyIterator.instance();
-				}
-
-				String schemaName = subject().getSchema();
-				Database database = database();
-
-				if ((schemaName != null) && (database != null)) {
-					Schema schema = database.schemaNamed(schemaName);
-
-					if (schema != null) {
-						return schema.tableNames();
-					}
-				}
-
-				return EmptyIterator.instance();
 			}
 		};
 	}
@@ -320,14 +392,6 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			protected String value() {
 				return subject().getSpecifiedValueColumnName();
 			}
-
-			@Override
-			protected Iterator<String> values() {
-				if ((subject() == null) || (table() == null)) {
-					return EmptyIterator.instance();
-				}
-				return table().columnNames();
-			}
 		};
 	}
 
@@ -361,6 +425,22 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_TABLE
 		);
 
+		// Schema widgets
+		buildLabeledComposite(
+			container,
+			JptUiMappingsMessages.TableGeneratorComposite_schema,
+			buildSchemaCombo(container),
+			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_SCHEMA
+		);
+
+		// Catalog widgets
+		buildLabeledComposite(
+			container,
+			JptUiMappingsMessages.TableGeneratorComposite_catalog,
+			buildCatalogCombo(container),
+			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_CATALOG
+		);
+
 		// Primary Key Column widgets
 		buildLabeledComposite(
 			container,
@@ -384,6 +464,12 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			buildPkColumnValueCombo(container),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN_VALUE
 		);
+
+		// Allocation Size widgets
+		initializeAllocationSizeWidgets(container);
+
+		// Initial Value widgets
+		initializeInitialValueWidgets(container);
 	}
 
 	/*

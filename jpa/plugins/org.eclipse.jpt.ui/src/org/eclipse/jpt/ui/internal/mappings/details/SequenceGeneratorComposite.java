@@ -32,6 +32,12 @@ import org.eclipse.swt.widgets.Composite;
  * |                     ----------------------------------------------------- |
  * | Sequence Generator: | SequenceCombo                                     | |
  * |                     ----------------------------------------------------- |
+ * |                     -------------                                         |
+ * | Allocation Size:    | I       |I|                                         |
+ * |                     -------------                                         |
+ * |                     -------------                                         |
+ * | Initial Value:      |         |I|                                         |
+ * |                     -------------                                         |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see IdMapping
@@ -159,6 +165,12 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 			buildSequenceNameCombo(container),
 			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_SEQUENCE
 		);
+
+		// Allocation Size widgets
+		initializeAllocationSizeWidgets(container);
+
+		// Initial Value widgets
+		initializeInitialValueWidgets(container);
 	}
 
 	/*

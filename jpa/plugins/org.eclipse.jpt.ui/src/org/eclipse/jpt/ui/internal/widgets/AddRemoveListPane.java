@@ -305,14 +305,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	private Composite buildTableContainer(Composite container) {
 
 		container = buildPane(container, buildTableContainerLayout());
-
-		GridData gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace   = true;
-		gridData.horizontalAlignment       = SWT.FILL;
-		gridData.verticalAlignment         = SWT.FILL;
-		container.setLayoutData(gridData);
-
+		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 		return container;
 	}
 

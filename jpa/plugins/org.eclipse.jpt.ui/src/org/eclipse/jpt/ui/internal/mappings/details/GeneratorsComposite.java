@@ -20,7 +20,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 /**
-/**
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
@@ -144,14 +143,14 @@ public class GeneratorsComposite extends AbstractPane<GeneratorHolder>
 
 		// Sequence Generator sub-section
 		container = buildCollapsableSubSection(
-			container,
+			buildSubPane(container, 10),
 			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
 			sequenceGeneratorExpansionStateHolder
 		);
 
 		// Sequence Generator check box
 		Button sequenceGeneratorCheckBox = buildCheckBox(
-			container,
+			buildSubPane(container, 5),
 			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
 			buildSequenceGeneratorBooleanHolder(),
 			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR
@@ -174,7 +173,7 @@ public class GeneratorsComposite extends AbstractPane<GeneratorHolder>
 		);
 
 		Button tableGeneratorCheckBox = buildCheckBox(
-			container,
+			buildSubPane(container, 5),
 			JptUiMappingsMessages.IdMappingComposite_tableGenerator,
 			buildTableGeneratorBooleanHolder(),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR

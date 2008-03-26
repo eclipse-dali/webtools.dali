@@ -80,9 +80,11 @@ public interface JpaHelpContextIds {
 	public static final String MAPPING_SEQUENCE_GENERATOR_NAME = PREFIX + "mapping_sequenceGeneratorName";
 	public static final String MAPPING_SEQUENCE_GENERATOR_SEQUENCE = PREFIX + "mapping_sequenceGeneratorSequence";
 	public static final String MAPPING_TABLE_GENERATOR = PREFIX + "mapping_tableGenerator";
+	public static final String MAPPING_TABLE_GENERATOR_CATALOG = PREFIX + "mapping_tableGeneratorCatalog";
 	public static final String MAPPING_TABLE_GENERATOR_NAME = PREFIX + "mapping_tableGeneratorName";
 	public static final String MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN = PREFIX + "mapping_tableGeneratorPrimaryKeyColumn";
 	public static final String MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN_VALUE = PREFIX + "mapping_tableGeneratorPrimaryKeyColumnValue";
+	public static final String MAPPING_TABLE_GENERATOR_SCHEMA = PREFIX + "mapping_tableGeneratorSchema";
 	public static final String MAPPING_TABLE_GENERATOR_TABLE= PREFIX + "mapping_tableGeneratorTable";
 	public static final String MAPPING_TABLE_GENERATOR_VALUE_COLUMN = PREFIX + "mapping_tableGeneratorValueColumn";
 	public static final String MAPPING_TARGET_ENTITY = PREFIX + "mapping_targetEntity";

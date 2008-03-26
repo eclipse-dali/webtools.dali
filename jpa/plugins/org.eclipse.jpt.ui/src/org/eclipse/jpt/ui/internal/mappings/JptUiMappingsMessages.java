@@ -40,6 +40,7 @@ public class JptUiMappingsMessages extends NLS {
 	public static String CascadeComposite_refresh;
 	public static String CascadeComposite_remove;
 	public static String CatalogChooser_label;
+	public static String ColumnComposite_columnDefinition;
 	public static String ColumnComposite_columnSection;
 	public static String ColumnComposite_defaultEmpty;
 	public static String ColumnComposite_defaultWithOneParam;
@@ -59,6 +60,8 @@ public class JptUiMappingsMessages extends NLS {
 	public static String ColumnComposite_updatableWithDefault;
 	public static String DefaultBasicMappingUiProvider_Default;
 	public static String DefaultEmbeddedMappingUiProvider_Default;
+	public static String DefaultWithoutValue;
+	public static String DefaultWithValue;
 	public static String DiscriminatorColumnComposite_column;
 	public static String DiscriminatorColumnComposite_defaultEmpty;
 	public static String DiscriminatorColumnComposite_discriminatorType;
@@ -81,6 +84,8 @@ public class JptUiMappingsMessages extends NLS {
 	public static String GeneratedValueComposite_sequence;
 	public static String GeneratedValueComposite_strategy;
 	public static String GeneratedValueComposite_table;
+	public static String GeneratorComposite_allocationSize;
+	public static String GeneratorComposite_initialValue;
 	public static String IdClassComposite_label;
 	public static String IdMappingComposite_pk_generation;
 	public static String IdMappingComposite_primaryKeyGeneration;
@@ -234,10 +239,12 @@ public class JptUiMappingsMessages extends NLS {
 	public static String TableComposite_defaultEmpty;
 	public static String TableComposite_defaultWithOneParam;
 	public static String TableComposite_tableSection;
+	public static String TableGeneratorComposite_catalog;
 	public static String TableGeneratorComposite_default;
 	public static String TableGeneratorComposite_name;
 	public static String TableGeneratorComposite_pkColumn;
 	public static String TableGeneratorComposite_pkColumnValue;
+	public static String TableGeneratorComposite_schema;
 	public static String TableGeneratorComposite_table;
 	public static String TableGeneratorComposite_tableGenerator;
 	public static String TableGeneratorComposite_valueColumn;

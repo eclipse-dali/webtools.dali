@@ -21,12 +21,14 @@ import org.eclipse.jpt.db.Table;
 @SuppressWarnings("nls")
 public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 {
+	private String columnDefinition;
 	private Boolean insertable;
 	private Boolean nullable;
 	private String table;
 	private Boolean unique;
 	private Boolean updatable;
 
+	public static final String COLUMN_DEFINITION_PROPERTY = "columnDefinition";
 	public static final String INSERTABLE_PROPERTY = "insertable";
 	public static final String NULLABLE_PROPERTY = "nullable";
 	public static final String TABLE_PROPERTY = "table";
@@ -42,8 +44,11 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 	public JoinColumnStateObject(Object owner, JoinColumn joinColumn) {
 		super(owner, joinColumn);
 	}
-
 	public abstract String defaultTableName();
+
+	public String getColumnDefinition() {
+		return columnDefinition;
+	}
 
 	public Boolean getDefaultInsertable() {
 
@@ -147,12 +152,19 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 		if (abstractJoinColumn != null) {
 			JoinColumn joinColumn = (JoinColumn) abstractJoinColumn;
 
-			table      = joinColumn.getSpecifiedTable();
-			insertable = joinColumn.getSpecifiedInsertable();
-			nullable   = joinColumn.getSpecifiedNullable();
-			unique     = joinColumn.getSpecifiedUnique();
-			updatable  = joinColumn.getSpecifiedUpdatable();
+			table            = joinColumn.getSpecifiedTable();
+			insertable       = joinColumn.getSpecifiedInsertable();
+			nullable         = joinColumn.getSpecifiedNullable();
+			unique           = joinColumn.getSpecifiedUnique();
+			updatable        = joinColumn.getSpecifiedUpdatable();
+			columnDefinition = joinColumn.getColumnDefinition();
 		}
+	}
+
+	public void setColumnDefinition(String columnDefinition) {
+		String oldColumnDefinition = this.columnDefinition;
+		this.columnDefinition = columnDefinition;
+		firePropertyChanged(COLUMN_DEFINITION_PROPERTY, oldColumnDefinition, columnDefinition);
 	}
 
 	public void setInsertable(Boolean insertable) {
@@ -233,6 +245,11 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 		// Nullable
 		if (joinColumn.getSpecifiedNullable() != nullable){
 			joinColumn.setSpecifiedNullable(nullable);
+		}
+
+		// Column Definition
+		if (valuesAreDifferent(columnDefinition, joinColumn.getColumnDefinition())) {
+			joinColumn.setColumnDefinition(columnDefinition);
 		}
 	}
 }

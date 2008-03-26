@@ -10,17 +10,13 @@
 package org.eclipse.jpt.ui.internal.orm.details;
 
 import java.util.Collection;
-import java.util.Iterator;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
-import org.eclipse.jpt.db.Database;
-import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -113,14 +109,6 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 			protected String value() {
 				return subject().getSpecifiedPkColumnName();
 			}
-
-			@Override
-			protected Iterator<String> values() {
-				if ((subject() == null) || (table() == null)) {
-					return EmptyIterator.instance();
-				}
-				return table().columnNames();
-			}
 		};
 	}
 
@@ -154,14 +142,6 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 			protected String value() {
 				return subject().getSpecifiedPkColumnValue();
 			}
-
-			@Override
-			protected Iterator<String> values() {
-				if ((subject() == null) || (table() == null)) {
-					return EmptyIterator.instance();
-				}
-				return table().columnNames();
-			}
 		};
 	}
 
@@ -182,6 +162,11 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 			}
 
 			@Override
+			protected String schemaName() {
+				return subject().getSchema();
+			}
+
+			@Override
 			protected void setValue(String value) {
 				subject().setSpecifiedTable(value);
 			}
@@ -194,27 +179,6 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 			@Override
 			protected String value() {
 				return subject().getSpecifiedTable();
-			}
-
-			@Override
-			protected Iterator<String> values() {
-
-				if (subject() == null) {
-					return EmptyIterator.instance();
-				}
-
-				String schemaName = subject().getSchema();
-				Database database = database();
-
-				if ((schemaName != null) && (database != null)) {
-					Schema schema = database.schemaNamed(schemaName);
-
-					if (schema != null) {
-						return schema.tableNames();
-					}
-				}
-
-				return EmptyIterator.instance();
 			}
 		};
 	}
@@ -248,14 +212,6 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 			@Override
 			protected String value() {
 				return subject().getSpecifiedValueColumnName();
-			}
-
-			@Override
-			protected Iterator<String> values() {
-				if ((subject() == null) || (table() == null)) {
-					return EmptyIterator.instance();
-				}
-				return table().columnNames();
 			}
 		};
 	}

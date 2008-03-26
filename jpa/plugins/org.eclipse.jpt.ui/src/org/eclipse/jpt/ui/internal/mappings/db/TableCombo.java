@@ -9,10 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.db;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.JpaNode;
+import org.eclipse.jpt.db.Database;
+import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -64,7 +68,12 @@ public abstract class TableCombo<T extends JpaNode> extends AbstractDatabaseObje
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	protected abstract Table table();
+	/**
+	 * Retrieves the name of the schema from where the table is located.
+	 *
+	 * @return The table's schema name
+	 */
+	protected abstract String schemaName();
 
 	/*
 	 * (non-Javadoc)
@@ -76,5 +85,34 @@ public abstract class TableCombo<T extends JpaNode> extends AbstractDatabaseObje
 		if (table == table()) {
 			this.doPopulate();
 		}
+	}
+
+	/**
+	 * Returns the selected database table.
+	 *
+	 * @return The selected table
+	 */
+	protected abstract Table table();
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected Iterator<String> values() {
+
+		if (subject() != null) {
+			Database database = database();
+			String schemaName = schemaName();
+
+			if ((schemaName != null) && (database != null)) {
+				Schema schema = database.schemaNamed(schemaName);
+
+				if (schema != null) {
+					return schema.tableNames();
+				}
+			}
+		}
+
+		return EmptyIterator.instance();
 	}
 }
