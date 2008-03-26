@@ -116,6 +116,11 @@ public abstract class DelegatingContentAndLabelProvider extends BaseLabelProvide
 	 */
 	@Override
 	public void dispose() {
+		disposeProviders();
+		super.dispose();
+	}
+
+	protected void disposeProviders() {
 		// coded this way to allow some item providers to dispose of their child 
 		// elements without disrupting the entire process
 		while (! itemContentProviders.isEmpty()) {
@@ -127,13 +132,12 @@ public abstract class DelegatingContentAndLabelProvider extends BaseLabelProvide
 		while (! itemLabelProviders.isEmpty()) {
 			dispose(itemLabelProviders.keySet().iterator().next());
 		}
-		super.dispose();
 	}
 	
 	/**
 	 * Disposes item
 	 */
-	public void dispose(Object item) {
+	protected void dispose(Object item) {
 		if (itemContentProviders.containsKey(item)) {
 			itemContentProviders.get(item).dispose();
 			itemContentProviders.remove(item);
@@ -146,7 +150,7 @@ public abstract class DelegatingContentAndLabelProvider extends BaseLabelProvide
 	
 	public void inputChanged(Viewer structuredViewer, Object oldInput, Object newInput) {
 		if (oldInput != newInput) {
-			dispose();
+			disposeProviders();
 		}
 		this.viewer = (StructuredViewer) structuredViewer;
 	}
