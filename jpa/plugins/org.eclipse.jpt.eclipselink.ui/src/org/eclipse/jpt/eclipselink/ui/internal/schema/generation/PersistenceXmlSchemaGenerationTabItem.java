@@ -44,15 +44,15 @@ public class PersistenceXmlSchemaGenerationTabItem
 	}
 
 	// ********** JpaPageComposite implementation **********
-	public String helpID() {
+	public String getHelpID() {
 		return null;
 	}
 
-	public Image pageImage() {
+	public Image getPageImage() {
 		return null;
 	}
 
-	public String pageText() {
+	public String getPageText() {
 		return EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_title;
 	}
 

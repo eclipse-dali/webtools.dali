@@ -260,7 +260,7 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 	private TypeMappingUiProvider<? extends TypeMapping> typeMappingUiProvider(String key) {
 		for (Iterator<TypeMappingUiProvider<? extends TypeMapping>> iter = this.typeMappingUiProviders(); iter.hasNext();) {
 			TypeMappingUiProvider<? extends TypeMapping> provider = iter.next();
-			if (provider.mappingKey() == key) {
+			if (provider.getMappingKey() == key) {
 				return provider;
 			}
 		}

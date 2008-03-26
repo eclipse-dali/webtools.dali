@@ -20,11 +20,11 @@ public class JavaResourceModelStructureProvider
 		super(resourceModel);
 	}
 	
-	public TreeItemContentProviderFactory treeItemContentProviderFactory() {
+	public TreeItemContentProviderFactory getTreeItemContentProviderFactory() {
 		return new JavaItemContentProviderFactory();
 	}
 	
-	public ItemLabelProviderFactory itemLabelProviderFactory() {
+	public ItemLabelProviderFactory getItemLabelProviderFactory() {
 		return new JavaItemLabelProviderFactory();
 	}
 }

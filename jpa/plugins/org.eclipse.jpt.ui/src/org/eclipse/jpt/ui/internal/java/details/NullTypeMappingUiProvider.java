@@ -41,15 +41,15 @@ public class NullTypeMappingUiProvider implements TypeMappingUiProvider<TypeMapp
 		super();
 	}
 
-	public String mappingKey() {
+	public String getMappingKey() {
 		return null;
 	}
 
-	public String label() {
+	public String getLabel() {
 		return "";
 	}
 
-	public Image image() {
+	public Image getImage() {
 		return JpaMappingImageHelper.imageForTypeMapping(
 			MappingKeys.NULL_TYPE_MAPPING_KEY
 		);

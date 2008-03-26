@@ -30,12 +30,12 @@ public interface JpaNavigatorProvider
 	/**
 	 * Build an factory to create {@link TreeItemContentProvider}s
 	 */
-	TreeItemContentProviderFactory treeItemContentProviderFactory();
+	TreeItemContentProviderFactory getTreeItemContentProviderFactory();
 	
 	/**
 	 * Build a factory to create {@link ItemLabelProvider}s
 	 */
-	ItemLabelProviderFactory itemLabelProviderFactory();
+	ItemLabelProviderFactory getItemLabelProviderFactory();
 	
 	void dispose();
 }

@@ -66,7 +66,7 @@ public class JpaNavigatorTreeItemContentProviderFactory
 		JpaNavigatorProvider navigatorProvider = JpaNavigatorProviderLookup.provider(platform.getId());
 		TreeItemContentProviderFactory delegate = null;
 		if (navigatorProvider != null) {
-			delegate = navigatorProvider.treeItemContentProviderFactory();
+			delegate = navigatorProvider.getTreeItemContentProviderFactory();
 		}
 		delegates.put(platformId, delegate);
 		return delegate;

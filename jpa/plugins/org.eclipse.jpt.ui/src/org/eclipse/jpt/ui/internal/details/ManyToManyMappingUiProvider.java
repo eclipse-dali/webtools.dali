@@ -41,16 +41,16 @@ public class ManyToManyMappingUiProvider
 		super();
 	}
 
-	public String mappingKey() {
+	public String getMappingKey() {
 		return MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public String label() {
+	public String getLabel() {
 		return JptUiMappingsMessages.PersistentAttributePage_ManyToManyLabel;
 	}
 
-	public Image image() {
-		return JpaMappingImageHelper.imageForAttributeMapping(mappingKey());
+	public Image getImage() {
+		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
 	}
 
 	public JpaComposite<ManyToManyMapping> buildAttributeMappingComposite(

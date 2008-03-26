@@ -46,22 +46,22 @@ public class NullAttributeMappingUiProvider
 	/*
 	 * (non-Javadoc)
 	 */
-	public String mappingKey() {
+	public String getMappingKey() {
 		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
-	public String label() {
+	public String getLabel() {
 		return JptUiMappingsMessages.NullAttributeMappingUiProvider_label;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
-	public Image image() {
-		return JpaMappingImageHelper.imageForAttributeMapping(mappingKey());
+	public Image getImage() {
+		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
 	}
 
 	/*

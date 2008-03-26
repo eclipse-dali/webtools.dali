@@ -251,7 +251,7 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 		for (Iterator<? extends MappingUiProvider<?>> iter = mappingChangeHandler.providers(); iter.hasNext(); ) {
 			MappingUiProvider<?> provider = iter.next();
 
-			if (mappingKey() == provider.mappingKey()) {
+			if (mappingKey() == provider.getMappingKey()) {
 				return provider;
 			}
 		}
@@ -433,7 +433,7 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 					}
 
 					MappingUiProvider<?> provider = (MappingUiProvider<?>) element;
-					return provider.image();
+					return provider.getImage();
 				}
 
 				@Override
@@ -444,7 +444,7 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 					}
 
 					MappingUiProvider<?> provider = (MappingUiProvider<?>) element;
-					return provider.label();
+					return provider.getLabel();
 				}
 			};
 		}
@@ -516,7 +516,7 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 		@Override
 		public String getElementName(Object object) {
 			MappingUiProvider<?> provider = (MappingUiProvider<?>) object;
-			return provider.label();
+			return provider.getLabel();
 		}
 
 		/*
@@ -535,8 +535,8 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 						return 1;
 					}
 
-					String displayString1 = item1.label();
-					String displayString2 = item2.label();
+					String displayString1 = item1.getLabel();
+					String displayString2 = item2.getLabel();
 					return Collator.getInstance().compare(displayString1, displayString2);
 				}
 			};
@@ -589,7 +589,7 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 			@Override
 			public boolean matchItem(Object item) {
 				MappingUiProvider<?> provider = (MappingUiProvider<?>) item;
-				return matches(provider.label());
+				return matches(provider.getLabel());
 			}
 		}
 	}

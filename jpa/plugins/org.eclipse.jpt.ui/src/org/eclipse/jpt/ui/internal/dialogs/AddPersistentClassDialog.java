@@ -124,7 +124,7 @@ public class AddPersistentClassDialog extends StatusDialog
 			new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					return ((TypeMappingUiProvider<?>) element).label();
+					return ((TypeMappingUiProvider<?>) element).getLabel();
 				}
 			});
 		this.mappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -191,7 +191,7 @@ public class AddPersistentClassDialog extends StatusDialog
 	
 	public String getMappingKey() {
 		StructuredSelection selection = (StructuredSelection) this.mappingCombo.getSelection();
-		return (selection.isEmpty()) ? null : ((TypeMappingUiProvider<?>) selection.getFirstElement()).mappingKey();
+		return (selection.isEmpty()) ? null : ((TypeMappingUiProvider<?>) selection.getFirstElement()).getMappingKey();
 	}
 	
 	protected IType chooseType() {

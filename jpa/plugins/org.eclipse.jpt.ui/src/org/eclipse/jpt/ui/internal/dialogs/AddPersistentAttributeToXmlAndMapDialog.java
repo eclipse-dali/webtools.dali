@@ -104,7 +104,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 			new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					return ((AttributeMappingUiProvider) element).label();
+					return ((AttributeMappingUiProvider) element).getLabel();
 				}
 			});
 		mappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -158,7 +158,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 
 	public String getMappingKey() {
 		StructuredSelection selection = (StructuredSelection) mappingCombo.getSelection();
-		return (selection.isEmpty()) ? null : ((AttributeMappingUiProvider) selection.getFirstElement()).mappingKey();
+		return (selection.isEmpty()) ? null : ((AttributeMappingUiProvider) selection.getFirstElement()).getMappingKey();
 	}
 
 	private void validate() {

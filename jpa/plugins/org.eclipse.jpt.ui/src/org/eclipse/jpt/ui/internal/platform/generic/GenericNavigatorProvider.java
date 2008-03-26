@@ -15,11 +15,11 @@ import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
 
 public class GenericNavigatorProvider implements JpaNavigatorProvider
 {
-	public ItemLabelProviderFactory itemLabelProviderFactory() {
+	public ItemLabelProviderFactory getItemLabelProviderFactory() {
 		return new GenericNavigatorItemLabelProviderFactory();
 	}
 
-	public TreeItemContentProviderFactory treeItemContentProviderFactory() {
+	public TreeItemContentProviderFactory getTreeItemContentProviderFactory() {
 		return new GenericNavigatorItemContentProviderFactory();
 	}
 	

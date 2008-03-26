@@ -357,7 +357,7 @@ public class PersistenceEditor extends FormEditor
 
 			super(PersistenceEditor.this,
 			      page.getClass().getName(),
-			      page.pageText());
+			      page.getPageText());
 
 			this.page = page;
 		}
@@ -413,9 +413,9 @@ public class PersistenceEditor extends FormEditor
 		 */
 		private void updateForm(ScrolledForm form) {
 
-			form.setText(page.pageText());
+			form.setText(page.getPageText());
 
-			Image image = page.pageImage();
+			Image image = page.getPageImage();
 
 			if (image != null) {
 				form.setImage(image);
@@ -437,7 +437,7 @@ public class PersistenceEditor extends FormEditor
 		 */
 		private void updateHelpButton() {
 
-			String helpID = page.helpID();
+			String helpID = page.getHelpID();
 
 			if (helpID != null) {
 				Action helpAction = new HelpAction(helpID);

@@ -51,15 +51,15 @@ public class BasicMappingUiProvider
 		return factory.createBasicMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 
-	public Image image() {
-		return JpaMappingImageHelper.imageForAttributeMapping(mappingKey());
+	public Image getImage() {
+		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
 	}
 
-	public String label() {
+	public String getLabel() {
 		return JptUiMappingsMessages.PersistentAttributePage_BasicLabel;
 	}
 
-	public String mappingKey() {
+	public String getMappingKey() {
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
 }

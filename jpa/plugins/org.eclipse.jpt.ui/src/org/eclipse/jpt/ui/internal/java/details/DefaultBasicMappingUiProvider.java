@@ -42,19 +42,19 @@ public class DefaultBasicMappingUiProvider
 		super();
 	}
 
-	public String mappingKey() {
+	public String getMappingKey() {
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public String label() {
+	public String getLabel() {
 		return NLS.bind(
 			JptUiMappingsMessages.DefaultBasicMappingUiProvider_Default,
 			JptUiMappingsMessages.PersistentAttributePage_BasicLabel
 		);
 	}
 
-	public Image image() {
-		return JpaMappingImageHelper.imageForAttributeMapping(mappingKey());
+	public Image getImage() {
+		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
 	}
 
 	public JpaComposite<BasicMapping> buildAttributeMappingComposite(JpaUiFactory factory,

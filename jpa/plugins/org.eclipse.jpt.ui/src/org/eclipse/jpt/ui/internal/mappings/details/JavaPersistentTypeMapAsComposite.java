@@ -54,15 +54,15 @@ public class JavaPersistentTypeMapAsComposite extends PersistentTypeMapAsComposi
 	protected MappingUiProvider<JavaPersistentType> buildDefaultProvider() {
 		return new MappingUiProvider<JavaPersistentType>() {
 
-			public Image image() {
+			public Image getImage() {
 				return JpaMappingImageHelper.imageForTypeMapping(null);
 			}
 
-			public String label() {
+			public String getLabel() {
 				return JptUiMessages.MapAsComposite_default;
 			}
 
-			public String mappingKey() {
+			public String getMappingKey() {
 				return null;
 			}
 		};

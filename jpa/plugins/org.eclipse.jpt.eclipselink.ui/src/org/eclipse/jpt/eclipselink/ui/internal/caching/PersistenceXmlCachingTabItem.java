@@ -45,14 +45,14 @@ public class PersistenceXmlCachingTabItem
 
 	// ********** JpaPageComposite implementation **********
 	
-	public String helpID() {
+	public String getHelpID() {
 		return null;
 	}
 
-	public Image pageImage() {
+	public Image getPageImage() {
 		return null;
 	}
-	public String pageText() {
+	public String getPageText() {
 		return EclipseLinkUiMessages.PersistenceXmlCachingTab_title;
 	}
 

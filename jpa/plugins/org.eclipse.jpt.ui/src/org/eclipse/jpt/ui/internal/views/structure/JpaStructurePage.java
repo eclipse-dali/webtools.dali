@@ -71,8 +71,8 @@ public class JpaStructurePage extends Page
 		viewer.setAutoExpandLevel(2);
 		DelegatingTreeContentAndLabelProvider contentAndLabelProvider
 			= new DelegatingTreeContentAndLabelProvider(
-				structureProvider.treeItemContentProviderFactory(),
-				structureProvider.itemLabelProviderFactory());
+				structureProvider.getTreeItemContentProviderFactory(),
+				structureProvider.getItemLabelProviderFactory());
 		viewer.setContentProvider(contentAndLabelProvider);
 		// TODO Use problem decorator
 		viewer.setLabelProvider(contentAndLabelProvider);

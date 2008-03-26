@@ -42,16 +42,16 @@ public class TransientMappingUiProvider
 		super();
 	}
 
-	public String mappingKey() {
+	public String getMappingKey() {
 		return MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public String label() {
+	public String getLabel() {
 		return JptUiMappingsMessages.PersistentAttributePage_TransientLabel;
 	}
 
-	public Image image() {
-		return JpaMappingImageHelper.imageForAttributeMapping(mappingKey());
+	public Image getImage() {
+		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
 	}
 
 	public JpaComposite<TransientMapping> buildAttributeMappingComposite(

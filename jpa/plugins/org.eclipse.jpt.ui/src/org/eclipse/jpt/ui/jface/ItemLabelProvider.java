@@ -28,12 +28,12 @@ public interface ItemLabelProvider
 	/**
 	 * Return the image for the item
 	 */
-	Image image();
+	Image getImage();
 	
 	/**
 	 * Return the text for the item
 	 */
-	public String text();
+	public String getText();
 	
 	/**
 	 * Dispose of this label provider, cleaning up all references, listeners, etc.

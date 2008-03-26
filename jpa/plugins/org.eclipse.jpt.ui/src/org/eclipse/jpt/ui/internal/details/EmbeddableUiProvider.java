@@ -40,16 +40,16 @@ public class EmbeddableUiProvider implements TypeMappingUiProvider<Embeddable>
 		super();
 	}
 
-	public String mappingKey() {
+	public String getMappingKey() {
 		return MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
 	}
 
-	public String label() {
+	public String getLabel() {
 		return JptUiMappingsMessages.PersistentTypePage_EmbeddableLabel;
 	}
 
-	public Image image() {
-		return JpaMappingImageHelper.imageForTypeMapping(mappingKey());
+	public Image getImage() {
+		return JpaMappingImageHelper.imageForTypeMapping(getMappingKey());
 	}
 
 	public JpaComposite<Embeddable> buildPersistentTypeMappingComposite(

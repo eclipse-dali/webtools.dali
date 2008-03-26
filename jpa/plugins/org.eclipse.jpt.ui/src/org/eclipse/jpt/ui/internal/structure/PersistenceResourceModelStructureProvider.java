@@ -20,11 +20,11 @@ public class PersistenceResourceModelStructureProvider
 		super(resourceModel);
 	}
 	
-	public TreeItemContentProviderFactory treeItemContentProviderFactory() {
+	public TreeItemContentProviderFactory getTreeItemContentProviderFactory() {
 		return new PersistenceItemContentProviderFactory();
 	}
 	
-	public ItemLabelProviderFactory itemLabelProviderFactory() {
+	public ItemLabelProviderFactory getItemLabelProviderFactory() {
 		return new PersistenceItemLabelProviderFactory();
 	}
 }

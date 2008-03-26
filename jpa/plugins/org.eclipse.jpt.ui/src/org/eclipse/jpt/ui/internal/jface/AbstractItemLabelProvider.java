@@ -149,11 +149,11 @@ public abstract class AbstractItemLabelProvider implements ItemLabelProvider
 		return labelProvider;
 	}
 	
-	public String text() {
+	public String getText() {
 		return textModel().getValue();
 	}
 	
-	public Image image() {
+	public Image getImage() {
 		return imageModel().getValue();
 	}
 	

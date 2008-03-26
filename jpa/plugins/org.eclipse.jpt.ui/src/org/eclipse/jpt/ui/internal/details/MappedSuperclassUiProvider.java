@@ -40,16 +40,16 @@ public class MappedSuperclassUiProvider implements TypeMappingUiProvider<MappedS
 		super();
 	}
 
-	public String mappingKey() {
+	public String getMappingKey() {
 		return MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY;
 	}
 
-	public String label() {
+	public String getLabel() {
 		return JptUiMappingsMessages.PersistentTypePage_MappedSuperclassLabel;
 	}
 
-	public Image image() {
-		return JpaMappingImageHelper.imageForTypeMapping(mappingKey());
+	public Image getImage() {
+		return JpaMappingImageHelper.imageForTypeMapping(getMappingKey());
 	}
 
 	public JpaComposite<MappedSuperclass> buildPersistentTypeMappingComposite(

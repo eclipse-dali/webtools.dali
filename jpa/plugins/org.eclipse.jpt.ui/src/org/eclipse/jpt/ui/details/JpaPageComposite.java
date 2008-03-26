@@ -29,19 +29,19 @@ public interface JpaPageComposite<T> extends JpaComposite<T> {
 	 * @return Either the help ID of this page or <code>null</code> if no help
 	 * is required
 	 */
-	String helpID();
+	String getHelpID();
 
 	/**
 	 * The image of the tab showing this page.
 	 *
 	 * @return The page's image
 	 */
-	Image pageImage();
+	Image getPageImage();
 
 	/**
 	 * The text of the tab showing this page.
 	 *
 	 * @return The page's text
 	 */
-	String pageText();
+	String getPageText();
 }

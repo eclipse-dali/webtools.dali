@@ -232,7 +232,7 @@ public class XmlPrimaryKeyJoinColumnImpl extends AbstractXmlNamedColumn implemen
 		return result.toString();
 	}
 
-	public TextRange referencedColumnNameTextRange() {
+	public TextRange getReferencedColumnNameTextRange() {
 		IDOMNode referencedColumnNameNode = (IDOMNode) DOMUtilities.childAttributeNode(this.node, OrmXmlMapper.REFERENCED_COLUMN_NAME);
 		return (referencedColumnNameNode == null) ? getValidationTextRange() : buildTextRange(referencedColumnNameNode);
 	}

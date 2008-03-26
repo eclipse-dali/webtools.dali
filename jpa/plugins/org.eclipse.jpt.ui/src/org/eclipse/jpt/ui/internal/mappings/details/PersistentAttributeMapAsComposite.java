@@ -79,12 +79,12 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 
 		return new MappingUiProvider<T>() {
 
-			public Image image() {
+			public Image getImage() {
 				String mappingKey = subject().getDefaultMappingKey();
 				return JpaMappingImageHelper.imageForAttributeMapping(mappingKey);
 			}
 
-			public String label() {
+			public String getLabel() {
 				String mappingKey = subject().getDefaultMappingKey();
 
 				return SWTUtil.buildDisplayString(
@@ -94,7 +94,7 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 				);
 			}
 
-			public String mappingKey() {
+			public String getMappingKey() {
 				return null;
 			}
 		};
@@ -140,7 +140,7 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 			}
 
 			public void morphMapping(MappingUiProvider<?> provider) {
-				subject().setSpecifiedMappingKey(provider.mappingKey());
+				subject().setSpecifiedMappingKey(provider.getMappingKey());
 			}
 
 			public String name() {

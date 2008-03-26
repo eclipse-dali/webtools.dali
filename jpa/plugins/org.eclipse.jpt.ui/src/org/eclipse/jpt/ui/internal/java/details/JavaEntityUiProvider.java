@@ -40,16 +40,16 @@ public class JavaEntityUiProvider implements TypeMappingUiProvider<JavaEntity>
 		super();
 	}
 
-	public String mappingKey() {
+	public String getMappingKey() {
 		return MappingKeys.ENTITY_TYPE_MAPPING_KEY;
 	}
 
-	public String label() {
+	public String getLabel() {
 		return JptUiMappingsMessages.PersistentTypePage_EntityLabel;
 	}
 
-	public Image image() {
-		return JpaMappingImageHelper.imageForTypeMapping(mappingKey());
+	public Image getImage() {
+		return JpaMappingImageHelper.imageForTypeMapping(getMappingKey());
 	}
 
 	public JpaComposite<JavaEntity> buildPersistentTypeMappingComposite(

@@ -125,7 +125,7 @@ public class PersistenceUnitGeneralComposite extends AbstractFormPane<Persistenc
 	/*
 	 * (non-Javadoc)
 	 */
-	public String helpID() {
+	public String getHelpID() {
 		return JpaHelpContextIds.PERSISTENCE_UNIT_GENERAL;
 	}
 
@@ -185,14 +185,14 @@ public class PersistenceUnitGeneralComposite extends AbstractFormPane<Persistenc
 	/*
 	 * (non-Javadoc)
 	 */
-	public Image pageImage() {
+	public Image getPageImage() {
 		return null;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
-	public String pageText() {
+	public String getPageText() {
 		return JptUiPersistenceMessages.PersistenceUnitGeneralComposite_general;
 	}
 

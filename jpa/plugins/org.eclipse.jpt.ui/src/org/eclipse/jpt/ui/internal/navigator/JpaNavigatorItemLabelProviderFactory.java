@@ -66,7 +66,7 @@ public class JpaNavigatorItemLabelProviderFactory
 		JpaNavigatorProvider navigatorProvider = JpaNavigatorProviderLookup.provider(platform.getId());
 		ItemLabelProviderFactory delegate = null;
 		if (navigatorProvider != null) {
-			delegate = navigatorProvider.itemLabelProviderFactory();
+			delegate = navigatorProvider.getItemLabelProviderFactory();
 		}
 		delegates.put(platformId, delegate);
 		return delegate;

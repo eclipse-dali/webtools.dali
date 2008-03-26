@@ -42,19 +42,19 @@ public class DefaultEmbeddedMappingUiProvider
 		super();
 	}
 
-	public String mappingKey() {
+	public String getMappingKey() {
 		return MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public String label() {
+	public String getLabel() {
 		return NLS.bind(
 			JptUiMappingsMessages.DefaultEmbeddedMappingUiProvider_Default,
 			JptUiMappingsMessages.PersistentAttributePage_EmbeddedLabel
 		);
 	}
 
-	public Image image() {
-		return JpaMappingImageHelper.imageForAttributeMapping(mappingKey());
+	public Image getImage() {
+		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
 	}
 
 	public JpaComposite<EmbeddedMapping> buildAttributeMappingComposite(

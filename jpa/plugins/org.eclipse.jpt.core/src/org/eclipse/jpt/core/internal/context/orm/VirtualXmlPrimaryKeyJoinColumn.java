@@ -61,7 +61,7 @@ public class VirtualXmlPrimaryKeyJoinColumn extends AbstractJpaEObject implement
 		return null;
 	}
 	
-	public TextRange referencedColumnNameTextRange() {
+	public TextRange getReferencedColumnNameTextRange() {
 		return null;
 	}
 		

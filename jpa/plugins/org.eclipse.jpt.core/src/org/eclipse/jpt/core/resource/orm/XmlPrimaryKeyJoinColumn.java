@@ -67,6 +67,6 @@ public interface XmlPrimaryKeyJoinColumn extends XmlNamedColumn
 	 * Return the {@link TextRange} for the referenced-column-name attibute.  If the referenced-column-name attibute 
 	 * does not exist return the {@link TextRange} for the *table element.
 	 */
-	TextRange referencedColumnNameTextRange();
+	TextRange getReferencedColumnNameTextRange();
 
 } // PrimaryKeyJoinColumn

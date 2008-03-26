@@ -20,11 +20,11 @@ public class OrmResourceModelStructureProvider
 		super(resourceModel);
 	}
 	
-	public TreeItemContentProviderFactory treeItemContentProviderFactory() {
+	public TreeItemContentProviderFactory getTreeItemContentProviderFactory() {
 		return new OrmItemContentProviderFactory();
 	}
 	
-	public ItemLabelProviderFactory itemLabelProviderFactory() {
+	public ItemLabelProviderFactory getItemLabelProviderFactory() {
 		return new OrmItemLabelProviderFactory();
 	}
 }

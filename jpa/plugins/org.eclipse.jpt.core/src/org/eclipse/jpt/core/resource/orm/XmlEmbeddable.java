@@ -45,7 +45,7 @@ public class XmlEmbeddable extends AbstractXmlTypeMapping
 		super();
 	}
 	
-	public XmlEntityMappings entityMappings() {
+	public XmlEntityMappings getEntityMappings() {
 		return (XmlEntityMappings) eContainer();
 	}
 

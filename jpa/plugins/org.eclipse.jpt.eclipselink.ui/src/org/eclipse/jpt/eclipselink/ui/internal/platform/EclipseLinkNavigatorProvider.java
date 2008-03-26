@@ -20,11 +20,11 @@ import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
  */
 public class EclipseLinkNavigatorProvider implements JpaNavigatorProvider
 {
-	public ItemLabelProviderFactory itemLabelProviderFactory() {
+	public ItemLabelProviderFactory getItemLabelProviderFactory() {
 		return new EclipseLinkNavigatorItemLabelProviderFactory();
 	}
 
-	public TreeItemContentProviderFactory treeItemContentProviderFactory() {
+	public TreeItemContentProviderFactory getTreeItemContentProviderFactory() {
 		return new EclipseLinkNavigatorItemContentProviderFactory();
 	}
 

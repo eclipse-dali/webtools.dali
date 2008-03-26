@@ -103,12 +103,12 @@ public abstract class DelegatingContentAndLabelProvider extends BaseLabelProvide
 	
 	public Image getImage(Object element) {
 		ItemLabelProvider provider = itemLabelProvider(element);
-		return (provider == null) ? null :provider.image();
+		return (provider == null) ? null :provider.getImage();
 	}
 	
 	public String getText(Object element) {
 		ItemLabelProvider provider = itemLabelProvider(element);
-		return (provider == null) ? null : provider.text();
+		return (provider == null) ? null : provider.getText();
 	}
 	
 	/**

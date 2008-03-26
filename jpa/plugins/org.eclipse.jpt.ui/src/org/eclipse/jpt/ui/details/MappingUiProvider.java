@@ -34,7 +34,7 @@ public interface MappingUiProvider<T> {
 	 *
 	 * @return A display string for the mapping type
 	 */
-	String label();
+	String getLabel();
 
 	/**
 	 * Returns an image that represents the mapping type defined by this provider.
@@ -42,7 +42,7 @@ public interface MappingUiProvider<T> {
 	 * @return An image representing a mapping or <code>null</code> if no image
 	 * is required
 	 */
-	Image image();
+	Image getImage();
 
 	/**
 	 * Returns a unique string that corresponds to the key of the mapping in the
@@ -50,5 +50,5 @@ public interface MappingUiProvider<T> {
 	 *
 	 * @return The key representing the mapping
 	 */
-	String mappingKey();
+	String getMappingKey();
 }
