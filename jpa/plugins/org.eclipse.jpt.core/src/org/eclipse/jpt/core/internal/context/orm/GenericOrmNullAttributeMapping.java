@@ -22,7 +22,7 @@ public class GenericOrmNullAttributeMapping extends AbstractOrmAttributeMapping<
 		super(parent);
 	}
 
-	public int xmlSequence() {
+	public int getXmlSequence() {
 		return -1;
 	}
 

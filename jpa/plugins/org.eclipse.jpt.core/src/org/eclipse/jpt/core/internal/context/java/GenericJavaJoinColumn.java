@@ -132,12 +132,12 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 		return dbReferencedColumn() != null;
 	}
 
-	public TextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
+	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
 		TextRange textRange = columnResource().referencedColumnNameTextRange(astRoot);
-		return (textRange != null) ? textRange : getOwner().validationTextRange(astRoot);
+		return (textRange != null) ? textRange : getOwner().getValidationTextRange(astRoot);
 	}
 
-	public TextRange validationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		// TODO Auto-generated method stub
 		return null;
 	}

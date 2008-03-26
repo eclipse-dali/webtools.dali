@@ -34,7 +34,7 @@ public class OrmNullAttributeMappingProvider implements OrmAttributeMappingProvi
 		super();
 	}
 
-	public String key() {
+	public String getKey() {
 		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
 	}
 

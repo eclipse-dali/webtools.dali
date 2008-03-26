@@ -115,7 +115,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	
 	protected JavaAttributeOverride setAttributeOverrideSpecified(JavaAttributeOverride oldAttributeOverride) {
 		int index = specifiedAttributeOverridesSize();
-		JavaAttributeOverride newAttributeOverride = jpaFactory().buildJavaAttributeOverride(this, this);
+		JavaAttributeOverride newAttributeOverride = getJpaFactory().buildJavaAttributeOverride(this, this);
 		this.specifiedAttributeOverrides.add(index, newAttributeOverride);
 		
 		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) getResourcePersistentAttribute().addAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
@@ -227,14 +227,14 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 		super.initializeFromResource(resourcePersistentAttribute);
 		this.initializeAttributeOverrides(resourcePersistentAttribute);
 		this.initializeDefaultAttributeOverrides(resourcePersistentAttribute);
-		this.embeddable = embeddableFor(persistentAttribute());
+		this.embeddable = embeddableFor(getPersistentAttribute());
 	}
 	
 	protected void initializeAttributeOverrides(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		ListIterator<JavaResourceNode> annotations = resourcePersistentAttribute.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
-			JavaAttributeOverride attributeOverride = jpaFactory().buildJavaAttributeOverride(this, this);
+			JavaAttributeOverride attributeOverride = getJpaFactory().buildJavaAttributeOverride(this, this);
 			attributeOverride.initializeFromResource((AttributeOverrideAnnotation) annotations.next());
 			this.specifiedAttributeOverrides.add(attributeOverride);
 		}
@@ -251,7 +251,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	}	@Override
 	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super.update(resourcePersistentAttribute);
-		this.embeddable = embeddableFor(persistentAttribute());
+		this.embeddable = embeddableFor(getPersistentAttribute());
 		this.updateSpecifiedAttributeOverrides(resourcePersistentAttribute);
 		this.updateVirtualAttributeOverrides(resourcePersistentAttribute);
 		
@@ -276,7 +276,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	}
 	
 	protected JavaAttributeOverride buildAttributeOverride(AttributeOverrideAnnotation attributeOverrideResource) {
-		JavaAttributeOverride attributeOverride = jpaFactory().buildJavaAttributeOverride(this, this);
+		JavaAttributeOverride attributeOverride = getJpaFactory().buildJavaAttributeOverride(this, this);
 		attributeOverride.initializeFromResource(attributeOverrideResource);
 		return attributeOverride;
 	}

@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  */
 public interface OrmAttributeMapping extends AttributeMapping, OrmJpaContextNode
 {
-	OrmPersistentAttribute persistentAttribute();
+	OrmPersistentAttribute getPersistentAttribute();
 
 	String getName();
 	void setName(String newName);
@@ -46,7 +46,7 @@ public interface OrmAttributeMapping extends AttributeMapping, OrmJpaContextNode
 	 * method and return an int that matches it's order in the schema
 	 * @return
 	 */
-	int xmlSequence();
+	int getXmlSequence();
 
 	void removeFromResourceModel(AbstractXmlTypeMapping typeMapping);
 	
@@ -79,10 +79,5 @@ public interface OrmAttributeMapping extends AttributeMapping, OrmJpaContextNode
 
 	boolean contains(int textOffset);
 
-	TextRange selectionTextRange();
-
-//	void initializeFromResource(JavaResourcePersistentAttribute persistentAttributeResource);
-//
-//	void update(JavaResourcePersistentAttribute persistentAttributeResource);
-	
+	TextRange getSelectionTextRange();
 }

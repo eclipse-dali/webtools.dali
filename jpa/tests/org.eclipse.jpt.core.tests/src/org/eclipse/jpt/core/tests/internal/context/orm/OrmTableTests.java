@@ -141,7 +141,7 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		assertEquals(TYPE_NAME, ormEntity.getTable().getDefaultName());
 		
-		ormEntity.javaEntity().getTable().setSpecifiedName("Foo");
+		ormEntity.getJavaEntity().getTable().setSpecifiedName("Foo");
 		assertEquals("Foo", ormEntity.getTable().getDefaultName());
 		
 		ormEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
@@ -225,7 +225,7 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		assertNull(ormEntity.getTable().getDefaultSchema());
 		
-		ormEntity.javaEntity().getTable().setSpecifiedSchema("Foo");
+		ormEntity.getJavaEntity().getTable().setSpecifiedSchema("Foo");
 		assertEquals("Foo", ormEntity.getTable().getDefaultSchema());
 		
 		ormEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
@@ -287,7 +287,7 @@ public class OrmTableTests extends ContextModelTestCase
 		ormEntity.getEntityMappings().setSpecifiedSchema("BAR");
 		assertEquals("BAR", ormEntity.getTable().getDefaultSchema());
 		
-		ormEntity.javaEntity().getTable().setSpecifiedSchema("JAVA_SCHEMA");
+		ormEntity.getJavaEntity().getTable().setSpecifiedSchema("JAVA_SCHEMA");
 		assertEquals("JAVA_SCHEMA", ormEntity.getTable().getDefaultSchema());
 		
 		ormEntity.getTable().setSpecifiedName("BLAH");
@@ -378,7 +378,7 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		assertNull(ormEntity.getTable().getDefaultCatalog());
 		
-		ormEntity.javaEntity().getTable().setSpecifiedCatalog("Foo");
+		ormEntity.getJavaEntity().getTable().setSpecifiedCatalog("Foo");
 		assertEquals("Foo", ormEntity.getTable().getDefaultCatalog());
 		
 		ormEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
@@ -440,7 +440,7 @@ public class OrmTableTests extends ContextModelTestCase
 		ormEntity.getEntityMappings().setSpecifiedCatalog("BAR");
 		assertEquals("BAR", ormEntity.getTable().getDefaultCatalog());
 		
-		ormEntity.javaEntity().getTable().setSpecifiedCatalog("JAVA_CATALOG");
+		ormEntity.getJavaEntity().getTable().setSpecifiedCatalog("JAVA_CATALOG");
 		assertEquals("JAVA_CATALOG", ormEntity.getTable().getDefaultCatalog());
 		
 		ormEntity.getTable().setSpecifiedName("BLAH");

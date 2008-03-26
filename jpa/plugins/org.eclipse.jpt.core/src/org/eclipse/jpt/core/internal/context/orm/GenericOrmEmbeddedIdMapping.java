@@ -29,7 +29,7 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmBaseEmbeddedMapping<
 		newMapping.initializeFromOrmEmbeddedIdMapping(this);
 	}
 	
-	public int xmlSequence() {
+	public int getXmlSequence() {
 		return 7;
 	}
 	
@@ -46,7 +46,7 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmBaseEmbeddedMapping<
 
 	public XmlEmbeddedId addToResourceModel(AbstractXmlTypeMapping typeMapping) {
 		XmlEmbeddedId embeddedId = OrmFactory.eINSTANCE.createXmlEmbeddedIdImpl();
-		persistentAttribute().initialize(embeddedId);
+		getPersistentAttribute().initialize(embeddedId);
 		typeMapping.getAttributes().getEmbeddedIds().add(embeddedId);
 		return embeddedId;
 	}

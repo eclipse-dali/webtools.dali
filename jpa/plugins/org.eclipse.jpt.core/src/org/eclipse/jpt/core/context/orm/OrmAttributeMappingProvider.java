@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.JpaFactory;
  */
 public interface OrmAttributeMappingProvider
 {
-	String key();
+	String getKey();
 	
 	OrmAttributeMapping buildAttributeMapping(JpaFactory factory, OrmPersistentAttribute parent);
 

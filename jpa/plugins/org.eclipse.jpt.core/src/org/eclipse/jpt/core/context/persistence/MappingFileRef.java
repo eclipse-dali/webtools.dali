@@ -65,7 +65,7 @@ public interface MappingFileRef extends PersistenceJpaContextNode, JpaStructureN
 	
 	// *************************************************************************
 	
-	PersistenceUnitDefaults persistenceUnitDefaults();
+	PersistenceUnitDefaults getPersistenceUnitDefaults();
 	
 	/**
 	 * Return the OrmPersistentType listed in this mapping file

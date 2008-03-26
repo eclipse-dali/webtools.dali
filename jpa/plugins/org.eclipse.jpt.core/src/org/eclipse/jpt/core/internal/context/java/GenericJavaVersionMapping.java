@@ -42,7 +42,7 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	}
 
 	protected JavaColumn createJavaColumn() {
-		return jpaFactory().buildJavaColumn(this, this);
+		return getJpaFactory().buildJavaColumn(this, this);
 	}
 	
 	@Override
@@ -66,7 +66,7 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 		return MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public String annotationName() {
+	public String getAnnotationName() {
 		return Version.ANNOTATION_NAME;
 	}
 	
@@ -147,7 +147,7 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
 						new String[] {table, column.getName()}, 
-						column, column.tableTextRange(astRoot))
+						column, column.getTableTextRange(astRoot))
 				);
 			doContinue = false;
 		}
@@ -158,7 +158,7 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
 						new String[] {column.getName()}, 
-						column, column.nameTextRange(astRoot))
+						column, column.getNameTextRange(astRoot))
 				);
 		}
 	}

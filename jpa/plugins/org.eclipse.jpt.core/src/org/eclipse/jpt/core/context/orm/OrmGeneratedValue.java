@@ -27,7 +27,7 @@ public interface OrmGeneratedValue extends GeneratedValue, OrmJpaContextNode
 	/**
 	 * Return the (best guess) text location of the generator.
 	 */
-	TextRange generatorTextRange();
+	TextRange getGeneratorTextRange();
 
 	void initialize(XmlGeneratedValue generatedValue);
 

@@ -58,7 +58,7 @@ public class VirtualXmlEmbeddedId extends AbstractJpaEObject implements XmlEmbed
 	}
 	
 	public String getName() {
-		return this.javaEmbeddedIdMapping.persistentAttribute().getName();
+		return this.javaEmbeddedIdMapping.getPersistentAttribute().getName();
 	}
 
 	public void setName(String newName) {

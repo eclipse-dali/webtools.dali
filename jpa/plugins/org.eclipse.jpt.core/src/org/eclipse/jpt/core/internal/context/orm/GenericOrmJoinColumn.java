@@ -95,14 +95,14 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 		return dbReferencedColumn() != null;
 	}
 
-	public TextRange referencedColumnNameTextRange() {
+	public TextRange getReferencedColumnNameTextRange() {
 		if (columnResource() != null) {
 			TextRange textRange = columnResource().referencedColumnNameTextRange();
 			if (textRange != null) {
 				return textRange;
 			}
 		}
-		return getOwner().validationTextRange();
+		return getOwner().getValidationTextRange();
 	}
 
 
@@ -215,14 +215,14 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 //		}
 //		
 		if (this.doContinue && ! isResolved()) {
-			if (mapping.persistentAttribute().isVirtual()) {
+			if (mapping.getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
 						new String[] {mapping.getName(), getName()}, 
 						this, 
-						nameTextRange())
+						getNameTextRange())
 				);
 			}
 			else {
@@ -232,7 +232,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
 						new String[] {getName()}, 
 						this, 
-						nameTextRange())
+						getNameTextRange())
 				);
 			}
 		}

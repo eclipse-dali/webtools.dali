@@ -24,13 +24,13 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
  */
 public interface JavaAttributeMapping extends AttributeMapping, JavaJpaContextNode
 {
-	JavaPersistentAttribute persistentAttribute();
+	JavaPersistentAttribute getPersistentAttribute();
 	
 	void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute);
 
 	void update(JavaResourcePersistentAttribute resourcePersistentAttribute);
 	
-	String annotationName();
+	String getAnnotationName();
 	
 	/**
 	 * Return all fully qualfied annotation names that are supported with this mapping type.

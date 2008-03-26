@@ -98,7 +98,7 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 	}
 	
 	public OrmJoinColumn addSpecifiedJoinColumn(int index) {
-		OrmJoinColumn joinColumn = jpaFactory().buildOrmJoinColumn(this, createJoinColumnOwner());
+		OrmJoinColumn joinColumn = getJpaFactory().buildOrmJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
 		this.associationOverride.getJoinColumns().add(index, OrmFactory.eINSTANCE.createXmlJoinColumnImpl());
 		this.fireItemAdded(AssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
@@ -174,12 +174,12 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 	}
 	
 	protected OrmJoinColumn createJoinColumn(XmlJoinColumn joinColumn) {
-		OrmJoinColumn ormJoinColumn = jpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner());
+		OrmJoinColumn ormJoinColumn = getJpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner());
 		ormJoinColumn.initialize(joinColumn);
 		return ormJoinColumn;
 	}
 
-	public TextRange validationTextRange() {
+	public TextRange getValidationTextRange() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -247,7 +247,7 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 			return GenericOrmAssociationOverride.this.joinColumnsSize();
 		}
 		
-		public TextRange validationTextRange() {
+		public TextRange getValidationTextRange() {
 			// TODO Auto-generated method stub
 			return null;
 		}

@@ -250,7 +250,7 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 	 * (non-Javadoc)
 	 */
 	@Override
-	public final Validator validator() {
+	public final Validator getValidator() {
 		return this.validator;
 	}
 }

@@ -667,7 +667,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertEquals(Column.DEFAULT_SCALE, ormColumn.getSpecifiedScale());
 	
 		//set Column annotation in Java
-		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.javaPersistentType().attributeNamed("name").getMapping();
+		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().attributeNamed("name").getMapping();
 		javaBasicMapping.getColumn().setSpecifiedName("FOO");		
 		javaBasicMapping.getColumn().setSpecifiedTable("FOO_TABLE");
 		javaBasicMapping.getColumn().setColumnDefinition("COLUMN_DEFINITION");
@@ -753,7 +753,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmColumn ormColumn = nameVirtualMapping.getColumn();
 	
 		//set Column annotation in Java
-		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.javaPersistentType().attributeNamed("name").getMapping();
+		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().attributeNamed("name").getMapping();
 		javaBasicMapping.getColumn().setSpecifiedName("FOO");		
 		javaBasicMapping.getColumn().setSpecifiedTable("FOO_TABLE");
 		javaBasicMapping.getColumn().setColumnDefinition("COLUMN_DEFINITION");
@@ -805,7 +805,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertEquals("ORM_TABLE", ormColumn.getSpecifiedTable());
 		
 		//set Column table element in Java
-		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.javaPersistentType().attributeNamed("name").getMapping();
+		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().attributeNamed("name").getMapping();
 		javaBasicMapping.getColumn().setSpecifiedTable("JAVA_TABLE");	
 		assertEquals("JAVA_TABLE", ormColumn.getSpecifiedTable());
 		

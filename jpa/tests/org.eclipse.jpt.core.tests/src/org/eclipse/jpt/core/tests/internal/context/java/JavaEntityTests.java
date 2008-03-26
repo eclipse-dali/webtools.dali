@@ -486,14 +486,14 @@ public class JavaEntityTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		removeXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		//only parent specified in orm.xml, i think this outcome is right??
-		assertEquals(AccessType.FIELD, ormPersistentType.javaPersistentType().getAccess());
+		assertEquals(AccessType.FIELD, ormPersistentType.getJavaPersistentType().getAccess());
 		assertEquals(AccessType.FIELD, childPersistentType.getAccess());
 
 		OrmPersistentType childOrmPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
 		removeXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		//both parent and child specified in orm.xml
-		assertEquals(AccessType.FIELD, ormPersistentType.javaPersistentType().getAccess());
-		assertEquals(AccessType.FIELD, childOrmPersistentType.javaPersistentType().getAccess());
+		assertEquals(AccessType.FIELD, ormPersistentType.getJavaPersistentType().getAccess());
+		assertEquals(AccessType.FIELD, childOrmPersistentType.getJavaPersistentType().getAccess());
 	}
 	
 	public void testAccessWithXmlSettings() throws Exception {
@@ -524,12 +524,12 @@ public class JavaEntityTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		//now class is specified in orm.xml, so entityMappings access setting wins over persistence-unit-defaults
-		assertEquals(AccessType.FIELD, ormPersistentType.javaPersistentType().getAccess());
+		assertEquals(AccessType.FIELD, ormPersistentType.getJavaPersistentType().getAccess());
 		
 		((OrmEntity) ormPersistentType.getMapping()).setSpecifiedAccess(AccessType.PROPERTY);
 		
 		//accessType should be PROPERTY now, java gets the access from xml entity if it is specified
-		assertEquals(AccessType.PROPERTY, ormPersistentType.javaPersistentType().getAccess());
+		assertEquals(AccessType.PROPERTY, ormPersistentType.getJavaPersistentType().getAccess());
 	}	
 	
 	public void testGetSpecifiedNameNull() throws Exception {

@@ -77,7 +77,7 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 //		return (mappedByNode == null) ? validationTextRange() : buildTextRange(mappedByNode);
 	}
 
-	public int xmlSequence() {
+	public int getXmlSequence() {
 		return 5;
 	}
 
@@ -92,7 +92,7 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 	
 	public XmlOneToOne addToResourceModel(AbstractXmlTypeMapping typeMapping) {
 		XmlOneToOne oneToOne = OrmFactory.eINSTANCE.createXmlOneToOneImpl();
-		persistentAttribute().initialize(oneToOne);
+		getPersistentAttribute().initialize(oneToOne);
 		typeMapping.getAttributes().getOneToOnes().add(oneToOne);
 		return oneToOne;
 	}

@@ -148,15 +148,15 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected OrmXml buildOrmXml(OrmResource ormResource) {
-		return jpaFactory().buildOrmXml(this, ormResource);
+		return getJpaFactory().buildOrmXml(this, ormResource);
 	}
 	
 	
 	// *************************************************************************
 	
-	public PersistenceUnitDefaults persistenceUnitDefaults() {
+	public PersistenceUnitDefaults getPersistenceUnitDefaults() {
 		if (getOrmXml() != null) {
-			return getOrmXml().persistenceUnitDefaults();
+			return getOrmXml().getPersistenceUnitDefaults();
 		}
 		return null;
 	}
@@ -179,16 +179,16 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 		return this.xmlMappingFileRef.containsOffset(textOffset);
 	}
 	
-	public TextRange selectionTextRange() {
+	public TextRange getSelectionTextRange() {
 		if (isVirtual()) {
 			return null;
 		}
 		return this.xmlMappingFileRef.selectionTextRange();
 	}
 	
-	public TextRange validationTextRange() {
+	public TextRange getValidationTextRange() {
 		if (isVirtual()) {
-			return getPersistenceUnit().validationTextRange();
+			return getPersistenceUnit().getValidationTextRange();
 		}
 		return this.xmlMappingFileRef.validationTextRange();
 	}
@@ -214,7 +214,7 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE,
 					this, 
-					validationTextRange())
+					getValidationTextRange())
 			);
 		}
 	}
@@ -227,7 +227,7 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
 					new String[] {getFileName()}, 
 					this, 
-					validationTextRange()) 
+					getValidationTextRange()) 
 			);
 		}
 	}
@@ -241,7 +241,7 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 					JpaValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE,
 					new String[] {getFileName()}, 
 					this,
-					validationTextRange())
+					getValidationTextRange())
 			);
 		}
 	}

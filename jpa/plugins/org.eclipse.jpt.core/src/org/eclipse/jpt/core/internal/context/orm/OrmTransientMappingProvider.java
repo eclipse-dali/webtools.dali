@@ -34,7 +34,7 @@ public class OrmTransientMappingProvider implements OrmAttributeMappingProvider
 		super();
 	}
 	
-	public String key() {
+	public String getKey() {
 		return MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
 	}
 	

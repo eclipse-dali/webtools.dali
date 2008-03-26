@@ -38,7 +38,7 @@ public class OrmEmbeddedMappingProvider implements OrmAttributeMappingProvider
 		return factory.buildOrmEmbeddedMapping(parent);
 	}
 
-	public String key() {
+	public String getKey() {
 		return MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
 	}
 }

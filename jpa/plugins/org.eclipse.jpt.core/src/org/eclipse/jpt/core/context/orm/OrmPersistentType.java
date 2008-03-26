@@ -123,6 +123,6 @@ public interface OrmPersistentType extends PersistentType, OrmJpaContextNode
 	 * If there is no underlying java persistent type, then null is returned.
 	 * @return
 	 */
-	JavaPersistentType javaPersistentType();
+	JavaPersistentType getJavaPersistentType();
 
 }

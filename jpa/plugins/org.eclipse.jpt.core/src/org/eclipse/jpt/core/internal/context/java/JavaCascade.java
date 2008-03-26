@@ -88,7 +88,7 @@ public class JavaCascade extends AbstractJavaJpaContextNode implements Cascade
 		firePropertyChanged(Cascade.REFRESH_PROPERTY, oldRefresh, newRefresh);
 	}
 
-	public TextRange validationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.relationshipMapping.cascadeTextRange(astRoot);
 	}
 	

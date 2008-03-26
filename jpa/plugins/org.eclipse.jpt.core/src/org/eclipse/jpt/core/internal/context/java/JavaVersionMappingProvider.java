@@ -37,11 +37,11 @@ public class JavaVersionMappingProvider
 		super();
 	}
 
-	public String key() {
+	public String getKey() {
 		return MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public String annotationName() {
+	public String getAnnotationName() {
 		return Version.ANNOTATION_NAME;
 	}
 

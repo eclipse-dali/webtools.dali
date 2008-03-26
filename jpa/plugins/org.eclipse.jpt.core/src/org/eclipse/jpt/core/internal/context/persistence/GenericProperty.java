@@ -73,7 +73,7 @@ public class GenericProperty extends AbstractPersistenceJpaContextNode
 	
 	// **************** validation ***********************************************
 	
-	public TextRange validationTextRange() {
+	public TextRange getValidationTextRange() {
 		return this.property.validationTextRange();
 	}
 	

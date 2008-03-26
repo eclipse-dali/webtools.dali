@@ -147,7 +147,7 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType resourcePersistentType) {
-		return jpaFactory().buildJavaPersistentType(this, resourcePersistentType);
+		return getJpaFactory().buildJavaPersistentType(this, resourcePersistentType);
 	}
 	
 	
@@ -172,7 +172,7 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_CLASS,
-					this, validationTextRange())
+					this, getValidationTextRange())
 			);
 		}
 	}
@@ -185,7 +185,7 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,
 					new String[] {getClassName()}, 
 					this, 
-					this.validationTextRange())
+					this.getValidationTextRange())
 			);
 		}
 	}
@@ -201,14 +201,14 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 		return this.xmlJavaClassRef.containsOffset(textOffset);
 	}
 	
-	public TextRange selectionTextRange() {
+	public TextRange getSelectionTextRange() {
 		if (isVirtual()) {
 			return null;
 		}
 		return this.xmlJavaClassRef.selectionTextRange();
 	}
 	
-	public TextRange validationTextRange() {
+	public TextRange getValidationTextRange() {
 		if (isVirtual()) {
 			return null;
 		}

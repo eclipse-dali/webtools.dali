@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.JpaFactory;
  */
 public interface OrmTypeMappingProvider
 {
-	String key();
+	String getKey();
 	
 	OrmTypeMapping buildTypeMapping(JpaFactory factory, OrmPersistentType parent);
 	

@@ -34,7 +34,7 @@ public class OrmVersionMappingProvider implements OrmAttributeMappingProvider
 		super();
 	}
 	
-	public String key() {
+	public String getKey() {
 		return MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
 	}
 

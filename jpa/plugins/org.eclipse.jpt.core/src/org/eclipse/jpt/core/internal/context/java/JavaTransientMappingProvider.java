@@ -37,11 +37,11 @@ public class JavaTransientMappingProvider
 		super();
 	}
 
-	public String key() {
+	public String getKey() {
 		return MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public String annotationName() {
+	public String getAnnotationName() {
 		return Transient.ANNOTATION_NAME;
 	}
 

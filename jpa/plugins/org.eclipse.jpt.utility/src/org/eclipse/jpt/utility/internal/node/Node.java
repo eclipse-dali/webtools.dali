@@ -15,7 +15,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.model.Model;
 
@@ -167,7 +166,7 @@ public interface Node extends Model, Comparable<Node> {
 	 * "validated" aspect of the node tree changes.
 	 * Typically only the root node directly holds a validator.
 	 */
-	Validator validator();
+	Validator getValidator();
 
 	/**
 	 * Set a validator that will be invoked whenever a

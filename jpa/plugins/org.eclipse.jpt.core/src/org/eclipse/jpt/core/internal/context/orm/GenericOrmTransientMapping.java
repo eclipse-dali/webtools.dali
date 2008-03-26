@@ -29,7 +29,7 @@ public class GenericOrmTransientMapping extends AbstractOrmAttributeMapping<XmlT
 		newMapping.initializeFromOrmTransientMapping(this);
 	}
 
-	public int xmlSequence() {
+	public int getXmlSequence() {
 		return 8;
 	}
 
@@ -39,7 +39,7 @@ public class GenericOrmTransientMapping extends AbstractOrmAttributeMapping<XmlT
 
 	public XmlTransient addToResourceModel(AbstractXmlTypeMapping typeMapping) {
 		XmlTransient transientResource = OrmFactory.eINSTANCE.createXmlTransientImpl();
-		persistentAttribute().initialize(transientResource);
+		getPersistentAttribute().initialize(transientResource);
 		typeMapping.getAttributes().getTransients().add(transientResource);
 		return transientResource;
 	}

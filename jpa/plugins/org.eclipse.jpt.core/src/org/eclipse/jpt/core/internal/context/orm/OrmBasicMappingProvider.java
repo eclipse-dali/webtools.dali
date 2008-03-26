@@ -34,7 +34,7 @@ public class OrmBasicMappingProvider implements OrmAttributeMappingProvider
 		super();
 	}
 
-	public String key() {
+	public String getKey() {
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
 

@@ -115,7 +115,7 @@ public interface EntityMappings extends OrmJpaContextNode, JpaStructureNode, Que
 
 		
 	
-	PersistenceUnitDefaults persistenceUnitDefaults();
+	PersistenceUnitDefaults getPersistenceUnitDefaults();
 	
 	/**
 	 * Return the {@link OrmPersistentType) listed in this mapping file

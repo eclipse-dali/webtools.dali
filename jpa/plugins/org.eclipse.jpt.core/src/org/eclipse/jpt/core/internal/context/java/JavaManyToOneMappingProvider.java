@@ -37,11 +37,11 @@ public class JavaManyToOneMappingProvider
 		super();
 	}
 
-	public String key() {
+	public String getKey() {
 		return MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public String annotationName() {
+	public String getAnnotationName() {
 		return ManyToOne.ANNOTATION_NAME;
 	}
 

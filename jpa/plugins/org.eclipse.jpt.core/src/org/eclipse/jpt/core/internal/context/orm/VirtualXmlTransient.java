@@ -31,7 +31,7 @@ public class VirtualXmlTransient extends AbstractJpaEObject implements XmlTransi
 	}
 
 	public String getName() {
-		return this.javaTransientMapping.persistentAttribute().getName();
+		return this.javaTransientMapping.getPersistentAttribute().getName();
 	}
 
 	public void setName(String newName) {

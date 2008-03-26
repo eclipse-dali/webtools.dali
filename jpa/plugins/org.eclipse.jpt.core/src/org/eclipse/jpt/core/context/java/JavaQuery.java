@@ -33,5 +33,5 @@ public interface JavaQuery extends Query, JavaJpaContextNode
 	
 	// **************** validation *********************************************
 	
-	TextRange nameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange(CompilationUnit astRoot);
 }

@@ -165,7 +165,7 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 	}
 
 	protected PersistenceXml buildPersistenceXml(PersistenceResource persistenceResource) {
-		return this.jpaFactory().buildPersistenceXml(this, persistenceResource);
+		return this.getJpaFactory().buildPersistenceXml(this, persistenceResource);
 	}
 	
 	

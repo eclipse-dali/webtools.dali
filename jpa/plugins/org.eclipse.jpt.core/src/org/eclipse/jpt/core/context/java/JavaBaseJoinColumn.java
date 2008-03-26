@@ -19,7 +19,7 @@ public interface JavaBaseJoinColumn extends BaseJoinColumn, JavaNamedColumn
 	/**
 	 * Return the (best guess) text location of the referenced column name
 	 */
-	TextRange referencedColumnNameTextRange(CompilationUnit astRoot);
+	TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot);
 
 	
 	Owner getOwner();

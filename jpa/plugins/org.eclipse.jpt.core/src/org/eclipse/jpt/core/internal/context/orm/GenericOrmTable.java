@@ -53,7 +53,7 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 	}
 	
 	protected JavaTable javaTable() {
-		JavaEntity javaEntity = ormEntity().javaEntity();
+		JavaEntity javaEntity = ormEntity().getJavaEntity();
 		if (javaEntity != null) {
 			return javaEntity.getTable();
 		}

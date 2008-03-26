@@ -24,5 +24,5 @@ import org.eclipse.jpt.core.utility.TextRange;
  */
 public interface JavaGenerator extends Generator, JavaJpaContextNode
 {
-	TextRange nameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange(CompilationUnit astRoot);
 }

@@ -179,7 +179,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	protected String defaultTargetEntity() {
 		RelationshipMapping javaMapping = javaRelationshipMapping();
 		if (javaMapping != null) {
-			if (persistentAttribute().isVirtual() && !getTypeMapping().isMetadataComplete()) {
+			if (getPersistentAttribute().isVirtual() && !getTypeMapping().isMetadataComplete()) {
 				return javaMapping.getTargetEntity();
 			}
 		}

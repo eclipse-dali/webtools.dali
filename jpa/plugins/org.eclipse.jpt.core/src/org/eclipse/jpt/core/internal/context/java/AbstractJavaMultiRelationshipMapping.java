@@ -53,7 +53,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 	protected AbstractJavaMultiRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.joinTable = jpaFactory().buildJavaJoinTable(this); 
+		this.joinTable = getJpaFactory().buildJavaJoinTable(this); 
 	}
 
 	public String getMappedBy() {
@@ -393,7 +393,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE,
 						this.getJoinTable(), 
-						this.getJoinTable().validationTextRange(astRoot))
+						this.getJoinTable().getValidationTextRange(astRoot))
 				);
 						
 		}

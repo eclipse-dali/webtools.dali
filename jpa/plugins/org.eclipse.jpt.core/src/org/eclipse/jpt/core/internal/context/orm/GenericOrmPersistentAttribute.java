@@ -75,7 +75,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 	
 	protected OrmAttributeMappingProvider attributeMappingProvider(String key) {
 		for (OrmAttributeMappingProvider provider : this.attributeMappingProviders) {
-			if (provider.key().equals(key)) {
+			if (provider.getKey().equals(key)) {
 				return provider;
 			}
 		}
@@ -83,7 +83,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 	}
 
 	protected OrmAttributeMapping buildAttributeMapping(String key) {
-		return this.attributeMappingProvider(key).buildAttributeMapping(jpaFactory(), this);
+		return this.attributeMappingProvider(key).buildAttributeMapping(getJpaFactory(), this);
 	}
 	
 	public String getId() {
@@ -154,7 +154,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 	}
 
 	public String getPrimaryKeyColumnName() {
-		return getMapping().primaryKeyColumnName();
+		return getMapping().getPrimaryKeyColumnName();
 	}
 
 //	@Override
@@ -338,11 +338,11 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 		return this.attributeMapping.contains(textOffset);
 	}
 	
-	public TextRange selectionTextRange() {
+	public TextRange getSelectionTextRange() {
 		if (isVirtual()) {
-			return getPersistentType().selectionTextRange();
+			return getPersistentType().getSelectionTextRange();
 		}
-		return this.attributeMapping.selectionTextRange();
+		return this.attributeMapping.getSelectionTextRange();
 	}
 	
 	@Override
@@ -351,11 +351,11 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 		getMapping().addToMessages(messages);
 	}
 	
-	public TextRange validationTextRange() {
+	public TextRange getValidationTextRange() {
 		if (isVirtual()) {
-			return getPersistentType().getMapping().attributesTextRange();
+			return getPersistentType().getMapping().getAttributesTextRange();
 		}
-		return this.attributeMapping.validationTextRange();
+		return this.attributeMapping.getValidationTextRange();
 	}
 
 	@Override

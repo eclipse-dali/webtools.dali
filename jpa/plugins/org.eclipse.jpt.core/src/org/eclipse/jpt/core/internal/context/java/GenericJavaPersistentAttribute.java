@@ -77,7 +77,7 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	}
 
 	public String getPrimaryKeyColumnName() {
-		return this.getMapping().primaryKeyColumnName();
+		return this.getMapping().getPrimaryKeyColumnName();
 	}
 
 	public boolean isOverridableAttribute() {
@@ -168,7 +168,7 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 
 		this.specifiedMapping = newMapping;	
 		if (newMapping != null) {
-			this.resourcePersistentAttribute.setMappingAnnotation(newMapping.annotationName());
+			this.resourcePersistentAttribute.setMappingAnnotation(newMapping.getAnnotationName());
 		}
 		else {
 			this.resourcePersistentAttribute.setMappingAnnotation(null);			
@@ -210,7 +210,7 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		return this.resourcePersistentAttribute.textRange(astRoot);
 	}
 
-	public TextRange validationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.selectionTextRange(astRoot);
 	}
 
@@ -218,7 +218,7 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		return this.resourcePersistentAttribute.nameTextRange(astRoot);
 	}
 	
-	public TextRange selectionTextRange() {
+	public TextRange getSelectionTextRange() {
 		return selectionTextRange(this.resourcePersistentAttribute.getMember().astRoot());
 	}
 	
@@ -235,7 +235,7 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	}
 	
 	public String specifiedMappingAnnotationName() {
-		return (this.specifiedMapping == null) ? null : this.specifiedMapping.annotationName();
+		return (this.specifiedMapping == null) ? null : this.specifiedMapping.getAnnotationName();
 	}
 	
 	protected void updateSpecifiedMapping(JavaResourcePersistentAttribute resourcePersistentAttribute) {

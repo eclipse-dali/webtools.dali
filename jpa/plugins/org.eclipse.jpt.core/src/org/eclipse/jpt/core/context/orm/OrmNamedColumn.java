@@ -30,7 +30,7 @@ public interface OrmNamedColumn extends NamedColumn, OrmJpaContextNode
 	/**
 	 * Return the (best guess) text location of the column's name.
 	 */
-	TextRange nameTextRange();
+	TextRange getNameTextRange();
 
 	/**
 	 * interface allowing columns to be used in multiple places
@@ -42,7 +42,7 @@ public interface OrmNamedColumn extends NamedColumn, OrmJpaContextNode
 		 * Return the column owner's text range. This can be returned by the
 		 * column when its annotation is not present.
 		 */
-		TextRange validationTextRange();
+		TextRange getValidationTextRange();
 
 	}
 }

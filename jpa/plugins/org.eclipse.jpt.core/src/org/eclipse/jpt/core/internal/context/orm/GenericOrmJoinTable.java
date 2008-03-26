@@ -170,7 +170,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		if (table() == null) {
 			addTableResource();
 		}
-		OrmJoinColumn joinColumn = jpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner());
+		OrmJoinColumn joinColumn = getJpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
 		XmlJoinColumn xmlJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumnImpl();
 		joinColumn.initialize(xmlJoinColumn);
@@ -261,7 +261,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		if (table() == null) {
 			addTableResource();
 		}
-		OrmJoinColumn joinColumn = jpaFactory().buildOrmJoinColumn(this, new InverseJoinColumnOwner());
+		OrmJoinColumn joinColumn = getJpaFactory().buildOrmJoinColumn(this, new InverseJoinColumnOwner());
 		this.specifiedInverseJoinColumns.add(index, joinColumn);
 		XmlJoinColumn xmlJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumnImpl();
 		joinColumn.initialize(xmlJoinColumn);
@@ -447,13 +447,13 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 	}	
 	
 	protected OrmJoinColumn buildJoinColumn(XmlJoinColumn joinColumn) {
-		OrmJoinColumn ormJoinColumn = jpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner());
+		OrmJoinColumn ormJoinColumn = getJpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner());
 		ormJoinColumn.initialize(joinColumn);
 		return ormJoinColumn;
 	}
 	
 	protected OrmJoinColumn buildInverseJoinColumn(XmlJoinColumn joinColumn) {
-		OrmJoinColumn ormJoinColumn = jpaFactory().buildOrmJoinColumn(this, new InverseJoinColumnOwner());
+		OrmJoinColumn ormJoinColumn = getJpaFactory().buildOrmJoinColumn(this, new InverseJoinColumnOwner());
 		ormJoinColumn.initialize(joinColumn);
 		return ormJoinColumn;
 	}
@@ -486,7 +486,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		OrmRelationshipMapping mapping = relationshipMapping();
 	
 		if (this.doContinue && ! hasResolvedSchema()) {
-			if (mapping.persistentAttribute().isVirtual()) {
+			if (mapping.getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -511,7 +511,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		}
 		
 		if (this.doContinue && ! isResolved()) {
-			if (mapping.persistentAttribute().isVirtual()) {
+			if (mapping.getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -580,8 +580,8 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 			return GenericOrmJoinTable.this.getName();
 		}
 
-		public TextRange validationTextRange() {
-			return GenericOrmJoinTable.this.validationTextRange();
+		public TextRange getValidationTextRange() {
+			return GenericOrmJoinTable.this.getValidationTextRange();
 		}
 	}
 

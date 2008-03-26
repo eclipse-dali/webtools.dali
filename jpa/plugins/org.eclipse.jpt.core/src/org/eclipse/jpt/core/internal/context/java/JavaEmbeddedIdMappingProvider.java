@@ -37,11 +37,11 @@ public class JavaEmbeddedIdMappingProvider
 		super();
 	}
 
-	public String key() {
+	public String getKey() {
 		return MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public String annotationName() {
+	public String getAnnotationName() {
 		return EmbeddedId.ANNOTATION_NAME;
 	}
 

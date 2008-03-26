@@ -45,7 +45,7 @@ public class GenericOrmEmbeddable extends AbstractOrmTypeMapping<XmlEmbeddable> 
 		return EmptyIterator.instance();
 	}
 
-	public int xmlSequence() {
+	public int getXmlSequence() {
 		return 2;
 	}
 
@@ -59,7 +59,7 @@ public class GenericOrmEmbeddable extends AbstractOrmTypeMapping<XmlEmbeddable> 
 	}
 	
 	public void removeFromResourceModel(XmlEntityMappings entityMappings) {
-		entityMappings.getEmbeddables().remove(this.typeMappingResource());
+		entityMappings.getEmbeddables().remove(this.getTypeMappingResource());
 	}
 
 	public XmlEmbeddable addToResourceModel(XmlEntityMappings entityMappings) {

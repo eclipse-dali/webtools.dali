@@ -90,9 +90,9 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 		firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, oldEntityMappings, null);
 	}
 	
-	public PersistenceUnitDefaults persistenceUnitDefaults() {
+	public PersistenceUnitDefaults getPersistenceUnitDefaults() {
 		if (getEntityMappings() != null) {
-			return getEntityMappings().persistenceUnitDefaults();
+			return getEntityMappings().getPersistenceUnitDefaults();
 		}
 		return null;
 	}
@@ -123,7 +123,7 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 	}
 	
 	protected EntityMappings buildEntityMappings(XmlEntityMappings xmlEntityMappings) {
-		return jpaFactory().buildEntityMappings(this, xmlEntityMappings);
+		return getJpaFactory().buildEntityMappings(this, xmlEntityMappings);
 	}
 	
 	
@@ -137,11 +137,11 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 	}
 	
 	// never actually selected
-	public TextRange selectionTextRange() {
+	public TextRange getSelectionTextRange() {
 		return TextRange.Empty.instance();
 	}
 	
-	public TextRange validationTextRange() {
+	public TextRange getValidationTextRange() {
 		return TextRange.Empty.instance();
 	}
 	

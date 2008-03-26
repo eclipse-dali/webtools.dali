@@ -38,7 +38,7 @@ public interface JpaStructureNode extends JpaNode
 	 * Return the text range do be used to select text in the editor
 	 * corresponding to this node.
 	 */
-	TextRange selectionTextRange();
+	TextRange getSelectionTextRange();
 	
 	/**
 	 * Return a unique identifier for all of this class of structure nodes

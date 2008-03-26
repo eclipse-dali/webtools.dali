@@ -253,7 +253,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 	}	
 
 	protected OrmPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn xmlPrimaryKeyJoinColumn) {
-		OrmPrimaryKeyJoinColumn ormPrimaryKeyJoinColumn = jpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+		OrmPrimaryKeyJoinColumn ormPrimaryKeyJoinColumn = getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		ormPrimaryKeyJoinColumn.initialize(xmlPrimaryKeyJoinColumn);
 		return ormPrimaryKeyJoinColumn;
 	}
@@ -343,7 +343,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 			return ormEntity().parentEntity().primaryKeyColumnName();
 		}
 		
-		public TextRange validationTextRange() {
+		public TextRange getValidationTextRange() {
 			// TODO Auto-generated method stub
 			return null;
 		}

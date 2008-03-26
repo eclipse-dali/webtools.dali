@@ -155,7 +155,7 @@ public class GenericJpaModel
 	 */
 	private void addJpaProject(JpaProject.Config config) {
 		dumpStackTrace();  // figure out exactly when JPA projects are added
-		this.jpaProjectHolders.add(this.jpaProjectHolder(config.project()).buildJpaProjectHolder(this, config));
+		this.jpaProjectHolders.add(this.jpaProjectHolder(config.getProject()).buildJpaProjectHolder(this, config));
 	}
 
 	/**
@@ -436,7 +436,7 @@ public class GenericJpaModel
 		}
 
 		public boolean holdsJpaProjectFor(IProject project) {
-			return this.config.project().equals(project);
+			return this.config.getProject().equals(project);
 		}
 
 		public JpaProject jpaProject() throws CoreException {
@@ -449,7 +449,7 @@ public class GenericJpaModel
 		}
 
 		private JpaProject buildJpaProject() throws CoreException {
-			JpaProject jpaProject = this.config.jpaPlatform().getJpaFactory().buildJpaProject(this.config);
+			JpaProject jpaProject = this.config.getJpaPlatform().getJpaFactory().buildJpaProject(this.config);
 			jpaProject.setUpdater(new AsynchronousJpaProjectUpdater(jpaProject));
 			return jpaProject;
 		}
@@ -467,7 +467,7 @@ public class GenericJpaModel
 		}
 
 		public JpaProjectHolder buildJpaProjectHolder(GenericJpaModel jm, Config c) {
-			throw new IllegalArgumentException(c.project().getName());
+			throw new IllegalArgumentException(c.getProject().getName());
 		}
 
 		public void remove() {
@@ -480,7 +480,7 @@ public class GenericJpaModel
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.config.project().getName());
+			return StringTools.buildToStringFor(this, this.config.getProject().getName());
 		}
 
 	}

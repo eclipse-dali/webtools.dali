@@ -28,7 +28,7 @@ public class GenericPersistenceUnitMetadata extends AbstractOrmJpaContextNode
 
 	public GenericPersistenceUnitMetadata(EntityMappings parent, XmlEntityMappings xmlEntityMappings) {
 		super(parent);
-		this.persistenceUnitDefaults = jpaFactory().buildPersistenceUnitDefaults(this, xmlEntityMappings);
+		this.persistenceUnitDefaults = getJpaFactory().buildPersistenceUnitDefaults(this, xmlEntityMappings);
 		this.initialize(xmlEntityMappings);
 	}
 
@@ -86,7 +86,7 @@ public class GenericPersistenceUnitMetadata extends AbstractOrmJpaContextNode
 		return this.entityMappings.getPersistenceUnitMetadata();
 	}
 	
-	public TextRange validationTextRange() {
+	public TextRange getValidationTextRange() {
 		if (persistenceUnitMetadata() != null) {
 			return persistenceUnitMetadata().validationTextRange();
 		}

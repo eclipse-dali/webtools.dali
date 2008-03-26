@@ -121,9 +121,9 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 		return javaEntity().getTableName();
 	}
 	
-	public TextRange validationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = columnResource().textRange(astRoot);
-		return (textRange != null) ? textRange : this.getOwner().validationTextRange(astRoot);	
+		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);	
 	}
 
 	

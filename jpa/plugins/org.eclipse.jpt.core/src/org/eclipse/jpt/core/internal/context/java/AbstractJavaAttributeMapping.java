@@ -39,12 +39,12 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 	@SuppressWarnings("unchecked")
 	protected T mappingResource() {
 		if (isDefault()) {
-			return (T) this.resourcePersistentAttribute.nullMappingAnnotation(annotationName());
+			return (T) this.resourcePersistentAttribute.nullMappingAnnotation(getAnnotationName());
 		}
-		return (T) this.resourcePersistentAttribute.mappingAnnotation(annotationName());
+		return (T) this.resourcePersistentAttribute.mappingAnnotation(getAnnotationName());
 	}
 	
-	public GenericJavaPersistentAttribute persistentAttribute() {
+	public GenericJavaPersistentAttribute getPersistentAttribute() {
 		return (GenericJavaPersistentAttribute) this.getParent();
 	}
 
@@ -57,7 +57,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 	 * or a "default" one
 	 */
 	public boolean isDefault() {
-		return this.persistentAttribute().mappingIsDefault(this);
+		return this.getPersistentAttribute().mappingIsDefault(this);
 	}
 
 	protected boolean embeddableOwned() {
@@ -69,23 +69,23 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 	}
 	
 	public TypeMapping getTypeMapping() {
-		return this.persistentAttribute().getTypeMapping();
+		return this.getPersistentAttribute().getTypeMapping();
 	}
 
 	public String attributeName() {
-		return this.persistentAttribute().getName();
+		return this.getPersistentAttribute().getName();
 	}
 	
 	public Table getDbTable(String tableName) {
 		return getTypeMapping().getDbTable(tableName);
 	}
 	
-	public TextRange validationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = this.mappingResource().textRange(astRoot);
-		return (textRange != null) ? textRange : this.persistentAttribute().validationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getPersistentAttribute().getValidationTextRange(astRoot);
 	}
 	
-	public String primaryKeyColumnName() {
+	public String getPrimaryKeyColumnName() {
 		return null;
 	}
 
@@ -132,7 +132,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 	}
 	
 	protected void addModifierMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		GenericJavaPersistentAttribute attribute = this.persistentAttribute();
+		GenericJavaPersistentAttribute attribute = this.getPersistentAttribute();
 		if (attribute.getMapping().getKey() != MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY
 				&& this.resourcePersistentAttribute.isForField()) {
 			int flags;
@@ -150,7 +150,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD,
 						new String[] {attribute.getName()},
-						attribute, attribute.validationTextRange(astRoot))
+						attribute, attribute.getValidationTextRange(astRoot))
 				);
 			}
 			
@@ -160,7 +160,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD,
 						new String[] {attribute.getName()},
-						attribute, attribute.validationTextRange(astRoot))
+						attribute, attribute.getValidationTextRange(astRoot))
 				);
 				
 			}
@@ -173,8 +173,8 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
-					new String[] {this.persistentAttribute().getName()},
-					this, this.validationTextRange(astRoot))
+					new String[] {this.getPersistentAttribute().getName()},
+					this, this.getValidationTextRange(astRoot))
 			);
 		}
 	}

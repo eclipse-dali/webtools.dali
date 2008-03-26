@@ -139,22 +139,22 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 		return getDbColumn() != null;
 	}
 
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		if (columnResource() != null) {
 			TextRange textRange = columnResource().nameTextRange();
 			if (textRange != null) {
 				return textRange;
 			}
 		}
-		return getOwner().validationTextRange();
+		return getOwner().getValidationTextRange();
 	}
 
-	public TextRange validationTextRange() {
+	public TextRange getValidationTextRange() {
 		TextRange textRange = columnResource().validationTextRange();
 		if (textRange != null) {
 			return textRange;
 		}
-		return getOwner().validationTextRange();
+		return getOwner().getValidationTextRange();
 	}
 
 	

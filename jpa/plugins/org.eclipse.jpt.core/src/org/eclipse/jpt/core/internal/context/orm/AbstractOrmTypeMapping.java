@@ -67,7 +67,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 	public void setClass(String newClass) {
 		String oldClass = this.class_;
 		this.class_ = newClass;
-		this.typeMappingResource().setClassName(newClass);
+		this.getTypeMappingResource().setClassName(newClass);
 		firePropertyChanged(CLASS_PROPERTY, oldClass, newClass);
 		getPersistentType().classChanged(oldClass, newClass);
 	}
@@ -89,7 +89,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 	public void setSpecifiedAccess(AccessType newSpecifiedAccess) {
 		AccessType oldSpecifiedAccess = this.specifiedAccess;
 		this.specifiedAccess = newSpecifiedAccess;
-		this.typeMappingResource().setAccess(AccessType.toXmlResourceModel(newSpecifiedAccess));
+		this.getTypeMappingResource().setAccess(AccessType.toXmlResourceModel(newSpecifiedAccess));
 		firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, oldSpecifiedAccess, newSpecifiedAccess);
 	}
 
@@ -123,7 +123,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 	public void setSpecifiedMetadataComplete(Boolean newSpecifiedMetadataComplete) {
 		Boolean oldMetadataComplete = this.specifiedMetadataComplete;
 		this.specifiedMetadataComplete = newSpecifiedMetadataComplete;
-		this.typeMappingResource().setMetadataComplete(newSpecifiedMetadataComplete);
+		this.getTypeMappingResource().setMetadataComplete(newSpecifiedMetadataComplete);
 		firePropertyChanged(SPECIFIED_METADATA_COMPLETE_PROPERTY, oldMetadataComplete, newSpecifiedMetadataComplete);
 	}
 
@@ -198,7 +198,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		return EmptyIterator.instance();
 	}
 
-	public T typeMappingResource() {
+	public T getTypeMappingResource() {
 		return this.typeMapping;
 	}
 	
@@ -257,7 +257,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 	}
 	
 	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType resourcePersistentType) {
-		return jpaFactory().buildJavaPersistentType(this, resourcePersistentType);
+		return getJpaFactory().buildJavaPersistentType(this, resourcePersistentType);
 	}
 
 	public void initialize(T typeMapping) {
@@ -295,7 +295,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		return null;
 	}
 	
-	public TextRange selectionTextRange() {
+	public TextRange getSelectionTextRange() {
 		return this.typeMapping.selectionTextRange();
 	}
 	
@@ -303,7 +303,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		return this.typeMapping.classTextRange();
 	}
 	
-	public TextRange attributesTextRange() {
+	public TextRange getAttributesTextRange() {
 		return this.typeMapping.attributesTextRange();
 	}
 
@@ -351,7 +351,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		}
 	}
 
-	public TextRange validationTextRange() {
+	public TextRange getValidationTextRange() {
 		return this.typeMapping.validationTextRange();
 	}
 }

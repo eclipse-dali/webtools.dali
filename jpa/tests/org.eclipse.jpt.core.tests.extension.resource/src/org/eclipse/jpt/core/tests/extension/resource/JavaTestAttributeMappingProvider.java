@@ -33,11 +33,11 @@ public class JavaTestAttributeMappingProvider
 		super();
 	}
 
-	public String key() {
+	public String getKey() {
 		return JavaTestAttributeMapping.TEST_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public String annotationName() {
+	public String getAnnotationName() {
 		return JavaTestAttributeMapping.TEST_ATTRIBUTE_ANNOTATION_NAME;
 	}
 

@@ -36,7 +36,7 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 
 	public GenericJavaAttributeOverride(JavaJpaContextNode parent, AttributeOverride.Owner owner) {
 		super(parent, owner);
-		this.column = jpaFactory().buildJavaColumn(this, this);
+		this.column = getJpaFactory().buildJavaColumn(this, this);
 	}
 	
 	@Override
@@ -149,7 +149,7 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_TABLE,
 						new String[] {getName(), table, getColumn().getName()},
 						getColumn(), 
-						getColumn().tableTextRange(astRoot))
+						getColumn().getTableTextRange(astRoot))
 				);
 			}
 			else {
@@ -159,7 +159,7 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 							JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
 							new String[] {table, getColumn().getName()}, 
 							getColumn(), 
-							getColumn().tableTextRange(astRoot))
+							getColumn().getTableTextRange(astRoot))
 					);
 			}
 			doContinue = false;
@@ -173,7 +173,7 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,
 						new String[] {getName(), getColumn().getName()}, 
 						getColumn(), 
-						getColumn().nameTextRange(astRoot))
+						getColumn().getNameTextRange(astRoot))
 				);
 			}
 			else {
@@ -183,7 +183,7 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 							JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
 							new String[] {getColumn().getName()}, 
 							getColumn(), 
-							getColumn().nameTextRange(astRoot))
+							getColumn().getNameTextRange(astRoot))
 					);
 			}
 		}

@@ -37,10 +37,10 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	
 	public GenericOrmVersionMapping(OrmPersistentAttribute parent) {
 		super(parent);
-		this.column = jpaFactory().buildOrmColumn(this, this);
+		this.column = getJpaFactory().buildOrmColumn(this, this);
 	}
 
-	public int xmlSequence() {
+	public int getXmlSequence() {
 		return 2;
 	}
 
@@ -82,7 +82,7 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 
 	public XmlVersion addToResourceModel(AbstractXmlTypeMapping typeMapping) {
 		XmlVersion version = OrmFactory.eINSTANCE.createXmlVersionImpl();
-		persistentAttribute().initialize(version);
+		getPersistentAttribute().initialize(version);
 		typeMapping.getAttributes().getVersions().add(version);
 		return version;
 	}
@@ -155,14 +155,14 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 		boolean doContinue = entityOwned() &&  this.connectionProfileIsActive();
 		
 		if (doContinue && getTypeMapping().tableNameIsInvalid(table)) {
-			if (persistentAttribute().isVirtual()) {
+			if (getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_TABLE,
-						new String[] {persistentAttribute().getName(), table, column.getName()},
+						new String[] {getPersistentAttribute().getName(), table, column.getName()},
 						column,
-						column.tableTextRange())
+						column.getTableTextRange())
 				);
 			}
 			else {
@@ -172,21 +172,21 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 						JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
 						new String[] {table, column.getName()}, 
 						column,
-						column.tableTextRange())
+						column.getTableTextRange())
 				);
 			}
 			doContinue = false;
 		}
 		
 		if (doContinue && ! column.isResolved()) {
-			if (persistentAttribute().isVirtual()) {
+			if (getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
-						new String[] {persistentAttribute().getName(), column.getName()}, 
+						new String[] {getPersistentAttribute().getName(), column.getName()}, 
 						column,
-						column.nameTextRange())
+						column.getNameTextRange())
 				);
 			}
 			else {
@@ -196,7 +196,7 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
 						new String[] {column.getName()}, 
 						column,
-						column.nameTextRange())
+						column.getNameTextRange())
 				);
 			}
 		}

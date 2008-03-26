@@ -37,7 +37,7 @@ public class VirtualXmlVersion extends AbstractJpaEObject implements XmlVersion
 	}
 
 	public String getName() {
-		return this.javaVersionMapping.persistentAttribute().getName();
+		return this.javaVersionMapping.getPersistentAttribute().getName();
 	}
 
 	public void setName(String newName) {

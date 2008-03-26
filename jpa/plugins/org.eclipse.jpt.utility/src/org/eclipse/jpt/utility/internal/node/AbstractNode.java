@@ -394,7 +394,7 @@ public abstract class AbstractNode
 	}
 
 	protected void validate() {
-		this.validator().validate();
+		this.getValidator().validate();
 	}
 
 	/**
@@ -404,11 +404,11 @@ public abstract class AbstractNode
 	 * Typically only the root node directly holds a validator.
 	 * NB: Root node model implementations will need to override this method.
 	 */
-	public Node.Validator validator() {
+	public Node.Validator getValidator() {
 		if (this.parent == null) {
 			throw new IllegalStateException("This node should not be firing change events during its construction.");
 		}
-		return this.parent.validator();
+		return this.parent.getValidator();
 	}
 
 	/**

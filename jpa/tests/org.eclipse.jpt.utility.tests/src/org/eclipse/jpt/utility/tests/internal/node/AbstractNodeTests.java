@@ -519,7 +519,7 @@ public class AbstractNodeTests extends TestCase {
 			super(null, name);
 		}
 		@Override
-		public Validator validator() {
+		public Validator getValidator() {
 			return Node.NULL_VALIDATOR;
 		}
 	}

@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
+import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
@@ -38,9 +38,9 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
+import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaGenerator;
@@ -145,7 +145,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	public GenericJavaEntity(JavaPersistentType parent) {
 		super(parent);
-		this.table = jpaFactory().buildJavaTable(this);
+		this.table = getJpaFactory().buildJavaTable(this);
 		this.discriminatorColumn = buildJavaDiscriminatorColumn();
 		this.specifiedSecondaryTables = new ArrayList<JavaSecondaryTable>();
 		this.specifiedPrimaryKeyJoinColumns = new ArrayList<JavaPrimaryKeyJoinColumn>();
@@ -162,7 +162,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected JavaDiscriminatorColumn buildJavaDiscriminatorColumn() {
-		return jpaFactory().buildJavaDiscriminatorColumn(this, buildDiscriminatorColumnOwner());
+		return getJpaFactory().buildJavaDiscriminatorColumn(this, buildDiscriminatorColumnOwner());
 	}
 	
 	protected JavaNamedColumn.Owner buildDiscriminatorColumnOwner() {
@@ -171,8 +171,8 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 				return GenericJavaEntity.this.getDbTable(tableName);
 			}
 
-			public TextRange validationTextRange(CompilationUnit astRoot) {
-				return GenericJavaEntity.this.validationTextRange(astRoot);
+			public TextRange getValidationTextRange(CompilationUnit astRoot) {
+				return GenericJavaEntity.this.getValidationTextRange(astRoot);
 			}
 
 			public TypeMapping getTypeMapping() {
@@ -364,7 +364,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 
 	//****************** IJavaTypeMapping implemenation *******************
 
-	public String annotationName() {
+	public String getAnnotationName() {
 		return EntityAnnotation.ANNOTATION_NAME;
 	}
 
@@ -442,7 +442,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	public JavaSecondaryTable addSpecifiedSecondaryTable(int index) {
-		JavaSecondaryTable secondaryTable = jpaFactory().buildJavaSecondaryTable(this);
+		JavaSecondaryTable secondaryTable = getJpaFactory().buildJavaSecondaryTable(this);
 		this.specifiedSecondaryTables.add(index, secondaryTable);
 		SecondaryTableAnnotation secondaryTableResource = (SecondaryTableAnnotation) this.javaResourcePersistentType.addAnnotation(index, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
 		secondaryTable.initializeFromResource(secondaryTableResource);
@@ -574,7 +574,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		if (getTableGenerator() != null) {
 			throw new IllegalStateException("tableGenerator already exists");
 		}
-		this.tableGenerator = jpaFactory().buildJavaTableGenerator(this);
+		this.tableGenerator = getJpaFactory().buildJavaTableGenerator(this);
 		TableGeneratorAnnotation tableGeneratorResource = (TableGeneratorAnnotation) this.javaResourcePersistentType.addAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 		this.tableGenerator.initializeFromResource(tableGeneratorResource);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
@@ -605,7 +605,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		if (getSequenceGenerator() != null) {
 			throw new IllegalStateException("sequenceGenerator already exists");
 		}
-		this.sequenceGenerator = jpaFactory().buildJavaSequenceGenerator(this);
+		this.sequenceGenerator = getJpaFactory().buildJavaSequenceGenerator(this);
 		SequenceGeneratorAnnotation sequenceGeneratorResource = (SequenceGeneratorAnnotation) this.javaResourcePersistentType.addAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 		this.sequenceGenerator.initializeFromResource(sequenceGeneratorResource);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
@@ -689,7 +689,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			//cause change notifications to be sent to the UI in the wrong order
 			this.defaultPrimaryKeyJoinColumn = null;
 		}
-		JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().buildJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+		JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
 		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = (PrimaryKeyJoinColumnAnnotation) this.javaResourcePersistentType.addAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME);
 		primaryKeyJoinColumn.initializeFromResource(pkJoinColumnResource);
@@ -759,7 +759,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	protected JavaAttributeOverride addSpecifiedAttributeOverride(int index) {
-		JavaAttributeOverride attributeOverride = jpaFactory().buildJavaAttributeOverride(this, createAttributeOverrideOwner());
+		JavaAttributeOverride attributeOverride = getJpaFactory().buildJavaAttributeOverride(this, createAttributeOverrideOwner());
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
 		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		attributeOverride.initializeFromResource(attributeOverrideResource);
@@ -805,7 +805,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	protected JavaAttributeOverride setAttributeOverrideSpecified(JavaAttributeOverride oldAttributeOverride) {
 		int index = specifiedAttributeOverridesSize();
-		JavaAttributeOverride newAttributeOverride = jpaFactory().buildJavaAttributeOverride(this, createAttributeOverrideOwner());
+		JavaAttributeOverride newAttributeOverride = getJpaFactory().buildJavaAttributeOverride(this, createAttributeOverrideOwner());
 		this.specifiedAttributeOverrides.add(index, newAttributeOverride);
 		
 		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
@@ -925,7 +925,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	public JavaAssociationOverride addSpecifiedAssociationOverride(int index) {
-		JavaAssociationOverride associationOverride = jpaFactory().buildJavaAssociationOverride(this, createAssociationOverrideOwner());
+		JavaAssociationOverride associationOverride = getJpaFactory().buildJavaAssociationOverride(this, createAssociationOverrideOwner());
 		this.specifiedAssociationOverrides.add(index, associationOverride);
 		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
 		associationOverride.initializeFromResource(associationOverrideResource);
@@ -989,7 +989,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	protected JavaAssociationOverride setAssociationOverrideSpecified(JavaAssociationOverride oldAssociationOverride) {
 		int index = specifiedAssociationOverridesSize();
-		JavaAssociationOverride newAssociationOverride = jpaFactory().buildJavaAssociationOverride(this, createAssociationOverrideOwner());
+		JavaAssociationOverride newAssociationOverride = getJpaFactory().buildJavaAssociationOverride(this, createAssociationOverrideOwner());
 		this.specifiedAssociationOverrides.add(index, newAssociationOverride);
 		
 		AssociationOverrideAnnotation attributeOverrideResource = (AssociationOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
@@ -1023,7 +1023,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	public JavaNamedQuery addNamedQuery(int index) {
-		JavaNamedQuery namedQuery = jpaFactory().buildJavaNamedQuery(this);
+		JavaNamedQuery namedQuery = getJpaFactory().buildJavaNamedQuery(this);
 		this.namedQueries.add(index, namedQuery);
 		NamedQueryAnnotation namedQueryAnnotation = (NamedQueryAnnotation) this.javaResourcePersistentType.addAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueries.ANNOTATION_NAME);
 		namedQuery.initializeFromResource(namedQueryAnnotation);
@@ -1064,7 +1064,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	public JavaNamedNativeQuery addNamedNativeQuery(int index) {
-		JavaNamedNativeQuery namedNativeQuery = jpaFactory().buildJavaNamedNativeQuery(this);
+		JavaNamedNativeQuery namedNativeQuery = getJpaFactory().buildJavaNamedNativeQuery(this);
 		this.namedNativeQueries.add(index, namedNativeQuery);
 		NamedNativeQueryAnnotation namedNativeQueryAnnotation = (NamedNativeQueryAnnotation) this.javaResourcePersistentType.addAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueries.ANNOTATION_NAME);
 		namedNativeQuery.initializeFromResource(namedNativeQueryAnnotation);		
@@ -1401,7 +1401,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	protected JavaSecondaryTable buildSecondaryTable(SecondaryTableAnnotation secondaryTableResource) {
-		JavaSecondaryTable secondaryTable = jpaFactory().buildJavaSecondaryTable(this);
+		JavaSecondaryTable secondaryTable = getJpaFactory().buildJavaSecondaryTable(this);
 		secondaryTable.initializeFromResource(secondaryTableResource);
 		return secondaryTable;
 	}
@@ -1424,7 +1424,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected JavaTableGenerator buildTableGenerator(TableGeneratorAnnotation tableGeneratorResource) {
-		JavaTableGenerator tableGenerator = jpaFactory().buildJavaTableGenerator(this);
+		JavaTableGenerator tableGenerator = getJpaFactory().buildJavaTableGenerator(this);
 		tableGenerator.initializeFromResource(tableGeneratorResource);
 		return tableGenerator;
 	}
@@ -1451,7 +1451,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected JavaSequenceGenerator buildSequenceGenerator(SequenceGeneratorAnnotation sequenceGeneratorResource) {
-		JavaSequenceGenerator sequenceGenerator = jpaFactory().buildJavaSequenceGenerator(this);
+		JavaSequenceGenerator sequenceGenerator = getJpaFactory().buildJavaSequenceGenerator(this);
 		sequenceGenerator.initializeFromResource(sequenceGeneratorResource);
 		return sequenceGenerator;
 	}
@@ -1481,7 +1481,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected JavaPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(PrimaryKeyJoinColumnAnnotation primaryKeyJoinColumnResource) {
-		JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().buildJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+		JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		primaryKeyJoinColumn.initializeFromResource(primaryKeyJoinColumnResource);
 		return primaryKeyJoinColumn;
 	}
@@ -1519,7 +1519,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected JavaAttributeOverride buildAttributeOverride(AttributeOverrideAnnotation attributeOverrideResource) {
-		JavaAttributeOverride attributeOverride = jpaFactory().buildJavaAttributeOverride(this, createAttributeOverrideOwner());
+		JavaAttributeOverride attributeOverride = getJpaFactory().buildJavaAttributeOverride(this, createAttributeOverrideOwner());
 		attributeOverride.initializeFromResource(attributeOverrideResource);
 		return attributeOverride;
 	}
@@ -1575,7 +1575,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected JavaAssociationOverride buildAssociationOverride(AssociationOverrideAnnotation associationOverrideResource) {
-		JavaAssociationOverride associationOverride = jpaFactory().buildJavaAssociationOverride(this, createAssociationOverrideOwner());
+		JavaAssociationOverride associationOverride = getJpaFactory().buildJavaAssociationOverride(this, createAssociationOverrideOwner());
 		associationOverride.initializeFromResource(associationOverrideResource);
 		return associationOverride;
 	}
@@ -1644,13 +1644,13 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	
 	protected JavaNamedQuery buildNamedQuery(NamedQueryAnnotation namedQueryResource) {
-		JavaNamedQuery namedQuery = jpaFactory().buildJavaNamedQuery(this);
+		JavaNamedQuery namedQuery = getJpaFactory().buildJavaNamedQuery(this);
 		namedQuery.initializeFromResource(namedQueryResource);
 		return namedQuery;
 	}
 	
 	protected JavaNamedNativeQuery buildNamedNativeQuery(NamedNativeQueryAnnotation namedNativeQueryResource) {
-		JavaNamedNativeQuery namedNativeQuery = jpaFactory().buildJavaNamedNativeQuery(this);
+		JavaNamedNativeQuery namedNativeQuery = getJpaFactory().buildJavaNamedNativeQuery(this);
 		namedNativeQuery.initializeFromResource(namedNativeQueryResource);
 		return namedNativeQuery;
 	}
@@ -1780,7 +1780,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.ENTITY_NO_ID,
 					new String[] {this.getName()},
-					this, this.validationTextRange(astRoot))
+					this, this.getValidationTextRange(astRoot))
 			);
 		}
 	}
@@ -1813,7 +1813,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
 							new String[] {current.getName()},
 							current,
-							current.nameTextRange(astRoot))
+							current.getNameTextRange(astRoot))
 					);
 				}
 			}
@@ -1837,7 +1837,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 							JpaValidationMessages.QUERY_DUPLICATE_NAME,
 							new String[] {current.getName()},
 							current,
-							current.nameTextRange(astRoot))
+							current.getNameTextRange(astRoot))
 					);
 				}
 			}
@@ -1848,8 +1848,8 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	class PrimaryKeyJoinColumnOwner implements JavaBaseJoinColumn.Owner
 	{
-		public TextRange validationTextRange(CompilationUnit astRoot) {
-			return GenericJavaEntity.this.validationTextRange(astRoot);
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return GenericJavaEntity.this.getValidationTextRange(astRoot);
 		}
 
 		public TypeMapping getTypeMapping() {

@@ -66,7 +66,7 @@ public class VirtualXmlManyToMany extends AbstractJpaEObject implements XmlManyT
 //	}
 	
 	public String getName() {
-		return this.javaManyToManyMapping.persistentAttribute().getName();
+		return this.javaManyToManyMapping.getPersistentAttribute().getName();
 	}
 
 	public void setName(String newName) {

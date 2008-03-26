@@ -88,11 +88,11 @@ public class GenericJavaGeneratedValue extends AbstractJavaJpaContextNode implem
 		firePropertyChanged(GeneratedValue.SPECIFIED_GENERATOR_PROPERTY, oldGenerator, newGenerator);
 	}
 	
-	public TextRange validationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.generatedValueResource.textRange(astRoot);
 	}
 
-	public TextRange generatorTextRange(CompilationUnit astRoot) {
+	public TextRange getGeneratorTextRange(CompilationUnit astRoot) {
 		return this.generatedValueResource.generatorTextRange(astRoot);
 	}
 

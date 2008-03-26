@@ -97,7 +97,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		JavaTypeMapping newMapping = createJavaTypeMappingFromMappingKey(key);
 	
 		this.mapping = newMapping;	
-		this.resourcePersistentType.setMappingAnnotation(newMapping.annotationName());
+		this.resourcePersistentType.setMappingAnnotation(newMapping.getAnnotationName());
 		firePropertyChanged(PersistentType.MAPPING_PROPERTY, oldMapping, newMapping);
 	
 		if (oldMapping != null) {
@@ -249,7 +249,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		return this.resourcePersistentType.textRange(astRoot);
 	}
 
-	public TextRange validationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.selectionTextRange(astRoot);
 	}
 
@@ -257,7 +257,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		return this.resourcePersistentType.nameTextRange(astRoot);
 	}
 	
-	public TextRange selectionTextRange() {
+	public TextRange getSelectionTextRange() {
 		return this.selectionTextRange(this.resourcePersistentType.getMember().astRoot());
 	}
 	
@@ -375,7 +375,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	
 	protected void updateMapping(JavaResourcePersistentType resourcePersistentType) {
 		String javaMappingAnnotationName = this.javaMappingAnnotationName(resourcePersistentType);
-		if (getMapping().annotationName() != javaMappingAnnotationName) {
+		if (getMapping().getAnnotationName() != javaMappingAnnotationName) {
 			setMapping(createJavaTypeMappingFromAnnotation(javaMappingAnnotationName, resourcePersistentType));
 		}
 		else {
@@ -424,7 +424,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 	
 	protected JavaPersistentAttribute createAttribute(JavaResourcePersistentAttribute persistentAttributeResource) {
-		JavaPersistentAttribute javaPersistentAttribute = jpaFactory().buildJavaPersistentAttribute(this);
+		JavaPersistentAttribute javaPersistentAttribute = getJpaFactory().buildJavaPersistentAttribute(this);
 		javaPersistentAttribute.initializeFromResource(persistentAttributeResource);
 		return javaPersistentAttribute;
 	}

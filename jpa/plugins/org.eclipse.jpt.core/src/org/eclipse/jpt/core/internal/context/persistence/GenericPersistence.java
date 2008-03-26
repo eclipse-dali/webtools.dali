@@ -139,7 +139,7 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected PersistenceUnit createPersistenceUnit(XmlPersistenceUnit xmlPersistenceUnit) {
-		return jpaFactory().buildPersistenceUnit(this, xmlPersistenceUnit);
+		return getJpaFactory().buildPersistenceUnit(this, xmlPersistenceUnit);
 	}
 	
 	
@@ -166,11 +166,11 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 		return xmlPersistence.containsOffset(textOffset);
 	}
 	
-	public TextRange selectionTextRange() {
+	public TextRange getSelectionTextRange() {
 		return xmlPersistence.selectionTextRange();
 	}
 	
-	public TextRange validationTextRange() {
+	public TextRange getValidationTextRange() {
 		return xmlPersistence.validationTextRange();
 	}
 
@@ -199,7 +199,7 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENCE_NO_PERSISTENCE_UNIT,
 						this, 
-						this.validationTextRange())
+						this.getValidationTextRange())
 				);
 		}
 	}
@@ -211,7 +211,7 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 						IMessage.NORMAL_SEVERITY,
 						JpaValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS,
 						this, 
-						this.validationTextRange())
+						this.getValidationTextRange())
 				);
 		}
 	}

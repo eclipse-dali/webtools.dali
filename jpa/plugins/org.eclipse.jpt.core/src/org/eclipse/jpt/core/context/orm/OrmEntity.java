@@ -64,7 +64,7 @@ public interface OrmEntity extends OrmTypeMapping, Entity, OrmGeneratorHolder
 	 * Return the Java Entity this ORM Entity corresponds to.  Return null if there is no
 	 * java entity.
 	 */
-	JavaEntity javaEntity();
+	JavaEntity getJavaEntity();
 
 	void initialize(XmlEntity entity);
 

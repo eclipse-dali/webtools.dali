@@ -33,7 +33,7 @@ public class OrmIdMappingProvider implements OrmAttributeMappingProvider
 	private OrmIdMappingProvider() {
 		super();
 	}
-	public String key() {
+	public String getKey() {
 		return MappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
 	}
 	

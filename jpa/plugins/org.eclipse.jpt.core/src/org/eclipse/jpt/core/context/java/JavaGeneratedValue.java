@@ -29,7 +29,7 @@ public interface JavaGeneratedValue extends GeneratedValue, JavaJpaContextNode
 	/**
 	 * Return the (best guess) text location of the generator.
 	 */
-	TextRange generatorTextRange(CompilationUnit astRoot);
+	TextRange getGeneratorTextRange(CompilationUnit astRoot);
 	
 	void initializeFromResource(GeneratedValueAnnotation generatedValue);
 	

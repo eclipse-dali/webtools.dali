@@ -37,11 +37,11 @@ public class JavaBasicMappingProvider
 		super();
 	}
 
-	public String key() {
+	public String getKey() {
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public String annotationName() {
+	public String getAnnotationName() {
 		return Basic.ANNOTATION_NAME;
 	}
 

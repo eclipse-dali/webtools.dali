@@ -27,7 +27,7 @@ public interface OrmBaseJoinColumn extends BaseJoinColumn, OrmNamedColumn
 	/**
 	 * Return the (best guess) text location of the referenced column name
 	 */
-	TextRange referencedColumnNameTextRange();
+	TextRange getReferencedColumnNameTextRange();
 
 	
 	Owner getOwner();

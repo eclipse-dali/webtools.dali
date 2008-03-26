@@ -35,7 +35,7 @@ public class GenericJavaManyToManyMapping extends AbstractJavaMultiRelationshipM
 		return MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public String annotationName() {
+	public String getAnnotationName() {
 		return ManyToMany.ANNOTATION_NAME;
 	}
 

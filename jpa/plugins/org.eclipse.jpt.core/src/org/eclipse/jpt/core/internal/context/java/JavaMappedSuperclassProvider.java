@@ -37,11 +37,11 @@ public class JavaMappedSuperclassProvider
 		super();
 	}
 
-	public String key() {
+	public String getKey() {
 		return MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY;
 	}
 	
-	public String annotationName() {
+	public String getAnnotationName() {
 		return MappedSuperclassAnnotation.ANNOTATION_NAME;
 	}
 

@@ -88,7 +88,7 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 	}
 	
 	public JavaQueryHint addHint(int index) {
-		JavaQueryHint hint = jpaFactory().buildJavaQueryHint(this);
+		JavaQueryHint hint = getJpaFactory().buildJavaQueryHint(this);
 		this.hints.add(index, hint);
 		this.query().addHint(index);
 		this.fireItemAdded(Query.HINTS_LIST, index, hint);
@@ -161,16 +161,16 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 	}
 
 	protected JavaQueryHint createQueryHint(QueryHintAnnotation hintResource) {
-		JavaQueryHint queryHint =  jpaFactory().buildJavaQueryHint(this);
+		JavaQueryHint queryHint =  getJpaFactory().buildJavaQueryHint(this);
 		queryHint.initializeFromResource(hintResource);
 		return queryHint;
 	}
 
-	public TextRange validationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.queryResource.textRange(astRoot);
 	}
 	
-	public TextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return this.queryResource.nameTextRange(astRoot);
 	}
 	

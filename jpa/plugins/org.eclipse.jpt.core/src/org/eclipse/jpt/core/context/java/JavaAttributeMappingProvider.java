@@ -26,9 +26,9 @@ public interface JavaAttributeMappingProvider {
 	/**
 	 * A unique String that corresponds to the IJavaAttributeMapping key 
 	 */
-	String key();
+	String getKey();
 
-	String annotationName();
+	String getAnnotationName();
 	
 	/**
 	 * Create an {@link JavaAttributeMapping} for the given attribute.  Use the {@link JpaFactory}

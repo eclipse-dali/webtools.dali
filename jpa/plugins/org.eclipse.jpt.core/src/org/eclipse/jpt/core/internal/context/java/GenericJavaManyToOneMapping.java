@@ -37,7 +37,7 @@ public class GenericJavaManyToOneMapping extends AbstractJavaSingleRelationshipM
 			JPA.JOIN_TABLE);
 	}
 
-	public String annotationName() {
+	public String getAnnotationName() {
 		return ManyToOne.ANNOTATION_NAME;
 	}
 

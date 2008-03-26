@@ -30,7 +30,7 @@ public interface JavaNamedColumn extends NamedColumn, JavaJpaContextNode
 	/**
 	 * Return the (best guess) text location of the column's name.
 	 */
-	TextRange nameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange(CompilationUnit astRoot);
 
 	/**
 	 * interface allowing columns to be used in multiple places
@@ -42,7 +42,7 @@ public interface JavaNamedColumn extends NamedColumn, JavaJpaContextNode
 		 * Return the column owner's text range. This can be returned by the
 		 * column when its annotation is not present.
 		 */
-		TextRange validationTextRange(CompilationUnit astRoot);
+		TextRange getValidationTextRange(CompilationUnit astRoot);
 
 	}
 

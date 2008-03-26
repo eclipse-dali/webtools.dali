@@ -27,7 +27,7 @@ public class SimpleJpaProjectConfig implements JpaProject.Config {
 		super();
 	}
 
-	public IProject project() {
+	public IProject getProject() {
 		return this.project;
 	}
 
@@ -35,7 +35,7 @@ public class SimpleJpaProjectConfig implements JpaProject.Config {
 		this.project = project;
 	}
 
-	public JpaPlatform jpaPlatform() {
+	public JpaPlatform getJpaPlatform() {
 		return this.jpaPlatform;
 	}
 
@@ -43,7 +43,7 @@ public class SimpleJpaProjectConfig implements JpaProject.Config {
 		this.jpaPlatform = jpaPlatform;
 	}
 
-	public String connectionProfileName() {
+	public String getConnectionProfileName() {
 		return this.connectionProfileName;
 	}
 

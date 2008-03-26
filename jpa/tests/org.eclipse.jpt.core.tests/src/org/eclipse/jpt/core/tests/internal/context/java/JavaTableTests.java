@@ -155,7 +155,7 @@ public class JavaTableTests extends ContextModelTestCase
 		
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
-		JavaEntity javaEntity = ormEntity.javaEntity();
+		JavaEntity javaEntity = ormEntity.getJavaEntity();
 		
 		assertNull(javaEntity.getTable().getDefaultSchema());
 		
@@ -272,7 +272,7 @@ public class JavaTableTests extends ContextModelTestCase
 		
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
-		JavaEntity javaEntity = ormEntity.javaEntity();
+		JavaEntity javaEntity = ormEntity.getJavaEntity();
 		
 		assertNull(javaEntity.getTable().getDefaultCatalog());
 		

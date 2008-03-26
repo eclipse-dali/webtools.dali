@@ -60,7 +60,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 	}
 
 	protected JavaColumn createJavaColumn() {
-		return jpaFactory().buildJavaColumn(this, this);
+		return getJpaFactory().buildJavaColumn(this, this);
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 	protected void initializeTableGenerator(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		TableGeneratorAnnotation tableGeneratorResource = tableGenerator(resourcePersistentAttribute);
 		if (tableGeneratorResource != null) {
-			this.tableGenerator = jpaFactory().buildJavaTableGenerator(this);
+			this.tableGenerator = getJpaFactory().buildJavaTableGenerator(this);
 			this.tableGenerator.initializeFromResource(tableGeneratorResource);
 		}
 	}
@@ -85,7 +85,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 	protected void initializeSequenceGenerator(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		SequenceGeneratorAnnotation sequenceGeneratorResource = sequenceGenerator(resourcePersistentAttribute);
 		if (sequenceGeneratorResource != null) {
-			this.sequenceGenerator = jpaFactory().buildJavaSequenceGenerator(this);
+			this.sequenceGenerator = getJpaFactory().buildJavaSequenceGenerator(this);
 			this.sequenceGenerator.initializeFromResource(sequenceGeneratorResource);
 		}
 	}
@@ -93,7 +93,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 	protected void initializeGeneratedValue(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		GeneratedValueAnnotation generatedValueResource = generatedValue(resourcePersistentAttribute);
 		if (generatedValueResource != null) {
-			this.generatedValue = jpaFactory().buildJavaGeneratedValue(this);
+			this.generatedValue = getJpaFactory().buildJavaGeneratedValue(this);
 			this.generatedValue.initializeFromResource(generatedValueResource);
 		}
 	}
@@ -112,7 +112,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 		return MappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public String annotationName() {
+	public String getAnnotationName() {
 		return Id.ANNOTATION_NAME;
 	}
 	
@@ -166,7 +166,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 		if (getGeneratedValue() != null) {
 			throw new IllegalStateException("gemeratedValue already exists");
 		}
-		this.generatedValue = jpaFactory().buildJavaGeneratedValue(this);
+		this.generatedValue = getJpaFactory().buildJavaGeneratedValue(this);
 		GeneratedValueAnnotation generatedValueResource = (GeneratedValueAnnotation) getResourcePersistentAttribute().addAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
 		this.generatedValue.initializeFromResource(generatedValueResource);
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, null, this.generatedValue);
@@ -197,7 +197,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 		if (getTableGenerator() != null) {
 			throw new IllegalStateException("tableGenerator already exists");
 		}
-		this.tableGenerator = jpaFactory().buildJavaTableGenerator(this);
+		this.tableGenerator = getJpaFactory().buildJavaTableGenerator(this);
 		TableGeneratorAnnotation tableGeneratorResource = (TableGeneratorAnnotation) getResourcePersistentAttribute().addAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 		this.tableGenerator.initializeFromResource(tableGeneratorResource);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
@@ -229,7 +229,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 			throw new IllegalStateException("sequenceGenerator already exists");
 		}
 		
-		this.sequenceGenerator = jpaFactory().buildJavaSequenceGenerator(this);
+		this.sequenceGenerator = getJpaFactory().buildJavaSequenceGenerator(this);
 		SequenceGeneratorAnnotation sequenceGeneratorResource = (SequenceGeneratorAnnotation) getResourcePersistentAttribute().addAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 		this.sequenceGenerator.initializeFromResource(sequenceGeneratorResource);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
@@ -287,7 +287,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 		}
 		else {
 			if (getTableGenerator() == null) {
-				setTableGenerator(jpaFactory().buildJavaTableGenerator(this));
+				setTableGenerator(getJpaFactory().buildJavaTableGenerator(this));
 				getTableGenerator().initializeFromResource(tableGeneratorResource);
 			}
 			else {
@@ -305,7 +305,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 		}
 		else {
 			if (getSequenceGenerator() == null) {
-				setSequenceGenerator(jpaFactory().buildJavaSequenceGenerator(this));
+				setSequenceGenerator(getJpaFactory().buildJavaSequenceGenerator(this));
 				getSequenceGenerator().initializeFromResource(sequenceGeneratorResource);
 			}
 			else {
@@ -323,7 +323,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 		}
 		else {
 			if (getGeneratedValue() == null) {
-				setGeneratedValue(jpaFactory().buildJavaGeneratedValue(this));
+				setGeneratedValue(getJpaFactory().buildJavaGeneratedValue(this));
 				getGeneratedValue().initializeFromResource(generatedValueResource);
 			}
 			else {
@@ -371,7 +371,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 	}
 
 	@Override
-	public String primaryKeyColumnName() {
+	public String getPrimaryKeyColumnName() {
 		return this.getColumn().getName();
 	}
 
@@ -407,7 +407,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
 						new String[] {table, column.getName()}, 
-						column, column.tableTextRange(astRoot))
+						column, column.getTableTextRange(astRoot))
 				);
 			doContinue = false;
 		}
@@ -418,7 +418,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
 						new String[] {column.getName()}, 
-						column, column.nameTextRange(astRoot))
+						column, column.getNameTextRange(astRoot))
 				);
 		}
 	}
@@ -445,7 +445,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 				JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME,
 				new String[] {generatorName},
 				this,
-				generatedValue.generatorTextRange(astRoot))
+				generatedValue.getGeneratorTextRange(astRoot))
 			);
 	}
 	
@@ -464,7 +464,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
 							new String[] {current.getName()},
 							current,
-							current.nameTextRange(astRoot))
+							current.getNameTextRange(astRoot))
 					);
 				}
 			}

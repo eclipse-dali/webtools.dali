@@ -26,5 +26,5 @@ public interface OrmGenerator extends Generator
 {
 	// **************** validation *********************************************
 	
-	TextRange nameTextRange();
+	TextRange getNameTextRange();
 }

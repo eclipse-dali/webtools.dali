@@ -142,12 +142,12 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		
-		ormEntity.javaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
+		ormEntity.getJavaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
 
 		OrmSecondaryTable ormSecondaryTable = ormEntity.virtualSecondaryTables().next();
 		assertEquals("FOO", ormSecondaryTable.getSpecifiedName());
 		
-		ormEntity.javaEntity().specifiedSecondaryTables().next().setSpecifiedName("BAZ");
+		ormEntity.getJavaEntity().specifiedSecondaryTables().next().setSpecifiedName("BAZ");
 		assertEquals("BAZ", ormSecondaryTable.getSpecifiedName());
 		
 		ormEntity.setSecondaryTablesDefinedInXml(true);
@@ -207,7 +207,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		assertEquals(TYPE_NAME, ormEntity.getTable().getDefaultName());
 		
-		SecondaryTable javaSecondaryTable = ormEntity.javaEntity().addSpecifiedSecondaryTable(0);
+		SecondaryTable javaSecondaryTable = ormEntity.getJavaEntity().addSpecifiedSecondaryTable(0);
 		javaSecondaryTable.setSpecifiedName("FOO");
 		javaSecondaryTable.setSpecifiedSchema("BAR");
 		
@@ -259,7 +259,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		ormEntity.getEntityMappings().setSpecifiedSchema("BAR");
 		assertEquals("BAR", ormSecondaryTable.getDefaultSchema());
 		
-		SecondaryTable javaSecondaryTable = ormEntity.javaEntity().addSpecifiedSecondaryTable(0);
+		SecondaryTable javaSecondaryTable = ormEntity.getJavaEntity().addSpecifiedSecondaryTable(0);
 		javaSecondaryTable.setSpecifiedName("FOO");
 		javaSecondaryTable.setSpecifiedSchema("JAVA_SCHEMA");
 		assertEquals("BAR", ormSecondaryTable.getDefaultSchema()); //schema is not defaulted from underlying java
@@ -322,7 +322,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		assertEquals(TYPE_NAME, ormEntity.getTable().getDefaultName());
 		
-		SecondaryTable javaSecondaryTable = ormEntity.javaEntity().addSpecifiedSecondaryTable(0);
+		SecondaryTable javaSecondaryTable = ormEntity.getJavaEntity().addSpecifiedSecondaryTable(0);
 		javaSecondaryTable.setSpecifiedName("FOO");
 		javaSecondaryTable.setSpecifiedCatalog("BAR");
 		
@@ -352,7 +352,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		ormEntity.getEntityMappings().setSpecifiedCatalog("BAR");
 		assertEquals("BAR", ormSecondaryTable.getDefaultCatalog());
 		
-		SecondaryTable javaSecondaryTable = ormEntity.javaEntity().addSpecifiedSecondaryTable(0);
+		SecondaryTable javaSecondaryTable = ormEntity.getJavaEntity().addSpecifiedSecondaryTable(0);
 		javaSecondaryTable.setSpecifiedName("FOO");
 		javaSecondaryTable.setSpecifiedCatalog("JAVA_CATALOG");
 		assertEquals("BAR", ormSecondaryTable.getDefaultCatalog()); //schema is not defaulted from underlying java

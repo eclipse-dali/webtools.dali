@@ -38,7 +38,7 @@ public class OrmEmbeddedIdMappingProvider implements OrmAttributeMappingProvider
 		return factory.buildOrmEmbeddedIdMapping(parent);
 	}
 
-	public String key() {
+	public String getKey() {
 		return MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY;
 	}
 }

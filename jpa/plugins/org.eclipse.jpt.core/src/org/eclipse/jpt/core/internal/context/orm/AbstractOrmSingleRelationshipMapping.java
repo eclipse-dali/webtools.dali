@@ -218,7 +218,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	}	
 	
 	protected OrmJoinColumn buildJoinColumn(XmlJoinColumn joinColumn) {
-		OrmJoinColumn ormJoinColumn = jpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner());
+		OrmJoinColumn ormJoinColumn = getJpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner());
 		ormJoinColumn.initialize(joinColumn);
 		return ormJoinColumn;
 	}	
@@ -298,14 +298,14 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 			String table = joinColumn.getTable();
 			
 			if (doContinue && getTypeMapping().tableNameIsInvalid(table)) {
-				if (persistentAttribute().isVirtual()) {
+				if (getPersistentAttribute().isVirtual()) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_TABLE,
 							new String[] {getName(), table, joinColumn.getName()},
 							joinColumn, 
-							joinColumn.tableTextRange())
+							joinColumn.getTableTextRange())
 					);
 				}
 				else {
@@ -315,21 +315,21 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 							JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
 							new String[] {table, joinColumn.getName()}, 
 							joinColumn, 
-							joinColumn.tableTextRange())
+							joinColumn.getTableTextRange())
 					);
 				}
 				doContinue = false;
 			}
 			
 			if (doContinue && ! joinColumn.isResolved()) {
-				if (persistentAttribute().isVirtual()) {
+				if (getPersistentAttribute().isVirtual()) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME,
 							new String[] {getName(), joinColumn.getName()}, 
 							joinColumn, 
-							joinColumn.nameTextRange())
+							joinColumn.getNameTextRange())
 					);
 				}
 				else {
@@ -339,20 +339,20 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 							JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
 							new String[] {joinColumn.getName()}, 
 							joinColumn, 
-							joinColumn.nameTextRange())
+							joinColumn.getNameTextRange())
 					);
 				}
 			}
 			
 			if (doContinue && ! joinColumn.isReferencedColumnResolved()) {
-				if (persistentAttribute().isVirtual()) {
+				if (getPersistentAttribute().isVirtual()) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
 							new String[] {getName(), joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
 							joinColumn, 
-							joinColumn.referencedColumnNameTextRange())
+							joinColumn.getReferencedColumnNameTextRange())
 					);
 				}
 				else {
@@ -362,7 +362,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 							JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
 							new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
 							joinColumn, 
-							joinColumn.referencedColumnNameTextRange())
+							joinColumn.getReferencedColumnNameTextRange())
 					);
 				}
 			}
@@ -433,8 +433,8 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 			return AbstractOrmSingleRelationshipMapping.this.joinColumnsSize();
 		}
 		
-		public TextRange validationTextRange() {
-			return AbstractOrmSingleRelationshipMapping.this.validationTextRange();
+		public TextRange getValidationTextRange() {
+			return AbstractOrmSingleRelationshipMapping.this.getValidationTextRange();
 		}
 	}
 }

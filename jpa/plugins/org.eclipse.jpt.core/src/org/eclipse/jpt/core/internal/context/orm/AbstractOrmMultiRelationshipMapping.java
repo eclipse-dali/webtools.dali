@@ -50,7 +50,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 
 	protected AbstractOrmMultiRelationshipMapping(OrmPersistentAttribute parent) {
 		super(parent);
-		this.joinTable = jpaFactory().buildOrmJoinTable(this);
+		this.joinTable = getJpaFactory().buildOrmJoinTable(this);
 	}
 
 	@Override
@@ -323,7 +323,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE,
 						getJoinTable(),
-						getJoinTable().validationTextRange())
+						getJoinTable().getValidationTextRange())
 				);
 		}
 		

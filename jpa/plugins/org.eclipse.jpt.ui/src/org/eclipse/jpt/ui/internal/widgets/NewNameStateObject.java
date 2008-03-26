@@ -139,7 +139,7 @@ final class NewNameStateObject extends AbstractNode
 	 * (non-Javadoc)
 	 */
 	@Override
-	public Validator validator() {
+	public Validator getValidator() {
 		return validator;
 	}
 }

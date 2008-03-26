@@ -37,11 +37,11 @@ public class JavaEmbeddedMappingProvider
 		super();
 	}
 
-	public String key() {
+	public String getKey() {
 		return MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public String annotationName() {
+	public String getAnnotationName() {
 		return Embedded.ANNOTATION_NAME;
 	}
 

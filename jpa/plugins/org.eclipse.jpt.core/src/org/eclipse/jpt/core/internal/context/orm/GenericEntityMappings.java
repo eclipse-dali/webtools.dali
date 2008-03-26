@@ -90,7 +90,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 
 	public GenericEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
 		super(parent);
-		this.persistenceUnitMetadata = jpaFactory().buildPersistenceUnitMetadata(this, xmlEntityMappings);
+		this.persistenceUnitMetadata = getJpaFactory().buildPersistenceUnitMetadata(this, xmlEntityMappings);
 		this.persistentTypes = new ArrayList<OrmPersistentType>();
 		this.sequenceGenerators = new ArrayList<OrmSequenceGenerator>();
 		this.tableGenerators = new ArrayList<OrmTableGenerator>();
@@ -231,7 +231,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	public OrmPersistentType addOrmPersistentType(String mappingKey, String className) {
-		OrmPersistentType persistentType = jpaFactory().buildOrmPersistentType(this, mappingKey);
+		OrmPersistentType persistentType = getJpaFactory().buildOrmPersistentType(this, mappingKey);
 		int index = insertionIndex(persistentType);
 		this.persistentTypes.add(index, persistentType);
 		if (className.startsWith(getPackage() + ".")) {
@@ -255,8 +255,8 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	private Comparator<OrmPersistentType> buildMappingComparator() {
 		return new Comparator<OrmPersistentType>() {
 			public int compare(OrmPersistentType o1, OrmPersistentType o2) {
-				int o1Sequence = o1.getMapping().xmlSequence();
-				int o2Sequence = o2.getMapping().xmlSequence();
+				int o1Sequence = o1.getMapping().getXmlSequence();
+				int o2Sequence = o2.getMapping().getXmlSequence();
 				if (o1Sequence < o2Sequence) {
 					return -1;
 				}
@@ -304,7 +304,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	public OrmSequenceGenerator addSequenceGenerator(int index) {
-		OrmSequenceGenerator ormSequenceGenerator = jpaFactory().buildOrmSequenceGenerator(this);
+		OrmSequenceGenerator ormSequenceGenerator = getJpaFactory().buildOrmSequenceGenerator(this);
 		this.sequenceGenerators.add(index, ormSequenceGenerator);
 		XmlSequenceGenerator sequenceGenerator = OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
 		ormSequenceGenerator.initialize(sequenceGenerator);
@@ -346,7 +346,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	public OrmTableGenerator addTableGenerator(int index) {
-		OrmTableGenerator xmlTableGenerator = jpaFactory().buildOrmTableGenerator(this);
+		OrmTableGenerator xmlTableGenerator = getJpaFactory().buildOrmTableGenerator(this);
 		this.tableGenerators.add(index, xmlTableGenerator);
 		XmlTableGenerator tableGenerator = OrmFactory.eINSTANCE.createXmlTableGeneratorImpl();
 		xmlTableGenerator.initialize(tableGenerator);
@@ -388,7 +388,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	public OrmNamedQuery addNamedQuery(int index) {
-		OrmNamedQuery namedQuery = jpaFactory().buildOrmNamedQuery(this);
+		OrmNamedQuery namedQuery = getJpaFactory().buildOrmNamedQuery(this);
 		this.namedQueries.add(index, namedQuery);
 		this.xmlEntityMappings.getNamedQueries().add(index, OrmFactory.eINSTANCE.createXmlNamedQuery());
 		this.fireItemAdded(EntityMappings.NAMED_QUERIES_LIST, index, namedQuery);
@@ -427,7 +427,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	public OrmNamedNativeQuery addNamedNativeQuery(int index) {
-		OrmNamedNativeQuery namedNativeQuery = jpaFactory().buildOrmNamedNativeQuery(this);
+		OrmNamedNativeQuery namedNativeQuery = getJpaFactory().buildOrmNamedNativeQuery(this);
 		this.namedNativeQueries.add(index, namedNativeQuery);
 		this.xmlEntityMappings.getNamedNativeQueries().add(index, OrmFactory.eINSTANCE.createXmlNamedNativeQuery());
 		this.fireItemAdded(EntityMappings.NAMED_QUERIES_LIST, index, namedNativeQuery);
@@ -469,7 +469,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		return false;
 	}
 
-	public PersistenceUnitDefaults persistenceUnitDefaults() {
+	public PersistenceUnitDefaults getPersistenceUnitDefaults() {
 		return getPersistenceUnitMetadata().getPersistenceUnitDefaults();
 	}
 	
@@ -500,7 +500,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	
 	protected void initializeMappedSuperclasses(XmlEntityMappings entityMappings) {
 		for (XmlMappedSuperclass mappedSuperclass : entityMappings.getMappedSuperclasses()) {
-			OrmPersistentType ormPersistentType = jpaFactory().buildOrmPersistentType(this, MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+			OrmPersistentType ormPersistentType = getJpaFactory().buildOrmPersistentType(this, MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
 			ormPersistentType.initialize(mappedSuperclass);
 			this.persistentTypes.add(ormPersistentType);
 		}	
@@ -508,7 +508,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	
 	protected void initializeEntities(XmlEntityMappings entityMappings) {
 		for (XmlEntity entity : entityMappings.getEntities()) {
-			OrmPersistentType ormPersistentType = jpaFactory().buildOrmPersistentType(this, MappingKeys.ENTITY_TYPE_MAPPING_KEY);
+			OrmPersistentType ormPersistentType = getJpaFactory().buildOrmPersistentType(this, MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 			ormPersistentType.initialize(entity);
 			this.persistentTypes.add(ormPersistentType);
 		}				
@@ -516,7 +516,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	
 	protected void initializeEmbeddables(XmlEntityMappings entityMappings) {
 		for (XmlEmbeddable embeddable : entityMappings.getEmbeddables()) {
-			OrmPersistentType ormPersistentType = jpaFactory().buildOrmPersistentType(this, MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+			OrmPersistentType ormPersistentType = getJpaFactory().buildOrmPersistentType(this, MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 			ormPersistentType.initialize(embeddable);
 			this.persistentTypes.add(ormPersistentType);
 		}
@@ -586,7 +586,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 				ormPersistentTypes.next().update(mappedSuperclass);
 			}
 			else {
-				OrmPersistentType ormPersistentType = jpaFactory().buildOrmPersistentType(this, MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+				OrmPersistentType ormPersistentType = getJpaFactory().buildOrmPersistentType(this, MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
 				ormPersistentType.initialize(mappedSuperclass);
 				addOrmPersistentType(ormPersistentType);
 			}
@@ -599,7 +599,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 				ormPersistentTypes.next().update(entity);
 			}
 			else {
-				OrmPersistentType ormPersistentType = jpaFactory().buildOrmPersistentType(this, MappingKeys.ENTITY_TYPE_MAPPING_KEY);
+				OrmPersistentType ormPersistentType = getJpaFactory().buildOrmPersistentType(this, MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 				ormPersistentType.initialize(entity);
 				addOrmPersistentType(ormPersistentType);
 			}
@@ -612,7 +612,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 				ormPersistentTypes.next().update(embeddable);
 			}
 			else {
-				OrmPersistentType ormPersistentType = jpaFactory().buildOrmPersistentType(this, MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+				OrmPersistentType ormPersistentType = getJpaFactory().buildOrmPersistentType(this, MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 				ormPersistentType.initialize(embeddable);
 				addOrmPersistentType(ormPersistentType);
 			}
@@ -638,7 +638,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 
 	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator tableGeneratorResource) {
-		OrmTableGenerator tableGenerator = jpaFactory().buildOrmTableGenerator(this);
+		OrmTableGenerator tableGenerator = getJpaFactory().buildOrmTableGenerator(this);
 		tableGenerator.initialize(tableGeneratorResource);
 		return tableGenerator;
 	}
@@ -662,7 +662,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 
 	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator sequenceGeneratorResource) {
-		OrmSequenceGenerator sequenceGenerator = jpaFactory().buildOrmSequenceGenerator(this);
+		OrmSequenceGenerator sequenceGenerator = getJpaFactory().buildOrmSequenceGenerator(this);
 		sequenceGenerator.initialize(sequenceGeneratorResource);
 		return sequenceGenerator;
 	}
@@ -687,7 +687,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 
 	protected OrmNamedQuery buildNamedQuery(XmlNamedQuery namedQuery) {
-		OrmNamedQuery ormNamedQuery = jpaFactory().buildOrmNamedQuery(this);
+		OrmNamedQuery ormNamedQuery = getJpaFactory().buildOrmNamedQuery(this);
 		ormNamedQuery.initialize(namedQuery);
 		return ormNamedQuery;
 	}
@@ -712,7 +712,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 
 	protected OrmNamedNativeQuery buildNamedNativeQuery(XmlNamedNativeQuery namedQuery) {
-		OrmNamedNativeQuery ormNamedNativeQuery =jpaFactory().buildOrmNamedNativeQuery(this);
+		OrmNamedNativeQuery ormNamedNativeQuery =getJpaFactory().buildOrmNamedNativeQuery(this);
 		ormNamedNativeQuery.initialize(namedQuery);
 		return ormNamedNativeQuery;
 	}
@@ -762,11 +762,11 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		return this.xmlEntityMappings.containsOffset(textOffset);
 	}
 	
-	public TextRange selectionTextRange() {
+	public TextRange getSelectionTextRange() {
 		return this.xmlEntityMappings.selectionTextRange();
 	}
 	
-	public TextRange validationTextRange() {
+	public TextRange getValidationTextRange() {
 		return null;
 	}
 	
@@ -796,7 +796,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
 							new String[] {current.getName()},
 							current,
-							current.nameTextRange())
+							current.getNameTextRange())
 					);
 				}
 			}
@@ -820,7 +820,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 							JpaValidationMessages.QUERY_DUPLICATE_NAME,
 							new String[] {current.getName()},
 							current,
-							current.nameTextRange())
+							current.getNameTextRange())
 					);
 				}
 			}

@@ -24,7 +24,7 @@ public class JavaNullTypeMapping extends AbstractJavaTypeMapping
 		super(parent);
 	}
 
-	public String annotationName() {
+	public String getAnnotationName() {
 		return null;
 	}
 	

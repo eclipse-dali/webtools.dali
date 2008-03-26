@@ -46,7 +46,7 @@ public class VirtualXmlOneToOne extends AbstractJpaEObject implements XmlOneToOn
 	}
 
 	public String getName() {
-		return this.javaOneToOneMapping.persistentAttribute().getName();
+		return this.javaOneToOneMapping.getPersistentAttribute().getName();
 	}
 
 	public void setName(String newName) {

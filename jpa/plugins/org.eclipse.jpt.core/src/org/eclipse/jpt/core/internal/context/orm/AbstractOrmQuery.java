@@ -77,7 +77,7 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 	}
 	
 	public OrmQueryHint addHint(int index) {
-		OrmQueryHint queryHint = jpaFactory().buildOrmQueryHint(this);
+		OrmQueryHint queryHint = getJpaFactory().buildOrmQueryHint(this);
 		this.hints.add(index, queryHint);
 		this.queryResource().getHints().add(index, OrmFactory.eINSTANCE.createXmlQueryHint());
 		this.fireItemAdded(Query.HINTS_LIST, index, queryHint);
@@ -123,7 +123,7 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 	}
 
 	protected OrmQueryHint createHint(XmlQueryHint queryHint) {
-		OrmQueryHint ormQueryHint = jpaFactory().buildOrmQueryHint(this);
+		OrmQueryHint ormQueryHint = getJpaFactory().buildOrmQueryHint(this);
 		ormQueryHint.initialize(queryHint);
 		return ormQueryHint;
 	}
@@ -159,11 +159,11 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 		return this.getName().equals(query.getName()) && query instanceof JavaQuery;
 	}
 
-	public TextRange validationTextRange() {
+	public TextRange getValidationTextRange() {
 		return this.queryResource().validationTextRange();
 	}
 	
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		return this.queryResource().nameTextRange();
 	}
 }

@@ -66,7 +66,7 @@ public class VirtualXmlOneToMany extends AbstractJpaEObject implements XmlOneToM
 //	}
 	
 	public String getName() {
-		return this.javaOneToManyMapping.persistentAttribute().getName();
+		return this.javaOneToManyMapping.getPersistentAttribute().getName();
 	}
 
 	public void setName(String newName) {

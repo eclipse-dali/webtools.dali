@@ -27,7 +27,7 @@ public class GenericJavaEmbeddable extends AbstractJavaTypeMapping implements Ja
 		return MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
 	}
 
-	public String annotationName() {
+	public String getAnnotationName() {
 		return EmbeddableAnnotation.ANNOTATION_NAME;
 	}
 

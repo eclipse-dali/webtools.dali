@@ -63,15 +63,15 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 	}
 
 	protected XmlIdClass idClassResource() {
-		return typeMappingResource().getIdClass();
+		return getTypeMappingResource().getIdClass();
 	}
 	
 	protected void addIdClassResource() {
-		typeMappingResource().setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());		
+		getTypeMappingResource().setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());		
 	}
 	
 	protected void removeIdClassResource() {
-		typeMappingResource().setIdClass(null);
+		getTypeMappingResource().setIdClass(null);
 	}
 
 	public String getKey() {
@@ -133,7 +133,7 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 		};
 	}
 
-	public int xmlSequence() {
+	public int getXmlSequence() {
 		return 0;
 	}
 
@@ -142,7 +142,7 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 	}
 	
 	public void removeFromResourceModel(XmlEntityMappings entityMappings) {
-		entityMappings.getMappedSuperclasses().remove(this.typeMappingResource());
+		entityMappings.getMappedSuperclasses().remove(this.getTypeMappingResource());
 	}
 	
 	public XmlMappedSuperclass addToResourceModel(XmlEntityMappings entityMappings) {

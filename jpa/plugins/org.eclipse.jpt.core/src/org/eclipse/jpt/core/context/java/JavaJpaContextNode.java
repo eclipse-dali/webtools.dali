@@ -43,6 +43,6 @@ public interface JavaJpaContextNode extends JpaContextNode
 	 */
 	void addToMessages(List<IMessage> messages, CompilationUnit astRoot);
 
-	TextRange validationTextRange(CompilationUnit astRoot);
+	TextRange getValidationTextRange(CompilationUnit astRoot);
 
 }

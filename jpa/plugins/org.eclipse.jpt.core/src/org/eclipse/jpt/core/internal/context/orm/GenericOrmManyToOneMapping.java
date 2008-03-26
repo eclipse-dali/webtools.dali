@@ -26,7 +26,7 @@ public class GenericOrmManyToOneMapping extends AbstractOrmSingleRelationshipMap
 		super(parent);
 	}
 
-	public int xmlSequence() {
+	public int getXmlSequence() {
 		return 3;
 	}
 
@@ -50,7 +50,7 @@ public class GenericOrmManyToOneMapping extends AbstractOrmSingleRelationshipMap
 		
 	public XmlManyToOne addToResourceModel(AbstractXmlTypeMapping typeMapping) {
 		XmlManyToOne manyToOne = OrmFactory.eINSTANCE.createXmlManyToOneImpl();
-		persistentAttribute().initialize(manyToOne);
+		getPersistentAttribute().initialize(manyToOne);
 		typeMapping.getAttributes().getManyToOnes().add(manyToOne);
 		return manyToOne;
 	}

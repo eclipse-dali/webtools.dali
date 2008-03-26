@@ -28,7 +28,7 @@ public interface OrmBaseColumn extends BaseColumn, OrmNamedColumn
 	/**
 	 * Return the (best guess) text location of the column's table.
 	 */
-	TextRange tableTextRange();
+	TextRange getTableTextRange();
 
 	Owner getOwner();
 	

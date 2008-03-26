@@ -37,11 +37,11 @@ public class JavaEmbeddableProvider
 		super();
 	}
 
-	public String key() {
+	public String getKey() {
 		return MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
 	}
 	
-	public String annotationName() {
+	public String getAnnotationName() {
 		return EmbeddableAnnotation.ANNOTATION_NAME;
 	}
 

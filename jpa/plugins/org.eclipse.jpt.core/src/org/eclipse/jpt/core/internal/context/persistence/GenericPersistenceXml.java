@@ -119,7 +119,7 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected Persistence buildPersistence(XmlPersistence xmlPersistence) {
-		return jpaFactory().buildPersistence(this, xmlPersistence);
+		return getJpaFactory().buildPersistence(this, xmlPersistence);
 	}
 	
 	
@@ -139,11 +139,11 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 	}
 	
 	// never actually selected
-	public TextRange selectionTextRange() {
+	public TextRange getSelectionTextRange() {
 		return TextRange.Empty.instance();
 	}
 	
-	public TextRange validationTextRange() {
+	public TextRange getValidationTextRange() {
 		return TextRange.Empty.instance();
 	}
 	

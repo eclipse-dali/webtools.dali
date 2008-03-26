@@ -32,5 +32,5 @@ public interface OrmQuery extends Query, OrmJpaContextNode
 	
 	// **************** validation *********************************************
 	
-	TextRange nameTextRange();
+	TextRange getNameTextRange();
 }

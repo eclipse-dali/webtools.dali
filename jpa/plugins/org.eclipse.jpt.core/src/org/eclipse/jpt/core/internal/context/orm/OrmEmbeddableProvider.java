@@ -23,7 +23,7 @@ public class OrmEmbeddableProvider implements OrmTypeMappingProvider
 		return factory.buildOrmEmbeddable(parent);
 	}
 
-	public String key() {
+	public String getKey() {
 		return MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
 	}
 }

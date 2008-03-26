@@ -244,14 +244,14 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		assertEquals(TYPE_NAME + "_Project", ormJoinTable.getDefaultName());
 
 		
-		((JavaEntity) targetPersistentType.javaPersistentType().getMapping()).getTable().setSpecifiedName("FOO");
+		((JavaEntity) targetPersistentType.getJavaPersistentType().getMapping()).getTable().setSpecifiedName("FOO");
 		assertEquals(TYPE_NAME + "_FOO", ormJoinTable.getDefaultName());
 		
-		((JavaEntity) ormPersistentType.javaPersistentType().getMapping()).getTable().setSpecifiedName("BAR");
+		((JavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getTable().setSpecifiedName("BAR");
 		assertEquals("BAR_FOO", ormJoinTable.getDefaultName());
 		
-		ormPersistentType.javaPersistentType().attributeNamed("projects").setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-		JavaManyToManyMapping javaManyMapping = (JavaManyToManyMapping) ormPersistentType.javaPersistentType().attributeNamed("projects").getMapping();
+		ormPersistentType.getJavaPersistentType().attributeNamed("projects").setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		JavaManyToManyMapping javaManyMapping = (JavaManyToManyMapping) ormPersistentType.getJavaPersistentType().attributeNamed("projects").getMapping();
 		javaManyMapping.getJoinTable().setSpecifiedName("JAVA_JOIN_TABLE");
 		
 		assertEquals("BAR_FOO", ormJoinTable.getDefaultName());

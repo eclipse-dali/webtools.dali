@@ -23,7 +23,7 @@ public class JavaTestTypeMapping extends AbstractJavaTypeMapping
 		super(parent);
 	}
 
-	public String annotationName() {
+	public String getAnnotationName() {
 		return TEST_TYPE_ANNOTATION_NAME;
 	}
 

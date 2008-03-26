@@ -22,7 +22,7 @@ public class OrmMappedSuperclassProvider implements OrmTypeMappingProvider
 		return factory.buildOrmMappedSuperclass(parent);
 	}
 
-	public String key() {
+	public String getKey() {
 		return MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY;
 	}
 }

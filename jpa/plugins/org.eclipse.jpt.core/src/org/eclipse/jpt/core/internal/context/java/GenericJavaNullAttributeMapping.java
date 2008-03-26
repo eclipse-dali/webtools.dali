@@ -30,7 +30,7 @@ public class GenericJavaNullAttributeMapping extends AbstractJavaAttributeMappin
 		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public String annotationName() {
+	public String getAnnotationName() {
 		return null;
 	}
 	

@@ -39,7 +39,7 @@ public class VirtualXmlBasic extends AbstractJpaEObject implements XmlBasic
 	}
 
 	public String getName() {
-		return this.javaBasicMapping.persistentAttribute().getName();
+		return this.javaBasicMapping.getPersistentAttribute().getName();
 	}
 
 	public void setName(String newName) {

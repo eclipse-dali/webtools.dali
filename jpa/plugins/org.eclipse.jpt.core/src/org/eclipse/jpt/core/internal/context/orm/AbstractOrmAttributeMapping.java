@@ -76,22 +76,22 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		this.name = newName;
 		this.attributeMapping.setName(newName);
 		firePropertyChanged(OrmAttributeMapping.NAME_PROPERTY, oldName, newName);
-		persistentAttribute().nameChanged(oldName, newName);
+		getPersistentAttribute().nameChanged(oldName, newName);
 	}
 
 	protected void setName_(String newName) {
 		String oldName = this.name;
 		this.name = newName;
 		firePropertyChanged(OrmAttributeMapping.NAME_PROPERTY, oldName, newName);
-		persistentAttribute().nameChanged(oldName, newName);
+		getPersistentAttribute().nameChanged(oldName, newName);
 	}
 	
-	public OrmPersistentAttribute persistentAttribute() {
+	public OrmPersistentAttribute getPersistentAttribute() {
 		return (OrmPersistentAttribute) getParent();
 	}
 
 	public String attributeName() {
-		return this.persistentAttribute().getName();
+		return this.getPersistentAttribute().getName();
 	}
 
 	public boolean isDefault() {
@@ -169,12 +169,12 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		initializeFromXmlMulitRelationshipMapping(oldMapping);
 	}
 
-	public String primaryKeyColumnName() {
+	public String getPrimaryKeyColumnName() {
 		return null;
 	}
 
 	public OrmTypeMapping getTypeMapping() {
-		return this.persistentAttribute().getTypeMapping();
+		return this.getPersistentAttribute().getTypeMapping();
 	}
 
 
@@ -207,7 +207,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 	
 	protected JavaPersistentAttribute javaPersistentAttribute() {
-		JavaPersistentType javaPersistentType = persistentAttribute().getPersistentType().javaPersistentType();
+		JavaPersistentType javaPersistentType = getPersistentAttribute().getPersistentType().getJavaPersistentType();
 		if (javaPersistentType != null && getName() != null) {
 			return javaPersistentType.attributeNamed(getName());
 		}
@@ -223,12 +223,12 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return this.attributeMapping.containsOffset(textOffset);
 	}
 	
-	public TextRange selectionTextRange() {
+	public TextRange getSelectionTextRange() {
 		return this.attributeMapping.selectionTextRange();
 	}	
 	
-	public TextRange validationTextRange() {
-		return (this.persistentAttribute().isVirtual()) ? this.getTypeMapping().attributesTextRange() : this.attributeMapping.validationTextRange();
+	public TextRange getValidationTextRange() {
+		return (this.getPersistentAttribute().isVirtual()) ? this.getTypeMapping().getAttributesTextRange() : this.attributeMapping.validationTextRange();
 	}
 	
 	public TextRange nameTextRange() {
@@ -255,7 +255,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME,
 					this, 
-					validationTextRange())
+					getValidationTextRange())
 			);
 		}
 	}
@@ -267,7 +267,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,
-					new String[] {getName(), persistentAttribute().getPersistentType().getMapping().getClass_()},
+					new String[] {getName(), getPersistentAttribute().getPersistentType().getMapping().getClass_()},
 					this, 
 					nameTextRange())
 			);
@@ -303,8 +303,8 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD,
 						new String[] {getName()},
-						persistentAttribute(),
-						persistentAttribute().validationTextRange())
+						getPersistentAttribute(),
+						getPersistentAttribute().getValidationTextRange())
 				);
 			}
 			
@@ -314,8 +314,8 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD,
 						new String[] {getName()},
-						persistentAttribute(), 
-						persistentAttribute().validationTextRange())
+						getPersistentAttribute(), 
+						getPersistentAttribute().getValidationTextRange())
 				);
 				
 			}
@@ -331,7 +331,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 					JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
 					new String[] {getName()},
 					this, 
-					validationTextRange())
+					getValidationTextRange())
 			);
 		}
 	}

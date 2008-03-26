@@ -113,7 +113,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 			//cause change notifications to be sent to the UI in the wrong order
 			this.defaultJoinColumn = null;
 		}
-		JavaJoinColumn joinColumn = jpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
+		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
 		JoinColumnAnnotation joinColumnResource = (JoinColumnAnnotation) getResourcePersistentAttribute().addAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
 		joinColumn.initializeFromResource(joinColumnResource);
@@ -262,7 +262,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	}	
 
 	protected JavaJoinColumn buildJoinColumn(JoinColumnAnnotation joinColumnResource) {
-		JavaJoinColumn joinColumn = jpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
+		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
 		joinColumn.initializeFromResource(joinColumnResource);
 		return joinColumn;
 	}
@@ -325,7 +325,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
 						new String[] {table, joinColumn.getName()}, 
-						joinColumn, joinColumn.tableTextRange(astRoot))
+						joinColumn, joinColumn.getTableTextRange(astRoot))
 				);
 				doContinue = false;
 			}
@@ -336,7 +336,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
 						new String[] {joinColumn.getName()}, 
-						joinColumn, joinColumn.nameTextRange(astRoot))
+						joinColumn, joinColumn.getNameTextRange(astRoot))
 				);
 			}
 			
@@ -346,7 +346,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
 						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-						joinColumn, joinColumn.referencedColumnNameTextRange(astRoot))
+						joinColumn, joinColumn.getReferencedColumnNameTextRange(astRoot))
 				);
 			}
 		}
@@ -372,7 +372,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		}
 
 		public String getAttributeName() {
-			return AbstractJavaSingleRelationshipMapping.this.persistentAttribute().getName();
+			return AbstractJavaSingleRelationshipMapping.this.getPersistentAttribute().getName();
 		}
 
 		public RelationshipMapping getRelationshipMapping() {
@@ -412,8 +412,8 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 			return null;
 		}
 		
-		public TextRange validationTextRange(CompilationUnit astRoot) {
-			return AbstractJavaSingleRelationshipMapping.this.validationTextRange(astRoot);
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return AbstractJavaSingleRelationshipMapping.this.getValidationTextRange(astRoot);
 		}
 		
 		public int joinColumnsSize() {

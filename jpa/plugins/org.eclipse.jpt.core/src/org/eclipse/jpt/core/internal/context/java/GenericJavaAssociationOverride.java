@@ -88,7 +88,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	}
 	
 	public JavaJoinColumn addSpecifiedJoinColumn(int index) {
-		JavaJoinColumn joinColumn = jpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
+		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
 		JoinColumnAnnotation joinColumnResource = getOverrideResource().addJoinColumn(index);
 		joinColumn.initializeFromResource(joinColumnResource);
@@ -184,7 +184,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	
 	
 	protected JavaJoinColumn createJoinColumn(JoinColumnAnnotation joinColumnResource) {
-		JavaJoinColumn joinColumn = jpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
+		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
 		joinColumn.initializeFromResource(joinColumnResource);
 		return joinColumn;
 	}
@@ -212,7 +212,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 							JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_TABLE,
 							new String[] {getName(), table, joinColumn.getName()},
 							joinColumn, 
-							joinColumn.tableTextRange(astRoot))
+							joinColumn.getTableTextRange(astRoot))
 					);
 				}
 				else {
@@ -222,7 +222,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 							JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
 							new String[] {table, joinColumn.getName()}, 
 							joinColumn, 
-							joinColumn.tableTextRange(astRoot))
+							joinColumn.getTableTextRange(astRoot))
 					);
 				}
 				doContinue = false;
@@ -236,7 +236,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 							JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME,
 							new String[] {getName(), joinColumn.getName()}, 
 							joinColumn, 
-							joinColumn.nameTextRange(astRoot))
+							joinColumn.getNameTextRange(astRoot))
 					);
 				}
 				else {
@@ -246,7 +246,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 							JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
 							new String[] {joinColumn.getName()}, 
 							joinColumn, 
-							joinColumn.nameTextRange(astRoot))
+							joinColumn.getNameTextRange(astRoot))
 					);
 				}
 			}
@@ -259,7 +259,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 							JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
 							new String[] {getName(), joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
 							joinColumn, 
-							joinColumn.referencedColumnNameTextRange(astRoot))
+							joinColumn.getReferencedColumnNameTextRange(astRoot))
 					);
 				}
 				else {
@@ -269,7 +269,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 							JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
 							new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
 							joinColumn,
-							joinColumn.referencedColumnNameTextRange(astRoot))
+							joinColumn.getReferencedColumnNameTextRange(astRoot))
 					);
 				}
 			}
@@ -317,7 +317,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 			return true;
 		}
 
-		public TextRange validationTextRange(CompilationUnit astRoot) {
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			// TODO Auto-generated method stub
 			return null;
 		}

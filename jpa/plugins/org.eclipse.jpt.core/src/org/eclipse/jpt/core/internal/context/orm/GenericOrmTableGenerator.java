@@ -248,7 +248,7 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 	}
 
 	public Schema getDbSchema() {
-		return this.database().schemaNamed(this.getSchema());
+		return this.getDatabase().schemaNamed(this.getSchema());
 	}
 	
 	// ********** orm resource model -> context model **********

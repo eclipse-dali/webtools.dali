@@ -20,7 +20,7 @@ package org.eclipse.jpt.core.context;
  */
 public interface AttributeMapping extends JpaContextNode
 {
-	PersistentAttribute persistentAttribute();
+	PersistentAttribute getPersistentAttribute();
 
 	boolean isDefault();
 
@@ -34,7 +34,7 @@ public interface AttributeMapping extends JpaContextNode
 	 * If the mapping is for a primary key column, return the column's name,
 	 * otherwise return null.
 	 */
-	String primaryKeyColumnName();
+	String getPrimaryKeyColumnName();
 
 	/**
 	 * Return the mapping for the attribute mapping's attribute's type.

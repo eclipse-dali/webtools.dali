@@ -51,7 +51,7 @@ public class VirtualXmlId extends AbstractJpaEObject implements XmlId
 	}
 
 	public String getName() {
-		return this.javaIdMapping.persistentAttribute().getName();
+		return this.javaIdMapping.getPersistentAttribute().getName();
 	}
 
 	public void setName(String newName) {

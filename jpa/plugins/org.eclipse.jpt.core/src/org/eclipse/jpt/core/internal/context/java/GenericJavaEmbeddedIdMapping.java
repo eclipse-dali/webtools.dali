@@ -29,7 +29,7 @@ public class GenericJavaEmbeddedIdMapping extends AbstractJavaBaseEmbeddedMappin
 		return MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public String annotationName() {
+	public String getAnnotationName() {
 		return EmbeddedId.ANNOTATION_NAME;
 	}
 

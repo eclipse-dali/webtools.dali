@@ -56,7 +56,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	
 	public GenericOrmIdMapping(OrmPersistentAttribute parent) {
 		super(parent);
-		this.column = jpaFactory().buildOrmColumn(this, this);
+		this.column = getJpaFactory().buildOrmColumn(this, this);
 	}
 
 
@@ -64,7 +64,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		return MappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public int xmlSequence() {
+	public int getXmlSequence() {
 		return 0;
 	}
 
@@ -105,7 +105,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		if (getGeneratedValue() != null) {
 			throw new IllegalStateException("gemeratedValue already exists");
 		}
-		this.generatedValue = jpaFactory().buildOrmGeneratedValue(this);
+		this.generatedValue = getJpaFactory().buildOrmGeneratedValue(this);
 		this.attributeMapping().setGeneratedValue(OrmFactory.eINSTANCE.createXmlGeneratedValueImpl());
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, null, this.generatedValue);
 		return this.generatedValue;
@@ -135,7 +135,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		if (getSequenceGenerator() != null) {
 			throw new IllegalStateException("sequenceGenerator already exists");
 		}
-		this.sequenceGenerator = jpaFactory().buildOrmSequenceGenerator(this);
+		this.sequenceGenerator = getJpaFactory().buildOrmSequenceGenerator(this);
 		this.attributeMapping().setSequenceGenerator(OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl());
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
 		return this.sequenceGenerator;
@@ -165,7 +165,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		if (getTableGenerator() != null) {
 			throw new IllegalStateException("tableGenerator already exists");
 		}
-		this.tableGenerator = jpaFactory().buildOrmTableGenerator(this);
+		this.tableGenerator = getJpaFactory().buildOrmTableGenerator(this);
 		this.attributeMapping().setTableGenerator(OrmFactory.eINSTANCE.createXmlTableGeneratorImpl());
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
 		return this.tableGenerator;
@@ -199,7 +199,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	}
 
 	@Override
-	public String primaryKeyColumnName() {
+	public String getPrimaryKeyColumnName() {
 		return this.getColumn().getName();
 	}
 
@@ -215,7 +215,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	
 	public XmlId addToResourceModel(AbstractXmlTypeMapping typeMapping) {
 		XmlId id = OrmFactory.eINSTANCE.createXmlIdImpl();
-		persistentAttribute().initialize(id);
+		getPersistentAttribute().initialize(id);
 		typeMapping.getAttributes().getIds().add(id);
 		return id;
 	}
@@ -261,7 +261,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	}
 	
 	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator xmlSequenceGenerator) {
-		OrmSequenceGenerator sequenceGenerator = jpaFactory().buildOrmSequenceGenerator(this);
+		OrmSequenceGenerator sequenceGenerator = getJpaFactory().buildOrmSequenceGenerator(this);
 		sequenceGenerator.initialize(xmlSequenceGenerator);
 		return sequenceGenerator;
 	}
@@ -273,7 +273,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	}
 	
 	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator tableGeneratorResource) {
-		OrmTableGenerator tableGenerator = jpaFactory().buildOrmTableGenerator(this);
+		OrmTableGenerator tableGenerator = getJpaFactory().buildOrmTableGenerator(this);
 		tableGenerator.initialize(tableGeneratorResource);
 		return tableGenerator;
 	}
@@ -285,7 +285,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	}
 	
 	protected OrmGeneratedValue buildGeneratedValue(XmlGeneratedValue xmlGeneratedValue) {
-		OrmGeneratedValue ormGeneratedValue = jpaFactory().buildOrmGeneratedValue(this);
+		OrmGeneratedValue ormGeneratedValue = getJpaFactory().buildOrmGeneratedValue(this);
 		ormGeneratedValue.initialize(xmlGeneratedValue);
 		return ormGeneratedValue;
 	}
@@ -392,14 +392,14 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		boolean doContinue = this.connectionProfileIsActive();
 		
 		if (doContinue && getTypeMapping().tableNameIsInvalid(table)) {
-			if (persistentAttribute().isVirtual()) {
+			if (getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_TABLE,
-						new String[] {persistentAttribute().getName(), table, column.getName()},
+						new String[] {getPersistentAttribute().getName(), table, column.getName()},
 						column, 
-						column.tableTextRange())
+						column.getTableTextRange())
 				);
 			}
 			else {
@@ -409,21 +409,21 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 						JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
 						new String[] {table, column.getName()}, 
 						column, 
-						column.tableTextRange())
+						column.getTableTextRange())
 				);
 			}
 			doContinue = false;
 		}
 		
 		if (doContinue && ! column.isResolved()) {
-			if (persistentAttribute().isVirtual()) {
+			if (getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
-						new String[] {persistentAttribute().getName(), column.getName()}, 
+						new String[] {getPersistentAttribute().getName(), column.getName()}, 
 						column, 
-						column.nameTextRange())
+						column.getNameTextRange())
 				);
 			}
 			else {
@@ -433,7 +433,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
 						new String[] {column.getName()}, 
 						column, 
-						column.nameTextRange())
+						column.getNameTextRange())
 				);
 			}
 		}
@@ -461,7 +461,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 				JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME,
 				new String[] {generatorName},
 				this,
-				generatedValue.generatorTextRange())
+				generatedValue.getGeneratorTextRange())
 			);
 	}
 	
@@ -480,7 +480,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
 							new String[] {current.getName()},
 							current,
-							current.nameTextRange())
+							current.getNameTextRange())
 					);
 				}
 			}

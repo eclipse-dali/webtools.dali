@@ -118,9 +118,9 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 		return this.owner;
 	}
 
-	public TextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		TextRange textRange = this.columnResource().nameTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getOwner().validationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);
 	}
 
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {

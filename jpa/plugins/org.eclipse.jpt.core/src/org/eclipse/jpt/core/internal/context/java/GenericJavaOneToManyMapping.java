@@ -45,7 +45,7 @@ public class GenericJavaOneToManyMapping extends AbstractJavaMultiRelationshipMa
 		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public String annotationName() {
+	public String getAnnotationName() {
 		return OneToMany.ANNOTATION_NAME;
 	}
 

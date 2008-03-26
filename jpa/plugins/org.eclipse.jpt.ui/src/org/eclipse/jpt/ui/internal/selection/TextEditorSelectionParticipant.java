@@ -66,7 +66,7 @@ public class TextEditorSelectionParticipant
 		}
 
 		this.forwardSelection = false;
-		TextRange textRange = newSelection.getSelectedNode().selectionTextRange();
+		TextRange textRange = newSelection.getSelectedNode().getSelectionTextRange();
 		if (textRange != null) {
 			this.textEditor.selectAndReveal(textRange.offset(), textRange.length());
 		}

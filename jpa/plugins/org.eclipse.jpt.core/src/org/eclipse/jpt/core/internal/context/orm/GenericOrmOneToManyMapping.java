@@ -42,7 +42,7 @@ public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapp
 		setMappedBy(oldMapping.getMappedBy());
 	}
 
-	public int xmlSequence() {
+	public int getXmlSequence() {
 		return 4;
 	}
 
@@ -55,7 +55,7 @@ public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapp
 	
 	public XmlOneToMany addToResourceModel(AbstractXmlTypeMapping typeMapping) {
 		XmlOneToMany oneToMany = OrmFactory.eINSTANCE.createXmlOneToManyImpl();
-		persistentAttribute().initialize(oneToMany);
+		getPersistentAttribute().initialize(oneToMany);
 		typeMapping.getAttributes().getOneToManys().add(oneToMany);
 		return oneToMany;
 	}

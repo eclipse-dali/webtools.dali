@@ -11,7 +11,6 @@ package org.eclipse.jpt.core;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
@@ -295,19 +294,19 @@ public interface JpaProject extends JpaNode {
 		/**
 		 * Return the Eclipse project to be associated with the new JPA project.
 		 */
-		IProject project();
+		IProject getProject();
 
 		/**
 		 * Return the JPA platform to be associated with the new JPA project.
 		 */
-		JpaPlatform jpaPlatform();
+		JpaPlatform getJpaPlatform();
 
 		/**
 		 * Return the name of the connection profile to be associated
 		 * with the new JPA project. (This connection profile wraps a DTP
 		 * connection profile.)
 		 */
-		String connectionProfileName();
+		String getConnectionProfileName();
 
 		/**
 		 * Return whether the new JPA project is to "discover" annotated

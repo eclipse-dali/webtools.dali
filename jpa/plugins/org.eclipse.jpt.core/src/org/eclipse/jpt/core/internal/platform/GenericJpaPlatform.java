@@ -166,7 +166,7 @@ public class GenericJpaPlatform implements JpaPlatform
 	protected JavaTypeMappingProvider javaTypeMappingProviderFromMappingKey(String typeMappingKey) {
 		for (Iterator<JavaTypeMappingProvider> i = this.javaTypeMappingProviders(); i.hasNext(); ) {
 			JavaTypeMappingProvider provider = i.next();
-			if (provider.key() == typeMappingKey) {
+			if (provider.getKey() == typeMappingKey) {
 				return provider;
 			}
 		}
@@ -176,7 +176,7 @@ public class GenericJpaPlatform implements JpaPlatform
 	protected JavaTypeMappingProvider javaTypeMappingProviderFromAnnotation(String annotationName) {
 		for (Iterator<JavaTypeMappingProvider> i = this.javaTypeMappingProviders(); i.hasNext(); ) {
 			JavaTypeMappingProvider provider = i.next();
-			if (provider.annotationName() == annotationName) {
+			if (provider.getAnnotationName() == annotationName) {
 				return provider;
 			}
 		}
@@ -212,7 +212,7 @@ public class GenericJpaPlatform implements JpaPlatform
 	protected JavaAttributeMappingProvider javaAttributeMappingProviderFromMappingKey(String attributeMappingKey) {
 		for (Iterator<JavaAttributeMappingProvider> i = this.javaAttributeMappingProviders(); i.hasNext(); ) {
 			JavaAttributeMappingProvider provider = i.next();
-			if (provider.key() == attributeMappingKey) {
+			if (provider.getKey() == attributeMappingKey) {
 				return provider;
 			}
 		}
@@ -222,7 +222,7 @@ public class GenericJpaPlatform implements JpaPlatform
 	protected JavaAttributeMappingProvider javaAttributeMappingProviderFromAnnotation(String annotationName) {
 		for (Iterator<JavaAttributeMappingProvider> i = this.javaAttributeMappingProviders(); i.hasNext(); ) {
 			JavaAttributeMappingProvider provider = i.next();
-			if (provider.annotationName() == annotationName) {
+			if (provider.getAnnotationName() == annotationName) {
 				return provider;
 			}
 		}
@@ -259,7 +259,7 @@ public class GenericJpaPlatform implements JpaPlatform
 	}
 
 	public String defaultJavaAttributeMappingKey(JavaPersistentAttribute persistentAttribute) {
-		return defaultJavaAttributeMappingProvider(persistentAttribute).key();
+		return defaultJavaAttributeMappingProvider(persistentAttribute).getKey();
 	}
 	
 	/**

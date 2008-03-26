@@ -167,7 +167,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 
 	public TextRange nameTextRange(CompilationUnit astRoot) {
 		TextRange textRange = tableResource().nameTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getParent().validationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {
@@ -176,7 +176,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 
 	public TextRange schemaTextRange(CompilationUnit astRoot) {
 		TextRange textRange = tableResource().schemaTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getParent().validationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
 	public boolean schemaTouches(int pos, CompilationUnit astRoot) {
@@ -291,9 +291,9 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 		return (JavaJpaContextNode) super.getParent();
 	}
 	
-	public TextRange validationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = tableResource().textRange(astRoot);
-		return (textRange != null) ? textRange : this.getParent().validationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
 	public org.eclipse.jpt.db.Table getDbTable() {
@@ -302,7 +302,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 	}
 
 	public Schema getDbSchema() {
-		return this.database().schemaNamed(this.getSchema());
+		return this.getDatabase().schemaNamed(this.getSchema());
 	}
 
 	public boolean hasResolvedSchema() {
@@ -364,7 +364,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 	}
 
 	private Iterator<String> candidateSchemas() {
-		return this.database().schemaNames();
+		return this.getDatabase().schemaNames();
 	}
 
 	private Iterator<String> candidateSchemas(Filter<String> filter) {
@@ -376,7 +376,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 	}
 
 	private Iterator<String> candidateCatalogs() {
-		return this.database().catalogNames();
+		return this.getDatabase().catalogNames();
 	}
 
 	private Iterator<String> candidateCatalogs(Filter<String> filter) {

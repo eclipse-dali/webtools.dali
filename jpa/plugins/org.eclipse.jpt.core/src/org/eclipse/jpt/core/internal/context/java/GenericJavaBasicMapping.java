@@ -57,7 +57,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 	}
 
 	protected JavaColumn createJavaColumn() {
-		return jpaFactory().buildJavaColumn(this, this);
+		return getJpaFactory().buildJavaColumn(this, this);
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public String annotationName() {
+	public String getAnnotationName() {
 		return Basic.ANNOTATION_NAME;
 	}
 	
@@ -326,7 +326,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
 						new String[] {table, column.getName()}, 
-						column, column.tableTextRange(astRoot))
+						column, column.getTableTextRange(astRoot))
 				);
 			doContinue = false;
 		}
@@ -337,7 +337,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
 						new String[] {column.getName()}, 
-						column, column.nameTextRange(astRoot))
+						column, column.getNameTextRange(astRoot))
 				);
 		}
 	}

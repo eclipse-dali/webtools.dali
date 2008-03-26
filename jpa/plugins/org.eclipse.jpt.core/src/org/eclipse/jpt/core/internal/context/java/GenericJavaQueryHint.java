@@ -64,7 +64,7 @@ public class GenericJavaQueryHint extends AbstractJavaJpaContextNode implements 
 	}
 
 	
-	public TextRange validationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		// TODO Auto-generated method stub
 		return null;
 	}

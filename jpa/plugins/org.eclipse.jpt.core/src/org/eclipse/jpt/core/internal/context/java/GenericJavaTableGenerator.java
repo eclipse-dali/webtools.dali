@@ -334,7 +334,7 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 	}
 
 	public Schema getDbSchema() {
-		return this.database().schemaNamed(this.getSchema());
+		return this.getDatabase().schemaNamed(this.getSchema());
 	}
 
 }

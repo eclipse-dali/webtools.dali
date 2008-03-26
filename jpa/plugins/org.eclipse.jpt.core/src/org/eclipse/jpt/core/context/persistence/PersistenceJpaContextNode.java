@@ -23,6 +23,6 @@ public interface PersistenceJpaContextNode extends JpaContextNode
 	 */
 	void addToMessages(List<IMessage> messages);
 
-	TextRange validationTextRange();
+	TextRange getValidationTextRange();
 
 }

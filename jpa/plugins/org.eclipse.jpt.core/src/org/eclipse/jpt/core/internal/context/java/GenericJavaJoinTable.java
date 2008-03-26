@@ -175,7 +175,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			//from the java resource model
 			addJoinTableResource();
 		}
-		JavaJoinColumn joinColumn = jpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
+		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
 		JoinColumnAnnotation joinColumnResource = this.tableResource().addJoinColumn(index);
 		joinColumn.initializeFromResource(joinColumnResource);
@@ -276,7 +276,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			//from the java resource model
 			addJoinTableResource();
 		}
-		JavaJoinColumn inverseJoinColumn = jpaFactory().buildJavaJoinColumn(this, createInverseJoinColumnOwner());
+		JavaJoinColumn inverseJoinColumn = getJpaFactory().buildJavaJoinColumn(this, createInverseJoinColumnOwner());
 		this.specifiedInverseJoinColumns.add(index, inverseJoinColumn);
 		JoinColumnAnnotation joinColumnResource = this.tableResource().addInverseJoinColumn(index);
 		inverseJoinColumn.initializeFromResource(joinColumnResource);
@@ -482,13 +482,13 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	}	
 	
 	protected JavaJoinColumn buildJoinColumn(JoinColumnAnnotation joinColumnResource) {
-		JavaJoinColumn joinColumn = jpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
+		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
 		joinColumn.initializeFromResource(joinColumnResource);
 		return joinColumn;
 	}
 	
 	protected JavaJoinColumn buildInverseJoinColumn(JoinColumnAnnotation joinColumnResource) {
-		JavaJoinColumn joinColumn = jpaFactory().buildJavaJoinColumn(this, createInverseJoinColumnOwner());
+		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createInverseJoinColumnOwner());
 		joinColumn.initializeFromResource(joinColumnResource);
 		return joinColumn;
 	}
@@ -535,7 +535,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
 						new String[] {joinColumn.getName()}, 
-						joinColumn, joinColumn.nameTextRange(astRoot))
+						joinColumn, joinColumn.getNameTextRange(astRoot))
 				);
 			}
 			
@@ -545,7 +545,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
 						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-						joinColumn, joinColumn.referencedColumnNameTextRange(astRoot))
+						joinColumn, joinColumn.getReferencedColumnNameTextRange(astRoot))
 				);
 			}
 		}
@@ -559,7 +559,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
 						new String[] {joinColumn.getName()}, 
-						joinColumn, joinColumn.nameTextRange(astRoot))
+						joinColumn, joinColumn.getNameTextRange(astRoot))
 				);
 			}
 			
@@ -569,7 +569,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
 						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-						joinColumn, joinColumn.referencedColumnNameTextRange(astRoot))
+						joinColumn, joinColumn.getReferencedColumnNameTextRange(astRoot))
 				);
 			}
 		}
@@ -622,8 +622,8 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			return GenericJavaJoinTable.this.getName();
 		}
 		
-		public TextRange validationTextRange(CompilationUnit astRoot) {
-			return GenericJavaJoinTable.this.validationTextRange(astRoot);
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return GenericJavaJoinTable.this.getValidationTextRange(astRoot);
 		}
 	}
 
@@ -643,7 +643,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		}
 
 		public String getAttributeName() {
-			return GenericJavaJoinTable.this.relationshipMapping().persistentAttribute().getName();
+			return GenericJavaJoinTable.this.relationshipMapping().getPersistentAttribute().getName();
 		}
 
 		@Override
@@ -695,7 +695,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			if (targetEntity == null) {
 				return null;
 			}
-			String attributeName = GenericJavaJoinTable.this.relationshipMapping().persistentAttribute().getName();
+			String attributeName = GenericJavaJoinTable.this.relationshipMapping().getPersistentAttribute().getName();
 			for (Iterator<PersistentAttribute> stream = targetEntity.getPersistentType().allAttributes(); stream.hasNext();) {
 				PersistentAttribute attribute = stream.next();
 				AttributeMapping mapping = attribute.getMapping();

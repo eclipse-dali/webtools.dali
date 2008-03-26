@@ -40,11 +40,11 @@ public class JavaNullAttributeMappingProvider
 		super();
 	}
 
-	public String key() {
+	public String getKey() {
 		return null;
 	}
 
-	public String annotationName() {
+	public String getAnnotationName() {
 		return null;
 	}
 	

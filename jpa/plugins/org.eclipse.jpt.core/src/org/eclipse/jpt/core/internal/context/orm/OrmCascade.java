@@ -240,7 +240,7 @@ public class OrmCascade extends AbstractOrmJpaContextNode implements Cascade, Or
 		return cascade == null ? false : cascade.isCascadeRefresh();
 	}
 
-	public TextRange validationTextRange() {
+	public TextRange getValidationTextRange() {
 		return this.cascadeResource().validationTextRange();
 	}
 }

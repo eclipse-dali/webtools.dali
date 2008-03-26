@@ -62,7 +62,7 @@ public interface OrmTypeMapping extends TypeMapping, OrmJpaContextNode
 	 * method and return an int that matches it's order in the schema
 	 * @return
 	 */
-	int xmlSequence();
+	int getXmlSequence();
 
 	void removeFromResourceModel(XmlEntityMappings entityMappings);
 		
@@ -70,13 +70,13 @@ public interface OrmTypeMapping extends TypeMapping, OrmJpaContextNode
 
 	void initializeFrom(OrmTypeMapping oldMapping);
 
-	AbstractXmlTypeMapping typeMappingResource();
+	AbstractXmlTypeMapping getTypeMappingResource();
 	
 	JavaPersistentType getJavaPersistentType();
 
-	TextRange selectionTextRange();
+	TextRange getSelectionTextRange();
 
-	TextRange attributesTextRange();
+	TextRange getAttributesTextRange();
 	
 	boolean containsOffset(int textOffset);
 	

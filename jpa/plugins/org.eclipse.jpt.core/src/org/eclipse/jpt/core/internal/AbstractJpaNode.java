@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.core.JpaFactory;
@@ -102,7 +101,7 @@ public abstract class AbstractJpaNode
 		return this.getJpaProject().getJpaPlatform();
 	}
 
-	protected JpaFactory jpaFactory() {
+	protected JpaFactory getJpaFactory() {
 		return this.getJpaPlatform().getJpaFactory();
 	}
 
@@ -110,7 +109,7 @@ public abstract class AbstractJpaNode
 		return this.getJpaProject().getConnectionProfile();
 	}
 
-	protected Database database() {
+	protected Database getDatabase() {
 		return this.getConnectionProfile().getDatabase();
 	}
 

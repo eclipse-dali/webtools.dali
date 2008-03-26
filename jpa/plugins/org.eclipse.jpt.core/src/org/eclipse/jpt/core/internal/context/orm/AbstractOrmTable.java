@@ -255,7 +255,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 				return textRange;
 			}
 		}
-		return this.getParent().validationTextRange(); 
+		return this.getParent().getValidationTextRange(); 
 	}
 	
 	protected TextRange catalogTextRange() {
@@ -265,7 +265,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 				return textRange;
 			}
 		}
-		return this.getParent().validationTextRange(); 
+		return this.getParent().getValidationTextRange(); 
 	}
 	
 	protected TextRange schemaTextRange() {
@@ -275,17 +275,17 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 				return textRange;
 			}
 		}
-		return this.getParent().validationTextRange(); 
+		return this.getParent().getValidationTextRange(); 
 	}
 	
-	public TextRange validationTextRange() {
+	public TextRange getValidationTextRange() {
 		if (table() != null) {
 			TextRange textRange = this.table().validationTextRange();
 			if (textRange != null) {
 				return textRange;
 			}
 		}
-		return getParent().validationTextRange();
+		return getParent().getValidationTextRange();
 	}
 
 	

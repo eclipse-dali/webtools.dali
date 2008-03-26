@@ -34,7 +34,7 @@ public class OrmManyToManyMappingProvider implements OrmAttributeMappingProvider
 		super();
 	}
 	
-	public String key() {
+	public String getKey() {
 		return MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 

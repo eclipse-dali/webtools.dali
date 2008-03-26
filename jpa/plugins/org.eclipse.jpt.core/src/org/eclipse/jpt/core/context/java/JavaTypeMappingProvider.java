@@ -26,9 +26,9 @@ public interface JavaTypeMappingProvider {
 	/**
 	 * A unique String that corresponds to the IJavaTypeMapping key 
 	 */
-	String key();
+	String getKey();
 
-	String annotationName();
+	String getAnnotationName();
 	
 	/**
 	 * Create an IJavaTypeMapping for the given attribute.  Use the IJpaFactory

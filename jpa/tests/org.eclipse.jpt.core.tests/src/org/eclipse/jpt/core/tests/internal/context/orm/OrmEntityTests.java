@@ -182,7 +182,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals(TYPE_NAME, ormEntity.getDefaultName());
 		
-		ormEntity.javaEntity().setSpecifiedName("Foo");
+		ormEntity.getJavaEntity().setSpecifiedName("Foo");
 		//xml default name is not affect by what is specified in java
 		assertEquals(TYPE_NAME, ormEntity.getDefaultName());
 		
@@ -335,7 +335,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);
 		assertNull(ormEntity.getDefaultAccess());
 		
-		ormPersistentType.javaPersistentType().attributeNamed("id").setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentType.getJavaPersistentType().attributeNamed("id").setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		//java has annotations on fields now, that should win in all cases
 		assertEquals(AccessType.FIELD, ormEntity.getDefaultAccess());
 		
@@ -343,7 +343,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
 		assertEquals(AccessType.FIELD, ormEntity.getDefaultAccess());
 
-		ormPersistentType.javaPersistentType().attributeNamed("id").setSpecifiedMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentType.getJavaPersistentType().attributeNamed("id").setSpecifiedMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(AccessType.PROPERTY, ormEntity.getDefaultAccess());
 	}
 
@@ -513,7 +513,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		//no inheritance strategy specified in java so single-table is default
 		assertEquals(InheritanceType.SINGLE_TABLE, ormEntity.getDefaultInheritanceStrategy());
 		
-		ormEntity.javaEntity().setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		ormEntity.getJavaEntity().setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
 		assertEquals(InheritanceType.JOINED, ormEntity.getDefaultInheritanceStrategy());
 			
 		ormEntity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
@@ -554,7 +554,7 @@ public class OrmEntityTests extends ContextModelTestCase
 
 		//set specified inheritance strategy in java and verify defaults in xml are correct
 		parentXmlEntity.setSpecifiedInheritanceStrategy(null);
-		parentXmlEntity.javaEntity().setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		parentXmlEntity.getJavaEntity().setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
 		assertEquals(InheritanceType.JOINED, parentXmlEntity.getDefaultInheritanceStrategy());
 		assertEquals(InheritanceType.JOINED, childXmlEntity.getDefaultInheritanceStrategy());
 		assertNull(parentXmlEntity.getSpecifiedInheritanceStrategy());
@@ -758,7 +758,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmPersistentType childPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
 		OrmEntity parentOrmEntity = (OrmEntity) parentPersistentType.getMapping();
 		OrmEntity childOrmEntity = (OrmEntity) childPersistentType.getMapping();
-		JavaEntity javaEntity = childOrmEntity.javaEntity();
+		JavaEntity javaEntity = childOrmEntity.getJavaEntity();
 		
 		JavaSecondaryTable javaSecondaryTableFoo = javaEntity.addSpecifiedSecondaryTable(0);
 		javaSecondaryTableFoo.setSpecifiedName("FOO");

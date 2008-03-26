@@ -152,11 +152,11 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 		return generatorResource.getAllocationSize();
 	}
 
-	public TextRange validationTextRange() {
+	public TextRange getValidationTextRange() {
 		return this.generatorResource().validationTextRange();
 	}
 	
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		return this.generatorResource().nameTextRange();
 	}
 }

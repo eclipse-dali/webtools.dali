@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -53,7 +52,6 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
-import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -135,12 +133,12 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	 */
 	public GenericJpaProject(JpaProject.Config config) throws CoreException {
 		super(null);  // JPA project is the root of the containment tree
-		if ((config.project() == null) || (config.jpaPlatform() == null)) {
+		if ((config.getProject() == null) || (config.getJpaPlatform() == null)) {
 			throw new NullPointerException();
 		}
-		this.project = config.project();
-		this.jpaPlatform = config.jpaPlatform();
-		this.dataSource = this.jpaFactory().buildJpaDataSource(this, config.connectionProfileName());
+		this.project = config.getProject();
+		this.jpaPlatform = config.getJpaPlatform();
+		this.dataSource = this.getJpaFactory().buildJpaDataSource(this, config.getConnectionProfileName());
 		this.discoversAnnotatedClasses = config.discoverAnnotatedClasses();
 		this.jpaFiles = this.buildEmptyJpaFiles();
 
@@ -190,7 +188,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	}
 
 	protected JpaRootContextNode buildRootContextNode() {
-		return this.jpaFactory().buildRootContext(this);
+		return this.getJpaFactory().buildRootContext(this);
 	}
 
 	// ***** inner class

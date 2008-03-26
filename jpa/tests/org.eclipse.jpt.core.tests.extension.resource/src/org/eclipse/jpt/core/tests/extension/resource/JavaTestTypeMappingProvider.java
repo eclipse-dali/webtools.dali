@@ -36,11 +36,11 @@ public class JavaTestTypeMappingProvider
 		super();
 	}
 
-	public String key() {
+	public String getKey() {
 		return JavaTestTypeMapping.TEST_TYPE_MAPPING_KEY;
 	}
 	
-	public String annotationName() {
+	public String getAnnotationName() {
 		return JavaTestTypeMapping.TEST_TYPE_ANNOTATION_NAME;
 	}
 

@@ -22,7 +22,7 @@ public class OrmEntityProvider implements OrmTypeMappingProvider
 		return factory.buildOrmEntity(parent);
 	}
 
-	public String key() {
+	public String getKey() {
 		return MappingKeys.ENTITY_TYPE_MAPPING_KEY;
 	}
 }

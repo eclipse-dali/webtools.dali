@@ -37,11 +37,11 @@ public class JavaManyToManyMappingProvider
 		super();
 	}
 
-	public String key() {
+	public String getKey() {
 		return MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public String annotationName() {
+	public String getAnnotationName() {
 		return ManyToMany.ANNOTATION_NAME;
 	}
 

@@ -41,7 +41,7 @@ public class GenericOrmManyToManyMapping extends AbstractOrmMultiRelationshipMap
 		setMappedBy(oldMapping.getMappedBy());
 	}
 
-	public int xmlSequence() {
+	public int getXmlSequence() {
 		return 6;
 	}
 
@@ -54,7 +54,7 @@ public class GenericOrmManyToManyMapping extends AbstractOrmMultiRelationshipMap
 	
 	public XmlManyToMany addToResourceModel(AbstractXmlTypeMapping typeMapping) {
 		XmlManyToMany manyToMany = OrmFactory.eINSTANCE.createXmlManyToManyImpl();
-		persistentAttribute().initialize(manyToMany);
+		getPersistentAttribute().initialize(manyToMany);
 		typeMapping.getAttributes().getManyToManys().add(manyToMany);
 		return manyToMany;
 	}

@@ -126,7 +126,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 			//cause change notifications to be sent to the UI in the wrong order
 			this.defaultPrimaryKeyJoinColumn = null;
 		}
-		JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().buildJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+		JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
 		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = this.secondaryTableResource.addPkJoinColumn(index);
 		primaryKeyJoinColumn.initializeFromResource(pkJoinColumnResource);
@@ -245,7 +245,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 	}	
 	
 	protected JavaPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(PrimaryKeyJoinColumnAnnotation primaryKeyJoinColumnResource) {
-		JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().buildJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+		JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		primaryKeyJoinColumn.initializeFromResource(primaryKeyJoinColumnResource);
 		return primaryKeyJoinColumn;
 	}
@@ -308,8 +308,8 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 	
 	class PrimaryKeyJoinColumnOwner implements JavaBaseJoinColumn.Owner
 	{
-		public TextRange validationTextRange(CompilationUnit astRoot) {
-			return GenericJavaSecondaryTable.this.validationTextRange(astRoot);
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return GenericJavaSecondaryTable.this.getValidationTextRange(astRoot);
 		}
 
 		public TypeMapping getTypeMapping() {

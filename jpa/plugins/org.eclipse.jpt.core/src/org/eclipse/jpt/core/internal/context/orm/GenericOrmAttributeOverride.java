@@ -42,7 +42,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 	public GenericOrmAttributeOverride(OrmJpaContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride) {
 		super(parent);
 		this.owner = owner;
-		this.column = jpaFactory().buildOrmColumn(this, this);
+		this.column = getJpaFactory().buildOrmColumn(this, this);
 		this.initialize(xmlAttributeOverride);
 	}
 	
@@ -104,7 +104,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 //		}
 //		return super.validationTextRange();
 //	}
-	public TextRange validationTextRange() {
+	public TextRange getValidationTextRange() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -161,7 +161,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_TABLE,
 						new String[] {getName(), table, column.getName()},
 						column, 
-						column.tableTextRange())
+						column.getTableTextRange())
 				);
 			}
 			else {
@@ -171,7 +171,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 							JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
 							new String[] {table, column.getName()}, 
 							column,
-							column.tableTextRange())
+							column.getTableTextRange())
 					);
 			}
 			doContinue = false;
@@ -185,7 +185,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,
 						new String[] {getName(), column.getName()}, 
 						column,
-						column.nameTextRange())
+						column.getNameTextRange())
 				);
 			}
 			else {
@@ -195,7 +195,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 							JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
 							new String[] {column.getName()}, 
 							column,
-							column.nameTextRange())
+							column.getNameTextRange())
 					);
 			}
 		}

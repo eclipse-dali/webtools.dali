@@ -48,7 +48,7 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 			JPA.JOIN_TABLE);
 	}
 	
-	public String annotationName() {
+	public String getAnnotationName() {
 		return OneToOne.ANNOTATION_NAME;
 	}
 	

@@ -40,11 +40,11 @@ public class JavaEntityProvider
 		super();
 	}
 
-	public String key() {
+	public String getKey() {
 		return MappingKeys.ENTITY_TYPE_MAPPING_KEY;
 	}
 	
-	public String annotationName() {
+	public String getAnnotationName() {
 		return EntityAnnotation.ANNOTATION_NAME;
 	}
 

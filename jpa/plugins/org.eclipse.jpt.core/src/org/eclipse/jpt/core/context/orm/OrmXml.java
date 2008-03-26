@@ -49,7 +49,7 @@ public interface OrmXml extends OrmJpaContextNode, JpaStructureNode
 	 */
 	void removeEntityMappings();
 	
-	PersistenceUnitDefaults persistenceUnitDefaults();
+	PersistenceUnitDefaults getPersistenceUnitDefaults();
 	
 	/**
 	 * Return the OrmPersistentType listed in this mapping file

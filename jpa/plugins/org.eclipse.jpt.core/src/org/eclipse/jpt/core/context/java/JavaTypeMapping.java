@@ -28,7 +28,7 @@ public interface JavaTypeMapping extends TypeMapping, JavaJpaContextNode
 	
 	void update(JavaResourcePersistentType persistentTypeResource);
 	
-	String annotationName();
+	String getAnnotationName();
 	
 	Iterator<String> correspondingAnnotationNames();
 	

@@ -618,7 +618,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	//this for the defaults of the PersistenceUnit.
 	protected PersistenceUnitDefaults persistenceUnitDefaults() {
 		for (MappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
-			PersistenceUnitDefaults persistenceUnitDefaults = mappingFileRef.persistenceUnitDefaults();
+			PersistenceUnitDefaults persistenceUnitDefaults = mappingFileRef.getPersistenceUnitDefaults();
 			if (persistenceUnitDefaults != null) {
 				return persistenceUnitDefaults;
 			}
@@ -867,7 +867,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected MappingFileRef buildMappingFileRef(XmlMappingFileRef xmlMappingFileRef) {
-		return jpaFactory().buildMappingFileRef(this, xmlMappingFileRef);
+		return getJpaFactory().buildMappingFileRef(this, xmlMappingFileRef);
 	}
 	
 	protected void updateClassRefs(XmlPersistenceUnit persistenceUnit) {
@@ -923,11 +923,11 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected ClassRef buildClassRef(XmlJavaClassRef xmlClassRef) {
-		return jpaFactory().buildClassRef(this, xmlClassRef);
+		return getJpaFactory().buildClassRef(this, xmlClassRef);
 	}
 	
 	protected ClassRef buildClassRef(String className) {
-		return jpaFactory().buildClassRef(this, className);
+		return getJpaFactory().buildClassRef(this, className);
 	}
 	
 	protected boolean classIsSpecified(String className) {
@@ -972,7 +972,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected Property buildProperty(XmlProperty xmlProperty) {
-		return jpaFactory().buildProperty(this, xmlProperty);
+		return getJpaFactory().buildProperty(this, xmlProperty);
 	}
 		
 	protected void updatePersistenceUnitDefaults() {
@@ -1147,7 +1147,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 						JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
 						new String[] {javaClassRef.getClassName()}, 
 						javaClassRef, 
-						javaClassRef.validationTextRange())
+						javaClassRef.getValidationTextRange())
 				);
 			}
 		}
@@ -1156,7 +1156,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	private Collection<PersistenceUnitDefaults> persistenceUnitDefaultsForValidation() {
 		ArrayList<PersistenceUnitDefaults> puDefaults = new ArrayList<PersistenceUnitDefaults>();
 		for (MappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
-			PersistenceUnitDefaults persistenceUnitDefaults = mappingFileRef.persistenceUnitDefaults();
+			PersistenceUnitDefaults persistenceUnitDefaults = mappingFileRef.getPersistenceUnitDefaults();
 			if (persistenceUnitDefaults != null) {
 				puDefaults.add(persistenceUnitDefaults);
 			}
@@ -1202,11 +1202,11 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		return xmlPersistenceUnit.containsOffset(textOffset);
 	}
 	
-	public TextRange selectionTextRange() {
+	public TextRange getSelectionTextRange() {
 		return xmlPersistenceUnit.selectionTextRange();
 	}
 	
-	public TextRange validationTextRange() {
+	public TextRange getValidationTextRange() {
 		return xmlPersistenceUnit.validationTextRange();
 	}
 	

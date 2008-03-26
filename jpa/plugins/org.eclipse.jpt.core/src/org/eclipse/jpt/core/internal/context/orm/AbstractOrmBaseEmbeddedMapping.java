@@ -175,7 +175,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 //	}
 
 	protected OrmAttributeOverride buildAttributeOverride(XmlAttributeOverride attributeOverride) {
-		return jpaFactory().buildOrmAttributeOverride(this, this, attributeOverride);
+		return getJpaFactory().buildOrmAttributeOverride(this, this, attributeOverride);
 	}
 	
 	@Override

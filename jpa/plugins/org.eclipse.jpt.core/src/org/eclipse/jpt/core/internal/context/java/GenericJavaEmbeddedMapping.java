@@ -27,7 +27,7 @@ public class GenericJavaEmbeddedMapping extends AbstractJavaBaseEmbeddedMapping<
 		return MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public String annotationName() {
+	public String getAnnotationName() {
 		return Embedded.ANNOTATION_NAME;
 	}
 }
