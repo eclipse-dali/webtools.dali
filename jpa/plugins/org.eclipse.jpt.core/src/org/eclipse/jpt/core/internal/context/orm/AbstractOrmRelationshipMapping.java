@@ -123,7 +123,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 
 	public Iterator<String> allTargetEntityAttributeNames() {
 		Entity targetEntity = this.getResolvedTargetEntity();
-		return (targetEntity == null) ? EmptyIterator.<String> instance() : targetEntity.persistentType().allAttributeNames();
+		return (targetEntity == null) ? EmptyIterator.<String> instance() : targetEntity.getPersistentType().allAttributeNames();
 	}
 
 	public Iterator<String> candidateMappedByAttributeNames() {
@@ -200,7 +200,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 			return null;
 		}
 		PersistentType persistentType = getPersistenceUnit().persistentType(qualifiedTargetEntity);
-		if (persistentType != null && persistentType.mappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
+		if (persistentType != null && persistentType.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
 			return (Entity) persistentType.getMapping();
 		}
 		return null;

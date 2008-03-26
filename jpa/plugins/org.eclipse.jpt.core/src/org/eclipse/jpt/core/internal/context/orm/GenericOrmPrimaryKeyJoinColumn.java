@@ -100,7 +100,7 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 
 	@Override
 	protected String tableName() {
-		return this.getOwner().getTypeMapping().tableName();
+		return this.getOwner().getTypeMapping().getTableName();
 	}
 
 	public boolean isReferencedColumnResolved() {

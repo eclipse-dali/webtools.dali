@@ -46,12 +46,12 @@ public interface OrmPersistentAttribute extends PersistentAttribute, OrmJpaConte
 	/**
 	 * Overriden to return {@link OrmTypeMapping}s
 	 */
-	OrmTypeMapping typeMapping();
+	OrmTypeMapping getTypeMapping();
 	
 	/**
 	 * Overriden to return {@link OrmPersistentType}s
 	 */
-	OrmPersistentType persistentType();
+	OrmPersistentType getPersistentType();
 	
 	boolean contains(int textOffset);
 

@@ -95,7 +95,7 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 
 	@Override
 	protected String tableName() {
-		return this.getOwner().getTypeMapping().tableName();
+		return this.getOwner().getTypeMapping().getTableName();
 	}
 
 	public Column dbReferencedColumn() {

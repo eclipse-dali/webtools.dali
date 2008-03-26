@@ -29,9 +29,9 @@ public interface JavaPersistentAttribute extends PersistentAttribute, JavaJpaCon
 	
 	JavaAttributeMapping getSpecifiedMapping();
 	
-	JavaTypeMapping typeMapping();
+	JavaTypeMapping getTypeMapping();
 	
-	JavaPersistentType persistentType();
+	JavaPersistentType getPersistentType();
 	
 	void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute);
 

@@ -56,7 +56,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		return true;
 	}
 
-	public String tableName() {
+	public String getTableName() {
 		return null;
 	}
 
@@ -69,7 +69,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		this.class_ = newClass;
 		this.typeMappingResource().setClassName(newClass);
 		firePropertyChanged(CLASS_PROPERTY, oldClass, newClass);
-		persistentType().classChanged(oldClass, newClass);
+		getPersistentType().classChanged(oldClass, newClass);
 	}
 	
 	public AccessType getDefaultAccess() {
@@ -127,7 +127,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		firePropertyChanged(SPECIFIED_METADATA_COMPLETE_PROPERTY, oldMetadataComplete, newSpecifiedMetadataComplete);
 	}
 
-	public OrmPersistentType persistentType() {
+	public OrmPersistentType getPersistentType() {
 		return (OrmPersistentType) getParent();
 	}
 
@@ -145,7 +145,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		this.setDefaultMetadataComplete(oldMapping.isDefaultMetadataComplete());
 	}
 	
-	public Table primaryDbTable() {
+	public Table getPrimaryDbTable() {
 		return null;
 	}
 
@@ -153,7 +153,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		return null;
 	}
 
-	public Schema dbSchema() {
+	public Schema getDbSchema() {
 		return null;
 	}
 
@@ -214,10 +214,10 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		if (!isMetadataComplete()) {
 			if (getJavaPersistentType() != null) {
 				if (getJavaPersistentType().hasAnyAttributeMappingAnnotations()) {
-					return getJavaPersistentType().access();
+					return getJavaPersistentType().getAccess();
 				}
-				if (persistentType().parentPersistentType() != null) {
-					return persistentType().parentPersistentType().access();
+				if (getPersistentType().parentPersistentType() != null) {
+					return getPersistentType().parentPersistentType().getAccess();
 				}
 			}
 		}
@@ -290,7 +290,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 	
 	public JpaStructureNode structureNode(int offset) {
 		if (this.typeMapping.containsOffset(offset)) {
-			return persistentType();
+			return getPersistentType();
 		}
 		return null;
 	}

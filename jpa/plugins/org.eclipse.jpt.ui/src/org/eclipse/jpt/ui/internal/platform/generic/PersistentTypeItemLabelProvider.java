@@ -39,7 +39,7 @@ public class PersistentTypeItemLabelProvider extends AbstractItemLabelProvider
 		return new PropertyAspectAdapter<PersistentType, Image>(PersistentType.MAPPING_PROPERTY, (PersistentType) model()) {
 			@Override
 			protected Image buildValue_() {
-				return JpaMappingImageHelper.imageForTypeMapping(subject.mappingKey());
+				return JpaMappingImageHelper.imageForTypeMapping(subject.getMappingKey());
 			}
 		};
 	}	

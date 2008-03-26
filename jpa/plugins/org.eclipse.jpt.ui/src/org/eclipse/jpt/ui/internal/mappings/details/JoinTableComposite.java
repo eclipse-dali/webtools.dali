@@ -239,7 +239,7 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 
 			@Override
 			protected org.eclipse.jpt.db.Table table() {
-				return subject().dbTable();
+				return subject().getDbTable();
 			}
 
 			private Schema tableSchema() {

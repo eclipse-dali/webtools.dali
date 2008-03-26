@@ -332,7 +332,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 			return;
 		}
 		
-		PersistentAttribute attribute = getResolvedTargetEntity().persistentType().attributeNamed(getMappedBy());
+		PersistentAttribute attribute = getResolvedTargetEntity().getPersistentType().attributeNamed(getMappedBy());
 		
 		if (attribute == null) {
 			messages.add(

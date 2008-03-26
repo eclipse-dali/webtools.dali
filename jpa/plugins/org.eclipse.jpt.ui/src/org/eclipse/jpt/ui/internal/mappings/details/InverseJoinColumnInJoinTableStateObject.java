@@ -54,7 +54,7 @@ public class InverseJoinColumnInJoinTableStateObject extends BaseJoinColumnState
 	 */
 	@Override
 	public Table getNameTable() {
-		return getOwner().dbTable();
+		return getOwner().getDbTable();
 	}
 
 	/*
@@ -76,7 +76,7 @@ public class InverseJoinColumnInJoinTableStateObject extends BaseJoinColumnState
 			return null;
 		}
 
-		return targetEntity.primaryDbTable();
+		return targetEntity.getPrimaryDbTable();
 	}
 
 	/**

@@ -36,7 +36,7 @@ public class PersistentAttributeActionFilter
 			return false;
 		}
 		
-		boolean mapped = ((PersistentAttribute) target).mappingKey() != MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
+		boolean mapped = ((PersistentAttribute) target).getMappingKey() != MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
 		return mapped == booleanValue;
 	}
 	

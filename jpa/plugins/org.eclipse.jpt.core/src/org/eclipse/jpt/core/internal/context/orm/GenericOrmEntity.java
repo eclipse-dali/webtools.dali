@@ -180,19 +180,19 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}	
 
 	@Override
-	public String tableName() {
+	public String getTableName() {
 		return getTable().getName();
 	}
 	
 	@Override
-	public org.eclipse.jpt.db.Table primaryDbTable() {
-		return getTable().dbTable();
+	public org.eclipse.jpt.db.Table getPrimaryDbTable() {
+		return getTable().getDbTable();
 	}
 
 	@Override
 	public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 		for (Iterator<Table> stream = this.associatedTablesIncludingInherited(); stream.hasNext();) {
-			org.eclipse.jpt.db.Table dbTable = stream.next().dbTable();
+			org.eclipse.jpt.db.Table dbTable = stream.next().getDbTable();
 			if (dbTable != null && dbTable.matchesShortJavaClassName(tableName)) {
 				return dbTable;
 			}
@@ -201,13 +201,13 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	@Override
-	public Schema dbSchema() {
-		return getTable().dbSchema();
+	public Schema getDbSchema() {
+		return getTable().getDbSchema();
 	}
 	
 	public JavaEntity javaEntity() {
 		JavaPersistentType javaPersistentType = getJavaPersistentType();
-		if (javaPersistentType != null && javaPersistentType.mappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
+		if (javaPersistentType != null && javaPersistentType.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
 			return (JavaEntity) javaPersistentType.getMapping();
 		}
 		return null;
@@ -921,7 +921,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 
 	public Entity parentEntity() {
-		for (Iterator<PersistentType> i = persistentType().inheritanceHierarchy(); i.hasNext();) {
+		for (Iterator<PersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
 			TypeMapping typeMapping = i.next().getMapping();
 			if (typeMapping != this && typeMapping instanceof Entity) {
 				return (Entity) typeMapping;
@@ -932,7 +932,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 	public Entity rootEntity() {
 		Entity rootEntity = null;
-		for (Iterator<PersistentType> i = persistentType().inheritanceHierarchy(); i.hasNext();) {
+		for (Iterator<PersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
 			PersistentType persistentType = i.next();
 			if (persistentType.getMapping() instanceof Entity) {
 				rootEntity = (Entity) persistentType.getMapping();
@@ -988,7 +988,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	 * and terminates at the root entity (or at the point of cyclicity).
 	 */
 	protected Iterator<TypeMapping> inheritanceHierarchy() {
-		return new TransformationIterator<PersistentType, TypeMapping>(persistentType().inheritanceHierarchy()) {
+		return new TransformationIterator<PersistentType, TypeMapping>(getPersistentType().inheritanceHierarchy()) {
 			@Override
 			protected TypeMapping transform(PersistentType type) {
 				return type.getMapping();
@@ -1503,7 +1503,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	// *************************************************************************
 	
 	public String primaryKeyColumnName() {
-		return GenericJavaEntity.primaryKeyColumnName(persistentType().allAttributes());
+		return GenericJavaEntity.primaryKeyColumnName(getPersistentType().allAttributes());
 	}
 	
 	//**********  Validation **************************
@@ -1598,7 +1598,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 
 	private boolean entityHasId() {
-		for (Iterator<PersistentAttribute> stream = this.persistentType().allAttributes(); stream.hasNext(); ) {
+		for (Iterator<PersistentAttribute> stream = this.getPersistentType().allAttributes(); stream.hasNext(); ) {
 			if (stream.next().isIdAttribute()) {
 				return true;
 			}
@@ -1616,7 +1616,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	public XmlEntity addToResourceModel(XmlEntityMappings entityMappings) {
 		XmlEntity entity = OrmFactory.eINSTANCE.createXmlEntity();
-		persistentType().initialize(entity);
+		getPersistentType().initialize(entity);
 		entityMappings.getEntities().add(entity);
 		return entity;
 	}
@@ -1639,7 +1639,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
 			Entity parentEntity = GenericOrmEntity.this.parentEntity();
-			return (parentEntity == null) ? null : parentEntity.primaryDbTable();
+			return (parentEntity == null) ? null : parentEntity.getPrimaryDbTable();
 		}
 
 		public int joinColumnsSize() {
@@ -1669,7 +1669,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 			if (attributeName == null) {
 				return null;
 			}
-			for (Iterator<PersistentAttribute> stream = persistentType().allAttributes(); stream.hasNext();) {
+			for (Iterator<PersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext();) {
 				PersistentAttribute persAttribute = stream.next();
 				if (attributeName.equals(persAttribute.getName())) {
 					if (persAttribute.getMapping() instanceof ColumnMapping) {
@@ -1701,7 +1701,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 			if (attributeName == null) {
 				return null;
 			}
-			for (Iterator<PersistentAttribute> stream = persistentType().allAttributes(); stream.hasNext();) {
+			for (Iterator<PersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext();) {
 				PersistentAttribute persAttribute = stream.next();
 				if (attributeName.equals(persAttribute.getName())) {
 					if (persAttribute.getMapping() instanceof RelationshipMapping) {

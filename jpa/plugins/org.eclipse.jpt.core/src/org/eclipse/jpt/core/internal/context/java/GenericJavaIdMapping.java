@@ -130,7 +130,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 	}
 	
 	public String defaultTableName() {
-		return getTypeMapping().tableName();
+		return getTypeMapping().getTableName();
 	}
 
 	//************** IIdMapping implementation ***************

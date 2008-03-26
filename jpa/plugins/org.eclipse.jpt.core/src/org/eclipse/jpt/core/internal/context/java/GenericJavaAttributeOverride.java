@@ -75,7 +75,7 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 		if (tableName != null) {
 			return tableName;
 		}
-		return getOwner().getTypeMapping().tableName();
+		return getOwner().getTypeMapping().getTableName();
 	}
 	
 	protected ColumnMapping columnMapping() {

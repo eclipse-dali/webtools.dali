@@ -83,7 +83,7 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	}
 	
 	public String defaultTableName() {
-		return getTypeMapping().tableName();
+		return getTypeMapping().getTableName();
 	}
 
 	//************** IVersionMapping implementation ***************

@@ -69,7 +69,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 	}
 	
 	public TypeMapping getTypeMapping() {
-		return this.persistentAttribute().typeMapping();
+		return this.persistentAttribute().getTypeMapping();
 	}
 
 	public String attributeName() {

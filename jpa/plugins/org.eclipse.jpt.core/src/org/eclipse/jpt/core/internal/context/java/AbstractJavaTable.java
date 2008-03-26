@@ -296,21 +296,21 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 		return (textRange != null) ? textRange : this.getParent().validationTextRange(astRoot);
 	}
 
-	public org.eclipse.jpt.db.Table dbTable() {
-		Schema schema = this.dbSchema();
+	public org.eclipse.jpt.db.Table getDbTable() {
+		Schema schema = this.getDbSchema();
 		return (schema == null) ? null : schema.tableNamed(this.getName());
 	}
 
-	public Schema dbSchema() {
+	public Schema getDbSchema() {
 		return this.database().schemaNamed(this.getSchema());
 	}
 
 	public boolean hasResolvedSchema() {
-		return this.dbSchema() != null;
+		return this.getDbSchema() != null;
 	}
 
 	public boolean isResolved() {
-		return this.dbTable() != null;
+		return this.getDbTable() != null;
 	}
 
 	@Override
@@ -351,7 +351,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 	}
 
 	private Iterator<String> candidateNames() {
-		Schema dbSchema = this.dbSchema();
+		Schema dbSchema = this.getDbSchema();
 		return (dbSchema != null) ? dbSchema.tableNames() : EmptyIterator.<String> instance();
 	}
 

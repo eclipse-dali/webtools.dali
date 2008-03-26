@@ -78,7 +78,7 @@ public class InverseJoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinCo
 		JoinTable joinTable = subject.getOwner();
 
 		if (joinTable != null) {
-			Table joinDBTable = joinTable.dbTable();
+			Table joinDBTable = joinTable.getDbTable();
 
 			if (joinDBTable != null) {
 				Iterator<String> columnNames = joinDBTable.columnNames();
@@ -135,7 +135,7 @@ public class InverseJoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinCo
 		Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
 
 		if (targetEntity != null) {
-			Table referencedDbTable = targetEntity.primaryDbTable();
+			Table referencedDbTable = targetEntity.getPrimaryDbTable();
 
 			if (referencedDbTable != null) {
 				Iterator<String> columnNames = referencedDbTable.columnNames();

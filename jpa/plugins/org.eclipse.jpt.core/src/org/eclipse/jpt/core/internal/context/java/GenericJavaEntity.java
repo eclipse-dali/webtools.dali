@@ -336,19 +336,19 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	@Override
-	public String tableName() {
+	public String getTableName() {
 		return getTable().getName();
 	}
 
 	@Override
-	public org.eclipse.jpt.db.Table primaryDbTable() {
-		return getTable().dbTable();
+	public org.eclipse.jpt.db.Table getPrimaryDbTable() {
+		return getTable().getDbTable();
 	}
 
 	@Override
 	public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 		for (Iterator<Table> stream = this.associatedTablesIncludingInherited(); stream.hasNext();) {
-			org.eclipse.jpt.db.Table dbTable = stream.next().dbTable();
+			org.eclipse.jpt.db.Table dbTable = stream.next().getDbTable();
 			if (dbTable != null && dbTable.matchesShortJavaClassName(tableName)) {
 				return dbTable;
 			}
@@ -357,8 +357,8 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	@Override
-	public Schema dbSchema() {
-		return getTable().dbSchema();
+	public Schema getDbSchema() {
+		return getTable().getDbSchema();
 	}
 
 
@@ -1141,7 +1141,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	public Entity parentEntity() {
-		for (Iterator<PersistentType> i = persistentType().inheritanceHierarchy(); i.hasNext();) {
+		for (Iterator<PersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
 			TypeMapping typeMapping = i.next().getMapping();
 			if (typeMapping != this && typeMapping instanceof Entity) {
 				return (Entity) typeMapping;
@@ -1152,7 +1152,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 
 	public Entity rootEntity() {
 		Entity rootEntity = this;
-		for (Iterator<PersistentType> i = persistentType().inheritanceHierarchy(); i.hasNext();) {
+		for (Iterator<PersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
 			PersistentType persistentType = i.next();
 			if (persistentType.getMapping() instanceof Entity) {
 				rootEntity = (Entity) persistentType.getMapping();
@@ -1162,14 +1162,14 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	public String primaryKeyColumnName() {
-		return primaryKeyColumnName(persistentType().allAttributes());
+		return primaryKeyColumnName(getPersistentType().allAttributes());
 	}
 	
 	public static String primaryKeyColumnName(Iterator<PersistentAttribute> attributes) {
 		String pkColumnName = null;
 		for (Iterator<PersistentAttribute> stream = attributes; stream.hasNext();) {
 			PersistentAttribute attribute = stream.next();
-			String name = attribute.primaryKeyColumnName();
+			String name = attribute.getPrimaryKeyColumnName();
 			if (pkColumnName == null) {
 				pkColumnName = name;
 			}
@@ -1239,7 +1239,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	 * and terminates at the root entity (or at the point of cyclicity).
 	 */
 	protected Iterator<TypeMapping> inheritanceHierarchy() {
-		return new TransformationIterator<PersistentType, TypeMapping>(persistentType().inheritanceHierarchy()) {
+		return new TransformationIterator<PersistentType, TypeMapping>(getPersistentType().inheritanceHierarchy()) {
 			@Override
 			protected TypeMapping transform(PersistentType type) {
 				return type.getMapping();
@@ -1790,7 +1790,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	private boolean entityHasId() {
-		for (Iterator<PersistentAttribute> stream = persistentType().allAttributes(); stream.hasNext(); ) {
+		for (Iterator<PersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext(); ) {
 			if (stream.next().isIdAttribute()) {
 				return true;
 			}
@@ -1862,7 +1862,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 
 		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
 			Entity parentEntity = GenericJavaEntity.this.parentEntity();
-			return (parentEntity == null) ? null : parentEntity.primaryDbTable();
+			return (parentEntity == null) ? null : parentEntity.getPrimaryDbTable();
 		}
 
 		public int joinColumnsSize() {
@@ -1887,7 +1887,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			if (attributeName == null) {
 				return null;
 			}
-			for (Iterator<PersistentAttribute> stream = persistentType().allAttributes(); stream.hasNext();) {
+			for (Iterator<PersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext();) {
 				PersistentAttribute persAttribute = stream.next();
 				if (attributeName.equals(persAttribute.getName())) {
 					if (persAttribute.getMapping() instanceof ColumnMapping) {
@@ -1922,7 +1922,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			if (attributeName == null) {
 				return null;
 			}
-			for (Iterator<PersistentAttribute> stream = persistentType().allAttributes(); stream.hasNext();) {
+			for (Iterator<PersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext();) {
 				PersistentAttribute persAttribute = stream.next();
 				if (attributeName.equals(persAttribute.getName())) {
 					if (persAttribute.getMapping() instanceof RelationshipMapping) {

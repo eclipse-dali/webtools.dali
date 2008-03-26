@@ -428,7 +428,7 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 		classRefs.next();
 		Embeddable embeddable = (Embeddable) classRefs.next().getJavaPersistentType().getMapping();
 		
-		BasicMapping cityMapping = (BasicMapping) embeddable.persistentType().attributeNamed("city").getMapping();
+		BasicMapping cityMapping = (BasicMapping) embeddable.getPersistentType().attributeNamed("city").getMapping();
 		cityMapping.getColumn().setSpecifiedName("FOO");
 		cityMapping.getColumn().setSpecifiedTable("BAR");
 		

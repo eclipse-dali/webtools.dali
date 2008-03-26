@@ -85,7 +85,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		return this.mapping;
 	}
 
-	public String mappingKey() {
+	public String getMappingKey() {
 		return getMapping().getKey();
 	}
 	
@@ -122,7 +122,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		return getMapping().isMapped();
 	}
 
-	public AccessType access() {
+	public AccessType getAccess() {
 		return this.access;
 	}
 	
@@ -300,7 +300,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	
 	protected void initializePersistentAttributes(JavaResourcePersistentType persistentTypeResource) {
 		Iterator<JavaResourcePersistentAttribute> resourceAttributes = persistentTypeResource.fields();
-		if (access() == AccessType.PROPERTY) {
+		if (getAccess() == AccessType.PROPERTY) {
 			resourceAttributes = persistentTypeResource.properties();
 		}		
 		
@@ -344,7 +344,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		}
 		if (javaAccess == null) {
 			if (parentPersistentType() != null) {
-				javaAccess = parentPersistentType().access();
+				javaAccess = parentPersistentType().getAccess();
 			}
 		}
 		if (javaAccess == null) {
@@ -404,7 +404,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	protected void updatePersistentAttributes(JavaResourcePersistentType resourcePersistentType) {
 		ListIterator<JavaPersistentAttribute> contextAttributes = attributes();
 		Iterator<JavaResourcePersistentAttribute> resourceAttributes = resourcePersistentType.fields();
-		if (access() == AccessType.PROPERTY) {
+		if (getAccess() == AccessType.PROPERTY) {
 			resourceAttributes = resourcePersistentType.properties();
 		}		
 		

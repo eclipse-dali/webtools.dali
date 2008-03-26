@@ -174,7 +174,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 
 	public OrmTypeMapping getTypeMapping() {
-		return this.persistentAttribute().typeMapping();
+		return this.persistentAttribute().getTypeMapping();
 	}
 
 
@@ -207,7 +207,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 	
 	protected JavaPersistentAttribute javaPersistentAttribute() {
-		JavaPersistentType javaPersistentType = persistentAttribute().persistentType().javaPersistentType();
+		JavaPersistentType javaPersistentType = persistentAttribute().getPersistentType().javaPersistentType();
 		if (javaPersistentType != null && getName() != null) {
 			return javaPersistentType.attributeNamed(getName());
 		}
@@ -267,7 +267,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,
-					new String[] {getName(), persistentAttribute().persistentType().getMapping().getClass_()},
+					new String[] {getName(), persistentAttribute().getPersistentType().getMapping().getClass_()},
 					this, 
 					nameTextRange())
 			);

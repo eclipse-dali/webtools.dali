@@ -237,28 +237,28 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		createTestType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		assertEquals(AccessType.FIELD, javaPersistentType().access());
+		assertEquals(AccessType.FIELD, javaPersistentType().getAccess());
 	}
 
 	public void testAccessField() throws Exception {
 		createTestEntityAnnotatedField();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		assertEquals(AccessType.FIELD, javaPersistentType().access());
+		assertEquals(AccessType.FIELD, javaPersistentType().getAccess());
 	}
 	
 	public void testAccessProperty() throws Exception {
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		assertEquals(AccessType.PROPERTY, javaPersistentType().access());
+		assertEquals(AccessType.PROPERTY, javaPersistentType().getAccess());
 	}
 	
 	public void testAccessFieldAndMethodAnnotated() throws Exception {
 		createTestEntityAnnotatedFieldAndMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		assertEquals(AccessType.FIELD, javaPersistentType().access());
+		assertEquals(AccessType.FIELD, javaPersistentType().getAccess());
 	}
 
 	public void testAccessInheritance() throws Exception {
@@ -275,7 +275,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		JavaPersistentType javaPersistentType = classRef.getJavaPersistentType();
 		assertEquals(PACKAGE_NAME + ".AnnotationTestTypeChild", javaPersistentType.getName());
 		
-		assertEquals(AccessType.PROPERTY, javaPersistentType.access());
+		assertEquals(AccessType.PROPERTY, javaPersistentType.getAccess());
 	}
 		
 	public void testAccessInheritance2() throws Exception {
@@ -292,7 +292,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		JavaPersistentType javaPersistentType = classRef.getJavaPersistentType();
 		assertEquals(PACKAGE_NAME + ".AnnotationTestTypeChild", javaPersistentType.getName());
 		
-		assertEquals(AccessType.FIELD, javaPersistentType.access());
+		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 	}	
 		
 	public void testAccessInheritance3() throws Exception {
@@ -309,7 +309,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		JavaPersistentType javaPersistentType = classRef.getJavaPersistentType();
 		assertEquals(PACKAGE_NAME + ".AnnotationTestTypeChild", javaPersistentType.getName());
 		
-		assertEquals(AccessType.PROPERTY, javaPersistentType.access());
+		assertEquals(AccessType.PROPERTY, javaPersistentType.getAccess());
 	}	
 		
 	public void testAccessInheritance4() throws Exception {
@@ -326,7 +326,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		
 		assertEquals(PACKAGE_NAME + ".AnnotationTestTypeChild", javaPersistentType.getName());
 		
-		assertEquals(AccessType.FIELD, javaPersistentType.access());
+		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 	}
 	
 	//inherited class having annotations set wins over the default access set on persistence-unit-defaults
@@ -345,7 +345,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		
 		assertEquals(PACKAGE_NAME + ".AnnotationTestTypeChild", javaPersistentType.getName());
 		
-		assertEquals(AccessType.PROPERTY, javaPersistentType.access());
+		assertEquals(AccessType.PROPERTY, javaPersistentType.getAccess());
 	}
 
 	public void testAccessXmlNoAccessNoAnnotations() throws Exception {
@@ -353,7 +353,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		createTestEntity();
 
 		JavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
-		assertEquals(AccessType.FIELD, javaPersistentType.access());
+		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 	}
 	
 	public void testAccessXmlEntityAccessNoAnnotations() throws Exception {
@@ -362,10 +362,10 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		JavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
 
 		entityPersistentType.getMapping().setSpecifiedAccess(AccessType.FIELD);
-		assertEquals(AccessType.FIELD, javaPersistentType.access());
+		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 
 		entityPersistentType.getMapping().setSpecifiedAccess(AccessType.PROPERTY);
-		assertEquals(AccessType.PROPERTY, javaPersistentType.access());
+		assertEquals(AccessType.PROPERTY, javaPersistentType.getAccess());
 	}
 	
 	public void testAccessXmlPersistenceUnitDefaultsAccessNoAnnotations()  throws Exception {
@@ -374,10 +374,10 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		JavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
 
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);
-		assertEquals(AccessType.FIELD, javaPersistentType.access());
+		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
-		assertEquals(AccessType.PROPERTY, javaPersistentType.access());
+		assertEquals(AccessType.PROPERTY, javaPersistentType.getAccess());
 	}
 	
 	public void testAccessXmlEntityPropertyAccessAndFieldAnnotations() throws Exception {
@@ -387,7 +387,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		JavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
 
 		entityPersistentType.getMapping().setSpecifiedAccess(AccessType.PROPERTY);
-		assertEquals(AccessType.PROPERTY, javaPersistentType.access());
+		assertEquals(AccessType.PROPERTY, javaPersistentType.getAccess());
 	}
 	
 	public void testAccessXmlEntityFieldAccessAndPropertyAnnotations() throws Exception {
@@ -397,7 +397,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		JavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
 
 		entityPersistentType.getMapping().setSpecifiedAccess(AccessType.FIELD);
-		assertEquals(AccessType.FIELD, javaPersistentType.access());
+		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 	}
 	
 	public void testAccessXmlPersistenceUnitDefaultsAccessFieldAnnotations() throws Exception {
@@ -406,7 +406,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		JavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
 
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
-		assertEquals(AccessType.FIELD, javaPersistentType.access());
+		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 	}
 
 	//inheritance wins over entity-mappings specified access
@@ -419,8 +419,8 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		JavaPersistentType childJavaPersistentType = childEntityPersistentType.javaPersistentType(); 
 
 		entityMappings().setSpecifiedAccess(AccessType.FIELD);
-		assertEquals(AccessType.PROPERTY, entityPersistentType.javaPersistentType().access());
-		assertEquals(AccessType.PROPERTY, childJavaPersistentType.access());
+		assertEquals(AccessType.PROPERTY, entityPersistentType.javaPersistentType().getAccess());
+		assertEquals(AccessType.PROPERTY, childJavaPersistentType.getAccess());
 	}
 
 	public void testAccessXmlMetadataCompleteFieldAnnotations() throws Exception {
@@ -432,7 +432,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
 		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertEquals(AccessType.PROPERTY, javaPersistentType.access());
+		assertEquals(AccessType.PROPERTY, javaPersistentType.getAccess());
 		
 	}
 	
@@ -444,7 +444,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		JavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
 
 		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertEquals(AccessType.FIELD, javaPersistentType.access());
+		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 	}
 	
 	public void testParentPersistentType() throws Exception {
@@ -553,21 +553,21 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().getMappingKey());
 	}
 	
 	public void testMappingKeyNull() throws Exception {
 		createTestType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		assertEquals(MappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().getMappingKey());
 	}
 	
 	public void testSetMappingKey() throws Exception {
 		createTestType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(MappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().getMappingKey());
 
 		javaPersistentType().setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		
@@ -575,14 +575,14 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		assertNotNull(typeResource.mappingAnnotation());
 		assertTrue(typeResource.mappingAnnotation() instanceof EntityAnnotation);
 		
-		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().getMappingKey());
 	}
 	
 	public void testSetMappingKey2() throws Exception {
 		createTestEntityAnnotatedField();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().getMappingKey());
 
 		javaPersistentType().setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		
@@ -590,14 +590,14 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		assertNotNull(typeResource.mappingAnnotation());
 		assertTrue(typeResource.mappingAnnotation() instanceof EmbeddableAnnotation);
 		
-		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, javaPersistentType().getMappingKey());
 	}
 
 	public void testSetMappingKeyNull() throws Exception {
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().getMappingKey());
 
 		javaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
 		
@@ -605,31 +605,31 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		assertNull(typeResource.mappingAnnotation());
 		assertNull(typeResource.mappingAnnotation(EntityAnnotation.ANNOTATION_NAME));
 		
-		assertEquals(MappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().getMappingKey());
 	}
 	
 	public void testGetMappingKeyMappingChangeInResourceModel() throws Exception {
 		createTestEntityAnnotatedField();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().getMappingKey());
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.setMappingAnnotation(EmbeddableAnnotation.ANNOTATION_NAME);
 				
-		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, javaPersistentType().getMappingKey());
 	}
 	
 	public void testGetMappingKeyMappingChangeInResourceModel2() throws Exception {
 		createTestType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(MappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().getMappingKey());
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.setMappingAnnotation(EntityAnnotation.ANNOTATION_NAME);
 				
-		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().getMappingKey());
 	}
 
 	public void testIsMapped() throws Exception {

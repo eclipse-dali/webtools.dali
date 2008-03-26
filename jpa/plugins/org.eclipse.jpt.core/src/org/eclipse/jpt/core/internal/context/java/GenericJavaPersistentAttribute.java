@@ -68,15 +68,15 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		return this.resourcePersistentAttribute;
 	}
 	
-	public JavaPersistentType persistentType() {
+	public JavaPersistentType getPersistentType() {
 		return (JavaPersistentType) this.getParent();
 	}
 
-	public JavaTypeMapping typeMapping() {
-		return this.persistentType().getMapping();
+	public JavaTypeMapping getTypeMapping() {
+		return this.getPersistentType().getMapping();
 	}
 
-	public String primaryKeyColumnName() {
+	public String getPrimaryKeyColumnName() {
 		return this.getMapping().primaryKeyColumnName();
 	}
 
@@ -138,14 +138,14 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		return (this.specifiedMapping != null) ? this.specifiedMapping : this.defaultMapping;
 	}
 
-	public String mappingKey() {
+	public String getMappingKey() {
 		return this.getMapping().getKey();
 	}
 
 	/**
 	 * return null if there is no "default" mapping for the attribute
 	 */
-	public String defaultMappingKey() {
+	public String getDefaultMappingKey() {
 		return this.defaultMapping.getKey();
 	}
 

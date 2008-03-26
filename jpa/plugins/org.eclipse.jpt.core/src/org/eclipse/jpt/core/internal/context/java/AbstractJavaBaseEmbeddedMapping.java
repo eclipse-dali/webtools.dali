@@ -286,7 +286,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	}
 
 	protected VirtualAttributeOverride buildVirtualAttributeOverrideResource(JavaResourcePersistentAttribute resourcePersistentAttribute, String attributeName) {
-		ColumnMapping columnMapping = (ColumnMapping) this.embeddable().persistentType().attributeNamed(attributeName).getMapping();
+		ColumnMapping columnMapping = (ColumnMapping) this.embeddable().getPersistentType().attributeNamed(attributeName).getMapping();
 		return new VirtualAttributeOverride(resourcePersistentAttribute, attributeName, columnMapping.getColumn());
 	}
 
@@ -327,7 +327,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 		if (this.embeddable() == null) {
 			return EmptyIterator.instance();
 		}
-		return new FilteringIterator<PersistentAttribute, PersistentAttribute>(this.embeddable().persistentType().attributes()) {
+		return new FilteringIterator<PersistentAttribute, PersistentAttribute>(this.embeddable().getPersistentType().attributes()) {
 			@Override
 			protected boolean accept(PersistentAttribute o) {
 				return o.isOverridableAttribute();
@@ -371,7 +371,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 		}
 		PersistentType persistentType = persistentAttribute.getPersistenceUnit().persistentType(qualifiedTypeName);
 		if (persistentType != null) {
-			if (persistentType.mappingKey() == MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
+			if (persistentType.getMappingKey() == MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
 				return (Embeddable) persistentType.getMapping();
 			}
 		}
@@ -382,7 +382,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 		if (attributeName == null || embeddable == null) {
 			return null;
 		}
-		for (Iterator<PersistentAttribute> stream = embeddable.persistentType().allAttributes(); stream.hasNext();) {
+		for (Iterator<PersistentAttribute> stream = embeddable.getPersistentType().allAttributes(); stream.hasNext();) {
 			PersistentAttribute persAttribute = stream.next();
 			if (attributeName.equals(persAttribute.getName())) {
 				if (persAttribute.getMapping() instanceof ColumnMapping) {

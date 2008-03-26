@@ -79,7 +79,7 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 	@Override
 	protected AttributeMappingUiProvider<? extends AttributeMapping>[] attributeMappingUiProvidersFor(PersistentAttribute persistentAttribute) {
 		AttributeMappingUiProvider<? extends AttributeMapping>[] providers = new AttributeMappingUiProvider<?>[CollectionTools.size(attributeMappingUiProviders()) + 1];
-		providers[0] =  defaultAttributeMappingUiProvider(persistentAttribute.defaultMappingKey());
+		providers[0] =  defaultAttributeMappingUiProvider(persistentAttribute.getDefaultMappingKey());
 		int i = 1;
 		for (Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> iterator = attributeMappingUiProviders(); iterator.hasNext(); ) {
 			providers[i++] = iterator.next();

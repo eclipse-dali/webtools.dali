@@ -146,7 +146,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 			return null;
 		}
 		PersistentType persistentType = getPersistenceUnit().persistentType(qualifiedTargetEntity);
-		if (persistentType != null && persistentType.mappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
+		if (persistentType != null && persistentType.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
 			return (Entity) persistentType.getMapping();
 		}
 		return null;
@@ -161,7 +161,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 
 	public Iterator<String> allTargetEntityAttributeNames() {
 		Entity targetEntity = this.getResolvedTargetEntity();
-		return (targetEntity == null) ? EmptyIterator.<String> instance() : targetEntity.persistentType().allAttributeNames();
+		return (targetEntity == null) ? EmptyIterator.<String> instance() : targetEntity.getPersistentType().allAttributeNames();
 	}
 
 	public Iterator<String> candidateMappedByAttributeNames() {

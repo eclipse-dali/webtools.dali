@@ -364,7 +364,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		 * by default, the join column is in the type mapping's primary table
 		 */
 		public String defaultTableName() {
-			return AbstractJavaSingleRelationshipMapping.this.getTypeMapping().tableName();
+			return AbstractJavaSingleRelationshipMapping.this.getTypeMapping().getTableName();
 		}
 
 		public Entity getTargetEntity() {
@@ -400,7 +400,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 
 		public Table dbReferencedColumnTable() {
 			Entity targetEntity = getTargetEntity();
-			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
+			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
 		}
 		
 		public boolean isVirtual(BaseJoinColumn joinColumn) {

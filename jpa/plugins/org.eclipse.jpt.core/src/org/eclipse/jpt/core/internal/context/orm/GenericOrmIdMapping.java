@@ -236,7 +236,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	}
 
 	public String defaultTableName() {
-		return getTypeMapping().tableName();
+		return getTypeMapping().getTableName();
 	}
 	
 	@Override

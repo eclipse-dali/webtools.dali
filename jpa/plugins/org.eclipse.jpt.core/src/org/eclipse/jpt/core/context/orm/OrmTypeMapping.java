@@ -80,7 +80,7 @@ public interface OrmTypeMapping extends TypeMapping, OrmJpaContextNode
 	
 	boolean containsOffset(int textOffset);
 	
-	OrmPersistentType persistentType();
+	OrmPersistentType getPersistentType();
 	
 	@SuppressWarnings("unchecked")
 	Iterator<OrmPersistentAttribute> overridableAttributes();

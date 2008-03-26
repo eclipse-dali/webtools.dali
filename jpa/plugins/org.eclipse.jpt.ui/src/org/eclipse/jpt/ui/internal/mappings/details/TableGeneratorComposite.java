@@ -117,7 +117,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected Table table() {
-				return subject().dbTable();
+				return subject().getDbTable();
 			}
 
 			@Override
@@ -175,7 +175,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected Table table() {
-				return subject().dbTable();
+				return subject().getDbTable();
 			}
 
 			@Override
@@ -242,7 +242,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected Table table() {
-				return subject().dbTable();
+				return subject().getDbTable();
 			}
 
 			@Override
@@ -313,7 +313,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected Table table() {
-				return subject().dbTable();
+				return subject().getDbTable();
 			}
 
 			@Override

@@ -42,7 +42,7 @@ public class PersistentAttributeItemLabelProvider extends AbstractItemLabelProvi
 				(PersistentAttribute) model()) {
 			@Override
 			protected Image buildValue_() {
-				Image image = JpaMappingImageHelper.imageForAttributeMapping(subject.mappingKey());
+				Image image = JpaMappingImageHelper.imageForAttributeMapping(subject.getMappingKey());
 				if (((PersistentAttribute) model()).isVirtual()) {
 					return JptUiIcons.ghost(image);
 				}

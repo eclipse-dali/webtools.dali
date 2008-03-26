@@ -95,13 +95,13 @@ public interface TableGenerator extends Generator
 	 * Return a db Schema object with the specified/default schema name.
 	 * This can return null if no Schema exists on the database with that name.
 	 */
-	Schema dbSchema();
+	Schema getDbSchema();
 
 	/**
 	 * Return a db Table object with the specified/default table name.
 	 * This can return null if no Table exists on the database with that name.
 	 */
-	Table dbTable();
+	Table getDbTable();
 
 
 //	class UniqueConstraintOwner implements IUniqueConstraint.Owner

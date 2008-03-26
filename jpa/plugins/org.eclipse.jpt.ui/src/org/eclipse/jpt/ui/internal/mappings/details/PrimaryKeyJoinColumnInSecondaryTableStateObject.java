@@ -53,7 +53,7 @@ public class PrimaryKeyJoinColumnInSecondaryTableStateObject extends BaseJoinCol
 	 */
 	@Override
 	public Table getNameTable() {
-		return getOwner().dbTable();
+		return getOwner().getDbTable();
 	}
 
 	/*
@@ -68,6 +68,6 @@ public class PrimaryKeyJoinColumnInSecondaryTableStateObject extends BaseJoinCol
 	 */
 	@Override
 	public Table getReferencedNameTable() {
-		return getOwner().getParent().primaryDbTable();
+		return getOwner().getParent().getPrimaryDbTable();
 	}
 }

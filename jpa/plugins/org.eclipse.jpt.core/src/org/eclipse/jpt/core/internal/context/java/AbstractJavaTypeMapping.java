@@ -39,15 +39,15 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 
 	//***************** ITypeMapping implementation *****************
 	
-	public JavaPersistentType persistentType() {
+	public JavaPersistentType getPersistentType() {
 		return (JavaPersistentType) getParent();
 	}
 
-	public String tableName() {
+	public String getTableName() {
 		return null;
 	}
 
-	public org.eclipse.jpt.db.Table primaryDbTable() {
+	public org.eclipse.jpt.db.Table getPrimaryDbTable() {
 		return null;
 	}
 
@@ -55,7 +55,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		return null;
 	}
 
-	public Schema dbSchema() {
+	public Schema getDbSchema() {
 		return null;
 	}
 
@@ -124,6 +124,6 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 
 	public TextRange validationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = this.mappingResource().textRange(astRoot);
-		return (textRange != null) ? textRange : this.persistentType().validationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getPersistentType().validationTextRange(astRoot);
 	}
 }

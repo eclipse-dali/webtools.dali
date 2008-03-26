@@ -366,7 +366,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		assertEquals("id", defaultPkJoinColumn.getDefaultReferencedColumnName());
 		
 		
-		IdMapping idMapping = (IdMapping) javaEntity().persistentType().attributeNamed("id").getMapping();
+		IdMapping idMapping = (IdMapping) javaEntity().getPersistentType().attributeNamed("id").getMapping();
 		idMapping.getColumn().setSpecifiedName("FOO");		
 		assertEquals("FOO", defaultPkJoinColumn.getDefaultName());
 		assertEquals("FOO", defaultPkJoinColumn.getDefaultReferencedColumnName());

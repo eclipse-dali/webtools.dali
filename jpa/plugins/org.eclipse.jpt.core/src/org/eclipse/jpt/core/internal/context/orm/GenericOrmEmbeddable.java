@@ -64,7 +64,7 @@ public class GenericOrmEmbeddable extends AbstractOrmTypeMapping<XmlEmbeddable> 
 
 	public XmlEmbeddable addToResourceModel(XmlEntityMappings entityMappings) {
 		XmlEmbeddable embeddable = OrmFactory.eINSTANCE.createXmlEmbeddable();
-		persistentType().initialize(embeddable);
+		getPersistentType().initialize(embeddable);
 		entityMappings.getEmbeddables().add(embeddable);
 		return embeddable;
 	}

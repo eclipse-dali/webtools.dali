@@ -99,7 +99,7 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	}
 
 	public String defaultTableName() {
-		return getTypeMapping().tableName();
+		return getTypeMapping().getTableName();
 	}
 
 	public Table getDbTable(String tableName) {

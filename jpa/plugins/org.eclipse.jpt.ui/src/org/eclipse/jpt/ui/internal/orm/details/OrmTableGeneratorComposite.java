@@ -106,7 +106,7 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 
 			@Override
 			protected Table table() {
-				return subject().dbTable();
+				return subject().getDbTable();
 			}
 
 			@Override
@@ -147,7 +147,7 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 
 			@Override
 			protected Table table() {
-				return subject().dbTable();
+				return subject().getDbTable();
 			}
 
 			@Override
@@ -188,7 +188,7 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 
 			@Override
 			protected Table table() {
-				return subject().dbTable();
+				return subject().getDbTable();
 			}
 
 			@Override
@@ -242,7 +242,7 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 
 			@Override
 			protected Table table() {
-				return subject().dbTable();
+				return subject().getDbTable();
 			}
 
 			@Override

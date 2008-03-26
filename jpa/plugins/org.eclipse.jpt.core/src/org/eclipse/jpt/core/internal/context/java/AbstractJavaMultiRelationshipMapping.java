@@ -405,7 +405,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 			return;
 		}
 		
-		PersistentAttribute attribute = targetEntity.persistentType().resolveAttribute(mappedBy);
+		PersistentAttribute attribute = targetEntity.getPersistentType().resolveAttribute(mappedBy);
 		
 		if (attribute == null) {
 			messages.add(

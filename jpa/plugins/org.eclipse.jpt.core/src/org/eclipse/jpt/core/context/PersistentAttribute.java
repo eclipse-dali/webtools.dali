@@ -31,12 +31,12 @@ public interface PersistentAttribute extends JpaContextNode, JpaStructureNode
 	 * The key may be for either the "specified" mapping or, if the "specified"
 	 * mapping is missing, the "default" mapping.
 	 */
-	String mappingKey();
+	String getMappingKey();
 
 	/**
 	 * Return the key for the attribute's "default" mapping.
 	 */
-	String defaultMappingKey();
+	String getDefaultMappingKey();
 
 	/**
 	 * Return the attribute's "specified" mapping, or if it is null
@@ -58,15 +58,15 @@ public interface PersistentAttribute extends JpaContextNode, JpaStructureNode
 		String SPECIFIED_MAPPING_PROPERTY = "specifiedMappingProperty";
 		String DEFAULT_MAPPING_PROPERTY = "defaultMappingProperty";
 	
-	TypeMapping typeMapping();
+	TypeMapping getTypeMapping();
 
-	PersistentType persistentType();
+	PersistentType getPersistentType();
 	
 	/**
 	 * If the attribute is mapped to a primary key column, return the
 	 * column's name, otherwise return null.
 	 */
-	String primaryKeyColumnName();
+	String getPrimaryKeyColumnName();
 
 	/**
 	 * Return whether the attribute's "attribute" mapping can be overridden.

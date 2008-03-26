@@ -231,7 +231,7 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 				Image image = null;
 
 				if (persistentType != null) {
-					image = JpaMappingImageHelper.imageForTypeMapping(persistentType.mappingKey());
+					image = JpaMappingImageHelper.imageForTypeMapping(persistentType.getMappingKey());
 				}
 
 				if (image != null) {

@@ -196,7 +196,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	}
 
 	public String defaultTableName() {
-		return getTypeMapping().tableName();
+		return getTypeMapping().getTableName();
 	}
 
 	public Table getDbTable(String tableName) {

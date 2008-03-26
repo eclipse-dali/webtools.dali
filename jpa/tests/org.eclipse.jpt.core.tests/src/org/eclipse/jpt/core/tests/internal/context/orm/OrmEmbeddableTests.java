@@ -246,8 +246,8 @@ public class OrmEmbeddableTests extends ContextModelTestCase
 		assertEquals(AccessType.PROPERTY, ormEntity.getSpecifiedAccess());
 		
 		ListIterator<OrmPersistentType> persistentTypes = entityMappings().ormPersistentTypes();
-		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, persistentTypes.next().mappingKey());
-		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, persistentTypes.next().mappingKey());
+		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, persistentTypes.next().getMappingKey());
+		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, persistentTypes.next().getMappingKey());
 	}
 	
 	public void testMakeEmbeddableMappedSuperclass() throws Exception {
@@ -290,8 +290,8 @@ public class OrmEmbeddableTests extends ContextModelTestCase
 		assertEquals(AccessType.PROPERTY, ormMappedSuperclass.getSpecifiedAccess());
 		
 		ListIterator<OrmPersistentType> persistentTypes = entityMappings().ormPersistentTypes();
-		assertEquals(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, persistentTypes.next().mappingKey());
-		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, persistentTypes.next().mappingKey());
+		assertEquals(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, persistentTypes.next().getMappingKey());
+		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, persistentTypes.next().getMappingKey());
 	}
 
 }

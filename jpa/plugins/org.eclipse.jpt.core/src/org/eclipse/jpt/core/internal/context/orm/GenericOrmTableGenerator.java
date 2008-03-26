@@ -242,12 +242,12 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 //		return OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 //	}
 
-	public Table dbTable() {
-		Schema schema = this.dbSchema();
+	public Table getDbTable() {
+		Schema schema = this.getDbSchema();
 		return (schema == null) ? null : schema.tableNamed(this.getTable());
 	}
 
-	public Schema dbSchema() {
+	public Schema getDbSchema() {
 		return this.database().schemaNamed(this.getSchema());
 	}
 	

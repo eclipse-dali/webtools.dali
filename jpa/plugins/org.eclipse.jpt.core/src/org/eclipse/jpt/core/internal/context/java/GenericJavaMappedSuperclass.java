@@ -106,7 +106,7 @@ public class GenericJavaMappedSuperclass extends AbstractJavaTypeMapping
 
 	@Override
 	public Iterator<JavaPersistentAttribute> overridableAttributes() {
-		return new FilteringIterator<JavaPersistentAttribute, JavaPersistentAttribute>(this.persistentType().attributes()) {
+		return new FilteringIterator<JavaPersistentAttribute, JavaPersistentAttribute>(this.getPersistentType().attributes()) {
 			@Override
 			protected boolean accept(JavaPersistentAttribute o) {
 				return o.isOverridableAttribute();
@@ -121,7 +121,7 @@ public class GenericJavaMappedSuperclass extends AbstractJavaTypeMapping
 
 	@Override
 	public Iterator<JavaPersistentAttribute> overridableAssociations() {
-		return new FilteringIterator<JavaPersistentAttribute, JavaPersistentAttribute>(this.persistentType().attributes()) {
+		return new FilteringIterator<JavaPersistentAttribute, JavaPersistentAttribute>(this.getPersistentType().attributes()) {
 			@Override
 			protected boolean accept(JavaPersistentAttribute o) {
 				return o.isOverridableAssociation();

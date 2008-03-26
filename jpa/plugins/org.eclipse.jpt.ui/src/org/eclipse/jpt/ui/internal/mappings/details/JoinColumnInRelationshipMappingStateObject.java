@@ -52,7 +52,7 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 			return joinColumn.getDefaultTable();
 		}
 
-		return getOwner().getTypeMapping().tableName();
+		return getOwner().getTypeMapping().getTableName();
 	}
 
 	/*
@@ -80,7 +80,7 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 		Entity targetEntity = getOwner().getResolvedTargetEntity();
 
 		if (targetEntity != null) {
-			return targetEntity.primaryDbTable();
+			return targetEntity.getPrimaryDbTable();
 		}
 
 		return null;
@@ -91,6 +91,6 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 	 */
 	@Override
 	public Schema getSchema() {
-		return getOwner().getTypeMapping().dbSchema();
+		return getOwner().getTypeMapping().getDbSchema();
 	}
 }

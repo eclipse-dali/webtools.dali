@@ -321,11 +321,11 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 		}
 
 		public Table getDbTable(String tableName) {
-			return GenericOrmSecondaryTable.this.dbTable();
+			return GenericOrmSecondaryTable.this.getDbTable();
 		}
 
 		public Table dbReferencedColumnTable() {
-			return getTypeMapping().primaryDbTable();
+			return getTypeMapping().getPrimaryDbTable();
 		}
 
 		public int joinColumnsSize() {

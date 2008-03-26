@@ -54,9 +54,9 @@ public interface Table extends JpaContextNode
 //	EList<IUniqueConstraint> getUniqueConstraints();
 //	IUniqueConstraint createUniqueConstraint(int index);
 
-	org.eclipse.jpt.db.Table dbTable();
+	org.eclipse.jpt.db.Table getDbTable();
 
-	Schema dbSchema();
+	Schema getDbSchema();
 	
 	/**
 	 * Return true if this table is connected to a datasource

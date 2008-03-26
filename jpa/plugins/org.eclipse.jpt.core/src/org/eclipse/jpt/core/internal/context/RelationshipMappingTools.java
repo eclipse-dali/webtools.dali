@@ -54,7 +54,7 @@ public class RelationshipMappingTools
 		if (!relationshipMapping.isRelationshipOwner()) {
 			return null;
 		}
-		String owningTableName = relationshipMapping.getTypeMapping().tableName();
+		String owningTableName = relationshipMapping.getTypeMapping().getTableName();
 		if (owningTableName == null) {
 			return null;
 		}
@@ -62,7 +62,7 @@ public class RelationshipMappingTools
 		if (targetEntity == null) {
 			return null;
 		}
-		String targetTableName = targetEntity.tableName();
+		String targetTableName = targetEntity.getTableName();
 		if (targetTableName == null) {
 			return null;
 		}

@@ -106,26 +106,26 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 		return this.attributeMapping;
 	}
 
-	public String mappingKey() {
+	public String getMappingKey() {
 		return this.getMapping().getKey();
 	}
 
-	public String defaultMappingKey() {
+	public String getDefaultMappingKey() {
 		return null;
 	}
 
 	public void setSpecifiedMappingKey(String newMappingKey) {
-		if (this.mappingKey() == newMappingKey) {
+		if (this.getMappingKey() == newMappingKey) {
 			return;
 		}
 		OrmAttributeMapping oldMapping = getMapping();
 		this.attributeMapping = buildAttributeMapping(newMappingKey);
-		persistentType().changeMapping(this, oldMapping, this.attributeMapping);
+		getPersistentType().changeMapping(this, oldMapping, this.attributeMapping);
 		firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, oldMapping, this.attributeMapping);
 	}
 	
 	protected void setSpecifiedMappingKey_(String newMappingKey) {
-		if (this.mappingKey() == newMappingKey) {
+		if (this.getMappingKey() == newMappingKey) {
 			return;
 		}
 		OrmAttributeMapping oldMapping = getMapping();
@@ -137,23 +137,23 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 		return this.attributeMappingProviders;
 	}
 
-	public OrmPersistentType persistentType() {
+	public OrmPersistentType getPersistentType() {
 		return (OrmPersistentType) getParent();
 	}
 
-	public OrmTypeMapping typeMapping() {
-		return persistentType().getMapping();
+	public OrmTypeMapping getTypeMapping() {
+		return getPersistentType().getMapping();
 	}
 
 	public boolean isVirtual() {
-		return persistentType().containsVirtualPersistentAttribute(this);
+		return getPersistentType().containsVirtualPersistentAttribute(this);
 	}
 
 	public void setVirtual(boolean virtual) {
 		getOrmPersistentType().setPersistentAttributeVirtual(this, virtual);
 	}
 
-	public String primaryKeyColumnName() {
+	public String getPrimaryKeyColumnName() {
 		return getMapping().primaryKeyColumnName();
 	}
 
@@ -232,7 +232,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 	}
 		
 	public void update(XmlId id) {
-		if (mappingKey() == MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
+		if (getMappingKey() == MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
 			((OrmIdMapping) getMapping()).update(id);
 		}
 		else {
@@ -242,7 +242,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 	}
 	
 	public void update(XmlEmbeddedId embeddedId) {
-		if (mappingKey() == MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
+		if (getMappingKey() == MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
 			((OrmEmbeddedIdMapping) getMapping()).update(embeddedId);
 		}
 		else {
@@ -252,7 +252,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 	}
 
 	public void update(XmlBasic basic) {
-		if (mappingKey() == MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
+		if (getMappingKey() == MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
 			((OrmBasicMapping) getMapping()).update(basic);
 		}
 		else {
@@ -262,7 +262,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 	}
 	
 	public void update(XmlVersion version) {
-		if (mappingKey() == MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY) {
+		if (getMappingKey() == MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY) {
 			((OrmVersionMapping) getMapping()).update(version);
 		}
 		else {
@@ -271,7 +271,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 		}
 	}
 	public void update(XmlManyToOne manyToOne) {
-		if (mappingKey() == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
+		if (getMappingKey() == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
 			((OrmManyToOneMapping) getMapping()).update(manyToOne);
 		}
 		else {
@@ -280,7 +280,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 		}
 	}
 	public void update(XmlOneToMany oneToMany) {
-		if (mappingKey() == MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
+		if (getMappingKey() == MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
 			((OrmOneToManyMapping) getMapping()).update(oneToMany);
 		}
 		else {
@@ -289,7 +289,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 		}
 	}
 	public void update(XmlOneToOne oneToOne) {
-		if (mappingKey() == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
+		if (getMappingKey() == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
 			((OrmOneToOneMapping) getMapping()).update(oneToOne);
 		}
 		else {
@@ -298,7 +298,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 		}
 	}
 	public void update(XmlManyToMany manyToMany) {
-		if (mappingKey() == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
+		if (getMappingKey() == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
 			((OrmManyToManyMapping) getMapping()).update(manyToMany);
 		}
 		else {
@@ -308,7 +308,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 	}
 
 	public void update(XmlEmbedded embedded) {
-		if (mappingKey() == MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY) {
+		if (getMappingKey() == MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY) {
 			((OrmEmbeddedMapping) getMapping()).update(embedded);
 		}
 		else {
@@ -318,7 +318,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 	}
 	
 	public void update(XmlTransient transientResource) {
-		if (mappingKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
+		if (getMappingKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
 			((OrmTransientMapping) getMapping()).update(transientResource);
 		}
 		else {
@@ -340,7 +340,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 	
 	public TextRange selectionTextRange() {
 		if (isVirtual()) {
-			return persistentType().selectionTextRange();
+			return getPersistentType().selectionTextRange();
 		}
 		return this.attributeMapping.selectionTextRange();
 	}
@@ -353,7 +353,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 	
 	public TextRange validationTextRange() {
 		if (isVirtual()) {
-			return persistentType().getMapping().attributesTextRange();
+			return getPersistentType().getMapping().attributesTextRange();
 		}
 		return this.attributeMapping.validationTextRange();
 	}

@@ -191,21 +191,21 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 //		return uniqueConstraints;
 //	}
 
-	public org.eclipse.jpt.db.Table dbTable() {
-		Schema schema = this.dbSchema();
+	public org.eclipse.jpt.db.Table getDbTable() {
+		Schema schema = this.getDbSchema();
 		return (schema == null) ? null : schema.tableNamed(getName());
 	}
 
-	public Schema dbSchema() {
+	public Schema getDbSchema() {
 		return getConnectionProfile().database().schemaNamed(getSchema());
 	}
 
 	public boolean hasResolvedSchema() {
-		return dbSchema() != null;
+		return getDbSchema() != null;
 	}
 
 	public boolean isResolved() {
-		return dbTable() != null;
+		return getDbTable() != null;
 	}
 	
 	protected void initialize(XmlBaseTable table) {

@@ -317,11 +317,11 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 		}
 
 		public Table getDbTable(String tableName) {
-			return GenericJavaSecondaryTable.this.dbTable();
+			return GenericJavaSecondaryTable.this.getDbTable();
 		}
 
 		public Table dbReferencedColumnTable() {
-			return getTypeMapping().primaryDbTable();
+			return getTypeMapping().getPrimaryDbTable();
 		}
 
 		public int joinColumnsSize() {

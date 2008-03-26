@@ -64,7 +64,7 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 		return new MappingChangeHandler() {
 
 			public String labelText() {
-				String mappingKey = subject().mappingKey();
+				String mappingKey = subject().getMappingKey();
 
 				if (mappingKey != null) {
 					return JptUiMessages.MapAsComposite_mappedTypeText;
@@ -74,7 +74,7 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 			}
 
 			public String mappingType() {
-				String mappingKey = subject().mappingKey();
+				String mappingKey = subject().getMappingKey();
 
 				if (mappingKey == null) {
 					return JptUiMessages.MapAsComposite_changeMappingType;
@@ -117,7 +117,7 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 	 */
 	@Override
 	protected String mappingKey() {
-		return subject().mappingKey();
+		return subject().getMappingKey();
 	}
 
 	/*

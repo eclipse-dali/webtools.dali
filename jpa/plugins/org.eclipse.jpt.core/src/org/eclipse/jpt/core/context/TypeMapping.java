@@ -31,14 +31,14 @@ public interface TypeMapping extends JpaContextNode
 	 */
 	String getKey();
 
-	PersistentType persistentType();
+	PersistentType getPersistentType();
 
 	boolean isMapped();
 	
 	/**
 	 * Return the type mapping's primary table name, null if a primary table does not apply
 	 */
-	String tableName();
+	String getTableName();
 
 	/**
 	 * Return the type mapping's "associated" tables, which includes the
@@ -63,9 +63,9 @@ public interface TypeMapping extends JpaContextNode
 	/**
 	 * return the resolved primary db table
 	 */
-	org.eclipse.jpt.db.Table primaryDbTable();
+	org.eclipse.jpt.db.Table getPrimaryDbTable();
 
-	Schema dbSchema();
+	Schema getDbSchema();
 
 	/**
 	 * return the resolved associated db table with the passed in name

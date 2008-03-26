@@ -163,7 +163,7 @@ public class TableComposite extends AbstractFormPane<Table>
 
 			@Override
 			protected org.eclipse.jpt.db.Table table() {
-				return subject().dbTable();
+				return subject().getDbTable();
 			}
 
 			private Schema tableSchema() {

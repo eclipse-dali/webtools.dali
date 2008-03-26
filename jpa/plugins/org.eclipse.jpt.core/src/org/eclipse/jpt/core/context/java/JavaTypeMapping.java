@@ -32,7 +32,7 @@ public interface JavaTypeMapping extends TypeMapping, JavaJpaContextNode
 	
 	Iterator<String> correspondingAnnotationNames();
 	
-	JavaPersistentType persistentType();
+	JavaPersistentType getPersistentType();
 	
 	@SuppressWarnings("unchecked")
 	Iterator<JavaPersistentAttribute> overridableAttributes();

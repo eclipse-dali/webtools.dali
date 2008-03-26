@@ -125,7 +125,7 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 				return this.javaColumn.getSpecifiedTable();
 			}	
 		}
-		return this.ormTypeMapping.tableName();
+		return this.ormTypeMapping.getTableName();
 	}
 
 	public void setTable(String value) {

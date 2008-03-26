@@ -44,7 +44,7 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 			return getJoinColumn().getDefaultTable();
 		}
 
-		return typeMapping().tableName();
+		return typeMapping().getTableName();
 	}
 
 	/*
@@ -52,7 +52,7 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 	 */
 	@Override
 	public Table getNameTable() {
-		return typeMapping().primaryDbTable();
+		return typeMapping().getPrimaryDbTable();
 	}
 
 	/*
@@ -79,7 +79,7 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 		Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
 
 		if (targetEntity != null) {
-			return targetEntity.primaryDbTable();
+			return targetEntity.getPrimaryDbTable();
 		}
 
 		return null;
@@ -90,7 +90,7 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 	 */
 	@Override
 	public Schema getSchema() {
-		return typeMapping().dbSchema();
+		return typeMapping().getDbSchema();
 	}
 
 	/**

@@ -569,7 +569,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 			if (GenericOrmJoinTable.this.getName() == null) {
 				return null;
 			}
-			return (GenericOrmJoinTable.this.getName().equals(tableName)) ? GenericOrmJoinTable.this.dbTable() : null;
+			return (GenericOrmJoinTable.this.getName().equals(tableName)) ? GenericOrmJoinTable.this.getDbTable() : null;
 		}
 		
 		/**
@@ -616,7 +616,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 
 		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
 			Entity targetEntity = getTargetEntity();
-			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
+			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
 		}
 		
 		public boolean isVirtual(BaseJoinColumn joinColumn) {
@@ -655,7 +655,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 				return null;
 			}
 			String attributeName = GenericOrmJoinTable.this.relationshipMapping().getName();
-			for (Iterator<PersistentAttribute> stream = targetEntity.persistentType().allAttributes(); stream.hasNext();) {
+			for (Iterator<PersistentAttribute> stream = targetEntity.getPersistentType().allAttributes(); stream.hasNext();) {
 				PersistentAttribute attribute = stream.next();
 				AttributeMapping mapping = attribute.getMapping();
 				if (mapping instanceof NonOwningMapping) {
@@ -678,7 +678,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		}
 
 		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
-			return getTypeMapping().primaryDbTable();
+			return getTypeMapping().getPrimaryDbTable();
 		}
 		
 		public boolean isVirtual(BaseJoinColumn joinColumn) {

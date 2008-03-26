@@ -29,11 +29,11 @@ public interface PersistentType extends JpaContextNode, JpaStructureNode
 	String getName();
 		String NAME_PROPERTY = "nameProperty";
 	
-	AccessType access();
+	AccessType getAccess();
 		String ACCESS_PROPERTY = "accessProperty";
 		
 	TypeMapping getMapping();
-	String mappingKey();
+	String getMappingKey();
 	void setMappingKey(String key);
 		String MAPPING_PROPERTY = "mappingProperty";
 

@@ -286,7 +286,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 		 * by default, the join column is in the type mapping's primary table
 		 */
 		public String defaultTableName() {
-			return GenericJavaAssociationOverride.this.owner.getTypeMapping().tableName();
+			return GenericJavaAssociationOverride.this.owner.getTypeMapping().getTableName();
 		}
 		
 		public String getDefaultColumnName() {
@@ -332,7 +332,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 
 		public Table dbReferencedColumnTable() {
 			Entity targetEntity = getTargetEntity();
-			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
+			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
 		}
 		
 		public boolean isVirtual(BaseJoinColumn joinColumn) {

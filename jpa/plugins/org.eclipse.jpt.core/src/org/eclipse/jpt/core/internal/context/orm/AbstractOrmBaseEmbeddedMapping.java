@@ -141,7 +141,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 		if (this.embeddable() == null) {
 			return EmptyIterator.instance();
 		}
-		return new FilteringIterator<PersistentAttribute, PersistentAttribute>(this.embeddable().persistentType().attributes()) {
+		return new FilteringIterator<PersistentAttribute, PersistentAttribute>(this.embeddable().getPersistentType().attributes()) {
 			@Override
 			protected boolean accept(PersistentAttribute o) {
 				return o.isOverridableAttribute();

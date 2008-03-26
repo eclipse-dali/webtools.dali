@@ -328,12 +328,12 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 //		return JavaUniqueConstraint.createTableGeneratorUniqueConstraint(new UniqueConstraintOwner(this), this.getMember(), index);
 //	}
 
-	public Table dbTable() {
-		Schema schema = this.dbSchema();
+	public Table getDbTable() {
+		Schema schema = this.getDbSchema();
 		return (schema == null) ? null : schema.tableNamed(this.getTable());
 	}
 
-	public Schema dbSchema() {
+	public Schema getDbSchema() {
 		return this.database().schemaNamed(this.getSchema());
 	}
 

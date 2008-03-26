@@ -611,7 +611,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			if (GenericJavaJoinTable.this.getName() == null) {
 				return null;
 			}
-			return (GenericJavaJoinTable.this.getName().equals(tableName)) ? GenericJavaJoinTable.this.dbTable() : null;
+			return (GenericJavaJoinTable.this.getName().equals(tableName)) ? GenericJavaJoinTable.this.getDbTable() : null;
 		}
 		
 		/**
@@ -658,7 +658,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 
 		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
 			Entity targetEntity = getTargetEntity();
-			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
+			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
 		}
 		
 		public boolean isVirtual(BaseJoinColumn joinColumn) {
@@ -696,7 +696,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 				return null;
 			}
 			String attributeName = GenericJavaJoinTable.this.relationshipMapping().persistentAttribute().getName();
-			for (Iterator<PersistentAttribute> stream = targetEntity.persistentType().allAttributes(); stream.hasNext();) {
+			for (Iterator<PersistentAttribute> stream = targetEntity.getPersistentType().allAttributes(); stream.hasNext();) {
 				PersistentAttribute attribute = stream.next();
 				AttributeMapping mapping = attribute.getMapping();
 				if (mapping instanceof NonOwningMapping) {
@@ -719,7 +719,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		}
 
 		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
-			return getTypeMapping().primaryDbTable();
+			return getTypeMapping().getPrimaryDbTable();
 		}
 		
 		public boolean isVirtual(BaseJoinColumn joinColumn) {

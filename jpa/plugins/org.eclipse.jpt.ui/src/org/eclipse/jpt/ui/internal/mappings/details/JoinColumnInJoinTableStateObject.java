@@ -53,7 +53,7 @@ public class JoinColumnInJoinTableStateObject extends BaseJoinColumnStateObject
 	 */
 	@Override
 	public Table getNameTable() {
-		return getOwner().dbTable();
+		return getOwner().getDbTable();
 	}
 
 	/*
@@ -69,7 +69,7 @@ public class JoinColumnInJoinTableStateObject extends BaseJoinColumnStateObject
 	 */
 	@Override
 	public Table getReferencedNameTable() {
-		return relationshipMapping().getTypeMapping().primaryDbTable();
+		return relationshipMapping().getTypeMapping().getPrimaryDbTable();
 	}
 
 	/**

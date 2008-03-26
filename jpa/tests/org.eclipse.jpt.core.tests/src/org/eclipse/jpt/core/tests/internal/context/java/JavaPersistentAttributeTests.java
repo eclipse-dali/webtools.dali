@@ -127,10 +127,10 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 
-		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, persistentAttribute.mappingKey());
+		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 		
 		persistentAttribute.setSpecifiedMappingKey(null);
-		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, persistentAttribute.mappingKey());
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 	}
 	
 	public void testDefaultMappingKey() throws Exception {
@@ -139,8 +139,8 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 
-		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, persistentAttribute.mappingKey());
-		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, persistentAttribute.defaultMappingKey());
+		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
 	}
 	
 	public void testSetSpecifiedMappingKey() throws Exception {
@@ -157,7 +157,7 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 		assertNotNull(attributeResource.mappingAnnotation());
 		assertTrue(attributeResource.mappingAnnotation() instanceof Embedded);
 		
-		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, persistentAttribute.mappingKey());
+		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 		assertTrue(persistentAttribute.getSpecifiedMapping() instanceof JavaEmbeddedMapping);
 	}
 	
@@ -166,7 +166,7 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, persistentAttribute.mappingKey());
+		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		
@@ -175,7 +175,7 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 		assertNotNull(attributeResource.mappingAnnotation());
 		assertTrue(attributeResource.mappingAnnotation() instanceof Embedded);
 		
-		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, persistentAttribute.mappingKey());
+		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 		assertTrue(persistentAttribute.getSpecifiedMapping() instanceof JavaEmbeddedMapping);
 	}
 
@@ -184,7 +184,7 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, persistentAttribute.mappingKey());
+		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 		
@@ -201,13 +201,13 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, persistentAttribute.mappingKey());
+		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		attributeResource.setMappingAnnotation(Embedded.ANNOTATION_NAME);
 				
-		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, persistentAttribute.mappingKey());
+		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 	}
 	
 	public void testGetMappingKeyMappingChangeInResourceModel2() throws Exception {

@@ -73,19 +73,19 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 	@Override
 	protected MappingUiProvider<T> buildDefaultProvider() {
 
-		if (subject().defaultMappingKey() == null) {
+		if (subject().getDefaultMappingKey() == null) {
 			return null;
 		}
 
 		return new MappingUiProvider<T>() {
 
 			public Image image() {
-				String mappingKey = subject().defaultMappingKey();
+				String mappingKey = subject().getDefaultMappingKey();
 				return JpaMappingImageHelper.imageForAttributeMapping(mappingKey);
 			}
 
 			public String label() {
-				String mappingKey = subject().defaultMappingKey();
+				String mappingKey = subject().getDefaultMappingKey();
 
 				return SWTUtil.buildDisplayString(
 					JptUiMessages.class,
@@ -108,7 +108,7 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 		return new MappingChangeHandler() {
 
 			public String labelText() {
-				String mappingKey = subject().mappingKey();
+				String mappingKey = subject().getMappingKey();
 
 				if (mappingKey != null) {
 					return JptUiMessages.MapAsComposite_mappedAttributeText;
@@ -118,7 +118,7 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 			}
 
 			public String mappingType() {
-				String mappingKey = subject().mappingKey();
+				String mappingKey = subject().getMappingKey();
 
 				if (mappingKey == null) {
 					return JptUiMessages.MapAsComposite_changeMappingType;
@@ -177,7 +177,7 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 	 */
 	@Override
 	protected String mappingKey() {
-		return subject().mappingKey();
+		return subject().getMappingKey();
 	}
 
 	/*

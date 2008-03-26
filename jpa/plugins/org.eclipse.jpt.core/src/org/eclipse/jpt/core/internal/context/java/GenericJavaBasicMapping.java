@@ -109,7 +109,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 	}
 
 	public String defaultTableName() {
-		return getTypeMapping().tableName();
+		return getTypeMapping().getTableName();
 	}
 	
 	//************** IBasicMapping implementation ***************

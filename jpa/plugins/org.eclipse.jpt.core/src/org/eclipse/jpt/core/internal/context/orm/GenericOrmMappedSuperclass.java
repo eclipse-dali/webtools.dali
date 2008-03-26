@@ -101,7 +101,7 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 
 	@Override
 	public Iterator<OrmPersistentAttribute> overridableAttributes() {
-		return new FilteringIterator<OrmPersistentAttribute, OrmPersistentAttribute>(this.persistentType().attributes()) {
+		return new FilteringIterator<OrmPersistentAttribute, OrmPersistentAttribute>(this.getPersistentType().attributes()) {
 			@Override
 			protected boolean accept(OrmPersistentAttribute o) {
 				return o.isOverridableAttribute();
@@ -116,7 +116,7 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 
 	@Override
 	public Iterator<OrmPersistentAttribute> overridableAssociations() {
-		return new FilteringIterator<OrmPersistentAttribute, OrmPersistentAttribute>(this.persistentType().attributes()) {
+		return new FilteringIterator<OrmPersistentAttribute, OrmPersistentAttribute>(this.getPersistentType().attributes()) {
 			@Override
 			protected boolean accept(OrmPersistentAttribute o) {
 				return o.isOverridableAssociation();
@@ -147,7 +147,7 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 	
 	public XmlMappedSuperclass addToResourceModel(XmlEntityMappings entityMappings) {
 		XmlMappedSuperclass mappedSuperclass = OrmFactory.eINSTANCE.createXmlMappedSuperclass();
-		persistentType().initialize(mappedSuperclass);
+		getPersistentType().initialize(mappedSuperclass);
 		entityMappings.getMappedSuperclasses().add(mappedSuperclass);
 		return mappedSuperclass;
 	}
