@@ -39,7 +39,7 @@ class ManyToOneRelation {
 	}
 
 	String javaFieldName() {
-		return this.foreignKey.javaFieldName();
+		return this.foreignKey.getJavaFieldName();
 	}
 
 	String getMappedBy() {

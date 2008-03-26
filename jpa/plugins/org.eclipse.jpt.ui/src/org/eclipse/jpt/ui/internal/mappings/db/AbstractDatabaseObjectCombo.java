@@ -118,7 +118,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
-						log(Tracing.UI_DB, "catalogChanged: " + catalog.name());
+						log(Tracing.UI_DB, "catalogChanged: " + catalog.getName());
 
 						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.catalogChanged(catalog);
@@ -145,7 +145,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
-						log(Tracing.UI_DB, "columnChanged: " + column.name());
+						log(Tracing.UI_DB, "columnChanged: " + column.getName());
 
 						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.columnChanged(column);
@@ -165,7 +165,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
-						log(Tracing.UI_DB, "foreignKeyChanged: " + foreignKey.name());
+						log(Tracing.UI_DB, "foreignKeyChanged: " + foreignKey.getName());
 
 						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.foreignKeyChanged(foreignKey);
@@ -209,7 +209,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
-						log(Tracing.UI_DB, "schemaChanged: " + schema.name());
+						log(Tracing.UI_DB, "schemaChanged: " + schema.getName());
 
 						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.schemaChanged(schema);
@@ -223,7 +223,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
-						log(Tracing.UI_DB, "sequenceChanged: " + sequence.name());
+						log(Tracing.UI_DB, "sequenceChanged: " + sequence.getName());
 
 						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.sequenceChanged(sequence);
@@ -237,7 +237,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
-						log(Tracing.UI_DB, "tableChanged: " + table.name());
+						log(Tracing.UI_DB, "tableChanged: " + table.getName());
 
 						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.tableChanged(table);
@@ -374,7 +374,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 * connection profile was set or the
 	 */
 	protected final Database database() {
-		return connectionProfile().database();
+		return connectionProfile().getDatabase();
 	}
 
 	/**

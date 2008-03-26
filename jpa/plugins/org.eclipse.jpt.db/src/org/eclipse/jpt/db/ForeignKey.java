@@ -27,17 +27,17 @@ public interface ForeignKey extends Comparable<ForeignKey> {
 	/**
 	 * Return the foreign key's name.
 	 */
-	String name();
+	String getName();
 
 	/**
 	 * Return the foreign key's "base" table.
 	 */
-	Table baseTable();
+	Table getBaseTable();
 
 	/**
 	 * Return the foreign key's "referenced" table.
 	 */
-	Table referencedTable();
+	Table getReferencedTable();
 
 	/**
 	 * Return the foreign key's column pairs.
@@ -80,7 +80,7 @@ public interface ForeignKey extends Comparable<ForeignKey> {
 	 * Return a Java-appropriate name for a field that holds the entity
 	 * mapped to the foreign key's "referenced" table.
 	 */
-	String javaFieldName();
+	String getJavaFieldName();
 
 	/**
 	 * Return whether the foreign key's default Java field name matches the

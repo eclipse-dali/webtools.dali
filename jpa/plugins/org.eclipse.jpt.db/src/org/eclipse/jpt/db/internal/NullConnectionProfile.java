@@ -61,59 +61,59 @@ final class NullConnectionProfile
 		return Status.CANCEL_STATUS;
 	}
 
-	public Database database() {
+	public Database getDatabase() {
 		return NullDatabase.instance();
 	}
 
-	public String name() {
+	public String getName() {
 		return ClassTools.shortClassNameForObject(this);
 	}
 
-	public String databaseName() {
+	public String getDatabaseName() {
 		return EMPTY_STRING;
 	}
 
-	public String databaseProduct() {
+	public String getDatabaseProduct() {
 		return EMPTY_STRING;
 	}
 
-	public String databaseVendor() {
+	public String getDatabaseVendor() {
 		return EMPTY_STRING;
 	}
 
-	public String databaseVersion() {
+	public String getDatabaseVersion() {
 		return EMPTY_STRING;
 	}
 
-	public String userName() {
+	public String getUserName() {
 		return EMPTY_STRING;
 	}
 
-	public String userPassword() {
+	public String getUserPassword() {
 		return EMPTY_STRING;
 	}
 
-	public String driverClassName() {
+	public String getDriverClassName() {
 		return EMPTY_STRING;
 	}
 
-	public String url() {
+	public String getUrl() {
 		return EMPTY_STRING;
 	}
 
-	public String instanceID() {
+	public String getInstanceID() {
 		return EMPTY_STRING;
 	}
 
-	public String providerID() {
+	public String getProviderID() {
 		return EMPTY_STRING;
 	}
 
-	public String driverDefinitionID() {
+	public String getDriverDefinitionID() {
 		return EMPTY_STRING;
 	}
 
-	public String driverJarList() {
+	public String getDriverJarList() {
 		return EMPTY_STRING;
 	}
 
@@ -145,11 +145,11 @@ final class NullConnectionProfile
 		// do nothing
 	}
 
-	public Schema defaultSchema() {
+	public Schema getDefaultSchema() {
 		return null;
 	}
 
-	public Catalog defaultCatalog() {
+	public Catalog getDefaultCatalog() {
 		return null;
 	}
 

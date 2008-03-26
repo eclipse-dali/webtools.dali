@@ -271,7 +271,7 @@ public class JpaFacetWizardPage
 			//clear out connection entries from previous login.
 			connectionCombo.removeAll();
 			
-			for (Iterator stream = JptDbPlugin.instance().connectionProfileRepository().connectionProfileNames(); stream.hasNext(); ) {
+			for (Iterator stream = JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNames(); stream.hasNext(); ) {
 				connectionCombo.add((String) stream.next());
 			}
 		}

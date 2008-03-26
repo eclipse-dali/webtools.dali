@@ -97,7 +97,7 @@ public abstract class AbstractJpaNode
 	}
 
 	protected Database database() {
-		return this.getConnectionProfile().database();
+		return this.getConnectionProfile().getDatabase();
 	}
 
 	public boolean connectionProfileIsActive() {

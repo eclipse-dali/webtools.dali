@@ -31,15 +31,15 @@ abstract class DTPWrapper
 		super();
 		this.connectionProfileHolder = connectionProfileHolder;
 		this.catalogObjectListener = this.buildCatalogObjectListener();
-		if (this.connectionProfile().isConnected()) {
-			RefreshManager.getInstance().AddListener(this.catalogObject(), this.catalogObjectListener);
+		if (this.getConnectionProfile().isConnected()) {
+			RefreshManager.getInstance().AddListener(this.getCatalogObject(), this.catalogObjectListener);
 		}
 	}
 
 	private ICatalogObjectListener buildCatalogObjectListener() {
 		return new ICatalogObjectListener() {
 			public void notifyChanged(ICatalogObject catalogObject, int eventType) {
-				if (catalogObject == DTPWrapper.this.catalogObject()) {
+				if (catalogObject == DTPWrapper.this.getCatalogObject()) {
 					DTPWrapper.this.catalogObjectChanged(eventType);
 				}
 			}
@@ -47,25 +47,25 @@ abstract class DTPWrapper
 	}
 
 	// typically, the wrapped DTP object
-	abstract ICatalogObject catalogObject();
+	abstract ICatalogObject getCatalogObject();
 
 	// typically, notify the connection profile something has changed
 	abstract void catalogObjectChanged(int eventType);
 
-	public DTPConnectionProfileWrapper connectionProfile() {
-		return this.connectionProfileHolder.connectionProfile();
+	public DTPConnectionProfileWrapper getConnectionProfile() {
+		return this.connectionProfileHolder.getConnectionProfile();
 	}
 
 	void dispose() {
-        RefreshManager.getInstance().removeListener(this.catalogObject(), this.catalogObjectListener);
+        RefreshManager.getInstance().removeListener(this.getCatalogObject(), this.catalogObjectListener);
 	}
 
 	// all the subclasses can implement this method
-	abstract String name();
+	abstract String getName();
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.name());
+		return StringTools.buildToStringFor(this, this.getName());
 	}
 
 }

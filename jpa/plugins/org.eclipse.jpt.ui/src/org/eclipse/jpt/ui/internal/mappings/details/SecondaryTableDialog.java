@@ -115,7 +115,7 @@ public class SecondaryTableDialog extends Dialog {
 	}
 
 	protected Database getDatabase() {
-		return this.getConnectionProfile().database();
+		return this.getConnectionProfile().getDatabase();
 	}
 
 	private ConnectionProfile getConnectionProfile() {

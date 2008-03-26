@@ -25,6 +25,6 @@ public interface Catalog extends Comparable<Catalog> {
 	/**
 	 * Return the catalog's name.
 	 */
-	String name();
+	String getName();
 
 }

@@ -121,7 +121,7 @@ public class GenerateEntitiesWizard extends Wizard {
 	}
 
 	Schema getDefaultSchema() {
-		return getProjectConnectionProfile().defaultSchema();
+		return getProjectConnectionProfile().getDefaultSchema();
 	}
 	
 	public PackageGenerator.Config getPackageGeneratorConfig() {

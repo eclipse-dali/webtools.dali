@@ -10,7 +10,6 @@
 package org.eclipse.jpt.db;
 
 import java.util.Iterator;
-
 import org.eclipse.datatools.connectivity.sqm.core.definition.DatabaseDefinition;
 
 /**
@@ -29,17 +28,17 @@ public interface Database extends SchemaContainer, Comparable<Database> {
 	/**
 	 * Return the database's name.
 	 */
-	String name();
+	String getName();
 
 	/**
 	 * Return the database's vendor.
 	 */
-	String vendor();
+	String getVendor();
 
 	/**
 	 * Return the database's version.
 	 */
-	String version();
+	String getVersion();
 
 	/**
 	 * Return whether the database's identifiers are case-sensitive.
@@ -49,7 +48,7 @@ public interface Database extends SchemaContainer, Comparable<Database> {
 	/**
 	 * Return the database's DTP database definition.
 	 */
-	DatabaseDefinition dtpDefinition();
+	DatabaseDefinition getDtpDefinition();
 
 	/**
 	 * Return whether the database supports catalogs.
@@ -86,6 +85,6 @@ public interface Database extends SchemaContainer, Comparable<Database> {
 	/**
 	 * Return the database's "default" catalog.
 	 */
-	Catalog defaultCatalog();
+	Catalog getDefaultCatalog();
 
 }

@@ -58,7 +58,7 @@ class GenTable {
 	}
 
 	private String buildEntityName(Collection<String> entityNames) {
-		String name = this.table.shortJavaClassName();
+		String name = this.table.getShortJavaClassName();
 		String overrideEntityName = this.entityConfig.getOverrideEntityName(this.table);
 		if (overrideEntityName == null) {
 			if (this.entityConfig.convertToCamelCase()) {
@@ -92,8 +92,8 @@ class GenTable {
 		Iterator<ForeignKey> fKeys = this.table.foreignKeys();
 		ForeignKey owningFK = fKeys.next();
 		ForeignKey nonOwningFK = fKeys.next();
-		GenTable owningTable = this.scope.genTable(owningFK.referencedTable());
-		GenTable nonOwningTable = this.scope.genTable(nonOwningFK.referencedTable());
+		GenTable owningTable = this.scope.genTable(owningFK.getReferencedTable());
+		GenTable nonOwningTable = this.scope.genTable(nonOwningFK.getReferencedTable());
 		if ((owningTable == null) || (nonOwningTable == null)) {
 			// both tables must be in the scope
 			return;
@@ -104,7 +104,7 @@ class GenTable {
 	void addReferencedTablesTo(Set<GenTable> referencedTables) {
 		for (Iterator<ForeignKey> stream = this.table.foreignKeys(); stream.hasNext(); ) {
 			ForeignKey fk = stream.next();
-			GenTable genTable = this.scope.genTable(fk.referencedTable());
+			GenTable genTable = this.scope.genTable(fk.getReferencedTable());
 			if (genTable != null) {
 				referencedTables.add(genTable);
 			}
@@ -122,7 +122,7 @@ class GenTable {
 	void configureManyToOneRelations() {
 		for (Iterator<ForeignKey> stream = this.table.foreignKeys(); stream.hasNext(); ) {
 			ForeignKey fk = stream.next();
-			GenTable referencedtable = this.scope.genTable(fk.referencedTable());
+			GenTable referencedtable = this.scope.genTable(fk.getReferencedTable());
 			if (referencedtable == null) {
 				continue;  // skip to next FK
 			}
@@ -222,7 +222,7 @@ class GenTable {
 	}
 
 	String javaFieldName() {
-		return this.table.javaFieldName();
+		return this.table.getJavaFieldName();
 	}
 
 	Iterator<ManyToOneRelation> manyToOneRelations() {
@@ -272,7 +272,7 @@ class GenTable {
 	}
 
 	String name() {
-		return this.table.name();
+		return this.table.getName();
 	}
 
 
@@ -310,7 +310,7 @@ class GenTable {
 	 */
 	private void configureBasicFieldNames(Set<Column> columns) {
 		for (Column column : columns) {
-			this.configureFieldName(column, column.javaFieldName());
+			this.configureFieldName(column, column.getJavaFieldName());
 		}
 	}
 

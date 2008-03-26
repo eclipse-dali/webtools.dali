@@ -28,88 +28,88 @@ public interface ConnectionProfile extends Comparable<ConnectionProfile> {
 	/**
 	 * Return the connection profile's name.
 	 */
-	String name();
+	String getName();
 
 	/**
 	 * Return the connection profile's database.
 	 * Return a "null" database if the connection profile is inactive.
 	 */
-	Database database();
+	Database getDatabase();
 
 	/**
 	 * Return the connection profile's "default" catalog.
 	 * Return null if the connection profile's database does not support
 	 * catalogs.
 	 */
-	Catalog defaultCatalog();
+	Catalog getDefaultCatalog();
 
 	/**
 	 * Return the connection profile's default schema.
 	 * In most cases the default schema's name will match the user name.
 	 * It may be null.
 	 */
-	Schema defaultSchema();
+	Schema getDefaultSchema();
 
 	/**
 	 * Return ID of the provider managing the DTP profile.
 	 */
-	String providerID();
+	String getProviderID();
 
 	/**
 	 * Return the connection profile's static ID.
 	 */
-	String instanceID();
+	String getInstanceID();
 
 	/**
 	 * Return the default database name.
 	 */
-	String databaseName();
+	String getDatabaseName();
 
 	/**
 	 * Return the database product name.
 	 */
-	String databaseProduct();
+	String getDatabaseProduct();
 
 	/**
 	 * Return the database vendor.
 	 */
-	String databaseVendor();
+	String getDatabaseVendor();
 
 	/**
 	 * Return the database version.
 	 */
-	String databaseVersion();
+	String getDatabaseVersion();
 
 	/**
 	 * Return the driver class name.
 	 */
-	String driverClassName();
+	String getDriverClassName();
 
 	/**
 	 * Return the default connection URL.
 	 */
-	String url();
+	String getUrl();
 
 	/**
 	 * Return the default user name.
 	 */
-	String userName();
+	String getUserName();
 
 	/**
 	 * Return the default user password.
 	 */
-	String userPassword();
+	String getUserPassword();
 
 	/**
 	 * Return the driver definition ID.
 	 */
-	String driverDefinitionID();
+	String getDriverDefinitionID();
 
 	/**
 	 * Return the jar list for the driver instance as a 
 	 * comma-delimited string.
 	 */
-	String driverJarList();
+	String getDriverJarList();
 
 	/**
 	 * Return whether the profile is either connected to a live database

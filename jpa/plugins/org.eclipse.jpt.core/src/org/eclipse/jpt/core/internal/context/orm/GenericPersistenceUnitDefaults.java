@@ -239,12 +239,12 @@ public class GenericPersistenceUnitDefaults extends AbstractOrmJpaContextNode
 	
 	protected String projectDefaultSchemaName() {
 		Schema projectDefaultSchema = getJpaProject().getDefaultSchema();
-		return projectDefaultSchema == null ? null : projectDefaultSchema.name();
+		return projectDefaultSchema == null ? null : projectDefaultSchema.getName();
 	}
 
 	protected String projectDefaultCatalogName() {
-		Catalog catalog = getJpaProject().getConnectionProfile().defaultCatalog();
-		return (catalog == null) ? null : catalog.name();
+		Catalog catalog = getJpaProject().getConnectionProfile().getDefaultCatalog();
+		return (catalog == null) ? null : catalog.getName();
 	}
 
 	protected XmlPersistenceUnitDefaults persistenceUnitDefaults() {

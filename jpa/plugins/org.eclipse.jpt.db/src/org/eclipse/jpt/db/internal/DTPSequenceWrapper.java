@@ -40,20 +40,20 @@ final class DTPSequenceWrapper
 	// ********** DTPWrapper implementation **********
 
 	@Override
-	ICatalogObject catalogObject() {
+	ICatalogObject getCatalogObject() {
 		return (ICatalogObject) this.dtpSequence;
 	}
 
 	@Override
 	synchronized void catalogObjectChanged(int eventType) {
-		this.connectionProfile().sequenceChanged(this, eventType);
+		this.getConnectionProfile().sequenceChanged(this, eventType);
 	}
 
 
 	// ********** Sequence implementation **********
 
 	@Override
-	public String name() {
+	public String getName() {
 		return this.dtpSequence.getName();
 	}
 
@@ -61,7 +61,7 @@ final class DTPSequenceWrapper
 	// ********** Comparable implementation **********
 
 	public int compareTo(Sequence sequence) {
-		return Collator.getInstance().compare(this.name(), sequence.name());
+		return Collator.getInstance().compare(this.getName(), sequence.getName());
 	}
 
 

@@ -159,7 +159,7 @@ public class JpaFacetDataModelProvider
 	}
 
 	private IStatus validateConnectionName(String connectionName) {
-		return JptDbPlugin.instance().connectionProfileRepository().connectionProfileNamed(connectionName).isActive() ?
+		return JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNamed(connectionName).isActive() ?
 				OK_STATUS
 			:
 				CONNECTION_NOT_CONNECTED_STATUS;

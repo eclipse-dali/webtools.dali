@@ -14,9 +14,9 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.db.ConnectionAdapter;
 import org.eclipse.jpt.db.ConnectionListener;
 import org.eclipse.jpt.db.ConnectionProfile;
+import org.eclipse.jpt.db.ConnectionProfileListener;
 import org.eclipse.jpt.db.ConnectionProfileRepository;
 import org.eclipse.jpt.db.JptDbPlugin;
-import org.eclipse.jpt.db.ConnectionProfileListener;
 
 /**
  * 
@@ -50,15 +50,15 @@ public class GenericJpaDataSource
 
 	// ********** constructor/initialization **********
 
-	private ConnectionProfileRepository connectionProfileRepository() {
-		return JptDbPlugin.instance().connectionProfileRepository();
+	private ConnectionProfileRepository getConnectionProfileRepository() {
+		return JptDbPlugin.instance().getConnectionProfileRepository();
 	}
 
 	public GenericJpaDataSource(JpaProject jpaProject, String connectionProfileName) {
 		super(jpaProject);
 
 		this.connectionProfileListener = this.buildConnectionProfileListener();
-		this.connectionProfileRepository().addConnectionProfileListener(this.connectionProfileListener);
+		this.getConnectionProfileRepository().addConnectionProfileListener(this.connectionProfileListener);
 
 		this.connectionListener = this.buildConnectionListener();
 		this.connectionProfileName = connectionProfileName;
@@ -100,14 +100,14 @@ public class GenericJpaDataSource
 
 	public void dispose() {
 		this.connectionProfile.removeConnectionListener(this.connectionListener);
-		this.connectionProfileRepository().removeConnectionProfileListener(this.connectionProfileListener);
+		this.getConnectionProfileRepository().removeConnectionProfileListener(this.connectionProfileListener);
 	}
 
 
 	// ********** internal methods **********
 
 	private ConnectionProfile connectionProfileNamed(String name) {
-		return this.connectionProfileRepository().connectionProfileNamed(name);
+		return this.getConnectionProfileRepository().connectionProfileNamed(name);
 	}
 
 	protected void setConnectionProfile(ConnectionProfile connectionProfile) {
@@ -146,7 +146,7 @@ public class GenericJpaDataSource
 		// possible name change
 		public void connectionProfileChanged(ConnectionProfile profile) {
 			if (profile == GenericJpaDataSource.this.connectionProfile) {
-				GenericJpaDataSource.this.setConnectionProfileName(profile.name());
+				GenericJpaDataSource.this.setConnectionProfileName(profile.getName());
 			}
 		}
 

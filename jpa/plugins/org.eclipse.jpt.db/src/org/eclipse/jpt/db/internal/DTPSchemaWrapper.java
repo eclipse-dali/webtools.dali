@@ -53,7 +53,7 @@ final class DTPSchemaWrapper
 	// ********** DTPWrapper implementation **********
 
 	@Override
-	ICatalogObject catalogObject() {
+	ICatalogObject getCatalogObject() {
 		return (ICatalogObject) this.dtpSchema;
 	}
 
@@ -61,14 +61,14 @@ final class DTPSchemaWrapper
 	synchronized void catalogObjectChanged(int eventType) {
 		// clear stuff so it can be rebuilt
 		this.dispose_();
-		this.connectionProfile().schemaChanged(this, eventType);
+		this.getConnectionProfile().schemaChanged(this, eventType);
 	}
 
 
 	// ********** Schema implementation **********
 
 	@Override
-	public String name() {
+	public String getName() {
 		return this.dtpSchema.getName();
 	}
 
@@ -112,7 +112,7 @@ final class DTPSchemaWrapper
 		return new TransformationIterator<DTPTableWrapper, String>(this.tableWrappers()) {
 			@Override
 			protected String transform(DTPTableWrapper table) {
-				 return table.name();
+				 return table.getName();
 			}
 		};
 	}
@@ -128,7 +128,7 @@ final class DTPSchemaWrapper
 	private DTPTableWrapper tableNamedCaseSensitive(String name) {
 		for (Iterator<DTPTableWrapper> stream = this.tableWrappers(); stream.hasNext(); ) {
 			DTPTableWrapper table = stream.next();
-			if (table.name().equals(name)) {
+			if (table.getName().equals(name)) {
 				return table;
 			}
 		}
@@ -138,7 +138,7 @@ final class DTPSchemaWrapper
 	private DTPTableWrapper tableNamedIgnoreCase(String name) {
 		for (Iterator<DTPTableWrapper> stream = this.tableWrappers(); stream.hasNext(); ) {
 			DTPTableWrapper table = stream.next();
-			if (StringTools.stringsAreEqualIgnoreCase(table.name(), name)) {
+			if (StringTools.stringsAreEqualIgnoreCase(table.getName(), name)) {
 				return table;
 			}
 		}
@@ -201,7 +201,7 @@ final class DTPSchemaWrapper
 		return new TransformationIterator<DTPSequenceWrapper, String>(this.sequenceWrappers()) {
 			@Override
 			protected String transform(DTPSequenceWrapper sequence) {
-				 return sequence.name();
+				 return sequence.getName();
 			}
 		};
 	}
@@ -217,7 +217,7 @@ final class DTPSchemaWrapper
 	private DTPSequenceWrapper sequenceNamedCaseSensitive(String name) {
 		for (Iterator<DTPSequenceWrapper> stream = this.sequenceWrappers(); stream.hasNext(); ) {
 			DTPSequenceWrapper sequence = stream.next();
-			if (sequence.name().equals(name)) {
+			if (sequence.getName().equals(name)) {
 				return sequence;
 			}
 		}
@@ -227,7 +227,7 @@ final class DTPSchemaWrapper
 	private DTPSequenceWrapper sequenceNamedIgnoreCase(String name) {
 		for (Iterator<DTPSequenceWrapper> stream = this.sequenceWrappers(); stream.hasNext(); ) {
 			DTPSequenceWrapper sequence = stream.next();
-			if (sequence.name().equalsIgnoreCase(name)) {
+			if (sequence.getName().equalsIgnoreCase(name)) {
 				return sequence;
 			}
 		}
@@ -238,7 +238,7 @@ final class DTPSchemaWrapper
 	// ********** Comparable implementation **********
 
 	public int compareTo(Schema schema) {
-		return Collator.getInstance().compare(this.name(), schema.name());
+		return Collator.getInstance().compare(this.getName(), schema.getName());
 	}
 
 

@@ -193,7 +193,7 @@ public class EntityGenerator {
 		if ( ! this.table().matchesShortJavaClassName(this.entityName())) {
 			pw.printAnnotation(JPA.TABLE);
 			pw.print("(name=\"");
-			pw.print(this.table().name());
+			pw.print(this.table().getName());
 			pw.print("\")");
 			pw.println();
 		}
@@ -254,11 +254,11 @@ public class EntityGenerator {
 			if (column.matchesJavaFieldName(fieldName)) {
 				this.printReadOnlyColumnAnnotationOn(pw);  // no Column name needed
 			} else {
-				this.printReadOnlyColumnAnnotationOn(column.name(), pw);
+				this.printReadOnlyColumnAnnotationOn(column.getName(), pw);
 			}
 		}
 		pw.printVisibility(this.config.fieldVisibility());
-		pw.printTypeDeclaration(column.primaryKeyJavaTypeDeclaration());
+		pw.printTypeDeclaration(column.getPrimaryKeyJavaTypeDeclaration());
 		pw.print(' ');
 		pw.print(fieldName);
 		pw.print(';');
@@ -300,11 +300,11 @@ public class EntityGenerator {
 				pw.println();
 			}
 			if ( ! column.matchesJavaFieldName(fieldName)) {
-				this.printColumnAnnotationOn(column.name(), pw);
+				this.printColumnAnnotationOn(column.getName(), pw);
 			}
 		}
 		pw.printVisibility(this.config.fieldVisibility());
-		pw.printTypeDeclaration(column.primaryKeyJavaTypeDeclaration());
+		pw.printTypeDeclaration(column.getPrimaryKeyJavaTypeDeclaration());
 		pw.print(' ');
 		pw.print(fieldName);
 		pw.print(';');
@@ -322,7 +322,7 @@ public class EntityGenerator {
 		String fieldName = this.genTable.fieldNameFor(column);
 		if (this.config.fieldAccessType()) {
 			if ( ! column.matchesJavaFieldName(fieldName)) {
-				this.printColumnAnnotationOn(column.name(), pw);
+				this.printColumnAnnotationOn(column.getName(), pw);
 			}
 		}
 		if (column.dataTypeIsLOB()) {
@@ -330,7 +330,7 @@ public class EntityGenerator {
 			pw.println();
 		}
 		pw.printVisibility(this.config.fieldVisibility());
-		pw.printTypeDeclaration(column.javaTypeDeclaration());
+		pw.printTypeDeclaration(column.getJavaTypeDeclaration());
 		pw.print(' ');
 		pw.print(fieldName);
 		pw.print(';');
@@ -376,7 +376,7 @@ public class EntityGenerator {
 		if (fk.referencesSingleColumnPrimaryKey()) {
 			pw.printAnnotation(JPA.JOIN_COLUMN);
 			pw.print("(name=\"");
-			pw.print(fk.columnPair().baseColumn().name());
+			pw.print(fk.columnPair().baseColumn().getName());
 			pw.print("\")");
 		} else {
 			if (fk.columnPairsSize() > 1) {
@@ -405,7 +405,7 @@ public class EntityGenerator {
 	}
 
 	private void printJoinColumnAnnotationOn(ForeignKey.ColumnPair columnPair, EntitySourceWriter pw) {
-		this.printJoinColumnAnnotationOn(columnPair.baseColumn().name(), columnPair.referencedColumn().name(), pw);
+		this.printJoinColumnAnnotationOn(columnPair.baseColumn().getName(), columnPair.referencedColumn().getName(), pw);
 	}
 
 	/**
@@ -540,26 +540,26 @@ public class EntityGenerator {
 	private void printJoinTableJoinColumnsOn(String elementName, String fieldName, ForeignKey foreignKey, EntitySourceWriter pw) {
 		if (foreignKey.columnPairsSize() != 1) {
 			this.printJoinTableJoinColumnsOn(elementName, foreignKey, pw);
-		} else if (foreignKey.referencedTable().primaryKeyColumnsSize() != 1) {
+		} else if (foreignKey.getReferencedTable().primaryKeyColumnsSize() != 1) {
 			// if the referenced table has a composite primary key, neither of the columns can be a default
 			// since both of the defaults require a single-column primary key
 			this.printJoinTableJoinColumnsOn(elementName, foreignKey, pw);
 		} else {
 			ForeignKey.ColumnPair columnPair = foreignKey.columnPair();
-			Column pkColumn = foreignKey.referencedTable().primaryKeyColumn();
-			if (columnPair.baseColumn().matchesJavaFieldName(fieldName + "_" + pkColumn.name())) {
+			Column pkColumn = foreignKey.getReferencedTable().primaryKeyColumn();
+			if (columnPair.baseColumn().matchesJavaFieldName(fieldName + "_" + pkColumn.getName())) {
 				if (columnPair.referencedColumn() == pkColumn) {
 					// we shouldn't get here...
 				} else {
 					pw.print(elementName);
 					pw.print('=');
-					this.printJoinColumnAnnotationOn(null, columnPair.referencedColumn().name(), pw);
+					this.printJoinColumnAnnotationOn(null, columnPair.referencedColumn().getName(), pw);
 				}
 			} else {
 				if (columnPair.referencedColumn() == pkColumn) {
 					pw.print(elementName);
 					pw.print('=');
-					this.printJoinColumnAnnotationOn(columnPair.baseColumn().name(), null, pw);
+					this.printJoinColumnAnnotationOn(columnPair.baseColumn().getName(), null, pw);
 				} else {
 					this.printJoinTableJoinColumnsOn(elementName, foreignKey, pw);
 				}
@@ -681,11 +681,11 @@ public class EntityGenerator {
 			if (column.matchesJavaFieldName(propertyName)) {
 				this.printReadOnlyColumnAnnotationOn(pw);  // no Column name needed
 			} else {
-				this.printReadOnlyColumnAnnotationOn(column.name(), pw);
+				this.printReadOnlyColumnAnnotationOn(column.getName(), pw);
 			}
 		}
 
-		pw.printGetterAndSetter(propertyName, column.primaryKeyJavaTypeDeclaration(), this.config.methodVisibility());
+		pw.printGetterAndSetter(propertyName, column.getPrimaryKeyJavaTypeDeclaration(), this.config.methodVisibility());
 	}
 
 	private void printEntityWritablePrimaryKeyGettersAndSettersOn(EntitySourceWriter pw) {
@@ -708,11 +708,11 @@ public class EntityGenerator {
 				pw.println();
 			}
 			if ( ! column.matchesJavaFieldName(propertyName)) {
-				this.printColumnAnnotationOn(column.name(), pw);
+				this.printColumnAnnotationOn(column.getName(), pw);
 			}
 		}
 
-		pw.printGetterAndSetter(propertyName, column.primaryKeyJavaTypeDeclaration(), this.config.methodVisibility());
+		pw.printGetterAndSetter(propertyName, column.getPrimaryKeyJavaTypeDeclaration(), this.config.methodVisibility());
 	}
 
 	private void printEntityNonPrimaryKeyBasicGettersAndSettersOn(EntitySourceWriter pw) {
@@ -725,11 +725,11 @@ public class EntityGenerator {
 		String propertyName = this.genTable.fieldNameFor(column);
 		if (this.config.propertyAccessType()) {
 			if ( ! column.matchesJavaFieldName(propertyName)) {
-				this.printColumnAnnotationOn(column.name(), pw);
+				this.printColumnAnnotationOn(column.getName(), pw);
 			}
 		}
 
-		pw.printGetterAndSetter(propertyName, column.javaTypeDeclaration(), this.config.methodVisibility());
+		pw.printGetterAndSetter(propertyName, column.getJavaTypeDeclaration(), this.config.methodVisibility());
 	}
 
 	private void printEntityManyToOneGettersAndSettersOn(EntitySourceWriter pw) {
@@ -853,7 +853,7 @@ public class EntityGenerator {
 	private void printIdFieldOn(Column column, EntitySourceWriter pw) {
 		String fieldName = this.genTable.fieldNameFor(column);
 		pw.printVisibility(this.config.fieldVisibility());
-		pw.printTypeDeclaration(column.primaryKeyJavaTypeDeclaration());
+		pw.printTypeDeclaration(column.getPrimaryKeyJavaTypeDeclaration());
 		pw.print(' ');
 		pw.print(fieldName);
 		pw.print(';');
@@ -876,7 +876,7 @@ public class EntityGenerator {
 
 	private void printIdGetterAndSetterOn(Column column, EntitySourceWriter pw) {
 		String propertyName = this.genTable.fieldNameFor(column);
-		pw.printGetterAndSetter(propertyName, column.primaryKeyJavaTypeDeclaration(), this.config.methodVisibility());
+		pw.printGetterAndSetter(propertyName, column.getPrimaryKeyJavaTypeDeclaration(), this.config.methodVisibility());
 	}
 
 	private void printPrimaryKeyEqualsMethodOn(String className, Iterator<Column> columns, EntitySourceWriter pw) {
@@ -928,7 +928,7 @@ public class EntityGenerator {
 
 	private void printPrimaryKeyEqualsClauseOn(Column column, EntitySourceWriter pw) {
 		String fieldName = this.genTable.fieldNameFor(column);
-		JavaType javaType = column.primaryKeyJavaType();
+		JavaType javaType = column.getPrimaryKeyJavaType();
 		if (javaType.isPrimitive()) {
 			this.printPrimitiveEqualsClauseOn(fieldName, pw);
 		} else {
@@ -978,7 +978,7 @@ public class EntityGenerator {
 
 	private void printPrimaryKeyHashCodeClauseOn(Column column, EntitySourceWriter pw) {
 		String fieldName = this.genTable.fieldNameFor(column);
-		JavaType javaType = column.primaryKeyJavaType();
+		JavaType javaType = column.getPrimaryKeyJavaType();
 		if (javaType.isPrimitive()) {
 			this.printPrimitiveHashCodeClauseOn(javaType.getElementTypeName(), fieldName, pw);
 		} else {

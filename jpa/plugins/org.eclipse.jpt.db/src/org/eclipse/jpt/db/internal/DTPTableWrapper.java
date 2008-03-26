@@ -64,7 +64,7 @@ final class DTPTableWrapper
 	// ********** DTPWrapper implementation **********
 
 	@Override
-	ICatalogObject catalogObject() {
+	ICatalogObject getCatalogObject() {
 		return (ICatalogObject) this.dtpTable;
 	}
 
@@ -72,19 +72,19 @@ final class DTPTableWrapper
 	synchronized void catalogObjectChanged(int eventType) {
 		// clear stuff so it can be rebuilt
 		this.dispose_();
-		this.connectionProfile().tableChanged(this, eventType);
+		this.getConnectionProfile().tableChanged(this, eventType);
 	}
 
 
 	// ********** Table implementation **********
 
 	@Override
-	public String name() {
+	public String getName() {
 		return this.dtpTable.getName();
 	}
 
-	public String shortJavaClassName() {
-		String jName = this.name();
+	public String getShortJavaClassName() {
+		String jName = this.getName();
 		if ( ! this.isCaseSensitive()) {
 			jName = StringTools.capitalize(jName.toLowerCase());
 		}
@@ -93,13 +93,13 @@ final class DTPTableWrapper
 
 	public boolean matchesShortJavaClassName(String shortJavaClassName) {
 		return this.isCaseSensitive() ?
-			this.name().equals(shortJavaClassName)
+			this.getName().equals(shortJavaClassName)
 		:
-			this.name().equalsIgnoreCase(shortJavaClassName);
+			this.getName().equalsIgnoreCase(shortJavaClassName);
 	}
 
-	public String javaFieldName() {
-		String jName = this.name();
+	public String getJavaFieldName() {
+		String jName = this.getName();
 		if ( ! this.isCaseSensitive()) {
 			jName = jName.toLowerCase();
 		}
@@ -146,7 +146,7 @@ final class DTPTableWrapper
 		return new TransformationIterator<DTPColumnWrapper, String>(this.columnWrappers()) {
 			@Override
 			protected String transform(DTPColumnWrapper next) {
-				 return next.name();
+				 return next.getName();
 			}
 		};
 	}
@@ -162,7 +162,7 @@ final class DTPTableWrapper
 	private DTPColumnWrapper columnNamedCaseSensitive(String name) {
 		for (Iterator<DTPColumnWrapper> stream = this.columnWrappers(); stream.hasNext(); ) {
 			DTPColumnWrapper column = stream.next();
-			if (column.name().equals(name)) {
+			if (column.getName().equals(name)) {
 				return column;
 			}
 		}
@@ -172,7 +172,7 @@ final class DTPTableWrapper
 	private DTPColumnWrapper columnNamedIgnoreCase(String name) {
 		for (Iterator<DTPColumnWrapper> stream = this.columnWrappers(); stream.hasNext(); ) {
 			DTPColumnWrapper column = stream.next();
-			if (StringTools.stringsAreEqualIgnoreCase(column.name(), name)) {
+			if (StringTools.stringsAreEqualIgnoreCase(column.getName(), name)) {
 				return column;
 			}
 		}
@@ -298,7 +298,7 @@ final class DTPTableWrapper
 	// ********** Comparable implementation **********
 
 	public int compareTo(Table table) {
-		return Collator.getInstance().compare(this.name(), table.name());
+		return Collator.getInstance().compare(this.getName(), table.getName());
 	}
 
 

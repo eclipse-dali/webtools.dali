@@ -64,33 +64,33 @@ final class DTPDatabaseWrapper
 	// ********** DTPWrapper implementation **********
 
 	@Override
-	ICatalogObject catalogObject() {
+	ICatalogObject getCatalogObject() {
 		return (ICatalogObject) this.dtpDatabase;
 	}
 
 	@Override
 	synchronized void catalogObjectChanged(int eventType) {
 		super.catalogObjectChanged(eventType);
-		this.connectionProfile().databaseChanged(this, eventType);
+		this.getConnectionProfile().databaseChanged(this, eventType);
 	}
 
 
 	// ********** Database implementation **********
 
 	@Override
-	public String name() {
+	public String getName() {
 		return this.dtpDatabase.getName();
 	}
 
-	public String vendor() {
+	public String getVendor() {
 		return this.dtpDatabase.getVendor();
 	}
 
-	public String version() {
+	public String getVersion() {
 		return this.dtpDatabase.getVersion();
 	}
 
-	public DatabaseDefinition dtpDefinition() {
+	public DatabaseDefinition getDtpDefinition() {
 		return RDBCorePlugin.getDefault().getDatabaseDefinitionRegistry().getDefinition(this.dtpDatabase);
 	}
 
@@ -155,7 +155,7 @@ final class DTPDatabaseWrapper
 		return new TransformationIterator<DTPCatalogWrapper, String>(this.catalogWrappers()) {
 			@Override
 			protected String transform(DTPCatalogWrapper catalog) {
-				 return catalog.name();
+				 return catalog.getName();
 			}
 		};
 	}
@@ -171,7 +171,7 @@ final class DTPDatabaseWrapper
 	private DTPCatalogWrapper catalogNamedCaseSensitive(String name) {
 		for (Iterator<DTPCatalogWrapper> stream = this.catalogWrappers(); stream.hasNext(); ) {
 			DTPCatalogWrapper catalog = stream.next();
-			if (catalog.name().equals(name)) {
+			if (catalog.getName().equals(name)) {
 				return catalog;
 			}
 		}
@@ -181,14 +181,14 @@ final class DTPDatabaseWrapper
 	private DTPCatalogWrapper catalogNamedIgnoreCase(String name) {
 		for (Iterator<DTPCatalogWrapper> stream = this.catalogWrappers(); stream.hasNext(); ) {
 			DTPCatalogWrapper catalog = stream.next();
-			if (StringTools.stringsAreEqualIgnoreCase(catalog.name(), name)) {
+			if (StringTools.stringsAreEqualIgnoreCase(catalog.getName(), name)) {
 				return catalog;
 			}
 		}
 		return null;
 	}
 
-	public synchronized DTPCatalogWrapper defaultCatalog() {
+	public synchronized DTPCatalogWrapper getDefaultCatalog() {
 		if ( ! this.defaultCatalogCalculated) {
 			this.defaultCatalogCalculated = true;
 			this.defaultCatalog = this.buildDefaultCatalog();
@@ -200,16 +200,16 @@ final class DTPDatabaseWrapper
 		if ( ! this.supportsCatalogs()) {
 			return null;
 		}
-		String userName = this.connectionProfile.userName();
+		String userName = this.connectionProfile.getUserName();
 		for (Iterator<DTPCatalogWrapper> stream = this.catalogWrappers(); stream.hasNext(); ) {
 			DTPCatalogWrapper catalog = stream.next();
-			if (catalog.name().length() == 0) {
+			if (catalog.getName().length() == 0) {
 				return catalog;  // special catalog that contains all schemata
 			}
-			if (catalog.name().equals(userName)) {
+			if (catalog.getName().equals(userName)) {
 				return catalog;  // user name is default catalog
 			}
-			if (catalog.name().equals(this.name())) {
+			if (catalog.getName().equals(this.getName())) {
 				return catalog;  // special catalog with same name as DB (PostgreSQL)
 			}
 		}
@@ -240,7 +240,7 @@ final class DTPDatabaseWrapper
 	@Override
 	synchronized DTPSchemaWrapper[] schemata_() {
 		return (this.supportsCatalogs()) ?
-			this.defaultCatalog().schemata_()
+			this.getDefaultCatalog().schemata_()
 		:
 			super.schemata_();
 	}
@@ -249,7 +249,7 @@ final class DTPDatabaseWrapper
 	// ********** Comparable implementation **********
 
 	public int compareTo(Database database) {
-		return Collator.getInstance().compare(this.name(), database.name());
+		return Collator.getInstance().compare(this.getName(), database.getName());
 	}
 
 

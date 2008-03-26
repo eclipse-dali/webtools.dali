@@ -59,7 +59,7 @@ final class DTPForeignKeyWrapper
 	// ********** DTPWrapper implementation **********
 
 	@Override
-	ICatalogObject catalogObject() {
+	ICatalogObject getCatalogObject() {
 		return (ICatalogObject) this.dtpForeignKey;
 	}
 
@@ -67,22 +67,22 @@ final class DTPForeignKeyWrapper
 	synchronized void catalogObjectChanged(int eventType) {
 		// clear stuff so it will be rebuilt
 		this.dispose_();
-		this.connectionProfile().foreignKeyChanged(this, eventType);
+		this.getConnectionProfile().foreignKeyChanged(this, eventType);
 	}
 
 
 	// ********** ForeignKey implementation **********
 
 	@Override
-	public String name() {
+	public String getName() {
 		return this.dtpForeignKey.getName();
 	}
 
-	public DTPTableWrapper baseTable() {
+	public DTPTableWrapper getBaseTable() {
 		return this.baseTable;
 	}
 
-	public synchronized DTPTableWrapper referencedTable() {
+	public synchronized DTPTableWrapper getReferencedTable() {
 		if (this.referencedTable == null) {
 			this.referencedTable = this.baseTable.table(this.dtpForeignKey.getUniqueConstraint().getBaseTable());
 		}
@@ -119,7 +119,7 @@ final class DTPForeignKeyWrapper
 		int size = baseColumns.size();
 		List<org.eclipse.datatools.modelbase.sql.tables.Column> refColumns = this.dtpRefColumns();
 		if (refColumns.size() != size) {
-			throw new IllegalStateException(this.baseTable().name() + "." + this.name() +  //$NON-NLS-1$
+			throw new IllegalStateException(this.getBaseTable().getName() + "." + this.getName() +  //$NON-NLS-1$
 								" - mismatched sizes: " + size + " vs. " + refColumns.size());  //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		LocalColumnPair[] result = new LocalColumnPair[baseColumns.size()];
@@ -164,7 +164,7 @@ final class DTPForeignKeyWrapper
 		return new FilteringIterator<Column, Column>(this.baseColumns()) {
 			@Override
 			protected boolean accept(Column column) {
-				return ! DTPForeignKeyWrapper.this.baseTable().primaryKeyColumnsContains(column);
+				return ! DTPForeignKeyWrapper.this.getBaseTable().primaryKeyColumnsContains(column);
 			}
 		};
 	}
@@ -206,8 +206,8 @@ final class DTPForeignKeyWrapper
 			return null;
 		}
 		LocalColumnPair columnPair = this.columnPairs_()[0];
-		String baseColName = columnPair.baseColumn().name();
-		String refColName = columnPair.referencedColumn().name();
+		String baseColName = columnPair.baseColumn().getName();
+		String refColName = columnPair.referencedColumn().getName();
 		if (baseColName.length() <= (refColName.length() + 1)) {
 			return null;
 		}
@@ -224,7 +224,7 @@ final class DTPForeignKeyWrapper
 
 	// ***** miscellaneous
 
-	public String javaFieldName() {
+	public String getJavaFieldName() {
 		String fieldName = this.defaultEntityFieldName();
 		return (fieldName != null) ? fieldName : this.nonDefaultEntityFieldName();
 	}
@@ -241,28 +241,28 @@ final class DTPForeignKeyWrapper
 			return false;
 		}
 
-		if (this.referencedTable().primaryKeyColumnsSize() != 1) {
+		if (this.getReferencedTable().primaryKeyColumnsSize() != 1) {
 			return false;
 		}
 
 		LocalColumnPair columnPair = this.columnPairs_()[0];
-		Column pkColumn = this.referencedTable().primaryKeyColumn();
+		Column pkColumn = this.getReferencedTable().primaryKeyColumn();
 		if (columnPair.referencedColumn() != pkColumn) {
 			return false;
 		}
 
-		return columnPair.baseColumn().matchesJavaFieldName(javaFieldName + "_" + pkColumn.name());  //$NON-NLS-1$
+		return columnPair.baseColumn().matchesJavaFieldName(javaFieldName + "_" + pkColumn.getName());  //$NON-NLS-1$
 	}
 
 	public boolean referencesSingleColumnPrimaryKey() {
 		if (this.columnPairsSize() != 1) {
 			return false;
 		}
-		if (this.referencedTable().primaryKeyColumnsSize() != 1) {
+		if (this.getReferencedTable().primaryKeyColumnsSize() != 1) {
 			return false;
 		}
 
-		return this.columnPair().referencedColumn() == this.referencedTable().primaryKeyColumn();
+		return this.columnPair().referencedColumn() == this.getReferencedTable().primaryKeyColumn();
 	}
 
 	/**
@@ -274,16 +274,16 @@ final class DTPForeignKeyWrapper
 	// TODO if the FK column name ends with the PK column name, strip the PK column name?
 	private String nonDefaultEntityFieldName() {
 		return (this.columnPairsSize() == 1) ?
-			this.columnPair().baseColumn().javaFieldName()
+			this.columnPair().baseColumn().getJavaFieldName()
 		:
-			this.referencedTable().javaFieldName();
+			this.getReferencedTable().getJavaFieldName();
 	}
 
 
 	// ********** Comparable implementation **********
 
 	public int compareTo(ForeignKey foreignKey) {
-		return Collator.getInstance().compare(this.name(), foreignKey.name());
+		return Collator.getInstance().compare(this.getName(), foreignKey.getName());
 	}
 
 
@@ -303,7 +303,7 @@ final class DTPForeignKeyWrapper
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.name() + ": " + Arrays.asList(this.columnPairs_()));  //$NON-NLS-1$
+		return StringTools.buildToStringFor(this, this.getName() + ": " + Arrays.asList(this.columnPairs_()));  //$NON-NLS-1$
 	}
 
 
@@ -352,7 +352,7 @@ final class DTPForeignKeyWrapper
 		// ********** Comparable implementation **********
 
 		public int compareTo(ColumnPair columnPair) {
-			return Collator.getInstance().compare(this.baseColumn().name(), columnPair.baseColumn().name());
+			return Collator.getInstance().compare(this.baseColumn().getName(), columnPair.baseColumn().getName());
 		}
 
 
@@ -360,7 +360,7 @@ final class DTPForeignKeyWrapper
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.baseColumn.name() + "=>" + this.referencedColumn.name());  //$NON-NLS-1$
+			return StringTools.buildToStringFor(this, this.baseColumn.getName() + "=>" + this.referencedColumn.getName());  //$NON-NLS-1$
 		}
 
 	}

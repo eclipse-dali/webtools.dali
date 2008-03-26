@@ -25,6 +25,6 @@ public interface Sequence extends Comparable<Sequence> {
 	/**
 	 * Return the sequence's name.
 	 */
-	String name();
+	String getName();
 
 }

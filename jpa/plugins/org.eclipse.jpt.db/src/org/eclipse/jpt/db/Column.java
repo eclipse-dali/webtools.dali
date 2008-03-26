@@ -27,17 +27,17 @@ public interface Column extends Comparable<Column> {
 	/**
 	 * Return the column's name.
 	 */
-	String name();
+	String getName();
 
 	/**
 	 * Return the name of the column's datatype.
 	 */
-	String dataTypeName();
+	String getDataTypeName();
 
 	/**
 	 * Return a Java-appropriate version of the column's name.
 	 */
-	String javaFieldName();
+	String getJavaFieldName();
 
 	/**
 	 * Return whether the column's name matches the specified Java identifier,
@@ -50,26 +50,26 @@ public interface Column extends Comparable<Column> {
 	 * similar to the column's data type and suitable for use as a
 	 * primary key field.
 	 */
-	String primaryKeyJavaTypeDeclaration();
+	String getPrimaryKeyJavaTypeDeclaration();
 
 	/**
 	 * Return a Java type that is reasonably
 	 * similar to the column's data type and suitable for use as a
 	 * primary key field.
 	 */
-	JavaType primaryKeyJavaType();
+	JavaType getPrimaryKeyJavaType();
 
 	/**
 	 * Return a Java type declaration that is reasonably
 	 * similar to the column's data type.
 	 */
-	String javaTypeDeclaration();
+	String getJavaTypeDeclaration();
 
 	/**
 	 * Return a Java type that is reasonably
 	 * similar to the column's data type.
 	 */
-	JavaType javaType();
+	JavaType getJavaType();
 
 	/**
 	 * Return whether the column's datatype is a LOB type

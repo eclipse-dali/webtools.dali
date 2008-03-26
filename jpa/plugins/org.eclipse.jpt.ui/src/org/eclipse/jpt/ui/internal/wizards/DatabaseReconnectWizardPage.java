@@ -110,7 +110,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 
 	public Collection<Table> getTables() {
 		Schema schema = this.getDefaultSchema();
-		if ( schema != null && schema.name() != null) {
+		if ( schema != null && schema.getName() != null) {
 			return CollectionTools.collection( schema.tables());
 		}
 		return Collections.<Table>emptyList();
@@ -143,11 +143,11 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 	}
 
 	ConnectionProfile connectionProfileNamed( String profileName) {
-		return JptDbPlugin.instance().connectionProfileRepository().connectionProfileNamed( profileName);
+		return JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNamed( profileName);
 	}
 	
 	Schema getDefaultSchema() {
-		return getProjectConnectionProfile().defaultSchema();
+		return getProjectConnectionProfile().getDefaultSchema();
 	}
 
 	// ********** member classes **********
@@ -228,7 +228,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 		}
 		
 		private Iterator<String> dtpConnectionProfileNames() {
-			return JptDbPlugin.instance().connectionProfileRepository().connectionProfileNames();
+			return JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNames();
 		}
 
 		private String getProjectConnectionProfileName() {
@@ -236,7 +236,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 		}
 		
 		Schema getDefaultSchema() {
-			return getProjectConnectionProfile().defaultSchema();
+			return getProjectConnectionProfile().getDefaultSchema();
 		}
 
 		private void openConnectionProfileNamed( String connectionProfileName) {
@@ -273,7 +273,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 
 		private void handleSchemaChange() {
 			ConnectionProfile connectionProfile = this.connectionProfileNamed( getConnectionProfileName());
-			Schema schema =  connectionProfile.database().schemaNamed( this.getSchemaName());
+			Schema schema =  connectionProfile.getDatabase().schemaNamed( this.getSchemaName());
 			DatabaseReconnectWizardPage.this.updateGenerateEntitiesPage( schema);
 			DatabaseReconnectWizardPage.this.setPageComplete( true);
 		}
@@ -282,15 +282,15 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 			// clear out schema entries from previous connection selection
 			this.schemaCombo.removeAll();
 			ConnectionProfile connectionProfile = this.connectionProfileNamed( getConnectionProfileName());
-			for ( Iterator<String> stream = CollectionTools.sort( connectionProfile.database().schemaNames()); stream.hasNext();) {
+			for ( Iterator<String> stream = CollectionTools.sort( connectionProfile.getDatabase().schemaNames()); stream.hasNext();) {
 				this.schemaCombo.add(stream.next());
 			}
 			// set login user name as default schema
 			Schema schema = this.getDefaultSchema();
-			if ( schema != null && schema.name() != null) {
-				schema =  connectionProfile.database().schemaNamed( schema.name()); // verify schema exist
+			if ( schema != null && schema.getName() != null) {
+				schema =  connectionProfile.getDatabase().schemaNamed( schema.getName()); // verify schema exist
 				if ( schema != null) {
-					this.schemaCombo.select( this.schemaCombo.indexOf( schema.name()));
+					this.schemaCombo.select( this.schemaCombo.indexOf( schema.getName()));
 					updateGenerateEntitiesPage( schema);
 					setPageComplete( true);
 				}
@@ -313,7 +313,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 			if( !addedProfile.isNull()) {
 				addedProfile.connect();
 				this.populateConnectionCombo();
-				this.connectionCombo.select( connectionCombo.indexOf( addedProfile.name()));
+				this.connectionCombo.select( connectionCombo.indexOf( addedProfile.getName()));
 				this.handleConnectionChange();
 			}
 		}

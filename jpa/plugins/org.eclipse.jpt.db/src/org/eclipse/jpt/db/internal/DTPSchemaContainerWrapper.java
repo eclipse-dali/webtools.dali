@@ -88,7 +88,7 @@ abstract class DTPSchemaContainerWrapper
 		return new TransformationIterator<DTPSchemaWrapper, String>(this.schemaWrappers()) {
 			@Override
 			protected String transform(DTPSchemaWrapper schema) {
-				 return schema.name();
+				 return schema.getName();
 			}
 		};
 	}
@@ -104,7 +104,7 @@ abstract class DTPSchemaContainerWrapper
 	private DTPSchemaWrapper schemaNamedCaseSensitive(String name) {
 		for (Iterator<DTPSchemaWrapper> stream = this.schemaWrappers(); stream.hasNext(); ) {
 			DTPSchemaWrapper schema = stream.next();
-			if (schema.name().equals(name)) {
+			if (schema.getName().equals(name)) {
 				return schema;
 			}
 		}
@@ -114,7 +114,7 @@ abstract class DTPSchemaContainerWrapper
 	private DTPSchemaWrapper schemaNamedIgnoreCase(String name) {
 		for (Iterator<DTPSchemaWrapper> stream = this.schemaWrappers(); stream.hasNext(); ) {
 			DTPSchemaWrapper schema = stream.next();
-			if (StringTools.stringsAreEqualIgnoreCase(schema.name(), name)) {
+			if (StringTools.stringsAreEqualIgnoreCase(schema.getName(), name)) {
 				return schema;
 			}
 		}

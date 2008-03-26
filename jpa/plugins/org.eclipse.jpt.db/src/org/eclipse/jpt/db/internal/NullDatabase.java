@@ -47,15 +47,15 @@ final class NullDatabase
 
 	// ********** Database implementation **********
 
-	public String name() {
+	public String getName() {
 		return ClassTools.shortClassNameForObject(this);
 	}
 
-	public String vendor() {
+	public String getVendor() {
 		return EMPTY_STRING;
 	}
 
-	public String version() {
+	public String getVersion() {
 		return EMPTY_STRING;
 	}
 
@@ -63,7 +63,7 @@ final class NullDatabase
 		return false;
 	}
 
-	public DatabaseDefinition dtpDefinition() {
+	public DatabaseDefinition getDtpDefinition() {
 		return null;
 	}
 
@@ -97,7 +97,7 @@ final class NullDatabase
 		return EMPTY_STRING;
 	}
 
-	public DTPCatalogWrapper defaultCatalog() {
+	public DTPCatalogWrapper getDefaultCatalog() {
 		return null;
 	}
 

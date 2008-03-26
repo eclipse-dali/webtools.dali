@@ -13,5 +13,5 @@ package org.eclipse.jpt.db.internal;
  * Provide a way for clients to access the connection profile.
  */
 interface ConnectionProfileHolder {
-	DTPConnectionProfileWrapper connectionProfile();
+	DTPConnectionProfileWrapper getConnectionProfile();
 }

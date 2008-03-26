@@ -197,7 +197,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	}
 
 	public Schema getDbSchema() {
-		return getConnectionProfile().database().schemaNamed(getSchema());
+		return getConnectionProfile().getDatabase().schemaNamed(getSchema());
 	}
 
 	public boolean hasResolvedSchema() {

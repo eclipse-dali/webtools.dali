@@ -256,7 +256,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	}
 
 	public Schema getDefaultSchema() {
-		return getConnectionProfile().defaultSchema();
+		return getConnectionProfile().getDefaultSchema();
 	}
 	
 	@Override

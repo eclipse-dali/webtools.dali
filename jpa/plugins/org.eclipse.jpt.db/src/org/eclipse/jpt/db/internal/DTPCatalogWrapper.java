@@ -41,21 +41,21 @@ final class DTPCatalogWrapper
 	// ********** DTPWrapper implementation **********
 
 	@Override
-	ICatalogObject catalogObject() {
+	ICatalogObject getCatalogObject() {
 		return (ICatalogObject) this.dtpCatalog;
 	}
 
 	@Override
 	synchronized void catalogObjectChanged(int eventType) {
 		super.catalogObjectChanged(eventType);
-		this.connectionProfile().catalogChanged(this, eventType);
+		this.getConnectionProfile().catalogChanged(this, eventType);
 	}
 
 
 	// ********** Catalog implementation **********
 
 	@Override
-	public String name() {
+	public String getName() {
 		return this.dtpCatalog.getName();
 	}
 
@@ -89,7 +89,7 @@ final class DTPCatalogWrapper
 	// ********** Comparable implementation **********
 
 	public int compareTo(Catalog catalog) {
-		return Collator.getInstance().compare(this.name(), catalog.name());
+		return Collator.getInstance().compare(this.getName(), catalog.getName());
 	}
 
 }

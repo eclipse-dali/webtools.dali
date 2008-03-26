@@ -75,7 +75,7 @@ public abstract class DTPPlatformTests extends TestCase {
     public DTPPlatformTests( String name) {
         super( name);
         
-        this.connectionRepository = JptDbPlugin.instance().connectionProfileRepository();
+        this.connectionRepository = JptDbPlugin.instance().getConnectionProfileRepository();
     }
 
     @Override
@@ -120,7 +120,7 @@ public abstract class DTPPlatformTests extends TestCase {
 
 	public void testGetProfilesByProvider() {
 		// Get Profiles By ProviderID
-		IConnectionProfile[] profiles = ProfileManager.getInstance().getProfileByProviderID( this.getProfile().providerID());
+		IConnectionProfile[] profiles = ProfileManager.getInstance().getProfileByProviderID( this.getProfile().getProviderID());
 		Assert.assertNotNull( profiles);
 		Assert.assertTrue( profiles.length > 0);
 	}
@@ -134,7 +134,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	
 	public void testGetProfileByInstanceId() {
 		// Get Profile By InstanceID
-		IConnectionProfile dtpProfile = ProfileManager.getInstance().getProfileByInstanceID( this.getProfile().instanceID());
+		IConnectionProfile dtpProfile = ProfileManager.getInstance().getProfileByInstanceID( this.getProfile().getInstanceID());
 		Assert.assertNotNull( dtpProfile);
 		Assert.assertTrue( dtpProfile.getName().equals( this.profileName()));
 	}
@@ -162,25 +162,25 @@ public abstract class DTPPlatformTests extends TestCase {
 	// ********** internal tests **********
 
     private void verifyDatabaseVersionNumber() {
-    	Database database = this.getProfile().database();
+    	Database database = this.getProfile().getDatabase();
     	Assert.assertNotNull( database);
     	
-        String actualVersionNumber = database.version();
+        String actualVersionNumber = database.getVersion();
         String expectedVersionNumber = this.databaseVersion();
         String errorMessage = "Expected version number: " + expectedVersionNumber + " but the actual version number was: " + actualVersionNumber;
         assertTrue( errorMessage, actualVersionNumber.indexOf( expectedVersionNumber) != -1);
 
-        String actualVendor = database.vendor();
+        String actualVendor = database.getVendor();
         String expectedVendor = this.databaseVendor();
         errorMessage = "Expected vendor: " + expectedVendor + " but the actual vendor was: " + actualVendor;
         assertEquals( errorMessage, actualVendor, expectedVendor);
     }
     
     private void verifyDatabaseContent() {
-    	Database database = this.getProfile().database();
+    	Database database = this.getProfile().getDatabase();
     	Assert.assertTrue( database.schemataSize() > 0);
 		
-        Schema schema = database.schemaNamed( this.getProfile().userName());
+        Schema schema = database.schemaNamed( this.getProfile().getUserName());
 		if( schema != null) {
 			Assert.assertTrue( schema.sequencesSize() >= 0);
 			
@@ -197,7 +197,7 @@ public abstract class DTPPlatformTests extends TestCase {
     private void verifyProfileNamed( String profileName) {
     	
     	ConnectionProfile profile = this.getProfileNamed( profileName);
-    	Assert.assertTrue( "ConnectionProfile not found", profileName.equals( profile.name()));
+    	Assert.assertTrue( "ConnectionProfile not found", profileName.equals( profile.getName()));
     }
 
 	// ***** Platform specific behavior *****
@@ -243,12 +243,12 @@ public abstract class DTPPlatformTests extends TestCase {
 
     protected Schema getSchemaNamed( String schemaName) { 
 
-	    return this.getProfile().database().schemaNamed( schemaName);
+	    return this.getProfile().getDatabase().schemaNamed( schemaName);
     }
 	
     protected Collection<Table> getTables() {
 		
-        Schema schema = this.getSchemaNamed( this.getProfile().userName());
+        Schema schema = this.getSchemaNamed( this.getProfile().getUserName());
 		if( schema == null) {
 			return new ArrayList<Table>();
 		}
@@ -257,7 +257,7 @@ public abstract class DTPPlatformTests extends TestCase {
 
     protected Table getTableNamed( String tableName) { 
 
-	    Schema schema =  this.getSchemaNamed( this.getProfile().userName());
+	    Schema schema =  this.getSchemaNamed( this.getProfile().getUserName());
 	    Assert.assertNotNull( schema);
 	
 		return schema.tableNamed( tableName);

@@ -332,7 +332,7 @@ public class JpaProjectPropertiesPage
 			//clear out connection entries from previous login.
 			connectionCombo.removeAll();
 			
-			for (Iterator<String> stream = JptDbPlugin.instance().connectionProfileRepository().connectionProfileNames(); stream.hasNext(); ) {
+			for (Iterator<String> stream = JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNames(); stream.hasNext(); ) {
 				connectionCombo.add(stream.next());
 			}
 		}

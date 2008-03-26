@@ -97,7 +97,7 @@ public final class DTPConnectionProfileRepository
 		return new TransformationIterator<DTPConnectionProfileWrapper, String>(this.connectionProfileWrappers()) {
 			@Override
 			protected String transform(DTPConnectionProfileWrapper profile) {
-				 return profile.name();
+				 return profile.getName();
 			}
 		};
 	}
@@ -109,7 +109,7 @@ public final class DTPConnectionProfileRepository
 	public ConnectionProfile connectionProfileNamed(String name) {
 		for (Iterator<DTPConnectionProfileWrapper> stream = this.connectionProfileWrappers(); stream.hasNext(); ) {
 			DTPConnectionProfileWrapper profile = stream.next();
-			if (profile.name().equals(name)) {
+			if (profile.getName().equals(name)) {
 				return profile;
 			}
 		}

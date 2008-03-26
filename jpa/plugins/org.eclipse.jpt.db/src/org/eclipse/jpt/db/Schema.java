@@ -28,7 +28,7 @@ public interface Schema extends Comparable<Schema> {
 	/**
 	 * Return the schema's name.
 	 */
-	String name();
+	String getName();
 
 	/**
 	 * Return the schema's tables.

@@ -27,7 +27,7 @@ public interface Table extends Comparable<Table> {
 	/**
 	 * Return the table's name.
 	 */
-	String name();
+	String getName();
 
 	/**
 	 * Return the table's columns.
@@ -98,7 +98,7 @@ public interface Table extends Comparable<Table> {
 	 * Return the table's name, converted to a Java-appropriate class
 	 * identifier, respecting the database's case-sensitivity.
 	 */
-	String shortJavaClassName();
+	String getShortJavaClassName();
 
 	/**
 	 * Return whether the table's name matches the specified Java-appropriate
@@ -110,6 +110,6 @@ public interface Table extends Comparable<Table> {
 	 * Return the table's name, converted to a Java-appropriate field
 	 * identifier, respecting the database's case-sensitivity.
 	 */
-	public String javaFieldName();
+	public String getJavaFieldName();
 
 }

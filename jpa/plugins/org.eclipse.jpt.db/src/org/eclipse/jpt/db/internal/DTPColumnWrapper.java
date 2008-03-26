@@ -67,30 +67,30 @@ final class DTPColumnWrapper
 	// ********** DTPWrapper implementation **********
 
 	@Override
-	ICatalogObject catalogObject() {
+	ICatalogObject getCatalogObject() {
 		return (ICatalogObject) this.dtpColumn;
 	}
 
 	@Override
 	synchronized void catalogObjectChanged(int eventType) {
-		this.connectionProfile().columnChanged(this, eventType);
+		this.getConnectionProfile().columnChanged(this, eventType);
 	}
 
 
 	// ********** Column implementation **********
 
 	@Override
-	public String name() {
+	public String getName() {
 		return this.dtpColumn.getName();
 	}
 
-	public String dataTypeName() {
+	public String getDataTypeName() {
 		DataType dataType = this.dtpColumn.getDataType();
 		return (dataType == null) ? null : dataType.getName();
 	}
 
-	public String javaFieldName() {
-		String jName = this.name();
+	public String getJavaFieldName() {
+		String jName = this.getName();
 		if ( ! this.isCaseSensitive()) {
 			jName = jName.toLowerCase();
 		}
@@ -99,17 +99,17 @@ final class DTPColumnWrapper
 
 	public boolean matchesJavaFieldName(String javaFieldName) {
 		return this.isCaseSensitive() ?
-			this.name().equals(javaFieldName)
+			this.getName().equals(javaFieldName)
 		:
-			this.name().equalsIgnoreCase(javaFieldName);
+			this.getName().equalsIgnoreCase(javaFieldName);
 	}
 
-	public String primaryKeyJavaTypeDeclaration() {
-		return this.primaryKeyJavaType().declaration();
+	public String getPrimaryKeyJavaTypeDeclaration() {
+		return this.getPrimaryKeyJavaType().declaration();
 	}
 
-	public JavaType primaryKeyJavaType() {
-		return this.jpaSpecCompliantPrimaryKeyJavaType(this.javaType());
+	public JavaType getPrimaryKeyJavaType() {
+		return this.jpaSpecCompliantPrimaryKeyJavaType(this.getJavaType());
 	}
 
 	/**
@@ -142,11 +142,11 @@ final class DTPColumnWrapper
 		return STRING_JAVA_TYPE;
 	}
 
-	public String javaTypeDeclaration() {
-		return this.javaType().declaration();
+	public String getJavaTypeDeclaration() {
+		return this.getJavaType().declaration();
 	}
 
-	public JavaType javaType() {
+	public JavaType getJavaType() {
 		DataType dataType = this.dtpColumn.getDataType();
 		return (dataType instanceof PredefinedDataType) ?
 			this.jpaSpecCompliantJavaType(this.javaType((PredefinedDataType) dataType))
@@ -161,7 +161,7 @@ final class DTPColumnWrapper
 	}
 
 	private PredefinedDataTypeDefinition predefinedDataTypeDefinition(PredefinedDataType dataType) {
-		return this.database().dtpDefinition().getPredefinedDataTypeDefinition(dataType.getName());
+		return this.database().getDtpDefinition().getPredefinedDataTypeDefinition(dataType.getName());
 	}
 
 	/**
@@ -196,7 +196,7 @@ final class DTPColumnWrapper
 	// ********** Comparable implementation **********
 
 	public int compareTo(Column column) {
-		return Collator.getInstance().compare(this.name(), column.name());
+		return Collator.getInstance().compare(this.getName(), column.getName());
 	}
 
 

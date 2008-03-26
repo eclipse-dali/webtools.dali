@@ -990,7 +990,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 			}
 		}
 		Schema projectDefaultSchema = projectDefaultSchema();
-		return projectDefaultSchema == null ? null : projectDefaultSchema.name();
+		return projectDefaultSchema == null ? null : projectDefaultSchema.getName();
 	}
 	
 	protected Schema projectDefaultSchema() {
@@ -1007,8 +1007,8 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 
 	protected String projectDefaultCatalogName() {
-		Catalog catalog = getJpaProject().getConnectionProfile().defaultCatalog();
-		return (catalog == null) ? null : catalog.name();
+		Catalog catalog = getJpaProject().getConnectionProfile().getDefaultCatalog();
+		return (catalog == null) ? null : catalog.getName();
 	}
 	
 	protected AccessType access(PersistenceUnitDefaults persistenceUnitDefaults) {

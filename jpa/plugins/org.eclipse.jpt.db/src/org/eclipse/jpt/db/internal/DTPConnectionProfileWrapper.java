@@ -70,14 +70,14 @@ final class DTPConnectionProfileWrapper
 
 	// ********** ConnectionProfileHolder implementation **********
 
-	public DTPConnectionProfileWrapper connectionProfile() {
+	public DTPConnectionProfileWrapper getConnectionProfile() {
 		return this;
 	}
 
 
 	// ********** ConnectionProfile implementation **********
 
-	public String name() {
+	public String getName() {
 		return this.dtpConnectionProfile.getName();
 	}
 
@@ -131,39 +131,39 @@ final class DTPConnectionProfileWrapper
 		return this.dtpConnectionProfile.workOffline();
 	}
 	
-	public String databaseVendor() {
+	public String getDatabaseVendor() {
 		return this.property(IJDBCDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID);
 	}
 
-	public String databaseName() {
+	public String getDatabaseName() {
 		return this.property(IJDBCDriverDefinitionConstants.DATABASE_NAME_PROP_ID);
 	}
 
-	public String databaseProduct() {
+	public String getDatabaseProduct() {
 		return this.property(DATABASE_PRODUCT_PROP_ID);
 	}
 
-	public String databaseVersion() {
+	public String getDatabaseVersion() {
 		return this.property(IJDBCDriverDefinitionConstants.DATABASE_VERSION_PROP_ID);
 	}
 
-	public String userName() {
+	public String getUserName() {
 		return this.property(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
 	}
 
-	public String userPassword() {
+	public String getUserPassword() {
 		return this.property(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID);
 	}
 
-	public synchronized InternalDatabase database() {
+	public synchronized InternalDatabase getDatabase() {
 		if (this.database == null) {
 			this.database = this.buildDatabase();
 		}
 		return this.database;
 	}
 
-	public DTPCatalogWrapper defaultCatalog() {
-		return this.database().defaultCatalog();
+	public DTPCatalogWrapper getDefaultCatalog() {
+		return this.getDatabase().getDefaultCatalog();
 	}
 
 	public void addConnectionListener(ConnectionListener listener) {
@@ -174,32 +174,32 @@ final class DTPConnectionProfileWrapper
 		this.connectionListener.removeConnectionListener(listener);
 	}
 
-	public Schema defaultSchema() {
-		return this.database().schemaNamed(this.defaultSchemaName());
+	public Schema getDefaultSchema() {
+		return this.getDatabase().schemaNamed(this.defaultSchemaName());
 	}
 
-	public String driverClassName() {
+	public String getDriverClassName() {
 		return this.property(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID);
 	}
 
-	public String url() {
+	public String getUrl() {
 		return this.property(IJDBCDriverDefinitionConstants.URL_PROP_ID);
 	}
 
-	public String instanceID() {
+	public String getInstanceID() {
 		return this.dtpConnectionProfile.getInstanceID();
 	}
 
-	public String providerID() {
+	public String getProviderID() {
 		return this.dtpConnectionProfile.getProviderId();
 	}
 
-	public String driverDefinitionID() {
+	public String getDriverDefinitionID() {
 		return this.property(DRIVER_DEFINITION_PROP_ID);
 	}
 
-	public String driverJarList() {
-		return DriverManager.getInstance().getDriverInstanceByID(this.driverDefinitionID()).getJarList();
+	public String getDriverJarList() {
+		return DriverManager.getInstance().getDriverInstanceByID(this.getDriverDefinitionID()).getJarList();
 	}
 
 
@@ -239,7 +239,7 @@ final class DTPConnectionProfileWrapper
 		//     "during the profile connected event notification, 
 		//     IManagedConnection is connected while IConnectionProfile is not"
 		// so, some hackery here to handle hackery there
-		return new DTPDatabaseWrapper(this, ProfileUtil.getDatabase(new DatabaseIdentifier(this.name(), this.databaseName()), true));
+		return new DTPDatabaseWrapper(this, ProfileUtil.getDatabase(new DatabaseIdentifier(this.getName(), this.getDatabaseName()), true));
 	}
 	
 	boolean wraps(org.eclipse.datatools.connectivity.IConnectionProfile dtpCP) {
@@ -278,10 +278,10 @@ final class DTPConnectionProfileWrapper
 	 * private - use #defaultSchema() : Schema instead
 	 */
 	private String defaultSchemaName() {
-		if (this.database().vendor().equalsIgnoreCase(POSTGRESQL_VENDOR)) {
+		if (this.getDatabase().getVendor().equalsIgnoreCase(POSTGRESQL_VENDOR)) {
 			return POSTGRESQL_DEFAULT_SCHEMA_NAME;
 		}
-		return this.userName();
+		return this.getUserName();
 	}
 
 	private String property(String propertyName) {
@@ -308,7 +308,7 @@ final class DTPConnectionProfileWrapper
 	// ********** Comparable implementation **********
 
 	public int compareTo(ConnectionProfile connectionProfile) {
-		return Collator.getInstance().compare(this.name(), connectionProfile.name());
+		return Collator.getInstance().compare(this.getName(), connectionProfile.getName());
 	}
 
 
@@ -316,7 +316,7 @@ final class DTPConnectionProfileWrapper
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.name());
+		return StringTools.buildToStringFor(this, this.getName());
 	}
 
 

@@ -15,6 +15,6 @@ import org.eclipse.jpt.db.Database;
  * "internal" database
  */
 interface InternalDatabase extends Database {
-	DTPCatalogWrapper defaultCatalog();
+	DTPCatalogWrapper getDefaultCatalog();
 	void dispose();
 }

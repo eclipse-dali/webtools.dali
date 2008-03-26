@@ -64,7 +64,7 @@ public class JptDbPlugin extends Plugin {
 		super.stop(context);
 	}
 
-	public ConnectionProfileRepository connectionProfileRepository() {
+	public ConnectionProfileRepository getConnectionProfileRepository() {
 		return this.connectionProfileRepository;
 	}
 

@@ -191,7 +191,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		this.tableTable.setSorter(new ViewerSorter() {
 			@Override
 			public int compare(Viewer viewer, Object e1, Object e2) {
-				return ((Table) e1).name().compareTo(((Table) e2).name());
+				return ((Table) e1).getName().compareTo(((Table) e2).getName());
 			}
 		});
 		
@@ -350,7 +350,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 	}
 
 	private String defaultEntityName(Table table) {
-		String entityName = table.shortJavaClassName();
+		String entityName = table.getShortJavaClassName();
 		if (this.convertToCamelCase) {
 			entityName = StringTools.convertUnderscoresToCamelCase(entityName);
 		}
@@ -358,7 +358,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 	}
 
 	void setOverrideEntityName(Table table, String name) {
-		if (table.shortJavaClassName().equals(name)) {
+		if (table.getShortJavaClassName().equals(name)) {
 			this.overrideEntityNames.remove(table);
 		} else {
 			this.overrideEntityNames.put(table, name);
@@ -432,7 +432,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 
 		@Override
 		public String getText(Object element) {
-			return ((Table) element).name();
+			return ((Table) element).getName();
 		}
 
 		public Image getColumnImage(Object element, int columnIndex) {
@@ -445,7 +445,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 			}
 			switch (columnIndex) {
 				case TABLE_COLUMN_INDEX:
-					return ((Table) element).name();
+					return ((Table) element).getName();
 
 				case ENTITY_NAME_COLUMN_INDEX:
 					return GenerateEntitiesWizardPage.this.entityName((Table) element);
