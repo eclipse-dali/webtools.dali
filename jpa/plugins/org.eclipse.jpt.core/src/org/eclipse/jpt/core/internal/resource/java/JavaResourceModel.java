@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.ResourceModelListener;
 import org.eclipse.jpt.core.internal.AbstractResourceModel;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.BitTools;
@@ -38,7 +39,7 @@ public class JavaResourceModel
 		super();
 		this.resourceModelListeners = new ArrayList<ResourceModelListener>();
 		this.compilationUnitResource = 
-			new JpaCompilationUnit(file, annotationProvider, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter, this);
+			new JpaCompilationUnitImpl(file, annotationProvider, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter, this);
 	}
 	
 	public String getResourceType() {

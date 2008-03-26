@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -74,8 +75,8 @@ public abstract class AbstractJavaResourceNode
 		return this.getJpaCompilationUnit().modifySharedDocumentCommandExecutorProvider();
 	}
 	
-	public AnnotationEditFormatter annotationEditFormatter()  {
-		return this.getJpaCompilationUnit().annotationEditFormatter();
+	public AnnotationEditFormatter getAnnotationEditFormatter()  {
+		return this.getJpaCompilationUnit().getAnnotationEditFormatter();
 	}
 
 	public JavaResourceModel resourceModel() {

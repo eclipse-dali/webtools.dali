@@ -17,15 +17,15 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
 
-public class JpaCompilationUnit
+public class JpaCompilationUnitImpl
 	extends AbstractJavaResourceNode
-	implements JavaResourceNode
+	implements JpaCompilationUnit
 {
 	protected final JpaAnnotationProvider annotationProvider;
 	
@@ -46,7 +46,7 @@ public class JpaCompilationUnit
 	
 	protected final JavaResourceModel javaResourceModel;
 	
-	public JpaCompilationUnit(
+	public JpaCompilationUnitImpl(
 			IFile file, 
 			JpaAnnotationProvider annotationProvider, 
 			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
@@ -104,7 +104,7 @@ public class JpaCompilationUnit
 	}
 	
 	@Override
-	public AnnotationEditFormatter annotationEditFormatter()  {
+	public AnnotationEditFormatter getAnnotationEditFormatter()  {
 		return this.annotationEditFormatter;
 	}
 	
@@ -120,7 +120,7 @@ public class JpaCompilationUnit
 		return this.compilationUnit;
 	}
 	
-	public JavaResourcePersistentType javaPersistentTypeResource(String fullyQualifiedTypeName) {
+	public JavaResourcePersistentType getJavaPersistentTypeResource(String fullyQualifiedTypeName) {
 		if (getPersistentType() != null) {
 			return getPersistentType().javaPersistentTypeResource(fullyQualifiedTypeName);
 		} 
@@ -165,7 +165,7 @@ public class JpaCompilationUnit
 			JavaResourcePersistentTypeImpl.buildJavaResourcePersistentType(this, 
 				iType, 
 				modifySharedDocumentCommandExecutorProvider(), 
-				annotationEditFormatter(), 
+				getAnnotationEditFormatter(), 
 				astRoot);
 	}
 	

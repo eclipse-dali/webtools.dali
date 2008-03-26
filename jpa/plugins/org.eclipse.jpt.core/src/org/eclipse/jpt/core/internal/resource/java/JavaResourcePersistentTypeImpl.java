@@ -206,7 +206,7 @@ public class JavaResourcePersistentTypeImpl
 	}
 	
 	protected JavaResourcePersistentType buildJavaResourcePersistentType(IType nestedType, CompilationUnit astRoot) {
-		return buildJavaResourcePersistentType(this, nestedType, modifySharedDocumentCommandExecutorProvider(), annotationEditFormatter(), astRoot);
+		return buildJavaResourcePersistentType(this, nestedType, modifySharedDocumentCommandExecutorProvider(), getAnnotationEditFormatter(), astRoot);
 	}
 
 	public static JavaResourcePersistentType buildJavaResourcePersistentType(
@@ -264,10 +264,10 @@ public class JavaResourcePersistentTypeImpl
 	protected JavaResourcePersistentAttribute createJavaPersistentAttribute(IMember member, CompilationUnit astRoot) {
 		Attribute attribute = null;
 		if (member instanceof IField) {
-			attribute = new JDTFieldAttribute((IField) member, this.modifySharedDocumentCommandExecutorProvider(), this.annotationEditFormatter());
+			attribute = new JDTFieldAttribute((IField) member, this.modifySharedDocumentCommandExecutorProvider(), this.getAnnotationEditFormatter());
 		}
 		else if (member instanceof IMethod) {
-			attribute = new JDTMethodAttribute((IMethod) member, this.modifySharedDocumentCommandExecutorProvider(), this.annotationEditFormatter());
+			attribute = new JDTMethodAttribute((IMethod) member, this.modifySharedDocumentCommandExecutorProvider(), this.getAnnotationEditFormatter());
 		}
 		else {
 			throw new IllegalArgumentException();

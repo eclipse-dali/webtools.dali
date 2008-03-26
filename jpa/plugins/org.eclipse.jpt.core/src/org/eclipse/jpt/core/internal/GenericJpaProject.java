@@ -40,10 +40,10 @@ import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.ResourceModelListener;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
-import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.CommandExecutor;
@@ -406,7 +406,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	// look for binary stuff here...
 	public JavaResourcePersistentType javaPersistentTypeResource(String typeName) {
 		for (JpaCompilationUnit jpCompilationUnitResource : CollectionTools.iterable(this.jpaCompilationUnitResources())) {
-			JavaResourcePersistentType jptr =  jpCompilationUnitResource.javaPersistentTypeResource(typeName);
+			JavaResourcePersistentType jptr =  jpCompilationUnitResource.getJavaPersistentTypeResource(typeName);
 			if (jptr != null) {
 				return jptr;
 			}
