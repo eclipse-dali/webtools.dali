@@ -71,7 +71,11 @@ public interface ResourceModel extends Model
 	 */
 	JpaStructureNode structureNode(int textOffset);
 	
+	void addRootStructureNode(JpaStructureNode structureNode);
 	
+	void addRootStructureNode(int index, JpaStructureNode structureNode);
+	
+
 	void javaElementChanged(ElementChangedEvent event);
 	
 	

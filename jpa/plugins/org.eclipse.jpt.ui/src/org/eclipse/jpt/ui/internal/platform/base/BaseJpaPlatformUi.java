@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
+import org.eclipse.jpt.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.resource.orm.OrmResourceModel;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResourceModel;
 import org.eclipse.jpt.ui.JpaPlatformUi;

@@ -19,20 +19,22 @@ import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.ResourceModelListener;
 import org.eclipse.jpt.core.internal.AbstractResourceModel;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.BitTools;
 
-public class JavaResourceModel
+public class JavaResourceModelImpl
 	extends AbstractResourceModel
+	implements JavaResourceModel
 {
 	private final Collection<ResourceModelListener> resourceModelListeners;
 	
 	private final JpaCompilationUnit compilationUnitResource;
 	
 	
-	public JavaResourceModel(
+	public JavaResourceModelImpl(
 			IFile file, JpaAnnotationProvider annotationProvider, 
 			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
 			AnnotationEditFormatter annotationEditFormatter) {

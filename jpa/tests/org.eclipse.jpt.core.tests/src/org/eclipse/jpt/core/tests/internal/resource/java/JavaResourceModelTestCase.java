@@ -23,8 +23,9 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.internal.GenericJpaProject;
 import org.eclipse.jpt.core.internal.SimpleJpaProjectConfig;
-import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
+import org.eclipse.jpt.core.internal.resource.java.JavaResourceModelImpl;
 import org.eclipse.jpt.core.internal.utility.jdt.NullAnnotationEditFormatter;
+import org.eclipse.jpt.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -126,7 +127,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		}
 		IFile file = (IFile) testType.getResource();
 		JpaProject jpaProject = buildJpaProject();
-		return new JavaResourceModel(
+		return new JavaResourceModelImpl(
 			file, 
 			jpaProject.getJpaPlatform().getAnnotationProvider(),
 			MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER,

@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
+import org.eclipse.jpt.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.platform.generic.JavaPersistentTypeItemContentProvider;
