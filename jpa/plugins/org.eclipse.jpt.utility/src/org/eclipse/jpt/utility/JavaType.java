@@ -32,12 +32,12 @@ public interface JavaType
 	 * Return the name of the type's "element type".
 	 * A member type will have one or more '$' characters in its name.
 	 */
-	String elementTypeName();
+	String getElementTypeName();
 
 	/**
 	 * Return the type's "array depth".
 	 */
-	int arrayDepth();
+	int getArrayDepth();
 
 	boolean isArray();
 

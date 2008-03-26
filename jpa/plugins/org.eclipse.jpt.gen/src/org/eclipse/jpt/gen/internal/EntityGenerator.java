@@ -980,7 +980,7 @@ public class EntityGenerator {
 		String fieldName = this.genTable.fieldNameFor(column);
 		JavaType javaType = column.primaryKeyJavaType();
 		if (javaType.isPrimitive()) {
-			this.printPrimitiveHashCodeClauseOn(javaType.elementTypeName(), fieldName, pw);
+			this.printPrimitiveHashCodeClauseOn(javaType.getElementTypeName(), fieldName, pw);
 		} else {
 			this.printReferenceHashCodeClauseOn(fieldName, pw);
 		}

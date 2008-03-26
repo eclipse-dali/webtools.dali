@@ -83,11 +83,11 @@ public final class SimpleJavaType
 
 	// ********** accessors **********
 
-	public String elementTypeName() {
+	public String getElementTypeName() {
 		return this.elementTypeName;
 	}
 
-	public int arrayDepth() {
+	public int getArrayDepth() {
 		return this.arrayDepth;
 	}
 
@@ -139,7 +139,7 @@ public final class SimpleJavaType
 	}
 
 	public boolean equals(JavaType other) {
-		return this.equals(other.elementTypeName(), other.arrayDepth());
+		return this.equals(other.getElementTypeName(), other.getArrayDepth());
 	}
 
 	@Override
@@ -153,8 +153,8 @@ public final class SimpleJavaType
 	}
 
 	public int compareTo(JavaType jt) {
-		int x = Collator.getInstance().compare(this.elementTypeName, jt.elementTypeName());
-		return (x != 0) ? x : (this.arrayDepth - jt.arrayDepth());
+		int x = Collator.getInstance().compare(this.elementTypeName, jt.getElementTypeName());
+		return (x != 0) ? x : (this.arrayDepth - jt.getArrayDepth());
 	}
 
 
