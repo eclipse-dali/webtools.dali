@@ -54,12 +54,12 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 	 * Return the java table resource, do not return null if the java annotation does not exist.
 	 * Use a null resource object instead of null.
 	 */
-	protected abstract TableAnnotation tableResource();
+	protected abstract TableAnnotation getTableResource();
 	
 	/**
 	 * Return the fully qualified annotation name of the java table resource
 	 */
-	protected abstract String annotationName();
+	protected abstract String getAnnotationName();
 	
 	public String getName() {
 		return (this.getSpecifiedName() == null) ? getDefaultName() : this.getSpecifiedName();
@@ -72,7 +72,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 	public void setSpecifiedName(String newSpecifiedName) {
 		String oldSpecifiedName = this.specifiedName;
 		this.specifiedName = newSpecifiedName;
-		tableResource().setName(newSpecifiedName);
+		getTableResource().setName(newSpecifiedName);
 		firePropertyChanged(Table.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
 	}
 	
@@ -103,7 +103,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 	public void setSpecifiedCatalog(String newSpecifiedCatalog) {
 		String oldSpecifiedCatalog = this.specifiedCatalog;
 		this.specifiedCatalog = newSpecifiedCatalog;
-		tableResource().setCatalog(newSpecifiedCatalog);
+		getTableResource().setCatalog(newSpecifiedCatalog);
 		firePropertyChanged(Table.SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
 	}
 
@@ -134,7 +134,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 	public void setSpecifiedSchema(String newSpecifiedSchema) {
 		String oldSpecifiedSchema = this.specifiedSchema;
 		this.specifiedSchema = newSpecifiedSchema;
-		tableResource().setSchema(newSpecifiedSchema);
+		getTableResource().setSchema(newSpecifiedSchema);
 		firePropertyChanged(Table.SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
 	}
 	
@@ -165,30 +165,30 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 
 	// ********** ITable implementation **********
 
-	public TextRange nameTextRange(CompilationUnit astRoot) {
-		TextRange textRange = tableResource().getNameTextRange(astRoot);
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		TextRange textRange = getTableResource().getNameTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return tableResource().nameTouches(pos, astRoot);
+		return getTableResource().nameTouches(pos, astRoot);
 	}
 
-	public TextRange schemaTextRange(CompilationUnit astRoot) {
-		TextRange textRange = tableResource().getSchemaTextRange(astRoot);
+	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
+		TextRange textRange = getTableResource().getSchemaTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
 	public boolean schemaTouches(int pos, CompilationUnit astRoot) {
-		return tableResource().schemaTouches(pos, astRoot);
+		return getTableResource().schemaTouches(pos, astRoot);
 	}
 
-	public TextRange catalogTextRange(CompilationUnit astRoot) {
-		return tableResource().getCatalogTextRange(astRoot);
+	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
+		return getTableResource().getCatalogTextRange(astRoot);
 	}
 
 	public boolean catalogTouches(int pos, CompilationUnit astRoot) {
-		return tableResource().catalogTouches(pos, astRoot);
+		return getTableResource().catalogTouches(pos, astRoot);
 	}
 
 	protected void setDefaultName(String newDefaultName) {
@@ -292,7 +292,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = tableResource().getTextRange(astRoot);
+		TextRange textRange = getTableResource().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
@@ -387,18 +387,18 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 		return StringTools.quote(this.candidateCatalogs(filter));
 	}
 
-	public String qualifiedName() {
+	public String getQualifiedName() {
 		return NameTools.buildQualifiedDatabaseObjectName(this.getCatalog(), this.getSchema(), this.getName());
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
-		sb.append(qualifiedName());
+		sb.append(getQualifiedName());
 	}
 
 	@Override
 	public String displayString() {
-		return qualifiedName();
+		return getQualifiedName();
 	}
 }

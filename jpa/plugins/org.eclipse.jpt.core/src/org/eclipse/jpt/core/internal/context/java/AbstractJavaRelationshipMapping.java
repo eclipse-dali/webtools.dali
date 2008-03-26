@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
-import org.eclipse.jpt.core.internal.context.RelationshipMappingTools;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.utility.Filter;
@@ -56,7 +56,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	public void setSpecifiedTargetEntity(String newSpecifiedTargetEntity) {
 		String oldSpecifiedTargetEntity = this.specifiedTargetEntity;
 		this.specifiedTargetEntity = newSpecifiedTargetEntity;
-		this.mappingResource().setTargetEntity(newSpecifiedTargetEntity);
+		this.getMappingResource().setTargetEntity(newSpecifiedTargetEntity);
 		firePropertyChanged(RelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY, oldSpecifiedTargetEntity, newSpecifiedTargetEntity);
 	}
 
@@ -95,7 +95,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
 		FetchType oldFetch = this.specifiedFetch;
 		this.specifiedFetch = newSpecifiedFetch;
-		this.mappingResource().setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
+		this.getMappingResource().setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
 		firePropertyChanged(Fetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
 
@@ -145,7 +145,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 		if (qualifiedTargetEntity == null) {
 			return null;
 		}
-		PersistentType persistentType = getPersistenceUnit().persistentType(qualifiedTargetEntity);
+		PersistentType persistentType = getPersistenceUnit().getPersistentType(qualifiedTargetEntity);
 		if (persistentType != null && persistentType.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
 			return (Entity) persistentType.getMapping();
 		}
@@ -180,6 +180,6 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	// ********** static methods **********
 
 	public boolean targetEntityIsValid(String targetEntity) {
-		return RelationshipMappingTools.targetEntityIsValid(targetEntity);
+		return MappingTools.targetEntityIsValid(targetEntity);
 	}
 }

@@ -28,8 +28,8 @@ public class GenericJavaNamedNativeQuery extends AbstractJavaQuery
 	}
 
 	@Override
-	protected NamedNativeQueryAnnotation query() {
-		return (NamedNativeQueryAnnotation) super.query();
+	protected NamedNativeQueryAnnotation getQueryResource() {
+		return (NamedNativeQueryAnnotation) super.getQueryResource();
 	}
 	
 	public String getResultClass() {
@@ -39,7 +39,7 @@ public class GenericJavaNamedNativeQuery extends AbstractJavaQuery
 	public void setResultClass(String newResultClass) {
 		String oldResultClass = this.resultClass;
 		this.resultClass = newResultClass;
-		query().setResultClass(newResultClass);
+		getQueryResource().setResultClass(newResultClass);
 		firePropertyChanged(NamedNativeQuery.RESULT_CLASS_PROPERTY, oldResultClass, newResultClass);
 	}
 	
@@ -56,7 +56,7 @@ public class GenericJavaNamedNativeQuery extends AbstractJavaQuery
 	public void setResultSetMapping(String newResultSetMapping) {
 		String oldResultSetMapping = this.resultSetMapping;
 		this.resultSetMapping = newResultSetMapping;
-		query().setResultSetMapping(newResultSetMapping);
+		getQueryResource().setResultSetMapping(newResultSetMapping);
 		firePropertyChanged(NamedNativeQuery.RESULT_SET_MAPPING_PROPERTY, oldResultSetMapping, newResultSetMapping);
 	}
 

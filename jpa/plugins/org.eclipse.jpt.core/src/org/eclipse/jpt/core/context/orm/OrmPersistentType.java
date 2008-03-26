@@ -36,7 +36,7 @@ public interface OrmPersistentType extends PersistentType, OrmJpaContextNode
 	/**
 	 * Overriden to return an {@link OrmPersistentAttribute}
 	 */
-	OrmPersistentAttribute attributeNamed(String attributeName);
+	OrmPersistentAttribute getAttributeNamed(String attributeName);
 
 	/**
 	 * Overriden to return an {@link OrmTypeMapping}

@@ -52,7 +52,7 @@ public class GenericJavaManyToOneMapping extends AbstractJavaSingleRelationshipM
 	
 	@Override
 	protected void setOptionalOnResourceModel(Boolean newOptional) {
-		this.mappingResource().setOptional(newOptional);
+		this.getMappingResource().setOptional(newOptional);
 	}
 	
 	@Override

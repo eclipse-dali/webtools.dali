@@ -285,7 +285,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 		/**
 		 * by default, the join column is in the type mapping's primary table
 		 */
-		public String defaultTableName() {
+		public String getDefaultTableName() {
 			return GenericJavaAssociationOverride.this.owner.getTypeMapping().getTableName();
 		}
 		
@@ -303,7 +303,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 		}
 
 		public RelationshipMapping getRelationshipMapping() {
-			return GenericJavaAssociationOverride.this.getOwner().relationshipMapping(GenericJavaAssociationOverride.this.getName());
+			return GenericJavaAssociationOverride.this.getOwner().getRelationshipMapping(GenericJavaAssociationOverride.this.getName());
 		}
 
 		public boolean tableNameIsInvalid(String tableName) {
@@ -330,7 +330,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 			return getTypeMapping().getDbTable(tableName);
 		}
 
-		public Table dbReferencedColumnTable() {
+		public Table getDbReferencedColumnTable() {
 			Entity targetEntity = getTargetEntity();
 			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
 		}

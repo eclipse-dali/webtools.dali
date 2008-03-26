@@ -32,12 +32,12 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 		super(parent);
 	}
 
-	public OrmEntity ormEntity() {
+	public OrmEntity getOrmEntity() {
 		return (OrmEntity) super.getParent();
 	}
 	
 	@Override
-	protected XmlTable table() {
+	protected XmlTable getTableResource() {
 		return this.entity.getTable();
 	}
 	
@@ -52,8 +52,8 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 		
 	}
 	
-	protected JavaTable javaTable() {
-		JavaEntity javaEntity = ormEntity().getJavaEntity();
+	protected JavaTable getJavaTable() {
+		JavaEntity javaEntity = getOrmEntity().getJavaEntity();
 		if (javaEntity != null) {
 			return javaEntity.getTable();
 		}
@@ -62,43 +62,43 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 	
 	public void initialize(XmlEntity entity) {
 		this.entity = entity;
-		this.initialize(this.table());
+		this.initialize(this.getTableResource());
 	}
 	
 	public void update(XmlEntity entity) {
 		this.entity = entity;
-		this.update(this.table());
+		this.update(this.getTableResource());
 	}
 
 	@Override
 	protected String defaultName() {
-		JavaTable javaTable = javaTable();
+		JavaTable javaTable = getJavaTable();
 		if (javaTable != null) {
-			if (ormEntity().isMetadataComplete() || (table() != null)) {
+			if (getOrmEntity().isMetadataComplete() || (getTableResource() != null)) {
 				return javaTable.getDefaultName();
 			}
 			return javaTable.getName();
 		}
-		Entity rootEntity = ormEntity().rootEntity();
-		if (rootEntity != ormEntity()) {
+		Entity rootEntity = getOrmEntity().getRootEntity();
+		if (rootEntity != getOrmEntity()) {
 			if (rootEntity.getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
 				return rootEntity.getTable().getName();
 			}
 		}
-		return ormEntity().getName();
+		return getOrmEntity().getName();
 	}
 	
 	@Override
 	protected String defaultSchema() {
-		JavaTable javaTable = javaTable();
+		JavaTable javaTable = getJavaTable();
 		if (javaTable != null ) {
-			if (ormEntity().isMetadataComplete() || (table() != null)) {
+			if (getOrmEntity().isMetadataComplete() || (getTableResource() != null)) {
 				return javaTable.getDefaultSchema();
 			}
 			return javaTable.getSchema();
 		}
-		Entity rootEntity = ormEntity().rootEntity();
-		if (rootEntity != ormEntity()) {
+		Entity rootEntity = getOrmEntity().getRootEntity();
+		if (rootEntity != getOrmEntity()) {
 			if (rootEntity.getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
 				return rootEntity.getTable().getSchema();
 			}
@@ -108,15 +108,15 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 	
 	@Override
 	protected String defaultCatalog() {
-		JavaTable javaTable = javaTable();
+		JavaTable javaTable = getJavaTable();
 		if (javaTable != null) {
-			if (ormEntity().isMetadataComplete() || (table() != null)) {
+			if (getOrmEntity().isMetadataComplete() || (getTableResource() != null)) {
 				return javaTable.getDefaultCatalog();
 			}
 			return javaTable.getCatalog();
 		}
-		Entity rootEntity = ormEntity().rootEntity();
-		if (rootEntity != ormEntity()) {
+		Entity rootEntity = getOrmEntity().getRootEntity();
+		if (rootEntity != getOrmEntity()) {
 			if (rootEntity.getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
 				return rootEntity.getTable().getCatalog();
 			}
@@ -139,7 +139,7 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 						JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
 						new String[] {schema, this.getName()}, 
 						this,
-						this.schemaTextRange())
+						this.getSchemaTextRange())
 				);
 			doContinue = false;
 		}
@@ -151,7 +151,7 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 						JpaValidationMessages.TABLE_UNRESOLVED_NAME,
 						new String[] {this.getName()}, 
 						this, 
-						this.nameTextRange())
+						this.getNameTextRange())
 				);
 		}
 	}

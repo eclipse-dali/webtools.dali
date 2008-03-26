@@ -69,10 +69,10 @@ public class GenericJavaMappedSuperclass extends AbstractJavaTypeMapping
 		this.idClass = newIdClass;
 		if (newIdClass != oldIdClass) {
 			if (newIdClass != null) {
-				if (idClassResource() == null) {
+				if (getIdClassResource() == null) {
 					addIdClassResource();
 				}
-				idClassResource().setValue(newIdClass);
+				getIdClassResource().setValue(newIdClass);
 			}
 			else {
 				removeIdClassResource();
@@ -87,7 +87,7 @@ public class GenericJavaMappedSuperclass extends AbstractJavaTypeMapping
 		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 
-	protected IdClassAnnotation idClassResource() {
+	protected IdClassAnnotation getIdClassResource() {
 		return (IdClassAnnotation) this.javaResourcePersistentType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	

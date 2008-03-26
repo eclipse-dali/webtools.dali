@@ -53,9 +53,9 @@ public interface OrmXml extends OrmJpaContextNode, JpaStructureNode
 	
 	/**
 	 * Return the OrmPersistentType listed in this mapping file
-	 * with the given fullyQualifiedTypeName.  Return null if non exists.
+	 * with the given fullyQualifiedTypeName.  Return null if none exists.
 	 */
-	OrmPersistentType persistentTypeFor(String fullyQualifiedTypeName);
+	OrmPersistentType getPersistentType(String fullyQualifiedTypeName);
 
 	// **************** updating **********************************************
 	

@@ -69,7 +69,7 @@ public interface ResourceModel extends Model
 	/**
 	 * Return a structure node for the given text offset
 	 */
-	JpaStructureNode structureNode(int textOffset);
+	JpaStructureNode getStructureNode(int textOffset);
 	
 	void addRootStructureNode(JpaStructureNode structureNode);
 	

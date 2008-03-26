@@ -67,7 +67,7 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 	public void setMappedBy(String newMappedBy) {
 		String oldMappedBy = this.mappedBy;
 		this.mappedBy = newMappedBy;
-		this.mappingResource().setMappedBy(newMappedBy);
+		this.getMappingResource().setMappedBy(newMappedBy);
 		firePropertyChanged(NonOwningMapping.MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
 	}
 
@@ -78,15 +78,15 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 
 	@Override
 	protected void setOptionalOnResourceModel(Boolean newOptional) {
-		this.mappingResource().setOptional(newOptional);
+		this.getMappingResource().setOptional(newOptional);
 	}
 	
-	public TextRange mappedByTextRange(CompilationUnit astRoot) {
-		return this.mappingResource().getMappedByTextRange(astRoot);
+	public TextRange getMappedByTextRange(CompilationUnit astRoot) {
+		return this.getMappingResource().getMappedByTextRange(astRoot);
 	}
 
 	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {
-		return this.mappingResource().mappedByTouches(pos, astRoot);
+		return this.getMappingResource().mappedByTouches(pos, astRoot);
 	}
 
 	@Override
@@ -151,7 +151,7 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
 						new String[] {mappedBy}, 
-						this, this.mappedByTextRange(astRoot))
+						this, this.getMappedByTextRange(astRoot))
 				);
 			return;
 		}
@@ -162,7 +162,7 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
 						new String[] {mappedBy}, 
-						this, this.mappedByTextRange(astRoot))
+						this, this.getMappedByTextRange(astRoot))
 				);
 			return;
 		}
@@ -180,7 +180,7 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
-						this, this.mappedByTextRange(astRoot))
+						this, this.getMappedByTextRange(astRoot))
 				);
 		}
 	}

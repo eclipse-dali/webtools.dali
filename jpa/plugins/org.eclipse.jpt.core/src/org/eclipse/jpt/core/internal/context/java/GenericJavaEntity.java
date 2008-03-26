@@ -193,8 +193,8 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		this.specifiedName = this.specifiedName(this.entityResource);
 		this.defaultName = this.defaultName(resourcePersistentType);
 		this.defaultInheritanceStrategy = this.defaultInheritanceStrategy();
-		this.specifiedInheritanceStrategy = this.specifiedInheritanceStrategy(inheritanceResource());
-		this.specifiedDiscriminatorValue = this.discriminatorValueResource().getValue();
+		this.specifiedInheritanceStrategy = this.specifiedInheritanceStrategy(getInheritanceResource());
+		this.specifiedDiscriminatorValue = this.getDiscriminatorValueResource().getValue();
 		this.defaultDiscriminatorValue = this.javaDefaultDiscriminatorValue();
 		this.discriminatorValueAllowed = this.discriminatorValueIsAllowed(resourcePersistentType);
 		this.discriminatorColumn.initializeFromResource(resourcePersistentType);
@@ -310,11 +310,11 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	//call one setter and the inheritanceResource could change. 
 	//You could call more than one setter before this object has received any notification
 	//from the java resource model
-	protected Inheritance inheritanceResource() {
+	protected Inheritance getInheritanceResource() {
 		return (Inheritance) this.javaResourcePersistentType.getNonNullAnnotation(Inheritance.ANNOTATION_NAME);
 	}
 	
-	protected DiscriminatorValue discriminatorValueResource() {
+	protected DiscriminatorValue getDiscriminatorValueResource() {
 		return (DiscriminatorValue) this.javaResourcePersistentType.getNonNullAnnotation(DiscriminatorValue.ANNOTATION_NAME);
 	}
 
@@ -503,7 +503,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	public void setSpecifiedInheritanceStrategy(InheritanceType newInheritanceType) {
 		InheritanceType oldInheritanceType = this.specifiedInheritanceStrategy;
 		this.specifiedInheritanceStrategy = newInheritanceType;
-		inheritanceResource().setStrategy(InheritanceType.toJavaResourceModel(newInheritanceType));
+		getInheritanceResource().setStrategy(InheritanceType.toJavaResourceModel(newInheritanceType));
 		firePropertyChanged(SPECIFIED_INHERITANCE_STRATEGY_PROPERTY, oldInheritanceType, newInheritanceType);
 	}
 	
@@ -540,7 +540,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	public void setSpecifiedDiscriminatorValue(String newSpecifiedDiscriminatorValue) {
 		String oldSpecifiedDiscriminatorValue = this.specifiedDiscriminatorValue;
 		this.specifiedDiscriminatorValue = newSpecifiedDiscriminatorValue;
-		discriminatorValueResource().setValue(newSpecifiedDiscriminatorValue);
+		getDiscriminatorValueResource().setValue(newSpecifiedDiscriminatorValue);
 		firePropertyChanged(SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY, oldSpecifiedDiscriminatorValue, newSpecifiedDiscriminatorValue);
 	}
 
@@ -1110,10 +1110,10 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		this.idClass = newIdClass;
 		if (newIdClass != oldIdClass) {
 			if (newIdClass != null) {
-				if (idClassResource() == null) {
+				if (getIdClassResource() == null) {
 					addIdClassResource();
 				}
-				idClassResource().setValue(newIdClass);
+				getIdClassResource().setValue(newIdClass);
 			}
 			else {
 				removeIdClassResource();
@@ -1128,7 +1128,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 
-	protected IdClassAnnotation idClassResource() {
+	protected IdClassAnnotation getIdClassResource() {
 		return (IdClassAnnotation) this.javaResourcePersistentType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	
@@ -1140,7 +1140,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		this.javaResourcePersistentType.removeAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 
-	public Entity parentEntity() {
+	public Entity getParentEntity() {
 		for (Iterator<PersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
 			TypeMapping typeMapping = i.next().getMapping();
 			if (typeMapping != this && typeMapping instanceof Entity) {
@@ -1150,7 +1150,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		return this;
 	}
 
-	public Entity rootEntity() {
+	public Entity getRootEntity() {
 		Entity rootEntity = this;
 		for (Iterator<PersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
 			PersistentType persistentType = i.next();
@@ -1161,7 +1161,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		return rootEntity;
 	}
 
-	public String primaryKeyColumnName() {
+	public String getPrimaryKeyColumnName() {
 		return primaryKeyColumnName(getPersistentType().allAttributes());
 	}
 	
@@ -1296,9 +1296,9 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		this.setSpecifiedName(this.specifiedName(this.entityResource));
 		this.setDefaultName(this.defaultName(resourcePersistentType));
 		
-		this.updateInheritance(inheritanceResource());
+		this.updateInheritance(getInheritanceResource());
 		this.updateDiscriminatorColumn(resourcePersistentType);
-		this.updateDiscriminatorValue(discriminatorValueResource());
+		this.updateDiscriminatorValue(getDiscriminatorValueResource());
 		this.setDiscriminatorValueAllowed(discriminatorValueIsAllowed(resourcePersistentType));
 		this.updateTable(resourcePersistentType);
 		this.updateSecondaryTables(resourcePersistentType);
@@ -1338,10 +1338,10 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected InheritanceType defaultInheritanceStrategy() {
-		if (rootEntity() == this) {
+		if (getRootEntity() == this) {
 			return InheritanceType.SINGLE_TABLE;
 		}
-		return rootEntity().getInheritanceStrategy();
+		return getRootEntity().getInheritanceStrategy();
 	}
 	
 	protected void updateDiscriminatorColumn(JavaResourcePersistentType persistentTypeResource) {
@@ -1367,13 +1367,13 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		if (this.javaResourcePersistentType.isAbstract()) {
 			return null;
 		}
-		if (this.discriminatorType() != DiscriminatorType.STRING) {
+		if (this.getDiscriminatorType() != DiscriminatorType.STRING) {
 			return null;
 		}
 		return this.getName();
 	}
 
-	protected DiscriminatorType discriminatorType() {
+	protected DiscriminatorType getDiscriminatorType() {
 		return this.getDiscriminatorColumn().getDiscriminatorType();
 	}
 	
@@ -1860,8 +1860,8 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			return GenericJavaEntity.this.getDbTable(tableName);
 		}
 
-		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
-			Entity parentEntity = GenericJavaEntity.this.parentEntity();
+		public org.eclipse.jpt.db.Table getDbReferencedColumnTable() {
+			Entity parentEntity = GenericJavaEntity.this.getParentEntity();
 			return (parentEntity == null) ? null : parentEntity.getPrimaryDbTable();
 		}
 
@@ -1877,13 +1877,13 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			if (joinColumnsSize() != 1) {
 				return null;
 			}
-			return GenericJavaEntity.this.parentEntity().primaryKeyColumnName();
+			return GenericJavaEntity.this.getParentEntity().getPrimaryKeyColumnName();
 		}
 	}
 	
 	class AttributeOverrideOwner implements AttributeOverride.Owner {
 
-		public ColumnMapping columnMapping(String attributeName) {
+		public ColumnMapping getColumnMapping(String attributeName) {
 			if (attributeName == null) {
 				return null;
 			}
@@ -1918,7 +1918,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 
 	class AssociationOverrideOwner implements AssociationOverride.Owner {
 
-		public RelationshipMapping relationshipMapping(String attributeName) {
+		public RelationshipMapping getRelationshipMapping(String attributeName) {
 			if (attributeName == null) {
 				return null;
 			}

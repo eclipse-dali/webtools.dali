@@ -63,7 +63,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 		return (OrmEntity) super.getParent();
 	}
 	
-	public OrmEntity ormEntity() {
+	public OrmEntity getOrmEntity() {
 		return getParent();
 	}
 	
@@ -169,7 +169,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 
 	
 	public boolean isVirtual() {
-		return ormEntity().containsVirtualSecondaryTable(this);
+		return getOrmEntity().containsVirtualSecondaryTable(this);
 	}
 	
 	@Override
@@ -185,7 +185,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 	}
 
 	@Override
-	protected XmlSecondaryTable table() {
+	protected XmlSecondaryTable getTableResource() {
 		return this.secondaryTable;
 	}
 
@@ -296,7 +296,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 						JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_SCHEMA,
 						new String[] {schema, getName()}, 
 						this,
-						schemaTextRange())
+						getSchemaTextRange())
 				);
 			doContinue = false;
 		}
@@ -308,7 +308,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 						JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_NAME,
 						new String[] {getName()}, 
 						this, 
-						nameTextRange())
+						getNameTextRange())
 				);
 		}
 	}
@@ -317,14 +317,14 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 	{
 
 		public TypeMapping getTypeMapping() {
-			return GenericOrmSecondaryTable.this.ormEntity();
+			return GenericOrmSecondaryTable.this.getOrmEntity();
 		}
 
 		public Table getDbTable(String tableName) {
 			return GenericOrmSecondaryTable.this.getDbTable();
 		}
 
-		public Table dbReferencedColumnTable() {
+		public Table getDbReferencedColumnTable() {
 			return getTypeMapping().getPrimaryDbTable();
 		}
 
@@ -340,7 +340,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 			if (joinColumnsSize() != 1) {
 				return null;
 			}
-			return ormEntity().parentEntity().primaryKeyColumnName();
+			return getOrmEntity().getParentEntity().getPrimaryKeyColumnName();
 		}
 		
 		public TextRange getValidationTextRange() {

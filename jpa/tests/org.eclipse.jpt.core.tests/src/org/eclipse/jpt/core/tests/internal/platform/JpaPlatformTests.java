@@ -117,10 +117,10 @@ public class JpaPlatformTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaAttributeMapping javaAttributeMapping = jpaProject().getJpaPlatform().buildJavaAttributeMappingFromMappingKey(JavaTestAttributeMapping.TEST_ATTRIBUTE_MAPPING_KEY, javaPersistentType().attributeNamed("name"));	
+		JavaAttributeMapping javaAttributeMapping = jpaProject().getJpaPlatform().buildJavaAttributeMappingFromMappingKey(JavaTestAttributeMapping.TEST_ATTRIBUTE_MAPPING_KEY, javaPersistentType().getAttributeNamed("name"));	
 		assertTrue(javaAttributeMapping instanceof JavaTestAttributeMapping);
 		
-		javaAttributeMapping = jpaPlatform().buildJavaAttributeMappingFromMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, javaPersistentType().attributeNamed("name"));
+		javaAttributeMapping = jpaPlatform().buildJavaAttributeMappingFromMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, javaPersistentType().getAttributeNamed("name"));
 		assertTrue(javaAttributeMapping instanceof TestJavaBasicMapping);
 	}
 	

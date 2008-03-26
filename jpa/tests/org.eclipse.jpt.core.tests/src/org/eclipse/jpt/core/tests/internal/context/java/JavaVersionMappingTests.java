@@ -119,7 +119,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		assertEquals("FOO", ((BasicMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
 		assertEquals(TemporalType.TIME, ((BasicMapping) persistentAttribute.getMapping()).getTemporal());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(Version.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(Basic.ANNOTATION_NAME));
@@ -142,7 +142,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		assertEquals("FOO", ((BasicMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
 		assertEquals(TemporalType.TIME, ((BasicMapping) persistentAttribute.getMapping()).getTemporal());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(Version.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
@@ -164,7 +164,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		assertEquals("FOO", ((IdMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
 		assertEquals(TemporalType.TIME, ((IdMapping) persistentAttribute.getMapping()).getTemporal());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(Version.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(Id.ANNOTATION_NAME));
@@ -186,7 +186,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedMapping);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(Version.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(Embedded.ANNOTATION_NAME));
@@ -208,7 +208,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof TransientMapping);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(Version.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(Transient.ANNOTATION_NAME));
@@ -230,7 +230,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedIdMapping);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(Version.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(EmbeddedId.ANNOTATION_NAME));
@@ -252,7 +252,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof OneToOneMapping);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(Version.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(OneToOne.ANNOTATION_NAME));
@@ -274,7 +274,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof OneToManyMapping);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(Version.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(OneToMany.ANNOTATION_NAME));
@@ -296,7 +296,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof ManyToOneMapping);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(Version.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(ManyToOne.ANNOTATION_NAME));
@@ -318,7 +318,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof ManyToManyMapping);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(Version.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
@@ -356,7 +356,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		
 		versionMapping.setTemporal(TemporalType.TIME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		Temporal temporal = (Temporal) attributeResource.getAnnotation(Temporal.ANNOTATION_NAME);
 		
@@ -376,7 +376,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		assertNull(versionMapping.getTemporal());
 		
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		Temporal temporal = (Temporal) attributeResource.addAnnotation(Temporal.ANNOTATION_NAME);
 		temporal.setValue(org.eclipse.jpt.core.resource.java.TemporalType.DATE);
@@ -400,7 +400,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		assertNull(versionMapping.getColumn().getSpecifiedName());
 		assertEquals("id", versionMapping.getColumn().getName());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addAnnotation(JPA.COLUMN);
 		column.setName("foo");

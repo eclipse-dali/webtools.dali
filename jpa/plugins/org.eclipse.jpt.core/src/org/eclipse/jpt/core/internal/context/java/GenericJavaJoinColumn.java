@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.context.RelationshipMappingTools;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Column;
@@ -40,7 +40,7 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	}
 
 	@Override
-	protected JoinColumnAnnotation columnResource() {
+	protected JoinColumnAnnotation getColumnResource() {
 		return this.joinColumn;
 	}
 	
@@ -85,12 +85,12 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 		return getOwner().isVirtual(this);
 	}
 
-	public Table dbReferencedColumnTable() {
-		return getOwner().dbReferencedColumnTable();
+	public Table getDbReferencedColumnTable() {
+		return getOwner().getDbReferencedColumnTable();
 	}
 
-	public Column dbReferencedColumn() {
-		Table table = this.dbReferencedColumnTable();
+	public Column getDbReferencedColumn() {
+		Table table = this.getDbReferencedColumnTable();
 		return (table == null) ? null : table.columnNamed(this.getReferencedColumnName());
 	}
 
@@ -100,11 +100,11 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	}
 
 	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
-		return columnResource().referencedColumnNameTouches(pos, astRoot);
+		return getColumnResource().referencedColumnNameTouches(pos, astRoot);
 	}
 
 	private Iterator<String> candidateReferencedColumnNames() {
-		Table table = this.getOwner().dbReferencedColumnTable();
+		Table table = this.getOwner().getDbReferencedColumnTable();
 		return (table != null) ? table.columnNames() : EmptyIterator.<String> instance();
 	}
 
@@ -129,11 +129,11 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	}
 
 	public boolean isReferencedColumnResolved() {
-		return dbReferencedColumn() != null;
+		return getDbReferencedColumn() != null;
 	}
 
 	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
-		TextRange textRange = columnResource().getReferencedColumnNameTextRange(astRoot);
+		TextRange textRange = getColumnResource().getReferencedColumnNameTextRange(astRoot);
 		return (textRange != null) ? textRange : getOwner().getValidationTextRange(astRoot);
 	}
 
@@ -167,7 +167,7 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 		if (!getOwner().getRelationshipMapping().isRelationshipOwner()) {
 			return null;
 		}
-		return RelationshipMappingTools.buildJoinColumnDefaultName(this);
+		return MappingTools.buildJoinColumnDefaultName(this);
 	}
 	
 	protected String defaultReferencedColumnName() {
@@ -178,7 +178,7 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 		if (!getOwner().getRelationshipMapping().isRelationshipOwner()) {
 			return null;
 		}
-		return RelationshipMappingTools.buildJoinColumnDefaultReferencedColumnName(this);
+		return MappingTools.buildJoinColumnDefaultReferencedColumnName(this);
 	}
 	
 	@Override

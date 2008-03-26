@@ -59,10 +59,10 @@ public abstract class AbstractResourceModel
 		this.removeItemFromList(index, rootStructureNodes, ROOT_STRUCTURE_NODES_LIST);
 	}
 	
-	public JpaStructureNode structureNode(int textOffset) {
+	public JpaStructureNode getStructureNode(int textOffset) {
 		synchronized (rootStructureNodes) {
 			for (JpaStructureNode rootNode : rootStructureNodes) {
-				JpaStructureNode node = rootNode.structureNode(textOffset);
+				JpaStructureNode node = rootNode.getStructureNode(textOffset);
 				if (node != null) {
 					return node;
 				}

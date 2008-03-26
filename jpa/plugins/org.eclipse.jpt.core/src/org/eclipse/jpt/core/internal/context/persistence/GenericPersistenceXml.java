@@ -131,9 +131,9 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 	}
 	
 	
-	public JpaStructureNode structureNode(int textOffset) {
+	public JpaStructureNode getStructureNode(int textOffset) {
 		if (persistence.containsOffset(textOffset)) {
-			return persistence.structureNode(textOffset);
+			return persistence.getStructureNode(textOffset);
 		}
 		return this;
 	}

@@ -50,7 +50,7 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	}
 	
 
-	protected abstract T columnResource();
+	protected abstract T getColumnResource();
 
 	
 	//************** INamedColumn implementation *****************
@@ -65,7 +65,7 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	public void setSpecifiedName(String newSpecifiedName) {
 		String oldSpecifiedName = this.specifiedName;
 		this.specifiedName = newSpecifiedName;
-		columnResource().setName(newSpecifiedName);
+		getColumnResource().setName(newSpecifiedName);
 		firePropertyChanged(NamedColumn.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
 	}
 	
@@ -98,7 +98,7 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	public void setColumnDefinition(String newColumnDefinition) {
 		String oldColumnDefinition = this.columnDefinition;
 		this.columnDefinition = newColumnDefinition;
-		columnResource().setColumnDefinition(newColumnDefinition);
+		getColumnResource().setColumnDefinition(newColumnDefinition);
 		firePropertyChanged(NamedColumn.COLUMN_DEFINITION_PROPERTY, oldColumnDefinition, newColumnDefinition);
 	}
 	
@@ -119,12 +119,12 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.columnResource().getNameTextRange(astRoot);
+		TextRange textRange = this.getColumnResource().getNameTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);
 	}
 
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return this.columnResource().nameTouches(pos, astRoot);
+		return this.getColumnResource().nameTouches(pos, astRoot);
 	}
 	
 	public Column getDbColumn() {
@@ -133,13 +133,13 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	}
 
 	public Table getDbTable() {
-		return getOwner().getDbTable(this.tableName());
+		return getOwner().getDbTable(this.getTableName());
 	}
 
 	/**
 	 * Return the name of the column's table.
 	 */
-	protected abstract String tableName();
+	protected abstract String getTableName();
 
 	public boolean isResolved() {
 		return this.getDbColumn() != null;

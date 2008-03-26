@@ -59,7 +59,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	/**
 	 * Return null if no table resource element exists
 	 */
-	protected abstract XmlBaseTable table();
+	protected abstract XmlBaseTable getTableResource();
 
 	protected abstract void removeTableResource();
 	
@@ -69,15 +69,15 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 		String oldSpecifiedName = this.specifiedName;
 		this.specifiedName = newSpecifiedName;
 		if (oldSpecifiedName != newSpecifiedName) {
-			if (this.table() != null) {
-				this.table().setName(newSpecifiedName);						
-				if (this.table().isAllFeaturesUnset()) {
+			if (this.getTableResource() != null) {
+				this.getTableResource().setName(newSpecifiedName);						
+				if (this.getTableResource().isAllFeaturesUnset()) {
 					removeTableResource();
 				}
 			}
 			else if (newSpecifiedName != null) {
 				addTableResource();
-				table().setName(newSpecifiedName);
+				getTableResource().setName(newSpecifiedName);
 			}
 		}
 		firePropertyChanged(SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
@@ -111,15 +111,15 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 		String oldSpecifiedCatalog = this.specifiedCatalog;
 		this.specifiedCatalog = newSpecifiedCatalog;
 		if (oldSpecifiedCatalog != newSpecifiedCatalog) {
-			if (this.table() != null) {
-				this.table().setCatalog(newSpecifiedCatalog);						
-				if (this.table().isAllFeaturesUnset()) {
+			if (this.getTableResource() != null) {
+				this.getTableResource().setCatalog(newSpecifiedCatalog);						
+				if (this.getTableResource().isAllFeaturesUnset()) {
 					removeTableResource();
 				}
 			}
 			else if (newSpecifiedCatalog != null) {
 				addTableResource();
-				table().setCatalog(newSpecifiedCatalog);
+				getTableResource().setCatalog(newSpecifiedCatalog);
 			}
 		}
 		firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
@@ -153,15 +153,15 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 		String oldSpecifiedSchema = this.specifiedSchema;
 		this.specifiedSchema = newSpecifiedSchema;
 		if (oldSpecifiedSchema != newSpecifiedSchema) {
-			if (this.table() != null) {
-				this.table().setSchema(newSpecifiedSchema);						
-				if (this.table().isAllFeaturesUnset()) {
+			if (this.getTableResource() != null) {
+				this.getTableResource().setSchema(newSpecifiedSchema);						
+				if (this.getTableResource().isAllFeaturesUnset()) {
 					removeTableResource();
 				}
 			}
 			else if (newSpecifiedSchema != null) {
 				addTableResource();
-				table().setSchema(newSpecifiedSchema);
+				getTableResource().setSchema(newSpecifiedSchema);
 			}
 		}
 
@@ -248,9 +248,9 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 		return NameTools.buildQualifiedDatabaseObjectName(this.getCatalog(), this.getSchema(), this.getName());
 	}
 
-	protected TextRange nameTextRange() {
-		if (table() != null) {
-			TextRange textRange = table().getNameTextRange();
+	protected TextRange getNameTextRange() {
+		if (getTableResource() != null) {
+			TextRange textRange = getTableResource().getNameTextRange();
 			if (textRange != null) {
 				return textRange;
 			}
@@ -258,9 +258,9 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 		return this.getParent().getValidationTextRange(); 
 	}
 	
-	protected TextRange catalogTextRange() {
-		if (table() != null) {
-			TextRange textRange = table().getCatalogTextRange();
+	protected TextRange getCatalogTextRange() {
+		if (getTableResource() != null) {
+			TextRange textRange = getTableResource().getCatalogTextRange();
 			if (textRange != null) {
 				return textRange;
 			}
@@ -268,9 +268,9 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 		return this.getParent().getValidationTextRange(); 
 	}
 	
-	protected TextRange schemaTextRange() {
-		if (table() != null) {
-			TextRange textRange = table().getSchemaTextRange();
+	protected TextRange getSchemaTextRange() {
+		if (getTableResource() != null) {
+			TextRange textRange = getTableResource().getSchemaTextRange();
 			if (textRange != null) {
 				return textRange;
 			}
@@ -279,8 +279,8 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	}
 	
 	public TextRange getValidationTextRange() {
-		if (table() != null) {
-			TextRange textRange = this.table().getValidationTextRange();
+		if (getTableResource() != null) {
+			TextRange textRange = this.getTableResource().getValidationTextRange();
 			if (textRange != null) {
 				return textRange;
 			}

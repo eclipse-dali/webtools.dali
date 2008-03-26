@@ -165,7 +165,7 @@ public class JpaModelManager {
 	/**
 	 * Return the workspace-wide JPA model.
 	 */
-	public JpaModel jpaModel() {
+	public JpaModel getJpaModel() {
 		return this.jpaModel;
 	}
 
@@ -174,16 +174,16 @@ public class JpaModelManager {
 	 * or null if unable to associate the specified project with a
 	 * JPA project.
 	 */
-	public JpaProject jpaProject(IProject project) throws CoreException {
-		return this.jpaModel.jpaProject(project);
+	public JpaProject getJpaProject(IProject project) throws CoreException {
+		return this.jpaModel.getJpaProject(project);
 	}
 
 	/**
 	 * Return the JPA file corresponding to the specified Eclipse file,
 	 * or null if unable to associate the specified file with a JPA file.
 	 */
-	public JpaFile jpaFile(IFile file) throws CoreException {
-		return this.jpaModel.jpaFile(file);
+	public JpaFile getJpaFile(IFile file) throws CoreException {
+		return this.jpaModel.getJpaFile(file);
 	}
 
 	/**

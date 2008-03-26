@@ -204,7 +204,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof BasicMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(Basic.ANNOTATION_NAME));
@@ -226,7 +226,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertNull(persistentAttribute.getSpecifiedMapping());
 		assertTrue(persistentAttribute.getMapping().isDefault());
 	
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
 		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
@@ -247,7 +247,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof VersionMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(Version.ANNOTATION_NAME));
@@ -269,7 +269,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof IdMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(Id.ANNOTATION_NAME));
@@ -291,7 +291,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(Embedded.ANNOTATION_NAME));
@@ -313,7 +313,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedIdMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(EmbeddedId.ANNOTATION_NAME));
@@ -335,7 +335,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof TransientMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(Transient.ANNOTATION_NAME));
@@ -357,7 +357,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof OneToOneMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(OneToOne.ANNOTATION_NAME));
@@ -379,7 +379,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof OneToManyMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(OneToMany.ANNOTATION_NAME));
@@ -401,7 +401,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof ManyToOneMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation(ManyToMany.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(ManyToOne.ANNOTATION_NAME));
@@ -416,7 +416,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		ManyToMany manyToMany = (ManyToMany) attributeResource.getMappingAnnotation();
 		
@@ -441,7 +441,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		ManyToMany manyToMany = (ManyToMany) attributeResource.getMappingAnnotation();
 		
@@ -466,7 +466,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		ManyToMany manyToMany = (ManyToMany) attributeResource.getMappingAnnotation();
 		
@@ -496,7 +496,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		ManyToMany manyToMany = (ManyToMany) attributeResource.getMappingAnnotation();
 		
@@ -526,7 +526,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		ManyToMany manyToMany = (ManyToMany) attributeResource.getMappingAnnotation();
 		
@@ -551,7 +551,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		ManyToMany manyToMany = (ManyToMany) attributeResource.getMappingAnnotation();
 		
@@ -709,7 +709,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		
 		assertNull(manyToManyMapping.getMapKey());
@@ -744,7 +744,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		
 		assertNull(manyToManyMapping.getMapKey());
@@ -769,7 +769,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		
 		assertNull(manyToManyMapping.getOrderBy());
@@ -795,7 +795,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		
 		assertNull(manyToManyMapping.getOrderBy());
@@ -820,7 +820,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		
 		assertTrue(manyToManyMapping.isNoOrdering());
@@ -847,7 +847,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		
 		assertTrue(manyToManyMapping.isNoOrdering());
@@ -873,7 +873,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		
 		assertFalse(manyToManyMapping.isPkOrdering());
@@ -900,7 +900,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		
 		assertFalse(manyToManyMapping.isCustomOrdering());

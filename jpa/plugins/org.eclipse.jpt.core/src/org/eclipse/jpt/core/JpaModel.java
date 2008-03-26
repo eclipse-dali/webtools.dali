@@ -31,7 +31,7 @@ public interface JpaModel extends Model {
 	 * Return null if unable to associate the specified Eclipse project
 	 * with a JPA project.
 	 */
-	JpaProject jpaProject(IProject project) throws CoreException;
+	JpaProject getJpaProject(IProject project) throws CoreException;
 
 	/**
 	 * Return whether the JPA model contains a JPA project corresponding
@@ -55,6 +55,6 @@ public interface JpaModel extends Model {
 	 * Return the JPA file corresponding to the specified Eclipse file,
 	 * or null if unable to associate the specified file with a JPA file.
 	 */
-	JpaFile jpaFile(IFile file) throws CoreException;
+	JpaFile getJpaFile(IFile file) throws CoreException;
 
 }

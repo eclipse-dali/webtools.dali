@@ -108,8 +108,8 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	private JpaProject.Config buildJpaProjectConfig(IProject project) {
 		SimpleJpaProjectConfig config = new SimpleJpaProjectConfig();
 		config.setProject(project);
-		config.setJpaPlatform(JptCorePlugin.jpaPlatform(project));
-		config.setConnectionProfileName(JptCorePlugin.connectionProfileName(project));
+		config.setJpaPlatform(JptCorePlugin.getJpaPlatform(project));
+		config.setConnectionProfileName(JptCorePlugin.getConnectionProfileName(project));
 		config.setDiscoverAnnotatedClasses(JptCorePlugin.discoverAnnotatedClasses(project));
 		return config;
 	}

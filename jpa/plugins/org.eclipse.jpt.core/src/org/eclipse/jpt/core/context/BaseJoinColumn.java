@@ -33,7 +33,7 @@ public interface BaseJoinColumn extends NamedColumn
 	/**
 	 * Return the wrapper for the datasource referenced column
 	 */
-	Column dbReferencedColumn();
+	Column getDbReferencedColumn();
 
 	/**
 	 * Return whether the reference column is found on the datasource
@@ -47,7 +47,7 @@ public interface BaseJoinColumn extends NamedColumn
 		/**
 		 * Return the wrapper for the datasource table for the referenced column
 		 */
-		Table dbReferencedColumnTable();
+		Table getDbReferencedColumnTable();
 		
 		boolean isVirtual(BaseJoinColumn joinColumn);
 	}

@@ -37,7 +37,7 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	}
 	
 	@Override
-	protected XmlPrimaryKeyJoinColumn columnResource() {
+	protected XmlPrimaryKeyJoinColumn getColumnResource() {
 		return this.primaryKeyJoinColumn;
 	}
 	
@@ -64,7 +64,7 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	public void setSpecifiedReferencedColumnName(String newSpecifiedReferencedColumnName) {
 		String oldSpecifiedReferencedColumnName = this.specifiedReferencedColumnName;
 		this.specifiedReferencedColumnName = newSpecifiedReferencedColumnName;
-		columnResource().setReferencedColumnName(newSpecifiedReferencedColumnName);
+		getColumnResource().setReferencedColumnName(newSpecifiedReferencedColumnName);
 		firePropertyChanged(SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
 	}
 	
@@ -89,13 +89,13 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 		return (OrmBaseJoinColumn.Owner) this.owner;
 	}
 
-	public Column dbReferencedColumn() {
+	public Column getDbReferencedColumn() {
 		Table table = this.dbReferencedColumnTable();
 		return (table == null) ? null : table.columnNamed(this.getReferencedColumnName());
 	}
 
 	public Table dbReferencedColumnTable() {
-		return getOwner().dbReferencedColumnTable();
+		return getOwner().getDbReferencedColumnTable();
 	}
 
 	@Override
@@ -104,12 +104,12 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	}
 
 	public boolean isReferencedColumnResolved() {
-		return dbReferencedColumn() != null;
+		return getDbReferencedColumn() != null;
 	}
 
 	public TextRange getReferencedColumnNameTextRange() {
-		if (columnResource() != null) {
-			TextRange textRange = columnResource().referencedColumnNameTextRange();
+		if (getColumnResource() != null) {
+			TextRange textRange = getColumnResource().referencedColumnNameTextRange();
 			if (textRange != null) {
 				return textRange;
 			}

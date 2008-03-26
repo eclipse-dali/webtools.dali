@@ -54,15 +54,15 @@ public class OrmCascade extends AbstractOrmJpaContextNode implements Cascade, Or
 		boolean oldAll = this.all;
 		this.all = newAll;
 		if (oldAll != newAll) {
-			if (this.cascadeResource() != null) {
-				this.cascadeResource().setCascadeAll(newAll);						
-				if (this.cascadeResource().isAllFeaturesUnset()) {
+			if (this.getCascadeResource() != null) {
+				this.getCascadeResource().setCascadeAll(newAll);						
+				if (this.getCascadeResource().isAllFeaturesUnset()) {
 					removeCascadeResource();
 				}
 			}
 			else if (newAll != false) {
 				addCascadeResource();
-				cascadeResource().setCascadeAll(newAll);
+				getCascadeResource().setCascadeAll(newAll);
 			}
 		}
 		firePropertyChanged(ALL_PROPERTY, oldAll, newAll);
@@ -82,15 +82,15 @@ public class OrmCascade extends AbstractOrmJpaContextNode implements Cascade, Or
 		boolean oldPersist = this.persist;
 		this.persist = newPersist;
 		if (oldPersist != newPersist) {
-			if (this.cascadeResource() != null) {
-				this.cascadeResource().setCascadePersist(newPersist);						
-				if (this.cascadeResource().isAllFeaturesUnset()) {
+			if (this.getCascadeResource() != null) {
+				this.getCascadeResource().setCascadePersist(newPersist);						
+				if (this.getCascadeResource().isAllFeaturesUnset()) {
 					removeCascadeResource();
 				}
 			}
 			else if (newPersist != false) {
 				addCascadeResource();
-				cascadeResource().setCascadePersist(newPersist);
+				getCascadeResource().setCascadePersist(newPersist);
 			}
 		}		
 		firePropertyChanged(PERSIST_PROPERTY, oldPersist, newPersist);
@@ -111,15 +111,15 @@ public class OrmCascade extends AbstractOrmJpaContextNode implements Cascade, Or
 		boolean oldMerge = this.merge;
 		this.merge = newMerge;
 		if (oldMerge != newMerge) {
-			if (this.cascadeResource() != null) {
-				this.cascadeResource().setCascadeMerge(newMerge);						
-				if (this.cascadeResource().isAllFeaturesUnset()) {
+			if (this.getCascadeResource() != null) {
+				this.getCascadeResource().setCascadeMerge(newMerge);						
+				if (this.getCascadeResource().isAllFeaturesUnset()) {
 					removeCascadeResource();
 				}
 			}
 			else if (newMerge != false) {
 				addCascadeResource();
-				cascadeResource().setCascadeMerge(newMerge);
+				getCascadeResource().setCascadeMerge(newMerge);
 			}
 		}		
 		firePropertyChanged(MERGE_PROPERTY, oldMerge, newMerge);
@@ -139,15 +139,15 @@ public class OrmCascade extends AbstractOrmJpaContextNode implements Cascade, Or
 		boolean oldRemove = this.remove;
 		this.remove = newRemove;
 		if (oldRemove != newRemove) {
-			if (this.cascadeResource() != null) {
-				this.cascadeResource().setCascadeRemove(newRemove);						
-				if (this.cascadeResource().isAllFeaturesUnset()) {
+			if (this.getCascadeResource() != null) {
+				this.getCascadeResource().setCascadeRemove(newRemove);						
+				if (this.getCascadeResource().isAllFeaturesUnset()) {
 					removeCascadeResource();
 				}
 			}
 			else if (newRemove != false) {
 				addCascadeResource();
-				cascadeResource().setCascadeRemove(newRemove);
+				getCascadeResource().setCascadeRemove(newRemove);
 			}
 		}		
 		firePropertyChanged(REMOVE_PROPERTY, oldRemove, newRemove);
@@ -167,15 +167,15 @@ public class OrmCascade extends AbstractOrmJpaContextNode implements Cascade, Or
 		boolean oldRefresh = this.refresh;
 		this.refresh = newRefresh;	
 		if (oldRefresh != newRefresh) {
-			if (this.cascadeResource() != null) {
-				this.cascadeResource().setCascadeRefresh(newRefresh);						
-				if (this.cascadeResource().isAllFeaturesUnset()) {
+			if (this.getCascadeResource() != null) {
+				this.getCascadeResource().setCascadeRefresh(newRefresh);						
+				if (this.getCascadeResource().isAllFeaturesUnset()) {
 					removeCascadeResource();
 				}
 			}
 			else if (newRefresh != false) {
 				addCascadeResource();
-				cascadeResource().setCascadeRefresh(newRefresh);
+				getCascadeResource().setCascadeRefresh(newRefresh);
 			}
 		}
 		firePropertyChanged(REFRESH_PROPERTY, oldRefresh, newRefresh);
@@ -188,7 +188,7 @@ public class OrmCascade extends AbstractOrmJpaContextNode implements Cascade, Or
 	}
 	
 
-	protected CascadeType cascadeResource() {
+	protected CascadeType getCascadeResource() {
 		return this.relationshipMapping.getCascade();
 	}
 	
@@ -202,7 +202,7 @@ public class OrmCascade extends AbstractOrmJpaContextNode implements Cascade, Or
 
 	public void initialize(XmlRelationshipMapping relationshipMapping) {
 		this.relationshipMapping = relationshipMapping;
-		CascadeType cascade = cascadeResource();
+		CascadeType cascade = getCascadeResource();
 		this.all = this.all(cascade);
 		this.persist = this.persist(cascade);
 		this.merge = this.merge(cascade);
@@ -212,7 +212,7 @@ public class OrmCascade extends AbstractOrmJpaContextNode implements Cascade, Or
 	
 	public void update(XmlRelationshipMapping relationshipMapping) {
 		this.relationshipMapping = relationshipMapping;
-		CascadeType cascade = cascadeResource();
+		CascadeType cascade = getCascadeResource();
 		this.setAll_(this.all(cascade));
 		this.setPersist_(this.persist(cascade));
 		this.setMerge_(this.merge(cascade));
@@ -241,6 +241,6 @@ public class OrmCascade extends AbstractOrmJpaContextNode implements Cascade, Or
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.cascadeResource().getValidationTextRange();
+		return this.getCascadeResource().getValidationTextRange();
 	}
 }

@@ -143,7 +143,7 @@ public class JpaPlatformRegistry {
 	 * Return the label for the JPA platform with the specified ID.
 	 * This does not activate the JPA platform's plug-in.
 	 */
-	public String jpaPlatformLabel(String id) {
+	public String getJpaPlatformLabel(String id) {
 		return this.jpaPlatformConfigurationElements.get(id).getAttribute(AT_LABEL);
 	}
 
@@ -154,7 +154,7 @@ public class JpaPlatformRegistry {
 	 * Unlike other registry methods, invoking this method may activate 
 	 * the plug-in.
 	 */
-	public JpaPlatform jpaPlatform(String id) {
+	public JpaPlatform getJpaPlatform(String id) {
 		IConfigurationElement configElement = this.jpaPlatformConfigurationElements.get(id);
 		if (configElement == null) {
 			throw new IllegalArgumentException(id);

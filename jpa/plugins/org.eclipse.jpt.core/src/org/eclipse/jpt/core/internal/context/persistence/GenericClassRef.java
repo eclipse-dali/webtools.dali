@@ -113,7 +113,7 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected void initializeJavaPersistentType() {
-		JavaResourcePersistentType persistentTypeResource = getJpaProject().javaPersistentTypeResource(getClassName());
+		JavaResourcePersistentType persistentTypeResource = getJpaProject().getJavaPersistentTypeResource(getClassName());
 		if (persistentTypeResource != null) {
 			this.javaPersistentType = buildJavaPersistentType(persistentTypeResource);
 		}				
@@ -132,7 +132,7 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected void updateJavaPersistentType() {
-		JavaResourcePersistentType persistentTypeResource = getJpaProject().javaPersistentTypeResource(getClassName());
+		JavaResourcePersistentType persistentTypeResource = getJpaProject().getJavaPersistentTypeResource(getClassName());
 		if (persistentTypeResource == null) {
 			setJavaPersistentType(null);
 		}
@@ -190,7 +190,7 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 		}
 	}
 
-	public JpaStructureNode structureNode(int textOffset) {
+	public JpaStructureNode getStructureNode(int textOffset) {
 		return this;
 	}
 	

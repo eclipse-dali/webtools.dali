@@ -165,7 +165,7 @@ public class PersistenceEditor extends FormEditor
 		return new TransformationPropertyValueModel<IFileEditorInput, JpaProject>(editorInputHolder) {
 			@Override
 			protected JpaProject transform_(IFileEditorInput value) {
-				return JptCorePlugin.jpaProject(value.getFile().getProject());
+				return JptCorePlugin.getJpaProject(value.getFile().getProject());
 			}
 		};
 	}
@@ -333,7 +333,7 @@ public class PersistenceEditor extends FormEditor
 	 * @return The JPA project
 	 */
 	protected JpaProject jpaProject() {
-		return JptCorePlugin.jpaProject(getEditorInput().getFile().getProject());
+		return JptCorePlugin.getJpaProject(getEditorInput().getFile().getProject());
 	}
 
 	/**

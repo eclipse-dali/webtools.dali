@@ -139,7 +139,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		assertEquals(ATTRIBUTE_OVERRIDE_NAME, specifiedAttributeOverride.getName());
 		
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) typeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDE);
 		
 		attributeOverrideResource.setName("FOO");
@@ -156,7 +156,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		
 		specifiedAttributeOverride.setName("FOO");
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) typeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDE);
 		
 		assertEquals("FOO", attributeOverrideResource.getName());
@@ -171,7 +171,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		assertEquals(ATTRIBUTE_OVERRIDE_COLUMN_NAME, column.getName());
 		
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) typeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDE);
 		ColumnAnnotation columnResource = attributeOverrideResource.getColumn();
 		columnResource.setName("FOO");
@@ -190,7 +190,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		assertEquals(ATTRIBUTE_OVERRIDE_COLUMN_NAME, column.getName());
 		
 		column.setSpecifiedName("FOO");
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) typeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDE);
 		ColumnAnnotation columnResource = attributeOverrideResource.getColumn();
 
@@ -218,7 +218,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		
 		
 		JavaPersistentType mappedSuperclass = CollectionTools.list(persistenceUnit().specifiedClassRefs()).get(1).getJavaPersistentType();
-		BasicMapping basicMapping = (BasicMapping) mappedSuperclass.attributeNamed("id").getMapping();
+		BasicMapping basicMapping = (BasicMapping) mappedSuperclass.getAttributeNamed("id").getMapping();
 		basicMapping.getColumn().setSpecifiedName("FOO");
 	
 		attributeOverride = entity.virtualAttributeOverrides().next();
@@ -240,7 +240,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 
 		
 		JavaPersistentType mappedSuperclass = CollectionTools.list(persistenceUnit().specifiedClassRefs()).get(1).getJavaPersistentType();
-		BasicMapping basicMapping = (BasicMapping) mappedSuperclass.attributeNamed("id").getMapping();
+		BasicMapping basicMapping = (BasicMapping) mappedSuperclass.getAttributeNamed("id").getMapping();
 		basicMapping.getColumn().setSpecifiedTable("BAR");
 	
 		attributeOverride = entity.virtualAttributeOverrides().next();
@@ -287,7 +287,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		attributeOverride.getColumn().setSpecifiedName("FOO");
 		
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(PACKAGE_NAME + ".AnnotationTestTypeChild");
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) typeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDE);
 	
 		assertEquals("FOO", attributeOverrideResource.getColumn().getName());

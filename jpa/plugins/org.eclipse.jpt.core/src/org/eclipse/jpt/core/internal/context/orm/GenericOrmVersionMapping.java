@@ -70,7 +70,7 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	public void setTemporal(TemporalType newTemporal) {
 		TemporalType oldTemporal = this.temporal;
 		this.temporal = newTemporal;
-		this.attributeMapping().setTemporal(TemporalType.toOrmResourceModel(newTemporal));
+		this.getAttributeMapping().setTemporal(TemporalType.toOrmResourceModel(newTemporal));
 		firePropertyChanged(ColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 	
@@ -88,17 +88,17 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	}
 	
 	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getVersions().remove(this.attributeMapping());
+		typeMapping.getAttributes().getVersions().remove(this.getAttributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}
 	}
 
 	public String getDefaultColumnName() {		
-		return attributeName();
+		return getAttributeName();
 	}
 
-	public String defaultTableName() {
+	public String getDefaultTableName() {
 		return getTypeMapping().getTableName();
 	}
 
@@ -126,16 +126,16 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 
 	//***************** IXmlColumn.Owner implementation ****************
 	
-	public XmlColumn columnResource() {
-		return this.attributeMapping().getColumn();
+	public XmlColumn getColumnResource() {
+		return this.getAttributeMapping().getColumn();
 	}
 	
 	public void addColumnResource() {
-		this.attributeMapping().setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
+		this.getAttributeMapping().setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
 	}
 	
 	public void removeColumnResource() {
-		this.attributeMapping().setColumn(null);
+		this.getAttributeMapping().setColumn(null);
 	}
 	
 	// ****************** validation ****************

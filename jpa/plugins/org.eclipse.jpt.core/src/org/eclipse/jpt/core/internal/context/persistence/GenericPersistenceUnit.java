@@ -1166,9 +1166,9 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	//*************************************
 	
-	public PersistentType persistentType(String fullyQualifiedTypeName) {
+	public PersistentType getPersistentType(String fullyQualifiedTypeName) {
 		for (MappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
-			OrmPersistentType ormPersistentType = mappingFileRef.persistentTypeFor(fullyQualifiedTypeName);
+			OrmPersistentType ormPersistentType = mappingFileRef.getPersistentType(fullyQualifiedTypeName);
 			if (ormPersistentType != null) {
 				return ormPersistentType;
 			}
@@ -1181,7 +1181,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		return null;
 	}
 	
-	public JpaStructureNode structureNode(int textOffset) {
+	public JpaStructureNode getStructureNode(int textOffset) {
 		for (MappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
 			if (mappingFileRef.containsOffset(textOffset)) {
 				return mappingFileRef;

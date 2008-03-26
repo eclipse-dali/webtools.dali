@@ -9,12 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context;
 
+import java.util.Iterator;
 import java.util.StringTokenizer;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.ColumnMapping;
+import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 
-public class RelationshipMappingTools
+public class MappingTools
 {	
 	public static boolean targetEntityIsValid(String targetEntity) {
 		if (targetEntity == null) {
@@ -121,6 +128,36 @@ public class RelationshipMappingTools
 	 */
 	protected static String targetPrimaryKeyColumnName(JoinColumn joinColumn) {
 		Entity targetEntity = joinColumn.getOwner().getTargetEntity();
-		return (targetEntity == null) ? null : targetEntity.primaryKeyColumnName();
+		return (targetEntity == null) ? null : targetEntity.getPrimaryKeyColumnName();
+	}
+	
+	
+	public static Embeddable getEmbeddableFor(JavaPersistentAttribute persistentAttribute) {
+		String qualifiedTypeName = persistentAttribute.getResourcePersistentAttribute().getQualifiedTypeName();
+		if (qualifiedTypeName == null) {
+			return null;
+		}
+		PersistentType persistentType = persistentAttribute.getPersistenceUnit().getPersistentType(qualifiedTypeName);
+		if (persistentType != null) {
+			if (persistentType.getMappingKey() == MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
+				return (Embeddable) persistentType.getMapping();
+			}
+		}
+		return null;
+	}
+	
+	public static ColumnMapping getColumnMapping(String attributeName, Embeddable embeddable) {
+		if (attributeName == null || embeddable == null) {
+			return null;
+		}
+		for (Iterator<PersistentAttribute> stream = embeddable.getPersistentType().allAttributes(); stream.hasNext();) {
+			PersistentAttribute persAttribute = stream.next();
+			if (attributeName.equals(persAttribute.getName())) {
+				if (persAttribute.getMapping() instanceof ColumnMapping) {
+					return (ColumnMapping) persAttribute.getMapping();
+				}
+			}
+		}
+		return null;		
 	}
 }

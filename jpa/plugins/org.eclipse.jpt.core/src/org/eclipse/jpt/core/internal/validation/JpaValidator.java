@@ -52,7 +52,7 @@ public class JpaValidator implements IValidatorJob {
 
 	private Iterator<IMessage> validationMessages(IValidationContext context) {
 		IProject project = ((IProjectValidationContext) context).getProject();
-		return JptCorePlugin.jpaProject(project).validationMessages();
+		return JptCorePlugin.getJpaProject(project).validationMessages();
 	}
 
 	public void cleanup(IReporter reporter) {
@@ -84,7 +84,7 @@ public class JpaValidator implements IValidatorJob {
 	private static final CollectionChangeListener JPA_MODEL_LISTENER = new LocalCollectionChangeListener();
 
 	static {
-		JptCorePlugin.jpaModel().addCollectionChangeListener(JpaModel.JPA_PROJECTS_COLLECTION, JPA_MODEL_LISTENER);
+		JptCorePlugin.getJpaModel().addCollectionChangeListener(JpaModel.JPA_PROJECTS_COLLECTION, JPA_MODEL_LISTENER);
 	}
 
 	/**

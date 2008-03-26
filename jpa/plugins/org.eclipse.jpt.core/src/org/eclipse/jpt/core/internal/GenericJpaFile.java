@@ -43,8 +43,8 @@ public class GenericJpaFile extends AbstractJpaNode implements JpaFile
 		return resourceModel;
 	}
 	
-	public JpaStructureNode structureNode(int textOffset) {
-		return resourceModel.structureNode(textOffset);
+	public JpaStructureNode getStructureNode(int textOffset) {
+		return resourceModel.getStructureNode(textOffset);
 	}
 	
 	public String getResourceType() {

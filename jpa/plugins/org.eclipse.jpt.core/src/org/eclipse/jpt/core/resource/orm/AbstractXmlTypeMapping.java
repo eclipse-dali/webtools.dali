@@ -507,7 +507,7 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 	}
 	
 
-	public TextRange classTextRange() {
+	public TextRange getClassTextRange() {
 		IDOMNode classNode = (IDOMNode) DOMUtilities.childAttributeNode(node, OrmXmlMapper.CLASS);
 		if (classNode != null) {
 			return buildTextRange(classNode);
@@ -515,7 +515,7 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 		return getValidationTextRange();
 	}
 
-	public TextRange attributesTextRange() {
+	public TextRange getAttributesTextRange() {
 		IDOMNode attributesNode = (IDOMNode) DOMUtilities.getNodeChild(node, OrmXmlMapper.ATTRIBUTES);
 		if (attributesNode != null) {
 			return buildTextRange(attributesNode);

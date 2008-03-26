@@ -106,7 +106,7 @@ public class JpaNavigatorContentProvider
 			IProject project = (IProject) ((IAdaptable) element).getAdapter(IProject.class);
 			
 			if (project != null) {
-				JpaProject jpaProject = JptCorePlugin.jpaProject(project);
+				JpaProject jpaProject = JptCorePlugin.getJpaProject(project);
 				if (jpaProject != null) {
 					JpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(jpaProject.getJpaPlatform());
 					
@@ -127,7 +127,7 @@ public class JpaNavigatorContentProvider
 			IProject project = (IProject) ((IAdaptable) parentElement).getAdapter(IProject.class);
 			
 			if (project != null) {
-				JpaProject jpaProject = JptCorePlugin.jpaProject(project);
+				JpaProject jpaProject = JptCorePlugin.getJpaProject(project);
 				if (jpaProject != null) {
 					JpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(jpaProject.getJpaPlatform());
 					

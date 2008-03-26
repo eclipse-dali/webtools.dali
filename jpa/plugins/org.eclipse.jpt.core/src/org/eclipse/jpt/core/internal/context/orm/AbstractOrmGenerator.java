@@ -42,7 +42,7 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		generatorResource().setName(newName);
+		getGeneratorResource().setName(newName);
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
@@ -63,7 +63,7 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 	public void setSpecifiedInitialValue(Integer newSpecifiedInitialValue) {
 		Integer oldSpecifiedInitialValue = this.specifiedInitialValue;
 		this.specifiedInitialValue = newSpecifiedInitialValue;
-		generatorResource().setInitialValue(newSpecifiedInitialValue);
+		getGeneratorResource().setInitialValue(newSpecifiedInitialValue);
 		firePropertyChanged(SPECIFIED_INITIAL_VALUE_PROPERTY, oldSpecifiedInitialValue, newSpecifiedInitialValue);
 	}
 	
@@ -94,7 +94,7 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 	public void setSpecifiedAllocationSize(Integer newSpecifiedAllocationSize) {
 		Integer oldSpecifiedAllocationSize = this.specifiedAllocationSize;
 		this.specifiedAllocationSize = newSpecifiedAllocationSize;
-		generatorResource().setAllocationSize(newSpecifiedAllocationSize);
+		getGeneratorResource().setAllocationSize(newSpecifiedAllocationSize);
 		firePropertyChanged(SPECIFIED_ALLOCATION_SIZE_PROPERTY, oldSpecifiedAllocationSize, newSpecifiedAllocationSize);
 	}
 	
@@ -136,7 +136,7 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 		return this.getName().equals(generator.getName()) && generator instanceof JavaGenerator;
 	}
 
-	protected T generatorResource() {
+	protected T getGeneratorResource() {
 		return this.generatorResource;
 	}
 	
@@ -153,10 +153,10 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.generatorResource().getValidationTextRange();
+		return this.getGeneratorResource().getValidationTextRange();
 	}
 	
 	public TextRange getNameTextRange() {
-		return this.generatorResource().getNameTextRange();
+		return this.getGeneratorResource().getNameTextRange();
 	}
 }

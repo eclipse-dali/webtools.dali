@@ -80,7 +80,7 @@ public abstract class ProjectAction implements IObjectActionDelegate {
 	}
 	
 	protected void execute(IProject project) {
-		JpaProject jpaProject = JptCorePlugin.jpaProject(project);
+		JpaProject jpaProject = JptCorePlugin.getJpaProject(project);
 		if (jpaProject == null) {
 			return;
 		}

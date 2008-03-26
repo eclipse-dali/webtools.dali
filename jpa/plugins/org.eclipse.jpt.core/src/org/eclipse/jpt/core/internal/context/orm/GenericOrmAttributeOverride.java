@@ -88,7 +88,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 		return null;
 	}
 	
-	public String defaultTableName() {
+	public String getDefaultTableName() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -112,7 +112,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 
 	//***************** IXmlColumn.Owner implementation ****************
 	
-	public XmlColumn columnResource() {
+	public XmlColumn getColumnResource() {
 		return this.attributeOverride.getColumn();
 	}
 	

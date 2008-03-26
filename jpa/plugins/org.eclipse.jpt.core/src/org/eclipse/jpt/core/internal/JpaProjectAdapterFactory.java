@@ -39,6 +39,6 @@ public class JpaProjectAdapterFactory
 			return null;
 		}
 		
-		return JptCorePlugin.jpaProject(project);
+		return JptCorePlugin.getJpaProject(project);
 	}	
 }

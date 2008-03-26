@@ -333,7 +333,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.getTable().setSpecifiedName("FOO");
 		entity.addSpecifiedSecondaryTable(0);
 		entity.addSpecifiedPrimaryKeyJoinColumn(0);
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		typeResource.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
@@ -372,7 +372,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.getTable().setSpecifiedName("FOO");
 		entity.addSpecifiedSecondaryTable(0);
 		entity.addSpecifiedPrimaryKeyJoinColumn(0);
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		typeResource.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
@@ -411,7 +411,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.getTable().setSpecifiedName("FOO");
 		entity.addSpecifiedSecondaryTable(0);
 		entity.addSpecifiedPrimaryKeyJoinColumn(0);
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		typeResource.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
@@ -458,19 +458,19 @@ public class JavaEntityTests extends ContextModelTestCase
 		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 			
 		JavaPersistentType childPersistentType = javaPersistentType();
-		PersistentType parentPersistentType = childPersistentType.parentPersistentType();
+		PersistentType parentPersistentType = childPersistentType.getParentPersistentType();
 		
 		assertEquals(AccessType.PROPERTY, parentPersistentType.getAccess());
 		assertEquals(AccessType.PROPERTY, childPersistentType.getAccess());		
 		
-		((IdMapping) parentPersistentType.attributeNamed("id").getMapping()).getColumn().setSpecifiedName("FOO");
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		((IdMapping) parentPersistentType.getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName("FOO");
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.properties().next().setMappingAnnotation(null);
 		//no mapping(Id) annotation, but still a Column annotation, so access should still be property
 		assertEquals(AccessType.PROPERTY, parentPersistentType.getAccess());
 		assertEquals(AccessType.PROPERTY, childPersistentType.getAccess());
 
-		((BasicMapping) parentPersistentType.attributeNamed("id").getMapping()).getColumn().setSpecifiedName(null);
+		((BasicMapping) parentPersistentType.getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName(null);
 		assertEquals(AccessType.FIELD, parentPersistentType.getAccess());
 		assertEquals(AccessType.FIELD, childPersistentType.getAccess());
 		
@@ -505,13 +505,13 @@ public class JavaEntityTests extends ContextModelTestCase
 				
 		assertEquals(AccessType.PROPERTY, javaPersistentType().getAccess());
 			
-		((IdMapping) javaPersistentType().attributeNamed("id").getMapping()).getColumn().setSpecifiedName("FOO");
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		((IdMapping) javaPersistentType().getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName("FOO");
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.properties().next().setMappingAnnotation(null);
 		//no mapping(Id) annotation, but still a Column annotation, so access should still be property
 		assertEquals(AccessType.PROPERTY, javaPersistentType().getAccess());
 
-		((BasicMapping) javaPersistentType().attributeNamed("id").getMapping()).getColumn().setSpecifiedName(null);
+		((BasicMapping) javaPersistentType().getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName(null);
 		assertEquals(AccessType.FIELD, javaPersistentType().getAccess());
 		
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
@@ -582,7 +582,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertEquals("foo", javaEntity().getSpecifiedName());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertEquals("foo", ((EntityAnnotation) typeResource.getMappingAnnotation()).getName());
 	}
@@ -595,7 +595,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertNull(javaEntity().getSpecifiedName());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertNull(((EntityAnnotation) typeResource.getMappingAnnotation()).getName());
 	}
@@ -604,7 +604,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntityWithName();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		EntityAnnotation entity = (EntityAnnotation) typeResource.getMappingAnnotation();
 		entity.setName("foo");
 		
@@ -663,13 +663,13 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertNotSame(javaEntity(), javaEntity().rootEntity());
+		assertNotSame(javaEntity(), javaEntity().getRootEntity());
 		assertEquals(InheritanceType.SINGLE_TABLE, javaEntity().getDefaultInheritanceStrategy());
 		
 		//change root inheritance strategy, verify default is changed for child entity
-		javaEntity().rootEntity().setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
+		javaEntity().getRootEntity().setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
 
-		assertEquals(InheritanceType.SINGLE_TABLE, javaEntity().rootEntity().getDefaultInheritanceStrategy());
+		assertEquals(InheritanceType.SINGLE_TABLE, javaEntity().getRootEntity().getDefaultInheritanceStrategy());
 		assertEquals(InheritanceType.TABLE_PER_CLASS, javaEntity().getDefaultInheritanceStrategy());
 		assertEquals(InheritanceType.TABLE_PER_CLASS, javaEntity().getInheritanceStrategy());
 		assertNull(javaEntity().getSpecifiedInheritanceStrategy());
@@ -681,7 +681,7 @@ public class JavaEntityTests extends ContextModelTestCase
 
 		assertEquals(InheritanceType.TABLE_PER_CLASS, javaEntity().getSpecifiedInheritanceStrategy());
 
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		Inheritance inheritance = (Inheritance) typeResource.getAnnotation(Inheritance.ANNOTATION_NAME);
 
 		inheritance.setStrategy(org.eclipse.jpt.core.resource.java.InheritanceType.JOINED);
@@ -702,7 +702,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertEquals(InheritanceType.JOINED, javaEntity().getSpecifiedInheritanceStrategy());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		Inheritance inheritance = (Inheritance) typeResource.getAnnotation(Inheritance.ANNOTATION_NAME);
 		assertEquals(org.eclipse.jpt.core.resource.java.InheritanceType.JOINED, inheritance.getStrategy());
 		
@@ -731,7 +731,7 @@ public class JavaEntityTests extends ContextModelTestCase
 
 		assertEquals(DISCRIMINATOR_VALUE, javaEntity().getSpecifiedDiscriminatorValue());
 
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		DiscriminatorValue discriminatorValue = (DiscriminatorValue) typeResource.getAnnotation(DiscriminatorValue.ANNOTATION_NAME);
 
 		discriminatorValue.setValue("foo");
@@ -753,7 +753,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertEquals("foo", javaEntity().getSpecifiedDiscriminatorValue());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		DiscriminatorValue discriminatorValue = (DiscriminatorValue) typeResource.getAnnotation(DiscriminatorValue.ANNOTATION_NAME);
 		assertEquals("foo", discriminatorValue.getValue());
 	}
@@ -774,7 +774,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 	
 		assertEquals(0, entity.secondaryTablesSize());
 
@@ -802,7 +802,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 	
 		assertEquals(0, entity.specifiedSecondaryTablesSize());
 
@@ -821,7 +821,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		javaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("BAR");
 		javaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		Iterator<JavaResourceNode> secondaryTables = typeResource.annotations(SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
 		
 		assertEquals("BAZ", ((SecondaryTableAnnotation) secondaryTables.next()).getName());
@@ -838,7 +838,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		javaEntity().addSpecifiedSecondaryTable(1).setSpecifiedName("BAR");
 		javaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		Iterator<JavaResourceNode> secondaryTables = typeResource.annotations(SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
 		
 		assertEquals("BAZ", ((SecondaryTableAnnotation) secondaryTables.next()).getName());
@@ -887,7 +887,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		javaEntity().addSpecifiedSecondaryTable(1).setSpecifiedName("BAR");
 		javaEntity().addSpecifiedSecondaryTable(2).setSpecifiedName("BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertEquals(3, CollectionTools.size(typeResource.annotations(SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME)));
 
@@ -928,7 +928,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 
 		entity.addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
 		entity.addSpecifiedSecondaryTable(1).setSpecifiedName("BAR");
@@ -967,7 +967,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 	
 		((SecondaryTableAnnotation) typeResource.addAnnotation(0, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME)).setName("FOO");
 		((SecondaryTableAnnotation) typeResource.addAnnotation(1, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME)).setName("BAR");
@@ -1029,7 +1029,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Entity parentEntity = javaEntity().rootEntity();
+		Entity parentEntity = javaEntity().getRootEntity();
 		assertEquals(3, CollectionTools.size(parentEntity.associatedTablesIncludingInherited()));
 		Iterator<Table> associatedTables = parentEntity.associatedTablesIncludingInherited();
 		Table table1 = associatedTables.next();
@@ -1051,7 +1051,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Entity parentEntity = javaEntity().rootEntity();
+		Entity parentEntity = javaEntity().getRootEntity();
 		assertEquals(3, CollectionTools.size(parentEntity.associatedTableNamesIncludingInherited()));
 		Iterator<String> associatedTables = parentEntity.associatedTableNamesIncludingInherited();
 		String table1 = associatedTables.next();
@@ -1071,7 +1071,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntityWithName();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation secondaryTable = (SecondaryTableAnnotation) typeResource.addAnnotation(0, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		secondaryTable.setName("FOO");
 		
@@ -1109,7 +1109,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("bar", secondaryTables.next().getSpecifiedName());
 		assertEquals("baz", secondaryTables.next().getSpecifiedName());
 	
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.removeAnnotation(0, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		
 		secondaryTables = javaEntity().secondaryTables();
@@ -1138,7 +1138,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertNull(javaEntity().getSequenceGenerator());
 		assertEquals(0, CollectionTools.size(javaEntity().getPersistenceUnit().allGenerators()));
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.addAnnotation(JPA.SEQUENCE_GENERATOR);
 		
 		assertNotNull(javaEntity().getSequenceGenerator());
@@ -1157,7 +1157,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		javaEntity().addSequenceGenerator();
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 	
 		assertNotNull(typeResource.getAnnotation(JPA.SEQUENCE_GENERATOR));
 		assertNotNull(javaEntity().getSequenceGenerator());
@@ -1175,7 +1175,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.addAnnotation(JPA.SEQUENCE_GENERATOR);
 		
 		javaEntity().removeSequenceGenerator();
@@ -1199,7 +1199,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertNull(javaEntity().getTableGenerator());
 		assertEquals(0, CollectionTools.size(javaEntity().getPersistenceUnit().allGenerators()));
 	
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.addAnnotation(JPA.TABLE_GENERATOR);
 		
 		assertNotNull(javaEntity().getTableGenerator());		
@@ -1218,7 +1218,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		javaEntity().addTableGenerator();
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 	
 		assertNotNull(typeResource.getAnnotation(JPA.TABLE_GENERATOR));
 		assertNotNull(javaEntity().getTableGenerator());
@@ -1236,7 +1236,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.addAnnotation(JPA.TABLE_GENERATOR);
 		
 		javaEntity().removeTableGenerator();
@@ -1259,7 +1259,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertNotNull(javaEntity().getDiscriminatorColumn());
 
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) typeResource.addAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		column.setName("foo");
 		
@@ -1282,7 +1282,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertFalse(specifiedPkJoinColumns.hasNext());
 
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 
 		//add an annotation to the resource model and verify the context model is updated
 		PrimaryKeyJoinColumnAnnotation pkJoinColumn = (PrimaryKeyJoinColumnAnnotation) typeResource.addAnnotation(0, JPA.PRIMARY_KEY_JOIN_COLUMN, JPA.PRIMARY_KEY_JOIN_COLUMNS);
@@ -1381,7 +1381,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		javaEntity().addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAR");
 		javaEntity().addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		Iterator<JavaResourceNode> pkJoinColumns = typeResource.annotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME);
 		
 		assertEquals("BAZ", ((PrimaryKeyJoinColumnAnnotation) pkJoinColumns.next()).getName());
@@ -1398,7 +1398,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		javaEntity().addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
 		javaEntity().addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		Iterator<JavaResourceNode> pkJoinColumns = typeResource.annotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME);
 		
 		assertEquals("FOO", ((PrimaryKeyJoinColumnAnnotation) pkJoinColumns.next()).getName());
@@ -1414,7 +1414,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		javaEntity().addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
 		javaEntity().addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertEquals(3, CollectionTools.size(typeResource.annotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME)));
 
@@ -1455,7 +1455,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 
 		entity.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
 		entity.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
@@ -1494,7 +1494,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 	
 		((PrimaryKeyJoinColumnAnnotation) typeResource.addAnnotation(0, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME)).setName("FOO");
 		((PrimaryKeyJoinColumnAnnotation) typeResource.addAnnotation(1, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME)).setName("BAR");
@@ -1641,7 +1641,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 
 		//add an annotation to the resource model and verify the context model is updated
 		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) typeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
@@ -1702,7 +1702,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		classRefs.next();
 		JavaEntity javaEntity = (JavaEntity) classRefs.next().getJavaPersistentType().getMapping();
 
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		assertEquals(SUB_TYPE_NAME, typeResource.getName());
 		assertNull(typeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.getAnnotation(AttributeOverrides.ANNOTATION_NAME));
@@ -1716,7 +1716,7 @@ public class JavaEntityTests extends ContextModelTestCase
 
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 		
-		BasicMapping idMapping = (BasicMapping) mappedSuperclass.getPersistentType().attributeNamed("id").getMapping();
+		BasicMapping idMapping = (BasicMapping) mappedSuperclass.getPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getColumn().setSpecifiedName("FOO");
 		idMapping.getColumn().setSpecifiedTable("BAR");
 		
@@ -1751,7 +1751,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertEquals(0, javaEntity().specifiedAttributeOverridesSize());
 
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 
 		//add an annotation to the resource model and verify the context model is updated
 		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) typeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
@@ -1799,7 +1799,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(3, javaEntity.attributeOverridesSize());
 		
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		AttributeOverrideAnnotation annotation = (AttributeOverrideAnnotation) typeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		annotation.setName("bar");	
 		assertEquals(4, javaEntity.attributeOverridesSize());
@@ -1815,7 +1815,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		javaEntity().virtualAttributeOverrides().next().setVirtual(false);
 		javaEntity().virtualAttributeOverrides().next().setVirtual(false);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		Iterator<JavaResourceNode> attributeOverrides = typeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		
 		assertEquals("id", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
@@ -1835,7 +1835,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		virtualAttributeOverrides.next().setVirtual(false);
 		javaEntity().virtualAttributeOverrides().next().setVirtual(false);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		Iterator<JavaResourceNode> attributeOverrides = typeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		
 		assertEquals("name", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
@@ -1854,7 +1854,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		javaEntity().virtualAttributeOverrides().next().setVirtual(false);
 		javaEntity().virtualAttributeOverrides().next().setVirtual(false);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		assertEquals(3, CollectionTools.size(typeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME)));
 
 		javaEntity().specifiedAttributeOverrides().next().setVirtual(true);
@@ -1902,7 +1902,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		javaEntity().virtualAttributeOverrides().next().setVirtual(false);
 
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		
 		ListIterator<AttributeOverrideAnnotation> javaAttributeOverrides = typeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		assertEquals(3, CollectionTools.size(javaAttributeOverrides));
@@ -1937,7 +1937,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 	
 		((AttributeOverrideAnnotation) typeResource.addAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME)).setName("FOO");
 		((AttributeOverrideAnnotation) typeResource.addAnnotation(1, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME)).setName("BAR");
@@ -2077,7 +2077,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 
 		//add an annotation to the resource model and verify the context model is updated
 		AssociationOverrideAnnotation associationOverride = (AssociationOverrideAnnotation) typeResource.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
@@ -2138,7 +2138,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		classRefs.next();
 		JavaEntity javaEntity = (JavaEntity) classRefs.next().getJavaPersistentType().getMapping();
 
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		assertEquals(SUB_TYPE_NAME, typeResource.getName());
 		assertNull(typeResource.getAnnotation(AssociationOverrideAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.getAnnotation(AssociationOverrides.ANNOTATION_NAME));
@@ -2224,7 +2224,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertEquals(0, javaEntity().specifiedAssociationOverridesSize());
 
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 
 		//add an annotation to the resource model and verify the context model is updated
 		AssociationOverrideAnnotation associationOverride = (AssociationOverrideAnnotation) typeResource.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
@@ -2269,7 +2269,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(2, javaEntity.associationOverridesSize());
 		
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		AssociationOverrideAnnotation annotation = (AssociationOverrideAnnotation) typeResource.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
 		annotation.setName("bar");	
 		assertEquals(3, javaEntity.associationOverridesSize());
@@ -2285,7 +2285,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		javaEntity().virtualAssociationOverrides().next().setVirtual(false);
 		javaEntity().virtualAssociationOverrides().next().setVirtual(false);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		Iterator<JavaResourceNode> associationOverrides = typeResource.annotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
 		
 		assertEquals("address", ((AssociationOverrideAnnotation) associationOverrides.next()).getName());
@@ -2305,7 +2305,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		virtualAssociationOverrides.next().setVirtual(false);
 		javaEntity().virtualAssociationOverrides().next().setVirtual(false);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		Iterator<JavaResourceNode> associationOverrides = typeResource.annotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
 		
 		assertEquals("address2", ((AssociationOverrideAnnotation) associationOverrides.next()).getName());
@@ -2323,7 +2323,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		javaEntity().virtualAssociationOverrides().next().setVirtual(false);
 		javaEntity().virtualAssociationOverrides().next().setVirtual(false);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		assertEquals(2, CollectionTools.size(typeResource.annotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME)));
 
 		javaEntity().specifiedAssociationOverrides().next().setVirtual(true);
@@ -2358,7 +2358,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		javaEntity().virtualAssociationOverrides().next().setVirtual(false);
 
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		
 		ListIterator<AssociationOverrideAnnotation> javaAssociationOverrides = typeResource.annotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
 		assertEquals(2, CollectionTools.size(javaAssociationOverrides));
@@ -2389,7 +2389,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 	
 		((AssociationOverrideAnnotation) typeResource.addAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME)).setName("FOO");
 		((AssociationOverrideAnnotation) typeResource.addAnnotation(1, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME)).setName("BAR");
@@ -2464,7 +2464,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		
 		NamedQuery namedQuery = entity.addNamedQuery(0);
 		namedQuery.setName("FOO");
@@ -2505,7 +2505,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 
 		entity.addNamedQuery(0).setName("FOO");
 		entity.addNamedQuery(1).setName("BAR");
@@ -2537,7 +2537,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 
 		entity.addNamedQuery(0).setName("FOO");
 		
@@ -2554,7 +2554,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 
 		entity.addNamedNativeQuery(0).setName("FOO");
 		
@@ -2571,7 +2571,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 
 		entity.addNamedQuery(0).setName("FOO");
 		entity.addNamedQuery(1).setName("BAR");
@@ -2610,7 +2610,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertEquals(0, CollectionTools.size(entity.getPersistenceUnit().allQueries()));
 		
@@ -2662,7 +2662,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 	
 		assertEquals(0, entity.namedQueriesSize());
 
@@ -2678,7 +2678,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		
 		NamedNativeQuery namedNativeQuery = entity.addNamedNativeQuery(0);
 		namedNativeQuery.setName("FOO");
@@ -2717,7 +2717,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 
 		entity.addNamedNativeQuery(0).setName("FOO");
 		entity.addNamedNativeQuery(1).setName("BAR");
@@ -2749,7 +2749,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 
 		entity.addNamedNativeQuery(0).setName("FOO");
 		entity.addNamedNativeQuery(1).setName("BAR");
@@ -2788,7 +2788,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertEquals(0, CollectionTools.size(entity.getPersistenceUnit().allQueries()));
 		
@@ -2840,7 +2840,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Entity entity = javaEntity();		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 	
 		assertEquals(0, entity.namedNativeQueriesSize());
 
@@ -2855,7 +2855,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 
 		assertNull(javaEntity().getIdClass());
 		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
@@ -2886,7 +2886,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 
 		assertNull(javaEntity().getIdClass());
 		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));

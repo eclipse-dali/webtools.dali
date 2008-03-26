@@ -202,12 +202,12 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		return this.typeMapping;
 	}
 	
-	protected PersistenceUnitMetadata persistenceUnitMetadata() {
+	protected PersistenceUnitMetadata getPersistenceUnitMetadata() {
 		return getEntityMappings().getPersistenceUnitMetadata();
 	}
 
 	protected boolean defaultMetadataComplete() {
-		return persistenceUnitMetadata().isXmlMappingMetadataComplete();
+		return getPersistenceUnitMetadata().isXmlMappingMetadataComplete();
 	}
 
 	protected AccessType defaultAccess() {
@@ -216,8 +216,8 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 				if (getJavaPersistentType().hasAnyAttributeMappingAnnotations()) {
 					return getJavaPersistentType().getAccess();
 				}
-				if (getPersistentType().parentPersistentType() != null) {
-					return getPersistentType().parentPersistentType().getAccess();
+				if (getPersistentType().getParentPersistentType() != null) {
+					return getPersistentType().getParentPersistentType().getAccess();
 				}
 			}
 		}
@@ -235,14 +235,14 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 	}
 	
 	protected void initializeJavaPersistentType() {
-		JavaResourcePersistentType persistentTypeResource = getJpaProject().javaPersistentTypeResource(getClass_());
+		JavaResourcePersistentType persistentTypeResource = getJpaProject().getJavaPersistentTypeResource(getClass_());
 		if (persistentTypeResource != null) {
 			this.javaPersistentType = buildJavaPersistentType(persistentTypeResource);
 		}	
 	}
 
 	protected void updateJavaPersistentType() {
-		JavaResourcePersistentType persistentTypeResource = getJpaProject().javaPersistentTypeResource(getClass_());
+		JavaResourcePersistentType persistentTypeResource = getJpaProject().getJavaPersistentTypeResource(getClass_());
 		if (persistentTypeResource == null) {
 			setJavaPersistentType(null);
 		}
@@ -288,7 +288,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 	
 	// *************************************************************************
 	
-	public JpaStructureNode structureNode(int offset) {
+	public JpaStructureNode getStructureNode(int offset) {
 		if (this.typeMapping.containsOffset(offset)) {
 			return getPersistentType();
 		}
@@ -299,12 +299,12 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		return this.typeMapping.getSelectionTextRange();
 	}
 	
-	public TextRange classTextRange() {
-		return this.typeMapping.classTextRange();
+	public TextRange getClassTextRange() {
+		return this.typeMapping.getClassTextRange();
 	}
 	
 	public TextRange getAttributesTextRange() {
-		return this.typeMapping.attributesTextRange();
+		return this.typeMapping.getAttributesTextRange();
 	}
 
 	public boolean containsOffset(int textOffset) {
@@ -332,7 +332,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CLASS,
 					this, 
-					this.classTextRange())
+					this.getClassTextRange())
 			);
 		}
 	}
@@ -346,7 +346,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 					JpaValidationMessages.PERSISTENT_TYPE_UNRESOLVED_CLASS,
 					new String[] {getClass_()},
 					this, 
-					this.classTextRange())
+					this.getClassTextRange())
 			);
 		}
 	}

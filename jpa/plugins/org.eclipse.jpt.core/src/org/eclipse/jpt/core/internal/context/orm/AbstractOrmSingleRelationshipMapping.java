@@ -121,7 +121,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 		XmlJoinColumn xmlJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumnImpl();
 		OrmJoinColumn joinColumn = buildJoinColumn(xmlJoinColumn);
 		this.specifiedJoinColumns.add(index, joinColumn);
-		this.attributeMapping().getJoinColumns().add(index, xmlJoinColumn);
+		this.getAttributeMapping().getJoinColumns().add(index, xmlJoinColumn);
 		this.fireItemAdded(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		if (oldDefaultJoinColumn != null) {
 			this.firePropertyChanged(SingleRelationshipMapping.DEFAULT_JOIN_COLUMN, oldDefaultJoinColumn, null);
@@ -145,7 +145,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 			//in the UI because the change notifications end up in the wrong order.
 			this.defaultJoinColumn = buildJoinColumn(null);
 		}
-		this.attributeMapping().getJoinColumns().remove(index);
+		this.getAttributeMapping().getJoinColumns().remove(index);
 		fireItemRemoved(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 		if (this.defaultJoinColumn != null) {
 			//fire change notification if a defaultJoinColumn was created above
@@ -159,7 +159,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedJoinColumns, targetIndex, sourceIndex);
-		this.attributeMapping().getJoinColumns().move(targetIndex, sourceIndex);
+		this.getAttributeMapping().getJoinColumns().move(targetIndex, sourceIndex);
 		fireItemMoved(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 
@@ -178,7 +178,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	public void setSpecifiedOptional(Boolean newSpecifiedOptional) {
 		Boolean oldSpecifiedOptional = this.specifiedOptional;
 		this.specifiedOptional = newSpecifiedOptional;
-		attributeMapping().setOptional(newSpecifiedOptional);
+		getAttributeMapping().setOptional(newSpecifiedOptional);
 		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldSpecifiedOptional, newSpecifiedOptional);
 	}
 	
@@ -380,7 +380,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 		/**
 		 * by default, the join column is in the type mapping's primary table
 		 */
-		public String defaultTableName() {
+		public String getDefaultTableName() {
 			return AbstractOrmSingleRelationshipMapping.this.getTypeMapping().getTableName();
 		}
 
@@ -415,7 +415,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 			return getTypeMapping().getDbTable(tableName);
 		}
 
-		public Table dbReferencedColumnTable() {
+		public Table getDbReferencedColumnTable() {
 			Entity targetEntity = getTargetEntity();
 			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
 		}

@@ -127,7 +127,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		
 		assertEquals("foo", javaEntity().getDiscriminatorColumn().getSpecifiedName());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		DiscriminatorColumnAnnotation discriminatorColumn = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		
 		assertEquals("foo", discriminatorColumn.getName());
@@ -141,7 +141,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		
 		assertNull(javaEntity().getDiscriminatorColumn().getSpecifiedName());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		DiscriminatorColumnAnnotation discriminatorColumn = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 	
 		assertNull(discriminatorColumn);
@@ -171,7 +171,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		assertNull(javaEntity().getDiscriminatorColumn().getSpecifiedDiscriminatorType());
 		
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		DiscriminatorColumnAnnotation discriminatorColumn = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		discriminatorColumn.setDiscriminatorType(org.eclipse.jpt.core.resource.java.DiscriminatorType.CHAR);
 		
@@ -186,7 +186,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		
 		javaEntity().getDiscriminatorColumn().setSpecifiedDiscriminatorType(DiscriminatorType.CHAR);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		DiscriminatorColumnAnnotation discriminatorColumn = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		
 		assertEquals(org.eclipse.jpt.core.resource.java.DiscriminatorType.CHAR, discriminatorColumn.getDiscriminatorType());
@@ -202,7 +202,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 
 		assertNull(javaEntity().getDiscriminatorColumn().getSpecifiedDiscriminatorType());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) typeResource.addAnnotation(JPA.DISCRIMINATOR_COLUMN);
 
 		column.setDiscriminatorType(org.eclipse.jpt.core.resource.java.DiscriminatorType.INTEGER);
@@ -239,7 +239,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 
 		assertNull(javaEntity().getDiscriminatorColumn().getSpecifiedLength());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		DiscriminatorColumnAnnotation discriminatorColumn = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		discriminatorColumn.setLength(Integer.valueOf(66));
 		
@@ -260,7 +260,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		
 		javaEntity().getDiscriminatorColumn().setSpecifiedLength(Integer.valueOf(100));
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		DiscriminatorColumnAnnotation discriminatorColumn = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		
 		assertEquals(Integer.valueOf(100), discriminatorColumn.getLength());
@@ -276,7 +276,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 
 		assertNull(javaEntity().getDiscriminatorColumn().getSpecifiedLength());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) typeResource.addAnnotation(JPA.DISCRIMINATOR_COLUMN);
 
 		column.setLength(Integer.valueOf(78));
@@ -295,7 +295,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		
 		assertNull(javaEntity().getDiscriminatorColumn().getColumnDefinition());
 
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		column.setColumnDefinition(COLUMN_DEFINITION);
 		
@@ -314,7 +314,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		
 		javaEntity().getDiscriminatorColumn().setColumnDefinition("foo");
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		
 		assertEquals("foo", column.getColumnDefinition());

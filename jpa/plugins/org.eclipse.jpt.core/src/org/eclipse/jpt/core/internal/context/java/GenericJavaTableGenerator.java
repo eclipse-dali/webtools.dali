@@ -52,8 +52,8 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 	}
 
 	@Override
-	protected TableGeneratorAnnotation generatorResource() {
-		return (TableGeneratorAnnotation) super.generatorResource();
+	protected TableGeneratorAnnotation getGeneratorResource() {
+		return (TableGeneratorAnnotation) super.getGeneratorResource();
 	}
 	
 	public void initializeFromResource(TableGeneratorAnnotation tableGenerator) {
@@ -82,7 +82,7 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 	public void setSpecifiedTable(String newSpecifiedTable) {
 		String oldSpecifiedTable = this.specifiedTable;
 		this.specifiedTable = newSpecifiedTable;
-		generatorResource().setTable(newSpecifiedTable);
+		getGeneratorResource().setTable(newSpecifiedTable);
 		firePropertyChanged(SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
 	}
 
@@ -107,7 +107,7 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 	public void setSpecifiedCatalog(String newSpecifiedCatalog) {
 		String oldSpecifiedCatalog = this.specifiedCatalog;
 		this.specifiedCatalog = newSpecifiedCatalog;
-		generatorResource().setCatalog(newSpecifiedCatalog);
+		getGeneratorResource().setCatalog(newSpecifiedCatalog);
 		firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
 	}
 	
@@ -132,7 +132,7 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 	public void setSpecifiedSchema(String newSpecifiedSchema) {
 		String oldSpecifiedSchema = this.specifiedSchema;
 		this.specifiedSchema = newSpecifiedSchema;
-		generatorResource().setSchema(newSpecifiedSchema);
+		getGeneratorResource().setSchema(newSpecifiedSchema);
 		firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
 	}
 
@@ -163,7 +163,7 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 	public void setSpecifiedPkColumnName(String newSpecifiedPkColumnName) {
 		String oldSpecifiedPkColumnName = this.specifiedPkColumnName;
 		this.specifiedPkColumnName = newSpecifiedPkColumnName;
-		generatorResource().setPkColumnName(newSpecifiedPkColumnName);
+		getGeneratorResource().setPkColumnName(newSpecifiedPkColumnName);
 		firePropertyChanged(SPECIFIED_PK_COLUMN_NAME_PROPERTY, oldSpecifiedPkColumnName, newSpecifiedPkColumnName);
 	}
 
@@ -188,7 +188,7 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 	public void setSpecifiedValueColumnName(String newSpecifiedValueColumnName) {
 		String oldSpecifiedValueColumnName = this.specifiedValueColumnName;
 		this.specifiedValueColumnName = newSpecifiedValueColumnName;
-		generatorResource().setValueColumnName(newSpecifiedValueColumnName);
+		getGeneratorResource().setValueColumnName(newSpecifiedValueColumnName);
 		firePropertyChanged(SPECIFIED_VALUE_COLUMN_NAME_PROPERTY, oldSpecifiedValueColumnName, newSpecifiedValueColumnName);
 	}
 
@@ -213,7 +213,7 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 	public void setSpecifiedPkColumnValue(String newSpecifiedPkColumnValue) {
 		String oldSpecifiedPkColumnValue = this.specifiedPkColumnValue;
 		this.specifiedPkColumnValue = newSpecifiedPkColumnValue;
-		generatorResource().setPkColumnValue(newSpecifiedPkColumnValue);
+		getGeneratorResource().setPkColumnValue(newSpecifiedPkColumnValue);
 		firePropertyChanged(SPECIFIED_PK_COLUMN_VALUE_PROPERTY, oldSpecifiedPkColumnValue, newSpecifiedPkColumnValue);
 	}
 

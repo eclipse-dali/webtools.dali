@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.BaseOverride;
@@ -23,10 +22,10 @@ import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaBaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.resource.java.NullColumn;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverrides;
@@ -69,8 +68,8 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	
 	//****************** AttributeOverride.Owner implemenation *******************
 	
-	public ColumnMapping columnMapping(String attributeName) {
-		return AbstractJavaBaseEmbeddedMapping.columnMapping(attributeName, embeddable());
+	public ColumnMapping getColumnMapping(String attributeName) {
+		return MappingTools.getColumnMapping(attributeName, embeddable());
 	}
 
 	public boolean isVirtual(BaseOverride override) {
@@ -227,7 +226,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 		super.initializeFromResource(resourcePersistentAttribute);
 		this.initializeAttributeOverrides(resourcePersistentAttribute);
 		this.initializeDefaultAttributeOverrides(resourcePersistentAttribute);
-		this.embeddable = embeddableFor(getPersistentAttribute());
+		this.embeddable = MappingTools.getEmbeddableFor(getPersistentAttribute());
 	}
 	
 	protected void initializeAttributeOverrides(JavaResourcePersistentAttribute resourcePersistentAttribute) {
@@ -251,7 +250,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	}	@Override
 	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super.update(resourcePersistentAttribute);
-		this.embeddable = embeddableFor(getPersistentAttribute());
+		this.embeddable = MappingTools.getEmbeddableFor(getPersistentAttribute());
 		this.updateSpecifiedAttributeOverrides(resourcePersistentAttribute);
 		this.updateVirtualAttributeOverrides(resourcePersistentAttribute);
 		
@@ -286,7 +285,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	}
 
 	protected VirtualAttributeOverride buildVirtualAttributeOverrideResource(JavaResourcePersistentAttribute resourcePersistentAttribute, String attributeName) {
-		ColumnMapping columnMapping = (ColumnMapping) this.embeddable().getPersistentType().attributeNamed(attributeName).getMapping();
+		ColumnMapping columnMapping = (ColumnMapping) this.embeddable().getPersistentType().getAttributeNamed(attributeName).getMapping();
 		return new VirtualAttributeOverride(resourcePersistentAttribute, attributeName, columnMapping.getColumn());
 	}
 
@@ -359,37 +358,5 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 		for (Iterator<JavaAttributeOverride> stream = attributeOverrides(); stream.hasNext();) {
 			stream.next().addToMessages(messages, astRoot);
 		}
-	}
-	
-	
-	//******* static methods *********
-	
-	public static Embeddable embeddableFor(JavaPersistentAttribute persistentAttribute) {
-		String qualifiedTypeName = persistentAttribute.getResourcePersistentAttribute().getQualifiedTypeName();
-		if (qualifiedTypeName == null) {
-			return null;
-		}
-		PersistentType persistentType = persistentAttribute.getPersistenceUnit().persistentType(qualifiedTypeName);
-		if (persistentType != null) {
-			if (persistentType.getMappingKey() == MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
-				return (Embeddable) persistentType.getMapping();
-			}
-		}
-		return null;
-	}
-	
-	public static ColumnMapping columnMapping(String attributeName, Embeddable embeddable) {
-		if (attributeName == null || embeddable == null) {
-			return null;
-		}
-		for (Iterator<PersistentAttribute> stream = embeddable.getPersistentType().allAttributes(); stream.hasNext();) {
-			PersistentAttribute persAttribute = stream.next();
-			if (attributeName.equals(persAttribute.getName())) {
-				if (persAttribute.getMapping() instanceof ColumnMapping) {
-					return (ColumnMapping) persAttribute.getMapping();
-				}
-			}
-		}
-		return null;		
 	}
 }

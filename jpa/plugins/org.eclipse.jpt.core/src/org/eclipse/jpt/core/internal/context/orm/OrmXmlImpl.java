@@ -42,9 +42,9 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 		return null;
 	}
 	
-	public OrmPersistentType persistentTypeFor(String fullyQualifiedTypeName) {
+	public OrmPersistentType getPersistentType(String fullyQualifiedTypeName) {
 		if (getEntityMappings() != null) {
-			return getEntityMappings().persistentTypeFor(fullyQualifiedTypeName);
+			return getEntityMappings().getPersistentType(fullyQualifiedTypeName);
 		}
 		return null;
 	}
@@ -129,9 +129,9 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 	
 	// *************************************************************************
 	
-	public JpaStructureNode structureNode(int textOffset) {
+	public JpaStructureNode getStructureNode(int textOffset) {
 		if (entityMappings.containsOffset(textOffset)) {
-			return entityMappings.structureNode(textOffset);
+			return entityMappings.getStructureNode(textOffset);
 		}
 		return this;
 	}

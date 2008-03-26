@@ -96,7 +96,7 @@ public class TextEditorSelectionParticipant
 			return JpaSelection.NULL_SELECTION;
 		}
 
-		JpaStructureNode selectedNode = jpaFile.structureNode(((ITextSelection) selection).getOffset());
+		JpaStructureNode selectedNode = jpaFile.getStructureNode(((ITextSelection) selection).getOffset());
 		if (selectedNode == null) {
 			return JpaSelection.NULL_SELECTION;
 		}
@@ -109,7 +109,7 @@ public class TextEditorSelectionParticipant
 		if ( ! (input instanceof IFileEditorInput)) {
 			return null;
 		}
-		return JptCorePlugin.jpaFile(((IFileEditorInput) input).getFile());
+		return JptCorePlugin.getJpaFile(((IFileEditorInput) input).getFile());
 	}
 
 	private IPostSelectionProvider postSelectionProvider() {

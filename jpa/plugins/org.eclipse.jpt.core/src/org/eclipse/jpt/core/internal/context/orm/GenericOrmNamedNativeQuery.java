@@ -35,7 +35,7 @@ public class GenericOrmNamedNativeQuery extends AbstractOrmQuery<XmlNamedNativeQ
 	public void setResultClass(String newResultClass) {
 		String oldResultClass = this.resultClass;
 		this.resultClass = newResultClass;
-		queryResource().setResultClass(newResultClass);
+		getQueryResource().setResultClass(newResultClass);
 		firePropertyChanged(NamedNativeQuery.RESULT_CLASS_PROPERTY, oldResultClass, newResultClass);
 	}
 
@@ -46,7 +46,7 @@ public class GenericOrmNamedNativeQuery extends AbstractOrmQuery<XmlNamedNativeQ
 	public void setResultSetMapping(String newResultSetMapping) {
 		String oldResultSetMapping = this.resultSetMapping;
 		this.resultSetMapping = newResultSetMapping;
-		queryResource().setResultSetMapping(newResultSetMapping);
+		getQueryResource().setResultSetMapping(newResultSetMapping);
 		firePropertyChanged(NamedNativeQuery.RESULT_SET_MAPPING_PROPERTY, oldResultSetMapping, newResultSetMapping);
 	}
 

@@ -14,8 +14,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
-import org.eclipse.jpt.core.internal.context.RelationshipMappingTools;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinColumn;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -67,7 +67,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	//******************* AbstractJavaTable implementation *****************
 
 	@Override
-	protected String annotationName() {
+	protected String getAnnotationName() {
 		return JoinTableAnnotation.ANNOTATION_NAME;
 	}
 	
@@ -80,12 +80,12 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	 */
 	@Override
 	protected String defaultName() {
-		return RelationshipMappingTools.buildJoinTableDefaultName(relationshipMapping());
+		return MappingTools.buildJoinTableDefaultName(getRelationshipMapping());
 	}
 
 	@Override
 	protected String defaultCatalog() {
-		if (!relationshipMapping().isRelationshipOwner()) {
+		if (!getRelationshipMapping().isRelationshipOwner()) {
 			return null;
 		}
 		return super.defaultCatalog();
@@ -93,14 +93,14 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	
 	@Override
 	protected String defaultSchema() {
-		if (!relationshipMapping().isRelationshipOwner()) {
+		if (!getRelationshipMapping().isRelationshipOwner()) {
 			return null;
 		}
 		return super.defaultSchema();
 	}
 	
 	@Override
-	protected JoinTableAnnotation tableResource() {
+	protected JoinTableAnnotation getTableResource() {
 		return (JoinTableAnnotation) this.attributeResource.getNonNullAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 	
@@ -108,7 +108,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	 * Return the join table java resource, null if the annotation does not exist.
 	 * Use tableResource() if you want a non null implementation
 	 */
-	protected JoinTableAnnotation joinTableResource() {
+	protected JoinTableAnnotation getJoinTableResource() {
 		return (JoinTableAnnotation) this.attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 	
@@ -169,7 +169,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			//cause change notifications to be sent to the UI in the wrong order
 			this.defaultJoinColumn = null;
 		}
-		if (joinTableResource() == null) {
+		if (getJoinTableResource() == null) {
 			//Add the JoinTable before creating the specifiedJoinColumn.
 			//Otherwise we will remove it and create another during an update
 			//from the java resource model
@@ -177,7 +177,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		}
 		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
-		JoinColumnAnnotation joinColumnResource = this.tableResource().addJoinColumn(index);
+		JoinColumnAnnotation joinColumnResource = this.getTableResource().addJoinColumn(index);
 		joinColumn.initializeFromResource(joinColumnResource);
 		this.fireItemAdded(JoinTable.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		if (oldDefaultJoinColumn != null) {
@@ -200,9 +200,9 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			//create the defaultJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
-			this.defaultJoinColumn = buildJoinColumn(new NullJoinColumn(tableResource()));
+			this.defaultJoinColumn = buildJoinColumn(new NullJoinColumn(getTableResource()));
 		}
-		this.tableResource().removeJoinColumn(index);
+		this.getTableResource().removeJoinColumn(index);
 		fireItemRemoved(JoinTable.SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 		if (this.defaultJoinColumn != null) {
 			//fire change notification if a defaultJoinColumn was created above
@@ -216,7 +216,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedJoinColumns, targetIndex, sourceIndex);
-		this.tableResource().moveJoinColumn(targetIndex, sourceIndex);
+		this.getTableResource().moveJoinColumn(targetIndex, sourceIndex);
 		fireItemMoved(JoinTable.SPECIFIED_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 
@@ -270,7 +270,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			//cause change notifications to be sent to the UI in the wrong order
 			this.defaultInverseJoinColumn = null;
 		}
-		if (joinTableResource() == null) {
+		if (getJoinTableResource() == null) {
 			//Add the JoinTable before creating the specifiedJoinColumn.
 			//Otherwise we will remove it and create another during an update
 			//from the java resource model
@@ -278,7 +278,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		}
 		JavaJoinColumn inverseJoinColumn = getJpaFactory().buildJavaJoinColumn(this, createInverseJoinColumnOwner());
 		this.specifiedInverseJoinColumns.add(index, inverseJoinColumn);
-		JoinColumnAnnotation joinColumnResource = this.tableResource().addInverseJoinColumn(index);
+		JoinColumnAnnotation joinColumnResource = this.getTableResource().addInverseJoinColumn(index);
 		inverseJoinColumn.initializeFromResource(joinColumnResource);
 		this.fireItemAdded(JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, index, inverseJoinColumn);
 		if (oldDefaultInverseJoinColumn != null) {
@@ -301,9 +301,9 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			//create the defaultJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
-			this.defaultInverseJoinColumn = buildInverseJoinColumn(new NullJoinColumn(tableResource()));
+			this.defaultInverseJoinColumn = buildInverseJoinColumn(new NullJoinColumn(getTableResource()));
 		}
-		this.tableResource().removeInverseJoinColumn(index);
+		this.getTableResource().removeInverseJoinColumn(index);
 		fireItemRemoved(JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 		if (this.defaultInverseJoinColumn != null) {
 			//fire change notification if a defaultJoinColumn was created above
@@ -317,17 +317,17 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	
 	public void moveSpecifiedInverseJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedInverseJoinColumns, targetIndex, sourceIndex);
-		this.tableResource().moveInverseJoinColumn(targetIndex, sourceIndex);
+		this.getTableResource().moveInverseJoinColumn(targetIndex, sourceIndex);
 		fireItemMoved(JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 
 
-	public RelationshipMapping relationshipMapping() {
+	public RelationshipMapping getRelationshipMapping() {
 		return this.getParent();
 	}
 
 	public boolean isSpecified() {
-		return joinTableResource() != null;
+		return getJoinTableResource() != null;
 	}
 
 	@Override
@@ -361,7 +361,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 
 	public void initializeFromResource(JavaResourcePersistentAttribute attributeResource) {
 		this.attributeResource = attributeResource;
-		JoinTableAnnotation joinTable = tableResource();
+		JoinTableAnnotation joinTable = getTableResource();
 		this.initializeFromResource(joinTable);
 		this.initializeSpecifiedJoinColumns(joinTable);
 		this.initializeDefaultJoinColumn(joinTable);
@@ -378,7 +378,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	}
 	
 	protected boolean shouldBuildDefaultJoinColumn() {
-		return !containsSpecifiedJoinColumns() && relationshipMapping().isRelationshipOwner();
+		return !containsSpecifiedJoinColumns() && getRelationshipMapping().isRelationshipOwner();
 	}
 	
 	protected void initializeDefaultJoinColumn(JoinTableAnnotation joinTable) {
@@ -397,7 +397,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	}
 	
 	protected boolean shouldBuildDefaultInverseJoinColumn() {
-		return !containsSpecifiedInverseJoinColumns() && relationshipMapping().isRelationshipOwner();
+		return !containsSpecifiedInverseJoinColumns() && getRelationshipMapping().isRelationshipOwner();
 	}
 	
 	protected void initializeDefaultInverseJoinColumn(JoinTableAnnotation joinTable) {
@@ -409,7 +409,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		
 	public void update(JavaResourcePersistentAttribute attributeResource) {
 		this.attributeResource = attributeResource;
-		JoinTableAnnotation joinTable = tableResource();
+		JoinTableAnnotation joinTable = getTableResource();
 		this.update(joinTable);
 		this.updateSpecifiedJoinColumns(joinTable);
 		this.updateDefaultJoinColumn(joinTable);
@@ -509,7 +509,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
 						new String[] {schema, getName()}, 
 						this, 
-						schemaTextRange(astRoot))
+						getSchemaTextRange(astRoot))
 				);
 			doContinue = false;
 		}
@@ -521,7 +521,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
 						new String[] {getName()}, 
 						this, 
-						nameTextRange(astRoot))
+						getNameTextRange(astRoot))
 				);
 			doContinue = false;
 		}
@@ -589,7 +589,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		}
 		
 		public RelationshipMapping getRelationshipMapping() {
-			return GenericJavaJoinTable.this.relationshipMapping();
+			return GenericJavaJoinTable.this.getRelationshipMapping();
 		}
 
 		/**
@@ -618,7 +618,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		 * by default, the join column is, obviously, in the join table;
 		 * not sure whether it can be anywhere else...
 		 */
-		public String defaultTableName() {
+		public String getDefaultTableName() {
 			return GenericJavaJoinTable.this.getName();
 		}
 		
@@ -639,11 +639,11 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		}
 
 		public Entity getTargetEntity() {
-			return GenericJavaJoinTable.this.relationshipMapping().getResolvedTargetEntity();
+			return GenericJavaJoinTable.this.getRelationshipMapping().getResolvedTargetEntity();
 		}
 
 		public String getAttributeName() {
-			return GenericJavaJoinTable.this.relationshipMapping().getPersistentAttribute().getName();
+			return GenericJavaJoinTable.this.getRelationshipMapping().getPersistentAttribute().getName();
 		}
 
 		@Override
@@ -656,7 +656,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			return (targetEntity == null) ? null : targetEntity.getDbTable(tableName);
 		}
 
-		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
+		public org.eclipse.jpt.db.Table getDbReferencedColumnTable() {
 			Entity targetEntity = getTargetEntity();
 			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
 		}
@@ -687,15 +687,15 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		}
 
 		public Entity getTargetEntity() {
-			return GenericJavaJoinTable.this.relationshipMapping().getEntity();
+			return GenericJavaJoinTable.this.getRelationshipMapping().getEntity();
 		}
 
 		public String getAttributeName() {
-			Entity targetEntity = GenericJavaJoinTable.this.relationshipMapping().getResolvedTargetEntity();
+			Entity targetEntity = GenericJavaJoinTable.this.getRelationshipMapping().getResolvedTargetEntity();
 			if (targetEntity == null) {
 				return null;
 			}
-			String attributeName = GenericJavaJoinTable.this.relationshipMapping().getPersistentAttribute().getName();
+			String attributeName = GenericJavaJoinTable.this.getRelationshipMapping().getPersistentAttribute().getName();
 			for (Iterator<PersistentAttribute> stream = targetEntity.getPersistentType().allAttributes(); stream.hasNext();) {
 				PersistentAttribute attribute = stream.next();
 				AttributeMapping mapping = attribute.getMapping();
@@ -718,7 +718,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			return getTypeMapping().getDbTable(tableName);
 		}
 
-		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
+		public org.eclipse.jpt.db.Table getDbReferencedColumnTable() {
 			return getTypeMapping().getPrimaryDbTable();
 		}
 		

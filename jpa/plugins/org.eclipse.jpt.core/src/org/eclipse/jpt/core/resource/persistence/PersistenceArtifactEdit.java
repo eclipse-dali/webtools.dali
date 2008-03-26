@@ -103,7 +103,7 @@ public class PersistenceArtifactEdit extends JpaArtifactEdit
 	 * Return a persistence resource for the default deploy location
 	 */
 	public PersistenceResource getResource() {
-		return getResource(JptCorePlugin.persistenceXmlDeploymentURI(getProject()));
+		return getResource(JptCorePlugin.getPersistenceXmlDeploymentURI(getProject()));
 	}
 	
 	/**

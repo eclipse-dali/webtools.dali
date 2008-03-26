@@ -279,7 +279,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		return this.jpaFiles.size();
 	}
 
-	public JpaFile jpaFile(IFile file) {
+	public JpaFile getJpaFile(IFile file) {
 		synchronized (this.jpaFiles) {
 			for (JpaFile jpaFile : this.jpaFiles) {
 				if (jpaFile.getFile().equals(file)) {
@@ -342,7 +342,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	}
 
 	protected boolean containsJpaFile(IFile file) {
-		return (this.jpaFile(file) != null);
+		return (this.getJpaFile(file) != null);
 	}
 
 
@@ -404,7 +404,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	}
 
 	// look for binary stuff here...
-	public JavaResourcePersistentType javaPersistentTypeResource(String typeName) {
+	public JavaResourcePersistentType getJavaPersistentTypeResource(String typeName) {
 		for (JpaCompilationUnit jpCompilationUnitResource : CollectionTools.iterable(this.jpaCompilationUnitResources())) {
 			JavaResourcePersistentType jptr =  jpCompilationUnitResource.getJavaPersistentTypeResource(typeName);
 			if (jptr != null) {
@@ -557,7 +557,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 				}
 				break;
 			case IResourceDelta.REMOVED :
-				JpaFile jpaFile = this.jpaFile(file);
+				JpaFile jpaFile = this.getJpaFile(file);
 				if (jpaFile != null) {
 					this.removeJpaFile(jpaFile);
 				}

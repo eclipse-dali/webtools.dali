@@ -115,7 +115,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	protected OrmResource ormResource() {
-		return this.ormArtifactEdit.getResource(JptCorePlugin.ormXmlDeploymentURI(jpaProject().getProject()));
+		return this.ormArtifactEdit.getResource(JptCorePlugin.getOrmXmlDeploymentURI(jpaProject().getProject()));
 	}
 	
 	protected XmlPersistence xmlPersistence() {

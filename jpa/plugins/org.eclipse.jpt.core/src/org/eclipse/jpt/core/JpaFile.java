@@ -42,7 +42,7 @@ public interface JpaFile extends JpaNode
 	/**
 	 * Return the structure node best represented by the location in the file
 	 */
-	JpaStructureNode structureNode(int textOffset);
+	JpaStructureNode getStructureNode(int textOffset);
 
 	/**
 	 * Forward the Java element changed event to the JPA file's content.

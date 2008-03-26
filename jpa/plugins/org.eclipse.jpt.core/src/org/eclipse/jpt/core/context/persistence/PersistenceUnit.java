@@ -456,10 +456,10 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	// *************************************************************************
 	
 	/**
-	 * Return the IPersistentType specified in this PersistenceUnit with the given
+	 * Return the PersistentType specified in this PersistenceUnit with the given
 	 * fully qualified type name
 	 */
-	PersistentType persistentType(String fullyQualifiedTypeName);
+	PersistentType getPersistentType(String fullyQualifiedTypeName);
 	
 	/**
 	 * Return whether the text representation of this persistence unit contains

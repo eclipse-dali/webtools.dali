@@ -44,12 +44,12 @@ public class JpaFileAdapterFactory
 		}
 		
 		IFile file = ((IFileEditorInput) editorInput).getFile();
-		JpaProject jpaProject = JptCorePlugin.jpaProject(file.getProject());
+		JpaProject jpaProject = JptCorePlugin.getJpaProject(file.getProject());
 		
 		if (jpaProject == null) {
 			return null;
 		}
 		
-		return jpaProject.jpaFile(file);
+		return jpaProject.getJpaFile(file);
 	}
 }

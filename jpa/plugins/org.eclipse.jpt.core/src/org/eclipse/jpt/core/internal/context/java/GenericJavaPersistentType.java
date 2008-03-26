@@ -141,7 +141,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		};
 	}
 
-	public JavaPersistentAttribute attributeNamed(String attributeName) {
+	public JavaPersistentAttribute getAttributeNamed(String attributeName) {
 		Iterator<JavaPersistentAttribute> stream = attributesNamed(attributeName);
 		return (stream.hasNext()) ? stream.next() : null;
 	}
@@ -152,7 +152,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 			JavaPersistentAttribute attribute = stream.next();
 			return (stream.hasNext()) ? null /*more than one*/: attribute;
 		}
-		return (parentPersistentType() == null) ? null : parentPersistentType().resolveAttribute(attributeName);
+		return (getParentPersistentType() == null) ? null : getParentPersistentType().resolveAttribute(attributeName);
 	}
 	
 	public ListIterator<JavaPersistentAttribute> attributes() {
@@ -216,7 +216,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		return EmptyIterator.instance();
 	}
 	
-	public JpaStructureNode structureNode(int offset) {
+	public JpaStructureNode getStructureNode(int offset) {
 		//TODO astRoot, possibly get this instead of rebuilding it
 		CompilationUnit astRoot = this.resourcePersistentType.getMember().getAstRoot(); 
 		
@@ -231,7 +231,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 
 	public boolean contains(int offset, CompilationUnit astRoot) {
-		TextRange fullTextRange = this.fullTextRange(astRoot);
+		TextRange fullTextRange = this.getFullTextRange(astRoot);
 		if (fullTextRange == null) {
 			//This happens if the attribute no longer exists in the java.
 			//The text selection event is fired before the update from java so our
@@ -245,20 +245,20 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 
 
-	public TextRange fullTextRange(CompilationUnit astRoot) {
+	public TextRange getFullTextRange(CompilationUnit astRoot) {
 		return this.resourcePersistentType.getTextRange(astRoot);
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.selectionTextRange(astRoot);
+		return this.getSelectionTextRange(astRoot);
 	}
 
-	public TextRange selectionTextRange(CompilationUnit astRoot) {
+	public TextRange getSelectionTextRange(CompilationUnit astRoot) {
 		return this.resourcePersistentType.getNameTextRange(astRoot);
 	}
 	
 	public TextRange getSelectionTextRange() {
-		return this.selectionTextRange(this.resourcePersistentType.getMember().getAstRoot());
+		return this.getSelectionTextRange(this.resourcePersistentType.getMember().getAstRoot());
 	}
 	
 	
@@ -267,12 +267,12 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		return new ChainIterator<PersistentType>(this) {
 			@Override
 			protected PersistentType nextLink(PersistentType pt) {
-				return pt.parentPersistentType();
+				return pt.getParentPersistentType();
 			}
 		};
 	}
 
-	public PersistentType parentPersistentType() {
+	public PersistentType getParentPersistentType() {
 		return this.parentPersistentType;
 	}
 
@@ -343,8 +343,8 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 			javaAccess = AccessType.fromJavaResourceModel(resourcePersistentType.getAccess());
 		}
 		if (javaAccess == null) {
-			if (parentPersistentType() != null) {
-				javaAccess = parentPersistentType().getAccess();
+			if (getParentPersistentType() != null) {
+				javaAccess = getParentPersistentType().getAccess();
 			}
 		}
 		if (javaAccess == null) {
@@ -446,7 +446,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		if (possibleParent.isMapped()) {
 			return possibleParent;
 		}
-		return possibleParent.parentPersistentType();
+		return possibleParent.getParentPersistentType();
 	}
 
 	/**
@@ -455,19 +455,19 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	 * If it is not found then find the JavaPersistentTypeResource and look for its parent type
 	 */
 	protected PersistentType possibleParent(String fullyQualifiedTypeName) {
-		PersistentType possibleParent = persistentType(fullyQualifiedTypeName);
+		PersistentType possibleParent = getPersistentType(fullyQualifiedTypeName);
 		if (possibleParent != null) {
 			return possibleParent;
 		}
-		JavaResourcePersistentType resourcePersistentType = getJpaProject().javaPersistentTypeResource(fullyQualifiedTypeName);
+		JavaResourcePersistentType resourcePersistentType = getJpaProject().getJavaPersistentTypeResource(fullyQualifiedTypeName);
 		if (resourcePersistentType != null) {
 			return possibleParent(resourcePersistentType.getSuperClassQualifiedName());
 		}
 		return null;		
 	}
 	
-	protected PersistentType persistentType(String fullyQualifiedTypeName) {
-		return getPersistenceUnit().persistentType(fullyQualifiedTypeName);
+	protected PersistentType getPersistentType(String fullyQualifiedTypeName) {
+		return getPersistenceUnit().getPersistentType(fullyQualifiedTypeName);
 	}
 
 	//*************** Validation ******************************************

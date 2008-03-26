@@ -261,20 +261,20 @@ public interface Entity extends TypeMapping, GeneratorHolder, QueryHolder, IdCla
 	 * Non-entities in the hierarchy should be ignored, ie skip
 	 * over them in the search for the root. 
 	 */
-	Entity rootEntity();
+	Entity getRootEntity();
 
 	/**
 	 * The first parent in the class hierarchy that is an entity. 
 	 * This is the parent in the entity (persistent) inheritance hierarchy
 	 * (vs class inheritance hierarchy)
 	 */
-	Entity parentEntity();
+	Entity getParentEntity();
 
 	/**
 	 * Return the name of the entity's primary key column.
 	 * Return null if the entity's primary key is "compound"
 	 * (i.e. the primary key is composed of multiple columns).
 	 */
-	String primaryKeyColumnName();
+	String getPrimaryKeyColumnName();
 
 }

@@ -91,7 +91,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	public void setTemporal(TemporalType newTemporal) {
 		TemporalType oldTemporal = this.temporal;
 		this.temporal = newTemporal;
-		this.attributeMapping().setTemporal(TemporalType.toOrmResourceModel(newTemporal));
+		this.getAttributeMapping().setTemporal(TemporalType.toOrmResourceModel(newTemporal));
 		firePropertyChanged(ColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 	
@@ -106,7 +106,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 			throw new IllegalStateException("gemeratedValue already exists");
 		}
 		this.generatedValue = getJpaFactory().buildOrmGeneratedValue(this);
-		this.attributeMapping().setGeneratedValue(OrmFactory.eINSTANCE.createXmlGeneratedValueImpl());
+		this.getAttributeMapping().setGeneratedValue(OrmFactory.eINSTANCE.createXmlGeneratedValueImpl());
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, null, this.generatedValue);
 		return this.generatedValue;
 	}
@@ -117,7 +117,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		}
 		OrmGeneratedValue oldGeneratedValue = this.generatedValue;
 		this.generatedValue = null;
-		this.attributeMapping().setGeneratedValue(null);
+		this.getAttributeMapping().setGeneratedValue(null);
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, oldGeneratedValue, null);
 	}
 	
@@ -136,7 +136,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 			throw new IllegalStateException("sequenceGenerator already exists");
 		}
 		this.sequenceGenerator = getJpaFactory().buildOrmSequenceGenerator(this);
-		this.attributeMapping().setSequenceGenerator(OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl());
+		this.getAttributeMapping().setSequenceGenerator(OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl());
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
 		return this.sequenceGenerator;
 	}
@@ -147,7 +147,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		}
 		OrmSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
 		this.sequenceGenerator = null;
-		this.attributeMapping().setSequenceGenerator(null);
+		this.getAttributeMapping().setSequenceGenerator(null);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, null);
 	}
 	
@@ -166,7 +166,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 			throw new IllegalStateException("tableGenerator already exists");
 		}
 		this.tableGenerator = getJpaFactory().buildOrmTableGenerator(this);
-		this.attributeMapping().setTableGenerator(OrmFactory.eINSTANCE.createXmlTableGeneratorImpl());
+		this.getAttributeMapping().setTableGenerator(OrmFactory.eINSTANCE.createXmlTableGeneratorImpl());
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
 		return this.tableGenerator;
 	}
@@ -177,7 +177,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		}
 		OrmTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = null;
-		this.attributeMapping().setTableGenerator(null);
+		this.getAttributeMapping().setTableGenerator(null);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldTableGenerator, null);	
 	}
 	
@@ -221,7 +221,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	}
 	
 	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getIds().remove(this.attributeMapping());
+		typeMapping.getAttributes().getIds().remove(this.getAttributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}
@@ -232,10 +232,10 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	}
 
 	public String getDefaultColumnName() {		
-		return attributeName();
+		return getAttributeName();
 	}
 
-	public String defaultTableName() {
+	public String getDefaultTableName() {
 		return getTypeMapping().getTableName();
 	}
 	
@@ -361,16 +361,16 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 
 	//***************** IXmlColumn.Owner implementation ****************
 	
-	public XmlColumn columnResource() {
-		return this.attributeMapping().getColumn();
+	public XmlColumn getColumnResource() {
+		return this.getAttributeMapping().getColumn();
 	}
 	
 	public void addColumnResource() {
-		this.attributeMapping().setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
+		this.getAttributeMapping().setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
 	}
 	
 	public void removeColumnResource() {
-		this.attributeMapping().setColumn(null);
+		this.getAttributeMapping().setColumn(null);
 	}
 	
 	// ****************** validation ****************

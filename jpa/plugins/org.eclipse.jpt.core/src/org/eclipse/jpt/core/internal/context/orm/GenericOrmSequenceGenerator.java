@@ -37,7 +37,7 @@ public class GenericOrmSequenceGenerator extends AbstractOrmGenerator<XmlSequenc
 	public void setSpecifiedSequenceName(String newSpecifiedSequenceName) {
 		String oldSpecifiedSequenceName = this.specifiedSequenceName;
 		this.specifiedSequenceName = newSpecifiedSequenceName;
-		generatorResource().setSequenceName(newSpecifiedSequenceName);
+		getGeneratorResource().setSequenceName(newSpecifiedSequenceName);
 		firePropertyChanged(SPECIFIED_SEQUENCE_NAME_PROPERTY, oldSpecifiedSequenceName, newSpecifiedSequenceName);
 	}
 	

@@ -53,7 +53,7 @@ public class JpaPlatformUiExtensionTests extends TestCase
 	}
 
 	public void testJpaPlatform() {
-		assertNotNull(JpaPlatformRegistry.instance().jpaPlatform(jpaProject().getJpaPlatform().getId()));
+		assertNotNull(JpaPlatformRegistry.instance().getJpaPlatform(jpaProject().getJpaPlatform().getId()));
 	}
 
 }

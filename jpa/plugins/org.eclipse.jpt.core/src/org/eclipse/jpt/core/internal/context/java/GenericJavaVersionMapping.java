@@ -48,7 +48,7 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	@Override
 	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super.initializeFromResource(resourcePersistentAttribute);
-		this.column.initializeFromResource(this.columnResource());
+		this.column.initializeFromResource(this.getColumnResource());
 		this.temporal = this.temporal(this.temporalResource());
 	}
 	
@@ -56,7 +56,7 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 		return (Temporal) getResourcePersistentAttribute().getNonNullAnnotation(Temporal.ANNOTATION_NAME);
 	}
 	
-	public ColumnAnnotation columnResource() {
+	public ColumnAnnotation getColumnResource() {
 		return (ColumnAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
@@ -79,10 +79,10 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	//************** INamedColumn.Owner implementation ***************
 
 	public String getDefaultColumnName() {
-		return attributeName();
+		return getAttributeName();
 	}
 	
-	public String defaultTableName() {
+	public String getDefaultTableName() {
 		return getTypeMapping().getTableName();
 	}
 
@@ -106,7 +106,7 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	@Override
 	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super.update(resourcePersistentAttribute);
-		this.column.update(this.columnResource());
+		this.column.update(this.getColumnResource());
 		this.setTemporal(this.temporal(this.temporalResource()));
 	}
 	

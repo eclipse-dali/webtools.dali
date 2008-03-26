@@ -244,7 +244,7 @@ public class JpaProjectPropertiesPage
 						}
 						
 						public String getText(Object element) {
-							return JpaPlatformRegistry.instance().jpaPlatformLabel((String) element);
+							return JpaPlatformRegistry.instance().getJpaPlatformLabel((String) element);
 						}
 						
 						public void addListener(ILabelProviderListener listener) {

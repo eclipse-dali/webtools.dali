@@ -51,7 +51,7 @@ public class SynchronizeClassesJob extends WorkspaceJob
 			return Status.CANCEL_STATUS;
 		}
 		
-		JpaProject jpaProject = JptCorePlugin.jpaProject(this.persistenceXmlFile.getProject());
+		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.persistenceXmlFile.getProject());
 
 		PersistenceArtifactEdit persistenceArtifactEdit = PersistenceArtifactEdit.getArtifactEditForWrite(this.persistenceXmlFile.getProject());
 		PersistenceResource persistenceResource = persistenceArtifactEdit.getResource(this.persistenceXmlFile);

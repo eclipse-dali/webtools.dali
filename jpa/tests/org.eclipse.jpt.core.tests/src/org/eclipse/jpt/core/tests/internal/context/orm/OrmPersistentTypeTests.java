@@ -178,25 +178,25 @@ public class OrmPersistentTypeTests extends ContextModelTestCase
 		assertEquals("idAttribute",  entity.getAttributes().getIds().get(0).getName());
 		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
 		
-		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("basicAttribute"));
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.getAttributeNamed("basicAttribute"));
 		assertEquals("embeddedAttribute",  entity.getAttributes().getEmbeddeds().get(0).getName());
 		assertEquals("versionAttribute",  entity.getAttributes().getVersions().get(0).getName());
 		assertEquals("idAttribute",  entity.getAttributes().getIds().get(0).getName());
 		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
 		
-		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("embeddedAttribute"));
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.getAttributeNamed("embeddedAttribute"));
 		assertEquals("versionAttribute",  entity.getAttributes().getVersions().get(0).getName());
 		assertEquals("idAttribute",  entity.getAttributes().getIds().get(0).getName());
 		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
 		
-		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("versionAttribute"));
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.getAttributeNamed("versionAttribute"));
 		assertEquals("idAttribute",  entity.getAttributes().getIds().get(0).getName());
 		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
 		
-		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("idAttribute"));
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.getAttributeNamed("idAttribute"));
 		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
 		
-		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("transientAttribute"));
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.getAttributeNamed("transientAttribute"));
 		assertNull(entity.getAttributes());
 	}
 	
@@ -207,7 +207,7 @@ public class OrmPersistentTypeTests extends ContextModelTestCase
 		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idAttribute");
 		assertEquals("idAttribute",  entity.getAttributes().getIds().get(0).getName());
 
-		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("idAttribute"));	
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.getAttributeNamed("idAttribute"));	
 		assertNull(entity.getAttributes());
 	}
 	
@@ -218,7 +218,7 @@ public class OrmPersistentTypeTests extends ContextModelTestCase
 		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicAttribute");
 		assertEquals("basicAttribute",  entity.getAttributes().getBasics().get(0).getName());
 
-		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("basicAttribute"));	
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.getAttributeNamed("basicAttribute"));	
 		assertNull(entity.getAttributes());
 	}
 	
@@ -229,7 +229,7 @@ public class OrmPersistentTypeTests extends ContextModelTestCase
 		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionAttribute");
 		assertEquals("versionAttribute",  entity.getAttributes().getVersions().get(0).getName());
 
-		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("versionAttribute"));	
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.getAttributeNamed("versionAttribute"));	
 		assertNull(entity.getAttributes());
 	}
 	
@@ -240,7 +240,7 @@ public class OrmPersistentTypeTests extends ContextModelTestCase
 		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedAttribute");
 		assertEquals("embeddedAttribute",  entity.getAttributes().getEmbeddeds().get(0).getName());
 
-		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("embeddedAttribute"));	
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.getAttributeNamed("embeddedAttribute"));	
 		assertNull(entity.getAttributes());
 	}
 	
@@ -251,7 +251,7 @@ public class OrmPersistentTypeTests extends ContextModelTestCase
 		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientAttribute");
 		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
 
-		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("transientAttribute"));	
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.getAttributeNamed("transientAttribute"));	
 		assertNull(entity.getAttributes());
 	}
 

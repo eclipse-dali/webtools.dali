@@ -42,7 +42,7 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 		this.hints = new ArrayList<OrmQueryHint>();
 	}
 
-	protected E queryResource() {
+	protected E getQueryResource() {
 		return this.queryResource;
 	}
 	
@@ -53,7 +53,7 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		this.queryResource().setName(newName);
+		this.getQueryResource().setName(newName);
 		firePropertyChanged(Query.NAME_PROPERTY, oldName, newName);
 	}
 
@@ -64,7 +64,7 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 	public void setQuery(String newQuery) {
 		String oldQuery = this.query;
 		this.query = newQuery;
-		this.queryResource().setQuery(newQuery);
+		this.getQueryResource().setQuery(newQuery);
 		firePropertyChanged(Query.QUERY_PROPERTY, oldQuery, newQuery);
 	}
 
@@ -79,7 +79,7 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 	public OrmQueryHint addHint(int index) {
 		OrmQueryHint queryHint = getJpaFactory().buildOrmQueryHint(this);
 		this.hints.add(index, queryHint);
-		this.queryResource().getHints().add(index, OrmFactory.eINSTANCE.createXmlQueryHint());
+		this.getQueryResource().getHints().add(index, OrmFactory.eINSTANCE.createXmlQueryHint());
 		this.fireItemAdded(Query.HINTS_LIST, index, queryHint);
 		return queryHint;
 	}
@@ -160,10 +160,10 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.queryResource().getValidationTextRange();
+		return this.getQueryResource().getValidationTextRange();
 	}
 	
 	public TextRange getNameTextRange() {
-		return this.queryResource().getNameTextRange();
+		return this.getQueryResource().getNameTextRange();
 	}
 }

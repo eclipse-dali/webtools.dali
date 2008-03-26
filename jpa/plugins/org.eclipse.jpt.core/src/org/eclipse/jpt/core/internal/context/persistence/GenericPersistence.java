@@ -150,10 +150,10 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 		throw new UnsupportedOperationException("No PersistenceUnit in this context");
 	}
 	
-	public JpaStructureNode structureNode(int textOffset) {
+	public JpaStructureNode getStructureNode(int textOffset) {
 		for (PersistenceUnit persistenceUnit : CollectionTools.iterable(persistenceUnits())) {
 			if (persistenceUnit.containsOffset(textOffset)) {
-				return persistenceUnit.structureNode(textOffset);
+				return persistenceUnit.getStructureNode(textOffset);
 			}
 		}
 		return this;

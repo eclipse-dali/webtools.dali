@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
-import org.eclipse.jpt.core.internal.context.RelationshipMappingTools;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.UniqueConstraint;
@@ -51,7 +51,7 @@ public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTa
 				return this.javaJoinTable.getSpecifiedName();
 			}	
 		}
-		return RelationshipMappingTools.buildJoinTableDefaultName(ormRelationshipMapping());
+		return MappingTools.buildJoinTableDefaultName(ormRelationshipMapping());
 	}
 
 	public void setName(String value) {

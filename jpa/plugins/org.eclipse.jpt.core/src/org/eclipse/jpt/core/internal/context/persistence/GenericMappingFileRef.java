@@ -161,14 +161,14 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 		return null;
 	}
 	
-	public OrmPersistentType persistentTypeFor(String fullyQualifiedTypeName) {
+	public OrmPersistentType getPersistentType(String fullyQualifiedTypeName) {
 		if (getOrmXml() != null) {
-			return getOrmXml().persistentTypeFor(fullyQualifiedTypeName);
+			return getOrmXml().getPersistentType(fullyQualifiedTypeName);
 		}
 		return null;
 	}
 	
-	public JpaStructureNode structureNode(int textOffset) {
+	public JpaStructureNode getStructureNode(int textOffset) {
 		return this;
 	}
 	

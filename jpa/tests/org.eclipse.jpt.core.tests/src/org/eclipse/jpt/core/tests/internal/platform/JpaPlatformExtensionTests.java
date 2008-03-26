@@ -61,11 +61,11 @@ public class JpaPlatformExtensionTests extends TestCase
 	}
 	
 	public void testJpaPlatformLabel() {
-		assertEquals(TEST_PLATFORM_LABEL, JpaPlatformRegistry.instance().jpaPlatformLabel(TEST_PLATFORM_ID));	
+		assertEquals(TEST_PLATFORM_LABEL, JpaPlatformRegistry.instance().getJpaPlatformLabel(TEST_PLATFORM_ID));	
 	}
 	
 	public void testJpaPlatform() {
-		assertNotNull(JpaPlatformRegistry.instance().jpaPlatform(TEST_PLATFORM_ID));		
+		assertNotNull(JpaPlatformRegistry.instance().getJpaPlatform(TEST_PLATFORM_ID));		
 	}
 
 }

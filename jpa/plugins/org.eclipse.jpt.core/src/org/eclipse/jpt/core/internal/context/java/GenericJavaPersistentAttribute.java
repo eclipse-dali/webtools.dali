@@ -152,7 +152,7 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	/**
 	 * return null if there is no "specified" mapping for the attribute
 	 */
-	public String specifiedMappingKey() {
+	public String getSpecifiedMappingKey() {
 		return (this.specifiedMapping == null) ? null : this.specifiedMapping.getKey();
 	}
 
@@ -160,7 +160,7 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	// to the new mapping; this can't be done in the same was as XmlAttributeMapping
 	// since we don't know all the possible mapping types
 	public void setSpecifiedMappingKey(String newKey) {
-		if (newKey == specifiedMappingKey()) {
+		if (newKey == getSpecifiedMappingKey()) {
 			return;
 		}
 		JavaAttributeMapping oldMapping = getMapping();
@@ -187,12 +187,12 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		}
 	}
 	
-	public JpaStructureNode structureNode(int textOffset) {
+	public JpaStructureNode getStructureNode(int textOffset) {
 		return this;
 	}
 
 	public boolean contains(int offset, CompilationUnit astRoot) {
-		TextRange fullTextRange = this.fullTextRange(astRoot);
+		TextRange fullTextRange = this.getFullTextRange(astRoot);
 		if (fullTextRange == null) {
 			//This happens if the attribute no longer exists in the java.
 			//The text selection event is fired before the update from java so our
@@ -206,20 +206,20 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	}
 
 
-	public TextRange fullTextRange(CompilationUnit astRoot) {
+	public TextRange getFullTextRange(CompilationUnit astRoot) {
 		return this.resourcePersistentAttribute.getTextRange(astRoot);
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.selectionTextRange(astRoot);
+		return this.getSelectionTextRange(astRoot);
 	}
 
-	public TextRange selectionTextRange(CompilationUnit astRoot) {
+	public TextRange getSelectionTextRange(CompilationUnit astRoot) {
 		return this.resourcePersistentAttribute.getNameTextRange(astRoot);
 	}
 	
 	public TextRange getSelectionTextRange() {
-		return selectionTextRange(this.resourcePersistentAttribute.getMember().getAstRoot());
+		return getSelectionTextRange(this.resourcePersistentAttribute.getMember().getAstRoot());
 	}
 	
 

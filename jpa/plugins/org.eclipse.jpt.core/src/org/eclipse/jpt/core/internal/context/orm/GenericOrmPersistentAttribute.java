@@ -327,7 +327,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 		}
 	}
 	
-	public JpaStructureNode structureNode(int offset) {
+	public JpaStructureNode getStructureNode(int offset) {
 		return this;
 	}
 

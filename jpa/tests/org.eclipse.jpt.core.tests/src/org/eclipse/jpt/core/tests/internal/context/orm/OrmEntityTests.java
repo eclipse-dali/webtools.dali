@@ -335,7 +335,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);
 		assertNull(ormEntity.getDefaultAccess());
 		
-		ormPersistentType.getJavaPersistentType().attributeNamed("id").setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentType.getJavaPersistentType().getAttributeNamed("id").setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		//java has annotations on fields now, that should win in all cases
 		assertEquals(AccessType.FIELD, ormEntity.getDefaultAccess());
 		
@@ -343,7 +343,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
 		assertEquals(AccessType.FIELD, ormEntity.getDefaultAccess());
 
-		ormPersistentType.getJavaPersistentType().attributeNamed("id").setSpecifiedMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentType.getJavaPersistentType().getAttributeNamed("id").setSpecifiedMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(AccessType.PROPERTY, ormEntity.getDefaultAccess());
 	}
 
@@ -543,7 +543,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity parentXmlEntity = (OrmEntity) parentPersistentType.getMapping();
 		OrmEntity childXmlEntity = (OrmEntity) childPersistentType.getMapping();
 		
-		assertEquals(parentXmlEntity, childXmlEntity.parentEntity());
+		assertEquals(parentXmlEntity, childXmlEntity.getParentEntity());
 		assertEquals(InheritanceType.SINGLE_TABLE, childXmlEntity.getDefaultInheritanceStrategy());
 		
 		//change root inheritance strategy, verify default is changed for child entity

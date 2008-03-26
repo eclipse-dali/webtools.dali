@@ -52,7 +52,7 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 	}
 	
 	@Override
-	protected PrimaryKeyJoinColumnAnnotation columnResource() {
+	protected PrimaryKeyJoinColumnAnnotation getColumnResource() {
 		return this.primaryKeyJoinColumnResource;
 	}
 	
@@ -69,7 +69,7 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 	public void setSpecifiedReferencedColumnName(String newSpecifiedReferencedColumnName) {
 		String oldSpecifiedReferencedColumnName = this.specifiedReferencedColumnName;
 		this.specifiedReferencedColumnName = newSpecifiedReferencedColumnName;
-		columnResource().setReferencedColumnName(newSpecifiedReferencedColumnName);
+		getColumnResource().setReferencedColumnName(newSpecifiedReferencedColumnName);
 		firePropertyChanged(SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
 	}
 
@@ -94,25 +94,25 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 	}
 
 	@Override
-	protected String tableName() {
+	protected String getTableName() {
 		return this.getOwner().getTypeMapping().getTableName();
 	}
 
-	public Column dbReferencedColumn() {
-		Table table = this.dbReferencedColumnTable();
+	public Column getDbReferencedColumn() {
+		Table table = this.getDbReferencedColumnTable();
 		return (table == null) ? null : table.columnNamed(this.getReferencedColumnName());
 	}
 
-	public Table dbReferencedColumnTable() {
-		return getOwner().dbReferencedColumnTable();
+	public Table getDbReferencedColumnTable() {
+		return getOwner().getDbReferencedColumnTable();
 	}
 
 	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
-		return this.columnResource().referencedColumnNameTouches(pos, astRoot);
+		return this.getColumnResource().referencedColumnNameTouches(pos, astRoot);
 	}
 
 	private Iterator<String> candidateReferencedColumnNames() {
-		Table table = this.getOwner().dbReferencedColumnTable();
+		Table table = this.getOwner().getDbReferencedColumnTable();
 		return (table != null) ? table.columnNames() : EmptyIterator.<String> instance();
 	}
 
@@ -137,15 +137,15 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 	}
 
 	public boolean isReferencedColumnResolved() {
-		return dbReferencedColumn() != null;
+		return getDbReferencedColumn() != null;
 	}
 
 	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
-		return this.columnResource().getReferencedColumnNameTextRange(astRoot);
+		return this.getColumnResource().getReferencedColumnNameTextRange(astRoot);
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = columnResource().getTextRange(astRoot);
+		TextRange textRange = getColumnResource().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);	
 	}
 

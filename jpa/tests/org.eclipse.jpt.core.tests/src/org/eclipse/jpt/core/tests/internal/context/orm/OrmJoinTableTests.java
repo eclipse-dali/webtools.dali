@@ -180,7 +180,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.attributeNamed("projects");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("projects");
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();
 	
@@ -250,8 +250,8 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		((JavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getTable().setSpecifiedName("BAR");
 		assertEquals("BAR_FOO", ormJoinTable.getDefaultName());
 		
-		ormPersistentType.getJavaPersistentType().attributeNamed("projects").setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-		JavaManyToManyMapping javaManyMapping = (JavaManyToManyMapping) ormPersistentType.getJavaPersistentType().attributeNamed("projects").getMapping();
+		ormPersistentType.getJavaPersistentType().getAttributeNamed("projects").setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		JavaManyToManyMapping javaManyMapping = (JavaManyToManyMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("projects").getMapping();
 		javaManyMapping.getJoinTable().setSpecifiedName("JAVA_JOIN_TABLE");
 		
 		assertEquals("BAR_FOO", ormJoinTable.getDefaultName());
@@ -267,7 +267,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		//remove m-m mapping from the orm.xml file
 		ormPersistentAttribute.setVirtual(true);
 		//ormPersistentType.getMapping().setSpecifiedMetadataComplete(null);
-		ormPersistentAttribute = ormPersistentType.attributeNamed("projects");
+		ormPersistentAttribute = ormPersistentType.getAttributeNamed("projects");
 		ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		ormJoinTable = ormManyToManyMapping.getJoinTable();
 		assertTrue(ormPersistentAttribute.isVirtual());

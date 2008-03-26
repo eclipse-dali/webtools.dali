@@ -1023,29 +1023,29 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		//persistentType not listed in persistence.xml and discoverAnnotatedClasses is false
 		assertFalse(jpaProject().discoversAnnotatedClasses());
-		assertNull(persistenceUnit.persistentType(FULLY_QUALIFIED_TYPE_NAME));
+		assertNull(persistenceUnit.getPersistentType(FULLY_QUALIFIED_TYPE_NAME));
 		
 		//test persistentType not listed in persistence.xml, discover annotated classes set to true
 		jpaProject().setDiscoversAnnotatedClasses(true);	
-		assertNotNull(persistenceUnit.persistentType(FULLY_QUALIFIED_TYPE_NAME));
+		assertNotNull(persistenceUnit.getPersistentType(FULLY_QUALIFIED_TYPE_NAME));
 		
 		//test persistentType list as class in persistence.xml
 		jpaProject().setDiscoversAnnotatedClasses(false);
 		XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		classRef.setJavaClass(FULLY_QUALIFIED_TYPE_NAME);
 		xmlPersistenceUnit().getClasses().add(classRef);
-		assertNotNull(persistenceUnit.persistentType(FULLY_QUALIFIED_TYPE_NAME));
+		assertNotNull(persistenceUnit.getPersistentType(FULLY_QUALIFIED_TYPE_NAME));
 
 		
 		//test persistentType from orm.xml file that is specified in the persistence.xml
 		createOrmXmlFile();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		assertNotNull(persistenceUnit.persistentType("model.Foo"));
-		assertEquals(ormPersistentType, persistenceUnit.persistentType("model.Foo"));
+		assertNotNull(persistenceUnit.getPersistentType("model.Foo"));
+		assertEquals(ormPersistentType, persistenceUnit.getPersistentType("model.Foo"));
 
 		//test persistentType from orm.xml file that is implied(not specified) in the persistence.xml
 		xmlPersistenceUnit().getMappingFiles().remove(0);
-		assertNotNull(persistenceUnit.persistentType("model.Foo"));
+		assertNotNull(persistenceUnit.getPersistentType("model.Foo"));
 	}
 	
 //TODO

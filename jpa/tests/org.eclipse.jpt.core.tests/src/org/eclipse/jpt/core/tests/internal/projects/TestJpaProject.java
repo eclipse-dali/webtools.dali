@@ -55,7 +55,7 @@ public class TestJpaProject extends TestJavaProject {
 		this.installFacet("jst.utility", "1.0");
 		this.installFacet("jpt.jpa", "1.0", jpaConfig);
 		this.addJar(this.jarName());
-		this.jpaProject = JptCorePlugin.jpaProject(this.getProject());
+		this.jpaProject = JptCorePlugin.getJpaProject(this.getProject());
 		this.jpaProject.setUpdater(new SynchronousJpaProjectUpdater(this.jpaProject));
 	}
 

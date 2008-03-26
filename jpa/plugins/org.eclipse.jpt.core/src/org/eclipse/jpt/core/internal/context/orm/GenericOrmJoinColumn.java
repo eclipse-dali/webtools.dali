@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
-import org.eclipse.jpt.core.internal.context.RelationshipMappingTools;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
@@ -53,7 +53,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 	public void setSpecifiedReferencedColumnName(String newSpecifiedReferencedColumnName) {
 		String oldSpecifiedReferencedColumnName = this.specifiedReferencedColumnName;
 		this.specifiedReferencedColumnName = newSpecifiedReferencedColumnName;
-		columnResource().setReferencedColumnName(newSpecifiedReferencedColumnName);
+		getColumnResource().setReferencedColumnName(newSpecifiedReferencedColumnName);
 		firePropertyChanged(SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
 	}
 	
@@ -83,21 +83,21 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 	}
 
 	public Table dbReferencedColumnTable() {
-		return getOwner().dbReferencedColumnTable();
+		return getOwner().getDbReferencedColumnTable();
 	}
 
-	public Column dbReferencedColumn() {
+	public Column getDbReferencedColumn() {
 		Table table = dbReferencedColumnTable();
 		return (table == null) ? null : table.columnNamed(getReferencedColumnName());
 	}
 
 	public boolean isReferencedColumnResolved() {
-		return dbReferencedColumn() != null;
+		return getDbReferencedColumn() != null;
 	}
 
 	public TextRange getReferencedColumnNameTextRange() {
-		if (columnResource() != null) {
-			TextRange textRange = columnResource().getReferencedColumnNameTextRange();
+		if (getColumnResource() != null) {
+			TextRange textRange = getColumnResource().getReferencedColumnNameTextRange();
 			if (textRange != null) {
 				return textRange;
 			}
@@ -107,7 +107,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 
 
 	@Override
-	protected XmlJoinColumn columnResource() {
+	protected XmlJoinColumn getColumnResource() {
 		return this.joinColumn;
 	}
 
@@ -153,7 +153,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 		if (!getOwner().getRelationshipMapping().isRelationshipOwner()) {
 			return null;
 		}
-		return RelationshipMappingTools.buildJoinColumnDefaultName(this);
+		return MappingTools.buildJoinColumnDefaultName(this);
 	}
 	
 	protected String defaultReferencedColumnName() {
@@ -164,7 +164,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 		if (!relationshipMapping.isRelationshipOwner()) {
 			return null;
 		}
-		return RelationshipMappingTools.buildJoinColumnDefaultReferencedColumnName(this);
+		return MappingTools.buildJoinColumnDefaultReferencedColumnName(this);
 	}
 	
 	@Override

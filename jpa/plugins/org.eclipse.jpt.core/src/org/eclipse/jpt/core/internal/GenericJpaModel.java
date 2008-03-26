@@ -32,10 +32,10 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.JpaProject.Config;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
-import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.OrmArtifactEdit;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.utility.internal.ClassTools;
@@ -80,8 +80,8 @@ public class GenericJpaModel
 	 * This will trigger the instantiation of the JPA project associated with the
 	 * specified Eclipse project.
 	 */
-	public synchronized JpaProject jpaProject(IProject project) throws CoreException {
-		return this.jpaProjectHolder(project).jpaProject();
+	public synchronized JpaProject getJpaProject(IProject project) throws CoreException {
+		return this.getJpaProjectHolder(project).jpaProject();
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class GenericJpaModel
 	 * associated JPA project.
 	 */
 	public synchronized boolean containsJpaProject(IProject project) {
-		return this.jpaProjectHolder(project).holdsJpaProjectFor(project);
+		return this.getJpaProjectHolder(project).holdsJpaProjectFor(project);
 	}
 
 	/**
@@ -115,9 +115,9 @@ public class GenericJpaModel
 	 * This will trigger the instantiation of the JPA project associated with the
 	 * specified file.
 	 */
-	public synchronized JpaFile jpaFile(IFile file) throws CoreException {
-		JpaProject jpaProject = this.jpaProject(file.getProject());
-		return (jpaProject == null) ? null : jpaProject.jpaFile(file);
+	public synchronized JpaFile getJpaFile(IFile file) throws CoreException {
+		JpaProject jpaProject = this.getJpaProject(file.getProject());
+		return (jpaProject == null) ? null : jpaProject.getJpaFile(file);
 	}
 
 
@@ -126,7 +126,7 @@ public class GenericJpaModel
 	/**
 	 * never return null
 	 */
-	private JpaProjectHolder jpaProjectHolder(IProject project) {
+	private JpaProjectHolder getJpaProjectHolder(IProject project) {
 		for (JpaProjectHolder holder : this.jpaProjectHolders) {
 			if (holder.holdsJpaProjectFor(project)) {
 				return holder;
@@ -138,8 +138,8 @@ public class GenericJpaModel
 	private JpaProject.Config buildJpaProjectConfig(IProject project) {
 		SimpleJpaProjectConfig config = new SimpleJpaProjectConfig();
 		config.setProject(project);
-		config.setJpaPlatform(JptCorePlugin.jpaPlatform(project));
-		config.setConnectionProfileName(JptCorePlugin.connectionProfileName(project));
+		config.setJpaPlatform(JptCorePlugin.getJpaPlatform(project));
+		config.setConnectionProfileName(JptCorePlugin.getConnectionProfileName(project));
 		config.setDiscoverAnnotatedClasses(JptCorePlugin.discoverAnnotatedClasses(project));
 		return config;
 	}
@@ -155,7 +155,7 @@ public class GenericJpaModel
 	 */
 	private void addJpaProject(JpaProject.Config config) {
 		dumpStackTrace();  // figure out exactly when JPA projects are added
-		this.jpaProjectHolders.add(this.jpaProjectHolder(config.getProject()).buildJpaProjectHolder(this, config));
+		this.jpaProjectHolders.add(this.getJpaProjectHolder(config.getProject()).buildJpaProjectHolder(this, config));
 	}
 
 	/**
@@ -165,7 +165,7 @@ public class GenericJpaModel
 	 */
 	private void removeJpaProject(IProject project) {
 		dumpStackTrace();  // figure out exactly when JPA projects are removed
-		this.jpaProjectHolder(project).remove();
+		this.getJpaProjectHolder(project).remove();
 	}
 
 
@@ -184,7 +184,7 @@ public class GenericJpaModel
 	 * to the specified Eclipse project.
 	 */
 	synchronized void synchronizeFiles(IProject project, IResourceDelta delta)  throws CoreException {
-		this.jpaProjectHolder(project).synchronizeJpaFiles(delta);
+		this.getJpaProjectHolder(project).synchronizeJpaFiles(delta);
 	}
 
 
@@ -263,13 +263,13 @@ public class GenericJpaModel
 
 	private void createOrmXml(IProject project) {
 		OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForWrite(project);
-		OrmResource resource = oae.getResource(JptCorePlugin.ormXmlDeploymentURI(project));
+		OrmResource resource = oae.getResource(JptCorePlugin.getOrmXmlDeploymentURI(project));
 
 		// 202811 - do not add content if it is already present
 		if (resource.getEntityMappings() == null) {
 			XmlEntityMappings entityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
 			entityMappings.setVersion("1.0");
-			this.resourceContents(resource).add(entityMappings);
+			this.getResourceContents(resource).add(entityMappings);
 			oae.save(null);
 		}
 		
@@ -280,7 +280,7 @@ public class GenericJpaModel
 	 * minimize the scope of the suppressed warnings
 	 */
 	@SuppressWarnings("unchecked")
-	private EList<EObject> resourceContents(OrmResource resource) {
+	private EList<EObject> getResourceContents(OrmResource resource) {
 		return resource.getContents();
 	}
 

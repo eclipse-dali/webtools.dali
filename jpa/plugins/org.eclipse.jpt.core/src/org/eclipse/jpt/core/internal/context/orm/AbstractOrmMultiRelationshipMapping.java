@@ -74,7 +74,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 	public void setMappedBy(String newMappedBy) {
 		String oldMappedBy = this.mappedBy;
 		this.mappedBy = newMappedBy;
-		attributeMapping().setMappedBy(newMappedBy);
+		getAttributeMapping().setMappedBy(newMappedBy);
 		firePropertyChanged(MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
 	}
 	
@@ -91,7 +91,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 	public void setOrderBy(String newOrderBy) {
 		String oldOrderBy = this.orderBy;
 		this.orderBy = newOrderBy;
-		attributeMapping().setOrderBy(newOrderBy);
+		getAttributeMapping().setOrderBy(newOrderBy);
 		firePropertyChanged(ORDER_BY_PROPERTY, oldOrderBy, newOrderBy);
 	}
 	
@@ -109,7 +109,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 		boolean oldNoOrdering = this.isNoOrdering;
 		this.isNoOrdering = newNoOrdering;
 		if (newNoOrdering) {
-			attributeMapping().setOrderBy(null);
+			getAttributeMapping().setOrderBy(null);
 		}
 		firePropertyChanged(NO_ORDERING_PROPERTY, oldNoOrdering, newNoOrdering);			
 	}
@@ -128,7 +128,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 		boolean oldPkOrdering = this.isPkOrdering;
 		this.isPkOrdering = newPkOrdering;
 		if (newPkOrdering) {
-			attributeMapping().setOrderBy("");
+			getAttributeMapping().setOrderBy("");
 		}
 		firePropertyChanged(PK_ORDERING_PROPERTY, oldPkOrdering, newPkOrdering);	
 	}
@@ -174,15 +174,15 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 		String oldMapKey = this.mapKey;
 		this.mapKey = newMapKey;
 		if (oldMapKey != newMapKey) {
-			if (this.mapKeyResource() != null) {
-				this.mapKeyResource().setName(newMapKey);						
-				if (this.mapKeyResource().isAllFeaturesUnset()) {
+			if (this.getMapKeyResource() != null) {
+				this.getMapKeyResource().setName(newMapKey);						
+				if (this.getMapKeyResource().isAllFeaturesUnset()) {
 					removeMapKeyResource();
 				}
 			}
 			else if (newMapKey != null) {
 				addMapKeyResource();
-				mapKeyResource().setName(newMapKey);
+				getMapKeyResource().setName(newMapKey);
 			}
 		}
 		firePropertyChanged(MAP_KEY_PROPERTY, oldMapKey, newMapKey);
@@ -194,16 +194,16 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 		firePropertyChanged(MAP_KEY_PROPERTY, oldMapKey, newMapKey);
 	}
 	
-	protected MapKey mapKeyResource() {
-		return attributeMapping().getMapKey();
+	protected MapKey getMapKeyResource() {
+		return getAttributeMapping().getMapKey();
 	}
 	
 	protected void removeMapKeyResource() {
-		attributeMapping().setMapKey(null);
+		getAttributeMapping().setMapKey(null);
 	}
 	
 	protected void addMapKeyResource() {
-		attributeMapping().setMapKey(OrmFactory.eINSTANCE.createMapKeyImpl());
+		getAttributeMapping().setMapKey(OrmFactory.eINSTANCE.createMapKeyImpl());
 	}
 
 	public Iterator<String> candidateMapKeyNames() {
@@ -243,8 +243,8 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 //		return JavaMultiRelationshipMapping.javaDefaultTargetEntityFromContainer(typeBinding);
 //	}
 	
-	public TextRange mappedByTextRange() {
-		return attributeMapping().getMappedByTextRange();
+	public TextRange getMappedByTextRange() {
+		return getAttributeMapping().getMappedByTextRange();
 	}
 	
 	public boolean mappedByIsValid(AttributeMapping mappedByMapping) {
@@ -332,7 +332,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 			return;
 		}
 		
-		PersistentAttribute attribute = getResolvedTargetEntity().getPersistentType().attributeNamed(getMappedBy());
+		PersistentAttribute attribute = getResolvedTargetEntity().getPersistentType().getAttributeNamed(getMappedBy());
 		
 		if (attribute == null) {
 			messages.add(
@@ -341,7 +341,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 						JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
 						new String[] {getMappedBy()}, 
 						this,
-						mappedByTextRange())
+						getMappedByTextRange())
 				);
 			return;
 		}
@@ -353,7 +353,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 						JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
 						new String[] {getMappedBy()}, 
 						this,
-						mappedByTextRange())
+						getMappedByTextRange())
 				);
 			return;
 		}
@@ -372,7 +372,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
 						this,
-						mappedByTextRange())
+						getMappedByTextRange())
 				);
 		}
 	}

@@ -84,6 +84,6 @@ public interface BaseColumn extends NamedColumn
 		/**
 		 * Return the name of the persistent attribute that contains the column.
 		 */
-		String defaultTableName();
+		String getDefaultTableName();
 	}
 }

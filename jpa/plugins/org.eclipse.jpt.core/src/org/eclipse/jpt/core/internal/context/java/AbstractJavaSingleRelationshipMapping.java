@@ -363,7 +363,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		/**
 		 * by default, the join column is in the type mapping's primary table
 		 */
-		public String defaultTableName() {
+		public String getDefaultTableName() {
 			return AbstractJavaSingleRelationshipMapping.this.getTypeMapping().getTableName();
 		}
 
@@ -398,7 +398,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 			return getTypeMapping().getDbTable(tableName);
 		}
 
-		public Table dbReferencedColumnTable() {
+		public Table getDbReferencedColumnTable() {
 			Entity targetEntity = getTargetEntity();
 			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
 		}

@@ -53,7 +53,7 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 	public void setMappedBy(String newMappedBy) {
 		String oldMappedBy = this.mappedBy;
 		this.mappedBy = newMappedBy;
-		attributeMapping().setMappedBy(newMappedBy);
+		getAttributeMapping().setMappedBy(newMappedBy);
 		firePropertyChanged(MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
 	}
 	
@@ -68,7 +68,7 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 		return (mappedByKey == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 	}
 
-	public TextRange mappedByTextRange() {
+	public TextRange getMappedByTextRange() {
 		return null;
 //		if (node == null) {
 //			return typeMapping().validationTextRange();
@@ -98,7 +98,7 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 	}
 	
 	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getOneToOnes().remove(this.attributeMapping());
+		typeMapping.getAttributes().getOneToOnes().remove(this.getAttributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}

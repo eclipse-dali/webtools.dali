@@ -68,7 +68,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
 		FetchType oldFetch = this.specifiedFetch;
 		this.specifiedFetch = newSpecifiedFetch;
-		this.attributeMapping().setFetch(FetchType.toOrmResourceModel(newSpecifiedFetch));
+		this.getAttributeMapping().setFetch(FetchType.toOrmResourceModel(newSpecifiedFetch));
 		firePropertyChanged(Fetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
 
@@ -93,7 +93,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	public void setSpecifiedOptional(Boolean newSpecifiedOptional) {
 		Boolean oldOptional = this.specifiedOptional;
 		this.specifiedOptional = newSpecifiedOptional;
-		this.attributeMapping().setOptional(newSpecifiedOptional);
+		this.getAttributeMapping().setOptional(newSpecifiedOptional);
 		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
 	}
 	
@@ -110,7 +110,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	public void setLob(boolean newLob) {
 		boolean oldLob = this.lob;
 		this.lob = newLob;
-		this.attributeMapping().setLob(newLob);
+		this.getAttributeMapping().setLob(newLob);
 		firePropertyChanged(BasicMapping.LOB_PROPERTY, oldLob, newLob);
 	}
 	
@@ -127,7 +127,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	public void setTemporal(TemporalType newTemporal) {
 		TemporalType oldTemporal = this.temporal;
 		this.temporal = newTemporal;
-		this.attributeMapping().setTemporal(TemporalType.toOrmResourceModel(newTemporal));
+		this.getAttributeMapping().setTemporal(TemporalType.toOrmResourceModel(newTemporal));
 		firePropertyChanged(ColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 
@@ -152,7 +152,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	public void setSpecifiedEnumerated(EnumType newSpecifiedEnumerated) {
 		EnumType oldEnumerated = this.specifiedEnumerated;
 		this.specifiedEnumerated = newSpecifiedEnumerated;
-		this.attributeMapping().setEnumerated(EnumType.toOrmResourceModel(newSpecifiedEnumerated));
+		this.getAttributeMapping().setEnumerated(EnumType.toOrmResourceModel(newSpecifiedEnumerated));
 		firePropertyChanged(BasicMapping.SPECIFIED_ENUMERATED_PROPERTY, oldEnumerated, newSpecifiedEnumerated);
 	}
 	
@@ -192,10 +192,10 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	}
 
 	public String getDefaultColumnName() {		
-		return attributeName();
+		return getAttributeName();
 	}
 
-	public String defaultTableName() {
+	public String getDefaultTableName() {
 		return getTypeMapping().getTableName();
 	}
 
@@ -253,7 +253,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	}
 	
 	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getBasics().remove(this.attributeMapping());
+		typeMapping.getAttributes().getBasics().remove(this.getAttributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}
@@ -261,16 +261,16 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	
 	//***************** IXmlColumn.Owner implementation ****************
 	
-	public XmlColumn columnResource() {
-		return this.attributeMapping().getColumn();
+	public XmlColumn getColumnResource() {
+		return this.getAttributeMapping().getColumn();
 	}
 	
 	public void addColumnResource() {
-		this.attributeMapping().setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
+		this.getAttributeMapping().setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
 	}
 	
 	public void removeColumnResource() {
-		this.attributeMapping().setColumn(null);
+		this.getAttributeMapping().setColumn(null);
 	}
 	
 	// ****************** validation ****************

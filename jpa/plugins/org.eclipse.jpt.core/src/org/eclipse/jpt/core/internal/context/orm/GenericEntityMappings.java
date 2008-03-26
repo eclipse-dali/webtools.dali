@@ -108,7 +108,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		return this;
 	}
 	
-	public OrmPersistentType persistentTypeFor(String fullyQualifiedTypeName) {
+	public OrmPersistentType getPersistentType(String fullyQualifiedTypeName) {
 		for (OrmPersistentType ormPersistentType : CollectionTools.iterable(ormPersistentTypes())) {
 			if (ormPersistentType.isFor(fullyQualifiedTypeName)) {
 				return ormPersistentType;
@@ -746,10 +746,10 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	
 	// *************************************************************************
 	
-	public JpaStructureNode structureNode(int textOffset) {
+	public JpaStructureNode getStructureNode(int textOffset) {
 		for (OrmPersistentType persistentType: CollectionTools.iterable(ormPersistentTypes())) {
 			if (persistentType.contains(textOffset)) {
-				return persistentType.structureNode(textOffset);
+				return persistentType.getStructureNode(textOffset);
 			}
 		}
 		return this;

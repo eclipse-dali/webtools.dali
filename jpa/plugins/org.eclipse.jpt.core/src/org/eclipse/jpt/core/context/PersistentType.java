@@ -59,7 +59,7 @@ public interface PersistentType extends JpaContextNode, JpaStructureNode
 	 * If this is the Cat JavaPersistentType then parentPersistentType is the Model JavaPersistentType
 	 * The parentPersistentType could be found in java or xml.
 	 */
-	PersistentType parentPersistentType();
+	PersistentType getParentPersistentType();
 
 	/**
 	 * Return a read-only iterator of the contained {@link PersistentAttribute}
@@ -87,7 +87,7 @@ public interface PersistentType extends JpaContextNode, JpaStructureNode
 	 * Return the attribute named <code>attributeName</code> if
 	 * it exists locally on this type
 	 */
-	PersistentAttribute attributeNamed(String attributeName);
+	PersistentAttribute getAttributeNamed(String attributeName);
 
 	/**
 	 * Resolve and return the attribute named <code>attributeName</code> if it

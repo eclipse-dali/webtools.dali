@@ -23,8 +23,8 @@ public class GenericJavaNamedQuery extends AbstractJavaQuery implements JavaName
 	}
 	
 	@Override
-	protected NamedQueryAnnotation query() {
-		return (NamedQueryAnnotation) super.query();
+	protected NamedQueryAnnotation getQueryResource() {
+		return (NamedQueryAnnotation) super.getQueryResource();
 	}
 
 	public void initializeFromResource(NamedQueryAnnotation queryResource) {

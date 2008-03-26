@@ -54,15 +54,15 @@ public class GenericOrmColumn extends AbstractOrmBaseColumn<XmlColumn> implement
 		Integer oldSpecifiedLength = this.specifiedLength;
 		this.specifiedLength = newSpecifiedLength;
 		if (oldSpecifiedLength != newSpecifiedLength) {
-			if (this.columnResource() != null) {
-				this.columnResource().setLength(newSpecifiedLength);
-				if (this.columnResource().isAllFeaturesUnset()) {
+			if (this.getColumnResource() != null) {
+				this.getColumnResource().setLength(newSpecifiedLength);
+				if (this.getColumnResource().isAllFeaturesUnset()) {
 					removeColumnResource();
 				}
 			}
 			else if (newSpecifiedLength != null) {
 				addColumnResource();
-				columnResource().setLength(newSpecifiedLength);
+				getColumnResource().setLength(newSpecifiedLength);
 			}
 		}
 		firePropertyChanged(SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
@@ -90,15 +90,15 @@ public class GenericOrmColumn extends AbstractOrmBaseColumn<XmlColumn> implement
 		Integer oldSpecifiedPrecision = this.specifiedPrecision;
 		this.specifiedPrecision = newSpecifiedPrecision;
 		if (oldSpecifiedPrecision != newSpecifiedPrecision) {
-			if (this.columnResource() != null) {
-				this.columnResource().setPrecision(newSpecifiedPrecision);
-				if (this.columnResource().isAllFeaturesUnset()) {
+			if (this.getColumnResource() != null) {
+				this.getColumnResource().setPrecision(newSpecifiedPrecision);
+				if (this.getColumnResource().isAllFeaturesUnset()) {
 					removeColumnResource();
 				}
 			}
 			else if (newSpecifiedPrecision != null) {
 				addColumnResource();
-				columnResource().setPrecision(newSpecifiedPrecision);
+				getColumnResource().setPrecision(newSpecifiedPrecision);
 			}
 		}
 		firePropertyChanged(SPECIFIED_PRECISION_PROPERTY, oldSpecifiedPrecision, newSpecifiedPrecision);
@@ -126,15 +126,15 @@ public class GenericOrmColumn extends AbstractOrmBaseColumn<XmlColumn> implement
 		Integer oldSpecifiedScale = this.specifiedScale;
 		this.specifiedScale = newSpecifiedScale;
 		if (oldSpecifiedScale != newSpecifiedScale) {
-			if (this.columnResource() != null) {
-				this.columnResource().setScale(newSpecifiedScale);
-				if (this.columnResource().isAllFeaturesUnset()) {
+			if (this.getColumnResource() != null) {
+				this.getColumnResource().setScale(newSpecifiedScale);
+				if (this.getColumnResource().isAllFeaturesUnset()) {
 					removeColumnResource();
 				}
 			}
 			else if (newSpecifiedScale != null) {
 				addColumnResource();
-				columnResource().setScale(newSpecifiedScale);
+				getColumnResource().setScale(newSpecifiedScale);
 			}
 		}
 		firePropertyChanged(SPECIFIED_SCALE_PROPERTY, oldSpecifiedScale, newSpecifiedScale);
@@ -147,8 +147,8 @@ public class GenericOrmColumn extends AbstractOrmBaseColumn<XmlColumn> implement
 	}
 
 	@Override
-	protected XmlColumn columnResource() {
-		return getOwner().columnResource();
+	protected XmlColumn getColumnResource() {
+		return getOwner().getColumnResource();
 	}
 	
 	@Override

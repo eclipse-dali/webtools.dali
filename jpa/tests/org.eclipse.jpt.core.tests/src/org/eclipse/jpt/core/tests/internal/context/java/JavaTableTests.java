@@ -137,12 +137,12 @@ public class JavaTableTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertNotSame(javaEntity(), javaEntity().rootEntity());
+		assertNotSame(javaEntity(), javaEntity().getRootEntity());
 		assertEquals(TYPE_NAME, javaEntity().getTable().getDefaultName());
-		assertEquals(TYPE_NAME, javaEntity().rootEntity().getTable().getDefaultName());
+		assertEquals(TYPE_NAME, javaEntity().getRootEntity().getTable().getDefaultName());
 		
 		//test that setting the root java entity name will change the table default name of the child
-		javaEntity().rootEntity().setSpecifiedName("foo");
+		javaEntity().getRootEntity().setSpecifiedName("foo");
 		assertEquals("foo", javaEntity().getTable().getDefaultName());
 	}
 
@@ -205,7 +205,7 @@ public class JavaTableTests extends ContextModelTestCase
 		
 		assertEquals("foo", javaEntity().getTable().getSpecifiedName());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		assertEquals("foo", table.getName());
@@ -219,7 +219,7 @@ public class JavaTableTests extends ContextModelTestCase
 		
 		assertNull(javaEntity().getTable().getSpecifiedName());
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 	
 		assertNull(table);
@@ -229,7 +229,7 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		table.setName("foo");
 		
@@ -243,7 +243,7 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		table.setCatalog("myCatalog");
@@ -306,7 +306,7 @@ public class JavaTableTests extends ContextModelTestCase
 		Table table = javaEntity().getTable();
 		table.setSpecifiedCatalog("myCatalog");
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableResource = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		assertEquals("myCatalog", tableResource.getCatalog());
@@ -319,7 +319,7 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		table.setSchema("mySchema");
@@ -345,7 +345,7 @@ public class JavaTableTests extends ContextModelTestCase
 		Table table = javaEntity().getTable();
 		table.setSpecifiedSchema("mySchema");
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableResource = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		assertEquals("mySchema", tableResource.getSchema());

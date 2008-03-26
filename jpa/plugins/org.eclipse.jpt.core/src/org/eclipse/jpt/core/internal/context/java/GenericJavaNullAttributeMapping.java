@@ -39,7 +39,7 @@ public class GenericJavaNullAttributeMapping extends AbstractJavaAttributeMappin
 	}
 	
 	@Override
-	protected JavaResourceNode mappingResource() {
+	protected JavaResourceNode getMappingResource() {
 		return null;
 	}
 	

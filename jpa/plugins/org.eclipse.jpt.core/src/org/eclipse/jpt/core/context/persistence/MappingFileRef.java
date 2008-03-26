@@ -71,7 +71,7 @@ public interface MappingFileRef extends PersistenceJpaContextNode, JpaStructureN
 	 * Return the OrmPersistentType listed in this mapping file
 	 * with the given fullyQualifiedTypeName.  Return null if non exists.
 	 */
-	OrmPersistentType persistentTypeFor(String fullyQualifiedTypeName);
+	OrmPersistentType getPersistentType(String fullyQualifiedTypeName);
 	
 	/**
 	 * Return whether the text representation of this persistence unit contains

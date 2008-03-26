@@ -67,7 +67,7 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 			return Collections.emptyList();
 		}
 
-		JpaFile jpaFile = JptCorePlugin.jpaFile((IFile) cu.getCorrespondingResource());
+		JpaFile jpaFile = JptCorePlugin.getJpaFile((IFile) cu.getCorrespondingResource());
 		if (jpaFile == null) {
 			return Collections.emptyList();
 		}

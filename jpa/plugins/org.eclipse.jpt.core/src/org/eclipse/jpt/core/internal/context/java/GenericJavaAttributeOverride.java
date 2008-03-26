@@ -54,20 +54,20 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 		return (AttributeOverride.Owner) super.getOwner();
 	}
 	
-	public ColumnAnnotation columnResource() {
+	public ColumnAnnotation getColumnResource() {
 		return this.getOverrideResource().getNonNullColumn();
 	}
 
 	public String getDefaultColumnName() {
-		ColumnMapping columnMapping = columnMapping();
+		ColumnMapping columnMapping = getColumnMapping();
 		if (columnMapping == null) {
 			return null;
 		}
 		return columnMapping.getColumn().getName();
 	}
 	
-	public String defaultTableName() {
-		ColumnMapping columnMapping = columnMapping();
+	public String getDefaultTableName() {
+		ColumnMapping columnMapping = getColumnMapping();
 		if (columnMapping == null) {
 			return null;
 		}
@@ -78,8 +78,8 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 		return getOwner().getTypeMapping().getTableName();
 	}
 	
-	protected ColumnMapping columnMapping() {
-		return getOwner().columnMapping(getName());
+	protected ColumnMapping getColumnMapping() {
+		return getOwner().getColumnMapping(getName());
 	}
 
 	//************* IColumn.Owner implementation **************
@@ -107,12 +107,12 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	//************* java resource model -> java context model **************	
 	public void initializeFromResource(AttributeOverrideAnnotation attributeOverrideResource) {
 		super.initializeFromResource(attributeOverrideResource);
-		this.column.initializeFromResource(this.columnResource());
+		this.column.initializeFromResource(this.getColumnResource());
 	}
 
 	public void update(AttributeOverrideAnnotation attributeOverrideResource) {
 		super.update(attributeOverrideResource);
-		this.column.update(this.columnResource());		
+		this.column.update(this.getColumnResource());		
 	}
 
 	@Override

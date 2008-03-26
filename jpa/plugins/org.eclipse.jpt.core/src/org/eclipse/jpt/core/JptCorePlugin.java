@@ -130,8 +130,8 @@ public class JptCorePlugin extends Plugin {
 	/**
 	 * Return the singular JPA model corresponding to the current workspace.
 	 */
-	public static JpaModel jpaModel() {
-		return JpaModelManager.instance().jpaModel();
+	public static JpaModel getJpaModel() {
+		return JpaModelManager.instance().getJpaModel();
 	}
 
 	/**
@@ -139,9 +139,9 @@ public class JptCorePlugin extends Plugin {
 	 * or null if unable to associate the specified project with a
 	 * JPA project.
 	 */
-	public static JpaProject jpaProject(IProject project) {
+	public static JpaProject getJpaProject(IProject project) {
 		try {
-			return JpaModelManager.instance().jpaProject(project);
+			return JpaModelManager.instance().getJpaProject(project);
 		} catch (CoreException ex) {
 			log(ex);
 			return null;
@@ -152,9 +152,9 @@ public class JptCorePlugin extends Plugin {
 	 * Return the JPA file corresponding to the specified Eclipse file,
 	 * or null if unable to associate the specified file with a JPA file.
 	 */
-	public static JpaFile jpaFile(IFile file) {
+	public static JpaFile getJpaFile(IFile file) {
 		try {
-			return JpaModelManager.instance().jpaFile(file);
+			return JpaModelManager.instance().getJpaFile(file);
 		} catch (CoreException ex) {
 			log(ex);
 			return null;
@@ -190,22 +190,22 @@ public class JptCorePlugin extends Plugin {
 	/**
 	 * Return the persistence.xml deployment URI for the specified project.
 	 */
-	public static String persistenceXmlDeploymentURI(IProject project) {
-		return deploymentURI(project, DEFAULT_PERSISTENCE_XML_FILE_PATH);
+	public static String getPersistenceXmlDeploymentURI(IProject project) {
+		return getDeploymentURI(project, DEFAULT_PERSISTENCE_XML_FILE_PATH);
 	}
 
 	/**
 	 * Return the orm.xml deployment URI for the specified project.
 	 */
-	public static String ormXmlDeploymentURI(IProject project) {
-		return deploymentURI(project, DEFAULT_ORM_XML_FILE_PATH);
+	public static String getOrmXmlDeploymentURI(IProject project) {
+		return getDeploymentURI(project, DEFAULT_ORM_XML_FILE_PATH);
 	}
 
 	/**
 	 * Tweak the specified deployment URI if the specified project
 	 * has a web facet.
 	 */
-	private static String deploymentURI(IProject project, String defaultURI) {
+	private static String getDeploymentURI(IProject project, String defaultURI) {
 		return projectHasWebFacet(project) ?
 				WEB_PROJECT_DEPLOY_PREFIX + "/" + defaultURI
 			:
@@ -215,7 +215,7 @@ public class JptCorePlugin extends Plugin {
 	/**
 	 * Return the JPA preferences for the specified Eclipse project.
 	 */
-	public static IEclipsePreferences preferences(IProject project) {
+	public static IEclipsePreferences getPreferences(IProject project) {
 		IScopeContext context = new ProjectScope(project);
 		return context.getNode(PLUGIN_ID);
 	}
@@ -223,22 +223,22 @@ public class JptCorePlugin extends Plugin {
 	/**
 	 * Return the JPA platform associated with the specified Eclipse project.
 	 */
-	public static JpaPlatform jpaPlatform(IProject project) {
-		return JpaPlatformRegistry.instance().jpaPlatform(jpaPlatformId(project));
+	public static JpaPlatform getJpaPlatform(IProject project) {
+		return JpaPlatformRegistry.instance().getJpaPlatform(getJpaPlatformId(project));
 	}
 
 	/**
 	 * Return the JPA platform ID associated with the specified Eclipse project.
 	 */
-	public static String jpaPlatformId(IProject project) {
-		return preferences(project).get(JPA_PLATFORM, GenericJpaPlatform.ID);
+	public static String getJpaPlatformId(IProject project) {
+		return getPreferences(project).get(JPA_PLATFORM, GenericJpaPlatform.ID);
 	}
 
 	/**
 	 * Set the JPA platform ID associated with the specified Eclipse project.
 	 */
 	public static void setJpaPlatformId(IProject project, String jpaPlatformId) {
-		IEclipsePreferences prefs = preferences(project);
+		IEclipsePreferences prefs = getPreferences(project);
 		prefs.put(JPA_PLATFORM, jpaPlatformId);
 		flush(prefs);
 	}
@@ -248,7 +248,7 @@ public class JptCorePlugin extends Plugin {
 	 * Eclipse project.
 	 */
 	public static boolean discoverAnnotatedClasses(IProject project) {
-		return preferences(project).getBoolean(DISCOVER_ANNOTATED_CLASSES, false);
+		return getPreferences(project).getBoolean(DISCOVER_ANNOTATED_CLASSES, false);
 	}
 
 	/**
@@ -256,7 +256,7 @@ public class JptCorePlugin extends Plugin {
 	 * Eclipse project.
 	 */
 	public static void setDiscoverAnnotatedClasses(IProject project, boolean discoverAnnotatedClasses) {
-		IEclipsePreferences prefs = preferences(project);
+		IEclipsePreferences prefs = getPreferences(project);
 		prefs.putBoolean(DISCOVER_ANNOTATED_CLASSES, discoverAnnotatedClasses);
 		flush(prefs);
 	}
@@ -276,7 +276,7 @@ public class JptCorePlugin extends Plugin {
 	 * Return the name of the connection profile associated with the specified
 	 * Eclipse project.
 	 */
-	public static String connectionProfileName(IProject project) {
+	public static String getConnectionProfileName(IProject project) {
 		try {
 			return project.getPersistentProperty(DATA_SOURCE_CONNECTION_PROFILE_NAME);
 		} catch (CoreException ex) {

@@ -32,7 +32,7 @@ public class GenericJavaTable extends AbstractJavaTable implements JavaTable
 	
 	public void initializeFromResource(JavaResourcePersistentMember persistentResource) {
 		this.persistentResource = persistentResource;
-		initializeFromResource(tableResource());
+		initializeFromResource(getTableResource());
 	}
 
 	
@@ -41,13 +41,13 @@ public class GenericJavaTable extends AbstractJavaTable implements JavaTable
 	//You could call more than one setter before this object has received any notification
 	//from the java resource model
 	@Override
-	protected TableAnnotation tableResource() {
+	protected TableAnnotation getTableResource() {
 		//TODO get the NullTable from the resource model or build it here in the context model??
-		return (TableAnnotation) this.persistentResource.getNonNullAnnotation(annotationName());
+		return (TableAnnotation) this.persistentResource.getNonNullAnnotation(getAnnotationName());
 	}
 
 	@Override
-	protected String annotationName() {
+	protected String getAnnotationName() {
 		return TableAnnotation.ANNOTATION_NAME;
 	}
 	
@@ -56,12 +56,12 @@ public class GenericJavaTable extends AbstractJavaTable implements JavaTable
 		return (JavaEntity) super.getParent();
 	}
 	
-	protected JavaEntity javaEntity() {
+	protected JavaEntity getJavaEntity() {
 		return getParent();
 	}
 	
-	protected Entity rootEntity() {
-		return javaEntity().rootEntity();
+	protected Entity getRootEntity() {
+		return getJavaEntity().getRootEntity();
 	}
 	
 	@Override
@@ -71,19 +71,19 @@ public class GenericJavaTable extends AbstractJavaTable implements JavaTable
 	 * name defaults to the root entity's table name.
 	 */
 	protected String defaultName() {
-		if (javaEntity().getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
-			if (rootEntity() != javaEntity()) {
-				return rootEntity().getTable().getName();
+		if (getJavaEntity().getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
+			if (getRootEntity() != getJavaEntity()) {
+				return getRootEntity().getTable().getName();
 			}
 		}
-		return javaEntity().getName();
+		return getJavaEntity().getName();
 	}
 	
 	@Override
 	protected String defaultSchema() {
-		if (javaEntity().getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
-			if (rootEntity() != javaEntity()) {
-				return rootEntity().getTable().getSchema();
+		if (getJavaEntity().getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
+			if (getRootEntity() != getJavaEntity()) {
+				return getRootEntity().getTable().getSchema();
 			}
 		}
 		return super.defaultSchema();
@@ -91,9 +91,9 @@ public class GenericJavaTable extends AbstractJavaTable implements JavaTable
 	
 	@Override
 	protected String defaultCatalog() {
-		if (javaEntity().getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
-			if (rootEntity() != javaEntity()) {
-				return rootEntity().getTable().getCatalog();
+		if (getJavaEntity().getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
+			if (getRootEntity() != getJavaEntity()) {
+				return getRootEntity().getTable().getCatalog();
 			}
 		}
 		return super.defaultCatalog();
@@ -101,7 +101,7 @@ public class GenericJavaTable extends AbstractJavaTable implements JavaTable
 	
 	public void update(JavaResourcePersistentMember persistentResource) {
 		this.persistentResource = persistentResource;
-		this.update(tableResource());
+		this.update(getTableResource());
 	}
 
 	//******************* validation **********************
@@ -119,7 +119,7 @@ public class GenericJavaTable extends AbstractJavaTable implements JavaTable
 						JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
 						new String[] {schema, getName()}, 
 						this, 
-						schemaTextRange(astRoot))
+						getSchemaTextRange(astRoot))
 				);
 			doContinue = false;
 		}
@@ -131,7 +131,7 @@ public class GenericJavaTable extends AbstractJavaTable implements JavaTable
 						JpaValidationMessages.TABLE_UNRESOLVED_NAME,
 						new String[] {getName()}, 
 						this, 
-						nameTextRange(astRoot))
+						getNameTextRange(astRoot))
 				);
 		}
 	}

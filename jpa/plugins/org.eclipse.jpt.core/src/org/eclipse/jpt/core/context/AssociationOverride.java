@@ -47,6 +47,6 @@ public interface AssociationOverride extends BaseOverride
 		 * Return null if it does not exist.  This relationship mapping
 		 * will be found in the mapped superclass, not in the owning entity
 		 */
-		RelationshipMapping relationshipMapping(String attributeName);
+		RelationshipMapping getRelationshipMapping(String attributeName);
 	}
 }

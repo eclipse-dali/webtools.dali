@@ -59,12 +59,12 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 	//***************** AbstractJavaTable implementation ********************
 	
 	@Override
-	protected String annotationName() {
+	protected String getAnnotationName() {
 		return SecondaryTableAnnotation.ANNOTATION_NAME;
 	}
 	
 	@Override
-	protected SecondaryTableAnnotation tableResource() {
+	protected SecondaryTableAnnotation getTableResource() {
 		return this.secondaryTableResource;
 	}
 
@@ -171,7 +171,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 		fireItemMoved(SecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 	
-	public JavaEntity javaEntity() {
+	public JavaEntity getJavaEntity() {
 		return getParent();
 	}
 	
@@ -267,7 +267,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 						JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_SCHEMA,
 						new String[] {schema, getName()}, 
 						this, 
-						schemaTextRange(astRoot))
+						getSchemaTextRange(astRoot))
 				);
 			doContinue = false;
 		}
@@ -279,7 +279,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 						JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_NAME,
 						new String[] {getName()}, 
 						this, 
-						nameTextRange(astRoot))
+						getNameTextRange(astRoot))
 				);
 		}
 	}
@@ -313,14 +313,14 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 		}
 
 		public TypeMapping getTypeMapping() {
-			return GenericJavaSecondaryTable.this.javaEntity();
+			return GenericJavaSecondaryTable.this.getJavaEntity();
 		}
 
 		public Table getDbTable(String tableName) {
 			return GenericJavaSecondaryTable.this.getDbTable();
 		}
 
-		public Table dbReferencedColumnTable() {
+		public Table getDbReferencedColumnTable() {
 			return getTypeMapping().getPrimaryDbTable();
 		}
 
@@ -336,7 +336,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 			if (joinColumnsSize() != 1) {
 				return null;
 			}
-			return javaEntity().primaryKeyColumnName();
+			return getJavaEntity().getPrimaryKeyColumnName();
 
 		}
 	}

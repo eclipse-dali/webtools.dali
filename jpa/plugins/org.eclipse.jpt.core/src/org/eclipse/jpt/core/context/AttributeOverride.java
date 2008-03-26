@@ -33,6 +33,6 @@ public interface AttributeOverride extends BaseOverride, Column.Owner
 		 * Return null if it does not exist.  This column mapping
 		 * will be found in the mapped superclass (or embeddable), not in the owning entity
 		 */
-		ColumnMapping columnMapping(String attributeName);
+		ColumnMapping getColumnMapping(String attributeName);
 	}
 }

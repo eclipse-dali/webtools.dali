@@ -44,7 +44,7 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 		setColumnDefinition(oldColumn.getColumnDefinition());
 	}
 
-	protected abstract T columnResource();
+	protected abstract T getColumnResource();
 	
 	protected abstract void removeColumnResource();
 	
@@ -66,15 +66,15 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 		String oldSpecifiedName = this.specifiedName;
 		this.specifiedName = newSpecifiedName;
 		if (oldSpecifiedName != newSpecifiedName) {
-			if (this.columnResource() != null) {
-				this.columnResource().setName(newSpecifiedName);						
-				if (this.columnResource().isAllFeaturesUnset()) {
+			if (this.getColumnResource() != null) {
+				this.getColumnResource().setName(newSpecifiedName);						
+				if (this.getColumnResource().isAllFeaturesUnset()) {
 					removeColumnResource();
 				}
 			}
 			else if (newSpecifiedName != null) {
 				addColumnResource();
-				columnResource().setName(newSpecifiedName);
+				getColumnResource().setName(newSpecifiedName);
 			}
 		}
 		firePropertyChanged(SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
@@ -104,15 +104,15 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 		String oldColumnDefinition = this.columnDefinition;
 		this.columnDefinition = newColumnDefinition;
 		if (oldColumnDefinition != newColumnDefinition) {
-			if (this.columnResource() != null) {
-				this.columnResource().setColumnDefinition(newColumnDefinition);						
-				if (this.columnResource().isAllFeaturesUnset()) {
+			if (this.getColumnResource() != null) {
+				this.getColumnResource().setColumnDefinition(newColumnDefinition);						
+				if (this.getColumnResource().isAllFeaturesUnset()) {
 					removeColumnResource();
 				}
 			}
 			else if (newColumnDefinition != null) {
 				addColumnResource();
-				columnResource().setColumnDefinition(newColumnDefinition);
+				getColumnResource().setColumnDefinition(newColumnDefinition);
 			}
 		}
 		firePropertyChanged(COLUMN_DEFINITION_PROPERTY, oldColumnDefinition, newColumnDefinition);
@@ -140,8 +140,8 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 	}
 
 	public TextRange getNameTextRange() {
-		if (columnResource() != null) {
-			TextRange textRange = columnResource().getNameTextRange();
+		if (getColumnResource() != null) {
+			TextRange textRange = getColumnResource().getNameTextRange();
 			if (textRange != null) {
 				return textRange;
 			}
@@ -150,7 +150,7 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 	}
 
 	public TextRange getValidationTextRange() {
-		TextRange textRange = columnResource().getValidationTextRange();
+		TextRange textRange = getColumnResource().getValidationTextRange();
 		if (textRange != null) {
 			return textRange;
 		}

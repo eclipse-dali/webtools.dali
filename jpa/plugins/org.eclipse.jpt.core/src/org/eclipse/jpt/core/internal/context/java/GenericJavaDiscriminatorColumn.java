@@ -35,7 +35,7 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 
 	public void initializeFromResource(JavaResourcePersistentMember persistentResource) {
 		this.persistenceResource = persistentResource;
-		this.initializeFromResource(this.columnResource());
+		this.initializeFromResource(this.getColumnResource());
 	}
 	
 	@Override
@@ -45,12 +45,12 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 		this.specifiedLength = this.length(column);
 	}
 	
-	protected JavaEntity javaEntity() {
+	protected JavaEntity getJavaEntity() {
 		return (JavaEntity) super.getParent();
 	}
 
 	@Override
-	protected DiscriminatorColumnAnnotation columnResource() {
+	protected DiscriminatorColumnAnnotation getColumnResource() {
 		return (DiscriminatorColumnAnnotation) this.persistenceResource.getNonNullAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
 	}
 	
@@ -69,7 +69,7 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	public void setSpecifiedDiscriminatorType(DiscriminatorType newSpecifiedDiscriminatorType) {
 		DiscriminatorType oldDiscriminatorType = this.specifiedDiscriminatorType;
 		this.specifiedDiscriminatorType = newSpecifiedDiscriminatorType;
-		columnResource().setDiscriminatorType(DiscriminatorType.toJavaResourceModel(newSpecifiedDiscriminatorType));
+		getColumnResource().setDiscriminatorType(DiscriminatorType.toJavaResourceModel(newSpecifiedDiscriminatorType));
 		firePropertyChanged(DiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY, oldDiscriminatorType, newSpecifiedDiscriminatorType);
 	}
 	
@@ -100,7 +100,7 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	public void setSpecifiedLength(Integer newSpecifiedLength) {
 		Integer oldSpecifiedLength = this.specifiedLength;
 		this.specifiedLength = newSpecifiedLength;
-		columnResource().setLength(newSpecifiedLength);
+		getColumnResource().setLength(newSpecifiedLength);
 		firePropertyChanged(DiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
 	}
 
@@ -117,12 +117,12 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	}
 
 	@Override
-	protected String tableName() {
-		return javaEntity().getTableName();
+	protected String getTableName() {
+		return getJavaEntity().getTableName();
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = columnResource().getTextRange(astRoot);
+		TextRange textRange = getColumnResource().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);	
 	}
 
@@ -131,7 +131,7 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	
 	public void update(JavaResourcePersistentMember persistentResource) {
 		this.persistenceResource = persistentResource;
-		this.update(this.columnResource());
+		this.update(this.getColumnResource());
 	}
 	
 	@Override

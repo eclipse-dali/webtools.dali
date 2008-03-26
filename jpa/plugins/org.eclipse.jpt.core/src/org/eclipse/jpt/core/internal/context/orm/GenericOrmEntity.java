@@ -920,7 +920,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		getTypeMappingResource().setIdClass(null);
 	}
 
-	public Entity parentEntity() {
+	public Entity getParentEntity() {
 		for (Iterator<PersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
 			TypeMapping typeMapping = i.next().getMapping();
 			if (typeMapping != this && typeMapping instanceof Entity) {
@@ -930,7 +930,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return this;
 	}
 
-	public Entity rootEntity() {
+	public Entity getRootEntity() {
 		Entity rootEntity = null;
 		for (Iterator<PersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
 			PersistentType persistentType = i.next();
@@ -1338,10 +1338,10 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 				return getJavaEntity().getInheritanceStrategy();
 			}
 		}
-		if (rootEntity() == this) {
+		if (getRootEntity() == this) {
 			return InheritanceType.SINGLE_TABLE;
 		}
-		return rootEntity().getInheritanceStrategy();
+		return getRootEntity().getInheritanceStrategy();
 	}
 	
 	protected void updateSpecifiedPrimaryKeyJoinColumns(XmlEntity entity) {
@@ -1502,7 +1502,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	// *************************************************************************
 	
-	public String primaryKeyColumnName() {
+	public String getPrimaryKeyColumnName() {
 		return GenericJavaEntity.primaryKeyColumnName(getPersistentType().allAttributes());
 	}
 	
@@ -1637,8 +1637,8 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 			return GenericOrmEntity.this.getDbTable(tableName);
 		}
 
-		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
-			Entity parentEntity = GenericOrmEntity.this.parentEntity();
+		public org.eclipse.jpt.db.Table getDbReferencedColumnTable() {
+			Entity parentEntity = GenericOrmEntity.this.getParentEntity();
 			return (parentEntity == null) ? null : parentEntity.getPrimaryDbTable();
 		}
 
@@ -1654,7 +1654,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 			if (joinColumnsSize() != 1) {
 				return null;
 			}
-			return GenericOrmEntity.this.parentEntity().primaryKeyColumnName();
+			return GenericOrmEntity.this.getParentEntity().getPrimaryKeyColumnName();
 		}
 		
 		public TextRange getValidationTextRange() {
@@ -1665,7 +1665,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	class AttributeOverrideOwner implements AttributeOverride.Owner {
 
-		public ColumnMapping columnMapping(String attributeName) {
+		public ColumnMapping getColumnMapping(String attributeName) {
 			if (attributeName == null) {
 				return null;
 			}
@@ -1697,7 +1697,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 	class AssociationOverrideOwner implements AssociationOverride.Owner {
 
-		public RelationshipMapping relationshipMapping(String attributeName) {
+		public RelationshipMapping getRelationshipMapping(String attributeName) {
 			if (attributeName == null) {
 				return null;
 			}

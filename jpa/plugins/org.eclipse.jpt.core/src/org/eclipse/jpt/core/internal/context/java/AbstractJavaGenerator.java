@@ -39,7 +39,7 @@ public abstract class AbstractJavaGenerator extends AbstractJavaJpaContextNode
 		this.specifiedAllocationSize = this.specifiedAllocationSize(generatorResource);
 	}
 	
-	protected GeneratorAnnotation generatorResource() {
+	protected GeneratorAnnotation getGeneratorResource() {
 		return this.generatorResource;
 	}
 	
@@ -62,7 +62,7 @@ public abstract class AbstractJavaGenerator extends AbstractJavaJpaContextNode
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		generatorResource().setName(newName);
+		getGeneratorResource().setName(newName);
 		firePropertyChanged(Generator.NAME_PROPERTY, oldName, newName);
 	}
 
@@ -83,7 +83,7 @@ public abstract class AbstractJavaGenerator extends AbstractJavaJpaContextNode
 	public void setSpecifiedInitialValue(Integer newSpecifiedInitialValue) {
 		Integer oldSpecifiedInitialValue = this.specifiedInitialValue;
 		this.specifiedInitialValue = newSpecifiedInitialValue;
-		generatorResource().setInitialValue(newSpecifiedInitialValue);
+		getGeneratorResource().setInitialValue(newSpecifiedInitialValue);
 		firePropertyChanged(Generator.SPECIFIED_INITIAL_VALUE_PROPERTY, oldSpecifiedInitialValue, newSpecifiedInitialValue);
 	}
 
@@ -104,7 +104,7 @@ public abstract class AbstractJavaGenerator extends AbstractJavaJpaContextNode
 	public void setSpecifiedAllocationSize(Integer newSpecifiedAllocationSize) {
 		Integer oldSpecifiedAllocationSize = this.specifiedAllocationSize;
 		this.specifiedAllocationSize = newSpecifiedAllocationSize;
-		generatorResource().setAllocationSize(newSpecifiedAllocationSize);
+		getGeneratorResource().setAllocationSize(newSpecifiedAllocationSize);
 		firePropertyChanged(Generator.SPECIFIED_ALLOCATION_SIZE_PROPERTY, oldSpecifiedAllocationSize, newSpecifiedAllocationSize);
 	}
 
@@ -120,10 +120,10 @@ public abstract class AbstractJavaGenerator extends AbstractJavaJpaContextNode
 
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.selectionTextRange(astRoot);
+		return this.getSelectionTextRange(astRoot);
 	}
 
-	public TextRange selectionTextRange(CompilationUnit astRoot) {
+	public TextRange getSelectionTextRange(CompilationUnit astRoot) {
 		return this.generatorResource.getTextRange(astRoot);
 	}
 	

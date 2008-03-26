@@ -66,8 +66,8 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 	@Override
 	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super.initializeFromResource(resourcePersistentAttribute);
-		this.column.initializeFromResource(this.columnResource());
-		this.temporal = this.temporal(this.temporalResource());
+		this.column.initializeFromResource(this.getColumnResource());
+		this.temporal = this.temporal(this.getTemporalResource());
 		this.initializeTableGenerator(resourcePersistentAttribute);
 		this.initializeSequenceGenerator(resourcePersistentAttribute);
 		this.initializeGeneratedValue(resourcePersistentAttribute);
@@ -98,11 +98,11 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 		}
 	}
 	
-	protected Temporal temporalResource() {
+	protected Temporal getTemporalResource() {
 		return (Temporal) getResourcePersistentAttribute().getNonNullAnnotation(Temporal.ANNOTATION_NAME);
 	}
 	
-	public ColumnAnnotation columnResource() {
+	public ColumnAnnotation getColumnResource() {
 		return (ColumnAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
@@ -126,10 +126,10 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 	}
 
 	public String getDefaultColumnName() {
-		return attributeName();
+		return getAttributeName();
 	}
 	
-	public String defaultTableName() {
+	public String getDefaultTableName() {
 		return getTypeMapping().getTableName();
 	}
 
@@ -146,7 +146,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 	public void setTemporal(TemporalType newTemporal) {
 		TemporalType oldTemporal = this.temporal;
 		this.temporal = newTemporal;
-		this.temporalResource().setValue(TemporalType.toJavaResourceModel(newTemporal));
+		this.getTemporalResource().setValue(TemporalType.toJavaResourceModel(newTemporal));
 		firePropertyChanged(ColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 	
@@ -266,8 +266,8 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 	@Override
 	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super.update(resourcePersistentAttribute);
-		this.column.update(this.columnResource());
-		this.setTemporal_(this.temporal(this.temporalResource()));
+		this.column.update(this.getColumnResource());
+		this.setTemporal_(this.temporal(this.getTemporalResource()));
 		this.updateTableGenerator(resourcePersistentAttribute);
 		this.updateSequenceGenerator(resourcePersistentAttribute);
 		this.updateGeneratedValue(resourcePersistentAttribute);

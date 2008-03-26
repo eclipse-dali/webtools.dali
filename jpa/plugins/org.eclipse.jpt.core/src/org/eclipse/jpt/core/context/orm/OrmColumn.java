@@ -36,7 +36,7 @@ public interface OrmColumn extends Column, OrmBaseColumn
 	 */
 	interface Owner extends OrmBaseColumn.Owner
 	{
-		XmlColumn columnResource();
+		XmlColumn getColumnResource();
 		
 		void addColumnResource();
 		

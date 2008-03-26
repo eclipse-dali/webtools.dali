@@ -63,10 +63,10 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 	@Override
 	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super.initializeFromResource(resourcePersistentAttribute);
-		this.column.initializeFromResource(this.columnResource());
-		this.specifiedEnumerated = this.specifiedEnumerated(this.enumeratedResource());
+		this.column.initializeFromResource(this.getColumnResource());
+		this.specifiedEnumerated = this.specifiedEnumerated(this.getEnumeratedResource());
 		this.lob = this.lob(resourcePersistentAttribute);
-		this.temporal = this.temporal(this.temporalResource());
+		this.temporal = this.temporal(this.getTemporalResource());
 	}
 	
 	@Override
@@ -75,15 +75,15 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 		this.specifiedOptional = this.specifiedOptional(basicResource);
 	}
 	
-	protected Enumerated enumeratedResource() {
+	protected Enumerated getEnumeratedResource() {
 		return (Enumerated) getResourcePersistentAttribute().getNonNullAnnotation(Enumerated.ANNOTATION_NAME);
 	}
 	
-	protected Temporal temporalResource() {
+	protected Temporal getTemporalResource() {
 		return (Temporal) getResourcePersistentAttribute().getNonNullAnnotation(Temporal.ANNOTATION_NAME);
 	}
 
-	public ColumnAnnotation columnResource() {
+	public ColumnAnnotation getColumnResource() {
 		return (ColumnAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 	
@@ -105,10 +105,10 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 	}
 	
 	public String getDefaultColumnName() {
-		return attributeName();
+		return getAttributeName();
 	}
 
-	public String defaultTableName() {
+	public String getDefaultTableName() {
 		return getTypeMapping().getTableName();
 	}
 	
@@ -133,7 +133,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
 		FetchType oldFetch = this.specifiedFetch;
 		this.specifiedFetch = newSpecifiedFetch;
-		this.mappingResource().setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
+		this.getMappingResource().setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
 		firePropertyChanged(Fetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
 	
@@ -164,7 +164,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 	public void setSpecifiedOptional(Boolean newSpecifiedOptional) {
 		Boolean oldOptional = this.specifiedOptional;
 		this.specifiedOptional = newSpecifiedOptional;
-		this.mappingResource().setOptional(newSpecifiedOptional);
+		this.getMappingResource().setOptional(newSpecifiedOptional);
 		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
 	}
 
@@ -201,7 +201,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 	public void setTemporal(TemporalType newTemporal) {
 		TemporalType oldTemporal = this.temporal;
 		this.temporal = newTemporal;
-		this.temporalResource().setValue(TemporalType.toJavaResourceModel(newTemporal));
+		this.getTemporalResource().setValue(TemporalType.toJavaResourceModel(newTemporal));
 		firePropertyChanged(ColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 	
@@ -232,7 +232,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 	public void setSpecifiedEnumerated(EnumType newSpecifiedEnumerated) {
 		EnumType oldEnumerated = this.specifiedEnumerated;
 		this.specifiedEnumerated = newSpecifiedEnumerated;
-		this.enumeratedResource().setValue(EnumType.toJavaResourceModel(newSpecifiedEnumerated));
+		this.getEnumeratedResource().setValue(EnumType.toJavaResourceModel(newSpecifiedEnumerated));
 		firePropertyChanged(BasicMapping.SPECIFIED_ENUMERATED_PROPERTY, oldEnumerated, newSpecifiedEnumerated);
 	}
 	
@@ -251,10 +251,10 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 	@Override
 	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super.update(resourcePersistentAttribute);
-		this.column.update(this.columnResource());
-		this.setSpecifiedEnumerated_(this.specifiedEnumerated(this.enumeratedResource()));
+		this.column.update(this.getColumnResource());
+		this.setSpecifiedEnumerated_(this.specifiedEnumerated(this.getEnumeratedResource()));
 		this.setLob(this.lob(resourcePersistentAttribute));
-		this.setTemporal_(this.temporal(this.temporalResource()));
+		this.setTemporal_(this.temporal(this.getTemporalResource()));
 	}
 	
 	@Override

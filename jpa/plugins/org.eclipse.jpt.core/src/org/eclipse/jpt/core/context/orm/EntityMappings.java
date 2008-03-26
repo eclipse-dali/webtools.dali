@@ -121,7 +121,7 @@ public interface EntityMappings extends OrmJpaContextNode, JpaStructureNode, Que
 	 * Return the {@link OrmPersistentType) listed in this mapping file
 	 * with the given fullyQualifiedTypeName.  Return null if none exists.
 	 */
-	OrmPersistentType persistentTypeFor(String fullyQualifiedTypeName);
+	OrmPersistentType getPersistentType(String fullyQualifiedTypeName);
 	
 	void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping);
 	

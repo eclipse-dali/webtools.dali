@@ -32,7 +32,7 @@ public interface JpaStructureNode extends JpaNode
 	/**
 	 * Return the structure node at the given offset.
 	 */
-	JpaStructureNode structureNode(int textOffset);
+	JpaStructureNode getStructureNode(int textOffset);
 	
 	/**
 	 * Return the text range do be used to select text in the editor

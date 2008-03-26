@@ -30,7 +30,7 @@ public interface JavaPersistentType extends PersistentType, JavaJpaContextNode
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaPersistentAttribute> attributes();
 	
-	JavaPersistentAttribute attributeNamed(String attributeName);
+	JavaPersistentAttribute getAttributeNamed(String attributeName);
 
 	/**
 	 * Resolve and return the attribute named <code>attributeName</code> if it

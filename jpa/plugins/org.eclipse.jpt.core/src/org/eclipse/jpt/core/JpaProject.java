@@ -122,7 +122,7 @@ public interface JpaProject extends JpaNode {
 	 * Return null if unable to associate the given file
 	 * with a JPA file.
 	 */
-	JpaFile jpaFile(IFile file);
+	JpaFile getJpaFile(IFile file);
 
 	/**
 	 * Return the JPA project's JPA files for the specified content type ID.
@@ -155,7 +155,7 @@ public interface JpaProject extends JpaNode {
 	 * Return the Java persistent type resource for the specified fully qualified type name;
 	 * null, if none exists.
 	 */
-	JavaResourcePersistentType javaPersistentTypeResource(String typeName);
+	JavaResourcePersistentType getJavaPersistentTypeResource(String typeName);
 	
 	
 	// **************** jpa model synchronization and lifecycle ****************

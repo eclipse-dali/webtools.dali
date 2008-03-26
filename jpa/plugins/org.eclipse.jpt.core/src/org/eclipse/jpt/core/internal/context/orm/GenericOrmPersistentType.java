@@ -109,7 +109,7 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	}
 	
 	protected OrmTypeMapping buildOrmTypeMapping(String key) {
-		return typeMappingProvider(key).buildTypeMapping(getJpaFactory(), this);
+		return getTypeMappingProvider(key).buildTypeMapping(getJpaFactory(), this);
 	}
 
 	protected Collection<OrmTypeMappingProvider> buildTypeMappingProviders() {
@@ -120,7 +120,7 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 		return collection;
 	}
 
-	protected OrmTypeMappingProvider typeMappingProvider(String key) {
+	protected OrmTypeMappingProvider getTypeMappingProvider(String key) {
 		for (OrmTypeMappingProvider provider : this.typeMappingProviders) {
 			if (provider.getKey().equals(key)) {
 				return provider;
@@ -157,12 +157,12 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 		return new ChainIterator<PersistentType>(this) {
 			@Override
 			protected PersistentType nextLink(PersistentType pt) {
-				return pt.parentPersistentType();
+				return pt.getParentPersistentType();
 			}
 		};
 	}
 
-	public PersistentType parentPersistentType() {
+	public PersistentType getParentPersistentType() {
 		return this.parentPersistentType;
 	}
 
@@ -228,7 +228,7 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 		};
 	}
 
-	public OrmPersistentAttribute attributeNamed(String attributeName) {
+	public OrmPersistentAttribute getAttributeNamed(String attributeName) {
 		Iterator<OrmPersistentAttribute> stream = attributesNamed(attributeName);
 		return (stream.hasNext()) ? stream.next() : null;
 	}
@@ -474,7 +474,7 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	protected void initializeParentPersistentType() {
 		JavaPersistentType javaPersistentType = getJavaPersistentType();
 		if (javaPersistentType != null) {
-			this.parentPersistentType = javaPersistentType.parentPersistentType();
+			this.parentPersistentType = javaPersistentType.getParentPersistentType();
 		}
 	}
 
@@ -521,7 +521,7 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 			this.parentPersistentType = null;
 			return;
 		}
-		this.parentPersistentType = javaPersistentType.parentPersistentType();
+		this.parentPersistentType = javaPersistentType.getParentPersistentType();
 	}
 
 	protected void updatePersistentAttributes(AbstractXmlTypeMapping typeMapping) {
@@ -769,8 +769,8 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 			OrmPersistentAttribute attribute = attributes.next();
 			return attributes.hasNext() ? null /* more than one */: attribute;
 		}
-		else if (parentPersistentType() != null) {
-			return parentPersistentType().resolveAttribute(attributeName);
+		else if (getParentPersistentType() != null) {
+			return getParentPersistentType().resolveAttribute(attributeName);
 		}
 		else {
 			return null;
@@ -782,7 +782,7 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 		return this;
 	}
 	
-	public JpaStructureNode structureNode(int textOffset) {
+	public JpaStructureNode getStructureNode(int textOffset) {
 		for (OrmPersistentAttribute attribute : CollectionTools.iterable(specifiedAttributes())) {
 			if (attribute.contains(textOffset)) {
 				return attribute;

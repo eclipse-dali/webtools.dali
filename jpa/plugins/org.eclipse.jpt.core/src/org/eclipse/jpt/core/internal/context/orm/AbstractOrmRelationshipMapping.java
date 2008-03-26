@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
-import org.eclipse.jpt.core.internal.context.RelationshipMappingTools;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -56,7 +56,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	public void setSpecifiedTargetEntity(String newSpecifiedTargetEntity) {
 		String oldSpecifiedTargetEntity = this.specifiedTargetEntity;
 		this.specifiedTargetEntity = newSpecifiedTargetEntity;
-		attributeMapping().setTargetEntity(newSpecifiedTargetEntity);
+		getAttributeMapping().setTargetEntity(newSpecifiedTargetEntity);
 		firePropertyChanged(SPECIFIED_TARGET_ENTITY_PROPERTY, oldSpecifiedTargetEntity, newSpecifiedTargetEntity);
 	}
 
@@ -97,7 +97,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
 		FetchType oldFetch = this.specifiedFetch;
 		this.specifiedFetch = newSpecifiedFetch;
-		this.attributeMapping().setFetch(FetchType.toOrmResourceModel(newSpecifiedFetch));
+		this.getAttributeMapping().setFetch(FetchType.toOrmResourceModel(newSpecifiedFetch));
 		firePropertyChanged(Fetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
 
@@ -138,7 +138,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	}
 	
 	public boolean targetEntityIsValid(String targetEntity) {
-		return RelationshipMappingTools.targetEntityIsValid(targetEntity);
+		return MappingTools.targetEntityIsValid(targetEntity);
 	}
 	
 	@Override
@@ -166,10 +166,10 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	}
 	
 	protected RelationshipMapping javaRelationshipMapping() {
-		if (javaPersistentAttribute() == null) {
+		if (findJavaPersistentAttribute() == null) {
 			return null;
 		}
-		AttributeMapping javaAttributeMapping = javaPersistentAttribute().getMapping();
+		AttributeMapping javaAttributeMapping = findJavaPersistentAttribute().getMapping();
 		if (javaAttributeMapping instanceof RelationshipMapping) {
 			return ((RelationshipMapping) javaAttributeMapping);
 		}
@@ -183,8 +183,8 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 				return javaMapping.getTargetEntity();
 			}
 		}
-		if (javaPersistentAttribute() != null) {
-			return defaultTargetEntity(javaPersistentAttribute().getResourcePersistentAttribute());
+		if (findJavaPersistentAttribute() != null) {
+			return defaultTargetEntity(findJavaPersistentAttribute().getResourcePersistentAttribute());
 		}
 		return null;
 	}
@@ -199,7 +199,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 		if (qualifiedTargetEntity == null) {
 			return null;
 		}
-		PersistentType persistentType = getPersistenceUnit().persistentType(qualifiedTargetEntity);
+		PersistentType persistentType = getPersistenceUnit().getPersistentType(qualifiedTargetEntity);
 		if (persistentType != null && persistentType.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
 			return (Entity) persistentType.getMapping();
 		}

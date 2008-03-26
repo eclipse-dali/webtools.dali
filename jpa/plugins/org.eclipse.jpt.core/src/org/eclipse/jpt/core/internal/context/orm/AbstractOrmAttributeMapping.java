@@ -90,7 +90,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return (OrmPersistentAttribute) getParent();
 	}
 
-	public String attributeName() {
+	public String getAttributeName() {
 		return this.getPersistentAttribute().getName();
 	}
 
@@ -190,26 +190,26 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return false;
 	}
 
-	protected T attributeMapping() {
+	protected T getAttributeMapping() {
 		return this.attributeMapping;
 	}
 
 	public void initialize(T attributeMapping) {
 		this.attributeMapping = attributeMapping;
 		this.name = attributeMapping.getName();
-		this.javaPersistentAttribute = javaPersistentAttribute();
+		this.javaPersistentAttribute = findJavaPersistentAttribute();
 	}
 	
 	public void update(T attributeMapping) {
 		this.attributeMapping = attributeMapping;
 		this.setName_(attributeMapping.getName());
-		this.setJavaPersistentAttribute(javaPersistentAttribute());
+		this.setJavaPersistentAttribute(findJavaPersistentAttribute());
 	}
 	
-	protected JavaPersistentAttribute javaPersistentAttribute() {
+	protected JavaPersistentAttribute findJavaPersistentAttribute() {
 		JavaPersistentType javaPersistentType = getPersistentAttribute().getPersistentType().getJavaPersistentType();
 		if (javaPersistentType != null && getName() != null) {
-			return javaPersistentType.attributeNamed(getName());
+			return javaPersistentType.getAttributeNamed(getName());
 		}
 		return null;
 	}
@@ -231,7 +231,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return (this.getPersistentAttribute().isVirtual()) ? this.getTypeMapping().getAttributesTextRange() : this.attributeMapping.getValidationTextRange();
 	}
 	
-	public TextRange nameTextRange() {
+	public TextRange getNameTextRange() {
 		return this.attributeMapping.getNameTextRange();
 	}
 	
@@ -262,14 +262,14 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	
 	protected void addUnresolvedAttributeMessage(List<IMessage> messages) {
 		if (! StringTools.stringIsEmpty(getName())
-				&& javaPersistentAttribute() == null) {
+				&& findJavaPersistentAttribute() == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,
 					new String[] {getName(), getPersistentAttribute().getPersistentType().getMapping().getClass_()},
 					this, 
-					nameTextRange())
+					getNameTextRange())
 			);
 		}
 	}

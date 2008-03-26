@@ -70,7 +70,7 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 	public Table getReferencedNameTable() {
 
 		AssociationOverride associationOverride = getOwner();
-		RelationshipMapping relationshipMapping = associationOverride.getOwner().relationshipMapping(associationOverride.getName());
+		RelationshipMapping relationshipMapping = associationOverride.getOwner().getRelationshipMapping(associationOverride.getName());
 
 		if (relationshipMapping == null){
 			return null;

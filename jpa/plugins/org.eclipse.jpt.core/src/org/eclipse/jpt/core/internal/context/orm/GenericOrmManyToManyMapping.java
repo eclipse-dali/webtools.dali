@@ -60,7 +60,7 @@ public class GenericOrmManyToManyMapping extends AbstractOrmMultiRelationshipMap
 	}
 	
 	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getManyToManys().remove(this.attributeMapping());
+		typeMapping.getAttributes().getManyToManys().remove(this.getAttributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}

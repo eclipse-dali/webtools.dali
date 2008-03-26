@@ -25,8 +25,8 @@ public class GenericJavaSequenceGenerator extends AbstractJavaGenerator
 	}
 
 	@Override
-	protected SequenceGeneratorAnnotation generatorResource() {
-		return (SequenceGeneratorAnnotation) super.generatorResource();
+	protected SequenceGeneratorAnnotation getGeneratorResource() {
+		return (SequenceGeneratorAnnotation) super.getGeneratorResource();
 	}
 
 	public void initializeFromResource(SequenceGeneratorAnnotation sequenceGenerator) {
@@ -49,7 +49,7 @@ public class GenericJavaSequenceGenerator extends AbstractJavaGenerator
 	public void setSpecifiedSequenceName(String newSpecifiedSequenceName) {
 		String oldSpecifiedSequenceName = this.specifiedSequenceName;
 		this.specifiedSequenceName = newSpecifiedSequenceName;
-		generatorResource().setSequenceName(newSpecifiedSequenceName);
+		getGeneratorResource().setSequenceName(newSpecifiedSequenceName);
 		firePropertyChanged(SPECIFIED_SEQUENCE_NAME_PROPERTY, oldSpecifiedSequenceName, newSpecifiedSequenceName);
 	}
 

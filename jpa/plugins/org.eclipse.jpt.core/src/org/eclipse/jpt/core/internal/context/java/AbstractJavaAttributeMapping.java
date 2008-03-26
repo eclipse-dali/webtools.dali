@@ -37,7 +37,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected T mappingResource() {
+	protected T getMappingResource() {
 		if (isDefault()) {
 			return (T) this.resourcePersistentAttribute.getNullMappingAnnotation(getAnnotationName());
 		}
@@ -72,7 +72,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 		return this.getPersistentAttribute().getTypeMapping();
 	}
 
-	public String attributeName() {
+	public String getAttributeName() {
 		return this.getPersistentAttribute().getName();
 	}
 	
@@ -81,7 +81,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.mappingResource().getTextRange(astRoot);
+		TextRange textRange = this.getMappingResource().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getPersistentAttribute().getValidationTextRange(astRoot);
 	}
 	
@@ -103,7 +103,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 
 	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		this.resourcePersistentAttribute = resourcePersistentAttribute;
-		initialize(mappingResource());
+		initialize(getMappingResource());
 	}
 
 	protected void initialize(T mappingResource) {
@@ -112,7 +112,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 
 	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		this.resourcePersistentAttribute = resourcePersistentAttribute;
-		this.update(mappingResource());
+		this.update(getMappingResource());
 	}
 	
 	protected void update(T mappingResource) {

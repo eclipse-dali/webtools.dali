@@ -52,7 +52,7 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmBaseEmbeddedMapping<
 	}
 	
 	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getEmbeddedIds().remove(this.attributeMapping());
+		typeMapping.getAttributes().getEmbeddedIds().remove(this.getAttributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}
