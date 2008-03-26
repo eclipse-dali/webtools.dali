@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
-import org.eclipse.jpt.core.resource.java.AbstractColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.BaseColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
-public abstract class AbstractColumnImpl extends AbstractNamedColumn implements AbstractColumnAnnotation
+public abstract class BaseColumnImpl extends AbstractNamedColumn implements BaseColumnAnnotation
 {
 	// hold this so we can get the 'table' text range
 	private final DeclarationAnnotationElementAdapter<String> tableDeclarationAdapter;
@@ -55,11 +55,11 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 	private Boolean updatable;
 	
 
-	public AbstractColumnImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
+	public BaseColumnImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
 		this(parent, member, daa, new MemberAnnotationAdapter(member, daa));
 	}
 	
-	public AbstractColumnImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	public BaseColumnImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.tableDeclarationAdapter = this.buildStringElementAdapter(this.tableElementName());
 		this.tableAdapter = this.buildShortCircuitElementAdapter(this.tableDeclarationAdapter);
@@ -96,7 +96,7 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		super.initializeFrom(oldAnnotation);
-		AbstractColumnAnnotation oldColumn = (AbstractColumnAnnotation) oldAnnotation;
+		BaseColumnAnnotation oldColumn = (BaseColumnAnnotation) oldAnnotation;
 		setTable(oldColumn.getTable());
 		setUnique(oldColumn.getUnique());
 		setNullable(oldColumn.getNullable());

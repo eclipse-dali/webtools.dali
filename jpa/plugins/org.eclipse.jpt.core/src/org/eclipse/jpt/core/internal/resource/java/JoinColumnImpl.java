@@ -31,7 +31,7 @@ import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
-public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinColumn
+public class JoinColumnImpl extends BaseColumnImpl implements NestableJoinColumn
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 

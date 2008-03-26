@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JoinColumnAnnotation extends AbstractColumnAnnotation
+public interface JoinColumnAnnotation extends BaseColumnAnnotation
 {
 	String ANNOTATION_NAME = JPA.JOIN_COLUMN;
 

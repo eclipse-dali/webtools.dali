@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface AbstractColumnAnnotation extends NamedColumnAnnotation
+public interface BaseColumnAnnotation extends NamedColumnAnnotation
 {
 
 	/**

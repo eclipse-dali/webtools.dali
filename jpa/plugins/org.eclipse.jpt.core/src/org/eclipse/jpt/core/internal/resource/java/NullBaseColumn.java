@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,20 +10,20 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.resource.java.AbstractColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.BaseColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
-public abstract class NullAbstractColumn extends NullNamedColumn implements AbstractColumnAnnotation, Annotation
+public abstract class NullBaseColumn extends NullNamedColumn implements BaseColumnAnnotation, Annotation
 {	
-	protected NullAbstractColumn(JavaResourceNode parent) {
+	protected NullBaseColumn(JavaResourceNode parent) {
 		super(parent);
 	}
 
 	@Override
-	protected abstract AbstractColumnAnnotation createColumnResource();
+	protected abstract BaseColumnAnnotation createColumnResource();
 
 	public String getTable() {
 		return null;

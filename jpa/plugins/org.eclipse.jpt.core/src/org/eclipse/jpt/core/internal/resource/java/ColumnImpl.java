@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
-public class ColumnImpl extends AbstractColumnImpl implements ColumnAnnotation, NestableAnnotation
+public class ColumnImpl extends BaseColumnImpl implements ColumnAnnotation, NestableAnnotation
 {
 	// this adapter is only used by a Column annotation associated with a mapping annotation (e.g. Basic)
 	public static final DeclarationAnnotationAdapter MAPPING_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);

@@ -18,9 +18,9 @@ import org.eclipse.jpt.core.resource.java.UniqueConstraint;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
-public abstract class NullAbstractTable extends AbstractJavaResourceNode implements TableAnnotation, Annotation
+public abstract class NullBaseTable extends AbstractJavaResourceNode implements Annotation
 {
-	protected NullAbstractTable(JavaResourcePersistentMember parent) {
+	protected NullBaseTable(JavaResourcePersistentMember parent) {
 		super(parent);
 	}
 	

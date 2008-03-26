@@ -14,14 +14,14 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.resource.java.AbstractColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.BaseColumnAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
-public abstract class AbstractJavaBaseColumn<T extends AbstractColumnAnnotation> extends AbstractJavaNamedColumn<T>
+public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> extends AbstractJavaNamedColumn<T>
 	implements JavaBaseColumn
 {
 
@@ -280,23 +280,23 @@ public abstract class AbstractJavaBaseColumn<T extends AbstractColumnAnnotation>
 		return this.owner().defaultTableName();
 	}
 	
-	protected String specifiedTable(AbstractColumnAnnotation column) {
+	protected String specifiedTable(BaseColumnAnnotation column) {
 		return column.getTable();
 	}
 	
-	protected Boolean specifiedUnique(AbstractColumnAnnotation column) {
+	protected Boolean specifiedUnique(BaseColumnAnnotation column) {
 		return column.getUnique();
 	}
 	
-	protected Boolean specifiedNullable(AbstractColumnAnnotation column) {
+	protected Boolean specifiedNullable(BaseColumnAnnotation column) {
 		return column.getNullable();
 	}
 	
-	protected Boolean specifiedInsertable(AbstractColumnAnnotation column) {
+	protected Boolean specifiedInsertable(BaseColumnAnnotation column) {
 		return column.getInsertable();
 	}
 	
-	protected Boolean specifiedUpdatable(AbstractColumnAnnotation column) {
+	protected Boolean specifiedUpdatable(BaseColumnAnnotation column) {
 		return column.getUpdatable();
 	}
 }
