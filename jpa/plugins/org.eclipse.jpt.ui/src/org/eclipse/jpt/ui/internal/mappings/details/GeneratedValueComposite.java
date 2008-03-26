@@ -84,8 +84,8 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 	private PropertyChangeListener buildGeneratedValuePropertyChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-				disengageListeners((GeneratedValue) e.oldValue());
-				engageListeners((GeneratedValue) e.newValue());
+				disengageListeners((GeneratedValue) e.getOldValue());
+				engageListeners((GeneratedValue) e.getNewValue());
 
 				if (!isPopulating()) {
 					setPopulating(true);

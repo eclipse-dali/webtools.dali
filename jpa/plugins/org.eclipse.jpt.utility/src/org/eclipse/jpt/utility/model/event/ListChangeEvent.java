@@ -155,12 +155,12 @@ public class ListChangeEvent extends ChangeEvent {
 	/**
 	 * Return the programmatic name of the list that was changed.
 	 */
-	public String listName() {
+	public String getListName() {
 		return this.listName;
 	}
 
 	@Override
-	public String aspectName() {
+	public String getAspectName() {
 		return this.listName;
 	}
 
@@ -170,7 +170,7 @@ public class ListChangeEvent extends ChangeEvent {
 	 * In the case of "moved" items, this will be the "target" index.
 	 * May be -1 if inappropriate or unknown.
 	 */
-	public int index() {
+	public int getIndex() {
 		return this.index;
 	}
 
@@ -211,7 +211,7 @@ public class ListChangeEvent extends ChangeEvent {
 	 * In the case of "moved" items, this will be the "target" index.
 	 * May be -1 if inappropriate or unknown.
 	 */
-	public int targetIndex() {
+	public int getTargetIndex() {
 		return this.index;
 	}
 
@@ -219,7 +219,7 @@ public class ListChangeEvent extends ChangeEvent {
 	 * In the case of "moved" items, this will be the "source" index.
 	 * May be -1 if inappropriate or unknown.
 	 */
-	public int sourceIndex() {
+	public int getSourceIndex() {
 		return this.sourceIndex;
 	}
 
@@ -227,7 +227,7 @@ public class ListChangeEvent extends ChangeEvent {
 	 * In the case of "moved" items, this will be the number of items moved.
 	 * May be -1 if inappropriate or unknown.
 	 */
-	public int moveLength() {
+	public int getMoveLength() {
 		return this.moveLength;
 	}
 

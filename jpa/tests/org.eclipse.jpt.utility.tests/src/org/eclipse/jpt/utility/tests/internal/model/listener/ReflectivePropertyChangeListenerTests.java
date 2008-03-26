@@ -175,17 +175,17 @@ public class ReflectivePropertyChangeListenerTests extends TestCase {
 		void propertyChangedSingleArgument(PropertyChangeEvent e) {
 			this.singleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
-			assertEquals(this.propertyName, e.propertyName());
-			assertEquals(this.oldValue, e.oldValue());
-			assertEquals(this.newValue, e.newValue());
+			assertEquals(this.propertyName, e.getPropertyName());
+			assertEquals(this.oldValue, e.getOldValue());
+			assertEquals(this.newValue, e.getNewValue());
 		}
 		void propertyChangedSingleArgument2(Object o) {
 			PropertyChangeEvent e = (PropertyChangeEvent) o;
 			this.singleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
-			assertEquals(this.propertyName, e.propertyName());
-			assertEquals(this.oldValue, e.oldValue());
-			assertEquals(this.newValue, e.newValue());
+			assertEquals(this.propertyName, e.getPropertyName());
+			assertEquals(this.oldValue, e.getOldValue());
+			assertEquals(this.newValue, e.getNewValue());
 		}
 		void propertyChangedDoubleArgument(PropertyChangeEvent e, Object o) {
 			fail("bogus event: " + e);

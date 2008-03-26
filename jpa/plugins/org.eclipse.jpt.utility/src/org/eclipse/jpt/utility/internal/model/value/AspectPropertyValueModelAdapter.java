@@ -60,7 +60,7 @@ public abstract class AspectPropertyValueModelAdapter<T>
 	/**
 	 * Return the cached value.
 	 */
-	public T value() {
+	public T getValue() {
 		return this.value;
 	}
 

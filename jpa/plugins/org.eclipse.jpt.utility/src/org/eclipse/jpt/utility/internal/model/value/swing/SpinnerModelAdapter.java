@@ -174,7 +174,7 @@ public class SpinnerModelAdapter
 	 * Synchronize the delegate model accordingly.
 	 */
 	protected void valueChanged(PropertyChangeEvent event) {
-		this.synchronizeDelegate(event.newValue());
+		this.synchronizeDelegate(event.getNewValue());
 	}
 
 	/**
@@ -190,7 +190,7 @@ public class SpinnerModelAdapter
 
 	protected void engageValueHolder() {
 		this.valueHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.valueListener);
-		this.synchronizeDelegate(this.valueHolder.value());
+		this.synchronizeDelegate(this.valueHolder.getValue());
 	}
 
 	protected void disengageValueHolder() {

@@ -159,31 +159,31 @@ public class JavaTypeTests extends TestCase {
 
 	private void verifyJavaClass(Class<?> javaClass) throws Exception {
 		JavaType javaType = new SimpleJavaType(javaClass);
-		assertEquals(javaClass, javaType.javaClass());
+		assertEquals(javaClass, javaType.getJavaClass());
 	}
 
 	public void testJavaClassName() throws Exception {
 		JavaType javaType;
 		javaType = new SimpleJavaType(java.lang.Object.class);
-		assertEquals("java.lang.Object", javaType.javaClassName());
+		assertEquals("java.lang.Object", javaType.getJavaClassName());
 
 		javaType = new SimpleJavaType(java.lang.Object[].class);
-		assertEquals("[Ljava.lang.Object;", javaType.javaClassName());
+		assertEquals("[Ljava.lang.Object;", javaType.getJavaClassName());
 
 		javaType = new SimpleJavaType(int.class);
-		assertEquals("int", javaType.javaClassName());
+		assertEquals("int", javaType.getJavaClassName());
 
 		javaType = new SimpleJavaType(int[].class);
-		assertEquals("[I", javaType.javaClassName());
+		assertEquals("[I", javaType.getJavaClassName());
 
 		javaType = new SimpleJavaType(void.class);
-		assertEquals("void", javaType.javaClassName());
+		assertEquals("void", javaType.getJavaClassName());
 
 		javaType = new SimpleJavaType(java.util.Map.Entry.class);
-		assertEquals("java.util.Map$Entry", javaType.javaClassName());
+		assertEquals("java.util.Map$Entry", javaType.getJavaClassName());
 
 		javaType = new SimpleJavaType(java.util.Map.Entry[][].class);
-		assertEquals("[[Ljava.util.Map$Entry;", javaType.javaClassName());
+		assertEquals("[[Ljava.util.Map$Entry;", javaType.getJavaClassName());
 	}
 
 	public void testDescribes() throws Exception {

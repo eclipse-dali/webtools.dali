@@ -314,7 +314,7 @@ public abstract class AbstractComboModelAdapter<E> {
 		if (this.comboHolder.isDisposed()) {
 			return;
 		}
-		int index = event.index();
+		int index = event.getIndex();
 		for (ListIterator<E> stream = this.items(event); stream.hasNext(); ) {
 			this.comboHolder.add(this.convert(stream.next()), index++);
 		}
@@ -327,7 +327,7 @@ public abstract class AbstractComboModelAdapter<E> {
 		if (this.comboHolder.isDisposed()) {
 			return;
 		}
-		this.comboHolder.remove(event.index(), event.index() + event.itemsSize() - 1);
+		this.comboHolder.remove(event.getIndex(), event.getIndex() + event.itemsSize() - 1);
 	}
 
 	/**
@@ -337,9 +337,9 @@ public abstract class AbstractComboModelAdapter<E> {
 		if (this.comboHolder.isDisposed()) {
 			return;
 		}
-		int target = event.targetIndex();
-		int source = event.sourceIndex();
-		int len = event.moveLength();
+		int target = event.getTargetIndex();
+		int source = event.getSourceIndex();
+		int len = event.getMoveLength();
 		int loStart = Math.min(target, source);
 		int hiStart = Math.max(target, source);
 		// make a copy of the affected items...
@@ -359,7 +359,7 @@ public abstract class AbstractComboModelAdapter<E> {
 		if (this.comboHolder.isDisposed()) {
 			return;
 		}
-		int index = event.index();
+		int index = event.getIndex();
 		for (ListIterator<E> stream = this.items(event); stream.hasNext(); ) {
 			this.comboHolder.setItem(index++, this.convert(stream.next()));
 		}
@@ -406,7 +406,7 @@ public abstract class AbstractComboModelAdapter<E> {
 			return;
 		}
 
-		E selectedValue = this.selectedItemHolder.value();
+		E selectedValue = this.selectedItemHolder.getValue();
 		this.comboHolder.setPopulating(true);
 
 		try {

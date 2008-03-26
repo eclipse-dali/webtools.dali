@@ -140,22 +140,22 @@ public class TreeAspectAdapterTests extends TestCase {
 		this.subjectHolder1.setValue(this.subject2);
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(TreeValueModel.NODES, this.event1.treeName());
-		assertEquals(0, this.event1.path().length);
+		assertEquals(TreeValueModel.NODES, this.event1.getTreeName());
+		assertEquals(0, this.event1.getPath().length);
 		
 		this.event1 = null;
 		this.subjectHolder1.setValue(null);
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(TreeValueModel.NODES, this.event1.treeName());
-		assertEquals(0, this.event1.path().length);
+		assertEquals(TreeValueModel.NODES, this.event1.getTreeName());
+		assertEquals(0, this.event1.getPath().length);
 		
 		this.event1 = null;
 		this.subjectHolder1.setValue(this.subject1);
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(TreeValueModel.NODES, this.event1.treeName());
-		assertEquals(0, this.event1.path().length);
+		assertEquals(TreeValueModel.NODES, this.event1.getTreeName());
+		assertEquals(0, this.event1.getPath().length);
 	}
 
 	public void testTreeStructureChange() {
@@ -164,8 +164,8 @@ public class TreeAspectAdapterTests extends TestCase {
 		this.subject1.addTwoNames(this.subject1.getRootNameNode(), "jam", "jaz");
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(TreeValueModel.NODES, this.event1.treeName());
-		Object[] path = this.event1.path();
+		assertEquals(TreeValueModel.NODES, this.event1.getTreeName());
+		Object[] path = this.event1.getPath();
 		assertEquals(this.subject1.getRootNameNode(), path[path.length - 1]);
 		assertTrue(this.subject1.containsNameNode("jam"));
 		assertTrue(this.subject1.containsNameNode("jaz"));

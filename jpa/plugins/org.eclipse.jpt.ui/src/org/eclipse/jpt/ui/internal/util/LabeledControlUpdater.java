@@ -69,7 +69,7 @@ public final class LabeledControlUpdater {
 	private PropertyChangeListener buildIconListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-				LabeledControlUpdater.this.setImage((Image) e.newValue());
+				LabeledControlUpdater.this.setImage((Image) e.getNewValue());
 			}
 
 			@Override
@@ -86,7 +86,7 @@ public final class LabeledControlUpdater {
 	private PropertyChangeListener buildTextListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-				LabeledControlUpdater.this.setText((String) e.newValue());
+				LabeledControlUpdater.this.setText((String) e.getNewValue());
 			}
 
 			@Override
@@ -106,12 +106,12 @@ public final class LabeledControlUpdater {
 
 		if (textHolder != null) {
 			textHolder.addPropertyChangeListener(PropertyValueModel.VALUE, buildTextListener());
-			setText(textHolder.value());
+			setText(textHolder.getValue());
 		}
 
 		if (imageHolder != null) {
 			imageHolder.addPropertyChangeListener(PropertyValueModel.VALUE, buildIconListener());
-			setImage(imageHolder.value());
+			setImage(imageHolder.getValue());
 		}
 	}
 

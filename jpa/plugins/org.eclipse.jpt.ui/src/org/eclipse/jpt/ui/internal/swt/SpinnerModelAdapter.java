@@ -108,7 +108,7 @@ public class SpinnerModelAdapter {
 		this.spinnerDisposeListener = this.buildSpinnerDisposeListener();
 		this.spinner.addDisposeListener(this.spinnerDisposeListener);
 
-		this.updateSpinner(numberHolder.value());
+		this.updateSpinner(numberHolder.getValue());
 	}
 
 
@@ -159,7 +159,7 @@ public class SpinnerModelAdapter {
 
 	protected void valueChanged(PropertyChangeEvent event) {
 		if (!this.locked) {
-			this.updateSpinner((Integer) event.newValue());
+			this.updateSpinner((Integer) event.getNewValue());
 		}
 	}
 

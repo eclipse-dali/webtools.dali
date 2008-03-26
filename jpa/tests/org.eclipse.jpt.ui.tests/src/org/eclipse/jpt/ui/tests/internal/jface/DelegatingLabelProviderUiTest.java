@@ -276,7 +276,7 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 	}
 	
 	private Vehicle selectedVehicle() {
-		return selectedVehicle.value();
+		return selectedVehicle.getValue();
 	}
 	
 	

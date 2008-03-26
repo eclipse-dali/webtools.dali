@@ -39,7 +39,7 @@ public class StaticPropertyValueModel<T>
 
 	// ********** PropertyValueModel implementation **********
 
-	public T value() {
+	public T getValue() {
 		return this.value;
 	}
 

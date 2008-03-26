@@ -117,9 +117,9 @@ public class JoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinColumnSta
 
 			@Override
 			protected void subjectChanged() {
-				Object oldValue = this.value();
+				Object oldValue = this.getValue();
 				super.subjectChanged();
-				Object newValue = this.value();
+				Object newValue = this.getValue();
 
 				// Make sure the default value is appended to the text
 				if (oldValue == newValue && newValue == null) {
@@ -174,9 +174,9 @@ public class JoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinColumnSta
 
 			@Override
 			protected void subjectChanged() {
-				Object oldValue = this.value();
+				Object oldValue = this.getValue();
 				super.subjectChanged();
-				Object newValue = this.value();
+				Object newValue = this.getValue();
 
 				// Make sure the default value is appended to the text
 				if (oldValue == newValue && newValue == null) {
@@ -254,9 +254,9 @@ public class JoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinColumnSta
 
 			@Override
 			protected void subjectChanged() {
-				Object oldValue = this.value();
+				Object oldValue = this.getValue();
 				super.subjectChanged();
-				Object newValue = this.value();
+				Object newValue = this.getValue();
 
 				// Make sure the default value is appended to the text
 				if (oldValue == newValue && newValue == null) {
@@ -308,9 +308,9 @@ public class JoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinColumnSta
 
 			@Override
 			protected void subjectChanged() {
-				Object oldValue = this.value();
+				Object oldValue = this.getValue();
 				super.subjectChanged();
-				Object newValue = this.value();
+				Object newValue = this.getValue();
 
 				// Make sure the default value is appended to the text
 				if (oldValue == newValue && newValue == null) {

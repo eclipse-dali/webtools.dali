@@ -351,7 +351,7 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		JoinColumnInAssociationOverrideDialog dialog =
 			new JoinColumnInAssociationOverrideDialog(
 				shell(),
-				(AssociationOverride) overrideHolder.value(),
+				(AssociationOverride) overrideHolder.getValue(),
 				joinColumn
 			);
 
@@ -502,7 +502,7 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		setPopulating(true);
 
 		try {
-			BaseOverride override = overrideHolder.value();
+			BaseOverride override = overrideHolder.getValue();
 
 			BaseOverride newOverride = override.setVirtual(!selected);
 			overrideHolder.setValue(newOverride);

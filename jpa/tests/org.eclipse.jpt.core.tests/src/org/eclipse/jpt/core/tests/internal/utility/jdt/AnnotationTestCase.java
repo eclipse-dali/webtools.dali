@@ -276,7 +276,7 @@ public abstract class AnnotationTestCase extends TestCase {
 
 	protected static final CommandExecutorProvider MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER =
 		new CommandExecutorProvider() {
-			public CommandExecutor commandExecutor() {
+			public CommandExecutor getCommandExecutor() {
 				return CommandExecutor.Default.instance();
 			}
 		};

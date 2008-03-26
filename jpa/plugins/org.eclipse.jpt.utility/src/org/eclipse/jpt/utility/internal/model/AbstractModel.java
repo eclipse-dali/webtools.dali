@@ -61,7 +61,7 @@ public abstract class AbstractModel implements Model, Serializable {
 	/**
 	 * This accessor will build the change support when required.
 	 */
-	protected synchronized ChangeSupport changeSupport() {
+	protected synchronized ChangeSupport getChangeSupport() {
 		if (this.changeSupport == null) {
 			this.changeSupport = this.buildChangeSupport();
 		}
@@ -79,117 +79,117 @@ public abstract class AbstractModel implements Model, Serializable {
 	// ********** state change support **********
 
 	public synchronized void addStateChangeListener(StateChangeListener listener) {
-		this.changeSupport().addStateChangeListener(listener);
+		this.getChangeSupport().addStateChangeListener(listener);
 	}
 
 	public synchronized void removeStateChangeListener(StateChangeListener listener) {
-		this.changeSupport().removeStateChangeListener(listener);
+		this.getChangeSupport().removeStateChangeListener(listener);
 	}
 
 	protected final void fireStateChanged() {
-		this.changeSupport().fireStateChanged();
+		this.getChangeSupport().fireStateChanged();
 	}
 
 	protected final void fireStateChanged(StateChangeEvent event) {
-		this.changeSupport().fireStateChanged(event);
+		this.getChangeSupport().fireStateChanged(event);
 	}
 
 
 	// ********** property change support **********
 
 	public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
-		this.changeSupport().addPropertyChangeListener(listener);
+		this.getChangeSupport().addPropertyChangeListener(listener);
 	}
 
 	public synchronized void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		this.changeSupport().addPropertyChangeListener(propertyName, listener);
+		this.getChangeSupport().addPropertyChangeListener(propertyName, listener);
 	}
 
 	public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
-		this.changeSupport().removePropertyChangeListener(listener);
+		this.getChangeSupport().removePropertyChangeListener(listener);
 	}
 
 	public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		this.changeSupport().removePropertyChangeListener(propertyName, listener);
+		this.getChangeSupport().removePropertyChangeListener(propertyName, listener);
 	}
 
 	protected final void firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
-		this.changeSupport().firePropertyChanged(propertyName, oldValue, newValue);
+		this.getChangeSupport().firePropertyChanged(propertyName, oldValue, newValue);
 	}
 
 	protected final void firePropertyChanged(String propertyName, int oldValue, int newValue) {
-		this.changeSupport().firePropertyChanged(propertyName, oldValue, newValue);
+		this.getChangeSupport().firePropertyChanged(propertyName, oldValue, newValue);
 	}
 
 	protected final void firePropertyChanged(String propertyName, boolean oldValue, boolean newValue) {
-		this.changeSupport().firePropertyChanged(propertyName, oldValue, newValue);
+		this.getChangeSupport().firePropertyChanged(propertyName, oldValue, newValue);
 	}
 
 	protected final void firePropertyChanged(String propertyName, Object newValue) {
-		this.changeSupport().firePropertyChanged(propertyName, null, newValue);
+		this.getChangeSupport().firePropertyChanged(propertyName, null, newValue);
 	}
 
 	protected final void firePropertyChanged(PropertyChangeEvent event) {
-		this.changeSupport().firePropertyChanged(event);
+		this.getChangeSupport().firePropertyChanged(event);
 	}
 
 
 	// ********** collection change support **********
 
 	public synchronized void addCollectionChangeListener(CollectionChangeListener listener) {
-		this.changeSupport().addCollectionChangeListener(listener);
+		this.getChangeSupport().addCollectionChangeListener(listener);
 	}
 
 	public synchronized void addCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
-		this.changeSupport().addCollectionChangeListener(collectionName, listener);
+		this.getChangeSupport().addCollectionChangeListener(collectionName, listener);
 	}
 
 	public synchronized void removeCollectionChangeListener(CollectionChangeListener listener) {
-		this.changeSupport().removeCollectionChangeListener(listener);
+		this.getChangeSupport().removeCollectionChangeListener(listener);
 	}
 
 	public synchronized void removeCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
-		this.changeSupport().removeCollectionChangeListener(collectionName, listener);
+		this.getChangeSupport().removeCollectionChangeListener(collectionName, listener);
 	}
 
 	protected final void fireItemAdded(String collectionName, Object addedItem) {
-		this.changeSupport().fireItemAdded(collectionName, addedItem);
+		this.getChangeSupport().fireItemAdded(collectionName, addedItem);
 	}
 
 	protected final void fireItemsAdded(String collectionName, Collection<?> addedItems) {
-		this.changeSupport().fireItemsAdded(collectionName, addedItems);
+		this.getChangeSupport().fireItemsAdded(collectionName, addedItems);
 	}
 
 	protected final void fireItemsAdded(CollectionChangeEvent event) {
-		this.changeSupport().fireItemsAdded(event);
+		this.getChangeSupport().fireItemsAdded(event);
 	}
 
 	protected final void fireItemRemoved(String collectionName, Object removedItem) {
-		this.changeSupport().fireItemRemoved(collectionName, removedItem);
+		this.getChangeSupport().fireItemRemoved(collectionName, removedItem);
 	}
 
 	protected final void fireItemsRemoved(String collectionName, Collection<?> removedItems) {
-		this.changeSupport().fireItemsRemoved(collectionName, removedItems);
+		this.getChangeSupport().fireItemsRemoved(collectionName, removedItems);
 	}
 
 	protected final void fireItemsRemoved(CollectionChangeEvent event) {
-		this.changeSupport().fireItemsRemoved(event);
+		this.getChangeSupport().fireItemsRemoved(event);
 	}
 
 	protected final void fireCollectionCleared(String collectionName) {
-		this.changeSupport().fireCollectionCleared(collectionName);
+		this.getChangeSupport().fireCollectionCleared(collectionName);
 	}
 
 	protected final void fireCollectionCleared(CollectionChangeEvent event) {
-		this.changeSupport().fireCollectionCleared(event);
+		this.getChangeSupport().fireCollectionCleared(event);
 	}
 
 	protected final void fireCollectionChanged(String collectionName) {
-		this.changeSupport().fireCollectionChanged(collectionName);
+		this.getChangeSupport().fireCollectionChanged(collectionName);
 	}
 
 	protected final void fireCollectionChanged(CollectionChangeEvent event) {
-		this.changeSupport().fireCollectionChanged(event);
+		this.getChangeSupport().fireCollectionChanged(event);
 	}
 
 	/**
@@ -407,83 +407,83 @@ public abstract class AbstractModel implements Model, Serializable {
 	// ********** list change support **********
 
 	public synchronized void addListChangeListener(ListChangeListener listener) {
-		this.changeSupport().addListChangeListener(listener);
+		this.getChangeSupport().addListChangeListener(listener);
 	}
 
 	public synchronized void addListChangeListener(String listName, ListChangeListener listener) {
-		this.changeSupport().addListChangeListener(listName, listener);
+		this.getChangeSupport().addListChangeListener(listName, listener);
 	}
 
 	public synchronized void removeListChangeListener(ListChangeListener listener) {
-		this.changeSupport().removeListChangeListener(listener);
+		this.getChangeSupport().removeListChangeListener(listener);
 	}
 
 	public synchronized void removeListChangeListener(String listName, ListChangeListener listener) {
-		this.changeSupport().removeListChangeListener(listName, listener);
+		this.getChangeSupport().removeListChangeListener(listName, listener);
 	}
 
 	protected final void fireItemAdded(String listName, int index, Object addedItem) {
-		this.changeSupport().fireItemAdded(listName, index, addedItem);
+		this.getChangeSupport().fireItemAdded(listName, index, addedItem);
 	}
 
 	protected final void fireItemsAdded(String listName, int index, List<?> addedItems) {
-		this.changeSupport().fireItemsAdded(listName, index, addedItems);
+		this.getChangeSupport().fireItemsAdded(listName, index, addedItems);
 	}
 
 	protected final void fireItemsAdded(ListChangeEvent event) {
-		this.changeSupport().fireItemsAdded(event);
+		this.getChangeSupport().fireItemsAdded(event);
 	}
 
 	protected final void fireItemRemoved(String listName, int index, Object removedItem) {
-		this.changeSupport().fireItemRemoved(listName, index, removedItem);
+		this.getChangeSupport().fireItemRemoved(listName, index, removedItem);
 	}
 
 	protected final void fireItemsRemoved(String listName, int index, List<?> removedItems) {
-		this.changeSupport().fireItemsRemoved(listName, index, removedItems);
+		this.getChangeSupport().fireItemsRemoved(listName, index, removedItems);
 	}
 
 	protected final void fireItemsRemoved(ListChangeEvent event) {
-		this.changeSupport().fireItemsRemoved(event);
+		this.getChangeSupport().fireItemsRemoved(event);
 	}
 
 	protected final void fireItemReplaced(String listName, int index, Object newItem, Object replacedItem) {
-		this.changeSupport().fireItemReplaced(listName, index, newItem, replacedItem);
+		this.getChangeSupport().fireItemReplaced(listName, index, newItem, replacedItem);
 	}
 
 	protected final <E> void fireItemsReplaced(String listName, int index, List<? extends E> newItems, List<E> replacedItems) {
-		this.changeSupport().fireItemsReplaced(listName, index, newItems, replacedItems);
+		this.getChangeSupport().fireItemsReplaced(listName, index, newItems, replacedItems);
 	}
 
 	protected final void fireItemsReplaced(ListChangeEvent event) {
-		this.changeSupport().fireItemsReplaced(event);
+		this.getChangeSupport().fireItemsReplaced(event);
 	}
 
 	protected final void fireItemMoved(String listName, int targetIndex, int sourceIndex) {
-		this.changeSupport().fireItemMoved(listName, targetIndex, sourceIndex);
+		this.getChangeSupport().fireItemMoved(listName, targetIndex, sourceIndex);
 	}
 
 	protected final <E> void fireItemsMoved(String listName, int targetIndex, int sourceIndex, int length) {
-		this.changeSupport().fireItemsMoved(listName, targetIndex, sourceIndex, length);
+		this.getChangeSupport().fireItemsMoved(listName, targetIndex, sourceIndex, length);
 	}
 
 	protected final void fireItemsMoved(ListChangeEvent event) {
-		this.changeSupport().fireItemsMoved(event);
+		this.getChangeSupport().fireItemsMoved(event);
 	}
 
 	protected final void fireListCleared(String listName) {
-		this.changeSupport().fireListCleared(listName);
+		this.getChangeSupport().fireListCleared(listName);
 	}
 
 	protected final void fireListCleared(ListChangeEvent event) {
-		this.changeSupport().fireListCleared(event);
+		this.getChangeSupport().fireListCleared(event);
 	}
 
 	protected final void fireListChanged(String listName) {
-		this.changeSupport().fireListChanged(listName);
+		this.getChangeSupport().fireListChanged(listName);
 	}
 
 	protected final void fireListChanged(ListChangeEvent event) {
-		this.changeSupport().fireListChanged(event);
+		this.getChangeSupport().fireListChanged(event);
 	}
 
 	/**
@@ -793,55 +793,55 @@ public abstract class AbstractModel implements Model, Serializable {
 	// ********** tree change support **********
 
 	public synchronized void addTreeChangeListener(TreeChangeListener listener) {
-		this.changeSupport().addTreeChangeListener(listener);
+		this.getChangeSupport().addTreeChangeListener(listener);
 	}
 
 	public synchronized void addTreeChangeListener(String treeName, TreeChangeListener listener) {
-		this.changeSupport().addTreeChangeListener(treeName, listener);
+		this.getChangeSupport().addTreeChangeListener(treeName, listener);
 	}
 
 	public synchronized void removeTreeChangeListener(TreeChangeListener listener) {
-		this.changeSupport().removeTreeChangeListener(listener);
+		this.getChangeSupport().removeTreeChangeListener(listener);
 	}
 
 	public synchronized void removeTreeChangeListener(String treeName, TreeChangeListener listener) {
-		this.changeSupport().removeTreeChangeListener(treeName, listener);
+		this.getChangeSupport().removeTreeChangeListener(treeName, listener);
 	}
 
 	protected final void fireNodeAdded(String treeName, Object[] path) {
-		this.changeSupport().fireNodeAdded(treeName, path);
+		this.getChangeSupport().fireNodeAdded(treeName, path);
 	}
 
 	protected final void fireNodeAdded(TreeChangeEvent event) {
-		this.changeSupport().fireNodeAdded(event);
+		this.getChangeSupport().fireNodeAdded(event);
 	}
 
 	protected final void fireNodeRemoved(String treeName, Object[] path) {
-		this.changeSupport().fireNodeRemoved(treeName, path);
+		this.getChangeSupport().fireNodeRemoved(treeName, path);
 	}
 
 	protected final void fireNodeRemoved(TreeChangeEvent event) {
-		this.changeSupport().fireNodeRemoved(event);
+		this.getChangeSupport().fireNodeRemoved(event);
 	}
 
 	protected final void fireTreeCleared(String treeName) {
-		this.changeSupport().fireTreeCleared(treeName);
+		this.getChangeSupport().fireTreeCleared(treeName);
 	}
 
 	protected final void fireTreeCleared(TreeChangeEvent event) {
-		this.changeSupport().fireTreeCleared(event);
+		this.getChangeSupport().fireTreeCleared(event);
 	}
 
 	protected final void fireTreeChanged(String treeName) {
-		this.changeSupport().fireTreeChanged(treeName);
+		this.getChangeSupport().fireTreeChanged(treeName);
 	}
 
 	protected final void fireTreeChanged(String treeName, Object[] path) {
-		this.changeSupport().fireTreeChanged(treeName, path);
+		this.getChangeSupport().fireTreeChanged(treeName, path);
 	}
 
 	protected final void fireTreeChanged(TreeChangeEvent event) {
-		this.changeSupport().fireTreeChanged(event);
+		this.getChangeSupport().fireTreeChanged(event);
 	}
 
 
@@ -851,7 +851,7 @@ public abstract class AbstractModel implements Model, Serializable {
 	 * Return whether there are any state change listeners.
 	 */
 	public boolean hasAnyStateChangeListeners() {
-		return this.changeSupport().hasAnyStateChangeListeners();
+		return this.getChangeSupport().hasAnyStateChangeListeners();
 	}
 
 	/**
@@ -865,7 +865,7 @@ public abstract class AbstractModel implements Model, Serializable {
 	 * Return whether there are any property change listeners for a specific property.
 	 */
 	public boolean hasAnyPropertyChangeListeners(String propertyName) {
-		return this.changeSupport().hasAnyPropertyChangeListeners(propertyName);
+		return this.getChangeSupport().hasAnyPropertyChangeListeners(propertyName);
 	}
 
 	/**
@@ -879,7 +879,7 @@ public abstract class AbstractModel implements Model, Serializable {
 	 * Return whether there are any collection change listeners for a specific collection.
 	 */
 	public boolean hasAnyCollectionChangeListeners(String collectionName) {
-		return this.changeSupport().hasAnyCollectionChangeListeners(collectionName);
+		return this.getChangeSupport().hasAnyCollectionChangeListeners(collectionName);
 	}
 
 	/**
@@ -893,7 +893,7 @@ public abstract class AbstractModel implements Model, Serializable {
 	 * Return whether there are any list change listeners for a specific list.
 	 */
 	public boolean hasAnyListChangeListeners(String listName) {
-		return this.changeSupport().hasAnyListChangeListeners(listName);
+		return this.getChangeSupport().hasAnyListChangeListeners(listName);
 	}
 
 	/**
@@ -907,7 +907,7 @@ public abstract class AbstractModel implements Model, Serializable {
 	 * Return whether there are any tree change listeners for a specific tree.
 	 */
 	public boolean hasAnyTreeChangeListeners(String treeName) {
-		return this.changeSupport().hasAnyTreeChangeListeners(treeName);
+		return this.getChangeSupport().hasAnyTreeChangeListeners(treeName);
 	}
 
 	/**
@@ -928,7 +928,7 @@ public abstract class AbstractModel implements Model, Serializable {
 	 * ChangeSupport already does that.
 	 */
 	protected final boolean valuesAreEqual(Object value1, Object value2) {
-		return this.changeSupport().valuesAreEqual(value1, value2);
+		return this.getChangeSupport().valuesAreEqual(value1, value2);
 	}
 	protected final boolean attributeValueHasNotChanged(Object oldValue, Object newValue) {
 		return this.valuesAreEqual(oldValue, newValue);
@@ -947,7 +947,7 @@ public abstract class AbstractModel implements Model, Serializable {
 	 * with the state that just changed.
 	 */
 	protected final boolean valuesAreDifferent(Object value1, Object value2) {
-		return this.changeSupport().valuesAreDifferent(value1, value2);
+		return this.getChangeSupport().valuesAreDifferent(value1, value2);
 	}
 	protected final boolean attributeValueHasChanged(Object oldValue, Object newValue) {
 		return this.valuesAreDifferent(oldValue, newValue);

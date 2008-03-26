@@ -408,7 +408,7 @@ public abstract class JDTMember
 
 		TextEdit edits = astRoot.rewrite(doc, compilationUnit.getJavaProject().getOptions(true));
 		if (sharedDocument) {
-			this.modifySharedDocumentCommandExecutor().execute(new ModifySharedDocumentCommand(edits, doc));
+			this.getModifySharedDocumentCommandExecutor().execute(new ModifySharedDocumentCommand(edits, doc));
 		} else {
 			this.applyEdits(edits, doc);
 		}
@@ -426,15 +426,15 @@ public abstract class JDTMember
 	 */
 	void applyEdits(TextEdit edits, IDocument doc) throws MalformedTreeException, BadLocationException {
 		edits.apply(doc, TextEdit.UPDATE_REGIONS);
-		this.annotationEditFormatter().format(doc, edits);
+		this.getAnnotationEditFormatter().format(doc, edits);
 	}
 
-	private AnnotationEditFormatter annotationEditFormatter() {
+	private AnnotationEditFormatter getAnnotationEditFormatter() {
 		return this.annotationEditFormatter;
 	}
 
-	private CommandExecutor modifySharedDocumentCommandExecutor() {
-		return this.modifySharedDocumentCommandExecutorProvider.commandExecutor();
+	private CommandExecutor getModifySharedDocumentCommandExecutor() {
+		return this.modifySharedDocumentCommandExecutorProvider.getCommandExecutor();
 	}
 
 

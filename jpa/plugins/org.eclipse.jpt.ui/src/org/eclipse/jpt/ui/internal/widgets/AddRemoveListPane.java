@@ -275,8 +275,8 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 					locked = true;
 
 					try {
-						Object value = e.newValue();
-						getSelectionModel().setSelectedValue(e.newValue());
+						Object value = e.getNewValue();
+						getSelectionModel().setSelectedValue(e.getNewValue());
 						int index = -1;
 
 						if (value != null) {

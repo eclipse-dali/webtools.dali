@@ -111,7 +111,7 @@ public class ObjectListSelectionModel
 	/**
 	 * Return the list model referenced by the list selection model.
 	 */
-	public ListModel listModel() {
+	public ListModel getListModel() {
 		return this.listModel;
 	}
 
@@ -124,7 +124,7 @@ public class ObjectListSelectionModel
 		}
 
 		int n = 0;
-		int count = this.listModel().getSize();
+		int count = this.getListModel().getSize();
 		for (int i = min; i <= max; i++) {
 			if (this.isSelectedIndex(i) && (i < count)) {
 				n++;
@@ -142,10 +142,10 @@ public class ObjectListSelectionModel
 		if (index == -1) {
 			return null;
 		}
-		if (this.listModel().getSize() <= index) {
+		if (this.getListModel().getSize() <= index) {
 			return null;
 		}
-		return this.listModel().getElementAt(index);
+		return this.getListModel().getElementAt(index);
 	}
 
 	/**
@@ -162,10 +162,10 @@ public class ObjectListSelectionModel
 		int maxSize = (max - min) + 1;
 		Object[] temp = new Object[maxSize];
 		int n = 0;
-		int count = this.listModel().getSize();
+		int count = this.getListModel().getSize();
 		for (int i = min; i <= max; i++) {
 			if (this.isSelectedIndex(i) && (i < count)) {
-				temp[n++] = this.listModel().getElementAt(i);
+				temp[n++] = this.getListModel().getElementAt(i);
 			}
 		}
 		if (n == maxSize) {
@@ -192,7 +192,7 @@ public class ObjectListSelectionModel
 		int maxSize = (max - min) + 1;
 		int[] temp = new int[maxSize];
 		int n = 0;
-		int count = this.listModel().getSize();
+		int count = this.getListModel().getSize();
 		for (int i = min; i <= max; i++) {
 			if (this.isSelectedIndex(i) && (i < count)) {
 				temp[n++] = i;
@@ -292,7 +292,7 @@ public class ObjectListSelectionModel
 	 */
 	public void removeSelectedValues(Iterator<?> objects) {
 		this.setValueIsAdjusting(true);
-		ListModel lm = this.listModel();
+		ListModel lm = this.getListModel();
 		int lmSize = lm.getSize();
 		while (objects.hasNext()) {
 			int index = this.indexOf(objects.next(), lm, lmSize);
@@ -326,7 +326,7 @@ public class ObjectListSelectionModel
 		if (index == -1) {
 			return null;
 		}
-		return this.listModel().getElementAt(index);
+		return this.getListModel().getElementAt(index);
 	}
 
 	/**
@@ -345,7 +345,7 @@ public class ObjectListSelectionModel
 		if (index == -1) {
 			return null;
 		}
-		return this.listModel().getElementAt(index);
+		return this.getListModel().getElementAt(index);
 	}
 
 	/**
@@ -364,7 +364,7 @@ public class ObjectListSelectionModel
 		if (index == -1) {
 			return null;
 		}
-		return this.listModel().getElementAt(index);
+		return this.getListModel().getElementAt(index);
 	}
 
 	/**
@@ -376,7 +376,7 @@ public class ObjectListSelectionModel
 		if (index == -1) {
 			return null;
 		}
-		return this.listModel().getElementAt(index);
+		return this.getListModel().getElementAt(index);
 	}
 
 	/**
@@ -391,7 +391,7 @@ public class ObjectListSelectionModel
 	 * without wrapping the actions in "adjusting" events.
 	 */
 	private void addSelectedValuesInternal(Iterator<?> objects) {
-		ListModel lm = this.listModel();
+		ListModel lm = this.getListModel();
 		int listModelSize = lm.getSize();
 		while (objects.hasNext()) {
 			int index = this.indexOf(objects.next(), lm, listModelSize);
@@ -404,7 +404,7 @@ public class ObjectListSelectionModel
 	 * Return -1 if the object is not in the list model.
 	 */
 	private int indexOf(Object object) {
-		ListModel lm = this.listModel();
+		ListModel lm = this.getListModel();
 		return this.indexOf(object, lm, lm.getSize());
 	}
 

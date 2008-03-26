@@ -67,7 +67,7 @@ public final class ControlSwitcher
 	private PropertyChangeListener buildPropertyChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-				switchPanes(e.newValue());
+				switchPanes(e.getNewValue());
 			}
 		};
 	}
@@ -94,7 +94,7 @@ public final class ControlSwitcher
 			buildPropertyChangeListener()
 		);
 
-		switchPanes(switchHolder.value());
+		switchPanes(switchHolder.getValue());
 	}
 
 	/**

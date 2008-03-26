@@ -157,7 +157,7 @@ public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
 		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		assertEquals(this.modelPropertiesSize, this.modelPropertiesSizeOriginal - 1);
 		assertNotNull(this.propertyChangedEvent);
-		assertNull(this.propertyChangedEvent.newValue());
+		assertNull(this.propertyChangedEvent.getNewValue());
 		
 		// Add original OutputMode
 		++this.propertiesTotal;

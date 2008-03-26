@@ -25,6 +25,6 @@ public interface CommandExecutorProvider {
 	/**
 	 * Return the appropriate command executor.
 	 */
-	CommandExecutor commandExecutor();
+	CommandExecutor getCommandExecutor();
 
 }

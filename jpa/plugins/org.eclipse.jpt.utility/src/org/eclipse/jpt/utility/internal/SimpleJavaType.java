@@ -114,11 +114,11 @@ public final class SimpleJavaType
 		return (this.arrayDepth == 0) && ClassTools.classNamedIsVariablePrimitiveWrapperClass(this.elementTypeName);
 	}
 
-	public Class<?> javaClass() throws ClassNotFoundException {
+	public Class<?> getJavaClass() throws ClassNotFoundException {
 		return ClassTools.classForTypeDeclaration(this.elementTypeName, this.arrayDepth);
 	}
 
-	public String javaClassName() {
+	public String getJavaClassName() {
 		return ClassTools.classNameForTypeDeclaration(this.elementTypeName, this.arrayDepth);
 	}
 

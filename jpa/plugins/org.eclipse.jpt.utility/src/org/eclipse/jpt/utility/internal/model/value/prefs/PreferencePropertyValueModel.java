@@ -180,7 +180,7 @@ public class PreferencePropertyValueModel<P>
 	 * Return the cached (converted) value.
 	 */
 	@Override
-	public synchronized P value() {
+	public synchronized P getValue() {
 		return this.value;
 	}
 
@@ -208,12 +208,12 @@ public class PreferencePropertyValueModel<P>
 	// ********** AspectAdapter implementation **********
 
 	@Override
-	protected Class<? extends ChangeListener> listenerClass() {
+	protected Class<? extends ChangeListener> getListenerClass() {
 		return PropertyChangeListener.class;
 	}
 
 	@Override
-	protected String listenerAspectName() {
+	protected String getListenerAspectName() {
 		return VALUE;
 	}
 
@@ -264,7 +264,7 @@ public class PreferencePropertyValueModel<P>
 	/**
 	 * Return the preference's key.
 	 */
-	public String key() {
+	public String getKey() {
 		return this.key;
 	}
 

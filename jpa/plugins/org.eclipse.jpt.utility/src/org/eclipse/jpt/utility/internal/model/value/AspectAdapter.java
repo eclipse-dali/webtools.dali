@@ -83,7 +83,7 @@ public abstract class AspectAdapter<S>
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new LocalChangeSupport(this, this.listenerClass(), this.listenerAspectName());
+		return new LocalChangeSupport(this, this.getListenerClass(), this.getListenerAspectName());
 	}
 
 	/**
@@ -108,35 +108,35 @@ public abstract class AspectAdapter<S>
 	 * The subject has changed. Notify listeners that the value has changed.
 	 */
 	protected synchronized void subjectChanged() {
-		Object oldValue = this.value();
+		Object oldValue = this.getValue();
 		boolean hasListeners = this.hasListeners();
 		if (hasListeners) {
 			this.disengageSubject();
 		}
-		this.subject = this.subjectHolder.value();
+		this.subject = this.subjectHolder.getValue();
 		if (hasListeners) {
 			this.engageSubject();
-			this.fireAspectChange(oldValue, this.value());
+			this.fireAspectChange(oldValue, this.getValue());
 		}
 	}
 
 	/**
 	 * Return the aspect's current value.
 	 */
-	protected abstract Object value();
+	protected abstract Object getValue();
 
 	/**
 	 * Return the class of listener that is interested in the aspect adapter's
 	 * changes.
 	 */
-	protected abstract Class<? extends ChangeListener> listenerClass();
+	protected abstract Class<? extends ChangeListener> getListenerClass();
 
 	/**
 	 * Return the name of the aspect adapter's aspect (e.g. VALUE).
 	 * This is the name of the aspect adapter's single aspect, not the
 	 * name of the subject's aspect the aspect adapter is adapting.
 	 */
-	protected abstract String listenerAspectName();
+	protected abstract String getListenerAspectName();
 
 	/**
 	 * Return whether there are any listeners for the aspect.
@@ -183,7 +183,7 @@ public abstract class AspectAdapter<S>
 		this.subjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
 		// synch our subject *after* we start listening to the subject holder,
 		// since its value might change when a listener is added
-		this.subject = this.subjectHolder.value();
+		this.subject = this.subjectHolder.getValue();
 	}
 
 	protected void disengageSubjectHolder() {
@@ -231,7 +231,7 @@ public abstract class AspectAdapter<S>
 
 		protected boolean listenerIsRelevant(Class<? extends ChangeListener> lClass, String listenerAspectName) {
 			return this.listenerIsRelevant(lClass)
-						&& (listenerAspectName == AspectAdapter.this.listenerAspectName());
+						&& (listenerAspectName == AspectAdapter.this.getListenerAspectName());
 		}
 
 		protected boolean hasNoRelevantListeners(Class<? extends ChangeListener> lClass, String listenerAspectName) {

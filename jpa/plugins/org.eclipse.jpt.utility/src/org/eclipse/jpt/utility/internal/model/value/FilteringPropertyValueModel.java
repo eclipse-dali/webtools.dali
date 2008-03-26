@@ -85,8 +85,8 @@ public class FilteringPropertyValueModel<T>
 
 	// ********** PropertyValueModel implementation **********
 
-	public T value() {
-		return this.filterValue(this.valueHolder.value());
+	public T getValue() {
+		return this.filterValue(this.valueHolder.getValue());
 	}
 
 
@@ -96,9 +96,9 @@ public class FilteringPropertyValueModel<T>
 	protected void valueChanged(PropertyChangeEvent event) {
 		// filter the values before propagating the change event
 		@SuppressWarnings("unchecked")
-		Object oldValue = this.filterValue((T) event.oldValue());
+		Object oldValue = this.filterValue((T) event.getOldValue());
 		@SuppressWarnings("unchecked")
-		Object newValue = this.filterValue((T) event.newValue());
+		Object newValue = this.filterValue((T) event.getNewValue());
 		this.firePropertyChanged(VALUE, oldValue, newValue);
 	}
 

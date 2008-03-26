@@ -57,42 +57,42 @@ public class TransformationPropertyValueModelTests extends TestCase {
 	}
 
 	public void testValue() {
-		assertEquals("foo", this.objectHolder.value());
-		assertEquals("FOO", this.transformationObjectHolder.value());
+		assertEquals("foo", this.objectHolder.getValue());
+		assertEquals("FOO", this.transformationObjectHolder.getValue());
 
 		this.objectHolder.setValue("bar");
-		assertEquals("bar", this.objectHolder.value());
-		assertEquals("BAR", this.transformationObjectHolder.value());
+		assertEquals("bar", this.objectHolder.getValue());
+		assertEquals("BAR", this.transformationObjectHolder.getValue());
 
 		this.objectHolder.setValue("baz");
-		assertEquals("baz", this.objectHolder.value());
-		assertEquals("BAZ", this.transformationObjectHolder.value());
+		assertEquals("baz", this.objectHolder.getValue());
+		assertEquals("BAZ", this.transformationObjectHolder.getValue());
 
 		this.objectHolder.setValue(null);
-		assertNull(this.objectHolder.value());
-		assertNull(this.transformationObjectHolder.value());
+		assertNull(this.objectHolder.getValue());
+		assertNull(this.transformationObjectHolder.getValue());
 
 		this.objectHolder.setValue("foo");
-		assertEquals("foo", this.objectHolder.value());
-		assertEquals("FOO", this.transformationObjectHolder.value());
+		assertEquals("foo", this.objectHolder.getValue());
+		assertEquals("FOO", this.transformationObjectHolder.getValue());
 	}
 
 	public void testSetValue() {
 		this.transformationObjectHolder.setValue("BAR");
-		assertEquals("bar", this.objectHolder.value());
-		assertEquals("BAR", this.transformationObjectHolder.value());
+		assertEquals("bar", this.objectHolder.getValue());
+		assertEquals("BAR", this.transformationObjectHolder.getValue());
 
 		this.transformationObjectHolder.setValue("Foo");
-		assertEquals("foo", this.objectHolder.value());
-		assertEquals("FOO", this.transformationObjectHolder.value());
+		assertEquals("foo", this.objectHolder.getValue());
+		assertEquals("FOO", this.transformationObjectHolder.getValue());
 
 		this.transformationObjectHolder.setValue(null);
-		assertNull(this.objectHolder.value());
-		assertNull(this.transformationObjectHolder.value());
+		assertNull(this.objectHolder.getValue());
+		assertNull(this.transformationObjectHolder.getValue());
 
 		this.transformationObjectHolder.setValue("baz");
-		assertEquals("baz", this.objectHolder.value());
-		assertEquals("BAZ", this.transformationObjectHolder.value());
+		assertEquals("baz", this.objectHolder.getValue());
+		assertEquals("BAZ", this.transformationObjectHolder.getValue());
 	}
 
 	public void testLazyListening() {
@@ -177,9 +177,9 @@ public class TransformationPropertyValueModelTests extends TestCase {
 
 	private void verifyEvent(PropertyChangeEvent e, Object source, Object oldValue, Object newValue) {
 		assertEquals(source, e.getSource());
-		assertEquals(PropertyValueModel.VALUE, e.propertyName());
-		assertEquals(oldValue, e.oldValue());
-		assertEquals(newValue, e.newValue());
+		assertEquals(PropertyValueModel.VALUE, e.getPropertyName());
+		assertEquals(oldValue, e.getOldValue());
+		assertEquals(newValue, e.getNewValue());
 	}
 
 }

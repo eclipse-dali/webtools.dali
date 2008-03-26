@@ -105,7 +105,7 @@ public class NumberSpinnerModelAdapter
 	 * Constructor - the number holder is required.
 	 */
 	public NumberSpinnerModelAdapter(WritablePropertyValueModel<Number> numberHolder, Comparable<?> minimum, Comparable<?> maximum, Number stepSize, Number defaultValue) {
-		super(numberHolder.value() == null ? defaultValue : (Number) numberHolder.value(), minimum, maximum, stepSize);
+		super(numberHolder.getValue() == null ? defaultValue : (Number) numberHolder.getValue(), minimum, maximum, stepSize);
 		this.numberHolder = numberHolder;
 		this.numberChangeListener = this.buildNumberChangeListener();
 		// postpone listening to the underlying number
@@ -123,7 +123,7 @@ public class NumberSpinnerModelAdapter
 	protected PropertyChangeListener buildNumberChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent event) {
-				NumberSpinnerModelAdapter.this.synchronize(event.newValue());
+				NumberSpinnerModelAdapter.this.synchronize(event.getNewValue());
 			}
 			@Override
 			public String toString() {
@@ -146,7 +146,7 @@ public class NumberSpinnerModelAdapter
 	public Object getValue() {
 		if (this.getChangeListeners().length == 0) {
 			// sorry about this "lateral" call to super  ~bjv
-			super.setValue(this.spinnerValueOf(this.numberHolder.value()));
+			super.setValue(this.spinnerValueOf(this.numberHolder.getValue()));
 		}
 		return super.getValue();
 	}
@@ -168,7 +168,7 @@ public class NumberSpinnerModelAdapter
 	public void addChangeListener(ChangeListener listener) {
 		if (this.getChangeListeners().length == 0) {
 			this.numberHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.numberChangeListener);
-			this.synchronize(this.numberHolder.value());
+			this.synchronize(this.numberHolder.getValue());
 		}
 		super.addChangeListener(listener);
 	}

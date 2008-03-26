@@ -417,7 +417,7 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		void itemAddedSingleArgument(CollectionChangeEvent e) {
 			this.itemAddedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
-			assertEquals(this.collectionName, e.collectionName());
+			assertEquals(this.collectionName, e.getCollectionName());
 			assertEquals(this.string, e.items().next());
 		}
 		void itemRemovedZeroArgument() {
@@ -426,7 +426,7 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		void itemRemovedSingleArgument(CollectionChangeEvent e) {
 			this.itemRemovedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
-			assertEquals(this.collectionName, e.collectionName());
+			assertEquals(this.collectionName, e.getCollectionName());
 			assertEquals(this.string, e.items().next());
 		}
 		void collectionClearedZeroArgument() {
@@ -435,7 +435,7 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		void collectionClearedSingleArgument(CollectionChangeEvent e) {
 			this.collectionClearedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
-			assertEquals(this.collectionName, e.collectionName());
+			assertEquals(this.collectionName, e.getCollectionName());
 			assertFalse(e.items().hasNext());
 		}
 		void collectionChangedZeroArgument() {
@@ -444,7 +444,7 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		void collectionChangedSingleArgument(CollectionChangeEvent e) {
 			this.collectionChangedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
-			assertEquals(this.collectionName, e.collectionName());
+			assertEquals(this.collectionName, e.getCollectionName());
 			assertFalse(e.items().hasNext());
 		}
 		void collectionChangedDoubleArgument(CollectionChangeEvent e, Object o) {

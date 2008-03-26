@@ -306,7 +306,7 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 	 * used
 	 */
 	public T subject() {
-		return subjectHolder.value();
+		return subjectHolder.getValue();
 	}
 
 	/**

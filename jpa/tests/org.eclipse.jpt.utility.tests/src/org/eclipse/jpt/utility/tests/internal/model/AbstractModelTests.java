@@ -1076,15 +1076,15 @@ public class AbstractModelTests
 	private void verifyPropertyChangeEvent(Object source, Object oldValue, Object newValue) {
 		assertNotNull(this.propertyChangeEvent);
 		assertEquals(source, this.propertyChangeEvent.getSource());
-		assertEquals(PROPERTY_NAME, this.propertyChangeEvent.propertyName());
-		assertEquals(oldValue, this.propertyChangeEvent.oldValue());
-		assertEquals(newValue, this.propertyChangeEvent.newValue());
+		assertEquals(PROPERTY_NAME, this.propertyChangeEvent.getPropertyName());
+		assertEquals(oldValue, this.propertyChangeEvent.getOldValue());
+		assertEquals(newValue, this.propertyChangeEvent.getNewValue());
 	}
 
 	private void verifyCollectionChangeEvent(Object item) {
 		assertNotNull(this.collectionChangeEvent);
 		assertEquals(this.testModel, this.collectionChangeEvent.getSource());
-		assertEquals(COLLECTION_NAME, this.collectionChangeEvent.collectionName());
+		assertEquals(COLLECTION_NAME, this.collectionChangeEvent.getCollectionName());
 		if (item == null) {
 			assertFalse(this.collectionChangeEvent.items().hasNext());
 		} else {
@@ -1099,16 +1099,16 @@ public class AbstractModelTests
 	private void verifyListChangeEvent(int targetIndex, int sourceIndex) {
 		assertNotNull(this.listChangeEvent);
 		assertEquals(this.testModel, this.listChangeEvent.getSource());
-		assertEquals(LIST_NAME, this.listChangeEvent.listName());
-		assertEquals(targetIndex, this.listChangeEvent.targetIndex());
-		assertEquals(sourceIndex, this.listChangeEvent.sourceIndex());
+		assertEquals(LIST_NAME, this.listChangeEvent.getListName());
+		assertEquals(targetIndex, this.listChangeEvent.getTargetIndex());
+		assertEquals(sourceIndex, this.listChangeEvent.getSourceIndex());
 	}
 
 	private void verifyListChangeEvent(int index, Object item, Object replacedItem) {
 		assertNotNull(this.listChangeEvent);
 		assertEquals(this.testModel, this.listChangeEvent.getSource());
-		assertEquals(LIST_NAME, this.listChangeEvent.listName());
-		assertEquals(index, this.listChangeEvent.index());
+		assertEquals(LIST_NAME, this.listChangeEvent.getListName());
+		assertEquals(index, this.listChangeEvent.getIndex());
 		if (item == null) {
 			assertFalse(this.listChangeEvent.items().hasNext());
 		} else {
@@ -1124,8 +1124,8 @@ public class AbstractModelTests
 	private void verifyTreeChangeEvent(Object[] path) {
 		assertNotNull(this.treeChangeEvent);
 		assertEquals(this.testModel, this.treeChangeEvent.getSource());
-		assertEquals(TREE_NAME, this.treeChangeEvent.treeName());
-		assertTrue(Arrays.equals(path, this.treeChangeEvent.path()));
+		assertEquals(TREE_NAME, this.treeChangeEvent.getTreeName());
+		assertTrue(Arrays.equals(path, this.treeChangeEvent.getPath()));
 	}
 
 // ********** listener implementations **********

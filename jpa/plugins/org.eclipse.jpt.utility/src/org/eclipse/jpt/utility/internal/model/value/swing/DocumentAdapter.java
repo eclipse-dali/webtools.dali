@@ -236,7 +236,7 @@ public class DocumentAdapter
 	 * Synchronize the delegate document accordingly.
 	 */
 	protected void stringChanged(PropertyChangeEvent event) {
-		this.synchronizeDelegate((String) event.newValue());
+		this.synchronizeDelegate((String) event.getNewValue());
 	}
 
 	/**
@@ -258,7 +258,7 @@ public class DocumentAdapter
 
 	protected void engageStringHolder() {
 		this.stringHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.stringListener);
-		this.synchronizeDelegate(this.stringHolder.value());
+		this.synchronizeDelegate(this.stringHolder.getValue());
 	}
 
 	protected void disengageStringHolder() {

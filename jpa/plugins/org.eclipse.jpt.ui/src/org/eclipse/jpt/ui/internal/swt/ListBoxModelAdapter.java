@@ -345,7 +345,7 @@ public class ListBoxModelAdapter<E> {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
-		int i = event.index();
+		int i = event.getIndex();
 		for (ListIterator<E> stream = this.items(event); stream.hasNext(); ) {
 			this.listBox.add(this.convert(stream.next()), i++);
 		}
@@ -358,7 +358,7 @@ public class ListBoxModelAdapter<E> {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
-		this.listBox.remove(event.index(), event.index() + event.itemsSize() - 1);
+		this.listBox.remove(event.getIndex(), event.getIndex() + event.itemsSize() - 1);
 	}
 
 	/**
@@ -368,9 +368,9 @@ public class ListBoxModelAdapter<E> {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
-		int target = event.targetIndex();
-		int source = event.sourceIndex();
-		int len = event.moveLength();
+		int target = event.getTargetIndex();
+		int source = event.getSourceIndex();
+		int len = event.getMoveLength();
 		int loStart = Math.min(target, source);
 		int hiStart = Math.max(target, source);
 		// make a copy of the affected items...
@@ -390,7 +390,7 @@ public class ListBoxModelAdapter<E> {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
-		int i = event.index();
+		int i = event.getIndex();
 		for (ListIterator<E> stream = this.items(event); stream.hasNext(); ) {
 			this.listBox.setItem(i++, this.convert(stream.next()));
 		}

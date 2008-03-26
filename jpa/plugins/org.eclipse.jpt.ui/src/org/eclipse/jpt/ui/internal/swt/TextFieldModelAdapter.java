@@ -94,7 +94,7 @@ public class TextFieldModelAdapter {
 		this.textFieldDisposeListener = this.buildTextFieldDisposeListener();
 		this.textField.addDisposeListener(this.textFieldDisposeListener);
 
-		String text = textHolder.value();
+		String text = textHolder.getValue();
 		this.textField.setText((text == null) ? "" : text);
 	}
 
@@ -145,7 +145,7 @@ public class TextFieldModelAdapter {
 	// ********** model events **********
 
 	protected void textChanged(PropertyChangeEvent event) {
-		String text = (String) event.newValue();
+		String text = (String) event.getNewValue();
 		// the model can be null, but the text field cannot
 		if (text == null) {
 			text = "";

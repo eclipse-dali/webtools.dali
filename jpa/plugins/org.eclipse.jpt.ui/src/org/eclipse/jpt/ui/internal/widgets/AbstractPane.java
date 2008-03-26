@@ -340,7 +340,7 @@ public abstract class AbstractPane<T extends Model>
 	private PropertyChangeListener buildAspectChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-				updatePane(e.propertyName());
+				updatePane(e.getPropertyName());
 			}
 		};
 	}
@@ -577,7 +577,7 @@ public abstract class AbstractPane<T extends Model>
 		);
 
 		section.setExpanded(
-			expandedStateHolder.value() != null ? expandedStateHolder.value() : true
+			expandedStateHolder.getValue() != null ? expandedStateHolder.getValue() : true
 		);
 
 		return subPane;
@@ -907,7 +907,7 @@ public abstract class AbstractPane<T extends Model>
 	private PropertyChangeListener buildExpandedStateChangeListener_(final Section section) {
 		return new PropertyChangeListener() {
 			public void propertyChanged(final PropertyChangeEvent e) {
-				Boolean value = (Boolean) e.newValue();
+				Boolean value = (Boolean) e.getNewValue();
 				if (value == null) {
 					value = Boolean.TRUE;
 				}
@@ -3141,7 +3141,7 @@ public abstract class AbstractPane<T extends Model>
 		return new PropertyChangeListener() {
 			@SuppressWarnings("unchecked")
 			public void propertyChanged(PropertyChangeEvent e) {
-				AbstractPane.this.subjectChanged((T) e.oldValue(), (T) e.newValue());
+				AbstractPane.this.subjectChanged((T) e.getOldValue(), (T) e.getNewValue());
 			}
 		};
 	}
@@ -4144,7 +4144,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Populate
 	 */
 	protected T subject() {
-		return this.subjectHolder.value();
+		return this.subjectHolder.getValue();
 	}
 
 	/**

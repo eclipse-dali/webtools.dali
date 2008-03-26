@@ -72,7 +72,7 @@ public class PropertyCollectionValueModelAdapter<E>
 		return new PropertyChangeListener() {
 			@SuppressWarnings("unchecked")
 			public void propertyChanged(PropertyChangeEvent event) {
-				PropertyCollectionValueModelAdapter.this.valueChanged((E) event.newValue());
+				PropertyCollectionValueModelAdapter.this.valueChanged((E) event.getNewValue());
 			}
 			@Override
 			public String toString() {
@@ -160,7 +160,7 @@ public class PropertyCollectionValueModelAdapter<E>
 		this.valueHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.propertyChangeListener);
 		// synch our value *after* we start listening to the value holder,
 		// since its value might change when a listener is added
-		this.value = this.valueHolder.value();
+		this.value = this.valueHolder.getValue();
 	}
 
 	protected void disengageModel() {

@@ -44,7 +44,7 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 	}
 
 	private Collection<String> wrappedCollection() {
-		return CollectionTools.collection(new SingleElementIterator<String>(this.wrappedValueHolder.value()));
+		return CollectionTools.collection(new SingleElementIterator<String>(this.wrappedValueHolder.getValue()));
 	}
 
 	@Override

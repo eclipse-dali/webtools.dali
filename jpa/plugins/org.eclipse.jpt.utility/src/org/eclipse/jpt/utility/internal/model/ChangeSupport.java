@@ -462,11 +462,11 @@ public class ChangeSupport
 	 * for general purpose notification of changes.
 	 */
 	public void firePropertyChanged(PropertyChangeEvent event) {
-		if (this.valuesAreEqual(event.oldValue(), event.newValue())) {
+		if (this.valuesAreEqual(event.getOldValue(), event.getNewValue())) {
 			return; 
 		}
 
-		String propertyName = event.propertyName();
+		String propertyName = event.getPropertyName();
 
 		PropertyChangeListener[] targets = null;
 		ChangeSupport child = null;
@@ -714,7 +714,7 @@ public class ChangeSupport
 			return;
 		}
 
-		String collectionName = event.collectionName();
+		String collectionName = event.getCollectionName();
 
 		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
@@ -846,7 +846,7 @@ public class ChangeSupport
 			return;
 		}
 
-		String collectionName = event.collectionName();
+		String collectionName = event.getCollectionName();
 
 		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
@@ -974,7 +974,7 @@ public class ChangeSupport
 	 * Report a bound collection update to any registered listeners.
 	 */
 	public void fireCollectionCleared(CollectionChangeEvent event) {
-		String collectionName = event.collectionName();
+		String collectionName = event.getCollectionName();
 
 		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
@@ -1054,7 +1054,7 @@ public class ChangeSupport
 	 * Report a bound collection update to any registered listeners.
 	 */
 	public void fireCollectionChanged(CollectionChangeEvent event) {
-		String collectionName = event.collectionName();
+		String collectionName = event.getCollectionName();
 
 		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
@@ -1192,7 +1192,7 @@ public class ChangeSupport
 			return;
 		}
 
-		String listName = event.listName();
+		String listName = event.getListName();
 
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
@@ -1324,7 +1324,7 @@ public class ChangeSupport
 			return;
 		}
 
-		String listName = event.listName();
+		String listName = event.getListName();
 
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
@@ -1456,7 +1456,7 @@ public class ChangeSupport
 			return;
 		}
 
-		String listName = event.listName();
+		String listName = event.getListName();
 
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
@@ -1584,11 +1584,11 @@ public class ChangeSupport
 	 * Report a bound list update to any registered listeners.
 	 */
 	public void fireItemsMoved(ListChangeEvent event) {
-		if (event.targetIndex() == event.sourceIndex()) {
+		if (event.getTargetIndex() == event.getSourceIndex()) {
 			return;
 		}
 
-		String listName = event.listName();
+		String listName = event.getListName();
 
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
@@ -1678,7 +1678,7 @@ public class ChangeSupport
 	 * Report a bound list update to any registered listeners.
 	 */
 	public void fireListCleared(ListChangeEvent event) {
-		String listName = event.listName();
+		String listName = event.getListName();
 
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
@@ -1758,7 +1758,7 @@ public class ChangeSupport
 	 * Report a bound list update to any registered listeners.
 	 */
 	public void fireListChanged(ListChangeEvent event) {
-		String listName = event.listName();
+		String listName = event.getListName();
 
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
@@ -1893,7 +1893,7 @@ public class ChangeSupport
 	 * Report a bound tree update to any registered listeners.
 	 */
 	public void fireNodeAdded(TreeChangeEvent event) {
-		String treeName = event.treeName();
+		String treeName = event.getTreeName();
 
 		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
@@ -1973,7 +1973,7 @@ public class ChangeSupport
 	 * Report a bound tree update to any registered listeners.
 	 */
 	public void fireNodeRemoved(TreeChangeEvent event) {
-		String treeName = event.treeName();
+		String treeName = event.getTreeName();
 
 		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
@@ -2053,7 +2053,7 @@ public class ChangeSupport
 	 * Report a bound tree update to any registered listeners.
 	 */
 	public void fireTreeCleared(TreeChangeEvent event) {
-		String treeName = event.treeName();
+		String treeName = event.getTreeName();
 
 		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
@@ -2140,7 +2140,7 @@ public class ChangeSupport
 	 * Report a bound tree update to any registered listeners.
 	 */
 	public void fireTreeChanged(TreeChangeEvent event) {
-		String treeName = event.treeName();
+		String treeName = event.getTreeName();
 
 		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;

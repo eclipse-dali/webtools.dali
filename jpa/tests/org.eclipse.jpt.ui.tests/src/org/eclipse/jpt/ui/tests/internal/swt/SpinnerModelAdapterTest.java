@@ -95,7 +95,7 @@ public class SpinnerModelAdapterTest {
 		assertEquals(
 			"The number holder's value should be the model's value",
 			model.getValue(),
-			numberHolder.value()
+			numberHolder.getValue()
 		);
 
 		assertFalse(
@@ -137,7 +137,7 @@ public class SpinnerModelAdapterTest {
 
 		assertNull(
 			"The number holder's value should be null",
-			numberHolder.value()
+			numberHolder.getValue()
 		);
 	}
 
@@ -162,7 +162,7 @@ public class SpinnerModelAdapterTest {
 
 		assertNull(
 			"The number holder's value should be null",
-			numberHolder.value()
+			numberHolder.getValue()
 		);
 	}
 
@@ -189,7 +189,7 @@ public class SpinnerModelAdapterTest {
 
 		assertNull(
 			"The number holder's value should be null",
-			numberHolder.value()
+			numberHolder.getValue()
 		);
 
 		assertFalse(
@@ -225,7 +225,7 @@ public class SpinnerModelAdapterTest {
 		assertEquals(
 			"The number holder's value should be " + value,
 			value,
-			numberHolder.value()
+			numberHolder.getValue()
 		);
 
 		assertFalse(
@@ -261,7 +261,7 @@ public class SpinnerModelAdapterTest {
 		assertEquals(
 			"The number holder's value should be the model's value",
 			model.getValue(),
-			numberHolder.value()
+			numberHolder.getValue()
 		);
 
 		assertFalse(

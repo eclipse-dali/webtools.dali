@@ -278,7 +278,7 @@ public class TreeModelAdapter<T>
 	 */
 	private void engageModel() {
 		this.rootHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.rootListener);
-		this.root = this.rootHolder.value();
+		this.root = this.rootHolder.getValue();
 		if (this.root == null) {
 			throw new NullPointerException();	// the root cannot be null while we have listeners
 		}
@@ -318,7 +318,7 @@ public class TreeModelAdapter<T>
 	 * non-root nodes.
 	 */
 	void rootChanged() {
-		TreeNodeValueModel<T> newRoot = this.rootHolder.value();
+		TreeNodeValueModel<T> newRoot = this.rootHolder.getValue();
 		if (newRoot == null) {
 			throw new NullPointerException();	// the root cannot be null while we have listeners
 		}
@@ -596,7 +596,7 @@ public class TreeModelAdapter<T>
 		 */
 		@Override
 		int childrenStartIndex() {
-			return this.event.index();
+			return this.event.getIndex();
 		}
 
 		/**
@@ -630,7 +630,7 @@ public class TreeModelAdapter<T>
 		 * Remove the old nodes and add the new ones.
 		 */
 		void moveChildren() {
-			TreeModelAdapter.this.moveChildren(this.parent(), this.event.targetIndex(), this.event.sourceIndex(), this.event.moveLength());
+			TreeModelAdapter.this.moveChildren(this.parent(), this.event.getTargetIndex(), this.event.getSourceIndex(), this.event.getMoveLength());
 		}
 
 		/**

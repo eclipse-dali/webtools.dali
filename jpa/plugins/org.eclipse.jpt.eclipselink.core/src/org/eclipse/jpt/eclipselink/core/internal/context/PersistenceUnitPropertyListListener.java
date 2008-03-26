@@ -84,15 +84,15 @@ public class PersistenceUnitPropertyListListener implements ListChangeListener
 	}
 
 	public void itemsMoved(ListChangeEvent e) {
-		throw new UnsupportedOperationException("source: " + e.getSource() + " - aspect: " + e.aspectName());
+		throw new UnsupportedOperationException("source: " + e.getSource() + " - aspect: " + e.getAspectName());
 	}
 
 	public void listCleared(ListChangeEvent e) {
-		throw new UnsupportedOperationException("source: " + e.getSource() + " - aspect: " + e.aspectName());
+		throw new UnsupportedOperationException("source: " + e.getSource() + " - aspect: " + e.getAspectName());
 	}
 
 	public void listChanged(ListChangeEvent e) {
-		throw new UnsupportedOperationException("source: " + e.getSource() + " - aspect: " + e.aspectName());
+		throw new UnsupportedOperationException("source: " + e.getSource() + " - aspect: " + e.getAspectName());
 	}
 
 	// ********** standard methods **********

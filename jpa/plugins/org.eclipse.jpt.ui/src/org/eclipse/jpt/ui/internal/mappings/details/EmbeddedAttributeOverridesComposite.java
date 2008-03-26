@@ -308,7 +308,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 		setPopulating(true);
 
 		try {
-			AttributeOverride override = this.attributeOverrideHolder.value();
+			AttributeOverride override = this.attributeOverrideHolder.getValue();
 
 			AttributeOverride newOverride = override.setVirtual(!selected);
 			this.attributeOverrideHolder.setValue(newOverride);

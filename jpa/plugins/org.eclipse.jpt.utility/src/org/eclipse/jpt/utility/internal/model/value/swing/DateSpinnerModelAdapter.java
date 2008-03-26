@@ -81,7 +81,7 @@ public class DateSpinnerModelAdapter
 	 * Constructor - the date holder is required.
 	 */
 	public DateSpinnerModelAdapter(WritablePropertyValueModel<Object> dateHolder, Comparable<?> start, Comparable<?> end, int calendarField, Date defaultValue) {
-		super(dateHolder.value() == null ? defaultValue : (Date) dateHolder.value(), start, end, calendarField);
+		super(dateHolder.getValue() == null ? defaultValue : (Date) dateHolder.getValue(), start, end, calendarField);
 		this.dateHolder = dateHolder;
 		this.dateChangeListener = this.buildDateChangeListener();
 		// postpone listening to the underlying date
@@ -99,7 +99,7 @@ public class DateSpinnerModelAdapter
 	protected PropertyChangeListener buildDateChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent event) {
-				DateSpinnerModelAdapter.this.synchronize(event.newValue());
+				DateSpinnerModelAdapter.this.synchronize(event.getNewValue());
 			}
 			@Override
 			public String toString() {
@@ -122,7 +122,7 @@ public class DateSpinnerModelAdapter
 	public Object getValue() {
 		if (this.getChangeListeners().length == 0) {
 			// sorry about this "lateral" call to super  ~bjv
-			super.setValue(this.spinnerValueOf(this.dateHolder.value()));
+			super.setValue(this.spinnerValueOf(this.dateHolder.getValue()));
 		}
 		return super.getValue();
 	}
@@ -144,7 +144,7 @@ public class DateSpinnerModelAdapter
 	public void addChangeListener(ChangeListener listener) {
 		if (this.getChangeListeners().length == 0) {
 			this.dateHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.dateChangeListener);
-			this.synchronize(this.dateHolder.value());
+			this.synchronize(this.dateHolder.getValue());
 		}
 		super.addChangeListener(listener);
 	}

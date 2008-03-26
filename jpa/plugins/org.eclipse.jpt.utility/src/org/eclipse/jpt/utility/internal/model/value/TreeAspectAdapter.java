@@ -146,17 +146,17 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 	// ********** AspectAdapter implementation **********
 
 	@Override
-	protected Object value() {
+	protected Object getValue() {
 		return this.nodes();
 	}
 
 	@Override
-	protected Class<? extends ChangeListener> listenerClass() {
+	protected Class<? extends ChangeListener> getListenerClass() {
 		return TreeChangeListener.class;
 	}
 
 	@Override
-	protected String listenerAspectName() {
+	protected String getListenerAspectName() {
 		return NODES;
 	}
 
@@ -198,11 +198,11 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 	// ********** behavior **********
 
 	protected void nodeAdded(TreeChangeEvent event) {
-		this.fireNodeAdded(NODES, event.path());
+		this.fireNodeAdded(NODES, event.getPath());
 	}
 
 	protected void nodeRemoved(TreeChangeEvent event) {
-		this.fireNodeRemoved(NODES, event.path());
+		this.fireNodeRemoved(NODES, event.getPath());
 	}
 
 	protected void treeCleared(TreeChangeEvent event) {
@@ -210,7 +210,7 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 	}
 
 	protected void treeChanged(TreeChangeEvent event) {
-		this.fireTreeChanged(NODES, event.path());
+		this.fireTreeChanged(NODES, event.getPath());
 	}
 
 }

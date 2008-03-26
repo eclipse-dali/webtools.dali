@@ -133,7 +133,7 @@ public class QueriesComposite extends AbstractPane<QueryHolder>
 		return new PostExecution<NewNameDialog>() {
 			public void execute(NewNameDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					Query query = queryHolder.value();
+					Query query = queryHolder.getValue();
 					query.setName(dialog.getName());
 				}
 			}
@@ -349,7 +349,7 @@ public class QueriesComposite extends AbstractPane<QueryHolder>
 
 	private void editQuery(ObjectListSelectionModel listSelectionModel) {
 
-		Query query = queryHolder.value();
+		Query query = queryHolder.getValue();
 
 		NewNameDialogBuilder builder = new NewNameDialogBuilder(shell());
 		builder.setLabelText(JptUiMappingsMessages.QueriesComposite_label);

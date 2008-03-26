@@ -210,17 +210,17 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	// ********** AspectAdapter implementation **********
 
 	@Override
-	protected Object value() {
+	protected Object getValue() {
 		return this.iterator();
 	}
 
 	@Override
-	protected Class<? extends ChangeListener> listenerClass() {
+	protected Class<? extends ChangeListener> getListenerClass() {
 		return ListChangeListener.class;
 	}
 
 	@Override
-	protected String listenerAspectName() {
+	protected String getListenerAspectName() {
 		return LIST_VALUES;
 	}
 

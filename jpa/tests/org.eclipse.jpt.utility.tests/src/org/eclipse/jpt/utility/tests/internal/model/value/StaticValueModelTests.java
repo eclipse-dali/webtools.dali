@@ -37,7 +37,7 @@ public class StaticValueModelTests extends TestCase {
 	}
 
 	public void testValue() {
-		assertEquals("foo", this.objectHolder.value());
+		assertEquals("foo", this.objectHolder.getValue());
 	}
 
 	public void testToString() {

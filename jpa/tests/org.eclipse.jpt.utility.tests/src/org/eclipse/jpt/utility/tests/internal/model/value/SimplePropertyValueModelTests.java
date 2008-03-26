@@ -40,16 +40,16 @@ public class SimplePropertyValueModelTests extends TestCase {
 	}
 
 	public void testValue() {
-		assertEquals("foo", this.objectHolder.value());
+		assertEquals("foo", this.objectHolder.getValue());
 	}
 
 	public void testSetValue() {
 		this.objectHolder.setValue("bar");
-		assertEquals("bar", this.objectHolder.value());
+		assertEquals("bar", this.objectHolder.getValue());
 		this.objectHolder.setValue(null);
-		assertEquals(null, this.objectHolder.value());
+		assertEquals(null, this.objectHolder.getValue());
 		this.objectHolder.setValue("baz");
-		assertEquals("baz", this.objectHolder.value());
+		assertEquals("baz", this.objectHolder.getValue());
 	}
 
 	public void testPropertyChange1() {
@@ -86,9 +86,9 @@ public class SimplePropertyValueModelTests extends TestCase {
 
 	private void verifyEvent(Object oldValue, Object newValue) {
 		assertEquals(this.objectHolder, this.event.getSource());
-		assertEquals(PropertyValueModel.VALUE, this.event.propertyName());
-		assertEquals(oldValue, this.event.oldValue());
-		assertEquals(newValue, this.event.newValue());
+		assertEquals(PropertyValueModel.VALUE, this.event.getPropertyName());
+		assertEquals(oldValue, this.event.getOldValue());
+		assertEquals(newValue, this.event.getNewValue());
 	}
 
 }

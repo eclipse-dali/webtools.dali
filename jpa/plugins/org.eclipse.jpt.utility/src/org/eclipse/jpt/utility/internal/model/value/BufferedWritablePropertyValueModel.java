@@ -117,8 +117,8 @@ public class BufferedWritablePropertyValueModel<T>
 	 * If we are currently "buffering" a value, return that;
 	 * otherwise, return the wrapped value.
 	 */
-	public T value() {
-		return this.buffering ? this.bufferedValue : this.valueHolder.value();
+	public T getValue() {
+		return this.buffering ? this.bufferedValue : this.valueHolder.getValue();
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class BufferedWritablePropertyValueModel<T>
 	 * when the trigger is "accepted".
 	 */
 	public void setValue(T value) {
-		Object old = this.value();
+		Object old = this.getValue();
 		this.bufferedValue = value;
 		this.buffering = true;
 		this.firePropertyChanged(VALUE, old, this.bufferedValue);
@@ -201,7 +201,7 @@ public class BufferedWritablePropertyValueModel<T>
 			// nothing needs to be passed through; nothing needs to be reset;
 			return;
 		}
-		if (((Boolean) event.newValue()).booleanValue()) {
+		if (((Boolean) event.getNewValue()).booleanValue()) {
 			// set the accepting flag so we ignore any events
 			// fired by the wrapped value holder
 			this.accepting = true;
@@ -215,13 +215,13 @@ public class BufferedWritablePropertyValueModel<T>
 			Object old = this.bufferedValue;
 			this.bufferedValue = null;
 			this.buffering = false;
-			this.firePropertyChanged(VALUE, old, this.valueHolder.value());
+			this.firePropertyChanged(VALUE, old, this.valueHolder.getValue());
 		}
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.value());
+		sb.append(this.getValue());
 	}
 
 
@@ -272,7 +272,7 @@ public class BufferedWritablePropertyValueModel<T>
 		 * change notification triggered by #setValue(Object).
 		 */
 		@Override
-		public Boolean value() {
+		public Boolean getValue() {
 			if (this.value == null) {
 				throw new IllegalStateException("The method Trigger.value() may only be called during change notification.");
 			}
@@ -307,7 +307,7 @@ public class BufferedWritablePropertyValueModel<T>
 		 * 	- false indicates "reset"
 		 */
 		public boolean booleanValue() {
-			return this.value().booleanValue();
+			return this.getValue().booleanValue();
 		}
 
 		/**

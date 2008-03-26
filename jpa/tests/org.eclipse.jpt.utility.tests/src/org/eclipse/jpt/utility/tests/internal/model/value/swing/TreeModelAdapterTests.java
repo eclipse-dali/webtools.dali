@@ -479,7 +479,7 @@ public class TreeModelAdapterTests extends TestCase {
 
 		// ********** TreeNodeValueModel implementation **********
 
-		public TestModel value() {
+		public TestModel getValue() {
 			return this.testModel;
 		}
 
@@ -555,7 +555,7 @@ public class TreeModelAdapterTests extends TestCase {
 			// we need to notify listeners that our "internal state" has changed
 			this.fireStateChanged();
 			// our display string stays in synch with the model's name
-			this.firePropertyChanged(DISPLAY_STRING_PROPERTY, e.oldValue(), e.newValue());
+			this.firePropertyChanged(DISPLAY_STRING_PROPERTY, e.getOldValue(), e.getNewValue());
 		}
 
 
@@ -735,8 +735,8 @@ public class TreeModelAdapterTests extends TestCase {
 
 		// ********** TreeNodeValueModel implementation **********
 
-		public String value() {
-			return this.nameAdapter.value();
+		public String getValue() {
+			return this.nameAdapter.getValue();
 		}
 		@Override
 		public void setValue(Object value) {
@@ -764,7 +764,7 @@ public class TreeModelAdapterTests extends TestCase {
 
 		protected void nameChanged(PropertyChangeEvent e) {
 			// we need to notify listeners that our "value" has changed
-			this.firePropertyChanged(VALUE, e.oldValue(), e.newValue());
+			this.firePropertyChanged(VALUE, e.getOldValue(), e.getNewValue());
 		}
 	}
 

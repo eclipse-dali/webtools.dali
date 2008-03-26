@@ -71,7 +71,7 @@ public class TreeModelAdapterUITest {
 
 	private void exec(String[] args) throws Exception {
 		this.rootNodeHolder = this.buildRootNodeHolder();
-		this.sorted = this.rootNodeHolder.value() instanceof SortedTestNode;
+		this.sorted = this.rootNodeHolder.getValue() instanceof SortedTestNode;
 		this.treeModel = this.buildTreeModel();
 		this.treeSelectionModel = this.buildTreeSelectionModel();
 		this.nameTextField = new TextField();
@@ -226,7 +226,7 @@ public class TreeModelAdapterUITest {
 		if (this.treeSelectionModel.isSelectionEmpty()) {
 			return null;
 		}
-		return this.selectedNode().value();
+		return this.selectedNode().getValue();
 	}
 
 	private TestNode rootNode() {
@@ -234,7 +234,7 @@ public class TreeModelAdapterUITest {
 	}
 
 	private TestModel root() {
-		return this.rootNode().value();
+		return this.rootNode().getValue();
 	}
 
 	private Collection<TreePath> expandedPaths() {

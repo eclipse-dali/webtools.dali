@@ -261,12 +261,12 @@ public class TransformationListValueModelAdapterTests extends TestCase {
 	private void verifyEvent(String type) {
 		assertEquals(type, this.eventType);
 		assertEquals(this.transformedListHolder, this.event.getSource());
-		assertEquals(ListValueModel.LIST_VALUES, this.event.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event.getListName());
 	}
 
 	private void verifyEvent(String type, int index, Object item) {
 		this.verifyEvent(type);
-		assertEquals(index, this.event.index());
+		assertEquals(index, this.event.getIndex());
 		assertEquals(item, this.event.items().next());
 	}
 

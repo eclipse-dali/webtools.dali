@@ -104,7 +104,7 @@ public class FilteringWritablePropertyValueModel<T>
 	 * alternative to building a <code>BidiFilter</code>.
 	 */
 	protected boolean reverseAccept(T value) {
-		return this.filter().reverseAccept(value);
+		return this.getFilter().reverseAccept(value);
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class FilteringWritablePropertyValueModel<T>
 	/**
 	 * Our constructors accept only a bidirectional filter.
 	 */
-	protected BidiFilter<T> filter() {
+	protected BidiFilter<T> getFilter() {
 		return (BidiFilter<T>) this.filter;
 	}
 

@@ -48,7 +48,7 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 	}
 
 	private boolean booleanValue() {
-		return this.adapter.value().booleanValue();
+		return this.adapter.getValue().booleanValue();
 	}
 
 	private Collection<String> wrappedCollection() {
@@ -130,8 +130,8 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 
 	private void verifyEvent(boolean oldValue, boolean newValue) {
 		assertEquals(this.adapter, this.event.getSource());
-		assertEquals(Boolean.valueOf(oldValue), this.event.oldValue());
-		assertEquals(Boolean.valueOf(newValue), this.event.newValue());
+		assertEquals(Boolean.valueOf(oldValue), this.event.getOldValue());
+		assertEquals(Boolean.valueOf(newValue), this.event.getNewValue());
 		this.event = null;
 	}
 
@@ -200,8 +200,8 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 		 * always return a Boolean
 		 */
 		@Override
-		public Boolean value() {
-			Boolean result = super.value();
+		public Boolean getValue() {
+			Boolean result = super.getValue();
 			return (result == null) ? Boolean.FALSE : result;
 		}
 		@SuppressWarnings("unchecked")

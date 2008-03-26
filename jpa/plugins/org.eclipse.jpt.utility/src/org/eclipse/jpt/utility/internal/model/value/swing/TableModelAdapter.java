@@ -124,16 +124,16 @@ public class TableModelAdapter<E>
 	protected ListChangeListener buildListChangeListener_() {
 		return new ListChangeListener() {
 			public void itemsAdded(ListChangeEvent event) {
-				TableModelAdapter.this.addRows(event.index(), event.itemsSize(), this.items(event));
+				TableModelAdapter.this.addRows(event.getIndex(), event.itemsSize(), this.items(event));
 			}
 			public void itemsRemoved(ListChangeEvent event) {
-				TableModelAdapter.this.removeRows(event.index(), event.itemsSize());
+				TableModelAdapter.this.removeRows(event.getIndex(), event.itemsSize());
 			}
 			public void itemsReplaced(ListChangeEvent event) {
-				TableModelAdapter.this.replaceRows(event.index(), this.items(event));
+				TableModelAdapter.this.replaceRows(event.getIndex(), this.items(event));
 			}
 			public void itemsMoved(ListChangeEvent event) {
-				TableModelAdapter.this.moveRows(event.targetIndex(), event.sourceIndex(), event.moveLength());
+				TableModelAdapter.this.moveRows(event.getTargetIndex(), event.getSourceIndex(), event.getMoveLength());
 			}
 			public void listCleared(ListChangeEvent event) {
 				TableModelAdapter.this.clearTable();
@@ -201,7 +201,7 @@ public class TableModelAdapter<E>
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		WritablePropertyValueModel<Object>[] row = this.rows.get(rowIndex);
-		return row[columnIndex].value();
+		return row[columnIndex].getValue();
 	}
 
 	@Override
@@ -238,7 +238,7 @@ public class TableModelAdapter<E>
 	/**
 	 * Return the underlying list model.
 	 */
-	public ListValueModel<? extends E> model() {
+	public ListValueModel<? extends E> getModel() {
 		return this.listHolder;
 	}
 

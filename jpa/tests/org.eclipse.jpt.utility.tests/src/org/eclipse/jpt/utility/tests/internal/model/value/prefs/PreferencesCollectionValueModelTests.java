@@ -157,10 +157,10 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 
 		assertNotNull(this.event);
 		assertEquals(this.preferencesAdapter, this.event.getSource());
-		assertEquals(CollectionValueModel.VALUES, this.event.collectionName());
+		assertEquals(CollectionValueModel.VALUES, this.event.getCollectionName());
 		assertEquals(1, this.event.itemsSize());
 		@SuppressWarnings("unchecked")
-		String key = ((PreferencePropertyValueModel<String>) this.event.items().next()).key();
+		String key = ((PreferencePropertyValueModel<String>) this.event.items().next()).getKey();
 		assertEquals(KEY_NAME_2, key);
 
 		this.expectedValues.remove(KEY_NAME_2);
@@ -240,7 +240,7 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 	private void verifyEvent(Map<String, String> items) {
 		assertNotNull(this.event);
 		assertEquals(this.preferencesAdapter, this.event.getSource());
-		assertEquals(CollectionValueModel.VALUES, this.event.collectionName());
+		assertEquals(CollectionValueModel.VALUES, this.event.getCollectionName());
 		assertEquals(items.size(), this.event.itemsSize());
 		@SuppressWarnings("unchecked")
 		Iterator<PreferencePropertyValueModel<String>> eventItems = (Iterator<PreferencePropertyValueModel<String>>) this.event.items();
@@ -264,7 +264,7 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 		while (stream.hasNext()) {
 			PreferencePropertyValueModel<String> model = stream.next();
 			model.addPropertyChangeListener(PropertyValueModel.VALUE, this.itemListener);
-			assertEquals(expected.get(model.key()), model.value());
+			assertEquals(expected.get(model.getKey()), model.getValue());
 			model.removePropertyChangeListener(PropertyValueModel.VALUE, this.itemListener);
 		}
 	}

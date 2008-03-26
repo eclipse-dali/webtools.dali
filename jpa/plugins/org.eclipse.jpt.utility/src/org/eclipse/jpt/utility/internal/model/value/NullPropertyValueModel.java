@@ -35,7 +35,7 @@ public class NullPropertyValueModel<T>
 
 	// ********** PropertyValueModel implementation **********
 
-	public T value() {
+	public T getValue() {
 		return null;
 	}
 

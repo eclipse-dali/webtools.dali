@@ -267,7 +267,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 			}
 
 			public void itemsRemoved(ListChangeEvent e) {
-				Object selectedItem = selectedItemHolder.value();
+				Object selectedItem = selectedItemHolder.getValue();
 
 				if (selectedItem == null) {
 					updateButtons();

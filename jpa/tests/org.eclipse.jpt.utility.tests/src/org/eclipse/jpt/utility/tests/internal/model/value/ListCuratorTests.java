@@ -124,8 +124,8 @@ public final class ListCuratorTests
 		this.subjectHolder1.setValue(this.subject2);
 		assertNotNull(this.event1);
 		assertEquals(this.curator, this.event1.getSource());
-		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
-		assertEquals(-1, this.event1.index());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
+		assertEquals(-1, this.event1.getIndex());
 		assertFalse(this.event1.items().hasNext());
 		assertEquals(this.subject2Names(), CollectionTools.list(this.curator.listIterator()));
 		
@@ -133,8 +133,8 @@ public final class ListCuratorTests
 		this.subjectHolder1.setValue(null);
 		assertNotNull(this.event1);
 		assertEquals(this.curator, this.event1.getSource());
-		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
-		assertEquals(-1, this.event1.index());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
+		assertEquals(-1, this.event1.getIndex());
 		assertFalse(this.event1.items().hasNext());
 		assertFalse(this.curator.iterator().hasNext());
 		
@@ -142,8 +142,8 @@ public final class ListCuratorTests
 		this.subjectHolder1.setValue(this.subject1);
 		assertNotNull(this.event1);
 		assertEquals(this.curator, this.event1.getSource());
-		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
-		assertEquals(-1, this.event1.index());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
+		assertEquals(-1, this.event1.getIndex());
 		assertFalse(this.event1.items().hasNext());
 		assertEquals(this.subject1Names(), CollectionTools.list(this.curator.listIterator()));
 	}
@@ -155,8 +155,8 @@ public final class ListCuratorTests
 		this.subject1.addString("echo");
 		assertNotNull(this.event1);
 		assertEquals(this.curator, this.event1.getSource());
-		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
-		assertEquals(this.subject1Names().size(), this.event1.index());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
+		assertEquals(this.subject1Names().size(), this.event1.getIndex());
 		assertEquals("echo", this.event1.items().next());
 		List<String> stringsPlus = this.subject1Names();
 		stringsPlus.add("echo");
@@ -166,8 +166,8 @@ public final class ListCuratorTests
 		this.subject1.addString(0, "zulu");
 		assertNotNull(this.event1);
 		assertEquals(this.curator, this.event1.getSource());
-		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
-		assertEquals(0, this.event1.index());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
+		assertEquals(0, this.event1.getIndex());
 		assertEquals("zulu", this.event1.items().next());
 		stringsPlus.add(0, "zulu");
 		assertEquals(stringsPlus, CollectionTools.list(this.curator.listIterator()));
@@ -180,8 +180,8 @@ public final class ListCuratorTests
 		String removedString = this.subject1.removeString(0);	// should be "alpha"
 		assertNotNull(this.event1);
 		assertEquals(this.curator, this.event1.getSource());
-		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
-		assertEquals(0, this.event1.index());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
+		assertEquals(0, this.event1.getIndex());
 		assertEquals(removedString, this.event1.items().next());
 		List<String> stringsMinus = this.subject1Names();
 		stringsMinus.remove(0);
@@ -190,8 +190,8 @@ public final class ListCuratorTests
 		removedString = this.subject1.removeString(2);	// should be "delta"
 		assertNotNull(this.event1);
 		assertEquals(this.curator, this.event1.getSource());
-		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
-		assertEquals(2, this.event1.index());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
+		assertEquals(2, this.event1.getIndex());
 		assertEquals(removedString, this.event1.items().next());
 		stringsMinus.remove(2);
 		assertEquals(stringsMinus, CollectionTools.list(this.curator.listIterator()));
@@ -204,7 +204,7 @@ public final class ListCuratorTests
 		this.subject1.setStrings(this.subject2Names());
 		assertNotNull(this.event1);
 		assertEquals(this.curator, this.event1.getSource());
-		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
 		List<String> newStrings = this.subject2Names();
 		assertEquals(newStrings, CollectionTools.list(this.curator.listIterator()));
 	}
@@ -222,7 +222,7 @@ public final class ListCuratorTests
 		List<String> finalList = CollectionTools.list(this.curator.listIterator());
 		assertNotNull(this.event1);
 		assertEquals(this.curator, this.event1.getSource());
-		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
 		assertEquals(newStrings, finalList);
 		assertTrue(identicalString == finalList.get(0));
 		assertTrue(nonidenticalString != finalList.get(1));

@@ -214,7 +214,7 @@ public class ListModelAdapter
 	 * Notify listeners of the changes.
 	 */
 	protected void itemsAdded(ListChangeEvent event) {
-		int start = event.index();
+		int start = event.getIndex();
 		int end = start + event.itemsSize() - 1;
 		this.fireIntervalAdded(this, start, end);
 		this.listSize += event.itemsSize();
@@ -225,7 +225,7 @@ public class ListModelAdapter
 	 * Notify listeners of the changes.
 	 */
 	protected void itemsRemoved(ListChangeEvent event) {
-		int start = event.index();
+		int start = event.getIndex();
 		int end = start + event.itemsSize() - 1;
 		this.fireIntervalRemoved(this, start, end);
 		this.listSize -= event.itemsSize();
@@ -236,7 +236,7 @@ public class ListModelAdapter
 	 * Notify listeners of the changes.
 	 */
 	protected void itemsReplaced(ListChangeEvent event) {
-		int start = event.index();
+		int start = event.getIndex();
 		int end = start + event.itemsSize() - 1;
 		this.fireContentsChanged(this, start, end);
 	}
@@ -246,8 +246,8 @@ public class ListModelAdapter
 	 * Notify listeners of the changes.
 	 */
 	protected void itemsMoved(ListChangeEvent event) {
-		int start = Math.min(event.sourceIndex(), event.targetIndex());
-		int end = Math.max(event.sourceIndex(), event.targetIndex()) + event.moveLength() - 1;
+		int start = Math.min(event.getSourceIndex(), event.getTargetIndex());
+		int end = Math.max(event.getSourceIndex(), event.getTargetIndex()) + event.getMoveLength() - 1;
 		this.fireContentsChanged(this, start, end);
 	}
 

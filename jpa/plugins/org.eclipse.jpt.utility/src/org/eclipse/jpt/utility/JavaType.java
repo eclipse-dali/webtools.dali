@@ -64,14 +64,14 @@ public interface JavaType
 	/**
 	 * Return the class corresponding to the type's element type and array depth.
 	 */
-	Class<?> javaClass() throws ClassNotFoundException;
+	Class<?> getJavaClass() throws ClassNotFoundException;
 
 	/**
 	 * Return the version of the type's name that matches that
 	 * returned by java.lang.Class#getName()
 	 * (e.g. "[[J", "[Ljava.lang.Object;", "java.util.Map$Entry").
 	 */
-	String javaClassName();
+	String getJavaClassName();
 
 	boolean equals(String otherElementTypeName, int otherArrayDepth);
 

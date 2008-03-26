@@ -49,7 +49,7 @@ public abstract class ChangeEvent extends EventObject {
 	 * Return the name of the aspect of the source that changed.
 	 * May be null if inappropriate.
 	 */
-	public abstract String aspectName();
+	public abstract String getAspectName();
 
 	/**
 	 * Return a copy of the event with the specified source
@@ -59,7 +59,7 @@ public abstract class ChangeEvent extends EventObject {
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.aspectName());
+		return StringTools.buildToStringFor(this, this.getAspectName());
 	}
 
 }

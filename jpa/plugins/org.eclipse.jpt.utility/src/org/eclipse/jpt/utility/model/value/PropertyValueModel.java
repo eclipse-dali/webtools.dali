@@ -28,7 +28,7 @@ public interface PropertyValueModel<T>
 	/**
 	 * Return the property's value.
 	 */
-	T value();
+	T getValue();
 		String VALUE = "value";
 
 }

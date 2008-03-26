@@ -192,7 +192,7 @@ public abstract class PrimitiveListTreeModel
 		}
 
 		public void itemsAdded(ListChangeEvent event) {
-			int i = event.index();
+			int i = event.getIndex();
 			for (ListIterator<?> stream = event.items(); stream.hasNext(); ) {
 				PrimitiveListTreeModel.this.insertPrimitive(i++, stream.next());
 			}
@@ -200,23 +200,23 @@ public abstract class PrimitiveListTreeModel
 
 		public void itemsRemoved(ListChangeEvent event) {
 			for (int i = 0; i < event.itemsSize(); i++) {
-				PrimitiveListTreeModel.this.removeNode(event.index());
+				PrimitiveListTreeModel.this.removeNode(event.getIndex());
 			}
 		}
 
 		public void itemsReplaced(ListChangeEvent event) {
-			int i = event.index();
+			int i = event.getIndex();
 			for (ListIterator<?> stream = event.items(); stream.hasNext(); ) {
 				PrimitiveListTreeModel.this.replacePrimitive(i++, stream.next());
 			}
 		}
 
 		public void itemsMoved(ListChangeEvent event) {
-			ArrayList<MutableTreeNode> temp = new ArrayList<MutableTreeNode>(event.moveLength());
-			for (int i = 0; i < event.moveLength(); i++) {
-				temp.add(PrimitiveListTreeModel.this.removeNode(event.sourceIndex()));
+			ArrayList<MutableTreeNode> temp = new ArrayList<MutableTreeNode>(event.getMoveLength());
+			for (int i = 0; i < event.getMoveLength(); i++) {
+				temp.add(PrimitiveListTreeModel.this.removeNode(event.getSourceIndex()));
 			}
-			int i = event.targetIndex();
+			int i = event.getTargetIndex();
 			for (MutableTreeNode node : temp) {
 				PrimitiveListTreeModel.this.insertPrimitive(i++, node);
 			}

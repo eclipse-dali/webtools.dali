@@ -80,7 +80,7 @@ public class EclipseLinkSchemaGeneration
 
 	// ********** behavior **********
 	public void propertyChanged(PropertyChangeEvent event) {
-		String aspectName = event.aspectName();
+		String aspectName = event.getAspectName();
 		
 		if (aspectName.equals(OUTPUT_MODE_PROPERTY)) {
 			this.outputModeChanged(event);
@@ -116,11 +116,11 @@ public class EclipseLinkSchemaGeneration
 	}
 
 	private void ddlGenerationTypeChanged(PropertyChangeEvent event) {
-		String stringValue = (event.newValue() == null) ? null : ((Property) event.newValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
 		DdlGenerationType newValue = getEnumValueOf(stringValue, DdlGenerationType.values());
 		DdlGenerationType old = this.ddlGenerationType;
 		this.ddlGenerationType = newValue;
-		this.firePropertyChanged(event.aspectName(), old, newValue);
+		this.firePropertyChanged(event.getAspectName(), old, newValue);
 	}
 
 	public DdlGenerationType getDefaultDdlGenerationType() {
@@ -140,11 +140,11 @@ public class EclipseLinkSchemaGeneration
 	}
 
 	private void outputModeChanged(PropertyChangeEvent event) {
-		String stringValue = (event.newValue() == null) ? null : ((Property) event.newValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
 		OutputMode newValue = getEnumValueOf(stringValue, OutputMode.values());
 		OutputMode old = this.outputMode;
 		this.outputMode = newValue;
-		this.firePropertyChanged(event.aspectName(), old, newValue);
+		this.firePropertyChanged(event.getAspectName(), old, newValue);
 	}
 
 	public OutputMode getDefaultOutputMode() {
@@ -164,10 +164,10 @@ public class EclipseLinkSchemaGeneration
 	}
 
 	private void createFileNameChanged(PropertyChangeEvent event) {
-		String newValue = (event.newValue() == null) ? null : ((Property) event.newValue()).getValue();
+		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
 		String old = this.createFileName;
 		this.createFileName = newValue;
-		this.firePropertyChanged(event.aspectName(), old, newValue);
+		this.firePropertyChanged(event.getAspectName(), old, newValue);
 	}
 
 	public String getDefaultCreateFileName() {
@@ -187,10 +187,10 @@ public class EclipseLinkSchemaGeneration
 	}
 
 	private void dropFileNameChanged(PropertyChangeEvent event) {
-		String newValue = (event.newValue() == null) ? null : ((Property) event.newValue()).getValue();
+		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
 		String old = this.dropFileName;
 		this.dropFileName = newValue;
-		this.firePropertyChanged(event.aspectName(), old, newValue);
+		this.firePropertyChanged(event.getAspectName(), old, newValue);
 	}
 
 	public String getDefaultDropFileName() {
@@ -210,10 +210,10 @@ public class EclipseLinkSchemaGeneration
 	}
 
 	private void applicationLocationChanged(PropertyChangeEvent event) {
-		String newValue = (event.newValue() == null) ? null : ((Property) event.newValue()).getValue();
+		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
 		String old = this.applicationLocation;
 		this.applicationLocation = newValue;
-		this.firePropertyChanged(event.aspectName(), old, newValue);
+		this.firePropertyChanged(event.getAspectName(), old, newValue);
 	}
 
 	public String getDefaultApplicationLocation() {

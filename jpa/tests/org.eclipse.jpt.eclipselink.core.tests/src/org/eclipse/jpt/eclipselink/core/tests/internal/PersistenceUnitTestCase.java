@@ -143,12 +143,12 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	}
 
 	protected void throwUnsupportedOperationException(ListChangeEvent e) {
-		throw new UnsupportedOperationException(e.aspectName());
+		throw new UnsupportedOperationException(e.getAspectName());
 	}
 
 	protected void verifyAAValue(Boolean testValue, Boolean subjectValue, PropertyValueModel<Boolean> aa, String persistenceXmlKey) {
 		assertEquals(testValue, subjectValue);
-		assertEquals(testValue, aa.value());
+		assertEquals(testValue, aa.getValue());
 		if (testValue != null) {
 			assertEquals(testValue.toString(), this.persistenceUnit().getProperty(persistenceXmlKey).getValue());
 		}
@@ -156,7 +156,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 
 	protected <T extends Enum<T>> void verifyAAValue(T testValue, T subjectValue, PropertyValueModel<? extends Enum<T>> aa, String persistenceXmlKey) {
 		assertEquals(testValue, subjectValue);
-		assertEquals(testValue, aa.value());
+		assertEquals(testValue, aa.getValue());
 		if (testValue != null) {
 			assertEquals(this.getEclipseLinkValueString(testValue), this.persistenceUnit().getProperty(persistenceXmlKey).getValue());
 		}
@@ -233,7 +233,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 
 	protected void verifyEventValue(Object value, Object expectedValue) {
 		// verify event value
-		assertEquals(expectedValue, this.propertyChangedEvent.newValue());
+		assertEquals(expectedValue, this.propertyChangedEvent.getNewValue());
 		assertEquals(expectedValue, value);
 	}
 
@@ -241,7 +241,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		// verify event received
 		assertNotNull("No Event Fired.", this.propertyChangedEvent);
 		// verify event for the expected property
-		assertEquals("Wrong Event.", this.propertyChangedEvent.aspectName(), propertyName);
+		assertEquals("Wrong Event.", this.propertyChangedEvent.getAspectName(), propertyName);
 		// verify event occurence
 		assertEquals("Multiple Event Received.", 1, this.propertyChangedEventCount);
 	}

@@ -389,7 +389,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	private void verifyBagEvent(String eventType) {
 		assertEquals(eventType, this.bagEventType);
 		assertEquals(this.bagHolder, this.bagEvent.getSource());
-		assertEquals(CollectionValueModel.VALUES, this.bagEvent.collectionName());
+		assertEquals(CollectionValueModel.VALUES, this.bagEvent.getCollectionName());
 	}
 
 	private void verifyBagEvent(String eventType, Object item) {
@@ -400,7 +400,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	private void verifySetEvent(String eventType) {
 		assertEquals(eventType, this.setEventType);
 		assertEquals(this.setHolder, this.setEvent.getSource());
-		assertEquals(CollectionValueModel.VALUES, this.setEvent.collectionName());
+		assertEquals(CollectionValueModel.VALUES, this.setEvent.getCollectionName());
 	}
 
 	private void verifySetEvent(String eventType, Object item) {

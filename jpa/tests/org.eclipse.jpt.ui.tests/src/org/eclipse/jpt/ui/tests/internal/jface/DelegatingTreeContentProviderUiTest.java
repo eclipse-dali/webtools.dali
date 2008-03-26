@@ -118,7 +118,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 				PropertyValueModel.VALUE,
 				new PropertyChangeListener() {
 					public void propertyChanged(PropertyChangeEvent event) {
-						controlTree.setSelection(new StructuredSelection(event.newValue()));
+						controlTree.setSelection(new StructuredSelection(event.getNewValue()));
 					}
 				}
 			);
@@ -187,7 +187,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 				PropertyValueModel.VALUE,
 				new PropertyChangeListener() {
 					public void propertyChanged(PropertyChangeEvent event) {
-						action.setEnabled(((TreeNode) event.newValue()).canHaveChildren());
+						action.setEnabled(((TreeNode) event.getNewValue()).canHaveChildren());
 					}
 				}
 			);
@@ -207,7 +207,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 				PropertyValueModel.VALUE,
 				new PropertyChangeListener() {
 					public void propertyChanged(PropertyChangeEvent event) {
-						action.setEnabled(((TreeNode) event.newValue()).canHaveNestedChildren());
+						action.setEnabled(((TreeNode) event.getNewValue()).canHaveNestedChildren());
 					}
 				}
 			);
@@ -227,7 +227,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 				PropertyValueModel.VALUE,
 				new PropertyChangeListener() {
 					public void propertyChanged(PropertyChangeEvent event) {
-						action.setEnabled(event.newValue() != root);
+						action.setEnabled(event.getNewValue() != root);
 					}
 				}
 			);
@@ -259,19 +259,19 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	void addChild() {
 		String nodeName = nodeNameText.getText();
 		if (nodeName.length() != 0) {
-			selectedNode.value().addChild(nodeName);
+			selectedNode.getValue().addChild(nodeName);
 		}
 	}
 
 	void addNestedChild() {
 		String nodeName = nodeNameText.getText();
 		if (nodeName.length() != 0) {
-			selectedNode.value().addNestedChild(nodeName);
+			selectedNode.getValue().addNestedChild(nodeName);
 		}
 	}
 
 	void remove() {
-		TreeNode node = selectedNode.value();
+		TreeNode node = selectedNode.getValue();
 		node.parent().removeChild(node);
 	}
 

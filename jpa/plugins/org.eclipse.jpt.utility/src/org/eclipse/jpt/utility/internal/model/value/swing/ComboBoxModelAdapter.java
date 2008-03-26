@@ -97,7 +97,7 @@ public class ComboBoxModelAdapter
 	// ********** ComboBoxModel implementation **********
 
 	public Object getSelectedItem() {
-		return this.selectionHolder.value();
+		return this.selectionHolder.getValue();
 	}
 
 	public void setSelectedItem(Object selectedItem) {

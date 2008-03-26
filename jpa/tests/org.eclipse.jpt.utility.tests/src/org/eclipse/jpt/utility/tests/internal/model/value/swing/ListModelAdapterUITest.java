@@ -230,7 +230,7 @@ public class ListModelAdapterUITest {
 	}
 
 	private TaskList taskList() {
-		return this.taskListHolder.value();
+		return this.taskListHolder.getValue();
 	}
 
 	void addTask() {

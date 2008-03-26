@@ -75,12 +75,12 @@ public class TreeChangeEvent extends ChangeEvent {
 	/**
 	 * Return the programmatic name of the tree that was changed.
 	 */
-	public String treeName() {
+	public String getTreeName() {
 		return this.treeName;
 	}
 
 	@Override
-	public String aspectName() {
+	public String getAspectName() {
 		return this.treeName;
 	}
 
@@ -88,7 +88,7 @@ public class TreeChangeEvent extends ChangeEvent {
 	 * Return the path to the part of the tree that was changed.
 	 * May be empty, if not known.
 	 */
-	public Object[] path() {
+	public Object[] getPath() {
 		return this.path;
 	}
 

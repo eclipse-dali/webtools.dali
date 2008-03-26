@@ -541,7 +541,7 @@ public abstract class AbstractComboModelAdapterTest {
 
 	private void testNullSubject() throws Exception {
 
-		assertNull("The selected item should be null", selectedItemHolder.value());
+		assertNull("The selected item should be null", selectedItemHolder.getValue());
 
 		selectedItemHolder.setValue(buildSelectedItem());
 		assertFalse("The item wasn't supposed to be modified", model.isSetItemCalled());

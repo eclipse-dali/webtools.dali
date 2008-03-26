@@ -70,7 +70,7 @@ public abstract class ValueAspectAdapter<T>
 
 	// ********** PropertyValueModel implementation **********
 
-	public T value() {
+	public T getValue() {
 		return this.value;
 	}
 
@@ -117,7 +117,7 @@ public abstract class ValueAspectAdapter<T>
 	 * Start listening to the current value.
 	 */
 	protected void engageValue() {
-		this.value = this.valueHolder.value();
+		this.value = this.valueHolder.getValue();
 		if (this.value != null) {
 			this.engageValue_();
 		}

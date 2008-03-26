@@ -134,7 +134,7 @@ public class OrmGeneratorsComposite extends AbstractPane<EntityMappings>
 		return new PostExecution<NewNameDialog>() {
 			public void execute(NewNameDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					OrmGenerator generator = generatorHolder.value();
+					OrmGenerator generator = generatorHolder.getValue();
 					generator.setName(dialog.getName());
 				}
 			}
@@ -332,7 +332,7 @@ public class OrmGeneratorsComposite extends AbstractPane<EntityMappings>
 
 	private void editGenerator(ObjectListSelectionModel listSelectionModel) {
 
-		OrmGenerator generator = generatorHolder.value();
+		OrmGenerator generator = generatorHolder.getValue();
 
 		NewNameDialogBuilder builder = new NewNameDialogBuilder(shell());
 		builder.setLabelText(JptUiOrmMessages.OrmGeneratorsComposite_label);

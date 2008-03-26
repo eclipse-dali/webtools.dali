@@ -42,7 +42,7 @@ public class StateChangeEvent extends ChangeEvent {
 	// ********** standard state **********
 
 	@Override
-	public String aspectName() {
+	public String getAspectName() {
 		return null;  // the point of the event is that the name is unknown...
 	}
 

@@ -116,14 +116,14 @@ public class ValueCollectionAdapterTests extends TestCase {
 		public void propertyChanged(PropertyChangeEvent e) {
 			this.eventReceived = true;
 			assertEquals(this.source, e.getSource());
-			assertEquals(this.oldValue, e.oldValue());
-			assertEquals(this.newValue, e.newValue());
-			assertEquals(PropertyValueModel.VALUE, e.propertyName());
+			assertEquals(this.oldValue, e.getOldValue());
+			assertEquals(this.newValue, e.getNewValue());
+			assertEquals(PropertyValueModel.VALUE, e.getPropertyName());
 		}
 		public void stateChanged(StateChangeEvent e) {
 			this.eventReceived = true;
 			assertEquals(this.source, e.getSource());
-			assertNull(e.aspectName());
+			assertNull(e.getAspectName());
 		}
 		boolean eventReceived() {
 			return this.eventReceived;

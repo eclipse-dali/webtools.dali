@@ -340,7 +340,7 @@ public class TableModelAdapter<E> {
 		if (this.table.isDisposed()) {
 			return;
 		}
-		int i = event.index();
+		int i = event.getIndex();
 		for (ListIterator<E> stream = this.items(event); stream.hasNext(); i++) {
 			TableItem tableItem = new TableItem(this.table, SWT.NULL, i);
 			tableItem.setData(stream.next());
@@ -359,9 +359,9 @@ public class TableModelAdapter<E> {
 		if (this.table.isDisposed()) {
 			return;
 		}
-		this.table.remove(event.index(), event.index() + event.itemsSize() - 1);
+		this.table.remove(event.getIndex(), event.getIndex() + event.itemsSize() - 1);
 
-		for (int index = event.index() + event.itemsSize(); --index >= event.index(); ) {
+		for (int index = event.getIndex() + event.itemsSize(); --index >= event.getIndex(); ) {
 			tableItemModelAdapters.remove(index);
 		}
 	}
@@ -373,9 +373,9 @@ public class TableModelAdapter<E> {
 		if (this.table.isDisposed()) {
 			return;
 		}
-		int target = event.targetIndex();
-		int source = event.sourceIndex();
-		int len = event.moveLength();
+		int target = event.getTargetIndex();
+		int source = event.getSourceIndex();
+		int len = event.getMoveLength();
 		int loStart = Math.min(target, source);
 		int hiStart = Math.max(target, source);
 		// make a copy of the affected items...
@@ -396,7 +396,7 @@ public class TableModelAdapter<E> {
 			return;
 		}
 
-		int rowIndex = event.index();
+		int rowIndex = event.getIndex();
 
 		for (ListIterator<E> stream = this.items(event); stream.hasNext(); ) {
 			TableItem tableItem = this.table.getItem(rowIndex);

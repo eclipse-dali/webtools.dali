@@ -105,7 +105,7 @@ public class NewEventTests extends TestCase {
 			super(source);
 		}
 		@Override
-		public String aspectName() {
+		public String getAspectName() {
 			return null;  // the point of the event is that the name is unknown...
 		}
 		@Override
@@ -116,24 +116,24 @@ public class NewEventTests extends TestCase {
 
 	static class AbstractFooModel extends AbstractModel implements FooModel {
 		@Override
-		protected synchronized FooChangeSupport changeSupport() {
-			return (FooChangeSupport) super.changeSupport();
+		protected synchronized FooChangeSupport getChangeSupport() {
+			return (FooChangeSupport) super.getChangeSupport();
 		}
 		@Override
 		protected ChangeSupport buildChangeSupport() {
 			return new FooChangeSupport(this);
 		}
 		public void addFooChangeListener(FooChangeListener listener) {
-			this.changeSupport().addFooChangeListener(listener);
+			this.getChangeSupport().addFooChangeListener(listener);
 		}
 		public void removeFooChangeListener(FooChangeListener listener) {
-			this.changeSupport().removeFooChangeListener(listener);
+			this.getChangeSupport().removeFooChangeListener(listener);
 		}
 		protected void fireFooChangeEvent() {
-			this.changeSupport().fireFooChanged();
+			this.getChangeSupport().fireFooChanged();
 		}
 		public boolean hasAnyFooChangeListeners() {
-			return this.changeSupport().hasAnyFooChangeListeners();
+			return this.getChangeSupport().hasAnyFooChangeListeners();
 		}
 		public boolean hasNoFooChangeListeners() {
 			return ! this.hasAnyFooChangeListeners();

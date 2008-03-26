@@ -477,8 +477,8 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		void nodeAddedSingleArgument(TreeChangeEvent e) {
 			this.nodeAddedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
-			assertEquals(this.treeName, e.treeName());
-			assertTrue(Arrays.equals(this.path, e.path()));
+			assertEquals(this.treeName, e.getTreeName());
+			assertTrue(Arrays.equals(this.path, e.getPath()));
 		}
 		void nodeRemovedZeroArgument() {
 			this.nodeRemovedZeroArgumentFlag = true;
@@ -486,8 +486,8 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		void nodeRemovedSingleArgument(TreeChangeEvent e) {
 			this.nodeRemovedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
-			assertEquals(this.treeName, e.treeName());
-			assertTrue(Arrays.equals(this.path, e.path()));
+			assertEquals(this.treeName, e.getTreeName());
+			assertTrue(Arrays.equals(this.path, e.getPath()));
 		}
 		void treeClearedZeroArgument() {
 			this.treeClearedZeroArgumentFlag = true;
@@ -495,8 +495,8 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		void treeClearedSingleArgument(TreeChangeEvent e) {
 			this.treeClearedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
-			assertEquals(this.treeName, e.treeName());
-			assertTrue(Arrays.equals(this.path, e.path()));
+			assertEquals(this.treeName, e.getTreeName());
+			assertTrue(Arrays.equals(this.path, e.getPath()));
 		}
 		void treeChangedZeroArgument() {
 			this.treeChangedZeroArgumentFlag = true;
@@ -504,8 +504,8 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		void treeChangedSingleArgument(TreeChangeEvent e) {
 			this.treeChangedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
-			assertEquals(this.treeName, e.treeName());
-			assertTrue(Arrays.equals(this.path, e.path()));
+			assertEquals(this.treeName, e.getTreeName());
+			assertTrue(Arrays.equals(this.path, e.getPath()));
 		}
 		void collectionChangedDoubleArgument(TreeChangeEvent e, Object o) {
 			fail("bogus event: " + e);

@@ -317,12 +317,12 @@ public class SimpleListValueModelTests extends TestCase {
 	private void verifyEvent(String e) {
 		assertEquals(e, this.eventType);
 		assertEquals(this.listHolder, this.event.getSource());
-		assertEquals(ListValueModel.LIST_VALUES, this.event.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event.getListName());
 	}
 
 	private void verifyEvent(String e, int index, Object item) {
 		this.verifyEvent(e);
-		assertEquals(index, this.event.index());
+		assertEquals(index, this.event.getIndex());
 		assertEquals(item, this.event.items().next());
 	}
 

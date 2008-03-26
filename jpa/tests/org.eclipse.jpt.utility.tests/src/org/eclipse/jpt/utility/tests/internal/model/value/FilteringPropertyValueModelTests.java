@@ -57,44 +57,44 @@ public class FilteringPropertyValueModelTests extends TestCase {
 	}
 
 	public void testValue() {
-		assertEquals("foo", this.objectHolder.value());
-		assertNull(this.filteredObjectHolder.value());
+		assertEquals("foo", this.objectHolder.getValue());
+		assertNull(this.filteredObjectHolder.getValue());
 
 		this.objectHolder.setValue("bar");
-		assertEquals("bar", this.objectHolder.value());
-		assertNotNull(this.filteredObjectHolder.value());
-		assertEquals("bar", this.filteredObjectHolder.value());
+		assertEquals("bar", this.objectHolder.getValue());
+		assertNotNull(this.filteredObjectHolder.getValue());
+		assertEquals("bar", this.filteredObjectHolder.getValue());
 
 		this.objectHolder.setValue("baz");
-		assertEquals("baz", this.objectHolder.value());
-		assertNotNull(this.filteredObjectHolder.value());
-		assertEquals("baz", this.filteredObjectHolder.value());
+		assertEquals("baz", this.objectHolder.getValue());
+		assertNotNull(this.filteredObjectHolder.getValue());
+		assertEquals("baz", this.filteredObjectHolder.getValue());
 
 		this.objectHolder.setValue(null);
-		assertNull(this.objectHolder.value());
-		assertNull(this.filteredObjectHolder.value());
+		assertNull(this.objectHolder.getValue());
+		assertNull(this.filteredObjectHolder.getValue());
 
 		this.objectHolder.setValue("foo");
-		assertEquals("foo", this.objectHolder.value());
-		assertNull(this.filteredObjectHolder.value());
+		assertEquals("foo", this.objectHolder.getValue());
+		assertNull(this.filteredObjectHolder.getValue());
 	}
 
 	public void testSetValue() {
 		this.filteredObjectHolder.setValue("bar");
-		assertEquals("bar", this.objectHolder.value());
-		assertEquals("bar", this.filteredObjectHolder.value());
+		assertEquals("bar", this.objectHolder.getValue());
+		assertEquals("bar", this.filteredObjectHolder.getValue());
 
 		this.filteredObjectHolder.setValue("foo");
-		assertEquals("bar", this.objectHolder.value());
-		assertEquals("bar", this.filteredObjectHolder.value());
+		assertEquals("bar", this.objectHolder.getValue());
+		assertEquals("bar", this.filteredObjectHolder.getValue());
 
 		this.filteredObjectHolder.setValue(null);
-		assertEquals("bar", this.objectHolder.value());
-		assertEquals("bar", this.filteredObjectHolder.value());
+		assertEquals("bar", this.objectHolder.getValue());
+		assertEquals("bar", this.filteredObjectHolder.getValue());
 
 		this.filteredObjectHolder.setValue("baz");
-		assertEquals("baz", this.objectHolder.value());
-		assertEquals("baz", this.filteredObjectHolder.value());
+		assertEquals("baz", this.objectHolder.getValue());
+		assertEquals("baz", this.filteredObjectHolder.getValue());
 	}
 
 	public void testLazyListening() {
@@ -179,9 +179,9 @@ public class FilteringPropertyValueModelTests extends TestCase {
 
 	private void verifyEvent(PropertyChangeEvent e, Object source, Object oldValue, Object newValue) {
 		assertEquals(source, e.getSource());
-		assertEquals(PropertyValueModel.VALUE, e.propertyName());
-		assertEquals(oldValue, e.oldValue());
-		assertEquals(newValue, e.newValue());
+		assertEquals(PropertyValueModel.VALUE, e.getPropertyName());
+		assertEquals(oldValue, e.getOldValue());
+		assertEquals(newValue, e.getNewValue());
 	}
 
 }

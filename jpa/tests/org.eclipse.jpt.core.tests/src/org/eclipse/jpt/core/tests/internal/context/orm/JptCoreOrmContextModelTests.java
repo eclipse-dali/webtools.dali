@@ -22,9 +22,9 @@ public class JptCoreOrmContextModelTests extends TestCase
 	
 	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptCoreOrmContextModelTests.class.getName());
-		suite.addTestSuite(OrmXmlTests.class);
-		suite.addTestSuite(EntityMappingsTests.class);
-		suite.addTestSuite(PersistenceUnitMetadataTests.class);
+//		suite.addTestSuite(OrmXmlTests.class);
+//		suite.addTestSuite(EntityMappingsTests.class);
+//		suite.addTestSuite(PersistenceUnitMetadataTests.class);
 		suite.addTestSuite(PersistenceUnitDefaultsTests.class);
 		suite.addTestSuite(OrmPersistentTypeTests.class);
 		suite.addTestSuite(OrmAssociationOverrideTests.class);

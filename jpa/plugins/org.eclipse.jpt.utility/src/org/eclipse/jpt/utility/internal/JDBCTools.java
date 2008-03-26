@@ -42,7 +42,7 @@ public final class JDBCTools {
 	 * @see java.sql.Types
 	 */
 	public static JDBCType jdbcTypeFor(JavaType javaType) {
-		return jdbcTypeForClassNamed(javaType.javaClassName());
+		return jdbcTypeForClassNamed(javaType.getJavaClassName());
 	}
 
 	/**

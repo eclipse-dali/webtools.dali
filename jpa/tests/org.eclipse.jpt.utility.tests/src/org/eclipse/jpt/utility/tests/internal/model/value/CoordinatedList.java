@@ -144,14 +144,14 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 	// ********** ListChangeListener implementation **********
 
 	public void itemsAdded(ListChangeEvent e) {
-		int i = e.index();
+		int i = e.getIndex();
 		for (Iterator<E> stream = this.items(e); stream.hasNext(); ) {
 			this.list.add(i++, stream.next());
 		}
 	}
 
 	public void itemsRemoved(ListChangeEvent e) {
-		int i = e.index();
+		int i = e.getIndex();
 		for (Iterator<E> stream = this.items(e); stream.hasNext(); ) {
 			stream.next();
 			this.list.remove(i);
@@ -159,14 +159,14 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 	}
 
 	public void itemsReplaced(ListChangeEvent e) {
-		int i = e.index();
+		int i = e.getIndex();
 		for (Iterator<E> stream = this.items(e); stream.hasNext(); ) {
 			this.list.set(i++, stream.next());
 		}
 	}
 
 	public void itemsMoved(ListChangeEvent e) {
-		CollectionTools.move(this.list, e.targetIndex(), e.sourceIndex(), e.moveLength());
+		CollectionTools.move(this.list, e.getTargetIndex(), e.getSourceIndex(), e.getMoveLength());
 	}
 
 	public void listCleared(ListChangeEvent e) {

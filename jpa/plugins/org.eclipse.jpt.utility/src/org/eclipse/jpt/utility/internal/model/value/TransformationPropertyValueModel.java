@@ -61,9 +61,9 @@ public class TransformationPropertyValueModel<T1, T2>
 
 	// ********** PropertyValueModel implementation **********
 
-	public T2 value() {
+	public T2 getValue() {
 		// transform the object returned by the nested value model before returning it
-		return this.transform(this.valueHolder.value());
+		return this.transform(this.valueHolder.getValue());
 	}
 
 
@@ -73,9 +73,9 @@ public class TransformationPropertyValueModel<T1, T2>
 	protected void valueChanged(PropertyChangeEvent event) {
 		// transform the values before propagating the change event
 	    @SuppressWarnings("unchecked")
-		Object oldValue = this.transform((T1) event.oldValue());
+		Object oldValue = this.transform((T1) event.getOldValue());
 	    @SuppressWarnings("unchecked")
-		Object newValue = this.transform((T1) event.newValue());
+		Object newValue = this.transform((T1) event.getNewValue());
 		this.firePropertyChanged(VALUE, oldValue, newValue);
 	}
 

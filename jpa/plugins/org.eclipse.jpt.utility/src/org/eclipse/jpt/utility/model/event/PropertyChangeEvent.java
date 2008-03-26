@@ -62,26 +62,26 @@ public class PropertyChangeEvent extends ChangeEvent {
 	/**
 	 * Return the programmatic name of the property that was changed.
 	 */
-	public String propertyName() {
+	public String getPropertyName() {
 		return this.propertyName;
 	}
 
 	@Override
-	public String aspectName() {
+	public String getAspectName() {
 		return this.propertyName;
 	}
 
 	/**
 	 * Return the old value of the property.
 	 */
-	public Object oldValue() {
+	public Object getOldValue() {
 		return this.oldValue;
 	}
 
 	/**
 	 * Return the new value of the property.
 	 */
-	public Object newValue() {
+	public Object getNewValue() {
 		return this.newValue;
 	}
 

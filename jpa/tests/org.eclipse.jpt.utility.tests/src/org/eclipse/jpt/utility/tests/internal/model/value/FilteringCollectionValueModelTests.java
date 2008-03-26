@@ -233,7 +233,7 @@ public class FilteringCollectionValueModelTests extends TestCase {
 
 	private void verifyEvent(CollectionChangeEvent event, Object source, Object items) {
 		assertEquals(source, event.getSource());
-		assertEquals(CollectionValueModel.VALUES, event.collectionName());
+		assertEquals(CollectionValueModel.VALUES, event.getCollectionName());
 		assertEquals(items, CollectionTools.vector(event.items()));
 	}
 

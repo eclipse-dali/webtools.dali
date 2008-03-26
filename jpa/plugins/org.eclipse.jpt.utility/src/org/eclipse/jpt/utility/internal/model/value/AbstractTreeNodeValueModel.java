@@ -179,17 +179,17 @@ public abstract class AbstractTreeNodeValueModel<T>
 		}
 		@SuppressWarnings("unchecked")
 		AbstractTreeNodeValueModel<T> other = (AbstractTreeNodeValueModel<T>) o;
-		return this.value().equals(other.value());
+		return this.getValue().equals(other.getValue());
 	}
 
 	@Override
 	public int hashCode() {
-		return this.value().hashCode();
+		return this.getValue().hashCode();
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.value());
+		sb.append(this.getValue());
 	}
 
 }

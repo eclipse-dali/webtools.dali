@@ -97,17 +97,17 @@ public class PreferencesCollectionValueModel<P>
 	// ********** AspectAdapter implementation **********
 
 	@Override
-	protected Object value() {
+	protected Object getValue() {
 		return this.iterator();
 	}
 
 	@Override
-	protected Class<? extends ChangeListener> listenerClass() {
+	protected Class<? extends ChangeListener> getListenerClass() {
 		return CollectionChangeListener.class;
 	}
 
 	@Override
-	protected String listenerAspectName() {
+	protected String getListenerAspectName() {
 		return VALUES;
 	}
 
@@ -126,7 +126,7 @@ public class PreferencesCollectionValueModel<P>
 		this.subject.addPreferenceChangeListener(this.preferenceChangeListener);
 		for (Iterator<PreferencePropertyValueModel<P>> stream = this.preferenceModels(); stream.hasNext(); ) {
 			PreferencePropertyValueModel<P> preferenceModel = stream.next();
-			this.preferences.put(preferenceModel.key(), preferenceModel);
+			this.preferences.put(preferenceModel.getKey(), preferenceModel);
 		}
 	}
 

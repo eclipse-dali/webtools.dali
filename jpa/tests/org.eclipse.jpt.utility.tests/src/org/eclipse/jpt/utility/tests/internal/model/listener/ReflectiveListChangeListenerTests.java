@@ -681,9 +681,9 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		void itemAddedSingleArgument(ListChangeEvent e) {
 			this.itemAddedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
-			assertEquals(this.listName, e.listName());
+			assertEquals(this.listName, e.getListName());
 			assertEquals(this.string, e.items().next());
-			assertEquals(this.index, e.index());
+			assertEquals(this.index, e.getIndex());
 		}
 		void itemRemovedZeroArgument() {
 			this.itemRemovedZeroArgumentFlag = true;
@@ -691,9 +691,9 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		void itemRemovedSingleArgument(ListChangeEvent e) {
 			this.itemRemovedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
-			assertEquals(this.listName, e.listName());
+			assertEquals(this.listName, e.getListName());
 			assertEquals(this.string, e.items().next());
-			assertEquals(this.index, e.index());
+			assertEquals(this.index, e.getIndex());
 		}
 		void itemReplacedZeroArgument() {
 			this.itemReplacedZeroArgumentFlag = true;
@@ -701,10 +701,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		void itemReplacedSingleArgument(ListChangeEvent e) {
 			this.itemReplacedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
-			assertEquals(this.listName, e.listName());
+			assertEquals(this.listName, e.getListName());
 			assertEquals(this.string, e.items().next());
 			assertEquals(this.replacedString, e.replacedItems().next());
-			assertEquals(this.index, e.index());
+			assertEquals(this.index, e.getIndex());
 		}
 		void itemMovedZeroArgument() {
 			this.itemMovedZeroArgumentFlag = true;
@@ -712,9 +712,9 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		void itemMovedSingleArgument(ListChangeEvent e) {
 			this.itemMovedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
-			assertEquals(this.listName, e.listName());
-			assertEquals(this.index, e.targetIndex());
-			assertEquals(this.sourceIndex, e.sourceIndex());
+			assertEquals(this.listName, e.getListName());
+			assertEquals(this.index, e.getTargetIndex());
+			assertEquals(this.sourceIndex, e.getSourceIndex());
 		}
 		void listChangedZeroArgument() {
 			this.listChangedZeroArgumentFlag = true;
@@ -722,9 +722,9 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		void listClearedSingleArgument(ListChangeEvent e) {
 			this.listClearedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
-			assertEquals(this.listName, e.listName());
+			assertEquals(this.listName, e.getListName());
 			assertFalse(e.items().hasNext());
-			assertEquals(this.index, e.index());
+			assertEquals(this.index, e.getIndex());
 		}
 		void listClearedZeroArgument() {
 			this.listClearedZeroArgumentFlag = true;
@@ -732,9 +732,9 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		void listChangedSingleArgument(ListChangeEvent e) {
 			this.listChangedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
-			assertEquals(this.listName, e.listName());
+			assertEquals(this.listName, e.getListName());
 			assertFalse(e.items().hasNext());
-			assertEquals(this.index, e.index());
+			assertEquals(this.index, e.getIndex());
 		}
 		void listChangedDoubleArgument(ListChangeEvent e, Object o) {
 			fail("bogus event: " + e);

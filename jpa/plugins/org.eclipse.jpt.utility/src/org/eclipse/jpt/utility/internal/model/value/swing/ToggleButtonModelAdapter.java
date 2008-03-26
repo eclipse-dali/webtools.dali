@@ -180,7 +180,7 @@ public class ToggleButtonModelAdapter
 		return this.listenerList.getListenerCount() == 0;
 	}
 
-	protected boolean defaultValue() {
+	protected boolean getDefaultValue() {
 		return this.defaultValue;
 	}
 
@@ -193,7 +193,7 @@ public class ToggleButtonModelAdapter
 	 */
 	protected void setSelected(Boolean value) {
 		if (value == null) {
-			this.setSelected(this.defaultValue());
+			this.setSelected(this.getDefaultValue());
 		} else {
 			this.setSelected(value.booleanValue());
 		}
@@ -203,12 +203,12 @@ public class ToggleButtonModelAdapter
 	 * The underlying model has changed - synchronize accordingly.
 	 */
 	protected void booleanChanged(PropertyChangeEvent event) {
-		this.setSelected((Boolean) event.newValue());
+		this.setSelected((Boolean) event.getNewValue());
 	}
 
 	protected void engageModel() {
 		this.booleanHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.booleanChangeListener);
-		this.setSelected(this.booleanHolder.value());
+		this.setSelected(this.booleanHolder.getValue());
 	}
 
 	protected void disengageModel() {

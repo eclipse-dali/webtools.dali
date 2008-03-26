@@ -615,7 +615,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	 * If there is no thread-specific command executor, use the default
 	 * implementation, which simply executes the command directly.
 	 */
-	protected CommandExecutor threadLocalModifySharedDocumentCommandExecutor() {
+	protected CommandExecutor getThreadLocalModifySharedDocumentCommandExecutor() {
 		CommandExecutor ce = this.threadLocalModifySharedDocumentCommandExecutor.get();
 		return (ce != null) ? ce : CommandExecutor.Default.instance();
 	}
@@ -633,8 +633,8 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		protected ModifySharedDocumentCommandExecutorProvider() {
 			super();
 		}
-		public CommandExecutor commandExecutor() {
-			return GenericJpaProject.this.threadLocalModifySharedDocumentCommandExecutor();
+		public CommandExecutor getCommandExecutor() {
+			return GenericJpaProject.this.getThreadLocalModifySharedDocumentCommandExecutor();
 		}
 	}
 

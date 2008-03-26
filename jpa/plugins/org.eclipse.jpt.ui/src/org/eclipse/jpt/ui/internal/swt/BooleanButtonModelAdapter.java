@@ -111,7 +111,7 @@ public class BooleanButtonModelAdapter {
 		this.buttonSelectionListener = this.buildButtonSelectionListener();
 		this.button.addSelectionListener(this.buttonSelectionListener);
 
-		this.setButtonSelection(this.booleanHolder.value());
+		this.setButtonSelection(this.booleanHolder.getValue());
 	}
 
 
@@ -167,7 +167,7 @@ public class BooleanButtonModelAdapter {
 	 * (which is typically false).
 	 */
 	protected void booleanChanged(PropertyChangeEvent event) {
-		this.setButtonSelection((Boolean) event.newValue());
+		this.setButtonSelection((Boolean) event.getNewValue());
 	}
 
 	protected void setButtonSelection(Boolean b) {

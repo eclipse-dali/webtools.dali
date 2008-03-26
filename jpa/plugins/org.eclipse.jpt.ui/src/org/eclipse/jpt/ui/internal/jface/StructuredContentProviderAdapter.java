@@ -189,7 +189,7 @@ public class StructuredContentProviderAdapter
 	 * Synchronize the list viewer.
 	 */
 	protected void itemsAdded(ListChangeEvent e) {
-		int i = e.index();
+		int i = e.getIndex();
 		for (@SuppressWarnings("unchecked") ListIterator stream = e.items(); stream.hasNext(); i++) {
 			this.listViewer.insert(stream.next(), i);
 		}
@@ -209,7 +209,7 @@ public class StructuredContentProviderAdapter
 	 */
 	protected void itemsReplaced(ListChangeEvent e) {
 		this.listViewer.remove(CollectionTools.array(e.replacedItems(), e.itemsSize()));
-		int i = e.index();
+		int i = e.getIndex();
 		for (@SuppressWarnings("unchecked") ListIterator stream = e.items(); stream.hasNext(); i++) {
 			this.listViewer.insert(stream.next(), i);
 		}
@@ -220,15 +220,15 @@ public class StructuredContentProviderAdapter
 	 * Synchronize the list viewer.
 	 */
 	protected void itemsMoved(ListChangeEvent e) {
-		int len = e.moveLength();
+		int len = e.getMoveLength();
 		Object[] items = new Object[len];
-		int offset = e.sourceIndex();
+		int offset = e.getSourceIndex();
 		for (int i = 0; i < len; i++) {
 			items[i] = this.listHolder.get(offset + i);
 		}
 		this.listViewer.remove(items);
 
-		offset = e.targetIndex();
+		offset = e.getTargetIndex();
 		for (int i = 0; i < len; i++) {
 			this.listViewer.insert(items[i], offset + i);
 		}

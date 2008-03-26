@@ -188,7 +188,7 @@ public class TransformationListValueModelAdapter<E1, E2>
 	 */
     @Override
 	protected void itemsAdded(ListChangeEvent event) {
-		this.addItemsToList(event.index(), this.transformItems(event), this.transformedList, LIST_VALUES);
+		this.addItemsToList(event.getIndex(), this.transformItems(event), this.transformedList, LIST_VALUES);
 	}
 
 	/**
@@ -198,7 +198,7 @@ public class TransformationListValueModelAdapter<E1, E2>
 	 */
     @Override
 	protected void itemsRemoved(ListChangeEvent event) {
-		this.removeItemsFromList(event.index(), event.itemsSize(), this.transformedList, LIST_VALUES);
+		this.removeItemsFromList(event.getIndex(), event.itemsSize(), this.transformedList, LIST_VALUES);
 	}
 
 	/**
@@ -208,7 +208,7 @@ public class TransformationListValueModelAdapter<E1, E2>
 	 */
     @Override
 	protected void itemsReplaced(ListChangeEvent event) {
-		this.setItemsInList(event.index(), this.transformItems(event), this.transformedList, LIST_VALUES);
+		this.setItemsInList(event.getIndex(), this.transformItems(event), this.transformedList, LIST_VALUES);
 	}
 
 	/**
@@ -218,7 +218,7 @@ public class TransformationListValueModelAdapter<E1, E2>
 	 */
     @Override
 	protected void itemsMoved(ListChangeEvent event) {
-    	this.moveItemsInList(event.targetIndex(), event.sourceIndex(), event.moveLength(), this.transformedList, LIST_VALUES);
+    	this.moveItemsInList(event.getTargetIndex(), event.getSourceIndex(), event.getMoveLength(), this.transformedList, LIST_VALUES);
 	}
 
 	/**

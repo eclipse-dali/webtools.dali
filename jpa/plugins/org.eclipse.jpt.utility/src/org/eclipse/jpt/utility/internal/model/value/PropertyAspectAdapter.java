@@ -137,7 +137,7 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	 * Return the value of the subject's property.
 	 */
 	@Override
-	public final T value() {
+	public final T getValue() {
 		return this.value;
 	}
 
@@ -166,12 +166,12 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	// ********** AspectAdapter implementation **********
 
 	@Override
-	protected Class<? extends ChangeListener> listenerClass() {
+	protected Class<? extends ChangeListener> getListenerClass() {
 		return PropertyChangeListener.class;
 	}
 
 	@Override
-	protected String listenerAspectName() {
+	protected String getListenerAspectName() {
 		return VALUE;
 	}
 

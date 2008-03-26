@@ -697,7 +697,7 @@ public class TableModelAdapterUITest {
 	// ********** queries **********
 
 	private Crowd crowd() {
-		return this.crowdHolder.value();
+		return this.crowdHolder.getValue();
 	}
 
 	private Person selectedPerson() {

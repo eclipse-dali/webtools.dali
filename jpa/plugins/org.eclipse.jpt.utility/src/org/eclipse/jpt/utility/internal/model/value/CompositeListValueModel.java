@@ -220,7 +220,7 @@ public class CompositeListValueModel<E1, E2>
 	 */
 	@Override
 	protected void itemsAdded(ListChangeEvent event) {
-		this.addComponentSources(event.index(), this.items(event), event.itemsSize(), true);  // true = fire event
+		this.addComponentSources(event.getIndex(), this.items(event), event.itemsSize(), true);  // true = fire event
 	}
 
 	/**
@@ -274,7 +274,7 @@ public class CompositeListValueModel<E1, E2>
 	 */
 	@Override
 	protected void itemsRemoved(ListChangeEvent event) {
-		this.removeComponentSources(event.index(), event.itemsSize(), true);  // true = fire event
+		this.removeComponentSources(event.getIndex(), event.itemsSize(), true);  // true = fire event
 	}
 
 	/**
@@ -321,7 +321,7 @@ public class CompositeListValueModel<E1, E2>
 	 */
 	@Override
 	protected void itemsReplaced(ListChangeEvent event) {
-		this.replaceComponentSources(event.index(), this.items(event), event.itemsSize(), true);  // true = fire event
+		this.replaceComponentSources(event.getIndex(), this.items(event), event.itemsSize(), true);  // true = fire event
 	}
 
 	/**
@@ -339,7 +339,7 @@ public class CompositeListValueModel<E1, E2>
 	 */
 	@Override
 	protected void itemsMoved(ListChangeEvent event) {
-		this.moveComponentSources(event.targetIndex(), event.sourceIndex(), event.moveLength(), true);  // true = fire event
+		this.moveComponentSources(event.getTargetIndex(), event.getSourceIndex(), event.getMoveLength(), true);  // true = fire event
 	}
 
 	protected void moveComponentSources(int targetSourcesIndex, int sourceSourcesIndex, int movedSourcesLength, boolean fireEvent) {
@@ -448,7 +448,7 @@ public class CompositeListValueModel<E1, E2>
 
 		// synchronize the cached list
 		Info info = this.infoList.get(componentLVMIndex);
-		CollectionTools.addAll(info.items, event.index(), this.componentItems(event), event.itemsSize());
+		CollectionTools.addAll(info.items, event.getIndex(), this.componentItems(event), event.itemsSize());
 
 		// translate the event
 		this.fireItemsAdded(event.cloneWithSource(this, LIST_VALUES, info.begin));
@@ -469,7 +469,7 @@ public class CompositeListValueModel<E1, E2>
 
 		// synchronize the cached list
 		Info info = this.infoList.get(componentLVMIndex);
-		int itemIndex = event.index();
+		int itemIndex = event.getIndex();
 		info.items.subList(itemIndex, itemIndex + event.itemsSize()).clear();
 
 		// translate the event
@@ -486,7 +486,7 @@ public class CompositeListValueModel<E1, E2>
 		// synchronize the cached list
 		int componentLVMIndex = this.indexFor(event);
 		Info info = this.infoList.get(componentLVMIndex);
-		int i = event.index();
+		int i = event.getIndex();
 		for (Iterator<E2> stream = this.componentItems(event); stream.hasNext(); ) {
 			info.items.set(i++, stream.next());
 		}
@@ -505,7 +505,7 @@ public class CompositeListValueModel<E1, E2>
 		// synchronize the cached list
 		int componentLVMIndex = this.indexFor(event);
 		Info info = this.infoList.get(componentLVMIndex);
-		CollectionTools.move(info.items, event.targetIndex(), event.sourceIndex(), event.moveLength());
+		CollectionTools.move(info.items, event.getTargetIndex(), event.getSourceIndex(), event.getMoveLength());
 
 		// translate the event
 		this.fireItemsMoved(event.cloneWithSource(this, LIST_VALUES, info.begin));

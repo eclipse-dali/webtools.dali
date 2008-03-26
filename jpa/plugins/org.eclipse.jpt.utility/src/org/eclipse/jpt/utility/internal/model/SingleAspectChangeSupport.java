@@ -100,7 +100,7 @@ public class SingleAspectChangeSupport
 
 	@Override
 	public void firePropertyChanged(PropertyChangeEvent event) {
-		this.check(PROPERTY_CHANGE_LISTENER_CLASS, event.propertyName());
+		this.check(PROPERTY_CHANGE_LISTENER_CLASS, event.getPropertyName());
 		super.firePropertyChanged(event);
 	}
 
@@ -127,7 +127,7 @@ public class SingleAspectChangeSupport
 
 	@Override
 	public void fireItemsAdded(CollectionChangeEvent event) {
-		this.check(COLLECTION_CHANGE_LISTENER_CLASS, event.collectionName());
+		this.check(COLLECTION_CHANGE_LISTENER_CLASS, event.getCollectionName());
 		super.fireItemsAdded(event);
 	}
 
@@ -145,7 +145,7 @@ public class SingleAspectChangeSupport
 
 	@Override
 	public void fireItemsRemoved(CollectionChangeEvent event) {
-		this.check(COLLECTION_CHANGE_LISTENER_CLASS, event.collectionName());
+		this.check(COLLECTION_CHANGE_LISTENER_CLASS, event.getCollectionName());
 		super.fireItemsRemoved(event);
 	}
 
@@ -163,7 +163,7 @@ public class SingleAspectChangeSupport
 
 	@Override
 	public void fireCollectionCleared(CollectionChangeEvent event) {
-		this.check(COLLECTION_CHANGE_LISTENER_CLASS, event.collectionName());
+		this.check(COLLECTION_CHANGE_LISTENER_CLASS, event.getCollectionName());
 		super.fireCollectionCleared(event);
 	}
 
@@ -175,7 +175,7 @@ public class SingleAspectChangeSupport
 
 	@Override
 	public void fireCollectionChanged(CollectionChangeEvent event) {
-		this.check(COLLECTION_CHANGE_LISTENER_CLASS, event.collectionName());
+		this.check(COLLECTION_CHANGE_LISTENER_CLASS, event.getCollectionName());
 		super.fireCollectionChanged(event);
 	}
 
@@ -190,7 +190,7 @@ public class SingleAspectChangeSupport
 
 	@Override
 	public void fireItemsAdded(ListChangeEvent event) {
-		this.check(LIST_CHANGE_LISTENER_CLASS, event.listName());
+		this.check(LIST_CHANGE_LISTENER_CLASS, event.getListName());
 		super.fireItemsAdded(event);
 	}
 
@@ -208,7 +208,7 @@ public class SingleAspectChangeSupport
 
 	@Override
 	public void fireItemsRemoved(ListChangeEvent event) {
-		this.check(LIST_CHANGE_LISTENER_CLASS, event.listName());
+		this.check(LIST_CHANGE_LISTENER_CLASS, event.getListName());
 		super.fireItemsRemoved(event);
 	}
 
@@ -226,7 +226,7 @@ public class SingleAspectChangeSupport
 
 	@Override
 	public void fireItemsReplaced(ListChangeEvent event) {
-		this.check(LIST_CHANGE_LISTENER_CLASS, event.listName());
+		this.check(LIST_CHANGE_LISTENER_CLASS, event.getListName());
 		super.fireItemsReplaced(event);
 	}
 
@@ -244,7 +244,7 @@ public class SingleAspectChangeSupport
 
 	@Override
 	public void fireItemsMoved(ListChangeEvent event) {
-		this.check(LIST_CHANGE_LISTENER_CLASS, event.listName());
+		this.check(LIST_CHANGE_LISTENER_CLASS, event.getListName());
 		super.fireItemsMoved(event);
 	}
 
@@ -256,7 +256,7 @@ public class SingleAspectChangeSupport
 
 	@Override
 	public void fireListCleared(ListChangeEvent event) {
-		this.check(LIST_CHANGE_LISTENER_CLASS, event.listName());
+		this.check(LIST_CHANGE_LISTENER_CLASS, event.getListName());
 		super.fireListCleared(event);
 	}
 
@@ -268,7 +268,7 @@ public class SingleAspectChangeSupport
 
 	@Override
 	public void fireListChanged(ListChangeEvent event) {
-		this.check(LIST_CHANGE_LISTENER_CLASS, event.listName());
+		this.check(LIST_CHANGE_LISTENER_CLASS, event.getListName());
 		super.fireListChanged(event);
 	}
 
@@ -283,7 +283,7 @@ public class SingleAspectChangeSupport
 
 	@Override
 	public void fireNodeAdded(TreeChangeEvent event) {
-		this.check(TREE_CHANGE_LISTENER_CLASS, event.treeName());
+		this.check(TREE_CHANGE_LISTENER_CLASS, event.getTreeName());
 		super.fireNodeAdded(event);
 	}
 
@@ -295,7 +295,7 @@ public class SingleAspectChangeSupport
 
 	@Override
 	public void fireNodeRemoved(TreeChangeEvent event) {
-		this.check(TREE_CHANGE_LISTENER_CLASS, event.treeName());
+		this.check(TREE_CHANGE_LISTENER_CLASS, event.getTreeName());
 		super.fireNodeRemoved(event);
 	}
 
@@ -307,7 +307,7 @@ public class SingleAspectChangeSupport
 
 	@Override
 	public void fireTreeCleared(TreeChangeEvent event) {
-		this.check(TREE_CHANGE_LISTENER_CLASS, event.treeName());
+		this.check(TREE_CHANGE_LISTENER_CLASS, event.getTreeName());
 		super.fireTreeCleared(event);
 	}
 
@@ -319,7 +319,7 @@ public class SingleAspectChangeSupport
 
 	@Override
 	public void fireTreeChanged(TreeChangeEvent event) {
-		this.check(TREE_CHANGE_LISTENER_CLASS, event.treeName());
+		this.check(TREE_CHANGE_LISTENER_CLASS, event.getTreeName());
 		super.fireTreeChanged(event);
 	}
 

@@ -88,12 +88,12 @@ public class CollectionChangeEvent extends ChangeEvent {
 	/**
 	 * Return the programmatic name of the collection that was changed.
 	 */
-	public String collectionName() {
+	public String getCollectionName() {
 		return this.collectionName;
 	}
 
 	@Override
-	public String aspectName() {
+	public String getAspectName() {
 		return this.collectionName;
 	}
 

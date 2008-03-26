@@ -170,7 +170,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 		// verify event received
 		assertNotNull("No Event Fired.", this.entitiesEvent);
 		// verify event for the expected property
-		assertEquals("Wrong Event.", this.entitiesEvent.aspectName(), Caching.ENTITIES_LIST_PROPERTY);
+		assertEquals("Wrong Event.", this.entitiesEvent.getAspectName(), Caching.ENTITIES_LIST_PROPERTY);
 		
 		// try to add it again
 		this.clearEvent();
@@ -184,7 +184,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 		// verify event received
 		assertNotNull("No Event Fired.", this.entitiesEvent);
 		// verify event for the expected property
-		assertEquals("Wrong Event.", this.entitiesEvent.aspectName(), Caching.ENTITIES_LIST_PROPERTY);
+		assertEquals("Wrong Event.", this.entitiesEvent.getAspectName(), Caching.ENTITIES_LIST_PROPERTY);
 	}
 
 	// ********** Listeners tests **********
@@ -399,7 +399,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 
 	protected void verifyCachingEvent(String propertyName, String entityName, Object expectedValue) throws Exception {
 		// verify event value
-		CacheProperties cache = (CacheProperties) this.propertyChangedEvent.newValue();
+		CacheProperties cache = (CacheProperties) this.propertyChangedEvent.getNewValue();
 		if (propertyName.equals(Caching.CACHE_TYPE_PROPERTY)) {
 			assertEquals(expectedValue, cache.getType());
 			assertEquals(expectedValue, this.caching.getCacheType(entityName));
