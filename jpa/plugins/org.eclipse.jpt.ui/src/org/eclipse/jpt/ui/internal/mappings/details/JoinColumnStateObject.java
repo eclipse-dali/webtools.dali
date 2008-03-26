@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.context.AbstractJoinColumn;
+import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
@@ -19,7 +19,7 @@ import org.eclipse.jpt.db.Table;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObject
+public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 {
 	private Boolean insertable;
 	private Boolean nullable;
@@ -140,7 +140,7 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 	 */
 	@Override
 	protected void initialize(Object owner,
-	                          AbstractJoinColumn abstractJoinColumn) {
+	                          BaseJoinColumn abstractJoinColumn) {
 
 		super.initialize(owner, abstractJoinColumn);
 
@@ -204,7 +204,7 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 	 * (non-Javadoc)
 	 */
 	@Override
-	public void updateJoinColumn(AbstractJoinColumn abstractJoinColumn) {
+	public void updateJoinColumn(BaseJoinColumn abstractJoinColumn) {
 
 		super.updateJoinColumn(abstractJoinColumn);
 

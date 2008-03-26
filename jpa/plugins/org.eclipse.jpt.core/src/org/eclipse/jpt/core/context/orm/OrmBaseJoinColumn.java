@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.jpt.core.context.AbstractJoinColumn;
+import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmAbstractJoinColumn extends AbstractJoinColumn, OrmNamedColumn
+public interface OrmBaseJoinColumn extends BaseJoinColumn, OrmNamedColumn
 {
 
 	/**
@@ -35,7 +35,7 @@ public interface OrmAbstractJoinColumn extends AbstractJoinColumn, OrmNamedColum
 	 * interface allowing join columns to be used in multiple places
 	 * (e.g. 1:1 mappings and join tables)
 	 */
-	interface Owner extends AbstractJoinColumn.Owner, OrmNamedColumn.Owner
+	interface Owner extends BaseJoinColumn.Owner, OrmNamedColumn.Owner
 	{
 
 	}

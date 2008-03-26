@@ -24,7 +24,7 @@ import org.eclipse.jpt.db.Table;
  * @version 2.0
  * @since 2.0
  */
-public class PrimaryKeyJoinColumnInSecondaryTableStateObject extends AbstractJoinColumnStateObject
+public class PrimaryKeyJoinColumnInSecondaryTableStateObject extends BaseJoinColumnStateObject
 {
 	/**
 	 * Creates a new <code>PrimaryKeyJoinColumnInSecondaryTableStateObject</code>.

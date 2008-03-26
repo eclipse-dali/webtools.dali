@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmJoinColumn extends JoinColumn, OrmAbstractJoinColumn, OrmBaseColumn
+public interface OrmJoinColumn extends JoinColumn, OrmBaseJoinColumn, OrmBaseColumn
 {
 	void initializeFrom(JoinColumn oldColumn);
 	
@@ -35,7 +35,7 @@ public interface OrmJoinColumn extends JoinColumn, OrmAbstractJoinColumn, OrmBas
 	 * interface allowing join columns to be used in multiple places
 	 * (e.g. 1:1 mappings and join tables)
 	 */
-	interface Owner extends JoinColumn.Owner, OrmAbstractJoinColumn.Owner, OrmBaseColumn.Owner
+	interface Owner extends JoinColumn.Owner, OrmBaseJoinColumn.Owner, OrmBaseColumn.Owner
 	{
 
 	}

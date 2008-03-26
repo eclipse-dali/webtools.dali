@@ -1,10 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved. This
- * program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0 which accompanies this distribution, and is
- * available at http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors: Oracle. - initial API and implementation
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
@@ -26,7 +27,7 @@ import org.eclipse.swt.widgets.Shell;
  * @version 2.0
  * @since 2.0
  */
-public class PrimaryKeyJoinColumnInSecondaryTableDialog extends AbstractJoinColumnDialog<PrimaryKeyJoinColumnInSecondaryTableStateObject> {
+public class PrimaryKeyJoinColumnInSecondaryTableDialog extends BaseJoinColumnDialog<PrimaryKeyJoinColumnInSecondaryTableStateObject> {
 
 	/**
 	 * Creates a new <code>PrimaryKeyJoinColumnDialog</code>.
@@ -49,7 +50,7 @@ public class PrimaryKeyJoinColumnInSecondaryTableDialog extends AbstractJoinColu
 	 */
 	@Override
 	protected AbstractDialogPane<PrimaryKeyJoinColumnInSecondaryTableStateObject> buildLayout(Composite container) {
-		return new AbstractJoinColumnDialogPane<PrimaryKeyJoinColumnInSecondaryTableStateObject>(
+		return new BaseJoinColumnDialogPane<PrimaryKeyJoinColumnInSecondaryTableStateObject>(
 			subjectHolder(),
 			container
 		);

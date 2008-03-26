@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaPrimaryKeyJoinColumn extends PrimaryKeyJoinColumn, JavaAbstractJoinColumn
+public interface JavaPrimaryKeyJoinColumn extends PrimaryKeyJoinColumn, JavaBaseJoinColumn
 {
 	void initializeFromResource(PrimaryKeyJoinColumnAnnotation primaryKeyJoinColumn);
 	

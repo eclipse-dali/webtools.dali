@@ -19,7 +19,7 @@ package org.eclipse.jpt.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface PrimaryKeyJoinColumn
-	extends AbstractJoinColumn
+	extends BaseJoinColumn
 {
 	// nothing yet
 }

@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class PrimaryKeyJoinColumnDialogPane extends AbstractJoinColumnDialogPane<PrimaryKeyJoinColumnStateObject>
+public class PrimaryKeyJoinColumnDialogPane extends BaseJoinColumnDialogPane<PrimaryKeyJoinColumnStateObject>
 {
 	/**
 	 * Creates a new <code>PrimaryKeyJoinColumnDialogPane</code>.

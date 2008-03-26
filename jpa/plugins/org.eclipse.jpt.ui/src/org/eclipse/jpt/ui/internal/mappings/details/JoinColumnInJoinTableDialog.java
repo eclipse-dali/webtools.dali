@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Shell;
  * @version 2.0
  * @since 1.0
  */
-public class JoinColumnInJoinTableDialog extends AbstractJoinColumnDialog<JoinColumnInJoinTableStateObject> {
+public class JoinColumnInJoinTableDialog extends BaseJoinColumnDialog<JoinColumnInJoinTableStateObject> {
 
 	/**
 	 * Creates a new <code>JoinColumnInJoinTableDialog</code>.
@@ -49,7 +49,7 @@ public class JoinColumnInJoinTableDialog extends AbstractJoinColumnDialog<JoinCo
 	 */
 	@Override
 	protected AbstractDialogPane<JoinColumnInJoinTableStateObject> buildLayout(Composite container) {
-		return new AbstractJoinColumnDialogPane<JoinColumnInJoinTableStateObject>(
+		return new BaseJoinColumnDialogPane<JoinColumnInJoinTableStateObject>(
 			subjectHolder(),
 			container
 		);

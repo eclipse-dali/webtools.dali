@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.AbstractJoinColumn;
+import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.JoinColumn;
@@ -420,7 +420,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
 		}
 		
-		public boolean isVirtual(AbstractJoinColumn joinColumn) {
+		public boolean isVirtual(BaseJoinColumn joinColumn) {
 			return AbstractOrmSingleRelationshipMapping.this.defaultJoinColumn == joinColumn;
 		}
 		

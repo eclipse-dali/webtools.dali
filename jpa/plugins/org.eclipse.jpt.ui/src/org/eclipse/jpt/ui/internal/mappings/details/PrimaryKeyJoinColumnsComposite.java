@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.core.context.AbstractJoinColumn;
+import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
@@ -250,8 +250,8 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<Entity>
 			buildPrimaryKeyJoinColumnsListHolder(),
 			NamedColumn.SPECIFIED_NAME_PROPERTY,
 			NamedColumn.DEFAULT_NAME_PROPERTY,
-			AbstractJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
-			AbstractJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY
+			BaseJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
+			BaseJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY
 		);
 	}
 

@@ -27,7 +27,7 @@ import org.eclipse.jpt.db.Table;
  * @version 2.0
  * @since 2.0
  */
-public class JoinColumnInJoinTableStateObject extends AbstractJoinColumnStateObject
+public class JoinColumnInJoinTableStateObject extends BaseJoinColumnStateObject
 {
 	/**
 	 * Creates a new <code>JoinColumnInJoinTableStateObject</code>.

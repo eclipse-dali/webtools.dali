@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObject> extends AbstractDialogPane<T>
+public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> extends AbstractDialogPane<T>
 {
 	private Combo nameCombo;
 	private Combo referencedColumnNameCombo;
@@ -53,7 +53,7 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public AbstractJoinColumnDialogPane(PropertyValueModel<? extends T> subjectHolder,
+	public BaseJoinColumnDialogPane(PropertyValueModel<? extends T> subjectHolder,
 	                                    Composite parent)
 	{
 		super(subjectHolder, parent);
@@ -65,8 +65,8 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
-		propertyNames.add(AbstractJoinColumnStateObject.REFERENCED_COLUMN_NAME_PROPERTY);
-		propertyNames.add(AbstractJoinColumnStateObject.NAME_PROPERTY);
+		propertyNames.add(BaseJoinColumnStateObject.REFERENCED_COLUMN_NAME_PROPERTY);
+		propertyNames.add(BaseJoinColumnStateObject.NAME_PROPERTY);
 	}
 
 	private ModifyListener buildNameComboListener() {
@@ -154,7 +154,7 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 
 	public void populateNameCombo() {
 
-		AbstractJoinColumnStateObject subject = subject();
+		BaseJoinColumnStateObject subject = subject();
 		nameCombo.removeAll();
 
 		if (subject == null) {
@@ -198,7 +198,7 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 
 	public void populateReferencedNameCombo() {
 
-		AbstractJoinColumnStateObject subject = subject();
+		BaseJoinColumnStateObject subject = subject();
 		referencedColumnNameCombo.removeAll();
 
 		if (subject == null) {
@@ -247,10 +247,10 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
 
-		if (propertyName == AbstractJoinColumnStateObject.NAME_PROPERTY) {
+		if (propertyName == BaseJoinColumnStateObject.NAME_PROPERTY) {
 			populateNameCombo();
 		}
-		else if (propertyName == AbstractJoinColumnStateObject.REFERENCED_COLUMN_NAME_PROPERTY) {
+		else if (propertyName == BaseJoinColumnStateObject.REFERENCED_COLUMN_NAME_PROPERTY) {
 			populateReferencedNameCombo();
 		}
 	}

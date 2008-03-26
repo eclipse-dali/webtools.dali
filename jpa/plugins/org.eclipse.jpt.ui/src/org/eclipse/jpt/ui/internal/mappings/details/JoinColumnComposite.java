@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.core.context.AbstractJoinColumn;
+import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.SingleRelationshipMapping;
@@ -238,8 +238,8 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 		return new ItemPropertyListValueModelAdapter<JoinColumn>(buildJoinColumnsListHolder(),
 			NamedColumn.SPECIFIED_NAME_PROPERTY,
 			NamedColumn.DEFAULT_NAME_PROPERTY,
-			AbstractJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
-			AbstractJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY);
+			BaseJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
+			BaseJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY);
 	}
 
 	private WritablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {

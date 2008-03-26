@@ -14,12 +14,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.AbstractJoinColumn;
+import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.core.context.java.JavaAbstractJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
@@ -250,7 +250,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 		return primaryKeyJoinColumn;
 	}
 	
-	protected JavaAbstractJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
+	protected JavaBaseJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 	
@@ -306,7 +306,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 		return false;
 	}
 	
-	class PrimaryKeyJoinColumnOwner implements JavaAbstractJoinColumn.Owner
+	class PrimaryKeyJoinColumnOwner implements JavaBaseJoinColumn.Owner
 	{
 		public TextRange validationTextRange(CompilationUnit astRoot) {
 			return GenericJavaSecondaryTable.this.validationTextRange(astRoot);
@@ -328,7 +328,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 			return GenericJavaSecondaryTable.this.primaryKeyJoinColumnsSize();
 		}
 		
-		public boolean isVirtual(AbstractJoinColumn joinColumn) {
+		public boolean isVirtual(BaseJoinColumn joinColumn) {
 			return GenericJavaSecondaryTable.this.defaultPrimaryKeyJoinColumn == joinColumn;
 		}
 		

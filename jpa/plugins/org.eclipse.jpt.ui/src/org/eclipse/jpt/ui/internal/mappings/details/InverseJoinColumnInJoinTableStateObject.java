@@ -26,7 +26,7 @@ import org.eclipse.jpt.db.Table;
  * @version 2.0
  * @since 2.0
  */
-public class InverseJoinColumnInJoinTableStateObject extends AbstractJoinColumnStateObject
+public class InverseJoinColumnInJoinTableStateObject extends BaseJoinColumnStateObject
 {
 	/**
 	 * Creates a new <code>JoinColumnInJoinTableStateObject</code>.

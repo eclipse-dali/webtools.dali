@@ -12,12 +12,12 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.AbstractJoinColumn;
+import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.core.context.orm.OrmAbstractJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
@@ -129,7 +129,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 		return primaryKeyJoinColumn;
 	}
 	
-	protected OrmAbstractJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
+	protected OrmBaseJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
@@ -313,7 +313,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 		}
 	}
 	
-	class PrimaryKeyJoinColumnOwner implements OrmAbstractJoinColumn.Owner
+	class PrimaryKeyJoinColumnOwner implements OrmBaseJoinColumn.Owner
 	{
 
 		public TypeMapping typeMapping() {
@@ -332,7 +332,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 			return GenericOrmSecondaryTable.this.primaryKeyJoinColumnsSize();
 		}
 		
-		public boolean isVirtual(AbstractJoinColumn joinColumn) {
+		public boolean isVirtual(BaseJoinColumn joinColumn) {
 			return GenericOrmSecondaryTable.this.defaultPrimaryKeyJoinColumn == joinColumn;
 		}
 		

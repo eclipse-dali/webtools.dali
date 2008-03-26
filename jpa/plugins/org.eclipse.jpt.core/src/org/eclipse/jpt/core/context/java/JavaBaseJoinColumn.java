@@ -10,10 +10,10 @@
 package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.AbstractJoinColumn;
+import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 
-public interface JavaAbstractJoinColumn extends AbstractJoinColumn, JavaNamedColumn
+public interface JavaBaseJoinColumn extends BaseJoinColumn, JavaNamedColumn
 {
 
 	/**
@@ -27,8 +27,8 @@ public interface JavaAbstractJoinColumn extends AbstractJoinColumn, JavaNamedCol
 	 * interface allowing join columns to be used in multiple places
 	 * (e.g. 1:1 mappings and join tables)
 	 */
-	interface Owner extends AbstractJoinColumn.Owner, JavaNamedColumn.Owner
+	interface Owner extends BaseJoinColumn.Owner, JavaNamedColumn.Owner
 	{
-
+		// nothing?
 	}
 }

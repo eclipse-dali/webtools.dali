@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class InverseJoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColumnInJoinTableStateObject>
+public class InverseJoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinColumnInJoinTableStateObject>
 {
 	/**
 	 * Creates a new <code>InverseJoinColumnDialogPane</code>.

@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.AbstractJoinColumn;
+import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Entity;
@@ -239,7 +239,7 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
 		}
 		
-		public boolean isVirtual(AbstractJoinColumn joinColumn) {
+		public boolean isVirtual(BaseJoinColumn joinColumn) {
 			return GenericOrmAssociationOverride.this.defaultJoinColumns.contains(joinColumn);
 		}
 

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.AbstractJoinColumn;
+import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
@@ -619,7 +619,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
 		}
 		
-		public boolean isVirtual(AbstractJoinColumn joinColumn) {
+		public boolean isVirtual(BaseJoinColumn joinColumn) {
 			return GenericOrmJoinTable.this.defaultInverseJoinColumn == joinColumn;
 		}
 		
@@ -681,7 +681,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 			return typeMapping().primaryDbTable();
 		}
 		
-		public boolean isVirtual(AbstractJoinColumn joinColumn) {
+		public boolean isVirtual(BaseJoinColumn joinColumn) {
 			return GenericOrmJoinTable.this.defaultJoinColumn == joinColumn;
 		}
 		

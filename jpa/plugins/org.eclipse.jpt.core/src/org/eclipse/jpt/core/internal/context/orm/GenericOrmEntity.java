@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.AbstractJoinColumn;
+import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseOverride;
@@ -38,7 +38,7 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
-import org.eclipse.jpt.core.context.orm.OrmAbstractJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
@@ -651,7 +651,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return primaryKeyJoinColumn;
 	}
 	
-	protected OrmAbstractJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
+	protected OrmBaseJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
@@ -1627,7 +1627,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		sb.append(getName());
 	}
 	
-	class PrimaryKeyJoinColumnOwner implements OrmAbstractJoinColumn.Owner
+	class PrimaryKeyJoinColumnOwner implements OrmBaseJoinColumn.Owner
 	{
 		public TypeMapping typeMapping() {
 			return GenericOrmEntity.this;
@@ -1646,7 +1646,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 			return GenericOrmEntity.this.primaryKeyJoinColumnsSize();
 		}
 		
-		public boolean isVirtual(AbstractJoinColumn joinColumn) {
+		public boolean isVirtual(BaseJoinColumn joinColumn) {
 			return GenericOrmEntity.this.defaultPrimaryKeyJoinColumns.contains(joinColumn);
 		}
 		

@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.AbstractJoinColumn;
+import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.JoinColumn;
@@ -403,7 +403,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
 		}
 		
-		public boolean isVirtual(AbstractJoinColumn joinColumn) {
+		public boolean isVirtual(BaseJoinColumn joinColumn) {
 			return AbstractJavaSingleRelationshipMapping.this.defaultJoinColumn == joinColumn;
 		}
 		

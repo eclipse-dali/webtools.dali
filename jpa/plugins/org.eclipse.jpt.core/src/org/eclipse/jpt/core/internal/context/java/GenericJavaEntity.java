@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.AbstractJoinColumn;
+import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseOverride;
@@ -38,7 +38,7 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.core.context.java.JavaAbstractJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
@@ -157,7 +157,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		this.virtualAssociationOverrides = new ArrayList<JavaAssociationOverride>();
 	}
 	
-	protected JavaAbstractJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
+	protected JavaBaseJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 	
@@ -1846,7 +1846,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		}
 	}
 	
-	class PrimaryKeyJoinColumnOwner implements JavaAbstractJoinColumn.Owner
+	class PrimaryKeyJoinColumnOwner implements JavaBaseJoinColumn.Owner
 	{
 		public TextRange validationTextRange(CompilationUnit astRoot) {
 			return GenericJavaEntity.this.validationTextRange(astRoot);
@@ -1869,7 +1869,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			return GenericJavaEntity.this.primaryKeyJoinColumnsSize();
 		}
 		
-		public boolean isVirtual(AbstractJoinColumn joinColumn) {
+		public boolean isVirtual(BaseJoinColumn joinColumn) {
 			return GenericJavaEntity.this.defaultPrimaryKeyJoinColumn == joinColumn;
 		}
 		

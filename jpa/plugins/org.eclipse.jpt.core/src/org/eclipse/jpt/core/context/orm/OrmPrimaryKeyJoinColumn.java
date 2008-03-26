@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmPrimaryKeyJoinColumn extends PrimaryKeyJoinColumn, OrmAbstractJoinColumn
+public interface OrmPrimaryKeyJoinColumn extends PrimaryKeyJoinColumn, OrmBaseJoinColumn
 {
 	void initialize(XmlPrimaryKeyJoinColumn column);
 	

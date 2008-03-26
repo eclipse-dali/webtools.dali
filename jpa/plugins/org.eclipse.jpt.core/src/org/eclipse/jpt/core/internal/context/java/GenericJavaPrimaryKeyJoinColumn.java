@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.java.JavaAbstractJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
@@ -33,7 +33,7 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 
 	protected PrimaryKeyJoinColumnAnnotation primaryKeyJoinColumnResource;
 	
-	public GenericJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, JavaAbstractJoinColumn.Owner owner) {
+	public GenericJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, JavaBaseJoinColumn.Owner owner) {
 		super(parent, owner);
 	}
 
@@ -47,8 +47,8 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 
 	//************** JavaNamedColumn implementation ***************
 	@Override
-	public JavaAbstractJoinColumn.Owner owner() {
-		return (JavaAbstractJoinColumn.Owner) super.owner();
+	public JavaBaseJoinColumn.Owner owner() {
+		return (JavaBaseJoinColumn.Owner) super.owner();
 	}
 	
 	@Override

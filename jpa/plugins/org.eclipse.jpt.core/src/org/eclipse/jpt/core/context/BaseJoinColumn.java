@@ -21,7 +21,7 @@ import org.eclipse.jpt.db.Table;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface AbstractJoinColumn extends NamedColumn
+public interface BaseJoinColumn extends NamedColumn
 {
 	String getReferencedColumnName();
 	String getDefaultReferencedColumnName();
@@ -49,6 +49,6 @@ public interface AbstractJoinColumn extends NamedColumn
 		 */
 		Table dbReferencedColumnTable();
 		
-		boolean isVirtual(AbstractJoinColumn joinColumn);
+		boolean isVirtual(BaseJoinColumn joinColumn);
 	}
 }
