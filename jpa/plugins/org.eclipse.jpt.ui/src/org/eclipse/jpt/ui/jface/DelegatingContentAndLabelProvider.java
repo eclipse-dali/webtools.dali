@@ -137,7 +137,7 @@ public abstract class DelegatingContentAndLabelProvider extends BaseLabelProvide
 	/**
 	 * Disposes item
 	 */
-	protected void dispose(Object item) {
+	public void dispose(Object item) {
 		if (itemContentProviders.containsKey(item)) {
 			itemContentProviders.get(item).dispose();
 			itemContentProviders.remove(item);
