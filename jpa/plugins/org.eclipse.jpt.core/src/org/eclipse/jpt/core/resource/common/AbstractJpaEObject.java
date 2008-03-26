@@ -237,19 +237,19 @@ public abstract class AbstractJpaEObject extends EObjectImpl implements JpaEObje
 			this.node = node;
 		}
 
-		public int offset() {
+		public int getOffset() {
 			return this.node.getStartOffset();
 		}
 
-		public int length() {
+		public int getLength() {
 			if (this.node.getNodeType() == Node.ELEMENT_NODE) {
 				return ((IDOMElement) this.node).getStartEndOffset() - this.node.getStartOffset();
 			}
 			return this.node.getLength();
 		}
 
-		public int lineNumber() {
-			return this.node.getStructuredDocument().getLineOfOffset(offset()) + 1;
+		public int getLineNumber() {
+			return this.node.getStructuredDocument().getLineOfOffset(getOffset()) + 1;
 		}
 
 	}

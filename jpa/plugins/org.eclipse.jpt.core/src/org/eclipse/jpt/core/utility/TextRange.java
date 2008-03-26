@@ -28,12 +28,12 @@ public interface TextRange {
 	 *
 	 * @return the offset of the text
 	 */
-	int offset();
+	int getOffset();
 	
 	/**
 	 * Return the length of the text.
 	 */
-	int length();
+	int getLength();
 
 	/**
 	 * Return whether the range includes the character at the specified index.
@@ -49,7 +49,7 @@ public interface TextRange {
 	/**
 	 * Return the line number of the text.
 	 */
-	int lineNumber();
+	int getLineNumber();
 
 	/**
 	 * Return true if the offsets and lengths are the same.
@@ -74,10 +74,10 @@ public interface TextRange {
 		private Empty() {
 			super();
 		}
-		public int offset() {
+		public int getOffset() {
 			return 0;
 		}
-		public int length() {
+		public int getLength() {
 			return 0;
 		}
 		public boolean includes(int index) {
@@ -86,7 +86,7 @@ public interface TextRange {
 		public boolean touches(int index) {
 			return index == 0;  // ???
 		}
-		public int lineNumber() {
+		public int getLineNumber() {
 			return 0;
 		}
 		@Override
@@ -98,8 +98,8 @@ public interface TextRange {
 				return false;
 			}
 			TextRange r = (TextRange) o;
-			return (r.offset() == 0)
-					&& (r.length() == 0);
+			return (r.getOffset() == 0)
+					&& (r.getLength() == 0);
 		}
 		@Override
 		public int hashCode() {

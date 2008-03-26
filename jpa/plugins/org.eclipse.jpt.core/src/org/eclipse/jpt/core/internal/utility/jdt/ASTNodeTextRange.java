@@ -24,16 +24,16 @@ public class ASTNodeTextRange extends AbstractTextRange {
 		this.astNode = astNode;
 	}
 
-	public int offset() {
+	public int getOffset() {
 		return this.astNode.getStartPosition();
 	}
 
-	public int length() {
+	public int getLength() {
 		return this.astNode.getLength();
 	}
 
-	public int lineNumber() {
-		return ((CompilationUnit) this.astNode.getRoot()).getLineNumber(this.offset());
+	public int getLineNumber() {
+		return ((CompilationUnit) this.astNode.getRoot()).getLineNumber(this.getOffset());
 	}
 
 }

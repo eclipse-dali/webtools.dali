@@ -26,15 +26,15 @@ public class SimpleTextRange extends AbstractTextRange {
 		this.lineNumber = lineNumber;
 	}
 
-	public int offset() {
+	public int getOffset() {
 		return this.offset;
 	}
 
-	public int length() {
+	public int getLength() {
 		return this.length;
 	}
 
-	public int lineNumber() {
+	public int getLineNumber() {
 		return this.lineNumber;
 	}
 

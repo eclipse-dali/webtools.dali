@@ -25,7 +25,7 @@ public abstract class AbstractTextRange
 {
 
 	public boolean includes(int index) {
-		return (this.offset() <= index) && (index < this.end());
+		return (this.getOffset() <= index) && (index < this.end());
 	}
 
 	public boolean touches(int index) {
@@ -37,7 +37,7 @@ public abstract class AbstractTextRange
 	 * is not included in the range.
 	 */
 	protected int end() {
-		return this.offset() + this.length();
+		return this.getOffset() + this.getLength();
 	}
 
 	@Override
@@ -49,18 +49,18 @@ public abstract class AbstractTextRange
 			return false;
 		}
 		TextRange r = (TextRange) o;
-		return (r.offset() == this.offset())
-				&& (r.length() == this.length());
+		return (r.getOffset() == this.getOffset())
+				&& (r.getLength() == this.getLength());
 	}
 
 	@Override
 	public int hashCode() {
-		return this.offset() ^ this.length();
+		return this.getOffset() ^ this.getLength();
 	}
 
 	@Override
 	public String toString() {
-		String start = String.valueOf(this.offset());
+		String start = String.valueOf(this.getOffset());
 		String end = String.valueOf(this.end());
 		return StringTools.buildToStringFor(this, start + ", " + end);
 	}

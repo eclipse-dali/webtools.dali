@@ -38,9 +38,9 @@ public class DefaultJpaValidationMessages
 	public static IMessage buildMessage(
 			int severity, String messageId, String[] parms, Object targetObject, TextRange textRange) {
 		IMessage message = new Message(BUNDLE, severity, messageId, parms, targetObject);
-		message.setLineNo(textRange.lineNumber());
-		message.setOffset(textRange.offset());
-		message.setLength(textRange.length());
+		message.setLineNo(textRange.getLineNumber());
+		message.setOffset(textRange.getOffset());
+		message.setLength(textRange.getLength());
 		return message;
 	}
 	
