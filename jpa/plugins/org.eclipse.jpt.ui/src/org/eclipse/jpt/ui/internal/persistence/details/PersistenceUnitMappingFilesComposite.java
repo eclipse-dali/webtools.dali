@@ -107,7 +107,7 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 	 */
 	private void addJPAMappingDescriptor(ObjectListSelectionModel listSelectionModel) {
 
-		IProject project = subject().jpaProject().project();
+		IProject project = subject().getJpaProject().getProject();
 
 		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
 			shell(),
@@ -119,7 +119,7 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 		dialog.setValidator(buildValidator());
 		dialog.setTitle(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_title);
 		dialog.setMessage(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_message);
-		dialog.addFilter(new XmlFileViewerFilter(subject().jpaProject().javaProject()));
+		dialog.addFilter(new XmlFileViewerFilter(subject().getJpaProject().getJavaProject()));
 		dialog.setInput(project);
 		dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
 
@@ -295,7 +295,7 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 	 * source path
 	 */
 	private IPath removeSourcePath(IFile file) {
-		IJavaProject javaProject = subject().jpaProject().javaProject();
+		IJavaProject javaProject = subject().getJpaProject().getJavaProject();
 		IPath filePath = file.getProjectRelativePath();
 
 		try {

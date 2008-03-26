@@ -97,7 +97,7 @@ public class JpaProjectPropertiesPage
 	private void setRuntime() {
 		IFacetedProject facetedProject = null;
 		try {
-			facetedProject = ProjectFacetsManager.create(getJpaProject().project());
+			facetedProject = ProjectFacetsManager.create(getJpaProject().getProject());
 		}
 		catch (CoreException ce) {
 			JptUiPlugin.log(ce);
@@ -157,19 +157,19 @@ public class JpaProjectPropertiesPage
 		boolean change = false;
 		boolean platformChange = false;
 
-		IProject project = jpaProject.project();
+		IProject project = jpaProject.getProject();
 
 		String platform = this.model.getStringProperty(JpaFacetDataModelProperties.PLATFORM_ID);
-		if ( ! platform.equals(jpaProject.jpaPlatform().getId())) {
+		if ( ! platform.equals(jpaProject.getJpaPlatform().getId())) {
 			change = true;
 			platformChange = true;
 			JptCorePlugin.setJpaPlatformId(project, platform);
 		}
 
 		String connection = this.model.getStringProperty(JpaFacetDataModelProperties.CONNECTION);
-		if ( ! connection.equals(jpaProject.dataSource().connectionProfileName())) {
+		if ( ! connection.equals(jpaProject.getDataSource().getConnectionProfileName())) {
 			change = true;
-			jpaProject.dataSource().setConnectionProfileName(connection);
+			jpaProject.getDataSource().setConnectionProfileName(connection);
 			JptCorePlugin.setConnectionProfileName(project, connection);
 		}
 
@@ -277,7 +277,7 @@ public class JpaProjectPropertiesPage
 		}
 		
 		void performDefaults() {
-			String platformId = getJpaProject().jpaPlatform().getId();
+			String platformId = getJpaProject().getJpaPlatform().getId();
 			model.setProperty(PLATFORM_ID, platformId);
 			platformCombo.setSelection(new StructuredSelection(platformId));
 		}
@@ -338,7 +338,7 @@ public class JpaProjectPropertiesPage
 		}
 		
 		void performDefaults() {
-			String connectionName = getJpaProject().dataSource().connectionProfileName();
+			String connectionName = getJpaProject().getDataSource().getConnectionProfileName();
 			model.setProperty(CONNECTION, connectionName);
 			if (connectionName == null) {
 				connectionCombo.clearSelection();

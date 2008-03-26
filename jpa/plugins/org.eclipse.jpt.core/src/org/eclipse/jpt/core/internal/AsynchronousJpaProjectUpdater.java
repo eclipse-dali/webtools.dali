@@ -70,9 +70,9 @@ public class AsynchronousJpaProjectUpdater implements JpaProject.Updater {
 		protected boolean shouldSchedule;
 
 		protected UpdateJob() {
-			super("Update JPA project: " + AsynchronousJpaProjectUpdater.this.jpaProject.name());  // TODO i18n
+			super("Update JPA project: " + AsynchronousJpaProjectUpdater.this.jpaProject.getName());  // TODO i18n
 			this.shouldSchedule = true;
-			this.setRule(AsynchronousJpaProjectUpdater.this.jpaProject.project());
+			this.setRule(AsynchronousJpaProjectUpdater.this.jpaProject.getProject());
 		}
 
 		@Override

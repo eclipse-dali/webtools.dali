@@ -52,10 +52,10 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 	}
 	
 	public OrmAssociationOverride setVirtual(boolean virtual) {
-		return (OrmAssociationOverride) owner().setVirtual(virtual, this);
+		return (OrmAssociationOverride) getOwner().setVirtual(virtual, this);
 	}
 	
-	public Owner owner() {
+	public Owner getOwner() {
 		return this.owner;
 	}
 
@@ -133,7 +133,7 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 	}	
 
 	public boolean isVirtual() {
-		return owner().isVirtual(this);
+		return getOwner().isVirtual(this);
 	}
 	
 	protected void initialize(XmlAssociationOverride associationOverride) {
@@ -195,28 +195,28 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 		 * by default, the join column is in the type mapping's primary table
 		 */
 		public String defaultTableName() {
-			return GenericOrmAssociationOverride.this.owner.typeMapping().tableName();
+			return GenericOrmAssociationOverride.this.owner.getTypeMapping().tableName();
 		}
 		
-		public String defaultColumnName() {
+		public String getDefaultColumnName() {
 			return null;
 		}
 		
-		public Entity targetEntity() {
-			RelationshipMapping relationshipMapping = relationshipMapping();
+		public Entity getTargetEntity() {
+			RelationshipMapping relationshipMapping = getRelationshipMapping();
 			return relationshipMapping == null ? null : relationshipMapping.getResolvedTargetEntity();
 		}
 
-		public String attributeName() {
+		public String getAttributeName() {
 			return GenericOrmAssociationOverride.this.getName();
 		}
 
-		public RelationshipMapping relationshipMapping() {
+		public RelationshipMapping getRelationshipMapping() {
 			return GenericOrmAssociationOverride.this.owner.relationshipMapping(GenericOrmAssociationOverride.this.getName());
 		}
 
 		public boolean tableNameIsInvalid(String tableName) {
-			return typeMapping().tableNameIsInvalid(tableName);
+			return getTypeMapping().tableNameIsInvalid(tableName);
 		}
 
 		/**
@@ -226,16 +226,16 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 			return true;
 		}
 
-		public TypeMapping typeMapping() {
-			return GenericOrmAssociationOverride.this.owner.typeMapping();
+		public TypeMapping getTypeMapping() {
+			return GenericOrmAssociationOverride.this.owner.getTypeMapping();
 		}
 
-		public Table dbTable(String tableName) {
-			return typeMapping().dbTable(tableName);
+		public Table getDbTable(String tableName) {
+			return getTypeMapping().getDbTable(tableName);
 		}
 
 		public Table dbReferencedColumnTable() {
-			Entity targetEntity = targetEntity();
+			Entity targetEntity = getTargetEntity();
 			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
 		}
 		

@@ -146,7 +146,7 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 	// *************************************************************************
 	
 	@Override
-	public PersistenceUnit persistenceUnit() {
+	public PersistenceUnit getPersistenceUnit() {
 		throw new UnsupportedOperationException("No PersistenceUnit in this context");
 	}
 	

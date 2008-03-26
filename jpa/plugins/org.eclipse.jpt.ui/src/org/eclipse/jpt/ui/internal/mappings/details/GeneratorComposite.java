@@ -101,7 +101,7 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 	 * @return The JPA project or <code>null</code> if the subject is <code>null</code>
 	 */
 	protected final JpaProject jpaProject() {
-		return this.subject() == null ? null : this.subject().jpaProject();
+		return this.subject() == null ? null : this.subject().getJpaProject();
 	}
 
 	/**

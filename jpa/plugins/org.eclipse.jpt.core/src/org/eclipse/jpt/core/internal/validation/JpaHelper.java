@@ -16,7 +16,7 @@ public class JpaHelper extends org.eclipse.wst.validation.internal.operations.Wo
 
 	@Override
 	public IResource getResource(Object obj) {
-		return ((JpaNode) obj).resource();
+		return ((JpaNode) obj).getResource();
 	}
 
 	/*

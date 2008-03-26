@@ -248,7 +248,7 @@ public class TargetEntityComposite extends AbstractFormPane<RelationshipMapping>
 		if (targetEntity != null) {
 
 			try {
-				IType type = subject().jpaProject().javaProject().findType(targetEntity);
+				IType type = subject().getJpaProject().getJavaProject().findType(targetEntity);
 
 				if (type != null) {
 					IJavaElement javaElement = type.getParent();

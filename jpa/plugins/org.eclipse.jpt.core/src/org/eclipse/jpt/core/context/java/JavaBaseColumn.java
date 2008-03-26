@@ -30,7 +30,7 @@ public interface JavaBaseColumn extends BaseColumn, JavaNamedColumn
 	 */
 	TextRange tableTextRange(CompilationUnit astRoot);
 
-	Owner owner();
+	Owner getOwner();
 	
 	/**
 	 * interface allowing columns to be used in multiple places

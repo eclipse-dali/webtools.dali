@@ -45,7 +45,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 	}
 	
 	public GenericJavaPersistentAttribute persistentAttribute() {
-		return (GenericJavaPersistentAttribute) this.parent();
+		return (GenericJavaPersistentAttribute) this.getParent();
 	}
 
 	protected JavaResourcePersistentAttribute getResourcePersistentAttribute() {
@@ -61,14 +61,14 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 	}
 
 	protected boolean embeddableOwned() {
-		return this.typeMapping().getKey() == MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
+		return this.getTypeMapping().getKey() == MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
 	}
 	
 	protected boolean entityOwned() {
-		return this.typeMapping().getKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY;
+		return this.getTypeMapping().getKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY;
 	}
 	
-	public TypeMapping typeMapping() {
+	public TypeMapping getTypeMapping() {
 		return this.persistentAttribute().typeMapping();
 	}
 
@@ -76,8 +76,8 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 		return this.persistentAttribute().getName();
 	}
 	
-	public Table dbTable(String tableName) {
-		return typeMapping().dbTable(tableName);
+	public Table getDbTable(String tableName) {
+		return getTypeMapping().getDbTable(tableName);
 	}
 	
 	public TextRange validationTextRange(CompilationUnit astRoot) {
@@ -168,7 +168,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 	}
 	
 	protected void addInvalidMappingMessage(List<IMessage> messages, CompilationUnit astRoot) {
-		if (! typeMapping().attributeMappingKeyAllowed(this.getKey())) {
+		if (! getTypeMapping().attributeMappingKeyAllowed(this.getKey())) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

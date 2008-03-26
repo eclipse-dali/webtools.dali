@@ -88,12 +88,12 @@ public class NullAssociationOverride extends AbstractJavaResourceNode implements
 	}
 	
 	@Override
-	public JavaResourcePersistentMember parent() {
-		return (JavaResourcePersistentMember) super.parent();
+	public JavaResourcePersistentMember getParent() {
+		return (JavaResourcePersistentMember) super.getParent();
 	}
 	
 	protected AssociationOverrideAnnotation createAssociationOverrideResource() {
-		return (AssociationOverrideAnnotation) parent().addAnnotation(getAnnotationName());
+		return (AssociationOverrideAnnotation) getParent().addAnnotation(getAnnotationName());
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {

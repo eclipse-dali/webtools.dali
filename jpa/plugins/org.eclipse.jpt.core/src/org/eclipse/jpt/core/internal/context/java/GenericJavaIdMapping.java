@@ -125,12 +125,12 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 			JPA.SEQUENCE_GENERATOR);
 	}
 
-	public String defaultColumnName() {
+	public String getDefaultColumnName() {
 		return attributeName();
 	}
 	
 	public String defaultTableName() {
-		return typeMapping().tableName();
+		return getTypeMapping().tableName();
 	}
 
 	//************** IIdMapping implementation ***************
@@ -346,11 +346,11 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 	
 	protected void updatePersistenceUnitGenerators() {
 		if (getTableGenerator() != null && getTableGenerator().getName() != null) {
-			persistenceUnit().addGenerator(getTableGenerator());
+			getPersistenceUnit().addGenerator(getTableGenerator());
 		}
 		
 		if (getSequenceGenerator() != null && getSequenceGenerator().getName() != null) {
-			persistenceUnit().addGenerator(getSequenceGenerator());
+			getPersistenceUnit().addGenerator(getSequenceGenerator());
 		}
 	}
 	
@@ -401,7 +401,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 		String table = column.getTable();
 		boolean doContinue = entityOwned() && column.connectionProfileIsActive();
 		
-		if (doContinue && this.typeMapping().tableNameIsInvalid(table)) {
+		if (doContinue && this.getTypeMapping().tableNameIsInvalid(table)) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -433,7 +433,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 			return;
 		}
 		
-		for (Generator nextMasterGenerator : CollectionTools.iterable(persistenceUnit().allGenerators())) {
+		for (Generator nextMasterGenerator : CollectionTools.iterable(getPersistenceUnit().allGenerators())) {
 			if (generatorName.equals(nextMasterGenerator.getName())) {
 				return;
 			}
@@ -450,7 +450,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 	}
 	
 	protected void addGeneratorMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		List<Generator> masterList = CollectionTools.list(persistenceUnit().allGenerators());
+		List<Generator> masterList = CollectionTools.list(getPersistenceUnit().allGenerators());
 		
 		for (Iterator<JavaGenerator> stream = this.generators(); stream.hasNext() ; ) {
 			JavaGenerator current = stream.next();

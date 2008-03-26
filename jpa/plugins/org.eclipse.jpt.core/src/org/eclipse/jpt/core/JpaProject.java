@@ -43,38 +43,38 @@ public interface JpaProject extends JpaNode {
 	/**
 	 * Return the JPA project's name, which is the Eclipse project's name.
 	 */
-	String name();
+	String getName();
 
 	/**
 	 * Return the Eclipse project associated with the JPA project.
 	 */
-	IProject project();
+	IProject getProject();
 
 	/**
 	 * Return the Java project associated with the JPA project.
 	 */
-	IJavaProject javaProject();
+	IJavaProject getJavaProject();
 
 	/**
 	 * Return the vendor-specific JPA platform that builds the JPA project
 	 * and its contents.
 	 */
-	JpaPlatform jpaPlatform();
+	JpaPlatform getJpaPlatform();
 
 	/**
 	 * Return the project's connection
 	 */
-	ConnectionProfile connectionProfile();
+	ConnectionProfile getConnectionProfile();
 
 	/**
 	 * Return the project's default schema, taken from the ConnectionProfile
 	 */
-	Schema defaultSchema();
+	Schema getDefaultSchema();
 	
 	/**
 	 * Return the data source the JPA project is mapped to.
 	 */
-	JpaDataSource dataSource();
+	JpaDataSource getDataSource();
 	
 	
 	// **************** discover annotated classes *****************************
@@ -140,12 +140,12 @@ public interface JpaProject extends JpaNode {
 	 * JPA projects associated with Web projects return "WEB-INF/classes";
 	 * all others simply return an empty string.
 	 */
-	String rootDeployLocation();
+	String getRootDeployLocation();
 	
 	/**
 	 * Return the {@link JpaRootContextNode} representing the JPA content of this project
 	 */
-	JpaRootContextNode rootContext();
+	JpaRootContextNode getRootContext();
 	
 	/**
 	 * Return an iterator on all ITypes that are annotated within this project
@@ -208,7 +208,7 @@ public interface JpaProject extends JpaNode {
 	 * Return the project-wide implementation of the CommandExecutorProvider
 	 * interface.
 	 */
-	CommandExecutorProvider modifySharedDocumentCommandExecutorProvider();
+	CommandExecutorProvider getModifySharedDocumentCommandExecutorProvider();
 
 
 	// **************** project "update" ***************************************
@@ -217,7 +217,7 @@ public interface JpaProject extends JpaNode {
 	 * Return the implementation of the Updater
 	 * interface that will be used to "update" a JPA project.
 	 */
-	Updater updater();
+	Updater getUpdater();
 
 	/**
 	 * Set the implementation of the Updater

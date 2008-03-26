@@ -138,7 +138,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 	
 
 	ConnectionProfile getProjectConnectionProfile() {
-		String profileName = this.jpaProject.dataSource().connectionProfileName();
+		String profileName = this.jpaProject.getDataSource().getConnectionProfileName();
 		return this.connectionProfileNamed( profileName);
 	}
 
@@ -232,7 +232,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 		}
 
 		private String getProjectConnectionProfileName() {
-			return jpaProject.dataSource().connectionProfileName();
+			return jpaProject.getDataSource().getConnectionProfileName();
 		}
 		
 		Schema getDefaultSchema() {

@@ -70,7 +70,7 @@ public interface TypeMapping extends JpaContextNode
 	/**
 	 * return the resolved associated db table with the passed in name
 	 */
-	org.eclipse.jpt.db.Table dbTable(String tableName);
+	org.eclipse.jpt.db.Table getDbTable(String tableName);
 
 	/**
 	 * Return whether the specified table is invalid for any annotations

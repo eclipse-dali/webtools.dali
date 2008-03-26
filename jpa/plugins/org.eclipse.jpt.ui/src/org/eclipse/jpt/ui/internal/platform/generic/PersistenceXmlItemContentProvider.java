@@ -32,7 +32,7 @@ public class PersistenceXmlItemContentProvider
 	
 	@Override
 	public JpaRootContextNode getParent() {
-		return (JpaRootContextNode) ((PersistenceXml) model()).parent();
+		return (JpaRootContextNode) ((PersistenceXml) model()).getParent();
 	}
 	
 	@Override

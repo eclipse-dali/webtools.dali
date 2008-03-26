@@ -25,8 +25,8 @@ public abstract class NullBaseTable extends AbstractJavaResourceNode implements 
 	}
 	
 	@Override
-	public JavaResourcePersistentMember parent() {
-		return (JavaResourcePersistentMember) super.parent();
+	public JavaResourcePersistentMember getParent() {
+		return (JavaResourcePersistentMember) super.getParent();
 	}
 	
 	public void initialize(CompilationUnit astRoot) {
@@ -46,7 +46,7 @@ public abstract class NullBaseTable extends AbstractJavaResourceNode implements 
 	}
 	
 	protected TableAnnotation createTableResource() {
-		return (TableAnnotation) parent().addAnnotation(getAnnotationName());
+		return (TableAnnotation) getParent().addAnnotation(getAnnotationName());
 	}
 	
 	public String getName() {

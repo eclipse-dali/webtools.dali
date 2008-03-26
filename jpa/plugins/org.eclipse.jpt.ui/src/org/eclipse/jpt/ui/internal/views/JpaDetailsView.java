@@ -111,7 +111,7 @@ public class JpaDetailsView extends AbstractJpaView
 
 	private JpaDetailsProvider getDetailsProvider(JpaStructureNode structureNode) {
 
-		String platformId = structureNode.jpaProject().jpaPlatform().getId();
+		String platformId = structureNode.getJpaProject().getJpaPlatform().getId();
 		JpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
 		return jpaPlatformUI.detailsProvider(structureNode);
 

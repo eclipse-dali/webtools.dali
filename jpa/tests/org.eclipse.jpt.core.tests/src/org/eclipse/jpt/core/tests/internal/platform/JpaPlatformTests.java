@@ -95,18 +95,18 @@ public class JpaPlatformTests extends ContextModelTestCase
 
 	
 	protected JpaPlatform jpaPlatform() {
-		return this.jpaProject().jpaPlatform();
+		return this.jpaProject().getJpaPlatform();
 	}
 
 	public void testJpaFactory() {
-		assertTrue(jpaPlatform().jpaFactory().getClass().getName().equals(TEST_JPA_FACTORY));
+		assertTrue(jpaPlatform().getJpaFactory().getClass().getName().equals(TEST_JPA_FACTORY));
 	}
 	
 	public void testBuildJavaTypeMappingFromMappingKey() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaTypeMapping javaTypeMapping = jpaProject().jpaPlatform().buildJavaTypeMappingFromMappingKey(JavaTestTypeMapping.TEST_TYPE_MAPPING_KEY, javaPersistentType());
+		JavaTypeMapping javaTypeMapping = jpaProject().getJpaPlatform().buildJavaTypeMappingFromMappingKey(JavaTestTypeMapping.TEST_TYPE_MAPPING_KEY, javaPersistentType());
 		assertTrue(javaTypeMapping instanceof JavaTestTypeMapping);
 		
 		javaTypeMapping = jpaPlatform().buildJavaTypeMappingFromMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType());
@@ -117,7 +117,7 @@ public class JpaPlatformTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaAttributeMapping javaAttributeMapping = jpaProject().jpaPlatform().buildJavaAttributeMappingFromMappingKey(JavaTestAttributeMapping.TEST_ATTRIBUTE_MAPPING_KEY, javaPersistentType().attributeNamed("name"));	
+		JavaAttributeMapping javaAttributeMapping = jpaProject().getJpaPlatform().buildJavaAttributeMappingFromMappingKey(JavaTestAttributeMapping.TEST_ATTRIBUTE_MAPPING_KEY, javaPersistentType().attributeNamed("name"));	
 		assertTrue(javaAttributeMapping instanceof JavaTestAttributeMapping);
 		
 		javaAttributeMapping = jpaPlatform().buildJavaAttributeMappingFromMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, javaPersistentType().attributeNamed("name"));

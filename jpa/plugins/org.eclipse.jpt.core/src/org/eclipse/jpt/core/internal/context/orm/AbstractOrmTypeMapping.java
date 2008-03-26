@@ -128,7 +128,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 	}
 
 	public OrmPersistentType persistentType() {
-		return (OrmPersistentType) parent();
+		return (OrmPersistentType) getParent();
 	}
 
 	/**
@@ -149,7 +149,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		return null;
 	}
 
-	public Table dbTable(String tableName) {
+	public Table getDbTable(String tableName) {
 		return null;
 	}
 
@@ -203,7 +203,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 	}
 	
 	protected PersistenceUnitMetadata persistenceUnitMetadata() {
-		return entityMappings().getPersistenceUnitMetadata();
+		return getEntityMappings().getPersistenceUnitMetadata();
 	}
 
 	protected boolean defaultMetadataComplete() {
@@ -221,7 +221,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 				}
 			}
 		}
-		return entityMappings().getAccess();
+		return getEntityMappings().getAccess();
 	}
 	
 	public JavaPersistentType getJavaPersistentType() {
@@ -235,14 +235,14 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 	}
 	
 	protected void initializeJavaPersistentType() {
-		JavaResourcePersistentType persistentTypeResource = jpaProject().javaPersistentTypeResource(getClass_());
+		JavaResourcePersistentType persistentTypeResource = getJpaProject().javaPersistentTypeResource(getClass_());
 		if (persistentTypeResource != null) {
 			this.javaPersistentType = buildJavaPersistentType(persistentTypeResource);
 		}	
 	}
 
 	protected void updateJavaPersistentType() {
-		JavaResourcePersistentType persistentTypeResource = jpaProject().javaPersistentTypeResource(getClass_());
+		JavaResourcePersistentType persistentTypeResource = getJpaProject().javaPersistentTypeResource(getClass_());
 		if (persistentTypeResource == null) {
 			setJavaPersistentType(null);
 		}

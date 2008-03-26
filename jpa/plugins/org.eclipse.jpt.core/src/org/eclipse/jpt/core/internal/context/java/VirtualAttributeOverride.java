@@ -79,12 +79,12 @@ public class VirtualAttributeOverride extends AbstractJavaResourceNode implement
 	}
 	
 	@Override
-	public JavaResourcePersistentMember parent() {
-		return (JavaResourcePersistentMember) super.parent();
+	public JavaResourcePersistentMember getParent() {
+		return (JavaResourcePersistentMember) super.getParent();
 	}
 	
 	protected AttributeOverrideAnnotation createAttributeOverrideResource() {
-		return (AttributeOverrideAnnotation) parent().addAnnotation(getAnnotationName());
+		return (AttributeOverrideAnnotation) getParent().addAnnotation(getAnnotationName());
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {

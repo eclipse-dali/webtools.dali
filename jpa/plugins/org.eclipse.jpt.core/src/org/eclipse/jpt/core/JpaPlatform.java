@@ -61,7 +61,7 @@ public interface JpaPlatform
 	 * (e.g. PersistenceResource), and context (e.g. IPersistenceUnit) model
 	 * objects
 	 */
-	JpaFactory jpaFactory();
+	JpaFactory getJpaFactory();
 	
 	
 	// **************** Java annotation support ********************************
@@ -70,7 +70,7 @@ public interface JpaPlatform
 	 * Return an annotation provider responsible for determining what annotations
 	 * are supported and constructing java resource model objects
 	 */
-	JpaAnnotationProvider annotationProvider();
+	JpaAnnotationProvider getAnnotationProvider();
 	
 	
 	// **************** Java type mapping support ********************************

@@ -449,7 +449,7 @@ public class GenericJpaModel
 		}
 
 		private JpaProject buildJpaProject() throws CoreException {
-			JpaProject jpaProject = this.config.jpaPlatform().jpaFactory().buildJpaProject(this.config);
+			JpaProject jpaProject = this.config.jpaPlatform().getJpaFactory().buildJpaProject(this.config);
 			jpaProject.setUpdater(new AsynchronousJpaProjectUpdater(jpaProject));
 			return jpaProject;
 		}

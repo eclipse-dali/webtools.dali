@@ -113,7 +113,7 @@ public class GenerateEntitiesWizard extends Wizard {
 	}
 	
 	ConnectionProfile getProjectConnectionProfile() {
-		return this.jpaProject.connectionProfile();
+		return this.jpaProject.getConnectionProfile();
 	}
 	
 	JpaProject getJpaProject(){

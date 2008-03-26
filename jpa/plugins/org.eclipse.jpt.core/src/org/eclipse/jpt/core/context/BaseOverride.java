@@ -39,7 +39,7 @@ public interface BaseOverride extends JpaContextNode
 		 * Return the type mapping that this override is contained in
 		 * @return
 		 */
-		TypeMapping typeMapping();
+		TypeMapping getTypeMapping();
 
 		/**
 		 * Return whether the given override is virtual. Virtual means that

@@ -104,7 +104,7 @@ public class NamedNativeQueryPropertyComposite extends AbstractPane<NamedNativeQ
 
 			@Override
 			protected IPackageFragmentRoot packageFragmentRoot() {
-				IProject project = subject().jpaProject().project();
+				IProject project = subject().getJpaProject().getProject();
 				IJavaProject root = JavaCore.create(project);
 
 				try {

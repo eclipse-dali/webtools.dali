@@ -28,7 +28,7 @@ public abstract class AbstractResourceModel
 		this.rootStructureNodes = new ArrayList<JpaStructureNode>();
 	}
 	
-	public abstract Object resource();
+	public abstract Object getResource();
 	
 	public ListIterator<JpaStructureNode> rootStructureNodes() {
 		return new CloneListIterator<JpaStructureNode>(rootStructureNodes);

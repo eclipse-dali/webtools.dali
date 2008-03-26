@@ -29,7 +29,7 @@ public interface JavaJoinColumn extends JoinColumn, JavaBaseJoinColumn, JavaBase
 	
 	void update(JoinColumnAnnotation joinColumn);
 
-	Owner owner();
+	Owner getOwner();
 	
 	/**
 	 * interface allowing join columns to be used in multiple places

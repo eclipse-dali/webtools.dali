@@ -51,20 +51,20 @@ public abstract class JpaXmlResourceModel extends AbstractResourceModel
 	}
 	
 	@Override
-	public JpaXmlResource resource() {
+	public JpaXmlResource getResource() {
 		return this.resource;
 	}
 	
 	public void javaElementChanged(ElementChangedEvent event) {
-		resource().javaElementChanged(event);
+		getResource().javaElementChanged(event);
 	}
 	
 	public void addResourceModelChangeListener(ResourceModelListener listener) {
-		resource().addResourceModelChangeListener(listener);
+		getResource().addResourceModelChangeListener(listener);
 	}
 	
 	public void removeResourceModelChangeListener(ResourceModelListener listener) {
-		resource().removeResourceModelChangeListener(listener);
+		getResource().removeResourceModelChangeListener(listener);
 	}
 	
 	@Override

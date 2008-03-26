@@ -33,7 +33,7 @@ public class PersistenceResourceModel extends JpaXmlResourceModel
 	/**
 	 * @see ResourceModel#getResourceType()
 	 */
-	public String resourceType() {
+	public String getResourceType() {
 		return ResourceModel.PERSISTENCE_RESOURCE_TYPE;
 	}
 	

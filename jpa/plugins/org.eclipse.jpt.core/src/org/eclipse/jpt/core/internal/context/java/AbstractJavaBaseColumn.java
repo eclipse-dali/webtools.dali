@@ -53,8 +53,8 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	}
 	
 	@Override
-	public JavaBaseColumn.Owner owner() {
-		return (JavaBaseColumn.Owner) super.owner();
+	public JavaBaseColumn.Owner getOwner() {
+		return (JavaBaseColumn.Owner) super.getOwner();
 	}
 
 	//************** IAbstractColumn implementation *******************
@@ -228,7 +228,7 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 
 	public TextRange tableTextRange(CompilationUnit astRoot) {
 		TextRange textRange = this.columnResource().tableTextRange(astRoot);
-		return (textRange != null) ? textRange : this.owner().validationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getOwner().validationTextRange(astRoot);
 	}
 
 	public boolean tableTouches(int pos, CompilationUnit astRoot) {
@@ -236,7 +236,7 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	}
 
 	private Iterator<String> candidateTableNames() {
-		return this.tableIsAllowed() ? this.owner().typeMapping().associatedTableNamesIncludingInherited() : EmptyIterator.<String> instance();
+		return this.tableIsAllowed() ? this.getOwner().getTypeMapping().associatedTableNamesIncludingInherited() : EmptyIterator.<String> instance();
 	}
 
 	private Iterator<String> candidateTableNames(Filter<String> filter) {
@@ -277,7 +277,7 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	}
 
 	protected String defaultTable() {
-		return this.owner().defaultTableName();
+		return this.getOwner().defaultTableName();
 	}
 	
 	protected String specifiedTable(BaseColumnAnnotation column) {

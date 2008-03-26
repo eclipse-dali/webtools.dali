@@ -123,7 +123,7 @@ public class InheritanceComposite extends AbstractFormPane<Entity> {
 
 			@Override
 			protected Table table() {
-				return subject().dbTable();
+				return subject().getDbTable();
 			}
 
 			@Override

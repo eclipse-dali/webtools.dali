@@ -41,12 +41,12 @@ public class JavaResourceModel
 			new JpaCompilationUnit(file, annotationProvider, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter, this);
 	}
 	
-	public String resourceType() {
+	public String getResourceType() {
 		return JAVA_RESOURCE_TYPE;
 	}
 	
 	@Override
-	public JpaCompilationUnit resource() {
+	public JpaCompilationUnit getResource() {
 		return this.compilationUnitResource;
 	}
 	
@@ -68,7 +68,7 @@ public class JavaResourceModel
 	}
 
 	public void resourceChanged() {
-		if (resource() == null) {
+		if (getResource() == null) {
 			throw new IllegalStateException("Change events should not be fired during construction");
 		}
 		for (ResourceModelListener listener : this.resourceModelListeners) {

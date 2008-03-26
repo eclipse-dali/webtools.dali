@@ -40,7 +40,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	//***************** ITypeMapping implementation *****************
 	
 	public JavaPersistentType persistentType() {
-		return (JavaPersistentType) parent();
+		return (JavaPersistentType) getParent();
 	}
 
 	public String tableName() {
@@ -51,7 +51,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		return null;
 	}
 
-	public org.eclipse.jpt.db.Table dbTable(String tableName) {
+	public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 		return null;
 	}
 

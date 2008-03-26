@@ -27,12 +27,12 @@ public class RootContextTests extends ContextModelTestCase
 		
 		assertFalse(pr.exists());
 		
-		JpaRootContextNode baseJpaContent = getJavaProject().getJpaProject().rootContext();
-		assertNull(baseJpaContent.persistenceXml());
+		JpaRootContextNode baseJpaContent = getJavaProject().getJpaProject().getRootContext();
+		assertNull(baseJpaContent.getPersistenceXml());
 		
 		baseJpaContent.addPersistenceXml();
 		
-		assertNotNull(baseJpaContent.persistenceXml());
+		assertNotNull(baseJpaContent.getPersistenceXml());
 		
 		boolean exceptionThrown = false;
 		try {
@@ -46,14 +46,14 @@ public class RootContextTests extends ContextModelTestCase
 	}
 	
 	public void testModifyRemovePersistenceXml() throws Exception {
-		JpaRootContextNode baseJpaContent = getJavaProject().getJpaProject().rootContext();
+		JpaRootContextNode baseJpaContent = getJavaProject().getJpaProject().getRootContext();
 		
-		assertNotNull(baseJpaContent.persistenceXml());
+		assertNotNull(baseJpaContent.getPersistenceXml());
 		
 		baseJpaContent.removePersistenceXml();
 		waitForWorkspaceJobs();
 		
-		assertNull(baseJpaContent.persistenceXml());
+		assertNull(baseJpaContent.getPersistenceXml());
 		
 		boolean exceptionThrown = false;
 		try {
@@ -72,22 +72,22 @@ public class RootContextTests extends ContextModelTestCase
 		
 		assertFalse(pr.exists());
 		
-		JpaRootContextNode baseJpaContent = getJavaProject().getJpaProject().rootContext();
-		assertNull(baseJpaContent.persistenceXml());
+		JpaRootContextNode baseJpaContent = getJavaProject().getJpaProject().getRootContext();
+		assertNull(baseJpaContent.getPersistenceXml());
 		
 		pr.getContents().add(PersistenceFactory.eINSTANCE.createXmlPersistence());
 		pr.save(null);
-		assertNotNull(baseJpaContent.persistenceXml());
+		assertNotNull(baseJpaContent.getPersistenceXml());
 	}
 	
 	public void testUpdateRemovePersistenceXml() throws Exception {
 		PersistenceResource pr = persistenceResource();
-		JpaRootContextNode baseJpaContent = getJavaProject().getJpaProject().rootContext();
+		JpaRootContextNode baseJpaContent = getJavaProject().getJpaProject().getRootContext();
 		
-		assertNotNull(baseJpaContent.persistenceXml());
+		assertNotNull(baseJpaContent.getPersistenceXml());
 		
 		deleteResource(pr);
 		
-		assertNull(baseJpaContent.persistenceXml());
+		assertNull(baseJpaContent.getPersistenceXml());
 	}
 }

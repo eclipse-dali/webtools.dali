@@ -52,8 +52,8 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 	}
 	
 	@Override
-	public JavaEntity parent() {
-		return (JavaEntity) super.parent();
+	public JavaEntity getParent() {
+		return (JavaEntity) super.getParent();
 	}
 
 	//***************** AbstractJavaTable implementation ********************
@@ -172,7 +172,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 	}
 	
 	public JavaEntity javaEntity() {
-		return parent();
+		return getParent();
 	}
 	
 	
@@ -312,16 +312,16 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 			return GenericJavaSecondaryTable.this.validationTextRange(astRoot);
 		}
 
-		public TypeMapping typeMapping() {
+		public TypeMapping getTypeMapping() {
 			return GenericJavaSecondaryTable.this.javaEntity();
 		}
 
-		public Table dbTable(String tableName) {
+		public Table getDbTable(String tableName) {
 			return GenericJavaSecondaryTable.this.dbTable();
 		}
 
 		public Table dbReferencedColumnTable() {
-			return typeMapping().primaryDbTable();
+			return getTypeMapping().primaryDbTable();
 		}
 
 		public int joinColumnsSize() {
@@ -332,7 +332,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 			return GenericJavaSecondaryTable.this.defaultPrimaryKeyJoinColumn == joinColumn;
 		}
 		
-		public String defaultColumnName() {
+		public String getDefaultColumnName() {
 			if (joinColumnsSize() != 1) {
 				return null;
 			}

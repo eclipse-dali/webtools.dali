@@ -117,7 +117,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		throws CoreException {
 		this.javaResourceModel = buildJavaResourceModel(testType);
 		this.javaResourceModel.resolveTypes();
-		return this.javaResourceModel.resource().getPersistentType();
+		return this.javaResourceModel.getResource().getPersistentType();
 	}	
 	
 	protected JavaResourceModel buildJavaResourceModel(IType testType) throws CoreException {
@@ -128,7 +128,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		JpaProject jpaProject = buildJpaProject();
 		return new JavaResourceModel(
 			file, 
-			jpaProject.jpaPlatform().annotationProvider(),
+			jpaProject.getJpaPlatform().getAnnotationProvider(),
 			MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER,
 			NullAnnotationEditFormatter.instance());
 	}

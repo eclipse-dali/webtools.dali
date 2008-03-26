@@ -31,7 +31,7 @@ public class RootContextItemContentProvider
 	
 	@Override
 	public IProject getParent() {
-		return ((JpaRootContextNode) model()).jpaProject().project();
+		return ((JpaRootContextNode) model()).getJpaProject().getProject();
 	}
 	
 	@Override
@@ -43,7 +43,7 @@ public class RootContextItemContentProvider
 							(JpaRootContextNode) model()) {
 						 @Override
 						protected PersistenceXml buildValue_() {
-							return subject.persistenceXml();
+							return subject.getPersistenceXml();
 						}
 					}));
 	}

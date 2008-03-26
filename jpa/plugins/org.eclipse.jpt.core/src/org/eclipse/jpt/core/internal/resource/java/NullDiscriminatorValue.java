@@ -23,8 +23,8 @@ public class NullDiscriminatorValue extends AbstractJavaResourceNode implements 
 	}
 	
 	@Override
-	public JavaResourcePersistentMember parent() {
-		return (JavaResourcePersistentMember) super.parent();
+	public JavaResourcePersistentMember getParent() {
+		return (JavaResourcePersistentMember) super.getParent();
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -58,7 +58,7 @@ public class NullDiscriminatorValue extends AbstractJavaResourceNode implements 
 	}
 	
 	protected DiscriminatorValue createDiscriminatorValueResource() {
-		return (DiscriminatorValue) parent().addAnnotation(getAnnotationName());
+		return (DiscriminatorValue) getParent().addAnnotation(getAnnotationName());
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {

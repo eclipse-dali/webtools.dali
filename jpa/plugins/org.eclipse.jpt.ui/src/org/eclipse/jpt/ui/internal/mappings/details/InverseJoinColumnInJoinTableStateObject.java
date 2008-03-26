@@ -85,6 +85,6 @@ public class InverseJoinColumnInJoinTableStateObject extends BaseJoinColumnState
 	 * @return The owner of the join column to create or to edit
 	 */
 	public RelationshipMapping relationshipMapping() {
-		return getOwner().parent();
+		return getOwner().getParent();
 	}
 }

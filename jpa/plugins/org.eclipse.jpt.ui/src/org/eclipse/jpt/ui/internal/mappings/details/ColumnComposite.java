@@ -155,7 +155,7 @@ public class ColumnComposite extends AbstractFormPane<Column>
 
 			@Override
 			protected Table table() {
-				return subject().dbTable();
+				return subject().getDbTable();
 			}
 
 			@Override
@@ -361,7 +361,7 @@ public class ColumnComposite extends AbstractFormPane<Column>
 
 			@Override
 			protected Table table() {
-				return subject().dbTable();
+				return subject().getDbTable();
 			}
 
 			@Override
@@ -371,7 +371,7 @@ public class ColumnComposite extends AbstractFormPane<Column>
 
 			@Override
 			protected Iterator<String> values() {
-				return subject().owner().typeMapping().associatedTableNamesIncludingInherited();
+				return subject().getOwner().getTypeMapping().associatedTableNamesIncludingInherited();
 			}
 		};
 	}

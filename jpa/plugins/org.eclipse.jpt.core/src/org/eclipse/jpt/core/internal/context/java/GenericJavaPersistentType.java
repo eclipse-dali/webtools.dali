@@ -60,8 +60,8 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 	
 	@Override
-	public IResource resource() {
-		return this.resourcePersistentType.resourceModel().resource().getCompilationUnit().getResource();
+	public IResource getResource() {
+		return this.resourcePersistentType.resourceModel().getResource().getCompilationUnit().getResource();
 	}
 
 	//****************** JpaStructureNode implementation *******************
@@ -294,7 +294,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 	
 	protected void initializeMapping(JavaResourcePersistentType persistentTypeResource) {
-		this.mapping  = jpaPlatform().buildJavaTypeMappingFromAnnotation(this.javaMappingAnnotationName(persistentTypeResource), this);
+		this.mapping  = getJpaPlatform().buildJavaTypeMappingFromAnnotation(this.javaMappingAnnotationName(persistentTypeResource), this);
 		this.mapping.initializeFromResource(persistentTypeResource);
 	}
 	
@@ -335,9 +335,9 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	protected AccessType access(JavaResourcePersistentType resourcePersistentType) {
 		AccessType javaAccess = null;
 		boolean metadataComplete = false;
-		if (ormPersistentType() != null) {
-			javaAccess = ormPersistentType().getMapping().getSpecifiedAccess();
-			metadataComplete = ormPersistentType().getMapping().isMetadataComplete();
+		if (getOrmPersistentType() != null) {
+			javaAccess = getOrmPersistentType().getMapping().getSpecifiedAccess();
+			metadataComplete = getOrmPersistentType().getMapping().isMetadataComplete();
 		}
 		if (javaAccess == null && !metadataComplete) {
 			javaAccess = AccessType.fromJavaResourceModel(resourcePersistentType.getAccess());
@@ -348,15 +348,15 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 			}
 		}
 		if (javaAccess == null) {
-			if (entityMappings() != null) {
-				javaAccess = entityMappings().getAccess();
+			if (getEntityMappings() != null) {
+				javaAccess = getEntityMappings().getAccess();
 			}
 		}
 		if (javaAccess == null) {
 			//have to check persistence-unit separately in the case where it is not listed directly in an orm.xml
 			//if it is listed in an orm.xml then the entityMappings().getAccess() check will cover persistence-unit.defaultAccess
-			if (persistenceUnit() != null) {
-				javaAccess = persistenceUnit().getDefaultAccess();
+			if (getPersistenceUnit() != null) {
+				javaAccess = getPersistenceUnit().getDefaultAccess();
 			}
 		}
 		if (javaAccess == null) {
@@ -384,11 +384,11 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 	
 	protected JavaTypeMapping createJavaTypeMappingFromMappingKey(String key) {
-		return jpaPlatform().buildJavaTypeMappingFromMappingKey(key, this);
+		return getJpaPlatform().buildJavaTypeMappingFromMappingKey(key, this);
 	}
 	
 	protected JavaTypeMapping createJavaTypeMappingFromAnnotation(String annotationName, JavaResourcePersistentType resourcePersistentType) {
-		JavaTypeMapping mapping = jpaPlatform().buildJavaTypeMappingFromAnnotation(annotationName, this);
+		JavaTypeMapping mapping = getJpaPlatform().buildJavaTypeMappingFromAnnotation(annotationName, this);
 		mapping.initializeFromResource(resourcePersistentType);
 		return mapping;
 	}
@@ -459,7 +459,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		if (possibleParent != null) {
 			return possibleParent;
 		}
-		JavaResourcePersistentType resourcePersistentType = jpaProject().javaPersistentTypeResource(fullyQualifiedTypeName);
+		JavaResourcePersistentType resourcePersistentType = getJpaProject().javaPersistentTypeResource(fullyQualifiedTypeName);
 		if (resourcePersistentType != null) {
 			return possibleParent(resourcePersistentType.getSuperClassQualifiedName());
 		}
@@ -467,7 +467,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 	
 	protected PersistentType persistentType(String fullyQualifiedTypeName) {
-		return persistenceUnit().persistentType(fullyQualifiedTypeName);
+		return getPersistenceUnit().persistentType(fullyQualifiedTypeName);
 	}
 
 	//*************** Validation ******************************************

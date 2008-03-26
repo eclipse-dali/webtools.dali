@@ -26,7 +26,7 @@ public interface JpaDataSource extends JpaNode {
 	 * Return the data source's connection profile name.
 	 * The connection profile is looked up based on this setting.
 	 */
-	String connectionProfileName();
+	String getConnectionProfileName();
 	
 	/**
 	 * Set the data source's connection profile name.
@@ -44,7 +44,7 @@ public interface JpaDataSource extends JpaNode {
 	 * The data source's connection profile should never be null.
 	 * If we do not have a connection, return a "null" connection profile.
 	 */
-	ConnectionProfile connectionProfile();
+	ConnectionProfile getConnectionProfile();
 	
 	/**
 	 * ID string used when connectionProfile property is changed

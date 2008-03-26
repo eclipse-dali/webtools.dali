@@ -22,7 +22,7 @@ public interface JavaBaseJoinColumn extends BaseJoinColumn, JavaNamedColumn
 	TextRange referencedColumnNameTextRange(CompilationUnit astRoot);
 
 	
-	Owner owner();
+	Owner getOwner();
 	/**
 	 * interface allowing join columns to be used in multiple places
 	 * (e.g. 1:1 mappings and join tables)

@@ -23,8 +23,8 @@ public class NullAttributeOverrideColumn extends NullBaseColumn implements Colum
 	}
 
 	@Override
-	public AttributeOverrideAnnotation parent() {
-		return (AttributeOverrideAnnotation) super.parent();
+	public AttributeOverrideAnnotation getParent() {
+		return (AttributeOverrideAnnotation) super.getParent();
 	}
 	
 	public String getAnnotationName() {
@@ -33,7 +33,7 @@ public class NullAttributeOverrideColumn extends NullBaseColumn implements Colum
 
 	@Override
 	protected ColumnAnnotation createColumnResource() {
-		return parent().addColumn();
+		return getParent().addColumn();
 	}
 
 	public Integer getLength() {

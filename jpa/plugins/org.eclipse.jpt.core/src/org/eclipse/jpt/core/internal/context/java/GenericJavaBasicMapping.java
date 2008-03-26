@@ -104,12 +104,12 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 			JPA.ENUMERATED);
 	}
 	
-	public String defaultColumnName() {
+	public String getDefaultColumnName() {
 		return attributeName();
 	}
 
 	public String defaultTableName() {
-		return typeMapping().tableName();
+		return getTypeMapping().tableName();
 	}
 	
 	//************** IBasicMapping implementation ***************
@@ -320,7 +320,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 		String table = column.getTable();
 		boolean doContinue = entityOwned() && column.connectionProfileIsActive();
 		
-		if (doContinue && this.typeMapping().tableNameIsInvalid(table)) {
+		if (doContinue && this.getTypeMapping().tableNameIsInvalid(table)) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,

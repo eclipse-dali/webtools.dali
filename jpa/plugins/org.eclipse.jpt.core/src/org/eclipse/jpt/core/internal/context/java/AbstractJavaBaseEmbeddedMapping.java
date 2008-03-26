@@ -369,7 +369,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 		if (qualifiedTypeName == null) {
 			return null;
 		}
-		PersistentType persistentType = persistentAttribute.persistenceUnit().persistentType(qualifiedTypeName);
+		PersistentType persistentType = persistentAttribute.getPersistenceUnit().persistentType(qualifiedTypeName);
 		if (persistentType != null) {
 			if (persistentType.mappingKey() == MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
 				return (Embeddable) persistentType.getMapping();

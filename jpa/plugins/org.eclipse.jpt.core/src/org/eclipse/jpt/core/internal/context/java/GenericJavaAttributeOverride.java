@@ -50,15 +50,15 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	}
 	
 	@Override
-	public AttributeOverride.Owner owner() {
-		return (AttributeOverride.Owner) super.owner();
+	public AttributeOverride.Owner getOwner() {
+		return (AttributeOverride.Owner) super.getOwner();
 	}
 	
 	public ColumnAnnotation columnResource() {
 		return this.getOverrideResource().getNonNullColumn();
 	}
 
-	public String defaultColumnName() {
+	public String getDefaultColumnName() {
 		ColumnMapping columnMapping = columnMapping();
 		if (columnMapping == null) {
 			return null;
@@ -75,20 +75,20 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 		if (tableName != null) {
 			return tableName;
 		}
-		return owner().typeMapping().tableName();
+		return getOwner().getTypeMapping().tableName();
 	}
 	
 	protected ColumnMapping columnMapping() {
-		return owner().columnMapping(getName());
+		return getOwner().columnMapping(getName());
 	}
 
 	//************* IColumn.Owner implementation **************
-	public TypeMapping typeMapping() {
-		return this.owner().typeMapping();
+	public TypeMapping getTypeMapping() {
+		return this.getOwner().getTypeMapping();
 	}
 	
-	public Table dbTable(String tableName) {
-		return this.typeMapping().dbTable(tableName);
+	public Table getDbTable(String tableName) {
+		return this.getTypeMapping().getDbTable(tableName);
 	}
 	
 	//************* IAttributeOverride implementation **************
@@ -101,7 +101,7 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	
 	@Override
 	protected Iterator<String> candidateNames() {
-		return this.owner().typeMapping().allOverridableAttributeNames();
+		return this.getOwner().getTypeMapping().allOverridableAttributeNames();
 	}
 	
 	//************* java resource model -> java context model **************	
@@ -141,7 +141,7 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 		String table = getColumn().getTable();
 		boolean doContinue = connectionProfileIsActive();
 		
-		if (doContinue && typeMapping().tableNameIsInvalid(table)) {
+		if (doContinue && getTypeMapping().tableNameIsInvalid(table)) {
 			if (isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(

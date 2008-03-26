@@ -38,13 +38,13 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 	}
 	
 	@Override
-	public JavaColumn.Owner owner() {
-		return (JavaColumn.Owner) super.owner();
+	public JavaColumn.Owner getOwner() {
+		return (JavaColumn.Owner) super.getOwner();
 	}
 
 	@Override
 	protected ColumnAnnotation columnResource() {
-		return this.owner().columnResource();
+		return this.getOwner().columnResource();
 	}
 	
 	public Integer getLength() {
@@ -129,7 +129,7 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 	
 	public TextRange validationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = columnResource().textRange(astRoot);
-		return (textRange != null) ? textRange : this.owner().validationTextRange(astRoot);	
+		return (textRange != null) ? textRange : this.getOwner().validationTextRange(astRoot);	
 	}
 	
 	@Override

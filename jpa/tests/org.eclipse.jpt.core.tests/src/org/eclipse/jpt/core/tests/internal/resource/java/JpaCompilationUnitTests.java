@@ -63,8 +63,8 @@ public class JpaCompilationUnitTests extends AnnotationTestCase {
 	protected JpaCompilationUnit getJpaCompilationUnitResource(ICompilationUnit testCompilationUnit) throws CoreException {
 		JpaProject jpaProject = ((TestJpaProject) this.javaProject).getJpaProject();
 		JpaFile jpaFile = jpaProject.jpaFile((IFile) testCompilationUnit.getResource());
-		JavaResourceModel javaResourceModel = (JavaResourceModel) jpaFile.resourceModel();
-		return javaResourceModel.resource();
+		JavaResourceModel javaResourceModel = (JavaResourceModel) jpaFile.getResourceModel();
+		return javaResourceModel.getResource();
 	}
 	
 	public void testGetPersistentType() throws Exception {

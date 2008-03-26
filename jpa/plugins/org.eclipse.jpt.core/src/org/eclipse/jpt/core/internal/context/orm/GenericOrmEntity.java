@@ -152,15 +152,15 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	protected OrmNamedColumn.Owner buildDiscriminatorColumnOwner() {
 		return new OrmNamedColumn.Owner(){
-			public org.eclipse.jpt.db.Table dbTable(String tableName) {
-				return GenericOrmEntity.this.dbTable(tableName);
+			public org.eclipse.jpt.db.Table getDbTable(String tableName) {
+				return GenericOrmEntity.this.getDbTable(tableName);
 			}
 
-			public TypeMapping typeMapping() {
+			public TypeMapping getTypeMapping() {
 				return GenericOrmEntity.this;
 			}
 			
-			public String defaultColumnName() {
+			public String getDefaultColumnName() {
 				//TODO default column name from java here or in XmlDiscriminatorColumn?
 				return DiscriminatorColumn.DEFAULT_NAME;
 			}
@@ -190,7 +190,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 
 	@Override
-	public org.eclipse.jpt.db.Table dbTable(String tableName) {
+	public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 		for (Iterator<Table> stream = this.associatedTablesIncludingInherited(); stream.hasNext();) {
 			org.eclipse.jpt.db.Table dbTable = stream.next().dbTable();
 			if (dbTable != null && dbTable.matchesShortJavaClassName(tableName)) {
@@ -1479,22 +1479,22 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	protected void updatePersistenceUnitGeneratorsAndQueries() {
 		if (getTableGenerator() != null && getTableGenerator().getName() != null) {
-			persistenceUnit().addGenerator(getTableGenerator());
+			getPersistenceUnit().addGenerator(getTableGenerator());
 		}
 		
 		if (getSequenceGenerator() != null && getSequenceGenerator().getName() != null) {
-			persistenceUnit().addGenerator(getSequenceGenerator());
+			getPersistenceUnit().addGenerator(getSequenceGenerator());
 		}
 		
 		for (Query query : CollectionTools.iterable(namedQueries())) {
 			if (query.getName() != null) {
-				persistenceUnit().addQuery(query);
+				getPersistenceUnit().addQuery(query);
 			}
 		}
 		
 		for (Query query : CollectionTools.iterable(namedNativeQueries())) {
 			if (query.getName() != null) {
-				persistenceUnit().addQuery(query);
+				getPersistenceUnit().addQuery(query);
 			}
 		}
 	}
@@ -1550,7 +1550,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	protected void addGeneratorMessages(List<IMessage> messages) {
-		List<Generator> masterList = CollectionTools.list(persistenceUnit().allGenerators());
+		List<Generator> masterList = CollectionTools.list(getPersistenceUnit().allGenerators());
 		
 		for (Iterator<OrmGenerator> stream = this.generators(); stream.hasNext() ; ) {
 			OrmGenerator current = stream.next();
@@ -1574,7 +1574,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	protected void addQueryMessages(List<IMessage> messages) {
-		List<Query> masterList = CollectionTools.list(persistenceUnit().allQueries());
+		List<Query> masterList = CollectionTools.list(getPersistenceUnit().allQueries());
 		
 		for (Iterator<OrmQuery> stream = this.queries(); stream.hasNext() ; ) {
 			OrmQuery current = stream.next();
@@ -1629,12 +1629,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	class PrimaryKeyJoinColumnOwner implements OrmBaseJoinColumn.Owner
 	{
-		public TypeMapping typeMapping() {
+		public TypeMapping getTypeMapping() {
 			return GenericOrmEntity.this;
 		}
 
-		public org.eclipse.jpt.db.Table dbTable(String tableName) {
-			return GenericOrmEntity.this.dbTable(tableName);
+		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
+			return GenericOrmEntity.this.getDbTable(tableName);
 		}
 
 		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
@@ -1650,7 +1650,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 			return GenericOrmEntity.this.defaultPrimaryKeyJoinColumns.contains(joinColumn);
 		}
 		
-		public String defaultColumnName() {
+		public String getDefaultColumnName() {
 			if (joinColumnsSize() != 1) {
 				return null;
 			}
@@ -1689,7 +1689,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 			return null;
 		}
 
-		public TypeMapping typeMapping() {
+		public TypeMapping getTypeMapping() {
 			return GenericOrmEntity.this;
 		}
 		
@@ -1721,7 +1721,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 			return null;
 		}
 
-		public TypeMapping typeMapping() {
+		public TypeMapping getTypeMapping() {
 			return GenericOrmEntity.this;
 		}
 	}

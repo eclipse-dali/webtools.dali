@@ -167,19 +167,19 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	protected JavaNamedColumn.Owner buildDiscriminatorColumnOwner() {
 		return new JavaNamedColumn.Owner(){
-			public org.eclipse.jpt.db.Table dbTable(String tableName) {
-				return GenericJavaEntity.this.dbTable(tableName);
+			public org.eclipse.jpt.db.Table getDbTable(String tableName) {
+				return GenericJavaEntity.this.getDbTable(tableName);
 			}
 
 			public TextRange validationTextRange(CompilationUnit astRoot) {
 				return GenericJavaEntity.this.validationTextRange(astRoot);
 			}
 
-			public TypeMapping typeMapping() {
+			public TypeMapping getTypeMapping() {
 				return GenericJavaEntity.this;
 			}
 			
-			public String defaultColumnName() {
+			public String getDefaultColumnName() {
 				return DiscriminatorColumn.DEFAULT_NAME;
 			}
 		};
@@ -346,7 +346,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	@Override
-	public org.eclipse.jpt.db.Table dbTable(String tableName) {
+	public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 		for (Iterator<Table> stream = this.associatedTablesIncludingInherited(); stream.hasNext();) {
 			org.eclipse.jpt.db.Table dbTable = stream.next().dbTable();
 			if (dbTable != null && dbTable.matchesShortJavaClassName(tableName)) {
@@ -1667,22 +1667,22 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	protected void updatePersistenceUnitGeneratorsAndQueries() {
 		if (getTableGenerator() != null && getTableGenerator().getName() != null) {
-			persistenceUnit().addGenerator(getTableGenerator());
+			getPersistenceUnit().addGenerator(getTableGenerator());
 		}
 		
 		if (getSequenceGenerator() != null && getSequenceGenerator().getName() != null) {
-			persistenceUnit().addGenerator(getSequenceGenerator());
+			getPersistenceUnit().addGenerator(getSequenceGenerator());
 		}
 		
 		for (Query query : CollectionTools.iterable(namedQueries())) {
 			if (query.getName() != null) {
-				persistenceUnit().addQuery(query);
+				getPersistenceUnit().addQuery(query);
 			}
 		}
 		
 		for (Query query : CollectionTools.iterable(namedNativeQueries())) {
 			if (query.getName() != null) {
-				persistenceUnit().addQuery(query);
+				getPersistenceUnit().addQuery(query);
 			}
 		}
 	}
@@ -1799,7 +1799,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected void addGeneratorMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		List<Generator> masterList = CollectionTools.list(persistenceUnit().allGenerators());
+		List<Generator> masterList = CollectionTools.list(getPersistenceUnit().allGenerators());
 		
 		for (Iterator<JavaGenerator> stream = this.generators(); stream.hasNext() ; ) {
 			JavaGenerator current = stream.next();
@@ -1823,7 +1823,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected void addQueryMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		List<Query> masterList = CollectionTools.list(persistenceUnit().allQueries());
+		List<Query> masterList = CollectionTools.list(getPersistenceUnit().allQueries());
 		
 		for (Iterator<JavaQuery> stream = this.queries(); stream.hasNext() ; ) {
 			JavaQuery current = stream.next();
@@ -1852,12 +1852,12 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			return GenericJavaEntity.this.validationTextRange(astRoot);
 		}
 
-		public TypeMapping typeMapping() {
+		public TypeMapping getTypeMapping() {
 			return GenericJavaEntity.this;
 		}
 
-		public org.eclipse.jpt.db.Table dbTable(String tableName) {
-			return GenericJavaEntity.this.dbTable(tableName);
+		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
+			return GenericJavaEntity.this.getDbTable(tableName);
 		}
 
 		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
@@ -1873,7 +1873,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			return GenericJavaEntity.this.defaultPrimaryKeyJoinColumn == joinColumn;
 		}
 		
-		public String defaultColumnName() {
+		public String getDefaultColumnName() {
 			if (joinColumnsSize() != 1) {
 				return null;
 			}
@@ -1906,7 +1906,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			return GenericJavaEntity.this.setAttributeOverrideVirtual(virtual, (JavaAttributeOverride) attributeOverride);
 		}
 
-		public TypeMapping typeMapping() {
+		public TypeMapping getTypeMapping() {
 			return GenericJavaEntity.this;
 		}
 
@@ -1941,7 +1941,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			return GenericJavaEntity.this.setAssociationOverrideVirtual(virtual, (JavaAssociationOverride) attributeOverride);
 		}
 
-		public TypeMapping typeMapping() {
+		public TypeMapping getTypeMapping() {
 			return GenericJavaEntity.this;
 		}
 

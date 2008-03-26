@@ -28,8 +28,8 @@ public class VirtualAttributeOverrideColumn extends NullBaseColumn implements Co
 	}
 
 	@Override
-	public AttributeOverrideAnnotation parent() {
-		return (AttributeOverrideAnnotation) super.parent();
+	public AttributeOverrideAnnotation getParent() {
+		return (AttributeOverrideAnnotation) super.getParent();
 	}
 	
 	public String getAnnotationName() {
@@ -38,7 +38,7 @@ public class VirtualAttributeOverrideColumn extends NullBaseColumn implements Co
 
 	@Override
 	protected ColumnAnnotation createColumnResource() {
-		return parent().addColumn();
+		return getParent().addColumn();
 	}
 
 	@Override

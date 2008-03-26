@@ -30,8 +30,8 @@ public abstract class AbstractJpaContextNode extends AbstractJpaNode
 	// **************** JpaNode impl *******************************************
 	
 	@Override
-	public JpaContextNode parent() {
-		return (JpaContextNode) super.parent();
+	public JpaContextNode getParent() {
+		return (JpaContextNode) super.getParent();
 	}
 	
 	
@@ -41,23 +41,23 @@ public abstract class AbstractJpaContextNode extends AbstractJpaNode
 	 * Overidden in BaseJpaContext, Persistence, PersitsenceXml to throw UnsupportedOperationException
 	 * Overidden in PersistenceUnit to return it.
 	 */
-	public PersistenceUnit persistenceUnit() {
-		return parent().persistenceUnit();
+	public PersistenceUnit getPersistenceUnit() {
+		return getParent().getPersistenceUnit();
 	}
 	
 	/**
 	 * Overidden in BaseJpaContext to return null
 	 * Overidden in EntityMappings to return it.
 	 */
-	public EntityMappings entityMappings() {
-		return parent().entityMappings();
+	public EntityMappings getEntityMappings() {
+		return getParent().getEntityMappings();
 	}
 	
 	/**
 	 * Overidden in BaseJpaContext to return null
 	 * Overidden in OrmPersistentType to return it.
 	 */
-	public OrmPersistentType ormPersistentType() {
-		return parent().ormPersistentType();
+	public OrmPersistentType getOrmPersistentType() {
+		return getParent().getOrmPersistentType();
 	}
 }

@@ -36,7 +36,7 @@ public interface AssociationOverride extends BaseOverride
 		
 	boolean containsSpecifiedJoinColumns();
 
-	AssociationOverride.Owner owner();
+	AssociationOverride.Owner getOwner();
 	
 	AssociationOverride setVirtual(boolean virtual);
 	

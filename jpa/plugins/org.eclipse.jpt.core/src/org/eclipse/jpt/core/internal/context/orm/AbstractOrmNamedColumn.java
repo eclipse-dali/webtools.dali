@@ -35,8 +35,8 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 	}
 
 	@Override
-	public OrmJpaContextNode parent() {
-		return (OrmJpaContextNode) super.parent();
+	public OrmJpaContextNode getParent() {
+		return (OrmJpaContextNode) super.getParent();
 	}
 	
 	public void initializeFrom(NamedColumn oldColumn) {
@@ -50,7 +50,7 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 	
 	protected abstract void addColumnResource();
 
-	public Owner owner() {
+	public Owner getOwner() {
 		return this.owner;
 	}
 
@@ -124,19 +124,19 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 		firePropertyChanged(COLUMN_DEFINITION_PROPERTY, oldColumnDefinition, newColumnDefinition);
 	}
 
-	public Column dbColumn() {
-		Table table = this.dbTable();
+	public Column getDbColumn() {
+		Table table = this.getDbTable();
 		return (table == null) ? null : table.columnNamed(getName());
 	}
 
-	public Table dbTable() {
-		return owner().dbTable(this.tableName());
+	public Table getDbTable() {
+		return getOwner().getDbTable(this.tableName());
 	}
 
 	protected abstract String tableName();
 
 	public boolean isResolved() {
-		return dbColumn() != null;
+		return getDbColumn() != null;
 	}
 
 	public TextRange nameTextRange() {
@@ -146,7 +146,7 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 				return textRange;
 			}
 		}
-		return owner().validationTextRange();
+		return getOwner().validationTextRange();
 	}
 
 	public TextRange validationTextRange() {
@@ -154,7 +154,7 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 		if (textRange != null) {
 			return textRange;
 		}
-		return owner().validationTextRange();
+		return getOwner().validationTextRange();
 	}
 
 	
@@ -184,7 +184,7 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 	 * Return the default column name.
 	 */
 	protected String defaultName() {
-		return this.owner().defaultColumnName();
+		return this.getOwner().getDefaultColumnName();
 	}
 
 

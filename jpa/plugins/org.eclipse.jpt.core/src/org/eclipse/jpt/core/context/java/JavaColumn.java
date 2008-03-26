@@ -29,7 +29,7 @@ public interface JavaColumn extends Column, JavaBaseColumn
 	
 	boolean connectionProfileIsActive();
 	
-	Owner owner();
+	Owner getOwner();
 	/**
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)

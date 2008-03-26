@@ -29,7 +29,7 @@ public class OrmPersistentTypeItemContentProvider extends AbstractTreeItemConten
 		
 		@Override
 		public Object getParent() {
-			return ((OrmPersistentType) model()).parent();
+			return ((OrmPersistentType) model()).getParent();
 		}
 		
 		@Override

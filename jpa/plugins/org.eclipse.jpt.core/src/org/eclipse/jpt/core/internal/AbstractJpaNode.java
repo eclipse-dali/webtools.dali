@@ -52,12 +52,12 @@ public abstract class AbstractJpaNode
 
 	// ********** IJpaNodeModel implementation **********
 
-	public IResource resource() {
-		return parent().resource();
+	public IResource getResource() {
+		return getParent().getResource();
 	}
 
-	public JpaProject jpaProject() {
-		return parent().jpaProject();
+	public JpaProject getJpaProject() {
+		return getParent().getJpaProject();
 	}
 
 	public String displayString() {
@@ -68,8 +68,8 @@ public abstract class AbstractJpaNode
 	// ********** overrides **********
 
 	@Override
-	public JpaNode parent() {
-		return (JpaNode) super.parent();
+	public JpaNode getParent() {
+		return (JpaNode) super.getParent();
 	}
 	
 
@@ -84,24 +84,24 @@ public abstract class AbstractJpaNode
 		};
 	}
 
-	protected JpaPlatform jpaPlatform() {
-		return this.jpaProject().jpaPlatform();
+	protected JpaPlatform getJpaPlatform() {
+		return this.getJpaProject().getJpaPlatform();
 	}
 
 	protected JpaFactory jpaFactory() {
-		return this.jpaPlatform().jpaFactory();
+		return this.getJpaPlatform().getJpaFactory();
 	}
 
-	protected ConnectionProfile connectionProfile() {
-		return this.jpaProject().connectionProfile();
+	protected ConnectionProfile getConnectionProfile() {
+		return this.getJpaProject().getConnectionProfile();
 	}
 
 	protected Database database() {
-		return this.connectionProfile().database();
+		return this.getConnectionProfile().database();
 	}
 
 	public boolean connectionProfileIsActive() {
-		return this.connectionProfile().isActive();
+		return this.getConnectionProfile().isActive();
 	}
 
 	// ********** update model **********
@@ -113,7 +113,7 @@ public abstract class AbstractJpaNode
 		super.aspectChanged(aspectName);
 		if (this.aspectTriggersUpdate(aspectName)) {
 			// System.out.println(Thread.currentThread() + " \"update\" change: " + this + ": " + aspectName);
-			this.jpaProject().update();
+			this.getJpaProject().update();
 		}
 	}
 

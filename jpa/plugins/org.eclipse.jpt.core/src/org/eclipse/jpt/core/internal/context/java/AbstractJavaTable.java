@@ -167,7 +167,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 
 	public TextRange nameTextRange(CompilationUnit astRoot) {
 		TextRange textRange = tableResource().nameTextRange(astRoot);
-		return (textRange != null) ? textRange : this.parent().validationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getParent().validationTextRange(astRoot);
 	}
 
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {
@@ -176,7 +176,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 
 	public TextRange schemaTextRange(CompilationUnit astRoot) {
 		TextRange textRange = tableResource().schemaTextRange(astRoot);
-		return (textRange != null) ? textRange : this.parent().validationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getParent().validationTextRange(astRoot);
 	}
 
 	public boolean schemaTouches(int pos, CompilationUnit astRoot) {
@@ -230,17 +230,17 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 	protected abstract String defaultName();
 
 	protected String defaultSchema() {
-		if (entityMappings() != null) {
-			return entityMappings().getSchema();
+		if (getEntityMappings() != null) {
+			return getEntityMappings().getSchema();
 		}
-		return persistenceUnit().getDefaultSchema();
+		return getPersistenceUnit().getDefaultSchema();
 	}
 	
 	protected String defaultCatalog() {
-		if (entityMappings() != null) {
-			return entityMappings().getCatalog();
+		if (getEntityMappings() != null) {
+			return getEntityMappings().getCatalog();
 		}
-		return persistenceUnit().getDefaultCatalog();
+		return getPersistenceUnit().getDefaultCatalog();
 	}
 	
 	
@@ -287,13 +287,13 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 //	}
 
 	@Override
-	public JavaJpaContextNode parent() {
-		return (JavaJpaContextNode) super.parent();
+	public JavaJpaContextNode getParent() {
+		return (JavaJpaContextNode) super.getParent();
 	}
 	
 	public TextRange validationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = tableResource().textRange(astRoot);
-		return (textRange != null) ? textRange : this.parent().validationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getParent().validationTextRange(astRoot);
 	}
 
 	public org.eclipse.jpt.db.Table dbTable() {

@@ -59,8 +59,8 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	}
 	
 	@Override
-	public AssociationOverride.Owner owner() {
-		return (AssociationOverride.Owner) super.owner();
+	public AssociationOverride.Owner getOwner() {
+		return (AssociationOverride.Owner) super.getOwner();
 	}
 	
 	public ListIterator<JavaJoinColumn> joinColumns() {
@@ -126,7 +126,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 
 	@Override
 	protected Iterator<String> candidateNames() {
-		return this.owner().typeMapping().allOverridableAssociationNames();
+		return this.getOwner().getTypeMapping().allOverridableAssociationNames();
 	}
 
 	@Override
@@ -204,7 +204,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 			String table = joinColumn.getTable();
 			boolean doContinue = connectionProfileIsActive();
 			
-			if (doContinue && owner().typeMapping().tableNameIsInvalid(table)) {
+			if (doContinue && getOwner().getTypeMapping().tableNameIsInvalid(table)) {
 				if (isVirtual()) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
@@ -286,28 +286,28 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 		 * by default, the join column is in the type mapping's primary table
 		 */
 		public String defaultTableName() {
-			return GenericJavaAssociationOverride.this.owner.typeMapping().tableName();
+			return GenericJavaAssociationOverride.this.owner.getTypeMapping().tableName();
 		}
 		
-		public String defaultColumnName() {
+		public String getDefaultColumnName() {
 			return null;
 		}
 		
-		public Entity targetEntity() {
-			RelationshipMapping relationshipMapping = relationshipMapping();
+		public Entity getTargetEntity() {
+			RelationshipMapping relationshipMapping = getRelationshipMapping();
 			return relationshipMapping == null ? null : relationshipMapping.getResolvedTargetEntity();
 		}
 
-		public String attributeName() {
+		public String getAttributeName() {
 			return GenericJavaAssociationOverride.this.getName();
 		}
 
-		public RelationshipMapping relationshipMapping() {
-			return GenericJavaAssociationOverride.this.owner().relationshipMapping(GenericJavaAssociationOverride.this.getName());
+		public RelationshipMapping getRelationshipMapping() {
+			return GenericJavaAssociationOverride.this.getOwner().relationshipMapping(GenericJavaAssociationOverride.this.getName());
 		}
 
 		public boolean tableNameIsInvalid(String tableName) {
-			return typeMapping().tableNameIsInvalid(tableName);
+			return getTypeMapping().tableNameIsInvalid(tableName);
 		}
 
 		/**
@@ -322,16 +322,16 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 			return null;
 		}
 
-		public TypeMapping typeMapping() {
-			return GenericJavaAssociationOverride.this.owner.typeMapping();
+		public TypeMapping getTypeMapping() {
+			return GenericJavaAssociationOverride.this.owner.getTypeMapping();
 		}
 
-		public Table dbTable(String tableName) {
-			return typeMapping().dbTable(tableName);
+		public Table getDbTable(String tableName) {
+			return getTypeMapping().getDbTable(tableName);
 		}
 
 		public Table dbReferencedColumnTable() {
-			Entity targetEntity = targetEntity();
+			Entity targetEntity = getTargetEntity();
 			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
 		}
 		

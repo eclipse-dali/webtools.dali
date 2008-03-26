@@ -100,7 +100,7 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 	
 	protected void initializeOrmXml() {
 		if (fileName != null) {
-			OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForRead(jpaProject().project());
+			OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForRead(getJpaProject().getProject());
 			OrmResource ormResource = oae.getResource(fileName);
 			
 			if (ormResource != null && ormResource.exists()) {
@@ -127,7 +127,7 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 	
 	protected void updateOrmXml() {
 		if (fileName != null) {
-			OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForRead(jpaProject().project());
+			OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForRead(getJpaProject().getProject());
 			OrmResource ormResource = oae.getResource(fileName);
 			if (ormResource != null && ormResource.exists()) {
 				if (ormXml != null) {
@@ -188,7 +188,7 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 	
 	public TextRange validationTextRange() {
 		if (isVirtual()) {
-			return persistenceUnit().validationTextRange();
+			return getPersistenceUnit().validationTextRange();
 		}
 		return this.xmlMappingFileRef.validationTextRange();
 	}

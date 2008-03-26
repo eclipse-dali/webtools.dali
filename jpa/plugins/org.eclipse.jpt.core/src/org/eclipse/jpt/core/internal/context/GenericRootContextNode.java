@@ -50,7 +50,7 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 			throw new IllegalArgumentException("The JPA project must not be null");
 		}
 		this.jpaProject = jpaProject;
-		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForRead(jpaProject.project());
+		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForRead(jpaProject.getProject());
 		PersistenceResource pr = pae.getResource();
 		
 		if (pr.exists()) {
@@ -71,17 +71,17 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 	// **************** JpaNode impl *******************************************
 	
 	@Override
-	public JpaProject jpaProject() {
+	public JpaProject getJpaProject() {
 		return jpaProject;
 	}
 	
 	@Override
-	public IResource resource() {
-		return jpaProject().project();
+	public IResource getResource() {
+		return getJpaProject().getProject();
 	}
 	
 	@Override
-	public JpaContextNode parent() {
+	public JpaContextNode getParent() {
 		return null;
 	}
 	
@@ -94,19 +94,19 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 	// **************** JpaContextNode impl ************************************
 	
 	@Override
-	public PersistenceUnit persistenceUnit() {
+	public PersistenceUnit getPersistenceUnit() {
 		// No PersistenceUnit in this context
 		return null;
 	}
 	
 	@Override
-	public EntityMappings entityMappings() {
+	public EntityMappings getEntityMappings() {
 		// No EntityMappings in this context
 		return null;
 	}
 	
 	@Override
-	public OrmPersistentType ormPersistentType() {
+	public OrmPersistentType getOrmPersistentType() {
 		// No OrmPersistentType in this context
 		return null;
 	}
@@ -114,7 +114,7 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 	
 	// **************** persistence xml ****************************************
 	
-	public PersistenceXml persistenceXml() {
+	public PersistenceXml getPersistenceXml() {
 		return this.persistenceXml;
 	}
 	
@@ -128,7 +128,7 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 		if (this.persistenceXml != null) {
 			throw new IllegalStateException();
 		}
-		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForWrite(this.jpaProject().project());
+		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForWrite(this.getJpaProject().getProject());
 		PersistenceResource pr = pae.createDefaultResource();
 		pae.dispose();
 		PersistenceXml px = this.buildPersistenceXml(pr);
@@ -140,7 +140,7 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 		if (this.persistenceXml == null) {
 			throw new IllegalStateException();
 		}
-		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForWrite(jpaProject().project());
+		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForWrite(getJpaProject().getProject());
 		PersistenceResource pr = pae.getResource();
 		pae.dispose();
 		try {
@@ -159,7 +159,7 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 	// **************** updating ***********************************************
 	
 	public void update(IProgressMonitor monitor) {
-		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForRead(jpaProject().project());
+		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForRead(getJpaProject().getProject());
 		PersistenceResource pr = pae.getResource();
 		
 		if (pr.exists()) {
@@ -197,7 +197,7 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 		addOrphanedJavaClassMessages(messages);
 		
 		if(okToContinueValidation) {
-			persistenceXml().addToMessages(messages);
+			getPersistenceXml().addToMessages(messages);
 		}
 		
 	}

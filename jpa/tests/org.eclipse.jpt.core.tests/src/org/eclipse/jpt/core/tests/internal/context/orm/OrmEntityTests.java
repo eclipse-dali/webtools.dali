@@ -529,7 +529,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		ormEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
 		assertEquals(InheritanceType.JOINED, ormEntity.getDefaultInheritanceStrategy());
 		
-		ormEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		ormEntity.getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		//this setting overrides the false meta-data complete found on ormEntity
 		assertEquals(InheritanceType.SINGLE_TABLE, ormEntity.getDefaultInheritanceStrategy());
 	}
@@ -560,7 +560,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertNull(parentXmlEntity.getSpecifiedInheritanceStrategy());
 		assertNull(childXmlEntity.getSpecifiedInheritanceStrategy());
 		
-		parentPersistentType.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		parentPersistentType.getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		assertEquals(InheritanceType.SINGLE_TABLE, parentXmlEntity.getDefaultInheritanceStrategy());
 		assertEquals(InheritanceType.SINGLE_TABLE, childXmlEntity.getDefaultInheritanceStrategy());
 	}
@@ -988,21 +988,21 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		assertNull(ormEntity.getSequenceGenerator());
 		assertNull(entityResource.getSequenceGenerator());
-		assertEquals(0, CollectionTools.size(ormEntity.persistenceUnit().allGenerators()));
+		assertEquals(0, CollectionTools.size(ormEntity.getPersistenceUnit().allGenerators()));
 		
 		entityResource.setSequenceGenerator(OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl());
 				
 		assertNotNull(ormEntity.getSequenceGenerator());
 		assertNotNull(entityResource.getSequenceGenerator());
-		assertEquals(0, CollectionTools.size(ormEntity.persistenceUnit().allGenerators()));
+		assertEquals(0, CollectionTools.size(ormEntity.getPersistenceUnit().allGenerators()));
 		
 		ormEntity.getSequenceGenerator().setName("foo");
-		assertEquals(1, CollectionTools.size(ormEntity.persistenceUnit().allGenerators()));
+		assertEquals(1, CollectionTools.size(ormEntity.getPersistenceUnit().allGenerators()));
 
 		entityResource.setSequenceGenerator(null);
 		assertNull(ormEntity.getSequenceGenerator());
 		assertNull(entityResource.getSequenceGenerator());
-		assertEquals(0, CollectionTools.size(ormEntity.persistenceUnit().allGenerators()));
+		assertEquals(0, CollectionTools.size(ormEntity.getPersistenceUnit().allGenerators()));
 	}
 	
 	public void testAddTableGenerator() throws Exception {
@@ -1060,21 +1060,21 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		assertNull(ormEntity.getTableGenerator());
 		assertNull(entityResource.getTableGenerator());
-		assertEquals(0, CollectionTools.size(ormEntity.persistenceUnit().allGenerators()));
+		assertEquals(0, CollectionTools.size(ormEntity.getPersistenceUnit().allGenerators()));
 		
 		entityResource.setTableGenerator(OrmFactory.eINSTANCE.createXmlTableGeneratorImpl());
 				
 		assertNotNull(ormEntity.getTableGenerator());
 		assertNotNull(entityResource.getTableGenerator());
-		assertEquals(0, CollectionTools.size(ormEntity.persistenceUnit().allGenerators()));
+		assertEquals(0, CollectionTools.size(ormEntity.getPersistenceUnit().allGenerators()));
 
 		ormEntity.getTableGenerator().setName("foo");
-		assertEquals(1, CollectionTools.size(ormEntity.persistenceUnit().allGenerators()));
+		assertEquals(1, CollectionTools.size(ormEntity.getPersistenceUnit().allGenerators()));
 		
 		entityResource.setTableGenerator(null);
 		assertNull(ormEntity.getTableGenerator());
 		assertNull(entityResource.getTableGenerator());
-		assertEquals(0, CollectionTools.size(ormEntity.persistenceUnit().allGenerators()));
+		assertEquals(0, CollectionTools.size(ormEntity.getPersistenceUnit().allGenerators()));
 	}
 	
 	public void testUpdateDiscriminatorColumn() throws Exception {
@@ -1663,7 +1663,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		
-		assertEquals(0, CollectionTools.size(ormEntity.persistenceUnit().allQueries()));
+		assertEquals(0, CollectionTools.size(ormEntity.getPersistenceUnit().allQueries()));
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		entityResource.getNamedQueries().add(OrmFactory.eINSTANCE.createXmlNamedQuery());
@@ -1678,7 +1678,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
-		assertEquals(3, CollectionTools.size(ormEntity.persistenceUnit().allQueries()));
+		assertEquals(3, CollectionTools.size(ormEntity.getPersistenceUnit().allQueries()));
 		
 		entityResource.getNamedQueries().move(2, 0);
 		namedQueries = ormEntity.namedQueries();
@@ -1699,17 +1699,17 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
-		assertEquals(2, CollectionTools.size(ormEntity.persistenceUnit().allQueries()));
+		assertEquals(2, CollectionTools.size(ormEntity.getPersistenceUnit().allQueries()));
 		
 		entityResource.getNamedQueries().remove(1);
 		namedQueries = ormEntity.namedQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
-		assertEquals(1, CollectionTools.size(ormEntity.persistenceUnit().allQueries()));
+		assertEquals(1, CollectionTools.size(ormEntity.getPersistenceUnit().allQueries()));
 		
 		entityResource.getNamedQueries().remove(0);
 		assertFalse(ormEntity.namedQueries().hasNext());
-		assertEquals(0, CollectionTools.size(ormEntity.persistenceUnit().allQueries()));
+		assertEquals(0, CollectionTools.size(ormEntity.getPersistenceUnit().allQueries()));
 	}
 	
 	public void testAddNamedNativeQuery() throws Exception {
@@ -1808,7 +1808,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		
-		assertEquals(0, CollectionTools.size(ormEntity.persistenceUnit().allQueries()));
+		assertEquals(0, CollectionTools.size(ormEntity.getPersistenceUnit().allQueries()));
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		entityResource.getNamedNativeQueries().add(OrmFactory.eINSTANCE.createXmlNamedNativeQuery());
@@ -1822,7 +1822,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertFalse(namedNativeQueries.hasNext());
-		assertEquals(3, CollectionTools.size(ormEntity.persistenceUnit().allQueries()));
+		assertEquals(3, CollectionTools.size(ormEntity.getPersistenceUnit().allQueries()));
 		
 		entityResource.getNamedNativeQueries().move(2, 0);
 		namedNativeQueries = ormEntity.namedNativeQueries();
@@ -1843,17 +1843,17 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
 		assertFalse(namedNativeQueries.hasNext());
-		assertEquals(2, CollectionTools.size(ormEntity.persistenceUnit().allQueries()));
+		assertEquals(2, CollectionTools.size(ormEntity.getPersistenceUnit().allQueries()));
 		
 		entityResource.getNamedNativeQueries().remove(1);
 		namedNativeQueries = ormEntity.namedNativeQueries();
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertFalse(namedNativeQueries.hasNext());
-		assertEquals(1, CollectionTools.size(ormEntity.persistenceUnit().allQueries()));
+		assertEquals(1, CollectionTools.size(ormEntity.getPersistenceUnit().allQueries()));
 		
 		entityResource.getNamedNativeQueries().remove(0);
 		assertFalse(ormEntity.namedNativeQueries().hasNext());
-		assertEquals(0, CollectionTools.size(ormEntity.persistenceUnit().allQueries()));
+		assertEquals(0, CollectionTools.size(ormEntity.getPersistenceUnit().allQueries()));
 	}
 	
 	public void testUpdateIdClass() throws Exception {

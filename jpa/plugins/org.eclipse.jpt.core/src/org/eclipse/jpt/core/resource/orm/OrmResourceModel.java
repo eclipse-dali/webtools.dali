@@ -33,7 +33,7 @@ public class OrmResourceModel extends JpaXmlResourceModel
 	/**
 	 * @see ResourceModel#getResourceType()
 	 */
-	public String resourceType() {
+	public String getResourceType() {
 		return ResourceModel.ORM_RESOURCE_TYPE;
 	}
 	
@@ -43,7 +43,7 @@ public class OrmResourceModel extends JpaXmlResourceModel
 	}
 	
 	@Override
-	public OrmResource resource() {
-		return (OrmResource) super.resource();
+	public OrmResource getResource() {
+		return (OrmResource) super.getResource();
 	}
 }

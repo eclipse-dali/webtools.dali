@@ -45,7 +45,7 @@ public abstract class AbstractJpaDetailsPage<T extends JpaStructureNode>
 	}
 
 	protected JpaPlatformUi jpaPlatformUi() {
-		String platformId = subject().jpaProject().jpaPlatform().getId();
+		String platformId = subject().getJpaProject().getJpaPlatform().getId();
 		return JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
 	}
 

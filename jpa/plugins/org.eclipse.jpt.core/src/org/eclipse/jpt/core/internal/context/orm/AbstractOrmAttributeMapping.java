@@ -87,7 +87,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 	
 	public OrmPersistentAttribute persistentAttribute() {
-		return (OrmPersistentAttribute) parent();
+		return (OrmPersistentAttribute) getParent();
 	}
 
 	public String attributeName() {
@@ -173,7 +173,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return null;
 	}
 
-	public OrmTypeMapping typeMapping() {
+	public OrmTypeMapping getTypeMapping() {
 		return this.persistentAttribute().typeMapping();
 	}
 
@@ -216,7 +216,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	
 	
 	protected boolean entityOwned() {
-		return typeMapping().getKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY;
+		return getTypeMapping().getKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY;
 	}
 
 	public boolean contains(int textOffset) {
@@ -228,7 +228,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}	
 	
 	public TextRange validationTextRange() {
-		return (this.persistentAttribute().isVirtual()) ? this.typeMapping().attributesTextRange() : this.attributeMapping.validationTextRange();
+		return (this.persistentAttribute().isVirtual()) ? this.getTypeMapping().attributesTextRange() : this.attributeMapping.validationTextRange();
 	}
 	
 	public TextRange nameTextRange() {
@@ -324,7 +324,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 
 	//TODO validation message - i think more info is needed in this message.  include type mapping type?
 	protected void addInvalidMappingMessage(List<IMessage> messages) {
-		if (! typeMapping().attributeMappingKeyAllowed(getKey())) {
+		if (! getTypeMapping().attributeMappingKeyAllowed(getKey())) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

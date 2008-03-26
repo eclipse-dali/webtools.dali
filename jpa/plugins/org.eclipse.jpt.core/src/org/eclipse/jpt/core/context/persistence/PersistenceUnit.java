@@ -30,7 +30,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 {
 	// **************** parent *************************************************
 	
-	Persistence parent();
+	Persistence getParent();
 	
 	
 	// **************** name ***************************************************

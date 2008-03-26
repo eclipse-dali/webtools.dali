@@ -28,16 +28,16 @@ public interface JpaNode extends Node, IAdaptable
 	/**
 	 * Return the JPA project the node belongs to.
 	 */
-	JpaProject jpaProject();
+	JpaProject getJpaProject();
 
 	/**
 	 * Return the resource that most directly contains the node.
 	 * This is used by JpaHelper.
 	 */
-	IResource resource();
+	IResource getResource();
 	
 	
 	// ********** covariant overrides **********
 	
-	JpaNode parent();
+	JpaNode getParent();
 }

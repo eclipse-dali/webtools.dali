@@ -182,7 +182,7 @@ public class AddPersistentClassDialog extends StatusDialog
 	}
 	
 	private JpaProject getJpaProject() {
-		return this.entityMappings.jpaProject();
+		return this.entityMappings.getJpaProject();
 	}
 	
 	public String getClassName() {
@@ -195,7 +195,7 @@ public class AddPersistentClassDialog extends StatusDialog
 	}
 	
 	protected IType chooseType() {
-		IJavaElement[] elements= new IJavaElement[] { getJpaProject().javaProject() };
+		IJavaElement[] elements= new IJavaElement[] { getJpaProject().getJavaProject() };
 		IJavaSearchScope scope= SearchEngine.createJavaSearchScope(elements);
 		IProgressService service = PlatformUI.getWorkbench().getProgressService();
 		
@@ -233,7 +233,7 @@ public class AddPersistentClassDialog extends StatusDialog
 		
 		IType type;
 		try {
-			type = getJpaProject().javaProject().findType(className);
+			type = getJpaProject().getJavaProject().findType(className);
 		}
 		catch (JavaModelException jme) {
 			type = null;

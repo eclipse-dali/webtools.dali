@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface JavaNamedColumn extends NamedColumn, JavaJpaContextNode
 {
 
-	Owner owner();
+	Owner getOwner();
 	
 	/**
 	 * Return the (best guess) text location of the column's name.

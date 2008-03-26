@@ -104,7 +104,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	@Override
-	public EntityMappings entityMappings() {
+	public EntityMappings getEntityMappings() {
 		return this;
 	}
 	
@@ -481,9 +481,9 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		this.specifiedSchema = entityMappings.getSchema();
 		this.specifiedCatalog = entityMappings.getCatalog();
 		this.specifiedAccess = this.specifiedAccess(entityMappings);
-		this.defaultAccess = persistenceUnit().getDefaultAccess();
-		this.defaultCatalog = persistenceUnit().getDefaultCatalog();
-		this.defaultSchema = persistenceUnit().getDefaultSchema();
+		this.defaultAccess = getPersistenceUnit().getDefaultAccess();
+		this.defaultCatalog = getPersistenceUnit().getDefaultCatalog();
+		this.defaultSchema = getPersistenceUnit().getDefaultSchema();
 		this.initializePersistentTypes(entityMappings);
 		this.initializeTableGenerators(entityMappings);
 		this.initializeSequenceGenerators(entityMappings);
@@ -554,9 +554,9 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		this.setSpecifiedCatalog(entityMappings.getCatalog());
 		this.setSpecifiedAccess(this.specifiedAccess(entityMappings));
 		this.persistenceUnitMetadata.update(entityMappings);
-		this.setDefaultAccess(persistenceUnit().getDefaultAccess());
-		this.setDefaultCatalog(persistenceUnit().getDefaultCatalog());
-		this.setDefaultSchema(persistenceUnit().getDefaultSchema());
+		this.setDefaultAccess(getPersistenceUnit().getDefaultAccess());
+		this.setDefaultCatalog(getPersistenceUnit().getDefaultCatalog());
+		this.setDefaultSchema(getPersistenceUnit().getDefaultSchema());
 		this.updatePersistentTypes(entityMappings);
 		this.updateTableGenerators(entityMappings);
 		this.updateSequenceGenerators(entityMappings);
@@ -720,25 +720,25 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	protected void updatePersistenceUnitGeneratorsAndQueries() {
 		for (Generator generator : CollectionTools.iterable(tableGenerators())) {
 			if (generator.getName() != null) {
-				persistenceUnit().addGenerator(generator);
+				getPersistenceUnit().addGenerator(generator);
 			}
 		}
 		
 		for (Generator generator : CollectionTools.iterable(sequenceGenerators())) {
 			if (generator.getName() != null) {
-				persistenceUnit().addGenerator(generator);
+				getPersistenceUnit().addGenerator(generator);
 			}
 		}
 		
 		for (Query query : CollectionTools.iterable(namedQueries())) {
 			if (query.getName() != null) {
-				persistenceUnit().addQuery(query);
+				getPersistenceUnit().addQuery(query);
 			}
 		}
 		
 		for (Query query : CollectionTools.iterable(namedNativeQueries())) {
 			if (query.getName() != null) {
-				persistenceUnit().addQuery(query);
+				getPersistenceUnit().addQuery(query);
 			}
 		}
 	}
@@ -782,7 +782,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	
 	@SuppressWarnings("unchecked")
 	protected void addGeneratorMessages(List<IMessage> messages) {
-		List<Generator> masterList = CollectionTools.list(persistenceUnit().allGenerators());
+		List<Generator> masterList = CollectionTools.list(getPersistenceUnit().allGenerators());
 		
 		for (Iterator<OrmGenerator> stream = new CompositeIterator<OrmGenerator>(this.tableGenerators(), this.sequenceGenerators()); stream.hasNext() ; ) {
 			OrmGenerator current = stream.next();
@@ -806,7 +806,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	
 	@SuppressWarnings("unchecked")
 	protected void addQueryMessages(List<IMessage> messages) {
-		List<Query> masterList = CollectionTools.list(persistenceUnit().allQueries());
+		List<Query> masterList = CollectionTools.list(getPersistenceUnit().allQueries());
 		
 		for (Iterator<OrmQuery> stream = new CompositeIterator<OrmQuery>(this.namedQueries(), this.namedNativeQueries()); stream.hasNext() ; ) {
 			OrmQuery current = stream.next();

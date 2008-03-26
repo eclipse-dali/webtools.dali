@@ -46,7 +46,7 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	}
 	
 	protected JavaEntity javaEntity() {
-		return (JavaEntity) super.parent();
+		return (JavaEntity) super.getParent();
 	}
 
 	@Override
@@ -123,7 +123,7 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	
 	public TextRange validationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = columnResource().textRange(astRoot);
-		return (textRange != null) ? textRange : this.owner().validationTextRange(astRoot);	
+		return (textRange != null) ? textRange : this.getOwner().validationTextRange(astRoot);	
 	}
 
 	

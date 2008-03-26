@@ -24,8 +24,8 @@ public class NullEnumerated extends AbstractJavaResourceNode implements Enumerat
 	}
 
 	@Override
-	public JavaResourcePersistentMember parent() {
-		return (JavaResourcePersistentMember) super.parent();
+	public JavaResourcePersistentMember getParent() {
+		return (JavaResourcePersistentMember) super.getParent();
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -49,7 +49,7 @@ public class NullEnumerated extends AbstractJavaResourceNode implements Enumerat
 	}
 		
 	protected Enumerated createEnumeratedResource() {
-		return (Enumerated) parent().addAnnotation(getAnnotationName());
+		return (Enumerated) getParent().addAnnotation(getAnnotationName());
 	}
 
 

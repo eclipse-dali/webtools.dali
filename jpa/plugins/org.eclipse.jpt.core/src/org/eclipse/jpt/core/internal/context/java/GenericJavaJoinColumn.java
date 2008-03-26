@@ -77,16 +77,16 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 
 
 	@Override
-	public JavaJoinColumn.Owner owner() {
-		return (JavaJoinColumn.Owner) super.owner();
+	public JavaJoinColumn.Owner getOwner() {
+		return (JavaJoinColumn.Owner) super.getOwner();
 	}
 
 	public boolean isVirtual() {
-		return owner().isVirtual(this);
+		return getOwner().isVirtual(this);
 	}
 
 	public Table dbReferencedColumnTable() {
-		return owner().dbReferencedColumnTable();
+		return getOwner().dbReferencedColumnTable();
 	}
 
 	public Column dbReferencedColumn() {
@@ -96,7 +96,7 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 
 	@Override
 	public boolean tableIsAllowed() {
-		return this.owner().tableIsAllowed();
+		return this.getOwner().tableIsAllowed();
 	}
 
 	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
@@ -104,7 +104,7 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	}
 
 	private Iterator<String> candidateReferencedColumnNames() {
-		Table table = this.owner().dbReferencedColumnTable();
+		Table table = this.getOwner().dbReferencedColumnTable();
 		return (table != null) ? table.columnNames() : EmptyIterator.<String> instance();
 	}
 
@@ -134,7 +134,7 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 
 	public TextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
 		TextRange textRange = columnResource().referencedColumnNameTextRange(astRoot);
-		return (textRange != null) ? textRange : owner().validationTextRange(astRoot);
+		return (textRange != null) ? textRange : getOwner().validationTextRange(astRoot);
 	}
 
 	public TextRange validationTextRange(CompilationUnit astRoot) {
@@ -160,22 +160,22 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	
 	@Override
 	protected String defaultName() {
-		RelationshipMapping relationshipMapping = owner().relationshipMapping();
+		RelationshipMapping relationshipMapping = getOwner().getRelationshipMapping();
 		if (relationshipMapping == null) {
 			return null;
 		}
-		if (!owner().relationshipMapping().isRelationshipOwner()) {
+		if (!getOwner().getRelationshipMapping().isRelationshipOwner()) {
 			return null;
 		}
 		return RelationshipMappingTools.buildJoinColumnDefaultName(this);
 	}
 	
 	protected String defaultReferencedColumnName() {
-		RelationshipMapping relationshipMapping = owner().relationshipMapping();
+		RelationshipMapping relationshipMapping = getOwner().getRelationshipMapping();
 		if (relationshipMapping == null) {
 			return null;
 		}
-		if (!owner().relationshipMapping().isRelationshipOwner()) {
+		if (!getOwner().getRelationshipMapping().isRelationshipOwner()) {
 			return null;
 		}
 		return RelationshipMappingTools.buildJoinColumnDefaultReferencedColumnName(this);
@@ -183,11 +183,11 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	
 	@Override
 	protected String defaultTable() {
-		RelationshipMapping relationshipMapping = owner().relationshipMapping();
+		RelationshipMapping relationshipMapping = getOwner().getRelationshipMapping();
 		if (relationshipMapping == null) {
 			return null;
 		}
-		if (!owner().relationshipMapping().isRelationshipOwner()) {
+		if (!getOwner().getRelationshipMapping().isRelationshipOwner()) {
 			return null;
 		}
 		return super.defaultTable();

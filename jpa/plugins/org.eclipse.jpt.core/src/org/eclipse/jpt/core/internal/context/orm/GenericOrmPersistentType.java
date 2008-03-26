@@ -102,7 +102,7 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 		if (className.equals(fullyQualifiedTypeName)) {
 			return true;
 		}
-		if ((entityMappings().getPackage() + className).equals(fullyQualifiedTypeName)) {
+		if ((getEntityMappings().getPackage() + className).equals(fullyQualifiedTypeName)) {
 			return true;
 		}
 		return false;
@@ -139,7 +139,7 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 		}
 		OrmTypeMapping oldMapping = getMapping();
 		this.ormTypeMapping = buildOrmTypeMapping(newMappingKey);
-		entityMappings().changeMapping(this, oldMapping, this.ormTypeMapping);
+		getEntityMappings().changeMapping(this, oldMapping, this.ormTypeMapping);
 		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.ormTypeMapping);
 	}
 	
@@ -778,7 +778,7 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	}
 	
 	@Override
-	public OrmPersistentType ormPersistentType() {
+	public OrmPersistentType getOrmPersistentType() {
 		return this;
 	}
 	

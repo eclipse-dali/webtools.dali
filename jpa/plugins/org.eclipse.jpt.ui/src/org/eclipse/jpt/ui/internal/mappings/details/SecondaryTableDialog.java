@@ -119,8 +119,8 @@ public class SecondaryTableDialog extends Dialog {
 	}
 
 	private ConnectionProfile getConnectionProfile() {
-		JpaProject project = (this.secondaryTable == null) ? this.entity.jpaProject() : this.secondaryTable.jpaProject();
-		return project.connectionProfile();
+		JpaProject project = (this.secondaryTable == null) ? this.entity.getJpaProject() : this.secondaryTable.getJpaProject();
+		return project.getConnectionProfile();
 	}
 
 	protected Schema getTableSchema() {

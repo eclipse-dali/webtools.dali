@@ -55,7 +55,7 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	}
 	
 	protected void initializeDefaultMapping(JavaResourcePersistentAttribute persistentAttributeResource) {
-		this.defaultMapping = jpaPlatform().buildDefaultJavaAttributeMapping(this);
+		this.defaultMapping = getJpaPlatform().buildDefaultJavaAttributeMapping(this);
 		this.defaultMapping.initializeFromResource(persistentAttributeResource);
 	}
 
@@ -69,7 +69,7 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	}
 	
 	public JavaPersistentType persistentType() {
-		return (JavaPersistentType) this.parent();
+		return (JavaPersistentType) this.getParent();
 	}
 
 	public JavaTypeMapping typeMapping() {
@@ -251,10 +251,10 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	}
 	
 	protected void updateDefaultMapping(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		String defaultMappingKey = jpaPlatform().defaultJavaAttributeMappingKey(this);
+		String defaultMappingKey = getJpaPlatform().defaultJavaAttributeMappingKey(this);
 		if (getDefaultMapping().getKey() != defaultMappingKey) {
 			JavaAttributeMapping oldDefaultMapping = this.defaultMapping;
-			this.defaultMapping = jpaPlatform().buildDefaultJavaAttributeMapping(this);
+			this.defaultMapping = getJpaPlatform().buildDefaultJavaAttributeMapping(this);
 			this.defaultMapping.initializeFromResource(resourcePersistentAttribute);
 			firePropertyChanged(PersistentAttribute.DEFAULT_MAPPING_PROPERTY, oldDefaultMapping, this.defaultMapping);
 		}
@@ -275,14 +275,14 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		if (key == MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
 			return null;
 		}
-		return jpaPlatform().buildJavaAttributeMappingFromMappingKey(key, this);
+		return getJpaPlatform().buildJavaAttributeMappingFromMappingKey(key, this);
 	}
 
 	protected JavaAttributeMapping createJavaAttributeMappingFromAnnotation(String annotationName, JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		if (annotationName == null) {
 			return null;
 		}
-		JavaAttributeMapping mapping = jpaPlatform().buildJavaAttributeMappingFromAnnotation(annotationName, this);
+		JavaAttributeMapping mapping = getJpaPlatform().buildJavaAttributeMappingFromAnnotation(annotationName, this);
 		mapping.initializeFromResource(resourcePersistentAttribute);
 		return mapping;
 	}

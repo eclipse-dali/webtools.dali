@@ -81,7 +81,7 @@ public class GenericNavigatorItemContentProviderFactory
 		
 		@Override
 		public PersistenceXml getParent() {
-			return (PersistenceXml) ((PersistenceUnit) model()).persistenceUnit().parent();
+			return (PersistenceXml) ((PersistenceUnit) model()).getPersistenceUnit().getParent();
 		}
 		
 		@Override

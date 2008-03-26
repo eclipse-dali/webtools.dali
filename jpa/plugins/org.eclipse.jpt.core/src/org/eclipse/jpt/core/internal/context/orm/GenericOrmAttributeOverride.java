@@ -47,10 +47,10 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 	}
 	
 	public OrmAttributeOverride setVirtual(boolean virtual) {
-		return (OrmAttributeOverride) owner().setVirtual(virtual, this);
+		return (OrmAttributeOverride) getOwner().setVirtual(virtual, this);
 	}
 
-	public Owner owner() {
+	public Owner getOwner() {
 		return this.owner;
 	}
 	
@@ -75,15 +75,15 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 		return this.column;
 	}
 
-	public TypeMapping typeMapping() {
-		return owner().typeMapping();
+	public TypeMapping getTypeMapping() {
+		return getOwner().getTypeMapping();
 	}
 
-	public Table dbTable(String tablename) {
-		return this.typeMapping().dbTable(getColumn().getTable());
+	public Table getDbTable(String tablename) {
+		return this.getTypeMapping().getDbTable(getColumn().getTable());
 	}
 	
-	public String defaultColumnName() {
+	public String getDefaultColumnName() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -94,7 +94,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 	}
 
 	public boolean isVirtual() {
-		return owner().isVirtual(this);
+		return getOwner().isVirtual(this);
 	}
 
 //	@Override
@@ -153,7 +153,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 		String table = column.getTable();
 		boolean doContinue = connectionProfileIsActive();
 		
-		if (doContinue && typeMapping().tableNameIsInvalid(table)) {
+		if (doContinue && getTypeMapping().tableNameIsInvalid(table)) {
 			if (isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(

@@ -151,7 +151,7 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 	}
 
 	public void updateEnbabledState() {
-		if (subject() == null || subject().parent() == null) {
+		if (subject() == null || subject().getParent() == null) {
 			return;
 		}
 		boolean enabled = !subject().isVirtual();

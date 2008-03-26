@@ -115,7 +115,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	protected OrmResource ormResource() {
-		return this.ormArtifactEdit.getResource(JptCorePlugin.ormXmlDeploymentURI(jpaProject().project()));
+		return this.ormArtifactEdit.getResource(JptCorePlugin.ormXmlDeploymentURI(jpaProject().getProject()));
 	}
 	
 	protected XmlPersistence xmlPersistence() {
@@ -131,7 +131,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	protected PersistenceUnit persistenceUnit() {
-		return rootContext().persistenceXml().getPersistence().persistenceUnits().next();
+		return rootContext().getPersistenceXml().getPersistence().persistenceUnits().next();
 	}
 	
 	protected ClassRef classRef() {
@@ -169,7 +169,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 
 	protected JpaRootContextNode rootContext() {
-		return (JpaRootContextNode) getJavaProject().getJpaProject().rootContext();
+		return (JpaRootContextNode) getJavaProject().getJpaProject().getRootContext();
 	}
 	
 	@Override

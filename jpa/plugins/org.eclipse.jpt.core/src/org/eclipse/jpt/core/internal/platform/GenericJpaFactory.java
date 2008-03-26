@@ -245,7 +245,7 @@ public class GenericJpaFactory implements JpaFactory
 	}
 	
 	public ResourceModel buildResourceModel(JpaProject jpaProject, IFile file) {
-		if (! JavaCore.create(jpaProject.project()).isOnClasspath(file)) {
+		if (! JavaCore.create(jpaProject.getProject()).isOnClasspath(file)) {
 			throw new IllegalArgumentException("The file" + file + " is not on the project classpath");
 		}
 		IContentType contentType = this.contentType(file);
@@ -272,8 +272,8 @@ public class GenericJpaFactory implements JpaFactory
 	
 	protected ResourceModel buildJavaResourceModel(JpaProject jpaProject, IFile file) {
 		return new JavaResourceModel(
-				file, jpaProject.jpaPlatform().annotationProvider(), 
-				jpaProject.modifySharedDocumentCommandExecutorProvider(),
+				file, jpaProject.getJpaPlatform().getAnnotationProvider(), 
+				jpaProject.getModifySharedDocumentCommandExecutorProvider(),
 				DefaultAnnotationEditFormatter.instance());
 	}
 	

@@ -122,7 +122,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 
 	@Override
-	public PersistenceUnit persistenceUnit() {
+	public PersistenceUnit getPersistenceUnit() {
 		return this;
 	}
 	
@@ -130,8 +130,8 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	// **************** parent *************************************************
 	
 	@Override
-	public Persistence parent() {
-		return (Persistence) super.parent();
+	public Persistence getParent() {
+		return (Persistence) super.getParent();
 	}
 	
 	
@@ -715,8 +715,8 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 			specifiedClassRefs.add(buildClassRef(xmlJavaClassRef));
 		}
 		
-		if (jpaProject().discoversAnnotatedClasses() && !isExcludeUnlistedClasses()) {
-			for (IType type : CollectionTools.iterable(jpaProject().annotatedClasses())) {
+		if (getJpaProject().discoversAnnotatedClasses() && !isExcludeUnlistedClasses()) {
+			for (IType type : CollectionTools.iterable(getJpaProject().annotatedClasses())) {
 				if (! classIsSpecified(type.getFullyQualifiedName())) {
 					impliedClassRefs.add(buildClassRef(type.getFullyQualifiedName()));
 				}
@@ -859,7 +859,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected boolean impliedMappingFileExists() {
-		OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForRead(jpaProject().project());
+		OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForRead(getJpaProject().getProject());
 		OrmResource or = oae.getResource(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 		boolean exists =  or != null && or.exists();
 		oae.dispose();
@@ -889,10 +889,10 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		}
 		
 		Iterator<ClassRef> impliedRefs = impliedClassRefs();
-		Iterator<IType> annotatedClasses = jpaProject().annotatedClasses();
+		Iterator<IType> annotatedClasses = getJpaProject().annotatedClasses();
 		
 		
-		if (jpaProject().discoversAnnotatedClasses() && !isExcludeUnlistedClasses()) {
+		if (getJpaProject().discoversAnnotatedClasses() && !isExcludeUnlistedClasses()) {
 			while (impliedRefs.hasNext()) {
 				ClassRef classRef = impliedRefs.next();
 				boolean updated = false;
@@ -994,7 +994,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected Schema projectDefaultSchema() {
-		return jpaProject().defaultSchema();
+		return getJpaProject().getDefaultSchema();
 	}
 
 	protected String catalog(PersistenceUnitDefaults persistenceUnitDefaults) {
@@ -1007,7 +1007,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 
 	protected String projectDefaultCatalogName() {
-		Catalog catalog = jpaProject().connectionProfile().defaultCatalog();
+		Catalog catalog = getJpaProject().getConnectionProfile().defaultCatalog();
 		return (catalog == null) ? null : catalog.name();
 	}
 	

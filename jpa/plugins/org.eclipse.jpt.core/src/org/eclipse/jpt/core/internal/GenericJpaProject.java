@@ -163,8 +163,8 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	}
 	
 	@Override
-	public IResource resource() {
-		return project();
+	public IResource getResource() {
+		return getProject();
 	}
 
 	protected Vector<JpaFile> buildEmptyJpaFiles() {
@@ -225,38 +225,38 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	}
 	
 	@Override
-	public JpaProject jpaProject() {
+	public JpaProject getJpaProject() {
 		return this;
 	}
 
-	public String name() {
+	public String getName() {
 		return this.project.getName();
 	}
 
-	public IProject project() {
+	public IProject getProject() {
 		return this.project;
 	}
 
-	public IJavaProject javaProject() {
+	public IJavaProject getJavaProject() {
 		return JavaCore.create(this.project);
 	}
 
 	@Override
-	public JpaPlatform jpaPlatform() {
+	public JpaPlatform getJpaPlatform() {
 		return this.jpaPlatform;
 	}
 
-	public JpaDataSource dataSource() {
+	public JpaDataSource getDataSource() {
 		return this.dataSource;
 	}
 
 	@Override
-	public ConnectionProfile connectionProfile() {
-		return this.dataSource.connectionProfile();
+	public ConnectionProfile getConnectionProfile() {
+		return this.dataSource.getConnectionProfile();
 	}
 
-	public Schema defaultSchema() {
-		return connectionProfile().defaultSchema();
+	public Schema getDefaultSchema() {
+		return getConnectionProfile().defaultSchema();
 	}
 	
 	@Override
@@ -266,7 +266,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.name());
+		sb.append(this.getName());
 	}
 
 
@@ -296,7 +296,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	public JpaFile jpaFile(IFile file) {
 		synchronized (this.jpaFiles) {
 			for (JpaFile jpaFile : this.jpaFiles) {
-				if (jpaFile.file().equals(file)) {
+				if (jpaFile.getFile().equals(file)) {
 					return jpaFile;
 				}
 			}
@@ -308,7 +308,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		return new FilteringIterator<JpaFile, JpaFile>(this.jpaFiles()) {
 			@Override
 			protected boolean accept(JpaFile o) {
-				return o.resourceType().equals(resourceType);
+				return o.getResourceType().equals(resourceType);
 			}
 		};
 	}
@@ -337,7 +337,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 			return null;
 		}
 		this.jpaFiles.add(jpaFile);
-		jpaFile.resourceModel().addResourceModelChangeListener(this.resourceModelListener);
+		jpaFile.getResourceModel().addResourceModelChangeListener(this.resourceModelListener);
 		return jpaFile;
 	}
 
@@ -345,9 +345,9 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	 * Remove the specified JPA file and dispose it.
 	 */
 	protected void removeJpaFile(JpaFile jpaFile) {
-		jpaFile.resourceModel().removeResourceModelChangeListener(this.resourceModelListener);
+		jpaFile.getResourceModel().removeResourceModelChangeListener(this.resourceModelListener);
 		if ( ! this.removeItemFromCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION)) {
-			throw new IllegalArgumentException("JPA file: " + jpaFile.file().getName());
+			throw new IllegalArgumentException("JPA file: " + jpaFile.getFile().getName());
 		}
 		for (Iterator<JpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
 			stream.next().fileRemoved(jpaFile);
@@ -362,7 +362,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 
 	// ********** context model **********
 
-	public JpaRootContextNode rootContext() {
+	public JpaRootContextNode getRootContext() {
 		return this.rootContextNode;
 	}
 
@@ -375,7 +375,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 					@Override
 					protected IType transform(JavaResourcePersistentType next) {
 						try {
-							return javaProject().findType(next.getQualifiedName(), new NullProgressMonitor());
+							return getJavaProject().findType(next.getQualifiedName(), new NullProgressMonitor());
 						}
 						catch (JavaModelException jme) {
 							return null;
@@ -412,7 +412,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		return new TransformationIterator<JpaFile, JpaCompilationUnit>(this.javaJpaFiles()) {
 			@Override
 			protected JpaCompilationUnit transform(JpaFile jpaFile) {
-				return ((JavaResourceModel) jpaFile.resourceModel()).resource();
+				return ((JavaResourceModel) jpaFile.getResourceModel()).getResource();
 			}
 		};
 	}
@@ -460,7 +460,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		addProjectLevelMessages(messages);
 		
 		//context model validation
-		rootContext().addToMessages(messages);
+		getRootContext().addToMessages(messages);
 	}
 
 	protected void addProjectLevelMessages(List<IMessage> messages) {
@@ -476,7 +476,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	protected boolean okToProceedForConnectionValidation = true;
 	
 	protected void addNoConnectionMessage(List<IMessage> messages) {
-		if (! this.dataSource().hasAConnection()) {
+		if (! this.getDataSource().hasAConnection()) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
@@ -488,12 +488,12 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	}
 	
 	protected void addInactiveConnectionMessage(List<IMessage> messages) {
-		if (okToProceedForConnectionValidation && ! this.dataSource().connectionProfileIsActive()) {
+		if (okToProceedForConnectionValidation && ! this.getDataSource().connectionProfileIsActive()) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
 						JpaValidationMessages.PROJECT_INACTIVE_CONNECTION,
-						new String[] {this.dataSource().connectionProfileName()},
+						new String[] {this.getDataSource().getConnectionProfileName()},
 						this)
 				);
 		}
@@ -517,7 +517,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 
 	protected static final String WEB_PROJECT_ROOT_DEPLOY_LOCATION = J2EEConstants.WEB_INF_CLASSES;
 
-	public String rootDeployLocation() {
+	public String getRootDeployLocation() {
 		return this.isWebProject() ? WEB_PROJECT_ROOT_DEPLOY_LOCATION : "";
 	}
 
@@ -624,7 +624,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		this.threadLocalModifySharedDocumentCommandExecutor.set(commandExecutor);
 	}
 
-	public CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
+	public CommandExecutorProvider getModifySharedDocumentCommandExecutorProvider() {
 		return this.modifySharedDocumentCommandExecutorProvider;
 	}
 
@@ -641,7 +641,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 
 	// ********** project "update" **********
 
-	public Updater updater() {
+	public Updater getUpdater() {
 		return this.updater;
 	}
 
@@ -665,7 +665,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	 */
 	public IStatus update(IProgressMonitor monitor) {
 		try {
-			this.rootContext().update(monitor);
+			this.getRootContext().update(monitor);
 		} catch (OperationCanceledException ex) {
 			return Status.CANCEL_STATUS;
 		} catch (Throwable ex) {

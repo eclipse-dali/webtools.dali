@@ -28,7 +28,7 @@ public class RemovePersistentClassAction
 	}
 	
 	public void run(IAction action) {
-		this.persistentType.entityMappings().removeOrmPersistentType(this.persistentType);
+		this.persistentType.getEntityMappings().removeOrmPersistentType(this.persistentType);
 	}
 	
 	public void selectionChanged(IAction action, ISelection selection) {

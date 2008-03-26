@@ -27,8 +27,8 @@ public abstract class AbstractJavaResourceNode extends AbstractNode
 	// **************** overrides **********************************************
 	
 	@Override
-	public JavaResourceNode parent() {
-		return (JavaResourceNode) super.parent();
+	public JavaResourceNode getParent() {
+		return (JavaResourceNode) super.getParent();
 	}
 	
 	@Override

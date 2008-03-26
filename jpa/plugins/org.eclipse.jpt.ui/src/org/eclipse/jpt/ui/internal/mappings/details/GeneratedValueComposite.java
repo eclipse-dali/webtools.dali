@@ -240,7 +240,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 				generatorNamePropertyChangeListener
 			);
 
-			generatedValue.persistenceUnit().removeListChangeListener(
+			generatedValue.getPersistenceUnit().removeListChangeListener(
 				PersistenceUnit.GENERATORS_LIST,
 				generatorsListChangeListener
 			);
@@ -285,7 +285,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 				generatorNamePropertyChangeListener
 			);
 
-			generatedValue.persistenceUnit().addListChangeListener(
+			generatedValue.getPersistenceUnit().addListChangeListener(
 				PersistenceUnit.GENERATORS_LIST,
 				generatorsListChangeListener
 			);
@@ -401,7 +401,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 	private String[] sortedUniqueGeneratorNames() {
 		return CollectionTools.array(
 			CollectionTools.sortedSet(
-				new TransformationIterator<Generator, String>(subject().persistenceUnit().allGenerators()) {
+				new TransformationIterator<Generator, String>(subject().getPersistenceUnit().allGenerators()) {
 					@Override
 					protected String transform(Generator next) {
 						return next.getName();

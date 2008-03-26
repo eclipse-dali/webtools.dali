@@ -52,12 +52,12 @@ public class GenericJavaTable extends AbstractJavaTable implements JavaTable
 	}
 	
 	@Override
-	public JavaEntity parent() {
-		return (JavaEntity) super.parent();
+	public JavaEntity getParent() {
+		return (JavaEntity) super.getParent();
 	}
 	
 	protected JavaEntity javaEntity() {
-		return parent();
+		return getParent();
 	}
 	
 	protected Entity rootEntity() {

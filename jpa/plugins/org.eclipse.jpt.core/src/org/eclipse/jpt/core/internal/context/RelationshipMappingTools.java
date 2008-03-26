@@ -54,7 +54,7 @@ public class RelationshipMappingTools
 		if (!relationshipMapping.isRelationshipOwner()) {
 			return null;
 		}
-		String owningTableName = relationshipMapping.typeMapping().tableName();
+		String owningTableName = relationshipMapping.getTypeMapping().tableName();
 		if (owningTableName == null) {
 			return null;
 		}
@@ -80,10 +80,10 @@ public class RelationshipMappingTools
 	//     or
 	// <target entity name>_<referenced column name>
 	public static String buildJoinColumnDefaultName(JoinColumn joinColumn) {
-		if (joinColumn.owner().joinColumnsSize() != 1) {
+		if (joinColumn.getOwner().joinColumnsSize() != 1) {
 			return null;
 		}
-		String prefix = joinColumn.owner().attributeName();
+		String prefix = joinColumn.getOwner().getAttributeName();
 		if (prefix == null) {
 			prefix = targetEntityName(joinColumn);
 		}
@@ -105,12 +105,12 @@ public class RelationshipMappingTools
 	 * return the name of the target entity
 	 */
 	protected static String targetEntityName(JoinColumn joinColumn) {
-		Entity targetEntity = joinColumn.owner().targetEntity();
+		Entity targetEntity = joinColumn.getOwner().getTargetEntity();
 		return (targetEntity == null) ? null : targetEntity.getName();
 	}
 
 	public static String buildJoinColumnDefaultReferencedColumnName(JoinColumn joinColumn) {
-		if (joinColumn.owner().joinColumnsSize() != 1) {
+		if (joinColumn.getOwner().joinColumnsSize() != 1) {
 			return null;
 		}
 		return targetPrimaryKeyColumnName(joinColumn);
@@ -120,7 +120,7 @@ public class RelationshipMappingTools
 	 * return the name of the single primary key column of the target entity
 	 */
 	protected static String targetPrimaryKeyColumnName(JoinColumn joinColumn) {
-		Entity targetEntity = joinColumn.owner().targetEntity();
+		Entity targetEntity = joinColumn.getOwner().getTargetEntity();
 		return (targetEntity == null) ? null : targetEntity.primaryKeyColumnName();
 	}
 }

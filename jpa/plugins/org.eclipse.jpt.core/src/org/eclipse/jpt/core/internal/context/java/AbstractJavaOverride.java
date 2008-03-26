@@ -70,20 +70,20 @@ public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode im
 	}
 
 	public boolean isVirtual() {
-		return owner().isVirtual(this);
+		return getOwner().isVirtual(this);
 	}
 
 	public BaseOverride setVirtual(boolean virtual) {
-		return owner().setVirtual(virtual, this);
+		return getOwner().setVirtual(virtual, this);
 	}
 	
-	public Owner owner() {
+	public Owner getOwner() {
 		return this.owner;
 	}
 	
 	@Override
-	public JavaJpaContextNode parent() {
-		return (JavaJpaContextNode) super.parent();
+	public JavaJpaContextNode getParent() {
+		return (JavaJpaContextNode) super.getParent();
 	}
 
 	protected abstract Iterator<String> candidateNames();
@@ -114,7 +114,7 @@ public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode im
 	
 	public TextRange validationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = this.overrideResource.textRange(astRoot);
-		return (textRange != null) ? textRange : this.parent().validationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getParent().validationTextRange(astRoot);
 	}
 	
 	@Override

@@ -85,7 +85,7 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	}
 
 	@Override
-	public OrmBaseJoinColumn.Owner owner() {
+	public OrmBaseJoinColumn.Owner getOwner() {
 		return (OrmBaseJoinColumn.Owner) this.owner;
 	}
 
@@ -95,12 +95,12 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	}
 
 	public Table dbReferencedColumnTable() {
-		return owner().dbReferencedColumnTable();
+		return getOwner().dbReferencedColumnTable();
 	}
 
 	@Override
 	protected String tableName() {
-		return this.owner().typeMapping().tableName();
+		return this.getOwner().getTypeMapping().tableName();
 	}
 
 	public boolean isReferencedColumnResolved() {
@@ -114,12 +114,12 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 				return textRange;
 			}
 		}
-		return owner().validationTextRange();
+		return getOwner().validationTextRange();
 	}
 
 		
 	public boolean isVirtual() {
-		return owner().isVirtual(this);
+		return getOwner().isVirtual(this);
 	}
 	
 	@Override

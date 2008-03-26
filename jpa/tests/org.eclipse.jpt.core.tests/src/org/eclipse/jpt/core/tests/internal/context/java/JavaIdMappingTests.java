@@ -508,17 +508,17 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 		assertNull(idMapping.getSequenceGenerator());
-		assertEquals(0, CollectionTools.size(idMapping.persistenceUnit().allGenerators()));
+		assertEquals(0, CollectionTools.size(idMapping.getPersistenceUnit().allGenerators()));
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		attributeResource.addAnnotation(JPA.SEQUENCE_GENERATOR);
 		assertNotNull(idMapping.getSequenceGenerator());
 		assertEquals(1, attributeResource.annotationsSize());
-		assertEquals(0, CollectionTools.size(idMapping.persistenceUnit().allGenerators()));
+		assertEquals(0, CollectionTools.size(idMapping.getPersistenceUnit().allGenerators()));
 		
 		idMapping.getSequenceGenerator().setName("foo");
-		assertEquals(1, CollectionTools.size(idMapping.persistenceUnit().allGenerators()));
+		assertEquals(1, CollectionTools.size(idMapping.getPersistenceUnit().allGenerators()));
 	}
 	
 	public void testAddSequenceGenerator() throws Exception {
@@ -580,17 +580,17 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 		assertNull(idMapping.getTableGenerator());
-		assertEquals(0, CollectionTools.size(idMapping.persistenceUnit().allGenerators()));
+		assertEquals(0, CollectionTools.size(idMapping.getPersistenceUnit().allGenerators()));
 		
 		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		attributeResource.addAnnotation(JPA.TABLE_GENERATOR);
 		assertNotNull(idMapping.getTableGenerator());		
 		assertEquals(1, attributeResource.annotationsSize());
-		assertEquals(0, CollectionTools.size(idMapping.persistenceUnit().allGenerators()));
+		assertEquals(0, CollectionTools.size(idMapping.getPersistenceUnit().allGenerators()));
 		
 		idMapping.getTableGenerator().setName("foo");
-		assertEquals(1, CollectionTools.size(idMapping.persistenceUnit().allGenerators()));
+		assertEquals(1, CollectionTools.size(idMapping.getPersistenceUnit().allGenerators()));
 	}
 	
 	public void testAddTableGenerator() throws Exception {

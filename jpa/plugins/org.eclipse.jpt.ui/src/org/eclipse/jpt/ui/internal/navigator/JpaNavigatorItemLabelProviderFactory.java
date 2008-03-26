@@ -58,7 +58,7 @@ public class JpaNavigatorItemLabelProviderFactory
 			return null;
 		}
 		
-		JpaPlatform platform = contextNode.jpaProject().jpaPlatform();
+		JpaPlatform platform = contextNode.getJpaProject().getJpaPlatform();
 		String platformId = platform.getId();
 		if (delegates.containsKey(platformId)) {
 			return delegates.get(platformId);

@@ -227,16 +227,16 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		}
 	}
 
-	public Table dbTable(String tableName) {
-		return typeMapping().dbTable(tableName);
+	public Table getDbTable(String tableName) {
+		return getTypeMapping().getDbTable(tableName);
 	}
 
-	public String defaultColumnName() {		
+	public String getDefaultColumnName() {		
 		return attributeName();
 	}
 
 	public String defaultTableName() {
-		return typeMapping().tableName();
+		return getTypeMapping().tableName();
 	}
 	
 	@Override
@@ -351,11 +351,11 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	
 	protected void updatePersistenceUnitGenerators() {
 		if (getTableGenerator() != null && getTableGenerator().getName() != null) {
-			persistenceUnit().addGenerator(getTableGenerator());
+			getPersistenceUnit().addGenerator(getTableGenerator());
 		}
 		
 		if (getSequenceGenerator() != null && getSequenceGenerator().getName() != null) {
-			persistenceUnit().addGenerator(getSequenceGenerator());
+			getPersistenceUnit().addGenerator(getSequenceGenerator());
 		}
 	}
 
@@ -391,7 +391,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		String table = column.getTable();
 		boolean doContinue = this.connectionProfileIsActive();
 		
-		if (doContinue && typeMapping().tableNameIsInvalid(table)) {
+		if (doContinue && getTypeMapping().tableNameIsInvalid(table)) {
 			if (persistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -449,7 +449,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 			return;
 		}
 		
-		for (Generator nextMasterGenerator : CollectionTools.iterable(persistenceUnit().allGenerators())) {
+		for (Generator nextMasterGenerator : CollectionTools.iterable(getPersistenceUnit().allGenerators())) {
 			if (generatorName.equals(nextMasterGenerator.getName())) {
 				return;
 			}
@@ -466,7 +466,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	}
 	
 	protected void addGeneratorMessages(List<IMessage> messages) {
-		List<Generator> masterList = CollectionTools.list(persistenceUnit().allGenerators());
+		List<Generator> masterList = CollectionTools.list(getPersistenceUnit().allGenerators());
 		
 		for (Iterator<OrmGenerator> stream = this.generators(); stream.hasNext() ; ) {
 			OrmGenerator current = stream.next();

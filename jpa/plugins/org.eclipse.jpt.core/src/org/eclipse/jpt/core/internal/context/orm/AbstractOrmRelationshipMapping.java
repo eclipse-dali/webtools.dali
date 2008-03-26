@@ -131,8 +131,8 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	}
 		
 	public Entity getEntity() {
-		if (typeMapping() instanceof Entity) {
-			return (Entity) typeMapping();
+		if (getTypeMapping() instanceof Entity) {
+			return (Entity) getTypeMapping();
 		}
 		return null;
 	}
@@ -179,7 +179,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	protected String defaultTargetEntity() {
 		RelationshipMapping javaMapping = javaRelationshipMapping();
 		if (javaMapping != null) {
-			if (persistentAttribute().isVirtual() && !typeMapping().isMetadataComplete()) {
+			if (persistentAttribute().isVirtual() && !getTypeMapping().isMetadataComplete()) {
 				return javaMapping.getTargetEntity();
 			}
 		}
@@ -199,7 +199,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 		if (qualifiedTargetEntity == null) {
 			return null;
 		}
-		PersistentType persistentType = persistenceUnit().persistentType(qualifiedTargetEntity);
+		PersistentType persistentType = getPersistenceUnit().persistentType(qualifiedTargetEntity);
 		if (persistentType != null && persistentType.mappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
 			return (Entity) persistentType.getMapping();
 		}
@@ -213,7 +213,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 		if (targetEntityIncludesPackage()) {
 			return getTargetEntity();
 		}
-		String package_ = entityMappings().getPackage();
+		String package_ = getEntityMappings().getPackage();
 		if (package_ != null) {
 			return package_ + '.' + getTargetEntity();
 		}

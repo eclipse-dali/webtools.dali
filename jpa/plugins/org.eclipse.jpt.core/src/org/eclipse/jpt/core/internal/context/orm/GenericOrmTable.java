@@ -33,7 +33,7 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 	}
 
 	public OrmEntity ormEntity() {
-		return (OrmEntity) super.parent();
+		return (OrmEntity) super.getParent();
 	}
 	
 	@Override
@@ -103,7 +103,7 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 				return rootEntity.getTable().getSchema();
 			}
 		}
-		return entityMappings().getSchema();
+		return getEntityMappings().getSchema();
 	}
 	
 	@Override
@@ -121,7 +121,7 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 				return rootEntity.getTable().getCatalog();
 			}
 		}
-		return entityMappings().getCatalog();
+		return getEntityMappings().getCatalog();
 	}
 	
 	//*********** Validation *******************************

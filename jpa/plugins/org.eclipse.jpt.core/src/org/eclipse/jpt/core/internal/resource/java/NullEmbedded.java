@@ -43,8 +43,8 @@ public class NullEmbedded extends AbstractJavaResourceNode implements Embedded, 
 	}
 	
 	@Override
-	public JavaResourcePersistentMember parent() {
-		return (JavaResourcePersistentMember) super.parent();
+	public JavaResourcePersistentMember getParent() {
+		return (JavaResourcePersistentMember) super.getParent();
 	}
 
 

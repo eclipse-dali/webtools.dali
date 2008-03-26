@@ -44,13 +44,13 @@ public class NullBasic extends AbstractJavaResourceNode implements Basic, Annota
 	}
 	
 	@Override
-	public JavaResourcePersistentMember parent() {
-		return (JavaResourcePersistentMember) super.parent();
+	public JavaResourcePersistentMember getParent() {
+		return (JavaResourcePersistentMember) super.getParent();
 	}
 	
 	protected Basic createBasicResource() {
-		parent().setMappingAnnotation(getAnnotationName());
-		return (Basic) parent().mappingAnnotation();
+		getParent().setMappingAnnotation(getAnnotationName());
+		return (Basic) getParent().mappingAnnotation();
 	}
 
 	public FetchType getFetch() {

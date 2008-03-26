@@ -253,10 +253,10 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		ormSecondaryTable.setSpecifiedName("FOO");
 		assertNull(ormSecondaryTable.getDefaultSchema());
 		
-		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
+		ormEntity.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
 		assertEquals("FOO", ormSecondaryTable.getDefaultSchema());
 		
-		ormEntity.entityMappings().setSpecifiedSchema("BAR");
+		ormEntity.getEntityMappings().setSpecifiedSchema("BAR");
 		assertEquals("BAR", ormSecondaryTable.getDefaultSchema());
 		
 		SecondaryTable javaSecondaryTable = ormEntity.javaEntity().addSpecifiedSecondaryTable(0);
@@ -264,10 +264,10 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		javaSecondaryTable.setSpecifiedSchema("JAVA_SCHEMA");
 		assertEquals("BAR", ormSecondaryTable.getDefaultSchema()); //schema is not defaulted from underlying java
 		
-		ormEntity.entityMappings().setSpecifiedSchema(null);
+		ormEntity.getEntityMappings().setSpecifiedSchema(null);
 		assertEquals("FOO", ormSecondaryTable.getDefaultSchema());
 
-		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema(null);
+		ormEntity.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema(null);
 		assertNull(ormSecondaryTable.getDefaultSchema());
 	}
 	
@@ -346,10 +346,10 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		ormSecondaryTable.setSpecifiedName("FOO");
 		assertNull(ormSecondaryTable.getDefaultCatalog());
 		
-		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");
+		ormEntity.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");
 		assertEquals("FOO", ormSecondaryTable.getDefaultCatalog());
 		
-		ormEntity.entityMappings().setSpecifiedCatalog("BAR");
+		ormEntity.getEntityMappings().setSpecifiedCatalog("BAR");
 		assertEquals("BAR", ormSecondaryTable.getDefaultCatalog());
 		
 		SecondaryTable javaSecondaryTable = ormEntity.javaEntity().addSpecifiedSecondaryTable(0);
@@ -357,10 +357,10 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		javaSecondaryTable.setSpecifiedCatalog("JAVA_CATALOG");
 		assertEquals("BAR", ormSecondaryTable.getDefaultCatalog()); //schema is not defaulted from underlying java
 		
-		ormEntity.entityMappings().setSpecifiedCatalog(null);
+		ormEntity.getEntityMappings().setSpecifiedCatalog(null);
 		assertEquals("FOO", ormSecondaryTable.getDefaultCatalog());
 
-		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog(null);
+		ormEntity.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog(null);
 		assertNull(ormSecondaryTable.getDefaultCatalog());
 	}
 	

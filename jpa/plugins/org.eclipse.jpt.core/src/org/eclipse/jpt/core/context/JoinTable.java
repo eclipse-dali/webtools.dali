@@ -23,7 +23,7 @@ import java.util.ListIterator;
 public interface JoinTable extends Table
 {
 
-	RelationshipMapping parent();
+	RelationshipMapping getParent();
 	
 	// **************** join columns **************************************
 	

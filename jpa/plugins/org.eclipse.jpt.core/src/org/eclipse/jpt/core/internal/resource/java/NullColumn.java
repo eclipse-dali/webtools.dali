@@ -23,8 +23,8 @@ public class NullColumn extends NullBaseColumn implements ColumnAnnotation, Anno
 	}
 
 	@Override
-	public JavaResourcePersistentMember parent() {
-		return (JavaResourcePersistentMember) super.parent();
+	public JavaResourcePersistentMember getParent() {
+		return (JavaResourcePersistentMember) super.getParent();
 	}
 	
 	public String getAnnotationName() {
@@ -33,7 +33,7 @@ public class NullColumn extends NullBaseColumn implements ColumnAnnotation, Anno
 
 	@Override
 	protected ColumnAnnotation createColumnResource() {
-		return (ColumnAnnotation) parent().addAnnotation(getAnnotationName());
+		return (ColumnAnnotation) getParent().addAnnotation(getAnnotationName());
 	}
 
 	public Integer getLength() {

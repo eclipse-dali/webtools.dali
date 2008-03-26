@@ -44,12 +44,12 @@ public class NullTemporal extends AbstractJavaResourceNode implements Temporal, 
 	}
 	
 	@Override
-	public JavaResourcePersistentMember parent() {
-		return (JavaResourcePersistentMember) super.parent();
+	public JavaResourcePersistentMember getParent() {
+		return (JavaResourcePersistentMember) super.getParent();
 	}
 	
 	protected Temporal createTemporalResource() {
-		return (Temporal) parent().addAnnotation(getAnnotationName());
+		return (Temporal) getParent().addAnnotation(getAnnotationName());
 	}
 
 

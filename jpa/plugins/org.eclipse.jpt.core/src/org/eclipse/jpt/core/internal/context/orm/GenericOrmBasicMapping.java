@@ -191,16 +191,16 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 		return this.column;
 	}
 
-	public String defaultColumnName() {		
+	public String getDefaultColumnName() {		
 		return attributeName();
 	}
 
 	public String defaultTableName() {
-		return typeMapping().tableName();
+		return getTypeMapping().tableName();
 	}
 
-	public Table dbTable(String tableName) {
-		return typeMapping().dbTable(tableName);
+	public Table getDbTable(String tableName) {
+		return getTypeMapping().getDbTable(tableName);
 	}
 	
 	@Override
@@ -288,7 +288,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 		String table = column.getTable();
 		boolean doContinue = connectionProfileIsActive();
 		
-		if (doContinue && typeMapping().tableNameIsInvalid(table)) {
+		if (doContinue && getTypeMapping().tableNameIsInvalid(table)) {
 			if (persistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(

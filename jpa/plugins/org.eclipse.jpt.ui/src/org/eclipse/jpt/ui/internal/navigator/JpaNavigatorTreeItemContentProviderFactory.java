@@ -58,7 +58,7 @@ public class JpaNavigatorTreeItemContentProviderFactory
 			return null;
 		}
 		
-		JpaPlatform platform = contextNode.jpaProject().jpaPlatform();
+		JpaPlatform platform = contextNode.getJpaProject().getJpaPlatform();
 		String platformId = platform.getId();
 		if (delegates.containsKey(platformId)) {
 			return delegates.get(platformId);

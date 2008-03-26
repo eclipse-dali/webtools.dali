@@ -35,7 +35,7 @@ public interface JpaRootContextNode extends JpaContextNode
 	 * this project.
 	 * This may be null. 
 	 */
-	PersistenceXml persistenceXml();
+	PersistenceXml getPersistenceXml();
 	
 	/**
 	 * Add a persistence.xml file to this content and return the content associated

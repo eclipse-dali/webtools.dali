@@ -88,7 +88,7 @@ public class OrmPackageChooser extends AbstractFormPane<EntityMappings>
 
 			@Override
 			protected IPackageFragmentRoot packageFragmentRoot() {
-				IProject project = subject().jpaProject().project();
+				IProject project = subject().getJpaProject().getProject();
 				IJavaProject root = JavaCore.create(project);
 
 				try {

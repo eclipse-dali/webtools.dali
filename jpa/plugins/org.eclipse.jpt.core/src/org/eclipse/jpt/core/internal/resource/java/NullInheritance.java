@@ -24,8 +24,8 @@ public class NullInheritance extends AbstractJavaResourceNode implements Inherit
 	}
 	
 	@Override
-	public JavaResourcePersistentMember parent() {
-		return (JavaResourcePersistentMember) super.parent();
+	public JavaResourcePersistentMember getParent() {
+		return (JavaResourcePersistentMember) super.getParent();
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -60,7 +60,7 @@ public class NullInheritance extends AbstractJavaResourceNode implements Inherit
 	}
 	
 	protected Inheritance createInheritanceResource() {
-		return (Inheritance) parent().addAnnotation(getAnnotationName());
+		return (Inheritance) getParent().addAnnotation(getAnnotationName());
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {

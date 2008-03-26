@@ -319,7 +319,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 			String table = joinColumn.getTable();
 			boolean doContinue = joinColumn.connectionProfileIsActive();
 			
-			if (doContinue && this.typeMapping().tableNameIsInvalid(table)) {
+			if (doContinue && this.getTypeMapping().tableNameIsInvalid(table)) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -364,23 +364,23 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		 * by default, the join column is in the type mapping's primary table
 		 */
 		public String defaultTableName() {
-			return AbstractJavaSingleRelationshipMapping.this.typeMapping().tableName();
+			return AbstractJavaSingleRelationshipMapping.this.getTypeMapping().tableName();
 		}
 
-		public Entity targetEntity() {
+		public Entity getTargetEntity() {
 			return AbstractJavaSingleRelationshipMapping.this.getResolvedTargetEntity();
 		}
 
-		public String attributeName() {
+		public String getAttributeName() {
 			return AbstractJavaSingleRelationshipMapping.this.persistentAttribute().getName();
 		}
 
-		public RelationshipMapping relationshipMapping() {
+		public RelationshipMapping getRelationshipMapping() {
 			return AbstractJavaSingleRelationshipMapping.this;
 		}
 
 		public boolean tableNameIsInvalid(String tableName) {
-			return AbstractJavaSingleRelationshipMapping.this.typeMapping().tableNameIsInvalid(tableName);
+			return AbstractJavaSingleRelationshipMapping.this.getTypeMapping().tableNameIsInvalid(tableName);
 		}
 
 		/**
@@ -390,16 +390,16 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 			return true;
 		}
 
-		public TypeMapping typeMapping() {
-			return AbstractJavaSingleRelationshipMapping.this.typeMapping();
+		public TypeMapping getTypeMapping() {
+			return AbstractJavaSingleRelationshipMapping.this.getTypeMapping();
 		}
 
-		public Table dbTable(String tableName) {
-			return typeMapping().dbTable(tableName);
+		public Table getDbTable(String tableName) {
+			return getTypeMapping().getDbTable(tableName);
 		}
 
 		public Table dbReferencedColumnTable() {
-			Entity targetEntity = targetEntity();
+			Entity targetEntity = getTargetEntity();
 			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
 		}
 		
@@ -407,7 +407,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 			return AbstractJavaSingleRelationshipMapping.this.defaultJoinColumn == joinColumn;
 		}
 		
-		public String defaultColumnName() {
+		public String getDefaultColumnName() {
 			// TODO Auto-generated method stub
 			return null;
 		}

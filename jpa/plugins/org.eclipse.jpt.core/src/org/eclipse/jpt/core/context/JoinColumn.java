@@ -20,7 +20,7 @@ package org.eclipse.jpt.core.context;
  */
 public interface JoinColumn extends BaseColumn, BaseJoinColumn
 {
-	JoinColumn.Owner owner();
+	JoinColumn.Owner getOwner();
 
 	/**
 	 * interface allowing join columns to be used in multiple places
@@ -42,17 +42,17 @@ public interface JoinColumn extends BaseColumn, BaseJoinColumn
 		/**
 		 * return the entity referenced by the join column
 		 */
-		Entity targetEntity();
+		Entity getTargetEntity();
 
 		/**
 		 * return the join column's attribute name
 		 */
-		String attributeName();
+		String getAttributeName();
 
 		/**
 		 * return the relationship mapping for this join column
 		 */
-		RelationshipMapping relationshipMapping();
+		RelationshipMapping getRelationshipMapping();
 		
 		/**
 		 * return the size of the joinColumns collection this join column is a part of

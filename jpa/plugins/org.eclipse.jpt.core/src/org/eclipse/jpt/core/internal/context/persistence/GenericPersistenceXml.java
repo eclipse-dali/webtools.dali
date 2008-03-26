@@ -44,12 +44,12 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 	}
 	
 	@Override
-	public JpaRootContextNode parent() {
-		return (JpaRootContextNode) super.parent();
+	public JpaRootContextNode getParent() {
+		return (JpaRootContextNode) super.getParent();
 	}
 	
 	@Override
-	public IResource resource() {
+	public IResource getResource() {
 		return persistenceResource.getFile();
 	}
 	
@@ -126,7 +126,7 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 	// *************************************************************************
 	
 	@Override
-	public PersistenceUnit persistenceUnit() {
+	public PersistenceUnit getPersistenceUnit() {
 		throw new UnsupportedOperationException("No PersistenceUnit in this context");
 	}
 	

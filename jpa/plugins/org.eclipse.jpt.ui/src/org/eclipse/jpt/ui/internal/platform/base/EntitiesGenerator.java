@@ -89,10 +89,10 @@ public class EntitiesGenerator
 			
 			if (wizard.synchronizePersistenceXml()) {
 				// we currently only support *one* persistence.xml file per project
-				PersistenceXml persistenceXml = this.project.rootContext().persistenceXml();
+				PersistenceXml persistenceXml = this.project.getRootContext().getPersistenceXml();
 				if (persistenceXml != null) {
 					//TODO casting to IFile - just trying to get rid of all compiler errors for now
-					synchClassesRunnable = new SynchronizeClassesJob((IFile) persistenceXml.resource());
+					synchClassesRunnable = new SynchronizeClassesJob((IFile) persistenceXml.getResource());
 				}
 			}
 			genEntitiesRunnable.schedule();
@@ -127,7 +127,7 @@ public class EntitiesGenerator
 			this.entityConfig = entityConfig;
 			this.selectedTables = selectedTables;
 			this.overwriteConfirmer = overwriteConfirmer;
-			setRule(project.project());
+			setRule(project.getProject());
 		}
 
 		@Override

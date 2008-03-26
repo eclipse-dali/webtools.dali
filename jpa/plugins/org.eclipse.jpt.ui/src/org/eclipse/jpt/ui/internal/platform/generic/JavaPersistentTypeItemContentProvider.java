@@ -27,7 +27,7 @@ public class JavaPersistentTypeItemContentProvider extends AbstractTreeItemConte
 	
 	@Override
 	public Object getParent() {
-		return ((JavaPersistentType) model()).parent();
+		return ((JavaPersistentType) model()).getParent();
 	}
 	
 	@Override

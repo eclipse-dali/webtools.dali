@@ -23,7 +23,7 @@ import java.util.ListIterator;
 public interface SecondaryTable extends Table
 {
 
-	public Entity parent();
+	public Entity getParent();
 	
 	/**
 	 * Return a list iterator of the primary key join columns whether specified or default.

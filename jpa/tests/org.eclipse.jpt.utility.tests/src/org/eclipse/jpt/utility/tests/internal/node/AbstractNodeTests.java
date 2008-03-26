@@ -90,19 +90,19 @@ public class AbstractNodeTests extends TestCase {
 		assertEquals("node 1.1.3", node.getName());
 		assertEquals(0, CollectionTools.size(node.children()));
 
-		node = (TestWorkbenchModel) node.parent();
+		node = (TestWorkbenchModel) node.getParent();
 		assertEquals("node 1.1", node.getName());
 		assertEquals(3, CollectionTools.size(node.children()));
 
-		node = (TestWorkbenchModel) node.parent();
+		node = (TestWorkbenchModel) node.getParent();
 		assertEquals("node 1", node.getName());
 		assertEquals(2, CollectionTools.size(node.children()));
 
-		node = (TestWorkbenchModel) node.parent();
+		node = (TestWorkbenchModel) node.getParent();
 		assertEquals("root", node.getName());
 		assertEquals(4, CollectionTools.size(node.children()));
 
-		node = (TestWorkbenchModel) node.parent();
+		node = (TestWorkbenchModel) node.getParent();
 		assertNull(node);
 	}
 
@@ -111,7 +111,7 @@ public class AbstractNodeTests extends TestCase {
 		node.setSize(42);
 		assertTrue(node.isDirty());
 
-		TestWorkbenchModel parent = (TestWorkbenchModel) node.parent();
+		TestWorkbenchModel parent = (TestWorkbenchModel) node.getParent();
 		assertTrue(parent.isClean());
 		assertTrue(this.root.isClean());
 	}
@@ -121,7 +121,7 @@ public class AbstractNodeTests extends TestCase {
 		node.setSize(42);
 		assertTrue(node.isDirty());
 
-		TestWorkbenchModel parent = (TestWorkbenchModel) node.parent();
+		TestWorkbenchModel parent = (TestWorkbenchModel) node.getParent();
 		assertTrue(parent.isClean());
 		assertTrue(this.root.isClean());
 
@@ -138,7 +138,7 @@ public class AbstractNodeTests extends TestCase {
 		node.setSize(42);
 		assertTrue(node.isDirtyBranch());
 
-		TestWorkbenchModel parent = (TestWorkbenchModel) node.parent();
+		TestWorkbenchModel parent = (TestWorkbenchModel) node.getParent();
 		assertTrue(parent.isDirtyBranch());
 		assertTrue(this.root.isDirtyBranch());
 
@@ -155,7 +155,7 @@ public class AbstractNodeTests extends TestCase {
 		TestWorkbenchModel node = this.root.testDescendantNamed("node 1.1.3");
 		node.setSize(42);
 
-		TestWorkbenchModel parent = (TestWorkbenchModel) node.parent();
+		TestWorkbenchModel parent = (TestWorkbenchModel) node.getParent();
 		parent.setSize(77);
 		assertTrue(parent.isDirty());
 		assertTrue(parent.isDirtyBranch());
@@ -172,7 +172,7 @@ public class AbstractNodeTests extends TestCase {
 		TestWorkbenchModel node2 = this.root.testDescendantNamed("node 1.1.2");
 		node2.setSize(42);
 
-		TestWorkbenchModel parent = (TestWorkbenchModel) node1.parent();
+		TestWorkbenchModel parent = (TestWorkbenchModel) node1.getParent();
 		assertTrue(parent.isClean());
 		assertTrue(parent.isDirtyBranch());
 
@@ -184,7 +184,7 @@ public class AbstractNodeTests extends TestCase {
 
 	public void testDirtyBranchForced() {
 		TestWorkbenchModel node = this.root.testDescendantNamed("node 1.1.3");
-		TestWorkbenchModel parent = (TestWorkbenchModel) node.parent();
+		TestWorkbenchModel parent = (TestWorkbenchModel) node.getParent();
 
 		assertTrue(node.isClean());
 		assertTrue(node.isCleanBranch());
@@ -207,7 +207,7 @@ public class AbstractNodeTests extends TestCase {
 		TestWorkbenchModel node = this.root.testDescendantNamed("node 1.1.3");
 		node.setName("BOGUS");
 		assertTrue(node.isDirty());
-		TestWorkbenchModel parent = (TestWorkbenchModel) node.parent();
+		TestWorkbenchModel parent = (TestWorkbenchModel) node.getParent();
 		assertTrue(parent.isClean());
 		assertTrue(parent.isDirtyBranch());
 		assertTrue(this.root.isClean());
@@ -235,7 +235,7 @@ public class AbstractNodeTests extends TestCase {
 	public void testProblems() {
 		TestWorkbenchModel node = this.root.testDescendantNamed("node 1.1.3");
 		node.setName("BOGUS");
-		TestWorkbenchModel parent = (TestWorkbenchModel) node.parent();
+		TestWorkbenchModel parent = (TestWorkbenchModel) node.getParent();
 
 		this.root.validateBranch();
 
@@ -276,7 +276,7 @@ public class AbstractNodeTests extends TestCase {
 	public void testBranchProblems() {
 		TestWorkbenchModel node = this.root.testDescendantNamed("node 1.1.3");
 		node.setName("BOGUS");
-		TestWorkbenchModel parent = (TestWorkbenchModel) node.parent();
+		TestWorkbenchModel parent = (TestWorkbenchModel) node.getParent();
 		parent.setName("BOGUS TOO");
 		this.root.setName("BOGUS TOO TOO");
 
@@ -304,7 +304,7 @@ public class AbstractNodeTests extends TestCase {
 	public void testClearAllBranchProblems() {
 		TestWorkbenchModel node = this.root.testDescendantNamed("node 1.1.3");
 		node.setName("BOGUS");
-		TestWorkbenchModel parent = (TestWorkbenchModel) node.parent();
+		TestWorkbenchModel parent = (TestWorkbenchModel) node.getParent();
 		parent.setName("BOGUS TOO");
 		this.root.setName("BOGUS TOO TOO");
 
@@ -330,7 +330,7 @@ public class AbstractNodeTests extends TestCase {
 	public void testRemovedBranchProblems() {
 		TestWorkbenchModel node = this.root.testDescendantNamed("node 1.1.3");
 		node.setName("BOGUS");
-		TestWorkbenchModel parent = (TestWorkbenchModel) node.parent();
+		TestWorkbenchModel parent = (TestWorkbenchModel) node.getParent();
 		parent.setName("BOGUS TOO");
 		this.root.setName("BOGUS TOO TOO");
 

@@ -147,14 +147,14 @@ public class OrmTableTests extends ContextModelTestCase
 		ormEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(TYPE_NAME, ormEntity.getTable().getDefaultName());
 
-		ormEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		ormEntity.getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		ormEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
 		assertEquals(TYPE_NAME, ormEntity.getTable().getDefaultName());
 	
 		ormEntity.setSpecifiedMetadataComplete(null);
 		assertEquals(TYPE_NAME, ormEntity.getTable().getDefaultName());
 		
-		ormEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
+		ormEntity.getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		assertEquals("Foo", ormEntity.getTable().getDefaultName());
 		
 		ormEntity.getTable().setSpecifiedName("Bar");
@@ -231,14 +231,14 @@ public class OrmTableTests extends ContextModelTestCase
 		ormEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertNull(ormEntity.getTable().getDefaultSchema());
 
-		ormEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		ormEntity.getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		ormEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
 		assertNull(ormEntity.getTable().getDefaultSchema());
 	
 		ormEntity.setSpecifiedMetadataComplete(null);
 		assertNull(ormEntity.getTable().getDefaultSchema());
 		
-		ormEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
+		ormEntity.getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		assertEquals("Foo", ormEntity.getTable().getDefaultSchema());
 		
 		ormEntity.getTable().setSpecifiedName("Bar");
@@ -281,10 +281,10 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		assertNull(ormEntity.getTable().getDefaultSchema());
 		
-		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
+		ormEntity.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
 		assertEquals("FOO", ormEntity.getTable().getDefaultSchema());
 		
-		ormEntity.entityMappings().setSpecifiedSchema("BAR");
+		ormEntity.getEntityMappings().setSpecifiedSchema("BAR");
 		assertEquals("BAR", ormEntity.getTable().getDefaultSchema());
 		
 		ormEntity.javaEntity().getTable().setSpecifiedSchema("JAVA_SCHEMA");
@@ -295,10 +295,10 @@ public class OrmTableTests extends ContextModelTestCase
 		assertEquals("BAR", ormEntity.getTable().getDefaultSchema());
 
 		
-		ormEntity.entityMappings().setSpecifiedSchema(null);
+		ormEntity.getEntityMappings().setSpecifiedSchema(null);
 		assertEquals("FOO", ormEntity.getTable().getDefaultSchema());
 
-		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema(null);
+		ormEntity.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema(null);
 		assertNull(ormEntity.getTable().getDefaultSchema());
 		
 		ormEntity.getTable().setSpecifiedName(null);
@@ -384,14 +384,14 @@ public class OrmTableTests extends ContextModelTestCase
 		ormEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertNull(ormEntity.getTable().getDefaultCatalog());
 
-		ormEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		ormEntity.getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		ormEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
 		assertNull(ormEntity.getTable().getDefaultCatalog());
 	
 		ormEntity.setSpecifiedMetadataComplete(null);
 		assertNull(ormEntity.getTable().getDefaultCatalog());
 		
-		ormEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
+		ormEntity.getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		assertEquals("Foo", ormEntity.getTable().getDefaultCatalog());
 		
 		ormEntity.getTable().setSpecifiedName("Bar");
@@ -434,10 +434,10 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		assertNull(ormEntity.getTable().getDefaultCatalog());
 		
-		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");
+		ormEntity.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");
 		assertEquals("FOO", ormEntity.getTable().getDefaultCatalog());
 		
-		ormEntity.entityMappings().setSpecifiedCatalog("BAR");
+		ormEntity.getEntityMappings().setSpecifiedCatalog("BAR");
 		assertEquals("BAR", ormEntity.getTable().getDefaultCatalog());
 		
 		ormEntity.javaEntity().getTable().setSpecifiedCatalog("JAVA_CATALOG");
@@ -448,10 +448,10 @@ public class OrmTableTests extends ContextModelTestCase
 		assertEquals("BAR", ormEntity.getTable().getDefaultCatalog());
 
 		
-		ormEntity.entityMappings().setSpecifiedCatalog(null);
+		ormEntity.getEntityMappings().setSpecifiedCatalog(null);
 		assertEquals("FOO", ormEntity.getTable().getDefaultCatalog());
 
-		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog(null);
+		ormEntity.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog(null);
 		assertNull(ormEntity.getTable().getDefaultCatalog());
 		
 		ormEntity.getTable().setSpecifiedName(null);

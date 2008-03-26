@@ -361,7 +361,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 		JpaProject jpaProject = jpaProject();
 
 		if (jpaProject != null) {
-			return jpaProject.connectionProfile();
+			return jpaProject.getConnectionProfile();
 		}
 
 		return null;
@@ -395,7 +395,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 		JpaProject jpaProject = jpaProject();
 
 		if (jpaProject != null) {
-			jpaProject.connectionProfile().removeConnectionListener(this.connectionListener);
+			jpaProject.getConnectionProfile().removeConnectionListener(this.connectionListener);
 		}
 	}
 
@@ -432,7 +432,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 		JpaProject jpaProject = jpaProject();
 
 		if (jpaProject != null) {
-			jpaProject.connectionProfile().addConnectionListener(this.connectionListener);
+			jpaProject.getConnectionProfile().addConnectionListener(this.connectionListener);
 		}
 	}
 
@@ -485,7 +485,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 * @return The JPA project
 	 */
 	protected JpaProject jpaProject() {
-		return subject() == null ? null : subject().jpaProject();
+		return subject() == null ? null : subject().getJpaProject();
 	}
 
 	/*

@@ -45,8 +45,8 @@ public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends
 	}
 	
 	@Override
-	public OrmBaseColumn.Owner owner() {
-		return (OrmBaseColumn.Owner) super.owner();
+	public OrmBaseColumn.Owner getOwner() {
+		return (OrmBaseColumn.Owner) super.getOwner();
 	}
 	
 //	@Override
@@ -255,7 +255,7 @@ public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends
 				return textRange;
 			}
 		}
-		return this.parent().validationTextRange(); 
+		return this.getParent().validationTextRange(); 
 	}
 	
 	@Override
@@ -302,7 +302,7 @@ public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends
 	}
 	
 	protected String defaultTable() {
-		return owner().defaultTableName();
+		return getOwner().defaultTableName();
 	}
 
 }

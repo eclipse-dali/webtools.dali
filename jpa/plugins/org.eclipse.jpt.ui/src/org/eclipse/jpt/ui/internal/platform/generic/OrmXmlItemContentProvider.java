@@ -32,7 +32,7 @@ public class OrmXmlItemContentProvider
 	
 	@Override
 	public PersistenceUnit getParent() {
-		return ((OrmXml) model()).persistenceUnit();
+		return ((OrmXml) model()).getPersistenceUnit();
 	}
 	
 	@Override

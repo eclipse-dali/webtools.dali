@@ -59,12 +59,12 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 	}
 	
 	@Override
-	public OrmEntity parent() {
-		return (OrmEntity) super.parent();
+	public OrmEntity getParent() {
+		return (OrmEntity) super.getParent();
 	}
 	
 	public OrmEntity ormEntity() {
-		return parent();
+		return getParent();
 	}
 	
 	public OrmPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn() {
@@ -266,12 +266,12 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 
 	@Override
 	protected String defaultCatalog() {
-		return entityMappings().getCatalog();
+		return getEntityMappings().getCatalog();
 	}
 
 	@Override
 	protected String defaultSchema() {
-		return entityMappings().getSchema();
+		return getEntityMappings().getSchema();
 	}
 	
 	
@@ -316,16 +316,16 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 	class PrimaryKeyJoinColumnOwner implements OrmBaseJoinColumn.Owner
 	{
 
-		public TypeMapping typeMapping() {
+		public TypeMapping getTypeMapping() {
 			return GenericOrmSecondaryTable.this.ormEntity();
 		}
 
-		public Table dbTable(String tableName) {
+		public Table getDbTable(String tableName) {
 			return GenericOrmSecondaryTable.this.dbTable();
 		}
 
 		public Table dbReferencedColumnTable() {
-			return typeMapping().primaryDbTable();
+			return getTypeMapping().primaryDbTable();
 		}
 
 		public int joinColumnsSize() {
@@ -336,7 +336,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 			return GenericOrmSecondaryTable.this.defaultPrimaryKeyJoinColumn == joinColumn;
 		}
 		
-		public String defaultColumnName() {
+		public String getDefaultColumnName() {
 			if (joinColumnsSize() != 1) {
 				return null;
 			}

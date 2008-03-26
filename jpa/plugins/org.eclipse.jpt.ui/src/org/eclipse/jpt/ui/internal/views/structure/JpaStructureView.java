@@ -88,7 +88,7 @@ public class JpaStructureView extends PageBookView
 			return null;
 		}
 		
-		JpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(jpaFile.jpaProject().jpaPlatform());
+		JpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(jpaFile.getJpaProject().getJpaPlatform());
 		return platformUi.buildStructureProvider(jpaFile);
 	}
 	

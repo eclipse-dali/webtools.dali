@@ -27,7 +27,7 @@ public class OrmXmlItemLabelProvider extends AbstractItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new StaticPropertyValueModel<String>(((OrmXml) model()).resource().getName());
+		return new StaticPropertyValueModel<String>(((OrmXml) model()).getResource().getName());
 	}
 	
 	@Override

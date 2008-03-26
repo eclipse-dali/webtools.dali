@@ -86,7 +86,7 @@ public class GenericJpaPlatform implements JpaPlatform
 	
 	// **************** Model construction / updating **************************
 	
-	public JpaFactory jpaFactory() {
+	public JpaFactory getJpaFactory() {
 		if (this.jpaFactory == null) {
 			this.jpaFactory = buildJpaFactory();
 		}
@@ -98,9 +98,9 @@ public class GenericJpaPlatform implements JpaPlatform
 	}
 	
 	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file) {
-		if (jpaFactory().hasRelevantContent(file)) {
-			ResourceModel resourceModel = jpaFactory().buildResourceModel(jpaProject, file);
-			return jpaFactory().buildJpaFile(jpaProject, file, resourceModel);
+		if (getJpaFactory().hasRelevantContent(file)) {
+			ResourceModel resourceModel = getJpaFactory().buildResourceModel(jpaProject, file);
+			return getJpaFactory().buildJpaFile(jpaProject, file, resourceModel);
 		}
 		
 		return null;
@@ -109,7 +109,7 @@ public class GenericJpaPlatform implements JpaPlatform
 	
 	// **************** java annotation support ********************************
 	
-	public JpaAnnotationProvider annotationProvider() {
+	public JpaAnnotationProvider getAnnotationProvider() {
 		if (this.annotationProvider == null) {
 			this.annotationProvider = buildAnnotationProvider();
 		}
@@ -124,23 +124,23 @@ public class GenericJpaPlatform implements JpaPlatform
 	// **************** type mapping support ********************************
 	
 	public JavaTypeMapping buildJavaTypeMappingFromMappingKey(String typeMappingKey, JavaPersistentType parent) {
-		return javaTypeMappingProviderFromMappingKey(typeMappingKey).buildMapping(parent, jpaFactory());
+		return javaTypeMappingProviderFromMappingKey(typeMappingKey).buildMapping(parent, getJpaFactory());
 	}
 	
 	public JavaTypeMapping buildJavaTypeMappingFromAnnotation(String mappingAnnotationName, JavaPersistentType parent) {
-		return javaTypeMappingProviderFromAnnotation(mappingAnnotationName).buildMapping(parent, jpaFactory());
+		return javaTypeMappingProviderFromAnnotation(mappingAnnotationName).buildMapping(parent, getJpaFactory());
 	}
 	
 	public JavaAttributeMapping buildJavaAttributeMappingFromMappingKey(String attributeMappingKey, JavaPersistentAttribute parent) {
-		return javaAttributeMappingProviderFromMappingKey(attributeMappingKey).buildMapping(parent, jpaFactory());
+		return javaAttributeMappingProviderFromMappingKey(attributeMappingKey).buildMapping(parent, getJpaFactory());
 	}
 	
 	public JavaAttributeMapping buildJavaAttributeMappingFromAnnotation(String mappingAnnotationName, JavaPersistentAttribute parent) {
-		return javaAttributeMappingProviderFromAnnotation(mappingAnnotationName).buildMapping(parent, jpaFactory());
+		return javaAttributeMappingProviderFromAnnotation(mappingAnnotationName).buildMapping(parent, getJpaFactory());
 	}
 
 	public JavaAttributeMapping buildDefaultJavaAttributeMapping(JavaPersistentAttribute parent) {
-		return defaultJavaAttributeMappingProvider(parent).buildMapping(parent, jpaFactory());
+		return defaultJavaAttributeMappingProvider(parent).buildMapping(parent, getJpaFactory());
 	}
 	
 	protected Iterator<JavaTypeMappingProvider> javaTypeMappingProviders() {

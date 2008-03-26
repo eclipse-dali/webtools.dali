@@ -168,7 +168,7 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 	 * @return The UI platform of the JPT plug-in
 	 */
 	protected JpaPlatformUi jpaPlatformUi() {
-		String platformId = subject().jpaProject().jpaPlatform().getId();
+		String platformId = subject().getJpaProject().getJpaPlatform().getId();
 		return JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
 	}
 

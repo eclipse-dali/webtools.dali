@@ -78,12 +78,12 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 
 	//************** INamedColumn.Owner implementation ***************
 
-	public String defaultColumnName() {
+	public String getDefaultColumnName() {
 		return attributeName();
 	}
 	
 	public String defaultTableName() {
-		return typeMapping().tableName();
+		return getTypeMapping().tableName();
 	}
 
 	//************** IVersionMapping implementation ***************
@@ -141,7 +141,7 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 		String table = column.getTable();
 		boolean doContinue = entityOwned() && column.connectionProfileIsActive();
 		
-		if (doContinue && this.typeMapping().tableNameIsInvalid(table)) {
+		if (doContinue && this.getTypeMapping().tableNameIsInvalid(table)) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,

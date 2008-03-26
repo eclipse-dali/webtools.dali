@@ -27,7 +27,7 @@ public class PersistenceXmlItemLabelProvider extends AbstractItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new StaticPropertyValueModel<String>(((PersistenceXml) model()).resource().getName());
+		return new StaticPropertyValueModel<String>(((PersistenceXml) model()).getResource().getName());
 	}
 	
 	@Override

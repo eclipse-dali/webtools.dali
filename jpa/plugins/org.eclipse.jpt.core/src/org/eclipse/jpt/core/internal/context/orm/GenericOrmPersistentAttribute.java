@@ -138,7 +138,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 	}
 
 	public OrmPersistentType persistentType() {
-		return (OrmPersistentType) parent();
+		return (OrmPersistentType) getParent();
 	}
 
 	public OrmTypeMapping typeMapping() {
@@ -150,7 +150,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 	}
 
 	public void setVirtual(boolean virtual) {
-		ormPersistentType().setPersistentAttributeVirtual(this, virtual);
+		getOrmPersistentType().setPersistentAttributeVirtual(this, virtual);
 	}
 
 	public String primaryKeyColumnName() {

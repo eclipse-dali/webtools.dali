@@ -296,7 +296,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		PrimaryKeyJoinColumn specifiedPkJoinColumn = javaEntity().specifiedPrimaryKeyJoinColumns().next();
-		assertNull(specifiedPkJoinColumn.dbColumn());
+		assertNull(specifiedPkJoinColumn.getDbColumn());
 	}
 	
 	public void testDbReferencedColumn() throws Exception {
@@ -312,7 +312,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		PrimaryKeyJoinColumn specifiedPkJoinColumn = javaEntity().specifiedPrimaryKeyJoinColumns().next();
-		assertNull(specifiedPkJoinColumn.dbTable());
+		assertNull(specifiedPkJoinColumn.getDbTable());
 	}
 
 }

@@ -23,8 +23,8 @@ public class NullDiscriminatorColumn extends NullNamedColumn implements Discrimi
 	}
 	
 	@Override
-	public JavaResourcePersistentMember parent() {
-		return (JavaResourcePersistentMember) super.parent();
+	public JavaResourcePersistentMember getParent() {
+		return (JavaResourcePersistentMember) super.getParent();
 	}
 
 	public String getAnnotationName() {
@@ -33,7 +33,7 @@ public class NullDiscriminatorColumn extends NullNamedColumn implements Discrimi
 
 	@Override
 	protected DiscriminatorColumnAnnotation createColumnResource() {
-		return (DiscriminatorColumnAnnotation) parent().addAnnotation(getAnnotationName());
+		return (DiscriminatorColumnAnnotation) getParent().addAnnotation(getAnnotationName());
 	}
 
 	public DiscriminatorType getDiscriminatorType() {

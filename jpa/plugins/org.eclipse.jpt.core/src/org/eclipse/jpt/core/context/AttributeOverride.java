@@ -22,7 +22,7 @@ public interface AttributeOverride extends BaseOverride, Column.Owner
 {
 	Column getColumn();
 
-	AttributeOverride.Owner owner();
+	AttributeOverride.Owner getOwner();
 	
 	AttributeOverride setVirtual(boolean virtual);
 	

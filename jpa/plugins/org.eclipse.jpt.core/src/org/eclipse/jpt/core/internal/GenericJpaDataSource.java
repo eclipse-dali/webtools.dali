@@ -77,7 +77,7 @@ public class GenericJpaDataSource
 
 	// ********** IJpaDataSource implementation **********
 
-	public String connectionProfileName() {
+	public String getConnectionProfileName() {
 		return this.connectionProfileName;
 	}
 
@@ -90,7 +90,7 @@ public class GenericJpaDataSource
 	}
 
 	@Override
-	public ConnectionProfile connectionProfile() {
+	public ConnectionProfile getConnectionProfile() {
 		return this.connectionProfile;
 	}
 
@@ -167,12 +167,12 @@ public class GenericJpaDataSource
 
 		@Override
 		public void opened(ConnectionProfile profile) {
-			GenericJpaDataSource.this.jpaProject().update();
+			GenericJpaDataSource.this.getJpaProject().update();
 		}
 
 		@Override
 		public void closed(ConnectionProfile profile) {
-			GenericJpaDataSource.this.jpaProject().update();
+			GenericJpaDataSource.this.getJpaProject().update();
 		}
 
 	}

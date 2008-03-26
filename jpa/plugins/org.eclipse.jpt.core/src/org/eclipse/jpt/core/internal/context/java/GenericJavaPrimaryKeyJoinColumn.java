@@ -47,8 +47,8 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 
 	//************** JavaNamedColumn implementation ***************
 	@Override
-	public JavaBaseJoinColumn.Owner owner() {
-		return (JavaBaseJoinColumn.Owner) super.owner();
+	public JavaBaseJoinColumn.Owner getOwner() {
+		return (JavaBaseJoinColumn.Owner) super.getOwner();
 	}
 	
 	@Override
@@ -90,12 +90,12 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 	}
 	
 	public boolean isVirtual() {
-		return owner().isVirtual(this);
+		return getOwner().isVirtual(this);
 	}
 
 	@Override
 	protected String tableName() {
-		return this.owner().typeMapping().tableName();
+		return this.getOwner().getTypeMapping().tableName();
 	}
 
 	public Column dbReferencedColumn() {
@@ -104,7 +104,7 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 	}
 
 	public Table dbReferencedColumnTable() {
-		return owner().dbReferencedColumnTable();
+		return getOwner().dbReferencedColumnTable();
 	}
 
 	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
@@ -112,7 +112,7 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 	}
 
 	private Iterator<String> candidateReferencedColumnNames() {
-		Table table = this.owner().dbReferencedColumnTable();
+		Table table = this.getOwner().dbReferencedColumnTable();
 		return (table != null) ? table.columnNames() : EmptyIterator.<String> instance();
 	}
 
@@ -146,7 +146,7 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 	
 	public TextRange validationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = columnResource().textRange(astRoot);
-		return (textRange != null) ? textRange : this.owner().validationTextRange(astRoot);	
+		return (textRange != null) ? textRange : this.getOwner().validationTextRange(astRoot);	
 	}
 
 	@Override

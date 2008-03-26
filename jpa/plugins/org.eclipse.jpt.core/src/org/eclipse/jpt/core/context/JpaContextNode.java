@@ -25,13 +25,13 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
  */
 public interface JpaContextNode extends JpaNode
 {
-	PersistenceUnit persistenceUnit();
+	PersistenceUnit getPersistenceUnit();
 	
 	/**
 	 * Return the EntityMappings if this contextNode is within an orm.xml context
 	 * Return null otherwise.
 	 */
-	EntityMappings entityMappings();
+	EntityMappings getEntityMappings();
 
-	OrmPersistentType ormPersistentType();
+	OrmPersistentType getOrmPersistentType();
 }

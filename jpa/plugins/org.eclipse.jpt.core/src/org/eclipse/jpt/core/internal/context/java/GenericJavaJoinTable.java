@@ -60,8 +60,8 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	}
 	
 	@Override
-	public JavaRelationshipMapping parent() {
-		return (JavaRelationshipMapping) super.parent();
+	public JavaRelationshipMapping getParent() {
+		return (JavaRelationshipMapping) super.getParent();
 	}
 	
 	//******************* AbstractJavaTable implementation *****************
@@ -323,7 +323,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 
 
 	public RelationshipMapping relationshipMapping() {
-		return this.parent();
+		return this.getParent();
 	}
 
 	public boolean isSpecified() {
@@ -584,11 +584,11 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			super();
 		}
 
-		public TypeMapping typeMapping() {
-			return relationshipMapping().typeMapping();
+		public TypeMapping getTypeMapping() {
+			return getRelationshipMapping().getTypeMapping();
 		}
 		
-		public RelationshipMapping relationshipMapping() {
+		public RelationshipMapping getRelationshipMapping() {
 			return GenericJavaJoinTable.this.relationshipMapping();
 		}
 
@@ -607,7 +607,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			return false;
 		}
 
-		public org.eclipse.jpt.db.Table dbTable(String tableName) {
+		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 			if (GenericJavaJoinTable.this.getName() == null) {
 				return null;
 			}
@@ -638,26 +638,26 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			super();
 		}
 
-		public Entity targetEntity() {
+		public Entity getTargetEntity() {
 			return GenericJavaJoinTable.this.relationshipMapping().getResolvedTargetEntity();
 		}
 
-		public String attributeName() {
+		public String getAttributeName() {
 			return GenericJavaJoinTable.this.relationshipMapping().persistentAttribute().getName();
 		}
 
 		@Override
-		public org.eclipse.jpt.db.Table dbTable(String tableName) {
-			org.eclipse.jpt.db.Table dbTable = super.dbTable(tableName);
+		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
+			org.eclipse.jpt.db.Table dbTable = super.getDbTable(tableName);
 			if (dbTable != null) {
 				return dbTable;
 			}
-			Entity targetEntity = targetEntity();
-			return (targetEntity == null) ? null : targetEntity.dbTable(tableName);
+			Entity targetEntity = getTargetEntity();
+			return (targetEntity == null) ? null : targetEntity.getDbTable(tableName);
 		}
 
 		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
-			Entity targetEntity = targetEntity();
+			Entity targetEntity = getTargetEntity();
 			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
 		}
 		
@@ -665,7 +665,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			return GenericJavaJoinTable.this.defaultInverseJoinColumn == joinColumn;
 		}
 		
-		public String defaultColumnName() {
+		public String getDefaultColumnName() {
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -686,11 +686,11 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			super();
 		}
 
-		public Entity targetEntity() {
+		public Entity getTargetEntity() {
 			return GenericJavaJoinTable.this.relationshipMapping().getEntity();
 		}
 
-		public String attributeName() {
+		public String getAttributeName() {
 			Entity targetEntity = GenericJavaJoinTable.this.relationshipMapping().getResolvedTargetEntity();
 			if (targetEntity == null) {
 				return null;
@@ -710,23 +710,23 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		}
 
 		@Override
-		public org.eclipse.jpt.db.Table dbTable(String tableName) {
-			org.eclipse.jpt.db.Table dbTable = super.dbTable(tableName);
+		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
+			org.eclipse.jpt.db.Table dbTable = super.getDbTable(tableName);
 			if (dbTable != null) {
 				return dbTable;
 			}
-			return typeMapping().dbTable(tableName);
+			return getTypeMapping().getDbTable(tableName);
 		}
 
 		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
-			return typeMapping().primaryDbTable();
+			return getTypeMapping().primaryDbTable();
 		}
 		
 		public boolean isVirtual(BaseJoinColumn joinColumn) {
 			return GenericJavaJoinTable.this.defaultJoinColumn == joinColumn;
 		}
 		
-		public String defaultColumnName() {
+		public String getDefaultColumnName() {
 			// TODO Auto-generated method stub
 			return null;
 		}

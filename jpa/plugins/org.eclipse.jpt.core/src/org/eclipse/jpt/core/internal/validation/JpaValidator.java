@@ -138,7 +138,7 @@ public class JpaValidator implements IValidatorJob {
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
 			try {
-				IMarker[] markers = this.jpaProject.project().findMarkers(JptCorePlugin.VALIDATION_MARKER_ID, true, IResource.DEPTH_INFINITE);
+				IMarker[] markers = this.jpaProject.getProject().findMarkers(JptCorePlugin.VALIDATION_MARKER_ID, true, IResource.DEPTH_INFINITE);
 				ResourcesPlugin.getWorkspace().deleteMarkers(markers);
 			} catch (CoreException ex) {
 				JptCorePlugin.log(ex);  // not much else we can do

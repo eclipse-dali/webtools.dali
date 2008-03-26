@@ -39,12 +39,12 @@ public interface Node extends Model, Comparable<Node> {
 	 * Most nodes must have a parent. The parent is immutable.
 	 * @see #children()
 	 */
-	Node parent();
+	Node getParent();
 
 	/**
 	 * INTRA-TREE API?
 	 * Return the node's children, which are also nodes.
-	 * @see #parent()
+	 * @see #getParent()
 	 */
 	Iterator<Node> children();
 
@@ -52,7 +52,7 @@ public interface Node extends Model, Comparable<Node> {
 	 * INTRA-TREE API?
 	 * Return the containment hierarchy's root node.
 	 * Most nodes must have a root.
-	 * @see #parent()
+	 * @see #getParent()
 	 */
 	Node root();
 

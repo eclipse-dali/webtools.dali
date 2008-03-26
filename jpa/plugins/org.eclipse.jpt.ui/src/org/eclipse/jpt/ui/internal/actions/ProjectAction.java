@@ -75,7 +75,7 @@ public abstract class ProjectAction implements IObjectActionDelegate {
 	}
 
 	protected JpaPlatformUi jpaPlatformUi(JpaProject project) {
-		String coreJpaPlatformId = project.jpaPlatform().getId();
+		String coreJpaPlatformId = project.getJpaPlatform().getId();
         return JpaPlatformUiRegistry.instance().jpaPlatform(coreJpaPlatformId); 
 	}
 	

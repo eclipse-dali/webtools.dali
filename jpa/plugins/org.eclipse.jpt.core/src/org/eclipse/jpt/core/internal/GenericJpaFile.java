@@ -35,11 +35,11 @@ public class GenericJpaFile extends AbstractJpaNode implements JpaFile
 		this.resourceModel = resourceModel;
 	}
 	
-	public IFile file() {
+	public IFile getFile() {
 		return file;
 	}
 	
-	public ResourceModel resourceModel() {
+	public ResourceModel getResourceModel() {
 		return resourceModel;
 	}
 	
@@ -47,31 +47,31 @@ public class GenericJpaFile extends AbstractJpaNode implements JpaFile
 		return resourceModel.structureNode(textOffset);
 	}
 	
-	public String resourceType() {
-		return resourceModel().resourceType();
+	public String getResourceType() {
+		return getResourceModel().getResourceType();
 	}
 	
 	public void dispose() {
-		resourceModel().dispose();
+		getResourceModel().dispose();
 	}
 	
 	public void javaElementChanged(ElementChangedEvent event) {
-		resourceModel().javaElementChanged(event);
+		getResourceModel().javaElementChanged(event);
 	}
 	
 	public void fileAdded(JpaFile jpaFile) {
-		resourceModel().resolveTypes();
+		getResourceModel().resolveTypes();
 	}
 	
 	public void fileRemoved(JpaFile jpaFile) {
-		resourceModel().resolveTypes();		
+		getResourceModel().resolveTypes();		
 	}
 	
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(file().toString());
+		sb.append(getFile().toString());
 		sb.append(" (resourceType: ");
-		sb.append(resourceType());
+		sb.append(getResourceType());
 		sb.append(")");
 	}
 }

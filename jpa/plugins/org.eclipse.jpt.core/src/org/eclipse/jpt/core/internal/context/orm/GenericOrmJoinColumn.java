@@ -74,16 +74,16 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 	}
 
 	public boolean isVirtual() {
-		return owner().isVirtual(this);
+		return getOwner().isVirtual(this);
 	}
 	
 	@Override
-	public OrmJoinColumn.Owner owner() {
+	public OrmJoinColumn.Owner getOwner() {
 		return (OrmJoinColumn.Owner) this.owner;
 	}
 
 	public Table dbReferencedColumnTable() {
-		return owner().dbReferencedColumnTable();
+		return getOwner().dbReferencedColumnTable();
 	}
 
 	public Column dbReferencedColumn() {
@@ -102,7 +102,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 				return textRange;
 			}
 		}
-		return owner().validationTextRange();
+		return getOwner().validationTextRange();
 	}
 
 
@@ -146,18 +146,18 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 
 	@Override
 	protected String defaultName() {
-		RelationshipMapping relationshipMapping = owner().relationshipMapping();
+		RelationshipMapping relationshipMapping = getOwner().getRelationshipMapping();
 		if (relationshipMapping == null) {
 			return null;
 		}
-		if (!owner().relationshipMapping().isRelationshipOwner()) {
+		if (!getOwner().getRelationshipMapping().isRelationshipOwner()) {
 			return null;
 		}
 		return RelationshipMappingTools.buildJoinColumnDefaultName(this);
 	}
 	
 	protected String defaultReferencedColumnName() {
-		RelationshipMapping relationshipMapping = owner().relationshipMapping();
+		RelationshipMapping relationshipMapping = getOwner().getRelationshipMapping();
 		if (relationshipMapping == null) {
 			return null;
 		}
@@ -169,7 +169,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 	
 	@Override
 	protected String defaultTable() {
-		RelationshipMapping relationshipMapping = owner().relationshipMapping();
+		RelationshipMapping relationshipMapping = getOwner().getRelationshipMapping();
 		if (relationshipMapping == null) {
 			return null;
 		}
@@ -190,7 +190,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 		super.addToMessages(messages);
 		this.doContinue = this.connectionProfileIsActive();
 	
-		OrmRelationshipMapping mapping = (OrmRelationshipMapping) owner().relationshipMapping();
+		OrmRelationshipMapping mapping = (OrmRelationshipMapping) getOwner().getRelationshipMapping();
 		//TODO why is this commented out?  i copied it like this from the maintenance stream
 //		if (doContinue && typeMapping.tableNameIsInvalid(table)) {
 //			if (mapping.isVirtual()) {

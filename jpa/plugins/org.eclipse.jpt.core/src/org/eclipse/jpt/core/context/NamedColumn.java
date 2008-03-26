@@ -42,19 +42,20 @@ public interface NamedColumn extends JpaContextNode
 	/**
 	 * Return the wrapper for the datasource column
 	 */
-	Column dbColumn();
+	Column getDbColumn();
 
 	/**
 	 * Return the wrapper for the datasource table
 	 */
-	Table dbTable();
+	Table getDbTable();
 
 	/**
 	 * Return whether the column is found on the datasource.
 	 */
 	boolean isResolved();
 
-	Owner owner();
+	Owner getOwner();
+	
 	/**
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)
@@ -64,16 +65,16 @@ public interface NamedColumn extends JpaContextNode
 		/**
 		 * Return the type mapping that contains the column.
 		 */
-		TypeMapping typeMapping();
+		TypeMapping getTypeMapping();
 
 		/**
 		 * Return the wrapper for the datasource table for the given table name
 		 */
-		Table dbTable(String tableName);
+		Table getDbTable(String tableName);
 		
 		/**
 		 * Return the default column name
 		 */
-		String defaultColumnName();
+		String getDefaultColumnName();
 	}
 }

@@ -30,7 +30,7 @@ public interface OrmBaseColumn extends BaseColumn, OrmNamedColumn
 	 */
 	TextRange tableTextRange();
 
-	Owner owner();
+	Owner getOwner();
 	
 	/**
 	 * interface allowing columns to be used in multiple places

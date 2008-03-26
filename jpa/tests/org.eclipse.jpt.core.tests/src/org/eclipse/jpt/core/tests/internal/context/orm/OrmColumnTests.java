@@ -704,7 +704,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getSpecifiedPrecision());
 		assertEquals(Column.DEFAULT_SCALE, ormColumn.getSpecifiedScale());
 	
-		ormPersistentType.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		ormPersistentType.getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.FALSE);
 		assertEquals("name", ormColumn.getSpecifiedName());
 		assertEquals(TYPE_NAME, ormColumn.getSpecifiedTable());
@@ -730,7 +730,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertEquals(Column.DEFAULT_SCALE, ormColumn.getSpecifiedScale());
 		
 		//set metadata-complete false, orm.xml virtual column gets setting from java annotation
-		ormPersistentType.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
+		ormPersistentType.getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		assertEquals("FOO", ormColumn.getSpecifiedName());
 		assertEquals("FOO_TABLE", ormColumn.getSpecifiedTable());
 		assertEquals("COLUMN_DEFINITION", ormColumn.getColumnDefinition());

@@ -39,7 +39,7 @@ public interface AttributeMapping extends JpaContextNode
 	/**
 	 * Return the mapping for the attribute mapping's attribute's type.
 	 */
-	TypeMapping typeMapping();
+	TypeMapping getTypeMapping();
 
 	/**
 	 * Return whether the "attribute" mapping can be overridden.

@@ -36,7 +36,7 @@ public interface OrmJoinTable extends JoinTable, OrmJpaContextNode
 	
 	//****************** covariant overrides *******************
 	
-	OrmRelationshipMapping parent();
+	OrmRelationshipMapping getParent();
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmJoinColumn> joinColumns();

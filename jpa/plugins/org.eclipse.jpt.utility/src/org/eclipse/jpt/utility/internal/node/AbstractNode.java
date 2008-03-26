@@ -184,7 +184,7 @@ public abstract class AbstractNode
 	 * Most nodes must have a parent.
 	 * @see #children()
 	 */
-	public Node parent() {
+	public Node getParent() {
 		return this.parent;
 	}
 
@@ -206,7 +206,7 @@ public abstract class AbstractNode
 	 * Return the node's children, which are also nodes.
 	 * Do NOT override this method.
 	 * Override #addChildrenTo(List).
-	 * @see #parent()
+	 * @see #getParent()
 	 * @see #addChildrenTo(java.util.List)
 	 */
 	public final Iterator<Node> children() {
@@ -230,7 +230,7 @@ public abstract class AbstractNode
 	 * INTRA-TREE API?
 	 * Return the containment hierarchy's root node.
 	 * Most nodes must have a root.
-	 * @see #parent()
+	 * @see #getParent()
 	 * NB: Assume the root has no parent.
 	 */
 	public Node root() {

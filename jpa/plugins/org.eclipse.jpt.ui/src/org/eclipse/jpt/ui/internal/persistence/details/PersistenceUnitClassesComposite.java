@@ -331,7 +331,7 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 
 		if (className != null) {
 			try {
-				return subject().jpaProject().javaProject().findType(className);
+				return subject().getJpaProject().getJavaProject().findType(className);
 			}
 			catch (JavaModelException e) {
 				JptUiPlugin.log(e);
@@ -403,7 +403,7 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 	}
 
 	private IPackageFragmentRoot packageFragmentRoot() {
-		IProject project = subject().jpaProject().project();
+		IProject project = subject().getJpaProject().getProject();
 		IJavaProject root = JavaCore.create(project);
 
 		try {

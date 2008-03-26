@@ -52,7 +52,7 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 			return joinColumn.getDefaultTable();
 		}
 
-		return getOwner().typeMapping().tableName();
+		return getOwner().getTypeMapping().tableName();
 	}
 
 	/*
@@ -91,6 +91,6 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 	 */
 	@Override
 	public Schema getSchema() {
-		return getOwner().typeMapping().dbSchema();
+		return getOwner().getTypeMapping().dbSchema();
 	}
 }

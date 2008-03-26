@@ -50,7 +50,7 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 	}
 	
 	@Override
-	public IResource resource() {
+	public IResource getResource() {
 		return ormResource.getFile();
 	}
 	

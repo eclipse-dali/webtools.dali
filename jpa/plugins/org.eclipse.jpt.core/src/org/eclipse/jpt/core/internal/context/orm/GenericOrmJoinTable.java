@@ -60,12 +60,12 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 	}
 	
 	@Override
-	public OrmRelationshipMapping parent() {
-		return (OrmRelationshipMapping) super.parent();
+	public OrmRelationshipMapping getParent() {
+		return (OrmRelationshipMapping) super.getParent();
 	}
 	
 	public OrmRelationshipMapping relationshipMapping() {
-		return parent();
+		return getParent();
 	}
 
 	public void initializeFrom(JoinTable oldJoinTable) {
@@ -89,7 +89,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		if (!relationshipMapping().isRelationshipOwner()) {
 			return null;
 		}
-		return entityMappings().getCatalog();
+		return getEntityMappings().getCatalog();
 	}
 	
 	@Override
@@ -102,7 +102,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		if (!relationshipMapping().isRelationshipOwner()) {
 			return null;
 		}
-		return entityMappings().getSchema();
+		return getEntityMappings().getSchema();
 	}
 
 	@Override
@@ -542,11 +542,11 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 			super();
 		}
 
-		public TypeMapping typeMapping() {
-			return relationshipMapping().typeMapping();
+		public TypeMapping getTypeMapping() {
+			return getRelationshipMapping().getTypeMapping();
 		}
 		
-		public RelationshipMapping relationshipMapping() {
+		public RelationshipMapping getRelationshipMapping() {
 			return GenericOrmJoinTable.this.relationshipMapping();
 		}
 
@@ -565,7 +565,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 			return false;
 		}
 
-		public org.eclipse.jpt.db.Table dbTable(String tableName) {
+		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 			if (GenericOrmJoinTable.this.getName() == null) {
 				return null;
 			}
@@ -596,26 +596,26 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 			super();
 		}
 
-		public Entity targetEntity() {
+		public Entity getTargetEntity() {
 			return GenericOrmJoinTable.this.relationshipMapping().getResolvedTargetEntity();
 		}
 
-		public String attributeName() {
+		public String getAttributeName() {
 			return GenericOrmJoinTable.this.relationshipMapping().getName();
 		}
 
 		@Override
-		public org.eclipse.jpt.db.Table dbTable(String tableName) {
-			org.eclipse.jpt.db.Table dbTable = super.dbTable(tableName);
+		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
+			org.eclipse.jpt.db.Table dbTable = super.getDbTable(tableName);
 			if (dbTable != null) {
 				return dbTable;
 			}
-			Entity targetEntity = targetEntity();
-			return (targetEntity == null) ? null : targetEntity.dbTable(tableName);
+			Entity targetEntity = getTargetEntity();
+			return (targetEntity == null) ? null : targetEntity.getDbTable(tableName);
 		}
 
 		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
-			Entity targetEntity = targetEntity();
+			Entity targetEntity = getTargetEntity();
 			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
 		}
 		
@@ -623,7 +623,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 			return GenericOrmJoinTable.this.defaultInverseJoinColumn == joinColumn;
 		}
 		
-		public String defaultColumnName() {
+		public String getDefaultColumnName() {
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -645,11 +645,11 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 			super();
 		}
 
-		public Entity targetEntity() {
+		public Entity getTargetEntity() {
 			return GenericOrmJoinTable.this.relationshipMapping().getEntity();
 		}
 
-		public String attributeName() {
+		public String getAttributeName() {
 			Entity targetEntity = GenericOrmJoinTable.this.relationshipMapping().getResolvedTargetEntity();
 			if (targetEntity == null) {
 				return null;
@@ -669,23 +669,23 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		}
 
 		@Override
-		public org.eclipse.jpt.db.Table dbTable(String tableName) {
-			org.eclipse.jpt.db.Table dbTable = super.dbTable(tableName);
+		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
+			org.eclipse.jpt.db.Table dbTable = super.getDbTable(tableName);
 			if (dbTable != null) {
 				return dbTable;
 			}
-			return typeMapping().dbTable(tableName);
+			return getTypeMapping().getDbTable(tableName);
 		}
 
 		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
-			return typeMapping().primaryDbTable();
+			return getTypeMapping().primaryDbTable();
 		}
 		
 		public boolean isVirtual(BaseJoinColumn joinColumn) {
 			return GenericOrmJoinTable.this.defaultJoinColumn == joinColumn;
 		}
 		
-		public String defaultColumnName() {
+		public String getDefaultColumnName() {
 			// TODO Auto-generated method stub
 			return null;
 		}

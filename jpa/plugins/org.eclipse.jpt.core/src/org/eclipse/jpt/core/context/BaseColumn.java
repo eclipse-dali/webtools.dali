@@ -73,7 +73,7 @@ public interface BaseColumn extends NamedColumn
 	//TODO not sure we really need/want this to be public.  This
 	//is used by ColumnComposite to get a list of possible associated tables, but
 	//right now that list isn't going to update in the UI except when we repopulate
-	Owner owner();
+	Owner getOwner();
 	
 	/**
 	 * interface allowing columns to be used in multiple places

@@ -37,8 +37,8 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	}
 
 	@Override
-	public OrmJpaContextNode parent() {
-		return (OrmJpaContextNode) super.parent();
+	public OrmJpaContextNode getParent() {
+		return (OrmJpaContextNode) super.getParent();
 	}
 	
 	public void initializeFrom(Table oldTable) {
@@ -197,7 +197,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	}
 
 	public Schema dbSchema() {
-		return connectionProfile().database().schemaNamed(getSchema());
+		return getConnectionProfile().database().schemaNamed(getSchema());
 	}
 
 	public boolean hasResolvedSchema() {
@@ -255,7 +255,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 				return textRange;
 			}
 		}
-		return this.parent().validationTextRange(); 
+		return this.getParent().validationTextRange(); 
 	}
 	
 	protected TextRange catalogTextRange() {
@@ -265,7 +265,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 				return textRange;
 			}
 		}
-		return this.parent().validationTextRange(); 
+		return this.getParent().validationTextRange(); 
 	}
 	
 	protected TextRange schemaTextRange() {
@@ -275,7 +275,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 				return textRange;
 			}
 		}
-		return this.parent().validationTextRange(); 
+		return this.getParent().validationTextRange(); 
 	}
 	
 	public TextRange validationTextRange() {
@@ -285,7 +285,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 				return textRange;
 			}
 		}
-		return parent().validationTextRange();
+		return getParent().validationTextRange();
 	}
 
 	

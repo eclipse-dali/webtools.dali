@@ -114,26 +114,26 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 		firePropertyChanged(NamedColumn.COLUMN_DEFINITION_PROPERTY, oldColumnDefinition, newColumnDefinition);
 	}
 
-	public Owner owner() {
+	public Owner getOwner() {
 		return this.owner;
 	}
 
 	public TextRange nameTextRange(CompilationUnit astRoot) {
 		TextRange textRange = this.columnResource().nameTextRange(astRoot);
-		return (textRange != null) ? textRange : this.owner().validationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getOwner().validationTextRange(astRoot);
 	}
 
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {
 		return this.columnResource().nameTouches(pos, astRoot);
 	}
 	
-	public Column dbColumn() {
-		Table table = this.dbTable();
+	public Column getDbColumn() {
+		Table table = this.getDbTable();
 		return (table == null) ? null : table.columnNamed(this.getName());
 	}
 
-	public Table dbTable() {
-		return owner().dbTable(this.tableName());
+	public Table getDbTable() {
+		return getOwner().getDbTable(this.tableName());
 	}
 
 	/**
@@ -142,7 +142,7 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	protected abstract String tableName();
 
 	public boolean isResolved() {
-		return this.dbColumn() != null;
+		return this.getDbColumn() != null;
 	}
 
 	@Override
@@ -158,7 +158,7 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	}
 
 	private Iterator<String> candidateNames() {
-		Table dbTable = this.dbTable();
+		Table dbTable = this.getDbTable();
 		return (dbTable != null) ? dbTable.columnNames() : EmptyIterator.<String> instance();
 	}
 
@@ -183,7 +183,7 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	 * Return the default column name.
 	 */
 	protected String defaultName() {
-		return this.owner().defaultColumnName();
+		return this.getOwner().getDefaultColumnName();
 	}
 
 }

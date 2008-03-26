@@ -120,7 +120,7 @@ public class PersistenceEditor extends FormEditor
 	private void addPersistenceUnitPages() {
 
 		JpaProject jpaProject = jpaProject();
-		String platformId = jpaProject.jpaPlatform().getId();
+		String platformId = jpaProject.getJpaPlatform().getId();
 		JpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
 		JpaUiFactory uiFactory = jpaPlatformUI.getJpaUiFactory();
 
@@ -206,7 +206,7 @@ public class PersistenceEditor extends FormEditor
 		return new PropertyAspectAdapter<JpaRootContextNode, PersistenceXml>(buildRootContextNodeHolder(), JpaRootContextNode.PERSISTENCE_XML_PROPERTY) {
 			@Override
 			protected PersistenceXml buildValue_() {
-				return subject.persistenceXml();
+				return subject.getPersistenceXml();
 			}
 		};
 	}
@@ -240,7 +240,7 @@ public class PersistenceEditor extends FormEditor
 		return new TransformationPropertyValueModel<JpaProject, JpaRootContextNode>(buildJpaProjectHolder()) {
 			@Override
 			protected JpaRootContextNode transform_(JpaProject value) {
-				return value.rootContext();
+				return value.getRootContext();
 			}
 		};
 	}

@@ -31,8 +31,8 @@ public class TestJpaPlatform extends GenericJpaPlatform
 	}
 	
 	@Override
-	public JpaAnnotationProvider annotationProvider() {
-		return super.annotationProvider();
+	public JpaAnnotationProvider getAnnotationProvider() {
+		return super.getAnnotationProvider();
 	}
 	
 	@Override

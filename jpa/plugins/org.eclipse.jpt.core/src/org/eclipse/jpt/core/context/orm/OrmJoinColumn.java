@@ -29,7 +29,7 @@ public interface OrmJoinColumn extends JoinColumn, OrmBaseJoinColumn, OrmBaseCol
 	
 	void update(XmlJoinColumn column);
 	
-	Owner owner();
+	Owner getOwner();
 
 	/**
 	 * interface allowing join columns to be used in multiple places

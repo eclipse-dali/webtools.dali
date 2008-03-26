@@ -32,7 +32,7 @@ public interface OrmSecondaryTable extends SecondaryTable, OrmJpaContextNode
 	
 	//************ covariant overrides *************
 
-	OrmEntity parent();
+	OrmEntity getParent();
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns();

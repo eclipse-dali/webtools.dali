@@ -27,8 +27,8 @@ public class GenericOrmColumn extends AbstractOrmBaseColumn<XmlColumn> implement
 	}
 	
 	@Override
-	public OrmColumn.Owner owner() {
-		return (OrmColumn.Owner) super.owner();
+	public OrmColumn.Owner getOwner() {
+		return (OrmColumn.Owner) super.getOwner();
 	}
 	
 	public void initializeFrom(Column oldColumn) {
@@ -148,17 +148,17 @@ public class GenericOrmColumn extends AbstractOrmBaseColumn<XmlColumn> implement
 
 	@Override
 	protected XmlColumn columnResource() {
-		return owner().columnResource();
+		return getOwner().columnResource();
 	}
 	
 	@Override
 	protected void addColumnResource() {
-		owner().addColumnResource();
+		getOwner().addColumnResource();
 	}
 	
 	@Override
 	protected void removeColumnResource() {
-		owner().removeColumnResource();
+		getOwner().removeColumnResource();
 	}
 	
 	@Override
