@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.resource.java.ManyToOne;
+import org.eclipse.jpt.core.resource.java.ManyToOneAnnotation;
 
 public class JavaManyToOneMappingProvider
 	implements JavaAttributeMappingProvider
@@ -42,7 +42,7 @@ public class JavaManyToOneMappingProvider
 	}
 	
 	public String getAnnotationName() {
-		return ManyToOne.ANNOTATION_NAME;
+		return ManyToOneAnnotation.ANNOTATION_NAME;
 	}
 
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory) {

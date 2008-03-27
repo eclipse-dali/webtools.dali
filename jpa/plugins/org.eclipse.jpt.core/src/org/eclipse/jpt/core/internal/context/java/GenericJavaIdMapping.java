@@ -27,12 +27,12 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.GeneratedValueAnnotation;
-import org.eclipse.jpt.core.resource.java.Id;
+import org.eclipse.jpt.core.resource.java.IdAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
-import org.eclipse.jpt.core.resource.java.Temporal;
+import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -42,7 +42,7 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> implements JavaIdMapping
+public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotation> implements JavaIdMapping
 {
 	protected final JavaColumn column;
 
@@ -98,8 +98,8 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 		}
 	}
 	
-	protected Temporal getTemporalResource() {
-		return (Temporal) getResourcePersistentAttribute().getNonNullAnnotation(Temporal.ANNOTATION_NAME);
+	protected TemporalAnnotation getTemporalResource() {
+		return (TemporalAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 	}
 	
 	public ColumnAnnotation getColumnResource() {
@@ -113,7 +113,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 	}
 
 	public String getAnnotationName() {
-		return Id.ANNOTATION_NAME;
+		return IdAnnotation.ANNOTATION_NAME;
 	}
 	
 	public Iterator<String> correspondingAnnotationNames() {
@@ -274,7 +274,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 		this.updatePersistenceUnitGenerators();
 	}
 	
-	protected TemporalType temporal(Temporal temporal) {
+	protected TemporalType temporal(TemporalAnnotation temporal) {
 		return TemporalType.fromJavaResourceModel(temporal.getValue());
 	}
 

@@ -25,19 +25,19 @@ import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.java.Basic;
+import org.eclipse.jpt.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.Enumerated;
+import org.eclipse.jpt.core.resource.java.EnumeratedAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.Lob;
-import org.eclipse.jpt.core.resource.java.Temporal;
+import org.eclipse.jpt.core.resource.java.LobAnnotation;
+import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic> implements JavaBasicMapping
+public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicAnnotation> implements JavaBasicMapping
 {
 	protected FetchType specifiedFetch;
 
@@ -70,17 +70,17 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 	}
 	
 	@Override
-	protected void initialize(Basic basicResource) {
+	protected void initialize(BasicAnnotation basicResource) {
 		this.specifiedFetch = this.specifiedFetchType(basicResource);
 		this.specifiedOptional = this.specifiedOptional(basicResource);
 	}
 	
-	protected Enumerated getEnumeratedResource() {
-		return (Enumerated) getResourcePersistentAttribute().getNonNullAnnotation(Enumerated.ANNOTATION_NAME);
+	protected EnumeratedAnnotation getEnumeratedResource() {
+		return (EnumeratedAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(EnumeratedAnnotation.ANNOTATION_NAME);
 	}
 	
-	protected Temporal getTemporalResource() {
-		return (Temporal) getResourcePersistentAttribute().getNonNullAnnotation(Temporal.ANNOTATION_NAME);
+	protected TemporalAnnotation getTemporalResource() {
+		return (TemporalAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 	}
 
 	public ColumnAnnotation getColumnResource() {
@@ -93,7 +93,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 	}
 
 	public String getAnnotationName() {
-		return Basic.ANNOTATION_NAME;
+		return BasicAnnotation.ANNOTATION_NAME;
 	}
 	
 	public Iterator<String> correspondingAnnotationNames() {
@@ -183,12 +183,12 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 		this.lob = newLob;
 		if (newLob) {
 			if (lobResource(getResourcePersistentAttribute()) == null) {
-				getResourcePersistentAttribute().addAnnotation(Lob.ANNOTATION_NAME);
+				getResourcePersistentAttribute().addAnnotation(LobAnnotation.ANNOTATION_NAME);
 			}
 		}
 		else {
 			if (lobResource(getResourcePersistentAttribute()) != null) {
-				getResourcePersistentAttribute().removeAnnotation(Lob.ANNOTATION_NAME);
+				getResourcePersistentAttribute().removeAnnotation(LobAnnotation.ANNOTATION_NAME);
 			}
 		}
 		firePropertyChanged(BasicMapping.LOB_PROPERTY, oldLob, newLob);
@@ -258,20 +258,20 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 	}
 	
 	@Override
-	protected void update(Basic basicResource) {
+	protected void update(BasicAnnotation basicResource) {
 		this.setSpecifiedFetch_(this.specifiedFetchType(basicResource));
 		this.setSpecifiedOptional_(this.specifiedOptional(basicResource));
 	}
 	
-	protected FetchType specifiedFetchType(Basic basic) {
+	protected FetchType specifiedFetchType(BasicAnnotation basic) {
 		return FetchType.fromJavaResourceModel(basic.getFetch());
 	}
 	
-	protected Boolean specifiedOptional(Basic basic) {
+	protected Boolean specifiedOptional(BasicAnnotation basic) {
 		return basic.getOptional();
 	}
 	
-	protected EnumType specifiedEnumerated(Enumerated enumerated) {
+	protected EnumType specifiedEnumerated(EnumeratedAnnotation enumerated) {
 		return EnumType.fromJavaResourceModel(enumerated.getValue());
 	}
 	
@@ -279,11 +279,11 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic>
 		return lobResource(resourcePersistentAttribute) != null;
 	}
 	
-	protected Lob lobResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		return (Lob) resourcePersistentAttribute.getAnnotation(Lob.ANNOTATION_NAME);
+	protected LobAnnotation lobResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		return (LobAnnotation) resourcePersistentAttribute.getAnnotation(LobAnnotation.ANNOTATION_NAME);
 	}
 	
-	protected TemporalType temporal(Temporal temporal) {
+	protected TemporalType temporal(TemporalAnnotation temporal) {
 		return TemporalType.fromJavaResourceModel(temporal.getValue());
 	}
 

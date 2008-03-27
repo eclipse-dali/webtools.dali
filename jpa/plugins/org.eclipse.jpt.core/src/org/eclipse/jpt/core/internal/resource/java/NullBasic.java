@@ -11,13 +11,13 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.core.resource.java.Basic;
+import org.eclipse.jpt.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.core.resource.java.FetchType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
-public class NullBasic extends AbstractJavaResourceNode implements Basic, Annotation
+public class NullBasic extends AbstractJavaResourceNode implements BasicAnnotation, Annotation
 {	
 	protected NullBasic(JavaResourcePersistentMember parent) {
 		super(parent);
@@ -40,7 +40,7 @@ public class NullBasic extends AbstractJavaResourceNode implements Basic, Annota
 	}
 
 	public String getAnnotationName() {
-		return Basic.ANNOTATION_NAME;
+		return BasicAnnotation.ANNOTATION_NAME;
 	}
 	
 	@Override
@@ -48,9 +48,9 @@ public class NullBasic extends AbstractJavaResourceNode implements Basic, Annota
 		return (JavaResourcePersistentMember) super.getParent();
 	}
 	
-	protected Basic createBasicResource() {
+	protected BasicAnnotation createBasicResource() {
 		getParent().setMappingAnnotation(getAnnotationName());
-		return (Basic) getParent().getMappingAnnotation();
+		return (BasicAnnotation) getParent().getMappingAnnotation();
 	}
 
 	public FetchType getFetch() {

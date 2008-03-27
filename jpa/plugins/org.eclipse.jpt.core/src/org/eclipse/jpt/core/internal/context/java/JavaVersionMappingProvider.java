@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.resource.java.Version;
+import org.eclipse.jpt.core.resource.java.VersionAnnotation;
 
 public class JavaVersionMappingProvider
 	implements JavaAttributeMappingProvider
@@ -42,7 +42,7 @@ public class JavaVersionMappingProvider
 	}
 	
 	public String getAnnotationName() {
-		return Version.ANNOTATION_NAME;
+		return VersionAnnotation.ANNOTATION_NAME;
 	}
 
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory) {

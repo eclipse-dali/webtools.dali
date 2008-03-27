@@ -59,24 +59,24 @@ import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
-import org.eclipse.jpt.core.resource.java.AssociationOverrides;
+import org.eclipse.jpt.core.resource.java.AssociationOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
-import org.eclipse.jpt.core.resource.java.AttributeOverrides;
-import org.eclipse.jpt.core.resource.java.DiscriminatorValue;
+import org.eclipse.jpt.core.resource.java.AttributeOverridesAnnotation;
+import org.eclipse.jpt.core.resource.java.DiscriminatorValueAnnotation;
 import org.eclipse.jpt.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.core.resource.java.IdClassAnnotation;
-import org.eclipse.jpt.core.resource.java.Inheritance;
+import org.eclipse.jpt.core.resource.java.InheritanceAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.java.NamedNativeQueries;
+import org.eclipse.jpt.core.resource.java.NamedNativeQueriesAnnotation;
 import org.eclipse.jpt.core.resource.java.NamedNativeQueryAnnotation;
-import org.eclipse.jpt.core.resource.java.NamedQueries;
+import org.eclipse.jpt.core.resource.java.NamedQueriesAnnotation;
 import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumns;
 import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
-import org.eclipse.jpt.core.resource.java.SecondaryTables;
+import org.eclipse.jpt.core.resource.java.SecondaryTablesAnnotation;
 import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -215,7 +215,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected void initializeSecondaryTables(JavaResourcePersistentType resourcePersistentType) {
-		ListIterator<JavaResourceNode> annotations = resourcePersistentType.annotations(SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
+		ListIterator<JavaResourceNode> annotations = resourcePersistentType.annotations(SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
 			this.specifiedSecondaryTables.add(buildSecondaryTable((SecondaryTableAnnotation) annotations.next()));
@@ -256,7 +256,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}	
 
 	protected void initializeSpecifiedAttributeOverrides(JavaResourcePersistentType persistentTypeResource) {
-		ListIterator<JavaResourceNode> annotations = persistentTypeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
+		ListIterator<JavaResourceNode> annotations = persistentTypeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
 			this.specifiedAttributeOverrides.add(buildAttributeOverride((AttributeOverrideAnnotation) annotations.next()));
@@ -273,7 +273,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected void initializeSpecifiedAssociationOverrides(JavaResourcePersistentType resourcePersistentType) {
-		ListIterator<JavaResourceNode> annotations = resourcePersistentType.annotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
+		ListIterator<JavaResourceNode> annotations = resourcePersistentType.annotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
 			this.specifiedAssociationOverrides.add(buildAssociationOverride((AssociationOverrideAnnotation) annotations.next()));
@@ -291,7 +291,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	protected void initializeNamedQueries(JavaResourcePersistentType resourcePersistentType) {
-		ListIterator<JavaResourceNode> annotations = resourcePersistentType.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueries.ANNOTATION_NAME);
+		ListIterator<JavaResourceNode> annotations = resourcePersistentType.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
 			this.namedQueries.add(buildNamedQuery((NamedQueryAnnotation) annotations.next()));
@@ -299,7 +299,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected void initializeNamedNativeQueries(JavaResourcePersistentType resourcePersistentType) {
-		ListIterator<JavaResourceNode> annotations = resourcePersistentType.annotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueries.ANNOTATION_NAME);
+		ListIterator<JavaResourceNode> annotations = resourcePersistentType.annotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
 			this.namedNativeQueries.add(buildNamedNativeQuery((NamedNativeQueryAnnotation) annotations.next()));
@@ -310,12 +310,12 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	//call one setter and the inheritanceResource could change. 
 	//You could call more than one setter before this object has received any notification
 	//from the java resource model
-	protected Inheritance getInheritanceResource() {
-		return (Inheritance) this.javaResourcePersistentType.getNonNullAnnotation(Inheritance.ANNOTATION_NAME);
+	protected InheritanceAnnotation getInheritanceResource() {
+		return (InheritanceAnnotation) this.javaResourcePersistentType.getNonNullAnnotation(InheritanceAnnotation.ANNOTATION_NAME);
 	}
 	
-	protected DiscriminatorValue getDiscriminatorValueResource() {
-		return (DiscriminatorValue) this.javaResourcePersistentType.getNonNullAnnotation(DiscriminatorValue.ANNOTATION_NAME);
+	protected DiscriminatorValueAnnotation getDiscriminatorValueResource() {
+		return (DiscriminatorValueAnnotation) this.javaResourcePersistentType.getNonNullAnnotation(DiscriminatorValueAnnotation.ANNOTATION_NAME);
 	}
 
 	protected void initializeIdClass(JavaResourcePersistentType typeResource) {
@@ -444,7 +444,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	public JavaSecondaryTable addSpecifiedSecondaryTable(int index) {
 		JavaSecondaryTable secondaryTable = getJpaFactory().buildJavaSecondaryTable(this);
 		this.specifiedSecondaryTables.add(index, secondaryTable);
-		SecondaryTableAnnotation secondaryTableResource = (SecondaryTableAnnotation) this.javaResourcePersistentType.addAnnotation(index, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
+		SecondaryTableAnnotation secondaryTableResource = (SecondaryTableAnnotation) this.javaResourcePersistentType.addAnnotation(index, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
 		secondaryTable.initializeFromResource(secondaryTableResource);
 		fireItemAdded(Entity.SPECIFIED_SECONDARY_TABLES_LIST, index, secondaryTable);
 		return secondaryTable;
@@ -460,7 +460,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	public void removeSpecifiedSecondaryTable(int index) {
 		JavaSecondaryTable removedSecondaryTable = this.specifiedSecondaryTables.remove(index);
-		this.javaResourcePersistentType.removeAnnotation(index, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeAnnotation(index, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(Entity.SPECIFIED_SECONDARY_TABLES_LIST, index, removedSecondaryTable);
 	}
 	
@@ -470,7 +470,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	public void moveSpecifiedSecondaryTable(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedSecondaryTables, targetIndex, sourceIndex);
-		this.javaResourcePersistentType.move(targetIndex, sourceIndex, SecondaryTables.ANNOTATION_NAME);
+		this.javaResourcePersistentType.move(targetIndex, sourceIndex, SecondaryTablesAnnotation.ANNOTATION_NAME);
 		fireItemMoved(Entity.SPECIFIED_SECONDARY_TABLES_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -761,7 +761,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	protected JavaAttributeOverride addSpecifiedAttributeOverride(int index) {
 		JavaAttributeOverride attributeOverride = getJpaFactory().buildJavaAttributeOverride(this, createAttributeOverrideOwner());
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
-		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
+		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		attributeOverride.initializeFromResource(attributeOverrideResource);
 		this.fireItemAdded(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
@@ -794,7 +794,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			}
 		}
 
-		this.javaResourcePersistentType.removeAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		
 		if (virtualAttributeOverride != null) {
@@ -808,7 +808,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		JavaAttributeOverride newAttributeOverride = getJpaFactory().buildJavaAttributeOverride(this, createAttributeOverrideOwner());
 		this.specifiedAttributeOverrides.add(index, newAttributeOverride);
 		
-		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
+		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		newAttributeOverride.initializeFromResource(attributeOverrideResource);
 		
 		int defaultIndex = this.virtualAttributeOverrides.indexOf(oldAttributeOverride);
@@ -837,7 +837,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 
 	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedAttributeOverrides, targetIndex, sourceIndex);
-		this.javaResourcePersistentType.move(targetIndex, sourceIndex, AttributeOverrides.ANNOTATION_NAME);
+		this.javaResourcePersistentType.move(targetIndex, sourceIndex, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		fireItemMoved(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -927,7 +927,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	public JavaAssociationOverride addSpecifiedAssociationOverride(int index) {
 		JavaAssociationOverride associationOverride = getJpaFactory().buildJavaAssociationOverride(this, createAssociationOverrideOwner());
 		this.specifiedAssociationOverrides.add(index, associationOverride);
-		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
+		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
 		associationOverride.initializeFromResource(associationOverrideResource);
 		this.fireItemAdded(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
 		return associationOverride;
@@ -947,7 +947,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	public void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedAssociationOverrides, targetIndex, sourceIndex);
-		this.javaResourcePersistentType.move(targetIndex, sourceIndex, AssociationOverrides.ANNOTATION_NAME);
+		this.javaResourcePersistentType.move(targetIndex, sourceIndex, AssociationOverridesAnnotation.ANNOTATION_NAME);
 		fireItemMoved(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 
@@ -978,7 +978,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			}
 		}
 
-		this.javaResourcePersistentType.removeAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
 		
 		if (virtualAssociationOverride != null) {
@@ -992,7 +992,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		JavaAssociationOverride newAssociationOverride = getJpaFactory().buildJavaAssociationOverride(this, createAssociationOverrideOwner());
 		this.specifiedAssociationOverrides.add(index, newAssociationOverride);
 		
-		AssociationOverrideAnnotation attributeOverrideResource = (AssociationOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
+		AssociationOverrideAnnotation attributeOverrideResource = (AssociationOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
 		newAssociationOverride.initializeFromResource(attributeOverrideResource);
 		
 		int virtualIndex = this.virtualAssociationOverrides.indexOf(oldAssociationOverride);
@@ -1025,7 +1025,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	public JavaNamedQuery addNamedQuery(int index) {
 		JavaNamedQuery namedQuery = getJpaFactory().buildJavaNamedQuery(this);
 		this.namedQueries.add(index, namedQuery);
-		NamedQueryAnnotation namedQueryAnnotation = (NamedQueryAnnotation) this.javaResourcePersistentType.addAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueries.ANNOTATION_NAME);
+		NamedQueryAnnotation namedQueryAnnotation = (NamedQueryAnnotation) this.javaResourcePersistentType.addAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		namedQuery.initializeFromResource(namedQueryAnnotation);
 		fireItemAdded(QueryHolder.NAMED_QUERIES_LIST, index, namedQuery);
 		return namedQuery;
@@ -1041,7 +1041,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	public void removeNamedQuery(int index) {
 		JavaNamedQuery removedNamedQuery = this.namedQueries.remove(index);
-		this.javaResourcePersistentType.removeAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueries.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(QueryHolder.NAMED_QUERIES_LIST, index, removedNamedQuery);
 	}	
 	
@@ -1051,7 +1051,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	public void moveNamedQuery(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.namedQueries, targetIndex, sourceIndex);
-		this.javaResourcePersistentType.move(targetIndex, sourceIndex, NamedQueries.ANNOTATION_NAME);
+		this.javaResourcePersistentType.move(targetIndex, sourceIndex, NamedQueriesAnnotation.ANNOTATION_NAME);
 		fireItemMoved(QueryHolder.NAMED_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -1066,7 +1066,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	public JavaNamedNativeQuery addNamedNativeQuery(int index) {
 		JavaNamedNativeQuery namedNativeQuery = getJpaFactory().buildJavaNamedNativeQuery(this);
 		this.namedNativeQueries.add(index, namedNativeQuery);
-		NamedNativeQueryAnnotation namedNativeQueryAnnotation = (NamedNativeQueryAnnotation) this.javaResourcePersistentType.addAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueries.ANNOTATION_NAME);
+		NamedNativeQueryAnnotation namedNativeQueryAnnotation = (NamedNativeQueryAnnotation) this.javaResourcePersistentType.addAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		namedNativeQuery.initializeFromResource(namedNativeQueryAnnotation);		
 		fireItemAdded(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
 		return namedNativeQuery;
@@ -1082,7 +1082,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	public void removeNamedNativeQuery(int index) {
 		JavaNamedNativeQuery removedNamedNativeQuery = this.namedNativeQueries.remove(index);
-		this.javaResourcePersistentType.removeAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueries.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, removedNamedNativeQuery);
 	}	
 	
@@ -1092,7 +1092,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.namedNativeQueries, targetIndex, sourceIndex);
-		this.javaResourcePersistentType.move(targetIndex, sourceIndex, NamedNativeQueries.ANNOTATION_NAME);
+		this.javaResourcePersistentType.move(targetIndex, sourceIndex, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		fireItemMoved(QueryHolder.NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -1328,12 +1328,12 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		getTable().update(persistentTypeResource);
 	}
 	
-	protected void updateInheritance(Inheritance inheritanceResource) {
+	protected void updateInheritance(InheritanceAnnotation inheritanceResource) {
 		this.setSpecifiedInheritanceStrategy_(this.specifiedInheritanceStrategy(inheritanceResource));
 		this.setDefaultInheritanceStrategy(this.defaultInheritanceStrategy());
 	}
 	
-	protected InheritanceType specifiedInheritanceStrategy(Inheritance inheritanceResource) {
+	protected InheritanceType specifiedInheritanceStrategy(InheritanceAnnotation inheritanceResource) {
 		return InheritanceType.fromJavaResourceModel(inheritanceResource.getStrategy());
 	}
 	
@@ -1348,7 +1348,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		getDiscriminatorColumn().update(persistentTypeResource);
 	}
 	
-	protected void updateDiscriminatorValue(DiscriminatorValue discriminatorValueResource) {
+	protected void updateDiscriminatorValue(DiscriminatorValueAnnotation discriminatorValueResource) {
 		this.setSpecifiedDiscriminatorValue_(discriminatorValueResource.getValue());
 		this.setDefaultDiscriminatorValue(this.javaDefaultDiscriminatorValue());
 	}
@@ -1383,7 +1383,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	protected void updateSecondaryTables(JavaResourcePersistentType persistentTypeResource) {
 		ListIterator<JavaSecondaryTable> secondaryTables = specifiedSecondaryTables();
-		ListIterator<JavaResourceNode> resourceSecondaryTables = persistentTypeResource.annotations(SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
+		ListIterator<JavaResourceNode> resourceSecondaryTables = persistentTypeResource.annotations(SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
 		
 		while (secondaryTables.hasNext()) {
 			JavaSecondaryTable secondaryTable = secondaryTables.next();
@@ -1501,7 +1501,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		
 	protected void updateSpecifiedAttributeOverrides(JavaResourcePersistentType persistentTypeResource) {
 		ListIterator<JavaAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
-		ListIterator<JavaResourceNode> resourceAttributeOverrides = persistentTypeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
+		ListIterator<JavaResourceNode> resourceAttributeOverrides = persistentTypeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		
 		while (attributeOverrides.hasNext()) {
 			JavaAttributeOverride attributeOverride = attributeOverrides.next();
@@ -1557,7 +1557,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 
 	protected void updateSpecifiedAssociationOverrides(JavaResourcePersistentType resourcePersistentType) {
 		ListIterator<JavaAssociationOverride> associationOverrides = specifiedAssociationOverrides();
-		ListIterator<JavaResourceNode> resourceAssociationOverrides = resourcePersistentType.annotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
+		ListIterator<JavaResourceNode> resourceAssociationOverrides = resourcePersistentType.annotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
 		
 		while (associationOverrides.hasNext()) {
 			JavaAssociationOverride associationOverride = associationOverrides.next();
@@ -1606,7 +1606,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 
 	protected void updateNamedQueries(JavaResourcePersistentType resourcePersistentType) {
 		ListIterator<JavaNamedQuery> namedQueries = namedQueries();
-		ListIterator<JavaResourceNode> resourceNamedQueries = resourcePersistentType.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueries.ANNOTATION_NAME);
+		ListIterator<JavaResourceNode> resourceNamedQueries = resourcePersistentType.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		
 		while (namedQueries.hasNext()) {
 			JavaNamedQuery namedQuery = namedQueries.next();
@@ -1625,7 +1625,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	protected void updateNamedNativeQueries(JavaResourcePersistentType resourcePersistentType) {
 		ListIterator<JavaNamedNativeQuery> namedNativeQueries = namedNativeQueries();
-		ListIterator<JavaResourceNode> resourceNamedNativeQueries = resourcePersistentType.annotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueries.ANNOTATION_NAME);
+		ListIterator<JavaResourceNode> resourceNamedNativeQueries = resourcePersistentType.annotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		
 		while (namedNativeQueries.hasNext()) {
 			JavaNamedNativeQuery namedQuery = namedNativeQueries.next();

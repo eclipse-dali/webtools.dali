@@ -18,11 +18,11 @@ import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.ManyToOne;
+import org.eclipse.jpt.core.resource.java.ManyToOneAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericJavaManyToOneMapping extends AbstractJavaSingleRelationshipMapping<ManyToOne>
+public class GenericJavaManyToOneMapping extends AbstractJavaSingleRelationshipMapping<ManyToOneAnnotation>
 	implements JavaManyToOneMapping
 {
 
@@ -38,7 +38,7 @@ public class GenericJavaManyToOneMapping extends AbstractJavaSingleRelationshipM
 	}
 
 	public String getAnnotationName() {
-		return ManyToOne.ANNOTATION_NAME;
+		return ManyToOneAnnotation.ANNOTATION_NAME;
 	}
 
 	public String getKey() {
@@ -56,7 +56,7 @@ public class GenericJavaManyToOneMapping extends AbstractJavaSingleRelationshipM
 	}
 	
 	@Override
-	protected Boolean specifiedOptional(ManyToOne relationshipMapping) {
+	protected Boolean specifiedOptional(ManyToOneAnnotation relationshipMapping) {
 		return relationshipMapping.getOptional();
 	}
 	

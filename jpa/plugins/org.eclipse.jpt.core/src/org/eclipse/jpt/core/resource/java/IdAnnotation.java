@@ -18,7 +18,7 @@ package org.eclipse.jpt.core.resource.java;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface Id extends JavaResourceNode
+public interface IdAnnotation extends JavaResourceNode
 {
 	String ANNOTATION_NAME = JPA.ID;
 

@@ -23,14 +23,14 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.Temporal;
-import org.eclipse.jpt.core.resource.java.Version;
+import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
+import org.eclipse.jpt.core.resource.java.VersionAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Version> implements JavaVersionMapping
+public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<VersionAnnotation> implements JavaVersionMapping
 {
 	protected final JavaColumn column;
 	
@@ -52,8 +52,8 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 		this.temporal = this.temporal(this.temporalResource());
 	}
 	
-	protected Temporal temporalResource() {
-		return (Temporal) getResourcePersistentAttribute().getNonNullAnnotation(Temporal.ANNOTATION_NAME);
+	protected TemporalAnnotation temporalResource() {
+		return (TemporalAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 	}
 	
 	public ColumnAnnotation getColumnResource() {
@@ -67,7 +67,7 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	}
 
 	public String getAnnotationName() {
-		return Version.ANNOTATION_NAME;
+		return VersionAnnotation.ANNOTATION_NAME;
 	}
 	
 	public Iterator<String> correspondingAnnotationNames() {
@@ -110,7 +110,7 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 		this.setTemporal(this.temporal(this.temporalResource()));
 	}
 	
-	protected TemporalType temporal(Temporal temporal) {
+	protected TemporalType temporal(TemporalAnnotation temporal) {
 		return TemporalType.fromJavaResourceModel(temporal.getValue());
 	}
 

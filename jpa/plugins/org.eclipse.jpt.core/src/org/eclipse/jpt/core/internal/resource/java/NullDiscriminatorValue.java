@@ -11,12 +11,12 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.core.resource.java.DiscriminatorValue;
+import org.eclipse.jpt.core.resource.java.DiscriminatorValueAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
-public class NullDiscriminatorValue extends AbstractJavaResourceNode implements DiscriminatorValue, Annotation
+public class NullDiscriminatorValue extends AbstractJavaResourceNode implements DiscriminatorValueAnnotation, Annotation
 {	
 	protected NullDiscriminatorValue(JavaResourcePersistentMember parent) {
 		super(parent);
@@ -44,7 +44,7 @@ public class NullDiscriminatorValue extends AbstractJavaResourceNode implements 
 	}
 
 	public String getAnnotationName() {
-		return DiscriminatorValue.ANNOTATION_NAME;
+		return DiscriminatorValueAnnotation.ANNOTATION_NAME;
 	}
 
 	public String getValue() {
@@ -57,8 +57,8 @@ public class NullDiscriminatorValue extends AbstractJavaResourceNode implements 
 		}		
 	}
 	
-	protected DiscriminatorValue createDiscriminatorValueResource() {
-		return (DiscriminatorValue) getParent().addAnnotation(getAnnotationName());
+	protected DiscriminatorValueAnnotation createDiscriminatorValueResource() {
+		return (DiscriminatorValueAnnotation) getParent().addAnnotation(getAnnotationName());
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {

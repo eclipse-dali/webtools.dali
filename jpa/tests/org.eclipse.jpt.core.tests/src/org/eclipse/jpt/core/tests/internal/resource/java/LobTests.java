@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.java.Lob;
+import org.eclipse.jpt.core.resource.java.LobAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class LobTests extends JavaResourceModelTestCase {
@@ -42,7 +42,7 @@ public class LobTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		Lob lob = (Lob) attributeResource.getAnnotation(JPA.LOB);
+		LobAnnotation lob = (LobAnnotation) attributeResource.getAnnotation(JPA.LOB);
 		assertNotNull(lob);
 	}
 

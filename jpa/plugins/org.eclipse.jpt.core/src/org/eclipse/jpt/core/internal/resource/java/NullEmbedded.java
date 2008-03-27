@@ -11,12 +11,12 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.core.resource.java.Embedded;
+import org.eclipse.jpt.core.resource.java.EmbeddedAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
-public class NullEmbedded extends AbstractJavaResourceNode implements Embedded, Annotation
+public class NullEmbedded extends AbstractJavaResourceNode implements EmbeddedAnnotation, Annotation
 {	
 	protected NullEmbedded(JavaResourcePersistentMember parent) {
 		super(parent);
@@ -39,7 +39,7 @@ public class NullEmbedded extends AbstractJavaResourceNode implements Embedded, 
 	}
 
 	public String getAnnotationName() {
-		return Embedded.ANNOTATION_NAME;
+		return EmbeddedAnnotation.ANNOTATION_NAME;
 	}
 	
 	@Override

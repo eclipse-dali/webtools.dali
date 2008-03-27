@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NestableUniqueConstraint;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
-import org.eclipse.jpt.core.resource.java.UniqueConstraint;
+import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
@@ -129,8 +129,8 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 		firePropertyChanged(SCHEMA_PROPERTY, oldSchema, newSchema);
 	}
 	
-	public ListIterator<UniqueConstraint> uniqueConstraints() {
-		return new CloneListIterator<UniqueConstraint>(this.uniqueConstraints);
+	public ListIterator<UniqueConstraintAnnotation> uniqueConstraints() {
+		return new CloneListIterator<UniqueConstraintAnnotation>(this.uniqueConstraints);
 	}
 	
 	public int uniqueConstraintsSize() {
@@ -141,7 +141,7 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 		return this.uniqueConstraints.get(index);
 	}
 	
-	public int indexOfUniqueConstraint(UniqueConstraint uniqueConstraint) {
+	public int indexOfUniqueConstraint(UniqueConstraintAnnotation uniqueConstraint) {
 		return this.uniqueConstraints.indexOf(uniqueConstraint);
 	}
 	

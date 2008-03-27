@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
-import org.eclipse.jpt.core.resource.java.UniqueConstraint;
+import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class SecondaryTableTests extends JavaResourceModelTestCase {
@@ -299,7 +299,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		SecondaryTableAnnotation table = (SecondaryTableAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLE);
 		
 		table.removeUniqueConstraint(1);
-		Iterator<UniqueConstraint> uniqueConstraints = table.uniqueConstraints();
+		Iterator<UniqueConstraintAnnotation> uniqueConstraints = table.uniqueConstraints();
 		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
 		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
 		assertFalse(uniqueConstraints.hasNext());

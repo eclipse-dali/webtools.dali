@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.resource.java.EmbeddedId;
+import org.eclipse.jpt.core.resource.java.EmbeddedIdAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -44,7 +44,7 @@ public class EmbeddedIdTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		JavaResourceNode mappingAnnotation = attributeResource.getMappingAnnotation();
-		assertTrue(mappingAnnotation instanceof EmbeddedId);
+		assertTrue(mappingAnnotation instanceof EmbeddedIdAnnotation);
 	}
 
 }

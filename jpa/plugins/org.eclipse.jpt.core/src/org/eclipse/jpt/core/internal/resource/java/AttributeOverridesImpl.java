@@ -17,7 +17,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
-import org.eclipse.jpt.core.resource.java.AttributeOverrides;
+import org.eclipse.jpt.core.resource.java.AttributeOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.NestableAttributeOverride;
@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class AttributeOverridesImpl extends AbstractResourceAnnotation<Member> implements AttributeOverrides
+public class AttributeOverridesImpl extends AbstractResourceAnnotation<Member> implements AttributeOverridesAnnotation
 {	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
@@ -138,11 +138,11 @@ public class AttributeOverridesImpl extends AbstractResourceAnnotation<Member> i
 			super();
 		}
 
-		public AttributeOverrides buildAnnotation(JavaResourcePersistentMember parent, Member member) {
+		public AttributeOverridesAnnotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new AttributeOverridesImpl(parent, member);
 		}
 		
-		public AttributeOverrides buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
+		public AttributeOverridesAnnotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

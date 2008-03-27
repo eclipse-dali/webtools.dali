@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableUniqueConstraint;
-import org.eclipse.jpt.core.resource.java.UniqueConstraint;
+import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
@@ -82,7 +82,7 @@ public class UniqueConstraintImpl extends AbstractResourceAnnotation<Member> imp
 	}
 	
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		UniqueConstraint oldUniqueConstraint = (UniqueConstraint) oldAnnotation;
+		UniqueConstraintAnnotation oldUniqueConstraint = (UniqueConstraintAnnotation) oldAnnotation;
 		for (String columnName : CollectionTools.iterable(oldUniqueConstraint.columnNames())) {
 			addColumnName(columnName);
 		}

@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
-import org.eclipse.jpt.core.resource.java.UniqueConstraint;
+import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
@@ -79,7 +79,7 @@ public abstract class NullBaseTable extends AbstractJavaResourceNode implements 
 		}
 	}
 
-	public UniqueConstraint addUniqueConstraint(int index) {
+	public UniqueConstraintAnnotation addUniqueConstraint(int index) {
 		return createTableResource().addUniqueConstraint(index);		
 	}
 
@@ -87,18 +87,18 @@ public abstract class NullBaseTable extends AbstractJavaResourceNode implements 
 		throw new UnsupportedOperationException();
 	}
 
-	public int indexOfUniqueConstraint(UniqueConstraint uniqueConstraint) {
+	public int indexOfUniqueConstraint(UniqueConstraintAnnotation uniqueConstraint) {
 		throw new UnsupportedOperationException();
 	}
 
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
 		throw new UnsupportedOperationException();
 	}
-	public UniqueConstraint uniqueConstraintAt(int index) {
+	public UniqueConstraintAnnotation uniqueConstraintAt(int index) {
 		throw new UnsupportedOperationException();
 	}
 
-	public ListIterator<UniqueConstraint> uniqueConstraints() {
+	public ListIterator<UniqueConstraintAnnotation> uniqueConstraints() {
 		return EmptyListIterator.instance();
 	}
 

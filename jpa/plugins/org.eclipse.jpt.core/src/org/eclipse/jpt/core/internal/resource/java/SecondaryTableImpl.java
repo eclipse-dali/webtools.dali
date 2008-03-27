@@ -30,7 +30,7 @@ import org.eclipse.jpt.core.resource.java.NestableSecondaryTable;
 import org.eclipse.jpt.core.resource.java.NestableUniqueConstraint;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
-import org.eclipse.jpt.core.resource.java.UniqueConstraint;
+import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
@@ -94,7 +94,7 @@ public class SecondaryTableImpl extends AbstractResourceTable implements Nestabl
 		setName(oldSecondaryTable.getName());
 		setCatalog(oldSecondaryTable.getCatalog());
 		setSchema(oldSecondaryTable.getSchema());
-		for (UniqueConstraint uniqueConstraint : CollectionTools.iterable(oldSecondaryTable.uniqueConstraints())) {
+		for (UniqueConstraintAnnotation uniqueConstraint : CollectionTools.iterable(oldSecondaryTable.uniqueConstraints())) {
 			NestableUniqueConstraint newUniqueConstraint = addUniqueConstraint(oldSecondaryTable.indexOfUniqueConstraint(uniqueConstraint));
 			newUniqueConstraint.initializeFrom((NestableAnnotation) uniqueConstraint);
 		}

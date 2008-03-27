@@ -9,8 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.utility.TextRange;
+
 /**
- * 
+ * Corresponds to the javax.persistence.OrderBy annotation
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -18,8 +21,27 @@ package org.eclipse.jpt.core.resource.java;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface EmbeddedId extends JavaResourceNode
+public interface DiscriminatorValueAnnotation extends JavaResourceNode
 {
-	String ANNOTATION_NAME = JPA.EMBEDDED_ID;
+	String ANNOTATION_NAME = JPA.DISCRIMINATOR_VALUE;
+
+	/**
+	 * Corresponds to the value element of the javax.persistence.OrderBy annotation.
+	 * Returns null if the value valuePair does not exist in the annotation
+	 */
+	String getValue();
+	
+	/**
+	 * Corresponds to the value element of the javax.persistence.OrderBy annotation.
+	 * Setting the value to null will not remove the OrderBy annotation
+	 */
+	void setValue(String value);
+		String VALUE_PROPERTY = "valueProperty";
+
+	/**
+	 * Return the {@link TextRange} for the value element. If value element
+	 * does not exist return the {@link TextRange} for the DisriminatorValue annotation.
+	 */
+	TextRange getValueTextRange(CompilationUnit astRoot);
 
 }

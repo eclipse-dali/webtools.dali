@@ -12,12 +12,12 @@ package org.eclipse.jpt.core.internal.resource.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.EnumType;
-import org.eclipse.jpt.core.resource.java.Enumerated;
+import org.eclipse.jpt.core.resource.java.EnumeratedAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
-public class NullEnumerated extends AbstractJavaResourceNode implements Enumerated, Annotation
+public class NullEnumerated extends AbstractJavaResourceNode implements EnumeratedAnnotation, Annotation
 {	
 	protected NullEnumerated(JavaResourcePersistentMember parent) {
 		super(parent);
@@ -45,11 +45,11 @@ public class NullEnumerated extends AbstractJavaResourceNode implements Enumerat
 	}
 
 	public String getAnnotationName() {
-		return Enumerated.ANNOTATION_NAME;
+		return EnumeratedAnnotation.ANNOTATION_NAME;
 	}
 		
-	protected Enumerated createEnumeratedResource() {
-		return (Enumerated) getParent().addAnnotation(getAnnotationName());
+	protected EnumeratedAnnotation createEnumeratedResource() {
+		return (EnumeratedAnnotation) getParent().addAnnotation(getAnnotationName());
 	}
 
 

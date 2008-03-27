@@ -117,15 +117,15 @@ public interface TableGeneratorAnnotation extends GeneratorAnnotation
 	void setPkColumnValue(String pkColumnValue);
 		String PK_COLUMN_VALUE_PROPERTY = "pkColumnValueProperty";
 	
-	ListIterator<UniqueConstraint> uniqueConstraints();
+	ListIterator<UniqueConstraintAnnotation> uniqueConstraints();
 	
-	UniqueConstraint uniqueConstraintAt(int index);
+	UniqueConstraintAnnotation uniqueConstraintAt(int index);
 	
-	int indexOfUniqueConstraint(UniqueConstraint uniqueConstraint);
+	int indexOfUniqueConstraint(UniqueConstraintAnnotation uniqueConstraint);
 	
 	int uniqueConstraintsSize();
 
-	UniqueConstraint addUniqueConstraint(int index);
+	UniqueConstraintAnnotation addUniqueConstraint(int index);
 	
 	void removeUniqueConstraint(int index);
 	

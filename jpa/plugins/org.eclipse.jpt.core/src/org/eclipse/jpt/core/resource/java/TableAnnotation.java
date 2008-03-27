@@ -38,15 +38,15 @@ public interface TableAnnotation extends JavaResourceNode
 	void setSchema(String schema);
 		String SCHEMA_PROPERTY = "schemaProperty";
 	
-	ListIterator<UniqueConstraint> uniqueConstraints();
+	ListIterator<UniqueConstraintAnnotation> uniqueConstraints();
 	
-	UniqueConstraint uniqueConstraintAt(int index);
+	UniqueConstraintAnnotation uniqueConstraintAt(int index);
 	
-	int indexOfUniqueConstraint(UniqueConstraint uniqueConstraint);
+	int indexOfUniqueConstraint(UniqueConstraintAnnotation uniqueConstraint);
 	
 	int uniqueConstraintsSize();
 
-	UniqueConstraint addUniqueConstraint(int index);
+	UniqueConstraintAnnotation addUniqueConstraint(int index);
 	
 	void removeUniqueConstraint(int index);
 	

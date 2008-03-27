@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.resource.java.Basic;
+import org.eclipse.jpt.core.resource.java.BasicAnnotation;
 
 public class JavaBasicMappingProvider
 	implements DefaultJavaAttributeMappingProvider
@@ -42,7 +42,7 @@ public class JavaBasicMappingProvider
 	}
 	
 	public String getAnnotationName() {
-		return Basic.ANNOTATION_NAME;
+		return BasicAnnotation.ANNOTATION_NAME;
 	}
 
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory) {

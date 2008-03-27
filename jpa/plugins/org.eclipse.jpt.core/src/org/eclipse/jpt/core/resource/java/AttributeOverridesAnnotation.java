@@ -18,9 +18,9 @@ package org.eclipse.jpt.core.resource.java;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface SecondaryTables extends ContainerAnnotation<NestableSecondaryTable>
+public interface AttributeOverridesAnnotation extends ContainerAnnotation<NestableAttributeOverride>
 {
-	String ANNOTATION_NAME = JPA.SECONDARY_TABLES;
+	String ANNOTATION_NAME = JPA.ATTRIBUTE_OVERRIDES;
 
-	String SECONDARY_TABLES_LIST = "secondaryTablesList";
+	String ATTRIBUTE_OVERRIDES_LIST = "attributeOverridesList";
 }

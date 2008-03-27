@@ -24,13 +24,13 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.OneToOne;
+import org.eclipse.jpt.core.resource.java.OneToOneAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMapping<OneToOne>
+public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMapping<OneToOneAnnotation>
 	implements JavaOneToOneMapping
 {
 	protected String mappedBy;
@@ -49,7 +49,7 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 	}
 	
 	public String getAnnotationName() {
-		return OneToOne.ANNOTATION_NAME;
+		return OneToOneAnnotation.ANNOTATION_NAME;
 	}
 	
 	public String getKey() {
@@ -107,19 +107,19 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 	}
 		
 	@Override
-	protected void initialize(OneToOne oneToOneResource) {
+	protected void initialize(OneToOneAnnotation oneToOneResource) {
 		super.initialize(oneToOneResource);
 		this.mappedBy = oneToOneResource.getMappedBy();
 	}
 
 	@Override
-	protected void update(OneToOne oneToOneResource) {
+	protected void update(OneToOneAnnotation oneToOneResource) {
 		super.update(oneToOneResource);
 		this.setMappedBy(oneToOneResource.getMappedBy());
 	}
 
 	@Override
-	protected Boolean specifiedOptional(OneToOne relationshipMapping) {
+	protected Boolean specifiedOptional(OneToOneAnnotation relationshipMapping) {
 		return relationshipMapping.getOptional();
 	}
 	

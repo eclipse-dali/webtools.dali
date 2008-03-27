@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OneToMany extends RelationshipMappingAnnotation
+public interface OneToManyAnnotation extends RelationshipMappingAnnotation
 {
 	String ANNOTATION_NAME = JPA.ONE_TO_MANY;
 

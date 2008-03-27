@@ -22,8 +22,8 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.MapKey;
-import org.eclipse.jpt.core.resource.java.OrderBy;
+import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
+import org.eclipse.jpt.core.resource.java.OrderByAnnotation;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
@@ -96,16 +96,16 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		firePropertyChanged(MultiRelationshipMapping.ORDER_BY_PROPERTY, oldOrderBy, newOrderBy);
 	}
 	
-	protected OrderBy getOrderByResource() {
-		return (OrderBy) getResourcePersistentAttribute().getAnnotation(OrderBy.ANNOTATION_NAME);
+	protected OrderByAnnotation getOrderByResource() {
+		return (OrderByAnnotation) getResourcePersistentAttribute().getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 	}
 	
-	protected OrderBy addOrderByResource() {
-		return (OrderBy) getResourcePersistentAttribute().addAnnotation(OrderBy.ANNOTATION_NAME);
+	protected OrderByAnnotation addOrderByResource() {
+		return (OrderByAnnotation) getResourcePersistentAttribute().addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void removeOrderByResource() {
-		getResourcePersistentAttribute().removeAnnotation(OrderBy.ANNOTATION_NAME);
+		getResourcePersistentAttribute().removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 	}
 	
 	public boolean isNoOrdering() {
@@ -204,11 +204,11 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 					this.getMapKeyResource(getResourcePersistentAttribute()).setName(newMapKey);
 				}
 				else {
-					getResourcePersistentAttribute().removeAnnotation(MapKey.ANNOTATION_NAME);				
+					getResourcePersistentAttribute().removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);				
 				}
 			}
 			else if (newMapKey != null) {
-				getResourcePersistentAttribute().addAnnotation(MapKey.ANNOTATION_NAME);
+				getResourcePersistentAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 				getMapKeyResource(getResourcePersistentAttribute()).setName(newMapKey);
 			}
 		}
@@ -254,8 +254,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		return false;
 	}
 	
-	protected MapKey getMapKeyResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		return (MapKey) resourcePersistentAttribute.getAnnotation(MapKey.ANNOTATION_NAME);
+	protected MapKeyAnnotation getMapKeyResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		return (MapKeyAnnotation) resourcePersistentAttribute.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 	}
 
 	public Iterator<String> candidateMapKeyNames() {
@@ -292,7 +292,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	@Override
 	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super.initializeFromResource(resourcePersistentAttribute);
-		MapKey mapKey = this.getMapKeyResource(resourcePersistentAttribute);
+		MapKeyAnnotation mapKey = this.getMapKeyResource(resourcePersistentAttribute);
 		if (mapKey != null) {
 			this.mapKey = mapKey.getName();
 		}
@@ -306,7 +306,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		this.mappedBy = this.mappedBy(relationshipMapping);
 	}
 	
-	protected void initializeOrderBy(OrderBy orderBy) {
+	protected void initializeOrderBy(OrderByAnnotation orderBy) {
 		if (orderBy != null) {
 			this.orderBy = orderBy.getValue();
 			if (orderBy.getValue() == null) {
@@ -336,7 +336,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 	
 	protected void updateMapKey(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		MapKey mapKey = this.getMapKeyResource(resourcePersistentAttribute);
+		MapKeyAnnotation mapKey = this.getMapKeyResource(resourcePersistentAttribute);
 		if (mapKey != null) {
 			setMapKey_(mapKey.getName());
 		}
@@ -345,7 +345,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		}
 	}
 	
-	protected void updateOrderBy(OrderBy orderBy) {
+	protected void updateOrderBy(OrderByAnnotation orderBy) {
 		if (orderBy != null) {
 			setOrderBy_(orderBy.getValue());
 			if (orderBy.getValue() == null) {

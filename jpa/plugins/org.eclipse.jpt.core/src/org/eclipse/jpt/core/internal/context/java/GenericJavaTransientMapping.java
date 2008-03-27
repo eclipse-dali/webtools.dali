@@ -15,12 +15,12 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
-import org.eclipse.jpt.core.resource.java.Transient;
+import org.eclipse.jpt.core.resource.java.TransientAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public class GenericJavaTransientMapping extends AbstractJavaAttributeMapping<Transient>
+public class GenericJavaTransientMapping extends AbstractJavaAttributeMapping<TransientAnnotation>
 	implements JavaTransientMapping
 {
 	public GenericJavaTransientMapping(JavaPersistentAttribute parent) {
@@ -32,7 +32,7 @@ public class GenericJavaTransientMapping extends AbstractJavaAttributeMapping<Tr
 	}
 	
 	public String getAnnotationName() {
-		return Transient.ANNOTATION_NAME;
+		return TransientAnnotation.ANNOTATION_NAME;
 	}
 	
 	public Iterator<String> correspondingAnnotationNames() {

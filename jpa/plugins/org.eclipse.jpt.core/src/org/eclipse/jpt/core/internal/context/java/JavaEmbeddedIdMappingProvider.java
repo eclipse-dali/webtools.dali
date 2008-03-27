@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
-import org.eclipse.jpt.core.resource.java.EmbeddedId;
+import org.eclipse.jpt.core.resource.java.EmbeddedIdAnnotation;
 
 public class JavaEmbeddedIdMappingProvider
 	implements DefaultJavaAttributeMappingProvider
@@ -43,7 +43,7 @@ public class JavaEmbeddedIdMappingProvider
 	}
 	
 	public String getAnnotationName() {
-		return EmbeddedId.ANNOTATION_NAME;
+		return EmbeddedIdAnnotation.ANNOTATION_NAME;
 	}
 
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory) {

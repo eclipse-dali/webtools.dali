@@ -21,52 +21,47 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OneToOne extends RelationshipMappingAnnotation
+public interface BasicAnnotation extends JavaResourceNode
 {
-	String ANNOTATION_NAME = JPA.ONE_TO_ONE;
-
+	
+	String ANNOTATION_NAME = JPA.BASIC;
+	
 	/**
-	 * Corresponds to the optional element of the OneToOne annotation.
+	 * Corresponds to the fetch element of the Basic annotation.
+	 * Returns null if the fetch element does not exist in java.
+	 */
+	FetchType getFetch();
+	
+	/**
+	 * Corresponds to the fetch element of the Basic annotation.
+	 * Set to null to remove the fetch element.
+	 */
+	void setFetch(FetchType fetch);
+		String FETCH_PROPERTY = "fetchProperty";
+		
+	/**
+	 * Corresponds to the optional element of the Basic annotation.
 	 * Returns null if the optional element does not exist in java.
 	 */
 	Boolean getOptional();
 	
 	/**
-	 * Corresponds to the optional element of the OneToOne annotation.
+	 * Corresponds to the optional element of the Basic annotation.
 	 * Set to null to remove the optional element.
 	 */
 	void setOptional(Boolean optional);
 		String OPTIONAL_PROPERTY = "optionalProperty";
 	
 	/**
-	 * Corresponds to the mappedBy element of the OneToOne annotation. 
-	 * Returns null if the mappedBy element does not exist in java.
+	 * Return the {@link TextRange} for the fetch element.  If the fetch element 
+	 * does not exist return the {@link TextRange} for the Basic annotation.
 	 */
-	String getMappedBy();
+	TextRange getFetchTextRange(CompilationUnit astRoot);
 	
-	/**
-	 * Corresponds to the mappedBy element of the OneToOne annotation. 
-	 * Set to null to remove the mappedBy element.
-	 */
-	void setMappedBy(String mappedBy);
-		String MAPPED_BY_PROPERTY = "mappedByProperty";
-	
-	/**
-	 * Return the {@link TextRange} for the mappedBy element.  If the mappedBy element 
-	 * does not exist return the {@link TextRange} for the OneToOne annotation.
-	 */
-	TextRange getMappedByTextRange(CompilationUnit astRoot);
-
 	/**
 	 * Return the {@link TextRange} for the optional element.  If the optional element 
-	 * does not exist return the {@link TextRange} for the OneToOne annotation.
+	 * does not exist return the {@link TextRange} for the Basic annotation.
 	 */
 	TextRange getOptionalTextRange(CompilationUnit astRoot);
-
-	/**
-	 * Return whether the specified postition touches the mappedBy element.
-	 * Return false if the mappedBy element does not exist.
-	 */
-	boolean mappedByTouches(int pos, CompilationUnit astRoot);
 
 }

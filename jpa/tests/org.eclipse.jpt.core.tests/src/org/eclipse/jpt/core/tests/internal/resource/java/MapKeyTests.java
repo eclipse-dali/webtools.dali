@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.java.MapKey;
+import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class MapKeyTests extends JavaResourceModelTestCase {
@@ -56,7 +56,7 @@ public class MapKeyTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		MapKey mapKey = (MapKey) attributeResource.getAnnotation(JPA.MAP_KEY);
+		MapKeyAnnotation mapKey = (MapKeyAnnotation) attributeResource.getAnnotation(JPA.MAP_KEY);
 		assertNotNull(mapKey);
 	}
 	
@@ -65,7 +65,7 @@ public class MapKeyTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		MapKey mapKey = (MapKey) attributeResource.getAnnotation(JPA.MAP_KEY);
+		MapKeyAnnotation mapKey = (MapKeyAnnotation) attributeResource.getAnnotation(JPA.MAP_KEY);
 		assertEquals("key", mapKey.getName());
 	}
 	
@@ -74,7 +74,7 @@ public class MapKeyTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 
-		MapKey mapKey = (MapKey) attributeResource.getAnnotation(JPA.MAP_KEY);
+		MapKeyAnnotation mapKey = (MapKeyAnnotation) attributeResource.getAnnotation(JPA.MAP_KEY);
 
 		mapKey.setName("foo");
 		

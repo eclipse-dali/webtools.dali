@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.resource.java.NamedQueries;
+import org.eclipse.jpt.core.resource.java.NamedQueriesAnnotation;
 import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableNamedQuery;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
@@ -27,10 +27,10 @@ import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class NamedQueriesImpl extends AbstractResourceAnnotation<Type> implements NamedQueries
+public class NamedQueriesImpl extends AbstractResourceAnnotation<Type> implements NamedQueriesAnnotation
 {
 	
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(NamedQueries.ANNOTATION_NAME);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(NamedQueriesAnnotation.ANNOTATION_NAME);
 
 	private List<NestableNamedQuery> namedQueries;
 	
@@ -44,7 +44,7 @@ public class NamedQueriesImpl extends AbstractResourceAnnotation<Type> implement
 	}
 	
 	public String getAnnotationName() {
-		return NamedQueries.ANNOTATION_NAME;
+		return NamedQueriesAnnotation.ANNOTATION_NAME;
 	}
 
 	public String getNestableAnnotationName() {
@@ -76,15 +76,15 @@ public class NamedQueriesImpl extends AbstractResourceAnnotation<Type> implement
 	}
 	
 	protected void add(int index, NestableNamedQuery namedQuery) {
-		addItemToList(index, namedQuery, this.namedQueries, NamedQueries.NAMED_QUERIES_LIST);
+		addItemToList(index, namedQuery, this.namedQueries, NamedQueriesAnnotation.NAMED_QUERIES_LIST);
 	}
 
 	public void remove(NestableNamedQuery namedQuery) {
-		removeItemFromList(namedQuery, this.namedQueries, NamedQueries.NAMED_QUERIES_LIST);
+		removeItemFromList(namedQuery, this.namedQueries, NamedQueriesAnnotation.NAMED_QUERIES_LIST);
 	}
 	
 	public void remove(int index) {
-		removeItemFromList(index, this.namedQueries, NamedQueries.NAMED_QUERIES_LIST);
+		removeItemFromList(index, this.namedQueries, NamedQueriesAnnotation.NAMED_QUERIES_LIST);
 	}
 	
 	public int indexOf(NestableNamedQuery attributeOverride) {
@@ -105,7 +105,7 @@ public class NamedQueriesImpl extends AbstractResourceAnnotation<Type> implement
 	}
 	
 	public void move(int targetIndex, int sourceIndex) {
-		moveItemInList(targetIndex, sourceIndex, this.namedQueries, NamedQueries.NAMED_QUERIES_LIST);
+		moveItemInList(targetIndex, sourceIndex, this.namedQueries, NamedQueriesAnnotation.NAMED_QUERIES_LIST);
 	}
 	
 	public void moveInternal(int targetIndex, int sourceIndex) {

@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.java.OrderBy;
+import org.eclipse.jpt.core.resource.java.OrderByAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class OrderByTests extends JavaResourceModelTestCase {
@@ -56,7 +56,7 @@ public class OrderByTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OrderBy orderBy = (OrderBy) attributeResource.getAnnotation(JPA.ORDER_BY);
+		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getAnnotation(JPA.ORDER_BY);
 		assertNotNull(orderBy);
 	}
 	
@@ -65,7 +65,7 @@ public class OrderByTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OrderBy orderBy = (OrderBy) attributeResource.getAnnotation(JPA.ORDER_BY);
+		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getAnnotation(JPA.ORDER_BY);
 		assertEquals("key", orderBy.getValue());
 	}
 	
@@ -74,7 +74,7 @@ public class OrderByTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 
-		OrderBy orderBy = (OrderBy) attributeResource.getAnnotation(JPA.ORDER_BY);
+		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getAnnotation(JPA.ORDER_BY);
 
 		orderBy.setValue("foo");
 		

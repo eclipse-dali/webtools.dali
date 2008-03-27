@@ -29,21 +29,21 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.TemporalType;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
-import org.eclipse.jpt.core.resource.java.Basic;
+import org.eclipse.jpt.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.Embedded;
-import org.eclipse.jpt.core.resource.java.EmbeddedId;
-import org.eclipse.jpt.core.resource.java.Enumerated;
-import org.eclipse.jpt.core.resource.java.Id;
+import org.eclipse.jpt.core.resource.java.EmbeddedAnnotation;
+import org.eclipse.jpt.core.resource.java.EmbeddedIdAnnotation;
+import org.eclipse.jpt.core.resource.java.EnumeratedAnnotation;
+import org.eclipse.jpt.core.resource.java.IdAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.java.Lob;
-import org.eclipse.jpt.core.resource.java.ManyToOne;
-import org.eclipse.jpt.core.resource.java.OneToOne;
-import org.eclipse.jpt.core.resource.java.Temporal;
-import org.eclipse.jpt.core.resource.java.Transient;
-import org.eclipse.jpt.core.resource.java.Version;
+import org.eclipse.jpt.core.resource.java.LobAnnotation;
+import org.eclipse.jpt.core.resource.java.ManyToOneAnnotation;
+import org.eclipse.jpt.core.resource.java.OneToOneAnnotation;
+import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
+import org.eclipse.jpt.core.resource.java.TransientAnnotation;
+import org.eclipse.jpt.core.resource.java.VersionAnnotation;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -237,7 +237,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		Basic basic = (Basic) attributeResource.getMappingAnnotation(JPA.BASIC);
+		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
 		basic.setFetch(org.eclipse.jpt.core.resource.java.FetchType.LAZY);
 		
 		assertEquals(FetchType.LAZY, basicMapping.getSpecifiedFetch());
@@ -265,7 +265,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		Basic basic = (Basic) attributeResource.getMappingAnnotation(JPA.BASIC);
+		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
 		
 		assertEquals(org.eclipse.jpt.core.resource.java.FetchType.LAZY, basic.getFetch());
 		
@@ -288,7 +288,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.properties().next();
-		Basic basic = (Basic) attributeResource.getMappingAnnotation(JPA.BASIC);
+		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
 		
 		assertEquals(org.eclipse.jpt.core.resource.java.FetchType.LAZY, basic.getFetch());
 		
@@ -335,9 +335,9 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		
 		assertNotNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(Temporal.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(Lob.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(Enumerated.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(LobAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testBasicMorphToDefaultBasic() throws Exception {
@@ -365,11 +365,11 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(((BasicMapping) persistentAttribute.getMapping()).getSpecifiedFetch());
 		assertNull(((BasicMapping) persistentAttribute.getMapping()).getSpecifiedOptional());
-		assertNull(attributeResource.getMappingAnnotation(Basic.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(BasicAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(Temporal.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(Lob.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(Enumerated.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(LobAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testBasicMorphToId() throws Exception {
@@ -393,12 +393,12 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.getMappingAnnotation(Basic.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getMappingAnnotation(Id.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(BasicAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(Temporal.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Lob.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Enumerated.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(LobAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testBasicMorphToVersion() throws Exception {
@@ -420,12 +420,12 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.getMappingAnnotation(Basic.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getMappingAnnotation(Version.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(BasicAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(Temporal.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Lob.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Enumerated.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(LobAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testBasicMorphToEmbedded() throws Exception {
@@ -446,12 +446,12 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.getMappingAnnotation(Basic.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getMappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(BasicAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Temporal.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Lob.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Enumerated.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(LobAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testBasicMorphToEmbeddedId() throws Exception {
@@ -472,12 +472,12 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.getMappingAnnotation(Basic.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getMappingAnnotation(EmbeddedId.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(BasicAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
 		assertNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Temporal.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Lob.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Enumerated.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(LobAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testBasicMorphToTransient() throws Exception {
@@ -498,12 +498,12 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.getMappingAnnotation(Basic.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getMappingAnnotation(Transient.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(BasicAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(TransientAnnotation.ANNOTATION_NAME));
 		assertNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Temporal.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Lob.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Enumerated.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(LobAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testBasicMorphToOneToOne() throws Exception {
@@ -528,12 +528,12 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 //TODO		assertEquals(FetchType.EAGER, ((IOneToOneMapping) persistentAttribute.getMapping()).getSpecifiedFetch());
 //		assertEquals(Boolean.FALSE, ((IOneToOneMapping) persistentAttribute.getMapping()).getSpecifiedOptional());
-		assertNotNull(attributeResource.getMappingAnnotation(OneToOne.ANNOTATION_NAME));
-		assertNull(attributeResource.getMappingAnnotation(Basic.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(BasicAnnotation.ANNOTATION_NAME));
 		assertNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Temporal.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Lob.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Enumerated.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(LobAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testBasicMorphToOneToMany() throws Exception {
@@ -558,11 +558,11 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 //TODO		assertEquals(FetchType.EAGER, ((IOneToManyMapping) persistentAttribute.getMapping()).getSpecifiedFetch());
 //		assertNotNull(attributeResource.mappingAnnotation(OneToMany.ANNOTATION_NAME));
-		assertNull(attributeResource.getMappingAnnotation(Basic.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(BasicAnnotation.ANNOTATION_NAME));
 		assertNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Temporal.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Lob.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Enumerated.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(LobAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
 	}
 	public void testBasicMorphToManyToOne() throws Exception {
 		createTestEntityWithBasicMapping();
@@ -586,12 +586,12 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 //TODO		assertEquals(FetchType.EAGER, ((IManyToOneMapping) persistentAttribute.getMapping()).getSpecifiedFetch());
 //		assertEquals(Boolean.FALSE, ((IManyToOneMapping) persistentAttribute.getMapping()).getSpecifiedOptional());
-		assertNotNull(attributeResource.getMappingAnnotation(ManyToOne.ANNOTATION_NAME));
-		assertNull(attributeResource.getMappingAnnotation(Basic.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getMappingAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(BasicAnnotation.ANNOTATION_NAME));
 		assertNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Temporal.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Lob.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Enumerated.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(LobAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testBasicMorphToManyToMany() throws Exception {
@@ -616,11 +616,11 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 //TODO		assertEquals(FetchType.EAGER, ((IManyToManyMapping) persistentAttribute.getMapping()).getSpecifiedFetch());
 //		assertNotNull(attributeResource.mappingAnnotation(ManyToMany.ANNOTATION_NAME));
-		assertNull(attributeResource.getMappingAnnotation(Basic.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(BasicAnnotation.ANNOTATION_NAME));
 		assertNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Temporal.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Lob.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(Enumerated.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(LobAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testDefaultBasicGetDefaultOptional() throws Exception {
@@ -666,7 +666,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		Basic basic = (Basic) attributeResource.getMappingAnnotation(JPA.BASIC);
+		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
 		basic.setOptional(Boolean.FALSE);
 		
 		assertEquals(Boolean.FALSE, basicMapping.getSpecifiedOptional());
@@ -694,7 +694,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		Basic basic = (Basic) attributeResource.getMappingAnnotation(JPA.BASIC);
+		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
 		
 		assertEquals(Boolean.FALSE, basic.getOptional());
 		
@@ -715,7 +715,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		Basic basic = (Basic) attributeResource.getMappingAnnotation(JPA.BASIC);
+		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
 		
 		assertEquals(Boolean.TRUE, basic.getOptional());
 		
@@ -743,7 +743,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		Basic basic = (Basic) attributeResource.getMappingAnnotation(JPA.BASIC);
+		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
 		basic.setOptional(Boolean.FALSE);
 		
 		assertEquals(Boolean.FALSE, basicMapping.getSpecifiedOptional());
@@ -792,10 +792,10 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNotNull(attributeResource.getAnnotation(Lob.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(LobAnnotation.ANNOTATION_NAME));
 		
 		basicMapping.setLob(false);
-		assertNull(attributeResource.getAnnotation(Lob.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(LobAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testIsLobUpdatesFromResourceModelChange() throws Exception {
@@ -809,11 +809,11 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		attributeResource.addAnnotation(Lob.ANNOTATION_NAME);
+		attributeResource.addAnnotation(LobAnnotation.ANNOTATION_NAME);
 		
 		assertTrue(basicMapping.isLob());
 	
-		attributeResource.removeAnnotation(Lob.ANNOTATION_NAME);
+		attributeResource.removeAnnotation(LobAnnotation.ANNOTATION_NAME);
 		
 		assertFalse(basicMapping.isLob());
 	}
@@ -881,12 +881,12 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		Enumerated enumerated = (Enumerated) attributeResource.getAnnotation(Enumerated.ANNOTATION_NAME);
+		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) attributeResource.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(org.eclipse.jpt.core.resource.java.EnumType.STRING, enumerated.getValue());
 		
 		basicMapping.setSpecifiedEnumerated(null);
-		assertNull(attributeResource.getAnnotation(Enumerated.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testGetSpecifieEnumeratedUpdatesFromResourceModelChange() throws Exception {
@@ -901,13 +901,13 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		Enumerated enumerated = (Enumerated) attributeResource.addAnnotation(Enumerated.ANNOTATION_NAME);
+		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) attributeResource.addAnnotation(EnumeratedAnnotation.ANNOTATION_NAME);
 		enumerated.setValue(org.eclipse.jpt.core.resource.java.EnumType.STRING);
 		
 		assertEquals(EnumType.STRING, basicMapping.getSpecifiedEnumerated());
 		
 		enumerated.setValue(null);
-		assertNull(attributeResource.getAnnotation(Enumerated.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME));
 		assertNull(basicMapping.getSpecifiedEnumerated());
 		assertFalse(basicMapping.isDefault());
 		assertSame(basicMapping, persistentAttribute.getSpecifiedMapping());
@@ -946,12 +946,12 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		Temporal temporal = (Temporal) attributeResource.getAnnotation(Temporal.ANNOTATION_NAME);
+		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(org.eclipse.jpt.core.resource.java.TemporalType.TIME, temporal.getValue());
 		
 		basicMapping.setTemporal(null);
-		assertNull(attributeResource.getAnnotation(Temporal.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testGetTemporalUpdatesFromResourceModelChange() throws Exception {
@@ -966,12 +966,12 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		Temporal temporal = (Temporal) attributeResource.addAnnotation(Temporal.ANNOTATION_NAME);
+		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.addAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		temporal.setValue(org.eclipse.jpt.core.resource.java.TemporalType.DATE);
 		
 		assertEquals(TemporalType.DATE, basicMapping.getTemporal());
 		
-		attributeResource.removeAnnotation(Temporal.ANNOTATION_NAME);
+		attributeResource.removeAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		
 		assertNull(basicMapping.getTemporal());
 		assertFalse(basicMapping.isDefault());

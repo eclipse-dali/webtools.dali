@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.resource.java.Id;
+import org.eclipse.jpt.core.resource.java.IdAnnotation;
 
 public class JavaIdMappingProvider
 	implements JavaAttributeMappingProvider
@@ -42,7 +42,7 @@ public class JavaIdMappingProvider
 	}
 	
 	public String getAnnotationName() {
-		return Id.ANNOTATION_NAME;
+		return IdAnnotation.ANNOTATION_NAME;
 	}
 
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory) {

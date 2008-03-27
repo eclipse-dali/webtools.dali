@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.resource.java.Inheritance;
+import org.eclipse.jpt.core.resource.java.InheritanceAnnotation;
 import org.eclipse.jpt.core.resource.java.InheritanceType;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -57,7 +57,7 @@ public class InheritanceTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestInheritance();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		Inheritance inheritance = (Inheritance) typeResource.getAnnotation(JPA.INHERITANCE);
+		InheritanceAnnotation inheritance = (InheritanceAnnotation) typeResource.getAnnotation(JPA.INHERITANCE);
 		assertNotNull(inheritance);
 	}
 	
@@ -65,7 +65,7 @@ public class InheritanceTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestInheritanceWithStrategy();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		Inheritance inheritance = (Inheritance) typeResource.getAnnotation(JPA.INHERITANCE);
+		InheritanceAnnotation inheritance = (InheritanceAnnotation) typeResource.getAnnotation(JPA.INHERITANCE);
 		assertEquals(InheritanceType.JOINED, inheritance.getStrategy());
 	}
 	
@@ -73,7 +73,7 @@ public class InheritanceTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestInheritance();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 
-		Inheritance inheritance = (Inheritance) typeResource.getAnnotation(JPA.INHERITANCE);
+		InheritanceAnnotation inheritance = (InheritanceAnnotation) typeResource.getAnnotation(JPA.INHERITANCE);
 		inheritance.setStrategy(InheritanceType.TABLE_PER_CLASS);
 		
 		assertSourceContains("@Inheritance(strategy=TABLE_PER_CLASS)");

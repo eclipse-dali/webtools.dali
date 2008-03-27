@@ -12,10 +12,10 @@ package org.eclipse.jpt.core.internal.context.java;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.resource.java.Embedded;
+import org.eclipse.jpt.core.resource.java.EmbeddedAnnotation;
 
 
-public class GenericJavaEmbeddedMapping extends AbstractJavaBaseEmbeddedMapping<Embedded> implements JavaEmbeddedMapping
+public class GenericJavaEmbeddedMapping extends AbstractJavaBaseEmbeddedMapping<EmbeddedAnnotation> implements JavaEmbeddedMapping
 {
 	public GenericJavaEmbeddedMapping(JavaPersistentAttribute parent) {
 		super(parent);
@@ -28,6 +28,6 @@ public class GenericJavaEmbeddedMapping extends AbstractJavaBaseEmbeddedMapping<
 	}
 	
 	public String getAnnotationName() {
-		return Embedded.ANNOTATION_NAME;
+		return EmbeddedAnnotation.ANNOTATION_NAME;
 	}
 }

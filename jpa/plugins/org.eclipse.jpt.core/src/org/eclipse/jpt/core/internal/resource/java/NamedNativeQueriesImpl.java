@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.resource.java.NamedNativeQueries;
+import org.eclipse.jpt.core.resource.java.NamedNativeQueriesAnnotation;
 import org.eclipse.jpt.core.resource.java.NamedNativeQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableNamedNativeQuery;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class NamedNativeQueriesImpl extends AbstractResourceAnnotation<Type> implements NamedNativeQueries
+public class NamedNativeQueriesImpl extends AbstractResourceAnnotation<Type> implements NamedNativeQueriesAnnotation
 {
 	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -44,7 +44,7 @@ public class NamedNativeQueriesImpl extends AbstractResourceAnnotation<Type> imp
 	}
 
 	public String getAnnotationName() {
-		return NamedNativeQueries.ANNOTATION_NAME;
+		return NamedNativeQueriesAnnotation.ANNOTATION_NAME;
 	}
 
 	public String getNestableAnnotationName() {
@@ -76,15 +76,15 @@ public class NamedNativeQueriesImpl extends AbstractResourceAnnotation<Type> imp
 	}
 	
 	protected void add(int index, NestableNamedNativeQuery query) {
-		addItemToList(index, query, this.namedNativeQueries, NamedNativeQueries.NAMED_NATIVE_QUERIES_LIST);
+		addItemToList(index, query, this.namedNativeQueries, NamedNativeQueriesAnnotation.NAMED_NATIVE_QUERIES_LIST);
 	}
 
 	public void remove(NestableNamedNativeQuery query) {
-		removeItemFromList(query, this.namedNativeQueries, NamedNativeQueries.NAMED_NATIVE_QUERIES_LIST);
+		removeItemFromList(query, this.namedNativeQueries, NamedNativeQueriesAnnotation.NAMED_NATIVE_QUERIES_LIST);
 	}
 	
 	public void remove(int index) {
-		removeItemFromList(index, this.namedNativeQueries, NamedNativeQueries.NAMED_NATIVE_QUERIES_LIST);
+		removeItemFromList(index, this.namedNativeQueries, NamedNativeQueriesAnnotation.NAMED_NATIVE_QUERIES_LIST);
 	}
 	
 	public int indexOf(NestableNamedNativeQuery query) {

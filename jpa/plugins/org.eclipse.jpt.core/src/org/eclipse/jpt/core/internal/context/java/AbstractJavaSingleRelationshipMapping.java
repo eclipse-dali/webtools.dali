@@ -31,7 +31,7 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.JoinColumns;
+import org.eclipse.jpt.core.resource.java.JoinColumnsAnnotation;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
@@ -115,7 +115,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		}
 		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
-		JoinColumnAnnotation joinColumnResource = (JoinColumnAnnotation) getResourcePersistentAttribute().addAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
+		JoinColumnAnnotation joinColumnResource = (JoinColumnAnnotation) getResourcePersistentAttribute().addAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
 		joinColumn.initializeFromResource(joinColumnResource);
 		this.fireItemAdded(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		if (oldDefaultJoinColumn != null) {
@@ -140,7 +140,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 			//in the UI because the change notifications end up in the wrong order.
 			this.defaultJoinColumn = buildJoinColumn(new NullJoinColumn(getResourcePersistentAttribute()));
 		}
-		getResourcePersistentAttribute().removeAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
+		getResourcePersistentAttribute().removeAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 		if (this.defaultJoinColumn != null) {
 			//fire change notification if a defaultJoinColumn was created above
@@ -154,7 +154,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedJoinColumns, targetIndex, sourceIndex);
-		getResourcePersistentAttribute().move(targetIndex, sourceIndex, JoinColumns.ANNOTATION_NAME);
+		getResourcePersistentAttribute().move(targetIndex, sourceIndex, JoinColumnsAnnotation.ANNOTATION_NAME);
 		fireItemMoved(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 
@@ -194,7 +194,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	}
 	
 	protected void initializeSpecifiedJoinColumns(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		ListIterator<JavaResourceNode> annotations = resourcePersistentAttribute.annotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
+		ListIterator<JavaResourceNode> annotations = resourcePersistentAttribute.annotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
 			this.specifiedJoinColumns.add(buildJoinColumn((JoinColumnAnnotation) annotations.next()));
@@ -231,7 +231,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	
 	protected void updateSpecifiedJoinColumns(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		ListIterator<JavaJoinColumn> joinColumns = specifiedJoinColumns();
-		ListIterator<JavaResourceNode> resourceJoinColumns = resourcePersistentAttribute.annotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
+		ListIterator<JavaResourceNode> resourceJoinColumns = resourcePersistentAttribute.annotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
 		
 		while (joinColumns.hasNext()) {
 			JavaJoinColumn joinColumn = joinColumns.next();

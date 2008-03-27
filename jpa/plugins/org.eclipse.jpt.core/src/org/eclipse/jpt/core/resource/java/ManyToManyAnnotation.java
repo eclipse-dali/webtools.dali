@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
-import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * Corresponds to the javax.persistence.UniqueConstraint annotation
+ * 
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,23 +21,33 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface UniqueConstraint extends JavaResourceNode
+public interface ManyToManyAnnotation extends RelationshipMappingAnnotation
 {
-	String ANNOTATION_NAME = JPA.UNIQUE_CONSTRAINT;
+	String ANNOTATION_NAME = JPA.MANY_TO_MANY;
 
-	ListIterator<String> columnNames();
-
-	int columnNamesSize();
+	/**
+	 * Corresponds to the mappedBy element of the ManyToMany annotation. 
+	 * Returns null if the mappedBy element does not exist in java.
+	 */
+	String getMappedBy();
 	
-	void addColumnName(String columnName);
-	
-	void removeColumnName(String columnName);
-		String COLUMN_NAMES_LIST = "columnNamesList";
+	/**
+	 * Corresponds to the mappedBy element of the ManyToMany annotation. 
+	 * Set to null to remove the mappedBy element.
+	 */
+	void setMappedBy(String mappedBy);
+		String MAPPED_BY_PROPERTY = "mappedByProperty";
 		
 	/**
-	 * Return whether the specified postition touches the columnNames element.
-	 * Return false if the columnNames element does not exist.
+	 * Return the {@link TextRange} for the mappedBy element.  If the mappedBy element 
+	 * does not exist return the {@link TextRange} for the ManyToMany annotation.
 	 */
-	boolean columnNamesTouches(int pos, CompilationUnit astRoot);
+	TextRange getMappedByTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return whether the specified postition touches the mappedBy element.
+	 * Return false if the mappedBy element does not exist.
+	 */
+	boolean mappedByTouches(int pos, CompilationUnit astRoot);
 
 }

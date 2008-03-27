@@ -18,9 +18,9 @@ package org.eclipse.jpt.core.resource.java;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface NamedNativeQueries extends ContainerAnnotation<NestableNamedNativeQuery>
+public interface NamedQueriesAnnotation extends ContainerAnnotation<NestableNamedQuery>
 {
-	String ANNOTATION_NAME = JPA.NAMED_NATIVE_QUERIES;
+	String ANNOTATION_NAME = JPA.NAMED_QUERIES;
 
-	String NAMED_NATIVE_QUERIES_LIST = "namedNativeQueriesList";
+	String NAMED_QUERIES_LIST = "namedQueriesList";
 }

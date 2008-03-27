@@ -17,9 +17,9 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
-import org.eclipse.jpt.core.resource.java.Basic;
-import org.eclipse.jpt.core.resource.java.Embedded;
-import org.eclipse.jpt.core.resource.java.Id;
+import org.eclipse.jpt.core.resource.java.BasicAnnotation;
+import org.eclipse.jpt.core.resource.java.EmbeddedAnnotation;
+import org.eclipse.jpt.core.resource.java.IdAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -155,7 +155,7 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNotNull(attributeResource.getMappingAnnotation());
-		assertTrue(attributeResource.getMappingAnnotation() instanceof Embedded);
+		assertTrue(attributeResource.getMappingAnnotation() instanceof EmbeddedAnnotation);
 		
 		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 		assertTrue(persistentAttribute.getSpecifiedMapping() instanceof JavaEmbeddedMapping);
@@ -173,7 +173,7 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNotNull(attributeResource.getMappingAnnotation());
-		assertTrue(attributeResource.getMappingAnnotation() instanceof Embedded);
+		assertTrue(attributeResource.getMappingAnnotation() instanceof EmbeddedAnnotation);
 		
 		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 		assertTrue(persistentAttribute.getSpecifiedMapping() instanceof JavaEmbeddedMapping);
@@ -191,7 +191,7 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getMappingAnnotation());
-		assertNull(attributeResource.getMappingAnnotation(Id.ANNOTATION_NAME));
+		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		
 		assertNull(persistentAttribute.getSpecifiedMapping());
 	}
@@ -205,7 +205,7 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		attributeResource.setMappingAnnotation(Embedded.ANNOTATION_NAME);
+		attributeResource.setMappingAnnotation(EmbeddedAnnotation.ANNOTATION_NAME);
 				
 		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 	}
@@ -219,7 +219,7 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		attributeResource.setMappingAnnotation(Basic.ANNOTATION_NAME);
+		attributeResource.setMappingAnnotation(BasicAnnotation.ANNOTATION_NAME);
 				
 		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getSpecifiedMapping().getKey());
 	}

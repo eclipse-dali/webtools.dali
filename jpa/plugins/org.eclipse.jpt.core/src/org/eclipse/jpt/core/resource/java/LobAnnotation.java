@@ -9,11 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.utility.TextRange;
-
 /**
- * Corresponds to the javax.persistence.Inheritance annotation
+ * Corresponds to the javax.persistence.Lob annotation
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,19 +18,8 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface Inheritance extends JavaResourceNode
+public interface LobAnnotation extends JavaResourceNode
 {
-	String ANNOTATION_NAME = JPA.INHERITANCE;
-
-	InheritanceType getStrategy();
+	String ANNOTATION_NAME = JPA.LOB;
 	
-	void setStrategy(InheritanceType strategy);
-		String STRATEGY_PROPERTY = "strategyProperty";
-		
-	/**
-	 * Return the {@link TextRange} for the strategy element.  If the strategy element 
-	 * does not exist return the {@link TextRange} for the Inheritance annotation.
-	 */
-	TextRange getStrategyTextRange(CompilationUnit astRoot);
-
 }

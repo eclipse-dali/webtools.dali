@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.resource.java;
 
 /**
- * Corresponds to the javax.persistence.Transient annotation
+ * 
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -18,8 +18,10 @@ package org.eclipse.jpt.core.resource.java;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface Transient extends JavaResourceNode
+public interface JoinColumnsAnnotation extends ContainerAnnotation<NestableJoinColumn>
 {
-	String ANNOTATION_NAME = JPA.TRANSIENT;
-
+	String ANNOTATION_NAME = JPA.JOIN_COLUMNS;
+	
+	String JOIN_COLUMNS_LIST = "joinColumnsList";
+	
 }

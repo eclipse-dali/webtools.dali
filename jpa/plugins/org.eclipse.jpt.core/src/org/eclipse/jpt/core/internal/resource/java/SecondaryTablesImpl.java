@@ -20,13 +20,13 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.NestableSecondaryTable;
 import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
-import org.eclipse.jpt.core.resource.java.SecondaryTables;
+import org.eclipse.jpt.core.resource.java.SecondaryTablesAnnotation;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class SecondaryTablesImpl extends AbstractResourceAnnotation<Member> implements SecondaryTables
+public class SecondaryTablesImpl extends AbstractResourceAnnotation<Member> implements SecondaryTablesAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
@@ -74,15 +74,15 @@ public class SecondaryTablesImpl extends AbstractResourceAnnotation<Member> impl
 	}
 	
 	protected void add(int index, NestableSecondaryTable secondaryTable) {
-		addItemToList(index, secondaryTable, this.secondaryTables, SecondaryTables.SECONDARY_TABLES_LIST);
+		addItemToList(index, secondaryTable, this.secondaryTables, SecondaryTablesAnnotation.SECONDARY_TABLES_LIST);
 	}
 	
 	public void remove(NestableSecondaryTable secondaryTable) {
-		removeItemFromList(secondaryTable, this.secondaryTables, SecondaryTables.SECONDARY_TABLES_LIST);
+		removeItemFromList(secondaryTable, this.secondaryTables, SecondaryTablesAnnotation.SECONDARY_TABLES_LIST);
 	}
 	
 	public void remove(int index) {
-		removeItemFromList(index, this.secondaryTables, SecondaryTables.SECONDARY_TABLES_LIST);
+		removeItemFromList(index, this.secondaryTables, SecondaryTablesAnnotation.SECONDARY_TABLES_LIST);
 	}
 	
 	public int indexOf(NestableSecondaryTable secondaryTable) {
@@ -103,7 +103,7 @@ public class SecondaryTablesImpl extends AbstractResourceAnnotation<Member> impl
 	}
 
 	public void move(int targetIndex, int sourceIndex) {
-		moveItemInList(targetIndex, sourceIndex,  this.secondaryTables, SecondaryTables.SECONDARY_TABLES_LIST);
+		moveItemInList(targetIndex, sourceIndex,  this.secondaryTables, SecondaryTablesAnnotation.SECONDARY_TABLES_LIST);
 	}
 	//TODO this move is different than how we handle SecondarTable.pkJoinColumns
 //	public void movePkJoinColumn(int oldIndex, int newIndex) {

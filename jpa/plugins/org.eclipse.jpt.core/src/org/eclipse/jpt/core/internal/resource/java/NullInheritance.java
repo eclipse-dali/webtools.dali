@@ -11,13 +11,13 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.core.resource.java.Inheritance;
+import org.eclipse.jpt.core.resource.java.InheritanceAnnotation;
 import org.eclipse.jpt.core.resource.java.InheritanceType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
-public class NullInheritance extends AbstractJavaResourceNode implements Inheritance, Annotation
+public class NullInheritance extends AbstractJavaResourceNode implements InheritanceAnnotation, Annotation
 {	
 	protected NullInheritance(JavaResourcePersistentMember parent) {
 		super(parent);
@@ -45,7 +45,7 @@ public class NullInheritance extends AbstractJavaResourceNode implements Inherit
 	}
 
 	public String getAnnotationName() {
-		return Inheritance.ANNOTATION_NAME;
+		return InheritanceAnnotation.ANNOTATION_NAME;
 	}
 
 	public InheritanceType getStrategy() {
@@ -59,8 +59,8 @@ public class NullInheritance extends AbstractJavaResourceNode implements Inherit
 		
 	}
 	
-	protected Inheritance createInheritanceResource() {
-		return (Inheritance) getParent().addAnnotation(getAnnotationName());
+	protected InheritanceAnnotation createInheritanceResource() {
+		return (InheritanceAnnotation) getParent().addAnnotation(getAnnotationName());
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {

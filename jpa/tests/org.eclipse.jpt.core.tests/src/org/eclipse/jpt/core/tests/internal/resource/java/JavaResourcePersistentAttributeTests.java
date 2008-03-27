@@ -16,14 +16,14 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.resource.java.IdImpl;
 import org.eclipse.jpt.core.internal.resource.java.OneToOneImpl;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
-import org.eclipse.jpt.core.resource.java.Basic;
+import org.eclipse.jpt.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.Id;
+import org.eclipse.jpt.core.resource.java.IdAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.java.OneToMany;
+import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -401,7 +401,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		assertNotNull(attributeResource.getMappingAnnotation(JPA.ID));
 		
 		JavaResourceNode javaAttributeMappingAnnotation = attributeResource.getMappingAnnotation();
-		assertTrue(javaAttributeMappingAnnotation instanceof Basic);
+		assertTrue(javaAttributeMappingAnnotation instanceof BasicAnnotation);
 		assertSourceContains("@Basic");
 		assertSourceContains("@Id");
 		
@@ -409,7 +409,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		attributeResource.setMappingAnnotation(JPA.ONE_TO_MANY);
 		assertEquals(1, attributeResource.mappingAnnotationsSize());
 		javaAttributeMappingAnnotation = attributeResource.getMappingAnnotation();
-		assertTrue(javaAttributeMappingAnnotation instanceof OneToMany);
+		assertTrue(javaAttributeMappingAnnotation instanceof OneToManyAnnotation);
 		assertSourceDoesNotContain("@Id");
 		assertSourceContains("@OneToMany");
 		assertSourceDoesNotContain("@Basic");
@@ -423,7 +423,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		
 		this.createAnnotationAndMembers("Id", "");
 		attributeResource.setMappingAnnotation(JPA.ID);
-		assertTrue(attributeResource.getMappingAnnotation() instanceof Id);
+		assertTrue(attributeResource.getMappingAnnotation() instanceof IdAnnotation);
 		assertSourceContains("@Id");
 	}
 
@@ -435,7 +435,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		
 		this.createAnnotationAndMembers("Id", "");
 		attributeResource.setMappingAnnotation(JPA.ID);
-		assertTrue(attributeResource.getMappingAnnotation() instanceof Id);
+		assertTrue(attributeResource.getMappingAnnotation() instanceof IdAnnotation);
 		
 		assertSourceContains("@Id");
 		assertSourceContains("@Column");
@@ -445,11 +445,11 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		IType testType = createTestEntityWithIdColumnGeneratedValue();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		assertTrue(attributeResource.getMappingAnnotation() instanceof Id);
+		assertTrue(attributeResource.getMappingAnnotation() instanceof IdAnnotation);
 		
 		this.createAnnotationAndMembers("Basic", "");
 		attributeResource.setMappingAnnotation(JPA.BASIC);
-		assertTrue(attributeResource.getMappingAnnotation() instanceof Basic);
+		assertTrue(attributeResource.getMappingAnnotation() instanceof BasicAnnotation);
 		
 		assertSourceDoesNotContain("@Id");
 		assertSourceContains("@GeneratedValue"); //not supported by Basic
@@ -460,7 +460,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		IType testType = createTestEntityWithIdColumnGeneratedValue();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		assertTrue(attributeResource.getMappingAnnotation() instanceof Id);
+		assertTrue(attributeResource.getMappingAnnotation() instanceof IdAnnotation);
 		
 		attributeResource.setMappingAnnotation(null);
 		assertNull(attributeResource.getMappingAnnotation());

@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.java.Version;
+import org.eclipse.jpt.core.resource.java.VersionAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class VersionTests extends JavaResourceModelTestCase {
@@ -44,6 +44,6 @@ public class VersionTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		JavaResourceNode mappingAnnotation = attributeResource.getMappingAnnotation();
-		assertTrue(mappingAnnotation instanceof Version);
+		assertTrue(mappingAnnotation instanceof VersionAnnotation);
 	}
 }

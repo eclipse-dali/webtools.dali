@@ -9,11 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.utility.TextRange;
-
 /**
- * 
+ * Corresponds to the javax.persistence.Version annotation
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,27 +18,8 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ManyToOne extends RelationshipMappingAnnotation
+public interface VersionAnnotation extends JavaResourceNode
 {
-	String ANNOTATION_NAME = JPA.MANY_TO_ONE;
-	
-	/**
-	 * Corresponds to the optional element of the ManyToOne annotation.
-	 * Returns null if the optional element does not exist in java.
-	 */
-	Boolean getOptional();
-	
-	/**
-	 * Corresponds to the optional element of the ManyToOne annotation.
-	 * Set to null to remove the optional element.
-	 */
-	void setOptional(Boolean optional);
-		String OPTIONAL_PROPERTY = "optionalProperty";
-
-	/**
-	 * Return the {@link TextRange} for the optional element.  If the optional element 
-	 * does not exist return the {@link TextRange} for the ManyToOne annotation.
-	 */
-	TextRange getOptionalTextRange(CompilationUnit astRoot);
+	String ANNOTATION_NAME = JPA.VERSION;
 
 }

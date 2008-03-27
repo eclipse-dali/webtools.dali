@@ -12,12 +12,12 @@ package org.eclipse.jpt.core.internal.resource.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.resource.java.Temporal;
+import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.core.resource.java.TemporalType;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
-public class NullTemporal extends AbstractJavaResourceNode implements Temporal, Annotation
+public class NullTemporal extends AbstractJavaResourceNode implements TemporalAnnotation, Annotation
 {	
 	protected NullTemporal(JavaResourcePersistentMember parent) {
 		super(parent);
@@ -40,7 +40,7 @@ public class NullTemporal extends AbstractJavaResourceNode implements Temporal, 
 	}
 
 	public String getAnnotationName() {
-		return Temporal.ANNOTATION_NAME;
+		return TemporalAnnotation.ANNOTATION_NAME;
 	}
 	
 	@Override
@@ -48,8 +48,8 @@ public class NullTemporal extends AbstractJavaResourceNode implements Temporal, 
 		return (JavaResourcePersistentMember) super.getParent();
 	}
 	
-	protected Temporal createTemporalResource() {
-		return (Temporal) getParent().addAnnotation(getAnnotationName());
+	protected TemporalAnnotation createTemporalResource() {
+		return (TemporalAnnotation) getParent().addAnnotation(getAnnotationName());
 	}
 
 

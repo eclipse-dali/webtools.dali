@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.resource.java.DiscriminatorValue;
+import org.eclipse.jpt.core.resource.java.DiscriminatorValueAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -54,7 +54,7 @@ public class DiscriminatorValueTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestDiscriminatorValue();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 	
-		DiscriminatorValue discriminatorValue = (DiscriminatorValue) typeResource.getAnnotation(JPA.DISCRIMINATOR_VALUE);
+		DiscriminatorValueAnnotation discriminatorValue = (DiscriminatorValueAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_VALUE);
 		assertNotNull(discriminatorValue);
 	}
 	
@@ -62,7 +62,7 @@ public class DiscriminatorValueTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestDiscriminatorValueWithValue();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		DiscriminatorValue discriminatorValue = (DiscriminatorValue) typeResource.getAnnotation(JPA.DISCRIMINATOR_VALUE);
+		DiscriminatorValueAnnotation discriminatorValue = (DiscriminatorValueAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_VALUE);
 		assertEquals("discriminator", discriminatorValue.getValue());
 	}
 	
@@ -70,7 +70,7 @@ public class DiscriminatorValueTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestDiscriminatorValue();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		DiscriminatorValue discriminatorValue = (DiscriminatorValue) typeResource.getAnnotation(JPA.DISCRIMINATOR_VALUE);
+		DiscriminatorValueAnnotation discriminatorValue = (DiscriminatorValueAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_VALUE);
 
 		discriminatorValue.setValue("foo");
 		

@@ -17,7 +17,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
-import org.eclipse.jpt.core.resource.java.AssociationOverrides;
+import org.eclipse.jpt.core.resource.java.AssociationOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.NestableAssociationOverride;
@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class AssociationOverridesImpl extends AbstractResourceAnnotation<Member> implements AssociationOverrides
+public class AssociationOverridesImpl extends AbstractResourceAnnotation<Member> implements AssociationOverridesAnnotation
 {	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
@@ -137,11 +137,11 @@ public class AssociationOverridesImpl extends AbstractResourceAnnotation<Member>
 			super();
 		}
 
-		public AssociationOverrides buildAnnotation(JavaResourcePersistentMember parent, Member member) {
+		public AssociationOverridesAnnotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new AssociationOverridesImpl(parent, member);
 		}
 		
-		public AssociationOverrides buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
+		public AssociationOverridesAnnotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

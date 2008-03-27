@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
-import org.eclipse.jpt.core.resource.java.AttributeOverrides;
+import org.eclipse.jpt.core.resource.java.AttributeOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
@@ -105,7 +105,7 @@ public class AttributeOverridesTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestAttributeOverrideOnField();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		AttributeOverrides attributeOverrides = (AttributeOverrides) attributeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDES);
+		AttributeOverridesAnnotation attributeOverrides = (AttributeOverridesAnnotation) attributeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDES);
 		AttributeOverrideAnnotation attributeOverride = attributeOverrides.nestedAnnotations().next();
 
 		assertNotNull(attributeOverride);
@@ -116,7 +116,7 @@ public class AttributeOverridesTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestAttributeOverrideOnField();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		AttributeOverrides attributeOverrides = (AttributeOverrides) attributeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDES);
+		AttributeOverridesAnnotation attributeOverrides = (AttributeOverridesAnnotation) attributeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDES);
 		AttributeOverrideAnnotation attributeOverride = attributeOverrides.nestedAnnotations().next();
 		ColumnAnnotation column = attributeOverride.getColumn();
 		assertNotNull(attributeOverride);
@@ -127,7 +127,7 @@ public class AttributeOverridesTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestAttributeOverrideOnField();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		AttributeOverrides attributeOverrides = (AttributeOverrides) attributeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDES);
+		AttributeOverridesAnnotation attributeOverrides = (AttributeOverridesAnnotation) attributeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDES);
 		AttributeOverrideAnnotation attributeOverride = attributeOverrides.nestedAnnotations().next();
 
 		assertNotNull(attributeOverride);
@@ -142,7 +142,7 @@ public class AttributeOverridesTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestAttributeOverrideOnField();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		AttributeOverrides attributeOverrides = (AttributeOverrides) attributeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDES);
+		AttributeOverridesAnnotation attributeOverrides = (AttributeOverridesAnnotation) attributeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDES);
 		AttributeOverrideAnnotation attributeOverride = attributeOverrides.nestedAnnotations().next();
 		assertEquals(ATTRIBUTE_OVERRIDE_NAME, attributeOverride.getName());
 		
@@ -158,7 +158,7 @@ public class AttributeOverridesTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestAttributeOverrideWithColumnOnField();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		AttributeOverrides attributeOverrides = (AttributeOverrides) attributeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDES);
+		AttributeOverridesAnnotation attributeOverrides = (AttributeOverridesAnnotation) attributeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDES);
 		AttributeOverrideAnnotation attributeOverride = attributeOverrides.nestedAnnotations().next();
 
 		ColumnAnnotation column = attributeOverride.getColumn();

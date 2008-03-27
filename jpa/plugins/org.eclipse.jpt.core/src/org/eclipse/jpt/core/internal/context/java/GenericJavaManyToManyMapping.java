@@ -17,13 +17,13 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.ManyToMany;
+import org.eclipse.jpt.core.resource.java.ManyToManyAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public class GenericJavaManyToManyMapping extends AbstractJavaMultiRelationshipMapping<ManyToMany>
+public class GenericJavaManyToManyMapping extends AbstractJavaMultiRelationshipMapping<ManyToManyAnnotation>
 	implements JavaManyToManyMapping
 {
 	
@@ -36,7 +36,7 @@ public class GenericJavaManyToManyMapping extends AbstractJavaMultiRelationshipM
 	}
 
 	public String getAnnotationName() {
-		return ManyToMany.ANNOTATION_NAME;
+		return ManyToManyAnnotation.ANNOTATION_NAME;
 	}
 
 	public Iterator<String> correspondingAnnotationNames() {
@@ -60,7 +60,7 @@ public class GenericJavaManyToManyMapping extends AbstractJavaMultiRelationshipM
 	}
 	
 	@Override
-	protected String mappedBy(ManyToMany relationshipMapping) {
+	protected String mappedBy(ManyToManyAnnotation relationshipMapping) {
 		return relationshipMapping.getMappedBy();
 	}
 	

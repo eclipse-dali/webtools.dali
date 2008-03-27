@@ -9,8 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.utility.TextRange;
+
 /**
- * 
+ * Corresponds to the javax.persistence.Inheritance annotation
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -18,10 +21,19 @@ package org.eclipse.jpt.core.resource.java;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JoinColumns extends ContainerAnnotation<NestableJoinColumn>
+public interface InheritanceAnnotation extends JavaResourceNode
 {
-	String ANNOTATION_NAME = JPA.JOIN_COLUMNS;
+	String ANNOTATION_NAME = JPA.INHERITANCE;
+
+	InheritanceType getStrategy();
 	
-	String JOIN_COLUMNS_LIST = "joinColumnsList";
-	
+	void setStrategy(InheritanceType strategy);
+		String STRATEGY_PROPERTY = "strategyProperty";
+		
+	/**
+	 * Return the {@link TextRange} for the strategy element.  If the strategy element 
+	 * does not exist return the {@link TextRange} for the Inheritance annotation.
+	 */
+	TextRange getStrategyTextRange(CompilationUnit astRoot);
+
 }

@@ -12,10 +12,10 @@ package org.eclipse.jpt.core.internal.context.java;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.resource.java.EmbeddedId;
+import org.eclipse.jpt.core.resource.java.EmbeddedIdAnnotation;
 
 
-public class GenericJavaEmbeddedIdMapping extends AbstractJavaBaseEmbeddedMapping<EmbeddedId>
+public class GenericJavaEmbeddedIdMapping extends AbstractJavaBaseEmbeddedMapping<EmbeddedIdAnnotation>
 	implements JavaEmbeddedIdMapping
 {
 
@@ -30,7 +30,7 @@ public class GenericJavaEmbeddedIdMapping extends AbstractJavaBaseEmbeddedMappin
 	}
 	
 	public String getAnnotationName() {
-		return EmbeddedId.ANNOTATION_NAME;
+		return EmbeddedIdAnnotation.ANNOTATION_NAME;
 	}
 
 	@Override

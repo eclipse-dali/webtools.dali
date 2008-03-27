@@ -17,13 +17,13 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.OneToMany;
+import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public class GenericJavaOneToManyMapping extends AbstractJavaMultiRelationshipMapping<OneToMany>
+public class GenericJavaOneToManyMapping extends AbstractJavaMultiRelationshipMapping<OneToManyAnnotation>
 	implements JavaOneToManyMapping
 {
 	
@@ -46,7 +46,7 @@ public class GenericJavaOneToManyMapping extends AbstractJavaMultiRelationshipMa
 	}
 
 	public String getAnnotationName() {
-		return OneToMany.ANNOTATION_NAME;
+		return OneToManyAnnotation.ANNOTATION_NAME;
 	}
 
 	// ********** JavaMultiRelationshipMapping implementation **********
@@ -62,7 +62,7 @@ public class GenericJavaOneToManyMapping extends AbstractJavaMultiRelationshipMa
 	}
 	
 	@Override
-	protected String mappedBy(OneToMany relationshipMapping) {
+	protected String mappedBy(OneToManyAnnotation relationshipMapping) {
 		return relationshipMapping.getMappedBy();
 	}
 

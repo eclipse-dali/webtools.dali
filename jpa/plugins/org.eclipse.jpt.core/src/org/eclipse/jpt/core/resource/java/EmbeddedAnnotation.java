@@ -18,7 +18,7 @@ package org.eclipse.jpt.core.resource.java;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface Embedded extends JavaResourceNode
+public interface EmbeddedAnnotation extends JavaResourceNode
 {
 	String ANNOTATION_NAME = JPA.EMBEDDED;
 

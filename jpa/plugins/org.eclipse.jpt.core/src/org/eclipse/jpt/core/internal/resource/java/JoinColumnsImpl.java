@@ -19,14 +19,14 @@ import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.JoinColumns;
+import org.eclipse.jpt.core.resource.java.JoinColumnsAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableJoinColumn;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class JoinColumnsImpl extends AbstractResourceAnnotation<Member> implements JoinColumns
+public class JoinColumnsImpl extends AbstractResourceAnnotation<Member> implements JoinColumnsAnnotation
 {
 	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -140,11 +140,11 @@ public class JoinColumnsImpl extends AbstractResourceAnnotation<Member> implemen
 			super();
 		}
 
-		public JoinColumns buildAnnotation(JavaResourcePersistentMember parent, Member member) {
+		public JoinColumnsAnnotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new JoinColumnsImpl(parent, member);
 		}
 		
-		public JoinColumns buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
+		public JoinColumnsAnnotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

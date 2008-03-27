@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.NestableUniqueConstraint;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
-import org.eclipse.jpt.core.resource.java.UniqueConstraint;
+import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
@@ -200,8 +200,8 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 		firePropertyChanged(PK_COLUMN_VALUE_PROPERTY, oldPkColumnValue, newPkColumnValue);
 	}
 
-	public ListIterator<UniqueConstraint> uniqueConstraints() {
-		return new CloneListIterator<UniqueConstraint>(this.uniqueConstraints);
+	public ListIterator<UniqueConstraintAnnotation> uniqueConstraints() {
+		return new CloneListIterator<UniqueConstraintAnnotation>(this.uniqueConstraints);
 	}
 	
 	public int uniqueConstraintsSize() {
@@ -212,7 +212,7 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 		return this.uniqueConstraints.get(index);
 	}
 	
-	public int indexOfUniqueConstraint(UniqueConstraint uniqueConstraint) {
+	public int indexOfUniqueConstraint(UniqueConstraintAnnotation uniqueConstraint) {
 		return this.uniqueConstraints.indexOf(uniqueConstraint);
 	}
 	
