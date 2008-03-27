@@ -350,11 +350,11 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	}
 	
 	protected void updatePersistenceUnitGenerators() {
-		if (getTableGenerator() != null && getTableGenerator().getName() != null) {
+		if (getTableGenerator() != null) {
 			getPersistenceUnit().addGenerator(getTableGenerator());
 		}
 		
-		if (getSequenceGenerator() != null && getSequenceGenerator().getName() != null) {
+		if (getSequenceGenerator() != null) {
 			getPersistenceUnit().addGenerator(getSequenceGenerator());
 		}
 	}
@@ -470,10 +470,13 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		
 		for (Iterator<OrmGenerator> stream = this.generators(); stream.hasNext() ; ) {
 			OrmGenerator current = stream.next();
+			if (current.isVirtual()) {
+				return;
+			}
 			masterList.remove(current);
 			
 			for (Generator each : masterList) {
-				if (! each.overrides(current) && each.getName().equals(current.getName())) {
+				if (! each.overrides(current) && each.getName() != null && each.getName().equals(current.getName())) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,

@@ -345,11 +345,11 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 	}
 	
 	protected void updatePersistenceUnitGenerators() {
-		if (getTableGenerator() != null && getTableGenerator().getName() != null) {
+		if (getTableGenerator() != null) {
 			getPersistenceUnit().addGenerator(getTableGenerator());
 		}
 		
-		if (getSequenceGenerator() != null && getSequenceGenerator().getName() != null) {
+		if (getSequenceGenerator() != null) {
 			getPersistenceUnit().addGenerator(getSequenceGenerator());
 		}
 	}
@@ -457,7 +457,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 			masterList.remove(current);
 			
 			for (Generator each : masterList) {
-				if (! each.overrides(current) && each.getName().equals(current.getName())) {
+				if (! each.overrides(current) && each.getName() != null && each.getName().equals(current.getName())) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,

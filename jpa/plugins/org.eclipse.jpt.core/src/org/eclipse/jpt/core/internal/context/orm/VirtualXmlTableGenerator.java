@@ -142,4 +142,8 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 	public TextRange getNameTextRange() {
 		return getValidationTextRange();
 	}
+	
+	public boolean isVirtual() {
+		return true;
+	}
 }

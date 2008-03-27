@@ -719,27 +719,19 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	
 	protected void updatePersistenceUnitGeneratorsAndQueries() {
 		for (Generator generator : CollectionTools.iterable(tableGenerators())) {
-			if (generator.getName() != null) {
-				getPersistenceUnit().addGenerator(generator);
-			}
+			getPersistenceUnit().addGenerator(generator);
 		}
 		
 		for (Generator generator : CollectionTools.iterable(sequenceGenerators())) {
-			if (generator.getName() != null) {
-				getPersistenceUnit().addGenerator(generator);
-			}
+			getPersistenceUnit().addGenerator(generator);
 		}
 		
 		for (Query query : CollectionTools.iterable(namedQueries())) {
-			if (query.getName() != null) {
-				getPersistenceUnit().addQuery(query);
-			}
+			getPersistenceUnit().addQuery(query);
 		}
 		
 		for (Query query : CollectionTools.iterable(namedNativeQueries())) {
-			if (query.getName() != null) {
-				getPersistenceUnit().addQuery(query);
-			}
+			getPersistenceUnit().addQuery(query);
 		}
 	}
 
@@ -789,7 +781,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 			masterList.remove(current);
 			
 			for (Generator each : masterList) {
-				if (! each.overrides(current) && each.getName().equals(current.getName())) {
+				if (! each.overrides(current) && each.getName() != null && each.getName().equals(current.getName())) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
@@ -813,7 +805,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 			masterList.remove(current);
 			
 			for (Query each : masterList) {
-				if (! each.overrides(current) && each.getName().equals(current.getName())) {
+				if (! each.overrides(current) && each.getName() != null && each.getName().equals(current.getName())) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,

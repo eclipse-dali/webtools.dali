@@ -118,4 +118,6 @@ public interface XmlGenerator extends JpaEObject
 	void setAllocationSize(Integer value);
 	
 	public TextRange getNameTextRange();
+	
+	boolean isVirtual();
 }

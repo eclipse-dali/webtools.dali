@@ -35,6 +35,15 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 		super(parent);
 	}
 
+	public boolean isVirtual() {
+		return getGeneratorResource().isVirtual();
+	}
+	
+	@Override
+	public OrmJpaContextNode getParent() {
+		return (OrmJpaContextNode) super.getParent();
+	}
+	
 	public String getName() {
 		return this.name;
 	}
@@ -132,6 +141,9 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 	}
 	
 	public boolean overrides(Generator generator) {
+		if (getName() == null) {
+			return false;
+		}
 		// this isn't ideal, but it will have to do until we have further adopter input
 		return this.getName().equals(generator.getName()) && generator instanceof JavaGenerator;
 	}
@@ -153,10 +165,12 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.getGeneratorResource().getValidationTextRange();
+		TextRange validationTextRange = this.getGeneratorResource().getValidationTextRange();
+		return validationTextRange != null ? validationTextRange : getParent().getValidationTextRange();
 	}
 	
 	public TextRange getNameTextRange() {
-		return this.getGeneratorResource().getNameTextRange();
+		TextRange nameTextRange = this.getGeneratorResource().getNameTextRange();
+		return nameTextRange != null ? nameTextRange : getValidationTextRange();
 	}
 }

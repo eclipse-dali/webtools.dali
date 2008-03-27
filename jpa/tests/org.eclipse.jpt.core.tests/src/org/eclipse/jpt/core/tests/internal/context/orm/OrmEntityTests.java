@@ -994,7 +994,7 @@ public class OrmEntityTests extends ContextModelTestCase
 				
 		assertNotNull(ormEntity.getSequenceGenerator());
 		assertNotNull(entityResource.getSequenceGenerator());
-		assertEquals(0, CollectionTools.size(ormEntity.getPersistenceUnit().allGenerators()));
+		assertEquals(1, CollectionTools.size(ormEntity.getPersistenceUnit().allGenerators()));
 		
 		ormEntity.getSequenceGenerator().setName("foo");
 		assertEquals(1, CollectionTools.size(ormEntity.getPersistenceUnit().allGenerators()));
@@ -1066,7 +1066,7 @@ public class OrmEntityTests extends ContextModelTestCase
 				
 		assertNotNull(ormEntity.getTableGenerator());
 		assertNotNull(entityResource.getTableGenerator());
-		assertEquals(0, CollectionTools.size(ormEntity.getPersistenceUnit().allGenerators()));
+		assertEquals(1, CollectionTools.size(ormEntity.getPersistenceUnit().allGenerators()));
 
 		ormEntity.getTableGenerator().setName("foo");
 		assertEquals(1, CollectionTools.size(ormEntity.getPersistenceUnit().allGenerators()));

@@ -1666,24 +1666,20 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected void updatePersistenceUnitGeneratorsAndQueries() {
-		if (getTableGenerator() != null && getTableGenerator().getName() != null) {
+		if (getTableGenerator() != null) {
 			getPersistenceUnit().addGenerator(getTableGenerator());
 		}
 		
-		if (getSequenceGenerator() != null && getSequenceGenerator().getName() != null) {
+		if (getSequenceGenerator() != null) {
 			getPersistenceUnit().addGenerator(getSequenceGenerator());
 		}
 		
 		for (Query query : CollectionTools.iterable(namedQueries())) {
-			if (query.getName() != null) {
-				getPersistenceUnit().addQuery(query);
-			}
+			getPersistenceUnit().addQuery(query);
 		}
 		
 		for (Query query : CollectionTools.iterable(namedNativeQueries())) {
-			if (query.getName() != null) {
-				getPersistenceUnit().addQuery(query);
-			}
+			getPersistenceUnit().addQuery(query);
 		}
 	}
 
@@ -1806,7 +1802,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			masterList.remove(current);
 			
 			for (Generator each : masterList) {
-				if (! each.overrides(current) && each.getName().equals(current.getName())) {
+				if (! each.overrides(current) && each.getName() != null && each.getName().equals(current.getName())) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,

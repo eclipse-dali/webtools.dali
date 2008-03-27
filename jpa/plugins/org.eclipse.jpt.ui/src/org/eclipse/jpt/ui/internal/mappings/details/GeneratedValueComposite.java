@@ -23,6 +23,7 @@ import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
@@ -401,7 +402,15 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 	private String[] sortedUniqueGeneratorNames() {
 		return CollectionTools.array(
 			CollectionTools.sortedSet(
-				new TransformationIterator<Generator, String>(subject().getPersistenceUnit().allGenerators()) {
+				new TransformationIterator<Generator, String>(
+						new FilteringIterator<Generator, Generator>(subject().getPersistenceUnit().allGenerators()) 
+						{
+							@Override
+							protected boolean accept(Generator o) {
+								return o.getName() != null;
+							}
+						})
+					{
 					@Override
 					protected String transform(Generator next) {
 						return next.getName();

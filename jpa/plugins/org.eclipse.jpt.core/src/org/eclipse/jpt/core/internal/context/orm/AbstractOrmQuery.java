@@ -155,6 +155,9 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 	}
 	
 	public boolean overrides(Query query) {
+		if (getName() == null) {
+			return false;
+		}
 		// this isn't ideal, but it will have to do until we have further adopter input
 		return this.getName().equals(query.getName()) && query instanceof JavaQuery;
 	}

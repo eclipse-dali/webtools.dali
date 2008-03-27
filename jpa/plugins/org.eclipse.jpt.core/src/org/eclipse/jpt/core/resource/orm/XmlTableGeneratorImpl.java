@@ -802,4 +802,8 @@ public class XmlTableGeneratorImpl extends AbstractJpaEObject implements XmlTabl
 		IDOMNode nameNode = (IDOMNode) DOMUtilities.childAttributeNode(getNode(), OrmXmlMapper.NAME);
 		return (nameNode == null) ? getValidationTextRange() : buildTextRange(nameNode);
 	}
+	
+	public boolean isVirtual() {
+		return false;
+	}
 }
