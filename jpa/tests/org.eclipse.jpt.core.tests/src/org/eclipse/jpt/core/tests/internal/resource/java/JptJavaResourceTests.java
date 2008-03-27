@@ -23,31 +23,31 @@ public class JptJavaResourceTests {
 		if (all) {
 			suite.addTestSuite(JpaCompilationUnitTests.class);
 		}
-//		suite.addTestSuite(JavaResourcePersistentTypeTests.class);
-//		suite.addTestSuite(JavaResourcePersistentAttributeTests.class);
-//		suite.addTestSuite(JPTToolsTests.class);
-//		
-//		suite.addTestSuite(AssociationOverrideTests.class);
-//		suite.addTestSuite(AssociationOverridesTests.class);
-//		suite.addTestSuite(AttributeOverrideTests.class);
-//		suite.addTestSuite(AttributeOverridesTests.class);
-//		suite.addTestSuite(BasicTests.class);
-//		suite.addTestSuite(ColumnTests.class);
-//		suite.addTestSuite(DiscriminatorValueTests.class);
-//		suite.addTestSuite(DiscriminatorColumnTests.class);
-//		suite.addTestSuite(EmbeddableTests.class);
-//		suite.addTestSuite(EmbeddedTests.class);
-//		suite.addTestSuite(EmbeddedIdTests.class);
-//		suite.addTestSuite(EntityTests.class);
-//		suite.addTestSuite(EnumeratedTests.class);
-//		suite.addTestSuite(GeneratedValueTests.class);
-//		suite.addTestSuite(IdClassTests.class);
-//		suite.addTestSuite(IdTests.class);
-//		suite.addTestSuite(InheritanceTests.class);
-//		suite.addTestSuite(JoinColumnTests.class);
-//		suite.addTestSuite(JoinColumnsTests.class);
-//		suite.addTestSuite(JoinTableTests.class);
-//		suite.addTestSuite(LobTests.class);
+		suite.addTestSuite(JavaResourcePersistentTypeTests.class);
+		suite.addTestSuite(JavaResourcePersistentAttributeTests.class);
+		suite.addTestSuite(JPTToolsTests.class);
+		
+		suite.addTestSuite(AssociationOverrideTests.class);
+		suite.addTestSuite(AssociationOverridesTests.class);
+		suite.addTestSuite(AttributeOverrideTests.class);
+		suite.addTestSuite(AttributeOverridesTests.class);
+		suite.addTestSuite(BasicTests.class);
+		suite.addTestSuite(ColumnTests.class);
+		suite.addTestSuite(DiscriminatorValueTests.class);
+		suite.addTestSuite(DiscriminatorColumnTests.class);
+		suite.addTestSuite(EmbeddableTests.class);
+		suite.addTestSuite(EmbeddedTests.class);
+		suite.addTestSuite(EmbeddedIdTests.class);
+		suite.addTestSuite(EntityTests.class);
+		suite.addTestSuite(EnumeratedTests.class);
+		suite.addTestSuite(GeneratedValueTests.class);
+		suite.addTestSuite(IdClassTests.class);
+		suite.addTestSuite(IdTests.class);
+		suite.addTestSuite(InheritanceTests.class);
+		suite.addTestSuite(JoinColumnTests.class);
+		suite.addTestSuite(JoinColumnsTests.class);
+		suite.addTestSuite(JoinTableTests.class);
+		suite.addTestSuite(LobTests.class);
 		suite.addTestSuite(ManyToManyTests.class);
 		suite.addTestSuite(ManyToOneTests.class);
 		suite.addTestSuite(MapKeyTests.class);
