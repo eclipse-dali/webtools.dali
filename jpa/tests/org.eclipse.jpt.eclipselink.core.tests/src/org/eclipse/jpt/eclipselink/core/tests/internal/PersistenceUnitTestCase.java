@@ -146,6 +146,12 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		throw new UnsupportedOperationException(e.getAspectName());
 	}
 
+	/**
+	 * Performs three value tests:<br>
+	 * 1. subject value<br>
+	 * 2. aspect adapter value<br>
+	 * 3. persistenceUnit property value<br>
+	 */
 	protected void verifyAAValue(Boolean testValue, Boolean subjectValue, PropertyValueModel<Boolean> aa, String persistenceXmlKey) {
 		assertEquals(testValue, subjectValue);
 		assertEquals(testValue, aa.getValue());
@@ -154,6 +160,12 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		}
 	}
 
+	/**
+	 * Performs three value tests:<br>
+	 * 1. subject value<br>
+	 * 2. aspect adapter value<br>
+	 * 3. persistenceUnit property value<br>
+	 */
 	protected <T extends Enum<T>> void verifyAAValue(T testValue, T subjectValue, PropertyValueModel<? extends Enum<T>> aa, String persistenceXmlKey) {
 		assertEquals(testValue, subjectValue);
 		assertEquals(testValue, aa.getValue());
@@ -162,6 +174,13 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		}
 	}
 
+	/**
+	 * Performs the following tests:<br>
+	 * 1. verify total number of EclipseLink properties<br>
+	 * 2. verify PU has the given propertyName<br>
+	 * 3. verify listening to propertyListAdapter<br>
+	 * 4. verify that the model can identify propertyName<br>
+	 */
 	protected void verifyInitialState(String propertyName, String key, ListValueModel<Property> propertyListAdapter) throws Exception {
 		assertEquals("Total not updated in populatePu(): ", propertyListAdapter.size(), this.propertiesTotal);
 		this.verifyPuHasProperty(key, "Property not added to populatePu()");
@@ -174,13 +193,19 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	}
 
 	/**
-	 * Verify that the tested Property model is initialized with the value from
+	 * Verifies that the model for the tested Property is initialized with the value from
 	 * the persistence unit.
 	 */
 	protected void verifyModelInitialized(Object modelValue, Object expectedValue) {
 		assertEquals("Property not populatedPu() or not model.initializeProperties()", expectedValue, modelValue);
 	}
 
+	/**
+	 * Performs the following operations with the property:<br>
+	 * 1. verifies the initial state<br>
+	 * 2. persistenceUnit putProperty<br>
+	 * 3. adapter setProperty<br>
+	 */
 	protected void verifySetProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
 		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
 		
@@ -199,6 +224,12 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		this.verifyPutProperty(propertyName, testValue1);
 	}
 
+	/**
+	 * Performs the following operations with the property:<br>
+	 * 1. performs a remove on the PU<br>
+	 * 2. performs a add with putProperty<br>
+	 * 3. performs a replace with putProperty<br>
+	 */
 	protected void verifyAddRemoveProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
 		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
 		
@@ -231,12 +262,23 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		this.verifyEventValue(value, expectedValue);
 	}
 
+	/**
+	 * Performs the following tests:<br>
+	 * 1. verifies the new value of this.propertyChangedEvent<br>
+	 * 2. verifies the given value<br>
+	 */
 	protected void verifyEventValue(Object value, Object expectedValue) {
 		// verify event value
 		assertEquals(expectedValue, this.propertyChangedEvent.getNewValue());
 		assertEquals(expectedValue, value);
 	}
 
+	/**
+	 * Performs the following tests:<br>
+	 * 1. verifies that an event is fired<br>
+	 * 2. verifies that it is the correct event<br>
+	 * 3. verifies that a single event is fired<br>
+	 */
 	protected void verifyEvent(String propertyName) {
 		// verify event received
 		assertNotNull("No Event Fired.", this.propertyChangedEvent);
