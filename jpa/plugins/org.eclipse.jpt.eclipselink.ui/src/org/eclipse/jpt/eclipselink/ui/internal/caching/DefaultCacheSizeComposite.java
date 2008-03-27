@@ -43,7 +43,6 @@ public class DefaultCacheSizeComposite extends AbstractPane<Caching>
 				if (value == null) {
 					value = -1;
 				}
-
 				return value;
 			}
 
@@ -60,14 +59,14 @@ public class DefaultCacheSizeComposite extends AbstractPane<Caching>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		buildLabeledSpinner(
+		this.buildLabeledSpinner(
 			container,
 			"Default Cache Size:",
-			buildCacheSizeHolder(),
-			-1,
+			this.buildCacheSizeHolder(),
+			Caching.DEFAULT_CACHE_SIZE_DEFAULT,
 			-1,
 			Integer.MAX_VALUE,
-			null // TODO
+			(String) null // TODO
 		);
 	}
 }

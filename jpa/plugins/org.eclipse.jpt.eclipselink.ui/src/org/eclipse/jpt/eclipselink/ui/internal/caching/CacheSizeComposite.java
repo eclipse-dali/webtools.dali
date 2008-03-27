@@ -43,7 +43,6 @@ public class CacheSizeComposite extends AbstractPane<EntityCaching>
 				if (value == null) {
 					value = -1;
 				}
-
 				return value;
 			}
 
@@ -60,14 +59,14 @@ public class CacheSizeComposite extends AbstractPane<EntityCaching>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		buildLabeledSpinner(
+		this.buildLabeledSpinner(
 			container,
 			"Cache Size:",
-			buildCacheSizeHolder(),
-			-1,
+			this.buildCacheSizeHolder(),
+			Caching.DEFAULT_CACHE_SIZE,
 			-1,
 			Integer.MAX_VALUE,
-			null // TODO
+			(String) null // TODO
 		);
 	}
 }
