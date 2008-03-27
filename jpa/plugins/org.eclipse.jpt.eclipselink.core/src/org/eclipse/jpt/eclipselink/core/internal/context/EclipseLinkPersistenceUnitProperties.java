@@ -294,6 +294,7 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	 * @param value -
 	 *            property value
 	 */
+	@SuppressWarnings("unchecked")
 	protected void putProperty(String key, Object value) {
 		String elKey = this.eclipseLinkKeyFor(key);
 		if (value == null)
@@ -301,9 +302,11 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 		else if (value.getClass().isEnum())
 			this.putEnumValue(elKey, (Enum) value);
 		else
-			throw new NoSuchMethodError("putProperty not supported yet");
-		// TODO
-		// this.putProperty_( elKey, value);
+			 this.putProperty_(elKey, value);
+	}
+
+	private void putProperty_(String key, Object value) {
+		this.persistenceUnit().putProperty(key, value.toString(), false);
 	}
 
 	/**

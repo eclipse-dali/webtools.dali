@@ -91,8 +91,9 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 
 	// ********** behavior **********
 	/**
-	 * Adds property names key/value pairs, where: key = EclipseLink property
-	 * key; value = property id
+	 * Adds property names key/value pairs, where: 
+	 * 		key = EclipseLink property key;
+	 * 		value = property id
 	 */
 	@Override
 	protected void addPropertyNames(Map<String, String> propertyNames) {
@@ -117,15 +118,15 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	public boolean itemIsProperty(Property item) {
 		boolean isProperty = super.itemIsProperty(item);
 		
-		if (isProperty) {
-			return true;
+		if ( ! isProperty) {
+				if (item.getName().startsWith(ECLIPSELINK_CACHE_TYPE) || 
+						item.getName().startsWith(ECLIPSELINK_CACHE_SIZE) || 
+						item.getName().startsWith(ECLIPSELINK_SHARED_CACHE)) {
+					return true;
+				}
+				return false;
 		}
-		else if (item.getName().startsWith(ECLIPSELINK_CACHE_TYPE) || 
-				item.getName().startsWith(ECLIPSELINK_CACHE_SIZE) || 
-				item.getName().startsWith(ECLIPSELINK_SHARED_CACHE)) {
-			return true;
-		}
-		return false;
+		return true;
 	}
 
 	/**
@@ -185,8 +186,8 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 
 	public void setCacheType(CacheType newCacheType, String entityName) {
 		CacheProperties old = this.setCacheType_(newCacheType, entityName);
-		this.firePropertyChanged(CACHE_TYPE_PROPERTY, old, this.cachePropertiesOf(entityName));
 		this.putEnumValue(ECLIPSELINK_CACHE_TYPE, entityName, newCacheType, false);
+		this.firePropertyChanged(CACHE_TYPE_PROPERTY, old, this.cachePropertiesOf(entityName));
 	}
 
 	private void cacheTypeChanged(PropertyChangeEvent event) {
@@ -209,8 +210,8 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 
 	public void setCacheSize(Integer newCacheSize, String entityName) {
 		CacheProperties old = this.setCacheSize_(newCacheSize, entityName);
-		this.firePropertyChanged(CACHE_SIZE_PROPERTY, old, this.cachePropertiesOf(entityName));
 		this.putIntegerValue(ECLIPSELINK_CACHE_SIZE + entityName, newCacheSize);
+		this.firePropertyChanged(CACHE_SIZE_PROPERTY, old, this.cachePropertiesOf(entityName));
 	}
 
 	private void cacheSizeChanged(PropertyChangeEvent event) {
@@ -233,8 +234,8 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 
 	public void setSharedCache(Boolean newSharedCache, String entityName) {
 		CacheProperties old = this.setSharedCache_(newSharedCache, entityName);
-		this.firePropertyChanged(SHARED_CACHE_PROPERTY, old, this.cachePropertiesOf(entityName));
 		this.putBooleanValue(ECLIPSELINK_SHARED_CACHE + entityName, newSharedCache);
+		this.firePropertyChanged(SHARED_CACHE_PROPERTY, old, this.cachePropertiesOf(entityName));
 	}
 
 	private void sharedCacheChanged(PropertyChangeEvent event) {
@@ -258,8 +259,8 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	public void setCacheTypeDefault(CacheType newCacheTypeDefault) {
 		CacheType old = this.cacheTypeDefault;
 		this.cacheTypeDefault = newCacheTypeDefault;
-		this.firePropertyChanged(CACHE_TYPE_DEFAULT_PROPERTY, old, newCacheTypeDefault);
 		this.putProperty(CACHE_TYPE_DEFAULT_PROPERTY, newCacheTypeDefault);
+		this.firePropertyChanged(CACHE_TYPE_DEFAULT_PROPERTY, old, newCacheTypeDefault);
 	}
 
 	private void cacheTypeDefaultChanged(PropertyChangeEvent event) {
@@ -282,9 +283,8 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	public void setCacheSizeDefault(Integer newCacheSizeDefault) {
 		Integer old = this.cacheSizeDefault;
 		this.cacheSizeDefault = newCacheSizeDefault;
+		this.putProperty(CACHE_SIZE_DEFAULT_PROPERTY, newCacheSizeDefault);
 		this.firePropertyChanged(CACHE_SIZE_DEFAULT_PROPERTY, old, newCacheSizeDefault);
-		// TODO - use putProperty( String key, Object value) instead
-		this.putIntegerValue(ECLIPSELINK_CACHE_SIZE_DEFAULT, newCacheSizeDefault);
 	}
 
 	private void cacheSizeDefaultChanged(PropertyChangeEvent event) {
@@ -307,14 +307,14 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	public void setSharedCacheDefault(Boolean newSharedCacheDefault) {
 		Boolean old = this.sharedCacheDefault;
 		this.sharedCacheDefault = newSharedCacheDefault;
+		this.putProperty(SHARED_CACHE_DEFAULT_PROPERTY, newSharedCacheDefault);
 		this.firePropertyChanged(SHARED_CACHE_DEFAULT_PROPERTY, old, newSharedCacheDefault);
-		// TODO - use putProperty( String key, Object value) instead
-		this.putBooleanValue(ECLIPSELINK_CACHE_SHARED_DEFAULT, newSharedCacheDefault);
 	}
 
 	private void sharedCacheDefaultChanged(PropertyChangeEvent event) {
 		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
 		Boolean newValue = getBooleanValueOf(stringValue);
+		
 		Boolean old = this.sharedCacheDefault;
 		this.sharedCacheDefault = newValue;
 		this.firePropertyChanged(event.getAspectName(), old, newValue);

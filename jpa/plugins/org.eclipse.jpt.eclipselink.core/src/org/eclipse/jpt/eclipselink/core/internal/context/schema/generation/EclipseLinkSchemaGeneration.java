@@ -111,8 +111,8 @@ public class EclipseLinkSchemaGeneration
 	public void setDdlGenerationType(DdlGenerationType newDdlGenType) {
 		DdlGenerationType old = this.ddlGenerationType;
 		this.ddlGenerationType = newDdlGenType;
+		this.putProperty(DDL_GENERATION_TYPE_PROPERTY, newDdlGenType);
 		this.firePropertyChanged(DDL_GENERATION_TYPE_PROPERTY, old, newDdlGenType);
-		this.putEnumValue(ECLIPSELINK_DDL_GENERATION_TYPE, newDdlGenType);
 	}
 
 	private void ddlGenerationTypeChanged(PropertyChangeEvent event) {
@@ -135,8 +135,8 @@ public class EclipseLinkSchemaGeneration
 	public void setOutputMode(OutputMode newOutputMode) {
 		OutputMode old = this.outputMode;
 		this.outputMode = newOutputMode;
+		this.putProperty(OUTPUT_MODE_PROPERTY, newOutputMode);
 		this.firePropertyChanged(OUTPUT_MODE_PROPERTY, old, newOutputMode);
-		this.putEnumValue(ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE, newOutputMode);
 	}
 
 	private void outputModeChanged(PropertyChangeEvent event) {
@@ -159,8 +159,8 @@ public class EclipseLinkSchemaGeneration
 	public void setCreateFileName(String newCreateFileName) {
 		String old = this.createFileName;
 		this.createFileName = newCreateFileName;
+		this.putProperty(CREATE_FILE_NAME_PROPERTY, newCreateFileName);
 		this.firePropertyChanged(CREATE_FILE_NAME_PROPERTY, old, newCreateFileName);
-		this.putStringValue(ECLIPSELINK_CREATE_FILE_NAME, newCreateFileName);
 	}
 
 	private void createFileNameChanged(PropertyChangeEvent event) {
@@ -182,8 +182,8 @@ public class EclipseLinkSchemaGeneration
 	public void setDropFileName(String newDropFileName) {
 		String old = this.dropFileName;
 		this.dropFileName = newDropFileName;
+		this.putProperty(DROP_FILE_NAME_PROPERTY, newDropFileName);
 		this.firePropertyChanged(DROP_FILE_NAME_PROPERTY, old, newDropFileName);
-		this.putStringValue(ECLIPSELINK_DROP_FILE_NAME, newDropFileName);
 	}
 
 	private void dropFileNameChanged(PropertyChangeEvent event) {
@@ -205,8 +205,8 @@ public class EclipseLinkSchemaGeneration
 	public void setApplicationLocation(String newApplicationLocation) {
 		String old = this.applicationLocation;
 		this.applicationLocation = newApplicationLocation;
+		this.putProperty(APPLICATION_LOCATION_PROPERTY, newApplicationLocation);
 		this.firePropertyChanged(APPLICATION_LOCATION_PROPERTY, old, newApplicationLocation);
-		this.putStringValue(ECLIPSELINK_APPLICATION_LOCATION, newApplicationLocation);
 	}
 
 	private void applicationLocationChanged(PropertyChangeEvent event) {
