@@ -71,16 +71,15 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 		if (jpaFile == null) {
 			return Collections.emptyList();
 		}
-		// TODO use interface
+		
 		JavaResourceModel javaResourceModel = (JavaResourceModel) jpaFile.getResourceModel();
-
 		if (javaResourceModel.rootStructureNodesSize() == 0) {
 			return Collections.emptyList();
 		}
 
 		//TODO A bit of hackery for now just to get this compiling and working good enough, 
-		//we need to have a way to get the context model given an IFile or IJpaFile
-		//instead of having to ask the IResourceModel for it
+		//we need to have a way to get the context model given an IFile or JpaFile
+		//instead of having to ask the ResourceModel for it
 		JavaPersistentType structureNode = (JavaPersistentType) javaResourceModel.rootStructureNodes().next();
 		CompletionContext cc = context.getCoreContext();
 
