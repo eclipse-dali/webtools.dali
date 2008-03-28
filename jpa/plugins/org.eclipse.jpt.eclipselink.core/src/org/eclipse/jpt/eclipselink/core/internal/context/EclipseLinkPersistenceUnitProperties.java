@@ -134,18 +134,37 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 
 	/**
 	 * Put the given String value into the PersistenceXml.
-	 * 
 	 * @param key -
 	 *            EclipseLink Key
+	 * @param newValue
+	 *            value to be associated with the key
 	 */
 	protected void putStringValue(String key, String newValue) {
 		this.putStringValue(key, null, newValue, false);
 	}
 
+	/**
+	 * Put the given String value into the PersistenceXml.
+	 * @param key
+	 *            EclipseLink Key
+	 * @param newValue
+	 *            value to be associated with the key
+	 * @param allowDuplicate
+	 */
 	protected void putStringValue(String key, String newValue, boolean allowDuplicate) {
 		this.putStringValue(key, null, newValue, allowDuplicate);
 	}
 
+	/**
+	 * Put the given String value into the PersistenceXml.
+	 * @param key
+	 *            EclipseLink Key
+	 * @param keySuffix
+	 *            e.g. entity name
+	 * @param newValue
+	 *            value to be associated with the key
+	 * @param allowDuplicate
+	 */
 	protected void putStringValue(String key, String keySuffix, String newValue, boolean allowDuplicate) {
 		String elKey = (keySuffix == null) ? key : key + keySuffix;
 		if (newValue == null) {
@@ -177,18 +196,37 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 
 	/**
 	 * Put the given Integer value into the PersistenceXml.
-	 * 
 	 * @param key -
 	 *            EclipseLink Key
+	 * @param newValue
+	 *            value to be associated with the key
 	 */
 	protected void putIntegerValue(String key, Integer newValue) {
 		this.putIntegerValue(key, null, newValue, false);
 	}
 
+	/**
+	 * Put the given Integer value into the PersistenceXml.
+	 * @param key
+	 *            EclipseLink Key
+	 * @param newValue
+	 *            value to be associated with the key
+	 * @param allowDuplicate
+	 */
 	protected void putIntegerValue(String key, Integer newValue, boolean allowDuplicate) {
 		this.putIntegerValue(key, null, newValue, allowDuplicate);
 	}
 
+	/**
+	 * Put the given Integer value into the PersistenceXml.
+	 * @param key
+	 *            EclipseLink Key
+	 * @param keySuffix
+	 *            e.g. entity name
+	 * @param newValue
+	 *            value to be associated with the key
+	 * @param allowDuplicate
+	 */
 	protected void putIntegerValue(String key, String keySuffix, Integer newValue, boolean allowDuplicate) {
 		String elKey = (keySuffix == null) ? key : key + keySuffix;
 		if (newValue == null) {
@@ -207,6 +245,9 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 		return this.getBooleanValue(elKey, null);
 	}
 
+	/**
+	 * Returns the Boolean value of the given Property from the PersistenceXml.
+	 */
 	protected Boolean getBooleanValue(String key, String keySuffix) {
 		String elKey = (keySuffix == null) ? key : key + keySuffix;
 		if (this.persistenceUnit().containsProperty(elKey)) {
@@ -220,18 +261,37 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 
 	/**
 	 * Put the given Boolean value into the PersistenceXml.
-	 * 
-	 * @param key -
+	 * @param key
 	 *            EclipseLink Key
+	 * @param newValue
+	 *            value to be associated with the key
 	 */
 	protected void putBooleanValue(String key, Boolean newValue) {
 		this.putBooleanValue(key, null, newValue, false);
 	}
 
+	/**
+	 * Put the given Boolean value into the PersistenceXml.
+	 * @param key
+	 *            EclipseLink Key
+	 * @param newValue
+	 *            value to be associated with the key
+	 * @param allowDuplicate
+	 */
 	protected void putBooleanValue(String key, Boolean newValue, boolean allowDuplicate) {
 		this.putBooleanValue(key, null, newValue, allowDuplicate);
 	}
 
+	/**
+	 * Put the given Boolean value into the PersistenceXml.
+	 * @param key
+	 *            EclipseLink Key
+	 * @param keySuffix
+	 *            e.g. entity name
+	 * @param newValue
+	 *            value to be associated with the key
+	 * @param allowDuplicate
+	 */
 	protected void putBooleanValue(String key, String keySuffix, Boolean newValue, boolean allowDuplicate) {
 		String elKey = (keySuffix == null) ? key : key + keySuffix;
 		if (newValue == null) {
@@ -318,6 +378,26 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 
 	protected Set<Property> getPropertiesSetWithPrefix(String keyPrefix) {
 		return CollectionTools.set(this.persistenceUnit().propertiesWithPrefix(keyPrefix));
+	}
+
+	/**
+	 * Extracts the entityName of the specified property name. If the property name
+	 * has no suffix, return an empty string.
+	 */
+	protected String getEntityName(Property property) {
+		return getEntityName(property.getName());
+	}
+
+	/**
+	 * Extracts the entityName of the specified string. If the string
+	 * has no suffix, return an empty string.
+	 */
+	protected String getEntityName(String propertyName) {
+		int index = propertyName.lastIndexOf('.');
+		if (index == -1) {
+			return "";
+		}
+		return propertyName.substring(index + 1);
 	}
 
 	/** ****** Static methods ******* */
