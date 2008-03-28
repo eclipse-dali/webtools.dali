@@ -65,7 +65,7 @@ public class CacheProperties implements Cloneable, Serializable
 	}
 
 	public CacheType getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(CacheType cacheType) {
@@ -73,7 +73,7 @@ public class CacheProperties implements Cloneable, Serializable
 	}
 
 	public Integer getSize() {
-		return size;
+		return this.size;
 	}
 
 	public void setSize(Integer cacheSize) {
@@ -81,7 +81,7 @@ public class CacheProperties implements Cloneable, Serializable
 	}
 
 	public Boolean isShared() {
-		return isShared;
+		return this.isShared;
 	}
 
 	public void setShared(Boolean isShared) {
