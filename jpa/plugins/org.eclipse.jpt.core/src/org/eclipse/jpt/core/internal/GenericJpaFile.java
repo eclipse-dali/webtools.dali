@@ -59,14 +59,6 @@ public class GenericJpaFile extends AbstractJpaNode implements JpaFile
 		getResourceModel().javaElementChanged(event);
 	}
 	
-	public void fileAdded(JpaFile jpaFile) {
-		getResourceModel().resolveTypes();
-	}
-	
-	public void fileRemoved(JpaFile jpaFile) {
-		getResourceModel().resolveTypes();		
-	}
-	
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(getFile().toString());

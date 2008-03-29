@@ -39,11 +39,6 @@ public interface JavaResourceNode extends Model
 	void updateFromJava(CompilationUnit astRoot);
 	
 	/**
-	 * Use to resolve type information that could be dependent on other files being added/removed
-	 */
-	void resolveTypes(CompilationUnit astRoot);
-	
-	/**
 	 * Return the ITextRange 
 	 */
 	TextRange getTextRange(CompilationUnit astRoot);

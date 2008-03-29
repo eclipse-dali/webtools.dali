@@ -418,9 +418,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 		setPersistable(calculatePersistability(astRoot));		
 	}
 	
-	@Override
 	public void resolveTypes(CompilationUnit astRoot) {
-		super.resolveTypes(astRoot);
 		setPersistable(calculatePersistability(astRoot));		
 	}
 	

@@ -87,7 +87,7 @@ public interface ResourceModel extends Model
 	void dispose();
 	
 	/**
-	 * Use to resolve type information that could be dependent on other files being added/removed
+	 * Used to resolve type information that could be dependent on other files being added/removed.
 	 */
 	void resolveTypes();
 }

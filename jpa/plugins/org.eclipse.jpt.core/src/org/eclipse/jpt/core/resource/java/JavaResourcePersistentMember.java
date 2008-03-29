@@ -165,5 +165,11 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	 * return the text range for the name of the persistent resource
 	 */
 	TextRange getNameTextRange(CompilationUnit astRoot);
+	
+	/**
+	 * Resolve type information that could be dependent on other files being added/removed
+	 */
+	void resolveTypes(CompilationUnit astRoot);
+
 
 }

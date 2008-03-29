@@ -32,5 +32,12 @@ public interface JpaCompilationUnit extends JavaResourceNode {
 	AnnotationEditFormatter getAnnotationEditFormatter();
 
 	void resourceChanged();
+	
+	/**
+	 * Resolve type information that could be dependent on other files being added/removed
+	 */
+	void resolveTypes();
+
+	void updateFromJava();
 
 }

@@ -170,6 +170,10 @@ public class JpaCompilationUnitImpl
 				astRoot);
 	}
 	
+	public void updateFromJava() {
+		updateFromJava(JDTTools.buildASTRoot(getCompilationUnit()));
+	}
+	
 	public void updateFromJava(CompilationUnit astRoot) {
 		IType iType = this.compilationUnit.findPrimaryType();
 		if (iType == null) {
@@ -202,10 +206,9 @@ public class JpaCompilationUnitImpl
 		this.javaResourceModel.resourceChanged();
 	}
 
-	@Override
-	public void resolveTypes(CompilationUnit astRoot) {
+	public void resolveTypes() {
 		if (getPersistentType() != null) {
-			getPersistentType().resolveTypes(astRoot);
+			getPersistentType().resolveTypes(JDTTools.buildASTRoot(getCompilationUnit()));
 		}
 	}
 }

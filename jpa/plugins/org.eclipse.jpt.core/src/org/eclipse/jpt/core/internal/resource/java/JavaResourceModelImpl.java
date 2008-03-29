@@ -18,7 +18,6 @@ import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.ResourceModelListener;
 import org.eclipse.jpt.core.internal.AbstractResourceModel;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
@@ -112,13 +111,18 @@ public class JavaResourceModelImpl
 		if (BitTools.onlyFlagIsSet(delta.getFlags(), IJavaElementDelta.F_PRIMARY_WORKING_COPY)) {
 			return;
 		}
+		if (delta.getKind() == IJavaElementDelta.REMOVED) {
+			//we get the java notification for removal before we get the resource notification.
+			//we do not need to handle this event and will get exceptions building an AstRoot if we try.
+			return;
+		}
 		if (delta.getElement().equals(this.compilationUnitResource.getCompilationUnit())) {
 			//TODO possibly hop on the UI thread here so that we know only 1 thread is changing our model
-			this.compilationUnitResource.updateFromJava(JDTTools.buildASTRoot(this.compilationUnitResource.getCompilationUnit()));
+			this.compilationUnitResource.updateFromJava();
 		}
 	}
 
 	public void resolveTypes() {
-		this.compilationUnitResource.resolveTypes(JDTTools.buildASTRoot(this.compilationUnitResource.getCompilationUnit()));
+		this.compilationUnitResource.resolveTypes();
 	}
 }

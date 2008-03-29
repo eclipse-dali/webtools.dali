@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
@@ -82,10 +81,6 @@ public abstract class AbstractJavaResourceNode
 
 	public JavaResourceModel getResourceModel() {
 		return this.getJpaCompilationUnit().getResourceModel();
-	}
-	
-	public void resolveTypes(CompilationUnit astRoot) {
-		// nothing
 	}
 	
 	public String displayString() {

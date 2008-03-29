@@ -96,11 +96,6 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	protected JpaRootContextNode rootContextNode;
 
 	/**
-	 * The visitor passed to resource deltas.
-	 */
-	protected final IResourceDeltaVisitor resourceDeltaVisitor;
-
-	/**
 	 * Support for modifying documents shared with the UI.
 	 */
 	protected final ThreadLocal<CommandExecutor> threadLocalModifySharedDocumentCommandExecutor;
@@ -142,7 +137,6 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		this.discoversAnnotatedClasses = config.discoverAnnotatedClasses();
 		this.jpaFiles = this.buildEmptyJpaFiles();
 
-		this.resourceDeltaVisitor = this.buildResourceDeltaVisitor();
 		this.threadLocalModifySharedDocumentCommandExecutor = this.buildThreadLocalModifySharedDocumentCommandExecutor();
 		this.modifySharedDocumentCommandExecutorProvider = this.buildModifySharedDocumentCommandExecutorProvider();
 
@@ -167,7 +161,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		return new Vector<JpaFile>();
 	}
 
-	protected IResourceDeltaVisitor buildResourceDeltaVisitor() {
+	protected ResourceDeltaVisitor buildResourceDeltaVisitor() {
 		return new ResourceDeltaVisitor();
 	}
 
@@ -301,15 +295,15 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 
 	/**
 	 * Add a JPA file for the specified file, if appropriate.
+	 * Return true if a JPA File was created and added, false otherwise
 	 */
-	protected void addJpaFile(IFile file) {
+	protected boolean addJpaFile(IFile file) {
 		JpaFile jpaFile = this.addJpaFileInternal(file);
 		if (jpaFile != null) {
 			this.fireItemAdded(JPA_FILES_COLLECTION, jpaFile);
-			for (Iterator<JpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
-				stream.next().fileAdded(jpaFile);
-			}
+			return true;
 		}
+		return false;
 	}
 
 	/**
@@ -328,15 +322,25 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	}
 
 	/**
-	 * Remove the specified JPA file and dispose it.
+	 * Remove the JPA file corresponding to the specified IFile, if it exists.
+	 * Return true if a JPA File was removed, false otherwise
+	 */
+	protected boolean removeJpaFile(IFile file) {
+		JpaFile jpaFile = this.getJpaFile(file);
+		if (jpaFile != null) { //a JpaFile is not added for every IFile
+			removeJpaFile(jpaFile);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Remove the JPA file and dispose of it
 	 */
 	protected void removeJpaFile(JpaFile jpaFile) {
 		jpaFile.getResourceModel().removeResourceModelChangeListener(this.resourceModelListener);
 		if ( ! this.removeItemFromCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION)) {
 			throw new IllegalArgumentException("JPA file: " + jpaFile.getFile().getName());
-		}
-		for (Iterator<JpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
-			stream.next().fileRemoved(jpaFile);
 		}
 		jpaFile.dispose();
 	}
@@ -543,31 +547,33 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	// ********** handling resource deltas **********
 
 	public void synchronizeJpaFiles(IResourceDelta delta) throws CoreException {
-		delta.accept(this.resourceDeltaVisitor);
+		ResourceDeltaVisitor resourceDeltaVisitor = this.buildResourceDeltaVisitor();
+		delta.accept(resourceDeltaVisitor);
+		if (resourceDeltaVisitor.jpaFilesChanged()) {
+			for(JpaFile jpaFile : CollectionTools.iterable(jpaFiles())) {
+				jpaFile.getResourceModel().resolveTypes();
+			}
+		}
 	}
 
 	/**
 	 * resource delta visitor callback
+	 * Return true if a JpaFile was either added or removed
 	 */
-	protected void synchronizeJpaFiles(IFile file, int deltaKind) {
+	protected boolean synchronizeJpaFiles(IFile file, int deltaKind) {
 		switch (deltaKind) {
 			case IResourceDelta.ADDED :
-				if ( ! this.containsJpaFile(file)) {
-					this.addJpaFile(file);
-				}
-				break;
+				return this.addJpaFile(file);
 			case IResourceDelta.REMOVED :
-				JpaFile jpaFile = this.getJpaFile(file);
-				if (jpaFile != null) {
-					this.removeJpaFile(jpaFile);
-				}
-				break;
+				return this.removeJpaFile(file);
 			case IResourceDelta.CHANGED :
 			case IResourceDelta.ADDED_PHANTOM :
 			case IResourceDelta.REMOVED_PHANTOM :
 			default :
 				break;  // only worried about added and removed files
 		}
+
+		return false;
 	}
 
 	// ***** inner class
@@ -575,6 +581,8 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	 * add a JPA file for every [appropriate] file encountered by the visitor
 	 */
 	protected class ResourceDeltaVisitor implements IResourceDeltaVisitor {
+		private boolean jpaFilesChanged = false;
+		
 		protected ResourceDeltaVisitor() {
 			super();
 		}
@@ -586,11 +594,20 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 				case IResource.FOLDER :
 					return true;  // visit children
 				case IResource.FILE :
-					GenericJpaProject.this.synchronizeJpaFiles((IFile) res, delta.getKind());
+					if (GenericJpaProject.this.synchronizeJpaFiles((IFile) res, delta.getKind())) {
+						this.jpaFilesChanged = true;
+					}
 					return false;  // no children
 				default :
 					return false;  // no children
 			}
+		}
+		/**
+		 * Used to determine if the JPA files collection was modified while
+		 * traversing the IResourceDelta.  Return true if a JPA file was added/removed
+		 */
+		protected boolean jpaFilesChanged() {
+			return this.jpaFilesChanged;
 		}
 	}
 

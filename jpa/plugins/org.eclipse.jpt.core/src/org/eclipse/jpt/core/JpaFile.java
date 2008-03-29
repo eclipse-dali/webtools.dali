@@ -55,15 +55,4 @@ public interface JpaFile extends JpaNode
 	 */
 	void dispose();
 	
-	/**
-	 * jpaFile was added to the JpaProject
-	 * @param jpaFile
-	 */
-	void fileAdded(JpaFile jpaFile);
-	
-	/**
-	 * jpaFile was removed from the JpaProject
-	 * @param jpaFile
-	 */
-	void fileRemoved(JpaFile jpaFile);
 }
