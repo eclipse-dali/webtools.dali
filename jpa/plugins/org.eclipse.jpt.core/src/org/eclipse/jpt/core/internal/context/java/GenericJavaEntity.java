@@ -418,6 +418,12 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		this.entityResource.setName(newSpecifiedName);
 		firePropertyChanged(Entity.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
 	}
+	
+	protected void setSpecifiedName_(String newSpecifiedName) {
+		String oldSpecifiedName = this.specifiedName;
+		this.specifiedName = newSpecifiedName;
+		firePropertyChanged(Entity.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
+	}
 
 	public String getDefaultName() {
 		return this.defaultName;
@@ -1293,7 +1299,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		super.update(resourcePersistentType);
 		this.entityResource = (EntityAnnotation) resourcePersistentType.getMappingAnnotation(EntityAnnotation.ANNOTATION_NAME);
 		
-		this.setSpecifiedName(this.specifiedName(this.entityResource));
+		this.setSpecifiedName_(this.specifiedName(this.entityResource));
 		this.setDefaultName(this.defaultName(resourcePersistentType));
 		
 		this.updateInheritance(getInheritanceResource());
