@@ -63,8 +63,8 @@ final class DTPConnectionProfileWrapper
 		super();
 		this.dtpConnectionProfile = dtpConnectionProfile;
 		this.connectionListener = new LocalConnectionListener();
-		this.dtpLiveConnection().addConnectionListener(this.connectionListener);
-		this.dtpOfflineConnection().addConnectionListener(this.connectionListener);
+		this.getDtpLiveConnection().addConnectionListener(this.connectionListener);
+		this.getDtpOfflineConnection().addConnectionListener(this.connectionListener);
 	}
 
 
@@ -104,7 +104,7 @@ final class DTPConnectionProfileWrapper
 	}
 
 	public boolean isConnected() {
-		return this.dtpLiveConnection().isConnected();
+		return this.getDtpLiveConnection().isConnected();
 	}
 
 	public boolean isDisconnected() {
@@ -112,7 +112,7 @@ final class DTPConnectionProfileWrapper
 	}
 
 	public boolean isWorkingOffline() {
-		return this.dtpOfflineConnection().isWorkingOffline();
+		return this.getDtpOfflineConnection().isWorkingOffline();
 	}
 
 	public boolean supportsWorkOfflineMode() {
@@ -132,27 +132,27 @@ final class DTPConnectionProfileWrapper
 	}
 	
 	public String getDatabaseVendor() {
-		return this.property(IJDBCDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID);
+		return this.getProperty(IJDBCDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID);
 	}
 
 	public String getDatabaseName() {
-		return this.property(IJDBCDriverDefinitionConstants.DATABASE_NAME_PROP_ID);
+		return this.getProperty(IJDBCDriverDefinitionConstants.DATABASE_NAME_PROP_ID);
 	}
 
 	public String getDatabaseProduct() {
-		return this.property(DATABASE_PRODUCT_PROP_ID);
+		return this.getProperty(DATABASE_PRODUCT_PROP_ID);
 	}
 
 	public String getDatabaseVersion() {
-		return this.property(IJDBCDriverDefinitionConstants.DATABASE_VERSION_PROP_ID);
+		return this.getProperty(IJDBCDriverDefinitionConstants.DATABASE_VERSION_PROP_ID);
 	}
 
 	public String getUserName() {
-		return this.property(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
+		return this.getProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
 	}
 
 	public String getUserPassword() {
-		return this.property(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID);
+		return this.getProperty(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID);
 	}
 
 	public synchronized InternalDatabase getDatabase() {
@@ -175,15 +175,15 @@ final class DTPConnectionProfileWrapper
 	}
 
 	public Schema getDefaultSchema() {
-		return this.getDatabase().schemaNamed(this.defaultSchemaName());
+		return this.getDatabase().schemaNamed(this.getDefaultSchemaName());
 	}
 
 	public String getDriverClassName() {
-		return this.property(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID);
+		return this.getProperty(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID);
 	}
 
 	public String getUrl() {
-		return this.property(IJDBCDriverDefinitionConstants.URL_PROP_ID);
+		return this.getProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID);
 	}
 
 	public String getInstanceID() {
@@ -195,7 +195,7 @@ final class DTPConnectionProfileWrapper
 	}
 
 	public String getDriverDefinitionID() {
-		return this.property(DRIVER_DEFINITION_PROP_ID);
+		return this.getProperty(DRIVER_DEFINITION_PROP_ID);
 	}
 
 	public String getDriverJarList() {
@@ -205,11 +205,11 @@ final class DTPConnectionProfileWrapper
 
 	// ********** internal methods **********
 
-	IManagedConnection dtpLiveConnection() {
+	IManagedConnection getDtpLiveConnection() {
 		return this.dtpConnectionProfile.getManagedConnection(LIVE_DTP_CONNECTION_TYPE);
 	}
 
-	IManagedConnection dtpOfflineConnection() {
+	IManagedConnection getDtpOfflineConnection() {
 		return this.dtpConnectionProfile.getManagedConnection(OFFLINE_DTP_CONNECTION_TYPE);
 	}
 
@@ -229,7 +229,7 @@ final class DTPConnectionProfileWrapper
 		}
 
 		if (this.isWorkingOffline()) {
-			ConnectionInfo connectionInfo = (ConnectionInfo) this.dtpOfflineConnection().getConnection().getRawConnection();
+			ConnectionInfo connectionInfo = (ConnectionInfo) this.getDtpOfflineConnection().getConnection().getRawConnection();
 			return new DTPDatabaseWrapper(this, connectionInfo.getSharedDatabase());
 		}
 
@@ -275,16 +275,16 @@ final class DTPConnectionProfileWrapper
 	}
 
 	/**
-	 * private - use #defaultSchema() : Schema instead
+	 * private - use #getDefaultSchema() : Schema instead
 	 */
-	private String defaultSchemaName() {
+	private String getDefaultSchemaName() {
 		if (this.getDatabase().getVendor().equalsIgnoreCase(POSTGRESQL_VENDOR)) {
 			return POSTGRESQL_DEFAULT_SCHEMA_NAME;
 		}
 		return this.getUserName();
 	}
 
-	private String property(String propertyName) {
+	private String getProperty(String propertyName) {
 		return this.dtpConnectionProfile.getBaseProperties().getProperty(propertyName);
 	}
 
@@ -293,8 +293,8 @@ final class DTPConnectionProfileWrapper
 
 	synchronized void dispose() {
 		this.disposeDatabase();
-		this.dtpOfflineConnection().removeConnectionListener(this.connectionListener);
-		this.dtpLiveConnection().removeConnectionListener(this.connectionListener);
+		this.getDtpOfflineConnection().removeConnectionListener(this.connectionListener);
+		this.getDtpLiveConnection().removeConnectionListener(this.connectionListener);
 	}
 
 	synchronized void disposeDatabase() {
@@ -349,7 +349,7 @@ final class DTPConnectionProfileWrapper
 		// ********** IManagedConnectionListener implementation **********
 
 		public void opened(ConnectEvent event) {
-			if (event.getConnection() == DTPConnectionProfileWrapper.this.dtpLiveConnection()) {
+			if (event.getConnection() == DTPConnectionProfileWrapper.this.getDtpLiveConnection()) {
 				// clear the database so it will be rebuilt
 				DTPConnectionProfileWrapper.this.disposeDatabase();
 				for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
@@ -365,7 +365,7 @@ final class DTPConnectionProfileWrapper
 		}
 
 		public boolean okToClose(ConnectEvent event) {
-			if (event.getConnection() == DTPConnectionProfileWrapper.this.dtpLiveConnection()) {
+			if (event.getConnection() == DTPConnectionProfileWrapper.this.getDtpLiveConnection()) {
 				for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 					if ( ! stream.next().okToClose(DTPConnectionProfileWrapper.this)) {
 						return false;
@@ -376,7 +376,7 @@ final class DTPConnectionProfileWrapper
 		}
 
 		public void aboutToClose(ConnectEvent event) {
-			if (event.getConnection() == DTPConnectionProfileWrapper.this.dtpLiveConnection()) {
+			if (event.getConnection() == DTPConnectionProfileWrapper.this.getDtpLiveConnection()) {
 				for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 					stream.next().aboutToClose(DTPConnectionProfileWrapper.this);
 				}
@@ -397,7 +397,7 @@ final class DTPConnectionProfileWrapper
 
 		// live => off-line
 		public boolean okToDetach(ConnectEvent event) {
-			if (event.getConnection() == DTPConnectionProfileWrapper.this.dtpOfflineConnection()) {
+			if (event.getConnection() == DTPConnectionProfileWrapper.this.getDtpOfflineConnection()) {
 				for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 					if ( ! stream.next().okToClose(DTPConnectionProfileWrapper.this)) {
 						return false;
@@ -409,7 +409,7 @@ final class DTPConnectionProfileWrapper
 		
 		// live => off-line
 		public void aboutToDetach(ConnectEvent event) {
-			if (event.getConnection() == DTPConnectionProfileWrapper.this.dtpOfflineConnection()) {
+			if (event.getConnection() == DTPConnectionProfileWrapper.this.getDtpOfflineConnection()) {
 				for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 					stream.next().aboutToClose(DTPConnectionProfileWrapper.this);
 				}
