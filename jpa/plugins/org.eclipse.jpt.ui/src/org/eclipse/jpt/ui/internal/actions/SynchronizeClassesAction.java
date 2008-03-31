@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.synch.SynchronizeClassesJob;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
@@ -33,7 +34,16 @@ public class SynchronizeClassesAction
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {
-		// only one element in actual selection
-		file = (IFile) ((StructuredSelection) selection).getFirstElement();
+		// Action is contributed for IFile's named "persistence.xml" and
+		// for PeristenceXml objects.
+		// There is always only one element in actual selection.
+		Object selectedObject = ((StructuredSelection) selection).getFirstElement();
+		
+		if (selectedObject instanceof IFile) {
+			file = (IFile) selectedObject;
+		}
+		else if (selectedObject instanceof PersistenceXml) {
+			file = (IFile) ((PersistenceXml) selectedObject).getResource();
+		}
 	}
 }

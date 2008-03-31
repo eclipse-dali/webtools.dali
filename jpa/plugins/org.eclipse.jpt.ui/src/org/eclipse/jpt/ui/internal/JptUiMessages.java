@@ -48,6 +48,7 @@ public class JptUiMessages extends NLS {
 	public static String DatabaseReconnectWizardPage_schemaInfo;
 	public static String EnumComboViewer_default;
 	public static String EnumComboViewer_defaultWithDefault;
+	public static String Error_openingEditor;
 	public static String General_browse;
 	public static String General_deselectAll;
 	public static String General_selectAll;

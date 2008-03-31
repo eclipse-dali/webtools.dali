@@ -128,23 +128,23 @@
 				</and>
 			</triggerPoints>
 			
-			<!--
-			
 			<possibleChildren>
-				<or>
-					<and>
-						<instanceof value="org.eclipse.emf.ecore.EObject" />
-						<or>
-							<test forcePluginActivation="true"
-								property="org.eclipse.wst.common.emfworkbench.integration.emfPackage"
-								value="ejb.xmi" />
-						</or>
-					</and>
-					<instanceof value="org.eclipse.jst.j2ee.internal.ejb.provider.J2EEJavaClassProviderHelper"/>
-					<instanceof value="org.eclipse.jst.j2ee.internal.ejb.provider.GroupedEJBItemProvider"/>
-				</or>
-				<instanceof value="org.eclipse.jst.j2ee.navigator.internal.LoadingDDNode"/>
+				<instanceof
+					value="org.eclipse.jpt.core.context.JpaContextNode"/>
 			</possibleChildren>
+			
+			<actionProvider
+				class="org.eclipse.jpt.ui.internal.navigator.JpaNavigatorActionProvider"
+				id="org.eclipse.jpt.ui.jpaActionProvider">
+				<enablement>
+					<and>
+						<instanceof
+							value="org.eclipse.jpt.core.context.JpaContextNode"/>
+					</and>
+				</enablement>
+			</actionProvider>
+			
+			<!--
 			
 			<commonSorter
 				id="org.eclipse.jst.j2ee.navigator.internal.J2EEViewerSorter"
@@ -254,24 +254,41 @@
 		</objectContribution>
 		
 		<objectContribution
-			id="org.eclipse.jpt.ui.entityMappingsActions"
-			objectClass="org.eclipse.jpt.core.context.orm.EntityMappings">
+			id="org.eclipse.jpt.ui.persistenceXmlActions"
+			objectClass="org.eclipse.jpt.core.context.persistence.PersistenceXml">
+			<action
+				id="synchClassesAction"
+				label="%synchronizeClasses"
+				menubarPath="content"
+				class="org.eclipse.jpt.ui.internal.actions.SynchronizeClassesAction"
+				enablesFor="1"/>
+		</objectContribution>
+		
+		<viewerContribution
+			id="org.eclipse.jpt.ui.jpaStructureViewActions"
+			targetID="org.eclipse.jpt.ui.jpaStructureView">
+			
 			<action
 				id="org.eclipse.jpt.ui.addPersistentClass"
 				class="org.eclipse.jpt.ui.internal.actions.AddPersistentClassAction"
 				label="%addPersistentClass"
-				menubarPath="additions"/>
-		</objectContribution>
-		
-		<objectContribution
-			id="org.eclipse.jpt.ui.ormPersistentTypeActions"
-			objectClass="org.eclipse.jpt.core.context.orm.OrmPersistentType">
+				menubarPath="additions">
+				<enablement>
+					<objectClass name="org.eclipse.jpt.core.context.orm.EntityMappings"/>
+				</enablement>
+			</action>
+			
 			<action
 				id="org.eclipse.jpt.ui.removePersistentClass"
 				class="org.eclipse.jpt.ui.internal.actions.RemovePersistentClassAction"
 				label="%removePersistentClass"
-				menubarPath="additions"/>
-		</objectContribution>
+				menubarPath="additions">
+				<enablement>
+					<objectClass name="org.eclipse.jpt.core.context.orm.OrmPersistentType"/>
+				</enablement>
+			</action>
+		
+		</viewerContribution>
 				<objectContribution
 			id="org.eclipse.jpt.ui.ormPersistentAttributeActions1"
 			objectClass="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute">

@@ -45,6 +45,14 @@
 			<adapter type="org.eclipse.jpt.core.JpaProject"/>
 		</factory>
 		
+		<!--factory
+			class="org.eclipse.jpt.core.internal.context.JpaContextNodeAdapterFactory"
+			adaptableType="org.eclipse.jpt.core.context.JpaContextNode">
+			<adapter type="org.eclipse.core.resources.IResource"/>
+			<adapter type="org.eclipse.core.resources.IFile"/>
+		</factory-->
+			
+		
 	</extension>
 	
 	
