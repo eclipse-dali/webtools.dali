@@ -184,8 +184,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 
 	@Override
 	protected void okPressed() {
-		unmappedPersistentAttribute.setSpecifiedMappingKey(getMappingKey());
-		unmappedPersistentAttribute.setVirtual(false);
+		unmappedPersistentAttribute.makeSpecified(getMappingKey());
 		super.okPressed();
 	}
 }

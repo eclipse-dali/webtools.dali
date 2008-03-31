@@ -140,6 +140,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAttributeMapping/name"/>
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlAttributeMapping"/>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlNullAttributeMapping"/>
     <genClasses ecoreClass="orm.ecore#//ColumnMapping">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//ColumnMapping/column"/>
     </genClasses>

@@ -13,9 +13,10 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 
 
-public class GenericOrmNullAttributeMapping extends AbstractOrmAttributeMapping<XmlAttributeMapping>
+public class GenericOrmNullAttributeMapping extends AbstractOrmAttributeMapping<XmlNullAttributeMapping>
 {
 
 	public GenericOrmNullAttributeMapping(OrmPersistentAttribute parent) {
@@ -34,7 +35,6 @@ public class GenericOrmNullAttributeMapping extends AbstractOrmAttributeMapping<
 		return null;
 	}
 	
-	//TODO throwing an exception correct here?
 	public XmlAttributeMapping addToResourceModel(AbstractXmlTypeMapping typeMapping) {
 		throw new UnsupportedOperationException();
 	}

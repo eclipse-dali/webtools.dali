@@ -32,7 +32,7 @@ public class AddPersistentAttributeToXmlAction extends ActionDelegate
 		if (this.selection instanceof StructuredSelection) {
 			for (Iterator<OrmPersistentAttribute> i = ((StructuredSelection) selection).iterator(); i.hasNext(); ) {
 				OrmPersistentAttribute ormPersistentAttribute = i.next();
-				ormPersistentAttribute.setVirtual(false);
+				ormPersistentAttribute.makeSpecified();
 			}
 		}
 	}

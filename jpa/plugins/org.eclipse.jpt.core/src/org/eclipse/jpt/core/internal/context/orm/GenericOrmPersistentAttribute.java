@@ -36,6 +36,7 @@ import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
 import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
+import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
@@ -149,32 +150,33 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 		return getPersistentType().containsVirtualPersistentAttribute(this);
 	}
 
-	public void setVirtual(boolean virtual) {
-		getOrmPersistentType().setPersistentAttributeVirtual(this, virtual);
+	public void makeVirtual() {
+		if (isVirtual()) {
+			throw new IllegalStateException("Attribute is already virtual");
+		}
+		getOrmPersistentType().makePersistentAttributeVirtual(this);
 	}
-
+	
+	public void makeSpecified() {
+		if (!isVirtual()) {
+			throw new IllegalStateException("Attribute is already specified");
+		}
+		if (getMappingKey() == MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
+			throw new IllegalStateException("Use makeSpecified(String) instead and specify a mapping type");
+		}
+		getOrmPersistentType().makePersistentAttributeSpecified(this);
+	}
+	
+	public void makeSpecified(String mappingKey) {
+		if (!isVirtual()) {
+			throw new IllegalStateException("Attribute is already specified");
+		}
+		getOrmPersistentType().makePersistentAttributeSpecified(this, mappingKey);
+	}
+	
 	public String getPrimaryKeyColumnName() {
 		return getMapping().getPrimaryKeyColumnName();
 	}
-
-//	@Override
-//	public ITextRange fullTextRange() {
-//		return (this.isVirtual()) ? null : super.fullTextRange();
-//	}
-//
-//	@Override
-//	public ITextRange validationTextRange() {
-//		return (this.isVirtual()) ? this.persistentType().attributesTextRange() : this.getMapping().validationTextRange();
-//	}
-//
-//	@Override
-//	public ITextRange selectionTextRange() {
-//		return (isVirtual()) ? null : this.getMapping().selectionTextRange();
-//	}
-//
-//	public ITextRange nameTextRange() {
-//		return getMapping().nameTextRange();
-//	}
 
 	public boolean isOverridableAttribute() {
 		return this.getMapping().isOverridableAttributeMapping();
@@ -230,7 +232,11 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 	public void initialize(XmlTransient transientResource) {
 		((OrmTransientMapping) getMapping()).initialize(transientResource);
 	}
-		
+	
+	public void initialize(XmlNullAttributeMapping xmlNullAttributeMapping) {
+		((GenericOrmNullAttributeMapping) getMapping()).initialize(xmlNullAttributeMapping);
+	}
+	
 	public void update(XmlId id) {
 		if (getMappingKey() == MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
 			((OrmIdMapping) getMapping()).update(id);

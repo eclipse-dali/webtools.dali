@@ -172,8 +172,10 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	
 	public void changeMapping(OrmPersistentAttribute ormPersistentAttribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping) {
 		int sourceIndex = this.specifiedPersistentAttributes.indexOf(ormPersistentAttribute);
-		this.specifiedPersistentAttributes.remove(sourceIndex);
-		oldMapping.removeFromResourceModel(getMapping().getTypeMappingResource());
+		if (sourceIndex != -1) {
+			this.specifiedPersistentAttributes.remove(sourceIndex);
+			oldMapping.removeFromResourceModel(getMapping().getTypeMappingResource());
+		}
 		if (getMapping().getTypeMappingResource().getAttributes() == null) {
 			getMapping().getTypeMappingResource().setAttributes(OrmFactory.eINSTANCE.createAttributes());
 		}
@@ -181,30 +183,38 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 		this.specifiedPersistentAttributes.add(targetIndex, ormPersistentAttribute);
 		newMapping.addToResourceModel(getMapping().getTypeMappingResource());
 		oldMapping.initializeOn(newMapping);
-		//TODO are the source and target correct in this case, or is target off by one???
-		fireItemMoved(SPECIFIED_ATTRIBUTES_LIST, targetIndex, sourceIndex);
-	}
-
-	public void setPersistentAttributeVirtual(OrmPersistentAttribute ormPersistentAttribute, boolean virtual) {
-		boolean oldVirtual = ormPersistentAttribute.isVirtual();
-		if (oldVirtual == virtual) {
-			return;
-		}
-		if (virtual) {	
-			OrmPersistentAttribute virtualPersistentAttribute = createVirtualPersistentAttribute(ormPersistentAttribute.getMapping().getJavaPersistentAttribute());
-			this.virtualPersistentAttributes.add(virtualPersistentAttribute);
-			this.removeSpecifiedPersistentAttribute(ormPersistentAttribute);
-			fireItemAdded(VIRTUAL_ATTRIBUTES_LIST, virtualAttributesSize(), virtualPersistentAttribute);
-		}
-		else {
-			int index = this.virtualPersistentAttributes.indexOf(ormPersistentAttribute);
-			this.virtualPersistentAttributes.remove(ormPersistentAttribute);
-			addSpecifiedPersistentAttribute(ormPersistentAttribute.getMappingKey(), ormPersistentAttribute.getName());
-			fireItemRemoved(VIRTUAL_ATTRIBUTES_LIST, index, ormPersistentAttribute);
+		if (sourceIndex != -1) {
+			//TODO are the source and target correct in this case, or is target off by one???
+			fireItemMoved(SPECIFIED_ATTRIBUTES_LIST, targetIndex, sourceIndex);
 		}
 	}
 
+	public void makePersistentAttributeVirtual(OrmPersistentAttribute ormPersistentAttribute) {
+		if (ormPersistentAttribute.isVirtual()) {
+			throw new IllegalStateException("Attribute is already virtual");
+		}
+		OrmPersistentAttribute virtualPersistentAttribute = createVirtualPersistentAttribute(ormPersistentAttribute.getMapping().getJavaPersistentAttribute());
+		this.virtualPersistentAttributes.add(virtualPersistentAttribute);
+		this.removeSpecifiedPersistentAttribute(ormPersistentAttribute);
+		fireItemAdded(VIRTUAL_ATTRIBUTES_LIST, virtualAttributesSize(), virtualPersistentAttribute);
+	}
+	
+	public void makePersistentAttributeSpecified(OrmPersistentAttribute ormPersistentAttribute) {
+		makePersistentAttributeSpecified(ormPersistentAttribute, ormPersistentAttribute.getMappingKey());		
+	}
 
+	public void makePersistentAttributeSpecified(OrmPersistentAttribute ormPersistentAttribute, String mappingKey) {
+		if (!ormPersistentAttribute.isVirtual()) {
+			throw new IllegalStateException("Attribute is already specified");
+		}
+		if (mappingKey == MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
+			throw new IllegalStateException("Use makePersistentAttributeSpecified(OrmPersistentAttribute, String) instead and specify a mapping type");
+		}
+		int index = this.virtualPersistentAttributes.indexOf(ormPersistentAttribute);
+		this.virtualPersistentAttributes.remove(ormPersistentAttribute);
+		addSpecifiedPersistentAttribute(mappingKey, ormPersistentAttribute.getName());
+		fireItemRemoved(VIRTUAL_ATTRIBUTES_LIST, index, ormPersistentAttribute);
+	}
 
 	public Iterator<String> allAttributeNames() {
 		return this.attributeNames(this.allAttributes());
@@ -604,35 +614,39 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	
 	protected OrmPersistentAttribute createVirtualPersistentAttribute(JavaPersistentAttribute javaAttribute) {
 		OrmPersistentAttribute ormPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, javaAttribute.getMappingKey());
-		if (javaAttribute.getMappingKey() == MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
+		String javaMappingKey = javaAttribute.getMappingKey();
+		if (javaMappingKey == MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
 			ormPersistentAttribute.initialize(new VirtualXmlBasic(getMapping(), (JavaBasicMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
 		}
-		else if (javaAttribute.getMappingKey() == MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
+		else if (javaMappingKey == MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
 			ormPersistentAttribute.initialize(new VirtualXmlEmbeddedId(getMapping(), (JavaEmbeddedIdMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
 		}
-		else if (javaAttribute.getMappingKey() == MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY) {
+		else if (javaMappingKey == MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY) {
 			ormPersistentAttribute.initialize(new VirtualXmlEmbedded(getMapping(), (JavaEmbeddedMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
 		}
-		else if (javaAttribute.getMappingKey() == MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
+		else if (javaMappingKey == MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
 			ormPersistentAttribute.initialize(new VirtualXmlId(getMapping(), (JavaIdMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
 		}
-		else if (javaAttribute.getMappingKey() == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
+		else if (javaMappingKey == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
 			ormPersistentAttribute.initialize(new VirtualXmlManyToMany(ormPersistentAttribute, (JavaManyToManyMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
 		}
-		else if (javaAttribute.getMappingKey() == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
+		else if (javaMappingKey == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
 			ormPersistentAttribute.initialize(new VirtualXmlManyToOne((JavaManyToOneMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
 		}
-		else if (javaAttribute.getMappingKey() == MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
+		else if (javaMappingKey == MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
 			ormPersistentAttribute.initialize(new VirtualXmlOneToMany(ormPersistentAttribute, (JavaOneToManyMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
 		}
-		else if (javaAttribute.getMappingKey() == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
+		else if (javaMappingKey == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
 			ormPersistentAttribute.initialize(new VirtualXmlOneToOne((JavaOneToOneMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
 		}
-		else if (javaAttribute.getMappingKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
+		else if (javaMappingKey == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
 			ormPersistentAttribute.initialize(new VirtualXmlTransient((JavaTransientMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
 		}
-		else if (javaAttribute.getMappingKey() == MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY) {
+		else if (javaMappingKey == MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY) {
 			ormPersistentAttribute.initialize(new VirtualXmlVersion(getMapping(), (JavaVersionMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaMappingKey == MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
+			ormPersistentAttribute.initialize(new VirtualXmlNullAttributeMapping(getMapping(), javaAttribute.getMapping(), getMapping().isMetadataComplete()));
 		}
 		return ormPersistentAttribute;
 	}

@@ -265,7 +265,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		
 		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		//remove m-m mapping from the orm.xml file
-		ormPersistentAttribute.setVirtual(true);
+		ormPersistentAttribute.makeVirtual();
 		//ormPersistentType.getMapping().setSpecifiedMetadataComplete(null);
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("projects");
 		ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();

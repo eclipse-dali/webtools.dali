@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
 import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
+import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
@@ -56,13 +57,36 @@ public interface OrmPersistentAttribute extends PersistentAttribute, OrmJpaConte
 	boolean contains(int textOffset);
 
 	/**
-	 * Set the persistent attribute to virtual. If true, the attribute will
-	 * be removed from the list of specified persistent attributes on {@link OrmPersistentType} 
+	 * Make the persistent attribute virtual. The attribute will be removed
+	 * from the list of specified persistent attributes on the {@link OrmPersistentType} 
 	 * and removed from the orm.xml file.
-	 * If false, the attribute will be added to the list of specified persistent attributes.
+	 * 
+	 * If the persistent attribute is already virtual, an IllegalStateException is thrown
+	 * @see PersistentAttribute#isVirtual()
 	 */
-	void setVirtual(boolean virtual);
-
+	void makeVirtual();
+	
+	/**
+	 * Take a virtual persistent attribute and specify it.
+	 * The attribute will be added to the list of specified persistent attributes
+	 * and added to the orm.xml file. The mappingKey will remain the same.
+	 * 
+	 * If the persistent attribute is already specified, an IllegalStateException is thrown
+	 * @see PersistentAttribute#isVirtual()
+	 */
+	void makeSpecified();
+	
+	/**
+	 * Take a virtual persistent attribute and specify it.
+	 * The attribute will be added to the list of specified persistent attributes
+	 * and added to the orm.xml file. The mappingKey will determine the type of mapping added
+	 * instead of the mappingKey already on the persistent attribute
+	 * 
+	 * If the persistent attribute is already specified, an IllegalStateException is thrown
+	 * @see PersistentAttribute#isVirtual()
+	 */
+	void makeSpecified(String mappingKey);
+	
 	void nameChanged(String oldName, String newName);
 
 	
@@ -87,7 +111,9 @@ public interface OrmPersistentAttribute extends PersistentAttribute, OrmJpaConte
 	void initialize(XmlEmbeddedId embeddedId);
 	
 	void initialize(XmlTransient transientResource);
-		
+	
+	void initialize(XmlNullAttributeMapping xmlNullAttributeMapping);
+	
 	void update(XmlId id);
 	
 	void update(XmlEmbeddedId embeddedId);

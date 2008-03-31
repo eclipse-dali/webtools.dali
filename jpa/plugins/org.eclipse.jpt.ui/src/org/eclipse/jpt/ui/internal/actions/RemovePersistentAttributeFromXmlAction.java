@@ -31,7 +31,7 @@ public class RemovePersistentAttributeFromXmlAction extends ActionDelegate
 		if (this.selection instanceof StructuredSelection) {
 			for (Iterator<OrmPersistentAttribute> i = ((StructuredSelection) this.selection).iterator(); i.hasNext(); ) {
 				OrmPersistentAttribute ormPersistentAttribute = i.next();
-				ormPersistentAttribute.setVirtual(true);
+				ormPersistentAttribute.makeVirtual();
 			}
 		}
 	}

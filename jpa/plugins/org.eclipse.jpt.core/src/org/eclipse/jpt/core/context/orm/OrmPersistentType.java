@@ -82,12 +82,26 @@ public interface OrmPersistentType extends PersistentType, OrmJpaContextNode
 	boolean containsVirtualPersistentAttribute(OrmPersistentAttribute ormPersistentAttribute);
 	
 	/**
-	 * Add/Remove the given orm persistent attribute to/from the orm.xml. If the virtual
-	 * flag is set to true, the attribute will be removed from the orm.xml and moved from the
-	 * list of specifed attributes to the list of virtual attributes.
+	 * Remove the given specified orm persistent attribute from the orm.xml. The attribute 
+	 * will be removed from the orm.xml and moved from the list of specified attributes 
+	 * to the list of virtual attributes.
 	 */
-	void setPersistentAttributeVirtual(OrmPersistentAttribute ormPersistentAttribute, boolean virtual);
+	void makePersistentAttributeVirtual(OrmPersistentAttribute ormPersistentAttribute);
 		
+	/**
+	 * Add the given virtual orm persistent attribute to the orm.xml. The attribute will
+	 * be added to the orm.xml and moved from the list of virtual attributes to the list
+	 * of specified attributes
+	 */
+	void makePersistentAttributeSpecified(OrmPersistentAttribute ormPersistentAttribute);
+
+	/**
+	 * Add the given virtual orm persistent attribute to the orm.xml with a mapping of 
+	 * type mappingKey. The attribute will be added to the orm.xml and moved from 
+	 * the list of virtual attributes to the list of specified attributes
+	 */
+	void makePersistentAttributeSpecified(OrmPersistentAttribute ormPersistentAttribute, String mappingKey);
+
 	//******************* mapping morphing *******************
 	void changeMapping(OrmPersistentAttribute ormPersistentAttribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping);
 	
