@@ -86,8 +86,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	}
 
 	/**
-	 * Initializes directly the PU properties before testing. Cannot use
-	 * Property Holder to initialize because it is not created yet
+	 * Initializes directly the PU properties before testing. 
 	 */
 	@Override
 	protected void populatePu() {
@@ -95,16 +94,16 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 		this.propertiesTotal = this.modelPropertiesSizeOriginal + 4; // 4 misc properties
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
-		this.persistenceUnit().putProperty("misc.property.1", "value.1", false);
-		this.persistenceUnit().putProperty(CACHE_TYPE_DEFAULT_KEY, this.getEclipseLinkValueString(CACHE_TYPE_DEFAULT_TEST_VALUE), false);
-		this.persistenceUnit().putProperty("misc.property.2", "value.2", false);
-		this.persistenceUnit().putProperty(CACHE_SIZE_DEFAULT_KEY, CACHE_SIZE_DEFAULT_TEST_VALUE.toString(), false);
-		this.persistenceUnit().putProperty(SHARED_CACHE_DEFAULT_KEY, SHARED_CACHE_DEFAULT_TEST_VALUE.toString(), false);
-		this.persistenceUnit().putProperty("misc.property.3", "value.3", false);
-		this.persistenceUnit().putProperty("misc.property.4", "value.4", false);
-		this.persistenceUnit().putProperty(CACHE_SIZE_KEY, CACHE_SIZE_TEST_VALUE.toString(), false);
-		this.persistenceUnit().putProperty(CACHE_TYPE_KEY, this.getEclipseLinkValueString(CACHE_TYPE_TEST_VALUE), false);
-		this.persistenceUnit().putProperty(SHARED_CACHE_KEY, SHARED_CACHE_TEST_VALUE.toString(), false);
+		this.persistenceUnitPut("misc.property.1", "value.1");
+		this.persistenceUnitPut(CACHE_TYPE_DEFAULT_KEY, CACHE_TYPE_DEFAULT_TEST_VALUE);
+		this.persistenceUnitPut("misc.property.2", "value.2");
+		this.persistenceUnitPut(CACHE_SIZE_DEFAULT_KEY, CACHE_SIZE_DEFAULT_TEST_VALUE);
+		this.persistenceUnitPut(SHARED_CACHE_DEFAULT_KEY, SHARED_CACHE_DEFAULT_TEST_VALUE);
+		this.persistenceUnitPut("misc.property.3", "value.3");
+		this.persistenceUnitPut("misc.property.4", "value.4");
+		this.persistenceUnitPut(CACHE_SIZE_KEY, CACHE_SIZE_TEST_VALUE);
+		this.persistenceUnitPut(CACHE_TYPE_KEY, CACHE_TYPE_TEST_VALUE);
+		this.persistenceUnitPut(SHARED_CACHE_KEY, SHARED_CACHE_TEST_VALUE);
 		return;
 	}
 
@@ -215,6 +214,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	public void testSetCacheTypeDefault() throws Exception {
 		this.verifyModelInitialized(
 			this.caching.getCacheTypeDefault(),
+			CACHE_TYPE_DEFAULT_KEY,
 			CACHE_TYPE_DEFAULT_TEST_VALUE);
 		this.verifySetProperty(
 			Caching.CACHE_TYPE_DEFAULT_PROPERTY,
@@ -239,6 +239,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	public void testSetCacheSizeDefault() throws Exception {
 		this.verifyModelInitialized(
 			this.caching.getCacheSizeDefault(),
+			CACHE_SIZE_DEFAULT_KEY,
 			CACHE_SIZE_DEFAULT_TEST_VALUE);
 		this.verifySetProperty(
 			Caching.CACHE_SIZE_DEFAULT_PROPERTY,
@@ -259,6 +260,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	public void testSetSharedCacheDefault() throws Exception {
 		this.verifyModelInitialized(
 			this.caching.getSharedCacheDefault(),
+			SHARED_CACHE_DEFAULT_KEY,
 			SHARED_CACHE_DEFAULT_TEST_VALUE);
 		this.verifySetProperty(Caching.SHARED_CACHE_DEFAULT_PROPERTY,
 			SHARED_CACHE_DEFAULT_KEY,
@@ -282,6 +284,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	public void testSetCacheType() throws Exception {
 		this.verifyModelInitialized(
 			this.caching.getCacheType(ENTITY_TEST),
+			CACHE_TYPE_KEY,
 			CACHE_TYPE_TEST_VALUE);
 		this.verifySetCachingProperty(
 			Caching.CACHE_TYPE_PROPERTY,
@@ -306,6 +309,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	public void testSetCacheSize() throws Exception {
 		this.verifyModelInitialized(
 			this.caching.getCacheSize(ENTITY_TEST),
+			CACHE_SIZE_KEY,
 			CACHE_SIZE_TEST_VALUE);
 		this.verifySetCachingProperty(
 			Caching.CACHE_SIZE_PROPERTY,
@@ -330,6 +334,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	public void testSetSharedCache() throws Exception {
 		this.verifyModelInitialized(
 			this.caching.getSharedCache(ENTITY_TEST),
+			SHARED_CACHE_KEY,
 			SHARED_CACHE_TEST_VALUE);
 		this.verifySetCachingProperty(
 			Caching.SHARED_CACHE_PROPERTY,
@@ -357,7 +362,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 		this.verifyInitialState(propertyName, key, propertyListAdapter);
 		
 		// Replace
-		this.putProperty(key, testValue2);
+		this.persistenceUnitPut(key, testValue2);
 		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		this.verifyPutCachingProperty(propertyName, ENTITY_TEST, testValue2);
 		
@@ -383,12 +388,12 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 		// Add original Property
 		++this.propertiesTotal;
 		++this.modelPropertiesSize;
-		this.putProperty(key, testValue1);
+		this.persistenceUnitPut(key, testValue1);
 		this.verifyPutCachingProperty(propertyName, ENTITY_TEST, testValue1);
 		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		
 		// Replace
-		this.putProperty(key, testValue2);
+		this.persistenceUnitPut(key, testValue2);
 		this.verifyPutCachingProperty(propertyName, ENTITY_TEST, testValue2);
 	}
 

@@ -95,15 +95,15 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 		this.modelPropertiesSizeOriginal = 5;
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
-		this.persistenceUnit().putProperty("property.0", "value.0", false);
-		this.persistenceUnit().putProperty(OUTPUT_MODE_KEY, this.getEclipseLinkValueString(OUTPUT_MODE_TEST_VALUE), false);
-		this.persistenceUnit().putProperty("property.2", "value.2", false);
-		this.persistenceUnit().putProperty("property.3", "value.3", false);
-		this.persistenceUnit().putProperty("property.4", "value.4", false);
-		this.persistenceUnit().putProperty(DDL_GENERATION_TYPE_KEY, this.getEclipseLinkValueString(DDL_GENERATION_TYPE_TEST_VALUE), false);
-		this.persistenceUnit().putProperty(CREATE_FILE_NAME_KEY, CREATE_FILE_NAME_TEST_VALUE, false);
-		this.persistenceUnit().putProperty(DROP_FILE_NAME_KEY, DROP_FILE_NAME_TEST_VALUE, false);
-		this.persistenceUnit().putProperty(APPLICATION_LOCATION_KEY, APPLICATION_LOCATION_TEST_VALUE, false);
+		this.persistenceUnitPut("property.0", "value.0");
+		this.persistenceUnitPut(OUTPUT_MODE_KEY, this.getEclipseLinkStringValueOf(OUTPUT_MODE_TEST_VALUE));
+		this.persistenceUnitPut("property.2", "value.2");
+		this.persistenceUnitPut("property.3", "value.3");
+		this.persistenceUnitPut("property.4", "value.4");
+		this.persistenceUnitPut(DDL_GENERATION_TYPE_KEY, this.getEclipseLinkStringValueOf(DDL_GENERATION_TYPE_TEST_VALUE));
+		this.persistenceUnitPut(CREATE_FILE_NAME_KEY, CREATE_FILE_NAME_TEST_VALUE);
+		this.persistenceUnitPut(DROP_FILE_NAME_KEY, DROP_FILE_NAME_TEST_VALUE);
+		this.persistenceUnitPut(APPLICATION_LOCATION_KEY, APPLICATION_LOCATION_TEST_VALUE);
 		return;
 	}
 
@@ -135,6 +135,7 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 	public void testSetCreateFileName() throws Exception {
 		this.verifyModelInitialized(
 			this.schemaGeneration.getCreateFileName(),
+			CREATE_FILE_NAME_KEY,
 			CREATE_FILE_NAME_TEST_VALUE);
 		this.verifySetProperty(
 			SchemaGeneration.CREATE_FILE_NAME_PROPERTY,
@@ -157,8 +158,15 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 	 * when the PU or the model changes.
 	 */
 	public void testSetDropFileName() throws Exception {
-		this.verifyModelInitialized(this.schemaGeneration.getDropFileName(), DROP_FILE_NAME_TEST_VALUE);
-		this.verifySetProperty(SchemaGeneration.DROP_FILE_NAME_PROPERTY, DROP_FILE_NAME_KEY, DROP_FILE_NAME_TEST_VALUE, DROP_FILE_NAME_TEST_VALUE_2);
+		this.verifyModelInitialized(
+			this.schemaGeneration.getDropFileName(),
+			DROP_FILE_NAME_KEY,
+			DROP_FILE_NAME_TEST_VALUE);
+		this.verifySetProperty(
+			SchemaGeneration.DROP_FILE_NAME_PROPERTY,
+			DROP_FILE_NAME_KEY,
+			DROP_FILE_NAME_TEST_VALUE,
+			DROP_FILE_NAME_TEST_VALUE_2);
 	}
 
 	public void testAddRemoveDropFileName() throws Exception {
@@ -171,8 +179,15 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 	 * adapter when the PU or the model changes.
 	 */
 	public void testSetApplicationLocation() throws Exception {
-		this.verifyModelInitialized(this.schemaGeneration.getApplicationLocation(), APPLICATION_LOCATION_TEST_VALUE);
-		this.verifySetProperty(SchemaGeneration.APPLICATION_LOCATION_PROPERTY, APPLICATION_LOCATION_KEY, APPLICATION_LOCATION_TEST_VALUE, APPLICATION_LOCATION_TEST_VALUE_2);
+		this.verifyModelInitialized(
+			this.schemaGeneration.getApplicationLocation(),
+			APPLICATION_LOCATION_KEY,
+			APPLICATION_LOCATION_TEST_VALUE);
+		this.verifySetProperty(
+			SchemaGeneration.APPLICATION_LOCATION_PROPERTY,
+			APPLICATION_LOCATION_KEY,
+			APPLICATION_LOCATION_TEST_VALUE,
+			APPLICATION_LOCATION_TEST_VALUE_2);
 	}
 
 	public void testAddRemoveApplicationLocation() throws Exception {
@@ -185,8 +200,15 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 	 * when the PU or the model changes.
 	 */
 	public void testSetOutputMode() throws Exception {
-		this.verifyModelInitialized(this.schemaGeneration.getOutputMode(), OUTPUT_MODE_TEST_VALUE);
-		this.verifySetProperty(SchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_KEY, OUTPUT_MODE_TEST_VALUE, OUTPUT_MODE_TEST_VALUE_2);
+		this.verifyModelInitialized(
+			this.schemaGeneration.getOutputMode(),
+			OUTPUT_MODE_KEY,
+			OUTPUT_MODE_TEST_VALUE);
+		this.verifySetProperty(
+			SchemaGeneration.OUTPUT_MODE_PROPERTY,
+			OUTPUT_MODE_KEY,
+			OUTPUT_MODE_TEST_VALUE,
+			OUTPUT_MODE_TEST_VALUE_2);
 	}
 
 	public void testAddRemoveOutputMode() throws Exception {
@@ -199,8 +221,15 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 	 * adapter when the PU or the model changes.
 	 */
 	public void testSetDdlGenerationType() throws Exception {
-		this.verifyModelInitialized(this.schemaGeneration.getDdlGenerationType(), DDL_GENERATION_TYPE_TEST_VALUE);
-		this.verifySetProperty(SchemaGeneration.DDL_GENERATION_TYPE_PROPERTY, DDL_GENERATION_TYPE_KEY, DDL_GENERATION_TYPE_TEST_VALUE, DDL_GENERATION_TYPE_TEST_VALUE_2);
+		this.verifyModelInitialized(
+			this.schemaGeneration.getDdlGenerationType(),
+			DDL_GENERATION_TYPE_KEY,
+			DDL_GENERATION_TYPE_TEST_VALUE);
+		this.verifySetProperty(
+			SchemaGeneration.DDL_GENERATION_TYPE_PROPERTY,
+			DDL_GENERATION_TYPE_KEY,
+			DDL_GENERATION_TYPE_TEST_VALUE,
+			DDL_GENERATION_TYPE_TEST_VALUE_2);
 	}
 
 	public void testAddRemoveDdlGenerationType() throws Exception {

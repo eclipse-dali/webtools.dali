@@ -91,6 +91,9 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	 * Method used for identifying the given property.
 	 */
 	public boolean itemIsProperty(Property item) {
+		if (item == null) {
+			throw new IllegalArgumentException("Property is null");
+		}
 		return this.propertyNames().keySet().contains(item.getName());
 	}
 
@@ -341,7 +344,7 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 			this.persistenceUnit().removeProperty(elKey);
 		}
 		else {
-			this.persistenceUnit().putProperty(elKey, getEclipseLinkStringValue(newValue), allowDuplicate);
+			this.persistenceUnit().putProperty(elKey, getEclipseLinkStringValueOf(newValue), allowDuplicate);
 		}
 	}
 
@@ -400,12 +403,16 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 		return propertyName.substring(index + 1);
 	}
 
-	/** ****** Static methods ******* */
+	// ****** Static methods ******* 
 	/**
-	 * Returns the EclipseLink value string for the enum.
+	 * Returns the EclipseLink string value for the given property value.
 	 */
-	public static String getEclipseLinkStringValue(Enum value) {
-		return (String) ClassTools.staticFieldValue(value.getClass(), value.toString().toUpperCase());
+	public static String getEclipseLinkStringValueOf(Object value) {
+		
+		if (value.getClass().isEnum()) {
+			return (String) ClassTools.staticFieldValue(value.getClass(), value.toString().toUpperCase());
+		}
+		return value.toString();
 	}
 
 	/**
@@ -414,7 +421,7 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	 */
 	public static <T extends Enum<T>> T getEnumValueOf(String eclipseLinkValueString, T[] enumValues) {
 		for (T mode : enumValues) {
-			if (getEclipseLinkStringValue(mode).equals(eclipseLinkValueString)) {
+			if (getEclipseLinkStringValueOf(mode).equals(eclipseLinkValueString)) {
 				return mode;
 			}
 		}

@@ -84,12 +84,12 @@ public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
 		this.modelPropertiesSizeOriginal = 2;
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
-		this.persistenceUnit().putProperty("property.0", "value.0", false);
-		this.persistenceUnit().putProperty(outputModeKey, this.getEclipseLinkValueString(OUTPUT_MODE_TEST_VALUE), false);
-		this.persistenceUnit().putProperty("property.2", "value.2", false);
-		this.persistenceUnit().putProperty("property.3", "value.3", false);
-		this.persistenceUnit().putProperty("property.4", "value.4", false);
-		this.persistenceUnit().putProperty(ddlGenTypeKey, this.getEclipseLinkValueString(DDL_GENERATION_TYPE_TEST_VALUE), false);
+		this.persistenceUnitPut("property.0", "value.0");
+		this.persistenceUnitPut(outputModeKey, this.getEclipseLinkStringValueOf(OUTPUT_MODE_TEST_VALUE));
+		this.persistenceUnitPut("property.2", "value.2");
+		this.persistenceUnitPut("property.3", "value.3");
+		this.persistenceUnitPut("property.4", "value.4");
+		this.persistenceUnitPut(ddlGenTypeKey, this.getEclipseLinkStringValueOf(DDL_GENERATION_TYPE_TEST_VALUE));
 		return;
 	}
 
@@ -145,7 +145,7 @@ public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
 		assertEquals(OUTPUT_MODE_TEST_VALUE, this.schemaGeneration.getOutputMode());
 		
 		// Replace
-		this.putEnumProperty(outputModeKey, OUTPUT_MODE_TEST_VALUE_2);
+		this.persistenceUnitPut(outputModeKey, OUTPUT_MODE_TEST_VALUE_2);
 		this.verifyPutProperty(SchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE_2, this.schemaGeneration.getOutputMode());
 		
 		// Remove
@@ -162,11 +162,11 @@ public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
 		// Add original OutputMode
 		++this.propertiesTotal;
 		++this.modelPropertiesSize;
-		this.putEnumProperty(outputModeKey, OUTPUT_MODE_TEST_VALUE);
+		this.persistenceUnitPut(outputModeKey, OUTPUT_MODE_TEST_VALUE);
 		this.verifyPutProperty(SchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE, this.schemaGeneration.getOutputMode());
 		
 		// Replace again
-		this.putEnumProperty(outputModeKey, OUTPUT_MODE_TEST_VALUE_2);
+		this.persistenceUnitPut(outputModeKey, OUTPUT_MODE_TEST_VALUE_2);
 		this.verifyPutProperty(SchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE_2, this.schemaGeneration.getOutputMode());
 		
 		// Replace by setting model object

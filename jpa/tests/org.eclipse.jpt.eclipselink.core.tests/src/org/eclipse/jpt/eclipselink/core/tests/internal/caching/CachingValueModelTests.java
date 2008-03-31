@@ -122,26 +122,21 @@ public class CachingValueModelTests extends PersistenceUnitTestCase
 	}
 
 	/**
-	 * Initializes directly the PU properties before testing. Cannot use
-	 * Property Holder to initialize because it is not created yet
+	 * Initializes directly the PU properties before testing.
 	 */
 	protected void populatePu() {
-		this.persistenceUnit().putProperty(
+		this.persistenceUnitPut(
 			Caching.ECLIPSELINK_CACHE_TYPE + ENTITY_NAME_TEST_VALUE, 
-			this.getEclipseLinkValueString(CACHE_TYPE_TEST_VALUE), 
-			false);
-		this.persistenceUnit().putProperty(
+			CACHE_TYPE_TEST_VALUE);
+		this.persistenceUnitPut(
 			Caching.ECLIPSELINK_SHARED_CACHE + ENTITY_NAME_TEST_VALUE, 
-			SHARED_CACHE_TEST_VALUE.toString(), 
-			false);
-		this.persistenceUnit().putProperty(
+			SHARED_CACHE_TEST_VALUE);
+		this.persistenceUnitPut(
 			Caching.ECLIPSELINK_CACHE_TYPE_DEFAULT, 
-			this.getEclipseLinkValueString(CACHE_TYPE_DEFAULT_TEST_VALUE), 
-			false);
-		this.persistenceUnit().putProperty(
+			CACHE_TYPE_DEFAULT_TEST_VALUE);
+		this.persistenceUnitPut(
 			Caching.ECLIPSELINK_CACHE_SHARED_DEFAULT, 
-			SHARED_CACHE_DEFAULT_TEST_VALUE.toString(), 
-			false);
+			SHARED_CACHE_DEFAULT_TEST_VALUE);
 		return;
 	}
 

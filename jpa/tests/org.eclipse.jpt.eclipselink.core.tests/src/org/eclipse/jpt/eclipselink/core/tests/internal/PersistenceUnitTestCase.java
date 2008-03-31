@@ -74,8 +74,8 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		};
 	}
 
-	protected String getEclipseLinkValueString(Enum value) {
-		return EclipseLinkPersistenceUnitProperties.getEclipseLinkStringValue(value);
+	protected String getEclipseLinkStringValueOf(Object value) {
+		return EclipseLinkPersistenceUnitProperties.getEclipseLinkStringValueOf(value);
 	}
 
 	/** ****** convenience test methods ******* */
@@ -85,38 +85,31 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	}
 
 	/**
-	 * Put into persistenceUnit properties.
+	 * Put into persistenceUnit properties. Do not allows to put duplicate entry.
 	 * 
 	 * @param key -
 	 *            EclipseLink Key
 	 * @param value -
 	 *            property value
 	 */
-	// TODO to rename to persistenceUnitPut
-	@SuppressWarnings("unchecked")
-	protected void putProperty(String key, Object value) {
+	protected void persistenceUnitPut(String key, Object value) {
+		if (key == null) {
+			throw new IllegalArgumentException("EclipseLink Key cannot be null");
+		}
 		if (value == null)
 			this.putNullProperty(key);
-		else if (value.getClass().isEnum())
-			this.putEnumProperty(key, (Enum) value);
 		else
 			this.putProperty_(key, value);
 	}
 
-	@SuppressWarnings("unchecked")
-	protected void putEnumProperty(String key, Enum value) {
+	private void putProperty_(String elKey, Object value) {
 		this.clearEvent();
-		this.persistenceUnit().putProperty(key, this.getEclipseLinkValueString(value), false);
+		this.persistenceUnit().putProperty(elKey, this.getEclipseLinkStringValueOf(value), false);
 	}
 
-	private void putProperty_(String key, Object value) {
+	protected void putNullProperty(String elKey) {
 		this.clearEvent();
-		this.persistenceUnit().putProperty(key, value.toString(), false);
-	}
-
-	protected void putNullProperty(String key) {
-		this.clearEvent();
-		this.persistenceUnit().putProperty(key, null, false);
+		this.persistenceUnit().putProperty(elKey, null, false);
 	}
 
 	/** ****** verify methods ******* */
@@ -152,11 +145,11 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	 * 2. aspect adapter value<br>
 	 * 3. persistenceUnit property value<br>
 	 */
-	protected void verifyAAValue(Boolean testValue, Boolean subjectValue, PropertyValueModel<Boolean> aa, String persistenceXmlKey) {
-		assertEquals(testValue, subjectValue);
-		assertEquals(testValue, aa.getValue());
-		if (testValue != null) {
-			assertEquals(testValue.toString(), this.persistenceUnit().getProperty(persistenceXmlKey).getValue());
+	protected void verifyAAValue(Boolean expectedValue, Boolean subjectValue, PropertyValueModel<Boolean> aa, String persistenceXmlKey) {
+		assertEquals(expectedValue, subjectValue);
+		assertEquals(expectedValue, aa.getValue());
+		if (expectedValue != null) {
+			assertEquals(expectedValue.toString(), this.persistenceUnit().getProperty(persistenceXmlKey).getValue());
 		}
 	}
 
@@ -166,11 +159,11 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	 * 2. aspect adapter value<br>
 	 * 3. persistenceUnit property value<br>
 	 */
-	protected <T extends Enum<T>> void verifyAAValue(T testValue, T subjectValue, PropertyValueModel<? extends Enum<T>> aa, String persistenceXmlKey) {
-		assertEquals(testValue, subjectValue);
-		assertEquals(testValue, aa.getValue());
-		if (testValue != null) {
-			assertEquals(this.getEclipseLinkValueString(testValue), this.persistenceUnit().getProperty(persistenceXmlKey).getValue());
+	protected <T extends Enum<T>> void verifyAAValue(T expectedValue, T subjectValue, PropertyValueModel<? extends Enum<T>> aa, String elKey) {
+		assertEquals(expectedValue, subjectValue);
+		assertEquals(expectedValue, aa.getValue());
+		if (expectedValue != null) {
+			assertEquals(this.getEclipseLinkStringValueOf(expectedValue), this.persistenceUnit().getProperty(elKey).getValue());
 		}
 	}
 
@@ -181,23 +174,28 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	 * 3. verify listening to propertyListAdapter<br>
 	 * 4. verify that the model can identify propertyName<br>
 	 */
-	protected void verifyInitialState(String propertyName, String key, ListValueModel<Property> propertyListAdapter) throws Exception {
+	protected void verifyInitialState(String propertyName, String elKey, ListValueModel<Property> propertyListAdapter) throws Exception {
 		assertEquals("Total not updated in populatePu(): ", propertyListAdapter.size(), this.propertiesTotal);
-		this.verifyPuHasProperty(key, "Property not added to populatePu()");
+		this.verifyPuHasProperty(elKey, "Property not added to populatePu()");
 		this.verifyHasListeners(propertyListAdapter);
 		this.verifyHasListeners(this.model(), propertyName);
 		
-		Property property = this.persistenceUnit().getProperty(key);
-		assertTrue("itemIsProperty() not updated: ", model().itemIsProperty(property));
+		Property property = this.persistenceUnit().getProperty(elKey);
+		assertTrue("model.itemIsProperty() is false: ", model().itemIsProperty(property));
 		assertEquals("propertyIdFor() not updated: ", propertyName, model().propertyIdFor(property));
 	}
 
 	/**
-	 * Verifies that the model for the tested Property is initialized with the value from
-	 * the persistence unit.
+	 * Verifies that the persistence unit is populated, and that the model for
+	 * the tested Property is initialized with the value from the persistence
+	 * unit.
 	 */
-	protected void verifyModelInitialized(Object modelValue, Object expectedValue) {
-		assertEquals("Property not populatedPu() or not model.initializeProperties()", expectedValue, modelValue);
+	protected void verifyModelInitialized(Object modelValue, String elKey, Object expectedValue) {
+		Property property = this.persistenceUnit().getProperty(elKey);
+		assertTrue("model.itemIsProperty() is false: ", model().itemIsProperty(property));
+
+		assertEquals("PersistenceUnit not populated - populatedPu()", this.getEclipseLinkStringValueOf(expectedValue), property.getValue());
+		assertEquals("Model not initialized - model.initializeProperties()", expectedValue, modelValue);
 	}
 
 	/**
@@ -213,7 +211,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		this.verifyInitialState(propertyName, key, propertyListAdapter);
 		
 		// Replace
-		this.putProperty(key, testValue2);
+		this.persistenceUnitPut(key, testValue2);
 		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		this.verifyPutProperty(propertyName, testValue2);
 		
@@ -247,12 +245,12 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		// Add original CacheTypeDefault
 		++this.propertiesTotal;
 		++this.modelPropertiesSize;
-		this.putProperty(key, testValue1);
+		this.persistenceUnitPut(key, testValue1);
 		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		this.verifyPutProperty(propertyName, testValue1);
 		
 		// Replace
-		this.putProperty(key, testValue2);
+		this.persistenceUnitPut(key, testValue2);
 		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		this.verifyPutProperty(propertyName, testValue2);
 	}

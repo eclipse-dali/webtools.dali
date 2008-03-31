@@ -68,14 +68,12 @@ public class SchemaGenerationValueModelTests extends PersistenceUnitTestCase
 	 */
 	@Override
 	protected void populatePu() {
-		this.persistenceUnit().putProperty(
+		this.persistenceUnitPut(
 			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE,
-			this.getEclipseLinkValueString(DDL_GENERATION_TYPE_TEST_VALUE),
-			false);
-		this.persistenceUnit().putProperty(
+			DDL_GENERATION_TYPE_TEST_VALUE);
+		this.persistenceUnitPut(
 			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE,
-			this.getEclipseLinkValueString(OUTPUT_MODE_TEST_VALUE),
-			false);
+			OUTPUT_MODE_TEST_VALUE);
 		return;
 	}
 
@@ -150,7 +148,7 @@ public class SchemaGenerationValueModelTests extends PersistenceUnitTestCase
 		// Modify the persistenceUnit directly
 		this.subject.putProperty(
 			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE,
-			this.getEclipseLinkValueString(newDdlGenerationType),
+			this.getEclipseLinkStringValueOf(newDdlGenerationType),
 			false);
 		this.verifyDdlGenerationTypeAAValue(newDdlGenerationType);
 		assertNotNull(this.ddlGenerationTypeEvent);
