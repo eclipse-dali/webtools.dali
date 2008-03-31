@@ -91,13 +91,13 @@ public abstract class AbstractComboModelAdapter<E> {
 	 * A listener that allows us to synchronize our selection list holder
 	 * with the combo's text.
 	 */
-	protected final ModifyListener comboModifyListener;
+	protected ModifyListener comboModifyListener;
 
 	/**
 	 * A listener that allows us to synchronize our selection list holder
 	 * with the combo's selection.
 	 */
-	protected final SelectionListener comboSelectionListener;
+	protected SelectionListener comboSelectionListener;
 
 	/**
 	 * Clients that are interested in selection change events.
@@ -146,13 +146,12 @@ public abstract class AbstractComboModelAdapter<E> {
 		this.selectedItemChangeListener = this.buildSelectedItemChangeListener();
 		this.selectedItemHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.selectedItemChangeListener);
 
-		this.comboModifyListener = this.buildComboModifyListener();
-		this.comboSelectionListener = this.buildComboSelectionListener();
-
 		if (this.comboHolder.isEditable()) {
+			this.comboModifyListener = this.buildComboModifyListener();
 			this.comboHolder.addModifyListener(this.comboModifyListener);
 		}
 		else {
+			this.comboSelectionListener = this.buildComboSelectionListener();
 			this.comboHolder.addSelectionListener(this.comboSelectionListener);
 		}
 
@@ -314,9 +313,18 @@ public abstract class AbstractComboModelAdapter<E> {
 		if (this.comboHolder.isDisposed()) {
 			return;
 		}
+
+		int count = this.comboHolder.getItemCount();
 		int index = event.getIndex();
+
 		for (ListIterator<E> stream = this.items(event); stream.hasNext(); ) {
 			this.comboHolder.add(this.convert(stream.next()), index++);
+		}
+
+		// When the combo is populated, it's possible the selection was already
+		// set but no items was found, resync the selected item
+		if (count == 0) {
+			synchronizeComboSelection();
 		}
 	}
 
@@ -328,6 +336,7 @@ public abstract class AbstractComboModelAdapter<E> {
 			return;
 		}
 		this.comboHolder.remove(event.getIndex(), event.getIndex() + event.itemsSize() - 1);
+		this.synchronizeComboSelection();
 	}
 
 	/**
@@ -461,8 +470,14 @@ public abstract class AbstractComboModelAdapter<E> {
 	protected void selectionChanged() {
 		if (!this.comboHolder.isPopulating()) {
 			E selectedItem = this.selectedItem();
-			this.selectedItemHolder.setValue(selectedItem);
-			this.notifyListeners(selectedItem);
+			this.comboHolder.setPopulating(true);
+			try {
+				this.selectedItemHolder.setValue(selectedItem);
+				this.notifyListeners(selectedItem);
+			}
+			finally {
+				this.comboHolder.setPopulating(false);
+			}
 		}
 	}
 
@@ -475,6 +490,7 @@ public abstract class AbstractComboModelAdapter<E> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	protected E selectedItem() {
 		if (this.comboHolder.isDisposed()) {
 			return null;
@@ -482,9 +498,11 @@ public abstract class AbstractComboModelAdapter<E> {
 
 		if (this.comboHolder.isEditable()) {
 			String text = this.comboHolder.getText();
+
 			if (text.length() == 0) {
 				return null;
 			}
+
 			for (int index = this.listHolder.size(); --index >= 0; ) {
 				E item = this.listHolder.get(index);
 				String value = this.convert(item);
@@ -492,7 +510,16 @@ public abstract class AbstractComboModelAdapter<E> {
 					return item;
 				}
 			}
-			return null;
+
+			// TODO: Find a way to prevent this type cast (it'll work if E is
+			// String but it won't work if E is something else), maybe use a
+			// BidiStringConverter instead of StringConverter
+			try {
+				return (E) text;
+			}
+			catch (ClassCastException e) {
+				return null;
+			}
 		}
 
 		int index = this.comboHolder.getSelectionIndex();
@@ -579,7 +606,6 @@ public abstract class AbstractComboModelAdapter<E> {
 		public E selection() {
 			return this.selection;
 		}
-
 	}
 
 
@@ -629,6 +655,7 @@ public abstract class AbstractComboModelAdapter<E> {
 		void addModifyListener(ModifyListener modifyListener);
 		void addSelectionListener(SelectionListener selectionListener);
 		void deselectAll();
+		int getItemCount();
 		String[] getItems();
 		int getSelectionIndex();
 		String getText();

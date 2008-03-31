@@ -1180,7 +1180,7 @@ public abstract class AbstractPane<T extends Model>
 			labelText,
 			listHolder,
 			selectedItemHolder,
-			null,
+			StringConverter.Default.<V>instance(),
 			helpId
 		);
 	}
@@ -1224,6 +1224,38 @@ public abstract class AbstractPane<T extends Model>
 		);
 
 		return combo;
+	}
+
+	/**
+	 * Creates a new container that will have a non-editable combo labeled with
+	 * the given text.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The container of the label and the given center control
+	 *
+	 * @category Layout
+	 */
+	protected final <V> Combo buildLabeledCombo(Composite container,
+	                                            String labelText,
+	                                            ListValueModel<V> listHolder,
+	                                            WritablePropertyValueModel<V> selectedItemHolder,
+	                                            StringConverter<V> stringConverter,
+	                                            String helpId) {
+
+		return this.buildLabeledCombo(
+			container,
+			labelText,
+			listHolder,
+			selectedItemHolder,
+			stringConverter,
+			null,
+			helpId
+		);
 	}
 
 	/**

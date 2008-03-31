@@ -9,29 +9,34 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 /**
+ * The state object used to edit a <code>JoinColumn</code>.
+ *
+ * @see JoinColumn
+ *
  * @version 2.0
  * @since 2.0
  */
 @SuppressWarnings("nls")
 public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 {
-	private String columnDefinition;
 	private Boolean insertable;
 	private Boolean nullable;
-	private String table;
 	private Boolean unique;
 	private Boolean updatable;
 
-	public static final String COLUMN_DEFINITION_PROPERTY = "columnDefinition";
 	public static final String INSERTABLE_PROPERTY = "insertable";
 	public static final String NULLABLE_PROPERTY = "nullable";
-	public static final String TABLE_PROPERTY = "table";
 	public static final String UNIQUE_PROPERTY = "unique";
 	public static final String UPDATABLE_PROPERTY = "updatable";
 
@@ -43,11 +48,6 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 	 */
 	public JoinColumnStateObject(Object owner, JoinColumn joinColumn) {
 		super(owner, joinColumn);
-	}
-	public abstract String defaultTableName();
-
-	public String getColumnDefinition() {
-		return columnDefinition;
 	}
 
 	public Boolean getDefaultInsertable() {
@@ -126,11 +126,7 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 		return null;
 	}
 
-	public abstract Schema getSchema();
-
-	public String getTable() {
-		return table;
-	}
+	protected abstract Schema getSchema();
 
 	public Boolean getUnique() {
 		return unique;
@@ -144,27 +140,32 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void initialize(Object owner,
-	                          BaseJoinColumn abstractJoinColumn) {
+	protected void initialize(Object owner, BaseJoinColumn baseJoinColumn) {
 
-		super.initialize(owner, abstractJoinColumn);
+		super.initialize(owner, baseJoinColumn);
 
-		if (abstractJoinColumn != null) {
-			JoinColumn joinColumn = (JoinColumn) abstractJoinColumn;
+		if (baseJoinColumn != null) {
+			JoinColumn joinColumn = (JoinColumn) baseJoinColumn;
 
-			table            = joinColumn.getSpecifiedTable();
 			insertable       = joinColumn.getSpecifiedInsertable();
 			nullable         = joinColumn.getSpecifiedNullable();
 			unique           = joinColumn.getSpecifiedUnique();
 			updatable        = joinColumn.getSpecifiedUpdatable();
-			columnDefinition = joinColumn.getColumnDefinition();
 		}
 	}
 
-	public void setColumnDefinition(String columnDefinition) {
-		String oldColumnDefinition = this.columnDefinition;
-		this.columnDefinition = columnDefinition;
-		firePropertyChanged(COLUMN_DEFINITION_PROPERTY, oldColumnDefinition, columnDefinition);
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected String initialTable() {
+		JoinColumn joinColumn = getJoinColumn();
+
+		if (joinColumn == null) {
+			return null;
+		}
+
+		return joinColumn.getSpecifiedTable();
 	}
 
 	public void setInsertable(Boolean insertable) {
@@ -179,12 +180,6 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 		firePropertyChanged(NULLABLE_PROPERTY, oldNullable, nullable);
 	}
 
-	public void setTable(String table) {
-		String oldTable = this.table;
-		this.table = table;
-		firePropertyChanged(TABLE_PROPERTY, oldTable, table);
-	}
-
 	public void setUnique(Boolean unique) {
 		Boolean oldUnique = this.unique;
 		this.unique = unique;
@@ -197,19 +192,20 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 		firePropertyChanged(UPDATABLE_PROPERTY, oldUpdatable, updatable);
 	}
 
-	public String specifiedTableName() {
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public ListIterator<String> tables() {
+		Schema schema = getSchema();
 
-		JoinColumn joinColumn = getJoinColumn();
-
-		if (joinColumn != null) {
-			return joinColumn.getSpecifiedTable();
+		if (schema == null) {
+			return EmptyListIterator.instance();
 		}
 
-		return null;
-	}
-
-	public String tableName() {
-		return (specifiedTableName() == null) ? defaultTableName() : specifiedTableName();
+		List<String> names = CollectionTools.list(schema.tableNames());
+		Collections.sort(names);
+		return names.listIterator();
 	}
 
 	/*
@@ -223,6 +219,8 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 		JoinColumn joinColumn = (JoinColumn) abstractJoinColumn;
 
 		// Table
+		String table = getTable();
+
 		if (valuesAreDifferent(table, joinColumn.getSpecifiedTable())) {
 			joinColumn.setSpecifiedTable(table);
 		}
@@ -245,11 +243,6 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 		// Nullable
 		if (joinColumn.getSpecifiedNullable() != nullable){
 			joinColumn.setSpecifiedNullable(nullable);
-		}
-
-		// Column Definition
-		if (valuesAreDifferent(columnDefinition, joinColumn.getColumnDefinition())) {
-			joinColumn.setColumnDefinition(columnDefinition);
 		}
 	}
 }

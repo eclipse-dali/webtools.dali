@@ -9,8 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.utility.internal.node.Node;
 
@@ -26,6 +31,11 @@ import org.eclipse.jpt.utility.internal.node.Node;
 @SuppressWarnings("nls")
 public abstract class BaseJoinColumnStateObject extends AbstractNode
 {
+	/**
+	 * The SQL fragment that is used when generating the DDL for the column.
+	 */
+	private String columnDefinition;
+
 	/**
 	 * Either the join column is being edited or <code>null</code> the state
 	 * object is being created.
@@ -48,9 +58,19 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 	private String referencedColumnName;
 
 	/**
+	 * The table
+	 */
+	private String table;
+
+	/**
 	 * Keeps track of the <code>Validator</code> since this is the root object.
 	 */
 	private Validator validator;
+
+	/**
+	 * Identifies a change in the column definition property.
+	 */
+	public static final String COLUMN_DEFINITION_PROPERTY = "columnDefinition";
 
 	/**
 	 * Identifies a change in the name property.
@@ -58,9 +78,24 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 	public static final String NAME_PROPERTY = "name";
 
 	/**
+	 * Identifies a change in the list of names.
+	 */
+	public static final String NAMES_LIST = "names";
+
+	/**
+	 * Identifies a change in the list of reference column names.
+	 */
+	public static final String REFERENCE_COLUMN_NAMES_LIST = "referenceColumnNames";
+
+	/**
 	 * Identifies a change in the referenced column name property.
 	 */
 	public static final String REFERENCED_COLUMN_NAME_PROPERTY = "referencedColumnName";
+
+	/**
+	 * Identifies a change in the table property.
+	 */
+	public static final String TABLE_PROPERTY = "table";
 
 	/**
 	 * Creates a new <code>AbstractJoinColumnStateObject</code>.
@@ -69,8 +104,7 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
-	public BaseJoinColumnStateObject(Object owner,
-	                                     BaseJoinColumn joinColumn) {
+	public BaseJoinColumnStateObject(Object owner, BaseJoinColumn joinColumn) {
 		super(null);
 		initialize(owner, joinColumn);
 	}
@@ -83,13 +117,41 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 		// This is the root of the Join Column state object
 	}
 
+	private ListIterator<String> columnNames(Table table) {
+
+		if (table == null) {
+			return EmptyListIterator.instance();
+		}
+
+		List<String> names = CollectionTools.list(table.columnNames());
+		Collections.sort(names);
+		return names.listIterator();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	public final String displayString() {
+		return "";
+	}
+
+	/**
+	 * Returns the SQL fragment that is used when generating the DDL for the
+	 * column.
+	 *
+	 * @return The edited column name or <code>null</code> if not used
+	 */
+	public String getColumnDefinition() {
+		return columnDefinition;
+	}
+
 	/**
 	 * Returns the default name if the join column is being edited otherwise
 	 * <code>null</code> is returned.
 	 *
 	 * @return Either the default name defined by the join column or <code>null</code>
 	 */
-	public String defaultName() {
+	public String getDefaultName() {
 		if (this.joinColumn == null) {
 			return null;
 		}
@@ -104,7 +166,7 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 	 * @return Either the default referenced column name defined by the join
 	 * column or <code>null</code>
 	 */
-	public String defaultReferencedColumnName() {
+	public String getDefaultReferencedColumnName() {
 		if (this.joinColumn == null) {
 			return null;
 		}
@@ -112,12 +174,12 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 		return this.joinColumn.getDefaultReferencedColumnName();
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Returns
+	 *
+	 * @return
 	 */
-	public final String displayString() {
-		return "";
-	}
+	public abstract String getDefaultTable();
 
 	/**
 	 * Returns the edited join column or <code>null</code> if this state object
@@ -166,7 +228,29 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 		return this.referencedColumnName;
 	}
 
+	/**
+	 * Returns
+	 *
+	 * @return
+	 */
 	public abstract Table getReferencedNameTable();
+
+	/**
+	 * Returns
+	 *
+	 * @return
+	 */
+	public String getTable() {
+		return table;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public final Validator getValidator() {
+		return this.validator;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -188,11 +272,50 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 
 		this.owner      = owner;
 		this.joinColumn = joinColumn;
+		this.table      = this.initialTable();
 
 		if (joinColumn != null) {
 			this.name                 = joinColumn.getSpecifiedName();
+			this.columnDefinition     = joinColumn.getColumnDefinition();
 			this.referencedColumnName = joinColumn.getSpecifiedReferencedColumnName();
 		}
+	}
+
+	/**
+	 * Returns
+	 */
+	protected abstract String initialTable();
+
+	/**
+	 * Returns the column names if the database table can be resolved.
+	 *
+	 * @return The names of the table's columns or an empty iterator if the table
+	 * can't be resolved
+	 */
+	public ListIterator<String> names() {
+		return columnNames(getNameTable());
+	}
+
+	/**
+	 * Returns the reference column names if the database table can be resolved.
+	 *
+	 * @return The names of the table's columns or an empty iterator if the table
+	 * can't be resolved
+	 */
+	public ListIterator<String> referenceColumnNames() {
+		return columnNames(getReferencedNameTable());
+	}
+
+	/**
+	 * Sets the SQL fragment that is used when generating the DDL for the column.
+	 *
+	 * @param columnDefinition The new join column's column definition or
+	 * <code>null</code> to clear the value
+	 */
+	public void setColumnDefinition(String columnDefinition) {
+		String oldColumnDefinition = this.columnDefinition;
+		this.columnDefinition = columnDefinition;
+		firePropertyChanged(COLUMN_DEFINITION_PROPERTY, oldColumnDefinition, columnDefinition);
 	}
 
 	/**
@@ -219,12 +342,38 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 		firePropertyChanged(REFERENCED_COLUMN_NAME_PROPERTY, oldReferencedColumnName, referencedColumnName);
 	}
 
+	public void setTable(String table) {
+		String oldTable = this.table;
+		this.table = table;
+		firePropertyChanged(TABLE_PROPERTY, oldTable, table);
+		tableChanged();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
 	public final void setValidator(Validator validator) {
 		this.validator = validator;
+	}
+
+	/**
+	 * The table from which the column names are used has changed, notifies the
+	 * listeners the list of names and reference column names should be updated.
+	 */
+	protected void tableChanged() {
+		fireListChanged(NAMES_LIST);
+		fireListChanged(REFERENCE_COLUMN_NAMES_LIST);
+	}
+
+	/**
+	 * Retrieves the list of all the table names contains in the associated
+	 * schema. The default returns an empty iterator.
+	 *
+	 * @return The names of the tables
+	 */
+	public ListIterator<String> tables() {
+		return EmptyListIterator.instance();
 	}
 
 	/**
@@ -244,13 +393,10 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 		if (valuesAreDifferent(referencedColumnName, joinColumn.getSpecifiedReferencedColumnName())) {
 			joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
 		}
-	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	public final Validator getValidator() {
-		return this.validator;
+		// Column Definition
+		if (valuesAreDifferent(columnDefinition, joinColumn.getColumnDefinition())) {
+			joinColumn.setColumnDefinition(columnDefinition);
+		}
 	}
 }

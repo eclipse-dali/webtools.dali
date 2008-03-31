@@ -16,58 +16,11 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | EntityNameComposite                                                       | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | TableComposite                                                        | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * | - v Attribute Overrides ------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | OverridesComposite                                                    | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * | - v Secondary Tables ---------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | SecondaryTablesComposite                                              | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * | - v Inheritance --------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | InheritanceComposite                                                  | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * | - v Queries ------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | QueriesComposite                                                      | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
+ * The pane used for a Java entity.
  *
- * @see BasicMapping
+ * @see OrmEntity
  * @see BaseJpaUiFactory - The factory creating this pane
- * @see EntityNameComposite
- * @see InheritanceComposite
- * @see OverridesComposite
- * @see SecondaryTablesComposite
- * @see TableComposite
- *
- * TODO talk to JavaEditor people about what we can do to hook in TabbedProperties for the JavaEditor
+ * @see JavaSecondaryTablesComposite
  *
  * @version 2.0
  * @since 1.0
@@ -75,15 +28,15 @@ import org.eclipse.swt.widgets.Composite;
 public class JavaEntityComposite extends AbstractEntityComposite<JavaEntity>
 {
 	/**
-	 * Creates a new <code>EntityComposite</code>.
+	 * Creates a new <code>JavaEntityComposite</code>.
 	 *
-	 * @param subjectHolder The holder of the subject <code>IEntity</code>
+	 * @param subjectHolder The holder of the subject <code>JavaEntity</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public JavaEntityComposite(PropertyValueModel<? extends JavaEntity> subjectHolder,
-	                       Composite parent,
-	                       WidgetFactory widgetFactory) {
+	                           Composite parent,
+	                           WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}

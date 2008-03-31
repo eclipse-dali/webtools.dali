@@ -141,7 +141,6 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 	public void create() {
 		super.create();
 		installSubject();
-		getButton(OK).setEnabled(false);
 	}
 
 	/*

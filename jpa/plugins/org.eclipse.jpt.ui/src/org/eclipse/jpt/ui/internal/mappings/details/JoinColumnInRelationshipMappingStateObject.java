@@ -44,7 +44,7 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 	 * (non-Javadoc)
 	 */
 	@Override
-	public String defaultTableName() {
+	public String getDefaultTable() {
 
 		JoinColumn joinColumn = getJoinColumn();
 
@@ -61,7 +61,18 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 	@Override
 	public Table getNameTable() {
 		Schema schema = getSchema();
-		return (schema == null) ? null : schema.tableNamed(tableName());
+
+		if (schema == null) {
+			return null;
+		}
+
+		String table = getTable();
+
+		if (table == null) {
+			table = getDefaultTable();
+		}
+
+		return schema.tableNamed(table);
 	}
 
 	/*

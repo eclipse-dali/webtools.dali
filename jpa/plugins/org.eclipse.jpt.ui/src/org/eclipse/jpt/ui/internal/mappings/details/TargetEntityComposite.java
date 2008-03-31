@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -22,14 +22,13 @@ import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
@@ -99,47 +98,6 @@ public class TargetEntityComposite extends AbstractFormPane<RelationshipMapping>
 		propertyNames.add(RelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY);
 	}
 
-	private FocusListener buildFocusListener() {
-
-		return new FocusListener() {
-
-			public void focusGained(FocusEvent e) {
-
-				if (!isPopulating()) {
-					CCombo combo = (CCombo) e.widget;
-
-					if (combo.getSelectionIndex() == 0) {
-						setPopulating(true);
-
-						try {
-							combo.setText("");
-						}
-						finally {
-							setPopulating(false);
-						}
-					}
-				}
-			}
-
-			public void focusLost(FocusEvent e) {
-				if (!isPopulating()) {
-					CCombo combo = (CCombo) e.widget;
-
-					if (combo.getText().length() == 0) {
-						setPopulating(true);
-
-						try {
-							combo.select(0);
-						}
-						finally {
-							setPopulating(false);
-						}
-					}
-				}
-			}
-		};
-	}
-
 	private Runnable buildOpenTargetEntityAction() {
 		return new Runnable() {
 			public void run() {
@@ -165,7 +123,9 @@ public class TargetEntityComposite extends AbstractFormPane<RelationshipMapping>
 			public void modifyText(ModifyEvent e) {
 				if (!isPopulating()) {
 					CCombo combo = (CCombo) e.widget;
-					valueChanged(combo.getText());
+					if (combo.getData("populating") == Boolean.FALSE) {
+						valueChanged(combo.getText());
+					}
 				}
 			}
 		};
@@ -225,7 +185,8 @@ public class TargetEntityComposite extends AbstractFormPane<RelationshipMapping>
 		combo = buildEditableCCombo(container);
 		combo.add(JptUiMappingsMessages.TargetEntityChooser_defaultEmpty);
 		combo.addModifyListener(buildTargetEntityModifyListener());
-		combo.addFocusListener(buildFocusListener());
+
+		SWTUtil.attachDefaultValueHandler(combo);
 
 		Hyperlink labelLink = buildHyperLink(container,
 			JptUiMappingsMessages.TargetEntityChooser_label,

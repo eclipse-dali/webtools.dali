@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.Composite;
  * | - v Secondary Tables ---------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
- * | | SecondaryTablesComposite                                              | |
+ * | | Pane                                                                  | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * |                                                                           |
@@ -76,12 +76,10 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see Entity
- * @see BaseJpaUiFactory - The factory creating this pane
  * @see EntityNameComposite
  * @see InheritanceComposite
  * @see IdClassComposite
  * @see OverridesComposite
- * @see SecondaryTablesComposite
  * @see TableComposite
  * @see GeneratorsComposite
  *
@@ -199,6 +197,7 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 			container,
 			JptUiMappingsMessages.SecondaryTablesComposite_secondaryTables
 		);
+
 		buildSecondaryTablesComposite(container);
 	}
 }

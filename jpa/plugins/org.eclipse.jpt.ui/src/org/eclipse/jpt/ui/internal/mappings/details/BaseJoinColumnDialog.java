@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Shell;
  * The abstract definition the dialog showing the information for a join column
  * to edit or to create.
  *
- * @see AbstractJoinColumnStateObject
+ * @see BaseJoinColumnStateObject
  *
  * @version 2.0
  * @since 1.0
@@ -37,7 +37,7 @@ public abstract class BaseJoinColumnDialog<T extends BaseJoinColumnStateObject> 
 	private Object owner;
 
 	/**
-	 * Creates a new <code>AbstractJoinColumnDialog</code>.
+	 * Creates a new <code>BaseJoinColumnDialog</code>.
 	 *
 	 * @param parent The parent shell
 	 * @param owner The owner of the join column to create or where it is located
@@ -45,8 +45,8 @@ public abstract class BaseJoinColumnDialog<T extends BaseJoinColumnStateObject> 
 	 * this state object is used to create a new one
 	 */
 	public BaseJoinColumnDialog(Shell parent,
-	                                Object owner,
-	                                BaseJoinColumn joinColumn) {
+	                            Object owner,
+	                            BaseJoinColumn joinColumn) {
 
 		super(parent);
 

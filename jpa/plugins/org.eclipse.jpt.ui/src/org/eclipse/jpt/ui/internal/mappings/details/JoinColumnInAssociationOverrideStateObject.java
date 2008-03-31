@@ -39,7 +39,8 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 	 * (non-Javadoc)
 	 */
 	@Override
-	public String defaultTableName() {
+	public String getDefaultTable() {
+
 		if (getJoinColumn() != null) {
 			return getJoinColumn().getDefaultTable();
 		}

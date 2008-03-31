@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Shell;
  * @see JoinColumn
  * @see JoinTable
  * @see JoinColumnInJoinTableStateObject
- * @see AbstractJoinColumnDialogPane
+ * @see BaseJoinColumnDialogPane
  *
  * @version 2.0
  * @since 1.0

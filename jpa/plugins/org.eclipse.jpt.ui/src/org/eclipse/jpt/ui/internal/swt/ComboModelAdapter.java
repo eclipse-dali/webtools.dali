@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.swt;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionListener;
@@ -96,14 +97,25 @@ public class ComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 
 	private static class SWTComboHolder implements ComboHolder {
 		private final Combo combo;
+		private final boolean editable;
+		private String selectedItem;
 
 		SWTComboHolder(Combo combo) {
 			super();
-			this.combo = combo;
+			this.combo    = combo;
+			this.editable = (combo.getStyle() & SWT.READ_ONLY) == 0;
 		}
 
 		public void add(String item, int index) {
 			this.combo.add(item, index);
+
+			// It is possible the selected item was set before the combo is being
+			// populated, update the selected item if it's matches the item being
+			// added
+			if ((this.selectedItem != null) && this.selectedItem.equals(item)) {
+				this.setText(this.selectedItem);
+				this.selectedItem = null;
+			}
 		}
 
 		public void addDisposeListener(DisposeListener disposeListener) {
@@ -120,6 +132,10 @@ public class ComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 
 		public void deselectAll() {
 			this.combo.deselectAll();
+		}
+
+		public int getItemCount() {
+			return this.combo.getItemCount();
 		}
 
 		public String[] getItems() {
@@ -139,7 +155,7 @@ public class ComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 		}
 
 		public boolean isEditable() {
-			return false;
+			return this.editable;
 		}
 
 		public boolean isPopulating() {
@@ -179,6 +195,17 @@ public class ComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 		}
 
 		public void setText(String item) {
+
+			// Keep track of the selected item since it's possible the selected
+			// item is before the combo is populated
+			if (this.combo.getItemCount() == 0) {
+				this.selectedItem = item;
+			}
+			else {
+				this.selectedItem = null;
+			}
+
+			this.combo.select(this.combo.indexOf(item));
 			this.combo.setText(item);
 		}
 	}

@@ -20,6 +20,8 @@ import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -65,7 +67,9 @@ public class SWTUtil {
 	 * beginning of the list
 	 */
 	public static void attachDefaultValueHandler(CCombo combo) {
-		combo.addFocusListener(buildCComboFocusListener());
+		CComboHandler handler = new CComboHandler();
+		combo.addFocusListener(handler);
+		combo.addModifyListener(handler);
 	}
 
 	/**
@@ -77,69 +81,9 @@ public class SWTUtil {
 	 * beginning of the list
 	 */
 	public static void attachDefaultValueHandler(Combo combo) {
-		combo.addFocusListener(buildComboFocusListener());
-	}
-
-	private static FocusListener buildCComboFocusListener() {
-		return new FocusListener() {
-
-			public void focusGained(FocusEvent e) {
-				CCombo combo = (CCombo) e.widget;
-				if (combo.getSelectionIndex() == 0) {
-					combo.setData("populating", Boolean.TRUE);
-					try {
-						combo.setText("");
-					}
-					finally {
-						combo.setData("populating", Boolean.FALSE);
-					}
-				}
-			}
-
-			public void focusLost(FocusEvent e) {
-				CCombo combo = (CCombo) e.widget;
-				if (combo.getText().length() == 0) {
-					combo.setData("populating", Boolean.TRUE);
-					try {
-						combo.select(0);
-					}
-					finally {
-						combo.setData("populating", Boolean.FALSE);
-					}
-				}
-			}
-		};
-	}
-
-	private static FocusListener buildComboFocusListener() {
-		return new FocusListener() {
-
-			public void focusGained(FocusEvent e) {
-				Combo combo = (Combo) e.widget;
-				if (combo.getSelectionIndex() == 0) {
-					combo.setData("populating", Boolean.TRUE);
-					try {
-						combo.setText("");
-					}
-					finally {
-						combo.setData("populating", Boolean.FALSE);
-					}
-				}
-			}
-
-			public void focusLost(FocusEvent e) {
-				Combo combo = (Combo) e.widget;
-				if (combo.getText().length() == 0) {
-					combo.setData("populating", Boolean.TRUE);
-					try {
-						combo.select(0);
-					}
-					finally {
-						combo.setData("populating", Boolean.FALSE);
-					}
-				}
-			}
-		};
+		ComboHandler handler = new ComboHandler();
+		combo.addFocusListener(handler);
+		combo.addModifyListener(handler);
 	}
 
 	/**
@@ -255,7 +199,7 @@ public class SWTUtil {
 		return display;
 	}
 
-   public static int getTableHeightHint(Table table, int rows) {
+	public static int getTableHeightHint(Table table, int rows) {
 		if (table.getFont().equals(JFaceResources.getDefaultFont()))
 			table.setFont(JFaceResources.getDialogFont());
 		int result= table.getItemHeight() * rows + table.getHeaderHeight();
@@ -264,7 +208,7 @@ public class SWTUtil {
 		return result;
 	}
 
-	/**
+   /**
 	 * Returns the Platform UI workbench.
 	 *
 	 * @return The workbench for this plug-in
@@ -430,5 +374,241 @@ public class SWTUtil {
 	 */
 	public static boolean uiThread(Widget widget) {
 		return widget.getDisplay().getThread() == Thread.currentThread();
+	}
+
+	/**
+	 * This handler is responsible for removing the default value when the combo
+	 * has the focus or when the selected item is the default value and to select
+	 * it when the combo loses the focus.
+	 */
+	private static class CComboHandler implements ModifyListener,
+	                                              FocusListener {
+
+		/**
+		 * This flag is used to prevent the methods of this handler from
+		 * interacting with each other.
+		 */
+		private boolean locked;
+
+		/*
+		 * (non-Javadoc)
+		 */
+		public void focusGained(FocusEvent e) {
+
+			if (locked) {
+				return;
+			}
+
+			CCombo combo = (CCombo) e.widget;
+
+			if (combo.getSelectionIndex() == 0) {
+				combo.setData("populating", Boolean.TRUE);
+				locked = true;
+
+				// The text has to be changed outside of the context of this
+				// listener otherwise the combo won't update because it's currently
+				// notifying its listeners
+				asyncExec(new TextUpdater(combo, Boolean.FALSE));
+			}
+		}
+
+		/*
+		 * (non-Javadoc)
+		 */
+		public void focusLost(FocusEvent e) {
+
+			if (locked) {
+				return;
+			}
+
+			CCombo combo = (CCombo) e.widget;
+
+			if (combo.getText().length() == 0) {
+				combo.setData("populating", Boolean.TRUE);
+				locked = true;
+
+				try {
+					combo.setText(combo.getItem(0));
+				}
+				finally {
+					combo.setData("populating", Boolean.FALSE);
+					locked = false;
+				}
+			}
+		}
+
+		/*
+		 * (non-Javadoc)
+		 */
+		public void modifyText(ModifyEvent e) {
+
+			if (locked) {
+				return;
+			}
+
+			CCombo combo = (CCombo) e.widget;
+
+			if (combo.isFocusControl() &&
+			    combo.getSelectionIndex() <= 0) {
+
+				// Make sure the current text is the default value
+				String currentValue = combo.getText();
+
+				if (combo.getItemCount() > 0 &&
+				    !currentValue.equals(combo.getItem(0))) {
+
+					return;
+				}
+
+				// Remove the default value
+				Object populating = combo.getData("populating");
+				combo.setData("populating", Boolean.TRUE);
+				locked = true;
+
+				// The text has to be changed outside of the context of this
+				// listener otherwise the combo won't update because it's currently
+				// notifying its listeners
+				asyncExec(new TextUpdater(combo, populating));
+			}
+		}
+
+		private class TextUpdater implements Runnable {
+			private final CCombo combo;
+			private final Object populating;
+
+			public TextUpdater(CCombo combo, Object populating) {
+				super();
+				this.combo      = combo;
+				this.populating = populating;
+			}
+
+			public void run() {
+				if (this.combo.isDisposed()) {
+					CComboHandler.this.locked = false;
+				}
+				else {
+					try {
+						this.combo.setText("");
+					}
+					finally {
+						this.combo.setData("populating", this.populating);
+						CComboHandler.this.locked = false;
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * This handler is responsible for removing the default value when the combo
+	 * has the focus or when the selected item is the default value and to select
+	 * it when the combo loses the focus.
+	 */
+	private static class ComboHandler implements ModifyListener,
+	                                             FocusListener {
+
+		/**
+		 * This flag is used to prevent the methods of this handler from
+		 * interacting with each other.
+		 */
+		private boolean locked;
+
+		/*
+		 * (non-Javadoc)
+		 */
+		public void focusGained(FocusEvent e) {
+
+			if (locked) {
+				return;
+			}
+
+			Combo combo = (Combo) e.widget;
+
+			if (combo.getSelectionIndex() == 0) {
+				combo.setData("populating", Boolean.TRUE);
+				locked = true;
+
+				// The text has to be changed outside of the context of this
+				// listener otherwise the combo won't update because it's currently
+				// notifying its listeners
+				asyncExec(new TextUpdater(combo, Boolean.FALSE));
+			}
+		}
+
+		/*
+		 * (non-Javadoc)
+		 */
+		public void focusLost(FocusEvent e) {
+
+			if (locked) {
+				return;
+			}
+
+			Combo combo = (Combo) e.widget;
+
+			if (combo.getText().length() == 0) {
+				combo.setData("populating", Boolean.TRUE);
+				locked = true;
+
+				try {
+					combo.select(0);
+				}
+				finally {
+					combo.setData("populating", Boolean.FALSE);
+					locked = false;
+				}
+			}
+		}
+
+		/*
+		 * (non-Javadoc)
+		 */
+		public void modifyText(ModifyEvent e) {
+
+			if (locked) {
+				return;
+			}
+
+			Combo combo = (Combo) e.widget;
+
+			if (combo.isFocusControl() &&
+			    combo.getSelectionIndex() == 0) {
+
+				Object populating = combo.getData("populating");
+				combo.setData("populating", Boolean.TRUE);
+				locked = true;
+
+				// The text has to be changed outside of the context of this
+				// listener otherwise the combo won't update because it's currently
+				// notifying its listeners
+				asyncExec(new TextUpdater(combo, populating));
+			}
+		}
+
+		private class TextUpdater implements Runnable {
+			private final Combo combo;
+			private final Object populating;
+
+			public TextUpdater(Combo combo, Object populating) {
+				super();
+				this.combo      = combo;
+				this.populating = populating;
+			}
+
+			public void run() {
+				if (this.combo.isDisposed()) {
+					ComboHandler.this.locked = false;
+				}
+				else {
+					try {
+						this.combo.setText("");
+					}
+					finally {
+						this.combo.setData("populating", this.populating);
+						ComboHandler.this.locked = false;
+					}
+				}
+			}
+		}
 	}
 }

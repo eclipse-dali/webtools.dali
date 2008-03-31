@@ -35,6 +35,22 @@ public class CComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 	// ********** static methods **********
 
 	/**
+	 * Constructor - the list holder, selections holder, combo, and
+	 * string converter are required.
+	 */
+	protected CComboModelAdapter(
+			ListValueModel<E> listHolder,
+			WritablePropertyValueModel<E> selectedItemHolder,
+			CCombo combo,
+			StringConverter<E> stringConverter)
+	{
+		super(listHolder,
+		      selectedItemHolder,
+		      new CComboHolder(combo),
+		      stringConverter);
+	}
+
+	/**
 	 * Adapt the specified model list and selection to the specified combo.
 	 * Use the default string converter to convert the model items to strings
 	 * to be displayed in the combo, which calls #toString() on the
@@ -52,6 +68,9 @@ public class CComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 			StringConverter.Default.<T>instance()
 		);
 	}
+
+
+	// ********** constructors **********
 
 	/**
 	 * Adapt the specified model list and selection to the specified combo.
@@ -73,30 +92,12 @@ public class CComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 	}
 
 
-	// ********** constructors **********
-
-	/**
-	 * Constructor - the list holder, selections holder, combo, and
-	 * string converter are required.
-	 */
-	protected CComboModelAdapter(
-			ListValueModel<E> listHolder,
-			WritablePropertyValueModel<E> selectedItemHolder,
-			CCombo combo,
-			StringConverter<E> stringConverter)
-	{
-		super(listHolder,
-		      selectedItemHolder,
-		      new CComboHolder(combo),
-		      stringConverter);
-	}
-
-
 	// ********** Internal member **********
 
 	private static class CComboHolder implements ComboHolder {
 		private final CCombo combo;
 		private final boolean editable;
+		private String selectedItem;
 
 		CComboHolder(CCombo combo) {
 			super();
@@ -106,6 +107,14 @@ public class CComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 
 		public void add(String item, int index) {
 			this.combo.add(item, index);
+
+			// It is possible the selected item was set before the combo is being
+			// populated, update the selected item if it's matches the item being
+			// added
+			if ((this.selectedItem != null) && this.selectedItem.equals(item)) {
+				this.setText(this.selectedItem);
+				this.selectedItem = null;
+			}
 		}
 
 		public void addDisposeListener(DisposeListener disposeListener) {
@@ -122,6 +131,10 @@ public class CComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 
 		public void deselectAll() {
 			this.combo.deselectAll();
+		}
+
+		public int getItemCount() {
+			return this.combo.getItemCount();
 		}
 
 		public String[] getItems() {
@@ -181,6 +194,16 @@ public class CComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 		}
 
 		public void setText(String item) {
+
+			// Keep track of the selected item since it's possible the selected
+			// item is before the combo is populated
+			if (this.combo.getItemCount() == 0) {
+				this.selectedItem = item;
+			}
+			else {
+				this.selectedItem = null;
+			}
+
 			this.combo.setText(item);
 		}
 	}

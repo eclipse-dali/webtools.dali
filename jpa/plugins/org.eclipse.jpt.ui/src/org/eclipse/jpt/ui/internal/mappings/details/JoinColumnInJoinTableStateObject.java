@@ -9,10 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 
 /**
  * The state object used to create or edit a primary key join column on a
@@ -38,6 +40,14 @@ public class JoinColumnInJoinTableStateObject extends BaseJoinColumnStateObject
 	public JoinColumnInJoinTableStateObject(JoinTable joinTable,
 	                                        JoinColumn joinColumn) {
 		super(joinTable, joinColumn);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public String getDefaultTable() {
+		return null;
 	}
 
 	/*
@@ -72,6 +82,14 @@ public class JoinColumnInJoinTableStateObject extends BaseJoinColumnStateObject
 		return relationshipMapping().getTypeMapping().getPrimaryDbTable();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected String initialTable() {
+		return getOwner().getName();
+	}
+
 	/**
 	 * Returns the mapping owning the join table.
 	 *
@@ -79,5 +97,13 @@ public class JoinColumnInJoinTableStateObject extends BaseJoinColumnStateObject
 	 */
 	public RelationshipMapping relationshipMapping() {
 		return getOwner().getParent();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public ListIterator<String> tables() {
+		return new SingleElementListIterator<String>(initialTable());
 	}
 }

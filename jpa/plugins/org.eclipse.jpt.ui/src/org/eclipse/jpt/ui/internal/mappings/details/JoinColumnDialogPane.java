@@ -9,32 +9,24 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import java.util.Collection;
-import java.util.Iterator;
-import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
- * |                    ------------------------------------------------------ |
- * | Table:             | TableCombo                                       |v| |
- * |                    ------------------------------------------------------ |
- * |                    ------------------------------------------------------ |
- * | Column Definition: | I                                                  | |
- * |                    ------------------------------------------------------ |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | BaseJoinColumnDialogPane                                              | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
  * |                                                                           |
  * | x Insertable                                                              |
  * |                                                                           |
@@ -48,15 +40,12 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see JoinColumnStateObject
  * @see JoinColumnDialog - The parent container
- * @see EnumDialogComboViewer
  *
  * @version 2.0
  * @since 1.0
  */
 public class JoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinColumnStateObject>
 {
-	private Combo tableCombo;
-
 	/**
 	 * Creates a new <code>JoinColumnDialogPane</code>.
 	 *
@@ -67,40 +56,6 @@ public class JoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinColumnSta
 	                            Composite parent)
 	{
 		super(subjectHolder, parent);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void addPropertyNames(Collection<String> propertyNames) {
-		super.addPropertyNames(propertyNames);
-		propertyNames.add(JoinColumnStateObject.TABLE_PROPERTY);
-	}
-
-	private WritablePropertyValueModel<String> buildColumnDefinitionHolder() {
-		return new PropertyAspectAdapter<JoinColumnStateObject, String>(getSubjectHolder(), JoinColumnStateObject.COLUMN_DEFINITION_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				return subject.getColumnDefinition();
-			}
-
-			@Override
-			protected void setValue_(String value) {
-				if (value.length() == 0) {
-					value = null;
-				}
-				subject.setColumnDefinition(value);
-			}
-		};
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected Composite buildContainer(Composite parent) {
-		return buildSubPane(parent, 0, 7, 0, 5);
 	}
 
 	private WritablePropertyValueModel<Boolean> buildInsertableHolder() {
@@ -210,29 +165,6 @@ public class JoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinColumnSta
 				}
 
 				return JptUiMappingsMessages.JoinColumnDialogPane_nullable;
-			}
-		};
-	}
-
-	private ModifyListener buildTableComboSelectionListener() {
-		return new ModifyListener() {
-
-			public void modifyText(ModifyEvent e) {
-
-				if (!isPopulating()) {
-					setPopulating(true);
-
-					try {
-						Combo combo = (Combo) e.widget;
-						String value = combo.getText();
-						boolean defaultValue = value.equals(combo.getItem(0));
-						subject().setTable(defaultValue ? null : value);
-						populateNameCombo();
-					}
-					finally {
-						setPopulating(false);
-					}
-				}
 			}
 		};
 	}
@@ -352,21 +284,11 @@ public class JoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinColumnSta
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void doPopulate() {
-		super.doPopulate();
-		populateTableCombo();
-	}
+	protected void initializeLayout(Composite container) {
 
-	private void initializeDetailsPane(Composite container) {
+		super.initializeLayout(container);
 
-		// Column Definition widgets
-		buildLabeledText(
-			container,
-			JptUiMappingsMessages.ColumnComposite_columnDefinition,
-			buildColumnDefinitionHolder()
-		);
-
-		// Insertable check box
+		// Insertable tri-state check box
 		buildTriStateCheckBoxWithDefault(
 			buildSubPane(container, 4),
 			JptUiMappingsMessages.JoinColumnDialogPane_insertable,
@@ -375,7 +297,7 @@ public class JoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinColumnSta
 			JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
 		);
 
-		// Updatable check box
+		// Updatable tri-state check box
 		buildTriStateCheckBoxWithDefault(
 			container,
 			JptUiMappingsMessages.JoinColumnDialogPane_updatable,
@@ -407,72 +329,7 @@ public class JoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinColumnSta
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void initializeLayout(Composite container) {
-		super.initializeLayout(container);
-
-		// Join Referenced Column widgets
-		tableCombo = buildLabeledEditableCombo(
-			container,
-			JptUiMappingsMessages.JoinColumnDialogPane_table,
-			buildTableComboSelectionListener(),
-			JpaHelpContextIds.MAPPING_JOIN_REFERENCED_COLUMN
-		);
-
-		initializeDetailsPane(container);
-	}
-
-	private void populateTableCombo() {
-		JoinColumnStateObject subject = subject();
-		tableCombo.removeAll();
-
-		if (subject == null) {
-			return;
-		}
-
-		// Add the default table if one exists
-		String defaultTableName = subject.defaultTableName();
-
-		if (defaultTableName != null) {
-			tableCombo.add(NLS.bind(
-				JptUiMappingsMessages.JoinColumnDialogPane_defaultWithOneParam,
-				defaultTableName
-			));
-		}
-		else {
-			tableCombo.add(JptUiMappingsMessages.JoinColumnDialogPane_defaultEmpty);
-		}
-
-		// Populate the combo with the table names
-		Schema schema = subject.getSchema();
-
-		if (schema != null) {
-			Iterator<String> tables = schema.tableNames();
-
-			for (Iterator<String> iter = CollectionTools.sort(tables); iter.hasNext(); ) {
-				tableCombo.add(iter.next());
-			}
-		}
-
-		// Update the selected table
-		String table = subject.getTable();
-
-		if (table != null) {
-			tableCombo.setText(table);
-		}
-		else {
-			tableCombo.select(0);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void propertyChanged(String propertyName) {
-		super.propertyChanged(propertyName);
-
-		if (propertyName == JoinColumnStateObject.TABLE_PROPERTY) {
-			populateTableCombo();
-		}
+	protected boolean isTableEditable() {
+		return true;
 	}
 }

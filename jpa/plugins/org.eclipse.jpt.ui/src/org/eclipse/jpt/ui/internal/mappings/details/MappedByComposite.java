@@ -16,13 +16,12 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
@@ -93,40 +92,9 @@ public class MappedByComposite extends AbstractFormPane<NonOwningMapping>
 			public void modifyText(ModifyEvent e) {
 				if (!isPopulating()) {
 					CCombo combo = (CCombo) e.widget;
-					valueChanged(combo.getText());
-				}
-			}
-		};
-	}
-
-	private FocusListener buildFocusListener() {
-		return new FocusListener() {
-
-			public void focusGained(FocusEvent e) {
-
-				setPopulating(true);
-
-				try {
-					if (combo.getSelectionIndex() == 0) {
-						combo.setText("");
+					if (combo.getData("populating") == Boolean.FALSE) {
+						valueChanged(combo.getText());
 					}
-				}
-				finally {
-					setPopulating(false);
-				}
-			}
-
-			public void focusLost(FocusEvent e) {
-
-				setPopulating(true);
-
-				try {
-					if (combo.getText().length() == 0) {
-						combo.select(0);
-					}
-				}
-				finally {
-					setPopulating(false);
 				}
 			}
 		};
@@ -155,7 +123,7 @@ public class MappedByComposite extends AbstractFormPane<NonOwningMapping>
 			JpaHelpContextIds.MAPPING_MAPPED_BY
 		);
 
-		combo.addFocusListener(buildFocusListener());
+		SWTUtil.attachDefaultValueHandler(combo);
 	}
 
 	private void populateCombo() {
@@ -228,7 +196,7 @@ public class MappedByComposite extends AbstractFormPane<NonOwningMapping>
 		}
 
 		// The default value
-		if (value == JptUiMappingsMessages.NoneSelected) {
+		if (JptUiMappingsMessages.NoneSelected.equals(value)) {
 			value = null;
 		}
 

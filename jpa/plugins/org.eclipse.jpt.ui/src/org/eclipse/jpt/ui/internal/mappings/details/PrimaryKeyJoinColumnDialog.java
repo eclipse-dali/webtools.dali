@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -11,18 +11,19 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractDialogPane;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * This dialog is used to either create or edit a joing column that is located
- * on an entity.
+ * This dialog is used to either create or edit a primary key join column that
+ * is located on an entity.
  *
  * @see PrimaryKeyJoinColumn
  * @see Entity
  * @see PrimaryKeyJoinColumnStateObject
- * @see PrimaryKeyJoinColumnDialogPane
+ * @see BaseJoinColumnDialogPane
  *
  * @version 2.0
  * @since 2.0
@@ -50,7 +51,10 @@ public class PrimaryKeyJoinColumnDialog extends BaseJoinColumnDialog<PrimaryKeyJ
 	 */
 	@Override
 	protected AbstractDialogPane<PrimaryKeyJoinColumnStateObject> buildLayout(Composite container) {
-		return new PrimaryKeyJoinColumnDialogPane(subjectHolder(), container);
+		return new BaseJoinColumnDialogPane<PrimaryKeyJoinColumnStateObject>(
+			subjectHolder(),
+			container
+		);
 	}
 
 	/*
@@ -59,6 +63,19 @@ public class PrimaryKeyJoinColumnDialog extends BaseJoinColumnDialog<PrimaryKeyJ
 	@Override
 	protected PrimaryKeyJoinColumnStateObject buildStateObject() {
 		return new PrimaryKeyJoinColumnStateObject(getOwner(), getJoinColumn());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected String descriptionTitle() {
+
+		if (getJoinColumn() == null) {
+			return JptUiMappingsMessages.PrimaryKeyJoinColumnDialog_addDescriptionTitle;
+		}
+
+		return JptUiMappingsMessages.PrimaryKeyJoinColumnDialog_editDescriptionTitle;
 	}
 
 	/*
@@ -75,5 +92,18 @@ public class PrimaryKeyJoinColumnDialog extends BaseJoinColumnDialog<PrimaryKeyJ
 	@Override
 	protected Entity getOwner() {
 		return (Entity) super.getOwner();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected String title() {
+
+		if (getJoinColumn() == null) {
+			return JptUiMappingsMessages.PrimaryKeyJoinColumnDialog_addTitle;
+		}
+
+		return JptUiMappingsMessages.PrimaryKeyJoinColumnDialog_editTitle;
 	}
 }

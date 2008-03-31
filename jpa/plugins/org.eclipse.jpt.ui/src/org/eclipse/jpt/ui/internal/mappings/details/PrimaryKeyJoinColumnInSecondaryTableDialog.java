@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -11,18 +11,19 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.SecondaryTable;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractDialogPane;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * This dialog is used to either create or edit a joing column that is within
- * a secondary table.
+ * This dialog is used to either create or edit a primary key joing column that
+ * is within a secondary table.
  *
  * @see PrimaryKeyJoinColumn
  * @see SecondaryTable
+ * @see BaseJoinColumnDialogPane
  * @see PrimaryKeyJoinColumnInSecondaryTableStateObject
- * @see AbstractJoinColumnDialogPane
  *
  * @version 2.0
  * @since 2.0
@@ -30,7 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 public class PrimaryKeyJoinColumnInSecondaryTableDialog extends BaseJoinColumnDialog<PrimaryKeyJoinColumnInSecondaryTableStateObject> {
 
 	/**
-	 * Creates a new <code>PrimaryKeyJoinColumnDialog</code>.
+	 * Creates a new <code>PrimaryKeyJoinColumnInSecondaryTableDialog</code>.
 	 *
 	 * @param parent The parent shell
 	 * @param secondaryTable The owner of the join column to create or where it
@@ -71,6 +72,19 @@ public class PrimaryKeyJoinColumnInSecondaryTableDialog extends BaseJoinColumnDi
 	 * (non-Javadoc)
 	 */
 	@Override
+	protected String descriptionTitle() {
+
+		if (getJoinColumn() == null) {
+			return JptUiMappingsMessages.PrimaryKeyJoinColumnInSecondaryTableDialog_addDescriptionTitle;
+		}
+
+		return JptUiMappingsMessages.PrimaryKeyJoinColumnInSecondaryTableDialog_editDescriptionTitle;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
 	public PrimaryKeyJoinColumn getJoinColumn() {
 		return (PrimaryKeyJoinColumn) super.getJoinColumn();
 	}
@@ -81,5 +95,18 @@ public class PrimaryKeyJoinColumnInSecondaryTableDialog extends BaseJoinColumnDi
 	@Override
 	protected SecondaryTable getOwner() {
 		return (SecondaryTable) super.getOwner();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected String title() {
+
+		if (getJoinColumn() == null) {
+			return JptUiMappingsMessages.PrimaryKeyJoinColumnInSecondaryTableDialog_addTitle;
+		}
+
+		return JptUiMappingsMessages.PrimaryKeyJoinColumnInSecondaryTableDialog_editTitle;
 	}
 }

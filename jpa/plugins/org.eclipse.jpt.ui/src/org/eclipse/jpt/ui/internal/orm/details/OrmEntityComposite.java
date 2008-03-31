@@ -16,51 +16,11 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | EntityNameComposite                                                       | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | TableComposite                                                        | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * | - v Attribute Overrides ------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | OverridesComposite                                                    | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * | - v Secondary Tables ---------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | SecondaryTablesComposite                                              | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * | - v Inheritance --------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | InheritanceComposite                                                  | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
+ * The pane used for an ORM entity.
  *
- * @see BasicMapping
+ * @see OrmEntity
  * @see BaseJpaUiFactory - The factory creating this pane
- * @see EntityNameComposite
- * @see InheritanceComposite
- * @see OverridesComposite
- * @see SecondaryTablesComposite
- * @see TableComposite
- *
- * TODO talk to JavaEditor people about what we can do to hook in TabbedProperties for the JavaEditor
+ * @see OrmSecondaryTablesComposite
  *
  * @version 2.0
  * @since 1.0
@@ -70,7 +30,7 @@ public class OrmEntityComposite extends AbstractEntityComposite<OrmEntity>
 	/**
 	 * Creates a new <code>OrmEntityComposite</code>.
 	 *
-	 * @param subjectHolder The holder of the subject <code>IEntity</code>
+	 * @param subjectHolder The holder of the subject <code>OrmEntity</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */

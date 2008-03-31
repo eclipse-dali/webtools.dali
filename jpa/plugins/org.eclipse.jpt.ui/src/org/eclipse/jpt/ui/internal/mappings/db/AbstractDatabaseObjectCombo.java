@@ -32,8 +32,6 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
@@ -248,60 +246,14 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 		};
 	}
 
-	private FocusListener buildFocusListener() {
-
-		return new FocusListener() {
-
-			public void focusGained(FocusEvent e) {
-
-				if (!isPopulating()) {
-					CCombo combo = (CCombo) e.widget;
-
-					if (combo.getSelectionIndex() == 0) {
-						setPopulating(true);
-
-						try {
-							combo.setText("");
-						}
-						finally {
-							setPopulating(false);
-						}
-					}
-				}
-			}
-
-			public void focusLost(FocusEvent e) {
-				if (!isPopulating()) {
-					CCombo combo = (CCombo) e.widget;
-
-					if (combo.getText().length() == 0) {
-						setPopulating(true);
-
-						try {
-							// Make sure the selection is really changed to the default
-							// value by changing it first to nothing
-							if (combo.getSelectionIndex() == 0) {
-								combo.select(-1);
-							}
-
-							// Now select the default value
-							combo.select(0);
-						}
-						finally {
-							setPopulating(false);
-						}
-					}
-				}
-			}
-		};
-	}
-
 	private ModifyListener buildModifyListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				if (!isPopulating()) {
 					CCombo combo = (CCombo) e.widget;
-					valueChanged(combo.getText());
+					if (combo.getData("populating") == Boolean.FALSE) {
+						valueChanged(combo.getText());
+					}
 				}
 			}
 		};
@@ -465,7 +417,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 
 		this.combo = buildEditableCCombo(container);
 		this.combo.addModifyListener(buildModifyListener());
-		this.combo.addFocusListener(buildFocusListener());
+		SWTUtil.attachDefaultValueHandler(this.combo);
 	}
 
 	/**
@@ -686,12 +638,14 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 		   ((oldValue != null) && !oldValue.equals(value))) {
 
 			setPopulating(true);
+			combo.setData("populating", Boolean.TRUE);
 
 			try {
 				setValue(value);
 			}
 			finally {
 				setPopulating(false);
+				combo.setData("populating", Boolean.FALSE);
 			}
 
 			if (value == null) {
