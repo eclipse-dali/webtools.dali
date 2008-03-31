@@ -43,7 +43,7 @@ public abstract class JoinColumnDialog<T extends JoinColumnStateObject> extends 
 	 */
 	@Override
 	protected AbstractDialogPane<?> buildLayout(Composite container) {
-		return new JoinColumnDialogPane(subjectHolder(), container);
+		return new JoinColumnDialogPane<T>(subjectHolder(), container);
 	}
 
 	/*

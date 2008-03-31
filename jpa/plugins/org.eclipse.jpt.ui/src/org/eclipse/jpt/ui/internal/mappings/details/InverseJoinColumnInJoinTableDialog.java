@@ -46,10 +46,17 @@ public class InverseJoinColumnInJoinTableDialog extends BaseJoinColumnDialog<Inv
 	 */
 	@Override
 	protected AbstractDialogPane<InverseJoinColumnInJoinTableStateObject> buildLayout(Composite container) {
-		return new BaseJoinColumnDialogPane<InverseJoinColumnInJoinTableStateObject>(
+		return new JoinColumnDialogPane<InverseJoinColumnInJoinTableStateObject>(
 			subjectHolder(),
 			container
-		);
+		)
+		
+		{
+			@Override
+			protected boolean isTableEditable() {
+				return false;
+			}
+		};
 	}
 
 	/*

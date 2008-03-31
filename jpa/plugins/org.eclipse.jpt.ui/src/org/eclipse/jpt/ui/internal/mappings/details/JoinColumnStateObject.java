@@ -12,10 +12,10 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
@@ -58,7 +58,7 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 			return joinColumn.getDefaultInsertable();
 		}
 
-		return JoinColumn.DEFAULT_INSERTABLE;
+		return BaseColumn.DEFAULT_INSERTABLE;
 	}
 
 	public Boolean getDefaultNullable() {
@@ -69,7 +69,7 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 			return joinColumn.getDefaultNullable();
 		}
 
-		return JoinColumn.DEFAULT_NULLABLE;
+		return BaseColumn.DEFAULT_NULLABLE;
 	}
 
 	public Boolean getDefaultUnique() {
@@ -80,7 +80,7 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 			return joinColumn.getDefaultUnique();
 		}
 
-		return JoinColumn.DEFAULT_UNIQUE;
+		return BaseColumn.DEFAULT_UNIQUE;
 	}
 
 	public Boolean getDefaultUpdatable() {
@@ -91,39 +91,20 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 			return joinColumn.getDefaultUpdatable();
 		}
 
-		return JoinColumn.DEFAULT_UPDATABLE;
+		return BaseColumn.DEFAULT_UPDATABLE;
 	}
 
 	public Boolean getInsertable() {
 		return insertable;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public JoinColumn getJoinColumn() {
 		return (JoinColumn) super.getJoinColumn();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	public Table getNameTable() {
-		return null;
-	}
-
 	public Boolean getNullable() {
 		return nullable;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	public Table getReferencedNameTable() {
-		return null;
 	}
 
 	protected abstract Schema getSchema();
@@ -136,9 +117,6 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 		return updatable;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initialize(Object owner, BaseJoinColumn baseJoinColumn) {
 
@@ -154,9 +132,6 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected String initialTable() {
 		JoinColumn joinColumn = getJoinColumn();

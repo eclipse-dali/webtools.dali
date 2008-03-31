@@ -101,14 +101,14 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 
 	@Override
 	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.initializeFromResource(resourcePersistentAttribute);
 		this.defaultTargetEntity = this.defaultTargetEntity(resourcePersistentAttribute);
+		super.initializeFromResource(resourcePersistentAttribute);
 	}
 	
 	@Override
 	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.update(resourcePersistentAttribute);
 		this.setDefaultTargetEntity(this.defaultTargetEntity(resourcePersistentAttribute));
+		super.update(resourcePersistentAttribute);
 	}
 	
 	@Override

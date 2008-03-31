@@ -127,7 +127,14 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 		Collections.sort(names);
 		return names.listIterator();
 	}
-
+	
+	private int columnsSize(Table table) {
+		if (table == null) {
+			return 0;
+		}
+		return table.columnsSize();
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 */
@@ -296,6 +303,10 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 		return columnNames(getNameTable());
 	}
 
+	public int columnsSize() {
+		return columnsSize(getNameTable());
+	}
+	
 	/**
 	 * Returns the reference column names if the database table can be resolved.
 	 *
@@ -304,6 +315,10 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 	 */
 	public ListIterator<String> referenceColumnNames() {
 		return columnNames(getReferencedNameTable());
+	}
+	
+	public int referenceColumnsSize() {
+		return columnsSize(getReferencedNameTable());
 	}
 
 	/**

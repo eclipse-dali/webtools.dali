@@ -49,10 +49,15 @@ public class JoinColumnInJoinTableDialog extends BaseJoinColumnDialog<JoinColumn
 	 */
 	@Override
 	protected AbstractDialogPane<JoinColumnInJoinTableStateObject> buildLayout(Composite container) {
-		return new BaseJoinColumnDialogPane<JoinColumnInJoinTableStateObject>(
+		return new JoinColumnDialogPane<JoinColumnInJoinTableStateObject>(
 			subjectHolder(),
 			container
-		);
+		) {
+			@Override
+			protected boolean isTableEditable() {
+				return false;
+			}
+		};
 	}
 
 	/*

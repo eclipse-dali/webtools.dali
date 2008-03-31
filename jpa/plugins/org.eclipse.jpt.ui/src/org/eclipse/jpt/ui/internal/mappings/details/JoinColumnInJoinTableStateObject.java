@@ -13,6 +13,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 
@@ -29,7 +30,7 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
  * @version 2.0
  * @since 2.0
  */
-public class JoinColumnInJoinTableStateObject extends BaseJoinColumnStateObject
+public class JoinColumnInJoinTableStateObject extends JoinColumnStateObject
 {
 	/**
 	 * Creates a new <code>JoinColumnInJoinTableStateObject</code>.
@@ -42,49 +43,31 @@ public class JoinColumnInJoinTableStateObject extends BaseJoinColumnStateObject
 		super(joinTable, joinColumn);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
+	@Override
+	protected Schema getSchema() {
+		return null;
+	}
+
 	@Override
 	public String getDefaultTable() {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	public JoinColumn getJoinColumn() {
-		return (JoinColumn) super.getJoinColumn();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public Table getNameTable() {
 		return getOwner().getDbTable();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public JoinTable getOwner() {
 		return (JoinTable) super.getOwner();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public Table getReferencedNameTable() {
 		return relationshipMapping().getTypeMapping().getPrimaryDbTable();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected String initialTable() {
 		return getOwner().getName();
@@ -99,9 +82,6 @@ public class JoinColumnInJoinTableStateObject extends BaseJoinColumnStateObject
 		return getOwner().getParent();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public ListIterator<String> tables() {
 		return new SingleElementListIterator<String>(initialTable());

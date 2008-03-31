@@ -242,6 +242,10 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 			protected ListIterator<String> listIterator_() {
 				return subject.names();
 			}
+			@Override
+			protected int size_() {
+				return subject.columnsSize();
+			}
 		};
 	}
 
@@ -287,6 +291,10 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 			@Override
 			protected ListIterator<String> listIterator_() {
 				return subject.referenceColumnNames();
+			}
+			@Override
+			protected int size_() {
+				return subject.referenceColumnsSize();
 			}
 		};
 	}

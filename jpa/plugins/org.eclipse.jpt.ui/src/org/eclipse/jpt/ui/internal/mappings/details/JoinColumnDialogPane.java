@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class JoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinColumnStateObject>
+public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJoinColumnDialogPane<T>
 {
 	/**
 	 * Creates a new <code>JoinColumnDialogPane</code>.
@@ -52,14 +52,14 @@ public class JoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinColumnSta
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public JoinColumnDialogPane(PropertyValueModel<? extends JoinColumnStateObject> subjectHolder,
+	public JoinColumnDialogPane(PropertyValueModel<? extends T> subjectHolder,
 	                            Composite parent)
 	{
 		super(subjectHolder, parent);
 	}
 
 	private WritablePropertyValueModel<Boolean> buildInsertableHolder() {
-		return new PropertyAspectAdapter<JoinColumnStateObject, Boolean>(getSubjectHolder(), JoinColumnStateObject.INSERTABLE_PROPERTY) {
+		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), JoinColumnStateObject.INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.getInsertable();
@@ -113,7 +113,7 @@ public class JoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinColumnSta
 	}
 
 	private WritablePropertyValueModel<Boolean> buildNullableHolder() {
-		return new PropertyAspectAdapter<JoinColumnStateObject, Boolean>(
+		return new PropertyAspectAdapter<T, Boolean>(
 			getSubjectHolder(),
 			JoinColumnStateObject.NULLABLE_PROPERTY)
 		{
@@ -170,7 +170,7 @@ public class JoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinColumnSta
 	}
 
 	private WritablePropertyValueModel<Boolean> buildUniqueHolder() {
-		return new PropertyAspectAdapter<JoinColumnStateObject, Boolean>(
+		return new PropertyAspectAdapter<T, Boolean>(
 			getSubjectHolder(),
 			JoinColumnStateObject.UNIQUE_PROPERTY)
 		{
@@ -227,7 +227,7 @@ public class JoinColumnDialogPane extends BaseJoinColumnDialogPane<JoinColumnSta
 	}
 
 	private WritablePropertyValueModel<Boolean> buildUpdatableHolder() {
-		return new PropertyAspectAdapter<JoinColumnStateObject, Boolean>(getSubjectHolder(), JoinColumnStateObject.UPDATABLE_PROPERTY) {
+		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), JoinColumnStateObject.UPDATABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.getUpdatable();
