@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.orm.details;
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
@@ -19,6 +20,8 @@ import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.mappings.details.OrmPersistentAttributeMapAsComposite;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -108,14 +111,14 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 		updateEnbabledState();
 	}
 
-//	private PropertyValueModel<OrmAttributeMapping> getMappingHolder() {
-//		return new TransformationPropertyValueModel<PersistentAttribute, OrmAttributeMapping>(getSubjectHolder()) {
-//			@Override
-//			protected OrmAttributeMapping transform_(PersistentAttribute value) {
-//				return (OrmAttributeMapping) value.getMapping();
-//			}
-//		};
-//	}
+	private PropertyValueModel<OrmAttributeMapping> getMappingHolder() {
+		return new TransformationPropertyValueModel<PersistentAttribute, OrmAttributeMapping>(getSubjectHolder()) {
+			@Override
+			protected OrmAttributeMapping transform_(PersistentAttribute value) {
+				return (OrmAttributeMapping) value.getMapping();
+			}
+		};
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -128,6 +131,9 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 			this,
 			buildSubPane(container, 0, 0, 5, 0)
 		);
+
+		// Entity type widgets
+		new OrmJavaAttributeChooser(this, getMappingHolder(), container);
 
 		// Mapping properties pane
 		PageBook attributePane = buildMappingPageBook(container);
