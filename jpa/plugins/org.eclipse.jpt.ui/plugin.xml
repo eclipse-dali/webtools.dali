@@ -239,7 +239,7 @@
 		</objectContribution>
 		
 		<objectContribution
-			id="org.eclipse.jpt.ui.persistenceXmlActions"
+			id="org.eclipse.jpt.ui.persistenceXmlFileActions"
 			objectClass="org.eclipse.core.resources.IFile"
 			nameFilter="persistence.xml">
 			<menu
@@ -264,31 +264,25 @@
 				enablesFor="1"/>
 		</objectContribution>
 		
-		<viewerContribution
-			id="org.eclipse.jpt.ui.jpaStructureViewActions"
-			targetID="org.eclipse.jpt.ui.jpaStructureView">
-			
+		<objectContribution
+			id="org.eclipse.jpt.ui.entityMappingsActions"
+			objectClass="org.eclipse.jpt.core.context.orm.EntityMappings">
 			<action
 				id="org.eclipse.jpt.ui.addPersistentClass"
 				class="org.eclipse.jpt.ui.internal.actions.AddPersistentClassAction"
 				label="%addPersistentClass"
-				menubarPath="additions">
-				<enablement>
-					<objectClass name="org.eclipse.jpt.core.context.orm.EntityMappings"/>
-				</enablement>
-			</action>
-			
+				menubarPath="additions"/>
+		</objectContribution>
+		
+		<objectContribution
+			id="org.eclipse.jpt.ui.ormPersistentTypeActions"
+			objectClass="org.eclipse.jpt.core.context.orm.OrmPersistentType">
 			<action
 				id="org.eclipse.jpt.ui.removePersistentClass"
 				class="org.eclipse.jpt.ui.internal.actions.RemovePersistentClassAction"
 				label="%removePersistentClass"
-				menubarPath="additions">
-				<enablement>
-					<objectClass name="org.eclipse.jpt.core.context.orm.OrmPersistentType"/>
-				</enablement>
-			</action>
-		
-		</viewerContribution>
+				menubarPath="additions"/>
+		</objectContribution>
 				<objectContribution
 			id="org.eclipse.jpt.ui.ormPersistentAttributeActions1"
 			objectClass="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute">
