@@ -150,5 +150,28 @@ public class OrmPersistentAttributeTests extends ContextModelTestCase
 		virtualAttribute = virtualAttributes.next();		
 		assertEquals("name", virtualAttribute.getName());
 	}
+	
+	public void testMakeVirtualNoUnderlyingJavaAttribute() throws Exception {
+		createTestType();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertEquals(2, ormPersistentType.virtualAttributesSize());
+		
+		ormPersistentType.virtualAttributes().next().makeSpecified();
+		ormPersistentType.virtualAttributes().next().makeSpecified();
 
+		
+		ormPersistentType.specifiedAttributes().next().getMapping().setName("noJavaAttribute");
+		assertEquals(1, ormPersistentType.virtualAttributesSize());
+		assertEquals(2, ormPersistentType.specifiedAttributesSize());
+		
+		
+		OrmPersistentAttribute specifiedOrmPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		specifiedOrmPersistentAttribute.makeVirtual();
+		assertEquals(1, ormPersistentType.virtualAttributesSize());
+		assertEquals(1, ormPersistentType.specifiedAttributesSize());
+		
+		assertEquals("id", ormPersistentType.virtualAttributes().next().getName());
+		assertEquals("name", ormPersistentType.specifiedAttributes().next().getName());
+	}
 }

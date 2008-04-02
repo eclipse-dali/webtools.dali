@@ -193,10 +193,16 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 		if (ormPersistentAttribute.isVirtual()) {
 			throw new IllegalStateException("Attribute is already virtual");
 		}
-		OrmPersistentAttribute virtualPersistentAttribute = createVirtualPersistentAttribute(ormPersistentAttribute.getMapping().getJavaPersistentAttribute());
-		this.virtualPersistentAttributes.add(virtualPersistentAttribute);
+		JavaPersistentAttribute javaPersistentAttribute = ormPersistentAttribute.getMapping().getJavaPersistentAttribute();
+		OrmPersistentAttribute virtualPersistentAttribute = null;
+		if (javaPersistentAttribute != null) {
+			virtualPersistentAttribute = createVirtualPersistentAttribute(javaPersistentAttribute);
+			this.virtualPersistentAttributes.add(virtualPersistentAttribute);
+		}
 		this.removeSpecifiedPersistentAttribute(ormPersistentAttribute);
-		fireItemAdded(VIRTUAL_ATTRIBUTES_LIST, virtualAttributesSize(), virtualPersistentAttribute);
+		if (virtualPersistentAttribute != null) {
+			fireItemAdded(VIRTUAL_ATTRIBUTES_LIST, virtualAttributesSize() - 1, virtualPersistentAttribute);
+		}
 	}
 	
 	public void makePersistentAttributeSpecified(OrmPersistentAttribute ormPersistentAttribute) {
