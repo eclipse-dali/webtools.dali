@@ -73,10 +73,10 @@ public class DefaultSharedCacheComposite extends AbstractFormPane<Caching>
 					Boolean defaultValue = subject().getDefaultSharedCacheDefault();
 					if (defaultValue != null) {
 						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
-						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCachingTab_defaultSharedCacheLabelDefault, defaultStringValue);
+						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCachingTab_defaultSharedCacheDefaultLabel, defaultStringValue);
 					}
 				}
-				return EclipseLinkUiMessages.PersistenceXmlCachingTab_defaultSharedCacheLabel;
+				return EclipseLinkUiMessages.PersistenceXmlCachingTab_sharedCacheDefaultLabel;
 			}
 		};
 	}
@@ -86,7 +86,7 @@ public class DefaultSharedCacheComposite extends AbstractFormPane<Caching>
 
 		this.buildTriStateCheckBoxWithDefault(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlCachingTab_defaultSharedCacheLabel,
+			EclipseLinkUiMessages.PersistenceXmlCachingTab_sharedCacheDefaultLabel,
 			this.buildDefaultSharedCacheHolder(),
 			this.buildDefaultSharedCacheStringHolder(),
 			null
