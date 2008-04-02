@@ -383,4 +383,13 @@ public class CachingValueModelTests extends PersistenceUnitTestCase
 			this.sharedCacheDefaultHolder, 
 			Caching.ECLIPSELINK_CACHE_SHARED_DEFAULT);
 	}
+
+	
+	protected void setProperty(String propertyName, Object newValue) throws Exception {
+		// do nothing
+	}
+
+	protected  void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
+		// do nothing
+	}
 }

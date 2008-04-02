@@ -193,4 +193,12 @@ public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
 			}
 		};
 	}
+	
+	protected void setProperty(String propertyName, Object newValue) throws Exception {
+		// do nothing
+	}
+
+	protected  void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
+		// do nothing
+	}
 }
