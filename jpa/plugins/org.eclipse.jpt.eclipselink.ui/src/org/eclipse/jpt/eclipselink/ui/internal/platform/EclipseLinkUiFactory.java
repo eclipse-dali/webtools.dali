@@ -15,9 +15,11 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
+import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
-import org.eclipse.jpt.eclipselink.ui.internal.caching.PersistenceXmlCachingTabItem;
-import org.eclipse.jpt.eclipselink.ui.internal.schema.generation.PersistenceXmlSchemaGenerationTabItem;
+import org.eclipse.jpt.eclipselink.ui.internal.caching.PersistenceXmlCachingTab;
+import org.eclipse.jpt.eclipselink.ui.internal.customization.PersistenceXmlCustomizationTab;
+import org.eclipse.jpt.eclipselink.ui.internal.schema.generation.PersistenceXmlSchemaGenerationTab;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
@@ -43,17 +45,31 @@ public class EclipseLinkUiFactory extends BaseJpaUiFactory
 		PropertyValueModel<EclipseLinkPersistenceUnit> eclipseLinkPersistenceUnitHolder = 
 			this.buildEclipseLinkPersistenceUnitHolder(subjectHolder);
 		ArrayList<JpaPageComposite<PersistenceUnit>> pages = 
-			new ArrayList<JpaPageComposite<PersistenceUnit>>(1);
+			new ArrayList<JpaPageComposite<PersistenceUnit>>(2);
 		
 		PropertyValueModel<SchemaGeneration> schemaGenHolder = 
 			this.buildSchemaGenerationHolder(eclipseLinkPersistenceUnitHolder);
-		pages.add(new PersistenceXmlSchemaGenerationTabItem(schemaGenHolder, parent, widgetFactory));
+		pages.add(new PersistenceXmlSchemaGenerationTab(schemaGenHolder, parent, widgetFactory));
 		
 		PropertyValueModel<Caching> cachingHolder = 
 			this.buildCachingHolder(eclipseLinkPersistenceUnitHolder);
-		pages.add(new PersistenceXmlCachingTabItem(cachingHolder, parent, widgetFactory));
+		pages.add(new PersistenceXmlCachingTab(cachingHolder, parent, widgetFactory));
+		
+		PropertyValueModel<Customization> customizationHolder = 
+			this.buildCustomizationHolder(eclipseLinkPersistenceUnitHolder);
+		pages.add(new PersistenceXmlCustomizationTab(customizationHolder, parent, widgetFactory));
 		
 		return pages.listIterator();
+	}
+
+	private PropertyValueModel<Customization> buildCustomizationHolder(
+				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
+		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Customization>(subjectHolder) {
+			@Override
+			protected Customization transform_(EclipseLinkPersistenceUnit value) {
+				return value.getCustomization();
+			}
+		};
 	}
 
 	private PropertyValueModel<Caching> buildCachingHolder(

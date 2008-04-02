@@ -58,6 +58,7 @@ public class EclipseLinkUiMessages extends NLS
 	public static String PersistenceXmlSchemaGenerationTab_outputMode;
 	
 	public static String PersistenceXmlSchemaGenerationTab_createDdlFileName;
+	public static String PersistenceXmlSchemaGenerationTab_dropDdlFileName;
 
 	public static String OutputModeComposite_both;
 	public static String OutputModeComposite_sql_script;
@@ -71,12 +72,15 @@ public class EclipseLinkUiMessages extends NLS
 	public static String PersistenceXmlCachingTab_title;
 	public static String PersistenceXmlCachingTab_sectionTitle;
 	public static String PersistenceXmlCachingTab_sectionDescription;
+	
 	public static String PersistenceXmlCachingTab_defaultCacheTypeLabel;
 	public static String PersistenceXmlCachingTab_cacheTypeLabel;
+	
 	public static String PersistenceXmlCachingTab_defaultSharedCacheLabel;
 	public static String PersistenceXmlCachingTab_sharedCacheLabel;
 
-	public static String PersistenceXmlCachingTab_defaultSharedCacheLabelDefault;
+	public static String PersistenceXmlCachingTab_defaultSharedCacheDefaultLabel;
+	public static String PersistenceXmlCachingTab_sharedCacheDefaultLabel;
 	
 	public static String CacheTypeComposite_full;
 	public static String CacheTypeComposite_hard_weak;
@@ -92,6 +96,35 @@ public class EclipseLinkUiMessages extends NLS
 	
 	public static String EntityDialog_selectEntity;
 	public static String EntityDialog_name;
+
+	public static String CachingEntityListComposite_groupTitle;
+	public static String CachingEntityListComposite_editButton;
+	
+	// Customization
+	public static String PersistenceXmlCustomizationTab_title;
+	public static String PersistenceXmlCustomizationTab_sectionTitle;
+	public static String PersistenceXmlCustomizationTab_sectionDescription;
+	
+	public static String PersistenceXmlCustomizationTab_throwExceptionsLabelDefault;
+	public static String PersistenceXmlCustomizationTab_throwExceptionsLabel;
+	
+	public static String PersistenceXmlCustomizationTab_weavingLabel;
+
+	public static String PersistenceXmlCustomizationTab_weavingLazyLabelDefault;
+	public static String PersistenceXmlCustomizationTab_weavingLazyLabel;
+		
+	public static String PersistenceXmlCustomizationTab_weavingChangeTrackingLabelDefault;
+	public static String PersistenceXmlCustomizationTab_weavingChangeTrackingLabel;
+		
+	public static String WeavingComposite_true_;
+	public static String WeavingComposite_false_;
+	public static String WeavingComposite_static_;
+
+	public static String CustomizationEntityListComposite_groupTitle;
+	public static String CustomizationEntityListComposite_editButton;
+	public static String PersistenceXmlCustomizationTab_customizerLabel;
+	public static String PersistenceXmlCustomizationTab_sessionCustomizerLabel;
+
 	
 	private EclipseLinkUiMessages() {
 		throw new UnsupportedOperationException();
