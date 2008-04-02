@@ -15,5 +15,6 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.jpt.eclipselink.core.internal;x-friends:="org.eclipse.jpt.eclipselink.ui,org.eclipse.jpt.eclipselink.core.tests",
  org.eclipse.jpt.eclipselink.core.internal.context;x-friends:="org.eclipse.jpt.eclipselink.ui,org.eclipse.jpt.eclipselink.core.tests",
  org.eclipse.jpt.eclipselink.core.internal.context.caching,
+ org.eclipse.jpt.eclipselink.core.internal.context.customization,
  org.eclipse.jpt.eclipselink.core.internal.context.schema.generation
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

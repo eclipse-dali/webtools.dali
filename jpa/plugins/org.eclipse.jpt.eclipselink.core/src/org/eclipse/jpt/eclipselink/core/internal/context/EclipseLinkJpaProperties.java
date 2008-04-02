@@ -15,6 +15,8 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.EclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
+import org.eclipse.jpt.eclipselink.core.internal.context.customization.EclipseLinkCustomization;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -35,6 +37,7 @@ public class EclipseLinkJpaProperties extends AbstractModel
 	
 	private SchemaGeneration schemaGeneration;
 	private Caching caching;
+	private Customization customization;
 
 	// private Logging logging;
 	private ListValueModel<Property> propertiesAdapter;
@@ -56,6 +59,7 @@ public class EclipseLinkJpaProperties extends AbstractModel
 		
 		this.schemaGeneration = this.buildSchemaGeneration();
 		this.caching = this.buildCaching();
+		this.customization = this.buildCustomization();
 		// TODO
 		// this.logging = this.buildLogging();
 	}
@@ -86,6 +90,10 @@ public class EclipseLinkJpaProperties extends AbstractModel
 		return new EclipseLinkCaching(this.persistenceUnit(), this.propertyListAdapter());
 	}
 
+	private Customization buildCustomization() {
+		return new EclipseLinkCustomization(this.persistenceUnit(), this.propertyListAdapter());
+	}
+
 	// TODO
 	// private Logging buildLogging() {
 	// return new EclipseLinkLogging( this.persistenceUnit());
@@ -98,6 +106,10 @@ public class EclipseLinkJpaProperties extends AbstractModel
 
 	public Caching getCaching() {
 		return this.caching;
+	}
+
+	public Customization getCustomization() {
+		return this.customization;
 	}
 
 	// TODO
