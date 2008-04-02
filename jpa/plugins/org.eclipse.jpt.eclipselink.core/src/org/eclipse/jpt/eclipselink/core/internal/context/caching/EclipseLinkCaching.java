@@ -125,9 +125,8 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 						item.getName().startsWith(ECLIPSELINK_SHARED_CACHE)) {
 					return true;
 				}
-				return false;
 		}
-		return true;
+		return isProperty;
 	}
 
 	/**
