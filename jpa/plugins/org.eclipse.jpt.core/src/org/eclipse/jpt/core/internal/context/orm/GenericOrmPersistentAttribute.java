@@ -238,99 +238,73 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 	}
 	
 	public void update(XmlId id) {
-		if (getMappingKey() == MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
-			((OrmIdMapping) getMapping()).update(id);
-		}
-		else {
+		if (getMappingKey() != MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
 			setSpecifiedMappingKey_(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
-			((OrmIdMapping) getMapping()).initialize(id);				
 		}
+		((OrmIdMapping) getMapping()).update(id);
 	}
 	
 	public void update(XmlEmbeddedId embeddedId) {
-		if (getMappingKey() == MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
-			((OrmEmbeddedIdMapping) getMapping()).update(embeddedId);
-		}
-		else {
+		if (getMappingKey() != MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
 			setSpecifiedMappingKey_(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
-			((OrmEmbeddedIdMapping) getMapping()).initialize(embeddedId);				
 		}
+		((OrmEmbeddedIdMapping) getMapping()).update(embeddedId);
 	}
 
 	public void update(XmlBasic basic) {
-		if (getMappingKey() == MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
-			((OrmBasicMapping) getMapping()).update(basic);
-		}
-		else {
+		if (getMappingKey() != MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
 			setSpecifiedMappingKey_(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-			((OrmBasicMapping) getMapping()).initialize(basic);				
 		}
+		((OrmBasicMapping) getMapping()).update(basic);
 	}
 	
 	public void update(XmlVersion version) {
-		if (getMappingKey() == MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY) {
-			((OrmVersionMapping) getMapping()).update(version);
-		}
-		else {
+		if (getMappingKey() != MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY) {
 			setSpecifiedMappingKey_(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
-			((OrmVersionMapping) getMapping()).initialize(version);				
 		}
+		((OrmVersionMapping) getMapping()).update(version);
 	}
+	
 	public void update(XmlManyToOne manyToOne) {
-		if (getMappingKey() == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
-			((OrmManyToOneMapping) getMapping()).update(manyToOne);
-		}
-		else {
+		if (getMappingKey() != MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
 			setSpecifiedMappingKey_(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-			((OrmManyToOneMapping) getMapping()).initialize(manyToOne);				
 		}
+		((OrmManyToOneMapping) getMapping()).update(manyToOne);
 	}
+	
 	public void update(XmlOneToMany oneToMany) {
-		if (getMappingKey() == MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
-			((OrmOneToManyMapping) getMapping()).update(oneToMany);
-		}
-		else {
+		if (getMappingKey() != MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
 			setSpecifiedMappingKey_(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-			((OrmOneToManyMapping) getMapping()).initialize(oneToMany);				
 		}
+		((OrmOneToManyMapping) getMapping()).update(oneToMany);
 	}
+	
 	public void update(XmlOneToOne oneToOne) {
-		if (getMappingKey() == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
-			((OrmOneToOneMapping) getMapping()).update(oneToOne);
-		}
-		else {
+		if (getMappingKey() != MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
 			setSpecifiedMappingKey_(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-			((OrmOneToOneMapping) getMapping()).initialize(oneToOne);				
 		}
+		((OrmOneToOneMapping) getMapping()).update(oneToOne);
 	}
+	
 	public void update(XmlManyToMany manyToMany) {
-		if (getMappingKey() == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
-			((OrmManyToManyMapping) getMapping()).update(manyToMany);
-		}
-		else {
+		if (getMappingKey() != MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
 			setSpecifiedMappingKey_(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-			((OrmManyToManyMapping) getMapping()).initialize(manyToMany);				
 		}
+		((OrmManyToManyMapping) getMapping()).update(manyToMany);
 	}
 
 	public void update(XmlEmbedded embedded) {
-		if (getMappingKey() == MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY) {
-			((OrmEmbeddedMapping) getMapping()).update(embedded);
-		}
-		else {
+		if (getMappingKey() != MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY) {
 			setSpecifiedMappingKey_(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
-			((OrmEmbeddedMapping) getMapping()).initialize(embedded);				
 		}
+		((OrmEmbeddedMapping) getMapping()).update(embedded);
 	}
 	
 	public void update(XmlTransient transientResource) {
-		if (getMappingKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
-			((OrmTransientMapping) getMapping()).update(transientResource);
-		}
-		else {
+		if (getMappingKey() != MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
 			setSpecifiedMappingKey_(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
-			((OrmTransientMapping) getMapping()).initialize(transientResource);				
 		}
+		((OrmTransientMapping) getMapping()).update(transientResource);
 	}
 	
 	public JpaStructureNode getStructureNode(int offset) {
