@@ -60,28 +60,43 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		this.populatePu();
 	}
 
-	private ListValueModel<Property> buildPropertiesAspectAdapter(PropertyValueModel<PersistenceUnit> subjectHolder) {
-		return new ListAspectAdapter<PersistenceUnit, Property>(subjectHolder, PersistenceUnit.PROPERTIES_LIST) {
-			@Override
-			protected ListIterator<Property> listIterator_() {
-				return this.subject.properties();
-			}
+	// ****** abstract methods *******
+	protected abstract PersistenceUnitProperties model();
 
-			@Override
-			protected int size_() {
-				return this.subject.propertiesSize();
-			}
-		};
-	}
+	/**
+	 * Initializes directly the PU properties before testing. Cannot use
+	 * Property Holder to initialize because it is not created yet
+	 */
+	protected abstract void populatePu();
+
+	/**
+	 * Sets the model's property identified by the given propertyName.
+	 * Used in verifySetProperty()
+	 * 
+	 * @param propertyName
+	 *            name of property to be set
+	 * @param newValue
+	 *            value of property
+	 * @throws Exception
+	 */
+	protected abstract void setProperty(String propertyName, Object newValue) throws Exception;
+	
+	/**
+	 * Verifies the model's property identified by the given propertyName
+	 * Used in verifySetProperty() and verifyAddRemoveProperty
+	 * 
+	 * @param propertyName
+	 *            name of property to be verified
+	 * @param expectedValue
+	 * @throws Exception
+	 */
+	protected abstract void verifyPutProperty(String propertyName, Object expectedValue) throws Exception;
+
+
+	// ****** convenience test methods *******
 
 	protected String getEclipseLinkStringValueOf(Object value) {
 		return EclipseLinkPersistenceUnitProperties.getEclipseLinkStringValueOf(value);
-	}
-
-	/** ****** convenience test methods ******* */
-	protected void clearEvent() {
-		this.propertyChangedEvent = null;
-		this.propertyChangedEventCount = 0;
 	}
 
 	/**
@@ -112,25 +127,11 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		this.persistenceUnit().putProperty(elKey, null, false);
 	}
 
-	/** ****** verify methods ******* */
-	protected abstract PersistenceUnitProperties model();
-
-	/**
-	 * Initializes directly the PU properties before testing. Cannot use
-	 * Property Holder to initialize because it is not created yet
-	 */
-	protected abstract void populatePu();
-
-	// TODO make abstract
-	protected void setProperty(String propertyName, Object newValue) throws Exception {
-		throw new IllegalStateException("Missing Implementation for setting: " + propertyName);
+	protected void clearEvent() {
+		this.propertyChangedEvent = null;
+		this.propertyChangedEventCount = 0;
 	}
-
-	// TODO make abstract
-	protected void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
-		throw new IllegalStateException("Missing Implementation for verifying: " + propertyName);
-	}
-
+	
 	protected void throwMissingDefinition(String methodName, String propertyName) throws NoSuchFieldException {
 		throw new NoSuchFieldException("Missing Definition for: " + methodName + "( " + propertyName + ")");
 	}
@@ -138,7 +139,8 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	protected void throwUnsupportedOperationException(ListChangeEvent e) {
 		throw new UnsupportedOperationException(e.getAspectName());
 	}
-
+	
+	// ****** verify methods *******
 	/**
 	 * Performs three value tests:<br>
 	 * 1. subject value<br>
