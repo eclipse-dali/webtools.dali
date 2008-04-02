@@ -164,9 +164,10 @@ public class PersistenceUnitGeneralComposite extends AbstractFormPane<Persistenc
 	protected void initializeLayout(Composite container) {
 
 		initializeGeneralPane(container);
+		initializeMappedClassesPane(container);
 		initializeJPAMappingDescriptorsPane(container);
 //		initializeJavaArchivesPane(container);
-		initializeMappedClassesPane(container);
+		
 	}
 
 	private void initializeMappedClassesPane(Composite container) {
