@@ -19,11 +19,11 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 /**
- *  PersistenceUnitCachingComposite
+ *  EclipseLinkCachingComposite
  */
-public class PersistenceUnitCachingComposite extends AbstractFormPane<Caching>
+public class EclipseLinkCachingComposite extends AbstractFormPane<Caching>
 {
-	public PersistenceUnitCachingComposite(AbstractFormPane<Caching> subjectHolder,
+	public EclipseLinkCachingComposite(AbstractFormPane<Caching> subjectHolder,
 	                                       Composite container) {
 
 		super(subjectHolder, container);

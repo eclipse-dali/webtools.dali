@@ -15,21 +15,15 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 
 /**
- * @version 2.0
- * @since 2.0
+ * EntityCacheProperties
  */
-public class EntityCaching extends AbstractModel {
+public class EntityCacheProperties extends AbstractModel {
 
 	private Caching caching;
 	private String entityName;
 
-	/**
-	 * Creates a new <code>EntityCaching</code>.
-	 *
-	 * @param caching
-	 * @param entityName
-	 */
-	public EntityCaching(Caching caching, String entityName) {
+	// ********** constructors **********
+	public EntityCacheProperties(Caching caching, String entityName) {
 		super();
 		this.caching    = caching;
 		this.entityName = entityName;
@@ -60,7 +54,7 @@ public class EntityCaching extends AbstractModel {
 	}
 
 	public Boolean getSharedCacheDefault() {
-		return this.caching.getSharedCacheDefault();
+		return this.caching.getDefaultSharedCache();
 	}
 
 	public void setCacheSize(Integer cachingSize) {

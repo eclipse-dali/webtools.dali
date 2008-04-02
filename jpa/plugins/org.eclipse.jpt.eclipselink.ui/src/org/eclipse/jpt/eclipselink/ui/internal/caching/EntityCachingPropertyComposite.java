@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class EntityCachingPropertyComposite extends AbstractPane<EntityCaching> {
+public class EntityCachingPropertyComposite extends AbstractPane<EntityCacheProperties> {
 
 	/**
 	 * Creates a new <code>EntityCachingPropertyComposite</code>.
@@ -28,7 +28,7 @@ public class EntityCachingPropertyComposite extends AbstractPane<EntityCaching> 
 	 * @param parent The parent container
 	 */
 	public EntityCachingPropertyComposite(AbstractPane<Caching> parentComposite,
-	                                      PropertyValueModel<EntityCaching> subjectHolder,
+	                                      PropertyValueModel<EntityCacheProperties> subjectHolder,
 	                                      Composite parent) {
 
 		super(parentComposite, subjectHolder, parent);
@@ -47,6 +47,6 @@ public class EntityCachingPropertyComposite extends AbstractPane<EntityCaching> 
 		new CacheSizeComposite(this, container);
 
 		// Share Cache
-		new ShareCacheComposite(this, container);
+		new SharedCacheComposite(this, container);
 	}
 }

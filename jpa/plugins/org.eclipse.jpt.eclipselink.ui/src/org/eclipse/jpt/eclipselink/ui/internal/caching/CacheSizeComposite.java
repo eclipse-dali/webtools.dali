@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * CacheSizeComposite
  */
-public class CacheSizeComposite extends AbstractPane<EntityCaching>
+public class CacheSizeComposite extends AbstractPane<EntityCacheProperties>
 {
 	/**
 	 * Creates a new <code>CacheTypeComposite</code>.
@@ -28,14 +28,14 @@ public class CacheSizeComposite extends AbstractPane<EntityCaching>
 	 * @param parent
 	 *            The parent container
 	 */
-	public CacheSizeComposite(AbstractPane<EntityCaching> parentComposite,
+	public CacheSizeComposite(AbstractPane<EntityCacheProperties> parentComposite,
 	                          Composite parent) {
 
 		super(parentComposite, parent);
 	}
 
 	private WritablePropertyValueModel<Integer> buildCacheSizeHolder() {
-		return new PropertyAspectAdapter<EntityCaching, Integer>(getSubjectHolder(), Caching.CACHE_SIZE_PROPERTY) {
+		return new PropertyAspectAdapter<EntityCacheProperties, Integer>(getSubjectHolder(), Caching.CACHE_SIZE_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
 				Integer value = subject.getCacheSize();

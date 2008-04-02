@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * CacheTypeComposite
  */
-public class CacheTypeComposite extends AbstractPane<EntityCaching>
+public class CacheTypeComposite extends AbstractPane<EntityCacheProperties>
 {
 	/**
 	 * Creates a new <code>CacheTypeComposite</code>.
@@ -30,14 +30,14 @@ public class CacheTypeComposite extends AbstractPane<EntityCaching>
 	 * @param parent
 	 *            The parent container
 	 */
-	public CacheTypeComposite(AbstractPane<EntityCaching> parentComposite,
+	public CacheTypeComposite(AbstractPane<EntityCacheProperties> parentComposite,
 	                          Composite parent) {
 
 		super(parentComposite, parent);
 	}
 
-	private EnumFormComboViewer<EntityCaching, CacheType> buildCacheTypeCombo(Composite container) {
-		return new EnumFormComboViewer<EntityCaching, CacheType>(this, container) {
+	private EnumFormComboViewer<EntityCacheProperties, CacheType> buildCacheTypeCombo(Composite container) {
+		return new EnumFormComboViewer<EntityCacheProperties, CacheType>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);

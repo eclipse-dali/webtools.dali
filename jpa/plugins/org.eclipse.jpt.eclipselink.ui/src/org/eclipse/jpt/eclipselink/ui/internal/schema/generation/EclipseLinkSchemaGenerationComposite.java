@@ -20,12 +20,12 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 /**
- * PersistenceUnitSchemaGenerationComposite
+ * EclipseLinkSchemaGenerationComposite
  */
-public class PersistenceUnitSchemaGenerationComposite
+public class EclipseLinkSchemaGenerationComposite
 	extends AbstractFormPane<SchemaGeneration>
 {
-	public PersistenceUnitSchemaGenerationComposite(
+	public EclipseLinkSchemaGenerationComposite(
 					AbstractFormPane<SchemaGeneration> subjectHolder, 
 					Composite container) {
 		super(subjectHolder, container, false);
@@ -49,10 +49,9 @@ public class PersistenceUnitSchemaGenerationComposite
 		
 		// Create DDL File Name:
 		new CreateDdlFileNameComposite(this, composite);
-		// TODO
-		// // Drop DDL File Name:
-		// this.dropDdlFileNameComboViewer = new DropDdlChooser( composite,
-		// this.commandStack, getWidgetFactory());
+		// Drop DDL File Name:
+		new DropDdlFileNameComposite(this, composite);
+		
 		return;
 	}
 

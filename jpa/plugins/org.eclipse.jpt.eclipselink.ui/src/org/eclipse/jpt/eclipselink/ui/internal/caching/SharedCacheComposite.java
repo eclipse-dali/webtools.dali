@@ -21,11 +21,11 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- *  ShareCacheComposite
+ *  SharedCacheComposite
  */
-public class ShareCacheComposite extends AbstractPane<EntityCaching>
+public class SharedCacheComposite extends AbstractPane<EntityCacheProperties>
 {
-	private TriStateCheckBox shareCacheCheckBox;
+	private TriStateCheckBox sharedCacheCheckBox;
 
 	/**
 	 * Creates a new <code>ShareCacheComposite</code>.
@@ -33,30 +33,14 @@ public class ShareCacheComposite extends AbstractPane<EntityCaching>
 	 * @param parentController The parent container of this one
 	 * @param parent The parent container
 	 */
-	public ShareCacheComposite(AbstractPane<EntityCaching> parentComposite,
+	public SharedCacheComposite(AbstractPane<EntityCacheProperties> parentComposite,
 	                           Composite parent) {
 
 		super(parentComposite, parent);
 	}
 
-	private PropertyValueModel<String> buildSharedCacheStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildSharedCacheHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if ((subject() != null) && (value == null)) {
-					Boolean defaultValue = subject().getSharedCacheDefault();
-					if (defaultValue != null) {
-						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
-						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCachingTab_defaultSharedCacheLabelDefault, defaultStringValue);
-					}
-				}
-				return EclipseLinkUiMessages.PersistenceXmlCachingTab_sharedCacheLabel;
-			}
-		};
-	}
-
 	private WritablePropertyValueModel<Boolean> buildSharedCacheHolder() {
-		return new PropertyAspectAdapter<EntityCaching, Boolean>(getSubjectHolder(), Caching.SHARED_CACHE_PROPERTY) {
+		return new PropertyAspectAdapter<EntityCacheProperties, Boolean>(getSubjectHolder(), Caching.SHARED_CACHE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSharedCache();
@@ -81,10 +65,26 @@ public class ShareCacheComposite extends AbstractPane<EntityCaching>
 		};
 	}
 
+	private PropertyValueModel<String> buildSharedCacheStringHolder() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildSharedCacheHolder()) {
+			@Override
+			protected String transform(Boolean value) {
+				if ((subject() != null) && (value == null)) {
+					Boolean defaultValue = subject().getSharedCacheDefault();
+					if (defaultValue != null) {
+						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
+						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCachingTab_defaultSharedCacheLabel, defaultStringValue);
+					}
+				}
+				return EclipseLinkUiMessages.PersistenceXmlCachingTab_sharedCacheLabel;
+			}
+		};
+	}
+
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		shareCacheCheckBox = this.buildTriStateCheckBoxWithDefault(
+		this.sharedCacheCheckBox = this.buildTriStateCheckBoxWithDefault(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlCachingTab_sharedCacheLabel,
 			this.buildSharedCacheHolder(),
@@ -97,6 +97,6 @@ public class ShareCacheComposite extends AbstractPane<EntityCaching>
 	@Override
 	public void enableWidgets(boolean enabled) {
 		super.enableWidgets(enabled);
-		shareCacheCheckBox.setEnabled(enabled);
+		this.sharedCacheCheckBox.setEnabled(enabled);
 	}
 }
