@@ -860,7 +860,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	protected boolean impliedMappingFileExists() {
 		OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForRead(getJpaProject().getProject());
-		OrmResource or = oae.getResource(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		OrmResource or = oae.getResource(JptCorePlugin.getDefaultOrmXmlDeploymentURI(getJpaProject().getProject()));
 		boolean exists =  or != null && or.exists();
 		oae.dispose();
 		return exists;

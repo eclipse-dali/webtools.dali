@@ -188,19 +188,29 @@ public class JptCorePlugin extends Plugin {
 	}
 
 	/**
-	 * Return the persistence.xml deployment URI for the specified project.
+	 * Return the persistence.xml (specified as "META-INF/persistence.xml")
+	 * deployment URI for the specified project.
 	 */
 	public static String getPersistenceXmlDeploymentURI(IProject project) {
 		return getDeploymentURI(project, DEFAULT_PERSISTENCE_XML_FILE_PATH);
 	}
 
 	/**
-	 * Return the orm.xml deployment URI for the specified project.
+	 * Return the default mapping file (specified as "META-INF/orm.xml")
+	 * deployment URI for the specified project.
 	 */
-	public static String getOrmXmlDeploymentURI(IProject project) {
+	public static String getDefaultOrmXmlDeploymentURI(IProject project) {
 		return getDeploymentURI(project, DEFAULT_ORM_XML_FILE_PATH);
 	}
-
+	
+	/**
+	 * Return the mapping file (specified as "META-INF/<mappingFileName>")
+	 * deployment URI for the specified project.
+	 */
+	public static String getOrmXmlDeploymentURI(IProject project, String mappingFileName) {
+		return getDeploymentURI(project, mappingFileName);
+	}
+	
 	/**
 	 * Tweak the specified deployment URI if the specified project
 	 * has a web facet.

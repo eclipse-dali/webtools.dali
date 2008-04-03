@@ -263,7 +263,7 @@ public class GenericJpaModel
 
 	private void createOrmXml(IProject project) {
 		OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForWrite(project);
-		OrmResource resource = oae.getResource(JptCorePlugin.getOrmXmlDeploymentURI(project));
+		OrmResource resource = oae.getResource(JptCorePlugin.getDefaultOrmXmlDeploymentURI(project));
 
 		// 202811 - do not add content if it is already present
 		if (resource.getEntityMappings() == null) {

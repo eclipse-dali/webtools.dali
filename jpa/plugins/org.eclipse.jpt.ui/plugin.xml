@@ -329,7 +329,7 @@
 		<navigatorContent
 			id="org.eclipse.jpt.ui.jpaNavigatorContent"
 			name="%jpaNavigatorContent" 
-			priority="higher"
+			priority="highest"
 			icon="icons/full/obj16/jpa-content.gif"
 			activeByDefault="true"
 			contentProvider="org.eclipse.jpt.ui.internal.navigator.JpaNavigatorContentProvider"

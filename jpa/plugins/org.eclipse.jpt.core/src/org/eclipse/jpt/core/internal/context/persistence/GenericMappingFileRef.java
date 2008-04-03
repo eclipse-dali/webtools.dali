@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
@@ -127,8 +128,9 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 	
 	protected void updateOrmXml() {
 		if (fileName != null) {
-			OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForRead(getJpaProject().getProject());
-			OrmResource ormResource = oae.getResource(fileName);
+			IProject project = getJpaProject().getProject();
+			OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForRead(project);
+			OrmResource ormResource = oae.getResource(JptCorePlugin.getOrmXmlDeploymentURI(project, fileName));
 			if (ormResource != null && ormResource.exists()) {
 				if (ormXml != null) {
 					ormXml.update(ormResource);
