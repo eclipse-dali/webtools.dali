@@ -9,6 +9,25 @@
 	
 	
 	<extension
+		point="org.eclipse.core.expressions.definitions">
+		
+		<!-- 
+			A test for determining whether our current context is within the 
+			JPA Structure View                                
+		-->
+		<definition
+			id="org.eclipse.jpt.ui.reference.inJpaStructureView">
+			<with
+				variable="activePartId">
+				<equals
+					value="org.eclipse.jpt.ui.jpaStructureView"/>
+			</with>
+		</definition>
+		
+	</extension>
+	
+	
+	<extension
 		point="org.eclipse.core.runtime.adapters">
 		
 		<factory
@@ -23,21 +42,8 @@
 			<adapter type="org.eclipse.jpt.core.JpaFile"/>
 		</factory>
 		
-		<factory
-			adaptableType="org.eclipse.jpt.core.context.PersistentAttribute"
-			class="org.eclipse.jpt.ui.internal.actions.PersistentAttributeActionFilter$Factory">
-			<adapter
-				type="org.eclipse.ui.IActionFilter"/>
-		</factory>
-		
-		<factory
-			adaptableType="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"
-			class="org.eclipse.jpt.ui.internal.actions.OrmPersistentAttributeActionFilter$Factory">
-			<adapter
-				type="org.eclipse.ui.IActionFilter"/>
-		</factory>
-		
 	</extension>
+	
 	
 <!-- =================================================================================== -->
 <!-- Extension: Java Completion Proposal Computer                                        -->
@@ -53,7 +59,8 @@
 			<partition type="__java_string"/>
 		</javaCompletionProposalComputer>
 	</extension>
-
+	
+	
 	<extension
 		point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
 		id="jpaProposalCategory"
@@ -69,6 +76,47 @@
 		<jpaPlatform
 			id="generic"
 			class="org.eclipse.jpt.ui.internal.platform.generic.GenericPlatformUi"/>
+		
+	</extension>
+	
+	
+	<extension
+		point="org.eclipse.ui.commands">
+		
+		<category
+			id="org.eclipse.jpt.ui.jpaStructureViewCommands"
+			name="%jpaStructureViewCommandCategory">
+		</category>
+		
+		<command
+			id="org.eclipse.jpt.ui.entityMappingsAddPersistentClass"
+			name="%addPersistentClass"
+			categoryId="org.eclipse.jpt.ui.jpaStructureViewCommands">
+		</command>
+		
+		<command
+			id="org.eclipse.jpt.ui.persistentTypeRemovePersistentClass"
+			name="%removePersistentClass"
+			categoryId="org.eclipse.jpt.ui.jpaStructureViewCommands">
+		</command>
+		
+		<command
+			id="org.eclipse.jpt.ui.persistentAttributeAddToXml"
+			name="%addPersistentAttributeToXml"
+			categoryId="org.eclipse.jpt.ui.jpaStructureViewCommands">
+		</command>
+		
+		<command
+			id="org.eclipse.jpt.ui.persistentAttributeAddToXmlAndMap"
+			name="%addPersistentAttributeToXmlAndMap"
+			categoryId="org.eclipse.jpt.ui.jpaStructureViewCommands">
+		</command>
+		
+		<command
+			id="org.eclipse.jpt.ui.persistentAttributeRemoveFromXml"
+			name="%removePersistentAttributeFromXml"
+			categoryId="org.eclipse.jpt.ui.jpaStructureViewCommands">
+		</command>
 		
 	</extension>
 	
@@ -89,6 +137,175 @@
       		<contentTypeBinding
 				contentTypeId="org.eclipse.jpt.core.content.persistence"/>
 		</editor>
+		
+ 	</extension>
+ 	
+ 	
+ 	<extension
+		point="org.eclipse.ui.handlers">
+		
+		<handler
+			commandId="org.eclipse.jpt.ui.entityMappingsAddPersistentClass"
+			class="org.eclipse.jpt.ui.internal.commands.AddPersistentClassHandler">
+			<activeWhen>
+				<reference
+					definitionId="org.eclipse.jpt.ui.reference.inJpaStructureView">
+				</reference>
+			</activeWhen>
+			<enabledWhen>
+				<and>
+					<count value="1"/>
+					<iterate>
+						<instanceof value="org.eclipse.jpt.core.context.orm.EntityMappings"/>
+					</iterate>
+				</and>
+			</enabledWhen>
+		</handler>
+		
+		<handler
+			commandId="org.eclipse.jpt.ui.persistentTypeRemovePersistentClass"
+			class="org.eclipse.jpt.ui.internal.commands.RemovePersistentClassHandler">
+			<activeWhen>
+				<reference
+					definitionId="org.eclipse.jpt.ui.reference.inJpaStructureView">
+				</reference>
+			</activeWhen>
+			<enabledWhen>
+				<iterate>
+					<instanceof value="org.eclipse.jpt.core.context.orm.OrmPersistentType"/>
+				</iterate>
+			</enabledWhen>
+		</handler>
+		
+		<handler
+			commandId="org.eclipse.jpt.ui.persistentAttributeAddToXml"
+			class="org.eclipse.jpt.ui.internal.commands.AddPersistentAttributeToXmlHandler">
+			<activeWhen>
+				<reference
+					definitionId="org.eclipse.jpt.ui.reference.inJpaStructureView">
+				</reference>
+			</activeWhen>
+			<enabledWhen>
+				<iterate>
+					<and>
+						<instanceof value="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"/>
+						<test property="org.eclipse.jpt.core.isVirtual" value="true"/>
+						<test property="org.eclipse.jpt.core.isMapped" value="true"/>
+					</and>
+				</iterate>
+			</enabledWhen>
+		</handler>
+		
+		<handler
+			commandId="org.eclipse.jpt.ui.persistentAttributeAddToXmlAndMap"
+			class="org.eclipse.jpt.ui.internal.commands.AddPersistentAttributeToXmlAndMapHandler">
+			<activeWhen>
+				<reference
+					definitionId="org.eclipse.jpt.ui.reference.inJpaStructureView">
+				</reference>
+			</activeWhen>
+			<enabledWhen>
+				<iterate>
+					<and>
+						<instanceof value="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"/>
+						<test property="org.eclipse.jpt.core.isVirtual" value="true"/>
+					</and>
+				</iterate>
+			</enabledWhen>
+		</handler>
+		
+		<handler
+			commandId="org.eclipse.jpt.ui.persistentAttributeRemoveFromXml"
+			class="org.eclipse.jpt.ui.internal.commands.RemovePersistentAttributeFromXmlHandler">
+			<activeWhen>
+				<reference
+					definitionId="org.eclipse.jpt.ui.reference.inJpaStructureView">
+				</reference>
+			</activeWhen>
+			<enabledWhen>
+				<iterate>
+					<and>
+						<instanceof value="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"/>
+						<test property="org.eclipse.jpt.core.isVirtual" value="false"/>
+					</and>
+				</iterate>
+			</enabledWhen>
+		</handler>
+		
+ 	</extension>
+ 	
+ 	
+ 	<extension
+		point="org.eclipse.ui.menus">
+		
+		<menuContribution
+			locationURI="popup:org.eclipse.jpt.ui.jpaStructureView">
+			<command
+				commandId="org.eclipse.jpt.ui.entityMappingsAddPersistentClass">
+				<visibleWhen>
+					<with
+						variable="selection">
+						<iterate>
+							<instanceof value="org.eclipse.jpt.core.context.orm.EntityMappings"/>
+						</iterate>
+					</with>
+				</visibleWhen>
+			</command>
+			<command
+				commandId="org.eclipse.jpt.ui.persistentTypeRemovePersistentClass">
+				<visibleWhen>
+					<with
+						variable="selection">
+						<iterate>
+							<instanceof value="org.eclipse.jpt.core.context.orm.OrmPersistentType"/>
+						</iterate>
+					</with>
+				</visibleWhen>
+			</command>
+			<command
+				commandId="org.eclipse.jpt.ui.persistentAttributeAddToXml">
+				<visibleWhen>
+					<with
+						variable="selection">
+						<iterate>
+							<and>
+								<instanceof value="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"/>
+								<test property="org.eclipse.jpt.core.isVirtual" value="true"/>
+							</and>
+						</iterate>
+					</with>
+				</visibleWhen>
+			</command>
+			<command
+				commandId="org.eclipse.jpt.ui.persistentAttributeAddToXmlAndMap">
+				<visibleWhen>
+					<with
+						variable="selection">
+						<iterate>
+							<and>
+								<instanceof value="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"/>
+								<test property="org.eclipse.jpt.core.isVirtual" value="true"/>
+							</and>
+						</iterate>
+					</with>
+				</visibleWhen>
+			</command>
+			<command
+				commandId="org.eclipse.jpt.ui.persistentAttributeRemoveFromXml">
+				<visibleWhen>
+					<with
+						variable="selection">
+						<iterate>
+							<and>
+								<instanceof value="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"/>
+								<test property="org.eclipse.jpt.core.isVirtual" value="false"/>
+							</and>
+						</iterate>
+					</with>
+				</visibleWhen>
+			</command>
+			
+		</menuContribution>
 		
  	</extension>
 	
@@ -177,6 +394,7 @@
 		
 	</extension>
 	
+	
 	<extension
 		point="org.eclipse.ui.popupMenus">
 		
@@ -264,90 +482,8 @@
 				enablesFor="1"/>
 		</objectContribution>
 		
-		<objectContribution
-			id="org.eclipse.jpt.ui.entityMappingsActions"
-			objectClass="org.eclipse.jpt.core.context.orm.EntityMappings">
-			<action
-				id="org.eclipse.jpt.ui.addPersistentClass"
-				class="org.eclipse.jpt.ui.internal.actions.AddPersistentClassAction"
-				label="%addPersistentClass"
-				menubarPath="additions"/>
-		</objectContribution>
-		
-		<objectContribution
-			id="org.eclipse.jpt.ui.ormPersistentTypeActions"
-			objectClass="org.eclipse.jpt.core.context.orm.OrmPersistentType">
-			<action
-				id="org.eclipse.jpt.ui.removePersistentClass"
-				class="org.eclipse.jpt.ui.internal.actions.RemovePersistentClassAction"
-				label="%removePersistentClass"
-				menubarPath="additions"/>
-		</objectContribution>
-				<objectContribution
-			id="org.eclipse.jpt.ui.ormPersistentAttributeActions1"
-			objectClass="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute">
-			
-			<action
-				id="org.eclipse.jpt.ui.addPersistentAttributeToXml"
-				class="org.eclipse.jpt.ui.internal.actions.AddPersistentAttributeToXmlAction"
-				label="%addPersistentAttributeToXml"
-				menubarPath="additions"/>
-			<visibility>
-				<and>
-					<objectState
-						name="isVirtual"
-						value="true"/>
-					<objectState
-						name="isMapped"
-						value="true"/>
-				</and>
-			</visibility>
-			
-		</objectContribution>
-		
-		<objectContribution
-			id="org.eclipse.jpt.ui.ormPersistentAttributeActions2"
-			objectClass="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute">
-			
-			<action
-				id="org.eclipse.jpt.ui.addPersistentAttributeToXmlAndMap"
-				class="org.eclipse.jpt.ui.internal.actions.AddPersistentAttributeToXmlAndMapAction"
-				label="%addPersistentAttributeToXmlAndMap"
-				enablesFor="1"
-				menubarPath="additions"/>
-			<visibility>
-				<and>
-					<objectState
-						name="isVirtual"
-						value="true"/>
-					<objectState
-						name="isMapped"
-						value="false"/>
-				</and>
-			</visibility>
-			
-		</objectContribution>
-		
-		<objectContribution
-			id="org.eclipse.jpt.ui.ormPersistentAttributeActions3"
-			objectClass="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute">
-			
-			<action
-				id="org.eclipse.jpt.ui.removePersistentAttributeFromXml"
-				class="org.eclipse.jpt.ui.internal.actions.RemovePersistentAttributeFromXmlAction"
-				label="%removePersistentAttributeFromXml"
-				menubarPath="additions"/>
-			<visibility>
-				<objectState
-					name="isVirtual"
-					value="false"/>
-			</visibility>
-			
-		</objectContribution>
-		
-		
-	
 	</extension>
+	
 	
 	<extension
 		point="org.eclipse.ui.preferencePages">
@@ -385,17 +521,17 @@
 			name="%jpaPerspective"/>
 		
 		<view
+	        id="org.eclipse.jpt.ui.jpaStructureView"
 	        category="org.eclipse.jpt.ui"
 	        class="org.eclipse.jpt.ui.internal.views.structure.JpaStructureView"
 	        icon="icons/full/eview16/jpa_structure.gif"
-	        id="org.eclipse.jpt.ui.jpaStructureView"
 	        name="%jpaStructure"/>
-		
+			
 		<view
-	        category="org.eclipse.jpt.ui"
+			id="org.eclipse.jpt.ui.jpaDetailsView"
+			category="org.eclipse.jpt.ui"
 	        class="org.eclipse.jpt.ui.internal.views.JpaDetailsView"
 	        icon="icons/full/eview16/jpa_details.gif"
-			id="org.eclipse.jpt.ui.jpaDetailsView"
 			name="%jpaDetails"/>
 		
 	</extension>

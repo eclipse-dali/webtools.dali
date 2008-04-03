@@ -10,10 +10,32 @@
 		name="%JPA_PLATFORM"
 		schema="schema/jpaPlatform.exsd"
 	/>
-
-
+	
+	
 	<!-- ***** Eclipse core extensions ***** -->
-
+	
+	<extension 
+		point="org.eclipse.core.expressions.propertyTesters">
+		
+		<propertyTester
+			id="org.eclipse.jpt.core.propertyTester.persistentAttribute"
+			type="org.eclipse.jpt.core.context.PersistentAttribute"
+			namespace="org.eclipse.jpt.core"
+			properties="isMapped"
+			class="org.eclipse.jpt.core.internal.context.PersistentAttributePropertyTester">
+		</propertyTester>
+		
+		<propertyTester
+			id="org.eclipse.jpt.core.propertyTester.ormPersistentAttribute"
+			type="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"
+			namespace="org.eclipse.jpt.core"
+			properties="isVirtual"
+			class="org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttributePropertyTester">
+		</propertyTester>
+		
+	</extension>
+	
+	
 	<extension
 		point="org.eclipse.core.resources.markers"
 		id="jpaProblemMarker"
@@ -44,14 +66,6 @@
 			adaptableType="org.eclipse.jdt.core.IJavaProject">
 			<adapter type="org.eclipse.jpt.core.JpaProject"/>
 		</factory>
-		
-		<!--factory
-			class="org.eclipse.jpt.core.internal.context.JpaContextNodeAdapterFactory"
-			adaptableType="org.eclipse.jpt.core.context.JpaContextNode">
-			<adapter type="org.eclipse.core.resources.IResource"/>
-			<adapter type="org.eclipse.core.resources.IFile"/>
-		</factory-->
-			
 		
 	</extension>
 	
