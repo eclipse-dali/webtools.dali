@@ -216,10 +216,21 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 		if (mappingKey == MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
 			throw new IllegalStateException("Use makePersistentAttributeSpecified(OrmPersistentAttribute, String) instead and specify a mapping type");
 		}
-		int index = this.virtualPersistentAttributes.indexOf(ormPersistentAttribute);
+			
+		OrmPersistentAttribute newPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, mappingKey);
+		if (getMapping().getTypeMappingResource().getAttributes() == null) {
+			getMapping().getTypeMappingResource().setAttributes(OrmFactory.eINSTANCE.createAttributes());
+		}
+		int insertionIndex = insertionIndex(newPersistentAttribute);
+		this.specifiedPersistentAttributes.add(insertionIndex, newPersistentAttribute);
+		newPersistentAttribute.getMapping().addToResourceModel(getMapping().getTypeMappingResource());
+		
+		int removalIndex = this.virtualPersistentAttributes.indexOf(ormPersistentAttribute);
 		this.virtualPersistentAttributes.remove(ormPersistentAttribute);
-		addSpecifiedPersistentAttribute(mappingKey, ormPersistentAttribute.getName());
-		fireItemRemoved(VIRTUAL_ATTRIBUTES_LIST, index, ormPersistentAttribute);
+		newPersistentAttribute.getSpecifiedMapping().setName(ormPersistentAttribute.getName());
+		
+		fireItemAdded(PersistentType.SPECIFIED_ATTRIBUTES_LIST, insertionIndex, newPersistentAttribute);
+		fireItemRemoved(VIRTUAL_ATTRIBUTES_LIST, removalIndex, ormPersistentAttribute);
 	}
 
 	public Iterator<String> allAttributeNames() {
