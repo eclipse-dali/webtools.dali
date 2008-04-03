@@ -72,7 +72,7 @@ public class JavaResourcePersistentTypeImpl
 		this.qualifiedName = this.qualifiedName(astRoot);
 		this.name = this.name(astRoot);
 		this.initializeNestedTypes(astRoot);
-		this.initializeAttributes(astRoot);
+		this.initializePersistentProperties(astRoot);
 		this.accessType = this.calculateAccessType();
 		this.superClassQualifiedName = this.superClassQualifiedName(astRoot);
 		this.isAbstract = this.isAbstract(astRoot);
@@ -84,7 +84,7 @@ public class JavaResourcePersistentTypeImpl
 		}
 	}
 	
-	protected void initializeAttributes(CompilationUnit astRoot) {
+	protected void initializePersistentProperties(CompilationUnit astRoot) {
 		for (IField field : getMember().jdtFields()) {
 			this.attributes.add(createJavaPersistentAttribute(field, astRoot));
 		}
