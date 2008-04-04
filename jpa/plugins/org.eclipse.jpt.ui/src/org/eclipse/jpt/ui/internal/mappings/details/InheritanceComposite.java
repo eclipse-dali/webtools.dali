@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
@@ -111,6 +112,14 @@ public class InheritanceComposite extends AbstractFormPane<Entity> {
 			buildDiscriminatorColumnHolder(),
 			container)
 		{
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(NamedColumn.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(NamedColumn.DEFAULT_NAME_PROPERTY);
+			}
+
 			@Override
 			protected String defaultValue() {
 				return subject().getDefaultName();
