@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.utility.jdt;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTType;
-import org.eclipse.jpt.core.utility.TextRange;
 
 public class TypeTests extends AnnotationTestCase {
 
@@ -51,13 +50,6 @@ public class TypeTests extends AnnotationTestCase {
 
 	public void testName() throws Exception {
 		assertEquals(TYPE_NAME, this.testType.name());
-	}
-
-	public void testTextRange() throws Exception {
-		String source = this.jdtType.getOpenable().getBuffer().getContents();
-		TextRange textRange = this.testType.textRange();
-		String body = source.substring(textRange.getOffset());
-		assertTrue(body.startsWith("public class " + TYPE_NAME));
 	}
 
 }

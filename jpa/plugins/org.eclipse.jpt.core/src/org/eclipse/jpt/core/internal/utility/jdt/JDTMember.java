@@ -109,23 +109,12 @@ public abstract class JDTMember
 		return JDTTools.buildASTRoot(this.jdtMember);
 	}
 
-	/**
-	 * note: this creates a *new* AST
-	 */
-	private CompilationUnit lightweightASTRoot() {
-		return JDTTools.buildLightweightASTRoot(this.jdtMember);
-	}
-
 	public ModifiedDeclaration getModifiedDeclaration() {
 		return this.getModifiedDeclaration(this.getAstRoot());
 	}
 
 	public ModifiedDeclaration getModifiedDeclaration(CompilationUnit astRoot) {
 		return new JDTModifiedDeclaration(this.getBodyDeclaration(astRoot));
-	}
-
-	public TextRange textRange() {
-		return this.getTextRange(this.lightweightASTRoot());
 	}
 
 	public TextRange getTextRange(CompilationUnit astRoot) {
@@ -149,33 +138,6 @@ public abstract class JDTMember
 
 	public Annotation annotation(DeclarationAnnotationAdapter adapter) {
 		return this.annotation(adapter, this.getAstRoot());
-	}
-
-	public boolean containsAnnotation(DeclarationAnnotationAdapter adapter, CompilationUnit astRoot) {
-		return this.annotation(adapter, astRoot) != null;
-	}
-
-	public boolean containsAnnotation(DeclarationAnnotationAdapter adapter) {
-		return this.containsAnnotation(adapter, this.getAstRoot());
-	}
-
-	/**
-	 * Return whether the member contains any one of the specified annotations.
-	 */
-	public boolean containsAnyAnnotation(DeclarationAnnotationAdapter[] adapters) {
-		return this.containsAnyAnnotation(adapters, this.getAstRoot());
-	}
-
-	/**
-	 * Return whether the member contains any one of the specified annotations.
-	 */
-	public boolean containsAnyAnnotation(DeclarationAnnotationAdapter[] adapters, CompilationUnit astRoot) {
-		for (DeclarationAnnotationAdapter adapter : adapters) {
-			if (this.containsAnnotation(adapter, astRoot)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**
@@ -257,13 +219,6 @@ public abstract class JDTMember
 
 	// ********** annotation elements **********
 
-	public <T> T annotationElementValue(DeclarationAnnotationElementAdapter<T> adapter, CompilationUnit astRoot) {
-		return adapter.getValue(this.getModifiedDeclaration(astRoot));
-	}
-
-	public <T> T annotationElementValue(DeclarationAnnotationElementAdapter<T> adapter) {
-		return this.annotationElementValue(adapter, this.getAstRoot());
-	}
 
 	public Expression annotationElementExpression(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
 		return adapter.getExpression(this.getModifiedDeclaration(astRoot));

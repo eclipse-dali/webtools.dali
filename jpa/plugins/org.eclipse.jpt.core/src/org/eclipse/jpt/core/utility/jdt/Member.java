@@ -27,8 +27,6 @@ import org.eclipse.jpt.core.utility.TextRange;
  */
 public interface Member {
 
-	IMember getJdtMember();
-
 	boolean wraps(IMember member);
 
 	Type getTopLevelDeclaringType();
