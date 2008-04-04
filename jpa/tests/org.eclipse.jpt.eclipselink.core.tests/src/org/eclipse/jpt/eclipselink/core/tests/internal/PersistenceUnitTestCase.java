@@ -9,8 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal;
 
-import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -19,7 +17,6 @@ import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceU
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.PersistenceUnitProperties;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
@@ -54,7 +51,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.subject = (PersistenceUnit) this.persistenceUnit();
+		this.subject = this.persistenceUnit();
 		this.subjectHolder = new SimplePropertyValueModel<PersistenceUnit>(this.subject);
 		this.persistenceUnitProperties = new EclipseLinkJpaProperties(this.subject);
 		this.populatePu();
