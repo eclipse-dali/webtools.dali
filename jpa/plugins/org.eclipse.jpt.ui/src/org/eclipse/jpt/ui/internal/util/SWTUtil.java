@@ -22,6 +22,7 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -408,7 +409,7 @@ public class SWTUtil {
 				// The text has to be changed outside of the context of this
 				// listener otherwise the combo won't update because it's currently
 				// notifying its listeners
-				asyncExec(new TextUpdater(combo, Boolean.FALSE));
+				asyncExec(new RemoveDefault(combo, Boolean.FALSE));
 			}
 		}
 
@@ -454,7 +455,8 @@ public class SWTUtil {
 				// Make sure the current text is the default value
 				String currentValue = combo.getText();
 
-				if (combo.getItemCount() > 0 &&
+				if (currentValue.length() > 0 &&
+				    combo.getItemCount()  > 0 &&
 				    !currentValue.equals(combo.getItem(0))) {
 
 					return;
@@ -468,15 +470,48 @@ public class SWTUtil {
 				// The text has to be changed outside of the context of this
 				// listener otherwise the combo won't update because it's currently
 				// notifying its listeners
-				asyncExec(new TextUpdater(combo, populating));
+				asyncExec(new ModifyText(combo, populating));
 			}
 		}
 
-		private class TextUpdater implements Runnable {
+		private class ModifyText implements Runnable {
 			private final CCombo combo;
 			private final Object populating;
 
-			public TextUpdater(CCombo combo, Object populating) {
+			public ModifyText(CCombo combo, Object populating) {
+				super();
+				this.combo      = combo;
+				this.populating = populating;
+			}
+
+			public void run() {
+				if (this.combo.isDisposed()) {
+					CComboHandler.this.locked = false;
+				}
+				else {
+					try {
+						String text = this.combo.getText();
+
+						if (text.length() == 0) {
+							text = this.combo.getItem(0);
+							this.combo.setText(text);
+						}
+
+						this.combo.setSelection(new Point(0, text.length()));
+					}
+					finally {
+						this.combo.setData("populating", this.populating);
+						CComboHandler.this.locked = false;
+					}
+				}
+			}
+		}
+
+		private class RemoveDefault implements Runnable {
+			private final CCombo combo;
+			private final Object populating;
+
+			public RemoveDefault(CCombo combo, Object populating) {
 				super();
 				this.combo      = combo;
 				this.populating = populating;
@@ -531,7 +566,7 @@ public class SWTUtil {
 				// The text has to be changed outside of the context of this
 				// listener otherwise the combo won't update because it's currently
 				// notifying its listeners
-				asyncExec(new TextUpdater(combo, Boolean.FALSE));
+				asyncExec(new RemoveDefault(combo, Boolean.FALSE));
 			}
 		}
 
@@ -581,15 +616,48 @@ public class SWTUtil {
 				// The text has to be changed outside of the context of this
 				// listener otherwise the combo won't update because it's currently
 				// notifying its listeners
-				asyncExec(new TextUpdater(combo, populating));
+				asyncExec(new ModifyText(combo, populating));
 			}
 		}
 
-		private class TextUpdater implements Runnable {
+		private class ModifyText implements Runnable {
 			private final Combo combo;
 			private final Object populating;
 
-			public TextUpdater(Combo combo, Object populating) {
+			public ModifyText(Combo combo, Object populating) {
+				super();
+				this.combo      = combo;
+				this.populating = populating;
+			}
+
+			public void run() {
+				if (this.combo.isDisposed()) {
+					ComboHandler.this.locked = false;
+				}
+				else {
+					try {
+						String text = this.combo.getText();
+
+						if (text.length() == 0) {
+							text = this.combo.getItem(0);
+							this.combo.setText(text);
+						}
+
+						this.combo.setSelection(new Point(0, text.length()));
+					}
+					finally {
+						this.combo.setData("populating", this.populating);
+						ComboHandler.this.locked = false;
+					}
+				}
+			}
+		}
+
+		private class RemoveDefault implements Runnable {
+			private final Combo combo;
+			private final Object populating;
+
+			public RemoveDefault(Combo combo, Object populating) {
 				super();
 				this.combo      = combo;
 				this.populating = populating;
