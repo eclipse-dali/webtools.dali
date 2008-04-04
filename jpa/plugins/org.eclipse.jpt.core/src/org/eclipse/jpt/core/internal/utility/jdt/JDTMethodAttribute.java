@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.core.utility.jdt.MethodAttribute;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
@@ -64,6 +65,10 @@ public class JDTMethodAttribute
 	
 	public IMethodBinding getBinding(CompilationUnit astRoot) {
 		return getBodyDeclaration(astRoot).resolveBinding();
+	}
+	
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		return new ASTNodeTextRange(getBodyDeclaration(astRoot).getName());
 	}
 
 	// ********** Attribute implementation **********

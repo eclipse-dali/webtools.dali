@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.core.utility.jdt.FieldAttribute;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
@@ -75,6 +76,10 @@ public class JDTFieldAttribute
 		return getFragment(astRoot).resolveBinding();
 	}
 	
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		return new ASTNodeTextRange(getFragment(astRoot).getName());
+	}
+
 	// ********** Attribute implementation **********
 
 	@Override
