@@ -251,7 +251,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 			public void modifyText(ModifyEvent e) {
 				if (!isPopulating()) {
 					CCombo combo = (CCombo) e.widget;
-					if (combo.getData("populating") == Boolean.FALSE) {
+					if (combo.getData("populating") != Boolean.TRUE) {//check !TRUE because null is a possibility as well
 						valueChanged(combo.getText());
 					}
 				}

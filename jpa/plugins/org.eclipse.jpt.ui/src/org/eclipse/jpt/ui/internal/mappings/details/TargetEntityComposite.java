@@ -123,7 +123,7 @@ public class TargetEntityComposite extends AbstractFormPane<RelationshipMapping>
 			public void modifyText(ModifyEvent e) {
 				if (!isPopulating()) {
 					CCombo combo = (CCombo) e.widget;
-					if (combo.getData("populating") == Boolean.FALSE) {
+					if (combo.getData("populating") != Boolean.TRUE) {//check !TRUE because null is a possibility as well
 						valueChanged(combo.getText());
 					}
 				}
