@@ -10,6 +10,8 @@
 package org.eclipse.jpt.ui.internal.orm.details;
 
 import java.util.Collection;
+import org.eclipse.jpt.core.context.Generator;
+import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
@@ -66,7 +68,7 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 	}
 
 	private WritablePropertyValueModel<String> buildGeneratorNameHolder() {
-		return new PropertyAspectAdapter<OrmTableGenerator, String>(getSubjectHolder(), OrmTableGenerator.NAME_PROPERTY) {
+		return new PropertyAspectAdapter<OrmTableGenerator, String>(getSubjectHolder(), Generator.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return subject.getName();
@@ -86,8 +88,8 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(OrmTableGenerator.DEFAULT_PK_COLUMN_NAME_PROPERTY);
-				propertyNames.add(OrmTableGenerator.SPECIFIED_PK_COLUMN_NAME_PROPERTY);
+				propertyNames.add(TableGenerator.DEFAULT_PK_COLUMN_NAME_PROPERTY);
+				propertyNames.add(TableGenerator.SPECIFIED_PK_COLUMN_NAME_PROPERTY);
 			}
 
 			@Override
@@ -119,8 +121,8 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(OrmTableGenerator.DEFAULT_PK_COLUMN_VALUE_PROPERTY);
-				propertyNames.add(OrmTableGenerator.SPECIFIED_PK_COLUMN_VALUE_PROPERTY);
+				propertyNames.add(TableGenerator.DEFAULT_PK_COLUMN_VALUE_PROPERTY);
+				propertyNames.add(TableGenerator.SPECIFIED_PK_COLUMN_VALUE_PROPERTY);
 			}
 
 			@Override
@@ -152,8 +154,8 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(OrmTableGenerator.DEFAULT_TABLE_PROPERTY);
-				propertyNames.add(OrmTableGenerator.SPECIFIED_TABLE_PROPERTY);
+				propertyNames.add(TableGenerator.DEFAULT_TABLE_PROPERTY);
+				propertyNames.add(TableGenerator.SPECIFIED_TABLE_PROPERTY);
 			}
 
 			@Override
@@ -190,8 +192,8 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(OrmTableGenerator.DEFAULT_VALUE_COLUMN_NAME_PROPERTY);
-				propertyNames.add(OrmTableGenerator.SPECIFIED_VALUE_COLUMN_NAME_PROPERTY);
+				propertyNames.add(TableGenerator.DEFAULT_VALUE_COLUMN_NAME_PROPERTY);
+				propertyNames.add(TableGenerator.SPECIFIED_VALUE_COLUMN_NAME_PROPERTY);
 			}
 
 			@Override
