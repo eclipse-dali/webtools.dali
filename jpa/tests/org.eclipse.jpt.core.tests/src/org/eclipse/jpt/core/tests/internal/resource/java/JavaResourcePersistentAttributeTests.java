@@ -336,6 +336,45 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		});
 	}
 	
+	private IType createTestTypePublicAttribute() throws Exception {
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("   public String foo;");
+				sb.append(CR);
+			}
+		});
+	}
+	
+	private IType createTestTypePackageAttribute() throws Exception {
+		
+		return this.createTestType(new DefaultAnnotationWriter() {
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("   String foo;");
+				sb.append(CR);
+			}
+		});
+	}
+	
+	private IType createTestTypeFinalAttribute() throws Exception {
+		
+		return this.createTestType(new DefaultAnnotationWriter() {
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("   public final String foo;");
+				sb.append(CR);
+			}
+		});
+	}
+
 	public void testJavaAttributeAnnotations() throws Exception {
 		IType testType = this.createTestEntityWithColumn();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
@@ -814,7 +853,39 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		attributeResource = fields.next();
 		column = (ColumnAnnotation) attributeResource.getAnnotation(JPA.COLUMN);
 		assertEquals("baz", column.getName());
-	
 	}
+	
+	public void testIsPublic() throws Exception {
+		IType jdtType = createTestTypePublicAttribute();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attribute = typeResource.attributes().next();
+		
+		assertTrue(attribute.isPublic());
+	}
+	
+	public void testIsPublicFalse() throws Exception {
+		IType jdtType = createTestTypePackageAttribute();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attribute = typeResource.attributes().next();
+		
+		assertFalse(attribute.isPublic());
+	}
+
+	public void testIsFinal() throws Exception {
+		IType jdtType = createTestTypeFinalAttribute();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attribute = typeResource.attributes().next();
+		
+		assertTrue(attribute.isFinal());		
+	}
+	
+	public void testIsFinalFalse() throws Exception {
+		IType jdtType = createTestTypePackageAttribute();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attribute = typeResource.attributes().next();
+		
+		assertFalse(attribute.isFinal());		
+	}
+	
 	//TODO add tests for JPTTools static methods
 }

@@ -36,6 +36,12 @@ public interface JavaResourcePersistentAttribute extends JavaResourcePersistentM
 	boolean typeIsBasic();
 		String TYPE_IS_BASIC_PROPERTY = "typeIsBasicProperty";
 	
+	boolean isFinal();
+		String FINAL_PROPERTY = "finalProperty";
+	
+	boolean isPublic();
+		String PUBLIC_PROPERTY = "publicProperty";
+	
 	/**
 	 * Return true if the attribute type is a container:
 	 * java.util.Collection

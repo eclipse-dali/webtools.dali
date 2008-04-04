@@ -17,6 +17,7 @@ import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
+import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jpt.core.internal.utility.jdt.JPTTools;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -40,18 +41,12 @@ public class JavaResourcePersistentAttributeImpl
 	
 	private String qualifiedReferenceEntityElementTypeName;
 	
+	private boolean public_;
+	
+	private boolean final_;
+	
 	public JavaResourcePersistentAttributeImpl(JavaResourcePersistentType parent, Attribute attribute){
 		super(parent, attribute);
-	}
-
-	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		this.typeIsBasic = this.typeIsBasic(astRoot);
-		this.qualifiedTypeName = this.qualifiedTypeName(astRoot);
-		this.qualifiedReferenceEntityTypeName = this.qualifiedReferenceEntityTypeName(astRoot);
-		this.qualifiedReferenceEntityElementTypeName = this.qualifiedReferenceEntityElementTypeName(astRoot);
-		this.typeIsContainer = this.typeIsContainer(astRoot);
 	}
 	
 	public String getName() {
@@ -148,6 +143,26 @@ public class JavaResourcePersistentAttributeImpl
 		return false;
 	}
 
+	public boolean isPublic() {
+		return this.public_;
+	}
+	
+	protected void setPublic(boolean newPublic) {
+		boolean oldPublic = this.public_;
+		this.public_ = newPublic;
+		firePropertyChanged(PUBLIC_PROPERTY, oldPublic, newPublic);
+	}
+	
+	public boolean isFinal() {
+		return this.final_;
+	}
+	
+	protected void setFinal(boolean newFinal) {
+		boolean oldFinal = this.final_;
+		this.final_ = newFinal;
+		firePropertyChanged(FINAL_PROPERTY, oldFinal, newFinal);
+	}
+	
 	public boolean typeIsBasic() {
 		return this.typeIsBasic;
 	}
@@ -199,6 +214,18 @@ public class JavaResourcePersistentAttributeImpl
 	}
 	
 	@Override
+	public void initialize(CompilationUnit astRoot) {
+		super.initialize(astRoot);
+		this.typeIsBasic = this.typeIsBasic(astRoot);
+		this.qualifiedTypeName = this.qualifiedTypeName(astRoot);
+		this.qualifiedReferenceEntityTypeName = this.qualifiedReferenceEntityTypeName(astRoot);
+		this.qualifiedReferenceEntityElementTypeName = this.qualifiedReferenceEntityElementTypeName(astRoot);
+		this.typeIsContainer = this.typeIsContainer(astRoot);
+		this.final_ = this.isFinal(astRoot);
+		this.public_ = this.isPublic(astRoot);
+	}
+
+	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
 		this.setTypeIsBasic(this.typeIsBasic(astRoot));
@@ -206,6 +233,8 @@ public class JavaResourcePersistentAttributeImpl
 		this.setQualifiedReferenceEntityTypeName(this.qualifiedReferenceEntityTypeName(astRoot));
 		this.setQualifiedReferenceEntityElementTypeName(this.qualifiedReferenceEntityElementTypeName(astRoot));
 		this.setTypeIsContainer(this.typeIsContainer(astRoot));
+		this.setFinal(this.isFinal(astRoot));
+		this.setPublic(this.isPublic(astRoot));
 	}
 
 	@Override
@@ -220,6 +249,18 @@ public class JavaResourcePersistentAttributeImpl
 
 	protected boolean typeIsBasic(CompilationUnit astRoot) {
 		return typeIsBasic(getMember().getTypeBinding(astRoot), astRoot.getAST());
+	}
+	
+	protected boolean isFinal(CompilationUnit astRoot) {
+		int flags = getMember().getBinding(astRoot).getModifiers();
+		
+		return Modifier.isFinal(flags);
+	}
+		
+	protected boolean isPublic(CompilationUnit astRoot) {
+		int flags = getMember().getBinding(astRoot).getModifiers();
+		
+		return Modifier.isPublic(flags);
 	}
 	
 	protected String qualifiedReferenceEntityTypeName(CompilationUnit astRoot) {

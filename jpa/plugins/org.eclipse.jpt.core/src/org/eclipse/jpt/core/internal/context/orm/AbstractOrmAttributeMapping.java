@@ -10,8 +10,6 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.jdt.core.Flags;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -283,21 +281,11 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 			return;
 		}
 		JavaResourcePersistentAttribute resourcePersistentAttribute = getJavaPersistentAttribute().getResourcePersistentAttribute();
-		if (resourcePersistentAttribute== null) {
-			return;
-		}
 
 		if (resourcePersistentAttribute.isForField()) {
-			int flags;
-			try {
-				flags = resourcePersistentAttribute.getMember().getJdtMember().getFlags();
-			} catch (JavaModelException jme) { 
-				/* no error to log, in that case */ 
-				return;
-			}
 			//TODO validation : need to have a validation message for final methods as well.
 			//From the JPA spec : No methods or persistent instance variables of the entity class may be final.
-			if (Flags.isFinal(flags)) {
+			if (resourcePersistentAttribute.isFinal()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -308,7 +296,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 				);
 			}
 			
-			if (Flags.isPublic(flags)) {
+			if (resourcePersistentAttribute.isPublic()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,

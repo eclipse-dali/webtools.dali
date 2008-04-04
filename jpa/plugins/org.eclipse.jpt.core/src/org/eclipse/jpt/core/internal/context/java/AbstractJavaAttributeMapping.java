@@ -10,8 +10,6 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.Flags;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -128,23 +126,16 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 		
 		addModifierMessages(messages, astRoot);
 		addInvalidMappingMessage(messages, astRoot);
-		
 	}
 	
 	protected void addModifierMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		GenericJavaPersistentAttribute attribute = this.getPersistentAttribute();
-		if (attribute.getMapping().getKey() != MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY
-				&& this.resourcePersistentAttribute.isForField()) {
-			int flags;
-			
-			try {
-				flags = this.resourcePersistentAttribute.getMember().getJdtMember().getFlags();
-			} catch (JavaModelException jme) { 
-				/* no error to log, in that case */ 
-				return;
-			}
-			
-			if (Flags.isFinal(flags)) {
+		if (attribute.getMappingKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
+			return;
+		}
+		
+		if ( this.resourcePersistentAttribute.isForField()) {
+			if (this.resourcePersistentAttribute.isFinal()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -154,7 +145,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 				);
 			}
 			
-			if (Flags.isPublic(flags)) {
+			if (this.resourcePersistentAttribute.isPublic()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -162,7 +153,6 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 						new String[] {attribute.getName()},
 						attribute, attribute.getValidationTextRange(astRoot))
 				);
-				
 			}
 		}
 	}
