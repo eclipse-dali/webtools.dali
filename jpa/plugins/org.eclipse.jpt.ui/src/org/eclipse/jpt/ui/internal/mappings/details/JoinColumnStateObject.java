@@ -143,6 +143,10 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 		return joinColumn.getSpecifiedTable();
 	}
 
+	protected boolean isTableEditable() {
+		return true;
+	}
+
 	public void setInsertable(Boolean insertable) {
 		Boolean oldInsertable = this.insertable;
 		this.insertable = insertable;
@@ -194,10 +198,12 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 		JoinColumn joinColumn = (JoinColumn) abstractJoinColumn;
 
 		// Table
-		String table = getTable();
+		if (isTableEditable()) {
+			String table = getTable();
 
-		if (valuesAreDifferent(table, joinColumn.getSpecifiedTable())) {
-			joinColumn.setSpecifiedTable(table);
+			if (valuesAreDifferent(table, joinColumn.getSpecifiedTable())) {
+				joinColumn.setSpecifiedTable(table);
+			}
 		}
 
 		// Insertable

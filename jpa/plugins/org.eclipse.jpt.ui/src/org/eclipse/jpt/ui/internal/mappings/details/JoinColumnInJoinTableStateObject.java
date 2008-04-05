@@ -44,11 +44,6 @@ public class JoinColumnInJoinTableStateObject extends JoinColumnStateObject
 	}
 
 	@Override
-	protected Schema getSchema() {
-		return null;
-	}
-
-	@Override
 	public String getDefaultTable() {
 		return null;
 	}
@@ -69,8 +64,18 @@ public class JoinColumnInJoinTableStateObject extends JoinColumnStateObject
 	}
 
 	@Override
+	protected Schema getSchema() {
+		return null;
+	}
+
+	@Override
 	protected String initialTable() {
 		return getOwner().getName();
+	}
+
+	@Override
+	protected boolean isTableEditable() {
+		return false;
 	}
 
 	/**

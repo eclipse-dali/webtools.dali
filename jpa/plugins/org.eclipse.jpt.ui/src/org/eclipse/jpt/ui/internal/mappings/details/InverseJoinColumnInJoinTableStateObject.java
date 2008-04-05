@@ -45,27 +45,19 @@ public class InverseJoinColumnInJoinTableStateObject extends JoinColumnStateObje
 	}
 
 	@Override
-	protected Schema getSchema() {
-		return null;
-	}
-
-	@Override
 	public String getDefaultTable() {
 		return null;
 	}
-
 
 	@Override
 	public Table getNameTable() {
 		return getOwner().getDbTable();
 	}
 
-
 	@Override
 	public JoinTable getOwner() {
 		return (JoinTable) super.getOwner();
 	}
-
 
 	@Override
 	public Table getReferencedNameTable() {
@@ -79,8 +71,18 @@ public class InverseJoinColumnInJoinTableStateObject extends JoinColumnStateObje
 	}
 
 	@Override
+	protected Schema getSchema() {
+		return null;
+	}
+
+	@Override
 	protected String initialTable() {
 		return getOwner().getName();
+	}
+
+	@Override
+	protected boolean isTableEditable() {
+		return false;
 	}
 
 	/**
