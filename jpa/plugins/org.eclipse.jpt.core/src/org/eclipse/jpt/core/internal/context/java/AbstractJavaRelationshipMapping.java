@@ -59,6 +59,12 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 		this.getMappingResource().setTargetEntity(newSpecifiedTargetEntity);
 		firePropertyChanged(RelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY, oldSpecifiedTargetEntity, newSpecifiedTargetEntity);
 	}
+	
+	protected void setSpecifiedTargetEntity_(String newSpecifiedTargetEntity) {
+		String oldSpecifiedTargetEntity = this.specifiedTargetEntity;
+		this.specifiedTargetEntity = newSpecifiedTargetEntity;
+		firePropertyChanged(RelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY, oldSpecifiedTargetEntity, newSpecifiedTargetEntity);
+	}
 
 	public String getDefaultTargetEntity() {
 		return this.defaultTargetEntity;
@@ -98,6 +104,12 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 		this.getMappingResource().setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
 		firePropertyChanged(Fetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
+	
+	protected void setSpecifiedFetch_(FetchType newSpecifiedFetch) {
+		FetchType oldFetch = this.specifiedFetch;
+		this.specifiedFetch = newSpecifiedFetch;
+		firePropertyChanged(Fetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
+	}
 
 	@Override
 	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
@@ -121,9 +133,10 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 
 	@Override
 	protected void update(T relationshipMapping) {
-		this.setSpecifiedFetch(this.fetch(relationshipMapping));
+		super.update(relationshipMapping);
+		this.setSpecifiedFetch_(this.fetch(relationshipMapping));
 		this.cascade.update(relationshipMapping);
-		this.setSpecifiedTargetEntity(this.specifiedTargetEntity(relationshipMapping));
+		this.setSpecifiedTargetEntity_(this.specifiedTargetEntity(relationshipMapping));
 		this.setResolvedTargetEntity(this.resolveTargetEntity(relationshipMapping));
 	}
 	

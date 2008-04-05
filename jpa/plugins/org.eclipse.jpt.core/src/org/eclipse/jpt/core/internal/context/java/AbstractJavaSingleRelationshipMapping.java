@@ -176,6 +176,12 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		setOptionalOnResourceModel(newSpecifiedOptional);
 		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldSpecifiedOptional, newSpecifiedOptional);
 	}
+	
+	protected void setSpecifiedOptional_(Boolean newSpecifiedOptional) {
+		Boolean oldSpecifiedOptional = this.specifiedOptional;
+		this.specifiedOptional = newSpecifiedOptional;
+		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldSpecifiedOptional, newSpecifiedOptional);
+	}
 
 	protected abstract void setOptionalOnResourceModel(Boolean newOptional);
 
@@ -223,7 +229,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	@Override
 	protected void update(T relationshipMapping) {
 		super.update(relationshipMapping);
-		this.setSpecifiedOptional(this.specifiedOptional(relationshipMapping));
+		this.setSpecifiedOptional_(this.specifiedOptional(relationshipMapping));
 	}
 	
 	protected abstract Boolean specifiedOptional(T relationshipMapping);

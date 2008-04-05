@@ -66,7 +66,13 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		this.setMappedByOnResourceModel(newMappedBy);
 		firePropertyChanged(NonOwningMapping.MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
 	}
-	
+
+	protected void setMappedBy_(String newMappedBy) {
+		String oldMappedBy = this.mappedBy;
+		this.mappedBy = newMappedBy;
+		firePropertyChanged(NonOwningMapping.MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
+	}
+
 	protected abstract void setMappedByOnResourceModel(String mappedBy);
 
 	public String getOrderBy() {
@@ -332,7 +338,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	@Override
 	protected void update(T relationshipMapping) {
 		super.update(relationshipMapping);
-		this.setMappedBy(this.mappedBy(relationshipMapping));
+		this.setMappedBy_(this.mappedBy(relationshipMapping));
 	}
 	
 	protected void updateMapKey(JavaResourcePersistentAttribute resourcePersistentAttribute) {

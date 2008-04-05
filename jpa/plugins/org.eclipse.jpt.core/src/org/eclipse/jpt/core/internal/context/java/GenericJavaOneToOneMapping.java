@@ -71,6 +71,12 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 		firePropertyChanged(NonOwningMapping.MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
 	}
 
+	protected void setMappedBy_(String newMappedBy) {
+		String oldMappedBy = this.mappedBy;
+		this.mappedBy = newMappedBy;
+		firePropertyChanged(NonOwningMapping.MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
+	}
+
 	public boolean mappedByIsValid(AttributeMapping mappedByMapping) {
 		String mappedByKey = mappedByMapping.getKey();
 		return (mappedByKey == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -115,7 +121,7 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 	@Override
 	protected void update(OneToOneAnnotation oneToOneResource) {
 		super.update(oneToOneResource);
-		this.setMappedBy(oneToOneResource.getMappedBy());
+		this.setMappedBy_(oneToOneResource.getMappedBy());
 	}
 
 	@Override
