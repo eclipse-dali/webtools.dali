@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.utility.jdt;
 
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
@@ -39,19 +38,6 @@ public abstract class JDTAttribute
 
 	public boolean isMethod() {
 		return false;
-	}
-
-	/**
-	 * Resolve the attribute.
-	 * Return the fully-qualified type name or return null if it cannot be
-	 * resolved unambiguously.
-	 */
-	public String resolvedTypeName(CompilationUnit astRoot) {
-		ITypeBinding typeBinding = getTypeBinding(astRoot);
-		if (typeBinding != null) {
-			return typeBinding.getQualifiedName();
-		}
-		return null;
 	}
 
 	/**

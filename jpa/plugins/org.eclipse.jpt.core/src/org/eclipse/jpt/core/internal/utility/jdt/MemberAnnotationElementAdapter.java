@@ -51,16 +51,8 @@ public class MemberAnnotationElementAdapter<T>
 		this.edit(this.buildSetValueEditor(value));
 	}
 
-	public Expression getExpression() {
-		return this.daea.getExpression(this.member.getModifiedDeclaration());
-	}
-
 	public Expression getExpression(CompilationUnit astRoot) {
 		return this.daea.getExpression(this.member.getModifiedDeclaration(astRoot));
-	}
-
-	public ASTNode getAstNode() {
-		return this.daea.getAstNode(this.member.getModifiedDeclaration());
 	}
 
 	public ASTNode getAstNode(CompilationUnit astRoot) {

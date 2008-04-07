@@ -336,7 +336,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "bar");
 		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
 
-		TextRange textRange = new ASTNodeTextRange(aea.getAstNode());
+		TextRange textRange = new ASTNodeTextRange(aea.getAstNode(idField().getAstRoot()));
 		assertEquals(this.source().indexOf(value), textRange.getOffset());
 		assertEquals(value.length(), textRange.getLength());
 		assertEquals(8, textRange.getLineNumber());
@@ -356,7 +356,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<Boolean> daea = new ConversionDeclarationAnnotationElementAdapter<Boolean>(daa3, "fred", BooleanExpressionConverter.instance());
 		AnnotationElementAdapter<Boolean> aea = new MemberAnnotationElementAdapter<Boolean>(this.idField(), daea);
 		assertEquals(Boolean.FALSE, aea.getValue());
-		TextRange textRange = new ASTNodeTextRange(aea.getAstNode());
+		TextRange textRange = new ASTNodeTextRange(aea.getAstNode(idField().getAstRoot()));
 		assertEquals(value.length(), textRange.getLength());
 	}
 
@@ -369,7 +369,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa);
 		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
 
-		TextRange textRange = new ASTNodeTextRange(aea.getAstNode());
+		TextRange textRange = new ASTNodeTextRange(aea.getAstNode(idField().getAstRoot()));
 		assertEquals(this.source().indexOf(element), textRange.getOffset());
 		assertEquals(element.length(), textRange.getLength());
 	}
@@ -382,7 +382,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa);
 		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
 
-		TextRange textRange = new ASTNodeTextRange(aea.getAstNode());
+		TextRange textRange = new ASTNodeTextRange(aea.getAstNode(idField().getAstRoot()));
 		assertEquals(this.source().indexOf(annotation), textRange.getOffset());
 		assertEquals(annotation.length(), textRange.getLength());
 	}

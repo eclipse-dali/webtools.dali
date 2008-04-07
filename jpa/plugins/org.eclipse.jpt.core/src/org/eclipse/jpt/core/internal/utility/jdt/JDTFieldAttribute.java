@@ -48,7 +48,7 @@ public class JDTFieldAttribute
 	// ********** Member implementation **********
 
 	public FieldDeclaration getBodyDeclaration(CompilationUnit astRoot) {
-		String fieldName = this.name();
+		String fieldName = this.getName();
 		for (FieldDeclaration fieldDeclaration : this.declaringTypeDeclaration(astRoot).getFields()) {
 			// handle multiple fields declared in a single statement:
 			//     private int foo, bar;
@@ -64,7 +64,7 @@ public class JDTFieldAttribute
 	private VariableDeclarationFragment getFragment(CompilationUnit astRoot) {
 		FieldDeclaration fieldDeclaration = getBodyDeclaration(astRoot);
 		for (VariableDeclarationFragment fragment : this.fragments(fieldDeclaration)) {
-			if (fragment.getName().getFullyQualifiedName().equals(name())) {
+			if (fragment.getName().getFullyQualifiedName().equals(getName())) {
 				return fragment;
 			}
 		}
@@ -88,7 +88,7 @@ public class JDTFieldAttribute
 	}
 
 	public String getAttributeName() {
-		return this.name();
+		return this.getName();
 	}
 
 	public ITypeBinding getTypeBinding(CompilationUnit astRoot) {

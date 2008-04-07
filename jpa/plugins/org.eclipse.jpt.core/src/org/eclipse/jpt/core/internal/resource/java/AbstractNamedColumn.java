@@ -113,11 +113,11 @@ public abstract class AbstractNamedColumn extends AbstractResourceAnnotation<Mem
 	}	
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
 	public TextRange getColumnDefinitionTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.columnDefinitionDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.columnDefinitionDeclarationAdapter, astRoot);
 	}
 	
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {

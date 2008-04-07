@@ -54,16 +54,8 @@ public class ShortCircuitAnnotationElementAdapter<T>
 		this.setValue(this.adapter.getValue(), value);
 	}
 
-	public Expression getExpression() {
-		return this.adapter.getExpression();
-	}
-
 	public Expression getExpression(CompilationUnit astRoot) {
 		return this.adapter.getExpression(astRoot);
-	}
-
-	public ASTNode getAstNode() {
-		return this.adapter.getAstNode();
 	}
 
 	public ASTNode getAstNode(CompilationUnit astRoot) {

@@ -157,15 +157,15 @@ public class ColumnImpl extends BaseColumnImpl implements ColumnAnnotation, Nest
 	}
 	
 	public TextRange getLengthTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.lengthDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.lengthDeclarationAdapter, astRoot);
 	}
 	
 	public TextRange getPrecisionTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.precisionDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.precisionDeclarationAdapter, astRoot);
 	}
 	
 	public TextRange getScaleTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.scaleDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.scaleDeclarationAdapter, astRoot);
 	}
 
 	@Override

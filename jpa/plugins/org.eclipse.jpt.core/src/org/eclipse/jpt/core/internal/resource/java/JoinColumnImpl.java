@@ -129,7 +129,7 @@ public class JoinColumnImpl extends BaseColumnImpl implements NestableJoinColumn
 	}
 	
 	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.referencedColumnNameDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.referencedColumnNameDeclarationAdapter, astRoot);
 	}
 
 	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {

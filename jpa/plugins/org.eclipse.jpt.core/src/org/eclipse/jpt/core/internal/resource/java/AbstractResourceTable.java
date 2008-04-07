@@ -179,15 +179,15 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 	protected abstract NestableUniqueConstraint createUniqueConstraint(int index);
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return elementTextRange(this.nameDeclarationAdapter, astRoot);
+		return getElementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 	
 	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
-		return elementTextRange(this.schemaDeclarationAdapter, astRoot);
+		return getElementTextRange(this.schemaDeclarationAdapter, astRoot);
 	}
 	
 	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
-		return elementTextRange(this.catalogDeclarationAdapter, astRoot);
+		return getElementTextRange(this.catalogDeclarationAdapter, astRoot);
 	}
 	
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {

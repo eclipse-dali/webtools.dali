@@ -89,7 +89,7 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 	}
 	
 	public TextRange getSequenceNameTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(SEQUENCE_NAME_ADAPTER, astRoot);
+		return this.getElementTextRange(SEQUENCE_NAME_ADAPTER, astRoot);
 	}
 
 	// ********** java annotations -> persistence model **********

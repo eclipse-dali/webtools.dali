@@ -43,11 +43,6 @@ public class JDTType
 		return (IType) super.getJdtMember();
 	}
 
-	@Override
-	public Type getTopLevelDeclaringType() {
-		return (this.declaringType() == null) ? this : super.getTopLevelDeclaringType();
-	}
-
 	public IType[] jdtTypes() {
 		try {
 			return getJdtMember().getTypes();
@@ -90,7 +85,7 @@ public class JDTType
 	}
 	
 	private AbstractTypeDeclaration getTypeDeclaration(List<AbstractTypeDeclaration> typeDeclarations) {
-		String name = this.name();
+		String name = this.getName();
 		for (AbstractTypeDeclaration typeDeclaration : typeDeclarations) {
 			if (typeDeclaration.getName().getFullyQualifiedName().equals(name)) {
 				return typeDeclaration;

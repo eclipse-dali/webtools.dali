@@ -72,7 +72,7 @@ public abstract class OverrideImpl
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {

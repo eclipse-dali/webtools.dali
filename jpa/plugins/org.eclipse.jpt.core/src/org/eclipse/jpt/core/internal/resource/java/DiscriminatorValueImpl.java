@@ -61,7 +61,7 @@ public class DiscriminatorValueImpl extends AbstractResourceAnnotation<Type> imp
 	}
 	
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(VALUE_ADAPTER, astRoot);
+		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {

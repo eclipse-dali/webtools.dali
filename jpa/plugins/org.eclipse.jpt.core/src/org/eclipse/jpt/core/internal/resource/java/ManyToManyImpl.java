@@ -100,7 +100,7 @@ public class ManyToManyImpl extends AbstractRelationshipMappingAnnotation implem
 	}
 
 	public TextRange getMappedByTextRange(CompilationUnit astRoot) {
-		return elementTextRange(MAPPED_BY_ADAPTER, astRoot);
+		return getElementTextRange(MAPPED_BY_ADAPTER, astRoot);
 	}
 
 	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {

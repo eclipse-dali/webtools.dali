@@ -40,7 +40,7 @@ public class JDTToolsTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
 		JDTFieldAttribute field = this.idField();
 
-		String actual = JDTTools.resolveEnum((Name) field.annotationElementExpression(daea));
+		String actual = JDTTools.resolveEnum((Name) daea.getExpression(field.getModifiedDeclaration()));
 		assertEquals("enums.TestEnum.BAZ", actual);
 	}
 
@@ -53,7 +53,7 @@ public class JDTToolsTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
 		JDTFieldAttribute field = this.idField();
 
-		String actual = JDTTools.resolveEnum((Name) field.annotationElementExpression(daea));
+		String actual = JDTTools.resolveEnum((Name) daea.getExpression(field.getModifiedDeclaration()));
 		assertEquals("enums.TestEnum.BAZ", actual);
 	}
 
@@ -66,7 +66,7 @@ public class JDTToolsTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
 		JDTFieldAttribute field = this.idField();
 
-		String actual = JDTTools.resolveEnum((Name) field.annotationElementExpression(daea));
+		String actual = JDTTools.resolveEnum((Name)daea.getExpression(field.getModifiedDeclaration()));
 		assertEquals("enums.TestEnum.BAZ", actual);
 	}
 
@@ -79,7 +79,7 @@ public class JDTToolsTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
 		JDTFieldAttribute field = this.idField();
 
-		String actual = JDTTools.resolveEnum((Name) field.annotationElementExpression(daea));
+		String actual = JDTTools.resolveEnum((Name) daea.getExpression(field.getModifiedDeclaration()));
 		assertEquals("enums.TestEnum.BAZ", actual);
 	}
 

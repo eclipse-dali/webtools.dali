@@ -15,7 +15,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.core.tests.internal.context.java.JptCoreContextJavaModelTests;
 import org.eclipse.jpt.core.tests.internal.context.orm.JptCoreOrmContextModelTests;
-import org.eclipse.jpt.core.tests.internal.context.persistence.JptCorePersistenceContextModelTests;
 
 public class JptCoreContextModelTests extends TestCase
 {
@@ -25,7 +24,7 @@ public class JptCoreContextModelTests extends TestCase
 	
 	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptCoreContextModelTests.class.getName());
-		suite.addTest(JptCorePersistenceContextModelTests.suite(all));
+		//suite.addTest(JptCorePersistenceContextModelTests.suite(all));
 		suite.addTest(JptCoreOrmContextModelTests.suite(all));
 		suite.addTest(JptCoreContextJavaModelTests.suite(all));
 		return suite;

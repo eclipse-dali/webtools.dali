@@ -37,10 +37,6 @@ public abstract class AbstractAnnotationAdapter implements AnnotationAdapter {
 
 	// ********** AnnotationAdapter implementation **********
 
-	public Annotation getAnnotation() {
-		return this.daa.getAnnotation(this.member.getModifiedDeclaration());
-	}
-
 	public Annotation getAnnotation(CompilationUnit astRoot) {
 		return this.daa.getAnnotation(this.member.getModifiedDeclaration(astRoot));
 	}
@@ -59,10 +55,6 @@ public abstract class AbstractAnnotationAdapter implements AnnotationAdapter {
 
 	public void removeAnnotation() {
 		this.edit(this.buildRemoveAnnotationEditor());
-	}
-
-	public ASTNode getAstNode() {
-		return this.daa.getAstNode(this.member.getModifiedDeclaration());
 	}
 
 	public ASTNode getAstNode(CompilationUnit astRoot) {

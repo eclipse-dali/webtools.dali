@@ -27,14 +27,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 public interface AnnotationAdapter {
 
 	/**
-	 * Return the value of the adapter's annotation.
-	 * If the compilation unit is available, #annotation(CompilationUnit)
-	 * might be more performant.
-	 * @see #getAnnotation(org.eclipse.jdt.core.dom.CompilationUnit)
-	 */
-	Annotation getAnnotation();
-
-	/**
 	 * Given the specified compilation unit, return the value of the
 	 * adapter's annotation.
 	 * @see #getAnnotation()
@@ -60,15 +52,6 @@ public interface AnnotationAdapter {
 	 * Remove the annotation.
 	 */
 	void removeAnnotation();
-
-	/**
-	 * Return the AST node corresponding to the annotation.
-	 * If the annotation is missing, return the annotation's parent's node.
-	 * If the compilation unit is available, #astNode(CompilationUnit)
-	 * might be more performant.
-	 * @see #getAstNode(org.eclipse.jdt.core.dom.CompilationUnit)
-	 */
-	ASTNode getAstNode();
 
 	/**
 	 * Return the AST node corresponding to the annotation.

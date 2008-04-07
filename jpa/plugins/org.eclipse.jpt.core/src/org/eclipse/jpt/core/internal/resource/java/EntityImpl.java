@@ -64,7 +64,7 @@ public class EntityImpl extends AbstractResourceAnnotation<Type> implements Enti
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(NAME_ADAPTER, astRoot);
+		return this.getElementTextRange(NAME_ADAPTER, astRoot);
 	}
 	
 	//*********** JavaResource implementation ****************

@@ -260,27 +260,27 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 	}
 
 	public TextRange getTableTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(TABLE_ADAPTER, astRoot);
+		return this.getElementTextRange(TABLE_ADAPTER, astRoot);
 	}
 	
 	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(CATALOG_ADAPTER, astRoot);
+		return this.getElementTextRange(CATALOG_ADAPTER, astRoot);
 	}
 	
 	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(SCHEMA_ADAPTER, astRoot);
+		return this.getElementTextRange(SCHEMA_ADAPTER, astRoot);
 	}
 	
 	public TextRange getPkColumnNameTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(PK_COLUMN_NAME_ADAPTER, astRoot);
+		return this.getElementTextRange(PK_COLUMN_NAME_ADAPTER, astRoot);
 	}
 	
 	public TextRange getPkColumnValueTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(PK_COLUMN_VALUE_ADAPTER, astRoot);
+		return this.getElementTextRange(PK_COLUMN_VALUE_ADAPTER, astRoot);
 	}
 	
 	public TextRange getValueColumnNameTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(VALUE_COLUMN_NAME_ADAPTER, astRoot);
+		return this.getElementTextRange(VALUE_COLUMN_NAME_ADAPTER, astRoot);
 	}
 
 	// ********** java annotations -> persistence model **********

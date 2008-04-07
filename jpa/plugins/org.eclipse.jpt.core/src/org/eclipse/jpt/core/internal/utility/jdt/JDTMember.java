@@ -16,17 +16,11 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
-import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.core.utility.jdt.Type;
@@ -71,7 +65,7 @@ public abstract class JDTMember
 
 	// ********** accessors **********
 
-	public IMember getJdtMember() {
+	protected IMember getJdtMember() {
 		return this.jdtMember;
 	}
 
@@ -83,23 +77,19 @@ public abstract class JDTMember
 	/**
 	 * this will return null for a top-level type
 	 */
-	public Type declaringType() {
+	protected Type declaringType() {
 		return this.declaringType;
 	}
 
 
 	// ********** miscellaneous **********
 
-	public ICompilationUnit compilationUnit() {
+	protected ICompilationUnit getCompilationUnit() {
 		return this.jdtMember.getCompilationUnit();
 	}
 
-	public String name() {
+	public String getName() {
 		return this.jdtMember.getElementName();
-	}
-
-	public Type getTopLevelDeclaringType() {
-		return this.declaringType.getTopLevelDeclaringType();
 	}
 
 	/**
@@ -117,168 +107,10 @@ public abstract class JDTMember
 		return new JDTModifiedDeclaration(this.getBodyDeclaration(astRoot));
 	}
 
-	public TextRange getTextRange(CompilationUnit astRoot) {
-		return this.textRange(this.getBodyDeclaration(astRoot));
-	}
-	
-	TextRange textRange(ASTNode astNode) {
-		return (astNode == null) ? null : new ASTNodeTextRange(astNode);
-	}
-
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.name());
+		return StringTools.buildToStringFor(this, this.getName());
 	}	
-
-	// ********** annotations **********
-
-	public Annotation annotation(DeclarationAnnotationAdapter adapter, CompilationUnit astRoot) {
-		return adapter.getAnnotation(this.getModifiedDeclaration(astRoot));
-	}
-
-	public Annotation annotation(DeclarationAnnotationAdapter adapter) {
-		return this.annotation(adapter, this.getAstRoot());
-	}
-
-	/**
-	 * Return the text range corresponding to the specified annotation.
-	 * If the annotation is missing, return null.
-	 */
-	public TextRange getAnnotationTextRange(DeclarationAnnotationAdapter adapter, CompilationUnit astRoot) {
-		return this.textRange(this.annotation(adapter, astRoot));
-	}
-
-	/**
-	 * Return the text range corresponding to the specified annotation.
-	 * If the annotation is missing, return null.
-	 */
-	public TextRange annotationTextRange(DeclarationAnnotationAdapter adapter) {
-		return this.getAnnotationTextRange(adapter, this.getAstRoot());
-	}
-
-	/**
-	 * Return the AST node corresponding to the specified annotation.
-	 * If the annotation is missing, return its parent node.
-	 */
-	public ASTNode annotationASTNode(DeclarationAnnotationAdapter adapter, CompilationUnit astRoot) {
-		return adapter.getAstNode(this.getModifiedDeclaration(astRoot));
-	}
-
-	/**
-	 * Return the AST node corresponding to the specified annotation.
-	 * If the annotation is missing, return its parent node.
-	 */
-	public ASTNode annotationASTNode(DeclarationAnnotationAdapter adapter) {
-		return this.annotationASTNode(adapter, this.getAstRoot());
-	}
-
-	/**
-	 * Add the specified marker annotation to the member.
-	 */
-	public void newMarkerAnnotation(final DeclarationAnnotationAdapter adapter) {
-		this.edit(new Editor() {
-			public void edit(ModifiedDeclaration declaration) {
-				adapter.newMarkerAnnotation(declaration);
-			}
-		});		
-	}
-
-	/**
-	 * Add the specified single member annotation to the member.
-	 */
-	public void newSingleMemberAnnotation(final DeclarationAnnotationAdapter adapter) {
-		this.edit(new Editor() {
-			public void edit(ModifiedDeclaration declaration) {
-				adapter.newSingleMemberAnnotation(declaration);
-			}
-		});		
-	}
-
-	/**
-	 * Add the specified normal annotation to the member.
-	 */
-	public void newNormalAnnotation(final DeclarationAnnotationAdapter adapter) {
-		this.edit(new Editor() {
-			public void edit(ModifiedDeclaration declaration) {
-				adapter.newNormalAnnotation(declaration);
-			}
-		});		
-	}
-
-	/**
-	 * Remove the specified annotation from the member.
-	 */
-	public void removeAnnotation(final DeclarationAnnotationAdapter adapter) {
-		this.edit(new Editor() {
-			public void edit(ModifiedDeclaration declaration) {
-				adapter.removeAnnotation(declaration);
-			}
-		});		
-	}
-
-
-	// ********** annotation elements **********
-
-
-	public Expression annotationElementExpression(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
-		return adapter.getExpression(this.getModifiedDeclaration(astRoot));
-	}
-
-	public Expression annotationElementExpression(DeclarationAnnotationElementAdapter<?> adapter) {
-		return this.annotationElementExpression(adapter, this.getAstRoot());
-	}
-
-	public boolean containsAnnotationElement(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
-		return this.annotationElementExpression(adapter, astRoot) != null;
-	}
-
-	public boolean containsAnnotationElement(DeclarationAnnotationElementAdapter<?> adapter) {
-		return this.containsAnnotationElement(adapter, this.getAstRoot());
-	}
-
-	/**
-	 * Return the text range corresponding to the specified element.
-	 * If the element is missing, return null.
-	 */
-	public TextRange getAnnotationElementTextRange(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
-		return this.textRange(this.annotationElementExpression(adapter, astRoot));
-	}
-
-	/**
-	 * Return the text range corresponding to the specified element.
-	 * If the element is missing, return null.
-	 */
-	public TextRange annotationElementTextRange(DeclarationAnnotationElementAdapter<?> adapter) {
-		return this.getAnnotationElementTextRange(adapter, this.getAstRoot());
-	}
-
-	/**
-	 * Return the AST node corresponding to the specified element.
-	 * If the element is missing, return its parent node.
-	 */
-	public ASTNode annotationElementASTNode(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
-		return adapter.getAstNode(this.getModifiedDeclaration(astRoot));
-	}
-
-	/**
-	 * Return the AST node corresponding to the specified element.
-	 * If the element is missing, return its parent node.
-	 */
-	public ASTNode annotationElementASTNode(DeclarationAnnotationElementAdapter<?> adapter) {
-		return this.annotationElementASTNode(adapter, this.getAstRoot());
-	}
-
-	/**
-	 * Set the value of the specified element.
-	 */
-	public <T> void setAnnotationElementValue(final DeclarationAnnotationElementAdapter<T> adapter, final T value) {
-		this.edit(new Editor() {
-			public void edit(ModifiedDeclaration declaration) {
-				adapter.setValue(value, declaration);
-			}
-		});		
-	}
-
 
 	// ********** editing **********
 
@@ -307,7 +139,7 @@ public abstract class JDTMember
 	 *        up the second time you edit through the XmlPersistence XmlProperties View
 	 */
 	private void edit_(Editor editor) throws JavaModelException, BadLocationException {
-		ICompilationUnit compilationUnit = this.compilationUnit();
+		ICompilationUnit compilationUnit = this.getCompilationUnit();
 		if ( ! compilationUnit.isWorkingCopy()) {
 			compilationUnit.becomeWorkingCopy(null);
 		}

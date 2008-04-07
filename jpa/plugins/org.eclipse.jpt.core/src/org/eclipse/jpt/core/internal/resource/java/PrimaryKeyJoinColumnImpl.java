@@ -118,7 +118,7 @@ public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements Nes
 	}
 
 	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.referencedColumnNameDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.referencedColumnNameDeclarationAdapter, astRoot);
 	}
 	
 	// ********** static methods **********

@@ -29,8 +29,6 @@ public interface Member {
 
 	boolean wraps(IMember member);
 
-	Type getTopLevelDeclaringType();
-
 	CompilationUnit getAstRoot();
 
 	/**
@@ -44,15 +42,7 @@ public interface Member {
 
 	ModifiedDeclaration getModifiedDeclaration(CompilationUnit astRoot);
 
-	TextRange getTextRange(CompilationUnit astRoot);
-
 	TextRange getNameTextRange(CompilationUnit astRoot);
-
-	TextRange getAnnotationTextRange(DeclarationAnnotationAdapter adapter, CompilationUnit astRoot);
-
-	TextRange getAnnotationElementTextRange(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot);
-
-	void newMarkerAnnotation(DeclarationAnnotationAdapter adapter);
 
 	void edit(Editor editor);
 

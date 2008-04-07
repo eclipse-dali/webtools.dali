@@ -217,15 +217,15 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractReso
 	}
 	
 	public TextRange getTargetEntityTextRange(CompilationUnit astRoot) {
-		return elementTextRange(this.targetEntityDeclarationAdapter, astRoot);
+		return getElementTextRange(this.targetEntityDeclarationAdapter, astRoot);
 	}
 	
 	public TextRange getFetchTextRange(CompilationUnit astRoot) {
-		return elementTextRange(this.fetchDeclarationAdapter, astRoot);
+		return getElementTextRange(this.fetchDeclarationAdapter, astRoot);
 	}
 	
 	public TextRange getCascadeTextRange(CompilationUnit astRoot) {
-		return elementTextRange(this.cascadeDeclarationAdapter, astRoot);
+		return getElementTextRange(this.cascadeDeclarationAdapter, astRoot);
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {

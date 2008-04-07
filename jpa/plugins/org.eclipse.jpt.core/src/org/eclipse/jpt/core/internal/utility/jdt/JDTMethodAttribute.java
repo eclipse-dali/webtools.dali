@@ -82,7 +82,7 @@ public class JDTMethodAttribute
 	 * "foo" returned for a method named "getFoo" or "isFoo"
 	 */
 	public String getAttributeName() {
-		String methodName = super.name();
+		String methodName = super.getName();
 		int beginIndex = 0;
 		if (methodName.startsWith("get")) {
 			beginIndex = 3;

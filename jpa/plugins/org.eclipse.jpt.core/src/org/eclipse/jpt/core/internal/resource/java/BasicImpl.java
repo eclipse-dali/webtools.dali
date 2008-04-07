@@ -85,11 +85,11 @@ public class BasicImpl extends AbstractResourceAnnotation<Attribute> implements 
 	}
 	
 	public TextRange getFetchTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(FETCH_ADAPTER, astRoot);
+		return this.getElementTextRange(FETCH_ADAPTER, astRoot);
 	}
 	
 	public TextRange getOptionalTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(OPTIONAL_ADAPTER, astRoot);
+		return this.getElementTextRange(OPTIONAL_ADAPTER, astRoot);
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {

@@ -103,11 +103,11 @@ public class QueryHintImpl extends AbstractResourceAnnotation<Type>
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 	
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.valueDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.valueDeclarationAdapter, astRoot);
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {

@@ -113,15 +113,15 @@ public abstract class GeneratorImpl extends AbstractResourceAnnotation<Member> i
 	}
 	
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 	
 	public TextRange getInitialValueTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.initialValueDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.initialValueDeclarationAdapter, astRoot);
 	}
 	
 	public TextRange getAllocationSizeTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.allocationSizeDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.allocationSizeDeclarationAdapter, astRoot);
 	}
 
 	// ********** java annotations -> persistence model **********

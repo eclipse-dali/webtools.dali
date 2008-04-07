@@ -24,6 +24,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
+import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
+import org.eclipse.jpt.core.utility.jdt.Member.Editor;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -529,19 +531,26 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		assertSourceDoesNotContain("@Column");
 	}
 	
-	
 	//update source code to change from @Id to @OneToOne and make sure @Column is not removed
 	public void testChangeAttributeMappingInSource() throws Exception {
 		IType jdtType = createTestEntityAnnotatedField();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		final JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 	
-		idField().removeAnnotation(((IdImpl) attributeResource.getMappingAnnotation()).getDeclarationAnnotationAdapter());
-
+		idField().edit(new Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				((IdImpl) attributeResource.getMappingAnnotation()).getDeclarationAnnotationAdapter().removeAnnotation(declaration);
+			}
+		});		
+		
 		this.createAnnotationAndMembers("OneToOne", "");
 		jdtType.getCompilationUnit().createImport("javax.persistence.OneToOne", null, new NullProgressMonitor());
 		
-		idField().newMarkerAnnotation(OneToOneImpl.DECLARATION_ANNOTATION_ADAPTER);
+		idField().edit(new Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				OneToOneImpl.DECLARATION_ANNOTATION_ADAPTER.newMarkerAnnotation(declaration);
+			}
+		});		
 		
 		assertNotNull(attributeResource.getAnnotation(JPA.COLUMN));
 		assertNull(attributeResource.getMappingAnnotation(JPA.ID));

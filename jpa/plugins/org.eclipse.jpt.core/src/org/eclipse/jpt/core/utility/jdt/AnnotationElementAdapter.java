@@ -51,30 +51,12 @@ public interface AnnotationElementAdapter<T> {
 	void setValue(T value);
 
 	/**
-	 * Return the expression value of the adapter's annotation element.
-	 * Return null if the element is not present.
-	 * If the compilation unit is available, #expression(CompilationUnit)
-	 * might be more performant.
-	 * @see #getExpression(org.eclipse.jdt.core.dom.CompilationUnit)
-	 */
-	Expression getExpression();
-
-	/**
 	 * Given the specified compilation unit, return the expression value of the
 	 * adapter's annotation element.
 	 * Return null if the element is not present.
 	 * @see #getExpression()
 	 */
 	Expression getExpression(CompilationUnit astRoot);
-
-	/**
-	 * Return the AST node corresponding to the element.
-	 * If the element is missing, return the annotation's node.
-	 * If the compilation unit is available, #astNode(CompilationUnit)
-	 * might be more performant.
-	 * @see #getAstNode(org.eclipse.jdt.core.dom.CompilationUnit)
-	 */
-	ASTNode getAstNode();
 
 	/**
 	 * Return the AST node corresponding to the element.

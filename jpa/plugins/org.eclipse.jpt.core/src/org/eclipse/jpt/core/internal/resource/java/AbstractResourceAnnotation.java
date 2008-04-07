@@ -9,7 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jpt.core.internal.utility.jdt.ASTNodeTextRange;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
@@ -66,22 +69,48 @@ public abstract class AbstractResourceAnnotation<E extends Member>
 	}
 	
 	public TextRange getTextRange(CompilationUnit astRoot) {
-		return getMember().getAnnotationTextRange(this.daa, astRoot);
+		return getAnnotationTextRange(astRoot);
+	}
+	
+	protected TextRange getTextRange(ASTNode astNode) {
+		return (astNode == null) ? null : new ASTNodeTextRange(astNode);
+	}
+
+	/**
+	 * Return the text range corresponding to the specified annotation.
+	 * If the annotation is missing, return null.
+	 */
+	protected TextRange getAnnotationTextRange(CompilationUnit astRoot) {
+		return this.getTextRange(getAnnotation(astRoot));
+	}
+	
+	protected org.eclipse.jdt.core.dom.Annotation getAnnotation(CompilationUnit astRoot) {
+		return this.daa.getAnnotation(getMember().getModifiedDeclaration(astRoot));
+		
+	}
+
+	protected Expression getAnnotationElementExpression(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
+		return adapter.getExpression(getMember().getModifiedDeclaration(astRoot));
+	}
+
+	protected TextRange getAnnotationElementTextRange(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
+		return this.getTextRange(getAnnotationElementExpression(adapter, astRoot));
+
 	}
 
 	/**
 	 * Convenience method. If the specified element is missing
 	 * return the member's text range instead.
 	 */
-	protected TextRange elementTextRange(DeclarationAnnotationElementAdapter<?> elementAdapter, CompilationUnit astRoot) {
-		return this.elementTextRange(this.member.getAnnotationElementTextRange(elementAdapter, astRoot), astRoot);
+	protected TextRange getElementTextRange(DeclarationAnnotationElementAdapter<?> elementAdapter, CompilationUnit astRoot) {
+		return this.getElementTextRange(getAnnotationElementTextRange(elementAdapter, astRoot), astRoot);
 	}
 	
 	/**
 	 * Convenience method. If the specified element text range is null
 	 * return the member's text range instead.
 	 */
-	protected TextRange elementTextRange(TextRange elementTextRange, CompilationUnit astRoot) {
+	protected TextRange getElementTextRange(TextRange elementTextRange, CompilationUnit astRoot) {
 		return (elementTextRange != null) ? elementTextRange : this.getTextRange(astRoot);
 	}
 	
@@ -90,7 +119,7 @@ public abstract class AbstractResourceAnnotation<E extends Member>
 	 * Returns false if the element does not exist
 	 */
 	protected boolean elementTouches(DeclarationAnnotationElementAdapter<?> elementAdapter, int pos, CompilationUnit astRoot) {
-		return this.elementTouches(this.member.getAnnotationElementTextRange(elementAdapter, astRoot), pos);
+		return this.elementTouches(getAnnotationElementTextRange(elementAdapter, astRoot), pos);
 	}
 	
 	/**

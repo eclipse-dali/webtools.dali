@@ -62,7 +62,7 @@ public class MapKeyImpl extends AbstractResourceAnnotation<Attribute> implements
 	}
 	
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(NAME_ADAPTER, astRoot);
+		return this.getElementTextRange(NAME_ADAPTER, astRoot);
 	}
 
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {

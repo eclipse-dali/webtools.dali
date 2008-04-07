@@ -14,11 +14,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.IMember;
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
+import org.eclipse.jpt.core.internal.utility.jdt.ASTNodeTextRange;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.ContainerAnnotation;
@@ -521,10 +523,9 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	public boolean isPersisted() {
 		return getMappingAnnotation() != null;
 	}
-	
 
 	public TextRange fullTextRange(CompilationUnit astRoot) {
-		return this.getMember().getTextRange(astRoot);
+		return this.getTextRange(getMember().getBodyDeclaration(astRoot));
 	}
 
 	public TextRange getTextRange(CompilationUnit astRoot) {
@@ -533,6 +534,10 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return this.getMember().getNameTextRange(astRoot);
+	}
+	
+	protected TextRange getTextRange(ASTNode astNode) {
+		return (astNode == null) ? null : new ASTNodeTextRange(astNode);
 	}
 
 }

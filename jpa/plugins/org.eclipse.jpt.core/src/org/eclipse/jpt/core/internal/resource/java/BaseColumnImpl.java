@@ -161,23 +161,23 @@ public abstract class BaseColumnImpl extends AbstractNamedColumn implements Base
 	}
 
 	public TextRange getNullableTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.nullableDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.nullableDeclarationAdapter, astRoot);
 	}
 	
 	public TextRange getInsertableTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.insertableDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.insertableDeclarationAdapter, astRoot);
 	}
 	
 	public TextRange getUniqueTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.uniqueDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.uniqueDeclarationAdapter, astRoot);
 	}
 	
 	public TextRange getUpdatableTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.updatableDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.updatableDeclarationAdapter, astRoot);
 	}
 	
 	public TextRange getTableTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.tableDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.tableDeclarationAdapter, astRoot);
 	}
 	
 	public boolean tableTouches(int pos, CompilationUnit astRoot) {

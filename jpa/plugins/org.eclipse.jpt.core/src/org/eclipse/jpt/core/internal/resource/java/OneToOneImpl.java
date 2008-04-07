@@ -109,11 +109,11 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 	}
 	
 	public TextRange getMappedByTextRange(CompilationUnit astRoot) {
-		return elementTextRange(MAPPED_BY_ADAPTER, astRoot);
+		return getElementTextRange(MAPPED_BY_ADAPTER, astRoot);
 	}
 	
 	public TextRange getOptionalTextRange(CompilationUnit astRoot) {
-		return elementTextRange(OPTIONAL_ADAPTER, astRoot);
+		return getElementTextRange(OPTIONAL_ADAPTER, astRoot);
 	}
 	
 	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {

@@ -25,6 +25,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.MappedSuperclassAnnotation;
 import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
+import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
+import org.eclipse.jpt.core.utility.jdt.Member.Editor;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -616,18 +618,25 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		assertSourceDoesNotContain("@Table");
 	}
 	
-	
 	//update source code to change from @Entity to @Embeddable and make sure @Table is not removed
 	public void testChangeTypeMappingInSource() throws Exception {
 		IType jdtType = createTestEntityWithTable();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		final JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
 		
-		testType().removeAnnotation(((EntityImpl) typeResource.getMappingAnnotation()).getDeclarationAnnotationAdapter());
+		testType().edit(new Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				((EntityImpl) typeResource.getMappingAnnotation()).getDeclarationAnnotationAdapter().removeAnnotation(declaration);
+			}
+		});	
 
 		this.createAnnotationAndMembers("Embeddable", "String name();");
 		jdtType.getCompilationUnit().createImport("javax.persistence.Embeddable", null, new NullProgressMonitor());
-		
-		testType().newMarkerAnnotation(EmbeddableImpl.DECLARATION_ANNOTATION_ADAPTER);
+				
+		testType().edit(new Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				EmbeddableImpl.DECLARATION_ANNOTATION_ADAPTER.newMarkerAnnotation(declaration);
+			}
+		});		
 		
 		assertNotNull(typeResource.getAnnotation(JPA.TABLE));
 		assertNull(typeResource.getMappingAnnotation(JPA.ENTITY));

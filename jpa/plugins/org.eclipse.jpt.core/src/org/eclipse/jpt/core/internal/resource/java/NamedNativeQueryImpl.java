@@ -142,11 +142,11 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 	}
 
 	public TextRange getResultClassTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.resultClassDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.resultClassDeclarationAdapter, astRoot);
 	}
 	
 	public TextRange getResultSetMappingTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.resultSetMappingDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.resultSetMappingDeclarationAdapter, astRoot);
 	}
 	
 	@Override

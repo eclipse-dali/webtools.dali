@@ -36,20 +36,8 @@ public class TypeTests extends AnnotationTestCase {
 		super.tearDown();
 	}
 
-	public void testJdtMember() throws Exception {
-		assertEquals(this.jdtType, this.testType.getJdtMember());
-	}
-
-	public void testTopLevelDeclaringType() throws Exception {
-		assertEquals(this.testType, this.testType.getTopLevelDeclaringType());
-	}
-
-	public void testDeclaringType() throws Exception {
-		assertNull(this.testType.declaringType());
-	}
-
 	public void testName() throws Exception {
-		assertEquals(TYPE_NAME, this.testType.name());
+		assertEquals(TYPE_NAME, this.testType.getName());
 	}
 
 }

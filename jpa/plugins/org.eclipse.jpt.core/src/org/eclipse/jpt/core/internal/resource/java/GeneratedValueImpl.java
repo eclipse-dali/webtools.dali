@@ -82,11 +82,11 @@ public class GeneratedValueImpl extends AbstractResourceAnnotation<Member> imple
 	}
 
 	public TextRange getStrategyTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(STRATEGY_ADAPTER, astRoot);
+		return this.getElementTextRange(STRATEGY_ADAPTER, astRoot);
 	}
 	
 	public TextRange getGeneratorTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(GENERATOR_ADAPTER, astRoot);
+		return this.getElementTextRange(GENERATOR_ADAPTER, astRoot);
 	}
 
 	// ********** java annotations -> persistence model **********

@@ -90,7 +90,7 @@ public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation impleme
 	}
 
 	public TextRange getOptionalTextRange(CompilationUnit astRoot) {
-		return elementTextRange(OPTIONAL_ADAPTER, astRoot);
+		return getElementTextRange(OPTIONAL_ADAPTER, astRoot);
 	}
 
 	@Override
