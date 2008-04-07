@@ -58,7 +58,6 @@ public interface Customization extends PersistenceUnitProperties
 		static final String ECLIPSELINK_WEAVING_FETCH_GROUPS = "persistence.tools.weaving.fetchgroups";
 		static final Boolean DEFAULT_WEAVING_FETCH_GROUPS = Boolean.TRUE;
 	
-//	Class name 
 	String getDefaultSessionCustomizer();
 	String getSessionCustomizer();
 	void setSessionCustomizer(String newSessionCustomizer);
@@ -80,6 +79,6 @@ public interface Customization extends PersistenceUnitProperties
 	int entitiesSize();
 	String addEntity(String entity);
 	void removeEntity(String entity);
-		String ENTITIES_LIST_PROPERTY = "entitiesList";
+		String ENTITIES_LIST_PROPERTY = "entitiesListProperty";
 
 }

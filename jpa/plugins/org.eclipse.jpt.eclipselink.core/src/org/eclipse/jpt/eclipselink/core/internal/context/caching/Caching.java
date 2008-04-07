@@ -72,6 +72,6 @@ public interface Caching extends PersistenceUnitProperties
 	int entitiesSize();
 	String addEntity(String entity);
 	void removeEntity(String entity);
-		String ENTITIES_LIST_PROPERTY = "entitiesList";
+		String ENTITIES_LIST_PROPERTY = "entitiesListProperty";
 
 }
