@@ -9,8 +9,6 @@
 package org.eclipse.jpt.eclipselink.ui.internal.persistencexml.details;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkJpaProperties;
-import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkProperties;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractJpaDetailsPage;
 import org.eclipse.swt.layout.FillLayout;
@@ -21,7 +19,6 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class PersistenceXmlDetailsPage extends AbstractJpaDetailsPage<PersistenceUnit>
 {
-	private EclipseLinkProperties persistenceUnit;
 
 	public PersistenceXmlDetailsPage(Composite parent, WidgetFactory widgetFactory) {
 		super(parent, widgetFactory);
@@ -29,7 +26,6 @@ public class PersistenceXmlDetailsPage extends AbstractJpaDetailsPage<Persistenc
 
 	protected void initialize() {
 		super.initialize();
-		this.persistenceUnit = new EclipseLinkJpaProperties(this.subject());
 	}
 
 	@Override
