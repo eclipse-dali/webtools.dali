@@ -316,10 +316,9 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	protected <T extends Enum<T>> T getEnumValue(String key, String keySuffix, T[] enumValues) {
 		String elKey = (keySuffix == null) ? key : key + keySuffix;
 		if (this.persistenceUnit().containsProperty(elKey)) {
-			String eclipseLinkValue = this.persistenceUnit().getProperty(elKey).getValue();
-			// TOREVIEW - handle incorrect eclipseLinkValue String in
-			// persistence.xml
-			return getEnumValueOf(eclipseLinkValue, enumValues);
+			String elStringValue = this.persistenceUnit().getProperty(elKey).getValue();
+			// TOREVIEW - handle incorrect eclipseLinkValue String in persistence.xml
+			return getEnumValueOf(elStringValue, enumValues);
 		}
 		return null;
 	}
@@ -419,26 +418,26 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	 * Returns the enum constant of the specified enum type with the specified
 	 * EclipseLink value string.
 	 */
-	public static <T extends Enum<T>> T getEnumValueOf(String eclipseLinkValueString, T[] enumValues) {
-		for (T mode : enumValues) {
-			if (getEclipseLinkStringValueOf(mode).equals(eclipseLinkValueString)) {
-				return mode;
+	public static <T extends Enum<T>> T getEnumValueOf(String elStringValue, T[] enumValues) {
+		for (T enumValue : enumValues) {
+			if (getEclipseLinkStringValueOf(enumValue).equals(elStringValue)) {
+				return enumValue;
 			}
 		}
 		return null;
 	}
 
-	public static Boolean getBooleanValueOf(String eclipseLinkValueString) {
-		if (eclipseLinkValueString == null) {
+	public static Boolean getBooleanValueOf(String elStringValue) {
+		if (elStringValue == null) {
 			return null;
 		}
-		return Boolean.valueOf(eclipseLinkValueString);
+		return Boolean.valueOf(elStringValue);
 	}
 
-	public static Integer getIntegerValueOf(String eclipseLinkValueString) {
-		if (eclipseLinkValueString == null) {
+	public static Integer getIntegerValueOf(String elStringValue) {
+		if (elStringValue == null) {
 			return null;
 		}
-		return Integer.valueOf(eclipseLinkValueString);
+		return Integer.valueOf(elStringValue);
 	}
 }
