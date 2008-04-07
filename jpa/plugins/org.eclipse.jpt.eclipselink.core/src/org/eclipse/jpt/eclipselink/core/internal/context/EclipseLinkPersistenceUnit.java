@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
+import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
 
 /**
@@ -34,16 +35,20 @@ public class EclipseLinkPersistenceUnit extends GenericPersistenceUnit
 	}
 
 	// ******** Behavior *********
-	public SchemaGeneration getSchemaGeneration() {
-		return this.eclipseLinkProperties.getSchemaGeneration();
-	}
-
 	public Caching getCaching() {
 		return this.eclipseLinkProperties.getCaching();
 	}
 
 	public Customization getCustomization() {
 		return this.eclipseLinkProperties.getCustomization();
+	}
+
+	public Logging getLogging() {
+		return this.eclipseLinkProperties.getLogging();
+	}
+
+	public SchemaGeneration getSchemaGeneration() {
+		return this.eclipseLinkProperties.getSchemaGeneration();
 	}
 
 }

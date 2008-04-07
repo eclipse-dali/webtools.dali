@@ -17,6 +17,8 @@ import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.EclipseLinkCustomization;
+import org.eclipse.jpt.eclipselink.core.internal.context.logging.EclipseLinkLogging;
+import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -35,11 +37,11 @@ public class EclipseLinkJpaProperties extends AbstractModel
 {
 	private PersistenceUnit persistenceUnit;
 	
-	private SchemaGeneration schemaGeneration;
 	private Caching caching;
 	private Customization customization;
-
-	// private Logging logging;
+	private Logging logging;
+	private SchemaGeneration schemaGeneration;
+	
 	private ListValueModel<Property> propertiesAdapter;
 	private ListValueModel<Property> propertyListAdapter;
 
@@ -57,11 +59,10 @@ public class EclipseLinkJpaProperties extends AbstractModel
 		this.propertiesAdapter = this.buildPropertiesAdapter(persistenceUnitHolder);
 		this.propertyListAdapter = this.buildPropertyListAdapter(this.propertiesAdapter);
 		
-		this.schemaGeneration = this.buildSchemaGeneration();
 		this.caching = this.buildCaching();
 		this.customization = this.buildCustomization();
-		// TODO
-		// this.logging = this.buildLogging();
+		this.logging = this.buildLogging();
+		this.schemaGeneration = this.buildSchemaGeneration();
 	}
 
 	private ListValueModel<Property> buildPropertyListAdapter(ListValueModel<Property> propertiesAdapter) {
@@ -82,10 +83,6 @@ public class EclipseLinkJpaProperties extends AbstractModel
 		};
 	}
 
-	private SchemaGeneration buildSchemaGeneration() {
-		return new EclipseLinkSchemaGeneration(this.persistenceUnit(), this.propertyListAdapter());
-	}
-
 	private Caching buildCaching() {
 		return new EclipseLinkCaching(this.persistenceUnit(), this.propertyListAdapter());
 	}
@@ -94,16 +91,15 @@ public class EclipseLinkJpaProperties extends AbstractModel
 		return new EclipseLinkCustomization(this.persistenceUnit(), this.propertyListAdapter());
 	}
 
-	// TODO
-	// private Logging buildLogging() {
-	// return new EclipseLinkLogging( this.persistenceUnit());
-	// }
-	
-	// ******** Behavior *********
-	public SchemaGeneration getSchemaGeneration() {
-		return this.schemaGeneration;
+	private Logging buildLogging() {
+		return new EclipseLinkLogging(this.persistenceUnit(), this.propertyListAdapter());
 	}
 
+	private SchemaGeneration buildSchemaGeneration() {
+		return new EclipseLinkSchemaGeneration(this.persistenceUnit(), this.propertyListAdapter());
+	}
+	
+	// ******** Behavior *********
 	public Caching getCaching() {
 		return this.caching;
 	}
@@ -112,13 +108,12 @@ public class EclipseLinkJpaProperties extends AbstractModel
 		return this.customization;
 	}
 
-	// TODO
-	// public Logging getLogging() {
-	// return this.logging;
-	// }
+	public Logging getLogging() {
+		return this.logging;
+	}
 	
-	public EclipseLinkProperties eclipseLinkProperties() {
-		return this;
+	public SchemaGeneration getSchemaGeneration() {
+		return this.schemaGeneration;
 	}
 
 	public ListValueModel<Property> propertiesAdapter() {

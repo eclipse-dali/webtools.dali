@@ -16,9 +16,11 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
+import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.ui.internal.caching.PersistenceXmlCachingTab;
 import org.eclipse.jpt.eclipselink.ui.internal.customization.PersistenceXmlCustomizationTab;
+import org.eclipse.jpt.eclipselink.ui.internal.logging.PersistenceXmlLoggingTab;
 import org.eclipse.jpt.eclipselink.ui.internal.schema.generation.PersistenceXmlSchemaGenerationTab;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
@@ -58,8 +60,22 @@ public class EclipseLinkUiFactory extends BaseJpaUiFactory
 		PropertyValueModel<Customization> customizationHolder = 
 			this.buildCustomizationHolder(eclipseLinkPersistenceUnitHolder);
 		pages.add(new PersistenceXmlCustomizationTab(customizationHolder, parent, widgetFactory));
+
+		PropertyValueModel<Logging> loggingHolder = 
+			this.buildLoggingHolder(eclipseLinkPersistenceUnitHolder);
+		pages.add(new PersistenceXmlLoggingTab(loggingHolder, parent, widgetFactory));
 		
 		return pages.listIterator();
+	}
+
+	private PropertyValueModel<Logging> buildLoggingHolder(
+				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
+		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Logging>(subjectHolder) {
+			@Override
+			protected Logging transform_(EclipseLinkPersistenceUnit value) {
+				return value.getLogging();
+			}
+		};
 	}
 
 	private PropertyValueModel<Customization> buildCustomizationHolder(

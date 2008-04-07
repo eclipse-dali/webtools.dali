@@ -34,19 +34,6 @@ public class EclipseLinkUiMessages extends NLS
 	public static String PersistenceXmlGeneralTab_browse;
 	public static String PersistenceXmlGeneralTab_description;
 	
-	public static String PersistenceXmlLoggingTab_loggingLevelLabel;
-	public static String PersistenceXmlLoggingTab_timestampLabel;
-	public static String PersistenceXmlLoggingTab_timestampLabelDefault;
-	public static String PersistenceXmlLoggingTab_threadLabel;
-	public static String PersistenceXmlLoggingTab_threadLabelDefault;
-	public static String PersistenceXmlLoggingTab_sessionLabel;
-	public static String PersistenceXmlLoggingTab_sessionLabelDefault;
-	public static String PersistenceXmlLoggingTab_exceptionsLabel;
-	public static String PersistenceXmlLoggingTab_exceptionsLabelDefault;
-	public static String PersistenceXmlLoggingTab_logFileLabel;
-	public static String PersistenceXmlLoggingTab_logFileLabelDefault;
-	public static String PersistenceXmlLoggingTab_loggersLabel;
-
 	// SchemaGeneration
 	public static String PersistenceXmlSchemaGenerationTab_title;
 	public static String PersistenceXmlSchemaGenerationTab_sectionTitle;
@@ -124,6 +111,42 @@ public class EclipseLinkUiMessages extends NLS
 	public static String CustomizationEntityListComposite_editButton;
 	public static String PersistenceXmlCustomizationTab_customizerLabel;
 	public static String PersistenceXmlCustomizationTab_sessionCustomizerLabel;
+
+	// Logging
+	public static String PersistenceXmlLoggingTab_title;
+	public static String PersistenceXmlLoggingTab_sectionTitle;
+	public static String PersistenceXmlLoggingTab_sectionDescription;
+	public static String PersistenceXmlLoggingTab_defaultWithOneParam;
+	public static String PersistenceXmlLoggingTab_defaultEmpty;
+
+	public static String PersistenceXmlLoggingTab_loggingLevelLabel;
+
+	public static String LoggingLevelComposite_off;
+	public static String LoggingLevelComposite_severe;
+	public static String LoggingLevelComposite_warning;
+	public static String LoggingLevelComposite_info;
+	public static String LoggingLevelComposite_config;
+	public static String LoggingLevelComposite_fine;
+	public static String LoggingLevelComposite_finer;
+	public static String LoggingLevelComposite_finest;
+
+	public static String PersistenceXmlLoggingTab_loggerLabel;
+	
+	public static String LoggerComposite_default_logger;
+	public static String LoggerComposite_java_logger;
+	public static String LoggerComposite_server_logger;
+
+	public static String PersistenceXmlLoggingTab_timestampLabel;
+	public static String PersistenceXmlLoggingTab_timestampLabelDefault;
+	public static String PersistenceXmlLoggingTab_threadLabel;
+	public static String PersistenceXmlLoggingTab_threadLabelDefault;
+	public static String PersistenceXmlLoggingTab_sessionLabel;
+	public static String PersistenceXmlLoggingTab_sessionLabelDefault;
+	public static String PersistenceXmlLoggingTab_exceptionsLabel;
+	public static String PersistenceXmlLoggingTab_exceptionsLabelDefault;
+	public static String PersistenceXmlLoggingTab_logFileLabel;
+	public static String PersistenceXmlLoggingTab_logFileLabelDefault;
+	public static String PersistenceXmlLoggingTab_loggersLabel;
 
 	
 	private EclipseLinkUiMessages() {
