@@ -413,7 +413,6 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	private CustomizerProperties replaceEntity_(String entity, CustomizerProperties properties) {
 		CustomizerProperties old = this.entitiesCustomizerProperties.get(entity);
 		this.entitiesCustomizerProperties.put(entity, properties);
-		// fire change ?
 		return old;
 	}
 

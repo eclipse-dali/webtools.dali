@@ -23,7 +23,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * PersistenceXmlSchemaGenerationTabItem
+ * PersistenceXmlSchemaGenerationTab
  */
 public class PersistenceXmlSchemaGenerationTab
 	extends AbstractFormPane<SchemaGeneration>
