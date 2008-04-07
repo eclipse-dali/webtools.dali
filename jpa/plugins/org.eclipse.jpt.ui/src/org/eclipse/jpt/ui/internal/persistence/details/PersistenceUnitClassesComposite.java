@@ -21,8 +21,6 @@ import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
@@ -31,6 +29,7 @@ import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
+import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
@@ -238,8 +237,7 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 					return image;
 				}
 
-				// TODO: Use the right warning image
-				return JFaceResources.getImageRegistry().get(Dialog.DLG_IMG_WARNING);
+				return JptUiPlugin.getImage(JptUiIcons.WARNING);
 			}
 
 			@Override
@@ -259,7 +257,7 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 	private ListValueModel<ClassRef> buildItemListHolder() {
 		return new ItemPropertyListValueModelAdapter<ClassRef>(
 			buildListHolder(),
-			ClassRef.JAVA_PERSISTENT_TYPE_PROPERTY, 
+			ClassRef.JAVA_PERSISTENT_TYPE_PROPERTY,
 			ClassRef.CLASS_NAME_PROPERTY
 		);
 	}
