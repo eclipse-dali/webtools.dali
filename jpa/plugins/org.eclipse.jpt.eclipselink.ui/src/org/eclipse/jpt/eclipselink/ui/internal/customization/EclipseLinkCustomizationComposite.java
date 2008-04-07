@@ -31,7 +31,7 @@ public class EclipseLinkCustomizationComposite extends AbstractFormPane<Customiz
 
 	@Override
 	protected void initializeLayout(Composite parent) {
-		Section section = getWidgetFactory().createSection(parent, SWT.FLAT | ExpandableComposite.TITLE_BAR| Section.DESCRIPTION);
+		Section section = getWidgetFactory().createSection(parent, SWT.FLAT | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION);
 		section.setText(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_sectionTitle);
 		section.setDescription(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_sectionDescription);
 		section.setLayoutData(new GridData(GridData.FILL_BOTH));

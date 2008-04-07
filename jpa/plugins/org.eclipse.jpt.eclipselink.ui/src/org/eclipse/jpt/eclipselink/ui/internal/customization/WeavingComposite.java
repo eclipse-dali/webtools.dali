@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.customization;
 
 import java.util.Collection;
+
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Weaving;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;

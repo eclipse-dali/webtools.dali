@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.customization;
 
 import java.util.ListIterator;
+
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;

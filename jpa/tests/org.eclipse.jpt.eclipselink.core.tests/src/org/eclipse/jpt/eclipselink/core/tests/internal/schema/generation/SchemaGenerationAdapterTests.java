@@ -191,7 +191,10 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 	}
 
 	public void testAddRemoveApplicationLocation() throws Exception {
-		this.verifyAddRemoveProperty(SchemaGeneration.APPLICATION_LOCATION_PROPERTY, APPLICATION_LOCATION_KEY, APPLICATION_LOCATION_TEST_VALUE, APPLICATION_LOCATION_TEST_VALUE_2);
+		this.verifyAddRemoveProperty(SchemaGeneration.APPLICATION_LOCATION_PROPERTY,
+			APPLICATION_LOCATION_KEY,
+			APPLICATION_LOCATION_TEST_VALUE,
+			APPLICATION_LOCATION_TEST_VALUE_2);
 	}
 
 	// ********** OutputMode **********
