@@ -188,6 +188,7 @@ public class JptUiMappingsMessages extends NLS {
 	public static String PersistentAttributePage_OneToOneLabel;
 	public static String PersistentAttributePage_TransientLabel;
 	public static String PersistentAttributePage_VersionLabel;
+	public static String PersistentTypePage_UnmappedLabel;
 	public static String PersistentTypePage_EmbeddableLabel;
 	public static String PersistentTypePage_EntityLabel;
 	public static String PersistentTypePage_MappedSuperclassLabel;

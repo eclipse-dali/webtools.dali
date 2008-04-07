@@ -16,6 +16,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Image;
@@ -46,7 +47,7 @@ public class NullTypeMappingUiProvider implements TypeMappingUiProvider<TypeMapp
 	}
 
 	public String getLabel() {
-		return "";
+		return JptUiMappingsMessages.PersistentTypePage_UnmappedLabel;
 	}
 
 	public Image getImage() {

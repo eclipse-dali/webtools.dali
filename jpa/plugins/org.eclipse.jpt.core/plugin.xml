@@ -21,16 +21,8 @@
 			id="org.eclipse.jpt.core.propertyTester.persistentAttribute"
 			type="org.eclipse.jpt.core.context.PersistentAttribute"
 			namespace="org.eclipse.jpt.core"
-			properties="isMapped"
+			properties="isMapped, isVirtual"
 			class="org.eclipse.jpt.core.internal.context.PersistentAttributePropertyTester">
-		</propertyTester>
-		
-		<propertyTester
-			id="org.eclipse.jpt.core.propertyTester.ormPersistentAttribute"
-			type="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"
-			namespace="org.eclipse.jpt.core"
-			properties="isVirtual"
-			class="org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttributePropertyTester">
 		</propertyTester>
 		
 	</extension>

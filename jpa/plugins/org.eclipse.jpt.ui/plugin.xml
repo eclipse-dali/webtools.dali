@@ -117,6 +117,28 @@
 			name="%removePersistentAttributeFromXml"
 			categoryId="org.eclipse.jpt.ui.jpaStructureViewCommands">
 		</command>
+
+		<command
+			id="org.eclipse.jpt.ui.persistentTypeMapAs"
+			name="%mapAs"
+			categoryId="org.eclipse.jpt.ui.jpaStructureViewCommands">
+			<commandParameter
+				id="persistentTypeMappingKey"
+				name="%mapAsParameterName"
+				optional="false">
+			</commandParameter>
+		</command>
+		
+		<command
+			id="org.eclipse.jpt.ui.persistentAttributeMapAs"
+			name="%mapAs"
+			categoryId="org.eclipse.jpt.ui.jpaStructureViewCommands">
+			<commandParameter
+				id="persistentAttributeMappingKey"
+				name="%mapAsParameterName"
+				optional="false">
+			</commandParameter>
+		</command>
 		
 	</extension>
 	
@@ -232,6 +254,37 @@
 			</enabledWhen>
 		</handler>
 		
+		<handler
+			commandId="org.eclipse.jpt.ui.persistentTypeMapAs"
+			class="org.eclipse.jpt.ui.internal.commands.PersistentTypeMapAsHandler">
+			<activeWhen>
+				<reference
+					definitionId="org.eclipse.jpt.ui.reference.inJpaStructureView"/>
+			</activeWhen>
+			<enabledWhen>
+				<iterate>
+					<instanceof value="org.eclipse.jpt.core.context.PersistentType"/>
+				</iterate>
+			</enabledWhen>
+		</handler>
+		
+		<handler
+			commandId="org.eclipse.jpt.ui.persistentAttributeMapAs"
+			class="org.eclipse.jpt.ui.internal.commands.PersistentAttributeMapAsHandler">
+			<activeWhen>
+				<reference
+					definitionId="org.eclipse.jpt.ui.reference.inJpaStructureView"/>
+			</activeWhen>
+			<enabledWhen>
+				<iterate>
+					<and>
+						<instanceof value="org.eclipse.jpt.core.context.PersistentAttribute"/>
+						<test property="org.eclipse.jpt.core.isVirtual" value="false"/>
+					</and>
+				</iterate>
+			</enabledWhen>
+		</handler>
+		
  	</extension>
  	
  	
@@ -305,6 +358,45 @@
 				</visibleWhen>
 			</command>
 			
+			<menu
+				id="org.eclipse.jpt.ui.persistentTypeMapAs"
+				label="%mapAs"
+				mnemonic="%mapAsMnemonic">
+				<visibleWhen>
+					<with
+						variable="selection">
+						<iterate>
+							<instanceof value="org.eclipse.jpt.core.context.PersistentType"/>
+						</iterate>
+					</with>
+				</visibleWhen>
+				<dynamic
+					id="org.eclipse.jpt.ui.persistentTypeMapAs"
+					class="org.eclipse.jpt.ui.internal.menus.PersistentTypeMapAsContribution">
+				</dynamic>
+			</menu>
+
+			<menu
+				id="org.eclipse.jpt.ui.persistentAttributeMapAs"
+				label="%mapAs"
+				mnemonic="%mapAsMnemonic">
+				<visibleWhen>
+					<with
+						variable="selection">
+						<iterate>
+							<and>
+								<instanceof value="org.eclipse.jpt.core.context.PersistentAttribute"/>
+								<test property="org.eclipse.jpt.core.isVirtual" value="false"/>
+							</and>
+						</iterate>
+					</with>
+				</visibleWhen>
+				<dynamic
+					id="org.eclipse.jpt.ui.persistentAttributeMapAs"
+					class="org.eclipse.jpt.ui.internal.menus.PersistentAttributeMapAsContribution">
+				</dynamic>
+			</menu>
+
 		</menuContribution>
 		
  	</extension>
