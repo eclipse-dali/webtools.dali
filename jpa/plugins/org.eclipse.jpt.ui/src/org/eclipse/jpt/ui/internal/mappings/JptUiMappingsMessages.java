@@ -62,9 +62,9 @@ public class JptUiMappingsMessages extends NLS {
 	public static String DefaultEmbeddedMappingUiProvider_Default;
 	public static String DefaultWithoutValue;
 	public static String DefaultWithValue;
-	public static String DiscriminatorColumnComposite_column;
 	public static String DiscriminatorColumnComposite_defaultEmpty;
 	public static String DiscriminatorColumnComposite_discriminatorType;
+	public static String DiscriminatorColumnComposite_name;
 	public static String EntityComposite_inheritance;
 	public static String EntityComposite_queries;
 	public static String EntityComposite_tableDefault;
@@ -92,10 +92,9 @@ public class JptUiMappingsMessages extends NLS {
 	public static String IdMappingComposite_sequenceGenerator;
 	public static String IdMappingComposite_tableGenerator;
 	public static String InheritanceComposite_char;
-	public static String InheritanceComposite_default;
-	public static String InheritanceComposite_defaultDiscriminatorType;
+	public static String InheritanceComposite_detailsGroupBox;
+	public static String InheritanceComposite_discriminatorColumnGroupBox;
 	public static String InheritanceComposite_discriminatorValue;
-	public static String InheritanceComposite_discriminatorValueDefaultWithOneParam;
 	public static String InheritanceComposite_integer;
 	public static String InheritanceComposite_joined;
 	public static String InheritanceComposite_single_table;

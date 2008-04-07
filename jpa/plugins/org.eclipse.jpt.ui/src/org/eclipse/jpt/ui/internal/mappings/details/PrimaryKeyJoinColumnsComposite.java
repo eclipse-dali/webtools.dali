@@ -22,7 +22,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.AbstractAdapter;
@@ -64,7 +64,7 @@ import org.eclipse.swt.widgets.Group;
  * @version 2.0
  * @since 2.0
  */
-public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<Entity>
+public class PrimaryKeyJoinColumnsComposite extends AbstractPane<Entity>
 {
 	private WritablePropertyValueModel<PrimaryKeyJoinColumn> joinColumnHolder;
 
@@ -74,7 +74,7 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<Entity>
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	public PrimaryKeyJoinColumnsComposite(AbstractFormPane<? extends Entity> subjectHolder,
+	public PrimaryKeyJoinColumnsComposite(AbstractPane<? extends Entity> subjectHolder,
 	                                      Composite parent) {
 
 		super(subjectHolder, parent);

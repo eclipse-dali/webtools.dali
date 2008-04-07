@@ -21,17 +21,25 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
+import org.eclipse.jpt.ui.internal.util.LabeledLabel;
+import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Spinner;
 
 /**
  * Here the layout of this pane:
@@ -41,14 +49,23 @@ import org.eclipse.swt.widgets.Composite;
  * | Strategy:            | EnumComboViewer                                |v| |
  * |                      ---------------------------------------------------- |
  * |                      ---------------------------------------------------- |
- * | Column:              | ColumnCombo                                    |v| |
+ * | Value:               | I                                              |v| |
+ * |                      ---------------------------------------------------- |
+ * |                                                                           |
+ * | > Discriminator Column                                                    |
+ * |                                                                           |
+ * |                      ---------------------------------------------------- |
+ * | Name:                | ColumnCombo                                    |v| |
  * |                      ---------------------------------------------------- |
  * |                      ---------------------------------------------------- |
- * | Discriminator Type:  | EnumComboViewer                                |v| |
+ * | Type:                | EnumComboViewer                                |v| |
  * |                      ---------------------------------------------------- |
  * |                      ---------------------------------------------------- |
- * | Discriminator Value: | I                                              |v| |
+ * | Column Definition:   | I                                                | |
  * |                      ---------------------------------------------------- |
+ * |                      -------------                                        |
+ * | Length:              | I       |I|                                        |
+ * |                      -------------                                        |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
  * | | PrimaryKeyJoinColumnsComposite                                        | |
@@ -57,7 +74,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see Entity
- * @see EntityComposite - The parent container
+ * @see AbstractEntityComposite - The parent container
  * @see ColumnCombo
  * @see EnumComboViewer
  * @see PrimaryKeyJoinColumnsComposite
@@ -65,9 +82,17 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class InheritanceComposite extends AbstractFormPane<Entity> {
+@SuppressWarnings("nls")
+public class InheritanceComposite extends AbstractPane<Entity> {
 
-	private CCombo discriminatorValueCombo;
+	/**
+	 * A key used to represent the default value, this is required to convert
+	 * the selected item from a combo to <code>null</code>. This key is most
+	 * likely never typed the user and it will help to convert the value to
+	 * <code>null</code> when it's time to set the new selected value into the
+	 * model.
+	 */
+	protected static String DEFAULT_KEY = "?!#!?#?#?default?#?!#?!#?";
 
 	/**
 	 * Creates a new <code>InheritanceComposite</code>.
@@ -75,7 +100,7 @@ public class InheritanceComposite extends AbstractFormPane<Entity> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public InheritanceComposite(AbstractFormPane<? extends Entity> parentPane,
+	public InheritanceComposite(AbstractPane<? extends Entity> parentPane,
 	                            Composite parent) {
 
 		super(parentPane, parent, false);
@@ -95,21 +120,109 @@ public class InheritanceComposite extends AbstractFormPane<Entity> {
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void addPropertyNames(Collection<String> propertyNames) {
-		super.addPropertyNames(propertyNames);
-		propertyNames.add(Entity.DEFAULT_DISCRIMINATOR_VALUE_PROPERTY);
-		propertyNames.add(Entity.SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY);
+	private WritablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {
+
+		return new PropertyAspectAdapter<DiscriminatorColumn, String>(discriminatorColumnHolder, DiscriminatorColumn.COLUMN_DEFINITION_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+				return subject.getColumnDefinition();
+			}
+
+			@Override
+			protected void setValue_(String value) {
+				if (value.length() == 0) {
+					value = null;
+				}
+				subject.setColumnDefinition(value);
+			}
+		};
 	}
 
-	private ColumnCombo<DiscriminatorColumn> buildColumnCombo(Composite container) {
+	private ListValueModel<String> buildDefaultDiscriminatorListValueHolder() {
+		return new PropertyListValueModelAdapter<String>(
+			buildDefaultDiscriminatorValueHolder()
+		);
+	}
+
+	private WritablePropertyValueModel<String> buildDefaultDiscriminatorValueHolder() {
+		return new PropertyAspectAdapter<Entity, String>(getSubjectHolder(), Entity.DEFAULT_DISCRIMINATOR_VALUE_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+				String name = subject.getDefaultDiscriminatorValue();
+
+				if (name == null) {
+					name = DEFAULT_KEY;
+				}
+				else {
+					name = DEFAULT_KEY + name;
+				}
+
+				return name;
+			}
+		};
+	}
+
+	private WritablePropertyValueModel<Integer> buildDefaultLengthHolder() {
+		return new PropertyAspectAdapter<DiscriminatorColumn, Integer>(buildDiscriminatorColumnHolder(), DiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
+			@Override
+			protected Integer buildValue_() {
+				return subject.getDefaultLength();
+			}
+
+			@Override
+			protected void subjectChanged() {
+				Object oldValue = this.getValue();
+				super.subjectChanged();
+				Object newValue = this.getValue();
+
+				// Make sure the default value is appended to the text
+				if (oldValue == newValue && newValue == null) {
+					this.fireAspectChange(Integer.MIN_VALUE, newValue);
+				}
+			}
+		};
+	}
+
+	private Control buildDefaultLengthLabel(Composite container) {
+
+		Label label = buildLabel(
+			container,
+			JptUiMappingsMessages.DefaultWithoutValue
+		);
+
+		new LabeledControlUpdater(
+			new LabeledLabel(label),
+			buildDefaultLengthLabelHolder()
+		);
+
+		return label;
+	}
+
+	private PropertyValueModel<String> buildDefaultLengthLabelHolder() {
+
+		return new TransformationPropertyValueModel<Integer, String>(buildDefaultLengthHolder()) {
+
+			@Override
+			protected String transform(Integer value) {
+
+				Integer defaultValue = (subject() != null) ? subject().getDiscriminatorColumn().getDefaultLength() :
+				                                             DiscriminatorColumn.DEFAULT_LENGTH;
+
+				return NLS.bind(
+					JptUiMappingsMessages.DefaultWithValue,
+					defaultValue
+				);
+			}
+		};
+	}
+
+	private ColumnCombo<DiscriminatorColumn> buildDiscriminatorColumnCombo(
+		Composite container,
+		PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {
 
 		return new ColumnCombo<DiscriminatorColumn>(
 			this,
-			buildDiscriminatorColumnHolder(),
+			discriminatorColumnHolder,
 			container)
 		{
 
@@ -151,11 +264,13 @@ public class InheritanceComposite extends AbstractFormPane<Entity> {
 		};
 	}
 
-	private EnumFormComboViewer<DiscriminatorColumn, DiscriminatorType> buildDiscriminatorTypeCombo(Composite container) {
+	private EnumFormComboViewer<DiscriminatorColumn, DiscriminatorType> buildDiscriminatorTypeCombo(
+		Composite container,
+		PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {
 
 		return new EnumFormComboViewer<DiscriminatorColumn, DiscriminatorType>(
 			this,
-			buildDiscriminatorColumnHolder(),
+			discriminatorColumnHolder,
 			container)
 		{
 			@Override
@@ -205,13 +320,84 @@ public class InheritanceComposite extends AbstractFormPane<Entity> {
 		};
 	}
 
-	private ModifyListener buildDiscriminatorValueComboSelectionListener() {
-		return new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				if (!isPopulating()) {
-					CCombo combo = (CCombo) e.widget;
-					discriminatorValueChanged(combo.getText());
+	private StringConverter<String> buildDiscriminatorValueConverter() {
+		return new StringConverter<String>() {
+			public String convertToString(String value) {
+
+				if (subject() == null) {
+					return null;
 				}
+
+				if (value == null) {
+					value = subject().getDefaultDiscriminatorValue();
+
+					if (value != null) {
+						value = DEFAULT_KEY + value;
+					}
+					else {
+						value = DEFAULT_KEY;
+					}
+				}
+
+				if (value.startsWith(DEFAULT_KEY)) {
+					String defaultName = value.substring(DEFAULT_KEY.length());
+
+					if (defaultName.length() > 0) {
+						value = NLS.bind(
+							JptUiMappingsMessages.DefaultWithValue,
+							defaultName
+						);
+					}
+					else {
+						value = JptUiMappingsMessages.DefaultWithoutValue;
+					}
+				}
+
+				return value;
+			}
+		};
+	}
+
+	private WritablePropertyValueModel<String> buildDiscriminatorValueHolder() {
+		return new PropertyAspectAdapter<Entity, String>(getSubjectHolder(), Entity.SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+				return subject.getSpecifiedDiscriminatorValue();
+			}
+
+			@Override
+			protected void setValue_(String value) {
+
+				// Convert the default value or an empty string to null
+				if ((value != null) &&
+				   ((value.length() == 0) || value.startsWith(DEFAULT_KEY))) {
+
+					value = null;
+				}
+
+				subject.setSpecifiedDiscriminatorValue(value);
+			}
+		};
+	}
+
+	private ListValueModel<String> buildDiscriminatorValueListHolder() {
+		return buildDefaultDiscriminatorListValueHolder();
+	}
+
+	private WritablePropertyValueModel<Integer> buildLengthHolder(PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {
+
+		return new PropertyAspectAdapter<DiscriminatorColumn, Integer>(discriminatorColumnHolder, DiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
+			@Override
+			protected Integer buildValue_() {
+				return subject.getSpecifiedLength();
+			}
+
+			@Override
+			protected void setValue_(Integer value) {
+				if (value == -1) {
+					value = null;
+				}
+				subject.setSpecifiedLength(value);
 			}
 		};
 	}
@@ -258,55 +444,53 @@ public class InheritanceComposite extends AbstractFormPane<Entity> {
 		};
 	}
 
-	private void discriminatorValueChanged(String value) {
+	private void initializeDiscriminatorColumnPane(Composite container) {
 
-		Entity subject = subject();
-		String oldValue = (subject != null) ? subject.getSpecifiedDiscriminatorValue() : null;
+		PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder =
+			buildDiscriminatorColumnHolder();
 
-		// Check for null value
-		if (StringTools.stringIsEmpty(value)) {
-			value = null;
+		// Name widgets
+		buildLabeledComposite(
+			container,
+			JptUiMappingsMessages.DiscriminatorColumnComposite_name,
+			buildDiscriminatorColumnCombo(container, discriminatorColumnHolder),
+			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_COLUMN
+		);
 
-			if (StringTools.stringIsEmpty(oldValue)) {
-				return;
-			}
-		}
+		// Discriminator Type widgets
+		buildLabeledComposite(
+			container,
+			JptUiMappingsMessages.DiscriminatorColumnComposite_discriminatorType,
+			buildDiscriminatorTypeCombo(container, discriminatorColumnHolder),
+			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_TYPE
+		);
 
-		// The default value
-		if (value != null &&
-		    discriminatorValueCombo.getItemCount() > 0 &&
-		    value.equals(discriminatorValueCombo.getItem(0)))
-		{
-			value = null;
-		}
+		container = buildCollapsableSubSection(
+			buildSubPane(container, 10),
+			JptUiMappingsMessages.InheritanceComposite_detailsGroupBox,
+			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
+		);
 
-		// Nothing to change
-		if ((oldValue == value) && value == null) {
-			return;
-		}
+		// Length widgets
+		Spinner lengthSpinner = buildLabeledSpinner(
+			container,
+			JptUiMappingsMessages.ColumnComposite_length,
+			buildLengthHolder(discriminatorColumnHolder),
+			-1,
+			-1,
+			Integer.MAX_VALUE,
+			buildDefaultLengthLabel(container),
+			JpaHelpContextIds.MAPPING_COLUMN_LENGTH
+		);
 
-		// Set the new value
-		if ((value != null) && (oldValue == null) ||
-		   ((oldValue != null) && !oldValue.equals(value))) {
+		updateGridData(container, lengthSpinner);
 
-			setPopulating(true);
-
-			try {
-				subject.setSpecifiedDiscriminatorValue(value);
-			}
-			finally {
-				setPopulating(false);
-			}
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void doPopulate() {
-		super.doPopulate();
-		populateDiscriminatorValueCombo();
+		// Column Definition widgets
+		buildLabeledText(
+			container,
+			JptUiMappingsMessages.ColumnComposite_columnDefinition,
+			buildColumnDefinitionHolder(discriminatorColumnHolder)
+		);
 	}
 
 	/*
@@ -329,31 +513,25 @@ public class InheritanceComposite extends AbstractFormPane<Entity> {
 			JpaHelpContextIds.ENTITY_INHERITANCE_STRATEGY
 		);
 
-		// Column widgets
-		buildLabeledComposite(
-			subPane,
-			JptUiMappingsMessages.DiscriminatorColumnComposite_column,
-			buildColumnCombo(subPane),
-			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_COLUMN
-		);
-
-		// Discriminator Type widgets
-		buildLabeledComposite(
-			subPane,
-			JptUiMappingsMessages.DiscriminatorColumnComposite_discriminatorType,
-			buildDiscriminatorTypeCombo(subPane),
-			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_TYPE
-		);
-
 		// Discrinator Value widgets
-		discriminatorValueCombo = buildLabeledEditableCCombo(
+		CCombo discriminatorValueCombo = buildLabeledEditableCCombo(
 			subPane,
 			JptUiMappingsMessages.InheritanceComposite_discriminatorValue,
-			buildDiscriminatorValueComboSelectionListener(),
+			buildDiscriminatorValueListHolder(),
+			buildDiscriminatorValueHolder(),
+			buildDiscriminatorValueConverter(),
 			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_VALUE
 		);
 
 		installDiscriminatorValueComboEnabler(discriminatorValueCombo);
+
+		// Discriminator Column sub-pane
+		Composite discriminatorColumnContainer = buildTitledPane(
+			buildSubPane(container, 10),
+			JptUiMappingsMessages.InheritanceComposite_discriminatorColumnGroupBox
+		);
+
+		initializeDiscriminatorColumnPane(discriminatorColumnContainer);
 
 		// Primary Key Join Columns widgets
 		new PrimaryKeyJoinColumnsComposite(
@@ -369,53 +547,34 @@ public class InheritanceComposite extends AbstractFormPane<Entity> {
 		);
 	}
 
-	private void populateDiscriminatorValueCombo() {
-
-		Entity subject = subject();
-		discriminatorValueCombo.removeAll();
-
-		if (subject == null) {
-			return;
-		}
-
-		// Add the default discriminator column value if one exists
-		String defaultDiscriminatorValue = subject.getDefaultDiscriminatorValue();
-
-		if (defaultDiscriminatorValue != null) {
-			discriminatorValueCombo.add(NLS.bind(
-				JptUiMappingsMessages.ColumnComposite_defaultWithOneParam,
-				defaultDiscriminatorValue)
-			);
-		}
-		else {
-			discriminatorValueCombo.add(NLS.bind(
-				JptUiMappingsMessages.DiscriminatorColumnComposite_defaultEmpty,
-				defaultDiscriminatorValue)
-			);
-		}
-
-		// Select the discriminator column value
-		String specifiedDiscriminatorValue = subject.getSpecifiedDiscriminatorValue();
-
-		if (specifiedDiscriminatorValue != null) {
-			discriminatorValueCombo.setText(specifiedDiscriminatorValue);
-		}
-		else {
-			discriminatorValueCombo.select(0);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Changes the layout of the given container by changing which widget will
+	 * grab the excess of horizontal space. By default, the center control grabs
+	 * the excess space, we change it to be the right control.
+	 *
+	 * @param container The container containing the controls needing their
+	 * <code>GridData</code> to be modified from the default values
+	 * @param spinner The spinner that got created
 	 */
-	@Override
-	protected void propertyChanged(String propertyName) {
-		super.propertyChanged(propertyName);
+	private void updateGridData(Composite container, Spinner spinner) {
 
-		if (propertyName == Entity.DEFAULT_DISCRIMINATOR_VALUE_PROPERTY ||
-		    propertyName == Entity.SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY)
-		{
-			populateDiscriminatorValueCombo();
+		// It is possible the spinner's parent is not the container of the
+		// label, spinner and right control (a pane is sometimes required for
+		// painting the spinner's border)
+		Composite paneContainer = spinner.getParent();
+
+		while (container != paneContainer.getParent()) {
+			paneContainer = paneContainer.getParent();
 		}
+
+		Control[] controls = paneContainer.getChildren();
+
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = false;
+		gridData.horizontalAlignment       = GridData.BEGINNING;
+		controls[1].setLayoutData(gridData);
+
+		controls[2].setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		removeAlignRight(controls[2]);
 	}
 }
