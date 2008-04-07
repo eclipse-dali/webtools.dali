@@ -81,7 +81,6 @@ public class EntitiesGenerator
 					wizard.getEntityGeneratorConfig(),
 					wizard.getSelectedTables(),
 					wizard.synchronizePersistenceXml(),
-					this.project,
 					new OverwriteConfirmer(this.getCurrentShell())
 			);
 			
@@ -119,7 +118,6 @@ public class EntitiesGenerator
 				EntityGenerator.Config entityConfig,
 				Collection<Table> selectedTables,
 				boolean synchronizePersistenceXml,
-				JpaProject project,
 				EntityGenerator.OverwriteConfirmer overwriteConfirmer
 		) {
 			super("Generating Entities");
@@ -127,7 +125,7 @@ public class EntitiesGenerator
 			this.entityConfig = entityConfig;
 			this.selectedTables = selectedTables;
 			this.overwriteConfirmer = overwriteConfirmer;
-			setRule(project.getProject());
+			setRule(packageConfig.getPackageFragment().getJavaProject().getProject());
 		}
 
 		@Override
