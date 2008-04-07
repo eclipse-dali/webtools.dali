@@ -41,11 +41,8 @@ import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueM
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -59,6 +56,8 @@ import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
+import org.eclipse.ui.forms.widgets.TableWrapData;
+import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
 
@@ -377,8 +376,8 @@ public class PersistenceEditor extends FormEditor
 
 			// Add the page's control to this page
 			Composite body = form.getBody();
-			body.setLayout(new GridLayout(1, false));
-			updateGridData(body);
+			body.setLayout(new TableWrapLayout());
+			updateLayoutData();
 			page.getControl().setParent(body);
 
 			// This will finish the initialization of the buttons
@@ -423,16 +422,6 @@ public class PersistenceEditor extends FormEditor
 			}
 		}
 
-		private void updateGridData(Composite container) {
-
-			GridData gridData = new GridData();
-			gridData.grabExcessHorizontalSpace = true;
-			gridData.grabExcessVerticalSpace   = true;
-			gridData.horizontalAlignment       = SWT.FILL;
-			gridData.verticalAlignment         = SWT.FILL;
-			container.setLayoutData(gridData);
-		}
-
 		/**
 		 * Adds a help button to the page's toolbar if a help ID exists.
 		 */
@@ -447,6 +436,17 @@ public class PersistenceEditor extends FormEditor
 				IToolBarManager manager = form.getToolBarManager();
 				manager.add(helpAction);
 			}
+		}
+
+		private void updateLayoutData() {
+
+			TableWrapData wrapData  = new TableWrapData();
+			wrapData.grabHorizontal = true;
+			wrapData.grabVertical   = true;
+			wrapData.align          = TableWrapData.FILL;
+			wrapData.valign         = TableWrapData.TOP;
+
+			page.getControl().setLayoutData(wrapData);
 		}
 
 		private class HelpAction extends Action {
