@@ -195,10 +195,10 @@ public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
 	}
 	
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
-		// do nothing
+		throw new UnsupportedOperationException();
 	}
 
 	protected  void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
-		// do nothing
+		throw new UnsupportedOperationException();
 	}
 }
