@@ -303,6 +303,7 @@ public class PersistenceEditor extends FormEditor
 		Assert.isLegal(editorInput instanceof IFileEditorInput, "Invalid Input: Must be IFileEditorInput");
 		super.init(site, editorInput);
 
+		setPartName(editorInput.getName());
 		editorInputHolder.setValue(getEditorInput());
 	}
 
