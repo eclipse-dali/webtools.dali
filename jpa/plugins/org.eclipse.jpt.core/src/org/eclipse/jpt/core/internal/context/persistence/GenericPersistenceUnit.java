@@ -698,7 +698,11 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		this.specifiedExcludeUnlistedClasses = xmlPersistenceUnit.getExcludeUnlistedClasses();
 		this.specifiedTransactionType = specifiedTransactionType(xmlPersistenceUnit);
 		this.defaultTransactionType = defaultTransacationType();
-		//TODO more things to initialize
+		this.description = xmlPersistenceUnit.getDescription();
+		this.provider = xmlPersistenceUnit.getProvider();
+		this.jtaDataSource = xmlPersistenceUnit.getJtaDataSource();
+		this.nonJtaDataSource = xmlPersistenceUnit.getNonJtaDataSource();
+		this.specifiedExcludeUnlistedClasses = xmlPersistenceUnit.getExcludeUnlistedClasses();
 	}
 	
 	protected void initializeMappingFileRefs(XmlPersistenceUnit xmlPersistenceUnit) {
