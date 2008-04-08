@@ -3026,11 +3026,61 @@ public abstract class AbstractPane<T extends Model>
 	                               String sectionText,
 	                               int type) {
 
-		Section section = this.widgetFactory.createSection(container, type);
+		return this.buildSection(container, sectionText, null, type);
+	}
+
+	/**
+	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
+	 * its client and is the returned <code>Composite</code>.
+	 *
+	 * @param container The container of the new widget
+	 * @param sectionText The text of the new section
+	 * @param description The section's description
+	 * @return The <code>Section</code>'s sub-pane
+	 *
+	 * @category Layout
+	 */
+	protected final Composite buildSection(Composite container,
+	                                       String sectionText,
+	                                       String description) {
+
+		return this.buildSection(
+			container,
+			sectionText,
+			description,
+			ExpandableComposite.TITLE_BAR
+		);
+	}
+
+	/**
+	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
+	 * its client and is the returned <code>Composite</code>.
+	 *
+	 * @param container The container of the new widget
+	 * @param sectionText The text of the new section
+	 * @param description The section's description or <code>null</code> if none
+	 * was provider
+	 * @param type The type of section to create
+	 * @param expandedStateHolder The holder of the boolean that will dictate
+	 * when to expand or collapse the section
+	 * @return The <code>Section</code>'s sub-pane
+	 *
+	 * @category Layout
+	 */
+	private Composite buildSection(Composite container,
+	                               String sectionText,
+	                               String description,
+	                               int type) {
+
+		Section section = this.widgetFactory.createSection(container, type | ((description != null) ? Section.DESCRIPTION : SWT.NULL));
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(sectionText);
 		section.marginWidth  = 0;
 		section.marginHeight = 0;
+
+		if (description != null) {
+			section.setDescription(description);
+		}
 
 		Composite subPane = this.buildSubPane(section);
 		section.setClient(subPane);

@@ -46,6 +46,7 @@ import org.eclipse.jpt.ui.internal.mappings.details.VersionMappingComposite;
 import org.eclipse.jpt.ui.internal.orm.details.OrmEntityComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitConnectionComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitGeneralComposite;
+import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitPropertiesComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -166,6 +167,7 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 
 		pages.add(new PersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory));
 		pages.add(new PersistenceUnitConnectionComposite(subjectHolder, parent, widgetFactory));
+		pages.add(new PersistenceUnitPropertiesComposite(subjectHolder, parent, widgetFactory));
 
 		return pages.listIterator();
 	}

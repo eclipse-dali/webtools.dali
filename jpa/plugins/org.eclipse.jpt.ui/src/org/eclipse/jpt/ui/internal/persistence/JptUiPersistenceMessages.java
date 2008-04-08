@@ -35,12 +35,10 @@ public class JptUiPersistenceMessages
 	public static String PersistenceUnitConnectionComposite_database;
 	public static String PersistenceUnitConnectionComposite_general;
 
-	public static String PersistenceUnitConnectionDatabaseComposite_description;
 	public static String PersistenceUnitConnectionDatabaseComposite_jtaDatasourceName;
 	public static String PersistenceUnitConnectionDatabaseComposite_nonJtaDatasourceName;
 
 	public static String PersistenceUnitConnectionGeneralComposite_default;
-	public static String PersistenceUnitConnectionGeneralComposite_description;
 	public static String PersistenceUnitConnectionGeneralComposite_jta;
 	public static String PersistenceUnitConnectionGeneralComposite_resource_local;
 	public static String PersistenceUnitConnectionGeneralComposite_transactionType;
@@ -48,13 +46,19 @@ public class JptUiPersistenceMessages
 	public static String PersistenceUnitGeneralComposite_general;
 	public static String PersistenceUnitGeneralComposite_javaArchives;
 	public static String PersistenceUnitGeneralComposite_jpaMappingDescriptors;
+	public static String PersistenceUnitGeneralComposite_jpaMappingDescriptors_description;
 	public static String PersistenceUnitGeneralComposite_mappedClasses;
+	public static String PersistenceUnitGeneralComposite_name;
 	public static String PersistenceUnitGeneralComposite_persistenceProvider;
 
-	public static String PersistenceUnitMappingFilesComposite_description;
 	public static String PersistenceUnitMappingFilesComposite_mappingFileDialog_message;
 	public static String PersistenceUnitMappingFilesComposite_mappingFileDialog_title;
 	public static String PersistenceUnitMappingFilesComposite_ormNoName;
+
+	public static String PersistenceUnitPropertiesComposite_nameColumn;
+	public static String PersistenceUnitPropertiesComposite_properties;
+	public static String PersistenceUnitPropertiesComposite_properties_description;
+	public static String PersistenceUnitPropertiesComposite_valueColumn;
 
 	static {
 		NLS.initializeMessages("jpt_ui_persistence", JptUiPersistenceMessages.class);

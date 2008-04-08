@@ -30,29 +30,40 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------
  * |                                                                           |
  * | - General --------------------------------------------------------------- |
- * |                       --------------------------------------------------- |
- * | Persistence Provider: |                                               |v| |
- * |                       --------------------------------------------------- |
+ * |                         ------------------------------------------------- |
+ * |   Name:                 | I                                             | |
+ * |                         ------------------------------------------------- |
+ * |                         ------------------------------------------------- |
+ * |   Persistence Provider: |                                             |v| |
+ * |                         ------------------------------------------------- |
  * |                                                                           |
- * | - JPA Mapping Descriptors ----------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | PersistenceUnitJPAMappingDescriptorsComposite                         | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
  * |                                                                           |
  * | - Mapped Classes -------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | PersistenceUnitMappedClassesComposite                                 | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
+ * |                                                                           |
+ * |   Description                                                             |
+ * |                                                                           |
+ * |   ----------------------------------------------------------------------- |
+ * |   |                                                                     | |
+ * |   | PersistenceUnitMappedClassesComposite                               | |
+ * |   |                                                                     | |
+ * |   ----------------------------------------------------------------------- |
+ * |                                                                           |
+ * |                                                                           |
+ * | - XML Mapping Files ----------------------------------------------------- |
+ * |                                                                           |
+ * |   Description                                                             |
+ * |                                                                           |
+ * |   ----------------------------------------------------------------------- |
+ * |   |                                                                     | |
+ * |   | PersistenceUnitMappingFilesComposite                                | |
+ * |   |                                                                     | |
+ * |   ----------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see PersistenceUnit
- * @see PersistenceUnitJPAMappingDescriptorsComposite
- * @see PersistenceUnitJavaArchivesComposite
+ * @see PersistenceUnitJarFilesComposite
  * @see PersistenceUnitMappedClassesComposite
+ * @see PersistenceUnitMappingFilesComposite
  *
  * @version 2.0
  * @since 2.0
@@ -122,6 +133,20 @@ public class PersistenceUnitGeneralComposite extends AbstractFormPane<Persistenc
 		};
 	}
 
+	private WritablePropertyValueModel<String> buildPersistenceUnitNameHolder() {
+		return new PropertyAspectAdapter<PersistenceUnit, String>(getSubjectHolder(), PersistenceUnit.NAME_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+				return subject.getName();
+			}
+
+			@Override
+			protected void setValue_(String value) {
+				subject.setName(value);
+			}
+		};
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
@@ -129,11 +154,32 @@ public class PersistenceUnitGeneralComposite extends AbstractFormPane<Persistenc
 		return JpaHelpContextIds.PERSISTENCE_UNIT_GENERAL;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
+	public Image getPageImage() {
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	public String getPageText() {
+		return JptUiPersistenceMessages.PersistenceUnitGeneralComposite_general;
+	}
+
 	private void initializeGeneralPane(Composite container) {
 
 		container = buildSection(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_general
+		);
+
+		// Name widgets
+		buildLabeledText(
+			container,
+			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_name,
+			buildPersistenceUnitNameHolder()
 		);
 
 		// Persistence Provider widgets
@@ -148,7 +194,8 @@ public class PersistenceUnitGeneralComposite extends AbstractFormPane<Persistenc
 
 		container = buildSection(
 			container,
-			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jpaMappingDescriptors
+			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jpaMappingDescriptors,
+			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jpaMappingDescriptors_description
 		);
 
 		updateGridData(container);
@@ -167,7 +214,7 @@ public class PersistenceUnitGeneralComposite extends AbstractFormPane<Persistenc
 		initializeMappedClassesPane(container);
 		initializeJPAMappingDescriptorsPane(container);
 //		initializeJavaArchivesPane(container);
-		
+
 	}
 
 	private void initializeMappedClassesPane(Composite container) {
@@ -181,20 +228,6 @@ public class PersistenceUnitGeneralComposite extends AbstractFormPane<Persistenc
 		updateGridData(container.getParent());
 
 		new PersistenceUnitClassesComposite(this, container);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	public Image getPageImage() {
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	public String getPageText() {
-		return JptUiPersistenceMessages.PersistenceUnitGeneralComposite_general;
 	}
 
 	private void updateGridData(Composite container) {

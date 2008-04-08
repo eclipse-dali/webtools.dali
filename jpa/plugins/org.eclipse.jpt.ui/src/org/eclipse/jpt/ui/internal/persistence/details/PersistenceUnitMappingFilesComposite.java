@@ -66,9 +66,6 @@ import org.xml.sax.helpers.DefaultHandler;
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
- * |                                                                           |
- * | Description                                                               |
- * |                                                                           |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
  * | | AddRemoveListPane                                                     | |
@@ -256,12 +253,6 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		// Description
-		buildMultiLineLabel(
-			container,
-			JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_description
-		);
 
 		// List pane
 		new AddRemoveListPane<PersistenceUnit>(

@@ -21,16 +21,13 @@ import org.eclipse.swt.widgets.Composite;
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
- * |                                                                           |
- * | Description                                                               |
- * |                                                                           |
  * |                    ------------------------------------------------------ |
  * | Transaction Type:  |                                                  |v| |
  * |                    ------------------------------------------------------ |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see PersistenceUnit
- * @see PersistenceUnitGeneralComposite - The parent container
+ * @see PersistenceUnitConnectionComposite - The parent container
  *
  * @version 2.0
  * @since 2.0
@@ -46,7 +43,7 @@ public class PersistenceUnitConnectionGeneralComposite extends AbstractPane<Pers
 	public PersistenceUnitConnectionGeneralComposite(AbstractPane<PersistenceUnit> subjectHolder,
 	                                                 Composite container) {
 
-		super(subjectHolder, container, false);
+		super(subjectHolder, container);
 	}
 
 	private EnumFormComboViewer<PersistenceUnit, PersistenceUnitTransactionType> buildTransactionTypeCombo(Composite container) {
@@ -96,12 +93,6 @@ public class PersistenceUnitConnectionGeneralComposite extends AbstractPane<Pers
 	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		// Description
-		buildMultiLineLabel(
-			container,
-			JptUiPersistenceMessages.PersistenceUnitConnectionGeneralComposite_description
-		);
 
 		// Transaction Type widgets
 		buildLabeledComposite(

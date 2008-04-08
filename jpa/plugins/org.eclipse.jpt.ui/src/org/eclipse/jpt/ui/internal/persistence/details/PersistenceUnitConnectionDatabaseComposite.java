@@ -25,9 +25,6 @@ import org.eclipse.swt.widgets.Text;
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
- * |                                                                           |
- * | Description                                                               |
- * |                                                                           |
  * |                          ------------------------------------------------ |
  * | JTA Datasource Name:     | I                                            | |
  * |                          ------------------------------------------------ |
@@ -53,7 +50,7 @@ public class PersistenceUnitConnectionDatabaseComposite extends AbstractPane<Per
 	public PersistenceUnitConnectionDatabaseComposite(AbstractPane<PersistenceUnit> subjectHolder,
 	                                                  Composite container) {
 
-		super(subjectHolder, container, false);
+		super(subjectHolder, container);
 	}
 
 	private PropertyValueModel<Boolean> buildJTADatasourceNameBooleanHolder() {
@@ -126,12 +123,6 @@ public class PersistenceUnitConnectionDatabaseComposite extends AbstractPane<Per
 	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		// Description
-		buildMultiLineLabel(
-			container,
-			JptUiPersistenceMessages.PersistenceUnitConnectionDatabaseComposite_description
-		);
 
 		// JTA Datasource Name widgets
 		Text text = buildLabeledText(
