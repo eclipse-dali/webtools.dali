@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.menus;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.ui.JpaPlatformUi;

@@ -10,9 +10,7 @@
 package org.eclipse.jpt.ui.internal.menus;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.ui.JpaPlatformUi;
