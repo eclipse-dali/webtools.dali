@@ -15,9 +15,8 @@ import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
-import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 public class RootContextItemContentProvider
@@ -28,23 +27,26 @@ public class RootContextItemContentProvider
 		super(rootContext, contentProvider);
 	}
 	
+	@Override
+	public JpaRootContextNode model() {
+		return (JpaRootContextNode) super.model();
+	}
 	
 	@Override
 	public IProject getParent() {
-		return ((JpaRootContextNode) model()).getJpaProject().getProject();
+		return model().getJpaProject().getProject();
 	}
 	
 	@Override
 	protected ListValueModel<PersistenceXml> buildChildrenModel() {
-		return new CollectionListValueModelAdapter<PersistenceXml>(
-				new PropertyCollectionValueModelAdapter<PersistenceXml>(
-					new PropertyAspectAdapter<JpaRootContextNode, PersistenceXml>(
-							JpaRootContextNode.PERSISTENCE_XML_PROPERTY,
-							(JpaRootContextNode) model()) {
-						 @Override
-						protected PersistenceXml buildValue_() {
-							return subject.getPersistenceXml();
-						}
-					}));
+		return new PropertyListValueModelAdapter<PersistenceXml>(
+				new PropertyAspectAdapter<JpaRootContextNode, PersistenceXml>(
+						JpaRootContextNode.PERSISTENCE_XML_PROPERTY,
+						model()) {
+					 @Override
+					protected PersistenceXml buildValue_() {
+						return subject.getPersistenceXml();
+					}
+				});
 	}
 }
