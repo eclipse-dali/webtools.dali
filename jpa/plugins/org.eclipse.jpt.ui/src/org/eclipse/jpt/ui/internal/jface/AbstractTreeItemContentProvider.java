@@ -15,7 +15,7 @@ import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.NullListValueModel;
-import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
@@ -142,7 +142,7 @@ public abstract class AbstractTreeItemContentProvider<E>
 	 * model.
 	 */
 	protected ListValueModel<E> buildChildrenModel(PropertyValueModel<E> childrenModel) {
-		return buildChildrenModel(new PropertyCollectionValueModelAdapter<E>(childrenModel));
+		return new PropertyListValueModelAdapter<E>(childrenModel);
 	}
 	
 	/**
