@@ -20,6 +20,7 @@ import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
 public class OrmXmlItemContentProvider
 	extends AbstractTreeItemContentProvider<OrmPersistentType>
@@ -29,26 +30,38 @@ public class OrmXmlItemContentProvider
 		super(ormXml, contentProvider);
 	}
 	
+	@Override
+	public OrmXml model() {
+		return (OrmXml) super.model();
+	}
 	
 	@Override
 	public PersistenceUnit getParent() {
-		return ((OrmXml) model()).getPersistenceUnit();
+		return model().getPersistenceUnit();
 	}
 	
 	@Override
 	protected ListValueModel<OrmPersistentType> buildChildrenModel() {
 		return new ListAspectAdapter<EntityMappings, OrmPersistentType>(
-				new PropertyAspectAdapter<OrmXml, EntityMappings>(
-						OrmXml.ENTITY_MAPPINGS_PROPERTY, (OrmXml) model()) {
-					@Override
-					protected EntityMappings buildValue_() {
-						return subject.getEntityMappings();
-					}
-				},
+				buildEntityMappingsHolder(),
 				EntityMappings.PERSISTENT_TYPES_LIST) {
 			@Override
 			protected ListIterator<OrmPersistentType> listIterator_() {
 				return subject.ormPersistentTypes();
+			}
+			@Override
+			protected int size_() {
+				return subject.ormPersistentTypesSize();
+			}
+		};
+	}
+	
+	protected PropertyValueModel<EntityMappings> buildEntityMappingsHolder() {
+		return new PropertyAspectAdapter<OrmXml, EntityMappings>(
+				OrmXml.ENTITY_MAPPINGS_PROPERTY, model()) {
+			@Override
+			protected EntityMappings buildValue_() {
+				return subject.getEntityMappings();
 			}
 		};
 	}

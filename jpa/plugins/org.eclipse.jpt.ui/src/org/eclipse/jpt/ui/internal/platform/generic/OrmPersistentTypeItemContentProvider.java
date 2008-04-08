@@ -11,7 +11,9 @@
 package org.eclipse.jpt.ui.internal.platform.generic;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
@@ -28,13 +30,18 @@ public class OrmPersistentTypeItemContentProvider extends AbstractTreeItemConten
 		}
 		
 		@Override
+		public OrmPersistentType model() {
+			return (OrmPersistentType) super.model();
+		}
+		
+		@Override
 		public Object getParent() {
-			return ((OrmPersistentType) model()).getParent();
+			return model().getParent();
 		}
 		
 		@Override
 		protected ListValueModel<OrmPersistentAttribute> buildChildrenModel() {
-			java.util.List<ListValueModel<OrmPersistentAttribute>> list = new ArrayList<ListValueModel<OrmPersistentAttribute>>();
+			List<ListValueModel<OrmPersistentAttribute>> list = new ArrayList<ListValueModel<OrmPersistentAttribute>>(2);
 			list.add(buildSpecifiedPersistentAttributesListHolder());
 			list.add(buildVirtualPersistentAttributesListHolder());
 			return new CompositeListValueModel<ListValueModel<OrmPersistentAttribute>, OrmPersistentAttribute>(list);
@@ -42,7 +49,7 @@ public class OrmPersistentTypeItemContentProvider extends AbstractTreeItemConten
 		
 
 		protected ListValueModel<OrmPersistentAttribute> buildSpecifiedPersistentAttributesListHolder() {
-			return new ListAspectAdapter<OrmPersistentType, OrmPersistentAttribute>(new String[]{OrmPersistentType.SPECIFIED_ATTRIBUTES_LIST}, (OrmPersistentType) model()) {
+			return new ListAspectAdapter<OrmPersistentType, OrmPersistentAttribute>(PersistentType.SPECIFIED_ATTRIBUTES_LIST, model()) {
 				@Override
 				protected ListIterator<OrmPersistentAttribute> listIterator_() {
 					return subject.specifiedAttributes();
@@ -55,7 +62,7 @@ public class OrmPersistentTypeItemContentProvider extends AbstractTreeItemConten
 		}
 		
 		protected ListValueModel<OrmPersistentAttribute> buildVirtualPersistentAttributesListHolder() {
-			return new ListAspectAdapter<OrmPersistentType, OrmPersistentAttribute>(new String[]{OrmPersistentType.VIRTUAL_ATTRIBUTES_LIST}, (OrmPersistentType) model()) {
+			return new ListAspectAdapter<OrmPersistentType, OrmPersistentAttribute>(OrmPersistentType.VIRTUAL_ATTRIBUTES_LIST, model()) {
 				@Override
 				protected ListIterator<OrmPersistentAttribute> listIterator_() {
 					return subject.virtualAttributes();

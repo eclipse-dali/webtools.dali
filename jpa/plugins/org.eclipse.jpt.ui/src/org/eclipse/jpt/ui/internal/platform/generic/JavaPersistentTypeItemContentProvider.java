@@ -11,6 +11,7 @@
 package org.eclipse.jpt.ui.internal.platform.generic;
 
 import java.util.ListIterator;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
@@ -26,13 +27,17 @@ public class JavaPersistentTypeItemContentProvider extends AbstractTreeItemConte
 	}
 	
 	@Override
+	public JavaPersistentType model() {
+		return (JavaPersistentType) super.model();
+	}
+	@Override
 	public Object getParent() {
-		return ((JavaPersistentType) model()).getParent();
+		return model().getParent();
 	}
 	
 	@Override
 	protected ListValueModel<JavaPersistentAttribute> buildChildrenModel() {
-		return new ListAspectAdapter<JavaPersistentType, JavaPersistentAttribute>(new String[]{JavaPersistentType.SPECIFIED_ATTRIBUTES_LIST}, (JavaPersistentType) model()) {
+		return new ListAspectAdapter<JavaPersistentType, JavaPersistentAttribute>(PersistentType.SPECIFIED_ATTRIBUTES_LIST, model()) {
 			@Override
 			protected ListIterator<JavaPersistentAttribute> listIterator_() {
 				return subject.attributes();
