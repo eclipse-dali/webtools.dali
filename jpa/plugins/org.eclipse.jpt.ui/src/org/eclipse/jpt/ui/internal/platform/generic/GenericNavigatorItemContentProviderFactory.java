@@ -37,7 +37,7 @@ import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAd
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
@@ -80,17 +80,22 @@ public class GenericNavigatorItemContentProviderFactory
 		}
 		
 		@Override
+		public PersistenceUnit model() {
+			return (PersistenceUnit) super.model();
+		}
+		
+		@Override
 		public PersistenceXml getParent() {
-			return (PersistenceXml) ((PersistenceUnit) model()).getPersistenceUnit().getParent();
+			return (PersistenceXml) model().getPersistenceUnit().getParent();
 		}
 		
 		@Override
 		protected ListValueModel<JpaContextNode> buildChildrenModel() {
-			List<ListValueModel<JpaContextNode>> list = new ArrayList<ListValueModel<JpaContextNode>>();
+			List<ListValueModel<? extends JpaContextNode>> list = new ArrayList<ListValueModel<? extends JpaContextNode>>();
 			list.add(buildSpecifiedOrmXmlLvm());
 			list.add(buildImpliedOrmXmlLvm());
 			list.add(buildPersistentTypeLvm());
-			return new CompositeListValueModel<ListValueModel<JpaContextNode>, JpaContextNode>(list);
+			return new CompositeListValueModel<ListValueModel<? extends JpaContextNode>, JpaContextNode>(list);
 		}
 		
 		private ListValueModel<JpaContextNode> buildSpecifiedOrmXmlLvm() {
@@ -101,11 +106,16 @@ public class GenericNavigatorItemContentProviderFactory
 							new ItemPropertyListValueModelAdapter<MappingFileRef>(
 								new ListAspectAdapter<PersistenceUnit, MappingFileRef>(
 										PersistenceUnit.SPECIFIED_MAPPING_FILE_REF_LIST,
-										(PersistenceUnit) model()) {
+										model()) {
+									@Override
 									protected ListIterator<MappingFileRef> listIterator_() {
 										return subject.specifiedMappingFileRefs();
 									}
-								})) {
+									@Override
+									protected int size_() {
+										return subject.specifiedMappingFileRefsSize();
+									}
+								}, MappingFileRef.ORM_XML_PROPERTY)) {
 							@Override
 							protected OrmXml transformItem(MappingFileRef item) {
 								return item.getOrmXml();
@@ -123,24 +133,24 @@ public class GenericNavigatorItemContentProviderFactory
 				});
 		}
 		
-		private ListValueModel<JpaContextNode> buildImpliedOrmXmlLvm() {
-			return new CollectionListValueModelAdapter<JpaContextNode>(	
-				new PropertyCollectionValueModelAdapter<OrmXml>(
-					new PropertyAspectAdapter<MappingFileRef, OrmXml>(
-							new PropertyAspectAdapter<PersistenceUnit, MappingFileRef>(
-									PersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY,
-									(PersistenceUnit) model()) {
-								@Override
-								protected MappingFileRef buildValue_() {
-									return subject.getImpliedMappingFileRef();
-								}
-							},
-							MappingFileRef.ORM_XML_PROPERTY) {
-						@Override
-						protected OrmXml buildValue_() {
-							return subject.getOrmXml();
-						}
-					}));
+		private ListValueModel<OrmXml> buildImpliedOrmXmlLvm() {
+			return new PropertyListValueModelAdapter<OrmXml>(
+				new PropertyAspectAdapter<MappingFileRef, OrmXml>(
+						new PropertyAspectAdapter<PersistenceUnit, MappingFileRef>(
+								PersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY,
+								model()) {
+							@Override
+							protected MappingFileRef buildValue_() {
+								return subject.getImpliedMappingFileRef();
+							}
+						},
+						MappingFileRef.ORM_XML_PROPERTY) {
+					@Override
+					protected OrmXml buildValue_() {
+						return subject.getOrmXml();
+					}
+				}
+			);
 		}
 		
 		private ListValueModel<JpaContextNode> buildPersistentTypeLvm() {
@@ -148,14 +158,7 @@ public class GenericNavigatorItemContentProviderFactory
 				new FilteringCollectionValueModel<PersistentType>(
 					new ListCollectionValueModelAdapter<PersistentType>(
 						new TransformationListValueModelAdapter<ClassRef, PersistentType>(
-							new ItemPropertyListValueModelAdapter<ClassRef>(
-								new ListAspectAdapter<PersistenceUnit, ClassRef>(
-										new String[] {PersistenceUnit.SPECIFIED_CLASS_REF_LIST, PersistenceUnit.IMPLIED_CLASS_REF_LIST},
-										(PersistenceUnit) model()) {
-									protected ListIterator<ClassRef> listIterator_() {
-										return subject.classRefs();
-									}
-								})) {
+							new ItemPropertyListValueModelAdapter<ClassRef>(buildClassRefLvm(), ClassRef.JAVA_PERSISTENT_TYPE_PROPERTY)) {
 							@Override
 							protected PersistentType transformItem(ClassRef item) {
 								return item.getJavaPersistentType();
@@ -171,6 +174,41 @@ public class GenericNavigatorItemContentProviderFactory
 						};
 					}
 				});
+		}
+		
+		private ListValueModel<ClassRef> buildClassRefLvm() {
+			ArrayList<ListValueModel<ClassRef>> holders = new ArrayList<ListValueModel<ClassRef>>(2);
+			holders.add(buildSpecifiedClassRefLvm());
+			holders.add(buildImpliedClassRefLvm());
+			return new CompositeListValueModel<ListValueModel<ClassRef>, ClassRef>(holders);
+		}
+		
+		private ListValueModel<ClassRef> buildSpecifiedClassRefLvm() {
+			return new ListAspectAdapter<PersistenceUnit, ClassRef>(
+				PersistenceUnit.SPECIFIED_CLASS_REF_LIST, model()) {
+					@Override
+					protected ListIterator<ClassRef> listIterator_() {
+						return subject.specifiedClassRefs();
+					}
+					@Override
+					protected int size_() {
+						return subject.specifiedClassRefsSize();
+					}
+			};
+		}
+		
+		private ListValueModel<ClassRef> buildImpliedClassRefLvm() {
+			return new ListAspectAdapter<PersistenceUnit, ClassRef>(
+				PersistenceUnit.IMPLIED_CLASS_REF_LIST, model()) {
+					@Override
+					protected ListIterator<ClassRef> listIterator_() {
+						return subject.impliedClassRefs();
+					}
+					@Override
+					protected int size_() {
+						return subject.impliedClassRefsSize();
+					}
+			};
 		}
 	}
 }

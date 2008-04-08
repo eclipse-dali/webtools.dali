@@ -24,12 +24,10 @@ import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
-import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
-import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 public class PersistenceItemContentProviderFactory
@@ -89,7 +87,11 @@ public class PersistenceItemContentProviderFactory
 				Persistence persistence, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(persistence, contentProvider);
 		}
-		
+			
+		@Override
+		public Persistence model() {
+			return (Persistence) super.model();
+		}
 		
 		@Override
 		public Object getParent() {
@@ -101,10 +103,14 @@ public class PersistenceItemContentProviderFactory
 		@Override
 		protected ListValueModel<PersistenceUnit> buildChildrenModel() {
 			return new ListAspectAdapter<Persistence, PersistenceUnit>(
-					Persistence.PERSISTENCE_UNITS_LIST, (Persistence) model()) {
+					Persistence.PERSISTENCE_UNITS_LIST, model()) {
 				@Override
 				protected ListIterator<PersistenceUnit> listIterator_() {
 					return subject.persistenceUnits();
+				}
+				@Override
+				protected int size_() {
+					return subject.persistenceUnitsSize();
 				}
 			};
 		}
@@ -119,51 +125,75 @@ public class PersistenceItemContentProviderFactory
 		}
 		
 		@Override
+		public PersistenceUnit model() {
+			return (PersistenceUnit) super.model();
+		}
+		
+		@Override
 		public Persistence getParent() {
-			return ((PersistenceUnit) model()).getParent();
+			return model().getParent();
 		}
 		
 		@Override
 		protected ListValueModel<JpaStructureNode> buildChildrenModel() {
-			ListValueModel<JpaStructureNode> specifiedMappingFileLvm = 
-				new ListAspectAdapter<PersistenceUnit, JpaStructureNode>(
+			ListValueModel<MappingFileRef> specifiedMappingFileLvm = 
+				new ListAspectAdapter<PersistenceUnit, MappingFileRef>(
 						PersistenceUnit.SPECIFIED_MAPPING_FILE_REF_LIST,
-						(PersistenceUnit) model()) {
+						model()) {
 					@Override
-					@SuppressWarnings("unchecked")
-					protected ListIterator<JpaStructureNode> listIterator_() {
-						return new ReadOnlyCompositeListIterator<JpaStructureNode>(
-							subject.specifiedMappingFileRefs());
+					protected ListIterator<MappingFileRef> listIterator_() {
+						return subject.specifiedMappingFileRefs();
+					}
+					@Override
+					protected int size_() {
+						return subject.specifiedMappingFileRefsSize();
 					}
 				};
 			
-			ListValueModel<JpaStructureNode> impliedMappingFileLvm = 
-				new CollectionListValueModelAdapter<JpaStructureNode>(
-					new PropertyCollectionValueModelAdapter<JpaStructureNode>(
-						new PropertyAspectAdapter<PersistenceUnit, JpaStructureNode>(
-								PersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY,
-								(PersistenceUnit) model()) {
-							 @Override
-							protected JpaStructureNode buildValue_() {
-								return subject.getImpliedMappingFileRef();
-							}
-						}));
-			ListValueModel<JpaStructureNode> classLvm = 
-				new ListAspectAdapter<PersistenceUnit, JpaStructureNode>(
-						new String[] {PersistenceUnit.SPECIFIED_CLASS_REF_LIST, PersistenceUnit.IMPLIED_CLASS_REF_LIST},
-						(PersistenceUnit) model()) {
+			ListValueModel<MappingFileRef> impliedMappingFileLvm = 
+				new PropertyListValueModelAdapter<MappingFileRef>(
+					new PropertyAspectAdapter<PersistenceUnit, MappingFileRef>(
+							PersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY,
+							model()) {
+						@Override
+						protected MappingFileRef buildValue_() {
+							return subject.getImpliedMappingFileRef();
+						}
+					}
+				);
+			ListValueModel<ClassRef> specifiedClassLvm = 
+				new ListAspectAdapter<PersistenceUnit, ClassRef>(
+						PersistenceUnit.SPECIFIED_CLASS_REF_LIST,
+						model()) {
 					@Override
-					@SuppressWarnings("unchecked")
-					protected ListIterator<JpaStructureNode> listIterator_() {
-						return new ReadOnlyCompositeListIterator<JpaStructureNode>(
-							subject.classRefs());
+					protected ListIterator<ClassRef> listIterator_() {
+						return subject.specifiedClassRefs();
+					}
+					@Override
+					protected int size_() {
+						return subject.specifiedClassRefsSize();
 					}
 				};
-			List<ListValueModel<JpaStructureNode>> list = new ArrayList<ListValueModel<JpaStructureNode>>();
+			ListValueModel<ClassRef> impliedClassLvm = 
+				new ListAspectAdapter<PersistenceUnit, ClassRef>(
+						PersistenceUnit.IMPLIED_CLASS_REF_LIST,
+						model()) {
+					@Override
+					protected ListIterator<ClassRef> listIterator_() {
+						return subject.impliedClassRefs();
+					}
+					@Override
+					protected int size_() {
+						return subject.impliedClassRefsSize();
+					}
+				};
+			List<ListValueModel<? extends JpaStructureNode>> list = new ArrayList<ListValueModel<? extends JpaStructureNode>>(4);
 			list.add(specifiedMappingFileLvm);
 			list.add(impliedMappingFileLvm);
-			list.add(classLvm);
-			return new CompositeListValueModel<ListValueModel<JpaStructureNode>, JpaStructureNode>(list);
+			list.add(specifiedClassLvm);
+			list.add(impliedClassLvm);
+			
+			return new CompositeListValueModel<ListValueModel<? extends JpaStructureNode>, JpaStructureNode>(list);
 		}
 	}
 	
