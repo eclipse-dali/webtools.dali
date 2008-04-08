@@ -69,7 +69,7 @@ public interface MappingFileRef extends PersistenceJpaContextNode, JpaStructureN
 	
 	/**
 	 * Return the OrmPersistentType listed in this mapping file
-	 * with the given fullyQualifiedTypeName.  Return null if non exists.
+	 * with the given fullyQualifiedTypeName.  Return null if none exists.
 	 */
 	OrmPersistentType getPersistentType(String fullyQualifiedTypeName);
 	
