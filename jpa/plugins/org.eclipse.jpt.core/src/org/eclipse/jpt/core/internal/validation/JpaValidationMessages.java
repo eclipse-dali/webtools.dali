@@ -44,6 +44,8 @@ public interface JpaValidationMessages
 	
 	public static final String PERSISTENCE_UNIT_DUPLICATE_CLASS = "PERSISTENCE_UNIT_DUPLICATE_CLASS";
 	
+	public static final String PERSISTENCE_UNIT_REDUNDANT_CLASS = "PERSISTENCE_UNIT_REDUNDANT_CLASS";
+	
 	public static final String GENERATOR_DUPLICATE_NAME = "GENERATOR_DUPLICATE_NAME";
 	
 	public static final String QUERY_DUPLICATE_NAME = "QUERY_DUPLICATE_NAME";

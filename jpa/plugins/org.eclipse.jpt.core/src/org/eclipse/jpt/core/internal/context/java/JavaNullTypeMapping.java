@@ -14,6 +14,9 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -42,6 +45,20 @@ public class JavaNullTypeMapping extends AbstractJavaTypeMapping
 	
 	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		// no-op, nothing to really add
+		//Adding this message here because the likely solution is to add an annotation to the java file.
+		//This message used to be found on the <class> tag in the persistence.xml.  The other possible
+		//way to fix the error is to remove it from the persistnce.xml.  This can be accomplished
+		//with the Synchronize Classes action.  We could also add a quick fix for this error.
+		messages.add(DefaultJpaValidationMessages.buildMessage(
+			IMessage.HIGH_SEVERITY,
+			JpaValidationMessages.PERSISTENCE_UNIT_INVALID_CLASS,
+			new String[] { this.getPersistentType().getName() },
+			this,
+			this.getValidationTextRange(astRoot)));
+	}
+	
+	@Override
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		return this.getPersistentType().getValidationTextRange(astRoot);
 	}
 }

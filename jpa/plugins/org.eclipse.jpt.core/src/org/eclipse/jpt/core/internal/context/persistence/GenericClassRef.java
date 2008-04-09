@@ -14,6 +14,7 @@ import java.util.List;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -21,6 +22,7 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -62,7 +64,7 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 	}
 	
 	public boolean isVirtual() {
-		return xmlJavaClassRef == null;
+		return this.xmlJavaClassRef == null;
 	}
 	
 	
@@ -160,10 +162,7 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 		super.addToMessages(messages);
 		addUnspecifiedClassMessage(messages);
 		addUnresolvedClassMessage(messages);
-		//classRef might have been empty
-		if(getJavaPersistentType() != null){
-			getJavaPersistentType().addToMessages(messages);
-		}
+		addJavaPersistentTypeMessages(messages);
 	}
 	
 	protected void addUnspecifiedClassMessage(List<IMessage> messages) {
@@ -188,6 +187,38 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 					this.getValidationTextRange())
 			);
 		}
+	}
+	
+	protected void addJavaPersistentTypeMessages(List<IMessage> messages) {
+		if (getJavaPersistentType() != null) { //class might not resolve to a java type
+			MappingFileRef mappingFileRef = getMappingFileContaining(getClassName());
+			if (mappingFileRef != null) {
+				messages.add(DefaultJpaValidationMessages.buildMessage(
+					IMessage.LOW_SEVERITY,
+					JpaValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS,
+					new String[] { this.getClassName(), mappingFileRef.getFileName()},
+					this,
+					this.getValidationTextRange()));
+			}
+			else {
+				//bug 190062 - only add java validation messages if this class is not listed in a mapping file
+				getJavaPersistentType().addToMessages(messages);
+			}
+		}
+	}
+	
+	//possibly move this and make it API on PersistenceUnit
+	/**
+	 * Return the mapping file that contains a persistent type for the given 
+	 * type name.  Return null if no mapping file contains the persistent type.
+	 */
+	protected MappingFileRef getMappingFileContaining(String fullyQualifiedTypeName) {
+		for (MappingFileRef mappingFileRef : CollectionTools.iterable(getPersistenceUnit().mappingFileRefs())) {
+			if (mappingFileRef.getPersistentType(fullyQualifiedTypeName) != null) {
+				return mappingFileRef;
+			}
+		}
+		return null;
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {

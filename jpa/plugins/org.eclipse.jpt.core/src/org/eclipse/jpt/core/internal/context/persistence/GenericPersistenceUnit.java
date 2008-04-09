@@ -816,7 +816,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	protected void updateMappingFileRefs(XmlPersistenceUnit persistenceUnit) {
 		Iterator<MappingFileRef> stream = specifiedMappingFileRefs();
-		Iterator<XmlMappingFileRef> stream2 = persistenceUnit.getMappingFiles().iterator();
+		Iterator<XmlMappingFileRef> stream2 = new CloneIterator<XmlMappingFileRef>(persistenceUnit.getMappingFiles());//prevent ConcurrentModificiationException
 		
 		while (stream.hasNext()) {
 			MappingFileRef mappingFileRef = stream.next();
@@ -876,7 +876,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	protected void updateClassRefs(XmlPersistenceUnit persistenceUnit) {
 		Iterator<ClassRef> stream = specifiedClassRefs();
-		Iterator<XmlJavaClassRef> stream2 = new CloneIterator<XmlJavaClassRef>(persistenceUnit.getClasses());
+		Iterator<XmlJavaClassRef> stream2 = new CloneIterator<XmlJavaClassRef>(persistenceUnit.getClasses());//prevent ConcurrentModificiationException
 		
 		while (stream.hasNext()) {
 			ClassRef classRef = stream.next();
@@ -1089,56 +1089,27 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 						}
 				)
 		);
-		for (MappingFileRef mappingFileRef : CollectionTools.collection(this.mappingFileRefs())) {
+		for (MappingFileRef mappingFileRef : CollectionTools.iterable(this.mappingFileRefs())) {
 			if (fileBag.count(mappingFileRef.getFileName()) > 1) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_MAPPING_FILE,
 						new String[] {mappingFileRef.getFileName()}, 
-						mappingFileRef/*, 
-						mappingFileRef.validationTextRange()*/)
+						mappingFileRef, 
+						mappingFileRef.getValidationTextRange())
 				);
 			}
 		}
 	}
 		
 	protected void addClassMessages(List<IMessage> messages) {
-//		addInvalidOrRedundantClassMessages(messages);
 		addDuplicateClassMessages(messages);
 		
-		for (ClassRef classRef : CollectionTools.collection(classRefs())) {
-				classRef.addToMessages(messages);
+		for (ClassRef classRef : CollectionTools.iterable(classRefs())) {
+			classRef.addToMessages(messages);
 		}
 	}
-	
-//	protected void addInvalidOrRedundantClassMessages(List<IMessage> messages) {
-//		for (IClassRef javaClassRef : CollectionTools.collection(this.classRefs())) {
-//			IJavaPersistentType javaPersistentType = javaClassRef.getJavaPersistentType();
-//			//*****leaving this test out for now********
-//			//first test for a redundant entry in any of the mapping files
-////			if (mappingFilesContainPersistentTypeFor(jdtType)){
-////			//Uncomment below code to add info message about redundant entry.
-////			/*	messages.add(JpaValidationMessages.buildMessage(
-////						IMessage.LOW_SEVERITY,
-////						IJpaValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS,
-////						new String[] { javaClassRef.getJavaClass() },
-////						javaClassRef, javaClassRef.validationTextRange())); */
-////			//if not redundant, check to see if it is an invalid entry
-////			} else if(!StringTools.stringIsEmpty(javaClass)
-//			} if (!StringTools.stringIsEmpty(javaClass)
-//					&& jdtType != null
-//					&& (javaPersistentTypeFor(javaClassRef) == null || javaPersistentTypeFor(
-//							javaClassRef).getMappingKey() == IMappingKeys.NULL_TYPE_MAPPING_KEY)){
-//								messages.add(JpaValidationMessages.buildMessage(
-//									IMessage.HIGH_SEVERITY,
-//									IJpaValidationMessages.PERSISTENCE_UNIT_INVALID_CLASS,
-//									new String[] { javaClassRef.getJavaClass() }, javaClassRef,
-//									javaClassRef.validationTextRange()));
-//			}
-//		}
-//	}
-	
 	
 	protected void addDuplicateClassMessages(List<IMessage> messages) {
 		HashBag<String> classNameBag = new HashBag<String>(
@@ -1151,7 +1122,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 						}
 				)
 		);
-		for (ClassRef javaClassRef : CollectionTools.collection(this.classRefs())) {
+		for (ClassRef javaClassRef : CollectionTools.iterable(this.classRefs())) {
 			if (javaClassRef.getClassName() != null
 					&& classNameBag.count(javaClassRef.getClassName()) > 1) {
 				messages.add(
