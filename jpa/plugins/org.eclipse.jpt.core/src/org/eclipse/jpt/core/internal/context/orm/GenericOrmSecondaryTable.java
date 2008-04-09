@@ -222,7 +222,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 		
 	protected void updateSpecifiedPrimaryKeyJoinColumns(XmlSecondaryTable secondaryTable) {
 		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = specifiedPrimaryKeyJoinColumns();
-		ListIterator<XmlPrimaryKeyJoinColumn> resourcePrimaryKeyJoinColumns = secondaryTable.getPrimaryKeyJoinColumns().listIterator();
+		ListIterator<XmlPrimaryKeyJoinColumn> resourcePrimaryKeyJoinColumns = new CloneListIterator<XmlPrimaryKeyJoinColumn>(secondaryTable.getPrimaryKeyJoinColumns());//prevent ConcurrentModificiationException
 		
 		while (primaryKeyJoinColumns.hasNext()) {
 			OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = primaryKeyJoinColumns.next();

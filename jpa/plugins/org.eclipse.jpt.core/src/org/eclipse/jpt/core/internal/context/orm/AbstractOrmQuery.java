@@ -137,7 +137,7 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 	
 	protected void updateHints(E queryResource) {
 		ListIterator<OrmQueryHint> hints = hints();
-		ListIterator<XmlQueryHint> resourceHints = queryResource.getHints().listIterator();
+		ListIterator<XmlQueryHint> resourceHints = new CloneListIterator<XmlQueryHint>(queryResource.getHints());//prevent ConcurrentModificiationException
 		
 		while (hints.hasNext()) {
 			OrmQueryHint hint = hints.next();

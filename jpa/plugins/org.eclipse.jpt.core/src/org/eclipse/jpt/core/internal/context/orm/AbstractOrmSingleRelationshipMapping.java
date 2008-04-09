@@ -235,7 +235,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 		ListIterator<OrmJoinColumn> joinColumns = specifiedJoinColumns();
 		ListIterator<XmlJoinColumn> resourceJoinColumns = EmptyListIterator.instance();
 		if (singleRelationshipMapping != null) {
-			resourceJoinColumns = singleRelationshipMapping.getJoinColumns().listIterator();
+			resourceJoinColumns = new CloneListIterator<XmlJoinColumn>(singleRelationshipMapping.getJoinColumns());//prevent ConcurrentModificiationException
 		}
 		
 		while (joinColumns.hasNext()) {

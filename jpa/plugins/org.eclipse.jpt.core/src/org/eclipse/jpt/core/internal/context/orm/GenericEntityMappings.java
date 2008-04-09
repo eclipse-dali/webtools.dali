@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -581,7 +582,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	protected void updateMappedSuperclasses(XmlEntityMappings entityMappings, ListIterator<OrmPersistentType> ormPersistentTypes) {
-		for (XmlMappedSuperclass mappedSuperclass : entityMappings.getMappedSuperclasses()) {
+		for (XmlMappedSuperclass mappedSuperclass : Collections.unmodifiableCollection(entityMappings.getMappedSuperclasses())) {//prevent ConcurrentModificiationException
 			if (ormPersistentTypes.hasNext()) {
 				ormPersistentTypes.next().update(mappedSuperclass);
 			}
@@ -594,7 +595,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	protected void updateEntities(XmlEntityMappings entityMappings, ListIterator<OrmPersistentType> ormPersistentTypes) {
-		for (XmlEntity entity : entityMappings.getEntities()) {
+		for (XmlEntity entity : Collections.unmodifiableCollection(entityMappings.getEntities())) {//prevent ConcurrentModificiationException
 			if (ormPersistentTypes.hasNext()) {
 				ormPersistentTypes.next().update(entity);
 			}
@@ -607,7 +608,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	protected void updateEmbeddables(XmlEntityMappings entityMappings, ListIterator<OrmPersistentType> ormPersistentTypes) {
-		for (XmlEmbeddable embeddable : entityMappings.getEmbeddables()) {
+		for (XmlEmbeddable embeddable : Collections.unmodifiableCollection(entityMappings.getEmbeddables())) {//prevent ConcurrentModificiationException
 			if (ormPersistentTypes.hasNext()) {
 				ormPersistentTypes.next().update(embeddable);
 			}
@@ -621,7 +622,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	
 	protected void updateTableGenerators(XmlEntityMappings entityMappings) {
 		ListIterator<OrmTableGenerator> tableGenerators = tableGenerators();
-		ListIterator<XmlTableGenerator> resourceTableGenerators = entityMappings.getTableGenerators().listIterator();
+		ListIterator<XmlTableGenerator> resourceTableGenerators = new CloneListIterator<XmlTableGenerator>(entityMappings.getTableGenerators());//prevent ConcurrentModificiationException
 		while (tableGenerators.hasNext()) {
 			OrmTableGenerator tableGenerator = tableGenerators.next();
 			if (resourceTableGenerators.hasNext()) {
@@ -645,7 +646,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 
 	protected void updateSequenceGenerators(XmlEntityMappings entityMappings) {
 		ListIterator<OrmSequenceGenerator> sequenceGenerators = sequenceGenerators();
-		ListIterator<XmlSequenceGenerator> resourceSequenceGenerators = entityMappings.getSequenceGenerators().listIterator();
+		ListIterator<XmlSequenceGenerator> resourceSequenceGenerators = new CloneListIterator<XmlSequenceGenerator>(entityMappings.getSequenceGenerators());//prevent ConcurrentModificiationException
 		while (sequenceGenerators.hasNext()) {
 			OrmSequenceGenerator sequenceGenerator = sequenceGenerators.next();
 			if (resourceSequenceGenerators.hasNext()) {
@@ -669,7 +670,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	
 	protected void updateNamedQueries(XmlEntityMappings entityMappings) {
 		ListIterator<OrmNamedQuery> namedQueries = namedQueries();
-		ListIterator<XmlNamedQuery> resourceNamedQueries = entityMappings.getNamedQueries().listIterator();
+		ListIterator<XmlNamedQuery> resourceNamedQueries = new CloneListIterator<XmlNamedQuery>(entityMappings.getNamedQueries());//prevent ConcurrentModificiationException
 		
 		while (namedQueries.hasNext()) {
 			OrmNamedQuery namedQuery = namedQueries.next();
@@ -694,7 +695,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 
 	protected void updateNamedNativeQueries(XmlEntityMappings entityMappings) {
 		ListIterator<OrmNamedNativeQuery> namedNativeQueries = namedNativeQueries();
-		ListIterator<XmlNamedNativeQuery> resourceNamedNativeQueries = entityMappings.getNamedNativeQueries().listIterator();
+		ListIterator<XmlNamedNativeQuery> resourceNamedNativeQueries = new CloneListIterator<XmlNamedNativeQuery>(entityMappings.getNamedNativeQueries());//prevent ConcurrentModificiationException
 		
 		while (namedNativeQueries.hasNext()) {
 			OrmNamedNativeQuery namedQuery = namedNativeQueries.next();

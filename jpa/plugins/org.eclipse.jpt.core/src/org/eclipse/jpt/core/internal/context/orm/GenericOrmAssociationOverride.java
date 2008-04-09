@@ -156,7 +156,7 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 	
 	protected void updateSpecifiedJoinColumns(XmlAssociationOverride associationOverride) {
 		ListIterator<OrmJoinColumn> joinColumns = specifiedJoinColumns();
-		ListIterator<XmlJoinColumn> resourceJoinColumns = associationOverride.getJoinColumns().listIterator();
+		ListIterator<XmlJoinColumn> resourceJoinColumns = new CloneListIterator<XmlJoinColumn>(associationOverride.getJoinColumns());//prevent ConcurrentModificiationException
 		
 		while (joinColumns.hasNext()) {
 			OrmJoinColumn joinColumn = joinColumns.next();

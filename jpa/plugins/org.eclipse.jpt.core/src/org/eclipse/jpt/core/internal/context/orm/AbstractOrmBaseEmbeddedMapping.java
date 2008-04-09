@@ -187,7 +187,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 	
 	protected void updateSpecifiedAttributeOverrides(T embedded) {
 		ListIterator<OrmAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
-		ListIterator<XmlAttributeOverride> resourceAttributeOverrides = embedded.getAttributeOverrides().listIterator();
+		ListIterator<XmlAttributeOverride> resourceAttributeOverrides = new CloneListIterator<XmlAttributeOverride>(embedded.getAttributeOverrides());//prevent ConcurrentModificiationException
 		
 		while (attributeOverrides.hasNext()) {
 			OrmAttributeOverride attributeOverride = attributeOverrides.next();

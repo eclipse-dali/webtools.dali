@@ -372,7 +372,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		ListIterator<OrmJoinColumn> joinColumns = specifiedJoinColumns();
 		ListIterator<XmlJoinColumn> resourceJoinColumns = EmptyListIterator.instance();
 		if (joinTable != null) {
-			resourceJoinColumns = joinTable.getJoinColumns().listIterator();
+			resourceJoinColumns = new CloneListIterator<XmlJoinColumn>(joinTable.getJoinColumns());//prevent ConcurrentModificiationException
 		}
 		
 		while (joinColumns.hasNext()) {
@@ -411,7 +411,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		ListIterator<OrmJoinColumn> inverseJoinColumns = specifiedInverseJoinColumns();
 		ListIterator<XmlJoinColumn> resourceInverseJoinColumns = EmptyListIterator.instance();
 		if (joinTable != null) {
-			resourceInverseJoinColumns = joinTable.getInverseJoinColumns().listIterator();
+			resourceInverseJoinColumns = new CloneListIterator<XmlJoinColumn>(joinTable.getInverseJoinColumns());//prevent ConcurrentModificiationException
 		}
 		
 		while (inverseJoinColumns.hasNext()) {

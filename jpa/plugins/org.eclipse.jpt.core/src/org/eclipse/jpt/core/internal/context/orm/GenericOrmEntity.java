@@ -1243,7 +1243,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	protected void updateSpecifiedSecondaryTables(XmlEntity entity) {
 		ListIterator<OrmSecondaryTable> secondaryTables = specifiedSecondaryTables();
-		ListIterator<XmlSecondaryTable> resourceSecondaryTables = entity.getSecondaryTables().listIterator();
+		ListIterator<XmlSecondaryTable> resourceSecondaryTables = new CloneListIterator<XmlSecondaryTable>(entity.getSecondaryTables());//prevent ConcurrentModificiationException
 		
 		while (secondaryTables.hasNext()) {
 			OrmSecondaryTable secondaryTable = secondaryTables.next();
@@ -1346,7 +1346,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	protected void updateSpecifiedPrimaryKeyJoinColumns(XmlEntity entity) {
 		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = specifiedPrimaryKeyJoinColumns();
-		ListIterator<XmlPrimaryKeyJoinColumn> resourcePrimaryKeyJoinColumns = entity.getPrimaryKeyJoinColumns().listIterator();
+		ListIterator<XmlPrimaryKeyJoinColumn> resourcePrimaryKeyJoinColumns = new CloneListIterator<XmlPrimaryKeyJoinColumn>(entity.getPrimaryKeyJoinColumns());//prevent ConcurrentModificiationException
 		
 		while (primaryKeyJoinColumns.hasNext()) {
 			OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = primaryKeyJoinColumns.next();
@@ -1371,7 +1371,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 	protected void updateSpecifiedAttributeOverrides(XmlEntity entity) {
 		ListIterator<OrmAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
-		ListIterator<XmlAttributeOverride> resourceAttributeOverrides = entity.getAttributeOverrides().listIterator();
+		ListIterator<XmlAttributeOverride> resourceAttributeOverrides = new CloneListIterator<XmlAttributeOverride>(entity.getAttributeOverrides());//prevent ConcurrentModificiationException
 		
 		while (attributeOverrides.hasNext()) {
 			OrmAttributeOverride attributeOverride = attributeOverrides.next();
@@ -1398,7 +1398,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 	protected void updateSpecifiedAssociationOverrides(XmlEntity entity) {
 		ListIterator<OrmAssociationOverride> associationOverrides = specifiedAssociationOverrides();
-		ListIterator<XmlAssociationOverride> resourceAssociationOverrides = entity.getAssociationOverrides().listIterator();
+		ListIterator<XmlAssociationOverride> resourceAssociationOverrides = new CloneListIterator<XmlAssociationOverride>(entity.getAssociationOverrides());//prevent ConcurrentModificiationException
 		
 		while (associationOverrides.hasNext()) {
 			OrmAssociationOverride associationOverride = associationOverrides.next();
@@ -1425,7 +1425,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	protected void updateNamedQueries(XmlEntity entity) {
 		ListIterator<OrmNamedQuery> namedQueries = namedQueries();
-		ListIterator<XmlNamedQuery> resourceNamedQueries = entity.getNamedQueries().listIterator();
+		ListIterator<XmlNamedQuery> resourceNamedQueries = new CloneListIterator<XmlNamedQuery>(entity.getNamedQueries());//prevent ConcurrentModificiationException
 		
 		while (namedQueries.hasNext()) {
 			OrmNamedQuery namedQuery = namedQueries.next();
@@ -1450,7 +1450,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 	protected void updateNamedNativeQueries(XmlEntity entity) {
 		ListIterator<OrmNamedNativeQuery> namedNativeQueries = namedNativeQueries();
-		ListIterator<XmlNamedNativeQuery> resourceNamedNativeQueries = entity.getNamedNativeQueries().listIterator();
+		ListIterator<XmlNamedNativeQuery> resourceNamedNativeQueries = new CloneListIterator<XmlNamedNativeQuery>(entity.getNamedNativeQueries());//prevent ConcurrentModificiationException
 		
 		while (namedNativeQueries.hasNext()) {
 			OrmNamedNativeQuery namedQuery = namedNativeQueries.next();
