@@ -194,7 +194,10 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		assertTrue("model.itemIsProperty() is false: ", model().itemIsProperty(property));
 
 		assertEquals("PersistenceUnit not populated - populatedPu()", this.getEclipseLinkStringValueOf(expectedValue), property.getValue());
-		assertEquals("Model not initialized - model.initializeProperties()", expectedValue, modelValue);
+		assertEquals(
+			"Model not initialized - model.initializeProperties() - modelValue = " + modelValue, 
+			expectedValue, 
+			modelValue);
 	}
 
 	/**
@@ -282,7 +285,9 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		// verify event for the expected property
 		assertEquals("Wrong Event.", this.propertyChangedEvent.getAspectName(), propertyName);
 		// verify event occurence
-		assertEquals("Multiple Event Received.", 1, this.propertyChangedEventCount);
+		assertTrue("No Event Received.", this.propertyChangedEventCount > 0);
+		assertTrue("Multiple Event Received (" +  this.propertyChangedEventCount + ")",
+			this.propertyChangedEventCount < 2);
 	}
 
 	protected void verifyHasNoListeners(ListValueModel listValueModel) throws Exception {
