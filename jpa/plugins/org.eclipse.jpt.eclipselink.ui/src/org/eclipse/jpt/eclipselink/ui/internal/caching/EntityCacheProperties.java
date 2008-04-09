@@ -41,6 +41,10 @@ public class EntityCacheProperties extends AbstractModel {
 		return this.caching.getCacheType(this.entityName);
 	}
 
+	public Integer getDefaultCacheSize() {
+		return this.caching.getDefaultCacheSize();
+	}
+
 	public CacheType getDefaultCacheType() {
 		return this.caching.getDefaultCacheType();
 	}
