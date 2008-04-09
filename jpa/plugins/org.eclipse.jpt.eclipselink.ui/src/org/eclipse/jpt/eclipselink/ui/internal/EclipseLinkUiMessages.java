@@ -3,7 +3,7 @@
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
+*
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
@@ -25,7 +25,10 @@ public class EclipseLinkUiMessages extends NLS
 	
 	public static String Boolean_True;
 	public static String Boolean_False;
-	
+
+	public static String DefaultWithoutValue;
+	public static String DefaultWithValue;
+
 	public static String PersistenceXmlTabFolder_defaultEmpty;
 	public static String PersistenceXmlTabFolder_defaultWithOneParam;
 	
@@ -68,12 +71,16 @@ public class EclipseLinkUiMessages extends NLS
 
 	public static String PersistenceXmlCachingTab_defaultSharedCacheDefaultLabel;
 	public static String PersistenceXmlCachingTab_sharedCacheDefaultLabel;
+
+	public static String CacheSizeComposite_cacheSize;
 	
 	public static String CacheTypeComposite_full;
 	public static String CacheTypeComposite_hard_weak;
 	public static String CacheTypeComposite_none;
 	public static String CacheTypeComposite_soft_weak;
 	public static String CacheTypeComposite_weak;
+
+	public static String DefaultCacheSizeComposite_defaultCacheSize;
 
 	public static String DefaultCacheTypeComposite_full;
 	public static String DefaultCacheTypeComposite_hard_weak;
@@ -131,7 +138,7 @@ public class EclipseLinkUiMessages extends NLS
 	public static String LoggingLevelComposite_finest;
 
 	public static String PersistenceXmlLoggingTab_loggerLabel;
-	
+
 	public static String LoggerComposite_default_logger;
 	public static String LoggerComposite_java_logger;
 	public static String LoggerComposite_server_logger;
@@ -148,7 +155,43 @@ public class EclipseLinkUiMessages extends NLS
 	public static String PersistenceXmlLoggingTab_logFileLabelDefault;
 	public static String PersistenceXmlLoggingTab_loggersLabel;
 
-	
+	// Session Options
+	public static String PersistenceXmlOptionsTab_title;
+	public static String PersistenceXmlOptionsTab_sectionTitle;
+	public static String PersistenceXmlOptionsTab_sectionDescription;
+	public static String PersistenceXmlOptionsTab_defaultWithOneParam;
+	public static String PersistenceXmlOptionsTab_defaultEmpty;
+
+	public static String PersistenceXmlOptionsTab_sessionName;
+	public static String PersistenceXmlOptionsTab_sessionsXml;
+
+	public static String PersistenceXmlOptionsTab_includeDescriptorQueriesLabel;
+	public static String PersistenceXmlOptionsTab_includeDescriptorQueriesLabelDefault;
+
+	public static String PersistenceXmlOptionsTab_eventListenerLabel;
+	public static String PersistenceXmlOptionsTab_targetDatabaseLabel;
+
+	public static String TargetDatabaseComposite_attunity;
+	public static String TargetDatabaseComposite_auto;
+	public static String TargetDatabaseComposite_cloudscape;
+	public static String TargetDatabaseComposite_database;
+	public static String TargetDatabaseComposite_db2;
+	public static String TargetDatabaseComposite_db2mainframe;
+	public static String TargetDatabaseComposite_dbase;
+	public static String TargetDatabaseComposite_derby;
+	public static String TargetDatabaseComposite_hsql;
+	public static String TargetDatabaseComposite_informix;
+	public static String TargetDatabaseComposite_javadb;
+	public static String TargetDatabaseComposite_mysql4;
+	public static String TargetDatabaseComposite_oracle;
+	public static String TargetDatabaseComposite_pointbase;
+	public static String TargetDatabaseComposite_postgresql;
+	public static String TargetDatabaseComposite_sqlanywhere;
+	public static String TargetDatabaseComposite_sqlserver;
+	public static String TargetDatabaseComposite_sybase;
+	public static String TargetDatabaseComposite_timesten;
+
+
 	private EclipseLinkUiMessages() {
 		throw new UnsupportedOperationException();
 	}

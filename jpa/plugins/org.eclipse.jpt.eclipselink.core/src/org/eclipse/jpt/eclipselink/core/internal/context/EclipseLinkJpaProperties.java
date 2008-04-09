@@ -19,6 +19,8 @@ import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customiza
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.EclipseLinkCustomization;
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.EclipseLinkLogging;
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
+import org.eclipse.jpt.eclipselink.core.internal.context.options.EclipseLinkOptions;
+import org.eclipse.jpt.eclipselink.core.internal.context.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -40,6 +42,7 @@ public class EclipseLinkJpaProperties extends AbstractModel
 	private Caching caching;
 	private Customization customization;
 	private Logging logging;
+	private Options options;
 	private SchemaGeneration schemaGeneration;
 	
 	private ListValueModel<Property> propertiesAdapter;
@@ -62,6 +65,7 @@ public class EclipseLinkJpaProperties extends AbstractModel
 		this.caching = this.buildCaching();
 		this.customization = this.buildCustomization();
 		this.logging = this.buildLogging();
+		this.options = this.buildOptions();
 		this.schemaGeneration = this.buildSchemaGeneration();
 	}
 
@@ -95,6 +99,10 @@ public class EclipseLinkJpaProperties extends AbstractModel
 		return new EclipseLinkLogging(this.persistenceUnit(), this.propertyListAdapter());
 	}
 
+	private Options buildOptions() {
+		return new EclipseLinkOptions(this.persistenceUnit(), this.propertyListAdapter());
+	}
+
 	private SchemaGeneration buildSchemaGeneration() {
 		return new EclipseLinkSchemaGeneration(this.persistenceUnit(), this.propertyListAdapter());
 	}
@@ -110,6 +118,10 @@ public class EclipseLinkJpaProperties extends AbstractModel
 
 	public Logging getLogging() {
 		return this.logging;
+	}
+
+	public Options getOptions() {
+		return this.options;
 	}
 	
 	public SchemaGeneration getSchemaGeneration() {

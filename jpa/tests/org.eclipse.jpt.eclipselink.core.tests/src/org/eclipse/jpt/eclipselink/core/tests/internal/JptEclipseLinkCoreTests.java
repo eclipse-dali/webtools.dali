@@ -15,6 +15,7 @@ import junit.framework.TestSuite;
 import org.eclipse.jpt.eclipselink.core.tests.internal.caching.JptEclipseLinkCoreCachingTests;
 import org.eclipse.jpt.eclipselink.core.tests.internal.customization.JptEclipseLinkCoreCustomizationTests;
 import org.eclipse.jpt.eclipselink.core.tests.internal.logging.JptEclipseLinkCoreLoggingTests;
+import org.eclipse.jpt.eclipselink.core.tests.internal.options.JptEclipseLinkCoreOptionsTests;
 import org.eclipse.jpt.eclipselink.core.tests.internal.schema.generation.JptEclipseLinkCoreSchemaGenerationTests;
 
 /**
@@ -25,6 +26,7 @@ public class JptEclipseLinkCoreTests
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptEclipseLinkCoreTests.class.getPackage().getName());
 		
+		suite.addTest(JptEclipseLinkCoreOptionsTests.suite());
 		suite.addTest(JptEclipseLinkCoreLoggingTests.suite());
 		suite.addTest(JptEclipseLinkCoreCustomizationTests.suite());
 		suite.addTest(JptEclipseLinkCoreCachingTests.suite());
