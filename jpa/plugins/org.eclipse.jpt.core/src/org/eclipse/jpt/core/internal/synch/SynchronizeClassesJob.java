@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.synch;
 
 import java.io.IOException;
-import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
@@ -20,6 +19,10 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.context.persistence.Persistence;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
@@ -27,6 +30,7 @@ import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * Synchronizes the lists of persistent classes in a persistence unit and a 
@@ -78,16 +82,15 @@ public class SynchronizeClassesJob extends WorkspaceJob
 		
 		persistenceUnitResource.getClasses().clear();
 		
-		monitor.worked(25);
-
-		//TODO njh - should be checking to see if the reference is necessary
-		//			ref is not necessary if defined in the XML, see commented code below
+		monitor.worked(25);		
 		
-		
-		for (Iterator<IType> stream = jpaProject.annotatedClasses(); stream.hasNext(); ) {
-			XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
-			classRef.setJavaClass(stream.next().getFullyQualifiedName());
-			persistenceUnitResource.getClasses().add(classRef);
+		for (IType type : CollectionTools.iterable(jpaProject.annotatedClasses())) {
+			String fullyQualifiedTypeName = type.getFullyQualifiedName();
+			if (!mappingFileContains(jpaProject, fullyQualifiedTypeName)) {
+				XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
+				classRef.setJavaClass(fullyQualifiedTypeName);
+				persistenceUnitResource.getClasses().add(classRef);
+			}
 		}
 		
 		monitor.worked(100);
@@ -105,84 +108,25 @@ public class SynchronizeClassesJob extends WorkspaceJob
 
 		return Status.OK_STATUS;
 	}
+	
+	private boolean mappingFileContains(JpaProject jpaProject, String fullyQualifiedTypeName) {
+		PersistenceXml persistenceXml = jpaProject.getRootContext().getPersistenceXml();
+		if (persistenceXml == null) {
+			return false;
+		}
+		Persistence persistence = persistenceXml.getPersistence();
+		if (persistence == null) {
+			return false;
+		}
+		if (persistence.persistenceUnitsSize() == 0) {
+			return false;
+		}
+		PersistenceUnit persistenceUnit = persistence.persistenceUnits().next();
+		for (MappingFileRef mappingFileRef : CollectionTools.iterable(persistenceUnit.mappingFileRefs())) {
+			if (mappingFileRef.getPersistentType(fullyQualifiedTypeName) != null) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
-//	private Iterator<String> sortedMappedTypeNames(XmlPersistenceUnit persistenceUnit) {
-//		return CollectionTools.sort(this.mappedTypeNames(persistenceUnit));
-//	}
-//	
-//	private Iterator<String> mappedTypeNames(XmlPersistenceUnit persistenceUnit) {
-//		return new TransformationIterator<IPersistentType, String>(this.mappedTypes(persistenceUnit)) {
-//			@Override
-//			protected String transform(IPersistentType pType) {
-//				return pType.resource().findJdtType().getFullyQualifiedName();
-//			}
-//		};
-//	}
-//	
-//	private Iterator<IPersistentType> mappedTypes(XmlPersistenceUnit persistenceUnit) {
-//		return new FilteringIterator<IPersistentType>(allJavaTypes(persistenceUnit.getJpaProject()), filter(persistenceUnit));
-//	}
-//	
-//	private Iterator<IPersistentType> allJavaTypes(IJpaProject jpaProject) {
-//		return new TransformationIterator<IJpaFile, IPersistentType>(jpaProject.jpaFiles(JptCorePlugin.JAVA_CONTENT_TYPE).iterator()) {
-//			@Override
-//			protected IPersistentType transform(IJpaFile next) {
-//				JpaCompilationUnit jcu = (JpaCompilationUnit) next.getContent();
-//				return (jcu.getTypes().isEmpty()) ? null : jcu.getTypes().get(0);
-//			}
-//		};
-//	}
-//	
-//	private Filter<IPersistentType> filter(final XmlPersistenceUnit persistenceUnit) {
-//		return new Filter<IPersistentType>() {
-//			public boolean accept(IPersistentType o) {
-//				if (o == null) {
-//					return false;
-//				}
-//				if (o.getMappingKey() == IMappingKeys.NULL_TYPE_MAPPING_KEY) {
-//					return false;
-//				}
-//				IType jdtType = o.findJdtType();
-//				if (jdtType == null) {
-//					return false;
-//				}
-//				for (XmlMappingFileRef mappingFileRef : persistenceUnit.getMappingFiles()) {
-//					if (containsType(mappingFileRef, jdtType)) {
-//						return false;
-//					}
-//				}
-//				return true;
-//			}
-//		};
-//	}
-//	
-//	private boolean containsType(XmlMappingFileRef mappingFileRef, IType jdtType) {
-//		IJpaFile mappingFile = mappingFileRef.getMappingFile();
-//		if (mappingFile == null) {
-//			return false;
-//		}
-//		
-//		XmlRootContentNode root;
-//		try {
-//			root = (XmlRootContentNode) mappingFile.getContent();
-//		}
-//		catch (ClassCastException cce) {
-//			return false;
-//		}
-//		
-//		EntityMappingsInternal entityMappings = root.getEntityMappings();
-//		
-//		if (entityMappings == null) {
-//			return false;
-//		}
-//		
-//		for (IPersistentType persistentType : entityMappings.getPersistentTypes()) {
-//			IType otherJdtType = persistentType.findJdtType();
-//			if (otherJdtType != null && otherJdtType.equals(jdtType)) {
-//				return true;
-//			}
-//		}
-//		
-//		return false;
-//	}
-

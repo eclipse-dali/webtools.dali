@@ -934,9 +934,18 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		return getJpaFactory().buildClassRef(this, className);
 	}
 	
+	/**
+	 * Return true if the class is specified either as a class
+	 * or listed in a mapping file
+	 */
 	protected boolean classIsSpecified(String className) {
 		for (ClassRef specifiedClassRef : CollectionTools.iterable(specifiedClassRefs())) {
 			if (className.equals(specifiedClassRef.getClassName())) {
+				return true;
+			}
+		}
+		for (MappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
+			if (mappingFileRef.getPersistentType(className) != null) {
 				return true;
 			}
 		}
