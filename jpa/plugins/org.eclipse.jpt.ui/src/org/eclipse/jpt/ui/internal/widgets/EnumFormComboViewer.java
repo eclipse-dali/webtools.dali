@@ -71,7 +71,9 @@ public abstract class EnumFormComboViewer<T extends Model, V> extends AbstractEn
 	 */
 	@Override
 	ComboViewer buildComboViewer(Composite container) {
-		return buildCComboViewer(container, buildLabelProvider());
+		ComboViewer comboViewer = buildCComboViewer(container, buildLabelProvider());
+		comboViewer.getCCombo().setVisibleItemCount(Integer.MAX_VALUE);
+		return comboViewer;
 	}
 
 	/*

@@ -71,7 +71,9 @@ public abstract class EnumDialogComboViewer<T extends Model, V> extends Abstract
 	 */
 	@Override
 	ComboViewer buildComboViewer(Composite container) {
-		return buildComboViewer(container, buildLabelProvider());
+		ComboViewer comboViewer = buildComboViewer(container, buildLabelProvider());
+		comboViewer.getCombo().setVisibleItemCount(Integer.MAX_VALUE);
+		return comboViewer;
 	}
 
 	/*
