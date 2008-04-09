@@ -12,11 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
-import org.eclipse.ui.forms.widgets.Section;
 
 /**
  *  EclipseLinkCachingComposite
@@ -30,20 +26,19 @@ public class EclipseLinkCachingComposite extends AbstractFormPane<Caching>
 	}
 
 	@Override
-	protected void initializeLayout(Composite parent) {
-		Section section = getWidgetFactory().createSection(parent, SWT.FLAT | ExpandableComposite.TITLE_BAR| Section.DESCRIPTION);
-		section.setText(EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionTitle);
-		section.setDescription(EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionDescription);
-		section.setLayoutData(new GridData(GridData.FILL_BOTH));
+	protected void initializeLayout(Composite container) {
 
-		Composite composite = buildSubPane(section);
-		section.setClient(composite);
+		container = buildSection(
+			container,
+			EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionTitle,
+			EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionDescription
+		);
 
 		// Default pane
 		int groupBoxMargin = groupBoxMargin();
 
 		Composite defaultPane = buildSubPane(
-			composite,
+			container,
 			0, groupBoxMargin, 0, groupBoxMargin
 		);
 
@@ -57,6 +52,6 @@ public class EclipseLinkCachingComposite extends AbstractFormPane<Caching>
 		new DefaultSharedCacheComposite(this, defaultPane);
 
 		// EntitiesList
-		new EntityListComposite(this, composite);
+		new EntityListComposite(this, container);
 	}
 }

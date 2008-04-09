@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.ui.internal.caching;
 
 import java.util.ListIterator;
-
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
@@ -52,7 +51,7 @@ public class EntityListComposite extends AbstractPane<Caching>
 		WritablePropertyValueModel<EntityCacheProperties> entityHolder = this.buildEntityHolder();
 
 		// Entities add/remove list pane
-		AddRemoveListPane<Caching> listPane = new AddRemoveListPane<Caching>(
+		new AddRemoveListPane<Caching>(
 			this,
 			container,
 			this.buildEntitiesAdapter(),
