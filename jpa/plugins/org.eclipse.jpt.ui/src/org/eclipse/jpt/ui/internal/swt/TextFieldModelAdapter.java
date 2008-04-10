@@ -145,6 +145,9 @@ public class TextFieldModelAdapter {
 	// ********** model events **********
 
 	protected void textChanged(PropertyChangeEvent event) {
+		if (this.textField.isDisposed()) {
+			return;
+		}
 		String text = (String) event.getNewValue();
 		// the model can be null, but the text field cannot
 		if (text == null) {
