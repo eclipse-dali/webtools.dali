@@ -192,7 +192,7 @@ public abstract class PackageChooserPane<T extends Model> extends AbstractChoose
 		String packageName = packageName();
 
 		if (packageName == null) {
-			packageName = null;
+			return null;
 		}
 
 		return packageFragmentRoot().getPackageFragment(packageName);
