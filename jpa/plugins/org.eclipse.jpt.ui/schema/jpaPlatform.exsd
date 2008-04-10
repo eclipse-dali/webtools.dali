@@ -54,7 +54,7 @@
          <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
-                  The id must match the corresponding org.eclipse.jpt.core.jpaVendor extension id.
+                  The id must match the corresponding org.eclipse.jpt.core.jpaPlatform extension id.
                </documentation>
             </annotation>
          </attribute>
