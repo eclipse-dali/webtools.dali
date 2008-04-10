@@ -171,8 +171,6 @@ public class TargetEntityComposite extends AbstractFormPane<RelationshipMapping>
 	protected void doPopulate() {
 
 		super.doPopulate();
-
-		combo.removeAll();
 		populateCombo();
 	}
 
@@ -227,6 +225,7 @@ public class TargetEntityComposite extends AbstractFormPane<RelationshipMapping>
 
 	private void populateCombo() {
 
+		combo.removeAll();
 		populateDefaultValue();
 		// TODO Add possible target entity names
 		updateSelectedItem();
