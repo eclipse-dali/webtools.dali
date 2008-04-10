@@ -320,7 +320,7 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 	
 	public TextRange getSelectionTextRange() {
 		if (isVirtual()) {
-			return getPersistentType().getSelectionTextRange();
+			return null;
 		}
 		return this.attributeMapping.getSelectionTextRange();
 	}
