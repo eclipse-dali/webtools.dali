@@ -62,7 +62,8 @@ class GenTable {
 		String overrideEntityName = this.entityConfig.getOverrideEntityName(this.table);
 		if (overrideEntityName == null) {
 			if (this.entityConfig.convertToCamelCase()) {
-				name = StringTools.convertUnderscoresToCamelCase(name);
+				// camel-casing can convert a name back to a reserved word (e.g. "package_" -> "package")
+				name = NameTools.convertToJavaIdentifier(StringTools.convertUnderscoresToCamelCase(name));
 			}
 		} else {
 			name = overrideEntityName;
@@ -291,15 +292,16 @@ class GenTable {
 	}
 
 	private String configureFieldName(Object o, String fieldName) {
-		fieldName = this.camelCase(fieldName);
+		fieldName = this.camelCaseFieldName(fieldName);
 		fieldName = NameTools.uniqueNameFor(fieldName, this.fieldNames.values());
 		this.fieldNames.put(o, fieldName);
 		return fieldName;
 	}
 
-	private String camelCase(String name) {
+	private String camelCaseFieldName(String name) {
 		return this.entityConfig.convertToCamelCase() ?
-			StringTools.convertUnderscoresToCamelCase(name, false)  // false = don't capitalize first letter
+			// camel-casing can convert a name back to a reserved word (e.g. "package_" -> "package")
+			NameTools.convertToJavaIdentifier(StringTools.convertUnderscoresToCamelCase(name, false))  // false = don't capitalize first letter
 		:
 			name;
 	}

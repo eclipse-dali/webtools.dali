@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-
 
 /**
  * Various helper methods for generating names.
@@ -162,7 +161,7 @@ public final class NameTools {
 				"do",
 				"double",
 				"else",
-				"enum",  // jdk 5.0
+				"enum",  // jdk 1.5
 				"extends",
 				"false",
 				"final",
@@ -221,8 +220,8 @@ public final class NameTools {
 	/**
 	 * Convert the specified string to a valid Java identifier
 	 * by substituting an underscore '_' for any invalid characters
-	 * in the string and capitalizing the string if it is a Java
-	 * reserved word.
+	 * in the string and appending an underscore '_' to the string if
+	 * it is a Java reserved word.
 	 */
 	public static String convertToJavaIdentifier(String string) {
 		return convertToJavaIdentifier(string, '_');
@@ -231,25 +230,27 @@ public final class NameTools {
 	/**
 	 * Convert the specified string to a valid Java identifier
 	 * by substituting the specified character for any invalid characters
-	 * in the string and capitalizing the string if it is a Java
-	 * reserved word.
+	 * in the string and, if necessary, appending the specified character
+	 * to the string until it is not a Java reserved word.
 	 */
 	public static String convertToJavaIdentifier(String string, char c) {
 		if (string.length() == 0) {
 			return string;
 		}
 		if (JAVA_RESERVED_WORDS_SET.contains(string)) {
-			// a reserved words is a valid identifier, we just need to tweak it a bit
-			return StringTools.capitalize(string);
+			// a reserved word is a valid identifier, we just need to tweak it a bit
+			checkCharIsJavaIdentifierPart(c);
+			return convertToJavaIdentifier(string + c, c);
 		}
-		return new String(convertToJavaIdentifierInternal(string.toCharArray(), c));
+		char[] array = string.toCharArray();
+		return (convertToJavaIdentifier_(array, c)) ? new String(array) : string;
 	}
 
 	/**
 	 * Convert the specified string to a valid Java identifier
 	 * by substituting an underscore '_' for any invalid characters
-	 * in the string and capitalizing the string if it is a Java
-	 * reserved word.
+	 * in the string and appending an underscore '_' to the string if
+	 * it is a Java reserved word.
 	 */
 	public static char[] convertToJavaIdentifier(char[] string) {
 		return convertToJavaIdentifier(string, '_');
@@ -258,8 +259,8 @@ public final class NameTools {
 	/**
 	 * Convert the specified string to a valid Java identifier
 	 * by substituting the specified character for any invalid characters
-	 * in the string and capitalizing the string if it is a Java
-	 * reserved word.
+	 * in the string and, if necessary, appending the specified character
+	 * to the string until it is not a Java reserved word.
 	 */
 	public static char[] convertToJavaIdentifier(char[] string, char c) {
 		int length = string.length;
@@ -267,28 +268,45 @@ public final class NameTools {
 			return string;
 		}
 		if (JAVA_RESERVED_WORDS_SET.contains(new String(string))) {
-			// a reserved words is a valid identifier, we just need to tweak it a bit
-			return StringTools.capitalize(string);
+			// a reserved word is a valid identifier, we just need to tweak it a bit
+			checkCharIsJavaIdentifierPart(c);
+			return convertToJavaIdentifier(CollectionTools.add(string, c), c);
 		}
-		return convertToJavaIdentifierInternal(string, c);
+		convertToJavaIdentifier_(string, c);
+		return string;
 	}
 
-	private static char[] convertToJavaIdentifierInternal(char[] string, char c) {
+	/**
+	 * The specified must not be empty.
+	 * Return whether the string was modified.
+	 */
+	private static boolean convertToJavaIdentifier_(char[] string, char c) {
+		boolean mod = false;
 		if ( ! Character.isJavaIdentifierStart(string[0])) {
-			if ( ! Character.isJavaIdentifierStart(c)) {
-				throw new IllegalArgumentException("invalid Java identifier start char: '" + c + "'");
-			}
+			checkCharIsJavaIdentifierStart(c);
 			string[0] = c;
+			mod = true;
 		}
-		if ( ! Character.isJavaIdentifierPart(c)) {
-			throw new IllegalArgumentException("invalid Java identifier part char: '" + c + "'");
-		}
+		checkCharIsJavaIdentifierPart(c);
 		for (int i = string.length; i-- > 1; ) {  // NB: end with 1
 			if ( ! Character.isJavaIdentifierPart(string[i])) {
 				string[i] = c;
+				mod = true;
 			}
 		}
-		return string;
+		return mod;
+	}
+
+	private static void checkCharIsJavaIdentifierStart(char c) {
+		if ( ! Character.isJavaIdentifierStart(c)) {
+			throw new IllegalArgumentException("invalid Java identifier start char: '" + c + "'");
+		}
+	}
+
+	private static void checkCharIsJavaIdentifierPart(char c) {
+		if ( ! Character.isJavaIdentifierPart(c)) {
+			throw new IllegalArgumentException("invalid Java identifier part char: '" + c + "'");
+		}
 	}
 
 

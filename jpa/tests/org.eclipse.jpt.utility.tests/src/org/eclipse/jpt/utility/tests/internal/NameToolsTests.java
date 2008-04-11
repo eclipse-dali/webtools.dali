@@ -173,7 +173,8 @@ public class NameToolsTests extends TestCase {
 	public void testconvertToJavaIdentifierString() {
 		assertEquals("foo", NameTools.convertToJavaIdentifier("foo"));
 		assertEquals("foo1", NameTools.convertToJavaIdentifier("foo1"));
-		assertEquals("Private", NameTools.convertToJavaIdentifier("private"));
+		assertEquals("private_", NameTools.convertToJavaIdentifier("private"));
+		assertEquals("throw_", NameTools.convertToJavaIdentifier("throw"));
 		assertEquals("_foo", NameTools.convertToJavaIdentifier("1foo"));
 		assertEquals("foo_", NameTools.convertToJavaIdentifier("foo%"));
 		assertEquals("foo__bar__", NameTools.convertToJavaIdentifier("foo  bar  "));
@@ -182,7 +183,8 @@ public class NameToolsTests extends TestCase {
 	public void testconvertToJavaIdentifierStringChar() {
 		assertEquals("foo", NameTools.convertToJavaIdentifier("foo", '$'));
 		assertEquals("foo1", NameTools.convertToJavaIdentifier("foo1", '$'));
-		assertEquals("Private", NameTools.convertToJavaIdentifier("private", '$'));
+		assertEquals("private$", NameTools.convertToJavaIdentifier("private", '$'));
+		assertEquals("throwss", NameTools.convertToJavaIdentifier("throw", 's'));
 		assertEquals("$foo", NameTools.convertToJavaIdentifier("1foo", '$'));
 		assertEquals("foo$", NameTools.convertToJavaIdentifier("foo%", '$'));
 		assertEquals("foo$$bar$$", NameTools.convertToJavaIdentifier("foo  bar  ", '$'));
@@ -201,6 +203,17 @@ public class NameToolsTests extends TestCase {
 		exCaught = false;
 		try {
 			String s = NameTools.convertToJavaIdentifier("foo%", '^');
+			fail("invalid string: \"" + s + "\"");
+		} catch (IllegalArgumentException ex) {
+			if (ex.getMessage().indexOf('^') != -1) {
+				exCaught = true;
+			}
+		}
+		assertTrue(exCaught);
+
+		exCaught = false;
+		try {
+			String s = NameTools.convertToJavaIdentifier("private", '^');
 			fail("invalid string: \"" + s + "\"");
 		} catch (IllegalArgumentException ex) {
 			if (ex.getMessage().indexOf('^') != -1) {
