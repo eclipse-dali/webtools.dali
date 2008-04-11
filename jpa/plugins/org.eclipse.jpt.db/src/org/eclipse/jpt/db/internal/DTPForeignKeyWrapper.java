@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -50,18 +49,13 @@ final class DTPForeignKeyWrapper
 	// ********** constructor **********
 
 	DTPForeignKeyWrapper(DTPTableWrapper baseTable, org.eclipse.datatools.modelbase.sql.constraints.ForeignKey dtpForeignKey) {
-		super(baseTable);
+		super(baseTable, dtpForeignKey);
 		this.baseTable = baseTable;
 		this.dtpForeignKey = dtpForeignKey;
 	}
 
 
 	// ********** DTPWrapper implementation **********
-
-	@Override
-	ICatalogObject getCatalogObject() {
-		return (ICatalogObject) this.dtpForeignKey;
-	}
 
 	@Override
 	synchronized void catalogObjectChanged(int eventType) {

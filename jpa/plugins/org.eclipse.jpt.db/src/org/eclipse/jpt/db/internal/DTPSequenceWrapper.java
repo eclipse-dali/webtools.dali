@@ -11,7 +11,6 @@ package org.eclipse.jpt.db.internal;
 
 import java.text.Collator;
 
-import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.jpt.db.Sequence;
 
 /**
@@ -31,18 +30,13 @@ final class DTPSequenceWrapper
 	// ********** constructor **********
 
 	DTPSequenceWrapper(DTPSchemaWrapper schema, org.eclipse.datatools.modelbase.sql.schema.Sequence dtpSequence) {
-		super(schema);
+		super(schema, dtpSequence);
 		this.schema = schema;
 		this.dtpSequence = dtpSequence;
 	}
 
 
 	// ********** DTPWrapper implementation **********
-
-	@Override
-	ICatalogObject getCatalogObject() {
-		return (ICatalogObject) this.dtpSequence;
-	}
 
 	@Override
 	synchronized void catalogObjectChanged(int eventType) {

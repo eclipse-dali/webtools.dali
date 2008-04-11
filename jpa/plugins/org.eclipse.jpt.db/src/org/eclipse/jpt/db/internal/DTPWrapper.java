@@ -26,28 +26,36 @@ abstract class DTPWrapper
 	// listen for the "catalog object" being refreshed
 	private final ICatalogObjectListener catalogObjectListener;
 
+	// we only listen to "live" connections
+	private final boolean connectionIsLive;
 
-	DTPWrapper(ConnectionProfileHolder connectionProfileHolder) {
+	// listen for this to refresh
+	final ICatalogObject catalogObject;
+
+
+	DTPWrapper(ConnectionProfileHolder connectionProfileHolder, Object dtpObject) {
 		super();
 		this.connectionProfileHolder = connectionProfileHolder;
-		this.catalogObjectListener = this.buildCatalogObjectListener();
-		if (this.getConnectionProfile().isConnected()) {
-			RefreshManager.getInstance().AddListener(this.getCatalogObject(), this.catalogObjectListener);
+		this.connectionIsLive = this.getConnectionProfile().isConnected();
+		if (this.connectionIsLive) {
+			this.catalogObject = (ICatalogObject) dtpObject;
+			this.catalogObjectListener = this.buildCatalogObjectListener();
+			RefreshManager.getInstance().AddListener(this.catalogObject, this.catalogObjectListener);
+		} else {
+			this.catalogObject = null;
+			this.catalogObjectListener = null;
 		}
 	}
 
 	private ICatalogObjectListener buildCatalogObjectListener() {
 		return new ICatalogObjectListener() {
-			public void notifyChanged(ICatalogObject catalogObject, int eventType) {
-				if (catalogObject == DTPWrapper.this.getCatalogObject()) {
+			public void notifyChanged(ICatalogObject dmElement, int eventType) {
+				if (dmElement == DTPWrapper.this.catalogObject) {
 					DTPWrapper.this.catalogObjectChanged(eventType);
 				}
 			}
 		};
 	}
-
-	// typically, the wrapped DTP object
-	abstract ICatalogObject getCatalogObject();
 
 	// typically, notify the connection profile something has changed
 	abstract void catalogObjectChanged(int eventType);
@@ -57,7 +65,9 @@ abstract class DTPWrapper
 	}
 
 	void dispose() {
-        RefreshManager.getInstance().removeListener(this.getCatalogObject(), this.catalogObjectListener);
+		if (this.connectionIsLive) {
+	        RefreshManager.getInstance().removeListener(this.catalogObject, this.catalogObjectListener);
+		}
 	}
 
 	// all the subclasses can implement this method

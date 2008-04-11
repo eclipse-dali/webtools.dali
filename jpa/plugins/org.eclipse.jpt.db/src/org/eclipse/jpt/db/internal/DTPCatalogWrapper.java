@@ -12,7 +12,6 @@ package org.eclipse.jpt.db.internal;
 import java.text.Collator;
 import java.util.List;
 
-import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.jpt.db.Catalog;
 
 /**
@@ -32,18 +31,13 @@ final class DTPCatalogWrapper
 	// ********** constructor **********
 
 	DTPCatalogWrapper(DTPDatabaseWrapper database, org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog) {
-		super(database);
+		super(database, dtpCatalog);
 		this.database = database;
 		this.dtpCatalog = dtpCatalog;
 	}
 
 
 	// ********** DTPWrapper implementation **********
-
-	@Override
-	ICatalogObject getCatalogObject() {
-		return (ICatalogObject) this.dtpCatalog;
-	}
 
 	@Override
 	synchronized void catalogObjectChanged(int eventType) {

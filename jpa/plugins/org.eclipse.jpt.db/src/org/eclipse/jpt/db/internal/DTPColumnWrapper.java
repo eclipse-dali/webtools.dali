@@ -11,7 +11,6 @@ package org.eclipse.jpt.db.internal;
 
 import java.text.Collator;
 
-import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.modelbase.dbdefinition.PredefinedDataTypeDefinition;
 import org.eclipse.datatools.modelbase.sql.datatypes.DataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.PredefinedDataType;
@@ -58,18 +57,13 @@ final class DTPColumnWrapper
 	// ********** constructor **********
 
 	DTPColumnWrapper(DTPTableWrapper table, org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
-		super(table);
+		super(table, dtpColumn);
 		this.table = table;
 		this.dtpColumn = dtpColumn;
 	}
 
 
 	// ********** DTPWrapper implementation **********
-
-	@Override
-	ICatalogObject getCatalogObject() {
-		return (ICatalogObject) this.dtpColumn;
-	}
 
 	@Override
 	synchronized void catalogObjectChanged(int eventType) {

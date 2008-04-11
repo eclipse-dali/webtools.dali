@@ -13,7 +13,6 @@ import java.text.Collator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.modelbase.sql.constraints.PrimaryKey;
 import org.eclipse.datatools.modelbase.sql.tables.BaseTable;
 import org.eclipse.jpt.db.Column;
@@ -55,18 +54,13 @@ final class DTPTableWrapper
 	// ********** constructor **********
 
 	DTPTableWrapper(DTPSchemaWrapper schema, org.eclipse.datatools.modelbase.sql.tables.Table dtpTable) {
-		super(schema);
+		super(schema, dtpTable);
 		this.schema = schema;
 		this.dtpTable = dtpTable;
 	}
 
 
 	// ********** DTPWrapper implementation **********
-
-	@Override
-	ICatalogObject getCatalogObject() {
-		return (ICatalogObject) this.dtpTable;
-	}
 
 	@Override
 	synchronized void catalogObjectChanged(int eventType) {

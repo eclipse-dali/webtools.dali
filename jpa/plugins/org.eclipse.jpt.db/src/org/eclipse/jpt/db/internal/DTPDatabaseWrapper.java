@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.datatools.connectivity.sqm.core.definition.DatabaseDefinition;
-import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.connectivity.sqm.internal.core.RDBCorePlugin;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Database;
@@ -55,18 +54,13 @@ final class DTPDatabaseWrapper
 	// ********** constructor **********
 
 	DTPDatabaseWrapper(DTPConnectionProfileWrapper connectionProfile, org.eclipse.datatools.modelbase.sql.schema.Database dtpDatabase) {
-		super(connectionProfile);
+		super(connectionProfile, dtpDatabase);
 		this.connectionProfile = connectionProfile;
 		this.dtpDatabase = dtpDatabase;
 	}
 
 
 	// ********** DTPWrapper implementation **********
-
-	@Override
-	ICatalogObject getCatalogObject() {
-		return (ICatalogObject) this.dtpDatabase;
-	}
 
 	@Override
 	synchronized void catalogObjectChanged(int eventType) {

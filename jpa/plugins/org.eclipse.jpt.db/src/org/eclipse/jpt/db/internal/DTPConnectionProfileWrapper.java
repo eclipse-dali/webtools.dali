@@ -15,6 +15,7 @@ import java.util.Vector;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.datatools.connectivity.ConnectEvent;
+import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.IManagedConnection;
 import org.eclipse.datatools.connectivity.IManagedConnectionOfflineListener;
 import org.eclipse.datatools.connectivity.drivers.DriverManager;
@@ -35,7 +36,10 @@ final class DTPConnectionProfileWrapper
 	implements ConnectionProfile, ConnectionProfileHolder
 {
 	// the wrapped DTP connection profile
-	private final org.eclipse.datatools.connectivity.IConnectionProfile dtpConnectionProfile;
+	private final IConnectionProfile dtpConnectionProfile;
+
+	// the DTP managed connection we listen to
+	private final IManagedConnection dtpManagedConnection;
 
 	// forward events from the DTP connection profile's managed connections
 	private final LocalConnectionListener connectionListener;
@@ -48,7 +52,7 @@ final class DTPConnectionProfileWrapper
 
 	public static final String LIVE_DTP_CONNECTION_TYPE = "java.sql.Connection";  //$NON-NLS-1$
 
-	public static final String OFFLINE_DTP_CONNECTION_TYPE = "org.eclipse.datatools.connectivity.sqm.core.connection.ConnectionInfo";  //$NON-NLS-1$
+	public static final String OFFLINE_DTP_CONNECTION_TYPE = ConnectionInfo.class.getName();
 
 	public static final String DATABASE_PRODUCT_PROP_ID = "org.eclipse.datatools.connectivity.server.version";  //$NON-NLS-1$
 
@@ -59,12 +63,18 @@ final class DTPConnectionProfileWrapper
 
 	// ********** constructor **********
 
-	DTPConnectionProfileWrapper(org.eclipse.datatools.connectivity.IConnectionProfile dtpConnectionProfile) {
+	DTPConnectionProfileWrapper(IConnectionProfile dtpConnectionProfile) {
 		super();
 		this.dtpConnectionProfile = dtpConnectionProfile;
+		this.dtpManagedConnection = this.buildDTPManagedConnection();
 		this.connectionListener = new LocalConnectionListener();
-		this.getDtpLiveConnection().addConnectionListener(this.connectionListener);
-		this.getDtpOfflineConnection().addConnectionListener(this.connectionListener);
+		this.dtpManagedConnection.addConnectionListener(this.connectionListener);
+	}
+
+	private IManagedConnection buildDTPManagedConnection() {
+		String connectionType = this.dtpConnectionProfile.supportsWorkOfflineMode() ?
+				OFFLINE_DTP_CONNECTION_TYPE : LIVE_DTP_CONNECTION_TYPE;
+		return this.dtpConnectionProfile.getManagedConnection(connectionType);
 	}
 
 
@@ -104,7 +114,8 @@ final class DTPConnectionProfileWrapper
 	}
 
 	public boolean isConnected() {
-		return this.getDtpLiveConnection().isConnected();
+		return this.dtpManagedConnection.isConnected()
+				&& ! this.dtpManagedConnection.isWorkingOffline();
 	}
 
 	public boolean isDisconnected() {
@@ -112,7 +123,7 @@ final class DTPConnectionProfileWrapper
 	}
 
 	public boolean isWorkingOffline() {
-		return this.getDtpOfflineConnection().isWorkingOffline();
+		return this.dtpManagedConnection.isWorkingOffline();
 	}
 
 	public boolean supportsWorkOfflineMode() {
@@ -205,14 +216,6 @@ final class DTPConnectionProfileWrapper
 
 	// ********** internal methods **********
 
-	IManagedConnection getDtpLiveConnection() {
-		return this.dtpConnectionProfile.getManagedConnection(LIVE_DTP_CONNECTION_TYPE);
-	}
-
-	IManagedConnection getDtpOfflineConnection() {
-		return this.dtpConnectionProfile.getManagedConnection(OFFLINE_DTP_CONNECTION_TYPE);
-	}
-
 	private void checkStatus(IStatus status) {
 		if (status.isOK()) {
 			return;
@@ -229,7 +232,7 @@ final class DTPConnectionProfileWrapper
 		}
 
 		if (this.isWorkingOffline()) {
-			ConnectionInfo connectionInfo = (ConnectionInfo) this.getDtpOfflineConnection().getConnection().getRawConnection();
+			ConnectionInfo connectionInfo = (ConnectionInfo) this.dtpManagedConnection.getConnection().getRawConnection();
 			return new DTPDatabaseWrapper(this, connectionInfo.getSharedDatabase());
 		}
 
@@ -242,7 +245,7 @@ final class DTPConnectionProfileWrapper
 		return new DTPDatabaseWrapper(this, ProfileUtil.getDatabase(new DatabaseIdentifier(this.getName(), this.getDatabaseName()), true));
 	}
 	
-	boolean wraps(org.eclipse.datatools.connectivity.IConnectionProfile dtpCP) {
+	boolean wraps(IConnectionProfile dtpCP) {
 		return this.dtpConnectionProfile == dtpCP;
 	}
 
@@ -293,8 +296,7 @@ final class DTPConnectionProfileWrapper
 
 	synchronized void dispose() {
 		this.disposeDatabase();
-		this.getDtpOfflineConnection().removeConnectionListener(this.connectionListener);
-		this.getDtpLiveConnection().removeConnectionListener(this.connectionListener);
+		this.dtpManagedConnection.removeConnectionListener(this.connectionListener);
 	}
 
 	synchronized void disposeDatabase() {
@@ -349,44 +351,42 @@ final class DTPConnectionProfileWrapper
 		// ********** IManagedConnectionListener implementation **********
 
 		public void opened(ConnectEvent event) {
-			if (event.getConnection() == DTPConnectionProfileWrapper.this.getDtpLiveConnection()) {
-				// clear the database so it will be rebuilt
-				DTPConnectionProfileWrapper.this.disposeDatabase();
-				for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
-					stream.next().opened(DTPConnectionProfileWrapper.this);
-				}
+			// clear the (possibly null) database so it will be rebuilt with the "live" data
+			DTPConnectionProfileWrapper.this.disposeDatabase();
+			// forward event
+			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
+				stream.next().opened(DTPConnectionProfileWrapper.this);
 			}
 		}
 
 		public void modified(ConnectEvent event) {
+			// forward event
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().modified(DTPConnectionProfileWrapper.this);
 			}
 		}
 
 		public boolean okToClose(ConnectEvent event) {
-			if (event.getConnection() == DTPConnectionProfileWrapper.this.getDtpLiveConnection()) {
-				for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
-					if ( ! stream.next().okToClose(DTPConnectionProfileWrapper.this)) {
-						return false;
-					}
+			// forward event
+			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
+				if ( ! stream.next().okToClose(DTPConnectionProfileWrapper.this)) {
+					return false;
 				}
 			}
 			return true;
 		}
 
 		public void aboutToClose(ConnectEvent event) {
-			if (event.getConnection() == DTPConnectionProfileWrapper.this.getDtpLiveConnection()) {
-				for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
-					stream.next().aboutToClose(DTPConnectionProfileWrapper.this);
-				}
+			// forward event
+			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
+				stream.next().aboutToClose(DTPConnectionProfileWrapper.this);
 			}
 		}
 
 		public void closed(ConnectEvent event) {
-			// clear the database so it will be rebuilt
+			// clear the database
 			DTPConnectionProfileWrapper.this.disposeDatabase();
-			// there is no DETACHED event, therefore closed is sent twice (i.e. by both connections)
+			// forward event
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().closed(DTPConnectionProfileWrapper.this);
 			}
@@ -397,29 +397,21 @@ final class DTPConnectionProfileWrapper
 
 		// live => off-line
 		public boolean okToDetach(ConnectEvent event) {
-			if (event.getConnection() == DTPConnectionProfileWrapper.this.getDtpOfflineConnection()) {
-				for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
-					if ( ! stream.next().okToClose(DTPConnectionProfileWrapper.this)) {
-						return false;
-					}
-				}
-			}
+			// don't forward the event(?)
 			return true;
 		}
 		
 		// live => off-line
 		public void aboutToDetach(ConnectEvent event) {
-			if (event.getConnection() == DTPConnectionProfileWrapper.this.getDtpOfflineConnection()) {
-				for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
-					stream.next().aboutToClose(DTPConnectionProfileWrapper.this);
-				}
-			}
+			// don't forward the event; the database will be cleared and
+			// listeners will be notified once the "offline" connection is "opened/workingOffline"
 		}
 
 		// live => off-line
 		public void workingOffline(ConnectEvent event) {
-			// clear the database so it will be rebuilt
+			// clear the (possibly null) database so it will be rebuilt with the "off-line" data
 			DTPConnectionProfileWrapper.this.disposeDatabase();
+			// convert the event to an "open" event
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().opened(DTPConnectionProfileWrapper.this);
 			}
@@ -427,7 +419,8 @@ final class DTPConnectionProfileWrapper
 
 		// off-line => live
 		public void aboutToAttach(ConnectEvent event) {
-			// ignore
+			// don't forward the event; the database will be cleared and
+			// listeners will be notified once the "live" connection is "opened"
 		}
 
 

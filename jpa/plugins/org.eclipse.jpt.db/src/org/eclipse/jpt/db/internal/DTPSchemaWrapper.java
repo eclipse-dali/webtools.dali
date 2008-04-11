@@ -13,7 +13,6 @@ import java.text.Collator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Sequence;
 import org.eclipse.jpt.db.Table;
@@ -44,18 +43,13 @@ final class DTPSchemaWrapper
 	// ********** constructor **********
 
 	DTPSchemaWrapper(DTPSchemaContainerWrapper container, org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema) {
-		super(container);
+		super(container, dtpSchema);
 		this.container = container;
 		this.dtpSchema = dtpSchema;
 	}
 
 
 	// ********** DTPWrapper implementation **********
-
-	@Override
-	ICatalogObject getCatalogObject() {
-		return (ICatalogObject) this.dtpSchema;
-	}
 
 	@Override
 	synchronized void catalogObjectChanged(int eventType) {

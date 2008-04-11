@@ -31,8 +31,8 @@ abstract class DTPSchemaContainerWrapper
 
 	// ********** constructor **********
 
-	DTPSchemaContainerWrapper(ConnectionProfileHolder connectionProfileHolder) {
-		super(connectionProfileHolder);
+	DTPSchemaContainerWrapper(ConnectionProfileHolder connectionProfileHolder, Object dtpObject) {
+		super(connectionProfileHolder, dtpObject);
 	}
 
 
