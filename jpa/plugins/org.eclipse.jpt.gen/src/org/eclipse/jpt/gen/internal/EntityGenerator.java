@@ -958,18 +958,15 @@ public class EntityGenerator {
 
 		pw.println("public int hashCode() {");
 		pw.indent();
-			pw.print("return ");
-			pw.indent();
-				while (columns.hasNext()) {
-					this.printPrimaryKeyHashCodeClauseOn(columns.next(), pw);
-					if (columns.hasNext()) {
-						pw.println();
-						pw.print("^ ");
-					}
-				}
+			pw.println("final int prime = 31;");
+			pw.println("int hash = 17;");
+			while (columns.hasNext()) {
+				pw.print("hash = hash * prime + ");
+				this.printPrimaryKeyHashCodeClauseOn(columns.next(), pw);
 				pw.print(';');
 				pw.println();
-			pw.undent();
+			}
+			pw.println("return hash;");
 		pw.undent();
 		pw.print('}');
 		pw.println();
@@ -987,9 +984,15 @@ public class EntityGenerator {
 	}
 
 	private void printPrimitiveHashCodeClauseOn(String primitiveName, String fieldName, EntitySourceWriter pw) {
-		if (primitiveName.equals("int") || primitiveName.equals("short") || primitiveName.equals("byte") || primitiveName.equals("char")) {
+		if (primitiveName.equals("int")) {
+			// this.value
 			pw.print("this.");
 			pw.print(fieldName);
+		} else if (primitiveName.equals("short") || primitiveName.equals("byte") || primitiveName.equals("char")) {  // explicit cast
+			// ((int) this.value)
+			pw.print("((int) this.");
+			pw.print(fieldName);
+			pw.print(')');
 		} else if (primitiveName.equals("long")) {  // cribbed from Long#hashCode()
 			// ((int) (this.value ^ (this.value >>> 32)))
 			pw.print("((int) (this.");
@@ -997,6 +1000,12 @@ public class EntityGenerator {
 			pw.print(" ^ (this.");
 			pw.print(fieldName);
 			pw.print(" >>> 32)))");
+		} else if (primitiveName.equals("float")) {  // cribbed from Float#hashCode()
+			// java.lang.Float.floatToIntBits(this.value)
+			pw.printTypeDeclaration("java.lang.Float");
+			pw.print(".floatToIntBits(this.");
+			pw.print(fieldName);
+			pw.print(')');
 		} else if (primitiveName.equals("double")) {  // cribbed from Double#hashCode()
 			//	((int) (java.lang.Double.doubleToLongBits(this.value) ^ (java.lang.Double.doubleToLongBits(this.value) >>> 32)))
 			pw.print("((int) (");
@@ -1008,17 +1017,11 @@ public class EntityGenerator {
 			pw.print(".doubleToLongBits(this.");
 			pw.print(fieldName);
 			pw.print(") >>> 32)))");
-		} else if (primitiveName.equals("float")) {  // cribbed from Float#hashCode()
-			// java.lang.Float.floatToIntBits(this.value)
-			pw.printTypeDeclaration("java.lang.Float");
-			pw.print(".floatToIntBits(this.");
-			pw.print(fieldName);
-			pw.print(')');
-		} else if (primitiveName.equals("boolean")) {  // cribbed from Boolean#hashCode()
-			// (this.value ? 1231 : 1237)
+		} else if (primitiveName.equals("boolean")) {
+			// (this.value ? 1 : 0)
 			pw.print("(this.");
 			pw.print(fieldName);
-			pw.print(" ? 1231 : 1237)");
+			pw.print(" ? 1 : 0)");
 		} else {
 			throw new IllegalArgumentException(primitiveName);
 		}
