@@ -3,14 +3,13 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.facet;
 
 import java.util.Set;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaCore;
@@ -50,8 +49,8 @@ public class JpaFacetDataModelProvider
 	public JpaFacetDataModelProvider() {
 		super();
 	}
-	
-	
+
+
 	@Override
 	public Set<String> getPropertyNames() {
 		@SuppressWarnings("unchecked")
@@ -65,7 +64,7 @@ public class JpaFacetDataModelProvider
 		propertyNames.add(CREATE_ORM_XML);
 		return propertyNames;
 	}
-	
+
 	@Override
 	public Object getDefaultProperty(String propertyName) {
 		if (propertyName.equals(FACET_ID)) {
@@ -111,14 +110,14 @@ public class JpaFacetDataModelProvider
 			String[] libraries = CollectionTools.sort(JavaCore.getUserLibraryNames());
 			DataModelPropertyDescriptor[] descriptors = new DataModelPropertyDescriptor[libraries.length + 1];
 			descriptors[0] = new DataModelPropertyDescriptor("", RUNTIME_NONE);
-			
+
 			int i = 1;
 			for (String library : libraries) {
 				descriptors[i++] = new DataModelPropertyDescriptor(library, library);
-			}	
+			}
 			return descriptors;
 		}
-		
+
 		return super.getValidPropertyDescriptors(propertyName);
 	}
 
@@ -159,6 +158,9 @@ public class JpaFacetDataModelProvider
 	}
 
 	private IStatus validateConnectionName(String connectionName) {
+		if (StringTools.stringIsEmpty(connectionName)) {
+			return OK_STATUS;
+		}
 		return JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNamed(connectionName).isActive() ?
 				OK_STATUS
 			:

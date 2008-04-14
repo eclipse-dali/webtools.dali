@@ -71,6 +71,7 @@ public class JptUiMessages extends NLS {
 	public static String JpaFacetWizardPage_jpaImplementationLabel;
 	public static String JpaFacetWizardPage_jpaPrefsLink;
 	public static String JpaFacetWizardPage_listClassesButton;
+	public static String JpaFacetWizardPage_none;
 	public static String JpaFacetWizardPage_persistentClassManagementLabel;
 	public static String JpaFacetWizardPage_platformLabel;
 	public static String JpaFacetWizardPage_specifyLibLabel;
