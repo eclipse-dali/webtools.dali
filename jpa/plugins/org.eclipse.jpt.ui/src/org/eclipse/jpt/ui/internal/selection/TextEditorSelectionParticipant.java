@@ -127,7 +127,7 @@ public class TextEditorSelectionParticipant
 		this.currentSelection = newSelection;
 		
 		if (this.forwardSelection) {
-			this.selectionManager.select(newSelection);
+			this.selectionManager.select(newSelection, this);
 		}
 	}
 
@@ -139,7 +139,7 @@ public class TextEditorSelectionParticipant
 		this.currentSelection = newSelection;
 
 		if (this.forwardSelection) {
-			this.selectionManager.select(newSelection);
+			this.selectionManager.select(newSelection, this);
 		}
 	}
 

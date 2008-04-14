@@ -15,23 +15,28 @@ public interface JpaSelectionManager
 {	
 	/**
 	 * Return the current selection.  
-	 * This will never be null, but it may be <code>JpaSelection.NULL_SELECTION</code>.
+	 * This will never be null, but it may be empty.
 	 */
 	public JpaSelection getCurrentSelection();
 	
 	/**
 	 * Not to be called lightly, this will affect the selection for all interested
 	 * objects in a window.
-	 * The newSelection will be selected.
+	 * @param newSelection  The new selection for the current window.
+	 * @param source  The selection participant (if any) that is causing the 
+	 * selection.  May be null.
 	 */
-	public void select(JpaSelection newSelection);
+	public void select(JpaSelection newSelection, JpaSelectionParticipant source);
 	
 	/**
 	 * Not to be called lightly, this will affect the selection for all interested
 	 * objects in a window.
-	 * The oldSelection will be deselected, iff it matches the current selection.
+	 * @param oldSelection  The oldSelection will be deselected, iff it matches 
+	 * the current selection.  If so, the new selection will be an empty JpaSelection.
+	 * @param source  The selection participant (if any) that is causing the 
+	 * selection.  May be null. 
 	 */
-	public void deselect(JpaSelection oldSelection);
+	public void deselect(JpaSelection oldSelection, JpaSelectionParticipant source);
 	
 	/**
 	 * This may be used to register a part with the selection manager if the part
@@ -43,5 +48,4 @@ public interface JpaSelectionManager
 	 * part is closed.
 	 */
 	public void register(IWorkbenchPart part);	
-
 }

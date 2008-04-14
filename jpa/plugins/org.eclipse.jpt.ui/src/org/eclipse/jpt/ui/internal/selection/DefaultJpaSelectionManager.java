@@ -115,7 +115,7 @@ public class DefaultJpaSelectionManager
 	void selectPart(IWorkbenchPart part) {
 		JpaSelectionParticipant selectionParticipant = getSelectionParticipant(part);
 		if (selectionParticipant != null) {
-			select(selectionParticipant.getSelection());
+			select(selectionParticipant.getSelection(), selectionParticipant);
 		}
 	}
 	
@@ -144,49 +144,32 @@ public class DefaultJpaSelectionManager
 		IWorkbenchPage activePage = window.getActivePage();
 		if ((activePage == null)
 				|| (activePage.getActiveEditor() == null)) {
-			select(DefaultJpaSelection.NULL_SELECTION);
+			select(DefaultJpaSelection.NULL_SELECTION, null);
 		}
 	}
 	
-	/**
-	 * This may be used to register a part with the selection manager if the part
-	 * is known to need access to the selection manager before it is ever activated
-	 * or in the case it may be activated prior to the selection manager being 
-	 * created.
-	 * 
-	 * It should not be necessary to deregister a part, as that happens when the 
-	 * part is closed.
-	 */
 	public void register(IWorkbenchPart part) {
 		initPart(part);
 	}
 	
-	/**
-	 * Not to be called lightly, this will affect the selection for all interested
-	 * objects in a window.
-	 * The newSelection will be selected.
-	 */
-	public void select(JpaSelection newSelection) {
+	public void select(JpaSelection newSelection, JpaSelectionParticipant source) {
 		if (currentSelection.equals(newSelection)) {
 			return;
 		}
 		
 		currentSelection = newSelection;
+		Object nonNullSource = (source == null) ? this : source;
 		fireSelectionChange(
-			new JpaSelectionEvent(newSelection, JpaSelectionEvent.SELECTION, this)
+			new JpaSelectionEvent(newSelection, JpaSelectionEvent.SELECTION, nonNullSource)
 		);
 	}
 	
-	/**
-	 * Not to be called lightly, this will affect the selection for all interested
-	 * objects in a window.
-	 * The oldSelection will be deselected, iff it matches the current selection.
-	 */
-	public void deselect(JpaSelection oldSelection) {
+	public void deselect(JpaSelection oldSelection, JpaSelectionParticipant source) {
 		if (currentSelection.equals(oldSelection)) {
 			currentSelection = DefaultJpaSelection.NULL_SELECTION;
+			Object nonNullSource = (source == null) ? this : source;
 			fireSelectionChange(
-				new JpaSelectionEvent(oldSelection, JpaSelectionEvent.DESELECTION, this)
+				new JpaSelectionEvent(oldSelection, JpaSelectionEvent.DESELECTION, nonNullSource)
 			);
 		}
 	}

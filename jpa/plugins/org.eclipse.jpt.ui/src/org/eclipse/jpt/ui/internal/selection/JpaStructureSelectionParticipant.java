@@ -30,7 +30,9 @@ public class JpaStructureSelectionParticipant
 	}
 	
 	public void selectionChanged(JpaSelectionEvent evt) {
-		this.structureView.select(evt.getSelection());
+		if (evt.getSource() != this) {
+			this.structureView.select(evt.getSelection());
+		}
 	}
 
 	public boolean disposeOnHide() {
@@ -56,7 +58,7 @@ public class JpaStructureSelectionParticipant
 
 		public void selectionChanged(SelectionChangedEvent event) {
 			if (structureView.getViewSite().getWorkbenchWindow().getPartService().getActivePart() == structureView) {
-				selectionManager.select(this.structureViewSelection());
+				selectionManager.select(this.structureViewSelection(), JpaStructureSelectionParticipant.this);
 			}
 		}
 

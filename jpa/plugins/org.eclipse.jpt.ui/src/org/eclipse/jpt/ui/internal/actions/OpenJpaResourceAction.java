@@ -70,7 +70,7 @@ public class OpenJpaResourceAction extends BaseSelectionListenerAction
 			if (selectedNode instanceof JpaStructureNode) {
 				JpaSelectionManager selectionManager =
 					SelectionManagerFactory.getSelectionManager(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				selectionManager.select(new DefaultJpaSelection((JpaStructureNode) selectedNode));
+				selectionManager.select(new DefaultJpaSelection((JpaStructureNode) selectedNode), null);
 			}
 		}
 	}
