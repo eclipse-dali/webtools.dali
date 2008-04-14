@@ -169,7 +169,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 
 	protected JpaRootContextNode rootContext() {
-		return (JpaRootContextNode) getJavaProject().getJpaProject().getRootContext();
+		return getJavaProject().getJpaProject().getRootContext();
 	}
 	
 	@Override
