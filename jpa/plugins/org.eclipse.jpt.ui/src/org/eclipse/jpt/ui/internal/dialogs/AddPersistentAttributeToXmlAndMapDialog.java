@@ -79,6 +79,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 		createLabel(composite, 1, JptUiMessages.AddPersistentClassDialog_mappingLabel);
 
 		mappingCombo = new ComboViewer(createCombo(composite, 1));
+		mappingCombo.getCombo().setFocus();
 		mappingCombo.setContentProvider(
 			new IStructuredContentProvider() {
 				public void dispose() {}
