@@ -199,6 +199,10 @@ public class JpaDetailsView extends AbstractJpaView
 			log("JpaDetailsView.setCurrentPage() : No page to populate");
 		}
 
+		//no need to show the page again if it is still the same
+		if (newPage != null && currentPage == newPage) {
+			return;
+		}
 		currentPage = newPage;
 
 		// Show new page
