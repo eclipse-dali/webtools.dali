@@ -90,7 +90,7 @@ public class EventListenerComposite extends AbstractPane<Options>
 				IType type = chooseType();
 
 				if (type != null) {
-					String className = type.getFullyQualifiedName();
+					String className = type.getFullyQualifiedName('.');
 					subject().setEventListener(className);
 				}
 			}

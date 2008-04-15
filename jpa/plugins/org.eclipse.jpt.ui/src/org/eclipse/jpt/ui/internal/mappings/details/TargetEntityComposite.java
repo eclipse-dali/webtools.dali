@@ -160,7 +160,7 @@ public class TargetEntityComposite extends AbstractFormPane<RelationshipMapping>
 
 		if (dialog.open() == Window.OK) {
 			IType type = (IType) dialog.getResult()[0];
-			this.combo.setText(type.getFullyQualifiedName('$'));
+			this.combo.setText(type.getFullyQualifiedName('.'));
 		}
 	}
 

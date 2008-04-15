@@ -90,7 +90,7 @@ public class SessionCustomizerComposite extends AbstractPane<Customization>
 				IType type = chooseType();
 
 				if (type != null) {
-					String className = type.getFullyQualifiedName();
+					String className = type.getFullyQualifiedName('.');
 					subject().setSessionCustomizer(className);
 				}
 			}

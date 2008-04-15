@@ -95,7 +95,7 @@ public class AddPersistentClassDialog extends StatusDialog
 			public void widgetSelected(SelectionEvent e) {
 				IType type = chooseType();
 				if (type != null) {
-					classText.setText(type.getFullyQualifiedName());
+					classText.setText(type.getFullyQualifiedName('.'));
 				}
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {

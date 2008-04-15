@@ -126,7 +126,7 @@ public class OrmJavaClassChooser extends AbstractFormPane<OrmTypeMapping> {
 				IType type = chooseType();
 
 				if (type != null) {
-					String className = type.getFullyQualifiedName();
+					String className = type.getFullyQualifiedName('.');
 					subject().setClass(className);
 				}
 			}

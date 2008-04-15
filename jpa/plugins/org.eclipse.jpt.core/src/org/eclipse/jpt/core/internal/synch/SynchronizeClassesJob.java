@@ -85,7 +85,7 @@ public class SynchronizeClassesJob extends WorkspaceJob
 		monitor.worked(25);		
 		
 		for (IType type : CollectionTools.iterable(jpaProject.annotatedClasses())) {
-			String fullyQualifiedTypeName = type.getFullyQualifiedName();
+			String fullyQualifiedTypeName = type.getFullyQualifiedName('.');
 			if (!mappingFileContains(jpaProject, fullyQualifiedTypeName)) {
 				XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 				classRef.setJavaClass(fullyQualifiedTypeName);

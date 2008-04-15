@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
+import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
@@ -122,7 +123,7 @@ public class NamedNativeQueryPropertyComposite extends AbstractPane<NamedNativeQ
 				IType type = chooseType();
 
 				if (type != null) {
-					String className = type.getFullyQualifiedName();
+					String className = type.getFullyQualifiedName('.');
 					subject().setResultClass(className);
 				}
 			}
@@ -130,7 +131,7 @@ public class NamedNativeQueryPropertyComposite extends AbstractPane<NamedNativeQ
 	}
 
 	private WritablePropertyValueModel<String> buildQueryHolder() {
-		return new PropertyAspectAdapter<NamedNativeQuery, String>(getSubjectHolder(), NamedNativeQuery.QUERY_PROPERTY) {
+		return new PropertyAspectAdapter<NamedNativeQuery, String>(getSubjectHolder(), Query.QUERY_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return subject.getQuery();

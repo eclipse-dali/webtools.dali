@@ -109,7 +109,7 @@ public class IdClassComposite extends AbstractPane<IdClass>
 				IType type = chooseType();
 
 				if (type != null) {
-					String className = type.getFullyQualifiedName();
+					String className = type.getFullyQualifiedName('.');
 					subject().setIdClass(className);
 				}
 			}

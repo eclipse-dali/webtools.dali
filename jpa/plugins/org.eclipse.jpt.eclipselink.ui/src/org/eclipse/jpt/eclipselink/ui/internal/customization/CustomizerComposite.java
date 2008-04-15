@@ -90,7 +90,7 @@ public class CustomizerComposite extends AbstractPane<EntityCustomizerProperties
 				IType type = chooseType();
 
 				if (type != null) {
-					String className = type.getFullyQualifiedName();
+					String className = type.getFullyQualifiedName('.');
 					subject().setDescriptorCustomizer(className);
 				}
 			}
