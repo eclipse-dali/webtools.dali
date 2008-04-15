@@ -351,23 +351,29 @@ final class DTPConnectionProfileWrapper
 		// ********** IManagedConnectionListener implementation **********
 
 		public void opened(ConnectEvent event) {
-			// clear the (possibly null) database so it will be rebuilt with the "live" data
+			// clear the (possibly "null") database so it will be rebuilt with the "live" data
 			DTPConnectionProfileWrapper.this.disposeDatabase();
-			// forward event
+			// forward event to listeners
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().opened(DTPConnectionProfileWrapper.this);
 			}
 		}
 
+		/**
+		 * This method is never called from the base DTP code.
+		 * Perhaps DTP extenders call it....
+		 * @see ManagedConnection#fireModifiedEvent(Object)
+		 *     which is never called...
+		 */
 		public void modified(ConnectEvent event) {
-			// forward event
+			// forward event to listeners
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().modified(DTPConnectionProfileWrapper.this);
 			}
 		}
 
 		public boolean okToClose(ConnectEvent event) {
-			// forward event
+			// forward event to listeners
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				if ( ! stream.next().okToClose(DTPConnectionProfileWrapper.this)) {
 					return false;
@@ -377,7 +383,7 @@ final class DTPConnectionProfileWrapper
 		}
 
 		public void aboutToClose(ConnectEvent event) {
-			// forward event
+			// forward event to listeners
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().aboutToClose(DTPConnectionProfileWrapper.this);
 			}
@@ -386,7 +392,7 @@ final class DTPConnectionProfileWrapper
 		public void closed(ConnectEvent event) {
 			// clear the database
 			DTPConnectionProfileWrapper.this.disposeDatabase();
-			// forward event
+			// forward event to listeners
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().closed(DTPConnectionProfileWrapper.this);
 			}
@@ -397,7 +403,7 @@ final class DTPConnectionProfileWrapper
 
 		// live => off-line
 		public boolean okToDetach(ConnectEvent event) {
-			// don't forward the event(?)
+			// don't forward the event to listeners (?)
 			return true;
 		}
 		
@@ -411,7 +417,7 @@ final class DTPConnectionProfileWrapper
 		public void workingOffline(ConnectEvent event) {
 			// clear the (possibly null) database so it will be rebuilt with the "off-line" data
 			DTPConnectionProfileWrapper.this.disposeDatabase();
-			// convert the event to an "open" event
+			// convert the event to an "open" event and forward it to listeners
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().opened(DTPConnectionProfileWrapper.this);
 			}
