@@ -318,14 +318,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 			                            boolean flushCache) {
 
 				Table table = (Table) composite.getChildren()[0];
-
-				// Pack the column so we can get the right table size
-				TableColumn tableColumn = table.getColumn(0);
-				table.setRedraw(false);
-				table.setLayoutDeferred(true);
-				tableColumn.pack();
-				table.setRedraw(true);
-				table.setLayoutDeferred(false);
+				packColumn(table);
 
 				// Calculate the table size and adjust it with the hints
 				Point size = table.computeSize(SWT.DEFAULT, SWT.DEFAULT);
@@ -341,34 +334,78 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 				return size;
 			}
 
+			private boolean isVerticalScrollbarBarVisible(Table table,
+			                                              Rectangle clientArea) {
+
+				// Get the height of all the rows
+				int height = table.getItemCount() * table.getItemHeight();
+
+				// Remove the border from the height
+				height += (table.getBorderWidth() * 2);
+
+				return (clientArea.height < height);
+			}
+
 			@Override
 			protected void layout(Composite composite, boolean flushCache) {
 
 				Rectangle bounds = composite.getClientArea();
 
 				if (bounds.width > 0) {
+
 					Table table = (Table) composite.getChildren()[0];
 					table.setBounds(0, 0, bounds.width, bounds.height);
-					updateTableColumnWidth(table, bounds.width);
+
+					updateTableColumnWidth(
+						table,
+						bounds.width,
+						isVerticalScrollbarBarVisible(table, bounds)
+					);
 				}
 			}
 
-			private void updateTableColumnWidth(Table table, int width) {
+			private void packColumn(Table table) {
 
 				TableColumn tableColumn = table.getColumn(0);
+
+				table.setRedraw(false);
+				table.setLayoutDeferred(true);
+				tableColumn.pack();
+				table.setLayoutDeferred(false);
+				table.setRedraw(true);
+
+				// Cache the column width so it can be used in
+				// updateTableColumnWidth() when determine which width to use
+				table.setData(
+					"column.width",
+					Integer.valueOf(tableColumn.getWidth())
+				);
+			}
+
+			private void updateTableColumnWidth(Table table,
+			                                    int width,
+			                                    boolean verticalScrollbarBarVisible) {
 
 				// Remove the border from the width
 				width -= (table.getBorderWidth() * 2);
 
 				// Remove the scrollbar from the width if it is shown
-				if (table.getVerticalBar().isVisible()) {
+				if (verticalScrollbarBarVisible) {
 					width -= table.getVerticalBar().getSize().x;
 				}
 
-				// Use the table width if the table column is smaller, otherwise
-				// use the table column since the rows are never smaller than the
-				// smallest row
-				width = Math.max(width, tableColumn.getWidth());
+				TableColumn tableColumn = table.getColumn(0);
+
+				// Retrieve the cached column width, which is required for
+				// determining which width to use (the column width or the
+				// calculated width)
+				Integer columnWitdh = (Integer) table.getData("column.width");
+
+				// Use the calculated width if the column is smaller, otherwise
+				// use the column width and a horizontal scroll bar will show up
+				width = Math.max(width, columnWitdh);
+
+				// Adjust the column width
 				tableColumn.setWidth(width);
 			}
 		};
@@ -396,9 +433,6 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 			helpId
 		);
 
-		table.setHeaderVisible(false);
-		table.setLinesVisible(false);
-
 		TableModelAdapter model = TableModelAdapter.adapt(
 			(ListValueModel<Object>) listHolder,
 			buildSelectedItemHolder(),
@@ -418,6 +452,20 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 			ListValueModel.LIST_VALUES,
 			buildListChangeListener()
 		);
+
+		initializeTable(table);
+	}
+
+	/**
+	 * Initializes the given table, which acts like a list in our case.
+	 *
+	 * @param table The main widget of this pane
+	 */
+	protected void initializeTable(Table table) {
+
+		table.setData("column.width", new Integer(0));
+		table.setHeaderVisible(false);
+		table.setLinesVisible(false);
 	}
 
 	/**

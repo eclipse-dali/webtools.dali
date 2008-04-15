@@ -45,11 +45,10 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
@@ -141,26 +140,6 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 				}
 			}
 		};
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected Composite buildContainer(Composite parent) {
-
-		GridLayout layout = new GridLayout(1, true);
-		layout.marginHeight = 0;
-		layout.marginWidth  = 0;
-		layout.marginTop    = 0;
-		layout.marginLeft   = 0;
-		layout.marginBottom = 0;
-		layout.marginRight  = 0;
-
-		Composite container = buildPane(parent, layout);
-		updateGridData(container);
-
-		return container;
 	}
 
 	private WritablePropertyValueModel<Boolean> buildExcludeUnlistedMappedClassesHolder() {
@@ -359,18 +338,15 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 			buildItemListHolder(),
 			buildSelectedItemHolder(),
 			buildLabelProvider()
-		) {
+		)
+		{
 			@Override
-			protected Composite buildContainer(Composite parent) {
-				parent = super.buildContainer(parent);
-				updateGridData(parent);
-				return parent;
-			}
+			protected void initializeTable(Table table) {
+				super.initializeTable(table);
 
-			@Override
-			protected void initializeLayout(Composite container) {
-				super.initializeLayout(container);
-				updateGridData(getContainer());
+				Composite container = table.getParent();
+				GridData gridData   = (GridData) container.getLayoutData();
+				gridData.heightHint = 75;
 			}
 		};
 
@@ -412,15 +388,5 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 		}
 
 		return null;
-	}
-
-	private void updateGridData(Composite container) {
-
-		GridData gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace   = true;
-		gridData.horizontalAlignment       = SWT.FILL;
-		gridData.verticalAlignment         = SWT.FILL;
-		container.setLayoutData(gridData);
 	}
 }
