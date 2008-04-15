@@ -53,7 +53,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
@@ -103,6 +102,11 @@ public abstract class AbstractPane<T extends Model>
 	private Composite container;
 
 	/**
+	 *
+	 */
+	private ArrayList<AbstractPane<?>> internalPanesForEnablementControl;
+
+	/**
 	 * The aligner responsible to align the left controls.
 	 */
 	private ControlAligner leftControlAligner;
@@ -139,6 +143,13 @@ public abstract class AbstractPane<T extends Model>
 	 * The factory used to create various common widgets.
 	 */
 	private WidgetFactory widgetFactory;
+
+	/**
+	 * The collection of <code>Control</code>s that are displayed in this pane,
+	 * which will have their enablement state updated when
+	 * {@link #enableWidgets(boolean)} is called.
+	 */
+	private ArrayList<Control> widgets;
 
 	/**
 	 * Creates a new <code>AbstractSubjectPane</code>.
@@ -331,6 +342,19 @@ public abstract class AbstractPane<T extends Model>
 	 * subject
 	 */
 	protected void addPropertyNames(Collection<String> propertyNames) {
+	}
+
+	/**
+	 * Indicates that the given <code>Control</code> has its enablement state
+	 * managed by this pane, i.e. through {@link #enableWidgets(boolean)}.
+	 *
+	 * @param control The <code>Control</code> to manage its enablement state
+	 * automatically
+	 *
+	 * @category Layout
+	 */
+	public final void addToEnablementControl(Control control) {
+		control.setData("enablement", null);
 	}
 
 	private PropertyChangeListener buildAspectChangeListener() {
@@ -1352,9 +1376,11 @@ public abstract class AbstractPane<T extends Model>
 		// Re-parent the left control to the new sub pane
 		leftControl.setParent(container);
 		this.leftControlAligner.add(leftControl);
+		this.widgets.add(leftControl);
 
 		// Center control
 		centerControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		this.widgets.add(centerControl);
 
 		// Re-parent the center control to the new sub pane
 		centerControl.setParent(container);
@@ -1385,6 +1411,7 @@ public abstract class AbstractPane<T extends Model>
 
 		rightControl.setLayoutData(gridData);
 		this.rightControlAligner.add(rightControl);
+		this.widgets.add(rightControl);
 
 		return container;
 	}
@@ -2707,6 +2734,7 @@ public abstract class AbstractPane<T extends Model>
 
 		list.addSelectionListener(buildSelectionListener(selectionHolder));
 		list.setLayoutData(new GridData(GridData.FILL_BOTH));
+		this.widgets.add(list);
 
 		if (helpId != null) {
 			helpSystem().setHelp(list, helpId);
@@ -3400,6 +3428,7 @@ public abstract class AbstractPane<T extends Model>
 		GridData gridData   = new GridData(GridData.FILL_BOTH);
 		gridData.heightHint = table.getItemHeight() * 4;
 		table.setLayoutData(gridData);
+		this.widgets.add(table);
 
 		if (helpId != null) {
 			helpSystem().setHelp(table, helpId);
@@ -3582,6 +3611,7 @@ public abstract class AbstractPane<T extends Model>
 
 		button.setLayoutData(new GridData());
 		BooleanButtonModelAdapter.adapt(booleanHolder, button);
+		this.widgets.add(button);
 
 		if (helpId != null) {
 			helpSystem().setHelp(button, helpId);
@@ -3637,6 +3667,8 @@ public abstract class AbstractPane<T extends Model>
 			booleanHolder,
 			checkBox
 		);
+
+		this.widgets.add(checkBox.getCheckBox());
 
 		if (helpId != null) {
 			helpSystem().setHelp(checkBox.getCheckBox(), helpId);
@@ -3783,6 +3815,31 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
+	 * Changes the enablement state of the children <code>Control</code>s.
+	 *
+	 * @param enabled <code>true</code> to enable the widgets or <code>false</code>
+	 * to disable them
+	 *
+	 * @category Layout
+	 */
+	private void enableChildren(boolean enabled) {
+
+		// Only update the enablement state of the child widgets if this pane
+		// has its enablement managed by enableWidgets() (i.e. not done manually)
+		if (this.isEnablementManaged(container)) {
+
+			for (Control control : this.widgets) {
+
+				// Make sure to check if the child control doesn't have its
+				// enablement state manually managed
+				if (this.isEnablementManaged(control)) {
+					control.setEnabled(enabled);
+				}
+			}
+		}
+	}
+
+	/**
 	 * Changes the enablement state of the widgets of this pane.
 	 *
 	 * @param enabled <code>true</code> to enable the widgets or <code>false</code>
@@ -3793,11 +3850,12 @@ public abstract class AbstractPane<T extends Model>
 	public void enableWidgets(boolean enabled) {
 
 		if (!container.isDisposed()) {
-
-			container.setEnabled(enabled);
+			this.enableChildren(enabled);
 
 			for (AbstractPane<?> subPane : this.subPanes) {
-				subPane.enableWidgets(enabled);
+				if (this.isPaneEnablementManaged(subPane)) {
+					subPane.enableWidgets(enabled);
+				}
 			}
 		}
 	}
@@ -3868,9 +3926,9 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Returns
+	 * Returns the factory responsible for creating the widgets.
 	 *
-	 * @return
+	 * @return The factory used by this pane to create the widgets
 	 *
 	 * @category Layout
 	 */
@@ -3889,7 +3947,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Layout
 	 */
 	protected final int groupBoxMargin() {
-		Group group = this.widgetFactory.createGroup(Display.getCurrent().getActiveShell(), "");
+		Group group = this.widgetFactory.createGroup(SWTUtil.getShell(), "");
 		Rectangle clientArea = group.getClientArea();
 		group.dispose();
 		return clientArea.x + 5;
@@ -3957,10 +4015,12 @@ public abstract class AbstractPane<T extends Model>
 		this.subjectHolder         = (PropertyValueModel<T>) subjectHolder;
 		this.widgetFactory         = widgetFactory;
 		this.subPanes              = new ArrayList<AbstractPane<?>>();
+		this.widgets               = new ArrayList<Control>();
 		this.leftControlAligner    = new ControlAligner();
 		this.rightControlAligner   = new ControlAligner();
 		this.subjectChangeListener = this.buildSubjectChangeListener();
 		this.aspectChangeListener  = this.buildAspectChangeListener();
+		this.internalPanesForEnablementControl = new ArrayList<AbstractPane<?>>();
 
 		this.initialize();
 	}
@@ -3973,6 +4033,45 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Layout
 	 */
 	protected abstract void initializeLayout(Composite container);
+
+	/**
+	 * Determines whether the enablement state is managed by this pane or is
+	 * manually managed.
+	 *
+	 * @param control The <code>Control</code> to verify how its enablement state
+	 * is managed
+	 * @return <code>true</code> if the enablement state can be changed when
+	 * {@link #enableWidgets(boolean)} is called; <code>false</code> if its
+	 * enablement state is manually changed
+	 */
+	public final boolean isEnablementManaged(Control control) {
+		return control.getData("enablement") != Boolean.FALSE;
+	}
+
+	/**
+	 * Determines whether the given pane has its enablement state managed by this
+	 * pane.
+	 *
+	 * @param subPane The sub-pane to verify how its enablement state is being
+	 * managed
+	 * @return <code>true</code> if the sub-pane's enablement state is managed by
+	 * this state; <code>false</code> if it's manually managed
+	 *
+	 * @category Layout
+	 */
+	private boolean isPaneEnablementManaged(AbstractPane<?> subPane) {
+
+		return // Test 1: This pane is being automatically managed and the
+		       // sub-pane was registered has an internal pane, which means its
+		       // enablement state is being managed automatically as well. A
+		       // sub-pane is managed automatically only when PaneEnabler changes
+		       // the enablement management checks
+		       this.isEnablementManaged(container) &&
+		       this.internalPanesForEnablementControl.contains(subPane) ||
+
+		       // Test 2: Check to see if the pane is automatically managed
+		       this.isEnablementManaged(subPane.getControl());
+	}
 
 	/**
 	 * Determines whether
@@ -4130,6 +4229,30 @@ public abstract class AbstractPane<T extends Model>
 	 */
 	protected final void removeAlignRight(Control control) {
 		this.rightControlAligner.remove(control);
+	}
+
+	/**
+	 * Removes the given <code>AbstractPane</code>'s <code>Control</code> from
+	 * having its enablement state managed by this pane. However, if this pane
+	 * has its enablement state modified, the given pane will receive that
+	 * notification.
+	 *
+	 * @param pane The pane to have its enablement state not managed by this pane
+	 */
+	public void removeFromEnablementControl(AbstractPane<?> pane) {
+		this.removeFromEnablementControl(pane.getControl());
+		this.internalPanesForEnablementControl.add(pane);
+	}
+
+	/**
+	 * Removes the given <code>Control</code> from having its enablement state
+	 * being managed by this pane.
+	 *
+	 * @param control The <code>Control</code> that has its enablement state
+	 * manually controlled
+	 */
+	public void removeFromEnablementControl(Control control) {
+		control.setData("enablement", Boolean.FALSE);
 	}
 
 	/**

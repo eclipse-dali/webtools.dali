@@ -203,6 +203,9 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		return composite;
 	}
 
+	protected void mappingPageChanged(JpaComposite<AttributeMapping> mappingComposite) {
+	}
+
 	private AttributeMappingUiProvider<? extends AttributeMapping> mappingUIProvider(String key) {
 
 		if (this.subject().getMapping() == null ||
@@ -218,6 +221,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 
 		// Nothing to update
 		if (this.currentMappingKey == mappingKey) {
+			this.mappingPageChanged(this.currentMappingComposite);
 			return;
 		}
 		// Dispose the existing mapping pane
@@ -250,6 +254,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 
 				this.currentMappingComposite.populate();
 				this.mappingPageBook.showPage(this.currentMappingComposite.getControl());
+				this.mappingPageChanged(this.currentMappingComposite);
 				this.repaintDetailsView(this.mappingPageBook);
 			}
 			catch (Exception e) {

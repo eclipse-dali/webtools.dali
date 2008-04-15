@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -273,6 +273,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 			buildOverrideDefaultAttributeOverrideHolder()
 		);
 
+		removeFromEnablementControl(overrideDefaultButton);
 		installOverrideDefaultButtonEnabler(overrideDefaultButton);
 
 		// Column widgets
@@ -283,6 +284,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 		);
 
 		installColumnCompositeEnabler(columnComposite);
+		removeFromEnablementControl(columnComposite.getControl());
 	}
 
 	private void installColumnCompositeEnabler(ColumnComposite columnComposite) {

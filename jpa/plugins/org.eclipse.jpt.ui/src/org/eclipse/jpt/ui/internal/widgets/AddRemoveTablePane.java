@@ -229,12 +229,11 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 		};
 	}
 
-	/**
-	 * Gives access to the main widget of this add/remove pane.
-	 *
-	 * @return The main widget of this pane
+	/*
+	 * (non-Javadoc)
 	 */
-	protected Table getTable() {
+	@Override
+	public Table getMainControl() {
 		return table;
 	}
 
@@ -252,6 +251,8 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 	{
 		table = buildTable(container, helpId);
 		table.setHeaderVisible(true);
+
+		removeFromEnablementControl(table);
 
 		TableModelAdapter<Object> tableModel = TableModelAdapter.adapt(
 			(ListValueModel<Object>) listHolder,

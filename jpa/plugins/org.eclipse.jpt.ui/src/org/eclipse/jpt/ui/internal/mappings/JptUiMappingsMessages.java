@@ -163,6 +163,7 @@ public class JptUiMappingsMessages extends NLS {
 	public static String NamedQueryPropertyComposite_queryHintsGroupBox;
 	public static String NewNameStateObject_nameAlreadyExists;
 	public static String NewNameStateObject_nameMustBeSpecified;
+	public static String NoNameSet;
 	public static String NoneSelected;
 	public static String NonOwningMapping_mappedByLabel;
 	public static String NullAttributeMappingUiProvider_label;
@@ -188,10 +189,10 @@ public class JptUiMappingsMessages extends NLS {
 	public static String PersistentAttributePage_OneToOneLabel;
 	public static String PersistentAttributePage_TransientLabel;
 	public static String PersistentAttributePage_VersionLabel;
-	public static String PersistentTypePage_UnmappedLabel;
 	public static String PersistentTypePage_EmbeddableLabel;
 	public static String PersistentTypePage_EntityLabel;
 	public static String PersistentTypePage_MappedSuperclassLabel;
+	public static String PersistentTypePage_UnmappedLabel;
 	public static String PrimaryKeyJoinColumnDialog_addDescriptionTitle;
 	public static String PrimaryKeyJoinColumnDialog_addTitle;
 	public static String PrimaryKeyJoinColumnDialog_editDescriptionTitle;

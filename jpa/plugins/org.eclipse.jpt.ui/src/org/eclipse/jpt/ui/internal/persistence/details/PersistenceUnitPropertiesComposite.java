@@ -345,7 +345,7 @@ public class PersistenceUnitPropertiesComposite extends AbstractPane<Persistence
 				helpId
 			);
 
-			Table table = getTable();
+			Table table = getMainControl();
 
 			TableViewer tableViewer = new TableViewer(table);
 			tableViewer.setCellEditors(buildCellEditors(table));

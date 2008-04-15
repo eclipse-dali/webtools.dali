@@ -353,9 +353,15 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	 */
 	@Override
 	public void enableWidgets(boolean enabled) {
+
 		super.enableWidgets(enabled);
 		this.enabled = enabled;
-		updateButtons();
+
+		if (!this.getMainControl().isDisposed()) {
+			this.getMainControl().setEnabled(enabled);
+		}
+
+		this.updateButtons();
 	}
 
 	protected final Composite getContainer() {
@@ -369,6 +375,13 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	protected final ListValueModel<?> getListHolder() {
 		return listHolder;
 	}
+
+	/**
+	 * Returns
+	 *
+	 * @return
+	 */
+	public abstract Composite getMainControl();
 
 	protected final WritablePropertyValueModel<Object> getSelectedItemHolder() {
 		return selectedItemHolder;
@@ -430,6 +443,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		// Add button
 		addButton = buildAddButton(container);
 		addAlignRight(addButton);
+		removeFromEnablementControl(addButton);
 
 		// Custom button
 		addCustomButtonAfterAddButton(container, helpId);
@@ -437,6 +451,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		// Optional button
 		if (adapter.hasOptionalButton()) {
 			optionalButton = buildOptionalButton(container);
+			removeFromEnablementControl(optionalButton);
 			addAlignRight(optionalButton);
 		}
 
@@ -445,6 +460,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 
 		// Remove button
 		removeButton = buildRemoveButton(container);
+		removeFromEnablementControl(removeButton);
 		addAlignRight(removeButton);
 
 		// Update the help topic ID

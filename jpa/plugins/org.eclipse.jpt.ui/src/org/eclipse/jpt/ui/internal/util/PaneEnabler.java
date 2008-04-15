@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -15,6 +15,7 @@ import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * This <code>PaneEnabler</code> keeps the "enabled" state of a collection of
@@ -167,7 +168,24 @@ public class PaneEnabler extends StateController
 		}
 
 		public void updateState(boolean state) {
-			this.pane.enableWidgets(state);
+
+			Composite container = this.pane.getControl();
+
+			if (!container.isDisposed()) {
+
+				// Remove the enablement from the pane's control since this enabler
+				// is responsible to manage its enablement state
+				boolean enablementManaged = this.pane.isEnablementManaged(container);
+				this.pane.addToEnablementControl(container);
+
+				// Now we can change the enablement state of the pane's widgets
+				this.pane.enableWidgets(state);
+
+				// Restore the enablement state
+				if (enablementManaged) {
+					this.pane.removeFromEnablementControl(container);
+				}
+			}
 		}
 	}
 }

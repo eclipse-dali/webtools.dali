@@ -19,6 +19,7 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.IJoinColumnsEditor;
+import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -72,8 +73,8 @@ import org.eclipse.swt.widgets.Group;
  */
 public class JoinTableComposite extends AbstractFormPane<JoinTable>
 {
-	private JoinColumnsComposite<JoinTable> inverseJoinColumnsComposite;
-	private JoinColumnsComposite<JoinTable> joinColumnsComposite;
+	private WritablePropertyValueModel<Boolean> inverseJoinColumnsPaneEnablerHolder;
+	private WritablePropertyValueModel<Boolean> joinColumnsPaneEnablerHolder;
 	private Button overrideDefaultInverseJoinColumnsCheckBox;
 	private Button overrideDefaultJoinColumnsCheckBox;
 
@@ -187,6 +188,10 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 		return new JoinColumnsProvider();
 	}
 
+	private SimplePropertyValueModel<Boolean> buildJoinColumnsPaneEnablerHolder() {
+		return new SimplePropertyValueModel<Boolean>(Boolean.FALSE);
+	}
+
 	private WritablePropertyValueModel<Boolean> buildOverrideDefaultHolder() {
 		return new SimplePropertyValueModel<Boolean>();
 	}
@@ -257,16 +262,7 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
-
-		JoinTable subject = subject();
-		boolean enabled = (subject != null) && subject.containsSpecifiedJoinColumns();
-		boolean inverseEnabled = (subject != null) && subject.containsSpecifiedInverseJoinColumns();
-
-		overrideDefaultJoinColumnsCheckBox.setSelection(enabled);
-		overrideDefaultInverseJoinColumnsCheckBox.setSelection(inverseEnabled);
-
-		joinColumnsComposite.enableWidgets(enabled);
-		inverseJoinColumnsComposite.enableWidgets(inverseEnabled);
+		updateJoinColumnPanesEnablement(true);
 	}
 
 	private void editInverseJoinColumn(InverseJoinColumnInJoinTableStateObject stateObject) {
@@ -291,6 +287,26 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 
 	private void editJoinColumn(JoinColumnInJoinTableStateObject stateObject) {
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public void enableWidgets(boolean enabled) {
+		super.enableWidgets(enabled);
+		updateJoinColumnPanesEnablement(enabled);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void initialize() {
+		super.initialize();
+
+		joinColumnsPaneEnablerHolder        = buildJoinColumnsPaneEnablerHolder();
+		inverseJoinColumnsPaneEnablerHolder = buildJoinColumnsPaneEnablerHolder();
 	}
 
 	/*
@@ -328,11 +344,14 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 			buildOverrideDefaultSelectionListener()
 		);
 
-		joinColumnsComposite = new JoinColumnsComposite<JoinTable>(
+		JoinColumnsComposite<JoinTable> joinColumnsComposite = new JoinColumnsComposite<JoinTable>(
 			this,
 			joinColumnGroupPane,
 			buildJoinColumnsEditor()
 		);
+
+		installJoinColumnsPaneEnabler(joinColumnsComposite);
+		removeFromEnablementControl(joinColumnsComposite.getControl());
 
 		// Inverse Join Columns group pane
 		Group inverseJoinColumnGroupPane = buildTitledPane(
@@ -351,11 +370,22 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 			buildOverrideDefaultInverseSelectionListener()
 		);
 
-		inverseJoinColumnsComposite = new JoinColumnsComposite<JoinTable>(
+		JoinColumnsComposite<JoinTable> inverseJoinColumnsComposite = new JoinColumnsComposite<JoinTable>(
 			this,
 			inverseJoinColumnGroupPane,
 			buildInverseJoinColumnsEditor()
 		);
+
+		installInverseJoinColumnsPaneEnabler(inverseJoinColumnsComposite);
+		removeFromEnablementControl(inverseJoinColumnsComposite.getControl());
+	}
+
+	private void installInverseJoinColumnsPaneEnabler(JoinColumnsComposite<JoinTable> pane) {
+		new PaneEnabler(inverseJoinColumnsPaneEnablerHolder, pane);
+	}
+
+	private void installJoinColumnsPaneEnabler(JoinColumnsComposite<JoinTable> pane) {
+		new PaneEnabler(joinColumnsPaneEnablerHolder, pane);
 	}
 
 	private void updateInverseJoinColumns() {
@@ -366,7 +396,6 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 
 		JoinTable joinTable = subject();
 		boolean selected = overrideDefaultInverseJoinColumnsCheckBox.getSelection();
-		inverseJoinColumnsComposite.enableWidgets(selected);
 		setPopulating(true);
 
 		try {
@@ -390,10 +419,25 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 					joinTable.removeSpecifiedInverseJoinColumn(index);
 				}
 			}
+
+			inverseJoinColumnsPaneEnablerHolder.setValue(selected);
 		}
 		finally {
 			setPopulating(false);
 		}
+	}
+
+	private void updateJoinColumnPanesEnablement(boolean globalEnablement) {
+
+		JoinTable subject      = subject();
+		boolean enabled        = globalEnablement && (subject != null) && subject.containsSpecifiedJoinColumns();
+		boolean inverseEnabled = globalEnablement && (subject != null) && subject.containsSpecifiedInverseJoinColumns();
+
+		overrideDefaultJoinColumnsCheckBox       .setSelection(enabled);
+		overrideDefaultInverseJoinColumnsCheckBox.setSelection(inverseEnabled);
+
+		joinColumnsPaneEnablerHolder       .setValue(enabled);
+		inverseJoinColumnsPaneEnablerHolder.setValue(inverseEnabled);
 	}
 
 	private void updateJoinColumns() {
@@ -404,7 +448,6 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 
 		JoinTable joinTable = subject();
 		boolean selected = overrideDefaultJoinColumnsCheckBox.getSelection();
-		joinColumnsComposite.enableWidgets(selected);
 		setPopulating(true);
 
 		try {
@@ -428,6 +471,8 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 					joinTable.removeSpecifiedJoinColumn(index);
 				}
 			}
+
+			joinColumnsPaneEnablerHolder.setValue(selected);
 		}
 		finally {
 			setPopulating(false);

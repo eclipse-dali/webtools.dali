@@ -24,6 +24,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
@@ -220,6 +221,25 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 	 * (non-Javadoc)
 	 */
 	@Override
+	public void enableWidgets(boolean enabled) {
+		super.enableWidgets(enabled);
+
+		if (!styledText.isDisposed()) {
+			styledText.setEnabled(enabled);
+
+			if (enabled) {
+				updateLinkRange();
+			}
+			else {
+				clearStyleRange();
+			}
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
 	protected void initialize() {
 		super.initialize();
 		this.mappingChangeHandler = buildMappingChangeHandler();
@@ -306,9 +326,13 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 	 * Updates the description by recreating the label.
 	 */
 	protected void updateDescription() {
+
 		clearStyleRange();
 		updateText();
-		updateLinkRange();
+
+		if (styledText.isEnabled()) {
+			updateLinkRange();
+		}
 	}
 
 	/**
@@ -347,6 +371,11 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 	protected void updateText() {
 
 		String name = mappingChangeHandler.name();
+
+		if (name == null) {
+			name = JptUiMappingsMessages.NoNameSet;
+		}
+
 		String mappingType = mappingChangeHandler.mappingType();
 		String text = buildText(name, mappingType);
 

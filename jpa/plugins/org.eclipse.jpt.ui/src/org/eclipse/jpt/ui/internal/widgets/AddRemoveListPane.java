@@ -419,6 +419,14 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * (non-Javadoc)
 	 */
 	@Override
+	public Table getMainControl() {
+		return table;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	protected void initializeMainComposite(Composite container,
 	                                       Adapter adapter,
@@ -432,6 +440,8 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 			SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.MULTI,
 			helpId
 		);
+
+		removeFromEnablementControl(table);
 
 		TableModelAdapter model = TableModelAdapter.adapt(
 			(ListValueModel<Object>) listHolder,

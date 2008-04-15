@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.orm.details;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
@@ -16,16 +17,17 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.mappings.details.OrmPersistentAttributeMapAsComposite;
+import org.eclipse.jpt.ui.internal.util.PaneEnabler;
+import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.PageBook;
 
 /**
@@ -86,6 +88,15 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 		return CollectionTools.array(attributeMappingUiProviders(), new AttributeMappingUiProvider[CollectionTools.size(attributeMappingUiProviders())]);
 	}
 
+	private PropertyValueModel<Boolean> buildPaneEnablerHolder() {
+		return new TransformationPropertyValueModel<OrmPersistentAttribute, Boolean>(getSubjectHolder()) {
+			@Override
+			protected Boolean transform_(OrmPersistentAttribute value) {
+				return !value.isVirtual();
+			}
+		};
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
@@ -100,15 +111,6 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 	@Override
 	protected Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
 		return jpaPlatformUi().defaultOrmAttributeMappingUiProviders();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void doPopulate() {
-		super.doPopulate();
-		updateEnbabledState();
 	}
 
 	private PropertyValueModel<OrmAttributeMapping> getMappingHolder() {
@@ -126,14 +128,21 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 	@Override
 	protected void initializeLayout(Composite container) {
 
+		ArrayList<AbstractPane<?>> panes = new ArrayList<AbstractPane<?>>(2);
+
 		// Map As composite
-		new OrmPersistentAttributeMapAsComposite(
+		OrmPersistentAttributeMapAsComposite mapAsPane = new OrmPersistentAttributeMapAsComposite(
 			this,
 			buildSubPane(container, 0, 0, 5, 0)
 		);
 
+		panes.add(mapAsPane);
+
 		// Entity type widgets
-		new OrmJavaAttributeChooser(this, getMappingHolder(), container);
+		OrmJavaAttributeChooser javaAttributePane =
+			new OrmJavaAttributeChooser(this, getMappingHolder(), container);
+
+		panes.add(javaAttributePane);
 
 		// Mapping properties pane
 		PageBook attributePane = buildMappingPageBook(container);
@@ -145,22 +154,25 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 		gridData.grabExcessVerticalSpace   = true;
 
 		attributePane.setLayoutData(gridData);
+
+		installPaneEnabler(panes);
 	}
 
-	public void updateEnabledState(boolean enabled, Control control) {
-		control.setEnabled(enabled);
-		if (control instanceof Composite) {
-			for (Iterator<Control> i = new ArrayIterator<Control>(((Composite) control).getChildren()); i.hasNext(); ) {
-				updateEnabledState(enabled, i.next());
-			}
-		}
+	private void installPaneEnabler(ArrayList<AbstractPane<?>> panes) {
+		new PaneEnabler(buildPaneEnablerHolder(), panes);
 	}
 
-	public void updateEnbabledState() {
-		if (subject() == null || subject().getParent() == null) {
-			return;
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void mappingPageChanged(JpaComposite<AttributeMapping> mappingComposite) {
+		boolean enabled = false;
+
+		if (subject() != null && subject().getParent() != null) {
+			enabled = !subject().isVirtual();
 		}
-		boolean enabled = !subject().isVirtual();
-		updateEnabledState(enabled, getControl());
+
+		mappingComposite.enableWidgets(enabled);
 	}
 }

@@ -69,6 +69,7 @@ import org.eclipse.swt.widgets.Group;
 public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapping>
 {
 	private WritablePropertyValueModel<JoinColumn> joinColumnHolder;
+	private WritablePropertyValueModel<Boolean> joinColumnPaneEnablerHolder;
 
 	/**
 	 * Creates a new <code>JoinColumnComposite</code>.
@@ -189,6 +190,10 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 		}
 	}
 
+	private SimplePropertyValueModel<Boolean> buildJoinColumnPaneEnablerHolder() {
+		return new SimplePropertyValueModel<Boolean>(Boolean.FALSE);
+	}
+
 	private Adapter buildJoinColumnsAdapter() {
 		return new AddRemovePane.AbstractAdapter() {
 
@@ -260,6 +265,15 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 		};
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void doPopulate() {
+		super.doPopulate();
+		updateJoinColumnPaneEnablement(true);
+	}
+
 	private void editJoinColumn(ObjectListSelectionModel listSelectionModel) {
 
 		JoinColumn joinColumn = (JoinColumn) listSelectionModel.selectedValue();
@@ -274,9 +288,20 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 	 * (non-Javadoc)
 	 */
 	@Override
+	public void enableWidgets(boolean enabled) {
+		super.enableWidgets(enabled);
+		updateJoinColumnPaneEnablement(enabled);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
 	protected void initialize() {
 		super.initialize();
-		joinColumnHolder = buildJoinColumnHolder();
+
+		joinColumnHolder            = buildJoinColumnHolder();
+		joinColumnPaneEnablerHolder = buildJoinColumnPaneEnablerHolder();
 	}
 
 	/*
@@ -311,13 +336,11 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 			);
 
 		installJoinColumnsListPaneEnabler(joinColumnsListPane);
+		removeFromEnablementControl(joinColumnsListPane.getControl());
 	}
 
 	private void installJoinColumnsListPaneEnabler(AddRemoveListPane<SingleRelationshipMapping> pane) {
-		new PaneEnabler(
-			buildOverrideDefaultJoinColumnHolder(),
-			pane
-		);
+		new PaneEnabler(joinColumnPaneEnablerHolder, pane);
 	}
 
 	private void removeJoinColumn(ObjectListSelectionModel listSelectionModel) {
@@ -331,6 +354,13 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 
 	private void updateJoinColumn(JoinColumnInRelationshipMappingStateObject stateObject) {
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
+	}
+
+	private void updateJoinColumnPaneEnablement(boolean enabled) {
+
+		SingleRelationshipMapping subject = subject();
+		enabled &= (subject != null) && subject.containsSpecifiedJoinColumns();
+		joinColumnPaneEnablerHolder.setValue(enabled);
 	}
 
 	private void updateJoinColumns(boolean selected) {
@@ -367,6 +397,8 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 					subject.removeSpecifiedJoinColumn(index);
 				}
 			}
+
+			updateJoinColumnPaneEnablement(selected);
 		}
 		finally {
 			setPopulating(false);

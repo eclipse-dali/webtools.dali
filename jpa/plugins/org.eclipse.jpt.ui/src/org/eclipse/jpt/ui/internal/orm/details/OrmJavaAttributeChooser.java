@@ -77,6 +77,18 @@ public class OrmJavaAttributeChooser extends AbstractFormPane<OrmAttributeMappin
 	 * (non-Javadoc)
 	 */
 	@Override
+	public void enableWidgets(boolean enabled) {
+		super.enableWidgets(enabled);
+
+		if (!text.isDisposed()) {
+			text.setEnabled(enabled);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
 	protected void initializeLayout(Composite container) {
 
 		text = buildLabeledText(

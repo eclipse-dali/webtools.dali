@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -60,12 +60,6 @@ public class JoinColumnsComposite<T extends JpaNode> extends AbstractFormPane<T>
 	 * The editor used to perform the common behaviors defined in the list pane.
 	 */
 	private IJoinColumnsEditor<T> joinColumnsEditor;
-
-	/**
-	 * Keeps track of the list pane in order to update its enablement state when
-	 * required.
-	 */
-	private AddRemoveListPane<T> joinColumnsListPane;
 
 	/**
 	 * Creates a new <code>JoinColumnsComposite</code>.
@@ -257,22 +251,13 @@ public class JoinColumnsComposite<T extends JpaNode> extends AbstractFormPane<T>
 	 * (non-Javadoc)
 	 */
 	@Override
-	public void enableWidgets(boolean enabled) {
-		super.enableWidgets(enabled);
-		joinColumnsListPane.enableWidgets(enabled);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
 	protected void initializeLayout(Composite container) {
 	}
 
 	private void initializeLayout2() {
 
 		// Join Columns list pane
-		joinColumnsListPane = new AddRemoveListPane<T>(
+		AddRemoveListPane<T> listPane = new AddRemoveListPane<T>(
 			this,
 			getControl(),
 			buildJoinColumnsAdapter(),
@@ -281,6 +266,11 @@ public class JoinColumnsComposite<T extends JpaNode> extends AbstractFormPane<T>
 			buildJoinColumnsListLabelProvider(),
 			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
 		);
+
+		// Remove the list pane from this pane's enablement control because its
+		// enablement is managed by a PaneEnabler registered with this pane
+		removeFromEnablementControl(listPane.getMainControl());
+		removeFromEnablementControl(listPane);
 	}
 
 	/**
