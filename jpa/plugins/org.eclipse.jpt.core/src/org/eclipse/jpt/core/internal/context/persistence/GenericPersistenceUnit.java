@@ -205,7 +205,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		String oldProvider = this.provider;
 		this.provider = newProvider;
 		this.xmlPersistenceUnit.setProvider(newProvider);
-		firePropertyChanged(DESCRIPTION_PROPERTY, oldProvider, newProvider);
+		firePropertyChanged(PROVIDER_PROPERTY, oldProvider, newProvider);
 	}
 	
 	
@@ -219,7 +219,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		String oldJtaDataSource = this.jtaDataSource;
 		this.jtaDataSource = newJtaDataSource;
 		this.xmlPersistenceUnit.setJtaDataSource(newJtaDataSource);
-		firePropertyChanged(DESCRIPTION_PROPERTY, oldJtaDataSource, newJtaDataSource);
+		firePropertyChanged(JTA_DATA_SOURCE_PROPERTY, oldJtaDataSource, newJtaDataSource);
 	}
 	
 	
@@ -233,7 +233,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		String oldNonJtaDataSource = this.nonJtaDataSource;
 		this.nonJtaDataSource = newNonJtaDataSource;
 		this.xmlPersistenceUnit.setNonJtaDataSource(newNonJtaDataSource);
-		firePropertyChanged(DESCRIPTION_PROPERTY, oldNonJtaDataSource, newNonJtaDataSource);
+		firePropertyChanged(NON_JTA_DATA_SOURCE_PROPERTY, oldNonJtaDataSource, newNonJtaDataSource);
 	}
 	
 	
