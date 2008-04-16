@@ -77,7 +77,7 @@ public class OutputModeComposite extends AbstractFormPane<SchemaGeneration>
 	protected void initializeLayout(Composite container) {
 		this.buildLabeledComposite(
 				container,
-				EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_outputMode,
+				EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_outputModeLabel,
 				this.buildOutputModeCombo(container),
 				null // TODO IJpaHelpContextIds.
 		);

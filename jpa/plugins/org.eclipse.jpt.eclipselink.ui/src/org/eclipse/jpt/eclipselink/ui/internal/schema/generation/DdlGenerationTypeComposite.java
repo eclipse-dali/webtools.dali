@@ -79,7 +79,7 @@ public class DdlGenerationTypeComposite
 
 		this.buildLabeledComposite(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_ddlGenerationType,
+			EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_ddlGenerationTypeLabel,
 			buildDdlGenerationTypeCombo( container),
 			null		// TODO IJpaHelpContextIds.
 		);

@@ -70,7 +70,7 @@ public class DropDdlFileNameComposite extends AbstractPane<SchemaGeneration>
 			@Override
 			protected void setValue_(String value) {
 
-				if (defaultValue(subject).equals(value)) {
+				if (DropDdlFileNameComposite.this.defaultValue(subject).equals(value)) {
 					value = null;
 				}
 				subject.setDropFileName(value);
@@ -100,7 +100,7 @@ public class DropDdlFileNameComposite extends AbstractPane<SchemaGeneration>
 
 		CCombo combo = buildLabeledEditableCCombo(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_dropDdlFileName,
+			EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_dropDdlFileNameLabel,
 			this.buildDefaultDropDdlFileNameListHolder(),
 			this.buildDropDdlFileNameHolder(),
 			null		// EclipseLinkHelpContextIds.DROP_DDL_FILE_NAME

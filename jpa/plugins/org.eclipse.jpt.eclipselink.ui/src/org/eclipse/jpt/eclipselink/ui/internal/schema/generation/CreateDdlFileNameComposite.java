@@ -100,7 +100,7 @@ public class CreateDdlFileNameComposite extends AbstractPane<SchemaGeneration>
 
 		CCombo combo = buildLabeledEditableCCombo(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_createDdlFileName,
+			EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_createDdlFileNameLabel,
 			this.buildDefaultCreateDdlFileNameListHolder(),
 			this.buildCreateDdlFileNameHolder(),
 			null		// EclipseLinkHelpContextIds.CREATE_DDL_FILE_NAME
