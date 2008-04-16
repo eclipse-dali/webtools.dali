@@ -13,41 +13,47 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
 
 /**
- * This updater will update the JPA project immediately and not return until
- * the update and all resulting updates are complete.
+ * This updater will "update" the JPA project immediately and not return until
+ * the "update" and all resulting "updates" are complete. This implementation
+ * should be used sparingly and for as short a time as possible, as it increases
+ * the probability of deadlocks. A deadlock can occur when a JPA project is
+ * updated from multiple threads and various resources are locked in varying
+ * orders.
  */
 public class SynchronousJpaProjectUpdater implements JpaProject.Updater {
 	protected final JpaProject jpaProject;
-	protected boolean updating;
-	protected boolean again;
+	protected final SynchronizedFlags flags;
 
 	protected static final IProgressMonitor NULL_PROGRESS_MONITOR = new NullProgressMonitor();
 
 	public SynchronousJpaProjectUpdater(JpaProject jpaProject) {
 		super();
 		this.jpaProject = jpaProject;
-		this.updating = false;
-		this.again = false;
+		this.flags = new SynchronizedFlags();
 	}
 
+	/**
+	 * Initialize the flags and execute an "update".
+	 */
+	public void start() {
+		this.flags.start();
+		this.update();
+	}
+
+	// recursion: we come back here when IJpaProject#update() is called during the "update"
 	public void update() {
-		if (this.updating) {
-			// recursion: we get here when IJpaProject#update() is called during the "update"
-			this.again = true;
-		} else {
-			this.updating = true;
+		if (this.flags.updateCanStart()) {
 			do {
-				this.again = false;
 				this.jpaProject.update(NULL_PROGRESS_MONITOR);
-			} while (this.again);
-			this.updating = false;
+			} while (this.flags.updateMustExecuteAgain());
 		}
 	}
 
 	public void dispose() {
-		// nothing to do
+		this.flags.dispose();
 	}
 
 	@Override
@@ -55,5 +61,72 @@ public class SynchronousJpaProjectUpdater implements JpaProject.Updater {
 		return StringTools.buildToStringFor(this, this.jpaProject);
 	}
 
-}
 
+	/**
+	 * synchronize access to the pair of 'updating' and 'again' flags
+	 */
+	protected static class SynchronizedFlags {
+		protected SynchronizedBoolean updating = new SynchronizedBoolean(false, this);
+		protected boolean again = false;
+		protected boolean stop = true;
+
+		protected synchronized void start() {
+			if ( ! this.stop) {
+				throw new IllegalStateException("The Updater was not stopped.");
+			}
+			this.stop = false;
+		}
+
+		/**
+		 * A client has requested an "update";
+		 * return whether the updater can start an "update".
+		 * Side-effects:
+		 *   - If we are currently updating, set the 'again' flag.
+		 *   - If we are not currently updating, set the 'updating' flag and clear the 'again' flag.
+		 */
+		protected synchronized boolean updateCanStart() {
+			if (this.stop) {
+				return false;
+			}
+			if (this.updating.isTrue()) {
+				this.again = true;
+				return false;
+			}
+			this.updating.setTrue();
+			this.again = false;
+			return true;
+		}
+
+		/**
+		 * The "update" has finished;
+		 * return whether the updater must execute another "update".
+		 * Side-effects:
+		 *   - If we are supposed to stop, clear the both the 'updating' and 'again' flags.
+		 *   - If we have to "update" again, clear the 'again' flag and leave the 'updating' flag set.
+		 *   - If we are finished, clear the 'updating' flag.
+		 */
+		protected synchronized boolean updateMustExecuteAgain() {
+			if (this.stop) {
+				return false;
+			}
+			if (this.again) {
+				this.again = false;
+				return true;
+			}
+			this.updating.setFalse();
+			return false;
+		}
+
+		protected synchronized void dispose() {
+			this.stop = true;
+			this.again = false;
+			try {
+				this.updating.waitUntilFalse();
+			} catch (InterruptedException ex) {
+				// the "update" thread was interrupted while waiting - ignore
+			}
+		}
+
+	}
+
+}

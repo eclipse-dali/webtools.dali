@@ -649,8 +649,11 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	}
 
 	public void setUpdater(Updater updater) {
+		if (this.updater != null) {  // first time through, the updater will be null
+			this.updater.dispose();
+		}
 		this.updater = updater;
-		this.update();
+		this.updater.start();
 	}
 
 	/**

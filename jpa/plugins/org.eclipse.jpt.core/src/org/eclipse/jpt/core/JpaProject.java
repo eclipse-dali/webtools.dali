@@ -221,6 +221,8 @@ public interface JpaProject extends JpaNode {
 	/**
 	 * Set the implementation of the Updater
 	 * interface that will be used to "update" a JPA project.
+	 * Before setting the updater, Clients should save the current updater so
+	 * it can be restored later.
 	 */
 	void setUpdater(Updater updater);
 
@@ -248,6 +250,11 @@ public interface JpaProject extends JpaNode {
 	interface Updater {
 
 		/**
+		 * The updater has just been assigned to its JPA project.
+		 */
+		void start();
+
+		/**
 		 * Update the JPA project.
 		 */
 		void update();
@@ -268,6 +275,9 @@ public interface JpaProject extends JpaNode {
 			// ensure single instance
 			private Null() {
 				super();
+			}
+			public void start() {
+				// do nothing
 			}
 			public void update() {
 				// do nothing
