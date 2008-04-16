@@ -108,12 +108,6 @@ public abstract class AbstractJpaNode
 	}
 
 	protected JpaFile getJpaFile(ResourceModel resourceModel) {
-		if (resourceModel == null) {
-			System.out.println("resourceModel is null");
-		}
-		if (getJpaProject() == null) {
-			System.out.println("JpaProject is null");
-		}
 		return getJpaProject().getJpaFile(resourceModel.getFile());
 	}
 
