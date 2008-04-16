@@ -49,7 +49,7 @@ public class DefaultCacheSizeComposite extends AbstractPane<Caching>
 		return new PropertyAspectAdapter<Caching, Integer>(getSubjectHolder(), Caching.CACHE_SIZE_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
-				Integer value = subject.getDefaultCacheSize();
+				Integer value = subject.getCacheSizeDefault();
 
 				if (value == null) {
 					value = -1;
