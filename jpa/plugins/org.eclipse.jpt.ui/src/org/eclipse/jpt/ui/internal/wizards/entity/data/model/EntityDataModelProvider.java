@@ -11,12 +11,9 @@
  ***********************************************************************/
 package org.eclipse.jpt.ui.internal.wizards.entity.data.model;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Set;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jpt.ui.internal.wizards.entity.EntityWizardMsg;
@@ -29,6 +26,7 @@ import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
 
 public class EntityDataModelProvider extends NewJavaClassDataModelProvider implements IEntityDataModelProperties{
 
+	@Override
 	public IDataModelOperation getDefaultOperation() {
 		return new NewEntityClassOperation(getDataModel());
 	}
@@ -41,6 +39,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 	 */
 	
 	
+	@Override
 	public Set getPropertyNames() {		
 		Set propertyNames = super.getPropertyNames();
 		propertyNames.add(INHERITANCE);
@@ -69,6 +68,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 	 * @param propertyName
 	 * @return Object default value of property
 	 */
+	@Override
 	public Object getDefaultProperty(String propertyName) {
 		if (propertyName.equals(INHERITANCE)) {
 			return Boolean.FALSE;

@@ -34,7 +34,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
@@ -207,7 +206,8 @@ public class EntityRowTableWizardSection extends Composite {
         typeColumn.setText(EntityWizardMsg.TYPE);
 
         this.addControlListener(new ControlAdapter() {
-        	public void controlResized(ControlEvent e) {
+        	@Override
+			public void controlResized(ControlEvent e) {
         		Table table = mTableViewer.getTable();
                     TableColumn[] columns = table.getColumns();
 				Point buttonArea = buttonComposition.computeSize(SWT.DEFAULT, SWT.DEFAULT);
@@ -557,6 +557,7 @@ public class EntityRowTableWizardSection extends Composite {
 		/* Create the area of dialog
 		 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
 		 */
+		@Override
 		public Control createDialogArea(Composite parent) {
 
 			Composite composite = (Composite) super.createDialogArea(parent);
@@ -651,6 +652,7 @@ public class EntityRowTableWizardSection extends Composite {
 		/* Create the content of the dialog
 		 * @see org.eclipse.jface.dialogs.Dialog#createContents(org.eclipse.swt.widgets.Composite)
 		 */
+		@Override
 		protected Control createContents(Composite parent) {
 			Composite composite = (Composite) super.createContents(parent);
 			
@@ -667,6 +669,7 @@ public class EntityRowTableWizardSection extends Composite {
 		/* Processes OK button pressed event.
 		 * @see org.eclipse.jface.dialogs.Dialog#okPressed()
 		 */
+		@Override
 		protected void okPressed() {
 			entityRow = callback.retrieveResultStrings(combo, texts);
 			super.okPressed();
@@ -724,6 +727,7 @@ public class EntityRowTableWizardSection extends Composite {
 		/* Create the area of the dialog
 		 * @see org.eclipse.jpt.ui.internal.wizards.entity.EntityRowTableWizardSection.AddFieldDialog#createDialogArea(org.eclipse.swt.widgets.Composite)
 		 */
+		@Override
 		public Control createDialogArea(Composite parent) {
 
 			Composite composite = (Composite) super.createDialogArea(parent);

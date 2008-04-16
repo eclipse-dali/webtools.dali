@@ -12,36 +12,26 @@
 package org.eclipse.jpt.ui.internal.wizards.entity;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.internal.ui.wizards.TypedElementSelectionValidator;
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
-import org.eclipse.jst.j2ee.internal.dialogs.FilteredFileSelectionDialog;
-import org.eclipse.jst.j2ee.internal.plugin.J2EEUIMessages;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.internal.wizard.NewJavaClassWizardPage;
 import org.eclipse.swt.SWT;
@@ -60,13 +50,11 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
-import org.eclipse.wst.common.componentcore.internal.operation.IArtifactEditOperationDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
@@ -107,10 +95,12 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 	/* Create top level composite (class properties) and add the entity's specific inheritance group
 	 * @see org.eclipse.jst.j2ee.internal.wizard.NewJavaClassWizardPage#createTopLevelComposite(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	protected Composite createTopLevelComposite(Composite parent) {
 		Composite composite = super.createTopLevelComposite(parent);
 		createInheritanceControl(composite);
 		inheritanceButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				boolean isChecked = inheritanceButton.getSelection();
 				if (isChecked) {
@@ -126,6 +116,7 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 		});		
 		createXMLstorageControl(composite);
 		xmlSupportButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				boolean isChecked = xmlSupportButton.getSelection();
 				ormXmlName.setEnabled(isChecked);	
@@ -321,6 +312,7 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 	 */
 	protected ViewerFilter getDialogViewerFilter() {
 		return new ViewerFilter() {
+			@Override
 			public boolean select(Viewer viewer, Object parent, Object element) {
 				if (element instanceof IFolder) {
 					IProject project = (IProject) getDataModel().getProperty(INewJavaClassDataModelProperties.PROJECT);
@@ -361,6 +353,7 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 	 * @return <code>true</code> if the project is valid to be included in 
 	 * 		   the project list, <code>false</code> - otherwise. 
 	 */
+	@Override
 	protected boolean isProjectValid(IProject project) {		
 		IProjectFacet jpaFacet = ProjectFacetsManager.getProjectFacet(JPA_FACET);
 		IFacetedProject fProject = null; 
@@ -385,7 +378,8 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 	    /*
 	     * @see Dialog#createDialogArea(Composite)
 	     */
-	    protected Control createDialogArea(Composite parent) {
+	    @Override
+		protected Control createDialogArea(Composite parent) {
 	    	Composite composite = (Composite)super.createDialogArea(parent);	    	
 			Label fileNameLabel = new Label(composite, SWT.LEFT);
 			fileNameLabel.setText(EntityWizardMsg.XML_NAME_TITLE);
