@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
+import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.internal.context.options.Options;
@@ -23,6 +24,9 @@ public interface EclipseLinkProperties extends PersistenceUnitProperties
 	Caching getCaching();
 		static final String CACHING_PROPERTY = "cachingProperty";
 		
+	Connection getConnection();
+	static final String CONNECTION_PROPERTY = "connectionProperty";
+	
 	Customization getCustomization();
 		static final String CUSTOMIZATION_PROPERTY = "customizationProperty";
 		

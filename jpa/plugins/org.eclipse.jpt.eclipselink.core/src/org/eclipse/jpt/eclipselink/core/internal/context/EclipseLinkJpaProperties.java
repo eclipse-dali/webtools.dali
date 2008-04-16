@@ -15,6 +15,8 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.EclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
+import org.eclipse.jpt.eclipselink.core.internal.context.connection.EclipseLinkConnection;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.EclipseLinkCustomization;
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.EclipseLinkLogging;
@@ -40,6 +42,7 @@ public class EclipseLinkJpaProperties extends AbstractModel
 	private PersistenceUnit persistenceUnit;
 	
 	private Caching caching;
+	private Connection connection;
 	private Customization customization;
 	private Logging logging;
 	private Options options;
@@ -63,6 +66,7 @@ public class EclipseLinkJpaProperties extends AbstractModel
 		this.propertyListAdapter = this.buildPropertyListAdapter(this.propertiesAdapter);
 		
 		this.caching = this.buildCaching();
+		this.connection = this.buildConnection();
 		this.customization = this.buildCustomization();
 		this.logging = this.buildLogging();
 		this.options = this.buildOptions();
@@ -90,6 +94,10 @@ public class EclipseLinkJpaProperties extends AbstractModel
 	private Caching buildCaching() {
 		return new EclipseLinkCaching(this.persistenceUnit(), this.propertyListAdapter());
 	}
+	
+	private Connection buildConnection() {
+		return new EclipseLinkConnection(this.persistenceUnit(), this.propertyListAdapter());
+	}
 
 	private Customization buildCustomization() {
 		return new EclipseLinkCustomization(this.persistenceUnit(), this.propertyListAdapter());
@@ -110,6 +118,10 @@ public class EclipseLinkJpaProperties extends AbstractModel
 	// ******** Behavior *********
 	public Caching getCaching() {
 		return this.caching;
+	}
+	
+	public Connection getConnection() {
+		return this.connection;
 	}
 
 	public Customization getCustomization() {
