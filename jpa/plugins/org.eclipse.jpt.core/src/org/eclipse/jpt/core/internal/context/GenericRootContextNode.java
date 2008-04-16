@@ -127,6 +127,7 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 		if (this.persistenceXml == null) {
 			throw new IllegalStateException();
 		}
+		this.persistenceXml.dispose();
 		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForWrite(getJpaProject().getProject());
 		PersistenceResource pr = pae.getResource();
 		pae.dispose();

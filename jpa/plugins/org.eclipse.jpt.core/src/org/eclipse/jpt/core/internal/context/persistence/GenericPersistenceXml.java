@@ -75,7 +75,7 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 		if (persistence == null) {
 			throw new IllegalStateException();
 		}
-		
+		this.persistence.dispose();
 		Persistence oldPersistence = persistence;
 		persistence = null;
 		XmlPersistence xmlPersistence = persistenceResource.getPersistence();
@@ -100,10 +100,7 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 	}
 
 	public void update(PersistenceResource persistenceResource) {
-		if (! persistenceResource.equals(this.persistenceResource)) {
-			this.persistenceResource = persistenceResource;
-			this.persistenceResource.getResourceModel().removeRootStructureNode(this);
-		}
+		this.persistenceResource = persistenceResource;
 		if (persistenceResource.getPersistence() != null) {
 			if (this.persistence != null) {
 				this.persistence.update(persistenceResource.getPersistence());
@@ -111,9 +108,11 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 			else {
 				setPersistence_(buildPersistence(persistenceResource.getPersistence()));
 			}
-			persistenceResource.getResourceModel().addRootStructureNode(getPersistence());
 		}
 		else {
+			if (getPersistence() != null) {
+				getPersistence().dispose();
+			}
 			setPersistence_(null);
 		}
 	}
@@ -174,4 +173,7 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 		}
 	}
 
+	public void dispose() {
+		this.persistence.dispose();
+	}
 }

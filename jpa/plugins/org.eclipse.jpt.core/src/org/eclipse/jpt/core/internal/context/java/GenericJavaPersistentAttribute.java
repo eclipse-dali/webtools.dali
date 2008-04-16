@@ -322,4 +322,8 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		super.toString(sb);
 		sb.append(getName());
 	}
+	
+	public void dispose() {
+		//nothing to dispose
+	}
 }

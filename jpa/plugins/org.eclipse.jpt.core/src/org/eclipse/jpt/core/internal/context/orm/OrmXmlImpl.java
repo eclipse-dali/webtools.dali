@@ -37,6 +37,11 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 		this.initialize(ormResource);
 	}
 	
+	@Override
+	public MappingFileRef getParent() {
+		return (MappingFileRef) super.getParent();
+	}
+	
 	public String getId() {
 		// isn't actually displayed, so needs no details page
 		return null;
@@ -56,6 +61,7 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 	
 	// **************** persistence ********************************************
 	
+	@Override
 	public EntityMappings getEntityMappings() {
 		return this.entityMappings;
 	}
@@ -82,8 +88,9 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 		if (this.entityMappings == null) {
 			throw new IllegalStateException();
 		}
-		
+		this.entityMappings.dispose();
 		EntityMappings oldEntityMappings = this.entityMappings;
+		
 		this.entityMappings = null;
 		XmlEntityMappings xmlEntityMappings = this.ormResource.getEntityMappings(); //TODO helper removeEntityMappings method on ormResource??
 		this.ormResource.getContents().remove(xmlEntityMappings);
@@ -114,10 +121,11 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 			else {
 				setEntityMappings(buildEntityMappings(ormResource.getEntityMappings()));
 			}
-			ormResource.getResourceModel().addRootStructureNode(getEntityMappings());
 		}
 		else {
-			ormResource.getResourceModel().removeRootStructureNode(getEntityMappings());
+			if (getEntityMappings() != null) {
+				getEntityMappings().dispose();
+			}
 			setEntityMappings(null);
 		}
 	}
@@ -151,6 +159,12 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 		super.addToMessages(messages);
 		if (getEntityMappings() != null) {
 			getEntityMappings().addToMessages(messages);
+		}
+	}
+	
+	public void dispose() {
+		if (getEntityMappings() != null) {
+			getEntityMappings().dispose();
 		}
 	}
 }

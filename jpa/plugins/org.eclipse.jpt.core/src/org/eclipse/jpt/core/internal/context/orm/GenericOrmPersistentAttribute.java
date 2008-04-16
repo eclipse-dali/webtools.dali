@@ -343,4 +343,8 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 		super.toString(sb);
 		sb.append(getName());
 	}
+	
+	public void dispose() {
+		//nothing to dispose
+	}
 }

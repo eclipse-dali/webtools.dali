@@ -10,8 +10,6 @@
 package org.eclipse.jpt.ui.internal.structure;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
@@ -31,7 +29,7 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 			Object item, DelegatingContentAndLabelProvider contentProvider) {
 		DelegatingTreeContentAndLabelProvider treeContentProvider = (DelegatingTreeContentAndLabelProvider) contentProvider;
 		if (item instanceof OrmResourceModel) {
-			return new OrmResourceModelItemContentProvider((OrmResourceModel) item, treeContentProvider);
+			return new ResourceModelItemContentProvider((OrmResourceModel) item, treeContentProvider);
 		}
 		if (item instanceof EntityMappings) {
 			return new EntityMappingsItemContentProvider((EntityMappings) item, treeContentProvider);
@@ -43,32 +41,6 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 	protected TreeItemContentProvider buildPersistentTypeItemContentProvider(PersistentType persistentType, DelegatingTreeContentAndLabelProvider treeContentProvider) {
 		return new OrmPersistentTypeItemContentProvider((OrmPersistentType) persistentType, treeContentProvider);
 	}
-	
-	
-	public static class OrmResourceModelItemContentProvider extends AbstractTreeItemContentProvider<JpaStructureNode>
-	{
-		public OrmResourceModelItemContentProvider(
-				OrmResourceModel ormResourceModel, DelegatingTreeContentAndLabelProvider contentProvider) {
-			super(ormResourceModel, contentProvider);
-		}
-		
-		@Override
-		public Object getParent() {
-			return null;
-		}
-		
-		@Override
-		protected ListValueModel<JpaStructureNode> buildChildrenModel() {
-			return new ListAspectAdapter<OrmResourceModel, JpaStructureNode>(
-					ResourceModel.ROOT_STRUCTURE_NODES_LIST, (OrmResourceModel) model()) {
-				@Override
-				protected ListIterator<JpaStructureNode> listIterator_() {
-					return subject.rootStructureNodes();
-				}
-			};
-		}	
-	}
-	
 	
 	public static class EntityMappingsItemContentProvider extends AbstractTreeItemContentProvider<OrmPersistentType>
 	{

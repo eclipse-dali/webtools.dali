@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
 
 /**
@@ -23,6 +24,9 @@ import org.eclipse.jpt.core.resource.orm.OrmResource;
  */
 public interface OrmXml extends OrmJpaContextNode, JpaStructureNode
 {
+	
+	MappingFileRef getParent();
+	
 	// **************** persistence *******************************************
 	
 	/**

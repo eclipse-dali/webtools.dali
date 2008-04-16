@@ -50,6 +50,8 @@ import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
@@ -339,10 +341,10 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	 */
 	protected void removeJpaFile(JpaFile jpaFile) {
 		jpaFile.getResourceModel().removeResourceModelChangeListener(this.resourceModelListener);
+		jpaFile.dispose();
 		if ( ! this.removeItemFromCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION)) {
 			throw new IllegalArgumentException("JPA file: " + jpaFile.getFile().getName());
 		}
-		jpaFile.dispose();
 	}
 
 	protected boolean containsJpaFile(IFile file) {
@@ -380,13 +382,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	}
 	
 	protected Iterator<JavaResourcePersistentType> annotatedJavaPersistentTypes() {
-		return new FilteringIterator<JavaResourcePersistentType, JavaResourcePersistentType>(
-				new TransformationIterator<JpaCompilationUnit, JavaResourcePersistentType>(jpaCompilationUnitResources()) {
-					@Override
-					protected JavaResourcePersistentType transform(JpaCompilationUnit next) {
-						return next.getPersistentType();
-					}
-				}) {
+		return new FilteringIterator<JavaResourcePersistentType, JavaResourcePersistentType>(javaResourcePersistentTypes()) {
 			@Override
 			protected boolean accept(JavaResourcePersistentType persistentType) {
 				return persistentType == null ? false : persistentType.isPersisted();
@@ -394,6 +390,19 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		};
 	}
 	
+	protected Iterator<JavaResourcePersistentType> javaResourcePersistentTypes() {
+		return new CompositeIterator<JavaResourcePersistentType>(
+			new TransformationIterator<JpaCompilationUnit, Iterator<JavaResourcePersistentType>>(jpaCompilationUnitResources()) {
+				@Override
+				protected Iterator<JavaResourcePersistentType> transform(JpaCompilationUnit next) {
+					if (next.getPersistentType() == null) {
+						return EmptyIterator.instance();
+					}
+					return new CompositeIterator<JavaResourcePersistentType>(next.getPersistentType(), next.getPersistentType().nestedTypes());
+				}
+			});
+	}
+
 	public Iterator<JpaFile> javaJpaFiles() {
 		return this.jpaFiles(ResourceModel.JAVA_RESOURCE_TYPE);
 	}

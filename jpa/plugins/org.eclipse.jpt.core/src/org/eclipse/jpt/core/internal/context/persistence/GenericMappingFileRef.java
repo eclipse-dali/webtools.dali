@@ -140,11 +140,17 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 				}
 			}
 			else {
+				if (getOrmXml() != null) {
+					getOrmXml().dispose();
+				}
 				setOrmXml(null);
 			}
 			oae.dispose();
 		}
 		else {
+			if (getOrmXml() != null) {
+				getOrmXml().dispose();
+			}
 			setOrmXml(null);
 		}
 	}
@@ -252,5 +258,11 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
 		sb.append(getFileName());
+	}
+	
+	public void dispose() {
+		if (getOrmXml() != null) {
+			getOrmXml().dispose();
+		}
 	}
 }

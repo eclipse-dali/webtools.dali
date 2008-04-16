@@ -847,4 +847,10 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	public TextRange getValidationTextRange() {
 		return this.ormTypeMapping.getValidationTextRange();
 	}
+	
+	public void dispose() {
+		if (getJavaPersistentType() != null) {
+			getJavaPersistentType().dispose();
+		}
+	}
 }

@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
@@ -37,7 +36,7 @@ public class PersistenceItemContentProviderFactory
 			Object item, DelegatingContentAndLabelProvider contentAndLabelProvider) {
 		DelegatingTreeContentAndLabelProvider treeContentProvider = (DelegatingTreeContentAndLabelProvider) contentAndLabelProvider;
 		if (item instanceof PersistenceResourceModel) {
-			return new PersistenceResourceModelItemContentProvider((PersistenceResourceModel) item, treeContentProvider);
+			return new ResourceModelItemContentProvider((PersistenceResourceModel) item, treeContentProvider);
 		}
 		else if (item instanceof Persistence) {
 			return new PersistenceItemContentProvider((Persistence) item, treeContentProvider);
@@ -52,32 +51,6 @@ public class PersistenceItemContentProviderFactory
 			return new ClassRefItemContentProvider((ClassRef) item, treeContentProvider);	
 		}
 		return null;
-	}
-	
-	
-	public static class PersistenceResourceModelItemContentProvider extends AbstractTreeItemContentProvider<JpaStructureNode>
-	{
-		public PersistenceResourceModelItemContentProvider(
-				PersistenceResourceModel persistenceResourceModel, 
-				DelegatingTreeContentAndLabelProvider contentProvider) {
-			super(persistenceResourceModel, contentProvider);
-		}
-		
-		@Override
-		public Object getParent() {
-			return null;
-		}
-		
-		@Override
-		protected ListValueModel<JpaStructureNode> buildChildrenModel() {
-			return new ListAspectAdapter<PersistenceResourceModel, JpaStructureNode>(
-					ResourceModel.ROOT_STRUCTURE_NODES_LIST, (PersistenceResourceModel) model()) {
-				@Override
-				protected ListIterator<JpaStructureNode> listIterator_() {
-					return subject.rootStructureNodes();
-				}
-			};
-		}	
 	}
 	
 	
@@ -198,8 +171,7 @@ public class PersistenceItemContentProviderFactory
 	}
 	
 	
-	@SuppressWarnings("unchecked")
-	public static class MappingFileRefItemContentProvider extends AbstractTreeItemContentProvider
+	public static class MappingFileRefItemContentProvider extends AbstractTreeItemContentProvider<MappingFileRef>
 	{
 		public MappingFileRefItemContentProvider(
 				MappingFileRef mappingFileRef, DelegatingTreeContentAndLabelProvider contentProvider) {
@@ -218,8 +190,7 @@ public class PersistenceItemContentProviderFactory
 	}
 	
 	
-	@SuppressWarnings("unchecked")
-	public static class ClassRefItemContentProvider extends AbstractTreeItemContentProvider
+	public static class ClassRefItemContentProvider extends AbstractTreeItemContentProvider<ClassRef>
 	{
 		public ClassRefItemContentProvider(
 				ClassRef classRef, DelegatingTreeContentAndLabelProvider contentProvider) {

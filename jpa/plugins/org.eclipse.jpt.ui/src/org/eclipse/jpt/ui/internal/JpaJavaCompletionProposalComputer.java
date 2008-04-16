@@ -25,11 +25,12 @@ import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
-import org.eclipse.jpt.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
@@ -72,15 +73,10 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 			return Collections.emptyList();
 		}
 		
-		JavaResourceModel javaResourceModel = (JavaResourceModel) jpaFile.getResourceModel();
-		if (javaResourceModel.rootStructureNodesSize() == 0) {
+		Iterator<JpaStructureNode> rootStructureNodes = jpaFile.rootStructureNodes();
+		if (!rootStructureNodes.hasNext()) {
 			return Collections.emptyList();
 		}
-
-		//TODO A bit of hackery for now just to get this compiling and working good enough, 
-		//we need to have a way to get the context model given an IFile or JpaFile
-		//instead of having to ask the ResourceModel for it
-		JavaPersistentType structureNode = (JavaPersistentType) javaResourceModel.rootStructureNodes().next();
 		CompletionContext cc = context.getCoreContext();
 
 		// the context's "token" is really a sort of "prefix" - it does NOT
@@ -103,9 +99,11 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 
 		CompilationUnit astRoot = JDTTools.buildASTRoot(cu);
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
-		for (Iterator<String> stream = structureNode.javaCompletionProposals(context.getInvocationOffset(), filter, astRoot); stream.hasNext(); ) {
-			String s = stream.next();
-			proposals.add(new CompletionProposal(s, tokenStart, tokenEnd - tokenStart + 1, s.length()));
+		for (JpaStructureNode structureNode : CollectionTools.iterable(rootStructureNodes)) {
+			for (Iterator<String> stream = ((JavaPersistentType) structureNode).javaCompletionProposals(context.getInvocationOffset(), filter, astRoot); stream.hasNext(); ) {
+				String s = stream.next();
+				proposals.add(new CompletionProposal(s, tokenStart, tokenEnd - tokenStart + 1, s.length()));
+			}
 		}
 		return proposals;
 	}

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.JpaContextNode;
@@ -220,14 +221,16 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		//TODO astRoot, possibly get this instead of rebuilding it
 		CompilationUnit astRoot = this.resourcePersistentType.getMember().getAstRoot(); 
 		
-		for (Iterator<JavaPersistentAttribute> i = attributes(); i.hasNext();) {
-			JavaPersistentAttribute persistentAttribute = i.next();
-			if (persistentAttribute.contains(offset, astRoot)) {
-				return persistentAttribute;
+		if (contains(offset, astRoot)) {
+			for (Iterator<JavaPersistentAttribute> i = attributes(); i.hasNext();) {
+				JavaPersistentAttribute persistentAttribute = i.next();
+				if (persistentAttribute.contains(offset, astRoot)) {
+					return persistentAttribute;
+				}
 			}
+			return this;
 		}
-		
-		return this;		
+		return null;		
 	}
 
 	public boolean contains(int offset, CompilationUnit astRoot) {
@@ -311,7 +314,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 
 	public void update(JavaResourcePersistentType resourcePersistentType) {
 		this.resourcePersistentType = resourcePersistentType;
-		this.resourcePersistentType.getResourceModel().addRootStructureNode(this);
+		getJpaFile(this.resourcePersistentType.getResourceModel()).addRootStructureNode(this.resourcePersistentType.getQualifiedName(), this);
 		updateParentPersistentType(resourcePersistentType);
 		updateAccess(resourcePersistentType);
 		updateName(resourcePersistentType);
@@ -492,6 +495,16 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
 		sb.append(getName());
+	}
+
+	public void dispose() {
+		JpaFile jpaFile = getJpaFile(this.resourcePersistentType.getResourceModel());
+		
+		if (jpaFile != null) {
+			//jpaFile can be null if the .java file was deleted,
+			//rootStructureNodes are cleared in the dispose of JpaFile
+			jpaFile.removeRootStructureNode(this.resourcePersistentType.getQualifiedName());
+		}
 	}
 
 }

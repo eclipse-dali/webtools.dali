@@ -36,7 +36,7 @@ public abstract class JpaXmlResourceModel extends AbstractResourceModel
 	
 	
 	protected JpaXmlResourceModel(IFile file) {
-		super();
+		super(file);
 		this.artifactEdit = buildArtifactEdit(file.getProject());
 		this.resource = this.artifactEdit.getResource(file);
 		this.resource.setResourceModel(this);

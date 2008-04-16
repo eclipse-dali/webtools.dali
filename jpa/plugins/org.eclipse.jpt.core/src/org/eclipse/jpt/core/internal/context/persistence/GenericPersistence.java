@@ -118,6 +118,7 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 	
 	public void update(XmlPersistence persistence) {
 		this.xmlPersistence = persistence;
+		getJpaFile(this.xmlPersistence.getResource().getResourceModel()).addRootStructureNode(this, this);
 		XmlPersistenceUnit xmlPersistenceUnit = null;
 		if (persistence.getPersistenceUnits().size() > 0) {
 			xmlPersistenceUnit = persistence.getPersistenceUnits().get(0);
@@ -213,6 +214,13 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 						this, 
 						this.getValidationTextRange())
 				);
+		}
+	}
+	
+	public void dispose() {
+		getJpaFile(this.xmlPersistence.getResource().getResourceModel()).removeRootStructureNode(this);
+		for (PersistenceUnit persistenceUnit : CollectionTools.iterable(persistenceUnits())) {
+			persistenceUnit.dispose();
 		}
 	}
 }

@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
@@ -107,6 +108,11 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	@Override
 	public EntityMappings getEntityMappings() {
 		return this;
+	}
+	
+	@Override
+	public OrmXml getParent() {
+		return (OrmXml) super.getParent();
 	}
 	
 	public OrmPersistentType getPersistentType(String fullyQualifiedTypeName) {
@@ -270,7 +276,8 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 
 	public void removeOrmPersistentType(int index) {
-		OrmPersistentType ormPersistentType = this.persistentTypes.get(index);		
+		OrmPersistentType ormPersistentType = this.persistentTypes.get(index);
+		ormPersistentType.dispose();
 		this.persistentTypes.remove(index);
 		ormPersistentType.getMapping().removeFromResourceModel(this.xmlEntityMappings);
 		fireItemRemoved(PERSISTENT_TYPES_LIST, index, ormPersistentType);		
@@ -281,10 +288,12 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	protected void removeOrmPersistentType_(OrmPersistentType ormPersistentType) {
+		ormPersistentType.dispose();
 		removeItemFromList(ormPersistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
 	}
 
 	public void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping) {
+		ormPersistentType.dispose();
 		int sourceIndex = this.persistentTypes.indexOf(ormPersistentType);
 		this.persistentTypes.remove(sourceIndex);
 		oldMapping.removeFromResourceModel(this.xmlEntityMappings);
@@ -549,6 +558,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 
 	public void update(XmlEntityMappings entityMappings) {
 		this.xmlEntityMappings = entityMappings;
+		getJpaFile(entityMappings.getResource().getResourceModel()).addRootStructureNode(this.getMappingFileName(), this);
 		this.setDescription(entityMappings.getDescription());
 		this.setPackage(entityMappings.getPackage());
 		this.setSpecifiedSchema(entityMappings.getSchema());
@@ -564,6 +574,10 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		this.updateNamedQueries(entityMappings);
 		this.updateNamedNativeQueries(entityMappings);
 		this.updatePersistenceUnitGeneratorsAndQueries();
+	}
+	
+	protected String getMappingFileName() {
+		return getParent().getParent().getFileName();
 	}
 	
 	protected AccessType specifiedAccess(XmlEntityMappings entityMappings) {
@@ -818,6 +832,19 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 				}
 			}
 			masterList.add(current);
+		}
+	}
+	
+	public void dispose() {
+		JpaFile jpaFile = getJpaFile(this.xmlEntityMappings.getResource().getResourceModel());
+		
+		if (jpaFile != null) {
+			//jpaFile can be null if the orm.xml file was deleted
+			//rootStructureNodes are cleared in the dispose of JpaFile
+			jpaFile.removeRootStructureNode(getMappingFileName());
+		}
+		for (OrmPersistentType  ormPersistentType : CollectionTools.iterable(ormPersistentTypes())) {
+			ormPersistentType.dispose();
 		}
 	}
 }

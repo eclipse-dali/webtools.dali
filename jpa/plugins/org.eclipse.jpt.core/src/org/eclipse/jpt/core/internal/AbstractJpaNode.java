@@ -15,9 +15,11 @@ import java.util.Set;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.core.JpaFactory;
+import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -103,6 +105,16 @@ public abstract class AbstractJpaNode
 
 	protected JpaFactory getJpaFactory() {
 		return this.getJpaPlatform().getJpaFactory();
+	}
+
+	protected JpaFile getJpaFile(ResourceModel resourceModel) {
+		if (resourceModel == null) {
+			System.out.println("resourceModel is null");
+		}
+		if (getJpaProject() == null) {
+			System.out.println("JpaProject is null");
+		}
+		return getJpaProject().getJpaFile(resourceModel.getFile());
 	}
 
 	protected ConnectionProfile getConnectionProfile() {

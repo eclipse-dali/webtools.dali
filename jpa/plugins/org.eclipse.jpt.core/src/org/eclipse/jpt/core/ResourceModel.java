@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
-import java.util.ListIterator;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jpt.utility.model.Model;
 
@@ -48,34 +48,11 @@ public interface ResourceModel extends Model
 	 */
 	String getResourceType();
 	
-	
-	// **************** root structure nodes *************************************
-	
 	/**
-	 * String constant associated with changes to the list of root structure nodes
+	 * Return the IFile that this resource model represents
 	 */
-	final static String ROOT_STRUCTURE_NODES_LIST = "rootStructureNodes";
+	IFile getFile();
 	
-	/**
-	 * Return a list iterator of all root structure nodes
-	 */
-	ListIterator<JpaStructureNode> rootStructureNodes();
-	
-	/**
-	 * Return the size of all root structure nodes
-	 */
-	int rootStructureNodesSize();
-	
-	/**
-	 * Return a structure node for the given text offset
-	 */
-	JpaStructureNode getStructureNode(int textOffset);
-	
-	void addRootStructureNode(JpaStructureNode structureNode);
-	
-	void addRootStructureNode(int index, JpaStructureNode structureNode);
-	
-
 	void javaElementChanged(ElementChangedEvent event);
 	
 	

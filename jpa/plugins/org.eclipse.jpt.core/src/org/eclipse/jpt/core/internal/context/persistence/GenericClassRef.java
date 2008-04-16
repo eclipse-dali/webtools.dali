@@ -136,6 +136,9 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 	protected void updateJavaPersistentType() {
 		JavaResourcePersistentType persistentTypeResource = getJpaProject().getJavaPersistentTypeResource(getClassName());
 		if (persistentTypeResource == null) {
+			if (getJavaPersistentType() != null) {
+				getJavaPersistentType().dispose();
+			}
 			setJavaPersistentType(null);
 		}
 		else { 
@@ -249,5 +252,11 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(getClassName());
+	}
+	
+	public void dispose() {
+		if (getJavaPersistentType() != null) {
+			getJavaPersistentType().dispose();
+		}
 	}
 }

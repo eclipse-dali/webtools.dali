@@ -285,6 +285,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	public void removeSpecifiedMappingFileRef(int index) {
 		MappingFileRef mappingFileRefRemoved = specifiedMappingFileRefs.remove(index);
+		mappingFileRefRemoved.dispose();
 		this.xmlPersistenceUnit.getMappingFiles().remove(index);
 		fireItemRemoved(SPECIFIED_MAPPING_FILE_REF_LIST, index, mappingFileRefRemoved);
 	}
@@ -302,6 +303,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected void removeSpecifiedMappingFileRef_(int index) {
+		specifiedMappingFileRefs.get(index).dispose();
 		removeItemFromList(index, specifiedMappingFileRefs, SPECIFIED_MAPPING_FILE_REF_LIST);
 	}
 	
@@ -324,9 +326,10 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	protected void unsetImpliedMappingFileRef() {
 		if (impliedMappingFileRef == null) {
-			throw new IllegalStateException("The implie mapping file ref is already unset.");
+			throw new IllegalStateException("The implied mapping file ref is already unset.");
 		}
 		MappingFileRef mappingFileRef = impliedMappingFileRef;
+		impliedMappingFileRef.dispose();
 		impliedMappingFileRef = null;
 		firePropertyChanged(IMPLIED_MAPPING_FILE_REF_PROPERTY, mappingFileRef, null);
 	}
@@ -373,6 +376,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	public void removeSpecifiedClassRef(int index) {
 		ClassRef classRefRemoved = this.specifiedClassRefs.remove(index);
+		classRefRemoved.dispose();
 		this.xmlPersistenceUnit.getClasses().remove(index);
 		fireItemRemoved(SPECIFIED_CLASS_REF_LIST, index, classRefRemoved);
 	}
@@ -386,6 +390,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected void removeSpecifiedClassRef_(ClassRef classRef) {
+		classRef.dispose();
 		removeSpecifiedClassRef_(this.specifiedClassRefs.indexOf(classRef));
 	}
 	
@@ -415,6 +420,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected void removeImpliedClassRef(ClassRef classRef) {
+		classRef.dispose();
 		removeImpliedClassRef(impliedClassRefs.indexOf(classRef));
 	}
 	
@@ -691,8 +697,15 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	protected void initialize(XmlPersistenceUnit xmlPersistenceUnit) {
 		this.xmlPersistenceUnit = xmlPersistenceUnit;
 		this.name = xmlPersistenceUnit.getName();
+		
+		//initialize specified classRefs before mappingFileRefs because of 
+		//JpaFile rootStructureNode, we want the mapping file to "win",
+		//as it would in a Jpa runtime implementation
+		initializeSpecifiedClassRefs(xmlPersistenceUnit);
 		initializeMappingFileRefs(xmlPersistenceUnit);
-		initializeClassRefs(xmlPersistenceUnit);
+		//initialize implied classRefs last since they depend on both
+		//specified classRefs and mappingFileRefs
+		initializeImpliedClassRefs(xmlPersistenceUnit);
 		initializeProperties(xmlPersistenceUnit);
 		initializePersistenceUnitDefaults();
 		this.specifiedExcludeUnlistedClasses = xmlPersistenceUnit.getExcludeUnlistedClasses();
@@ -714,15 +727,17 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		}
 	}
 	
-	protected void initializeClassRefs(XmlPersistenceUnit xmlPersistenceUnit) {
+	protected void initializeSpecifiedClassRefs(XmlPersistenceUnit xmlPersistenceUnit) {
 		for (XmlJavaClassRef xmlJavaClassRef : xmlPersistenceUnit.getClasses()) {
 			specifiedClassRefs.add(buildClassRef(xmlJavaClassRef));
 		}
-		
+	}
+	
+	protected void initializeImpliedClassRefs(XmlPersistenceUnit xmlPersistenceUnit) {
 		if (getJpaProject().discoversAnnotatedClasses() && !isExcludeUnlistedClasses()) {
 			for (IType type : CollectionTools.iterable(getJpaProject().annotatedClasses())) {
-				if (! classIsSpecified(type.getFullyQualifiedName())) {
-					impliedClassRefs.add(buildClassRef(type.getFullyQualifiedName()));
+				if (! classIsSpecified(type.getFullyQualifiedName('.'))) {
+					impliedClassRefs.add(buildClassRef(type.getFullyQualifiedName('.')));
 				}
 			}
 		}
@@ -765,8 +780,14 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		updateProvider(persistenceUnit);
 		updateJtaDataSource(persistenceUnit);
 		updateNonJtaDataSource(persistenceUnit);
+		//update specified classRefs before mappingFileRefs because of 
+		//JpaFile rootStructureNode, we want the mapping file to "win",
+		//as it would in a Jpa runtime implementation
+		updateSpecifiedClassRefs(persistenceUnit);
 		updateMappingFileRefs(persistenceUnit);
-		updateClassRefs(persistenceUnit);
+		//update implied classRefs last since they depend on both
+		//specified classRefs and mappingFileRefs
+		updateImpliedClassRefs(persistenceUnit);
 		updateExcludeUnlistedClasses(persistenceUnit);
 		updateProperties(persistenceUnit);
 		updatePersistenceUnitDefaults();
@@ -874,7 +895,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		return getJpaFactory().buildMappingFileRef(this, xmlMappingFileRef);
 	}
 	
-	protected void updateClassRefs(XmlPersistenceUnit persistenceUnit) {
+	protected void updateSpecifiedClassRefs(XmlPersistenceUnit persistenceUnit) {
 		Iterator<ClassRef> stream = specifiedClassRefs();
 		Iterator<XmlJavaClassRef> stream2 = new CloneIterator<XmlJavaClassRef>(persistenceUnit.getClasses());//prevent ConcurrentModificiationException
 		
@@ -891,7 +912,9 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		while (stream2.hasNext()) {
 			addSpecifiedClassRef_(buildClassRef(stream2.next()));
 		}
-		
+	}
+	
+	protected void updateImpliedClassRefs(XmlPersistenceUnit persistenceUnit) {
 		Iterator<ClassRef> impliedRefs = impliedClassRefs();
 		Iterator<IType> annotatedClasses = getJpaProject().annotatedClasses();
 		
@@ -902,8 +925,8 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 				boolean updated = false;
 				while (! updated && annotatedClasses.hasNext()) {
 					IType annotatedClass = annotatedClasses.next();
-					if (! classIsSpecified(annotatedClass.getFullyQualifiedName())) {
-						classRef.update(annotatedClass.getFullyQualifiedName());
+					if (! classIsSpecified(annotatedClass.getFullyQualifiedName('.'))) {
+						classRef.update(annotatedClass.getFullyQualifiedName('.'));
 						updated = true;
 					}
 				}
@@ -914,8 +937,8 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 			
 			while (annotatedClasses.hasNext()) {
 				IType annotatedClass = annotatedClasses.next();
-				if (! classIsSpecified(annotatedClass.getFullyQualifiedName())) {
-					addImpliedClassRef(annotatedClass.getFullyQualifiedName());
+				if (! classIsSpecified(annotatedClass.getFullyQualifiedName('.'))) {
+					addImpliedClassRef(annotatedClass.getFullyQualifiedName('.'));
 				}
 			}
 		}
@@ -1198,5 +1221,14 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
 		sb.append(getName());
+	}
+	
+	public void dispose() {
+		for (ClassRef classRef : CollectionTools.iterable(classRefs())) {
+			classRef.dispose();
+		}
+		for (MappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
+			mappingFileRef.dispose();
+		}
 	}
 }

@@ -99,7 +99,7 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 
 		if (type != null) {
 			ClassRef classRef = subject().addSpecifiedClassRef();
-			classRef.setClassName(type.getFullyQualifiedName());
+			classRef.setClassName(type.getFullyQualifiedName('.'));
 			listSelectionModel.setSelectedValue(classRef);
 		}
 	}

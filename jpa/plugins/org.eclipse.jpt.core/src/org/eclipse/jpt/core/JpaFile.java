@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
+import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ElementChangedEvent;
 
@@ -39,8 +40,33 @@ public interface JpaFile extends JpaNode
 	 */
 	ResourceModel getResourceModel();
 	
+	// **************** root structure nodes *************************************
+	
 	/**
-	 * Return the structure node best represented by the location in the file
+	 * String constant associated with changes to the root structure nodes collection
+	 */
+	String ROOT_STRUCTURE_NODES_COLLECTION = "rootStructureNodes";
+	
+	/**
+	 * Return the root context model object represented by this JPA file.
+	 */
+	Iterator<JpaStructureNode> rootStructureNodes();
+	
+	int rootStructureNodesSize();
+	/**
+	 * Set the root context model object represented by this JPA file.
+	 * There is the potential for multiple root structure nodes 
+	 * for this JPA file.  For example a java file that is listed
+	 * both as a <class> in the persistence.xml and as an <entity> in
+	 * an orm.xml file.  In this case the orm.xml file needs to set
+	 * the root structure node after the java class reference.
+	 * Last one in during project update wins.
+	 */
+	void addRootStructureNode(Object key, JpaStructureNode rootStructureNode);	
+	
+	void removeRootStructureNode(Object key);
+	/**
+	 * Return the structure node best represented by the location in the file.
 	 */
 	JpaStructureNode getStructureNode(int textOffset);
 

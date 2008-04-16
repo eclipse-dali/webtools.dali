@@ -44,4 +44,10 @@ public interface JpaStructureNode extends JpaNode
 	 * Return a unique identifier for all of this class of structure nodes
 	 */
 	String getId();
+
+	/**
+	 * Dispose of this structureNode and dispose of chil structureNodes.
+	 * Typically this would be used to update the JpaFile rootStructureNodes.
+	 */
+	void dispose();
 }

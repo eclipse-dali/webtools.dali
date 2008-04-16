@@ -37,7 +37,7 @@ public class JavaResourceModelImpl
 			IFile file, JpaAnnotationProvider annotationProvider, 
 			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
 			AnnotationEditFormatter annotationEditFormatter) {
-		super();
+		super(file);
 		this.resourceModelListeners = new ArrayList<ResourceModelListener>();
 		this.compilationUnitResource = 
 			new JpaCompilationUnitImpl(file, annotationProvider, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter, this);
