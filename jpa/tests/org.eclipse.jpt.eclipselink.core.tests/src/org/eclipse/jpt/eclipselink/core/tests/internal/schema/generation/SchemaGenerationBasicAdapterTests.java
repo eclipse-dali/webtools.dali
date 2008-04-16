@@ -23,7 +23,6 @@ import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.Schem
 import org.eclipse.jpt.eclipselink.core.tests.internal.PersistenceUnitTestCase;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -58,20 +57,6 @@ public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
 		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration.OUTPUT_MODE_PROPERTY, propertyChangeListener);
 		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration.DDL_GENERATION_TYPE_PROPERTY, propertyChangeListener);
 		this.clearEvent();
-	}
-
-	private PropertyChangeListener buildPropertyChangeListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				SchemaGenerationBasicAdapterTests.this.propertyChangedEvent = event;
-				SchemaGenerationBasicAdapterTests.this.propertyChangedEventCount++;
-			}
-
-			@Override
-			public String toString() {
-				return "outputMode listener";
-			}
-		};
 	}
 
 	/**
@@ -146,7 +131,7 @@ public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
 		
 		// Replace
 		this.persistenceUnitPut(outputModeKey, OUTPUT_MODE_TEST_VALUE_2);
-		this.verifyPutProperty(SchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE_2, this.schemaGeneration.getOutputMode());
+		this.verifyPutEvent(SchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE_2, this.schemaGeneration.getOutputMode());
 		
 		// Remove
 		this.clearEvent();
@@ -163,16 +148,16 @@ public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
 		++this.propertiesTotal;
 		++this.modelPropertiesSize;
 		this.persistenceUnitPut(outputModeKey, OUTPUT_MODE_TEST_VALUE);
-		this.verifyPutProperty(SchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE, this.schemaGeneration.getOutputMode());
+		this.verifyPutEvent(SchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE, this.schemaGeneration.getOutputMode());
 		
 		// Replace again
 		this.persistenceUnitPut(outputModeKey, OUTPUT_MODE_TEST_VALUE_2);
-		this.verifyPutProperty(SchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE_2, this.schemaGeneration.getOutputMode());
+		this.verifyPutEvent(SchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE_2, this.schemaGeneration.getOutputMode());
 		
 		// Replace by setting model object
 		this.clearEvent();
 		this.schemaGeneration.setOutputMode(OUTPUT_MODE_TEST_VALUE);
-		this.verifyPutProperty(SchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE, this.schemaGeneration.getOutputMode());
+		this.verifyPutEvent(SchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_TEST_VALUE, this.schemaGeneration.getOutputMode());
 	}
 
 	// ****** convenience methods *******
@@ -193,12 +178,15 @@ public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
 			}
 		};
 	}
-	
+
+	// ********** get/set property **********
+	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
 		throw new UnsupportedOperationException();
 	}
 
-	protected  void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
+	@Override
+	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		throw new UnsupportedOperationException();
 	}
 }

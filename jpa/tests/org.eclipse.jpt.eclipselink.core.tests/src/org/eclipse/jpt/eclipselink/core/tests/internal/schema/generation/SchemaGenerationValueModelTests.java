@@ -218,12 +218,15 @@ public class SchemaGenerationValueModelTests extends PersistenceUnitTestCase
 			this.outputModeHolder,
 			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE);
 	}
-	
+
+	// ********** get/set property **********
+	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
 		throw new UnsupportedOperationException();
 	}
 
-	protected  void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
+	@Override
+	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		throw new UnsupportedOperationException();
 	}
 }

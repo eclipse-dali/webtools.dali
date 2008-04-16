@@ -21,7 +21,6 @@ import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.LoggingLevel;
 import org.eclipse.jpt.eclipselink.core.tests.internal.PersistenceUnitTestCase;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
@@ -107,20 +106,6 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 	
 	// ********** Listeners **********
 
-	private PropertyChangeListener buildPropertyChangeListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				LoggingAdapterTests.this.propertyChangedEvent = event;
-				LoggingAdapterTests.this.propertyChangedEventCount++;
-			}
-
-			@Override
-			public String toString() {
-				return "Logging listener";
-			}
-		};
-	}
-
 	// ********** Listeners tests **********
 	public void testHasListeners() throws Exception {
 		// new
@@ -132,6 +117,7 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(ctdProperty.hasAnyPropertyChangeListeners(Property.VALUE_PROPERTY));
 		this.verifyHasListeners(this.logging, Logging.TIMESTAMP_PROPERTY);
+//TODO ADD OTHER PROPERTIES
 		this.verifyHasListeners(propertyListAdapter);
 		
 		EclipseLinkLogging elLogging = (EclipseLinkLogging) this.logging;
@@ -283,7 +269,7 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 			LOGGER_TEST_VALUE_2);
 	}
 
-	// ********** setting properties **********
+	// ********** get/set property **********
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
 		if (propertyName.equals(Logging.LEVEL_PROPERTY))
@@ -305,34 +291,37 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 	}
 
 	@Override
-	protected void verifyPutProperty(String propertyName, Object expectedValue) throws NoSuchFieldException {
+	protected Object getProperty(String propertyName) throws NoSuchFieldException {
+		Object modelValue = null;
 		if (propertyName.equals(Logging.LEVEL_PROPERTY))
-			this.verifyPutProperty(propertyName, this.logging.getLevel(), expectedValue);
+			modelValue = this.logging.getLevel();
 		else if (propertyName.equals(Logging.TIMESTAMP_PROPERTY))
-			this.verifyPutProperty(propertyName, this.logging.getTimestamp(), expectedValue);
+			modelValue = this.logging.getTimestamp();
 		else if (propertyName.equals(Logging.THREAD_PROPERTY))
-			this.verifyPutProperty(propertyName, this.logging.getThread(), expectedValue);
+			modelValue = this.logging.getThread();
 		else if (propertyName.equals(Logging.SESSION_PROPERTY))
-			this.verifyPutProperty(propertyName, this.logging.getSession(), expectedValue);
+			modelValue = this.logging.getSession();
 		else if (propertyName.equals(Logging.EXCEPTIONS_PROPERTY))
-			this.verifyPutProperty(propertyName, this.logging.getExceptions(), expectedValue);
+			modelValue = this.logging.getExceptions();
 		else if (propertyName.equals(Logging.LOG_FILE_LOCATION_PROPERTY))
-			this.verifyPutProperty(propertyName, this.logging.getLogFileLocation(), expectedValue);
-		else if (propertyName.equals(Logging.LOGGER_PROPERTY)) {
-			if(expectedValue == null) {
-				this.verifyPutProperty(propertyName, this.logging.getLogger(), null);
-			}
-			else if(expectedValue.getClass().isEnum()) {
-				this.verifyPutProperty(
-							propertyName, 
-							this.logging.getLogger(), 
-							this.getEclipseLinkStringValueOf(LOGGER_TEST_VALUE)); // model is storing EclipseLinkStringValue
-			}
-			else
-				this.verifyPutProperty(propertyName, this.logging.getLogger(), expectedValue);
-		}
+			modelValue = this.logging.getLogFileLocation();
+		else if (propertyName.equals(Logging.LOGGER_PROPERTY))
+			modelValue = this.logging.getLogger();
 		else
-			this.throwMissingDefinition("verifyPutProperty", propertyName);
+			this.throwMissingDefinition("getProperty", propertyName);
+		return modelValue;
+	}
+	
+	@Override
+	protected void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
+		Object expectedValue_ = expectedValue;
+		if (propertyName.equals(Logging.LOGGER_PROPERTY)) {
+			
+			expectedValue_ = (expectedValue != null && expectedValue.getClass().isEnum()) ?
+				this.getEclipseLinkStringValueOf(LOGGER_TEST_VALUE) : // model is storing EclipseLinkStringValue
+				expectedValue;
+		}
+		super.verifyPutProperty(propertyName, expectedValue_);
 	}
 	
 	protected PersistenceUnitProperties model() {

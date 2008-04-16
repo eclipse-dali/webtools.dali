@@ -22,7 +22,6 @@ import org.eclipse.jpt.eclipselink.core.internal.context.caching.EclipseLinkCach
 import org.eclipse.jpt.eclipselink.core.tests.internal.PersistenceUnitTestCase;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
-import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -132,20 +131,6 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 
 			public void listChanged(ListChangeEvent e) {
 				CachingAdapterTests.this.entityChanged(e);
-			}
-		};
-	}
-
-	private PropertyChangeListener buildPropertyChangeListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				CachingAdapterTests.this.propertyChangedEvent = event;
-				CachingAdapterTests.this.propertyChangedEventCount++;
-			}
-
-			@Override
-			public String toString() {
-				return "Caching listener";
 			}
 		};
 	}
@@ -422,6 +407,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 		}
 	}
 
+	// ********** get/set property **********
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
 		if (propertyName.equals(Caching.CACHE_TYPE_DEFAULT_PROPERTY))
@@ -446,14 +432,16 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	}
 
 	@Override
-	protected void verifyPutProperty(String propertyName, Object expectedValue) throws NoSuchFieldException {
+	protected Object getProperty(String propertyName) throws NoSuchFieldException {
+		Object modelValue = null;
 		if (propertyName.equals(Caching.CACHE_TYPE_DEFAULT_PROPERTY))
-			this.verifyPutProperty(propertyName, this.caching.getCacheTypeDefault(), expectedValue);
+			modelValue = this.caching.getCacheTypeDefault();
 		else if (propertyName.equals(Caching.CACHE_SIZE_DEFAULT_PROPERTY))
-			this.verifyPutProperty(propertyName, this.caching.getCacheSizeDefault(), expectedValue);
+			modelValue = this.caching.getCacheSizeDefault();
 		else if (propertyName.equals(Caching.SHARED_CACHE_DEFAULT_PROPERTY))
-			this.verifyPutProperty(propertyName, this.caching.getSharedCacheDefault(), expectedValue);
+			modelValue = this.caching.getSharedCacheDefault();
 		else
-			this.throwMissingDefinition("verifyPutProperty", propertyName);
+			this.throwMissingDefinition("getProperty", propertyName);
+		return modelValue;
 	}
 }

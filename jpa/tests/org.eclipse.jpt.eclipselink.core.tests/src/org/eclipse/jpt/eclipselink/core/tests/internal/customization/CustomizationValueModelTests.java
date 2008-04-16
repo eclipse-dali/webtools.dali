@@ -146,12 +146,15 @@ public class CustomizationValueModelTests extends PersistenceUnitTestCase
 			this.throwExceptionsHolder, 
 			Customization.ECLIPSELINK_THROW_EXCEPTIONS);
 	}
-	
+
+	// ********** get/set property **********
+	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
 		throw new UnsupportedOperationException();
 	}
 
-	protected  void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
+	@Override
+	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		throw new UnsupportedOperationException();
 	}
 }

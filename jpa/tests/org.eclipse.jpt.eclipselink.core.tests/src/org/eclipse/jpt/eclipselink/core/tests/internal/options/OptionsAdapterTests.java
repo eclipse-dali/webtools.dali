@@ -20,7 +20,6 @@ import org.eclipse.jpt.eclipselink.core.internal.context.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.options.TargetDatabase;
 import org.eclipse.jpt.eclipselink.core.tests.internal.PersistenceUnitTestCase;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
@@ -94,20 +93,6 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	}
 	
 	// ********** Listeners **********
-
-	private PropertyChangeListener buildPropertyChangeListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				OptionsAdapterTests.this.propertyChangedEvent = event;
-				OptionsAdapterTests.this.propertyChangedEventCount++;
-			}
-
-			@Override
-			public String toString() {
-				return "Options listener";
-			}
-		};
-	}
 
 	// ********** Listeners tests **********
 	public void testHasListeners() throws Exception {
@@ -238,7 +223,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 			SESSION_EVENT_LISTENER_TEST_VALUE_2);
 	}
 
-	// ********** setting properties ********** 
+	// ********** get/set property **********
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
 		if (propertyName.equals(Options.SESSION_NAME_PROPERTY))
@@ -256,19 +241,21 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	}
 
 	@Override
-	protected void verifyPutProperty(String propertyName, Object expectedValue) throws NoSuchFieldException {
+	protected Object getProperty(String propertyName) throws NoSuchFieldException {
+		Object modelValue = null;
 		if (propertyName.equals(Options.SESSION_NAME_PROPERTY))
-			this.verifyPutProperty(propertyName, this.options.getSessionName(), expectedValue);
+			modelValue = this.options.getSessionName();
 		else if (propertyName.equals(Options.SESSIONS_XML_PROPERTY))
-			this.verifyPutProperty(propertyName, this.options.getSessionsXml(), expectedValue);
+			modelValue = this.options.getSessionsXml();
 		else if (propertyName.equals(Options.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY))
-			this.verifyPutProperty(propertyName, this.options.getIncludeDescriptorQueries(), expectedValue);
+			modelValue = this.options.getIncludeDescriptorQueries();
 		else if (propertyName.equals(Options.TARGET_DATABASE_PROPERTY))
-			this.verifyPutProperty(propertyName, this.options.getTargetDatabase(), expectedValue);
+			modelValue = this.options.getTargetDatabase();
 		else if (propertyName.equals(Options.SESSION_EVENT_LISTENER_PROPERTY))
-			this.verifyPutProperty(propertyName, this.options.getEventListener(), expectedValue);
+			modelValue = this.options.getEventListener();
 		else
-			this.throwMissingDefinition("verifyPutProperty", propertyName);
+			this.throwMissingDefinition("getProperty", propertyName);
+		return modelValue;
 	}
 	
 	protected PersistenceUnitProperties model() {

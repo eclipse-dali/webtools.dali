@@ -22,7 +22,6 @@ import org.eclipse.jpt.eclipselink.core.internal.context.customization.Weaving;
 import org.eclipse.jpt.eclipselink.core.tests.internal.PersistenceUnitTestCase;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
-import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -139,20 +138,6 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 
 			public void listChanged(ListChangeEvent e) {
 				CustomizationAdapterTests.this.entityChanged(e);
-			}
-		};
-	}
-
-	private PropertyChangeListener buildPropertyChangeListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				CustomizationAdapterTests.this.propertyChangedEvent = event;
-				CustomizationAdapterTests.this.propertyChangedEventCount++;
-			}
-
-			@Override
-			public String toString() {
-				return "Customization listener";
 			}
 		};
 	}
@@ -440,7 +425,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 			this.throwMissingDefinition("setCustomizationProperty", propertyName);
 	}
 
-	// ********** setting properties **********
+	// ********** get/set property **********
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
 		if (propertyName.equals(Customization.THROW_EXCEPTIONS_PROPERTY))
@@ -460,23 +445,25 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	}
 
 	@Override
-	protected void verifyPutProperty(String propertyName, Object expectedValue) throws NoSuchFieldException {
+	protected Object getProperty(String propertyName) throws NoSuchFieldException {
+		Object modelValue = null;
 		if (propertyName.equals(Customization.THROW_EXCEPTIONS_PROPERTY))
-			this.verifyPutProperty(propertyName, this.customization.getThrowExceptions(), expectedValue);
+			modelValue = this.customization.getThrowExceptions();
 		else if (propertyName.equals(Customization.WEAVING_PROPERTY))
-			this.verifyPutProperty(propertyName, this.customization.getWeaving(), expectedValue);
+			modelValue = this.customization.getWeaving();
 		else if (propertyName.equals(Customization.WEAVING_LAZY_PROPERTY))
-			this.verifyPutProperty(propertyName, this.customization.getWeavingLazy(), expectedValue);
+			modelValue = this.customization.getWeavingLazy();
 		else if (propertyName.equals(Customization.WEAVING_CHANGE_TRACKING_PROPERTY))
-			this.verifyPutProperty(propertyName, this.customization.getWeavingChangeTracking(), expectedValue);
+			modelValue = this.customization.getWeavingChangeTracking();
 		else if (propertyName.equals(Customization.WEAVING_FETCH_GROUPS_PROPERTY))
-			this.verifyPutProperty(propertyName, this.customization.getWeavingFetchGroups(), expectedValue);
+			modelValue = this.customization.getWeavingFetchGroups();
 		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY))
-			this.verifyPutProperty(propertyName, this.customization.getSessionCustomizer(), expectedValue);
+			modelValue = this.customization.getSessionCustomizer();
 		else
-			this.throwMissingDefinition("verifyPutProperty", propertyName);
+			this.throwMissingDefinition("getProperty", propertyName);
+		return modelValue;
 	}
-	
+
 	protected PersistenceUnitProperties model() {
 		return this.customization;
 	}

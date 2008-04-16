@@ -145,12 +145,15 @@ public class LoggingValueModelTests extends PersistenceUnitTestCase
 			this.timestampHolder, 
 			Logging.ECLIPSELINK_TIMESTAMP);
 	}
-	
+
+	// ********** get/set property **********
+	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
 		throw new UnsupportedOperationException();
 	}
 
-	protected  void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
+	@Override
+	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		throw new UnsupportedOperationException();
 	}
 }

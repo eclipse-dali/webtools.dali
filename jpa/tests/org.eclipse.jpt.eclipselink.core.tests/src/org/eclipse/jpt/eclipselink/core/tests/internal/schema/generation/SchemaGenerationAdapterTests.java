@@ -21,7 +21,6 @@ import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.Outpu
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.core.tests.internal.PersistenceUnitTestCase;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
@@ -69,20 +68,6 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration.DROP_FILE_NAME_PROPERTY, propertyChangeListener);
 		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration.APPLICATION_LOCATION_PROPERTY, propertyChangeListener);
 		this.clearEvent();
-	}
-
-	private PropertyChangeListener buildPropertyChangeListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				SchemaGenerationAdapterTests.this.propertyChangedEvent = event;
-				SchemaGenerationAdapterTests.this.propertyChangedEventCount++;
-			}
-
-			@Override
-			public String toString() {
-				return "SchemaGeneration listener";
-			}
-		};
 	}
 
 	/**
@@ -239,7 +224,7 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 		this.verifyAddRemoveProperty(SchemaGeneration.DDL_GENERATION_TYPE_PROPERTY, DDL_GENERATION_TYPE_KEY, DDL_GENERATION_TYPE_TEST_VALUE, DDL_GENERATION_TYPE_TEST_VALUE_2);
 	}
 
-	// ****** convenience methods *******
+	// ********** get/set property **********
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws NoSuchFieldException {
 		if (propertyName.equals(SchemaGeneration.OUTPUT_MODE_PROPERTY))
@@ -259,19 +244,21 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 	}
 
 	@Override
-	protected void verifyPutProperty(String propertyName, Object expectedValue) throws NoSuchFieldException {
+	protected Object getProperty(String propertyName) throws NoSuchFieldException {
+		Object modelValue = null;
 		if (propertyName.equals(SchemaGeneration.OUTPUT_MODE_PROPERTY))
-			this.verifyPutProperty(propertyName, this.schemaGeneration.getOutputMode(), expectedValue);
+			modelValue = this.schemaGeneration.getOutputMode();
 		else if (propertyName.equals(SchemaGeneration.DDL_GENERATION_TYPE_PROPERTY))
-			this.verifyPutProperty(propertyName, this.schemaGeneration.getDdlGenerationType(), expectedValue);
+			modelValue = this.schemaGeneration.getDdlGenerationType();
 		else if (propertyName.equals(SchemaGeneration.APPLICATION_LOCATION_PROPERTY))
-			this.verifyPutProperty(propertyName, this.schemaGeneration.getApplicationLocation(), expectedValue);
+			modelValue = this.schemaGeneration.getApplicationLocation();
 		else if (propertyName.equals(SchemaGeneration.CREATE_FILE_NAME_PROPERTY))
-			this.verifyPutProperty(propertyName, this.schemaGeneration.getCreateFileName(), expectedValue);
+			modelValue = this.schemaGeneration.getCreateFileName();
 		else if (propertyName.equals(SchemaGeneration.DROP_FILE_NAME_PROPERTY))
-			this.verifyPutProperty(propertyName, this.schemaGeneration.getDropFileName(), expectedValue);
+			modelValue = this.schemaGeneration.getDropFileName();
 		else
-			this.throwMissingDefinition("verifyPutProperty", propertyName);
+			this.throwMissingDefinition("getProperty", propertyName);
+		return modelValue;
 	}
 
 	protected PersistenceUnitProperties model() {

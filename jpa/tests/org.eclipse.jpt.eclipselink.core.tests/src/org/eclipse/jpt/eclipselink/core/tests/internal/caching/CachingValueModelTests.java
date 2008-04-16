@@ -384,12 +384,15 @@ public class CachingValueModelTests extends PersistenceUnitTestCase
 			Caching.ECLIPSELINK_CACHE_SHARED_DEFAULT);
 	}
 
-	
+
+	// ********** get/set property **********
+	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
 		throw new UnsupportedOperationException();
 	}
 
-	protected  void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
+	@Override
+	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		throw new UnsupportedOperationException();
 	}
 }

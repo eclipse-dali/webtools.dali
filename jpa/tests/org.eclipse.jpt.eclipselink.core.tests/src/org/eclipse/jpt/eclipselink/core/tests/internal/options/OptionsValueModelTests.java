@@ -145,12 +145,15 @@ public class OptionsValueModelTests extends PersistenceUnitTestCase
 			this.includeDescriptorQueriesHolder, 
 			Options.ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES);
 	}
-	
+
+	// ********** get/set property **********
+	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
 		throw new UnsupportedOperationException();
 	}
 
-	protected  void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
+	@Override
+	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		throw new UnsupportedOperationException();
 	}
 }
