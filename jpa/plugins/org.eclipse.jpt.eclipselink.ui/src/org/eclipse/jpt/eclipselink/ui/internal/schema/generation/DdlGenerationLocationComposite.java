@@ -11,10 +11,12 @@ package org.eclipse.jpt.eclipselink.ui.internal.schema.generation;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
+import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.ui.internal.widgets.FileChooserPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -35,26 +37,51 @@ public class DdlGenerationLocationComposite extends AbstractPane<SchemaGeneratio
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<SchemaGeneration, String>(getSubjectHolder(), "SchemaGeneration.") {
+				return new PropertyAspectAdapter<SchemaGeneration, String>(getSubjectHolder(), SchemaGeneration.APPLICATION_LOCATION_PROPERTY) {
 					@Override
 					protected String buildValue_() {
-						return "";
+
+						String name = subject.getApplicationLocation();
+						if (name == null) {
+							name = defaultValue(subject);
+						}
+						return name;
 					}
 
 					@Override
 					protected void setValue_(String value) {
+
+						if (defaultValue(subject).equals(value)) {
+							value = null;
+						}
+						subject.setApplicationLocation(value);
 					}
 				};
 			}
 
+			private String defaultValue(SchemaGeneration subject) {
+				String defaultValue = subject.getDefaultApplicationLocation();
+
+				if (defaultValue != null) {
+					return NLS.bind(
+						EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_defaultWithOneParam,
+						defaultValue
+					);
+				}
+				else {
+					return EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_defaultEmpty;
+				}
+			}
+
 			@Override
 			protected String dialogMessage() {
+				//TODO
 				return "TODO";
 			}
 
 			@Override
 			protected String dialogTitle() {
-				return "Generation File";
+				return EclipseLinkUiMessages.DdlGenerationLocationComposite_dialogTitle;
 			}
 
 			@Override
@@ -64,7 +91,7 @@ public class DdlGenerationLocationComposite extends AbstractPane<SchemaGeneratio
 
 			@Override
 			protected String labelText() {
-				return "DDL Generation Location:";
+				return EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_ddlGenerationLocationLabel;
 			}
 		};
 	}
