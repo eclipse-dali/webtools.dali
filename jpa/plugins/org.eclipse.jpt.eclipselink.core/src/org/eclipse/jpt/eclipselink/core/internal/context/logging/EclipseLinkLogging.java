@@ -9,8 +9,6 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.logging;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -33,9 +31,6 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 	private Boolean exceptions;
 	private String logFileLocation;
 	private String logger; // storing EclipseLinkStringValue since value can be Logger or custom class
-	
-	protected List<String> loggers;
-	
 
 	// ********** constructors **********
 	public EclipseLinkLogging(PersistenceUnit parent, ListValueModel<Property> propertyListAdapter) {
@@ -48,9 +43,6 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 	 */
 	@Override
 	protected void initializeProperties() {
-		this.loggers = 
-			 new ArrayList<String>();
-		
 		// TOREVIEW - handle incorrect String in persistence.xml
 		this.level = 
 			this.getEnumValue(ECLIPSELINK_LEVEL, LoggingLevel.values());
