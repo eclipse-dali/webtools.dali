@@ -333,8 +333,8 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 	 * name, schema, catalog
 	 */
 	@Override
-	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.connectedCandidateValuesFor(pos, filter, astRoot);
+	public Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.connectedJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}

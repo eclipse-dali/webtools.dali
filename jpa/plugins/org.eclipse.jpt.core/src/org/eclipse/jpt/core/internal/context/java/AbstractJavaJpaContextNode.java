@@ -28,7 +28,7 @@ public abstract class AbstractJavaJpaContextNode extends AbstractJpaContextNode 
 
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		if (this.connectionProfileIsActive()) {
-			Iterator<String> result = this.connectedCandidateValuesFor(pos, filter, astRoot);
+			Iterator<String> result = this.connectedJavaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
@@ -41,9 +41,9 @@ public abstract class AbstractJavaJpaContextNode extends AbstractJpaContextNode 
 	 * get candidates from the various database tables etc.
 	 * This method should NOT be cascaded to "child" objects; it should
 	 * only return candidates for the current object. The cascading is
-	 * handled by #candidateValuesFor(int, Filter, CompilationUnit).
+	 * handled by #javaCompletionProposals(int, Filter, CompilationUnit).
 	 */
-	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+	public Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		return null;
 	}
 	
