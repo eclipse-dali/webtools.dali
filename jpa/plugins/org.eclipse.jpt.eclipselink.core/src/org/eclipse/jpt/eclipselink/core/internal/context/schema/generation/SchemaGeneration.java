@@ -54,6 +54,6 @@ public interface SchemaGeneration extends PersistenceUnitProperties
 		static final String APPLICATION_LOCATION_PROPERTY = "applicationLocationProperty";
 		// EclipseLink key string
 		static final String ECLIPSELINK_APPLICATION_LOCATION = "eclipselink.application-location";
-		static final String DEFAULT_SCHEMA_GENERATION_APPLICATION_LOCATION = null;		// No Default
+		static final String DEFAULT_SCHEMA_GENERATION_APPLICATION_LOCATION = ".";
 	
 }
