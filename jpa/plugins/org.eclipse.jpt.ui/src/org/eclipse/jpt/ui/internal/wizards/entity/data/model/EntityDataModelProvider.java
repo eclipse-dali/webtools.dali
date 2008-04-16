@@ -21,7 +21,6 @@ import org.eclipse.jpt.ui.internal.wizards.entity.data.operation.NewEntityClassO
 import org.eclipse.jst.j2ee.internal.common.J2EECommonMessages;
 import org.eclipse.jst.j2ee.internal.common.operations.NewJavaClassDataModelProvider;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
 import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
 
 public class EntityDataModelProvider extends NewJavaClassDataModelProvider implements IEntityDataModelProperties{
