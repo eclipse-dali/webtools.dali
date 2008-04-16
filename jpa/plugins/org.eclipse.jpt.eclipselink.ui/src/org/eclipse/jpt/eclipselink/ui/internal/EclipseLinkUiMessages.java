@@ -36,7 +36,55 @@ public class EclipseLinkUiMessages extends NLS
 	public static String PersistenceXmlGeneralTab_provider;
 	public static String PersistenceXmlGeneralTab_browse;
 	public static String PersistenceXmlGeneralTab_description;
+
+	// Connection
+	public static String PersistenceXmlConnectionTab_title;
+	public static String PersistenceXmlConnectionTab_sectionTitle;
+	public static String PersistenceXmlConnectionTab_sectionDescription;
+	public static String PersistenceXmlConnectionTab_defaultWithOneParam;
+	public static String PersistenceXmlConnectionTab_defaultEmpty;
 	
+	public static String PersistenceXmlConnectionTab_transactionTypeLabel;
+	
+	public static String TransactionTypeComposite_jta;
+	public static String TransactionTypeComposite_resource_local;
+	
+	public static String PersistenceXmlConnectionTab_nativeSqlLabel;
+	public static String PersistenceXmlConnectionTab_nativeSqlLabelDefault;
+	
+	public static String PersistenceXmlConnectionTab_batchWritingLabel;
+
+	public static String BatchWritingComposite_none;
+	public static String BatchWritingComposite_jdbc;
+	public static String BatchWritingComposite_buffered;
+	public static String BatchWritingComposite_oracle_jdbc;
+	
+	public static String PersistenceXmlConnectionTab_cacheStatementsLabel;
+	public static String PersistenceXmlConnectionTab_cacheStatementsLabelDefault;
+	public static String PersistenceXmlConnectionTab_cacheStatementsSizeLabel;
+	
+	public static String PersistenceXmlConnectionTab_dataSourceLabel;
+	public static String PersistenceXmlConnectionTab_jdbcLabel;
+
+	public static String PersistenceXmlConnectionTab_jtaDataSourceLabel;
+	public static String PersistenceXmlConnectionTab_nonJtaDataSourceLabel;
+	
+	public static String PersistenceXmlConnectionTab_driverLabel;
+	public static String PersistenceXmlConnectionTab_urlLabel;
+	public static String PersistenceXmlConnectionTab_userLabel;
+	public static String PersistenceXmlConnectionTab_passwordLabel;
+	public static String PersistenceXmlConnectionTab_bindParametersLabel;
+	public static String PersistenceXmlConnectionTab_bindParametersLabelDefault;
+
+	public static String PersistenceXmlConnectionTab_readConnectionsSharedLabel;
+	public static String PersistenceXmlConnectionTab_readConnectionsSharedLabelDefault;
+	public static String PersistenceXmlConnectionTab_readConnectionsSectionTitle;
+	public static String PersistenceXmlConnectionTab_readConnectionsMinLabel;
+	public static String PersistenceXmlConnectionTab_readConnectionsMaxLabel;
+	public static String PersistenceXmlConnectionTab_writeConnectionsSectionTitle;
+	public static String PersistenceXmlConnectionTab_writeConnectionsMinLabel;
+	public static String PersistenceXmlConnectionTab_writeConnectionsMaxLabel;
+
 	// SchemaGeneration
 	public static String PersistenceXmlSchemaGenerationTab_title;
 	public static String PersistenceXmlSchemaGenerationTab_sectionTitle;
@@ -44,11 +92,11 @@ public class EclipseLinkUiMessages extends NLS
 	public static String PersistenceXmlSchemaGenerationTab_defaultWithOneParam;
 	public static String PersistenceXmlSchemaGenerationTab_defaultEmpty;
 	
-	public static String PersistenceXmlSchemaGenerationTab_ddlGenerationType;
-	public static String PersistenceXmlSchemaGenerationTab_outputMode;
+	public static String PersistenceXmlSchemaGenerationTab_ddlGenerationTypeLabel;
+	public static String PersistenceXmlSchemaGenerationTab_outputModeLabel;
 	
-	public static String PersistenceXmlSchemaGenerationTab_createDdlFileName;
-	public static String PersistenceXmlSchemaGenerationTab_dropDdlFileName;
+	public static String PersistenceXmlSchemaGenerationTab_createDdlFileNameLabel;
+	public static String PersistenceXmlSchemaGenerationTab_dropDdlFileNameLabel;
 
 	public static String OutputModeComposite_both;
 	public static String OutputModeComposite_sql_script;
@@ -57,6 +105,10 @@ public class EclipseLinkUiMessages extends NLS
 	public static String DdlGenerationTypeComposite_none;
 	public static String DdlGenerationTypeComposite_create_tables;
 	public static String DdlGenerationTypeComposite_drop_and_create_tables;
+
+	public static String PersistenceXmlSchemaGenerationTab_ddlGenerationLocationLabel;
+	
+	public static String DdlGenerationLocationComposite_dialogTitle;
 	
 	// Caching
 	public static String PersistenceXmlCachingTab_title;

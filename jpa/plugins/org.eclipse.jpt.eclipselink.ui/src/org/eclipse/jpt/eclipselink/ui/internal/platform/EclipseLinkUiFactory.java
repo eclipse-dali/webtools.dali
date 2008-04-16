@@ -15,11 +15,13 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
+import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.internal.context.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.ui.internal.caching.PersistenceXmlCachingTab;
+import org.eclipse.jpt.eclipselink.ui.internal.connection.PersistenceXmlConnectionTab;
 import org.eclipse.jpt.eclipselink.ui.internal.customization.PersistenceXmlCustomizationTab;
 import org.eclipse.jpt.eclipselink.ui.internal.logging.PersistenceXmlLoggingTab;
 import org.eclipse.jpt.eclipselink.ui.internal.options.PersistenceXmlOptionsTab;
@@ -49,20 +51,20 @@ public class EclipseLinkUiFactory extends BaseJpaUiFactory
 		PropertyValueModel<EclipseLinkPersistenceUnit> eclipseLinkPersistenceUnitHolder = 
 			this.buildEclipseLinkPersistenceUnitHolder(subjectHolder);
 		ArrayList<JpaPageComposite<PersistenceUnit>> pages = 
-			new ArrayList<JpaPageComposite<PersistenceUnit>>(2);
+			new ArrayList<JpaPageComposite<PersistenceUnit>>(10);
 		
-		PropertyValueModel<SchemaGeneration> schemaGenHolder = 
-			this.buildSchemaGenerationHolder(eclipseLinkPersistenceUnitHolder);
-		pages.add(new PersistenceXmlSchemaGenerationTab(schemaGenHolder, parent, widgetFactory));
+		PropertyValueModel<Connection> connectionHolder = 
+			this.buildConnectionHolder(eclipseLinkPersistenceUnitHolder);
+		pages.add(new PersistenceXmlConnectionTab(connectionHolder, parent, widgetFactory));
+		
+		PropertyValueModel<Customization> customizationHolder = 
+			this.buildCustomizationHolder(eclipseLinkPersistenceUnitHolder);
+		pages.add(new PersistenceXmlCustomizationTab(customizationHolder, parent, widgetFactory));
 		
 		PropertyValueModel<Caching> cachingHolder = 
 			this.buildCachingHolder(eclipseLinkPersistenceUnitHolder);
 		pages.add(new PersistenceXmlCachingTab(cachingHolder, parent, widgetFactory));
 		
-		PropertyValueModel<Customization> customizationHolder = 
-			this.buildCustomizationHolder(eclipseLinkPersistenceUnitHolder);
-		pages.add(new PersistenceXmlCustomizationTab(customizationHolder, parent, widgetFactory));
-
 		PropertyValueModel<Logging> loggingHolder = 
 			this.buildLoggingHolder(eclipseLinkPersistenceUnitHolder);
 		pages.add(new PersistenceXmlLoggingTab(loggingHolder, parent, widgetFactory));
@@ -71,7 +73,21 @@ public class EclipseLinkUiFactory extends BaseJpaUiFactory
 			this.buildOptionsHolder(eclipseLinkPersistenceUnitHolder);
 		pages.add(new PersistenceXmlOptionsTab(optionsHolder, parent, widgetFactory));
 		
+		PropertyValueModel<SchemaGeneration> schemaGenHolder = 
+			this.buildSchemaGenerationHolder(eclipseLinkPersistenceUnitHolder);
+		pages.add(new PersistenceXmlSchemaGenerationTab(schemaGenHolder, parent, widgetFactory));
+		
 		return pages.listIterator();
+	}
+
+	private PropertyValueModel<Connection> buildConnectionHolder(
+				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
+		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Connection>(subjectHolder) {
+			@Override
+			protected Connection transform_(EclipseLinkPersistenceUnit value) {
+				return value.getConnection();
+			}
+		};
 	}
 
 	private PropertyValueModel<Options> buildOptionsHolder(
