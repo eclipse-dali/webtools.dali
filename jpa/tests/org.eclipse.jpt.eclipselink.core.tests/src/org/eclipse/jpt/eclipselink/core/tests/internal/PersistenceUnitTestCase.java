@@ -20,6 +20,7 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
@@ -67,6 +68,16 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	protected abstract void populatePu();
 
 	/**
+	 * Gets the model's property identified by the given propertyName.
+	 * 
+	 * @param propertyName
+	 *            name of property to get
+	 * @throws Exception
+	 */
+	protected abstract Object getProperty(String propertyName) throws Exception;
+
+
+	/**
 	 * Sets the model's property identified by the given propertyName.
 	 * Used in verifySetProperty()
 	 * 
@@ -77,19 +88,8 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	 * @throws Exception
 	 */
 	protected abstract void setProperty(String propertyName, Object newValue) throws Exception;
+
 	
-	/**
-	 * Verifies the model's property identified by the given propertyName
-	 * Used in verifySetProperty() and verifyAddRemoveProperty
-	 * 
-	 * @param propertyName
-	 *            name of property to be verified
-	 * @param expectedValue
-	 * @throws Exception
-	 */
-	protected abstract void verifyPutProperty(String propertyName, Object expectedValue) throws Exception;
-
-
 	// ****** convenience test methods *******
 
 	protected String getEclipseLinkStringValueOf(Object value) {
@@ -136,8 +136,22 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	protected void throwUnsupportedOperationException(ListChangeEvent e) {
 		throw new UnsupportedOperationException(e.getAspectName());
 	}
+
+	protected PropertyChangeListener buildPropertyChangeListener() {
+		return new PropertyChangeListener() {
+			public void propertyChanged(PropertyChangeEvent event) {
+				PersistenceUnitTestCase.this.propertyChangedEvent = event;
+				PersistenceUnitTestCase.this.propertyChangedEventCount++;
+			}
 	
-	// ****** verify methods *******
+			@Override
+			public String toString() {
+				return "Connection listener";
+			}
+		};
+	}
+	
+	// ****** verify EclipseLink properties *******
 	/**
 	 * Performs three value tests:<br>
 	 * 1. subject value<br>
@@ -256,10 +270,35 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		this.verifyPutProperty(propertyName, testValue2);
 	}
+	
+	/**
+	 * Verifies the model's property identified by the given propertyName
+	 * Used in verifySetProperty() and verifyAddRemoveProperty
+	 * 
+	 * @param propertyName
+	 *            name of property to be verified
+	 * @param expectedValue
+	 * @throws Exception
+	 */
+	protected void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
 
-	protected void verifyPutProperty(String propertyName, Object value, Object expectedValue) {
+		this.verifyPutEvent(propertyName, this.getProperty(propertyName), expectedValue);
+	}
+
+	/**
+	 * Verifies the event of the put() action.
+	 * 
+	 * @param propertyName
+	 *            name of property to be verified
+	 * @param propertyValue
+	 *            value of property
+	 * @param expectedValue
+	 * @throws Exception
+	 */
+	protected void verifyPutEvent(String propertyName, Object propertyValue, Object expectedValue) {
+		
 		this.verifyEvent(propertyName);
-		this.verifyEventValue(value, expectedValue);
+		this.verifyEventValue(propertyValue, expectedValue);
 	}
 
 	/**
@@ -312,5 +351,64 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 
 	protected void verifyPuHasNotProperty(String eclipseLinkPropertyName, String msg) {
 		assertNull(msg + " - " + eclipseLinkPropertyName, this.persistenceUnit().getProperty(eclipseLinkPropertyName));
+	}
+
+	// ****** verify Persistence Unit properties *******
+
+	/**
+	 * Performs the following tests:<br>
+	 * 1. verify Persistence Unit specified property initialized<br>
+	 * 2. set the PU property and verify PU its value<br>
+	 * 3. set the PU property to null and verify PU its value<br>
+	 * 4. set model value property and verify PU modified<br>
+	 * 5. set model value property to null and verify PU modified<br>
+	 */
+	protected void verifySetPersistenceUnitProperty(String propertyName, Object initialModelValue, Object testValue1, Object testValue2) throws Exception {
+		// Basic
+		this.verifyHasListeners(this.model(), propertyName);
+		assertEquals("Persistence Unit not initialized.", testValue1, this.getPersistenceUnitProperty(propertyName));
+		assertEquals(
+			"Model not initialized - model.initializeProperties() - modelValue = " + initialModelValue, 
+			testValue1, 
+			initialModelValue);
+		
+		// Modifying value by setting PU
+		this.clearEvent();
+		this.setPersistenceUnitProperty(propertyName, testValue2);
+		this.verifyModelModified(propertyName, testValue2);
+		
+		// Setting PU to null
+		this.clearEvent();
+		this.setPersistenceUnitProperty(propertyName, null);
+		this.verifyModelModified(propertyName, null);
+		
+		// Modifying value by setting model object
+		this.clearEvent();
+		this.setProperty(propertyName, testValue1);
+		this.verifyPersistenceUnitModified(propertyName, testValue1);
+
+		// Setting model to null
+		this.clearEvent();
+		this.setProperty(propertyName, null);
+		this.verifyPersistenceUnitModified(propertyName, null);
+	}
+
+	protected void verifyPersistenceUnitModified(String propertyName, Object expectedValue) throws Exception {
+		assertEquals("Persistence Unit not modified.", expectedValue, this.getPersistenceUnitProperty(propertyName));
+		this.verifyPutProperty(propertyName, expectedValue);
+	}
+
+	protected void verifyModelModified(String propertyName, Object expectedValue) throws Exception {
+		Object modelValue = this.getProperty(propertyName);
+		assertEquals("connection value not modified.", expectedValue, modelValue);
+		this.verifyPutEvent(propertyName, modelValue, expectedValue);
+	}
+	
+	protected void setPersistenceUnitProperty(String propertyName, Object newValue) throws NoSuchFieldException {
+		throw new NoSuchMethodError("Missing implementation for setPersistenceUnitProperty");
+	}
+	
+	protected Object getPersistenceUnitProperty(String propertyName) throws NoSuchFieldException {
+		throw new NoSuchMethodError("Missing implementation for getPersistenceUnitProperty");
 	}
 }
