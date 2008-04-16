@@ -32,7 +32,12 @@ Require-Bundle: org.eclipse.core.expressions,
  org.eclipse.wst.sse.ui,
  org.eclipse.wst.web.ui,
  org.eclipse.ui.navigator,
- org.eclipse.ui.editors
+ org.eclipse.ui.editors,
+ org.eclipse.jem.util;bundle-version="2.0.1",
+ org.eclipse.emf.codegen;bundle-version="2.3.1",
+ org.eclipse.jst.common.annotations.controller;bundle-version="1.1.2",
+ org.eclipse.emf.ecore;bundle-version="2.4.0",
+ org.eclipse.wst.common.emf;bundle-version="1.1.104"
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.jpt.ui,
  org.eclipse.jpt.ui.details,
@@ -67,6 +72,9 @@ Export-Package: org.eclipse.jpt.ui,
  org.eclipse.jpt.ui.internal.views.structure;x-internal:=true,
  org.eclipse.jpt.ui.internal.widgets;x-internal:=true,
  org.eclipse.jpt.ui.internal.wizards;x-internal:=true,
+ org.eclipse.jpt.ui.internal.wizards.entity;x-internal:=true,
+ org.eclipse.jpt.ui.internal.wizards.entity.data.model;x-internal:=true,
+ org.eclipse.jpt.ui.internal.wizards.entity.data.operation;x-internal:=true,
  org.eclipse.jpt.ui.jface,
  org.eclipse.jpt.ui.navigator,
  org.eclipse.jpt.ui.structure

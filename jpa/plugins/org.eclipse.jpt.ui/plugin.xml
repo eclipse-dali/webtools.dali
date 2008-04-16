@@ -658,4 +658,22 @@
 		
 	</extension>
  	
+<!-- =================================================================================== -->
+<!-- Extension: Entity Wizard                                                       -->
+<!-- =================================================================================== -->
+ 	
+    <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="org.eclipse.jpt"
+            class="org.eclipse.jpt.ui.internal.wizards.entity.EntityWizard"
+            icon="icons/full/obj16/entity.gif"
+            id="org.eclipse.jpt.ui.internal.wizards.entity.EntityWizard"
+            name="JPA Entity">
+         <description>
+			Create Entity wizard
+         </description>
+      </wizard>
+   </extension>
+ 	
 </plugin>
