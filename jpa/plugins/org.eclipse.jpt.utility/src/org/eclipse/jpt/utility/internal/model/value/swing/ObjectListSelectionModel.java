@@ -179,7 +179,7 @@ public class ObjectListSelectionModel
 	}
 
 	/**
-	 * Return an array of the selected indices in ordered.
+	 * Return an array of the selected indices in order.
 	 */
 	public int[] selectedIndices() {
 		int min = this.getMinSelectionIndex();
