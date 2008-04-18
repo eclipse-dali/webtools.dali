@@ -122,6 +122,9 @@ public class JoinColumnImpl extends BaseColumnImpl implements NestableJoinColumn
 	}
 	
 	public void setReferencedColumnName(String newReferencedColumnName) {
+		if (attributeValueHasNotChanged(this.referencedColumnName, newReferencedColumnName)) {
+			return;
+		}
 		String oldReferencedColumnName = this.referencedColumnName;
 		this.referencedColumnName = newReferencedColumnName;
 		this.referencedColumnNameAdapter.setValue(newReferencedColumnName);

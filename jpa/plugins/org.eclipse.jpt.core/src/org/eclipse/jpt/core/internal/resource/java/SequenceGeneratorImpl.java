@@ -82,6 +82,9 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 	}
 
 	public void setSequenceName(String newSequenceName) {
+		if (attributeValueHasNotChanged(this.sequenceName, newSequenceName)) {
+			return;
+		}
 		String oldSequenceName = this.sequenceName;
 		this.sequenceName = newSequenceName;
 		this.sequenceNameAdapter.setValue(newSequenceName);

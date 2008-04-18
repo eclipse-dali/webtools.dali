@@ -128,6 +128,9 @@ public class ColumnImpl extends BaseColumnImpl implements ColumnAnnotation, Nest
 	}
 
 	public void setLength(Integer newLength) {
+		if (attributeValueHasNotChanged(this.length, newLength)) {
+			return;
+		}
 		Integer oldLength = this.length;
 		this.length = newLength;
 		this.lengthAdapter.setValue(newLength);
@@ -139,6 +142,9 @@ public class ColumnImpl extends BaseColumnImpl implements ColumnAnnotation, Nest
 	}
 
 	public void setPrecision(Integer newPrecision) {
+		if (attributeValueHasNotChanged(this.precision, newPrecision)) {
+			return;
+		}
 		Integer oldPrecision = this.precision;
 		this.precision = newPrecision;
 		this.precisionAdapter.setValue(newPrecision);
@@ -150,6 +156,9 @@ public class ColumnImpl extends BaseColumnImpl implements ColumnAnnotation, Nest
 	}
 
 	public void setScale(Integer newScale) {
+		if (attributeValueHasNotChanged(this.scale, newScale)) {
+			return;
+		}
 		Integer oldScale = this.scale;
 		this.scale = newScale;
 		this.scaleAdapter.setValue(newScale);

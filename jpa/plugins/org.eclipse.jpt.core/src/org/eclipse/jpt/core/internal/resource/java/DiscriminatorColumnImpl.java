@@ -90,6 +90,9 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 	}
 	
 	public void setDiscriminatorType(DiscriminatorType newDiscriminatorType) {
+		if (attributeValueHasNotChanged(this.discriminatorType, newDiscriminatorType)) {
+			return;
+		}
 		DiscriminatorType oldDiscriminatorType = this.discriminatorType;
 		this.discriminatorType = newDiscriminatorType;
 		this.discriminatorTypeAdapter.setValue(DiscriminatorType.toJavaAnnotationValue(newDiscriminatorType));
@@ -101,6 +104,9 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 	}
 
 	public void setLength(Integer newLength) {
+		if (attributeValueHasNotChanged(this.length, newLength)) {
+			return;
+		}
 		Integer oldLength = this.length;
 		this.length = newLength;
 		this.lengthAdapter.setValue(newLength);

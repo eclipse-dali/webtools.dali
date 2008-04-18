@@ -139,6 +139,9 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 	}
 	
 	public void setTable(String newTable) {
+		if (attributeValueHasNotChanged(this.table, newTable)) {
+			return;
+		}
 		String oldTable = this.table;
 		this.table = newTable;
 		this.tableAdapter.setValue(newTable);
@@ -150,6 +153,9 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 	}
 	
 	public void setCatalog(String newCatalog) {
+		if (attributeValueHasNotChanged(this.catalog, newCatalog)) {
+			return;
+		}
 		String oldCatalog = this.catalog;
 		this.catalog = newCatalog;
 		this.catalogAdapter.setValue(newCatalog);
@@ -161,6 +167,9 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 	}
 	
 	public void setSchema(String newSchema) {
+		if (attributeValueHasNotChanged(this.schema, newSchema)) {
+			return;
+		}
 		String oldSchema = this.schema;
 		this.schema = newSchema;
 		this.schemaAdapter.setValue(newSchema);
@@ -172,6 +181,9 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 	}
 	
 	public void setPkColumnName(String newPkColumnName) {
+		if (attributeValueHasNotChanged(this.pkColumnName, newPkColumnName)) {
+			return;
+		}
 		String oldPkColumnName = this.pkColumnName;
 		this.pkColumnName = newPkColumnName;
 		this.pkColumnNameAdapter.setValue(newPkColumnName);
@@ -183,6 +195,9 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 	}
 	
 	public void setValueColumnName(String newValueColumnName) {
+		if (attributeValueHasNotChanged(this.valueColumnName, newValueColumnName)) {
+			return;
+		}
 		String oldValueColumnName = this.valueColumnName;
 		this.valueColumnName = newValueColumnName;
 		this.valueColumnNameAdapter.setValue(newValueColumnName);
@@ -194,6 +209,9 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 	}
 	
 	public void setPkColumnValue(String newPkColumnValue) {
+		if (attributeValueHasNotChanged(this.pkColumnValue, newPkColumnValue)) {
+			return;
+		}
 		String oldPkColumnValue = this.pkColumnValue;
 		this.pkColumnValue = newPkColumnValue;
 		this.pkColumnValueAdapter.setValue(newPkColumnValue);

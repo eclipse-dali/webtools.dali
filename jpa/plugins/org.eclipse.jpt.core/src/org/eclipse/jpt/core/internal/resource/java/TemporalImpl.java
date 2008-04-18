@@ -55,6 +55,9 @@ public class TemporalImpl extends AbstractResourceAnnotation<Attribute> implemen
 	}
 	
 	public void setValue(TemporalType newValue) {
+		if (attributeValueHasNotChanged(this.value, newValue)) {
+			return;
+		}
 		TemporalType oldValue = this.value;
 		this.value = newValue;
 		this.valueAdapter.setValue(TemporalType.toJavaAnnotationValue(newValue));

@@ -59,6 +59,9 @@ public class IdClassImpl extends AbstractResourceAnnotation<Type> implements IdC
 	}
 
 	public void setValue(String newValue) {
+		if (attributeValueHasNotChanged(this.value, newValue)) {
+			return;
+		}
 		String oldValue = this.value;
 		this.value = newValue;
 		this.valueAdapter.setValue(newValue);

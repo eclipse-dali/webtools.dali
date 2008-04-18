@@ -54,6 +54,9 @@ public class DiscriminatorValueImpl extends AbstractResourceAnnotation<Type> imp
 	}
 
 	public void setValue(String newValue) {
+		if (attributeValueHasNotChanged(this.value, newValue)) {
+			return;
+		}
 		String oldValue = this.value;
 		this.value = newValue;
 		this.valueAdapter.setValue(newValue);

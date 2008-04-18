@@ -55,6 +55,9 @@ public class EnumeratedImpl extends AbstractResourceAnnotation<Attribute> implem
 	}
 	
 	public void setValue(EnumType newValue) {
+		if (attributeValueHasNotChanged(this.value, newValue)) {
+			return;
+		}
 		EnumType oldValue = this.value;
 		this.value = newValue;
 		this.valueAdapter.setValue(EnumType.toJavaAnnotationValue(newValue));

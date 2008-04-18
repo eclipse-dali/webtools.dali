@@ -97,6 +97,9 @@ public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements Nes
 	}
 	
 	public void setReferencedColumnName(String newReferencedColumnName) {
+		if (attributeValueHasNotChanged(this.referencedColumnName, newReferencedColumnName)) {
+			return;
+		}
 		String oldReferencedColumnName = this.referencedColumnName;
 		this.referencedColumnName = newReferencedColumnName;
 		this.referencedColumnNameAdapter.setValue(newReferencedColumnName);

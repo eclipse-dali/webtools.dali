@@ -64,6 +64,9 @@ public class GeneratedValueImpl extends AbstractResourceAnnotation<Member> imple
 	}
 	
 	public void setStrategy(GenerationType newStrategy) {
+		if (attributeValueHasNotChanged(this.strategy, newStrategy)) {
+			return;
+		}
 		GenerationType oldStrategy = this.strategy;
 		this.strategy = newStrategy;
 		this.strategyAdapter.setValue(GenerationType.toJavaAnnotationValue(newStrategy));
@@ -75,6 +78,9 @@ public class GeneratedValueImpl extends AbstractResourceAnnotation<Member> imple
 	}
 	
 	public void setGenerator(String newGenerator) {
+		if (attributeValueHasNotChanged(this.generator, newGenerator)) {
+			return;
+		}
 		String oldGenerator = this.generator;
 		this.generator = newGenerator;
 		this.generatorAdapter.setValue(newGenerator);

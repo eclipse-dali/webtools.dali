@@ -114,6 +114,9 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 	}
 	
 	public void setResultClass(String newResultClass) {
+		if (attributeValueHasNotChanged(this.resultClass, newResultClass)) {
+			return;
+		}
 		String oldResultClass = this.resultClass;
 		this.resultClass = newResultClass;
 		this.resultClassAdapter.setValue(newResultClass);
@@ -135,6 +138,9 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 	}
 	
 	public void setResultSetMapping(String newResultSetMapping) {
+		if (attributeValueHasNotChanged(this.resultSetMapping, newResultSetMapping)) {
+			return;
+		}
 		String oldResultSetMapping = this.resultSetMapping;
 		this.resultSetMapping = newResultSetMapping;
 		this.resultSetMappingAdapter.setValue(newResultSetMapping);

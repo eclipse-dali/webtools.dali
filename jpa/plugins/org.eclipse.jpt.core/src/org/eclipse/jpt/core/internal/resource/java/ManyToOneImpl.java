@@ -83,6 +83,9 @@ public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation impleme
 	}
 	
 	public void setOptional(Boolean newOptional) {
+		if (attributeValueHasNotChanged(this.optional, newOptional)) {
+			return;
+		}
 		Boolean oldOptional = this.optional;
 		this.optional = newOptional;
 		this.optionalAdapter.setValue(newOptional);

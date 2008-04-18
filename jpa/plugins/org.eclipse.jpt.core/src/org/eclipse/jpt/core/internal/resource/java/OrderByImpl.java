@@ -55,6 +55,9 @@ public class OrderByImpl extends AbstractResourceAnnotation<Attribute> implement
 	}
 
 	public void setValue(String newValue) {
+		if (attributeValueHasNotChanged(this.value, newValue)) {
+			return;
+		}
 		String oldValue = this.value;
 		this.value = newValue;
 		this.valueAdapter.setValue(newValue);

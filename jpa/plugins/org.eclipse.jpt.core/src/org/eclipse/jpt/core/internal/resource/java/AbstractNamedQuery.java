@@ -92,6 +92,9 @@ public abstract class AbstractNamedQuery extends AbstractResourceAnnotation<Type
 	}
 	
 	public void setName(String newName) {
+		if (attributeValueHasNotChanged(this.name, newName)) {
+			return;
+		}
 		String oldName = this.name;
 		this.name = newName;
 		this.nameAdapter.setValue(newName);
@@ -103,6 +106,9 @@ public abstract class AbstractNamedQuery extends AbstractResourceAnnotation<Type
 	}
 
 	public void setQuery(String newQuery) {
+		if (attributeValueHasNotChanged(this.query, newQuery)) {
+			return;
+		}
 		String oldQuery = this.query;
 		this.query = newQuery;
 		this.queryAdapter.setValue(newQuery);

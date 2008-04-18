@@ -107,6 +107,9 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractReso
 	}
 	
 	public void setTargetEntity(String newTargetEntity) {
+		if (attributeValueHasNotChanged(this.targetEntity, newTargetEntity)) {
+			return;
+		}
 		String oldTargetEntity = this.targetEntity;
 		this.targetEntity = newTargetEntity;
 		this.targetEntityAdapter.setValue(newTargetEntity);
@@ -128,6 +131,9 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractReso
 	}
 	
 	public void setFetch(FetchType newFetch) {
+		if (attributeValueHasNotChanged(this.fetch, newFetch)) {
+			return;
+		}
 		FetchType oldFetch = this.fetch;
 		this.fetch = newFetch;
 		this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(newFetch));

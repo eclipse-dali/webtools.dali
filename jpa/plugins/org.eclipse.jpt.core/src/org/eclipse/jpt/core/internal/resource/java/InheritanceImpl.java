@@ -54,6 +54,9 @@ public class InheritanceImpl extends AbstractResourceAnnotation<Type> implements
 	}
 	
 	public void setStrategy(InheritanceType newStrategy) {
+		if (attributeValueHasNotChanged(this.strategy, newStrategy)) {
+			return;
+		}
 		InheritanceType oldStrategy = this.strategy;
 		this.strategy = newStrategy;
 		this.strategyAdapter.setValue(InheritanceType.toJavaAnnotationValue(newStrategy));

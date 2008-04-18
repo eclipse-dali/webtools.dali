@@ -95,6 +95,9 @@ public abstract class AbstractNamedColumn extends AbstractResourceAnnotation<Mem
 	}
 
 	public void setName(String newName) {
+		if (attributeValueHasNotChanged(this.name, newName)) {
+			return;
+		}
 		String oldName = this.name;
 		this.name = newName;
 		this.nameAdapter.setValue(newName);
@@ -106,6 +109,9 @@ public abstract class AbstractNamedColumn extends AbstractResourceAnnotation<Mem
 	}
 	
 	public void setColumnDefinition(String newColumnDefinition) {
+		if (attributeValueHasNotChanged(this.columnDefinition, newColumnDefinition)) {
+			return;
+		}
 		String oldColumnDefinition = this.columnDefinition;
 		this.columnDefinition = newColumnDefinition;
 		this.columnDefinitionAdapter.setValue(newColumnDefinition);

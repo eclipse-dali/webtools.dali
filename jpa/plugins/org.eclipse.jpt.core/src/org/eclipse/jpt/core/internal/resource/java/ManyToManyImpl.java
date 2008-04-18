@@ -83,6 +83,9 @@ public class ManyToManyImpl extends AbstractRelationshipMappingAnnotation implem
 	}
 	
 	public void setMappedBy(String newMappedBy) {
+		if (attributeValueHasNotChanged(this.mappedBy, newMappedBy)) {
+			return;
+		}
 		String oldMappedBy = this.mappedBy;
 		this.mappedBy = newMappedBy;
 		this.mappedByAdapter.setValue(newMappedBy);

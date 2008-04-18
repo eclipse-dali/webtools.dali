@@ -84,6 +84,9 @@ public abstract class GeneratorImpl extends AbstractResourceAnnotation<Member> i
 	}
 	
 	public void setAllocationSize(Integer newAllocationSize) {
+		if (attributeValueHasNotChanged(this.allocationSize, newAllocationSize)) {
+			return;
+		}
 		Integer oldAllocationSize = this.allocationSize;
 		this.allocationSize = newAllocationSize;
 		this.allocationSizeAdapter.setValue(newAllocationSize);
@@ -95,6 +98,9 @@ public abstract class GeneratorImpl extends AbstractResourceAnnotation<Member> i
 	}
 
 	public void setInitialValue(Integer newInitialValue) {
+		if (attributeValueHasNotChanged(this.initialValue, newInitialValue)) {
+			return;
+		}
 		Integer oldInitialValue = this.initialValue;
 		this.initialValue = newInitialValue;
 		this.initialValueAdapter.setValue(newInitialValue);
@@ -106,6 +112,9 @@ public abstract class GeneratorImpl extends AbstractResourceAnnotation<Member> i
 	}
 
 	public void setName(String newName) {
+		if (attributeValueHasNotChanged(this.name, newName)) {
+			return;
+		}
 		String oldName = this.name;
 		this.name = newName;
 		this.nameAdapter.setValue(newName);

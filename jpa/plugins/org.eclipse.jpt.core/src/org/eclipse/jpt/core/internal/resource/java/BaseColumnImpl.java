@@ -110,6 +110,9 @@ public abstract class BaseColumnImpl extends AbstractNamedColumn implements Base
 	}
 
 	public void setTable(String newTable) {
+		if (attributeValueHasNotChanged(this.table, newTable)) {
+			return;
+		}
 		String oldTable = this.table;
 		this.table = newTable;
 		this.tableAdapter.setValue(newTable);
@@ -121,6 +124,9 @@ public abstract class BaseColumnImpl extends AbstractNamedColumn implements Base
 	}
 
 	public void setUnique(Boolean newUnique) {
+		if (attributeValueHasNotChanged(this.unique, newUnique)) {
+			return;
+		}
 		Boolean oldUnique = this.unique;
 		this.unique = newUnique;
 		this.uniqueAdapter.setValue(newUnique);
@@ -132,6 +138,9 @@ public abstract class BaseColumnImpl extends AbstractNamedColumn implements Base
 	}
 
 	public void setNullable(Boolean newNullable) {
+		if (attributeValueHasNotChanged(this.nullable, newNullable)) {
+			return;
+		}
 		Boolean oldNullable = this.nullable;
 		this.nullable = newNullable;
 		this.nullableAdapter.setValue(newNullable);
@@ -143,6 +152,9 @@ public abstract class BaseColumnImpl extends AbstractNamedColumn implements Base
 	}
 
 	public void setInsertable(Boolean newInsertable) {
+		if (attributeValueHasNotChanged(this.insertable, newInsertable)) {
+			return;
+		}
 		Boolean oldInsertable = this.insertable;
 		this.insertable = newInsertable;
 		this.insertableAdapter.setValue(newInsertable);
@@ -154,6 +166,9 @@ public abstract class BaseColumnImpl extends AbstractNamedColumn implements Base
 	}
 
 	public void setUpdatable(Boolean newUpdatable) {
+		if (attributeValueHasNotChanged(this.updatable, newUpdatable)) {
+			return;
+		}
 		Boolean oldUpdatable = this.updatable;
 		this.updatable = newUpdatable;
 		this.updatableAdapter.setValue(newUpdatable);

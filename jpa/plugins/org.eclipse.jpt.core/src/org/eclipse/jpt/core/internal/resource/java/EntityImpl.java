@@ -57,6 +57,9 @@ public class EntityImpl extends AbstractResourceAnnotation<Type> implements Enti
 	}
 
 	public void setName(String newName) {
+		if (attributeValueHasNotChanged(this.name, newName)) {
+			return;
+		}
 		String oldName = this.name;
 		this.name = newName;
 		this.nameAdapter.setValue(newName);

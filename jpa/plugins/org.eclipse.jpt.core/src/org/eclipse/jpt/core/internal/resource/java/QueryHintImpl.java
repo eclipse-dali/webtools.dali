@@ -85,6 +85,9 @@ public class QueryHintImpl extends AbstractResourceAnnotation<Type>
 	}
 	
 	public void setName(String newName) {
+		if (attributeValueHasNotChanged(this.name, newName)) {
+			return;
+		}
 		String oldName = this.name;
 		this.name = newName;
 		this.nameAdapter.setValue(newName);
@@ -96,6 +99,9 @@ public class QueryHintImpl extends AbstractResourceAnnotation<Type>
 	}
 
 	public void setValue(String newValue) {
+		if (attributeValueHasNotChanged(this.value, newValue)) {
+			return;
+		}
 		String oldValue = this.value;
 		this.value = newValue;
 		this.valueAdapter.setValue(newValue);

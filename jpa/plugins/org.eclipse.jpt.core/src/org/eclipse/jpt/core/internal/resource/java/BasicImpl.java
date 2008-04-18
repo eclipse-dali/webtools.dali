@@ -67,6 +67,9 @@ public class BasicImpl extends AbstractResourceAnnotation<Attribute> implements 
 	}
 	
 	public void setOptional(Boolean newOptional) {
+		if (attributeValueHasNotChanged(this.optional, newOptional)) {
+			return;
+		}
 		Boolean oldOptional = this.optional;
 		this.optional = newOptional;
 		this.optionalAdapter.setValue(newOptional);
@@ -78,6 +81,9 @@ public class BasicImpl extends AbstractResourceAnnotation<Attribute> implements 
 	}
 	
 	public void setFetch(FetchType newFetch) {
+		if (attributeValueHasNotChanged(this.fetch, newFetch)) {
+			return;
+		}
 		FetchType oldFetch = this.fetch;
 		this.fetch = newFetch;
 		this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(newFetch));

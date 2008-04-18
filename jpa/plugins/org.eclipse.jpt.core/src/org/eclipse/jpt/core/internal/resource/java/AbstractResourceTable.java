@@ -101,6 +101,9 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 	}
 
 	public void setName(String newName) {
+		if (attributeValueHasNotChanged(this.name, newName)) {
+			return;
+		}
 		String oldName = this.name;
 		this.name = newName;
 		this.nameAdapter.setValue(newName);
@@ -112,6 +115,9 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 	}
 
 	public void setCatalog(String newCatalog) {
+		if (attributeValueHasNotChanged(this.catalog, newCatalog)) {
+			return;
+		}
 		String oldCatalog = this.catalog;
 		this.catalog = newCatalog;
 		this.catalogAdapter.setValue(newCatalog);
@@ -123,6 +129,9 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 	}
 
 	public void setSchema(String newSchema) {
+		if (attributeValueHasNotChanged(this.schema, newSchema)) {
+			return;
+		}
 		String oldSchema = this.schema;
 		this.schema = newSchema;
 		this.schemaAdapter.setValue(newSchema);
