@@ -105,6 +105,9 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 	}
 	
 	public void setMappedBy(String newMappedBy) {
+		if (attributeValueHasNotChanged(this.mappedBy, newMappedBy)) {
+			return;
+		}
 		String oldMappedBy = this.mappedBy;
 		this.mappedBy = newMappedBy;
 		this.mappedByAdapter.setValue(newMappedBy);
