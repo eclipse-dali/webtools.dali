@@ -50,6 +50,7 @@ public class JptUiPersistenceMessages
 	public static String PersistenceUnitGeneralComposite_mappedClasses;
 	public static String PersistenceUnitGeneralComposite_name;
 	public static String PersistenceUnitGeneralComposite_persistenceProvider;
+	public static String PersistenceUnitGeneralComposite_description;
 
 	public static String PersistenceUnitMappingFilesComposite_mappingFileDialog_message;
 	public static String PersistenceUnitMappingFilesComposite_mappingFileDialog_title;

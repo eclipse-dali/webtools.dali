@@ -147,6 +147,20 @@ public class PersistenceUnitGeneralComposite extends AbstractFormPane<Persistenc
 		};
 	}
 
+	private WritablePropertyValueModel<String> buildPersistenceUnitDescriptionHolder() {
+		return new PropertyAspectAdapter<PersistenceUnit, String>(getSubjectHolder(), PersistenceUnit.DESCRIPTION_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+				return subject.getDescription();
+			}
+			
+			@Override
+			protected void setValue_(String value) {
+				subject.setDescription(value);
+			}
+		};
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
@@ -187,6 +201,13 @@ public class PersistenceUnitGeneralComposite extends AbstractFormPane<Persistenc
 			container,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_persistenceProvider,
 			buildPersistenceProviderHolder()
+		);
+
+		// Description widgets
+		buildLabeledText(
+			container,
+			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_description,
+			buildPersistenceUnitDescriptionHolder()
 		);
 	}
 
