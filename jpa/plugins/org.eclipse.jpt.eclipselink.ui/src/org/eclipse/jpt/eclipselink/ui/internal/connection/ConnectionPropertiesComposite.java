@@ -3,7 +3,7 @@
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
+*
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Group;
 /**
  *  ConnectionPropertiesComposite
  */
+@SuppressWarnings("nls")
 public class ConnectionPropertiesComposite extends AbstractPane<Connection>
 {
 	public ConnectionPropertiesComposite(AbstractPane<Connection> parentComposite, Composite parent) {
@@ -46,17 +47,23 @@ public class ConnectionPropertiesComposite extends AbstractPane<Connection>
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_dataSourceLabel,
 			dataSourceHolder
 		);
-		
-		DataSourcePropertiesComposite dataSourceComposite = new DataSourcePropertiesComposite(this, dataGroup);
+
+		DataSourcePropertiesComposite dataSourceComposite = new DataSourcePropertiesComposite(
+			this,
+			this.buildSubPane(dataGroup, 0, 16)
+		);
 
 		// JDBC radio button
 		this.buildRadioButton(
-			dataGroup,
+			this.buildSubPane(dataGroup, 5),
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_jdbcLabel,
 			jdbcHolder
 		);
-		
-		JdbcPropertiesComposite jdbcComposite = new JdbcPropertiesComposite(this, dataGroup);
+
+		JdbcPropertiesComposite jdbcComposite = new JdbcPropertiesComposite(
+			this,
+			this.buildSubPane(dataGroup, 0, 16)
+		);
 
 		new PaneEnabler(dataSourceHolder, dataSourceComposite);
 		new PaneEnabler(jdbcHolder, jdbcComposite);
@@ -70,32 +77,32 @@ public class ConnectionPropertiesComposite extends AbstractPane<Connection>
 		return new PropertyAspectAdapter<DataModel, Boolean>(subjectHolder, DataModel.DATA_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return Boolean.valueOf(subject.isDataSource());
+				return subject.isDataSource();
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				subject.setDataSource(value.booleanValue());
+				subject.setDataSource(value);
 			}
 		};
 	}
-	
+
 	private WritablePropertyValueModel<Boolean> buildJdbcHolder(PropertyValueModel<DataModel> subjectHolder) {
 		return new PropertyAspectAdapter<DataModel, Boolean>(subjectHolder, DataModel.DATA_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return Boolean.valueOf(subject.isJdbc());
+				return subject.isJdbc();
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				subject.setDataSource(!value.booleanValue());
+				subject.setDataSource(!value);
 			}
 		};
 	}
 
 	private class DataModel extends AbstractModel {
-		private Boolean isDataSource;
+		private boolean isDataSource;
 			public static final String DATA_PROPERTY = "dataProperty";
 
 		public DataModel() {
@@ -104,16 +111,43 @@ public class ConnectionPropertiesComposite extends AbstractPane<Connection>
 		public DataModel(Boolean isDataSource) {
 			this.isDataSource = isDataSource;
 		}
-		public Boolean isDataSource() {
+		public boolean isDataSource() {
 			return this.isDataSource;
 		}
-		public Boolean isJdbc() {
+		public boolean isJdbc() {
 			return ! this.isDataSource;
 		}
-		public void setDataSource(Boolean isDataSource) {
+		public void setDataSource(boolean isDataSource) {
 			Object old = this.isDataSource;
 			this.isDataSource = isDataSource;
 			this.firePropertyChanged(DATA_PROPERTY, old, isDataSource);
+
+			if (isDataSource) {
+				clearJdbcOptions();
+			}
+			else {
+				clearDataSourceOptions();
+			}
+		}
+
+		private void clearDataSourceOptions() {
+			Connection connection = subject();
+			connection.setJtaDataSource(null);
+			connection.setNonJtaDataSource(null);
+		}
+
+		private void clearJdbcOptions() {
+			Connection connection = subject();
+			connection.setDriver(null);
+			connection.setUrl(null);
+			connection.setUser(null);
+			connection.setPassword(null);
+			connection.setBindParameters(null);
+			connection.setReadConnectionsMax(null);
+			connection.setReadConnectionsMin(null);
+			connection.setReadConnectionsShared(null);
+			connection.setWriteConnectionsMax(null);
+			connection.setWriteConnectionsMin(null);
 		}
 	}
 }

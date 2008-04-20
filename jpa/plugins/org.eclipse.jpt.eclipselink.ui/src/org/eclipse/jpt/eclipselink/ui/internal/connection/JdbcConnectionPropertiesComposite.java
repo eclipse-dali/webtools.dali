@@ -3,7 +3,7 @@
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
+*
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
@@ -47,7 +47,7 @@ public class JdbcConnectionPropertiesComposite extends AbstractPane<Connection>
 		);
 
 		// Password
-		this.buildLabeledText(
+		this.buildLabeledPasswordText(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_passwordLabel,
 			buildPasswordHolder()
@@ -55,8 +55,8 @@ public class JdbcConnectionPropertiesComposite extends AbstractPane<Connection>
 
 		// Bind Parameters
 		new JdbcBindParametersComposite(this, container);
-		
-		
+
+
 	}
 
 	private WritablePropertyValueModel<String> buildUrlHolder() {
@@ -109,5 +109,5 @@ public class JdbcConnectionPropertiesComposite extends AbstractPane<Connection>
 			}
 		};
 	}
-	
+
 }

@@ -3,7 +3,7 @@
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
+*
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
@@ -13,45 +13,46 @@ import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
-import org.eclipse.ui.forms.widgets.Section;
 
 /**
  *  JdbcWriteConnectionPropertiesComposite
  */
+@SuppressWarnings("nls")
 public class JdbcWriteConnectionPropertiesComposite extends AbstractPane<Connection>
 {
 	public JdbcWriteConnectionPropertiesComposite(AbstractPane<Connection> parentComposite, Composite parent) {
 
-		super(parentComposite, parent);
+		super(parentComposite, parent, false);
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		Section section = getWidgetFactory().createSection(container, SWT.FLAT | ExpandableComposite.TITLE_BAR);
-		section.setText(EclipseLinkUiMessages.PersistenceXmlConnectionTab_writeConnectionsSectionTitle);
-		Composite composite = getWidgetFactory().createComposite(section);
-		composite.setLayout(new GridLayout(1, false));
-		section.setClient(composite);
-		this.updateGridData(composite);
-		this.updateGridData(composite.getParent());
+
+		container = this.buildSection(
+			container,
+			EclipseLinkUiMessages.PersistenceXmlConnectionTab_writeConnectionsSectionTitle
+		);
+
+		GridData data = (GridData) container.getLayoutData();
+		data.verticalAlignment = SWT.TOP;
+
+		data = (GridData) getControl().getLayoutData();
+		data.verticalAlignment = SWT.TOP;
+
+		// This will add space to have the same layout than read connection pool
+		Button space = this.getWidgetFactory().createCheckBox(container, "m");
+		Point size = space.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		container = this.buildSubPane(container, size.y + 5);
+		space.dispose();
 
 		// Write Connections Minimum
-		new JdbcWriteConnectionsMinComposite(this, composite);
-		
-		// Write Connections Maximum
-		new JdbcWriteConnectionsMaxComposite(this, composite);
-	}
+		new JdbcWriteConnectionsMinComposite(this, container);
 
-	private void updateGridData(Composite container) {
-		GridData gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.FILL;
-		container.setLayoutData(gridData);
+		// Write Connections Maximum
+		new JdbcWriteConnectionsMaxComposite(this, container);
 	}
 }

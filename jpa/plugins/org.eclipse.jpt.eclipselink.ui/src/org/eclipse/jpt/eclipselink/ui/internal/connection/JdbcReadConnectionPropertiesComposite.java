@@ -3,7 +3,7 @@
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
+*
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
@@ -14,10 +14,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
-import org.eclipse.ui.forms.widgets.Section;
 
 /**
  *  JdbcReadConnectionPropertiesComposite
@@ -26,35 +23,30 @@ public class JdbcReadConnectionPropertiesComposite extends AbstractPane<Connecti
 {
 	public JdbcReadConnectionPropertiesComposite(AbstractPane<Connection> parentComposite, Composite parent) {
 
-		super(parentComposite, parent);
+		super(parentComposite, parent, false);
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		Section section = getWidgetFactory().createSection(container, SWT.FLAT | ExpandableComposite.TITLE_BAR);
-		section.setText(EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsSectionTitle);
-		Composite composite = getWidgetFactory().createComposite(section);
-		composite.setLayout(new GridLayout(1, false));
-		section.setClient(composite);
-		this.updateGridData(composite);
-		this.updateGridData(composite.getParent());
+
+		container = this.buildSection(
+			container,
+			EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsSectionTitle
+		);
+
+		GridData data = (GridData) container.getLayoutData();
+		data.verticalAlignment = SWT.TOP;
+
+		data = (GridData) getControl().getLayoutData();
+		data.verticalAlignment = SWT.TOP;
 
 		// Read Connections Shared
-		new JdbcReadConnectionsSharedComposite(this, composite);
+		new JdbcReadConnectionsSharedComposite(this, container);
 
 		// Read Connections Minimum
-		new JdbcReadConnectionsMinComposite(this, composite);
-		
-		// Read Connections Maximum
-		new JdbcReadConnectionsMaxComposite(this, composite);
-	}
+		new JdbcReadConnectionsMinComposite(this, container);
 
-	private void updateGridData(Composite container) {
-		GridData gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.FILL;
-		container.setLayoutData(gridData);
+		// Read Connections Maximum
+		new JdbcReadConnectionsMaxComposite(this, container);
 	}
 }
