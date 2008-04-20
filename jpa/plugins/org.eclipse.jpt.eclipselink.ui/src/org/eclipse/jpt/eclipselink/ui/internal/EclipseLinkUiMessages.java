@@ -14,15 +14,15 @@ package org.eclipse.jpt.eclipselink.ui.internal;
  */
 import org.eclipse.osgi.util.NLS;
 
-public class EclipseLinkUiMessages extends NLS 
-{	
+public class EclipseLinkUiMessages extends NLS
+{
 	private static final String BUNDLE_NAME = "eclipselink_ui"; //$NON-NLS-1$
-	
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, EclipseLinkUiMessages.class);
 	}
-	
+
 	public static String Boolean_True;
 	public static String Boolean_False;
 
@@ -31,7 +31,7 @@ public class EclipseLinkUiMessages extends NLS
 
 	public static String PersistenceXmlTabFolder_defaultEmpty;
 	public static String PersistenceXmlTabFolder_defaultWithOneParam;
-	
+
 	public static String PersistenceXmlGeneralTab_name;
 	public static String PersistenceXmlGeneralTab_provider;
 	public static String PersistenceXmlGeneralTab_browse;
@@ -43,32 +43,30 @@ public class EclipseLinkUiMessages extends NLS
 	public static String PersistenceXmlConnectionTab_sectionDescription;
 	public static String PersistenceXmlConnectionTab_defaultWithOneParam;
 	public static String PersistenceXmlConnectionTab_defaultEmpty;
-	
+
 	public static String PersistenceXmlConnectionTab_transactionTypeLabel;
-	
+
 	public static String TransactionTypeComposite_jta;
 	public static String TransactionTypeComposite_resource_local;
-	
+
 	public static String PersistenceXmlConnectionTab_nativeSqlLabel;
 	public static String PersistenceXmlConnectionTab_nativeSqlLabelDefault;
-	
+
 	public static String PersistenceXmlConnectionTab_batchWritingLabel;
 
 	public static String BatchWritingComposite_none;
 	public static String BatchWritingComposite_jdbc;
 	public static String BatchWritingComposite_buffered;
 	public static String BatchWritingComposite_oracle_jdbc;
-	
+
 	public static String PersistenceXmlConnectionTab_cacheStatementsLabel;
-	public static String PersistenceXmlConnectionTab_cacheStatementsLabelDefault;
-	public static String PersistenceXmlConnectionTab_cacheStatementsSizeLabel;
-	
+
 	public static String PersistenceXmlConnectionTab_dataSourceLabel;
 	public static String PersistenceXmlConnectionTab_jdbcLabel;
 
 	public static String PersistenceXmlConnectionTab_jtaDataSourceLabel;
 	public static String PersistenceXmlConnectionTab_nonJtaDataSourceLabel;
-	
+
 	public static String PersistenceXmlConnectionTab_driverLabel;
 	public static String PersistenceXmlConnectionTab_urlLabel;
 	public static String PersistenceXmlConnectionTab_userLabel;
@@ -91,33 +89,33 @@ public class EclipseLinkUiMessages extends NLS
 	public static String PersistenceXmlSchemaGenerationTab_sectionDescription;
 	public static String PersistenceXmlSchemaGenerationTab_defaultWithOneParam;
 	public static String PersistenceXmlSchemaGenerationTab_defaultEmpty;
-	
+
 	public static String PersistenceXmlSchemaGenerationTab_ddlGenerationTypeLabel;
 	public static String PersistenceXmlSchemaGenerationTab_outputModeLabel;
-	
+
 	public static String PersistenceXmlSchemaGenerationTab_createDdlFileNameLabel;
 	public static String PersistenceXmlSchemaGenerationTab_dropDdlFileNameLabel;
 
 	public static String OutputModeComposite_both;
 	public static String OutputModeComposite_sql_script;
 	public static String OutputModeComposite_database;
-	
+
 	public static String DdlGenerationTypeComposite_none;
 	public static String DdlGenerationTypeComposite_create_tables;
 	public static String DdlGenerationTypeComposite_drop_and_create_tables;
 
 	public static String PersistenceXmlSchemaGenerationTab_ddlGenerationLocationLabel;
-	
+
 	public static String DdlGenerationLocationComposite_dialogTitle;
-	
+
 	// Caching
 	public static String PersistenceXmlCachingTab_title;
 	public static String PersistenceXmlCachingTab_sectionTitle;
 	public static String PersistenceXmlCachingTab_sectionDescription;
-	
+
 	public static String PersistenceXmlCachingTab_defaultCacheTypeLabel;
 	public static String PersistenceXmlCachingTab_cacheTypeLabel;
-	
+
 	public static String PersistenceXmlCachingTab_defaultSharedCacheLabel;
 	public static String PersistenceXmlCachingTab_sharedCacheLabel;
 
@@ -125,7 +123,7 @@ public class EclipseLinkUiMessages extends NLS
 	public static String PersistenceXmlCachingTab_sharedCacheDefaultLabel;
 
 	public static String CacheSizeComposite_cacheSize;
-	
+
 	public static String CacheTypeComposite_full;
 	public static String CacheTypeComposite_hard_weak;
 	public static String CacheTypeComposite_none;
@@ -139,29 +137,29 @@ public class EclipseLinkUiMessages extends NLS
 	public static String DefaultCacheTypeComposite_none;
 	public static String DefaultCacheTypeComposite_soft_weak;
 	public static String DefaultCacheTypeComposite_weak;
-	
+
 	public static String EntityDialog_selectEntity;
 	public static String EntityDialog_name;
 
 	public static String CachingEntityListComposite_groupTitle;
 	public static String CachingEntityListComposite_editButton;
-	
+
 	// Customization
 	public static String PersistenceXmlCustomizationTab_title;
 	public static String PersistenceXmlCustomizationTab_sectionTitle;
 	public static String PersistenceXmlCustomizationTab_sectionDescription;
-	
+
 	public static String PersistenceXmlCustomizationTab_throwExceptionsLabelDefault;
 	public static String PersistenceXmlCustomizationTab_throwExceptionsLabel;
-	
+
 	public static String PersistenceXmlCustomizationTab_weavingLabel;
 
 	public static String PersistenceXmlCustomizationTab_weavingLazyLabelDefault;
 	public static String PersistenceXmlCustomizationTab_weavingLazyLabel;
-		
+
 	public static String PersistenceXmlCustomizationTab_weavingChangeTrackingLabelDefault;
 	public static String PersistenceXmlCustomizationTab_weavingChangeTrackingLabel;
-		
+
 	public static String WeavingComposite_true_;
 	public static String WeavingComposite_false_;
 	public static String WeavingComposite_static_;
