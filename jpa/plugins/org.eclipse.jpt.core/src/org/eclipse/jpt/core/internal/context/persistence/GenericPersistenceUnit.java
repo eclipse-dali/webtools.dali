@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
+
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -466,8 +467,11 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 
 	public Property getProperty(String key) {
+		if (key == null) {
+			throw new IllegalStateException("Cannot getProperty: key is null.");
+		}
 		for(Property property : this.properties) {
-			if(property.getName().equals(key)) {
+			if(key.equals(property.getName())) {
 				return property;
 			}
 		}
@@ -475,10 +479,13 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 
 	public ListIterator<Property> propertiesWithPrefix(String keyPrefix) {
+		if (keyPrefix == null) {
+			throw new IllegalStateException("Cannot find propertiesWithPrefix: keyPrefix is null.");
+		}
 		List<Property> properties = new ArrayList<Property>();
 		
 		for(Property property : this.properties) {
-			if(property.getName().startsWith(keyPrefix)) {
+			if(property.getName() != null && property.getName().startsWith(keyPrefix)) {
 				properties.add( property);
 			}
 		}
@@ -486,9 +493,14 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	public Property getProperty(String key, String value) {
+		if (key == null || value == null) {
+			throw new IllegalStateException("Cannot getProperty: key or value is null.");
+		}
 		for(Property property : this.properties) {
-			if(property.getName().equals(key) && property.getValue().equals(value)) {
-				return property;
+			if(key.equals(property.getName())) {
+				if(value.equals(property.getValue())) {
+						return property;
+				}
 			}
 		}
 		return null;
