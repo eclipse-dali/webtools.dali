@@ -116,7 +116,7 @@ public abstract class AbstractXmlBaseTable extends AbstractJpaEObject implements
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<UniqueConstraint> uniqueConstraints;
+	protected EList<XmlUniqueConstraint> uniqueConstraints;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -246,7 +246,7 @@ public abstract class AbstractXmlBaseTable extends AbstractJpaEObject implements
 
 	/**
 	 * Returns the value of the '<em><b>Unique Constraints</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.UniqueConstraint}.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Unique Constraints</em>' containment reference list isn't clear,
@@ -258,11 +258,11 @@ public abstract class AbstractXmlBaseTable extends AbstractJpaEObject implements
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<UniqueConstraint> getUniqueConstraints()
+	public EList<XmlUniqueConstraint> getUniqueConstraints()
 	{
 		if (uniqueConstraints == null)
 		{
-			uniqueConstraints = new EObjectContainmentEList<UniqueConstraint>(UniqueConstraint.class, this, OrmPackage.ABSTRACT_XML_BASE_TABLE__UNIQUE_CONSTRAINTS);
+			uniqueConstraints = new EObjectContainmentEList<XmlUniqueConstraint>(XmlUniqueConstraint.class, this, OrmPackage.ABSTRACT_XML_BASE_TABLE__UNIQUE_CONSTRAINTS);
 		}
 		return uniqueConstraints;
 	}
@@ -327,7 +327,7 @@ public abstract class AbstractXmlBaseTable extends AbstractJpaEObject implements
 				return;
 			case OrmPackage.ABSTRACT_XML_BASE_TABLE__UNIQUE_CONSTRAINTS:
 				getUniqueConstraints().clear();
-				getUniqueConstraints().addAll((Collection<? extends UniqueConstraint>)newValue);
+				getUniqueConstraints().addAll((Collection<? extends XmlUniqueConstraint>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

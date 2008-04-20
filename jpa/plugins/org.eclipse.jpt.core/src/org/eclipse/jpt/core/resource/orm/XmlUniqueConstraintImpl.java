@@ -14,7 +14,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.common.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,19 +26,12 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.UniqueConstraint#getColumnNames <em>Column Names</em>}</li>
- * </ul>
- * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getUniqueConstraint()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlUniqueConstraintImpl()
  * @model kind="class"
- * @extends JpaEObject
  * @generated
  */
-public class UniqueConstraint extends AbstractJpaEObject implements JpaEObject
+public class XmlUniqueConstraintImpl extends AbstractJpaEObject implements XmlUniqueConstraint
 {
 	/**
 	 * The cached value of the '{@link #getColumnNames() <em>Column Names</em>}' attribute list.
@@ -56,7 +48,7 @@ public class UniqueConstraint extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected UniqueConstraint()
+	protected XmlUniqueConstraintImpl()
 	{
 		super();
 	}
@@ -69,7 +61,7 @@ public class UniqueConstraint extends AbstractJpaEObject implements JpaEObject
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.UNIQUE_CONSTRAINT;
+		return OrmPackage.Literals.XML_UNIQUE_CONSTRAINT_IMPL;
 	}
 
 	/**
@@ -82,7 +74,7 @@ public class UniqueConstraint extends AbstractJpaEObject implements JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Column Names</em>' attribute list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getUniqueConstraint_ColumnNames()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlUniqueConstraint_ColumnNames()
 	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -90,7 +82,7 @@ public class UniqueConstraint extends AbstractJpaEObject implements JpaEObject
 	{
 		if (columnNames == null)
 		{
-			columnNames = new EDataTypeEList<String>(String.class, this, OrmPackage.UNIQUE_CONSTRAINT__COLUMN_NAMES);
+			columnNames = new EDataTypeEList<String>(String.class, this, OrmPackage.XML_UNIQUE_CONSTRAINT_IMPL__COLUMN_NAMES);
 		}
 		return columnNames;
 	}
@@ -105,7 +97,7 @@ public class UniqueConstraint extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.UNIQUE_CONSTRAINT__COLUMN_NAMES:
+			case OrmPackage.XML_UNIQUE_CONSTRAINT_IMPL__COLUMN_NAMES:
 				return getColumnNames();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -122,7 +114,7 @@ public class UniqueConstraint extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.UNIQUE_CONSTRAINT__COLUMN_NAMES:
+			case OrmPackage.XML_UNIQUE_CONSTRAINT_IMPL__COLUMN_NAMES:
 				getColumnNames().clear();
 				getColumnNames().addAll((Collection<? extends String>)newValue);
 				return;
@@ -140,7 +132,7 @@ public class UniqueConstraint extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.UNIQUE_CONSTRAINT__COLUMN_NAMES:
+			case OrmPackage.XML_UNIQUE_CONSTRAINT_IMPL__COLUMN_NAMES:
 				getColumnNames().clear();
 				return;
 		}
@@ -157,7 +149,7 @@ public class UniqueConstraint extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.UNIQUE_CONSTRAINT__COLUMN_NAMES:
+			case OrmPackage.XML_UNIQUE_CONSTRAINT_IMPL__COLUMN_NAMES:
 				return columnNames != null && !columnNames.isEmpty();
 		}
 		return super.eIsSet(featureID);

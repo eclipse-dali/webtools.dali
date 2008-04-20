@@ -355,9 +355,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlTableGenerator/uniqueConstraints"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlTableGeneratorImpl"/>
-    <genClasses ecoreClass="orm.ecore#//UniqueConstraint">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//UniqueConstraint/columnNames"/>
+    <genClasses ecoreClass="orm.ecore#//XmlUniqueConstraint">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlUniqueConstraint/columnNames"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlUniqueConstraintImpl"/>
   </genPackages>
   <genPackages prefix="Persistence" basePackage="org.eclipse.jpt.core.resource" disposableProviderFactory="true"
       adapterFactory="false" ecorePackage="persistence.ecore#/">

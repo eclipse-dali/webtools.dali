@@ -84,7 +84,7 @@ public class UniqueConstraintImpl extends AbstractResourceAnnotation<Member> imp
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		UniqueConstraintAnnotation oldUniqueConstraint = (UniqueConstraintAnnotation) oldAnnotation;
 		for (String columnName : CollectionTools.iterable(oldUniqueConstraint.columnNames())) {
-			addColumnName(columnName);
+			addColumnName(columnNamesSize(), columnName);
 		}
 	}
 	
@@ -97,8 +97,16 @@ public class UniqueConstraintImpl extends AbstractResourceAnnotation<Member> imp
 	}
 	
 	public void addColumnName(String columnName) {
-		addItemToList(columnName, this.columnNames, COLUMN_NAMES_LIST);
+		addColumnName(columnNamesSize(), columnName);
+	}
+	
+	public void addColumnName(int index, String columnName) {
+		addColumnName_(index, columnName);
 		this.columnNamesAdapter.setValue(this.columnNames.toArray(new String[this.columnNames.size()]));
+	}
+	
+	protected void addColumnName_(int index, String columnName) {
+		addItemToList(index, columnName, this.columnNames, COLUMN_NAMES_LIST);
 	}
 	
 	public void removeColumnName(String columnName) {
@@ -106,6 +114,16 @@ public class UniqueConstraintImpl extends AbstractResourceAnnotation<Member> imp
 		this.columnNamesAdapter.setValue(this.columnNames.toArray(new String[this.columnNames.size()]));
 	}
 
+	public void removeColumnName(int index) {
+		removeItemFromList(index, this.columnNames, COLUMN_NAMES_LIST);
+		this.columnNamesAdapter.setValue(this.columnNames.toArray(new String[this.columnNames.size()]));
+	}
+	
+	public void moveColumnName(int targetIndex, int sourceIndex) {
+		moveItemInList(targetIndex, sourceIndex, this.columnNames, COLUMN_NAMES_LIST);
+		this.columnNamesAdapter.setValue(this.columnNames.toArray(new String[this.columnNames.size()]));
+	}
+	
 	public boolean columnNamesTouches(int pos, CompilationUnit astRoot) {
 		return this.elementTouches(this.columnNamesDeclarationAdapter, pos, astRoot);
 	}
@@ -121,7 +139,7 @@ public class UniqueConstraintImpl extends AbstractResourceAnnotation<Member> imp
 		for (int i = 0; i < javaColumnNames.length; i++) {
 			String columnName = javaColumnNames[i];
 			if (!this.columnNames.contains(columnName)) {
-				addColumnName(columnName);
+				addColumnName_(columnNamesSize(), columnName);
 			}
 		}
 	}

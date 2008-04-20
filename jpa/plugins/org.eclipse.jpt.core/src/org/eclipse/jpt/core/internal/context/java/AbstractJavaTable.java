@@ -9,20 +9,28 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
+import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.NameTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
-public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
+public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode implements UniqueConstraint.Owner
 {
 
 	protected String specifiedName;
@@ -34,22 +42,19 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 	protected String specifiedSchema;
 	protected String defaultSchema;
 	
-//	protected EList<IUniqueConstraint> uniqueConstraints;
+	protected final List<JavaUniqueConstraint> uniqueConstraints;
 
 
 	protected AbstractJavaTable(JavaJpaContextNode parent) {
 		super(parent);
+		this.uniqueConstraints = new ArrayList<JavaUniqueConstraint>();
 	}
 
-	protected void initializeFromResource(TableAnnotation table) {
-		this.defaultName = this.defaultName();
-		this.defaultSchema = this.defaultSchema();
-		this.defaultCatalog = this.defaultCatalog();
-		this.specifiedName = table.getName();
-		this.specifiedSchema = table.getSchema();
-		this.specifiedCatalog = table.getCatalog();
+	@Override
+	public JavaJpaContextNode getParent() {
+		return (JavaJpaContextNode) super.getParent();
 	}
-	
+
 	/**
 	 * Return the java table resource, do not return null if the java annotation does not exist.
 	 * Use a null resource object instead of null.
@@ -154,16 +159,52 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 		return this.defaultSchema;
 	}
 	
-//	public EList<IUniqueConstraint> getUniqueConstraints() {
-//		if (uniqueConstraints == null) {
-//			uniqueConstraints = new EObjectContainmentEList<IUniqueConstraint>(IUniqueConstraint.class, this, JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__UNIQUE_CONSTRAINTS);
-//		}
-//		return uniqueConstraints;
-//	}
+	
+	// ********** unique constraints **********
+	
+	public ListIterator<JavaUniqueConstraint> uniqueConstraints() {
+		return new CloneListIterator<JavaUniqueConstraint>(this.uniqueConstraints);
+	}
+	
+	public int uniqueConstraintsSize() {
+		return this.uniqueConstraints.size();
+	}
+	
+	public JavaUniqueConstraint addUniqueConstraint(int index) {
+		JavaUniqueConstraint uniqueConstraint = getJpaFactory().buildJavaUniqueConstraint(this, this);
+		this.uniqueConstraints.add(index, uniqueConstraint);
+		UniqueConstraintAnnotation uniqueConstraintAnnotation = this.getTableResource().addUniqueConstraint(index);
+		uniqueConstraint.initialize(uniqueConstraintAnnotation);
+		fireItemAdded(Table.UNIQUE_CONSTRAINTS_LIST, index, uniqueConstraint);
+		return uniqueConstraint;
+	}
+		
+	public void removeUniqueConstraint(UniqueConstraint uniqueConstraint) {
+		this.removeUniqueConstraint(this.uniqueConstraints.indexOf(uniqueConstraint));
+	}
+
+	public void removeUniqueConstraint(int index) {
+		JavaUniqueConstraint removedUniqueConstraint = this.uniqueConstraints.remove(index);
+		this.getTableResource().removeUniqueConstraint(index);
+		fireItemRemoved(Table.UNIQUE_CONSTRAINTS_LIST, index, removedUniqueConstraint);
+	}
+	
+	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.uniqueConstraints, targetIndex, sourceIndex);
+		this.getTableResource().moveUniqueConstraint(targetIndex, sourceIndex);
+		fireItemMoved(Table.UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);		
+	}
+	
+	protected void addUniqueConstraint(int index, JavaUniqueConstraint uniqueConstraint) {
+		addItemToList(index, uniqueConstraint, this.uniqueConstraints, Table.UNIQUE_CONSTRAINTS_LIST);
+	}
+	
+	protected void removeUniqueConstraint_(JavaUniqueConstraint uniqueConstraint) {
+		removeItemFromList(uniqueConstraint, this.uniqueConstraints, Table.UNIQUE_CONSTRAINTS_LIST);
+	}
 
 
-
-	// ********** ITable implementation **********
+	// ********** Table implementation **********
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		TextRange textRange = getTableResource().getNameTextRange(astRoot);
@@ -208,14 +249,24 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 		this.defaultSchema = newDefaultSchema;
 		firePropertyChanged(Table.DEFAULT_SCHEMA_PROPERTY, oldDefaultSchema, newDefaultSchema);
 	}
+	
 
-//	public IUniqueConstraint createUniqueConstraint(int index) {
-//		return createJavaUniqueConstraint(index);
-//	}
-//
-//	protected abstract JavaUniqueConstraint createJavaUniqueConstraint(int index);
+	
+	protected void initializeFromResource(TableAnnotation table) {
+		this.defaultName = this.defaultName();
+		this.defaultSchema = this.defaultSchema();
+		this.defaultCatalog = this.defaultCatalog();
+		this.specifiedName = table.getName();
+		this.specifiedSchema = table.getSchema();
+		this.specifiedCatalog = table.getCatalog();
+		this.initializeUniqueConstraints(table);
+	}
 
-
+	protected void initializeUniqueConstraints(TableAnnotation table) {
+		for (UniqueConstraintAnnotation uniqueConstraintAnnotation : CollectionTools.iterable(table.uniqueConstraints())) {
+			this.uniqueConstraints.add(buildUniqueConstraint(uniqueConstraintAnnotation));
+		}
+	}
 	
 	protected void update(TableAnnotation table) {
 		this.setSpecifiedName_(table.getName());
@@ -224,7 +275,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 		this.setDefaultName(this.defaultName());
 		this.setDefaultSchema(this.defaultSchema());
 		this.setDefaultCatalog(this.defaultCatalog());
-		//this.updateUniqueConstraints(table);
+		this.updateUniqueConstraints(table);
 	}
 	
 	protected abstract String defaultName();
@@ -243,53 +294,42 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 		return getPersistenceUnit().getDefaultCatalog();
 	}
 	
-	
-//	/**
-//	 * here we just worry about getting the unique constraints lists the same size;
-//	 * then we delegate to the unique constraints to synch themselves up
-//	 */
-//	private void updateUniqueConstraintsFromJava(CompilationUnit astRoot) {
-//		// synchronize the model join columns with the Java source
-//		List<IUniqueConstraint> constraints = this.getUniqueConstraints();
-//		int persSize = constraints.size();
-//		int javaSize = 0;
-//		boolean allJavaAnnotationsFound = false;
-//		for (int i = 0; i < persSize; i++) {
-//			JavaUniqueConstraint uniqueConstraint = (JavaUniqueConstraint) constraints.get(i);
-//			if (uniqueConstraint.annotation(astRoot) == null) {
-//				allJavaAnnotationsFound = true;
-//				break; // no need to go any further
-//			}
-//			uniqueConstraint.updateFromJava(astRoot);
-//			javaSize++;
-//		}
-//		if (allJavaAnnotationsFound) {
-//			// remove any model join columns beyond those that correspond to the Java annotations
-//			while (persSize > javaSize) {
-//				persSize--;
-//				constraints.remove(persSize);
-//			}
-//		}
-//		else {
-//			// add new model join columns until they match the Java annotations
-//			while (!allJavaAnnotationsFound) {
-//				JavaUniqueConstraint uniqueConstraint = this.createJavaUniqueConstraint(javaSize);
-//				if (uniqueConstraint.annotation(astRoot) == null) {
-//					allJavaAnnotationsFound = true;
-//				}
-//				else {
-//					this.getUniqueConstraints().add(uniqueConstraint);
-//					uniqueConstraint.updateFromJava(astRoot);
-//					javaSize++;
-//				}
-//			}
-//		}
-//	}
-
-	@Override
-	public JavaJpaContextNode getParent() {
-		return (JavaJpaContextNode) super.getParent();
+	protected void updateUniqueConstraints(TableAnnotation table) {
+		ListIterator<JavaUniqueConstraint> uniqueConstraints = uniqueConstraints();
+		ListIterator<UniqueConstraintAnnotation> resourceUniqueConstraints = table.uniqueConstraints();
+		
+		while (uniqueConstraints.hasNext()) {
+			JavaUniqueConstraint uniqueConstraint = uniqueConstraints.next();
+			if (resourceUniqueConstraints.hasNext()) {
+				uniqueConstraint.update(resourceUniqueConstraints.next());
+			}
+			else {
+				removeUniqueConstraint_(uniqueConstraint);
+			}
+		}
+		
+		while (resourceUniqueConstraints.hasNext()) {
+			addUniqueConstraint(uniqueConstraintsSize(), buildUniqueConstraint(resourceUniqueConstraints.next()));
+		}
 	}
+
+	protected JavaUniqueConstraint buildUniqueConstraint(UniqueConstraintAnnotation uniqueConstraintAnnotation) {
+		JavaUniqueConstraint uniqueConstraint = getJpaFactory().buildJavaUniqueConstraint(this, this);
+		uniqueConstraint.initialize(uniqueConstraintAnnotation);
+		return uniqueConstraint;
+	}
+	
+	
+	//******************* UniqueConstraint.Owner implementation ******************
+	
+	public Iterator<String> candidateUniqueConstraintColumnNames() {
+		org.eclipse.jpt.db.Table dbTable = getDbTable();
+		if (dbTable != null) {
+			return dbTable.columnNames();
+		}
+		return EmptyIterator.instance();
+	}
+	
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = getTableResource().getTextRange(astRoot);
@@ -319,12 +359,12 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 		if (result != null) {
 			return result;
 		}
-//		for (IUniqueConstraint constraint : this.getUniqueConstraints()) {
-//			result = ((JavaUniqueConstraint) constraint).candidateValuesFor(pos, filter, astRoot);
-//			if (result != null) {
-//				return result;
-//			}
-//		}
+		for (JavaUniqueConstraint constraint : CollectionTools.iterable(this.uniqueConstraints())) {
+			result = constraint.javaCompletionProposals(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
 		return null;
 	}
 

@@ -9,14 +9,26 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
+import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlBaseTable;
+import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.NameTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
-public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode implements Table
+public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode implements UniqueConstraint.Owner
 {
 	protected String specifiedName;
 
@@ -30,10 +42,12 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 
 	protected String defaultSchema;
 	
-//	protected EList<IUniqueConstraint> uniqueConstraints;
+	protected final List<OrmUniqueConstraint> uniqueConstraints;
+
 
 	protected AbstractOrmTable(OrmJpaContextNode parent) {
 		super(parent);
+		this.uniqueConstraints = new ArrayList<OrmUniqueConstraint>();
 	}
 
 	@Override
@@ -80,13 +94,13 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 				getTableResource().setName(newSpecifiedName);
 			}
 		}
-		firePropertyChanged(SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
+		firePropertyChanged(Table.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
 	}
 	
 	protected void setSpecifiedName_(String newSpecifiedName) {
 		String oldSpecifiedName = this.specifiedName;
 		this.specifiedName = newSpecifiedName;
-		firePropertyChanged(SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
+		firePropertyChanged(Table.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
 	}
 
 	public String getDefaultName() {
@@ -96,7 +110,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	protected void setDefaultName(String newDefaultName) {
 		String oldDefaultName = this.defaultName;
 		this.defaultName = newDefaultName;
-		firePropertyChanged(DEFAULT_NAME_PROPERTY, oldDefaultName, newDefaultName);
+		firePropertyChanged(Table.DEFAULT_NAME_PROPERTY, oldDefaultName, newDefaultName);
 	}
 
 	public String getCatalog() {
@@ -122,13 +136,13 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 				getTableResource().setCatalog(newSpecifiedCatalog);
 			}
 		}
-		firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
+		firePropertyChanged(Table.SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
 	}
 	
 	protected void setSpecifiedCatalog_(String newSpecifiedCatalog) {
 		String oldSpecifiedCatalog = this.specifiedCatalog;
 		this.specifiedCatalog = newSpecifiedCatalog;
-		firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
+		firePropertyChanged(Table.SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
 	}
 
 	public String getDefaultCatalog() {
@@ -138,7 +152,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	protected void setDefaultCatalog(String newDefaultCatalog) {
 		String oldDefaultCatalog = this.defaultCatalog;
 		this.defaultCatalog = newDefaultCatalog;
-		firePropertyChanged(DEFAULT_CATALOG_PROPERTY, oldDefaultCatalog, newDefaultCatalog);
+		firePropertyChanged(Table.DEFAULT_CATALOG_PROPERTY, oldDefaultCatalog, newDefaultCatalog);
 	}
 
 	public String getSchema() {
@@ -165,13 +179,13 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 			}
 		}
 
-		firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
+		firePropertyChanged(Table.SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
 	}
 	
 	protected void setSpecifiedSchema_(String newSpecifiedSchema) {
 		String oldSpecifiedSchema = this.specifiedSchema;
 		this.specifiedSchema = newSpecifiedSchema;
-		firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
+		firePropertyChanged(Table.SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
 	}
 
 	public String getDefaultSchema() {
@@ -181,16 +195,69 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	protected void setDefaultSchema(String newDefaultSchema) {
 		String oldDefaultSchema = this.defaultSchema;
 		this.defaultSchema = newDefaultSchema;
-		firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, oldDefaultSchema, newDefaultSchema);
+		firePropertyChanged(Table.DEFAULT_SCHEMA_PROPERTY, oldDefaultSchema, newDefaultSchema);
 	}
 
-//	public EList<IUniqueConstraint> getUniqueConstraints() {
-//		if (uniqueConstraints == null) {
-//			uniqueConstraints = new EObjectContainmentEList<IUniqueConstraint>(IUniqueConstraint.class, this, OrmPackage.ABSTRACT_XML_TABLE__UNIQUE_CONSTRAINTS);
-//		}
-//		return uniqueConstraints;
-//	}
+	
+	// ********** unique constraints **********
+	
+	public ListIterator<OrmUniqueConstraint> uniqueConstraints() {
+		return new CloneListIterator<OrmUniqueConstraint>(this.uniqueConstraints);
+	}
+	
+	public int uniqueConstraintsSize() {
+		return this.uniqueConstraints.size();
+	}
+	
+	public OrmUniqueConstraint addUniqueConstraint(int index) {
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		OrmUniqueConstraint uniqueConstraint =  buildUniqueConstraint(uniqueConstraintResource);
+		this.uniqueConstraints.add(index, uniqueConstraint);
+		
+		if (this.getTableResource() == null) {
+			addTableResource();
+		}
+		
+		getTableResource().getUniqueConstraints().add(index, uniqueConstraintResource);
+		fireItemAdded(Table.UNIQUE_CONSTRAINTS_LIST, index, uniqueConstraint);
+		return uniqueConstraint;
+	}
+	
+	protected void addUniqueConstraint(int index, OrmUniqueConstraint uniqueConstraint) {
+		addItemToList(index, uniqueConstraint, this.uniqueConstraints, Table.UNIQUE_CONSTRAINTS_LIST);
+	}
+	
+	
+	public void removeUniqueConstraint(UniqueConstraint uniqueConstraint) {
+		this.removeUniqueConstraint(this.uniqueConstraints.indexOf(uniqueConstraint));
+	}
+	
+	public void removeUniqueConstraint(int index) {
+		OrmUniqueConstraint removedUniqueConstraint = this.uniqueConstraints.remove(index);
+		getTableResource().getUniqueConstraints().remove(index);
+		fireItemRemoved(Table.UNIQUE_CONSTRAINTS_LIST, index, removedUniqueConstraint);
+	}
+	
+	protected void removeUniqueConstraint_(OrmUniqueConstraint uniqueConstraint) {
+		removeItemFromList(uniqueConstraint, this.uniqueConstraints, Table.UNIQUE_CONSTRAINTS_LIST);
+	}
+	
+	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.uniqueConstraints, targetIndex, sourceIndex);
+		this.getTableResource().getUniqueConstraints().move(targetIndex, sourceIndex);
+		fireItemMoved(Table.UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);		
+	}
+	
+	//******************* UniqueConstraint.Owner implementation ******************
 
+	public Iterator<String> candidateUniqueConstraintColumnNames() {
+		org.eclipse.jpt.db.Table dbTable = getDbTable();
+		if (dbTable != null) {
+			return dbTable.columnNames();
+		}
+		return EmptyIterator.instance();
+	}
+	
 	public org.eclipse.jpt.db.Table getDbTable() {
 		Schema schema = this.getDbSchema();
 		return (schema == null) ? null : schema.tableNamed(getName());
@@ -215,6 +282,16 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 		this.defaultName = this.defaultName();
 		this.defaultSchema = this.defaultSchema();
 		this.defaultCatalog = this.defaultCatalog();
+		this.initializeUniqueContraints(table);
+	}
+	
+	protected void initializeUniqueContraints(XmlBaseTable table) {
+		if (table == null) {
+			return;
+		}
+		for (XmlUniqueConstraint uniqueConstraint : table.getUniqueConstraints()) {
+			this.uniqueConstraints.add(buildUniqueConstraint(uniqueConstraint));
+		}
 	}
 	
 	protected void update(XmlBaseTable table) {
@@ -224,6 +301,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 		this.setDefaultName(this.defaultName());
 		this.setDefaultSchema(this.defaultSchema());
 		this.setDefaultCatalog(this.defaultCatalog());
+		this.updateUniqueConstraints(table);
 	}
 
 	protected String specifiedName(XmlBaseTable table) {
@@ -244,6 +322,35 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	
 	protected abstract String defaultCatalog();
 	
+	protected void updateUniqueConstraints(XmlBaseTable table) {
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = uniqueConstraints();
+		ListIterator<XmlUniqueConstraint> resourceUniqueConstraints;
+		if (table == null) {
+			resourceUniqueConstraints = EmptyListIterator.instance();
+		}
+		else {
+			resourceUniqueConstraints = new CloneListIterator<XmlUniqueConstraint>(table.getUniqueConstraints());//prevent ConcurrentModificiationException
+		}
+		while (uniqueConstraints.hasNext()) {
+			OrmUniqueConstraint uniqueConstraint = uniqueConstraints.next();
+			if (resourceUniqueConstraints.hasNext()) {
+				uniqueConstraint.update(resourceUniqueConstraints.next());
+			}
+			else {
+				removeUniqueConstraint_(uniqueConstraint);
+			}
+		}
+		
+		while (resourceUniqueConstraints.hasNext()) {
+			addUniqueConstraint(uniqueConstraintsSize(), buildUniqueConstraint(resourceUniqueConstraints.next()));
+		}
+	}
+
+	protected OrmUniqueConstraint buildUniqueConstraint(XmlUniqueConstraint xmlUniqueConstraint) {
+		return getJpaFactory().buildOrmUniqueConstraint(this, this, xmlUniqueConstraint);
+	}
+	
+
 	public String qualifiedName() {
 		return NameTools.buildQualifiedDatabaseObjectName(this.getCatalog(), this.getSchema(), this.getName());
 	}

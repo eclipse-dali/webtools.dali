@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 
@@ -87,9 +88,40 @@ public interface TableGenerator extends Generator
 		String SPECIFIED_PK_COLUMN_VALUE_PROPERTY = "specifiedPkColummValueProperty";
 
 
-//	EList<IUniqueConstraint> getUniqueConstraints();
+	// **************** unique constraints **************************************
 
-//	IUniqueConstraint createUniqueConstraint(int index);
+	/**
+	 * Return a list iterator of the unique constraints.
+	 * This will not be null.
+	 */
+	<T extends UniqueConstraint> ListIterator<T> uniqueConstraints();
+	
+	/**
+	 * Return the number of unique constraints.
+	 */
+	int uniqueConstraintsSize();
+		
+	/**
+	 * Add a unique constraint to the table and return the object 
+	 * representing it.
+	 */
+	UniqueConstraint addUniqueConstraint(int index);
+	
+	/**
+	 * Remove unique constraint at the given index from the Table
+	 */
+	void removeUniqueConstraint(int index);
+	
+	/**
+	 * Remove the unique constraint from the Table
+	 */
+	void removeUniqueConstraint(UniqueConstraint uniqueConstraint);
+	
+	/**
+	 * Move the unique constraint from the source index to the target index.
+	 */
+	void moveUniqueConstraint(int targetIndex, int sourceIndex);
+		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraintsList";
 
 	/**
 	 * Return a db Schema object with the specified/default schema name.
@@ -102,19 +134,4 @@ public interface TableGenerator extends Generator
 	 * This can return null if no Table exists on the database with that name.
 	 */
 	Table getDbTable();
-
-
-//	class UniqueConstraintOwner implements IUniqueConstraint.Owner
-//	{
-//		private final ITableGenerator tableGenerator;
-//
-//		public UniqueConstraintOwner(ITableGenerator tableGenerator) {
-//			super();
-//			this.tableGenerator = tableGenerator;
-//		}
-//
-//		public Iterator<String> candidateUniqueConstraintColumnNames() {
-//			return this.tableGenerator.dbTable().columnNames();
-//		}
-//	}
 }

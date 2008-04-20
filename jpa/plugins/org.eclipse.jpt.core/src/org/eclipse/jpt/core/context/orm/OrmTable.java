@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 
@@ -26,4 +27,12 @@ public interface OrmTable extends Table, OrmJpaContextNode
 	void initialize(XmlEntity entity);
 
 	void update(XmlEntity entity);
+
+	
+	//****************** covariant overrides *******************
+
+	@SuppressWarnings("unchecked")
+	ListIterator<OrmUniqueConstraint> uniqueConstraints();
+	
+	OrmUniqueConstraint addUniqueConstraint(int index);
 }

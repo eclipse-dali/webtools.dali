@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
@@ -18,9 +19,12 @@ import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTable;
+import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.core.resource.orm.XmlTable;
+import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -480,6 +484,277 @@ public class OrmTableTests extends ContextModelTestCase
 //		assertNull(ormEntity.getName());
 //	}
 
+	public void testUniqueConstraints() throws Exception {
+		createTestEntity();
+		
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+		
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormEntity.getTable().uniqueConstraints();
+		assertFalse(uniqueConstraints.hasNext());
 
+		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlTable tableResource = OrmFactory.eINSTANCE.createXmlTable();
+		entityResource.setTable(tableResource);
+		
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		tableResource.getUniqueConstraints().add(0, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "foo");
+		
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		tableResource.getUniqueConstraints().add(0, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "bar");
+		
+		uniqueConstraints = ormEntity.getTable().uniqueConstraints();
+		assertTrue(uniqueConstraints.hasNext());
+		assertEquals("bar", uniqueConstraints.next().columnNames().next());
+		assertEquals("foo", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+	public void testUniqueConstraintsSize() throws Exception {
+		createTestEntity();
+		
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+		
+		assertEquals(0,  ormEntity.getTable().uniqueConstraintsSize());
+
+		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlTable tableResource = OrmFactory.eINSTANCE.createXmlTable();
+		entityResource.setTable(tableResource);
+		
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		tableResource.getUniqueConstraints().add(0, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "foo");
+		
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		tableResource.getUniqueConstraints().add(1, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "bar");
+		
+		assertEquals(2,  ormEntity.getTable().uniqueConstraintsSize());
+	}
+
+	public void testAddUniqueConstraint() throws Exception {
+		createTestEntity();
+		
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+		
+		OrmTable table = ormEntity.getTable();
+		table.addUniqueConstraint(0).addColumnName(0, "FOO");
+		table.addUniqueConstraint(0).addColumnName(0, "BAR");
+		table.addUniqueConstraint(0).addColumnName(0, "BAZ");
+		
+		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlTable tableResource = entityResource.getTable();
+		
+		ListIterator<XmlUniqueConstraint> uniqueConstraints = tableResource.getUniqueConstraints().listIterator();
+		
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().get(0));
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().get(0));
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().get(0));
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+	public void testAddUniqueConstraint2() throws Exception {
+		createTestEntity();
+		
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+		
+		OrmTable table = ormEntity.getTable();
+		table.addUniqueConstraint(0).addColumnName(0, "FOO");
+		table.addUniqueConstraint(1).addColumnName(0, "BAR");
+		table.addUniqueConstraint(0).addColumnName(0, "BAZ");
+		
+		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlTable tableResource = entityResource.getTable();
+		
+		ListIterator<XmlUniqueConstraint> uniqueConstraints = tableResource.getUniqueConstraints().listIterator();
+		
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().get(0));
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().get(0));
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().get(0));
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+	public void testRemoveUniqueConstraint() throws Exception {
+		createTestEntity();
+		
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+		
+		OrmTable table = ormEntity.getTable();
+		table.addUniqueConstraint(0).addColumnName(0, "FOO");
+		table.addUniqueConstraint(1).addColumnName(0, "BAR");
+		table.addUniqueConstraint(2).addColumnName(0, "BAZ");
+		
+		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlTable tableResource = entityResource.getTable();
+		
+		assertEquals(3, tableResource.getUniqueConstraints().size());
+
+		table.removeUniqueConstraint(1);
+		
+		ListIterator<XmlUniqueConstraint> uniqueConstraintResources = tableResource.getUniqueConstraints().listIterator();
+		assertEquals("FOO", uniqueConstraintResources.next().getColumnNames().get(0));		
+		assertEquals("BAZ", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertFalse(uniqueConstraintResources.hasNext());
+		
+		Iterator<OrmUniqueConstraint> uniqueConstraints = table.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());		
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	
+		
+		table.removeUniqueConstraint(1);
+		uniqueConstraintResources = tableResource.getUniqueConstraints().listIterator();
+		assertEquals("FOO", uniqueConstraintResources.next().getColumnNames().get(0));		
+		assertFalse(uniqueConstraintResources.hasNext());
+
+		uniqueConstraints = table.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());		
+		assertFalse(uniqueConstraints.hasNext());
+
+		
+		table.removeUniqueConstraint(0);
+		uniqueConstraintResources = tableResource.getUniqueConstraints().listIterator();
+		assertFalse(uniqueConstraintResources.hasNext());
+		uniqueConstraints = table.uniqueConstraints();
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+	public void testMoveUniqueConstraint() throws Exception {
+		createTestEntity();
+		
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+		
+		OrmTable table = ormEntity.getTable();
+		table.addUniqueConstraint(0).addColumnName(0, "FOO");
+		table.addUniqueConstraint(1).addColumnName(0, "BAR");
+		table.addUniqueConstraint(2).addColumnName(0, "BAZ");
+		
+		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlTable tableResource = entityResource.getTable();
+		
+		assertEquals(3, tableResource.getUniqueConstraints().size());
+		
+		
+		table.moveUniqueConstraint(2, 0);
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = table.uniqueConstraints();
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+
+		ListIterator<XmlUniqueConstraint> uniqueConstraintResources = tableResource.getUniqueConstraints().listIterator();
+		assertEquals("BAR", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertEquals("BAZ", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertEquals("FOO", uniqueConstraintResources.next().getColumnNames().get(0));
+
+
+		table.moveUniqueConstraint(0, 1);
+		uniqueConstraints = table.uniqueConstraints();
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+
+		uniqueConstraintResources = tableResource.getUniqueConstraints().listIterator();
+		assertEquals("BAZ", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertEquals("BAR", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertEquals("FOO", uniqueConstraintResources.next().getColumnNames().get(0));
+	}
+	
+	public void testUpdateUniqueConstraints() throws Exception {
+		createTestEntity();
+		
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+		
+		OrmTable table = ormEntity.getTable();
+		
+		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlTable tableResource = OrmFactory.eINSTANCE.createXmlTable();
+		entityResource.setTable(tableResource);
+	
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		tableResource.getUniqueConstraints().add(0, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "FOO");
+
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		tableResource.getUniqueConstraints().add(1, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "BAR");
+
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		tableResource.getUniqueConstraints().add(2, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "BAZ");
+
+		
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = table.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+		
+		tableResource.getUniqueConstraints().move(2, 0);
+		uniqueConstraints = table.uniqueConstraints();
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	
+		tableResource.getUniqueConstraints().move(0, 1);
+		uniqueConstraints = table.uniqueConstraints();
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	
+		tableResource.getUniqueConstraints().remove(1);
+		uniqueConstraints = table.uniqueConstraints();
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	
+		tableResource.getUniqueConstraints().remove(1);
+		uniqueConstraints = table.uniqueConstraints();
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+		
+		tableResource.getUniqueConstraints().remove(0);
+		uniqueConstraints = table.uniqueConstraints();
+		assertFalse(uniqueConstraints.hasNext());
+	}
+
+//TODO not yet supporting unique constriants from java
+//	public void testUniqueConstraintsFromJava() throws Exception {
+//		createTestEntity();
+//		
+//		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+//		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+//				
+//		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormEntity.getTable().uniqueConstraints();
+//		assertFalse(uniqueConstraints.hasNext());
+//
+//		JavaEntity javaEntity = (JavaEntity) ormPersistentType.getJavaPersistentType().getMapping();
+//		javaEntity.getTable().addUniqueConstraint(0).addColumnName(0, "FOO");
+//		javaEntity.getTable().addUniqueConstraint(1).addColumnName(0, "BAR");
+//		javaEntity.getTable().addUniqueConstraint(2).addColumnName(0, "BAZ");
+//		
+//		
+//		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+//		assertNull(entityResource.getTable());
+//
+//		uniqueConstraints = ormEntity.getTable().uniqueConstraints();
+//		assertTrue(uniqueConstraints.hasNext());
+//		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+//		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+//		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+//		assertFalse(uniqueConstraints.hasNext());
+//		
+//		entityResource.setTable(OrmFactory.eINSTANCE.createXmlTableImpl());
+//		assertEquals(0,  ormEntity.getTable().uniqueConstraintsSize());
+//	}
 
 }

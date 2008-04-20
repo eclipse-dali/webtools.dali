@@ -136,7 +136,7 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL: return (EObject)createXmlSequenceGeneratorImpl();
 			case OrmPackage.SQL_RESULT_SET_MAPPING: return (EObject)createSqlResultSetMapping();
 			case OrmPackage.XML_TABLE_GENERATOR_IMPL: return (EObject)createXmlTableGeneratorImpl();
-			case OrmPackage.UNIQUE_CONSTRAINT: return (EObject)createUniqueConstraint();
+			case OrmPackage.XML_UNIQUE_CONSTRAINT_IMPL: return (EObject)createXmlUniqueConstraintImpl();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -782,10 +782,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public UniqueConstraint createUniqueConstraint()
+	public XmlUniqueConstraintImpl createXmlUniqueConstraintImpl()
 	{
-		UniqueConstraint uniqueConstraint = new UniqueConstraint();
-		return uniqueConstraint;
+		XmlUniqueConstraintImpl xmlUniqueConstraintImpl = new XmlUniqueConstraintImpl();
+		return xmlUniqueConstraintImpl;
 	}
 
 	/**

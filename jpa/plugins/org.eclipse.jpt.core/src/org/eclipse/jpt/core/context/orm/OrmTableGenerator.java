@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 
@@ -26,4 +27,12 @@ public interface OrmTableGenerator extends TableGenerator, OrmGenerator, OrmJpaC
 	void initialize(XmlTableGenerator tableGenerator);
 
 	void update(XmlTableGenerator tableGenerator);
+	
+	//****************** covariant overrides *******************
+
+	@SuppressWarnings("unchecked")
+	ListIterator<OrmUniqueConstraint> uniqueConstraints();
+	
+	OrmUniqueConstraint addUniqueConstraint(int index);
+
 }

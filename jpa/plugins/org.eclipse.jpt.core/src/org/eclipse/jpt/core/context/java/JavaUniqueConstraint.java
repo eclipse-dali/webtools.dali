@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
-import java.util.ListIterator;
-import org.eclipse.jpt.core.context.TableGenerator;
-import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
+import org.eclipse.jpt.core.context.UniqueConstraint;
+import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 
 /**
  * 
@@ -22,19 +21,9 @@ import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaTableGenerator
-	extends JavaGenerator, TableGenerator
+public interface JavaUniqueConstraint extends UniqueConstraint, JavaJpaContextNode
 {
-	void initializeFromResource(TableGeneratorAnnotation generator);
+	void initialize(UniqueConstraintAnnotation uniqueConstraintAnnotation);
 	
-	void update(TableGeneratorAnnotation generator);
-	
-	
-	//****************** covariant overrides *******************
-
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaUniqueConstraint> uniqueConstraints();
-	
-	JavaUniqueConstraint addUniqueConstraint(int index);
-
+	void update(UniqueConstraintAnnotation uniqueConstraintAnnotation);
 }

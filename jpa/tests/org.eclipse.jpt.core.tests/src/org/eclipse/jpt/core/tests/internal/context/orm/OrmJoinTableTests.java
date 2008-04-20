@@ -26,10 +26,12 @@ import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
+import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -900,4 +902,280 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		joinTableResource.getJoinColumns().remove(0);
 		assertFalse(ormJoinTable.specifiedJoinColumns().hasNext());
 	}
+	
+
+	public void testUniqueConstraints() throws Exception {
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();
+		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTableImpl());
+		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
+		
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormJoinTable.uniqueConstraints();
+		assertFalse(uniqueConstraints.hasNext());
+		
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		joinTableResource.getUniqueConstraints().add(0, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "foo");
+		
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		joinTableResource.getUniqueConstraints().add(0, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "bar");
+		
+		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		assertTrue(uniqueConstraints.hasNext());
+		assertEquals("bar", uniqueConstraints.next().columnNames().next());
+		assertEquals("foo", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+	public void testUniqueConstraintsSize() throws Exception {
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();
+		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTableImpl());
+		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
+		
+		assertEquals(0,  ormJoinTable.uniqueConstraintsSize());
+		
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		joinTableResource.getUniqueConstraints().add(0, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "foo");
+		
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		joinTableResource.getUniqueConstraints().add(1, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "bar");
+		
+		assertEquals(2,  ormJoinTable.uniqueConstraintsSize());
+	}
+
+	public void testAddUniqueConstraint() throws Exception {
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();
+		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTableImpl());
+		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
+		
+		ormJoinTable.addUniqueConstraint(0).addColumnName(0, "FOO");
+		ormJoinTable.addUniqueConstraint(0).addColumnName(0, "BAR");
+		ormJoinTable.addUniqueConstraint(0).addColumnName(0, "BAZ");
+
+		ListIterator<XmlUniqueConstraint> uniqueConstraints = joinTableResource.getUniqueConstraints().listIterator();
+		
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().get(0));
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().get(0));
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().get(0));
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+	public void testAddUniqueConstraint2() throws Exception {
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();
+		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTableImpl());
+		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
+
+		ormJoinTable.addUniqueConstraint(0).addColumnName(0, "FOO");
+		ormJoinTable.addUniqueConstraint(1).addColumnName(0, "BAR");
+		ormJoinTable.addUniqueConstraint(0).addColumnName(0, "BAZ");
+		
+		ListIterator<XmlUniqueConstraint> uniqueConstraints = joinTableResource.getUniqueConstraints().listIterator();
+		
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().get(0));
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().get(0));
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().get(0));
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+	public void testRemoveUniqueConstraint() throws Exception {
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();
+		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTableImpl());
+		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
+		
+		ormJoinTable.addUniqueConstraint(0).addColumnName(0, "FOO");
+		ormJoinTable.addUniqueConstraint(1).addColumnName(0, "BAR");
+		ormJoinTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
+		
+		assertEquals(3, joinTableResource.getUniqueConstraints().size());
+
+		ormJoinTable.removeUniqueConstraint(1);
+		
+		ListIterator<XmlUniqueConstraint> uniqueConstraintResources = joinTableResource.getUniqueConstraints().listIterator();
+		assertEquals("FOO", uniqueConstraintResources.next().getColumnNames().get(0));		
+		assertEquals("BAZ", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertFalse(uniqueConstraintResources.hasNext());
+		
+		Iterator<OrmUniqueConstraint> uniqueConstraints = ormJoinTable.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());		
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	
+		
+		ormJoinTable.removeUniqueConstraint(1);
+		uniqueConstraintResources = joinTableResource.getUniqueConstraints().listIterator();
+		assertEquals("FOO", uniqueConstraintResources.next().getColumnNames().get(0));		
+		assertFalse(uniqueConstraintResources.hasNext());
+
+		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());		
+		assertFalse(uniqueConstraints.hasNext());
+
+		
+		ormJoinTable.removeUniqueConstraint(0);
+		uniqueConstraintResources = joinTableResource.getUniqueConstraints().listIterator();
+		assertFalse(uniqueConstraintResources.hasNext());
+		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+	public void testMoveUniqueConstraint() throws Exception {
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();
+		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTableImpl());
+		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
+		
+		ormJoinTable.addUniqueConstraint(0).addColumnName(0, "FOO");
+		ormJoinTable.addUniqueConstraint(1).addColumnName(0, "BAR");
+		ormJoinTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
+		
+		assertEquals(3, joinTableResource.getUniqueConstraints().size());
+		
+		
+		ormJoinTable.moveUniqueConstraint(2, 0);
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormJoinTable.uniqueConstraints();
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+
+		ListIterator<XmlUniqueConstraint> uniqueConstraintResources = joinTableResource.getUniqueConstraints().listIterator();
+		assertEquals("BAR", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertEquals("BAZ", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertEquals("FOO", uniqueConstraintResources.next().getColumnNames().get(0));
+
+
+		ormJoinTable.moveUniqueConstraint(0, 1);
+		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+
+		uniqueConstraintResources = joinTableResource.getUniqueConstraints().listIterator();
+		assertEquals("BAZ", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertEquals("BAR", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertEquals("FOO", uniqueConstraintResources.next().getColumnNames().get(0));
+	}
+	
+	public void testUpdateUniqueConstraints() throws Exception {
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();
+		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTableImpl());
+		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
+	
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		joinTableResource.getUniqueConstraints().add(0, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "FOO");
+
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		joinTableResource.getUniqueConstraints().add(1, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "BAR");
+
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		joinTableResource.getUniqueConstraints().add(2, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "BAZ");
+
+		
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormJoinTable.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+		
+		joinTableResource.getUniqueConstraints().move(2, 0);
+		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	
+		joinTableResource.getUniqueConstraints().move(0, 1);
+		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	
+		joinTableResource.getUniqueConstraints().remove(1);
+		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	
+		joinTableResource.getUniqueConstraints().remove(1);
+		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+		
+		joinTableResource.getUniqueConstraints().remove(0);
+		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+
+	public void testUniqueConstraintsFromJava() throws Exception {
+		createTestEntityWithValidManyToMany();
+		
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentType.attributes().next().getMapping();
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();
+		
+		assertTrue(ormManyToManyMapping.getPersistentAttribute().isVirtual());
+		
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormJoinTable.uniqueConstraints();
+		assertFalse(uniqueConstraints.hasNext());
+
+		JavaManyToManyMapping javaManyToManyMapping = (JavaManyToManyMapping) ormPersistentType.getJavaPersistentType().attributes().next().getMapping();
+		
+		javaManyToManyMapping.getJoinTable().addUniqueConstraint(0).addColumnName(0, "FOO");
+		javaManyToManyMapping.getJoinTable().addUniqueConstraint(1).addColumnName(0, "BAR");
+		javaManyToManyMapping.getJoinTable().addUniqueConstraint(2).addColumnName(0, "BAZ");
+
+		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		assertTrue(uniqueConstraints.hasNext());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+		
+		ormManyToManyMapping.getPersistentAttribute().makeSpecified();
+		
+		ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentType.attributes().next().getMapping();
+		ormManyToManyMapping.getJoinTable();
+		assertEquals(0,  ormManyToManyMapping.getJoinTable().uniqueConstraintsSize());
+	}
+
 }

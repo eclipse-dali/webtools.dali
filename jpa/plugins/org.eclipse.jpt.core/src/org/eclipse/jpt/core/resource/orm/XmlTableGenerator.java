@@ -199,7 +199,7 @@ public interface XmlTableGenerator extends XmlGenerator
 
 	/**
 	 * Returns the value of the '<em><b>Unique Constraints</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.UniqueConstraint}.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Unique Constraints</em>' containment reference list isn't clear,
@@ -211,6 +211,6 @@ public interface XmlTableGenerator extends XmlGenerator
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<UniqueConstraint> getUniqueConstraints();
+	EList<XmlUniqueConstraint> getUniqueConstraints();
 
 } // TableGenerator

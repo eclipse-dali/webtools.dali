@@ -30,6 +30,9 @@ public interface JavaJoinTable extends JoinTable, JavaJpaContextNode
 	
 	boolean isSpecified();
 	
+	
+	//****************** covariant overrides *******************
+
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaJoinColumn> joinColumns();
 	
@@ -51,4 +54,8 @@ public interface JavaJoinTable extends JoinTable, JavaJpaContextNode
 	
 	JavaJoinColumn addSpecifiedInverseJoinColumn(int index);
 
+	@SuppressWarnings("unchecked")
+	ListIterator<JavaUniqueConstraint> uniqueConstraints();
+	
+	JavaUniqueConstraint addUniqueConstraint(int index);
 }

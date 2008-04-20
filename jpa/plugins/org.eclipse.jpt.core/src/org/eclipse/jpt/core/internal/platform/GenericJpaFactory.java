@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.io.IOException;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
@@ -26,6 +25,7 @@ import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
+import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
@@ -62,6 +62,7 @@ import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
@@ -99,6 +100,7 @@ import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
+import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
@@ -143,6 +145,7 @@ import org.eclipse.jpt.core.internal.context.java.GenericJavaSequenceGenerator;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaTable;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaTableGenerator;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaTransientMapping;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaUniqueConstraint;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaVersionMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericEntityMappings;
@@ -176,6 +179,7 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmSequenceGenerator;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmTable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmTableGenerator;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmTransientMapping;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmUniqueConstraint;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmVersionMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitMetadata;
@@ -195,6 +199,7 @@ import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
+import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResourceModel;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
@@ -481,6 +486,10 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericJavaQueryHint(parent);
 	}
 	
+	public JavaUniqueConstraint buildJavaUniqueConstraint(JavaJpaContextNode parent, UniqueConstraint.Owner owner) {
+		return new GenericJavaUniqueConstraint(parent, owner);
+	}
+	
 	public OrmPersistentType buildOrmPersistentType(EntityMappings parent, String mappingKey) {
 		return new GenericOrmPersistentType(parent, mappingKey);
 	}
@@ -603,5 +612,9 @@ public class GenericJpaFactory implements JpaFactory
 	
 	public OrmAttributeMapping buildOrmNullAttributeMapping(OrmPersistentAttribute parent) {
 		return new GenericOrmNullAttributeMapping(parent);
+	}
+	
+	public OrmUniqueConstraint buildOrmUniqueConstraint(OrmJpaContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint xmlUniqueConstraint) {
+		return new GenericOrmUniqueConstraint(parent, owner, xmlUniqueConstraint);
 	}
 }

@@ -5531,14 +5531,14 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_TABLE_GENERATOR_IMPL_FEATURE_COUNT = XML_TABLE_GENERATOR_FEATURE_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.UniqueConstraint <em>Unique Constraint</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint <em>Xml Unique Constraint</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.resource.orm.UniqueConstraint
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getUniqueConstraint()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlUniqueConstraint()
 	 * @generated
 	 */
-	public static final int UNIQUE_CONSTRAINT = 90;
+	public static final int XML_UNIQUE_CONSTRAINT = 90;
 
 	/**
 	 * The feature id for the '<em><b>Column Names</b></em>' attribute list.
@@ -5547,16 +5547,44 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int UNIQUE_CONSTRAINT__COLUMN_NAMES = 0;
+	public static final int XML_UNIQUE_CONSTRAINT__COLUMN_NAMES = 0;
 
 	/**
-	 * The number of structural features of the '<em>Unique Constraint</em>' class.
+	 * The number of structural features of the '<em>Xml Unique Constraint</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int UNIQUE_CONSTRAINT_FEATURE_COUNT = 1;
+	public static final int XML_UNIQUE_CONSTRAINT_FEATURE_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlUniqueConstraintImpl <em>Xml Unique Constraint Impl</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.resource.orm.XmlUniqueConstraintImpl
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlUniqueConstraintImpl()
+	 * @generated
+	 */
+	public static final int XML_UNIQUE_CONSTRAINT_IMPL = 91;
+
+	/**
+	 * The feature id for the '<em><b>Column Names</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_UNIQUE_CONSTRAINT_IMPL__COLUMN_NAMES = XML_UNIQUE_CONSTRAINT__COLUMN_NAMES;
+
+	/**
+	 * The number of structural features of the '<em>Xml Unique Constraint Impl</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_UNIQUE_CONSTRAINT_IMPL_FEATURE_COUNT = XML_UNIQUE_CONSTRAINT_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.AccessType <em>Access Type</em>}' enum.
@@ -5566,7 +5594,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAccessType()
 	 * @generated
 	 */
-	public static final int ACCESS_TYPE = 91;
+	public static final int ACCESS_TYPE = 92;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.DiscriminatorType <em>Discriminator Type</em>}' enum.
@@ -5576,7 +5604,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getDiscriminatorType()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_TYPE = 92;
+	public static final int DISCRIMINATOR_TYPE = 93;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.EnumType <em>Enum Type</em>}' enum.
@@ -5586,7 +5614,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEnumType()
 	 * @generated
 	 */
-	public static final int ENUM_TYPE = 93;
+	public static final int ENUM_TYPE = 94;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.FetchType <em>Fetch Type</em>}' enum.
@@ -5596,7 +5624,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getFetchType()
 	 * @generated
 	 */
-	public static final int FETCH_TYPE = 94;
+	public static final int FETCH_TYPE = 95;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.GenerationType <em>Generation Type</em>}' enum.
@@ -5606,7 +5634,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getGenerationType()
 	 * @generated
 	 */
-	public static final int GENERATION_TYPE = 95;
+	public static final int GENERATION_TYPE = 96;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.InheritanceType <em>Inheritance Type</em>}' enum.
@@ -5616,7 +5644,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getInheritanceType()
 	 * @generated
 	 */
-	public static final int INHERITANCE_TYPE = 96;
+	public static final int INHERITANCE_TYPE = 97;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.TemporalType <em>Temporal Type</em>}' enum.
@@ -5626,7 +5654,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTemporalType()
 	 * @generated
 	 */
-	public static final int TEMPORAL_TYPE = 97;
+	public static final int TEMPORAL_TYPE = 98;
 
 	/**
 	 * The meta object id for the '<em>Discriminator Value</em>' data type.
@@ -5636,7 +5664,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getDiscriminatorValue()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_VALUE = 98;
+	public static final int DISCRIMINATOR_VALUE = 99;
 
 	/**
 	 * The meta object id for the '<em>Enumerated</em>' data type.
@@ -5646,7 +5674,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEnumerated()
 	 * @generated
 	 */
-	public static final int ENUMERATED = 99;
+	public static final int ENUMERATED = 100;
 
 	/**
 	 * The meta object id for the '<em>Order By</em>' data type.
@@ -5656,7 +5684,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getOrderBy()
 	 * @generated
 	 */
-	public static final int ORDER_BY = 100;
+	public static final int ORDER_BY = 101;
 
 	/**
 	 * The meta object id for the '<em>Version Type</em>' data type.
@@ -5666,7 +5694,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getVersionType()
 	 * @generated
 	 */
-	public static final int VERSION_TYPE = 101;
+	public static final int VERSION_TYPE = 102;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -6303,7 +6331,14 @@ public class OrmPackage extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass uniqueConstraintEClass = null;
+	private EClass xmlUniqueConstraintEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlUniqueConstraintImplEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -10223,31 +10258,47 @@ public class OrmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.UniqueConstraint <em>Unique Constraint</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint <em>Xml Unique Constraint</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Unique Constraint</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.UniqueConstraint
+	 * @return the meta object for class '<em>Xml Unique Constraint</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint
 	 * @generated
 	 */
-	public EClass getUniqueConstraint()
+	public EClass getXmlUniqueConstraint()
 	{
-		return uniqueConstraintEClass;
+		return xmlUniqueConstraintEClass;
 	}
 
+
 	/**
-	 * Returns the meta object for the attribute list '{@link org.eclipse.jpt.core.resource.orm.UniqueConstraint#getColumnNames <em>Column Names</em>}'.
+	 * Returns the meta object for the attribute list '{@link org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint#getColumnNames <em>Column Names</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute list '<em>Column Names</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.UniqueConstraint#getColumnNames()
-	 * @see #getUniqueConstraint()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint#getColumnNames()
+	 * @see #getXmlUniqueConstraint()
 	 * @generated
 	 */
-	public EAttribute getUniqueConstraint_ColumnNames()
+	public EAttribute getXmlUniqueConstraint_ColumnNames()
 	{
-		return (EAttribute)uniqueConstraintEClass.getEStructuralFeatures().get(0);
+		return (EAttribute)xmlUniqueConstraintEClass.getEStructuralFeatures().get(0);
 	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.XmlUniqueConstraintImpl <em>Xml Unique Constraint Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Unique Constraint Impl</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlUniqueConstraintImpl
+	 * @generated
+	 */
+	public EClass getXmlUniqueConstraintImpl()
+	{
+		return xmlUniqueConstraintImplEClass;
+	}
+
 
 	/**
 	 * Returns the meta object for enum '{@link org.eclipse.jpt.core.resource.orm.AccessType <em>Access Type</em>}'.
@@ -10778,8 +10829,10 @@ public class OrmPackage extends EPackageImpl
 
 		xmlTableGeneratorImplEClass = createEClass(XML_TABLE_GENERATOR_IMPL);
 
-		uniqueConstraintEClass = createEClass(UNIQUE_CONSTRAINT);
-		createEAttribute(uniqueConstraintEClass, UNIQUE_CONSTRAINT__COLUMN_NAMES);
+		xmlUniqueConstraintEClass = createEClass(XML_UNIQUE_CONSTRAINT);
+		createEAttribute(xmlUniqueConstraintEClass, XML_UNIQUE_CONSTRAINT__COLUMN_NAMES);
+
+		xmlUniqueConstraintImplEClass = createEClass(XML_UNIQUE_CONSTRAINT_IMPL);
 
 		// Create enums
 		accessTypeEEnum = createEEnum(ACCESS_TYPE);
@@ -10912,6 +10965,7 @@ public class OrmPackage extends EPackageImpl
 		xmlSequenceGeneratorImplEClass.getESuperTypes().add(this.getXmlSequenceGenerator());
 		xmlTableGeneratorEClass.getESuperTypes().add(this.getXmlGenerator());
 		xmlTableGeneratorImplEClass.getESuperTypes().add(this.getXmlTableGenerator());
+		xmlUniqueConstraintImplEClass.getESuperTypes().add(this.getXmlUniqueConstraint());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(xmlEntityMappingsEClass, XmlEntityMappings.class, "XmlEntityMappings", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -11229,7 +11283,7 @@ public class OrmPackage extends EPackageImpl
 		initEAttribute(getXmlBaseTable_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlBaseTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlBaseTable_Catalog(), theXMLTypePackage.getString(), "catalog", null, 0, 1, XmlBaseTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlBaseTable_Schema(), theXMLTypePackage.getString(), "schema", null, 0, 1, XmlBaseTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlBaseTable_UniqueConstraints(), this.getUniqueConstraint(), null, "uniqueConstraints", null, 0, -1, XmlBaseTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlBaseTable_UniqueConstraints(), this.getXmlUniqueConstraint(), null, "uniqueConstraints", null, 0, -1, XmlBaseTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlTableEClass, XmlTable.class, "XmlTable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -11260,12 +11314,14 @@ public class OrmPackage extends EPackageImpl
 		initEAttribute(getXmlTableGenerator_PkColumnName(), theXMLTypePackage.getString(), "pkColumnName", null, 0, 1, XmlTableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlTableGenerator_ValueColumnName(), theXMLTypePackage.getString(), "valueColumnName", null, 0, 1, XmlTableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlTableGenerator_PkColumnValue(), theXMLTypePackage.getString(), "pkColumnValue", null, 0, 1, XmlTableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlTableGenerator_UniqueConstraints(), this.getUniqueConstraint(), null, "uniqueConstraints", null, 0, -1, XmlTableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlTableGenerator_UniqueConstraints(), this.getXmlUniqueConstraint(), null, "uniqueConstraints", null, 0, -1, XmlTableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlTableGeneratorImplEClass, XmlTableGeneratorImpl.class, "XmlTableGeneratorImpl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(uniqueConstraintEClass, UniqueConstraint.class, "UniqueConstraint", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getUniqueConstraint_ColumnNames(), theXMLTypePackage.getString(), "columnNames", null, 1, -1, UniqueConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(xmlUniqueConstraintEClass, XmlUniqueConstraint.class, "XmlUniqueConstraint", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlUniqueConstraint_ColumnNames(), theXMLTypePackage.getString(), "columnNames", null, 1, -1, XmlUniqueConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlUniqueConstraintImplEClass, XmlUniqueConstraintImpl.class, "XmlUniqueConstraintImpl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Initialize enums and add enum literals
 		initEEnum(accessTypeEEnum, AccessType.class, "AccessType");
@@ -13586,14 +13642,14 @@ public class OrmPackage extends EPackageImpl
 		public static final EClass XML_TABLE_GENERATOR_IMPL = eINSTANCE.getXmlTableGeneratorImpl();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.UniqueConstraint <em>Unique Constraint</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint <em>Xml Unique Constraint</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.resource.orm.UniqueConstraint
-		 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getUniqueConstraint()
+		 * @see org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint
+		 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlUniqueConstraint()
 		 * @generated
 		 */
-		public static final EClass UNIQUE_CONSTRAINT = eINSTANCE.getUniqueConstraint();
+		public static final EClass XML_UNIQUE_CONSTRAINT = eINSTANCE.getXmlUniqueConstraint();
 
 		/**
 		 * The meta object literal for the '<em><b>Column Names</b></em>' attribute list feature.
@@ -13601,7 +13657,17 @@ public class OrmPackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute UNIQUE_CONSTRAINT__COLUMN_NAMES = eINSTANCE.getUniqueConstraint_ColumnNames();
+		public static final EAttribute XML_UNIQUE_CONSTRAINT__COLUMN_NAMES = eINSTANCE.getXmlUniqueConstraint_ColumnNames();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlUniqueConstraintImpl <em>Xml Unique Constraint Impl</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.resource.orm.XmlUniqueConstraintImpl
+		 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlUniqueConstraintImpl()
+		 * @generated
+		 */
+		public static final EClass XML_UNIQUE_CONSTRAINT_IMPL = eINSTANCE.getXmlUniqueConstraintImpl();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.AccessType <em>Access Type</em>}' enum.

@@ -17,14 +17,18 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.SecondaryTable;
+import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
+import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
+import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -511,5 +515,261 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		secondaryTableResource.getPrimaryKeyJoinColumns().remove(0);
 		assertFalse(ormSecondaryTable.specifiedPrimaryKeyJoinColumns().hasNext());
 	}
+	
 
+	public void testUniqueConstraints() throws Exception {
+		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
+		OrmSecondaryTable ormSecondaryTable = ormEntity.addSpecifiedSecondaryTable(0);
+		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlSecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
+		
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormSecondaryTable.uniqueConstraints();
+		assertFalse(uniqueConstraints.hasNext());
+		
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		secondaryTableResource.getUniqueConstraints().add(0, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "foo");
+		
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		secondaryTableResource.getUniqueConstraints().add(0, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "bar");
+		
+		uniqueConstraints = ormSecondaryTable.uniqueConstraints();
+		assertTrue(uniqueConstraints.hasNext());
+		assertEquals("bar", uniqueConstraints.next().columnNames().next());
+		assertEquals("foo", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+	public void testUniqueConstraintsSize() throws Exception {
+		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
+		OrmSecondaryTable ormSecondaryTable = ormEntity.addSpecifiedSecondaryTable(0);
+		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlSecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
+		
+		assertEquals(0,  ormSecondaryTable.uniqueConstraintsSize());
+		
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		secondaryTableResource.getUniqueConstraints().add(0, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "foo");
+		
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		secondaryTableResource.getUniqueConstraints().add(1, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "bar");
+		
+		assertEquals(2,  ormSecondaryTable.uniqueConstraintsSize());
+	}
+
+	public void testAddUniqueConstraint() throws Exception {
+		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
+		OrmSecondaryTable ormSecondaryTable = ormEntity.addSpecifiedSecondaryTable(0);
+		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlSecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
+		
+		ormSecondaryTable.addUniqueConstraint(0).addColumnName(0, "FOO");
+		ormSecondaryTable.addUniqueConstraint(0).addColumnName(0, "BAR");
+		ormSecondaryTable.addUniqueConstraint(0).addColumnName(0, "BAZ");
+		
+		ListIterator<XmlUniqueConstraint> uniqueConstraints = secondaryTableResource.getUniqueConstraints().listIterator();
+		
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().get(0));
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().get(0));
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().get(0));
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+	public void testAddUniqueConstraint2() throws Exception {
+		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
+		OrmSecondaryTable ormSecondaryTable = ormEntity.addSpecifiedSecondaryTable(0);
+		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlSecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
+		
+		ormSecondaryTable.addUniqueConstraint(0).addColumnName(0, "FOO");
+		ormSecondaryTable.addUniqueConstraint(1).addColumnName(0, "BAR");
+		ormSecondaryTable.addUniqueConstraint(0).addColumnName(0, "BAZ");
+		
+		ListIterator<XmlUniqueConstraint> uniqueConstraints = secondaryTableResource.getUniqueConstraints().listIterator();
+		
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().get(0));
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().get(0));
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().get(0));
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+	public void testRemoveUniqueConstraint() throws Exception {
+		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
+		OrmSecondaryTable ormSecondaryTable = ormEntity.addSpecifiedSecondaryTable(0);
+		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlSecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
+		
+		ormSecondaryTable.addUniqueConstraint(0).addColumnName(0, "FOO");
+		ormSecondaryTable.addUniqueConstraint(1).addColumnName(0, "BAR");
+		ormSecondaryTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
+		
+		assertEquals(3, secondaryTableResource.getUniqueConstraints().size());
+
+		ormSecondaryTable.removeUniqueConstraint(1);
+		
+		ListIterator<XmlUniqueConstraint> uniqueConstraintResources = secondaryTableResource.getUniqueConstraints().listIterator();
+		assertEquals("FOO", uniqueConstraintResources.next().getColumnNames().get(0));		
+		assertEquals("BAZ", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertFalse(uniqueConstraintResources.hasNext());
+		
+		Iterator<OrmUniqueConstraint> uniqueConstraints = ormSecondaryTable.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());		
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	
+		
+		ormSecondaryTable.removeUniqueConstraint(1);
+		uniqueConstraintResources = secondaryTableResource.getUniqueConstraints().listIterator();
+		assertEquals("FOO", uniqueConstraintResources.next().getColumnNames().get(0));		
+		assertFalse(uniqueConstraintResources.hasNext());
+
+		uniqueConstraints = ormSecondaryTable.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());		
+		assertFalse(uniqueConstraints.hasNext());
+
+		
+		ormSecondaryTable.removeUniqueConstraint(0);
+		uniqueConstraintResources = secondaryTableResource.getUniqueConstraints().listIterator();
+		assertFalse(uniqueConstraintResources.hasNext());
+		uniqueConstraints = ormSecondaryTable.uniqueConstraints();
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+	public void testMoveUniqueConstraint() throws Exception {
+		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
+		OrmSecondaryTable ormSecondaryTable = ormEntity.addSpecifiedSecondaryTable(0);
+		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlSecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
+		
+		ormSecondaryTable.addUniqueConstraint(0).addColumnName(0, "FOO");
+		ormSecondaryTable.addUniqueConstraint(1).addColumnName(0, "BAR");
+		ormSecondaryTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
+		
+		assertEquals(3, secondaryTableResource.getUniqueConstraints().size());
+		
+		
+		ormSecondaryTable.moveUniqueConstraint(2, 0);
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormSecondaryTable.uniqueConstraints();
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+
+		ListIterator<XmlUniqueConstraint> uniqueConstraintResources = secondaryTableResource.getUniqueConstraints().listIterator();
+		assertEquals("BAR", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertEquals("BAZ", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertEquals("FOO", uniqueConstraintResources.next().getColumnNames().get(0));
+
+
+		ormSecondaryTable.moveUniqueConstraint(0, 1);
+		uniqueConstraints = ormSecondaryTable.uniqueConstraints();
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+
+		uniqueConstraintResources = secondaryTableResource.getUniqueConstraints().listIterator();
+		assertEquals("BAZ", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertEquals("BAR", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertEquals("FOO", uniqueConstraintResources.next().getColumnNames().get(0));
+	}
+	
+	public void testUpdateUniqueConstraints() throws Exception {
+		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
+		OrmSecondaryTable ormSecondaryTable = ormEntity.addSpecifiedSecondaryTable(0);
+		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlSecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
+	
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		secondaryTableResource.getUniqueConstraints().add(0, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "FOO");
+
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		secondaryTableResource.getUniqueConstraints().add(1, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "BAR");
+
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		secondaryTableResource.getUniqueConstraints().add(2, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "BAZ");
+
+		
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormSecondaryTable.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+		
+		secondaryTableResource.getUniqueConstraints().move(2, 0);
+		uniqueConstraints = ormSecondaryTable.uniqueConstraints();
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	
+		secondaryTableResource.getUniqueConstraints().move(0, 1);
+		uniqueConstraints = ormSecondaryTable.uniqueConstraints();
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	
+		secondaryTableResource.getUniqueConstraints().remove(1);
+		uniqueConstraints = ormSecondaryTable.uniqueConstraints();
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	
+		secondaryTableResource.getUniqueConstraints().remove(1);
+		uniqueConstraints = ormSecondaryTable.uniqueConstraints();
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+		
+		secondaryTableResource.getUniqueConstraints().remove(0);
+		uniqueConstraints = ormSecondaryTable.uniqueConstraints();
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+	
+	public void testUniqueConstraintsFromJava() throws Exception {
+		createTestEntity();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+		
+		JavaEntity javaEntity = (JavaEntity) ormPersistentType.getJavaPersistentType().getMapping();
+		JavaSecondaryTable javaSecondaryTable = javaEntity.addSpecifiedSecondaryTable(0);
+		javaSecondaryTable.setSpecifiedName("SECONDARY");
+		
+		OrmSecondaryTable ormSecondaryTable = ormEntity.secondaryTables().next();
+		assertTrue(ormSecondaryTable.isVirtual());
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormSecondaryTable.uniqueConstraints();
+		assertFalse(uniqueConstraints.hasNext());
+
+		
+		javaSecondaryTable.addUniqueConstraint(0).addColumnName(0, "FOO");
+		javaSecondaryTable.addUniqueConstraint(1).addColumnName(0, "BAR");
+		javaSecondaryTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
+
+		uniqueConstraints = ormSecondaryTable.uniqueConstraints();
+		assertTrue(uniqueConstraints.hasNext());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+		
+		ormEntity.setSecondaryTablesDefinedInXml(true);
+		OrmSecondaryTable ormSecondaryTable2 = ormEntity.secondaryTables().next();
+		ormSecondaryTable2.setSpecifiedName("SECONDARY");
+		
+		assertEquals("SECONDARY", ormSecondaryTable.getSpecifiedName());
+		assertFalse(ormSecondaryTable2.isVirtual());
+		assertEquals(0, ormSecondaryTable2.uniqueConstraintsSize());
+	}
 }

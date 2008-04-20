@@ -11,11 +11,22 @@
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.TableGenerator;
+import org.eclipse.jpt.core.context.UniqueConstraint;
+import org.eclipse.jpt.core.context.java.JavaIdMapping;
+import org.eclipse.jpt.core.context.java.JavaTableGenerator;
+import org.eclipse.jpt.core.context.orm.OrmIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
+import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
+import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -370,4 +381,242 @@ public class OrmTableGeneratorTests extends ContextModelTestCase
 		assertNull(tableGeneratorResource.getPkColumnValue());
 		assertNull(tableGenerator.getSpecifiedPkColumnValue());
 	}
+	
+
+	public void testUniqueConstraints() throws Exception {
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = tableGenerator.uniqueConstraints();
+		assertFalse(uniqueConstraints.hasNext());
+		
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		tableGeneratorResource.getUniqueConstraints().add(0, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "foo");
+		
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		tableGeneratorResource.getUniqueConstraints().add(0, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "bar");
+		
+		uniqueConstraints = tableGenerator.uniqueConstraints();
+		assertTrue(uniqueConstraints.hasNext());
+		assertEquals("bar", uniqueConstraints.next().columnNames().next());
+		assertEquals("foo", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+	public void testUniqueConstraintsSize() throws Exception {
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		
+		assertEquals(0,  tableGenerator.uniqueConstraintsSize());
+		
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		tableGeneratorResource.getUniqueConstraints().add(0, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "foo");
+		
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		tableGeneratorResource.getUniqueConstraints().add(1, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "bar");
+		
+		assertEquals(2,  tableGenerator.uniqueConstraintsSize());
+	}
+
+	public void testAddUniqueConstraint() throws Exception {
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		
+		tableGenerator.addUniqueConstraint(0).addColumnName(0, "FOO");
+		tableGenerator.addUniqueConstraint(0).addColumnName(0, "BAR");
+		tableGenerator.addUniqueConstraint(0).addColumnName(0, "BAZ");
+				
+		ListIterator<XmlUniqueConstraint> uniqueConstraints = tableGeneratorResource.getUniqueConstraints().listIterator();
+		
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().get(0));
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().get(0));
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().get(0));
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+	public void testAddUniqueConstraint2() throws Exception {
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		
+		tableGenerator.addUniqueConstraint(0).addColumnName(0, "FOO");
+		tableGenerator.addUniqueConstraint(1).addColumnName(0, "BAR");
+		tableGenerator.addUniqueConstraint(0).addColumnName(0, "BAZ");
+		
+		ListIterator<XmlUniqueConstraint> uniqueConstraints = tableGeneratorResource.getUniqueConstraints().listIterator();
+		
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().get(0));
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().get(0));
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().get(0));
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+	public void testRemoveUniqueConstraint() throws Exception {
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+
+		tableGenerator.addUniqueConstraint(0).addColumnName(0, "FOO");
+		tableGenerator.addUniqueConstraint(1).addColumnName(0, "BAR");
+		tableGenerator.addUniqueConstraint(2).addColumnName(0, "BAZ");
+		
+		assertEquals(3, tableGeneratorResource.getUniqueConstraints().size());
+
+		tableGenerator.removeUniqueConstraint(1);
+		
+		ListIterator<XmlUniqueConstraint> uniqueConstraintResources = tableGeneratorResource.getUniqueConstraints().listIterator();
+		assertEquals("FOO", uniqueConstraintResources.next().getColumnNames().get(0));		
+		assertEquals("BAZ", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertFalse(uniqueConstraintResources.hasNext());
+		
+		Iterator<UniqueConstraint> uniqueConstraints = tableGenerator.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());		
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	
+		
+		tableGenerator.removeUniqueConstraint(1);
+		uniqueConstraintResources = tableGeneratorResource.getUniqueConstraints().listIterator();
+		assertEquals("FOO", uniqueConstraintResources.next().getColumnNames().get(0));		
+		assertFalse(uniqueConstraintResources.hasNext());
+
+		uniqueConstraints = tableGenerator.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());		
+		assertFalse(uniqueConstraints.hasNext());
+
+		
+		tableGenerator.removeUniqueConstraint(0);
+		uniqueConstraintResources = tableGeneratorResource.getUniqueConstraints().listIterator();
+		assertFalse(uniqueConstraintResources.hasNext());
+		uniqueConstraints = tableGenerator.uniqueConstraints();
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+	public void testMoveUniqueConstraint() throws Exception {
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+
+		tableGenerator.addUniqueConstraint(0).addColumnName(0, "FOO");
+		tableGenerator.addUniqueConstraint(1).addColumnName(0, "BAR");
+		tableGenerator.addUniqueConstraint(2).addColumnName(0, "BAZ");
+		
+		assertEquals(3, tableGeneratorResource.getUniqueConstraints().size());
+		
+		
+		tableGenerator.moveUniqueConstraint(2, 0);
+		ListIterator<UniqueConstraint> uniqueConstraints = tableGenerator.uniqueConstraints();
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+
+		ListIterator<XmlUniqueConstraint> uniqueConstraintResources = tableGeneratorResource.getUniqueConstraints().listIterator();
+		assertEquals("BAR", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertEquals("BAZ", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertEquals("FOO", uniqueConstraintResources.next().getColumnNames().get(0));
+
+
+		tableGenerator.moveUniqueConstraint(0, 1);
+		uniqueConstraints = tableGenerator.uniqueConstraints();
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+
+		uniqueConstraintResources = tableGeneratorResource.getUniqueConstraints().listIterator();
+		assertEquals("BAZ", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertEquals("BAR", uniqueConstraintResources.next().getColumnNames().get(0));
+		assertEquals("FOO", uniqueConstraintResources.next().getColumnNames().get(0));
+	}
+	
+	public void testUpdateUniqueConstraints() throws Exception {
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+	
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		tableGeneratorResource.getUniqueConstraints().add(0, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "FOO");
+
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		tableGeneratorResource.getUniqueConstraints().add(1, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "BAR");
+
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		tableGeneratorResource.getUniqueConstraints().add(2, uniqueConstraintResource);
+		uniqueConstraintResource.getColumnNames().add(0, "BAZ");
+
+		
+		ListIterator<UniqueConstraint> uniqueConstraints = tableGenerator.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+		
+		tableGeneratorResource.getUniqueConstraints().move(2, 0);
+		uniqueConstraints = tableGenerator.uniqueConstraints();
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	
+		tableGeneratorResource.getUniqueConstraints().move(0, 1);
+		uniqueConstraints = tableGenerator.uniqueConstraints();
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	
+		tableGeneratorResource.getUniqueConstraints().remove(1);
+		uniqueConstraints = tableGenerator.uniqueConstraints();
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+	
+		tableGeneratorResource.getUniqueConstraints().remove(1);
+		uniqueConstraints = tableGenerator.uniqueConstraints();
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+		
+		tableGeneratorResource.getUniqueConstraints().remove(0);
+		uniqueConstraints = tableGenerator.uniqueConstraints();
+		assertFalse(uniqueConstraints.hasNext());
+	}
+	
+	public void testUniqueConstraintsFromJava() throws Exception {
+		createTestEntity();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentType.attributes().next().getMapping();
+
+		JavaIdMapping javaIdMapping = (JavaIdMapping) ormPersistentType.getJavaPersistentType().attributes().next().getMapping();
+		JavaTableGenerator javaTableGenerator = javaIdMapping.addTableGenerator();
+		javaTableGenerator.setName("TABLE_GENERATOR");
+		
+		OrmTableGenerator ormTableGenerator = ormIdMapping.getTableGenerator();
+		assertTrue(ormTableGenerator.isVirtual());
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormTableGenerator.uniqueConstraints();
+		assertFalse(uniqueConstraints.hasNext());
+
+		
+		javaTableGenerator.addUniqueConstraint(0).addColumnName(0, "FOO");
+		javaTableGenerator.addUniqueConstraint(1).addColumnName(0, "BAR");
+		javaTableGenerator.addUniqueConstraint(2).addColumnName(0, "BAZ");
+
+		uniqueConstraints = ormTableGenerator.uniqueConstraints();
+		assertTrue(uniqueConstraints.hasNext());
+		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+		
+		ormIdMapping.getPersistentAttribute().makeSpecified();
+		ormIdMapping = (OrmIdMapping) ormPersistentType.attributes().next().getMapping();
+	
+		OrmTableGenerator ormTableGenerator2 = ormIdMapping.addTableGenerator();
+		ormTableGenerator2.setName("TABLE_GENERATOR");
+		
+		assertFalse(ormTableGenerator2.isVirtual());
+		assertEquals(0, ormTableGenerator2.uniqueConstraintsSize());
+	}
+
 }

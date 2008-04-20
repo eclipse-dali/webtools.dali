@@ -24,7 +24,14 @@ import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
  */
 public interface JavaSecondaryTable extends SecondaryTable, JavaJpaContextNode
 {
+
+	void initializeFromResource(SecondaryTableAnnotation secondaryTable);
 	
+	void update(SecondaryTableAnnotation secondaryTable);
+
+
+	//****************** covariant overrides *******************
+
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns();
 	
@@ -35,8 +42,9 @@ public interface JavaSecondaryTable extends SecondaryTable, JavaJpaContextNode
 	
 	JavaPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 	
-	void initializeFromResource(SecondaryTableAnnotation secondaryTable);
+	@SuppressWarnings("unchecked")
+	ListIterator<JavaUniqueConstraint> uniqueConstraints();
 	
-	void update(SecondaryTableAnnotation secondaryTable);
+	JavaUniqueConstraint addUniqueConstraint(int index);
 
 }

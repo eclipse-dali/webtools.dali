@@ -57,5 +57,9 @@ public interface OrmJoinTable extends JoinTable, OrmJpaContextNode
 	ListIterator<OrmJoinColumn> specifiedInverseJoinColumns();
 
 	OrmJoinColumn addSpecifiedInverseJoinColumn(int index);
-
+	
+	@SuppressWarnings("unchecked")
+	ListIterator<OrmUniqueConstraint> uniqueConstraints();
+	
+	OrmUniqueConstraint addUniqueConstraint(int index);
 }

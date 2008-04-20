@@ -43,5 +43,9 @@ public interface OrmSecondaryTable extends SecondaryTable, OrmJpaContextNode
 	ListIterator<OrmPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns();
 	
 	OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
-
+	
+	@SuppressWarnings("unchecked")
+	ListIterator<OrmUniqueConstraint> uniqueConstraints();
+	
+	OrmUniqueConstraint addUniqueConstraint(int index);
 }

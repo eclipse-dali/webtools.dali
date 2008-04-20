@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.db.Schema;
 
 /**
@@ -51,8 +52,42 @@ public interface Table extends JpaContextNode
 		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchemaProperty";
 
 
-//	EList<IUniqueConstraint> getUniqueConstraints();
-//	IUniqueConstraint createUniqueConstraint(int index);
+	// **************** unique constraints **************************************
+
+	/**
+	 * Return a list iterator of the unique constraints.
+	 * This will not be null.
+	 */
+	<T extends UniqueConstraint> ListIterator<T> uniqueConstraints();
+	
+	/**
+	 * Return the number of unique constraints.
+	 */
+	int uniqueConstraintsSize();
+		
+	/**
+	 * Add a unique constraint to the table and return the object 
+	 * representing it.
+	 */
+	UniqueConstraint addUniqueConstraint(int index);
+	
+	/**
+	 * Remove unique constraint at the given index from the Table
+	 */
+	void removeUniqueConstraint(int index);
+	
+	/**
+	 * Remove the unique constraint from the Table
+	 */
+	void removeUniqueConstraint(UniqueConstraint uniqueConstraint);
+	
+	/**
+	 * Move the unique constraint from the source index to the target index.
+	 */
+	void moveUniqueConstraint(int targetIndex, int sourceIndex);
+		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraintsList";
+
+
 
 	org.eclipse.jpt.db.Table getDbTable();
 
@@ -72,20 +107,4 @@ public interface Table extends JpaContextNode
 	 * Return true if this can be resolved to a table on the active connection
 	 */
 	boolean isResolved();
-
-
-//
-//	class UniqueConstraintOwner implements IUniqueConstraint.Owner
-//	{
-//		private final ITable table;
-//
-//		public UniqueConstraintOwner(ITable table) {
-//			super();
-//			this.table = table;
-//		}
-//
-//		public Iterator<String> candidateUniqueConstraintColumnNames() {
-//			return this.table.dbTable().columnNames();
-//		}
-//	}
 }

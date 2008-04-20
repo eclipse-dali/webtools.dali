@@ -15,10 +15,11 @@ import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
-import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
+import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
+import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
@@ -51,12 +52,13 @@ import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
@@ -88,6 +90,7 @@ import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
+import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
@@ -104,6 +107,7 @@ import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
+import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
@@ -270,6 +274,8 @@ public interface JpaFactory
 	
 	OrmAttributeMapping buildOrmNullAttributeMapping(OrmPersistentAttribute parent);
 	
+	OrmUniqueConstraint buildOrmUniqueConstraint(OrmJpaContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint xmlUniqueConstraint);
+	
 	// **************** java context objects ***********************************
 	
 	JavaPersistentType buildJavaPersistentType(JpaContextNode parent, JavaResourcePersistentType resourcePersistentType);
@@ -335,4 +341,6 @@ public interface JpaFactory
 	JavaNamedNativeQuery buildJavaNamedNativeQuery(JavaJpaContextNode parent);
 	
 	JavaQueryHint buildJavaQueryHint(JavaQuery parent);
+	
+	JavaUniqueConstraint buildJavaUniqueConstraint(JavaJpaContextNode parent, UniqueConstraint.Owner owner);
 }

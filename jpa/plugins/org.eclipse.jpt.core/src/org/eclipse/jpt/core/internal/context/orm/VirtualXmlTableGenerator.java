@@ -10,11 +10,15 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.jpt.core.context.java.JavaTableGenerator;
+import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.orm.UniqueConstraint;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
+import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlTableGenerator
 {
@@ -130,9 +134,15 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 
 
 
-	public EList<UniqueConstraint> getUniqueConstraints() {
-		// TODO Auto-generated method stub
-		return null;
+	public EList<XmlUniqueConstraint> getUniqueConstraints() {
+		EList<XmlUniqueConstraint> xmlUniqueConstraints = new EObjectContainmentEList<XmlUniqueConstraint>(XmlUniqueConstraint.class, this, OrmPackage.XML_TABLE_GENERATOR__UNIQUE_CONSTRAINTS);
+
+		for (JavaUniqueConstraint uniqueConstraint : CollectionTools.iterable(this.javaTableGenerator.uniqueConstraints())) {
+			XmlUniqueConstraint xmlUniqueConstraint = new VirtualXmlUniqueConstraint(uniqueConstraint, this.metadataComplete);
+			xmlUniqueConstraints.add(xmlUniqueConstraint);
+		}
+
+		return xmlUniqueConstraints;
 	}
 
 	public void update(JavaTableGenerator javaTableGenerator) {

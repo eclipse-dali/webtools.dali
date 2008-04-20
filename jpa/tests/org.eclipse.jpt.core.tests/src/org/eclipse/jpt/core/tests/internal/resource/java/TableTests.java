@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -278,6 +279,11 @@ public class TableTests extends JavaResourceModelTestCase {
 		table.uniqueConstraintAt(1).addColumnName("BAZ");
 		
 		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint,@UniqueConstraint(columnNames={ \"BAR\", \"BAZ\" }), @UniqueConstraint(columnNames=\"FOO\")})");
+		
+		assertEquals("FOO", table.uniqueConstraintAt(2).columnNames().next());
+		ListIterator<String> columnNames = table.uniqueConstraintAt(1).columnNames();
+		assertEquals("BAR", columnNames.next());
+		assertEquals("BAZ", columnNames.next());
 	}	
 	public void testRemoveUniqueConstraint() throws Exception {
 		IType testType = this.createTestTableWithUniqueConstraints();

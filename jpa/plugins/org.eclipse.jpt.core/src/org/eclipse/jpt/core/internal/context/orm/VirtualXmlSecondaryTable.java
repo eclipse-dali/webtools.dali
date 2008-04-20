@@ -13,9 +13,10 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
-import org.eclipse.jpt.core.resource.orm.UniqueConstraint;
+import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -75,8 +76,15 @@ public class VirtualXmlSecondaryTable extends AbstractJpaEObject implements XmlS
 		return primaryKeyJoinColumns;
 	}
 	
-	public EList<UniqueConstraint> getUniqueConstraints() {
-		return new EObjectContainmentEList<UniqueConstraint>(UniqueConstraint.class, this, OrmPackage.XML_SECONDARY_TABLE_IMPL__UNIQUE_CONSTRAINTS);
+	public EList<XmlUniqueConstraint> getUniqueConstraints() {
+		EList<XmlUniqueConstraint> xmlUniqueConstraints = new EObjectContainmentEList<XmlUniqueConstraint>(XmlUniqueConstraint.class, this, OrmPackage.XML_SECONDARY_TABLE__UNIQUE_CONSTRAINTS);
+
+		for (JavaUniqueConstraint uniqueConstraint : CollectionTools.iterable(this.javaSecondaryTable.uniqueConstraints())) {
+			XmlUniqueConstraint xmlUniqueConstraint = new VirtualXmlUniqueConstraint(uniqueConstraint, true);
+			xmlUniqueConstraints.add(xmlUniqueConstraint);
+		}
+
+		return xmlUniqueConstraints;
 	}
 	
 	public TextRange getNameTextRange() {
