@@ -29,6 +29,8 @@ import org.eclipse.jpt.eclipselink.ui.internal.schema.generation.PersistenceXmlS
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
+import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitGeneralComposite;
+import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitPropertiesComposite;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -51,7 +53,9 @@ public class EclipseLinkUiFactory extends BaseJpaUiFactory
 		PropertyValueModel<EclipseLinkPersistenceUnit> eclipseLinkPersistenceUnitHolder = 
 			this.buildEclipseLinkPersistenceUnitHolder(subjectHolder);
 		ArrayList<JpaPageComposite<PersistenceUnit>> pages = 
-			new ArrayList<JpaPageComposite<PersistenceUnit>>(10);
+			new ArrayList<JpaPageComposite<PersistenceUnit>>(8);
+
+		pages.add(new PersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory));
 		
 		PropertyValueModel<Connection> connectionHolder = 
 			this.buildConnectionHolder(eclipseLinkPersistenceUnitHolder);
@@ -76,6 +80,8 @@ public class EclipseLinkUiFactory extends BaseJpaUiFactory
 		PropertyValueModel<SchemaGeneration> schemaGenHolder = 
 			this.buildSchemaGenerationHolder(eclipseLinkPersistenceUnitHolder);
 		pages.add(new PersistenceXmlSchemaGenerationTab(schemaGenHolder, parent, widgetFactory));
+		
+		pages.add(new PersistenceUnitPropertiesComposite(subjectHolder, parent, widgetFactory));
 		
 		return pages.listIterator();
 	}
