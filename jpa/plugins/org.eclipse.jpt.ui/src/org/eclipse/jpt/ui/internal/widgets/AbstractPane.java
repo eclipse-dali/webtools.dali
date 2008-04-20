@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.widgets;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
@@ -2262,6 +2263,111 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
+	 * Creates a new container that will have a text field as the center control
+	 * labeled with the given label.
+	 *
+	 * @param container The parent container
+	 * @param textHolder The holder of the text field's input
+	 * @return The newly created <code>Text</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildLabeledPasswordText(Composite container,
+	                                              String labelText,
+	                                              WritablePropertyValueModel<String> textHolder) {
+
+		return this.buildLabeledPasswordText(
+			container,
+			labelText,
+			textHolder,
+			null
+		);
+	}
+
+	/**
+	 * Creates a new container that will have a text field as the center control
+	 * labeled with the given label.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text field's label
+	 * @param rightComponent The component to be placed to the right of the text
+	 * field
+	 * @param textHolder The holder of the text field's input
+	 * @param helpId The topic help ID to be registered for the text field
+	 * @return The newly created <code>Text</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildLabeledPasswordText(Composite container,
+	                                              String labelText,
+	                                              WritablePropertyValueModel<String> textHolder,
+	                                              Control rightComponent,
+	                                              String helpId) {
+
+		Text text = this.buildPasswordText(container, textHolder);
+
+		this.buildLabeledComposite(
+			container,
+			labelText,
+			text,
+			rightComponent,
+			helpId
+		);
+
+		return text;
+	}
+
+	/**
+	 * Creates a new container that will have a text field as the center control
+	 * labeled with the given label.
+	 *
+	 * @param container The parent container
+	 * @param textHolder The holder of the text field's input
+	 * @param helpId The topic help ID to be registered for the text field
+	 * @return The newly created <code>Text</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildLabeledPasswordText(Composite container,
+	                                              String labelText,
+	                                              WritablePropertyValueModel<String> textHolder,
+	                                              String helpId) {
+
+		return this.buildLabeledPasswordText(
+			container,
+			labelText,
+			textHolder,
+			null,
+			helpId
+		);
+	}
+
+	/**
+	 * Creates a new container that will have a text field as the center control
+	 * labeled with the given label.
+	 *
+	 * @param container The parent container
+	 * @param textHolder The holder of the text field's input
+	 * @param helpId The topic help ID to be registered for the text field
+	 * @return The newly created <code>Text</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildLabeledPawordText(Composite container,
+	                                            String labelText,
+	                                            WritablePropertyValueModel<String> textHolder,
+	                                            String helpId) {
+
+		return this.buildLabeledPasswordText(
+			container,
+			labelText,
+			textHolder,
+			null,
+			helpId
+		);
+	}
+
+	/**
 	 * Creates a new spinner.
 	 *
 	 * @param parent The parent container
@@ -2461,127 +2567,6 @@ public abstract class AbstractPane<T extends Model>
 			null,
 			null
 		);
-	}
-
-	/**
-	 * Creates a new container that will have a text field as the center control
-	 * labeled with the given label.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text field's label
-	 * @param textListener The listener that is notified when the text field's
-	 * input changes
-	 * @return The newly created <code>Text</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Text buildLabeledText(Composite container,
-	                                      String labelText,
-	                                      ModifyListener textListener) {
-
-		Text text = this.buildText(container);
-		text.addModifyListener(textListener);
-
-		this.buildLabeledComposite(
-			container,
-			labelText,
-			text
-		);
-
-		return text;
-	}
-
-	/**
-	 * Creates a new container that will have a text field as the center control
-	 * labeled with the given label.
-	 *
-	 * @param container The parent container
-	 * @param textListener The listener that is notified when the text field's
-	 * input changes
-	 * @param rightControl The control shown to the right of the main widget
-	 * @return The newly created <code>Text</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Text buildLabeledText(Composite container,
-	                                      String labelText,
-	                                      ModifyListener textListener,
-	                                      Control rightControl) {
-
-		Text text = this.buildText(container);
-		text.addModifyListener(textListener);
-
-		this.buildLabeledComposite(
-			container,
-			labelText,
-			text,
-			rightControl
-		);
-
-		return text;
-	}
-
-	/**
-	 * Creates a new container that will have a text field as the center control
-	 * labeled with the given label.
-	 *
-	 * @param container The parent container
-	 * @param textListener The listener that is notified when the text field's
-	 * input changes
-	 * @param rightControl The control shown to the right of the main widget
-	 * @param helpId The topic help ID to be registered for the text field
-	 * @return The newly created <code>Text</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Text buildLabeledText(Composite container,
-	                                      String labelText,
-	                                      ModifyListener textListener,
-	                                      Control rightControl,
-	                                      String helpId) {
-
-		Text text = this.buildText(container);
-		text.addModifyListener(textListener);
-
-		this.buildLabeledComposite(
-			container,
-			labelText,
-			text,
-			rightControl,
-			helpId
-		);
-
-		return text;
-	}
-
-	/**
-	 * Creates a new container that will have a text field as the center control
-	 * labeled with the given label.
-	 *
-	 * @param container The parent container
-	 * @param textListener The listener that is notified when the text field's
-	 * input changes
-	 * @param helpId The topic help ID to be registered for the text field
-	 * @return The newly created <code>Text</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Text buildLabeledText(Composite container,
-	                                      String labelText,
-	                                      ModifyListener textListener,
-	                                      String helpId) {
-
-		Text text = this.buildText(container);
-		text.addModifyListener(textListener);
-
-		this.buildLabeledComposite(
-			container,
-			labelText,
-			text,
-			helpId
-		);
-
-		return text;
 	}
 
 	/**
@@ -2922,6 +2907,26 @@ public abstract class AbstractPane<T extends Model>
 		container.setLayout(layout);
 		container.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		return container;
+	}
+
+	/**
+	 * Creates a new <code>Text</code> widget.
+	 *
+	 * @param container The parent container
+	 * @param textHolder The holder of the text field's input
+	 * @return The newly created <code>Text</code> widget
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildPasswordText(Composite container,
+	                                       WritablePropertyValueModel<String> textHolder) {
+
+		Text text = this.widgetFactory.createPasswordText(container);
+		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		TextFieldModelAdapter.adapt(textHolder, text);
+
+		return text;
 	}
 
 	/**

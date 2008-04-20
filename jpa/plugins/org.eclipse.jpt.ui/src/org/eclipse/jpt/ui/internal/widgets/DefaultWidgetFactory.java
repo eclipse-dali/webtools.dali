@@ -58,8 +58,8 @@ public class DefaultWidgetFactory implements WidgetFactory {
 		return INSTANCE;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Button createButton(Composite parent, String text) {
 		return this.createButton(parent, text, SWT.NULL);
@@ -80,50 +80,50 @@ public class DefaultWidgetFactory implements WidgetFactory {
 		return button;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public CCombo createCCombo(Composite parent) {
 		return new CCombo(parent, SWT.BORDER | SWT.READ_ONLY);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Button createCheckBox(Composite parent, String text) {
 		return this.createButton(parent, text, SWT.CHECK);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Combo createCombo(Composite parent) {
 		return new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Composite createComposite(Composite parent) {
 		return new Composite(parent, SWT.NULL);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public CCombo createEditableCCombo(Composite parent) {
 		return new CCombo(parent, SWT.BORDER);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Combo createEditableCombo(Composite parent) {
 		return new Combo(parent, SWT.BORDER);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Group createGroup(Composite parent, String title) {
 		Group group = new Group(parent, SWT.NULL);
@@ -131,8 +131,8 @@ public class DefaultWidgetFactory implements WidgetFactory {
 		return group;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Hyperlink createHyperlink(Composite parent, String text) {
 		Hyperlink hyperlink = new Hyperlink(parent, SWT.NULL);
@@ -140,8 +140,8 @@ public class DefaultWidgetFactory implements WidgetFactory {
 		return hyperlink;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Label createLabel(Composite parent, String labelText) {
 		Label label = new Label(parent, SWT.WRAP);
@@ -149,15 +149,15 @@ public class DefaultWidgetFactory implements WidgetFactory {
 		return label;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public List createList(Composite parent, int style) {
 		return new List(parent, SWT.BORDER | style);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public FormText createMultiLineLabel(Composite parent, String labelText) {
 
@@ -184,57 +184,64 @@ public class DefaultWidgetFactory implements WidgetFactory {
 		return text;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Text createMultiLineText(Composite parent) {
 		return new Text(parent, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
+	 */
+	public Text createPasswordText(Composite parent) {
+		return new Text(parent, SWT.BORDER | SWT.PASSWORD);
+	}
+
+	/**
+	 * {@inheritDoc}
 	 */
 	public Button createPushButton(Composite parent, String text) {
 		return this.createButton(parent, text, SWT.PUSH);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Button createRadioButton(Composite parent, String text) {
 		return this.createButton(parent, text, SWT.RADIO);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Section createSection(Composite parent, int style) {
 		return new Section(parent, style);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Spinner createSpinner(Composite parent) {
 		return new Spinner(parent, SWT.NULL);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Table createTable(Composite parent, int style) {
 		return new Table(parent, SWT.BORDER | style);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Text createText(Composite parent) {
 		return new Text(parent, SWT.BORDER);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Button createTriStateCheckBox(Composite parent, String text) {
 		TriStateCheckBox checkBox = new TriStateCheckBox(parent, text, this);

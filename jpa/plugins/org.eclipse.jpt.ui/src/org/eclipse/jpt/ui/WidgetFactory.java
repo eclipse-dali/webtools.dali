@@ -153,6 +153,14 @@ public interface WidgetFactory {
 	Text createMultiLineText(Composite parent);
 
 	/**
+	 * Creates a new editable text field that handles password.
+	 *
+	 * @param container The parent container
+	 * @return A new <code>Text</code>
+	 */
+	Text createPasswordText(Composite container);
+
+	/**
 	 * Creates a new push button (toggle between selected and unselected).
 	 *
 	 * @param parent The parent container

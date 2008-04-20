@@ -93,8 +93,8 @@ public class FormWidgetFactory implements WidgetFactory {
 		return container;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Button createButton(Composite parent, String text) {
 		return createButton(parent, text, SWT.NULL);
@@ -113,8 +113,8 @@ public class FormWidgetFactory implements WidgetFactory {
 		return widgetFactory.createButton(parent, text, SWT.FLAT | style);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public CCombo createCCombo(Composite parent) {
 		return createCCombo(parent, SWT.READ_ONLY);
@@ -141,22 +141,22 @@ public class FormWidgetFactory implements WidgetFactory {
 		return combo;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Button createCheckBox(Composite parent, String text) {
 		return createButton(parent, text, SWT.CHECK);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Combo createCombo(Composite parent) {
 		return new Combo(parent, SWT.READ_ONLY);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Composite createComposite(Composite parent) {
 		Composite composite = widgetFactory.createComposite(parent);
@@ -164,15 +164,15 @@ public class FormWidgetFactory implements WidgetFactory {
 		return composite;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public CCombo createEditableCCombo(Composite parent) {
 		return createCCombo(parent, SWT.NULL);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Combo createEditableCombo(Composite parent) {
 		Combo combo = new Combo(parent, SWT.FLAT);
@@ -180,8 +180,8 @@ public class FormWidgetFactory implements WidgetFactory {
 		return combo;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Group createGroup(Composite parent, String title) {
 		Group group = new Group(parent, SWT.SHADOW_NONE);
@@ -191,22 +191,22 @@ public class FormWidgetFactory implements WidgetFactory {
 		return group;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Hyperlink createHyperlink(Composite parent, String text) {
 		return widgetFactory.createHyperlink(parent, text, SWT.FLAT);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Label createLabel(Composite container, String labelText) {
 		return widgetFactory.createLabel(container, labelText, SWT.WRAP);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public List createList(Composite container, int style) {
 		List list = new List(container, SWT.FLAT | style);
@@ -214,8 +214,8 @@ public class FormWidgetFactory implements WidgetFactory {
 		return list;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public FormText createMultiLineLabel(Composite parent, String labelText) {
 
@@ -241,36 +241,43 @@ public class FormWidgetFactory implements WidgetFactory {
 		return text;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Text createMultiLineText(Composite parent) {
 		return createText(parent, SWT.MULTI | SWT.V_SCROLL);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
+	 */
+	public Text createPasswordText(Composite parent) {
+		return createText(parent, SWT.PASSWORD);
+	}
+
+	/**
+	 * {@inheritDoc}
 	 */
 	public Button createPushButton(Composite parent, String text) {
 		return createButton(parent, text, SWT.PUSH);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Button createRadioButton(Composite parent, String text) {
 		return createButton(parent, text, SWT.RADIO);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Section createSection(Composite parent, int style) {
 		return widgetFactory.createSection(parent, SWT.FLAT | style);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Spinner createSpinner(Composite parent) {
 		parent = createBorderContainer(parent);
@@ -282,8 +289,8 @@ public class FormWidgetFactory implements WidgetFactory {
 		return spinner;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Table createTable(Composite parent, int style) {
 		Table table = this.widgetFactory.createTable(parent, SWT.BORDER | style);
@@ -291,8 +298,8 @@ public class FormWidgetFactory implements WidgetFactory {
 		return table;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Text createText(Composite parent) {
 		return createText(parent, SWT.NULL);
@@ -302,8 +309,8 @@ public class FormWidgetFactory implements WidgetFactory {
 		return widgetFactory.createText(parent, null, SWT.FLAT | style);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Button createTriStateCheckBox(Composite parent, String text) {
 		TriStateCheckBox checkBox = new TriStateCheckBox(parent, text, this);
