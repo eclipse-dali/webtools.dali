@@ -9,13 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.orm.details;
 
-import java.util.Collection;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
@@ -25,7 +24,6 @@ import org.eclipse.swt.widgets.Text;
  * @version 2.0
  * @since 1.0
  */
-@SuppressWarnings("nls")
 public class OrmJavaAttributeChooser extends AbstractFormPane<OrmAttributeMapping>
 {
 	private Text text;
@@ -44,33 +42,21 @@ public class OrmJavaAttributeChooser extends AbstractFormPane<OrmAttributeMappin
 		super(parentPane, subjectHolder, parent);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void addPropertyNames(Collection<String> propertyNames) {
-		super.addPropertyNames(propertyNames);
-		propertyNames.add(OrmAttributeMapping.NAME_PROPERTY);
-	}
+	private WritablePropertyValueModel<String> buildNameHolder() {
+		return new PropertyAspectAdapter<OrmAttributeMapping, String>(getSubjectHolder(), OrmAttributeMapping.NAME_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+				return subject.getName();
+			}
 
-	private ModifyListener buildNameModifyListener() {
-		return new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				if (!isPopulating()) {
-					Text text = (Text) e.widget;
-					textChanged(text.getText());
+			@Override
+			protected void setValue_(String value) {
+				if (value.length() == 0) {
+					value = null;
 				}
+				subject.setName(value);
 			}
 		};
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	public void doPopulate() {
-		super.doPopulate();
-		populateText();
 	}
 
 	/*
@@ -94,49 +80,7 @@ public class OrmJavaAttributeChooser extends AbstractFormPane<OrmAttributeMappin
 		text = buildLabeledText(
 			container,
 			JptUiOrmMessages.OrmJavaAttributeChooser_javaAttribute,
-			buildNameModifyListener()
+			buildNameHolder()
 		);
-	}
-
-	private void populateText() {
-
-		OrmAttributeMapping subject = subject();
-		text.setText("");
-
-		if (subject == null) {
-			return;
-		}
-
-		String name = subject.getName();
-
-		if (name == null) {
-			name = "";
-		}
-
-		text.setText(name);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void propertyChanged(String propertyName) {
-		super.propertyChanged(propertyName);
-
-		if (propertyName == OrmAttributeMapping.NAME_PROPERTY) {
-			populateText();
-		}
-	}
-
-	private void textChanged(String text) {
-
-		setPopulating(true);
-
-		try {
-			subject().setName(text);
-		}
-		finally {
-			setPopulating(false);
-		}
 	}
 }
