@@ -38,8 +38,8 @@ public class PropertySheetWidgetFactory extends FormWidgetFactory {
 		super(widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected CCombo createCCombo(Composite parent, int style) {
@@ -47,24 +47,24 @@ public class PropertySheetWidgetFactory extends FormWidgetFactory {
 		return getWidgetFactory().createCCombo(parent, style);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Composite createComposite(Composite parent) {
 		return getWidgetFactory().createComposite(parent);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Group createGroup(Composite parent, String title) {
 		return getWidgetFactory().createGroup(parent, title);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected Text createText(Composite parent, int style) {
@@ -72,8 +72,8 @@ public class PropertySheetWidgetFactory extends FormWidgetFactory {
 		return getWidgetFactory().createText(parent, null, SWT.FLAT | style);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public TabbedPropertySheetWidgetFactory getWidgetFactory() {
