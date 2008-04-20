@@ -131,10 +131,9 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 	// ********** Level tests **********
 	public void testSetLevel() throws Exception {
 		this.verifyModelInitialized(
-			this.logging.getLevel(),
 			LEVEL_KEY,
 			LEVEL_TEST_VALUE);
-		this.verifySetProperty(Logging.LEVEL_PROPERTY,
+		this.verifySetProperty(
 			LEVEL_KEY,
 			LEVEL_TEST_VALUE,
 			LEVEL_TEST_VALUE_2);
@@ -142,7 +141,6 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveLevel() throws Exception {
 		this.verifyAddRemoveProperty(
-			Logging.LEVEL_PROPERTY,
 			LEVEL_KEY,
 			LEVEL_TEST_VALUE,
 			LEVEL_TEST_VALUE_2);
@@ -151,10 +149,9 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 	// ********** Timestamp tests **********
 	public void testSetThrowExceptions() throws Exception {
 		this.verifyModelInitialized(
-			this.logging.getTimestamp(),
 			TIMESTAMP_KEY,
 			TIMESTAMP_TEST_VALUE);
-		this.verifySetProperty(Logging.TIMESTAMP_PROPERTY,
+		this.verifySetProperty(
 			TIMESTAMP_KEY,
 			TIMESTAMP_TEST_VALUE,
 			TIMESTAMP_TEST_VALUE_2);
@@ -162,7 +159,6 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveThrowExceptions() throws Exception {
 		this.verifyAddRemoveProperty(
-			Logging.TIMESTAMP_PROPERTY,
 			TIMESTAMP_KEY,
 			TIMESTAMP_TEST_VALUE,
 			TIMESTAMP_TEST_VALUE_2);
@@ -171,10 +167,9 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 	// ********** Thread tests **********
 	public void testSetThread() throws Exception {
 		this.verifyModelInitialized(
-			this.logging.getThread(),
 			THREAD_KEY,
 			THREAD_TEST_VALUE);
-		this.verifySetProperty(Logging.THREAD_PROPERTY,
+		this.verifySetProperty(
 			THREAD_KEY,
 			THREAD_TEST_VALUE,
 			THREAD_TEST_VALUE_2);
@@ -182,7 +177,6 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveThread() throws Exception {
 		this.verifyAddRemoveProperty(
-			Logging.THREAD_PROPERTY,
 			THREAD_KEY,
 			THREAD_TEST_VALUE,
 			THREAD_TEST_VALUE_2);
@@ -191,10 +185,9 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 	// ********** Session tests **********
 	public void testSetSession() throws Exception {
 		this.verifyModelInitialized(
-			this.logging.getSession(),
 			SESSION_KEY,
 			SESSION_TEST_VALUE);
-		this.verifySetProperty(Logging.SESSION_PROPERTY,
+		this.verifySetProperty(
 			SESSION_KEY,
 			SESSION_TEST_VALUE,
 			SESSION_TEST_VALUE_2);
@@ -202,7 +195,6 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveSession() throws Exception {
 		this.verifyAddRemoveProperty(
-			Logging.SESSION_PROPERTY,
 			SESSION_KEY,
 			SESSION_TEST_VALUE,
 			SESSION_TEST_VALUE_2);
@@ -211,10 +203,9 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 	// ********** Exceptions tests **********
 	public void testSetExceptions() throws Exception {
 		this.verifyModelInitialized(
-			this.logging.getExceptions(),
 			EXCEPTIONS_KEY,
 			EXCEPTIONS_TEST_VALUE);
-		this.verifySetProperty(Logging.EXCEPTIONS_PROPERTY,
+		this.verifySetProperty(
 			EXCEPTIONS_KEY,
 			EXCEPTIONS_TEST_VALUE,
 			EXCEPTIONS_TEST_VALUE_2);
@@ -222,7 +213,6 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 	
 	public void testAddRemoveExceptions() throws Exception {
 		this.verifyAddRemoveProperty(
-			Logging.EXCEPTIONS_PROPERTY,
 			EXCEPTIONS_KEY,
 			EXCEPTIONS_TEST_VALUE,
 			EXCEPTIONS_TEST_VALUE_2);
@@ -231,11 +221,9 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 	// ********** LogFileLocation **********
 	public void testSetLogFileLocation() throws Exception {
 		this.verifyModelInitialized(
-			this.logging.getLogFileLocation(),
 			LOG_FILE_LOCATION_KEY,
 			LOG_FILE_LOCATION_TEST_VALUE);
 		this.verifySetProperty(
-			Logging.LOG_FILE_LOCATION_PROPERTY,
 			LOG_FILE_LOCATION_KEY,
 			LOG_FILE_LOCATION_TEST_VALUE,
 			LOG_FILE_LOCATION_TEST_VALUE_2);
@@ -243,7 +231,6 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveLogFileLocation() throws Exception {
 		this.verifyAddRemoveProperty(
-			Logging.LOG_FILE_LOCATION_PROPERTY,
 			LOG_FILE_LOCATION_KEY,
 			LOG_FILE_LOCATION_TEST_VALUE,
 			LOG_FILE_LOCATION_TEST_VALUE_2);
@@ -252,10 +239,9 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 	// ********** Logger tests **********
 	public void testSetLogger() throws Exception {
 		this.verifyModelInitialized(
-			this.logging.getLogger(),
 			LOGGER_KEY,
 			this.getEclipseLinkStringValueOf(LOGGER_TEST_VALUE)); // model is storing EclipseLinkStringValue
-		this.verifySetProperty(Logging.LOGGER_PROPERTY,
+		this.verifySetProperty(
 			LOGGER_KEY,
 			LOGGER_TEST_VALUE,
 			LOGGER_TEST_VALUE_2);
@@ -263,7 +249,6 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveLogger() throws Exception {
 		this.verifyAddRemoveProperty(
-			Logging.LOGGER_PROPERTY,
 			LOGGER_KEY,
 			LOGGER_TEST_VALUE,
 			LOGGER_TEST_VALUE_2);

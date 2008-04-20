@@ -200,7 +200,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	// ********** TransactionType tests **********
 	public void testSetTransactionType() throws Exception {
 		this.verifySetPersistenceUnitProperty(Connection.TRANSACTION_TYPE_PROPERTY,
-			this.connection.getTransactionType(),
 			TRANSACTION_TYPE_TEST_VALUE,
 			TRANSACTION_TYPE_TEST_VALUE_2);
 	}
@@ -208,7 +207,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	// ********** JtaDataSource tests **********
 	public void testSetJtaDataSource() throws Exception {
 		this.verifySetPersistenceUnitProperty(Connection.JTA_DATA_SOURCE_PROPERTY,
-			this.connection.getJtaDataSource(),
 			JTA_DATA_SOURCE_TEST_VALUE,
 			JTA_DATA_SOURCE_TEST_VALUE_2);
 	}
@@ -216,7 +214,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	// ********** NonJtaDataSource tests **********
 	public void testSetNonJtaDataSource() throws Exception {
 		this.verifySetPersistenceUnitProperty(Connection.NON_JTA_DATA_SOURCE_PROPERTY,
-			this.connection.getNonJtaDataSource(),
 			NON_JTA_DATA_SOURCE_TEST_VALUE,
 			NON_JTA_DATA_SOURCE_TEST_VALUE_2);
 	}
@@ -224,10 +221,9 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	// ********** NativeSql tests **********
 	public void testSetNativeSql() throws Exception {
 		this.verifyModelInitialized(
-			this.connection.getNativeSql(),
 			NATIVE_SQL_KEY,
 			NATIVE_SQL_TEST_VALUE);
-		this.verifySetProperty(Connection.NATIVE_SQL_PROPERTY,
+		this.verifySetProperty(
 			NATIVE_SQL_KEY,
 			NATIVE_SQL_TEST_VALUE,
 			NATIVE_SQL_TEST_VALUE_2);
@@ -235,7 +231,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveNativeSql() throws Exception {
 		this.verifyAddRemoveProperty(
-			Connection.NATIVE_SQL_PROPERTY,
 			NATIVE_SQL_KEY,
 			NATIVE_SQL_TEST_VALUE,
 			NATIVE_SQL_TEST_VALUE_2);
@@ -244,10 +239,9 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	// ********** BatchWriting tests **********
 	public void testSetBatchWriting() throws Exception {
 		this.verifyModelInitialized(
-			this.connection.getBatchWriting(),
 			BATCH_WRITING_KEY,
 			BATCH_WRITING_TEST_VALUE);
-		this.verifySetProperty(Connection.BATCH_WRITING_PROPERTY,
+		this.verifySetProperty(
 			BATCH_WRITING_KEY,
 			BATCH_WRITING_TEST_VALUE,
 			BATCH_WRITING_TEST_VALUE_2);
@@ -255,7 +249,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveBatchWriting() throws Exception {
 		this.verifyAddRemoveProperty(
-			Connection.BATCH_WRITING_PROPERTY,
 			BATCH_WRITING_KEY,
 			BATCH_WRITING_TEST_VALUE,
 			BATCH_WRITING_TEST_VALUE_2);
@@ -264,10 +257,9 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	// ********** CacheStatements tests **********
 	public void testSetCacheStatements() throws Exception {
 		this.verifyModelInitialized(
-			this.connection.getCacheStatements(),
 			CACHE_STATEMENTS_KEY,
 			CACHE_STATEMENTS_TEST_VALUE);
-		this.verifySetProperty(Connection.CACHE_STATEMENTS_PROPERTY,
+		this.verifySetProperty(
 			CACHE_STATEMENTS_KEY,
 			CACHE_STATEMENTS_TEST_VALUE,
 			CACHE_STATEMENTS_TEST_VALUE_2);
@@ -275,7 +267,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveCacheStatements() throws Exception {
 		this.verifyAddRemoveProperty(
-			Connection.CACHE_STATEMENTS_PROPERTY,
 			CACHE_STATEMENTS_KEY,
 			CACHE_STATEMENTS_TEST_VALUE,
 			CACHE_STATEMENTS_TEST_VALUE_2);
@@ -284,10 +275,9 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	// ********** CacheStatementsSize tests **********
 	public void testSetCacheStatementsSize() throws Exception {
 		this.verifyModelInitialized(
-			this.connection.getCacheStatementsSize(),
 			CACHE_STATEMENTS_SIZE_KEY,
 			CACHE_STATEMENTS_SIZE_TEST_VALUE);
-		this.verifySetProperty(Connection.CACHE_STATEMENTS_SIZE_PROPERTY,
+		this.verifySetProperty(
 			CACHE_STATEMENTS_SIZE_KEY,
 			CACHE_STATEMENTS_SIZE_TEST_VALUE,
 			CACHE_STATEMENTS_SIZE_TEST_VALUE_2);
@@ -295,7 +285,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveCacheStatementsSize() throws Exception {
 		this.verifyAddRemoveProperty(
-			Connection.CACHE_STATEMENTS_SIZE_PROPERTY,
 			CACHE_STATEMENTS_SIZE_KEY,
 			CACHE_STATEMENTS_SIZE_TEST_VALUE,
 			CACHE_STATEMENTS_SIZE_TEST_VALUE_2);
@@ -304,10 +293,9 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	// ********** Driver tests **********
 	public void testSetDriver() throws Exception {
 		this.verifyModelInitialized(
-			this.connection.getDriver(),
 			DRIVER_KEY,
 			DRIVER_TEST_VALUE);
-		this.verifySetProperty(Connection.DRIVER_PROPERTY,
+		this.verifySetProperty(
 			DRIVER_KEY,
 			DRIVER_TEST_VALUE,
 			DRIVER_TEST_VALUE_2);
@@ -315,7 +303,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveDriver() throws Exception {
 		this.verifyAddRemoveProperty(
-			Connection.DRIVER_PROPERTY,
 			DRIVER_KEY,
 			DRIVER_TEST_VALUE,
 			DRIVER_TEST_VALUE_2);
@@ -324,10 +311,9 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	// ********** Url tests **********
 	public void testSetUrl() throws Exception {
 		this.verifyModelInitialized(
-			this.connection.getUrl(),
 			URL_KEY,
 			URL_TEST_VALUE);
-		this.verifySetProperty(Connection.URL_PROPERTY,
+		this.verifySetProperty(
 			URL_KEY,
 			URL_TEST_VALUE,
 			URL_TEST_VALUE_2);
@@ -335,7 +321,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveUrl() throws Exception {
 		this.verifyAddRemoveProperty(
-			Connection.URL_PROPERTY,
 			URL_KEY,
 			URL_TEST_VALUE,
 			URL_TEST_VALUE_2);
@@ -344,10 +329,9 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	// ********** User tests **********
 	public void testSetUser() throws Exception {
 		this.verifyModelInitialized(
-			this.connection.getUser(),
 			USER_KEY,
 			USER_TEST_VALUE);
-		this.verifySetProperty(Connection.USER_PROPERTY,
+		this.verifySetProperty(
 			USER_KEY,
 			USER_TEST_VALUE,
 			USER_TEST_VALUE_2);
@@ -355,7 +339,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveUser() throws Exception {
 		this.verifyAddRemoveProperty(
-			Connection.USER_PROPERTY,
 			USER_KEY,
 			USER_TEST_VALUE,
 			USER_TEST_VALUE_2);
@@ -364,10 +347,9 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	// ********** Password tests **********
 	public void testSetPassword() throws Exception {
 		this.verifyModelInitialized(
-			this.connection.getPassword(),
 			PASSWORD_KEY,
 			PASSWORD_TEST_VALUE);
-		this.verifySetProperty(Connection.PASSWORD_PROPERTY,
+		this.verifySetProperty(
 			PASSWORD_KEY,
 			PASSWORD_TEST_VALUE,
 			PASSWORD_TEST_VALUE_2);
@@ -375,7 +357,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemovePassword() throws Exception {
 		this.verifyAddRemoveProperty(
-			Connection.PASSWORD_PROPERTY,
 			PASSWORD_KEY,
 			PASSWORD_TEST_VALUE,
 			PASSWORD_TEST_VALUE_2);
@@ -384,10 +365,9 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	// ********** BindParameters tests **********
 	public void testSetBindParameters() throws Exception {
 		this.verifyModelInitialized(
-			this.connection.getBindParameters(),
 			BIND_PARAMETERS_KEY,
 			BIND_PARAMETERS_TEST_VALUE);
-		this.verifySetProperty(Connection.BIND_PARAMETERS_PROPERTY,
+		this.verifySetProperty(
 			BIND_PARAMETERS_KEY,
 			BIND_PARAMETERS_TEST_VALUE,
 			BIND_PARAMETERS_TEST_VALUE_2);
@@ -395,7 +375,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveBindParameters() throws Exception {
 		this.verifyAddRemoveProperty(
-			Connection.BIND_PARAMETERS_PROPERTY,
 			BIND_PARAMETERS_KEY,
 			BIND_PARAMETERS_TEST_VALUE,
 			BIND_PARAMETERS_TEST_VALUE_2);
@@ -404,10 +383,9 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	// ********** ReadConnectionsShared tests **********
 	public void testSetReadConnectionsShared() throws Exception {
 		this.verifyModelInitialized(
-			this.connection.getReadConnectionsShared(),
 			READ_CONNECTIONS_SHARED_KEY,
 			READ_CONNECTIONS_SHARED_TEST_VALUE);
-		this.verifySetProperty(Connection.READ_CONNECTIONS_SHARED_PROPERTY,
+		this.verifySetProperty(
 			READ_CONNECTIONS_SHARED_KEY,
 			READ_CONNECTIONS_SHARED_TEST_VALUE,
 			READ_CONNECTIONS_SHARED_TEST_VALUE_2);
@@ -415,7 +393,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveReadConnectionsShared() throws Exception {
 		this.verifyAddRemoveProperty(
-			Connection.READ_CONNECTIONS_SHARED_PROPERTY,
 			READ_CONNECTIONS_SHARED_KEY,
 			READ_CONNECTIONS_SHARED_TEST_VALUE,
 			READ_CONNECTIONS_SHARED_TEST_VALUE_2);
@@ -424,10 +401,9 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	// ********** ReadConnectionsMin tests **********
 	public void testSetReadConnectionsMin() throws Exception {
 		this.verifyModelInitialized(
-			this.connection.getReadConnectionsMin(),
 			READ_CONNECTIONS_MIN_KEY,
 			READ_CONNECTIONS_MIN_TEST_VALUE);
-		this.verifySetProperty(Connection.READ_CONNECTIONS_MIN_PROPERTY,
+		this.verifySetProperty(
 			READ_CONNECTIONS_MIN_KEY,
 			READ_CONNECTIONS_MIN_TEST_VALUE,
 			READ_CONNECTIONS_MIN_TEST_VALUE_2);
@@ -435,7 +411,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveReadConnectionsMin() throws Exception {
 		this.verifyAddRemoveProperty(
-			Connection.READ_CONNECTIONS_MIN_PROPERTY,
 			READ_CONNECTIONS_MIN_KEY,
 			READ_CONNECTIONS_MIN_TEST_VALUE,
 			READ_CONNECTIONS_MIN_TEST_VALUE_2);
@@ -444,10 +419,9 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	// ********** ReadConnectionsMax tests **********
 	public void testSetReadConnectionsMax() throws Exception {
 		this.verifyModelInitialized(
-			this.connection.getReadConnectionsMax(),
 			READ_CONNECTIONS_MAX_KEY,
 			READ_CONNECTIONS_MAX_TEST_VALUE);
-		this.verifySetProperty(Connection.READ_CONNECTIONS_MAX_PROPERTY,
+		this.verifySetProperty(
 			READ_CONNECTIONS_MAX_KEY,
 			READ_CONNECTIONS_MAX_TEST_VALUE,
 			READ_CONNECTIONS_MAX_TEST_VALUE_2);
@@ -455,7 +429,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveReadConnectionsMax() throws Exception {
 		this.verifyAddRemoveProperty(
-			Connection.READ_CONNECTIONS_MAX_PROPERTY,
 			READ_CONNECTIONS_MAX_KEY,
 			READ_CONNECTIONS_MAX_TEST_VALUE,
 			READ_CONNECTIONS_MAX_TEST_VALUE_2);
@@ -464,10 +437,9 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	// ********** WriteConnectionsMin tests **********
 	public void testSetWriteConnectionsMin() throws Exception {
 		this.verifyModelInitialized(
-			this.connection.getWriteConnectionsMin(),
 			WRITE_CONNECTIONS_MIN_KEY,
 			WRITE_CONNECTIONS_MIN_TEST_VALUE);
-		this.verifySetProperty(Connection.WRITE_CONNECTIONS_MIN_PROPERTY,
+		this.verifySetProperty(
 			WRITE_CONNECTIONS_MIN_KEY,
 			WRITE_CONNECTIONS_MIN_TEST_VALUE,
 			WRITE_CONNECTIONS_MIN_TEST_VALUE_2);
@@ -475,7 +447,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveWriteConnectionsMin() throws Exception {
 		this.verifyAddRemoveProperty(
-			Connection.WRITE_CONNECTIONS_MIN_PROPERTY,
 			WRITE_CONNECTIONS_MIN_KEY,
 			WRITE_CONNECTIONS_MIN_TEST_VALUE,
 			WRITE_CONNECTIONS_MIN_TEST_VALUE_2);
@@ -484,10 +455,9 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	// ********** WriteConnectionsMax tests **********
 	public void testSetWriteConnectionsMax() throws Exception {
 		this.verifyModelInitialized(
-			this.connection.getWriteConnectionsMax(),
 			WRITE_CONNECTIONS_MAX_KEY,
 			WRITE_CONNECTIONS_MAX_TEST_VALUE);
-		this.verifySetProperty(Connection.WRITE_CONNECTIONS_MAX_PROPERTY,
+		this.verifySetProperty(
 			WRITE_CONNECTIONS_MAX_KEY,
 			WRITE_CONNECTIONS_MAX_TEST_VALUE,
 			WRITE_CONNECTIONS_MAX_TEST_VALUE_2);
@@ -495,7 +465,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveWriteConnectionsMax() throws Exception {
 		this.verifyAddRemoveProperty(
-			Connection.WRITE_CONNECTIONS_MAX_PROPERTY,
 			WRITE_CONNECTIONS_MAX_KEY,
 			WRITE_CONNECTIONS_MAX_TEST_VALUE,
 			WRITE_CONNECTIONS_MAX_TEST_VALUE_2);

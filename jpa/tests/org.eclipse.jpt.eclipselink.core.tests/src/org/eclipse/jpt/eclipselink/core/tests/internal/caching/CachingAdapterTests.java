@@ -198,11 +198,9 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	 */
 	public void testSetCacheTypeDefault() throws Exception {
 		this.verifyModelInitialized(
-			this.caching.getCacheTypeDefault(),
 			CACHE_TYPE_DEFAULT_KEY,
 			CACHE_TYPE_DEFAULT_TEST_VALUE);
 		this.verifySetProperty(
-			Caching.CACHE_TYPE_DEFAULT_PROPERTY,
 			CACHE_TYPE_DEFAULT_KEY,
 			CACHE_TYPE_DEFAULT_TEST_VALUE,
 			CACHE_TYPE_DEFAULT_TEST_VALUE_2);
@@ -210,7 +208,6 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveCacheTypeDefault() throws Exception {
 		this.verifyAddRemoveProperty(
-			Caching.CACHE_TYPE_DEFAULT_PROPERTY,
 			CACHE_TYPE_DEFAULT_KEY,
 			CACHE_TYPE_DEFAULT_TEST_VALUE,
 			CACHE_TYPE_DEFAULT_TEST_VALUE_2);
@@ -223,11 +220,9 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	 */
 	public void testSetCacheSizeDefault() throws Exception {
 		this.verifyModelInitialized(
-			this.caching.getCacheSizeDefault(),
 			CACHE_SIZE_DEFAULT_KEY,
 			CACHE_SIZE_DEFAULT_TEST_VALUE);
 		this.verifySetProperty(
-			Caching.CACHE_SIZE_DEFAULT_PROPERTY,
 			CACHE_SIZE_DEFAULT_KEY,
 			CACHE_SIZE_DEFAULT_TEST_VALUE,
 			CACHE_SIZE_DEFAULT_TEST_VALUE_2);
@@ -235,7 +230,6 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveCacheSizeDefault() throws Exception {
 		this.verifyAddRemoveProperty(
-			Caching.CACHE_SIZE_DEFAULT_PROPERTY,
 			CACHE_SIZE_DEFAULT_KEY,
 			CACHE_SIZE_DEFAULT_TEST_VALUE,
 			CACHE_SIZE_DEFAULT_TEST_VALUE_2);
@@ -244,10 +238,9 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	// ********** SharedCacheDefault **********
 	public void testSetSharedCacheDefault() throws Exception {
 		this.verifyModelInitialized(
-			this.caching.getSharedCacheDefault(),
 			SHARED_CACHE_DEFAULT_KEY,
 			SHARED_CACHE_DEFAULT_TEST_VALUE);
-		this.verifySetProperty(Caching.SHARED_CACHE_DEFAULT_PROPERTY,
+		this.verifySetProperty(
 			SHARED_CACHE_DEFAULT_KEY,
 			SHARED_CACHE_DEFAULT_TEST_VALUE,
 			SHARED_CACHE_DEFAULT_TEST_VALUE_2);
@@ -255,7 +248,6 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveSharedCacheDefault() throws Exception {
 		this.verifyAddRemoveProperty(
-			Caching.SHARED_CACHE_DEFAULT_PROPERTY,
 			SHARED_CACHE_DEFAULT_KEY,
 			SHARED_CACHE_DEFAULT_TEST_VALUE,
 			SHARED_CACHE_DEFAULT_TEST_VALUE_2);
@@ -268,7 +260,6 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	 */
 	public void testSetCacheType() throws Exception {
 		this.verifyModelInitialized(
-			this.caching.getCacheType(ENTITY_TEST),
 			CACHE_TYPE_KEY,
 			CACHE_TYPE_TEST_VALUE);
 		this.verifySetCachingProperty(
@@ -293,7 +284,6 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	 */
 	public void testSetCacheSize() throws Exception {
 		this.verifyModelInitialized(
-			this.caching.getCacheSize(ENTITY_TEST),
 			CACHE_SIZE_KEY,
 			CACHE_SIZE_TEST_VALUE);
 		this.verifySetCachingProperty(
@@ -318,7 +308,6 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	 */
 	public void testSetSharedCache() throws Exception {
 		this.verifyModelInitialized(
-			this.caching.getSharedCache(ENTITY_TEST),
 			SHARED_CACHE_KEY,
 			SHARED_CACHE_TEST_VALUE);
 		this.verifySetCachingProperty(
@@ -440,6 +429,12 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 			modelValue = this.caching.getCacheSizeDefault();
 		else if (propertyName.equals(Caching.SHARED_CACHE_DEFAULT_PROPERTY))
 			modelValue = this.caching.getSharedCacheDefault();
+		else if (propertyName.equals(Caching.CACHE_SIZE_PROPERTY))
+			modelValue = this.caching.getCacheSize(ENTITY_TEST);
+		else if (propertyName.equals(Caching.CACHE_TYPE_PROPERTY))
+			modelValue = this.caching.getCacheType(ENTITY_TEST);
+		else if (propertyName.equals(Caching.SHARED_CACHE_PROPERTY))
+			modelValue = this.caching.getSharedCache(ENTITY_TEST);
 		else
 			this.throwMissingDefinition("getProperty", propertyName);
 		return modelValue;

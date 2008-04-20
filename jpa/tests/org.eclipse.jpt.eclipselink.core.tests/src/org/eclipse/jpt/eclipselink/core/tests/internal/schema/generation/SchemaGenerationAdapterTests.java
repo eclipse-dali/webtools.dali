@@ -119,11 +119,9 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 	 */
 	public void testSetCreateFileName() throws Exception {
 		this.verifyModelInitialized(
-			this.schemaGeneration.getCreateFileName(),
 			CREATE_FILE_NAME_KEY,
 			CREATE_FILE_NAME_TEST_VALUE);
 		this.verifySetProperty(
-			SchemaGeneration.CREATE_FILE_NAME_PROPERTY,
 			CREATE_FILE_NAME_KEY,
 			CREATE_FILE_NAME_TEST_VALUE,
 			CREATE_FILE_NAME_TEST_VALUE_2);
@@ -131,7 +129,6 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveCreateFileName() throws Exception {
 		this.verifyAddRemoveProperty(
-			SchemaGeneration.CREATE_FILE_NAME_PROPERTY,
 			CREATE_FILE_NAME_KEY,
 			CREATE_FILE_NAME_TEST_VALUE,
 			CREATE_FILE_NAME_TEST_VALUE_2);
@@ -144,18 +141,19 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 	 */
 	public void testSetDropFileName() throws Exception {
 		this.verifyModelInitialized(
-			this.schemaGeneration.getDropFileName(),
 			DROP_FILE_NAME_KEY,
 			DROP_FILE_NAME_TEST_VALUE);
 		this.verifySetProperty(
-			SchemaGeneration.DROP_FILE_NAME_PROPERTY,
 			DROP_FILE_NAME_KEY,
 			DROP_FILE_NAME_TEST_VALUE,
 			DROP_FILE_NAME_TEST_VALUE_2);
 	}
 
 	public void testAddRemoveDropFileName() throws Exception {
-		this.verifyAddRemoveProperty(SchemaGeneration.DROP_FILE_NAME_PROPERTY, DROP_FILE_NAME_KEY, DROP_FILE_NAME_TEST_VALUE, DROP_FILE_NAME_TEST_VALUE_2);
+		this.verifyAddRemoveProperty(
+			DROP_FILE_NAME_KEY, 
+			DROP_FILE_NAME_TEST_VALUE, 
+			DROP_FILE_NAME_TEST_VALUE_2);
 	}
 
 	// ********** ApplicationLocation **********
@@ -165,18 +163,16 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 	 */
 	public void testSetApplicationLocation() throws Exception {
 		this.verifyModelInitialized(
-			this.schemaGeneration.getApplicationLocation(),
 			APPLICATION_LOCATION_KEY,
 			APPLICATION_LOCATION_TEST_VALUE);
 		this.verifySetProperty(
-			SchemaGeneration.APPLICATION_LOCATION_PROPERTY,
 			APPLICATION_LOCATION_KEY,
 			APPLICATION_LOCATION_TEST_VALUE,
 			APPLICATION_LOCATION_TEST_VALUE_2);
 	}
 
 	public void testAddRemoveApplicationLocation() throws Exception {
-		this.verifyAddRemoveProperty(SchemaGeneration.APPLICATION_LOCATION_PROPERTY,
+		this.verifyAddRemoveProperty(
 			APPLICATION_LOCATION_KEY,
 			APPLICATION_LOCATION_TEST_VALUE,
 			APPLICATION_LOCATION_TEST_VALUE_2);
@@ -189,18 +185,19 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 	 */
 	public void testSetOutputMode() throws Exception {
 		this.verifyModelInitialized(
-			this.schemaGeneration.getOutputMode(),
 			OUTPUT_MODE_KEY,
 			OUTPUT_MODE_TEST_VALUE);
 		this.verifySetProperty(
-			SchemaGeneration.OUTPUT_MODE_PROPERTY,
 			OUTPUT_MODE_KEY,
 			OUTPUT_MODE_TEST_VALUE,
 			OUTPUT_MODE_TEST_VALUE_2);
 	}
 
 	public void testAddRemoveOutputMode() throws Exception {
-		this.verifyAddRemoveProperty(SchemaGeneration.OUTPUT_MODE_PROPERTY, OUTPUT_MODE_KEY, OUTPUT_MODE_TEST_VALUE, OUTPUT_MODE_TEST_VALUE_2);
+		this.verifyAddRemoveProperty(
+			OUTPUT_MODE_KEY, 
+			OUTPUT_MODE_TEST_VALUE, 
+			OUTPUT_MODE_TEST_VALUE_2);
 	}
 
 	// ********** DdlGenerationType **********
@@ -210,18 +207,19 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 	 */
 	public void testSetDdlGenerationType() throws Exception {
 		this.verifyModelInitialized(
-			this.schemaGeneration.getDdlGenerationType(),
 			DDL_GENERATION_TYPE_KEY,
 			DDL_GENERATION_TYPE_TEST_VALUE);
 		this.verifySetProperty(
-			SchemaGeneration.DDL_GENERATION_TYPE_PROPERTY,
 			DDL_GENERATION_TYPE_KEY,
 			DDL_GENERATION_TYPE_TEST_VALUE,
 			DDL_GENERATION_TYPE_TEST_VALUE_2);
 	}
 
 	public void testAddRemoveDdlGenerationType() throws Exception {
-		this.verifyAddRemoveProperty(SchemaGeneration.DDL_GENERATION_TYPE_PROPERTY, DDL_GENERATION_TYPE_KEY, DDL_GENERATION_TYPE_TEST_VALUE, DDL_GENERATION_TYPE_TEST_VALUE_2);
+		this.verifyAddRemoveProperty(
+			DDL_GENERATION_TYPE_KEY, 
+			DDL_GENERATION_TYPE_TEST_VALUE, 
+			DDL_GENERATION_TYPE_TEST_VALUE_2);
 	}
 
 	// ********** get/set property **********

@@ -209,10 +209,9 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	// ********** ThrowExceptions tests **********
 	public void testSetThrowExceptions() throws Exception {
 		this.verifyModelInitialized(
-			this.customization.getThrowExceptions(),
 			THROW_EXCEPTIONS_KEY,
 			THROW_EXCEPTIONS_TEST_VALUE);
-		this.verifySetProperty(Customization.THROW_EXCEPTIONS_PROPERTY,
+		this.verifySetProperty(
 			THROW_EXCEPTIONS_KEY,
 			THROW_EXCEPTIONS_TEST_VALUE,
 			THROW_EXCEPTIONS_TEST_VALUE_2);
@@ -220,7 +219,6 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveThrowExceptions() throws Exception {
 		this.verifyAddRemoveProperty(
-			Customization.THROW_EXCEPTIONS_PROPERTY,
 			THROW_EXCEPTIONS_KEY,
 			THROW_EXCEPTIONS_TEST_VALUE,
 			THROW_EXCEPTIONS_TEST_VALUE_2);
@@ -229,10 +227,9 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	// ********** WeavingLazy tests **********
 	public void testSetWeavingLazy() throws Exception {
 		this.verifyModelInitialized(
-			this.customization.getWeavingLazy(),
 			WEAVING_LAZY_KEY,
 			WEAVING_LAZY_TEST_VALUE);
-		this.verifySetProperty(Customization.WEAVING_LAZY_PROPERTY,
+		this.verifySetProperty(
 			WEAVING_LAZY_KEY,
 			WEAVING_LAZY_TEST_VALUE,
 			WEAVING_LAZY_TEST_VALUE_2);
@@ -240,7 +237,6 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveWeavingLazy() throws Exception {
 		this.verifyAddRemoveProperty(
-			Customization.WEAVING_LAZY_PROPERTY,
 			WEAVING_LAZY_KEY,
 			WEAVING_LAZY_TEST_VALUE,
 			WEAVING_LAZY_TEST_VALUE_2);
@@ -249,10 +245,9 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	// ********** WeavingChangeTracking tests **********
 	public void testSetWeavingChangeTracking() throws Exception {
 		this.verifyModelInitialized(
-			this.customization.getWeavingChangeTracking(),
 			WEAVING_CHANGE_TRACKING_KEY,
 			WEAVING_CHANGE_TRACKING_TEST_VALUE);
-		this.verifySetProperty(Customization.WEAVING_CHANGE_TRACKING_PROPERTY,
+		this.verifySetProperty(
 			WEAVING_CHANGE_TRACKING_KEY,
 			WEAVING_CHANGE_TRACKING_TEST_VALUE,
 			WEAVING_CHANGE_TRACKING_TEST_VALUE_2);
@@ -260,7 +255,6 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveWeavingChangeTracking() throws Exception {
 		this.verifyAddRemoveProperty(
-			Customization.WEAVING_CHANGE_TRACKING_PROPERTY,
 			WEAVING_CHANGE_TRACKING_KEY,
 			WEAVING_CHANGE_TRACKING_TEST_VALUE,
 			WEAVING_CHANGE_TRACKING_TEST_VALUE_2);
@@ -269,10 +263,9 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	// ********** WeavingFetchGroups tests **********
 	public void testSetWeavingFetchGroups() throws Exception {
 		this.verifyModelInitialized(
-			this.customization.getWeavingFetchGroups(),
 			WEAVING_FETCH_GROUPS_KEY,
 			WEAVING_FETCH_GROUPS_TEST_VALUE);
-		this.verifySetProperty(Customization.WEAVING_FETCH_GROUPS_PROPERTY,
+		this.verifySetProperty(
 			WEAVING_FETCH_GROUPS_KEY,
 			WEAVING_FETCH_GROUPS_TEST_VALUE,
 			WEAVING_FETCH_GROUPS_TEST_VALUE_2);
@@ -280,7 +273,6 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveWeavingFetchGroups() throws Exception {
 		this.verifyAddRemoveProperty(
-			Customization.WEAVING_FETCH_GROUPS_PROPERTY,
 			WEAVING_FETCH_GROUPS_KEY,
 			WEAVING_FETCH_GROUPS_TEST_VALUE,
 			WEAVING_FETCH_GROUPS_TEST_VALUE_2);
@@ -289,10 +281,9 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	// ********** SessionCustomizer tests **********
 	public void testSetSessionCustomizer() throws Exception {
 		this.verifyModelInitialized(
-			this.customization.getSessionCustomizer(),
 			SESSION_CUSTOMIZER_KEY,
 			SESSION_CUSTOMIZER_TEST_VALUE);
-		this.verifySetProperty(Customization.SESSION_CUSTOMIZER_PROPERTY,
+		this.verifySetProperty(
 			SESSION_CUSTOMIZER_KEY,
 			SESSION_CUSTOMIZER_TEST_VALUE,
 			SESSION_CUSTOMIZER_TEST_VALUE_2);
@@ -300,7 +291,6 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveSessionCustomizer() throws Exception {
 		this.verifyAddRemoveProperty(
-			Customization.SESSION_CUSTOMIZER_PROPERTY,
 			SESSION_CUSTOMIZER_KEY,
 			SESSION_CUSTOMIZER_TEST_VALUE,
 			SESSION_CUSTOMIZER_TEST_VALUE_2);
@@ -313,11 +303,9 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	 */
 	public void testSetWeaving() throws Exception {
 		this.verifyModelInitialized(
-			this.customization.getWeaving(),
 			WEAVING_KEY,
 			WEAVING_TEST_VALUE);
 		this.verifySetProperty(
-			Customization.WEAVING_PROPERTY,
 			WEAVING_KEY,
 			WEAVING_TEST_VALUE,
 			WEAVING_TEST_VALUE_2);
@@ -325,7 +313,6 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveWeaving() throws Exception {
 		this.verifyAddRemoveProperty(
-			Customization.WEAVING_PROPERTY,
 			WEAVING_KEY,
 			WEAVING_TEST_VALUE,
 			WEAVING_TEST_VALUE_2);
@@ -338,7 +325,6 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	 */
 	public void testSetCustomization() throws Exception {
 		this.verifyModelInitialized(
-			this.customization.getDescriptorCustomizer(ENTITY_TEST),
 			CUSTOMIZER_KEY,
 			CUSTOMIZER_TEST_VALUE);
 		this.verifySetCustomizationProperty(
@@ -459,6 +445,8 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 			modelValue = this.customization.getWeavingFetchGroups();
 		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY))
 			modelValue = this.customization.getSessionCustomizer();
+		else if (propertyName.equals(Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY))
+			modelValue = this.customization.getDescriptorCustomizer(ENTITY_TEST);
 		else
 			this.throwMissingDefinition("getProperty", propertyName);
 		return modelValue;

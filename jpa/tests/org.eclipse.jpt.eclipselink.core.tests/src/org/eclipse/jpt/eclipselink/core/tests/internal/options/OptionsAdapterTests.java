@@ -126,10 +126,9 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	// ********** SessionName tests **********
 	public void testSetSessionName() throws Exception {
 		this.verifyModelInitialized(
-			this.options.getSessionName(),
 			SESSION_NAME_KEY,
 			SESSION_NAME_TEST_VALUE);
-		this.verifySetProperty(Options.SESSION_NAME_PROPERTY,
+		this.verifySetProperty(
 			SESSION_NAME_KEY,
 			SESSION_NAME_TEST_VALUE,
 			SESSION_NAME_TEST_VALUE_2);
@@ -137,7 +136,6 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveSessionName() throws Exception {
 		this.verifyAddRemoveProperty(
-			Options.SESSION_NAME_PROPERTY,
 			SESSION_NAME_KEY,
 			SESSION_NAME_TEST_VALUE,
 			SESSION_NAME_TEST_VALUE_2);
@@ -146,10 +144,9 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	// ********** SessionsXml tests **********
 	public void testSetSessionsXml() throws Exception {
 		this.verifyModelInitialized(
-			this.options.getSessionsXml(),
 			SESSIONS_XML_KEY,
 			SESSIONS_XML_TEST_VALUE);
-		this.verifySetProperty(Options.SESSIONS_XML_PROPERTY,
+		this.verifySetProperty(
 			SESSIONS_XML_KEY,
 			SESSIONS_XML_TEST_VALUE,
 			SESSIONS_XML_TEST_VALUE_2);
@@ -157,7 +154,6 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveSessionsXml() throws Exception {
 		this.verifyAddRemoveProperty(
-			Options.SESSIONS_XML_PROPERTY,
 			SESSIONS_XML_KEY,
 			SESSIONS_XML_TEST_VALUE,
 			SESSIONS_XML_TEST_VALUE_2);
@@ -166,10 +162,9 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	// ********** IncludeDescriptorQueries tests **********
 	public void testSetIncludeDescriptorQueries() throws Exception {
 		this.verifyModelInitialized(
-			this.options.getIncludeDescriptorQueries(),
 			INCLUDE_DESCRIPTOR_QUERIES_KEY,
 			INCLUDE_DESCRIPTOR_QUERIES_TEST_VALUE);
-		this.verifySetProperty(Options.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY,
+		this.verifySetProperty(
 			INCLUDE_DESCRIPTOR_QUERIES_KEY,
 			INCLUDE_DESCRIPTOR_QUERIES_TEST_VALUE,
 			INCLUDE_DESCRIPTOR_QUERIES_TEST_VALUE_2);
@@ -177,7 +172,6 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveIncludeDescriptorQueries() throws Exception {
 		this.verifyAddRemoveProperty(
-			Options.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY,
 			INCLUDE_DESCRIPTOR_QUERIES_KEY,
 			INCLUDE_DESCRIPTOR_QUERIES_TEST_VALUE,
 			INCLUDE_DESCRIPTOR_QUERIES_TEST_VALUE_2);
@@ -186,10 +180,9 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	// ********** TargetDatabase tests **********
 	public void testSetTargetDatabase() throws Exception {
 		this.verifyModelInitialized(
-			this.options.getTargetDatabase(),
 			TARGET_DATABASE_KEY,
 			TARGET_DATABASE_TEST_VALUE);
-		this.verifySetProperty(Options.TARGET_DATABASE_PROPERTY,
+		this.verifySetProperty(
 			TARGET_DATABASE_KEY,
 			TARGET_DATABASE_TEST_VALUE,
 			TARGET_DATABASE_TEST_VALUE_2);
@@ -197,7 +190,6 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveTargetDatabase() throws Exception {
 		this.verifyAddRemoveProperty(
-			Options.TARGET_DATABASE_PROPERTY,
 			TARGET_DATABASE_KEY,
 			TARGET_DATABASE_TEST_VALUE,
 			TARGET_DATABASE_TEST_VALUE_2);
@@ -206,10 +198,9 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	// ********** EventListener tests **********
 	public void testSetEventListener() throws Exception {
 		this.verifyModelInitialized(
-			this.options.getEventListener(),
 			SESSION_EVENT_LISTENER_KEY,
 			SESSION_EVENT_LISTENER_TEST_VALUE);
-		this.verifySetProperty(Options.SESSION_EVENT_LISTENER_PROPERTY,
+		this.verifySetProperty(
 			SESSION_EVENT_LISTENER_KEY,
 			SESSION_EVENT_LISTENER_TEST_VALUE,
 			SESSION_EVENT_LISTENER_TEST_VALUE_2);
@@ -217,7 +208,6 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveEventListener() throws Exception {
 		this.verifyAddRemoveProperty(
-			Options.SESSION_EVENT_LISTENER_PROPERTY,
 			SESSION_EVENT_LISTENER_KEY,
 			SESSION_EVENT_LISTENER_TEST_VALUE,
 			SESSION_EVENT_LISTENER_TEST_VALUE_2);
