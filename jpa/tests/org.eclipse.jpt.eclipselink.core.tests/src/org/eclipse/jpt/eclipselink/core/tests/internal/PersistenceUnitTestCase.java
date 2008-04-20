@@ -202,12 +202,15 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	 * Verifies that the persistence unit is populated, and that the model for
 	 * the tested Property is initialized with the value from the persistence
 	 * unit.
+	 * @throws Exception 
 	 */
-	protected void verifyModelInitialized(Object modelValue, String elKey, Object expectedValue) {
+	protected void verifyModelInitialized(String elKey, Object expectedValue) throws Exception {
 		Property property = this.persistenceUnit().getProperty(elKey);
 		assertTrue("model.itemIsProperty() is false: ", model().itemIsProperty(property));
 
 		assertEquals("PersistenceUnit not populated - populatedPu()", this.getEclipseLinkStringValueOf(expectedValue), property.getValue());
+		String propertyName = this.model().propertyIdFor(property);
+		Object modelValue = this.getProperty(propertyName);
 		assertEquals(
 			"Model not initialized - model.initializeProperties() - modelValue = " + modelValue, 
 			expectedValue, 
@@ -220,14 +223,16 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	 * 2. persistenceUnit putProperty<br>
 	 * 3. adapter setProperty<br>
 	 */
-	protected void verifySetProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
+	protected void verifySetProperty(String elKey, Object testValue1, Object testValue2) throws Exception {
 		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
-		
+		Property property = this.persistenceUnit().getProperty(elKey);
+		String propertyName = this.model().propertyIdFor(property);
+
 		// Basic
-		this.verifyInitialState(propertyName, key, propertyListAdapter);
+		this.verifyInitialState(propertyName, elKey, propertyListAdapter);
 		
 		// Replace
-		this.persistenceUnitPut(key, testValue2);
+		this.persistenceUnitPut(elKey, testValue2);
 		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		this.verifyPutProperty(propertyName, testValue2);
 		
@@ -244,16 +249,18 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	 * 2. performs a add with putProperty<br>
 	 * 3. performs a replace with putProperty<br>
 	 */
-	protected void verifyAddRemoveProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
+	protected void verifyAddRemoveProperty(String elKey, Object testValue1, Object testValue2) throws Exception {
 		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
-		
+		Property property = this.persistenceUnit().getProperty(elKey);
+		String propertyName = this.model().propertyIdFor(property);
+
 		// Remove
 		this.clearEvent();
 		--this.propertiesTotal;
 		--this.modelPropertiesSize;
-		assertTrue("persistenceUnit.properties doesn't contains: " + key, this.persistenceUnit().containsProperty(key));
-		this.persistenceUnit().removeProperty(key);
-		assertFalse(this.persistenceUnit().containsProperty(key));
+		assertTrue("persistenceUnit.properties doesn't contains: " + elKey, this.persistenceUnit().containsProperty(elKey));
+		this.persistenceUnit().removeProperty(elKey);
+		assertFalse(this.persistenceUnit().containsProperty(elKey));
 		assertEquals(this.modelPropertiesSize, this.modelPropertiesSizeOriginal - 1);
 		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		this.verifyPutProperty(propertyName, null);
@@ -261,12 +268,12 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		// Add original CacheTypeDefault
 		++this.propertiesTotal;
 		++this.modelPropertiesSize;
-		this.persistenceUnitPut(key, testValue1);
+		this.persistenceUnitPut(elKey, testValue1);
 		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		this.verifyPutProperty(propertyName, testValue1);
 		
 		// Replace
-		this.persistenceUnitPut(key, testValue2);
+		this.persistenceUnitPut(elKey, testValue2);
 		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		this.verifyPutProperty(propertyName, testValue2);
 	}
@@ -363,10 +370,11 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	 * 4. set model value property and verify PU modified<br>
 	 * 5. set model value property to null and verify PU modified<br>
 	 */
-	protected void verifySetPersistenceUnitProperty(String propertyName, Object initialModelValue, Object testValue1, Object testValue2) throws Exception {
+	protected void verifySetPersistenceUnitProperty(String propertyName, Object testValue1, Object testValue2) throws Exception {
 		// Basic
 		this.verifyHasListeners(this.model(), propertyName);
 		assertEquals("Persistence Unit not initialized.", testValue1, this.getPersistenceUnitProperty(propertyName));
+		Object initialModelValue = this.getProperty(propertyName);
 		assertEquals(
 			"Model not initialized - model.initializeProperties() - modelValue = " + initialModelValue, 
 			testValue1, 
