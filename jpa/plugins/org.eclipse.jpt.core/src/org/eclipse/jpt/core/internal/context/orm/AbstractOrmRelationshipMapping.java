@@ -192,35 +192,23 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	protected abstract String defaultTargetEntity(JavaResourcePersistentAttribute persistentAttributeResource);
 
 	protected Entity resolveTargetEntity() {
-		String qualifiedTargetEntity = getDefaultTargetEntity();
-		if (getSpecifiedTargetEntity() != null) {
-			qualifiedTargetEntity = fullyQualifiedTargetEntity();
-		}
-		if (qualifiedTargetEntity == null) {
+		if (getTargetEntity() == null) {
 			return null;
 		}
-		PersistentType persistentType = getPersistenceUnit().getPersistentType(qualifiedTargetEntity);
+		PersistentType persistentType = getTargetPersistentType();
 		if (persistentType != null && persistentType.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
 			return (Entity) persistentType.getMapping();
 		}
 		return null;
 	}
 	
-	protected String fullyQualifiedTargetEntity() {
-		if (getTargetEntity() == null) {
-			return null;
+	protected PersistentType getTargetPersistentType() {
+		// try to resolve by only the locally specified name
+		PersistentType persistentType = getPersistenceUnit().getPersistentType(getTargetEntity());
+		if (persistentType == null) {
+			// try to resolve by prepending the global package name
+			persistentType = getPersistenceUnit().getPersistentType(getEntityMappings().getPackage() + "." + getTargetEntity());
 		}
-		if (targetEntityIncludesPackage()) {
-			return getTargetEntity();
-		}
-		String package_ = getEntityMappings().getPackage();
-		if (package_ != null) {
-			return package_ + '.' + getTargetEntity();
-		}
-		return getTargetEntity();
-	}
-
-	private boolean targetEntityIncludesPackage() {
-		return getTargetEntity().lastIndexOf('.') != -1;
+		return persistentType;
 	}
 }

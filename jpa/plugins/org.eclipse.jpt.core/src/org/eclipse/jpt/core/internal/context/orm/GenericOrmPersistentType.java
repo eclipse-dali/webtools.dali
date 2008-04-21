@@ -103,7 +103,7 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 		if (className.equals(fullyQualifiedTypeName)) {
 			return true;
 		}
-		if ((getEntityMappings().getPackage() + className).equals(fullyQualifiedTypeName)) {
+		if ((getEntityMappings().getPackage() + "." +  className).equals(fullyQualifiedTypeName)) {
 			return true;
 		}
 		return false;

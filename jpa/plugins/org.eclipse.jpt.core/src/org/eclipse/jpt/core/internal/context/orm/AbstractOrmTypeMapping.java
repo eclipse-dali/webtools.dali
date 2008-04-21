@@ -235,14 +235,24 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 	}
 	
 	protected void initializeJavaPersistentType() {
-		JavaResourcePersistentType persistentTypeResource = getJpaProject().getJavaPersistentTypeResource(getClass_());
+		JavaResourcePersistentType persistentTypeResource = getJavaResourcePersistentType();
 		if (persistentTypeResource != null) {
 			this.javaPersistentType = buildJavaPersistentType(persistentTypeResource);
 		}	
 	}
 
-	protected void updateJavaPersistentType() {
+	protected JavaResourcePersistentType getJavaResourcePersistentType() {
+		// try to resolve by only the locally specified name
 		JavaResourcePersistentType persistentTypeResource = getJpaProject().getJavaPersistentTypeResource(getClass_());
+		if (persistentTypeResource == null) {
+			// try to resolve by prepending the global package name
+			persistentTypeResource = getJpaProject().getJavaPersistentTypeResource(getEntityMappings().getPackage() + "." + getClass_());
+		}
+		return persistentTypeResource;
+	}
+	
+	protected void updateJavaPersistentType() {
+		JavaResourcePersistentType persistentTypeResource = getJavaResourcePersistentType();
 		if (persistentTypeResource == null) {
 			setJavaPersistentType(null);
 		}
