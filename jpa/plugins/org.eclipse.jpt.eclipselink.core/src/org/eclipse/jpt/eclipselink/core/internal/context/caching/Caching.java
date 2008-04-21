@@ -32,7 +32,7 @@ public interface Caching extends PersistenceUnitProperties
 			static final String CACHE_SIZE_DEFAULT_PROPERTY = "cacheSizeDefaultProperty";
 			// EclipseLink key string
 			static final String ECLIPSELINK_CACHE_SIZE_DEFAULT = "eclipselink.cache.size.default";
-			static final Integer DEFAULT_CACHE_SIZE_DEFAULT = 100;
+			static final Integer DEFAULT_CACHE_SIZE_DEFAULT = new Integer(1000);
 
 	Boolean getDefaultSharedCacheDefault();
 	Boolean getSharedCacheDefault();
@@ -57,7 +57,7 @@ public interface Caching extends PersistenceUnitProperties
 			static final String CACHE_SIZE_PROPERTY = "cacheSizeProperty";
 			// EclipseLink key string
 			static final String ECLIPSELINK_CACHE_SIZE = "eclipselink.cache.size.";
-			static final Integer DEFAULT_CACHE_SIZE = 1000;
+			static final Integer DEFAULT_CACHE_SIZE = new Integer(1000);
 
 	Boolean getDefaultSharedCache();
 	Boolean getSharedCache(String entityName);
@@ -65,7 +65,7 @@ public interface Caching extends PersistenceUnitProperties
 			static final String SHARED_CACHE_PROPERTY = "sharedCacheProperty";
 			// EclipseLink key string
 			static final String ECLIPSELINK_SHARED_CACHE = "eclipselink.cache.shared.";
-			static final Boolean DEFAULT_SHARED_CACHE = true;
+			static final Boolean DEFAULT_SHARED_CACHE = Boolean.TRUE;
 
 
 	ListIterator<String> entities();
