@@ -1001,7 +1001,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 			stream2 = EmptyIterator.instance();
 		}
 		else {
-			stream2 = xmlProperties.getProperties().iterator();
+			stream2 = new CloneIterator<XmlProperty>(xmlProperties.getProperties());//avoid ConcurrentModificationException
 		}
 		
 		while (stream.hasNext()) {
