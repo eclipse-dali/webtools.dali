@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension
-         point="org.eclipse.jpt.core.jpaPlatform">
-      <jpaPlatform
-            class="org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatform"
-            id="core.testJpaPlatform"
-            label="Test Jpa Platform">
-      </jpaPlatform>
-   </extension>
-   <extension
-         point="org.eclipse.jpt.ui.jpaPlatform">
-      <jpaPlatform
-            class="org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformUi"
-            id="core.testJpaPlatform">
-      </jpaPlatform>
-   </extension>
+
+	<extension
+		point="org.eclipse.jpt.core.jpaPlatform">
+		
+		<jpaPlatform
+			id="core.testJpaPlatform"
+			label="Test Jpa Platform"
+			class="org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatform"
+			default="true">
+		</jpaPlatform>
+		
+	</extension>
+	
+	<extension
+		point="org.eclipse.jpt.ui.jpaPlatform">
+		
+		<jpaPlatform
+			id="core.testJpaPlatform"
+			class="org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformUi">
+		</jpaPlatform>
+		
+	</extension>
 
 </plugin>
