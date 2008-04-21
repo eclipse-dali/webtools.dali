@@ -156,6 +156,9 @@ public class PersistenceUnitGeneralComposite extends AbstractFormPane<Persistenc
 			
 			@Override
 			protected void setValue_(String value) {
+				if (value.length() == 0) {
+					value = null;
+				}
 				subject.setDescription(value);
 			}
 		};
