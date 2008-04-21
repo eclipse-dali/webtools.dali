@@ -14,19 +14,25 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
+import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
+import org.eclipse.jpt.core.internal.prefs.JpaPreferenceInitializer;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.prefs.BackingStoreException;
+import org.osgi.service.prefs.Preferences;
 
 /**
  * The JPT plug-in lifecycle implementation.
@@ -221,13 +227,57 @@ public class JptCorePlugin extends Plugin {
 			:
 				defaultURI;
 	}
-
+	
+	/**
+	 * Return the default JPA preferences
+	 * @see JpaPreferenceInitializer
+	 */
+	public static IEclipsePreferences getDefaultPreferences() {
+		IScopeContext context = new DefaultScope();
+		return context.getNode(PLUGIN_ID);
+	}
+	
+	/**
+	 * Return the JPA preferences for the current workspace instance.
+	 */
+	public static IEclipsePreferences getWorkspacePreferences() {
+		IScopeContext context = new InstanceScope();
+		return context.getNode(PLUGIN_ID);
+	}
+	
 	/**
 	 * Return the JPA preferences for the specified Eclipse project.
 	 */
-	public static IEclipsePreferences getPreferences(IProject project) {
+	public static IEclipsePreferences getProjectPreferences(IProject project) {
 		IScopeContext context = new ProjectScope(project);
 		return context.getNode(PLUGIN_ID);
+	}
+	
+	/**
+	 * Return the default JPA library for creating new JPA projects
+	 */
+	public static String getDefaultJpaLibrary() {
+		return Platform.getPreferencesService().get(
+				JpaPreferenceConstants.PREF_DEFAULT_JPA_LIB, null,
+				new Preferences[] {getWorkspacePreferences(), getDefaultPreferences()});
+	}
+	
+	/**
+	 * Return the default JPA platform ID for creating new JPA projects
+	 */
+	public static String getDefaultJpaPlatformId() {
+		return Platform.getPreferencesService().get(
+				JpaPreferenceConstants.PREF_DEFAULT_JPA_PLATFORM, GenericJpaPlatform.ID,
+				new Preferences[] {getWorkspacePreferences(), getDefaultPreferences()});
+	}
+	
+	/**
+	 * Set the default JPA platform ID for creating new JPA projects
+	 */
+	public static void setDefaultJpaPlatformId(String platformId) {
+		IEclipsePreferences prefs = getWorkspacePreferences();
+		prefs.put(JpaPreferenceConstants.PREF_DEFAULT_JPA_PLATFORM, platformId);
+		flush(prefs);
 	}
 
 	/**
@@ -236,19 +286,19 @@ public class JptCorePlugin extends Plugin {
 	public static JpaPlatform getJpaPlatform(IProject project) {
 		return JpaPlatformRegistry.instance().getJpaPlatform(getJpaPlatformId(project));
 	}
-
+	
 	/**
 	 * Return the JPA platform ID associated with the specified Eclipse project.
 	 */
 	public static String getJpaPlatformId(IProject project) {
-		return getPreferences(project).get(JPA_PLATFORM, GenericJpaPlatform.ID);
+		return getProjectPreferences(project).get(JPA_PLATFORM, GenericJpaPlatform.ID);
 	}
 
 	/**
 	 * Set the JPA platform ID associated with the specified Eclipse project.
 	 */
 	public static void setJpaPlatformId(IProject project, String jpaPlatformId) {
-		IEclipsePreferences prefs = getPreferences(project);
+		IEclipsePreferences prefs = getProjectPreferences(project);
 		prefs.put(JPA_PLATFORM, jpaPlatformId);
 		flush(prefs);
 	}
@@ -258,7 +308,7 @@ public class JptCorePlugin extends Plugin {
 	 * Eclipse project.
 	 */
 	public static boolean discoverAnnotatedClasses(IProject project) {
-		return getPreferences(project).getBoolean(DISCOVER_ANNOTATED_CLASSES, false);
+		return getProjectPreferences(project).getBoolean(DISCOVER_ANNOTATED_CLASSES, false);
 	}
 
 	/**
@@ -266,7 +316,7 @@ public class JptCorePlugin extends Plugin {
 	 * Eclipse project.
 	 */
 	public static void setDiscoverAnnotatedClasses(IProject project, boolean discoverAnnotatedClasses) {
-		IEclipsePreferences prefs = getPreferences(project);
+		IEclipsePreferences prefs = getProjectPreferences(project);
 		prefs.putBoolean(DISCOVER_ANNOTATED_CLASSES, discoverAnnotatedClasses);
 		flush(prefs);
 	}

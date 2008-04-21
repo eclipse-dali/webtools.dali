@@ -13,6 +13,9 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
+import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
+import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Class used to initialize default preference values.
@@ -23,7 +26,11 @@ public class JpaPreferenceInitializer extends AbstractPreferenceInitializer
 	public void initializeDefaultPreferences() {
 		IEclipsePreferences node = new DefaultScope().getNode(JptCorePlugin.instance().getBundle().getSymbolicName());
 		
-		// default JPA library
-		node.put(JpaPreferenceConstants.PREF_DEFAULT_JPA_LIB, "");
+		// default JPA platform
+		String defaultPlatformId = JpaPlatformRegistry.instance().getDefaultJpaPlatformId();
+		if (StringTools.stringIsEmpty(defaultPlatformId)) {
+			defaultPlatformId = GenericJpaPlatform.ID;
+		}
+		node.put(JpaPreferenceConstants.PREF_DEFAULT_JPA_PLATFORM, defaultPlatformId);
 	}
 }

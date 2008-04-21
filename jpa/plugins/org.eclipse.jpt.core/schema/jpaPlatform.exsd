@@ -43,6 +43,11 @@
    </element>
 
    <element name="jpaPlatform">
+      <annotation>
+         <documentation>
+            Declares a JPA platform. See &lt;samp&gt;org.eclipse.jpt.core.JpaPlatform&lt;/samp&gt; for more information on JPA platforms.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="id" type="string" use="required">
             <annotation>
@@ -54,7 +59,7 @@
          <attribute name="label" type="string" use="required">
             <annotation>
                <documentation>
-                  An translatable string representation of the platform.
+                  A translatable string representation of the platform.
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>
@@ -64,11 +69,18 @@
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The class that implements &lt;samp&gt;org.eclipse.jpt.core.JpaPlatform&lt;/samp&gt;.
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.jpt.core.JpaPlatform"/>
                </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="default" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  Declares whether this platform should be used as a default JPA platform for new JPA project content.  Note that if a workspace contains more than one default platform, one of them will be chosen at random.  By default, a platform is not a default platform.
+               </documentation>
             </annotation>
          </attribute>
       </complexType>

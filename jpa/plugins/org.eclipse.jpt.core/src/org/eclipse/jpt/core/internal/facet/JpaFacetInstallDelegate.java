@@ -59,11 +59,15 @@ public class JpaFacetInstallDelegate
 		IJavaProject javaProject = JavaCore.create(project);
 		IDataModel dataModel = (IDataModel) config;
 		this.configureClasspath(javaProject, dataModel, monitor);
-
+		
+		// project settings
 		JptCorePlugin.setJpaPlatformId(project, dataModel.getStringProperty(PLATFORM_ID));
 		JptCorePlugin.setConnectionProfileName(project, dataModel.getStringProperty(CONNECTION));
 		JptCorePlugin.setDiscoverAnnotatedClasses(project, dataModel.getBooleanProperty(DISCOVER_ANNOTATED_CLASSES));
-
+		
+		// defaults settings
+		JptCorePlugin.setDefaultJpaPlatformId(dataModel.getStringProperty(PLATFORM_ID));
+		
 		monitor.worked(1);
 	}
 

@@ -99,6 +99,20 @@
 	</extension>
 	
 	
+	<!-- ***** JPT extensions (eat our own dogfood) ***** -->
+
+	<extension
+		point="org.eclipse.jpt.core.jpaPlatform">
+		
+		<jpaPlatform
+			id="generic"
+			label="%GENERIC_PLATFORM_LABEL"
+			class="org.eclipse.jpt.core.internal.platform.GenericJpaPlatform"
+			default="false"/>
+		
+	</extension>
+	
+	
 	<!-- ***** WTP extensions ***** -->
 
 	<extension
@@ -161,11 +175,18 @@
 			<delegate class="org.eclipse.jpt.core.internal.facet.JpaFacetInstallDelegate"/>
 		</action>
 		
-		<!-- The uninstall action is only used to enable facet uninstallation
-			 through the facet UI.  The delegate has no functionality. -->
+		<!-- 
+			The uninstall action is only used to enable facet uninstallation
+			through the facet UI.  The delegate currently has no functionality. 
+		-->
 		<action facet="jpt.jpa" type="uninstall" id="jpt.jpa.uninstall">
 			<delegate class="org.eclipse.jpt.core.internal.facet.JpaFacetUninstallDelegate"/>
 		</action>
+		
+		<!-- 
+			There is no version change delegate, because as of now, there is 
+		    only a single version of JPA 
+		-->
 		
 	</extension>
 	
@@ -226,19 +247,6 @@
 			-->
 			
 		</validator>
-		
-	</extension>
-
-	
-	<!-- ***** JPT extensions (eat our own dogfood) ***** -->
-
-	<extension
-		point="org.eclipse.jpt.core.jpaPlatform">
-		
-		<jpaPlatform
-			id="generic"
-			label="%GENERIC_PLATFORM_LABEL"
-			class="org.eclipse.jpt.core.internal.platform.GenericJpaPlatform"/>
 		
 	</extension>
 	

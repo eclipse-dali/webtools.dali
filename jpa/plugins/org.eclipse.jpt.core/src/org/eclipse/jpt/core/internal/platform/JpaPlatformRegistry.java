@@ -46,7 +46,8 @@ public class JpaPlatformRegistry {
 	private static final String EL_PLATFORM = "jpaPlatform"; //$NON-NLS-1$	
 	private static final String AT_ID = "id"; //$NON-NLS-1$	
 	private static final String AT_LABEL = "label"; //$NON-NLS-1$	
-	private static final String AT_CLASS = "class"; //$NON-NLS-1$	
+	private static final String AT_CLASS = "class"; //$NON-NLS-1$
+	private static final String AT_DEFAULT = "default"; //$NON-NLS-1$
 
 
 	// ********** constructor/initialization **********
@@ -138,7 +139,7 @@ public class JpaPlatformRegistry {
 	public Iterator<String> jpaPlatformIds() {
 		return new ReadOnlyIterator<String>(this.jpaPlatformConfigurationElements.keySet());
 	}
-
+	
 	/**
 	 * Return the label for the JPA platform with the specified ID.
 	 * This does not activate the JPA platform's plug-in.
@@ -146,7 +147,21 @@ public class JpaPlatformRegistry {
 	public String getJpaPlatformLabel(String id) {
 		return this.jpaPlatformConfigurationElements.get(id).getAttribute(AT_LABEL);
 	}
-
+	
+	/**
+	 * Return the ID for a JPA platform registered as a default platform.
+	 * Returns null if there are no such registered platforms.
+	 * Returns the first platform ID if there are multiple such registered platforms.
+	 */
+	public String getDefaultJpaPlatformId() {
+		for (String platformId : jpaPlatformConfigurationElements.keySet()) {
+			if (! "false".equals(jpaPlatformConfigurationElements.get(platformId).getAttribute(AT_DEFAULT))) {
+				return platformId;
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * Return a new JPA platform for the specified ID.
 	 * NB: This should only be called when instantiating a JPA platform

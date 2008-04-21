@@ -209,9 +209,7 @@ public class JpaFacetWizardPage
 				);
 			// we need some input here, even if it means absolutely nothing
 			platformCombo.setInput("null input");
-			if (platformCombo.getElementAt(0) != null) {
-				platformCombo.setSelection(new StructuredSelection(platformCombo.getElementAt(0)));
-			}
+			platformCombo.setSelection(new StructuredSelection(model.getDefaultProperty(PLATFORM_ID)));
 		}
 	}
 

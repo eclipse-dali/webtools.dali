@@ -15,8 +15,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
-import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
-import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -71,7 +69,7 @@ public class JpaFacetDataModelProvider
 			return JptCorePlugin.FACET_ID;
 		}
 		if (propertyName.equals(PLATFORM_ID)) {
-			return GenericJpaPlatform.ID;
+			return JptCorePlugin.getDefaultJpaPlatformId();
 		}
 		if (propertyName.equals(CONNECTION)) {
 			return "";
@@ -83,7 +81,7 @@ public class JpaFacetDataModelProvider
 			return Boolean.valueOf(this.runtimeSupportsEjb30(this.runtime()));
 		}
 		if (propertyName.equals(JPA_LIBRARY)) {
-			return JptCorePlugin.instance().getPluginPreferences().getString(JpaPreferenceConstants.PREF_DEFAULT_JPA_LIB);
+			return JptCorePlugin.getDefaultJpaLibrary();
 		}
 		if (propertyName.equals(DISCOVER_ANNOTATED_CLASSES)) {
 			return Boolean.valueOf(this.runtimeSupportsEjb30(this.runtime()));

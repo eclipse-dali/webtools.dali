@@ -15,4 +15,6 @@ package org.eclipse.jpt.core.internal.prefs;
 public class JpaPreferenceConstants 
 {
 	public static final String PREF_DEFAULT_JPA_LIB = "defaultJpaLib";
+	
+	public static final String PREF_DEFAULT_JPA_PLATFORM = "defaultJpaPlatform";
 }
