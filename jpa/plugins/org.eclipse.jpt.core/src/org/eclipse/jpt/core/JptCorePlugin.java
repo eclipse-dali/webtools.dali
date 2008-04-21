@@ -26,7 +26,6 @@ import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
-import org.eclipse.jpt.core.internal.prefs.JpaPreferenceInitializer;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
