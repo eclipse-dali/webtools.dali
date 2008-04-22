@@ -117,7 +117,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	public boolean itemIsProperty(Property item) {
 		boolean isProperty = super.itemIsProperty(item);
 		
-		if ( ! isProperty) {
+		if ( ! isProperty && item.getName() != null) {
 				if (item.getName().startsWith(ECLIPSELINK_DESCRIPTOR_CUSTOMIZER)) {
 					return true;
 				}

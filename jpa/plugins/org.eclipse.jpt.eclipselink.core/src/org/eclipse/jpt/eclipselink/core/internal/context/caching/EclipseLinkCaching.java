@@ -119,7 +119,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	public boolean itemIsProperty(Property item) {
 		boolean isProperty = super.itemIsProperty(item);
 		
-		if ( ! isProperty) {
+		if ( ! isProperty && item.getName() != null) {
 				if (item.getName().startsWith(ECLIPSELINK_CACHE_TYPE) || 
 						item.getName().startsWith(ECLIPSELINK_CACHE_SIZE) || 
 						item.getName().startsWith(ECLIPSELINK_SHARED_CACHE)) {
