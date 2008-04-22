@@ -3,14 +3,13 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.connection;
 
 import java.util.Collection;
-
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -25,14 +24,14 @@ public class TransactionTypeComposite extends AbstractFormPane<Connection>
 {
 	/**
 	 * Creates a new <code>TransactionTypeComposite</code>.
-	 * 
+	 *
 	 * @param parentController
 	 *            The parent container of this one
 	 * @param parent
 	 *            The parent container
 	 */
 	public TransactionTypeComposite(
-					AbstractFormPane<? extends Connection> parentComposite, 
+					AbstractFormPane<? extends Connection> parentComposite,
 					Composite parent) {
 
 		super( parentComposite, parent);
@@ -69,10 +68,36 @@ public class TransactionTypeComposite extends AbstractFormPane<Connection>
 			@Override
 			protected void setValue(PersistenceUnitTransactionType value) {
 				subject().setTransactionType(value);
+
+				if (value == PersistenceUnitTransactionType.RESOURCE_LOCAL) {
+					clearJTAProperties();
+				}
+				else {
+					clearResourceLocalProperties();
+				}
 			}
 		};
 	}
-	
+
+	private void clearJTAProperties() {
+		subject().setJtaDataSource(null);
+	}
+
+	private void clearResourceLocalProperties() {
+		Connection connection = subject();
+		connection.setNonJtaDataSource(null);
+		connection.setDriver(null);
+		connection.setUrl(null);
+		connection.setUser(null);
+		connection.setPassword(null);
+		connection.setBindParameters(null);
+		connection.setWriteConnectionsMax(null);
+		connection.setWriteConnectionsMin(null);
+		connection.setReadConnectionsMax(null);
+		connection.setReadConnectionsMin(null);
+		connection.setReadConnectionsShared(null);
+	}
+
 	@Override
 	protected void initializeLayout( Composite container) {
 

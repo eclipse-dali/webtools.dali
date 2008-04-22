@@ -29,19 +29,26 @@ public class EclipseLinkConnectionComposite
 	@Override
 	protected void initializeLayout(Composite container) {
 
+		int groupBoxMargin = groupBoxMargin() * 2;
+
 		container = buildSection(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_sectionTitle,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_sectionDescription
 		);
 
-		new TransactionTypeComposite(this, container);
+		Composite subPane = buildSubPane(
+			container,
+			0, groupBoxMargin, 10, groupBoxMargin
+		);
 
-		new BatchWritingComposite(this, container);
+		new TransactionTypeComposite(this, subPane);
 
-		new CacheStatementsPropertiesComposite(this, container);
+		new BatchWritingComposite(this, subPane);
 
-		new NativeSqlComposite(this, container);
+		new CacheStatementsPropertiesComposite(this, subPane);
+
+		new NativeSqlComposite(this, subPane);
 
 		new ConnectionPropertiesComposite(this, container);
 	}

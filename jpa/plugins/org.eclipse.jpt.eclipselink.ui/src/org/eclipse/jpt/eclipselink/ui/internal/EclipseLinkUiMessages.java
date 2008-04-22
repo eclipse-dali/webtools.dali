@@ -50,6 +50,9 @@ public class EclipseLinkUiMessages extends NLS
 
 	public static String JdbcPropertiesComposite_EclipseLinkConnectionPool_GroupBox;
 
+	public static String JdbcConnectionPropertiesComposite_ConnectionDialog_Message;
+	public static String JdbcConnectionPropertiesComposite_ConnectionDialog_Title;
+
 	public static String TransactionTypeComposite_jta;
 	public static String TransactionTypeComposite_resource_local;
 
