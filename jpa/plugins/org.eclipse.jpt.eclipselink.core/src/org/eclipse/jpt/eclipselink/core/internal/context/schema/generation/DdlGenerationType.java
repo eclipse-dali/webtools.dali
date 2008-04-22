@@ -18,7 +18,7 @@ public enum DdlGenerationType {
 	drop_and_create_tables;
 	
 	// EclipseLink value string
-	static final String NONE = "none";
-	static final String CREATE_TABLES = "create-tables";
-	static final String DROP_AND_CREATE_TABLES = "drop-and-create-tables";
+	public static final String NONE = "none";
+	public static final String CREATE_TABLES = "create-tables";
+	public static final String DROP_AND_CREATE_TABLES = "drop-and-create-tables";
 }

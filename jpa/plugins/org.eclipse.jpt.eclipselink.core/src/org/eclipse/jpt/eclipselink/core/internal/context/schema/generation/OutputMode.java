@@ -18,7 +18,7 @@ public enum OutputMode {
 	database;
 
 	// EclipseLink value string
-	static final String BOTH = "both";
-	static final String DATABASE = "database";
-	static final String SQL_SCRIPT = "sql-script";
+	public static final String BOTH = "both";
+	public static final String DATABASE = "database";
+	public static final String SQL_SCRIPT = "sql-script";
 }
