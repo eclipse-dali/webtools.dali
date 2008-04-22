@@ -18,6 +18,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.eclipselink.ui.internal.ddlgen.EclipseLinkDLLGeneratorUi;
 import org.eclipse.jpt.eclipselink.ui.internal.persistencexml.details.PersistenceDetailsProvider;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
@@ -48,7 +49,10 @@ public class EclipseLinkPlatformUI extends BaseJpaPlatformUi
 	}
 
 	public void generateDDL(JpaProject project, IStructuredSelection selection) {
-		this.displayNotSupportedMessage("DDL Generation", "DDL Generation is not supported");
+
+		String projectLocation = project.getProject().getLocation().toString();
+		
+		EclipseLinkDLLGeneratorUi.generate(project, projectLocation, selection);
 	}
 
 	protected void displayNotSupportedMessage(String title, String message) {
