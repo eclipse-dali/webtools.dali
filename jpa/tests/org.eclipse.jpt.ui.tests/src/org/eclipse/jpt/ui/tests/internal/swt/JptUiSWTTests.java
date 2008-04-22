@@ -20,7 +20,8 @@ import org.junit.runners.Suite.SuiteClasses;
 ({
 	CComboModelAdapterTest.class,
 	ComboModelAdapterTest.class,
-	SpinnerModelAdapterTest.class
+	SpinnerModelAdapterTest.class,
+	TableModelAdapterTest.class
 })
 @RunWith(Suite.class)
 public final class JptUiSWTTests {
