@@ -642,13 +642,13 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	}
 	
 	protected OrmPersistentAttribute createVirtualPersistentAttribute(JavaPersistentAttribute javaAttribute) {
-		OrmPersistentAttribute ormPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, javaAttribute.getMappingKey());
 		String javaMappingKey = javaAttribute.getMappingKey();
 		JavaAttributeMapping javaAttributeMapping = javaAttribute.getMapping();
 		if (getMapping().isMetadataComplete()) {
 			javaMappingKey = javaAttribute.getDefaultMappingKey();
 			javaAttributeMapping = javaAttribute.getDefaultMapping();
 		}
+		OrmPersistentAttribute ormPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, javaMappingKey);
 		
 		if (javaMappingKey == MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
 			ormPersistentAttribute.initialize(new VirtualXmlBasic(getMapping(), (JavaBasicMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
