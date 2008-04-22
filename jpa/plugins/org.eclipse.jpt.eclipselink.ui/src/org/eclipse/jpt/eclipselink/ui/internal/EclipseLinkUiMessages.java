@@ -46,6 +46,10 @@ public class EclipseLinkUiMessages extends NLS
 
 	public static String PersistenceXmlConnectionTab_transactionTypeLabel;
 
+	public static String ConnectionPropertiesComposite_Database_GroupBox;
+
+	public static String JdbcPropertiesComposite_EclipseLinkConnectionPool_GroupBox;
+
 	public static String TransactionTypeComposite_jta;
 	public static String TransactionTypeComposite_resource_local;
 
@@ -60,9 +64,6 @@ public class EclipseLinkUiMessages extends NLS
 	public static String BatchWritingComposite_oracle_jdbc;
 
 	public static String PersistenceXmlConnectionTab_cacheStatementsLabel;
-
-	public static String PersistenceXmlConnectionTab_dataSourceLabel;
-	public static String PersistenceXmlConnectionTab_jdbcLabel;
 
 	public static String PersistenceXmlConnectionTab_jtaDataSourceLabel;
 	public static String PersistenceXmlConnectionTab_nonJtaDataSourceLabel;
