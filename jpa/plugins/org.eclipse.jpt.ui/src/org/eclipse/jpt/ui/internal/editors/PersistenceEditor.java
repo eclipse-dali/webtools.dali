@@ -103,8 +103,8 @@ public class PersistenceEditor extends FormEditor
 		initialize();
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected void addPages() {
@@ -250,8 +250,8 @@ public class PersistenceEditor extends FormEditor
 		);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void close(boolean save) {
@@ -259,8 +259,8 @@ public class PersistenceEditor extends FormEditor
 		editorInputHolder.setValue(null);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void dispose() {
@@ -271,31 +271,31 @@ public class PersistenceEditor extends FormEditor
 		super.dispose();
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		getEditor(getPageCount() - 1).doSave(monitor);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void doSaveAs() {
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public IFileEditorInput getEditorInput() {
 		return (IFileEditorInput) super.getEditorInput();
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void init(IEditorSite site, IEditorInput editorInput) throws PartInitException {
@@ -318,8 +318,8 @@ public class PersistenceEditor extends FormEditor
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean isSaveAsAllowed() {
@@ -362,8 +362,8 @@ public class PersistenceEditor extends FormEditor
 			this.page = page;
 		}
 
-		/*
-		 * (non-Javadoc)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		protected void createFormContent(IManagedForm managedForm) {
@@ -374,11 +374,8 @@ public class PersistenceEditor extends FormEditor
 			// Update the text and image
 			updateForm(form);
 
-			// Add the page's control to this page
-			Composite body = form.getBody();
-			body.setLayout(new TableWrapLayout());
-			updateLayoutData();
-			page.getControl().setParent(body);
+			// Update the layout
+			updateBody(form);
 
 			// This will finish the initialization of the buttons
 			updateHelpButton();
@@ -388,8 +385,8 @@ public class PersistenceEditor extends FormEditor
 			page.populate();
 		}
 
-		/*
-		 * (non-Javadoc)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public void dispose() {
@@ -397,12 +394,33 @@ public class PersistenceEditor extends FormEditor
 			super.dispose();
 		}
 
-		/*
-		 * (non-Javadoc)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public void setFocus() {
 			page.getControl().setFocus();
+		}
+
+		/**
+		 * Adds the page's control to this page.
+		 *
+		 * @param form The form containing the composite with which the page's
+		 * control is parented
+		 */
+		private void updateBody(ScrolledForm form) {
+
+			Composite body = form.getBody();
+
+			body.setLayout(new TableWrapLayout());
+
+			TableWrapData wrapData = new TableWrapData(
+				TableWrapData.FILL_GRAB,
+				TableWrapData.FILL_GRAB
+			);
+
+			page.getControl().setLayoutData(wrapData);
+			page.getControl().setParent(body);
 		}
 
 		/**
@@ -436,17 +454,6 @@ public class PersistenceEditor extends FormEditor
 				IToolBarManager manager = form.getToolBarManager();
 				manager.add(helpAction);
 			}
-		}
-
-		private void updateLayoutData() {
-
-			TableWrapData wrapData  = new TableWrapData();
-			wrapData.grabHorizontal = true;
-			wrapData.grabVertical   = true;
-			wrapData.align          = TableWrapData.FILL;
-			wrapData.valign         = TableWrapData.TOP;
-
-			page.getControl().setLayoutData(wrapData);
 		}
 
 		private class HelpAction extends Action {

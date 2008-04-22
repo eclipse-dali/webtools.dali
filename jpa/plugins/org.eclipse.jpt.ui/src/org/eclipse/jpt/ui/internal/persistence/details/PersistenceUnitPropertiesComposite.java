@@ -34,8 +34,10 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 /**
@@ -65,6 +67,7 @@ public class PersistenceUnitPropertiesComposite extends AbstractPane<Persistence
                                                 implements JpaPageComposite<PersistenceUnit>
 {
 	private WritablePropertyValueModel<Property> propertyHolder;
+	private TablePane tablePane;
 
 	/**
 	 * Creates a new <code>PersistenceUnitPropertiesComposite</code>.
@@ -101,8 +104,18 @@ public class PersistenceUnitPropertiesComposite extends AbstractPane<Persistence
 	private AddRemoveTablePane.Adapter buildTableAdapter() {
 		return new AddRemoveTablePane.AbstractAdapter() {
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
+
 				Property property = subject().addProperty();
 				propertyHolder.setValue(property);
+
+				int index = subject().propertiesSize() - 1;
+				TableItem tableItem = tablePane.getMainControl().getItem(index);
+				tablePane.getMainControl().showItem(tableItem);
+
+				tablePane.getTableViewer().editElement(
+					property,
+					PropertyColumnAdapter.NAME_COLUMN
+				);
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
@@ -113,29 +126,29 @@ public class PersistenceUnitPropertiesComposite extends AbstractPane<Persistence
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public String getHelpID() {
 		return JpaHelpContextIds.PERSISTENCE_UNIT_PROPERTIES;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Image getPageImage() {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	public String getPageText() {
 		return JptUiPersistenceMessages.PersistenceUnitPropertiesComposite_properties;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected void initialize() {
@@ -143,8 +156,8 @@ public class PersistenceUnitPropertiesComposite extends AbstractPane<Persistence
 		propertyHolder = new SimplePropertyValueModel<Property>();
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected void initializeLayout(Composite container) {
@@ -154,14 +167,15 @@ public class PersistenceUnitPropertiesComposite extends AbstractPane<Persistence
 			JptUiPersistenceMessages.PersistenceUnitPropertiesComposite_properties_description
 		);
 
-		new TablePane(container);
+		tablePane = new TablePane(container);
 	}
 
 	private static class PropertyColumnAdapter implements ColumnAdapter<Property> {
 
-		public static final int COLUMN_COUNT = 2;
-		public static final int NAME_COLUMN_INDEX = 0;
-		public static final int VALUE_COLUMN_INDEX = 1;
+		public static final int COLUMN_COUNT = 3;
+		public static final int NAME_COLUMN = 1;
+		public static final int SELECTION_COLUMN = 0;
+		public static final int VALUE_COLUMN = 2;
 
 		private WritablePropertyValueModel<String> buildNameHolder(Property subject) {
 			return new PropertyAspectAdapter<Property, String>(Property.NAME_PROPERTY, subject) {
@@ -192,9 +206,10 @@ public class PersistenceUnitPropertiesComposite extends AbstractPane<Persistence
 		}
 
 		public WritablePropertyValueModel<?>[] cellModels(Property subject) {
-			WritablePropertyValueModel<?>[] holders = new WritablePropertyValueModel<?>[2];
-			holders[0] = buildNameHolder(subject);
-			holders[1] = buildValueHolder(subject);
+			WritablePropertyValueModel<?>[] holders = new WritablePropertyValueModel<?>[COLUMN_COUNT];
+			holders[SELECTION_COLUMN] = new SimplePropertyValueModel<Object>();
+			holders[NAME_COLUMN]      = buildNameHolder(subject);
+			holders[VALUE_COLUMN]     = buildValueHolder(subject);
 			return holders;
 		}
 
@@ -205,11 +220,11 @@ public class PersistenceUnitPropertiesComposite extends AbstractPane<Persistence
 		public String columnName(int columnIndex) {
 
 			switch (columnIndex) {
-				case PropertyColumnAdapter.NAME_COLUMN_INDEX: {
+				case PropertyColumnAdapter.NAME_COLUMN: {
 					return JptUiPersistenceMessages.PersistenceUnitPropertiesComposite_nameColumn;
 				}
 
-				case PropertyColumnAdapter.VALUE_COLUMN_INDEX: {
+				case PropertyColumnAdapter.VALUE_COLUMN: {
 					return JptUiPersistenceMessages.PersistenceUnitPropertiesComposite_valueColumn;
 				}
 
@@ -233,12 +248,12 @@ public class PersistenceUnitPropertiesComposite extends AbstractPane<Persistence
 			String value = null;
 
 			switch (columnIndex) {
-				case PropertyColumnAdapter.NAME_COLUMN_INDEX: {
+				case PropertyColumnAdapter.NAME_COLUMN: {
 					value = property.getName();
 					break;
 				}
 
-				case PropertyColumnAdapter.VALUE_COLUMN_INDEX: {
+				case PropertyColumnAdapter.VALUE_COLUMN: {
 					value = property.getValue();
 					break;
 				}
@@ -254,6 +269,10 @@ public class PersistenceUnitPropertiesComposite extends AbstractPane<Persistence
 
 	private class TablePane extends AddRemoveTablePane<PersistenceUnit> {
 
+		private final String SELECTION_COLUMN = "selection";
+
+		private TableViewer tableViewer;
+
 		private TablePane(Composite parent) {
 			super(PersistenceUnitPropertiesComposite.this,
 			      parent,
@@ -265,6 +284,7 @@ public class PersistenceUnitPropertiesComposite extends AbstractPane<Persistence
 
 		private CellEditor[] buildCellEditors(Table table) {
 			return new CellEditor[] {
+				null,
 				new TextCellEditor(table),
 				new TextCellEditor(table)
 			};
@@ -274,7 +294,7 @@ public class PersistenceUnitPropertiesComposite extends AbstractPane<Persistence
 			return new ICellModifier() {
 
 				public boolean canModify(Object element, String property) {
-					return true;
+					return !SELECTION_COLUMN.equals(property);
 				}
 
 				public Object getValue(Object element, String property) {
@@ -323,9 +343,21 @@ public class PersistenceUnitPropertiesComposite extends AbstractPane<Persistence
 
 		private String[] buildColumnProperties() {
 			return new String[] {
+				SELECTION_COLUMN,
 				Property.NAME_PROPERTY,
 				Property.VALUE_PROPERTY
 			};
+		}
+
+		@Override
+		protected Composite buildContainer(Composite parent) {
+			Composite container = super.buildContainer(parent);
+			container.setLayoutData(new GridData(GridData.FILL_BOTH));
+			return container;
+		}
+
+		TableViewer getTableViewer() {
+			return tableViewer;
 		}
 
 		@Override
@@ -347,10 +379,20 @@ public class PersistenceUnitPropertiesComposite extends AbstractPane<Persistence
 
 			Table table = getMainControl();
 
-			TableViewer tableViewer = new TableViewer(table);
+			// Make the selection column non-resizable since it's only used to
+			// ease the selection of rows
+			TableColumn selectionColumn = table.getColumn(PropertyColumnAdapter.SELECTION_COLUMN);
+			selectionColumn.setResizable(false);
+			selectionColumn.setWidth(20);
+
+			// Install the editors
+			tableViewer = new TableViewer(table);
 			tableViewer.setCellEditors(buildCellEditors(table));
 			tableViewer.setCellModifier(buildCellModifier());
 			tableViewer.setColumnProperties(buildColumnProperties());
+
+			getContainer().setLayoutData(new GridData(GridData.FILL_BOTH));
+			table.setLayoutData(new GridData(GridData.FILL_BOTH));
 		}
 	}
 }

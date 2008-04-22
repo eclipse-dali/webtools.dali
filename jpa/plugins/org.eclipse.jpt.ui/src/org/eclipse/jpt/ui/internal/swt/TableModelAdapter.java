@@ -302,8 +302,15 @@ public class TableModelAdapter<E> {
 			TableColumn tableColumn = new TableColumn(this.table, SWT.NULL, index);
 			tableColumn.setMoveable(false);
 			tableColumn.setResizable(true);
-			tableColumn.setText(this.columnAdapter.columnName(index));
 			tableColumn.setWidth(100);
+
+			String columnName = this.columnAdapter.columnName(index);
+
+			if (columnName == null) {
+				columnName = "";
+			}
+
+			tableColumn.setText(columnName);
 		}
 	}
 
@@ -323,12 +330,11 @@ public class TableModelAdapter<E> {
 		int itemCount = this.listHolder.size();
 
 		for (int index = 0; index < itemCount; index++) {
+
 			TableItem tableItem = new TableItem(this.table, SWT.NULL, index);
 			tableItem.setData(this.listHolder.get(index));
 
-			TableItemModelAdapter adapter =
-				TableItemModelAdapter.adapt(tableItem, columnAdapter, labelProvider);
-
+			TableItemModelAdapter adapter = buildItemModel(tableItem);
 			tableItemModelAdapters.add(adapter);
 		}
 	}
@@ -337,18 +343,20 @@ public class TableModelAdapter<E> {
 	 * The model has changed - synchronize the table.
 	 */
 	protected void listItemsAdded(ListChangeEvent event) {
+
 		if (this.table.isDisposed()) {
 			return;
 		}
-		int i = event.getIndex();
-		for (ListIterator<E> stream = this.items(event); stream.hasNext(); i++) {
-			TableItem tableItem = new TableItem(this.table, SWT.NULL, i);
+
+		int index = event.getIndex();
+
+		for (ListIterator<E> stream = this.items(event); stream.hasNext(); index++) {
+
+			TableItem tableItem = new TableItem(this.table, SWT.NULL, index);
 			tableItem.setData(stream.next());
 
-			TableItemModelAdapter adapter =
-				TableItemModelAdapter.adapt(tableItem, columnAdapter, labelProvider);
-
-			tableItemModelAdapters.add(i, adapter);
+			TableItemModelAdapter adapter = this.buildItemModel(tableItem);
+			tableItemModelAdapters.add(index, adapter);
 		}
 	}
 
@@ -356,9 +364,11 @@ public class TableModelAdapter<E> {
 	 * The model has changed - synchronize the table.
 	 */
 	protected void listItemsRemoved(ListChangeEvent event) {
+
 		if (this.table.isDisposed()) {
 			return;
 		}
+
 		this.table.remove(event.getIndex(), event.getIndex() + event.itemsSize() - 1);
 
 		for (int index = event.getIndex() + event.itemsSize(); --index >= event.getIndex(); ) {
@@ -370,22 +380,61 @@ public class TableModelAdapter<E> {
 	 * The model has changed - synchronize the table.
 	 */
 	protected void listItemsMoved(ListChangeEvent event) {
+
 		if (this.table.isDisposed()) {
 			return;
 		}
-		int target = event.getTargetIndex();
-		int source = event.getSourceIndex();
-		int len = event.getMoveLength();
-		int loStart = Math.min(target, source);
-		int hiStart = Math.max(target, source);
-		// make a copy of the affected items...
-		TableItem[] subArray = CollectionTools.subArray(this.table.getItems(), loStart, hiStart + len - loStart);
-		// ...move them around...
-		subArray = CollectionTools.move(subArray, target - loStart, source - loStart, len);
-		// ...and then put them back
-		for (int i = 0; i < subArray.length; i++) {
-			// TODO
+
+		int length        = event.getMoveLength();
+		int sourceIndex   = event.getSourceIndex();
+		int targetIndex   = event.getTargetIndex();
+		int lowStartIndex = Math.min(targetIndex, sourceIndex);
+		int hiStartIndex  = Math.max(targetIndex, sourceIndex);
+
+		Object[] items = new Object[hiStartIndex - lowStartIndex + length];
+		int itemsIndex = items.length;
+
+		// Remove the TableItems wrapping the moved items
+		for (int index = hiStartIndex + length; --index >= lowStartIndex; ) {
+
+			TableItemModelAdapter tableItemModel = this.tableItemModelAdapters.get(index);
+			items[--itemsIndex] = tableItemModel.tableItem.getData();
+
+			// Remove the TableItem, which will also dispose TableItemModelAdapter
+			this.table.remove(index);
 		}
+
+		// Move the items so they can retrieved in the right order when
+		// re-creating the TableItems
+		CollectionTools.move(
+			items,
+			targetIndex - lowStartIndex,
+			sourceIndex - lowStartIndex,
+			length
+		);
+
+		itemsIndex = 0;
+
+		// Add TableItems for the moved items
+		for (int index = lowStartIndex; index <= hiStartIndex + length - 1; index++) {
+
+			// Create the new TableItem
+			TableItem tableItem = new TableItem(this.table, SWT.NULL, index);
+			tableItem.setData(items[itemsIndex++]);
+
+			// Adapt it with a model adapter
+			TableItemModelAdapter adapter = this.buildItemModel(tableItem);
+			tableItemModelAdapters.set(index, adapter);
+		}
+	}
+
+
+	private TableItemModelAdapter buildItemModel(TableItem tableItem) {
+		return TableItemModelAdapter.adapt(
+			tableItem,
+			columnAdapter,
+			labelProvider
+		);
 	}
 
 	/**
@@ -404,8 +453,11 @@ public class TableModelAdapter<E> {
 
 			TableItemModelAdapter adapter = tableItemModelAdapters.get(rowIndex);
 
-			for (int columnIndex = this.columnAdapter.columnCount(); --columnIndex >= 0; ) {
-				adapter.tableItemChanged(columnIndex, tableItem.getData(), true);
+			int columnCount = this.columnAdapter.columnCount();
+			boolean revalidate = (columnCount == 1);
+
+			for (int columnIndex = columnCount; --columnIndex >= 0; ) {
+				adapter.tableItemChanged(columnIndex, tableItem.getData(), revalidate);
 			}
 
 			rowIndex++;
@@ -505,9 +557,9 @@ public class TableModelAdapter<E> {
 
 	// ********** list box events **********
 
+	@SuppressWarnings("unchecked")
 	protected void tableSelectionChanged(SelectionEvent event) {
 		if (this.selectionChangeListeners.length > 0) {
-			@SuppressWarnings("unchecked")
 			SelectionChangeEvent<E> scEvent = new SelectionChangeEvent(this, this.selectedItems());
 			for (SelectionChangeListener<E> selectionChangeListener : this.selectionChangeListeners) {
 				selectionChangeListener.selectionChanged(scEvent);
@@ -515,11 +567,11 @@ public class TableModelAdapter<E> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Collection<E> selectedItems() {
 		if (this.table.isDisposed()) {
 			return Collections.emptySet();
 		}
-		@SuppressWarnings("unchecked")
 		ArrayList<E> selectedItems = new ArrayList(this.table.getSelectionCount());
 		for (int selectionIndex : this.table.getSelectionIndices()) {
 			selectedItems.add(this.listHolder.get(selectionIndex));
@@ -527,6 +579,7 @@ public class TableModelAdapter<E> {
 		return selectedItems;
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void tableDoubleClicked(SelectionEvent event) {
 		if (this.table.isDisposed()) {
 			return;
@@ -534,7 +587,6 @@ public class TableModelAdapter<E> {
 		if (this.doubleClickListeners.length > 0) {
 			// there should be only a single item selected during a double-click(?)
 			E selection = this.listHolder.get(this.table.getSelectionIndex());
-			@SuppressWarnings("unchecked")
 			DoubleClickEvent<E> dcEvent = new DoubleClickEvent(this, selection);
 			for (DoubleClickListener<E> doubleClickListener : this.doubleClickListeners) {
 				doubleClickListener.doubleClick(dcEvent);

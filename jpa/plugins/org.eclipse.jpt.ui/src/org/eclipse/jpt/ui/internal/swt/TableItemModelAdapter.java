@@ -21,6 +21,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
 /**
@@ -198,7 +199,8 @@ public class TableItemModelAdapter {
    	}
 
    	public void propertyChanged(PropertyChangeEvent event) {
-   		tableItemChanged(index, tableItem.getData(), true);
+   		Table table = tableItem.getParent();
+   		tableItemChanged(index, tableItem.getData(), table.getColumnCount() == 0);
    	}
    }
 }
