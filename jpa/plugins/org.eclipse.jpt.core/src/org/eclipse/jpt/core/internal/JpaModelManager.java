@@ -331,7 +331,9 @@ public class JpaModelManager {
 				this.checkDeltaFlagsForOpenedProject(project, delta);
 				break;
 			case IResourceDelta.REMOVED :  // already handled with the PRE_DELETE event
-			case IResourceDelta.ADDED :  // already handled with the facet POST_INSTALL event
+			case IResourceDelta.ADDED :  // all but project rename handled with the facet POST_INSTALL event
+				this.checkDeltaFlagsForRenamedProject(project, delta);
+				break;
 			case IResourceDelta.ADDED_PHANTOM :  // ignore
 			case IResourceDelta.REMOVED_PHANTOM :  // ignore
 			default :
@@ -350,6 +352,17 @@ public class JpaModelManager {
 	private void checkDeltaFlagsForOpenedProject(IProject project, IResourceDelta delta) {
 		if (BitTools.flagIsSet(delta.getFlags(), IResourceDelta.OPEN) && project.isOpen()) {
 			debug("\tProject CHANGED - OPEN: " + project.getName());
+			this.jpaModel.checkForTransition(project);
+		}
+	}
+	
+	/**
+	 * We don't get any events from the Facets Framework when a project is renamed,
+	 * so we need to check for the renamed projects here.
+	 */
+	private void checkDeltaFlagsForRenamedProject(IProject project, IResourceDelta delta) {
+		if (BitTools.flagIsSet(delta.getFlags(), IResourceDelta.MOVED_FROM) && project.isOpen()) {
+			debug("\tProject ADDED - MOVED_FROM: " + delta.getMovedFromPath());
 			this.jpaModel.checkForTransition(project);
 		}
 	}
