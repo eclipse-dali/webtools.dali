@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.widgets;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
@@ -958,12 +957,20 @@ public abstract class AbstractPane<T extends Model>
 	                                         final Runnable hyperLinkAction) {
 
 		Hyperlink link = this.widgetFactory.createHyperlink(parent, text);
+		this.widgets.add(link);
+
 		link.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
-				SWTUtil.asyncExec(hyperLinkAction);
+
+				Hyperlink hyperLink = (Hyperlink) e.widget;
+
+				if (hyperLink.isEnabled()) {
+					SWTUtil.asyncExec(hyperLinkAction);
+				}
 			}
 		});
+
 		return link;
 	}
 
