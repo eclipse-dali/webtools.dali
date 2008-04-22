@@ -23,15 +23,15 @@
 	<!-- Cheatsheets -->
 	<!-- =========== -->
 	<extension point="org.eclipse.ui.cheatsheets.cheatSheetContent">
-		<category name="JPA Development" id="com.jpa.category"/>
-		<cheatsheet name="Create a JPA project" category="com.jpa.category" contentFile="$nl$/cheatsheets/add_persistence.xml" id="org.eclipse.jpa.cheatsheet.createproject1">
-			<description>This cheat sheet helps you create a JPA project.</description>
+		<category name="%jpaDevelopment" id="com.jpa.category"/>
+		<cheatsheet name="%createAJpaProject" category="com.jpa.category" contentFile="$nl$/cheatsheets/add_persistence.xml" id="org.eclipse.jpa.cheatsheet.createproject1">
+			<description>%createAJpaProjectDescription</description>
 		</cheatsheet>
-		<cheatsheet name="Create a persistent entity" category="com.jpa.category" contentFile="$nl$/cheatsheets/create_entity.xml" id="org.eclipse.jpa.cheatsheet.addentity">
-			<description>This cheat sheet helps you create a Java persistent entity.</description>
+		<cheatsheet name="%createAPersistentEntity" category="com.jpa.category" contentFile="$nl$/cheatsheets/create_entity.xml" id="org.eclipse.jpa.cheatsheet.addentity">
+			<description>%createAPersistentEntityDescription</description>
 		</cheatsheet>
-		<cheatsheet name="Map a persistent entity" category="com.jpa.category" contentFile="$nl$/cheatsheets/map_entity.xml" id="org.eclipse.jpa.cheatsheet.mapentity">
-			<description>This cheat sheet helps you map the a Java persistent entity to a database table.</description>
+		<cheatsheet name="%MapAPersistentEntity" category="com.jpa.category" contentFile="$nl$/cheatsheets/map_entity.xml" id="org.eclipse.jpa.cheatsheet.mapentity">
+			<description>%MapAPersistentEntityDescription</description>
 		</cheatsheet>
 	</extension>
 </plugin>
