@@ -51,6 +51,9 @@ public class OrmJavaAttributeChooser extends AbstractFormPane<OrmAttributeMappin
 
 			@Override
 			protected void setValue_(String value) {
+				if (subject.getPersistentAttribute().isVirtual()) {
+					return;
+				}
 				if (value.length() == 0) {
 					value = null;
 				}
