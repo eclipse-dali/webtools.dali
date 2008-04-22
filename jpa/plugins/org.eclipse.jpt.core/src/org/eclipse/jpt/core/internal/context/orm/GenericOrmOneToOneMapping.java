@@ -9,16 +9,26 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.NonOwningMapping;
+import org.eclipse.jpt.core.context.OneToOneMapping;
+import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
+import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 
 public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapping<XmlOneToOne>
@@ -26,10 +36,13 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 {
 	
 	protected String mappedBy;
+	
+	protected final List<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns;
 
 
 	public GenericOrmOneToOneMapping(OrmPersistentAttribute parent) {
 		super(parent);
+		this.primaryKeyJoinColumns = new ArrayList<OrmPrimaryKeyJoinColumn>();
 	}
 
 	public void initializeOn(OrmAttributeMapping newMapping) {
@@ -44,6 +57,54 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 	
 	public boolean isRelationshipOwner() {
 		return getMappedBy() == null;
+	}
+
+	
+	
+	public ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
+		return new CloneListIterator<OrmPrimaryKeyJoinColumn>(this.primaryKeyJoinColumns);
+	}
+	
+	public int primaryKeyJoinColumnsSize() {
+		return this.primaryKeyJoinColumns.size();
+	}
+	
+	public OrmPrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index) {
+		OrmPrimaryKeyJoinColumn pkJoinColumn = getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, new JoinColumnOwner());
+		XmlPrimaryKeyJoinColumn xmlPkJoinColumn = OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl();
+		this.primaryKeyJoinColumns.add(index, pkJoinColumn);
+		this.getAttributeMapping().getPrimaryKeyJoinColumns().add(index, xmlPkJoinColumn);
+		pkJoinColumn.initialize(xmlPkJoinColumn);
+		this.fireItemAdded(OneToOneMapping.PRIMAY_KEY_JOIN_COLUMNS_LIST, index, pkJoinColumn);
+		return pkJoinColumn;
+	}
+
+	protected void addPrimaryKeyJoinColumn(int index, OrmPrimaryKeyJoinColumn joinColumn) {
+		addItemToList(index, joinColumn, this.primaryKeyJoinColumns, OneToOneMapping.PRIMAY_KEY_JOIN_COLUMNS_LIST);
+	}
+
+	public void removePrimaryKeyJoinColumn(PrimaryKeyJoinColumn pkJoinColumn) {
+		this.removePrimaryKeyJoinColumn(this.primaryKeyJoinColumns.indexOf(pkJoinColumn));
+	}
+	
+	public void removePrimaryKeyJoinColumn(int index) {
+		OrmPrimaryKeyJoinColumn removedPkJoinColumn = this.primaryKeyJoinColumns.remove(index);
+		this.getAttributeMapping().getPrimaryKeyJoinColumns().remove(index);
+		fireItemRemoved(OneToOneMapping.PRIMAY_KEY_JOIN_COLUMNS_LIST, index, removedPkJoinColumn);
+	}
+
+	protected void removePrimaryKeyJoinColumn_(OrmPrimaryKeyJoinColumn joinColumn) {
+		removeItemFromList(joinColumn, this.primaryKeyJoinColumns, OneToOneMapping.PRIMAY_KEY_JOIN_COLUMNS_LIST);
+	}
+	
+	public void movePrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.primaryKeyJoinColumns, targetIndex, sourceIndex);
+		this.getAttributeMapping().getPrimaryKeyJoinColumns().move(targetIndex, sourceIndex);
+		fireItemMoved(OneToOneMapping.PRIMAY_KEY_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
+	}
+	
+	public boolean containsPrimaryKeyJoinColumns() {
+		return !this.primaryKeyJoinColumns.isEmpty();
 	}
 
 	public String getMappedBy() {
@@ -102,17 +163,67 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}
-	}
+	}	
 	
+	@Override
+	protected boolean addJoinColumnMessages() {
+		if (containsPrimaryKeyJoinColumns() && !containsSpecifiedJoinColumns()) {
+			return false;
+		}
+		return super.addJoinColumnMessages();
+	}
+
 	@Override
 	public void initialize(XmlOneToOne oneToOne) {
 		super.initialize(oneToOne);
 		this.mappedBy = oneToOne.getMappedBy();
+		this.initializePrimaryKeyJoinColumns(oneToOne);
 	}
+	
+	protected void initializePrimaryKeyJoinColumns(XmlOneToOne oneToOne) {
+		if (oneToOne == null) {
+			return;
+		}
+		for (XmlPrimaryKeyJoinColumn pkJoinColumn : oneToOne.getPrimaryKeyJoinColumns()) {
+			this.primaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn(pkJoinColumn));
+		}
+	}
+	
+	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn xmlPkJoinColumn) {
+		OrmPrimaryKeyJoinColumn ormPkJoinColumn = getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, new JoinColumnOwner());
+		ormPkJoinColumn.initialize(xmlPkJoinColumn);
+		return ormPkJoinColumn;
+	}	
+
 	
 	@Override
 	public void update(XmlOneToOne oneToOne) {
 		super.update(oneToOne);
 		this.setMappedBy_(oneToOne.getMappedBy());
+		this.updatePrimaryKeyJoinColumns(oneToOne);
 	}
+	
+	
+	protected void updatePrimaryKeyJoinColumns(XmlOneToOne oneToOne) {
+		ListIterator<OrmPrimaryKeyJoinColumn> pkJoinColumns = primaryKeyJoinColumns();
+		ListIterator<XmlPrimaryKeyJoinColumn> resourcePkJoinColumns = EmptyListIterator.instance();
+		if (oneToOne != null) {
+			resourcePkJoinColumns = new CloneListIterator<XmlPrimaryKeyJoinColumn>(oneToOne.getPrimaryKeyJoinColumns());//prevent ConcurrentModificiationException
+		}
+		
+		while (pkJoinColumns.hasNext()) {
+			OrmPrimaryKeyJoinColumn pkJoinColumn = pkJoinColumns.next();
+			if (resourcePkJoinColumns.hasNext()) {
+				pkJoinColumn.update(resourcePkJoinColumns.next());
+			}
+			else {
+				removePrimaryKeyJoinColumn_(pkJoinColumn);
+			}
+		}
+		
+		while (resourcePkJoinColumns.hasNext()) {
+			addPrimaryKeyJoinColumn(primaryKeyJoinColumnsSize(), buildPrimaryKeyJoinColumn(resourcePkJoinColumns.next()));
+		}
+	}
+
 }

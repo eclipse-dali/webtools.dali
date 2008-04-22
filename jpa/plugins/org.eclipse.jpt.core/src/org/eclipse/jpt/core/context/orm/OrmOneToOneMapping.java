@@ -24,11 +24,20 @@ import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
  */
 public interface OrmOneToOneMapping extends OneToOneMapping, OrmSingleRelationshipMapping
 {
-	ListIterator<OrmJoinColumn> joinColumns();
-
-	ListIterator<OrmJoinColumn> specifiedJoinColumns();
 
 	void initialize(XmlOneToOne oneToOne);
 
 	void update(XmlOneToOne oneToOne);
+	
+	
+	// ********** covariant overrides **********
+	ListIterator<OrmJoinColumn> joinColumns();
+
+	ListIterator<OrmJoinColumn> specifiedJoinColumns();
+	
+	@SuppressWarnings("unchecked")
+	ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns();
+	
+	OrmPrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index);
+
 }

@@ -11,10 +11,8 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -69,21 +67,4 @@ public class GenericJavaManyToOneMapping extends AbstractJavaSingleRelationshipM
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 	}
-	
-	//***************** ISingleRelationshipMapping implementation *****************
-	@Override
-	@SuppressWarnings("unchecked")
-	//overriding purely to suppress the warning you get at the class level
-	public ListIterator<JavaJoinColumn> joinColumns() {
-		return super.joinColumns();
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	//overriding purely to suppress the warning you get at the class level
-	public ListIterator<JavaJoinColumn> specifiedJoinColumns() {
-		return super.specifiedJoinColumns();
-	}
-
-
 }

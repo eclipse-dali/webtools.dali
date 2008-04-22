@@ -13,6 +13,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
+import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
@@ -76,7 +77,8 @@ public class VirtualXmlOneToOne extends AbstractJpaEObject implements XmlOneToOn
 	}
 
 	public EList<XmlJoinColumn> getJoinColumns() {
-		EList<XmlJoinColumn> joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__JOIN_COLUMNS);
+		//TODO need to check metadataComplete here
+		EList<XmlJoinColumn> joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_ONE_TO_ONE__JOIN_COLUMNS);
 		//TODO here i'm using joinColumns() while VirtualXmlJoinTable uses specifiedJoinColumns()???
 		for (JavaJoinColumn joinColumn : CollectionTools.iterable(this.javaOneToOneMapping.joinColumns())) {
 			XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, this.metadataComplete);
@@ -125,8 +127,14 @@ public class VirtualXmlOneToOne extends AbstractJpaEObject implements XmlOneToOn
 	}
 
 	public EList<XmlPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
-		// TODO we don't yet support primary key join columns in the context model
-		return null;
+		EList<XmlPrimaryKeyJoinColumn> joinColumns = new EObjectContainmentEList<XmlPrimaryKeyJoinColumn>(XmlPrimaryKeyJoinColumn.class, this, OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS);
+		if (!this.metadataComplete) {
+			for (JavaPrimaryKeyJoinColumn joinColumn : CollectionTools.iterable(this.javaOneToOneMapping.primaryKeyJoinColumns())) {
+				XmlPrimaryKeyJoinColumn xmlJoinColumn = new VirtualXmlPrimaryKeyJoinColumn(joinColumn/*, this.metadataComplete*/);
+				joinColumns.add(xmlJoinColumn);
+			}
+		}
+		return joinColumns;
 	}
 	
 	public void update(JavaOneToOneMapping javaOneToOneMapping) {

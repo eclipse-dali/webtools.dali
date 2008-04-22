@@ -32,6 +32,7 @@ import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
@@ -880,4 +881,104 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
 //TODO	assertEquals(FetchType.EAGER, ((IBasicMapping) ormPersistentAttribute.getMapping()).getSpecifiedFetch());
 	}
+	
+	
+	
+	
+	
+	public void testAddPrimaryKeyJoinColumn() throws Exception {
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		OrmOneToOneMapping ormOneToOneMapping = (OrmOneToOneMapping) ormPersistentAttribute.getMapping();
+		XmlOneToOne oneToOneResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
+		
+		OrmPrimaryKeyJoinColumn joinColumn = ormOneToOneMapping.addPrimaryKeyJoinColumn(0);
+		joinColumn.setSpecifiedName("FOO");
+				
+		assertEquals("FOO", oneToOneResource.getPrimaryKeyJoinColumns().get(0).getName());
+		
+		OrmPrimaryKeyJoinColumn joinColumn2 = ormOneToOneMapping.addPrimaryKeyJoinColumn(0);
+		joinColumn2.setSpecifiedName("BAR");
+		
+		assertEquals("BAR", oneToOneResource.getPrimaryKeyJoinColumns().get(0).getName());
+		assertEquals("FOO", oneToOneResource.getPrimaryKeyJoinColumns().get(1).getName());
+		
+		OrmPrimaryKeyJoinColumn joinColumn3 = ormOneToOneMapping.addPrimaryKeyJoinColumn(1);
+		joinColumn3.setSpecifiedName("BAZ");
+		
+		assertEquals("BAR", oneToOneResource.getPrimaryKeyJoinColumns().get(0).getName());
+		assertEquals("BAZ", oneToOneResource.getPrimaryKeyJoinColumns().get(1).getName());
+		assertEquals("FOO", oneToOneResource.getPrimaryKeyJoinColumns().get(2).getName());
+		
+		ListIterator<OrmPrimaryKeyJoinColumn> joinColumns = ormOneToOneMapping.primaryKeyJoinColumns();
+		assertEquals(joinColumn2, joinColumns.next());
+		assertEquals(joinColumn3, joinColumns.next());
+		assertEquals(joinColumn, joinColumns.next());
+		
+		joinColumns = ormOneToOneMapping.primaryKeyJoinColumns();
+		assertEquals("BAR", joinColumns.next().getName());
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertEquals("FOO", joinColumns.next().getName());
+	}
+	
+	public void testRemovePrimaryKeyJoinColumn() throws Exception {
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		OrmOneToOneMapping ormOneToOneMapping = (OrmOneToOneMapping) ormPersistentAttribute.getMapping();
+		XmlOneToOne oneToOneResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
+
+		ormOneToOneMapping.addPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
+		ormOneToOneMapping.addPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
+		ormOneToOneMapping.addPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
+		
+		assertEquals(3, oneToOneResource.getPrimaryKeyJoinColumns().size());
+		
+		ormOneToOneMapping.removePrimaryKeyJoinColumn(0);
+		assertEquals(2, oneToOneResource.getPrimaryKeyJoinColumns().size());
+		assertEquals("BAR", oneToOneResource.getPrimaryKeyJoinColumns().get(0).getName());
+		assertEquals("BAZ", oneToOneResource.getPrimaryKeyJoinColumns().get(1).getName());
+
+		ormOneToOneMapping.removePrimaryKeyJoinColumn(0);
+		assertEquals(1, oneToOneResource.getPrimaryKeyJoinColumns().size());
+		assertEquals("BAZ", oneToOneResource.getPrimaryKeyJoinColumns().get(0).getName());
+		
+		ormOneToOneMapping.removePrimaryKeyJoinColumn(0);
+		assertEquals(0, oneToOneResource.getPrimaryKeyJoinColumns().size());
+	}
+	
+	public void testMovePrimaryKeyJoinColumn() throws Exception {
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		OrmOneToOneMapping ormOneToOneMapping = (OrmOneToOneMapping) ormPersistentAttribute.getMapping();
+		XmlOneToOne oneToOneResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
+
+		ormOneToOneMapping.addPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
+		ormOneToOneMapping.addPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
+		ormOneToOneMapping.addPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
+		
+		assertEquals(3, oneToOneResource.getPrimaryKeyJoinColumns().size());
+		
+		
+		ormOneToOneMapping.movePrimaryKeyJoinColumn(2, 0);
+		ListIterator<OrmPrimaryKeyJoinColumn> joinColumns = ormOneToOneMapping.primaryKeyJoinColumns();
+		assertEquals("BAR", joinColumns.next().getName());
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertEquals("FOO", joinColumns.next().getName());
+
+		assertEquals("BAR", oneToOneResource.getPrimaryKeyJoinColumns().get(0).getName());
+		assertEquals("BAZ", oneToOneResource.getPrimaryKeyJoinColumns().get(1).getName());
+		assertEquals("FOO", oneToOneResource.getPrimaryKeyJoinColumns().get(2).getName());
+
+
+		ormOneToOneMapping.movePrimaryKeyJoinColumn(0, 1);
+		joinColumns = ormOneToOneMapping.primaryKeyJoinColumns();
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertEquals("BAR", joinColumns.next().getName());
+		assertEquals("FOO", joinColumns.next().getName());
+
+		assertEquals("BAZ", oneToOneResource.getPrimaryKeyJoinColumns().get(0).getName());
+		assertEquals("BAR", oneToOneResource.getPrimaryKeyJoinColumns().get(1).getName());
+		assertEquals("FOO", oneToOneResource.getPrimaryKeyJoinColumns().get(2).getName());
+	}
+
 }

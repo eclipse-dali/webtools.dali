@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
 
 /**
@@ -23,5 +24,10 @@ import org.eclipse.jpt.core.context.ManyToOneMapping;
 public interface JavaManyToOneMapping
 	extends JavaSingleRelationshipMapping, ManyToOneMapping
 {
-	// nothing yet
+	// ********** covariant overrides **********
+	
+	ListIterator<JavaJoinColumn> joinColumns();
+
+	ListIterator<JavaJoinColumn> specifiedJoinColumns();
+
 }

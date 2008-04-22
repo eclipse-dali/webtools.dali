@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import java.util.ListIterator;
+
 /**
  * 
  * 
@@ -21,5 +23,40 @@ package org.eclipse.jpt.core.context;
 public interface OneToOneMapping
 	extends SingleRelationshipMapping, NonOwningMapping
 {
-	// nothing yet
+	// **************** primary key join columns **************************************
+
+	/**
+	 * Return a list iterator of the primary key join columns.
+	 * This will not be null.
+	 */
+	<T extends PrimaryKeyJoinColumn> ListIterator<T> primaryKeyJoinColumns();
+
+	/**
+	 * Return the number of join columns, both specified and default.
+	 */
+	int primaryKeyJoinColumnsSize();
+	/**
+	 * Add a specified join column to the join table return the object 
+	 * representing it.
+	 */
+	PrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index);
+	
+	/**
+	 * Remove the specified join column from the join table.
+	 */
+	void removePrimaryKeyJoinColumn(int index);
+	
+	/**
+	 * Remove the specified join column at the index from the join table.
+	 */
+	void removePrimaryKeyJoinColumn(PrimaryKeyJoinColumn primaryKeyJoinColumn);
+	
+	/**
+	 * Move the specified join column from the source index to the target index.
+	 */
+	void movePrimaryKeyJoinColumn(int targetIndex, int sourceIndex);
+
+	boolean containsPrimaryKeyJoinColumns();
+		String PRIMAY_KEY_JOIN_COLUMNS_LIST = "primaryKeyJoinColumnsList";
+
 }

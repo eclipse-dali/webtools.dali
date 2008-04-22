@@ -309,15 +309,19 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 		
-		//bug 192287 - do not want joinColumn validation errors on the non-owning side
-		//of a bidirectional relationship.  This is a low risk fix for RC3, but a better
-		//solution would be to not have the default joinColumns on the non-owning side.
-		//This would fix another bug that we show default joinColumns in this situation.
-		if (entityOwned() && isRelationshipOwner()) {
+		if (addJoinColumnMessages()) {
 			addJoinColumnMessages(messages, astRoot);
 		}
 	}
 	
+	//bug 192287 - do not want joinColumn validation errors on the non-owning side
+	//of a bidirectional relationship.  This is a low risk fix for RC3, but a better
+	//solution would be to not have the default joinColumns on the non-owning side.
+	//This would fix another bug that we show default joinColumns in this situation.
+	protected boolean addJoinColumnMessages() {
+		return (entityOwned() && isRelationshipOwner());
+	}
+		
 	protected void addJoinColumnMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		
 		for (Iterator<JavaJoinColumn> stream = this.joinColumns(); stream.hasNext();) {
