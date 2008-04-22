@@ -479,12 +479,17 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		assertEquals(3, ormPersistentType.virtualAttributesSize());		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		
+		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
+		
+		ormPersistentAttribute.makeSpecified(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute= ormPersistentType.specifiedAttributes().next();
+		
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("address", ormManyToOneMapping.getName());
-		assertEquals(FetchType.EAGER, ormManyToOneMapping.getSpecifiedFetch());
-		assertEquals(Boolean.TRUE, ormManyToOneMapping.getSpecifiedOptional());
+		assertEquals(FetchType.EAGER, ormManyToOneMapping.getDefaultFetch());
+		assertEquals(Boolean.TRUE, ormManyToOneMapping.getDefaultOptional());
 		//TODO hmm, is this correct?
-		assertEquals("test.Address", ormManyToOneMapping.getSpecifiedTargetEntity());
+		assertEquals("test.Address", ormManyToOneMapping.getDefaultTargetEntity());
 		
 		//TODO default join columns in xml one-to-one
 //		XmlJoinColumn ormJoinColumn = ormManyToOneMapping.specifiedJoinColumns().next();
@@ -525,8 +530,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		assertNull(ormManyToOneMapping.getSpecifiedTargetEntity());
 		assertEquals(FetchType.EAGER, ormManyToOneMapping.getFetch());
 		assertEquals(Boolean.TRUE, ormManyToOneMapping.getOptional());
-		//TODO default target entity in xml
-		//assertEquals("test.Address", ormManyToOneMapping.getDefaultTargetEntity());
+		assertEquals("test.Address", ormManyToOneMapping.getDefaultTargetEntity());
 		
 		assertFalse(ormManyToOneMapping.specifiedJoinColumns().hasNext());
 		

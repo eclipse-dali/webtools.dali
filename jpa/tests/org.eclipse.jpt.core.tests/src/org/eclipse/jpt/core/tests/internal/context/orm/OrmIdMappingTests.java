@@ -561,6 +561,11 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(2, ormPersistentType.virtualAttributesSize());		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
+		
+		ormPersistentAttribute.makeSpecified(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute= ormPersistentType.specifiedAttributes().next();
 		
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", ormIdMapping.getName());
@@ -570,16 +575,16 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertNull(ormIdMapping.getTableGenerator());
 		
 		OrmColumn ormColumn = ormIdMapping.getColumn();
-		assertEquals("id", ormColumn.getSpecifiedName());
-		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUnique());
-		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedNullable());
-		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedInsertable());
-		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUpdatable());
+		assertEquals("id", ormColumn.getName());
+		assertEquals(Boolean.FALSE, ormColumn.getUnique());
+		assertEquals(Boolean.TRUE, ormColumn.getNullable());
+		assertEquals(Boolean.TRUE, ormColumn.getInsertable());
+		assertEquals(Boolean.TRUE, ormColumn.getUpdatable());
 		assertNull(ormColumn.getColumnDefinition());
-		assertEquals(TYPE_NAME, ormColumn.getSpecifiedTable());
-		assertEquals(Integer.valueOf(255), ormColumn.getSpecifiedLength());
-		assertEquals(Integer.valueOf(0), ormColumn.getSpecifiedPrecision());
-		assertEquals(Integer.valueOf(0), ormColumn.getSpecifiedScale());
+		assertEquals(TYPE_NAME, ormColumn.getTable());
+		assertEquals(Integer.valueOf(255), ormColumn.getLength());
+		assertEquals(Integer.valueOf(0), ormColumn.getPrecision());
+		assertEquals(Integer.valueOf(0), ormColumn.getScale());
 	}
 	
 	public void testSpecifiedMapping() throws Exception {

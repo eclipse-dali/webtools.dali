@@ -533,12 +533,16 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertEquals(3, ormPersistentType.virtualAttributesSize());		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		
+		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
+		
+		ormPersistentAttribute.makeSpecified(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute= ormPersistentType.specifiedAttributes().next();
+
 		OrmOneToOneMapping ormOneToOneMapping = (OrmOneToOneMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("address", ormOneToOneMapping.getName());
-		assertEquals(FetchType.EAGER, ormOneToOneMapping.getSpecifiedFetch());
-		assertEquals(Boolean.TRUE, ormOneToOneMapping.getSpecifiedOptional());
-		//TODO hmm, is this correct?
-		assertEquals("test.Address", ormOneToOneMapping.getSpecifiedTargetEntity());
+		assertEquals(FetchType.EAGER, ormOneToOneMapping.getFetch());
+		assertEquals(Boolean.TRUE, ormOneToOneMapping.getOptional());
+		assertEquals("test.Address", ormOneToOneMapping.getTargetEntity());
 		assertNull(ormOneToOneMapping.getMappedBy());
 
 		//TODO default join columns in xml one-to-one

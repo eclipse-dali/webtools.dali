@@ -154,6 +154,11 @@ public class OrmTransientMappingTests extends ContextModelTestCase
 		assertEquals(2, ormPersistentType.virtualAttributesSize());		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
+		
+		ormPersistentAttribute.makeSpecified(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute= ormPersistentType.specifiedAttributes().next();
+
 		OrmTransientMapping ormTransientMapping = (OrmTransientMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", ormTransientMapping.getName());
 	}

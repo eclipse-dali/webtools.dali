@@ -10,18 +10,23 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
+import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.BasicMapping;
+import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmIdMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmNullAttributeMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToOneMapping;
+import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class OrmPersistentAttributeTests extends ContextModelTestCase
 {
@@ -49,7 +54,66 @@ public class OrmPersistentAttributeTests extends ContextModelTestCase
 			}
 		});
 	}
+	
+	private void createEntityAnnotation() throws Exception {
+		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
+	}
+	
+	private void createColumnAnnotation() throws Exception {
+		this.createAnnotationAndMembers("Column", "String name() default \"\";");		
+	}
 
+	private void createIdAnnotation() throws Exception {
+		this.createAnnotationAndMembers("Id", "");		
+	}
+	
+	private void createOneToOneAnnotation() throws Exception {
+		this.createAnnotationAndMembers("OneToOne", "");		
+	}
+	
+	private IType createTestEntityIdMapping() throws Exception {
+		createEntityAnnotation();
+		createIdAnnotation();
+		createColumnAnnotation();
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.COLUMN);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@Id");
+				sb.append("@Column(name=\"FOO\")");
+			}
+		});
+	}
+	
+	private IType createTestEntityOneToOneMapping() throws Exception {
+		createEntityAnnotation();
+		createOneToOneAnnotation();
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_ONE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@OneToOne");
+				sb.append("    private Address address;");
+			}
+		});
+	}
+	
 	public void testMakeSpecified() throws Exception {
 		createTestType();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
@@ -173,5 +237,39 @@ public class OrmPersistentAttributeTests extends ContextModelTestCase
 		
 		assertEquals("id", ormPersistentType.virtualAttributes().next().getName());
 		assertEquals("name", ormPersistentType.specifiedAttributes().next().getName());
+	}
+	
+	public void testVirtualMappingTypeWhenMetadataComplete()  throws Exception {
+		createTestEntityIdMapping();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		assertEquals("id", ormPersistentAttribute.getName());
+		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
+		assertEquals("FOO", ((IdMapping) ormPersistentAttribute.getMapping()).getColumn().getName());
+		
+		
+		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
+
+		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		assertEquals("id", ormPersistentAttribute.getName());
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
+		assertEquals("id", ((BasicMapping) ormPersistentAttribute.getMapping()).getColumn().getName());
+	}
+	
+	public void testVirtualMappingTypeWhenMetadataComplete2()  throws Exception {
+		createTestEntityOneToOneMapping();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		assertEquals("address", ormPersistentAttribute.getName());
+		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
+		
+		
+		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
+
+		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		assertEquals("address", ormPersistentAttribute.getName());
+		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
 	}
 }

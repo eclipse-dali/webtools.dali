@@ -133,4 +133,7 @@ public interface OrmPersistentAttribute extends PersistentAttribute, OrmJpaConte
 	void update(XmlEmbedded embedded);
 	
 	void update(XmlTransient transientResource);
+	
+	void update(XmlNullAttributeMapping xmlNullAttributeMapping);
+
 }

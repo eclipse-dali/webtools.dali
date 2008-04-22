@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
@@ -573,36 +574,46 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	}
 	
 	protected void updateVirtualAttribute(OrmPersistentAttribute ormPersistentAttribute, JavaPersistentAttribute javaAttribute) {
-		if (javaAttribute.getMappingKey() == MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.update(new VirtualXmlBasic(getMapping(), (JavaBasicMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		String javaMappingKey = javaAttribute.getMappingKey();
+		JavaAttributeMapping javaAttributeMapping = javaAttribute.getMapping();
+		if (getMapping().isMetadataComplete()) {
+			javaMappingKey = javaAttribute.getDefaultMappingKey();
+			javaAttributeMapping = javaAttribute.getDefaultMapping();
 		}
-		else if (javaAttribute.getMappingKey() == MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.update(new VirtualXmlEmbedded(getMapping(), (JavaEmbeddedMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		
+		if (javaMappingKey == MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
+			ormPersistentAttribute.update(new VirtualXmlBasic(getMapping(), (JavaBasicMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
-		else if (javaAttribute.getMappingKey() == MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.update(new VirtualXmlEmbeddedId(getMapping(), (JavaEmbeddedIdMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		else if (javaMappingKey == MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY) {
+			ormPersistentAttribute.update(new VirtualXmlEmbedded(getMapping(), (JavaEmbeddedMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
-		else if (javaAttribute.getMappingKey() == MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.update(new VirtualXmlId(getMapping(), (JavaIdMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		else if (javaMappingKey == MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
+			ormPersistentAttribute.update(new VirtualXmlEmbeddedId(getMapping(), (JavaEmbeddedIdMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
-		else if (javaAttribute.getMappingKey() == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.update(new VirtualXmlManyToMany(ormPersistentAttribute, (JavaManyToManyMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		else if (javaMappingKey == MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
+			ormPersistentAttribute.update(new VirtualXmlId(getMapping(), (JavaIdMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
-		else if (javaAttribute.getMappingKey() == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.update(new VirtualXmlManyToOne((JavaManyToOneMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		else if (javaMappingKey == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
+			ormPersistentAttribute.update(new VirtualXmlManyToMany(ormPersistentAttribute, (JavaManyToManyMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
-		else if (javaAttribute.getMappingKey() == MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.update(new VirtualXmlOneToMany(ormPersistentAttribute, (JavaOneToManyMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		else if (javaMappingKey == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
+			ormPersistentAttribute.update(new VirtualXmlManyToOne((JavaManyToOneMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
-		else if (javaAttribute.getMappingKey() == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.update(new VirtualXmlOneToOne((JavaOneToOneMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		else if (javaMappingKey == MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
+			ormPersistentAttribute.update(new VirtualXmlOneToMany(ormPersistentAttribute, (JavaOneToManyMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
-		else if (javaAttribute.getMappingKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.update(new VirtualXmlTransient((JavaTransientMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		else if (javaMappingKey == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
+			ormPersistentAttribute.update(new VirtualXmlOneToOne((JavaOneToOneMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
-		else if (javaAttribute.getMappingKey() == MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.update(new VirtualXmlVersion(getMapping(), (JavaVersionMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
-		}		
+		else if (javaMappingKey == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
+			ormPersistentAttribute.update(new VirtualXmlTransient((JavaTransientMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
+		}
+		else if (javaMappingKey == MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY) {
+			ormPersistentAttribute.update(new VirtualXmlVersion(getMapping(), (JavaVersionMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
+		}
+		else if (javaMappingKey == MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
+			ormPersistentAttribute.update(new VirtualXmlNullAttributeMapping(getMapping(), javaAttributeMapping, getMapping().isMetadataComplete()));
+		}
 	}
 	
 	protected void updateVirtualPersistentAttributes() {
@@ -633,38 +644,44 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	protected OrmPersistentAttribute createVirtualPersistentAttribute(JavaPersistentAttribute javaAttribute) {
 		OrmPersistentAttribute ormPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, javaAttribute.getMappingKey());
 		String javaMappingKey = javaAttribute.getMappingKey();
+		JavaAttributeMapping javaAttributeMapping = javaAttribute.getMapping();
+		if (getMapping().isMetadataComplete()) {
+			javaMappingKey = javaAttribute.getDefaultMappingKey();
+			javaAttributeMapping = javaAttribute.getDefaultMapping();
+		}
+		
 		if (javaMappingKey == MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlBasic(getMapping(), (JavaBasicMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+			ormPersistentAttribute.initialize(new VirtualXmlBasic(getMapping(), (JavaBasicMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
 		else if (javaMappingKey == MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlEmbeddedId(getMapping(), (JavaEmbeddedIdMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+			ormPersistentAttribute.initialize(new VirtualXmlEmbeddedId(getMapping(), (JavaEmbeddedIdMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
 		else if (javaMappingKey == MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlEmbedded(getMapping(), (JavaEmbeddedMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+			ormPersistentAttribute.initialize(new VirtualXmlEmbedded(getMapping(), (JavaEmbeddedMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
 		else if (javaMappingKey == MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlId(getMapping(), (JavaIdMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+			ormPersistentAttribute.initialize(new VirtualXmlId(getMapping(), (JavaIdMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
 		else if (javaMappingKey == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlManyToMany(ormPersistentAttribute, (JavaManyToManyMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+			ormPersistentAttribute.initialize(new VirtualXmlManyToMany(ormPersistentAttribute, (JavaManyToManyMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
 		else if (javaMappingKey == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlManyToOne((JavaManyToOneMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+			ormPersistentAttribute.initialize(new VirtualXmlManyToOne((JavaManyToOneMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
 		else if (javaMappingKey == MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlOneToMany(ormPersistentAttribute, (JavaOneToManyMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+			ormPersistentAttribute.initialize(new VirtualXmlOneToMany(ormPersistentAttribute, (JavaOneToManyMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
 		else if (javaMappingKey == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlOneToOne((JavaOneToOneMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+			ormPersistentAttribute.initialize(new VirtualXmlOneToOne((JavaOneToOneMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
 		else if (javaMappingKey == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlTransient((JavaTransientMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+			ormPersistentAttribute.initialize(new VirtualXmlTransient((JavaTransientMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
 		else if (javaMappingKey == MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlVersion(getMapping(), (JavaVersionMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+			ormPersistentAttribute.initialize(new VirtualXmlVersion(getMapping(), (JavaVersionMapping) javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
 		else if (javaMappingKey == MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlNullAttributeMapping(getMapping(), javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+			ormPersistentAttribute.initialize(new VirtualXmlNullAttributeMapping(getMapping(), javaAttributeMapping, getMapping().isMetadataComplete()));
 		}
 		return ormPersistentAttribute;
 	}
