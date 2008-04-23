@@ -118,6 +118,9 @@ public abstract class AbstractJavaGenerator extends AbstractJavaJpaContextNode
 		return Generator.DEFAULT_ALLOCATION_SIZE;
 	}
 
+	public boolean isVirtual() {
+		return false;
+	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.getSelectionTextRange(astRoot);

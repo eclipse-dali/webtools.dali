@@ -25,8 +25,6 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface OrmGenerator extends Generator
 {
 	
-	boolean isVirtual();
-	
 	// **************** validation *********************************************
 	
 	TextRange getNameTextRange();

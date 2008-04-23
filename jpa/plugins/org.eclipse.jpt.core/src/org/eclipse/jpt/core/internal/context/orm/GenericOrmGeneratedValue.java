@@ -30,6 +30,11 @@ public class GenericOrmGeneratedValue extends AbstractOrmJpaContextNode implemen
 		super(parent);
 	}
 	
+	@Override
+	public OrmJpaContextNode getParent() {
+		return (OrmJpaContextNode) super.getParent();
+	}
+	
 	public GenerationType getStrategy() {
 		return (this.getSpecifiedStrategy() == null) ? this.getDefaultStrategy() : this.getSpecifiedStrategy();
 	}
@@ -87,7 +92,8 @@ public class GenericOrmGeneratedValue extends AbstractOrmJpaContextNode implemen
 	}
 
 	public TextRange getGeneratorTextRange() {
-		return this.generatedValue.getGeneratorTextRange();
+		TextRange textRange =  this.generatedValue.getGeneratorTextRange();
+		return textRange != null ? textRange : getValidationTextRange();
 	}
 
 	
@@ -118,6 +124,7 @@ public class GenericOrmGeneratedValue extends AbstractOrmJpaContextNode implemen
 	}
 	
 	public TextRange getValidationTextRange() {
-		return this.generatedValue.getValidationTextRange();
+		TextRange validationTextRange = this.generatedValue.getValidationTextRange();
+		return validationTextRange != null ? validationTextRange : getParent().getValidationTextRange();
 	}
 }

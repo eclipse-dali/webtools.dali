@@ -70,4 +70,8 @@ public interface Generator extends JpaContextNode
 	 * (for example, a generator defined in orm.xml overrides one defined in java)
 	 */
 	boolean overrides(Generator generator);
+	
+	
+	boolean isVirtual();
+
 }
