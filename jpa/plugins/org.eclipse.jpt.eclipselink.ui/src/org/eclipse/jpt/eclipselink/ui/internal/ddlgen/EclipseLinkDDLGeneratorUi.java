@@ -77,7 +77,7 @@ public class EclipseLinkDDLGeneratorUi
 				return;
 			}
 		}
-		IWorkspaceRunnable runnable = new GenerateDLLRunnable(puName, this.project, projectLocation);
+		IWorkspaceRunnable runnable = new GenerateDDLRunnable(puName, this.project, projectLocation);
 		try {
 			ResourcesPlugin.getWorkspace().run(runnable, new NullProgressMonitor());
 		} 
@@ -106,12 +106,12 @@ public class EclipseLinkDDLGeneratorUi
 
 	// ********** runnable **********
 
-	static class GenerateDLLRunnable implements IWorkspaceRunnable {
+	static class GenerateDDLRunnable implements IWorkspaceRunnable {
 		private final String puName;
 		private final JpaProject project;
 		private  String projectLocation;
 
-		GenerateDLLRunnable(String puName, JpaProject project, String projectLocation) {
+		GenerateDDLRunnable(String puName, JpaProject project, String projectLocation) {
 			super();
 			this.puName = puName;
 			this.project = project;
