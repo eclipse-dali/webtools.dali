@@ -9,22 +9,29 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context;
 
+import java.util.Collection;
 import java.util.List;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -64,7 +71,7 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 	
 	@Override
 	public JpaProject getJpaProject() {
-		return jpaProject;
+		return this.jpaProject;
 	}
 	
 	@Override
@@ -206,17 +213,42 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 
 	
 	protected void addOrphanedJavaClassMessages(List<IMessage> messages) {
-//		for (Iterator<JavaPersistentType> stream = jpaProject.javaPersistentTypes(); stream.hasNext(); ) {
-//			JavaPersistentType jpType = stream.next();
-//			if (jpType.getMappingKey() != IMappingKeys.NULL_TYPE_MAPPING_KEY && ! contains(jpType)) {
-//				messages.add(
-//						JpaValidationMessages.buildMessage(
-//							IMessage.HIGH_SEVERITY,
-//							IJpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CONTEXT,
-//							jpType.getMapping(), jpType.getMapping().validationTextRange())
-//					);
-//			}
-//		}
+		if (getPersistenceXml() == null) {
+			//handled with other validation
+			return;
+		}
+		if (getPersistenceXml().getPersistence() == null) {
+			//handled with other validation
+			return;
+		}
+		Collection<IType> orphanedClasses = CollectionTools.collection(getJpaProject().annotatedClasses());
+		for (IType type : CollectionTools.iterable(getJpaProject().annotatedClasses())) {
+			for (PersistenceUnit persistenceUnit : CollectionTools.iterable(getPersistenceXml().getPersistence().persistenceUnits())) {
+				for (ClassRef classRef : CollectionTools.iterable(persistenceUnit.classRefs())) {
+					if (classRef.isFor(type.getFullyQualifiedName('.'))) {
+						orphanedClasses.remove(type);
+					}
+				}
+				for (MappingFileRef mappingFileRef : CollectionTools.iterable(persistenceUnit.mappingFileRefs())) {
+					if (mappingFileRef.getOrmXml() == null || mappingFileRef.getOrmXml().getEntityMappings() == null) {
+						continue;
+					}
+					if (mappingFileRef.getOrmXml().getEntityMappings().getPersistentType(type.getFullyQualifiedName('.')) != null) {
+						orphanedClasses.remove(type);
+					}
+				}
+			}
+		}
+		
+		for (IType orphanedType : orphanedClasses) {
+			JavaResourcePersistentType javaResourcePersistentType = getJpaProject().getJavaPersistentTypeResource(orphanedType.getFullyQualifiedName('.'));
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CONTEXT,
+							javaResourcePersistentType.getResourceModel().getFile(),
+							javaResourcePersistentType.getMappingAnnotation().getTextRange(JDTTools.buildASTRoot(orphanedType)))
+					);
+		}
 	}
-	
 }
