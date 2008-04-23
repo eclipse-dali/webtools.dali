@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -591,12 +590,13 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		this.updateEmbeddables(entityMappings, ormPersistentTypes);
 		
 		while (ormPersistentTypes.hasNext()) {
-			this.removeOrmPersistentType(ormPersistentTypes.next());
+			this.removeOrmPersistentType_(ormPersistentTypes.next());
 		}		
 	}
 	
 	protected void updateMappedSuperclasses(XmlEntityMappings entityMappings, ListIterator<OrmPersistentType> ormPersistentTypes) {
-		for (XmlMappedSuperclass mappedSuperclass : Collections.unmodifiableCollection(entityMappings.getMappedSuperclasses())) {//prevent ConcurrentModificiationException
+		ListIterator<XmlMappedSuperclass> mappedSuperclasses = new CloneListIterator<XmlMappedSuperclass>(entityMappings.getMappedSuperclasses());//prevent ConcurrentModificiationException
+		for (XmlMappedSuperclass mappedSuperclass :  CollectionTools.iterable(mappedSuperclasses)) {
 			if (ormPersistentTypes.hasNext()) {
 				ormPersistentTypes.next().update(mappedSuperclass);
 			}
@@ -609,7 +609,8 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	protected void updateEntities(XmlEntityMappings entityMappings, ListIterator<OrmPersistentType> ormPersistentTypes) {
-		for (XmlEntity entity : Collections.unmodifiableCollection(entityMappings.getEntities())) {//prevent ConcurrentModificiationException
+		ListIterator<XmlEntity> entities = new CloneListIterator<XmlEntity>(entityMappings.getEntities());//prevent ConcurrentModificiationException
+		for (XmlEntity entity : CollectionTools.iterable(entities)) {
 			if (ormPersistentTypes.hasNext()) {
 				ormPersistentTypes.next().update(entity);
 			}
@@ -622,7 +623,8 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	protected void updateEmbeddables(XmlEntityMappings entityMappings, ListIterator<OrmPersistentType> ormPersistentTypes) {
-		for (XmlEmbeddable embeddable : Collections.unmodifiableCollection(entityMappings.getEmbeddables())) {//prevent ConcurrentModificiationException
+		ListIterator<XmlEmbeddable> embeddables = new CloneListIterator<XmlEmbeddable>(entityMappings.getEmbeddables());//prevent ConcurrentModificiationException
+		for (XmlEmbeddable embeddable : CollectionTools.iterable(embeddables)) {
 			if (ormPersistentTypes.hasNext()) {
 				ormPersistentTypes.next().update(embeddable);
 			}

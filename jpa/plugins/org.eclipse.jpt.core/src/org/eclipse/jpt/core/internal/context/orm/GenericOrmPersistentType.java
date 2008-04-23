@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -687,7 +686,8 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	}
 
 	protected void updateIds(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
-		for (XmlId id : Collections.unmodifiableCollection(attributes.getIds())) {//prevent ConcurrentModificiationException
+		ListIterator<XmlId> ids = new CloneListIterator<XmlId>(attributes.getIds());//prevent ConcurrentModificiationException
+		for (XmlId id : CollectionTools.iterable(ids)) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(id);
 			}
@@ -700,7 +700,8 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	}
 	
 	protected void updateEmbeddedIds(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
-		for (XmlEmbeddedId embeddedId : Collections.unmodifiableCollection(attributes.getEmbeddedIds())) {//prevent ConcurrentModificiationException
+		ListIterator<XmlEmbeddedId> embeddedIds = new CloneListIterator<XmlEmbeddedId>(attributes.getEmbeddedIds());//prevent ConcurrentModificiationException
+		for (XmlEmbeddedId embeddedId : CollectionTools.iterable(embeddedIds)) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(embeddedId);
 			}
@@ -713,7 +714,8 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	}
 	
 	protected void updateBasics(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
-		for (XmlBasic basic : Collections.unmodifiableCollection(attributes.getBasics())) {//prevent ConcurrentModificiationException
+		ListIterator<XmlBasic> basics = new CloneListIterator<XmlBasic>(attributes.getBasics());//prevent ConcurrentModificiationException
+		for (XmlBasic basic : CollectionTools.iterable(basics)) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(basic);
 			}
@@ -726,7 +728,8 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	}
 	
 	protected void updateVersions(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
-		for (XmlVersion version : Collections.unmodifiableCollection(attributes.getVersions())) {//prevent ConcurrentModificiationException
+		ListIterator<XmlVersion> versions = new CloneListIterator<XmlVersion>(attributes.getVersions());//prevent ConcurrentModificiationException
+		for (XmlVersion version : CollectionTools.iterable(versions)) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(version);
 			}
@@ -737,8 +740,10 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 			}
 		}
 	}
+	
 	protected void updateManyToOnes(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
-		for (XmlManyToOne manyToOne : Collections.unmodifiableCollection(attributes.getManyToOnes())) {//prevent ConcurrentModificiationException
+		ListIterator<XmlManyToOne> manyToOnes = new CloneListIterator<XmlManyToOne>(attributes.getManyToOnes());//prevent ConcurrentModificiationException
+		for (XmlManyToOne manyToOne : CollectionTools.iterable(manyToOnes)) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(manyToOne);
 			}
@@ -749,8 +754,10 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 			}
 		}
 	}
+	
 	protected void updateOneToManys(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
-		for (XmlOneToMany oneToMany : Collections.unmodifiableCollection(attributes.getOneToManys())) {//prevent ConcurrentModificiationException
+		ListIterator<XmlOneToMany> oneToManys = new CloneListIterator<XmlOneToMany>(attributes.getOneToManys());//prevent ConcurrentModificiationException
+		for (XmlOneToMany oneToMany : CollectionTools.iterable(oneToManys)) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(oneToMany);
 			}
@@ -761,8 +768,10 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 			}
 		}
 	}
+	
 	protected void updateOneToOnes(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
-		for (XmlOneToOne oneToOne : Collections.unmodifiableCollection(attributes.getOneToOnes())) {//prevent ConcurrentModificiationException
+		ListIterator<XmlOneToOne> oneToOnes = new CloneListIterator<XmlOneToOne>(attributes.getOneToOnes());//prevent ConcurrentModificiationException
+		for (XmlOneToOne oneToOne : CollectionTools.iterable(oneToOnes)) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(oneToOne);
 			}
@@ -773,8 +782,10 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 			}
 		}
 	}
+	
 	protected void updateManyToManys(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
-		for (XmlManyToMany manyToMany : Collections.unmodifiableCollection(attributes.getManyToManys())) {//prevent ConcurrentModificiationException
+		ListIterator<XmlManyToMany> manyToManys = new CloneListIterator<XmlManyToMany>(attributes.getManyToManys());//prevent ConcurrentModificiationException
+		for (XmlManyToMany manyToMany : CollectionTools.iterable(manyToManys)) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(manyToMany);
 			}
@@ -787,7 +798,8 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	}
 
 	protected void updateEmbeddeds(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
-		for (XmlEmbedded embedded : Collections.unmodifiableCollection(attributes.getEmbeddeds())) {//prevent ConcurrentModificiationException
+		ListIterator<XmlEmbedded> embeddeds = new CloneListIterator<XmlEmbedded>(attributes.getEmbeddeds());//prevent ConcurrentModificiationException
+		for (XmlEmbedded embedded : CollectionTools.iterable(embeddeds)) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(embedded);
 			}
@@ -800,7 +812,8 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	}
 	
 	protected void updateTransients(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
-		for (XmlTransient transientResource : Collections.unmodifiableCollection(attributes.getTransients())) {//prevent ConcurrentModificiationException
+		ListIterator<XmlTransient> transients = new CloneListIterator<XmlTransient>(attributes.getTransients());//prevent ConcurrentModificiationException
+		for (XmlTransient transientResource : CollectionTools.iterable(transients)) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(transientResource);
 			}
