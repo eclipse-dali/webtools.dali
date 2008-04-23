@@ -66,10 +66,14 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 
 			@Override
 			public void setValue(Integer value) {
-				if ((subject == null) && (value == -1)) {
+				if (subject != null) {
+					setValue_(value);
 					return;
 				}
-				setValue_(value);
+				if (value == -1) {
+					return;
+				}
+				retrieveGenerator(subject()).setSpecifiedAllocationSize(value);
 			}
 
 			@Override
@@ -77,7 +81,7 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 				if (value == -1) {
 					value = null;
 				}
-				retrieveGenerator(subject()).setSpecifiedAllocationSize(value);
+				subject.setSpecifiedAllocationSize(value);
 			}
 		};
 	}
@@ -212,10 +216,14 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 
 			@Override
 			public void setValue(String value) {
-				if ((subject == null) && (value.length() == 0)) {
+				if (subject != null) {
+					setValue_(value);
 					return;
 				}
-				setValue_(value);
+				if (value.length() == 0) {
+					return;
+				}
+				retrieveGenerator(subject()).setName(value);
 			}
 
 			@Override
@@ -223,7 +231,10 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 				if (value.length() == 0) {
 					value = null;
 				}
-				retrieveGenerator(subject()).setName(value);
+				if (subject.isVirtual()) {
+					return;
+				}
+				subject.setName(value);
 			}
 		};
 	}
@@ -243,20 +254,22 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 
 			@Override
 			public void setValue(Integer value) {
-				if ((subject == null) && (value == -1)) {
+				if (subject != null) {
+					setValue_(value);
 					return;
 				}
-				setValue_(value);
+				if (value == -1) {
+					return;
+				}
+				retrieveGenerator(subject()).setSpecifiedInitialValue(value);
 			}
 
 			@Override
 			protected void setValue_(Integer value) {
-
 				if (value == -1) {
 					value = null;
 				}
-
-				retrieveGenerator(subject()).setSpecifiedInitialValue(value);
+				subject.setSpecifiedInitialValue(value);
 			}
 		};
 	}

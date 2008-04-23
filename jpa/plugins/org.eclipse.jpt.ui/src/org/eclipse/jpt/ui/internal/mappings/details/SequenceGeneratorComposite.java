@@ -99,7 +99,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 
 			@Override
 			protected String defaultValue() {
-				return JptUiMappingsMessages.SequenceGeneratorComposite_default;
+				return subject().getDefaultSequenceName();
 			}
 
 			@Override
