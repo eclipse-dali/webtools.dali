@@ -21,7 +21,7 @@ import java.util.Map.Entry;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import oracle.toplink.essentials.ejb.cmp3.EntityManagerFactoryProvider;
+import org.eclipse.persistence.jpa.config.PersistenceUnitProperties;
 
 /** 
  * This class creates a EclipseLink <code>EntityManagerFactory</code>, 
@@ -96,17 +96,17 @@ public class Main
 		this.eclipseLinkPropertiesPath = this.getEclipseLinkPropertiesPath(args);
 		this.eclipseLinkProperties = this.getProperties(this.eclipseLinkPropertiesPath);
 		
-		this.createDDLFileName = EntityManagerFactoryProvider.getConfigPropertyAsString( 
-						EntityManagerFactoryProvider.CREATE_JDBC_DDL_FILE, 
+		this.createDDLFileName = this.getConfigPropertyAsString( 
+						PersistenceUnitProperties.CREATE_JDBC_DDL_FILE, 
 						this.eclipseLinkProperties,  
-						EntityManagerFactoryProvider.DEFAULT_CREATE_JDBC_FILE_NAME);
+						PersistenceUnitProperties.DEFAULT_CREATE_JDBC_FILE_NAME);
 		
-		this.dropDDLFileName = EntityManagerFactoryProvider.getConfigPropertyAsString( 
-						EntityManagerFactoryProvider.DROP_JDBC_DDL_FILE, 
+		this.dropDDLFileName = this.getConfigPropertyAsString( 
+						PersistenceUnitProperties.DROP_JDBC_DDL_FILE, 
 						this.eclipseLinkProperties,  
-						EntityManagerFactoryProvider.DEFAULT_DROP_JDBC_FILE_NAME);
+						PersistenceUnitProperties.DEFAULT_DROP_JDBC_FILE_NAME);
 		
-		this.appLocation = this.eclipseLinkProperties.get(EntityManagerFactoryProvider.APP_LOCATION);
+		this.appLocation = this.eclipseLinkProperties.get(PersistenceUnitProperties.APP_LOCATION);
 		this.isDebugMode = this.getDebugMode(args);
 	}
 	
@@ -185,4 +185,33 @@ public class Main
 		}
 		return false;
 	}
+
+	// ****** utility methods *******
+	
+    /**
+     * Check the provided map for an object with the given key.  If that object is not available, check the
+     * System properties.  If it is not available from either location, return the default value.
+     * @param propertyKey 
+     * @param map 
+     * @param defaultValue 
+     * @return 
+     */
+    protected String getConfigPropertyAsString(String propertyKey, Map<String, String> overrides, String defaultValue){
+    	String value = this.getConfigPropertyAsString(propertyKey, overrides);
+        if (value == null){
+            value = defaultValue;
+        }
+        return value;
+    }
+    
+    protected String getConfigPropertyAsString(String propertyKey, Map<String, String> overrides){
+        String value = null;
+        if (overrides != null){
+            value = (String)overrides.get(propertyKey);
+        }
+        if (value == null){
+            value = System.getProperty(propertyKey);
+        }
+        return value;
+    }
 }
