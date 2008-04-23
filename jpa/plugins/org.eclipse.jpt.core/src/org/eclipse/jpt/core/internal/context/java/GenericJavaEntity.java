@@ -1832,7 +1832,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			masterList.remove(current);
 			
 			for (Query each : masterList) {
-				if (! each.overrides(current) && each.getName().equals(current.getName())) {
+				if (! each.overrides(current) && each.getName() != null && each.getName().equals(current.getName())) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
