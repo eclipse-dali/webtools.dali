@@ -58,7 +58,7 @@ import org.eclipse.wst.validation.internal.operations.ValidatorJob;
  *  Pre-req:
  *  	org.eclipse.jpt.eclipselink.core.ddlgen.jar in ECLIPSE_HOME/plugins
  */
-public class EclipseLinkDLLGenerator
+public class EclipseLinkDDLGenerator
 {
 	static public String LAUNCH_CONFIG_NAME = "EclipseLink";   //$NON-NLS-1$
 	static public String DDL_GEN_PACKAGE_NAME = "org.eclipse.jpt.eclipselink.core.ddlgen";   //$NON-NLS-1$
@@ -82,10 +82,10 @@ public class EclipseLinkDLLGenerator
 		if (puName == null || puName.length() == 0 || project == null) {
 			throw new NullPointerException();
 		}
-		new EclipseLinkDLLGenerator(puName, project, projectLocation, monitor).generate();
+		new EclipseLinkDDLGenerator(puName, project, projectLocation, monitor).generate();
 	}
 
-	private EclipseLinkDLLGenerator(String puName, JpaProject project, String projectLocation, IProgressMonitor monitor) {
+	private EclipseLinkDDLGenerator(String puName, JpaProject project, String projectLocation, IProgressMonitor monitor) {
 		super();
 		this.puName = puName;
 		this.project = project;
@@ -211,9 +211,9 @@ public class EclipseLinkDLLGenerator
 			public void launchesTerminated(ILaunch[] launches) {
 				for (int i = 0; i < launches.length; i++) {
 					ILaunch launch = launches[i];
-					if (launch.equals(EclipseLinkDLLGenerator.this.getLaunch())) {
+					if (launch.equals(EclipseLinkDDLGenerator.this.getLaunch())) {
 
-						EclipseLinkDLLGenerator.this.postGenerate();
+						EclipseLinkDDLGenerator.this.postGenerate();
 						return;
 					}
 				}

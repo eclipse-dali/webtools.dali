@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.internal.ddlgen.EclipseLinkDLLGenerator;
+import org.eclipse.jpt.eclipselink.core.internal.ddlgen.EclipseLinkDDLGenerator;
 import org.eclipse.jpt.eclipselink.ui.internal.ddlgen.wizards.GenerateDDLWizard;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Shell;
  *  EclipseLinkDLLGeneratorUi is used by the EclipseLinkPlatformUi to initiate 
  *  the execution of EclipseLink DDL generator.
  */
-public class EclipseLinkDLLGeneratorUi
+public class EclipseLinkDDLGeneratorUi
 {
 	private JpaProject project;
 	private String projectLocation;
@@ -47,14 +47,14 @@ public class EclipseLinkDLLGeneratorUi
 		if (project == null) {
 			throw new NullPointerException();
 		}
-		new EclipseLinkDLLGeneratorUi(project, projectLocation, selection).generate();
+		new EclipseLinkDDLGeneratorUi(project, projectLocation, selection).generate();
 	}
 
-	private EclipseLinkDLLGeneratorUi() {
+	private EclipseLinkDDLGeneratorUi() {
 		super();
 	}
 
-	private EclipseLinkDLLGeneratorUi(JpaProject project, String projectLocation, IStructuredSelection selection) {
+	private EclipseLinkDDLGeneratorUi(JpaProject project, String projectLocation, IStructuredSelection selection) {
 		super();
 		this.project = project;
 		this.selection = selection;
@@ -120,7 +120,7 @@ public class EclipseLinkDLLGeneratorUi
 
 		public void run(IProgressMonitor monitor) throws CoreException {
 			try {
-				EclipseLinkDLLGenerator.generate(this.puName, this.project, this.projectLocation, monitor);
+				EclipseLinkDDLGenerator.generate(this.puName, this.project, this.projectLocation, monitor);
 			} 
 			catch (OperationCanceledException e) {
 				return;
