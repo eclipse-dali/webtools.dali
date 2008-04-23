@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.ui.internal.caching;
 
 import java.util.Collection;
-
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.CacheType;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -48,6 +47,11 @@ public class CacheTypeComposite extends AbstractPane<EntityCacheProperties>
 			@Override
 			protected CacheType[] choices() {
 				return CacheType.values();
+			}
+			
+			@Override
+			protected boolean sortChoices() {
+				return false;
 			}
 
 			@Override

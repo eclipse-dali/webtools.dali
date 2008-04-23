@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.ui.internal.logging;
 
 import java.util.Collection;
-
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.LoggingLevel;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -50,7 +49,12 @@ public class LoggingLevelComposite extends AbstractFormPane<Logging>
 			protected LoggingLevel[] choices() {
 				return LoggingLevel.values();
 			}
-
+			
+			@Override
+			protected boolean sortChoices() {
+				return false;
+			}
+			
 			@Override
 			protected LoggingLevel defaultValue() {
 				return this.subject().getDefaultLevel();

@@ -131,6 +131,7 @@ public class EclipseLinkUiMessages extends NLS
 	public static String CacheTypeComposite_full;
 	public static String CacheTypeComposite_hard_weak;
 	public static String CacheTypeComposite_none;
+	public static String CacheTypeComposite_soft;
 	public static String CacheTypeComposite_soft_weak;
 	public static String CacheTypeComposite_weak;
 
@@ -139,6 +140,7 @@ public class EclipseLinkUiMessages extends NLS
 	public static String DefaultCacheTypeComposite_full;
 	public static String DefaultCacheTypeComposite_hard_weak;
 	public static String DefaultCacheTypeComposite_none;
+	public static String DefaultCacheTypeComposite_soft;
 	public static String DefaultCacheTypeComposite_soft_weak;
 	public static String DefaultCacheTypeComposite_weak;
 

@@ -22,7 +22,7 @@ public interface SchemaGeneration extends PersistenceUnitProperties
 		static final String DDL_GENERATION_TYPE_PROPERTY = "ddlGenerationTypeProperty";
 		// EclipseLink key string
 		static final String ECLIPSELINK_DDL_GENERATION_TYPE = "eclipselink.ddl-generation";
-		static final DdlGenerationType DEFAULT_SCHEMA_GENERATION_DDL_GENERATION_TYPE = null;		// No Default
+		static final DdlGenerationType DEFAULT_SCHEMA_GENERATION_DDL_GENERATION_TYPE = DdlGenerationType.none;
 
 	OutputMode getDefaultOutputMode();
 	OutputMode getOutputMode();

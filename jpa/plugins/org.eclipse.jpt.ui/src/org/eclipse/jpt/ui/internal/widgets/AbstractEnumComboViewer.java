@@ -103,7 +103,9 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	 */
 	private Object[] buildChoices() {
 		V[] choices = choices();
-		Arrays.sort(choices, buildComparator());
+		if (sortChoices()) {
+			Arrays.sort(choices, buildComparator());
+		}
 
 		Object[] extendedChoices = new Object[choices.length + 1];
 		System.arraycopy(choices, 0, extendedChoices, 1, choices.length);
@@ -112,6 +114,14 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 		return extendedChoices;
 	}
 
+	/**
+	 * Return true to sort the choices in alphabetical order
+	 * @return
+	 */
+	protected boolean sortChoices() {
+		return true;
+	}
+	
 	/**
 	 * Creates the <code>ComboViewer</code> with the right combo widgets.
 	 *

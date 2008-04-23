@@ -13,16 +13,18 @@ package org.eclipse.jpt.eclipselink.core.internal.context.caching;
  *  CacheType
  */
 public enum CacheType {
-	full,
-	hard_weak, 
-	none, 
 	soft_weak, 
-	weak;
+	hard_weak, 
+	weak,
+	soft,
+	full,
+	none; 
 
 	// EclipseLink value string
 	public static final String FULL = "Full";
 	public static final String HARD_WEAK = "HardWeak";
 	public static final String NONE = "NONE";
+	public static final String SOFT = "Soft";
 	public static final String SOFT_WEAK = "SoftWeak";
 	public static final String WEAK = "Weak";
 }
