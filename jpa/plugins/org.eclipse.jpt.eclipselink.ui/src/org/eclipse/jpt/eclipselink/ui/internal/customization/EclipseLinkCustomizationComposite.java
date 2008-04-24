@@ -53,9 +53,6 @@ public class EclipseLinkCustomizationComposite extends AbstractFormPane<Customiz
 		// Weaving Lazy
 		new WeavingLazyComposite(this, defaultPane);
 
-		// Weaving Fetch Groups
-		new WeavingFetchGroupsComposite(this, defaultPane);
-
 		// Weaving Change Tracking
 		new WeavingChangeTrackingComposite(this, defaultPane);
 

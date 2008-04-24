@@ -31,7 +31,7 @@ public interface Customization extends PersistenceUnitProperties
 	void setWeaving(Weaving newWeaving);
 		static final String WEAVING_PROPERTY = "weavingProperty";
 		// EclipseLink key string
-		static final String ECLIPSELINK_WEAVING = "eclipselink.weaving";
+		static final String ECLIPSELINK_WEAVING = "persistence.tools.weaving";
 		static final Weaving DEFAULT_WEAVING = Weaving.true_;
  
 	Boolean getDefaultWeavingLazy();
@@ -39,7 +39,7 @@ public interface Customization extends PersistenceUnitProperties
 	void setWeavingLazy(Boolean newWeavingLazy);
 		static final String WEAVING_LAZY_PROPERTY = "weavingLazyProperty";
 		// EclipseLink key string
-		static final String ECLIPSELINK_WEAVING_LAZY = "eclipselink.weaving.lazy";
+		static final String ECLIPSELINK_WEAVING_LAZY = "persistence.tools.weaving.lazy";
 		static final Boolean DEFAULT_WEAVING_LAZY = Boolean.TRUE;
 	
 	Boolean getDefaultWeavingChangeTracking();
@@ -47,7 +47,7 @@ public interface Customization extends PersistenceUnitProperties
 	void setWeavingChangeTracking(Boolean newWeavingChangeTracking);
 		static final String WEAVING_CHANGE_TRACKING_PROPERTY = "weavingChangeTrackingProperty";
 		// EclipseLink key string
-		static final String ECLIPSELINK_WEAVING_CHANGE_TRACKING = "eclipselink.weaving.changetracking";
+		static final String ECLIPSELINK_WEAVING_CHANGE_TRACKING = "persistence.tools.weaving.changetracking";
 		static final Boolean DEFAULT_WEAVING_CHANGE_TRACKING = Boolean.TRUE;
 
 	Boolean getDefaultWeavingFetchGroups();
@@ -55,7 +55,7 @@ public interface Customization extends PersistenceUnitProperties
 	void setWeavingFetchGroups(Boolean newWeavingFetchGroups);
 		static final String WEAVING_FETCH_GROUPS_PROPERTY = "weavingFetchGroupsProperty";
 		// EclipseLink key string
-		static final String ECLIPSELINK_WEAVING_FETCH_GROUPS = "eclipselink.weaving.fetchgroups";
+		static final String ECLIPSELINK_WEAVING_FETCH_GROUPS = "persistence.tools.weaving.fetchgroups";
 		static final Boolean DEFAULT_WEAVING_FETCH_GROUPS = Boolean.TRUE;
 	
 	String getDefaultSessionCustomizer();
