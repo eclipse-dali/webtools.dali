@@ -28,6 +28,10 @@
          id="org.eclipse.jpt_sdk.feature"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.jpt.eclipselink_sdk.feature"
+         version="0.0.0"/>
+
    <plugin
          id="org.eclipse.jpt"
          download-size="0"
