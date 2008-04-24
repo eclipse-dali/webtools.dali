@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.ddlgen.EclipseLinkDDLGenerator;
+import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.ddlgen.wizards.GenerateDDLWizard;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -67,6 +68,9 @@ public class EclipseLinkDDLGeneratorUi
 		
 		PersistenceUnit persistenceUnit = this.getPersistenceUnits().next(); // Take the first persistenceUnit
 		String puName = persistenceUnit.getName();
+		if( ! this.displayGeneratingDDLWarning()) {
+			return;
+		}
 		
 		GenerateDDLWizard wizard = new GenerateDDLWizard(this.project, this.selection);
 		WizardDialog dialog = new WizardDialog(this.getCurrentShell(), wizard);
@@ -88,6 +92,18 @@ public class EclipseLinkDDLGeneratorUi
 	
 	private Shell getCurrentShell() {
 	    return Display.getCurrent().getActiveShell();
+	}
+	
+	private boolean displayGeneratingDDLWarning() {
+		String message = org.eclipse.osgi.util.NLS.bind(
+			EclipseLinkUiMessages.EclipseLinkDDLGeneratorUi_generatingDDLWarningMessage,
+			System.getProperty("line.separator"),  
+			System.getProperty("line.separator") +  System.getProperty( "line.separator"));
+			
+		return MessageDialog.openQuestion(
+			this.getCurrentShell(), 
+			EclipseLinkUiMessages.EclipseLinkDDLGeneratorUi_generatingDDLWarningTitle, 
+			message);
 	}
 
 	// ********** Persistence Unit **********

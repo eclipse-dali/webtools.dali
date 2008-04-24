@@ -247,6 +247,9 @@ public class EclipseLinkUiMessages extends NLS
 	public static String TargetDatabaseComposite_sybase;
 	public static String TargetDatabaseComposite_timesten;
 
+	// DDLGeneration
+	public static String EclipseLinkDDLGeneratorUi_generatingDDLWarningTitle;
+	public static String EclipseLinkDDLGeneratorUi_generatingDDLWarningMessage;
 
 	private EclipseLinkUiMessages() {
 		throw new UnsupportedOperationException();
