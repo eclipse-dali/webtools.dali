@@ -474,7 +474,7 @@
 			name="%jpaWizardCategoryName"/>
 		
 		<wizard
-			id="org.eclipse.jpt.jpaProject"
+			id="org.eclipse.jpt.ui.wizard.newJpaProject"
 			name="%newJpaProjectWizardName"
 			icon="icons/full/etool16/new_jpaproject_wiz.gif"
 			category="org.eclipse.jpt"
@@ -484,6 +484,24 @@
 			<description>%newJpaProjectWizardDesc</description>
 		</wizard>
 		
+		<wizard
+            id="org.eclipse.jpt.ui.wizard.newEntity"
+			name="%newJpaEntityWizardName"
+			icon="icons/full/etool16/new_entity_wiz.gif"
+			category="org.eclipse.jpt"
+			class="org.eclipse.jpt.ui.internal.wizards.entity.EntityWizard">
+			<description>%newJpaEntityWizardDesc</description>
+		</wizard>
+		
+		<wizard
+            id="org.eclipse.jpt.ui.wizard.newMappingFile"
+			name="%newJpaMappingFileWizardName"
+			icon="icons/full/etool16/new_jpa_file_wiz.gif"
+			category="org.eclipse.jpt"
+			class="org.eclipse.jpt.ui.internal.wizards.orm.MappingFileWizard">
+			<description>%newJpaMappingFileWizardDesc</description>
+		</wizard>
+      
 	</extension>
 	
 	
@@ -657,23 +675,5 @@
 		</wizard-pages>
 		
 	</extension>
- 	
-<!-- =================================================================================== -->
-<!-- Extension: Entity Wizard                                                       -->
-<!-- =================================================================================== -->
- 	
-    <extension
-         point="org.eclipse.ui.newWizards">
-      <wizard
-            category="org.eclipse.jpt"
-            class="org.eclipse.jpt.ui.internal.wizards.entity.EntityWizard"
-            icon="icons/full/obj16/entity.gif"
-            id="org.eclipse.jpt.ui.internal.wizards.entity.EntityWizard"
-            name="JPA Entity">
-         <description>
-			Create Entity wizard
-         </description>
-      </wizard>
-   </extension>
  	
 </plugin>

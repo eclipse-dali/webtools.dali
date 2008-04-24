@@ -113,6 +113,15 @@ public class JptUiMessages extends NLS {
 	public static String MapAsComposite_unmappedAttributeText;
 	public static String MapAsComposite_unmappedTypeText;
 	public static String MapAsComposite_version;
+	public static String MappingFileWizard_title;
+	public static String MappingFileWizardPage_title;
+	public static String MappingFileWizardPage_desc;
+	public static String MappingFileWizardPage_projectLabel;
+	public static String MappingFileWizardPage_sourceFolderLabel;
+	public static String MappingFileWizardPage_filePathLabel;
+	public static String MappingFileWizardPage_accessLabel;
+	public static String MappingFileWizardPage_addToPersistenceUnitButton;
+	public static String MappingFileWizardPage_persistenceUnitLabel;
 	public static String NewJpaProjectWizard_firstPage_description;
 	public static String NewJpaProjectWizard_firstPage_title;
 	public static String NewJpaProjectWizard_title;

@@ -20,6 +20,22 @@ public class JptCoreMessages extends NLS
 		NLS.initializeMessages(BUNDLE_NAME, JptCoreMessages.class);
 	}
 	
+	public static String NONE;
+	
+	public static String VALIDATE_PROJECT_NOT_SPECIFIED;
+	
+	public static String VALIDATE_SOURCE_FOLDER_NOT_SPECIFIED;
+	
+	public static String VALIDATE_SOURCE_FOLDER_DOES_NOT_EXIST;
+	
+	public static String VALIDATE_SOURCE_FOLDER_NOT_IN_PROJECT;
+	
+	public static String VALIDATE_SOURCE_FOLDER_NOT_SOURCE_FOLDER;
+	
+	public static String VALIDATE_ORM_FILE_ALREADY_EXISTS;
+	
+	public static String VALIDATE_PERSISTENCE_UNIT_DOES_NOT_EXIST;
+	
 	public static String VALIDATE_PLATFORM_NOT_SPECIFIED;
 	
 	public static String VALIDATE_CONNECTION_NOT_SPECIFIED;
