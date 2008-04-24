@@ -21,6 +21,7 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractSecondaryTablesComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.PrimaryKeyJoinColumnsInSecondaryTableComposite;
+import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
@@ -60,13 +61,13 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposite<OrmEntity>
 {
 	/**
-	 * Creates a new <code>SecondaryTablesComposite</code>.
+	 * Creates a new <code>OrmSecondaryTablesComposite</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
 	public OrmSecondaryTablesComposite(AbstractFormPane<? extends OrmEntity> parentPane,
-	                                Composite parent) {
+	                                   Composite parent) {
 
 		super(parentPane, parent);
 	}
@@ -85,10 +86,9 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private ListValueModel<OrmSecondaryTable> buildSecondaryTablesListModel() {
-		return new ItemPropertyListValueModelAdapter<OrmSecondaryTable>(buildSecondaryTablesListHolder(), 
-			Table.SPECIFIED_NAME_PROPERTY);
-	}	
+	private WritablePropertyValueModel<Boolean> buildDefineInXmlHolder() {
+		return new DefineInXmlHolder();
+	}
 
 	private ListValueModel<OrmSecondaryTable> buildSecondaryTablesListHolder() {
 		List<ListValueModel<OrmSecondaryTable>> list = new ArrayList<ListValueModel<OrmSecondaryTable>>();
@@ -96,7 +96,11 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 		list.add(buildVirtualSecondaryTablesListHolder());
 		return new CompositeListValueModel<ListValueModel<OrmSecondaryTable>, OrmSecondaryTable>(list);
 	}
-	
+
+	private ListValueModel<OrmSecondaryTable> buildSecondaryTablesListModel() {
+		return new ItemPropertyListValueModelAdapter<OrmSecondaryTable>(buildSecondaryTablesListHolder(),
+			Table.SPECIFIED_NAME_PROPERTY);
+	}
 
 	private ListValueModel<OrmSecondaryTable> buildSpecifiedSecondaryTablesListHolder() {
 		return new ListAspectAdapter<OrmEntity, OrmSecondaryTable>(getSubjectHolder(), Entity.SPECIFIED_SECONDARY_TABLES_LIST) {
@@ -111,7 +115,7 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 			}
 		};
 	}
-	
+
 	private ListValueModel<OrmSecondaryTable> buildVirtualSecondaryTablesListHolder() {
 		return new ListAspectAdapter<OrmEntity, OrmSecondaryTable>(getSubjectHolder(), OrmEntity.VIRTUAL_SECONDARY_TABLES_LIST) {
 			@Override
@@ -134,16 +138,18 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 		WritablePropertyValueModel<SecondaryTable> secondaryTableHolder =
 			buildSecondaryTableHolder();
 
+		WritablePropertyValueModel<Boolean> defineInXmlHolder =
+			buildDefineInXmlHolder();
+
 		// Override Define In XML check box
 		buildCheckBox(
-			buildSubPane(container, 8),
+			buildSubPane(container, 0, groupBoxMargin),
 			JptUiMappingsMessages.OrmSecondaryTablesComposite_defineInXml,
-			buildDefineInXmlHolder()
+			defineInXmlHolder
 		);
 
-		
 		// Secondary Tables add/remove list pane
-		new AddRemoveListPane<Entity>(
+		AddRemoveListPane<Entity> listPane = new AddRemoveListPane<Entity>(
 			this,
 			buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
 			buildSecondaryTablesAdapter(),
@@ -153,6 +159,8 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS//TODO need a help context id for this
 		);
 
+		installListPaneEnabler(defineInXmlHolder, listPane);
+
 		// Primary Key Join Columns pane
 		new PrimaryKeyJoinColumnsInSecondaryTableComposite(
 			this,
@@ -160,19 +168,20 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 			container
 		);
 	}
-	
 
-	private WritablePropertyValueModel<Boolean> buildDefineInXmlHolder() {
-		return new DefineInXmlHolder();
+	private void installListPaneEnabler(WritablePropertyValueModel<Boolean> defineInXmlHolder,
+	                                    AddRemoveListPane<Entity> listPane) {
+
+		new PaneEnabler(defineInXmlHolder, listPane);
 	}
-	
+
 	private class DefineInXmlHolder extends ListPropertyValueModelAdapter<Boolean>
 		implements WritablePropertyValueModel<Boolean> {
 
 		public DefineInXmlHolder() {
 			super(buildVirtualSecondaryTablesListHolder());
 		}
-		
+
 		@Override
 		protected Boolean buildValue() {
 			if (subject() == null) {
@@ -180,11 +189,9 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 			}
 			return Boolean.valueOf(subject().secondaryTablesDefinedInXml());
 		}
-		
+
 		public void setValue(Boolean value) {
 			subject().setSecondaryTablesDefinedInXml(value.booleanValue());
 		}
 	}
-	
-
 }
