@@ -155,7 +155,7 @@ public class JpaPlatformRegistry {
 	 */
 	public String getDefaultJpaPlatformId() {
 		for (String platformId : jpaPlatformConfigurationElements.keySet()) {
-			if (! "false".equals(jpaPlatformConfigurationElements.get(platformId).getAttribute(AT_DEFAULT))) {
+			if ("true".equals(jpaPlatformConfigurationElements.get(platformId).getAttribute(AT_DEFAULT))) {
 				return platformId;
 			}
 		}
