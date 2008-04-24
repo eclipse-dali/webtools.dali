@@ -166,6 +166,9 @@ public class EclipseLinkUiMessages extends NLS
 	public static String PersistenceXmlCustomizationTab_weavingChangeTrackingLabelDefault;
 	public static String PersistenceXmlCustomizationTab_weavingChangeTrackingLabel;
 
+	public static String PersistenceXmlCustomizationTab_weavingFetchGroupsLabelDefault;
+	public static String PersistenceXmlCustomizationTab_weavingFetchGroupsLabel;
+
 	public static String WeavingComposite_true_;
 	public static String WeavingComposite_false_;
 	public static String WeavingComposite_static_;
