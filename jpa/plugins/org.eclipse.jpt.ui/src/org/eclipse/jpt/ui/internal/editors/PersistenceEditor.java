@@ -119,6 +119,12 @@ public class PersistenceEditor extends FormEditor
 	private void addPersistenceUnitPages() {
 
 		JpaProject jpaProject = jpaProject();
+
+		// The project doesn't have JPA
+		if (jpaProject == null) {
+			return;
+		}
+
 		String platformId = jpaProject.getJpaPlatform().getId();
 		JpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
 		JpaUiFactory uiFactory = jpaPlatformUI.getJpaUiFactory();
