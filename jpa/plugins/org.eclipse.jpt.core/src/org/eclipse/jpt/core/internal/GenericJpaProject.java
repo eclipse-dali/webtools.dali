@@ -78,6 +78,11 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	 * The data source that wraps the DTP model.
 	 */
 	protected final JpaDataSource dataSource;
+	
+	/**
+	 * A schema name used to override the connection's default schema
+	 */
+	protected String userOverrideDefaultSchemaName;
 
 	/**
 	 * Flag indicating whether the project should "discover" annotated
@@ -136,6 +141,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		this.project = config.getProject();
 		this.jpaPlatform = config.getJpaPlatform();
 		this.dataSource = this.getJpaFactory().buildJpaDataSource(this, config.getConnectionProfileName());
+		this.userOverrideDefaultSchemaName = config.getUserOverrideDefaultSchemaName();
 		this.discoversAnnotatedClasses = config.discoverAnnotatedClasses();
 		this.jpaFiles = this.buildEmptyJpaFiles();
 
@@ -219,6 +225,11 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	public String getName() {
 		return this.project.getName();
 	}
+	
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getName());
+	}
 
 	public IProject getProject() {
 		return this.project;
@@ -241,17 +252,37 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	public ConnectionProfile getConnectionProfile() {
 		return this.dataSource.getConnectionProfile();
 	}
-
+	
 	public Schema getDefaultSchema() {
+		Schema defaultSchema = getUserOverrideDefaultSchema();
+		if (defaultSchema != null) {
+			return defaultSchema;
+		}
 		return getConnectionProfile().getDefaultSchema();
 	}
 	
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.getName());
+	public Schema getUserOverrideDefaultSchema() {
+		if (this.userOverrideDefaultSchemaName == null) {
+			return null;
+		}
+		return getConnectionProfile().getDatabase().schemaNamed(this.userOverrideDefaultSchemaName);
 	}
-
-
+	
+	
+	// **************** user override default schema name **********************
+	
+	public String getUserOverrideDefaultSchemaName() {
+		return this.userOverrideDefaultSchemaName;
+	}
+	
+	public void setUserOverrideDefaultSchemaName(String newDefaultSchemaName) {
+		String oldDefaultSchemaName = this.userOverrideDefaultSchemaName;
+		this.userOverrideDefaultSchemaName = newDefaultSchemaName;
+		this.firePropertyChanged(USER_OVERRIDE_DEFAULT_SCHEMA_NAME_PROPERTY, 
+				oldDefaultSchemaName, newDefaultSchemaName);
+	}
+	
+	
 	// **************** discover annotated classes *****************************
 	
 	public boolean discoversAnnotatedClasses() {

@@ -66,14 +66,52 @@ public interface JpaProject extends JpaNode {
 	ConnectionProfile getConnectionProfile();
 
 	/**
-	 * Return the project's default schema, taken from the ConnectionProfile
+	 * Return the primary schema associated with this project, which unless overridden, 
+	 * is the default schema from the connection
+	 * @see JpaProject#getUserOverrideDefaultSchema()
+	 * @return The default schema.  May be null if the connection is not connected.
 	 */
 	Schema getDefaultSchema();
+	
+	/**
+	 * Return the user specified schema to be used as a default for this project.
+	 * @see JpaProject#getUserOverrideDefaultSchemaName()
+	 * @return  The user specified default schema. May be null if the connection
+	 *   is not connected or if the user has not overridden the schema (implies 
+	 *   the default schema associated with the connection profile should be used).
+	 */
+	Schema getUserOverrideDefaultSchema();
 	
 	/**
 	 * Return the data source the JPA project is mapped to.
 	 */
 	JpaDataSource getDataSource();
+	
+	
+	// **************** user override default schema name **********************
+	
+	/** 
+	 * ID string used when userOverrideDefaultSchemaName property is changed.
+	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
+	 */
+	String USER_OVERRIDE_DEFAULT_SCHEMA_NAME_PROPERTY = "userOverrideDefaultSchemaName";
+	
+	/**
+	 * Return the name of the schema to be used as a default for the project
+	 * instead of the one that is defaultly associated with the connection profile.
+	 * @return The schema name. May be null (implies that the connection profile
+	 *   default schema should be used).
+	 */
+	String getUserOverrideDefaultSchemaName();
+	
+	/**
+	 * Set the name of the schema to be used as a default for the project
+	 * instead of the one that is defaultly associated with the connection profile.
+	 * @parameter defaultSchemaName - The default schema name to use instead of
+	 *   the default schema of the connection profile. May be null (implies that
+	 *   the connection profile default schema should be used).
+	 */
+	void setUserOverrideDefaultSchemaName(String defaultSchemaName);
 	
 	
 	// **************** discover annotated classes *****************************
@@ -317,6 +355,13 @@ public interface JpaProject extends JpaNode {
 		 * connection profile.)
 		 */
 		String getConnectionProfileName();
+		
+		/**
+		 * Return the name of the schema to use instead of the default schema
+		 * of the connection profile.
+		 * May be null.
+		 */
+		String getUserOverrideDefaultSchemaName();
 
 		/**
 		 * Return whether the new JPA project is to "discover" annotated

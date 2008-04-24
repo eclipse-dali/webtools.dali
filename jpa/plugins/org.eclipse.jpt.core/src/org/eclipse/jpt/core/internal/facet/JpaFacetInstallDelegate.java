@@ -63,6 +63,9 @@ public class JpaFacetInstallDelegate
 		// project settings
 		JptCorePlugin.setJpaPlatformId(project, dataModel.getStringProperty(PLATFORM_ID));
 		JptCorePlugin.setConnectionProfileName(project, dataModel.getStringProperty(CONNECTION));
+		if (dataModel.getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
+			JptCorePlugin.setUserOverrideDefaultSchemaName(project, dataModel.getStringProperty(USER_OVERRIDE_DEFAULT_SCHEMA));
+		}
 		JptCorePlugin.setDiscoverAnnotatedClasses(project, dataModel.getBooleanProperty(DISCOVER_ANNOTATED_CLASSES));
 		
 		// defaults settings

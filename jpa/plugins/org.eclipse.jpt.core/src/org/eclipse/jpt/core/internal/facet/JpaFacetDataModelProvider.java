@@ -15,13 +15,16 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
+import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.JptDbPlugin;
+import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.componentcore.datamodel.FacetInstallDataModelProvider;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelPropertyDescriptor;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonMessages;
 import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
@@ -33,13 +36,26 @@ public class JpaFacetDataModelProvider
 {
 	private static final String EJB_FACET_ID = IModuleConstants.JST_EJB_MODULE;
 
-	private static final String RUNTIME_NONE = WTPCommonPlugin.getResourceString(org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonMessages.RUNTIME_NONE, null);
-
-	private static final IStatus PLATFORM_NOT_SPECIFIED_STATUS = buildErrorStatus(JptCoreMessages.VALIDATE_PLATFORM_NOT_SPECIFIED);
-	private static final IStatus CONNECTION_NOT_CONNECTED_STATUS = buildInfoStatus(JptCoreMessages.VALIDATE_CONNECTION_NOT_CONNECTED);
-	private static final IStatus RUNTIME_NOT_SPECIFIED_STATUS = buildWarningStatus(JptCoreMessages.VALIDATE_RUNTIME_NOT_SPECIFIED);
-	private static final IStatus RUNTIME_DOES_NOT_SUPPORT_EJB_30_STATUS = buildWarningStatus(JptCoreMessages.VALIDATE_RUNTIME_DOES_NOT_SUPPORT_EJB_30);
-	private static final IStatus LIBRARY_NOT_SPECIFIED_STATUS = buildWarningStatus(JptCoreMessages.VALIDATE_LIBRARY_NOT_SPECIFIED);
+	private static final String RUNTIME_NONE = 
+			WTPCommonPlugin.getResourceString(WTPCommonMessages.RUNTIME_NONE, null);
+	
+	private static final IStatus PLATFORM_NOT_SPECIFIED_STATUS = 
+			buildErrorStatus(JptCoreMessages.VALIDATE_PLATFORM_NOT_SPECIFIED);
+	
+	private static final IStatus CONNECTION_NOT_CONNECTED_STATUS = 
+			buildInfoStatus(JptCoreMessages.VALIDATE_CONNECTION_NOT_CONNECTED);
+	
+	private static final IStatus USER_OVERRIDE_DEFAULT_SCHEMA_NOT_SPECIFIED_STATUS = 
+			buildErrorStatus(JptCoreMessages.VALIDATE_DEFAULT_SCHEMA_NOT_SPECIFIED);
+	
+	private static final IStatus RUNTIME_NOT_SPECIFIED_STATUS = 
+			buildWarningStatus(JptCoreMessages.VALIDATE_RUNTIME_NOT_SPECIFIED);
+	
+	private static final IStatus RUNTIME_DOES_NOT_SUPPORT_EJB_30_STATUS = 
+			buildWarningStatus(JptCoreMessages.VALIDATE_RUNTIME_DOES_NOT_SUPPORT_EJB_30);
+	
+	private static final IStatus LIBRARY_NOT_SPECIFIED_STATUS = 
+			buildWarningStatus(JptCoreMessages.VALIDATE_LIBRARY_NOT_SPECIFIED);
 
 	/**
 	 * required default constructor
@@ -55,6 +71,8 @@ public class JpaFacetDataModelProvider
 		Set<String> propertyNames = super.getPropertyNames();
 		propertyNames.add(PLATFORM_ID);
 		propertyNames.add(CONNECTION);
+		propertyNames.add(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA);
+		propertyNames.add(USER_OVERRIDE_DEFAULT_SCHEMA);
 		propertyNames.add(RUNTIME);
 		propertyNames.add(USE_SERVER_JPA_IMPLEMENTATION);
 		propertyNames.add(JPA_LIBRARY);
@@ -73,6 +91,12 @@ public class JpaFacetDataModelProvider
 		}
 		if (propertyName.equals(CONNECTION)) {
 			return "";
+		}
+		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
+			return Boolean.FALSE;
+		}
+		if (propertyName.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
+			return getDefaultSchemaName();
 		}
 		if (propertyName.equals(RUNTIME)) {
 			return null;
@@ -127,6 +151,10 @@ public class JpaFacetDataModelProvider
 		if (name.equals(CONNECTION)) {
 			return this.validateConnectionName(this.getStringProperty(name));
 		}
+		if (name.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)
+				|| name.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
+			return this.validateUserOverrideDefaultSchema();
+		}
 		if (name.equals(USE_SERVER_JPA_IMPLEMENTATION)) {
 			return this.validateJpaLibrary(this.getBooleanProperty(name));
 		}
@@ -143,6 +171,14 @@ public class JpaFacetDataModelProvider
 	private boolean runtimeSupportsEjb30(IRuntime runtime) {
 		IProjectFacetVersion ejb30 = ProjectFacetsManager.getProjectFacet(EJB_FACET_ID).getVersion("3.0");
 		return (runtime == null) ? false : runtime.supports(ejb30);
+	}
+	
+	private String getDefaultSchemaName() {
+		String connectionName = getStringProperty(CONNECTION);
+		ConnectionProfile connection = 
+			JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNamed(connectionName);
+		Schema defaultSchema = connection.getDefaultSchema();
+		return (defaultSchema == null) ? null : defaultSchema.getName();
 	}
 
 
@@ -163,6 +199,15 @@ public class JpaFacetDataModelProvider
 				OK_STATUS
 			:
 				CONNECTION_NOT_CONNECTED_STATUS;
+	}
+	
+	private IStatus validateUserOverrideDefaultSchema() {
+		if (getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
+			if (StringTools.stringIsEmpty(getStringProperty(USER_OVERRIDE_DEFAULT_SCHEMA))) {
+				return USER_OVERRIDE_DEFAULT_SCHEMA_NOT_SPECIFIED_STATUS;
+			}
+		}
+		return OK_STATUS;
 	}
 
 	private IStatus validateJpaLibrary(boolean useServerJpaImplementation) {
@@ -205,5 +250,4 @@ public class JpaFacetDataModelProvider
 	private static IStatus buildStatus(int severity, String message) {
 		return new Status(severity, JptCorePlugin.PLUGIN_ID, message);
 	}
-
 }

@@ -65,13 +65,16 @@ public class JptUiMessages extends NLS {
 	public static String JpaDetailsView_viewNotAvailable;
 	public static String JpaFacetWizardPage_connectionLabel;
 	public static String JpaFacetWizardPage_connectionLink;
+	public static String JpaFacetWizardPage_connectLink;
 	public static String JpaFacetWizardPage_createOrmXmlButton;
+	public static String JpaFacetWizardPage_defaultSchemaLabel;
 	public static String JpaFacetWizardPage_description;
 	public static String JpaFacetWizardPage_discoverClassesButton;
 	public static String JpaFacetWizardPage_jpaImplementationLabel;
 	public static String JpaFacetWizardPage_jpaPrefsLink;
 	public static String JpaFacetWizardPage_listClassesButton;
 	public static String JpaFacetWizardPage_none;
+	public static String JpaFacetWizardPage_overrideDefaultSchemaLabel;
 	public static String JpaFacetWizardPage_persistentClassManagementLabel;
 	public static String JpaFacetWizardPage_platformLabel;
 	public static String JpaFacetWizardPage_specifyLibLabel;

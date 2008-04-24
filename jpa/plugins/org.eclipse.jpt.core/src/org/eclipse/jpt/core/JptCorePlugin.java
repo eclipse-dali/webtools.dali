@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
+import org.eclipse.jpt.core.internal.prefs.JpaPreferenceInitializer;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
@@ -68,7 +69,14 @@ public class JptCorePlugin extends Plugin {
 	 * project's preferences.
 	 */
 	public static final String JPA_PLATFORM = PLUGIN_ID + ".platform";  //$NON-NLS-1$
-
+	
+	/**
+	 * The key for storing a JPA project's user overridden default schema name
+	 * in the Eclipse project's preferences.
+	 */
+	public static final String USER_OVERRIDE_DEFAULT_SCHEMA_NAME = 
+			PLUGIN_ID + ".userOverrideDefaultSchemaName";  //$NON-NLS-1$
+	
 	/**
 	 * The key for storing a JPA project's "discover" flag in the Eclipse
 	 * project's preferences.
@@ -301,7 +309,30 @@ public class JptCorePlugin extends Plugin {
 		prefs.put(JPA_PLATFORM, jpaPlatformId);
 		flush(prefs);
 	}
-
+	
+	/**
+	 * Return the default schema name associated with the specified Eclipse project.
+	 * @see JpaProject#getUserOverrideDefaultSchemaName()
+	 */
+	public static String getUserOverrideDefaultSchemaName(IProject project) {
+		return getProjectPreferences(project).get(USER_OVERRIDE_DEFAULT_SCHEMA_NAME, null);
+	}
+	
+	/**
+	 * Set the default schema name associated with the specified Eclipse project.
+	 * @see JpaProject#setUserOverrideDefaultSchemaName()
+	 */
+	public static void setUserOverrideDefaultSchemaName(IProject project, String defaultSchemaName) {
+		IEclipsePreferences prefs = getProjectPreferences(project);
+		if (defaultSchemaName == null) {
+			prefs.remove(USER_OVERRIDE_DEFAULT_SCHEMA_NAME);
+		}
+		else {
+			prefs.put(USER_OVERRIDE_DEFAULT_SCHEMA_NAME, defaultSchemaName);
+		}
+		flush(prefs);
+	}
+	
 	/**
 	 * Return the JPA "discover" flag associated with the specified
 	 * Eclipse project.

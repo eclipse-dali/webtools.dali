@@ -21,6 +21,7 @@ public class SimpleJpaProjectConfig implements JpaProject.Config {
 	protected IProject project;
 	protected JpaPlatform jpaPlatform;
 	protected String connectionProfileName;
+	protected String userOverrideDefaultSchemaName;
 	protected boolean discoverAnnotatedClasses;
 
 	public SimpleJpaProjectConfig() {
@@ -50,7 +51,15 @@ public class SimpleJpaProjectConfig implements JpaProject.Config {
 	public void setConnectionProfileName(String connectionProfileName) {
 		this.connectionProfileName = connectionProfileName;
 	}
-
+	
+	public String getUserOverrideDefaultSchemaName() {
+		return this.userOverrideDefaultSchemaName;
+	}
+	
+	public void setUserOverrideDefaultSchemaName(String userOverrideDefaultSchemaName) {
+		this.userOverrideDefaultSchemaName = userOverrideDefaultSchemaName;
+	}
+	
 	public boolean discoverAnnotatedClasses() {
 		return this.discoverAnnotatedClasses;
 	}

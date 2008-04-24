@@ -16,41 +16,53 @@ public interface JpaFacetDataModelProperties extends IDataModelProperties
 	/**
 	 * Required, type String, identifies Jpa Platform
 	 */
-	public static final String PLATFORM_ID = "IJpaFacetDataModelProperties.PLATFORM_ID";
+	public static final String PLATFORM_ID = "JpaFacetDataModelProperties.PLATFORM_ID";
 	
 	/**
 	 * Not required, type String, identifies database connection
 	 */
-	public static final String CONNECTION = "IJpaFacetDataModelProperties.CONNECTION";
+	public static final String CONNECTION = "JpaFacetDataModelProperties.CONNECTION";
+	
+	/**
+	 * Required, type Boolean, identifies if the user wishes to override default schema name
+	 */
+	public static final String USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA = 
+		"JpaFacetDataModelProperties.USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA";
+	
+	/**
+	 * Not required, type String, identifies the user overridden default schema name
+	 */
+	public static final String USER_OVERRIDE_DEFAULT_SCHEMA = 
+			"JpaFacetDataModelProperties.USER_OVERRIDE_DEFAULT_SCHEMA";
 	
 	/**
 	 * Internal, type IRuntime, identifies runtime associated with project
 	 * Used only in conjunction with validation of other properties, because this information
 	 * is otherwise inaccessible to this data model
 	 */
-	public static final String RUNTIME = "IJpaFacetDataModelProperties.RUNTIME";
+	public static final String RUNTIME = "JpaFacetDataModelProperties.RUNTIME";
 	
 	/**
 	 * Required, type boolean, identifies whether server runtime provides 
 	 * JPA implementation
 	 * If this is true, then the property JPA_LIBRARY is not used
 	 */
-	public static final String USE_SERVER_JPA_IMPLEMENTATION = "IJpaFacetDataModelProperties.USE_SERVER_JPA_IMPLEMENTATION";
+	public static final String USE_SERVER_JPA_IMPLEMENTATION = "JpaFacetDataModelProperties.USE_SERVER_JPA_IMPLEMENTATION";
 	
 	/**
 	 * Not required, type String, identifies JPA implementation library.
 	 * Only used if the property USE_SERVER_JPA_IMPLEMENTATION is false.
 	 */
-	public static final String JPA_LIBRARY = "IJpaFacetDataModelProperties.JPA_LIBRARY";
+	public static final String JPA_LIBRARY = "JpaFacetDataModelProperties.JPA_LIBRARY";
 	
 	/**
 	 * Required, type boolean, identifies whether all annotated classes are to be automatically
 	 * included as part of all persistence units
 	 */
-	public static final String DISCOVER_ANNOTATED_CLASSES = "IJpaFacetDataModelProperties.DISCOVER_ANNOTATED_CLASSES";
+	public static final String DISCOVER_ANNOTATED_CLASSES = "JpaFacetDataModelProperties.DISCOVER_ANNOTATED_CLASSES";
 	
 	/**
 	 * Required, type boolean, details whether orm.xml should be created
 	 */
-	public static final String CREATE_ORM_XML = "IJpaFacetDataModelProperties.CREATE_ORM_XML";
+	public static final String CREATE_ORM_XML = "JpaFacetDataModelProperties.CREATE_ORM_XML";
 }

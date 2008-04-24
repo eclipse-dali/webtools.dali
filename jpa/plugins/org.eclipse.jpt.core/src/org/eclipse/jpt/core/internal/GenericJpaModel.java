@@ -140,6 +140,7 @@ public class GenericJpaModel
 		config.setProject(project);
 		config.setJpaPlatform(JptCorePlugin.getJpaPlatform(project));
 		config.setConnectionProfileName(JptCorePlugin.getConnectionProfileName(project));
+		config.setUserOverrideDefaultSchemaName(JptCorePlugin.getUserOverrideDefaultSchemaName(project));
 		config.setDiscoverAnnotatedClasses(JptCorePlugin.discoverAnnotatedClasses(project));
 		return config;
 	}

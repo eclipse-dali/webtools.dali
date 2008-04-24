@@ -31,7 +31,9 @@ import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
+import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.JptDbPlugin;
+import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
@@ -48,7 +50,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelEvent;
@@ -113,6 +117,8 @@ public class JpaProjectPropertiesPage
 		return new String[] {
 			JpaFacetDataModelProperties.PLATFORM_ID,
 			JpaFacetDataModelProperties.CONNECTION,
+			JpaFacetDataModelProperties.USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA,
+			JpaFacetDataModelProperties.USER_OVERRIDE_DEFAULT_SCHEMA,
 			JpaFacetDataModelProperties.DISCOVER_ANNOTATED_CLASSES
 		};
 	}
@@ -121,14 +127,17 @@ public class JpaProjectPropertiesPage
 		return (JpaProject) this.getElement().getAdapter(JpaProject.class);
 	}
 
-	Combo createCombo(Composite container, boolean fillHorizontal) {
+	Combo createCombo(Composite container, int span, boolean fillHorizontal) {
 		Combo combo = new Combo(container, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY);
+		GridData gd;
 		if (fillHorizontal) {
-			combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			gd = new GridData(GridData.FILL_HORIZONTAL);
 		}
 		else {
-			combo.setLayoutData(new GridData());
+			gd = new GridData();
 		}
+		gd.horizontalSpan = span;
+		combo.setLayoutData(gd);
 		return combo;
 	}
 
@@ -172,6 +181,17 @@ public class JpaProjectPropertiesPage
 			change = true;
 			jpaProject.getDataSource().setConnectionProfileName(connection);
 			JptCorePlugin.setConnectionProfileName(project, connection);
+		}
+		
+		String userOverrideDefaultSchema = null;
+		if (this.model.getBooleanProperty(JpaFacetDataModelProperties.USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
+			userOverrideDefaultSchema = this.model.getStringProperty(JpaFacetDataModelProperties.USER_OVERRIDE_DEFAULT_SCHEMA);
+		}
+		String projectUserOverrideDefaultSchema = jpaProject.getUserOverrideDefaultSchemaName();
+		if (! StringTools.stringsAreEqualIgnoreCase(userOverrideDefaultSchema, projectUserOverrideDefaultSchema)) {
+			change = true;
+			jpaProject.setUserOverrideDefaultSchemaName(userOverrideDefaultSchema);
+			JptCorePlugin.setUserOverrideDefaultSchemaName(project, userOverrideDefaultSchema);
 		}
 
 		boolean discover = this.model.getBooleanProperty(JpaFacetDataModelProperties.DISCOVER_ANNOTATED_CLASSES);
@@ -222,7 +242,7 @@ public class JpaProjectPropertiesPage
 			// TODO
 			// PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IDaliHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
 
-			platformCombo = new ComboViewer(createCombo(group, true));
+			platformCombo = new ComboViewer(createCombo(group, 1, true));
 			platformCombo.setContentProvider(
 					new IStructuredContentProvider() {
 						public Object[] getElements(Object inputElement) {
@@ -290,15 +310,23 @@ public class JpaProjectPropertiesPage
 		final Combo connectionCombo;
 
 		private Link connectionLink;
-
-
+		
+		private Link connectLink;
+		
+		private final Button overrideDefaultSchemaButton;
+		
+		private final Label defaultSchemaLabel;
+		
+		private final Combo defaultSchemaCombo;
+		
+		
 		public ConnectionGroup(Composite composite) {
 			Group group = new Group(composite, SWT.NONE);
 			group.setText(JptUiMessages.JpaFacetWizardPage_connectionLabel);
-			group.setLayout(new GridLayout());
+			group.setLayout(new GridLayout(3, false));
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-			connectionCombo = createCombo(group, true);
+			connectionCombo = createCombo(group, 3, true);
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_CONNECTION);
 			connectionCombo.addSelectionListener(
 					new SelectionListener() {
@@ -331,6 +359,71 @@ public class JpaProjectPropertiesPage
 					}
 				}
 			);
+			
+			connectLink = new Link(group, SWT.NONE);
+			data = new GridData(GridData.END, GridData.CENTER, false, false);
+			data.horizontalSpan = 2;
+			connectLink.setLayoutData(data);
+			connectLink.setText(JptUiMessages.JpaFacetWizardPage_connectLink);
+			connectLink.setEnabled(false);
+			connectLink.addSelectionListener(
+				new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						openConnectionProfile();
+					}
+				});
+			model.addListener(
+				new IDataModelListener() {
+					public void propertyChanged(DataModelEvent event) {
+						if (event.getPropertyName().equals(CONNECTION)) {
+							updateConnectLink();
+						}
+					}
+				});
+			
+			overrideDefaultSchemaButton = createButton(group, 3, JptUiMessages.JpaFacetWizardPage_overrideDefaultSchemaLabel, SWT.CHECK);
+			synchHelper.synchCheckbox(overrideDefaultSchemaButton, USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA, new Control[0]);
+			
+			defaultSchemaLabel = new Label(group, SWT.LEFT);
+			defaultSchemaLabel.setText(JptUiMessages.JpaFacetWizardPage_defaultSchemaLabel);
+			GridData gd = new GridData();
+			gd.horizontalSpan = 1;
+			defaultSchemaLabel.setLayoutData(gd);
+			
+			defaultSchemaCombo = createCombo(group, 1, true);
+			defaultSchemaCombo.addSelectionListener(
+					new SelectionListener() {
+						public void widgetDefaultSelected(SelectionEvent e) {
+							widgetSelected(e);
+						}
+						
+						public void widgetSelected(SelectionEvent e) {
+							String schema = defaultSchemaCombo.getText();
+							model.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, schema);
+						}
+					}
+				);
+			fillSchemas();
+			
+			model.addListener(
+				new IDataModelListener() {
+					public void propertyChanged(DataModelEvent event) {
+						if (event.getPropertyName().equals(CONNECTION)) {
+							fillSchemas();
+						}
+						else if (event.getPropertyName().equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
+							boolean enabled = (Boolean) event.getProperty();
+							defaultSchemaLabel.setEnabled(enabled);
+							defaultSchemaCombo.setEnabled(enabled);
+							fillSchemas();
+						}
+						else if (event.getPropertyName().equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
+							defaultSchemaCombo.select(defaultSchemaCombo.indexOf((String) event.getProperty()));
+						}
+					}
+				});
+			
 			performDefaults();
 		}
 
@@ -343,6 +436,53 @@ public class JpaProjectPropertiesPage
 				connectionCombo.add(stream.next());
 			}
 		}
+		
+		void openNewConnectionWizard() {
+			String connectionName = DTPUiTools.createNewProfile();
+			if (connectionName != null) {
+				fillConnections();
+				model.setProperty(CONNECTION, connectionName);
+				connectionCombo.select(connectionCombo.indexOf(connectionName));
+			}
+		}
+		
+		private void openConnectionProfile() {
+			ConnectionProfile connection = getConnectionProfile();
+			connection.connect();
+			updateConnectLink();
+			fillSchemas();
+			return;
+		}
+		
+		private void updateConnectLink() {
+			ConnectionProfile connectionProfile = getConnectionProfile();
+			connectLink.setEnabled(! connectionProfile.isNull() && ! connectionProfile.isConnected());
+		}
+		
+		private void fillSchemas() {
+			for (Iterator<String> stream = CollectionTools.sort(getConnectionProfile().getDatabase().schemaNames()); stream.hasNext(); ) {
+				defaultSchemaCombo.add(stream.next());
+			}
+			String userOverrideDefaultSchema = model.getStringProperty(USER_OVERRIDE_DEFAULT_SCHEMA);
+			if (userOverrideDefaultSchema != null && defaultSchemaCombo.indexOf(userOverrideDefaultSchema) < 0) {
+				defaultSchemaCombo.add(userOverrideDefaultSchema);
+			}
+			if (! model.getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
+				Schema defaultSchema = getConnectionProfile().getDefaultSchema();
+				String defaultSchemaName = (defaultSchema == null) ? null : defaultSchema.getName();
+				int defaultSchemaIndex = (defaultSchemaName == null) ? -1 : defaultSchemaCombo.indexOf(defaultSchemaName);
+				if (defaultSchemaIndex >= 0) {
+					defaultSchemaCombo.select(defaultSchemaIndex);
+				}
+				else {
+					defaultSchemaCombo.deselectAll();
+				}
+			}
+		}
+		
+		private ConnectionProfile getConnectionProfile() {
+			return JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNamed(model.getStringProperty(CONNECTION));
+		}
 
 		void performDefaults() {
 			String connectionName = getJpaProject().getDataSource().getConnectionProfileName();
@@ -353,15 +493,10 @@ public class JpaProjectPropertiesPage
 			else {
 				connectionCombo.setText(connectionName);
 			}
-		}
-
-		void openNewConnectionWizard() {
-			String connectionName = DTPUiTools.createNewProfile();
-			if (connectionName != null) {
-				fillConnections();
-				model.setProperty(CONNECTION, connectionName);
-				connectionCombo.select(connectionCombo.indexOf(connectionName));
-			}
+			
+			String defaultSchema = getJpaProject().getUserOverrideDefaultSchemaName();
+			model.setProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA, defaultSchema != null);
+			model.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, defaultSchema);
 		}
 	}
 
