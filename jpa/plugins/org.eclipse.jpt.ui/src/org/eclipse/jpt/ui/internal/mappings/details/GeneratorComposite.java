@@ -231,9 +231,6 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 				if (value.length() == 0) {
 					value = null;
 				}
-				if (subject.isVirtual()) {
-					return;
-				}
 				subject.setName(value);
 			}
 		};

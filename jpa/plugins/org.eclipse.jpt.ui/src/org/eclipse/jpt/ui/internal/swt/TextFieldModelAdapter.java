@@ -55,7 +55,14 @@ public class TextFieldModelAdapter {
 	 */
 	protected final DisposeListener textFieldDisposeListener;
 
-
+	/**
+	 * Flag to prevent setting the model during text field population.
+	 * This can be a problem for virtual model objects where we never
+	 * want to call the setter and can't depend on the setter change
+	 * notification to stop the notification cycle.
+	 */
+	protected boolean populating;
+	
 	// ********** static methods **********
 
 	/**
@@ -95,7 +102,7 @@ public class TextFieldModelAdapter {
 		this.textField.addDisposeListener(this.textFieldDisposeListener);
 
 		String text = textHolder.getValue();
-		this.textField.setText((text == null) ? "" : text);
+		setText((text == null) ? "" : text);
 	}
 
 
@@ -154,14 +161,26 @@ public class TextFieldModelAdapter {
 			text = "";
 		}
 		if ( ! text.equals(this.textField.getText())) {  // ???
-			this.textField.setText(text);
+			setText(text);
 		}
 	}
 
+	protected void setText(String text) {
+		this.populating = true;
+		try {
+			this.textField.setText(text);
+		}
+		finally {
+			this.populating = false;
+		}
+	}
 
 	// ********** text field events **********
 
 	protected void textFieldModified(ModifyEvent event) {
+		if (this.populating) {
+			return;
+		}
 		this.textHolder.setValue(this.textField.getText());
 	}
 
