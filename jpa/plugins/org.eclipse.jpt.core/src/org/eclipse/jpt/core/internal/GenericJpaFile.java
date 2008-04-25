@@ -106,9 +106,10 @@ public class GenericJpaFile extends AbstractJpaNode implements JpaFile
 	public void dispose() {
 		getResourceModel().dispose();
 		
-		//no need to call dispose on the rootStructureNodes or to fire change notification here,
-		//the jpaFile is in the process of being removed.
-		this.rootStructureNodes.clear();
+		Set<Object> keys = this.rootStructureNodes.keySet();
+		for (Object key : keys) {
+			removeRootStructureNode(key);
+		}
 	}
 	
 	public void javaElementChanged(ElementChangedEvent event) {

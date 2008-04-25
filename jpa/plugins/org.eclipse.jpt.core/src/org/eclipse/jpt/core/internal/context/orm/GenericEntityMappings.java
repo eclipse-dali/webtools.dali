@@ -838,13 +838,19 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	public void dispose() {
-		JpaFile jpaFile = getJpaFile(this.xmlEntityMappings.getResource().getResourceModel());
-		
-		if (jpaFile != null) {
-			//jpaFile can be null if the orm.xml file was deleted
+		if (this.xmlEntityMappings.getResource() != null) {
+			//the resource is null if the orm.xml file was deleted
 			//rootStructureNodes are cleared in the dispose of JpaFile
-			jpaFile.removeRootStructureNode(getMappingFileName());
+			JpaFile jpaFile = getJpaFile(this.xmlEntityMappings.getResource().getResourceModel());
+		
+			if (jpaFile != null) {
+				//yes, this can also be null, seems that sometimes the resource is null and
+				//something it is not yet null, but we will have no jpaFile for it after a delete.
+				jpaFile.removeRootStructureNode(getMappingFileName());
+			}
 		}
+		//still need to dispose these even in the case of a file being deleted.  
+		//JpaFile.dispose() just removes the root structure nodes for this file, not other files (java files)
 		for (OrmPersistentType  ormPersistentType : CollectionTools.iterable(ormPersistentTypes())) {
 			ormPersistentType.dispose();
 		}
