@@ -5,7 +5,7 @@ Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.utility.tests
 Bundle-Version: 1.2.0
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.jpt.utility,
+Require-Bundle: org.eclipse.jpt.utility;bundle-version="[1.2.0,2.0.0)",
  org.junit;bundle-version="[3.0.0,4.0.0)"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.eclipse.jpt.utility.tests.internal;x-internal:=true,
