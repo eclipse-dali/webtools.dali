@@ -260,6 +260,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 				IdMapping.GENERATED_VALUE_PROPERTY,
 				generatedValuePropertyChangeListener
 			);
+			disengageListeners(subject.getGeneratedValue());
 		}
 	}
 
@@ -301,6 +302,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 		super.engageListeners(subject);
 
 		if (subject != null) {
+			engageListeners(subject.getGeneratedValue());
 			subject.addPropertyChangeListener(
 				IdMapping.GENERATED_VALUE_PROPERTY,
 				generatedValuePropertyChangeListener
