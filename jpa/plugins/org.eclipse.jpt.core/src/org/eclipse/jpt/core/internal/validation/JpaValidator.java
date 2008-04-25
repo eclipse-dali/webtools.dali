@@ -137,11 +137,14 @@ public class JpaValidator implements IValidatorJob {
 
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
-			try {
-				IMarker[] markers = this.jpaProject.getProject().findMarkers(JptCorePlugin.VALIDATION_MARKER_ID, true, IResource.DEPTH_INFINITE);
-				ResourcesPlugin.getWorkspace().deleteMarkers(markers);
-			} catch (CoreException ex) {
-				JptCorePlugin.log(ex);  // not much else we can do
+			IProject project = this.jpaProject.getProject();
+			if (project.isOpen()) {//no need to remove markers if project has been closed
+				try {
+					IMarker[] markers = project.findMarkers(JptCorePlugin.VALIDATION_MARKER_ID, true, IResource.DEPTH_INFINITE);
+					ResourcesPlugin.getWorkspace().deleteMarkers(markers);
+				} catch (CoreException ex) {
+					JptCorePlugin.log(ex);  // not much else we can do
+				}
 			}
 			return Status.OK_STATUS;
 		}
