@@ -14,13 +14,17 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.OneToOneMapping;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
@@ -29,6 +33,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapping<XmlOneToOne>
@@ -130,13 +135,10 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 	}
 
 	public TextRange getMappedByTextRange() {
-		return null;
-//		if (node == null) {
-//			return typeMapping().validationTextRange();
-//		}
-//		IDOMNode mappedByNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.MAPPED_BY);
-//		return (mappedByNode == null) ? validationTextRange() : buildTextRange(mappedByNode);
+		TextRange mappedByTextRange = getAttributeMapping().getMappedByTextRange();
+		return mappedByTextRange != null ? mappedByTextRange : getValidationTextRange();
 	}
+
 
 	public int getXmlSequence() {
 		return 5;
@@ -164,6 +166,18 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 			typeMapping.setAttributes(null);
 		}
 	}	
+
+	
+	//***************** Validation ***********************************
+	
+	@Override
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
+		
+		if (this.getMappedBy() != null) {
+			addMappedByMessages(messages);
+		}
+	}
 	
 	@Override
 	protected boolean addJoinColumnMessages() {
@@ -171,6 +185,57 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 			return false;
 		}
 		return super.addJoinColumnMessages();
+	}
+	
+	protected void addMappedByMessages(List<IMessage> messages) {
+		String mappedBy = this.getMappedBy();
+		Entity targetEntity = this.getResolvedTargetEntity();
+		
+		if (targetEntity == null) {
+			// already have validation messages for that
+			return;
+		}
+		
+		PersistentAttribute attribute = targetEntity.getPersistentType().resolveAttribute(mappedBy);
+		
+		if (attribute == null) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
+						new String[] {mappedBy}, 
+						this, this.getMappedByTextRange())
+				);
+			return;
+		}
+		
+		if (! this.mappedByIsValid(attribute.getMapping())) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
+						new String[] {mappedBy}, 
+						this, this.getMappedByTextRange())
+				);
+			return;
+		}
+		
+		NonOwningMapping mappedByMapping;
+		try {
+			mappedByMapping = (NonOwningMapping) attribute.getMapping();
+		} catch (ClassCastException cce) {
+			// there is no error then
+			return;
+		}
+		
+		if (mappedByMapping.getMappedBy() != null) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
+						this, this.getMappedByTextRange())
+				);
+		}
 	}
 
 	@Override

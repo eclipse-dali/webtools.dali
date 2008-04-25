@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <!-- begin-user-doc -->
@@ -77,5 +78,7 @@ public interface XmlOneToOne extends XmlSingleRelationshipMapping
 	 * @generated
 	 */
 	EList<XmlPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
+	
+	TextRange getMappedByTextRange();
 
 } // OneToOne

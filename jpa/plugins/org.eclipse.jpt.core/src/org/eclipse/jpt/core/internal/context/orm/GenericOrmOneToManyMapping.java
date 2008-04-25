@@ -46,8 +46,7 @@ public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapp
 		return 4;
 	}
 
-	// ********** INonOwningMapping implementation **********
-	@Override
+	// ********** NonOwningMapping implementation **********
 	public boolean mappedByIsValid(AttributeMapping mappedByMapping) {
 		String mappedByKey = mappedByMapping.getKey();
 		return (mappedByKey == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);

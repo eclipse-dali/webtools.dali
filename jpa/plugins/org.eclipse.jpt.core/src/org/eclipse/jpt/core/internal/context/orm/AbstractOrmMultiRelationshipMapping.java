@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
-import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.MultiRelationshipMapping;
 import org.eclipse.jpt.core.context.NonOwningMapping;
@@ -244,12 +243,8 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 //	}
 	
 	public TextRange getMappedByTextRange() {
-		return getAttributeMapping().getMappedByTextRange();
-	}
-	
-	public boolean mappedByIsValid(AttributeMapping mappedByMapping) {
-		// TODO Auto-generated method stub
-		return false;
+		TextRange mappedByTextRange = getAttributeMapping().getMappedByTextRange();
+		return mappedByTextRange != null ? mappedByTextRange : getValidationTextRange();
 	}
 	
 	@Override
@@ -332,7 +327,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 			return;
 		}
 		
-		PersistentAttribute attribute = getResolvedTargetEntity().getPersistentType().getAttributeNamed(getMappedBy());
+		PersistentAttribute attribute = getResolvedTargetEntity().getPersistentType().resolveAttribute(getMappedBy());
 		
 		if (attribute == null) {
 			messages.add(

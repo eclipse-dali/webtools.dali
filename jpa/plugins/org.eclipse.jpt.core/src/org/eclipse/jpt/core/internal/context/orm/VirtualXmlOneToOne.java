@@ -145,4 +145,8 @@ public class VirtualXmlOneToOne extends AbstractJpaEObject implements XmlOneToOn
 	public TextRange getNameTextRange() {
 		return null;
 	}
+	
+	public TextRange getMappedByTextRange() {
+		return null;
+	}
 }
