@@ -10,9 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.wizards.orm;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
@@ -23,7 +21,6 @@ import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperti
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jst.j2ee.internal.plugin.J2EEUIMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -36,8 +33,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.common.componentcore.internal.operation.IArtifactEditOperationDataModelProperties;
-import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.internal.datamodel.ui.DataModelWizardPage;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
@@ -99,6 +94,7 @@ public class MappingFileWizardPage extends DataModelWizardPage
 		data.horizontalSpan = 1;
 		projectNameCombo.setLayoutData(data);
 		projectNameCombo.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				super.widgetSelected(e);
 				// update source folder
