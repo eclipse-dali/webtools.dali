@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.customization;
 
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -19,7 +20,10 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 public class EntityCustomizerProperties extends AbstractModel {
 
 	private Customization customization;
+	
 	private String entityName;
+	
+	private static final long serialVersionUID = 1L;
 
 	// ********** constructors **********
 	public EntityCustomizerProperties(Customization customization, String entityName) {
@@ -28,6 +32,7 @@ public class EntityCustomizerProperties extends AbstractModel {
 		this.entityName = entityName;
 	}
 
+	// ********** behavior **********
 	public boolean entityNameIsValid() {
 		return !StringTools.stringIsEmpty(this.entityName);
 	}
@@ -46,5 +51,9 @@ public class EntityCustomizerProperties extends AbstractModel {
 
 	public void setDescriptorCustomizer(String descriptorCustomizer) {
 		this.customization.setDescriptorCustomizer(descriptorCustomizer, this.entityName);
+	}
+
+	public JpaProject getJpaProject() {
+		return this.customization.getJpaProject();
 	}
 }

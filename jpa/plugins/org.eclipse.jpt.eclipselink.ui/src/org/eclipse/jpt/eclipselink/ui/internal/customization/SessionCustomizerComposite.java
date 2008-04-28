@@ -9,10 +9,15 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.customization;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.eclipselink.ui.internal.JptEclipseLinkUiPlugin;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -72,16 +77,15 @@ public class SessionCustomizerComposite extends AbstractPane<Customization>
 
 			@Override
 			protected IPackageFragmentRoot packageFragmentRoot() {
-				//TODO
-//				IProject project = subject().getJpaProject().getProject();
-//				IJavaProject root = JavaCore.create(project);
-//
-//				try {
-//					return root.getAllPackageFragmentRoots()[0];
-//				}
-//				catch (JavaModelException e) {
-//					JptEclipseLinkUiPlugin.log(e);
-//				}
+				IProject project = subject().getJpaProject().getProject();
+				IJavaProject root = JavaCore.create(project);
+
+				try {
+					return root.getAllPackageFragmentRoots()[0];
+				}
+				catch (JavaModelException e) {
+					JptEclipseLinkUiPlugin.log(e);
+				}
 				return null;
 			}
 

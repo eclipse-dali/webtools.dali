@@ -38,6 +38,8 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	// key = Entity name ; value = Customizer properties
 	private Map<String, CustomizerProperties> entitiesCustomizerProperties;
 	
+	private static final long serialVersionUID = 1L;
+	
 	// ********** constructors **********
 	public EclipseLinkCustomization(PersistenceUnit parent, ListValueModel<Property> propertyListAdapter) {
 		super(parent, propertyListAdapter);

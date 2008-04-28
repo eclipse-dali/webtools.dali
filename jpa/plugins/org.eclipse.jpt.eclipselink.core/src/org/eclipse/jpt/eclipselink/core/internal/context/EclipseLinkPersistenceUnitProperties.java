@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.utility.internal.ClassTools;
@@ -35,6 +36,8 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	// key = EclipseLink property key; value = property id
 	private Map<String, String> propertyNames;
 
+	private static final long serialVersionUID = 1L;
+	
 	// ********** constructors / initialization **********
 	protected EclipseLinkPersistenceUnitProperties(
 			PersistenceUnit parent, 
@@ -67,8 +70,11 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 
 	// ********** behavior **********
 	protected PersistenceUnit persistenceUnit() {
-		PersistenceUnit pu = this.persistenceUnit;
-		return pu;
+		return this.persistenceUnit;
+	}
+	
+	public JpaProject getJpaProject() {
+		return this.persistenceUnit.getJpaProject();
 	}
 
 	public PersistenceUnitPropertyListListener propertyListListener() {

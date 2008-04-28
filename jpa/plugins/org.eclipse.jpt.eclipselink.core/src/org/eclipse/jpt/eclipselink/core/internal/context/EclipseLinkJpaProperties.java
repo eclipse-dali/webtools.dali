@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context;
 
 import java.util.ListIterator;
 
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
@@ -51,6 +52,8 @@ public class EclipseLinkJpaProperties extends AbstractModel
 	private ListValueModel<Property> propertiesAdapter;
 	private ListValueModel<Property> propertyListAdapter;
 
+	private static final long serialVersionUID = 1L;
+	
 	// ********** constructors/initialization **********
 	public EclipseLinkJpaProperties(PersistenceUnit parent) {
 		super();
@@ -150,6 +153,10 @@ public class EclipseLinkJpaProperties extends AbstractModel
 
 	public PersistenceUnit persistenceUnit() {
 		return this.persistenceUnit;
+	}
+	
+	public JpaProject getJpaProject() {
+		return this.persistenceUnit.getJpaProject();
 	}
 
 	public boolean itemIsProperty(Property item) {
