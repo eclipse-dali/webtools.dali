@@ -241,7 +241,13 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 		this.verifyModelInitialized(
 			LOGGER_KEY,
 			this.getEclipseLinkStringValueOf(LOGGER_TEST_VALUE)); // model is storing EclipseLinkStringValue
+		// verify set enum value
 		this.verifySetProperty(
+			LOGGER_KEY,
+			LOGGER_TEST_VALUE,
+			LOGGER_TEST_VALUE_2);
+		// verify set custom and literal value
+		this.verifySetLogger(
 			LOGGER_KEY,
 			LOGGER_TEST_VALUE,
 			LOGGER_TEST_VALUE_2);
@@ -252,6 +258,36 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 			LOGGER_KEY,
 			LOGGER_TEST_VALUE,
 			LOGGER_TEST_VALUE_2);
+	}
+	
+	/**
+	 * Verifies setting custom logger and literals.
+	 */
+	protected void verifySetLogger(String elKey, Object testValue1, Object testValue2) throws Exception {
+		Property property = this.persistenceUnit().getProperty(elKey);
+		String propertyName = this.model().propertyIdFor(property);
+		// test set custom logger.
+		this.clearEvent();
+		this.setProperty(propertyName, testValue2);
+		this.verifyPutProperty(propertyName, testValue2);
+
+		// test set (Logger) null
+		this.clearEvent();
+		this.logging.setLogger((Logger) null);
+		assertFalse(this.persistenceUnit().containsProperty(elKey));
+		this.verifyPutProperty(propertyName, null);
+		
+		// test set enum literal
+		this.clearEvent();
+		this.setProperty(propertyName, testValue1.toString());
+		assertTrue(this.persistenceUnit().containsProperty(elKey));
+		this.verifyPutProperty(propertyName, this.getEclipseLinkStringValueOf(testValue1));
+
+		// test set (String) null
+		this.clearEvent();
+		this.logging.setLogger((String) null);
+		assertFalse(this.persistenceUnit().containsProperty(elKey));
+		this.verifyPutProperty(propertyName, null);
 	}
 
 	// ********** get/set property **********
@@ -269,8 +305,12 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 			this.logging.setExceptions((Boolean) newValue);
 		else if (propertyName.equals(Logging.LOG_FILE_LOCATION_PROPERTY))
 			this.logging.setLogFileLocation((String) newValue);
-		else if (propertyName.equals(Logging.LOGGER_PROPERTY))
-			this.logging.setLogger((Logger) newValue);
+		else if (propertyName.equals(Logging.LOGGER_PROPERTY)) {
+			if (newValue.getClass().isEnum())
+				this.logging.setLogger((Logger) newValue);
+			else
+				this.logging.setLogger((String) newValue);
+		}
 		else
 			this.throwMissingDefinition("setProperty", propertyName);
 	}

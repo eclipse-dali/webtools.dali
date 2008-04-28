@@ -287,22 +287,41 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 		return this.logger;
 	}
 
+	/**
+	 * Sets EclipseLink logger.
+	 * 
+	 * @param newLogger - Logger
+	 */
 	public void setLogger(Logger newLogger) {
 		if( newLogger == null) {
-			this.setLogger((String) null);
+			this.setLogger_((String) null);
+			return;
+		}
+		this.setLogger_(getEclipseLinkStringValueOf(newLogger));
+	}
+
+	/**
+	 * Sets EclipseLink logger or custom logger.
+	 * 
+	 * @param newLogger -
+	 *            Can be a EclipseLink logger literal or
+	 *            a fully qualified class name of a custom logger.
+	 */
+	public void setLogger(String newLogger) {
+		if( newLogger == null) {
+			this.setLogger_((String) null);
+			return;
+		}
+		Logger logger = Logger.getLoggerFor(newLogger);
+		if(logger == null) {	// custom Logger class
+			this.setLogger_(newLogger);
 		}
 		else {
-			this.setLogger(getEclipseLinkStringValueOf(newLogger));
+			this.setLogger(logger);
 		}
 	}
 	
-	/**
-	 * Sets custom logger.
-	 * 
-	 * @param newLogger -
-	 *            Fully qualified class name of a custom logger.
-	 */
-	public void setLogger(String newLogger) {
+	private void setLogger_(String newLogger) {
 		String old = this.logger;
 		this.logger = newLogger;
 		this.putProperty(LOGGER_PROPERTY, newLogger);

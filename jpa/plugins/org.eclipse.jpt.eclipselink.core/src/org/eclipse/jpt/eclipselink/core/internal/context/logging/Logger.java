@@ -18,7 +18,20 @@ public enum Logger {
 			server_logger;
 	
 	// EclipseLink value string
-	static final String DEFAULT_LOGGER = "DefaultLogger";
-	static final String JAVA_LOGGER = "JavaLogger";
-	static final String SERVER_LOGGER = "ServerLogger";
+	public static final String DEFAULT_LOGGER = "DefaultLogger";
+	public static final String JAVA_LOGGER = "JavaLogger";
+	public static final String SERVER_LOGGER = "ServerLogger";
+	
+	/**
+	 * Return the Logger value corresponding to the given literal.
+	 */
+	public static Logger getLoggerFor(String literal) {
+		
+		for( Logger logger : Logger.values()) {
+			if(logger.toString().equals(literal)) {
+				return logger;
+			}
+		}
+		return null;
+	}
 }
