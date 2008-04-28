@@ -85,11 +85,11 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 		if (propertyName.equals(SOURCE_FOLDER)) {
 			IFolder sourceFolder = getDefaultSourceFolder();
 			if (sourceFolder != null && sourceFolder.exists()) {
-				return sourceFolder.getFullPath().toOSString();
+				return sourceFolder.getFullPath().toPortableString();
 			}
 		}
 		else if (propertyName.equals(FILE_PATH)) {
-			return new Path(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH).toOSString();
+			return new Path(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH).toPortableString();
 		}
 		else if (propertyName.equals(DEFAULT_ACCESS)) {
 			return null;

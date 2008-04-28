@@ -122,6 +122,9 @@ public class JptUiMessages extends NLS {
 	public static String MappingFileWizardPage_accessLabel;
 	public static String MappingFileWizardPage_addToPersistenceUnitButton;
 	public static String MappingFileWizardPage_persistenceUnitLabel;
+	public static String MappingFileWizardPage_incorrectSourceFolderError;
+	public static String MappingFileWizardPage_accessLabel_sourceFolderDialogTitle;
+	public static String MappingFileWizardPage_accessLabel_sourceFolderDialogDesc;
 	public static String NewJpaProjectWizard_firstPage_description;
 	public static String NewJpaProjectWizard_firstPage_title;
 	public static String NewJpaProjectWizard_title;
