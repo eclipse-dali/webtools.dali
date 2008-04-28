@@ -24,6 +24,7 @@ import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.resource.orm.AccessType;
@@ -81,11 +82,17 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 		if (persistenceXml == null) {
 			throw new ExecutionException("Project does not have a persistence.xml file");
 		}
-		PersistenceUnit pUnit = persistenceXml.getPersistenceUnit();
-		if (pUnit == null || ! pUnitName.equals(pUnit.getName())) {
-			throw new ExecutionException("persistence.xml does not have persistence unit named \'" + pUnitName + "\'");
+		Persistence persistence = persistenceXml.getPersistence();
+		if (persistence == null) {
+			throw new ExecutionException("persistence.xml does not have a persistence node.");
 		}
-		return pUnit;
+		for (Iterator<PersistenceUnit> stream = persistence.persistenceUnits(); stream.hasNext(); ) {
+			PersistenceUnit pUnit = stream.next();
+			if (pUnitName.equals(pUnit.getName())) {
+				return pUnit;
+			}
+		}
+		throw new ExecutionException("persistence.xml does not have persistence unit named \'" + pUnitName + "\'");
 	}
 	
 	/**
@@ -148,7 +155,7 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 			}
 		}
 		MappingFileRef mfRef = pUnit.addSpecifiedMappingFileRef();
-		mfRef.setFileName(filePath);
+		mfRef.setFileName(new Path(filePath).toPortableString());
 		
 		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForWrite(getProject());
 		pae.getResource((IFile) pUnit.getResource());

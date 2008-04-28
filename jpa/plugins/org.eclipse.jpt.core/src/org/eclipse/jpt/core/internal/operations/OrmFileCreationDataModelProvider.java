@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.operations;
 
+import java.util.Iterator;
 import java.util.Set;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -28,12 +30,18 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.resource.orm.AccessType;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelProvider;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelPropertyDescriptor;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
+import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 
 public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	implements OrmFileCreationDataModelProperties
@@ -62,6 +70,14 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 		propertyNames.add(ADD_TO_PERSISTENCE_UNIT);
 		propertyNames.add(PERSISTENCE_UNIT);
 		return propertyNames;
+	}
+	
+	@Override
+	public boolean isPropertyEnabled(String propertyName) {
+		if (propertyName.equals(PERSISTENCE_UNIT)) {
+			return getBooleanProperty(ADD_TO_PERSISTENCE_UNIT);
+		}
+		return super.isPropertyEnabled(propertyName);
 	}
 	
 	@Override
@@ -95,6 +111,11 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 		boolean ok = super.propertySet(propertyName, propertyValue);
 		if (propertyName.equals(PROJECT_NAME)) {
 			this.model.notifyPropertyChange(SOURCE_FOLDER, IDataModel.DEFAULT_CHG);
+			this.model.notifyPropertyChange(PERSISTENCE_UNIT, IDataModel.DEFAULT_CHG);
+			this.model.notifyPropertyChange(PERSISTENCE_UNIT, IDataModel.VALID_VALUES_CHG);
+		}
+		else if (propertyName.equals(ADD_TO_PERSISTENCE_UNIT)) {
+			this.model.notifyPropertyChange(PERSISTENCE_UNIT, IDataModel.ENABLE_CHG);
 		}
 		return ok;
 	}
@@ -103,13 +124,51 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	public DataModelPropertyDescriptor[] getValidPropertyDescriptors(String propertyName) {
 		if (propertyName.equals(DEFAULT_ACCESS)) {
 			DataModelPropertyDescriptor[] accessTypes = new DataModelPropertyDescriptor[3];
-			accessTypes[0] = new DataModelPropertyDescriptor(null, JptCoreMessages.NONE);
-			accessTypes[1] = new DataModelPropertyDescriptor(AccessType.FIELD, AccessType.FIELD.getName());
-			accessTypes[2] = new DataModelPropertyDescriptor(AccessType.PROPERTY, AccessType.PROPERTY.getName());
+			accessTypes[0] = accessPropertyDescriptor(null);
+			accessTypes[1] = accessPropertyDescriptor(AccessType.FIELD);
+			accessTypes[2] = accessPropertyDescriptor(AccessType.PROPERTY);
 			return accessTypes;
 		}
+		else if (propertyName.equals(PERSISTENCE_UNIT)) {
+			return CollectionTools.array(
+				new TransformationIterator<String, DataModelPropertyDescriptor>(new CompositeIterator<String>(null, persistenceUnitNames())) {
+					@Override
+					protected DataModelPropertyDescriptor transform(String next) {
+						return persistenceUnitPropertyDescriptor(next);
+					}
+				},
+				new DataModelPropertyDescriptor[0]);
+				
+		}
+		return super.getValidPropertyDescriptors(propertyName);
+	}
+	
+	@Override
+	public DataModelPropertyDescriptor getPropertyDescriptor(String propertyName) {
+		if (propertyName.equals(DEFAULT_ACCESS)) {
+			return accessPropertyDescriptor((AccessType) getProperty(DEFAULT_ACCESS)); 
+		}
+		else if (propertyName.equals(PERSISTENCE_UNIT)) {
+			return persistenceUnitPropertyDescriptor(getStringProperty(PERSISTENCE_UNIT));
+		}
+		return super.getPropertyDescriptor(propertyName);
+	}
+	
+	private DataModelPropertyDescriptor accessPropertyDescriptor(AccessType accessType) {
+		if (accessType == null) {
+			return new DataModelPropertyDescriptor(null, JptCoreMessages.NONE);
+		}
 		else {
-			return super.getValidPropertyDescriptors(propertyName);
+			return new DataModelPropertyDescriptor(accessType, accessType.getName());
+		}
+	}
+	
+	private DataModelPropertyDescriptor persistenceUnitPropertyDescriptor(String persistenceUnitName) {
+		if (StringTools.stringIsEmpty(persistenceUnitName)) {
+			return new DataModelPropertyDescriptor(null, JptCoreMessages.NONE);
+		}
+		else {
+			return new DataModelPropertyDescriptor(persistenceUnitName);
 		}
 	}
 	
@@ -170,12 +229,18 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	
 	private IStatus validatePersistenceUnit() {
 		boolean addToPUnit = getBooleanProperty(ADD_TO_PERSISTENCE_UNIT);
+		String projectName = getStringProperty(PROJECT_NAME);
 		String pUnitName = getStringProperty(PERSISTENCE_UNIT);
 		if (addToPUnit) {
+			if (StringTools.stringIsEmpty(pUnitName)) {
+				return new Status(
+					IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
+					JptCoreMessages.bind(JptCoreMessages.VALIDATE_PERSISTENCE_UNIT_DOES_NOT_SPECIFIED, pUnitName));
+			}
 			if (getPersistenceUnit() == null) {
 				return new Status(
 					IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
-					JptCoreMessages.bind(JptCoreMessages.VALIDATE_PERSISTENCE_UNIT_DOES_NOT_EXIST, pUnitName));
+					JptCoreMessages.bind(JptCoreMessages.VALIDATE_PERSISTENCE_UNIT_NOT_IN_PROJECT, pUnitName, projectName));
 			}
 		}
 		return Status.OK_STATUS;
@@ -299,21 +364,63 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	
 	private PersistenceUnit getPersistenceUnit() {
 		String pUnitName = getStringProperty(PERSISTENCE_UNIT);
-		if (StringTools.stringIsEmpty(pUnitName)) {
-			return null;
+		JpaProject jpaProject = 
+			(StringTools.stringIsEmpty(pUnitName)) ? null : getJpaProject();
+		PersistenceXml persistenceXml = 
+			(jpaProject == null) ? null : jpaProject.getRootContext().getPersistenceXml();
+		Persistence persistence = 
+			(persistenceXml == null) ? null : persistenceXml.getPersistence();
+		if (persistence != null) {
+			for (Iterator<PersistenceUnit> stream = persistence.persistenceUnits(); stream.hasNext(); ) {
+				PersistenceUnit next = stream.next();
+				if (pUnitName.equals(next.getName())) {
+					return next;
+				}
+			}
 		}
-		JpaProject jpaProject = getJpaProject();
-		if (jpaProject == null) {
-			return null;
-		}
-		PersistenceXml persistenceXml = jpaProject.getRootContext().getPersistenceXml();
-		if (persistenceXml == null) {
-			return null;
-		}
-		PersistenceUnit pUnit = persistenceXml.getPersistenceUnit();
-		if (! pUnitName.equals(pUnit.getName())) {
-			return null;
-		}
-		return pUnit;
+		return null;
+	}
+	
+	private Iterator<IProject> jpaIProjects() {
+		return new FilteringIterator<IProject, IProject>(CollectionTools.iterator(ProjectUtilities.getAllProjects())) {
+			@Override
+			protected boolean accept(IProject project) {
+				try {
+					return FacetedProjectFramework.hasProjectFacet(project, JptCorePlugin.FACET_ID);
+				}
+				catch (CoreException ce) {
+					return false;
+				}
+			}
+		};
+	}
+	
+	private Iterator<PersistenceUnit> persistenceUnits() {
+		return new CompositeIterator<PersistenceUnit>(
+			new TransformationIterator<IProject, Iterator<PersistenceUnit>>(jpaIProjects()) {
+				@Override
+				protected Iterator<PersistenceUnit> transform(IProject jpaIProject) {
+					JpaProject jpaProject = JptCorePlugin.getJpaProject(jpaIProject);
+					PersistenceXml persistenceXml = 
+						(jpaProject == null) ? null : jpaProject.getRootContext().getPersistenceXml();
+					Persistence persistence = 
+						(persistenceXml == null) ? null : persistenceXml.getPersistence();
+					if (persistence == null) {
+						return EmptyIterator.instance();
+					}
+					else {
+						return persistence.persistenceUnits();
+					}
+				}
+			});
+	}
+	
+	private Iterator<String> persistenceUnitNames() {
+		return new TransformationIterator<PersistenceUnit, String>(persistenceUnits()) {
+			@Override
+			protected String transform(PersistenceUnit next) {
+				return next.getName();
+			}
+		};
 	}
 }

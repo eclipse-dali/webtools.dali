@@ -29,6 +29,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
@@ -133,7 +134,6 @@ public class MappingFileWizardPage extends DataModelWizardPage
 		data.horizontalSpan = 1;
 		filePathText.setLayoutData(data);
 		synchHelper.synchText(filePathText, FILE_PATH, null);
-		fillProjects();
 		new Label(composite, SWT.NONE);
 		
 		accessLabel = new Label(composite, SWT.NONE);
@@ -146,6 +146,7 @@ public class MappingFileWizardPage extends DataModelWizardPage
 		data.widthHint = 300;
 		data.horizontalSpan = 1;
 		accessCombo.setLayoutData(data);
+		synchHelper.synchCombo(accessCombo, DEFAULT_ACCESS, null);
 		new Label(composite, SWT.NONE);
 		
 		addToPersistenceUnitButton = new Button(composite, SWT.CHECK | SWT.BEGINNING);
@@ -153,6 +154,7 @@ public class MappingFileWizardPage extends DataModelWizardPage
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 3;
 		addToPersistenceUnitButton.setLayoutData(data);
+		synchHelper.synchCheckbox(addToPersistenceUnitButton, ADD_TO_PERSISTENCE_UNIT, null);
 		
 		persistenceUnitLabel = new Label(composite, SWT.NONE);
 		persistenceUnitLabel.setText(JptUiMessages.MappingFileWizardPage_persistenceUnitLabel); //$NON-NLS-1$
@@ -164,6 +166,20 @@ public class MappingFileWizardPage extends DataModelWizardPage
 		data.widthHint = 300;
 		data.horizontalSpan = 1;
 		persistenceUnitCombo.setLayoutData(data);
+		synchHelper.synchCombo(persistenceUnitCombo, PERSISTENCE_UNIT, null);
+		
+//		model.addListener(
+//			new IDataModelListener() {
+//				public void propertyChanged(final DataModelEvent event) {
+//					if (event.getPropertyName().equals(ADD_TO_PERSISTENCE_UNIT)) {
+//						Display.getCurrent().asyncExec(new Runnable() {
+//							public void run() {
+//								persistenceUnitCombo.setEnabled((Boolean) event.getProperty());
+//							}
+//						});
+//					}
+//				}
+//			});
 		new Label(composite, SWT.NONE);
 		
 //		classText.setFocus();

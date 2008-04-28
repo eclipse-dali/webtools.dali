@@ -34,7 +34,9 @@ public class JptCoreMessages extends NLS
 	
 	public static String VALIDATE_ORM_FILE_ALREADY_EXISTS;
 	
-	public static String VALIDATE_PERSISTENCE_UNIT_DOES_NOT_EXIST;
+	public static String VALIDATE_PERSISTENCE_UNIT_DOES_NOT_SPECIFIED;
+	
+	public static String VALIDATE_PERSISTENCE_UNIT_NOT_IN_PROJECT;
 	
 	public static String VALIDATE_PLATFORM_NOT_SPECIFIED;
 	
