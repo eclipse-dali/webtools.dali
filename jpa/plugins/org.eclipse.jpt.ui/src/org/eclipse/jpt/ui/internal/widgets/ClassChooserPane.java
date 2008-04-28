@@ -22,11 +22,8 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.model.Model;
-import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -85,8 +82,8 @@ public abstract class ClassChooserPane<T extends Model> extends AbstractChooserP
 		super(parentPane, subjectHolder, parent);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected final Runnable buildBrowseAction() {
@@ -97,20 +94,13 @@ public abstract class ClassChooserPane<T extends Model> extends AbstractChooserP
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected Control buildMainControl(Composite container) {
 
-		WritablePropertyValueModel<String> textHolder = buildTextHolder();
-
-		textHolder.addPropertyChangeListener(
-			PropertyValueModel.VALUE,
-			buildTextChangeListener()
-		);
-
-		Text text = buildText(container, textHolder);
+		Text text = buildText(container, buildTextHolder());
 
 		ControlContentAssistHelper.createTextContentAssistant(
 			text,
@@ -118,24 +108,6 @@ public abstract class ClassChooserPane<T extends Model> extends AbstractChooserP
 		);
 
 		return text;
-	}
-
-	private PropertyChangeListener buildTextChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(buildTextChangeListener_());
-	}
-
-	private PropertyChangeListener buildTextChangeListener_() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				if (subject() != null) {
-					IPackageFragmentRoot root = packageFragmentRoot();
-
-					if (root != null) {
-						javaTypeCompletionProcessor.setPackageFragment(root.getPackageFragment(""));
-					}
-				}
-			}
-		};
 	}
 
 	/**
@@ -196,8 +168,17 @@ public abstract class ClassChooserPane<T extends Model> extends AbstractChooserP
 	 */
 	protected abstract String className();
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void doPopulate() {
+		super.doPopulate();
+		updatePackageFragment();
+	}
+
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected void initialize() {
@@ -220,4 +201,18 @@ public abstract class ClassChooserPane<T extends Model> extends AbstractChooserP
 	 * prompt the user to select a class and set it.
 	 */
 	protected abstract void promptType();
+
+	private void updatePackageFragment() {
+
+		if (subject() != null) {
+			IPackageFragmentRoot root = packageFragmentRoot();
+
+			if (root != null) {
+				javaTypeCompletionProcessor.setPackageFragment(root.getPackageFragment(""));
+				return;
+			}
+		}
+
+		javaTypeCompletionProcessor.setPackageFragment(null);
+	}
 }
