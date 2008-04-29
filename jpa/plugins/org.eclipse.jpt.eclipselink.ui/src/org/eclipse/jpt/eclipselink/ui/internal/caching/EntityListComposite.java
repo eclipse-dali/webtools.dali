@@ -97,21 +97,6 @@ public class EntityListComposite extends AbstractPane<Caching>
 				addEntityFromDialog(listSelectionModel);
 			}
 
-			@Override
-			public boolean hasOptionalButton() {
-				return true;
-			}
-
-			@Override
-			public String optionalButtonText() {
-				return EclipseLinkUiMessages.CachingEntityListComposite_editButton;
-			}
-
-			@Override
-			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
-				editEntityFromDialog(listSelectionModel);
-			}
-
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				Caching caching = subject();
 				for (Object item : listSelectionModel.selectedValues()) {
@@ -128,22 +113,6 @@ public class EntityListComposite extends AbstractPane<Caching>
 
 		if (dialog.open() == Window.OK) {
 			String name = dialog.getSelectedName();
-			String entity = this.subject().addEntity(name);
-
-			listSelectionModel.setSelectedValue(entity);
-		}
-	}
-
-	private void editEntityFromDialog(ObjectListSelectionModel listSelectionModel) {
-
-		EntityCacheProperties entityCaching = (EntityCacheProperties) listSelectionModel.selectedValue();
-
-		EntityDialog dialog = new EntityDialog(shell(), jpaProject());
-		dialog.setSelectedName(entityCaching.getEntityName());
-
-		if (dialog.open() == Window.OK) {
-			String name = dialog.getSelectedName();
-			this.subject().removeEntity(entityCaching.getEntityName());
 			String entity = this.subject().addEntity(name);
 
 			listSelectionModel.setSelectedValue(entity);
@@ -180,8 +149,7 @@ public class EntityListComposite extends AbstractPane<Caching>
 
 	private ListValueModel<String> buildEntitiesListHolder() {
 		return new ListAspectAdapter<Caching, String>(
-				this.getSubjectHolder(), Caching.ENTITIES_LIST_PROPERTY) {
-
+					this.getSubjectHolder(), Caching.ENTITIES_LIST_PROPERTY) {
 			@Override
 			protected ListIterator<String> listIterator_() {
 				return this.subject.entities();

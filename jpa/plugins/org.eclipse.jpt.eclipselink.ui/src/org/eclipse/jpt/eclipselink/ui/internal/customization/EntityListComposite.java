@@ -97,21 +97,6 @@ public class EntityListComposite extends AbstractPane<Customization>
 				addEntityFromDialog(listSelectionModel);
 			}
 
-			@Override
-			public boolean hasOptionalButton() {
-				return true;
-			}
-
-			@Override
-			public String optionalButtonText() {
-				return EclipseLinkUiMessages.CustomizationEntityListComposite_editButton;
-			}
-
-			@Override
-			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
-				editEntityFromDialog(listSelectionModel);
-			}
-
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				 Customization customization = subject();
 				for (Object item : listSelectionModel.selectedValues()) {
@@ -124,26 +109,10 @@ public class EntityListComposite extends AbstractPane<Customization>
 
 	private void addEntityFromDialog(ObjectListSelectionModel listSelectionModel) {
 
-		EntityDialog dialog = new EntityDialog(getControl().getShell(), jpaProject());
+		EntityDialog dialog = new EntityDialog(getControl().getShell(), getJpaProject());
 
 		if (dialog.open() == Window.OK) {
 			String name = dialog.getSelectedName();
-			String entity = this.subject().addEntity(name);
-
-			listSelectionModel.setSelectedValue(entity);
-		}
-	}
-
-	private void editEntityFromDialog(ObjectListSelectionModel listSelectionModel) {
-
-		EntityCustomizerProperties entityCustomization = (EntityCustomizerProperties) listSelectionModel.selectedValue();
-
-		EntityDialog dialog = new EntityDialog(shell(), jpaProject());
-		dialog.setSelectedName(entityCustomization.getEntityName());
-
-		if (dialog.open() == Window.OK) {
-			String name = dialog.getSelectedName();
-			this.subject().removeEntity(entityCustomization.getEntityName());
 			String entity = this.subject().addEntity(name);
 
 			listSelectionModel.setSelectedValue(entity);
@@ -164,9 +133,8 @@ public class EntityListComposite extends AbstractPane<Customization>
 		return new SimplePropertyValueModel<EntityCustomizerProperties>();
 	}
 
-	private JpaProject jpaProject() {
-		// TODO
-		return null;
+	private JpaProject getJpaProject() {
+		return this.subject().getJpaProject();
 	}
 
 	private ListValueModel<EntityCustomizerProperties> buildEntityCustomizationListHolder() {
@@ -181,7 +149,6 @@ public class EntityListComposite extends AbstractPane<Customization>
 	private ListValueModel<String> buildEntitiesListHolder() {
 		return new ListAspectAdapter<Customization, String>(
 				this.getSubjectHolder(), Customization.ENTITIES_LIST_PROPERTY) {
-
 			@Override
 			protected ListIterator<String> listIterator_() {
 				return this.subject.entities();
