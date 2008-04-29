@@ -47,7 +47,8 @@ public class CustomizerComposite extends AbstractPane<EntityCustomizerProperties
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<EntityCustomizerProperties, String>(getSubjectHolder(), Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY) {
+				return new PropertyAspectAdapter<EntityCustomizerProperties, String>(
+							getSubjectHolder(), Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return subject.getDescriptorCustomizer();

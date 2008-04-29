@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.caching;
 
 import java.util.Collection;
+
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.CacheType;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -86,6 +87,5 @@ public class DefaultCacheTypeComposite extends AbstractFormPane<Caching>
 			this.buildDefaultCacheTypeCombo( container),
 			null		// TODO IJpaHelpContextIds.
 		);
-//		helpSystem().setHelp(this.defaultCacheTypeCombo.getControl(), IJpaHelpContextIds.CACHING_CACHE_TYPE);
 	}
 }
