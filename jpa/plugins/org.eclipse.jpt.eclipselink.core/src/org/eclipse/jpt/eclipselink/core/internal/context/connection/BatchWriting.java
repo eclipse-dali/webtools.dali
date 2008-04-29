@@ -22,5 +22,5 @@ public enum BatchWriting {
 	static final String NONE = "None";
 	static final String JDBC = "JDBC";
 	static final String BUFFERED = "Buffered";
-	static final String ORACLE_JDBC = "OracleJDBC";
+	static final String ORACLE_JDBC = "Oracle-JDBC";
 }
