@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.Entity;
@@ -22,6 +21,7 @@ import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -60,13 +60,25 @@ public class SecondaryTableDialog extends Dialog {
 	}
 
 	@Override
+	protected Point getInitialSize() {
+		Point size = super.getInitialSize();
+		size.x = convertWidthInCharsToPixels(50);
+		return size;
+	}
+
+	@Override
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setText(getTitle());
 	}
 
 	protected String getTitle() {
-		return JptUiMappingsMessages.SecondaryTableDialog_editSecondaryTable;
+		if (secondaryTable != null) {
+			return JptUiMappingsMessages.SecondaryTableDialog_editSecondaryTable;
+		}
+		else {
+			return JptUiMappingsMessages.SecondaryTableDialog_addSecondaryTable;
+		}
 	}
 
 	@Override

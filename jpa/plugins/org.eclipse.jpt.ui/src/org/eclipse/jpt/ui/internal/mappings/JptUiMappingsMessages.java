@@ -231,6 +231,7 @@ public class JptUiMappingsMessages extends NLS {
 	public static String QueryHintsComposite_nameColumn;
 	public static String QueryHintsComposite_valueColumn;
 	public static String SchemaChooser_label;
+	public static String SecondaryTableDialog_addSecondaryTable;
 	public static String SecondaryTableDialog_catalog;
 	public static String SecondaryTableDialog_defaultCatalog;
 	public static String SecondaryTableDialog_defaultSchema;
