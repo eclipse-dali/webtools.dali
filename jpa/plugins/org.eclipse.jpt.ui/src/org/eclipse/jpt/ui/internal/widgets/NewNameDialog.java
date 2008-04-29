@@ -88,6 +88,8 @@ public class NewNameDialog extends AbstractValidatingDialog<NewNameStateObject>
 
 		DialogPane pane = (DialogPane) pane();
 		pane.selectAll();
+
+		getButton(OK).setEnabled(false);
 	}
 
 	/*
