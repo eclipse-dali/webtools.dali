@@ -380,6 +380,13 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		return properties;
 	}
 
+	/**
+	 * Set all CustomizerProperties to default.
+	 */
+	private void clearCustomizerProperties(String entityName) {
+		this.setDescriptorCustomizer(null, entityName);
+	}
+
 	// ****** convenience methods *******
 	
 	private void putEntityCustomizerProperties(String entityName, CustomizerProperties properties) {
@@ -422,6 +429,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		if (!this.entitiesCustomizerProperties.containsKey(entity)) {
 			return;
 		}
+		this.clearCustomizerProperties(entity);
 		this.entitiesCustomizerProperties.remove(entity);
 		this.fireListChanged(ENTITIES_LIST_PROPERTY);
 	}
