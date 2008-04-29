@@ -26,6 +26,8 @@ public class JptCoreMessages extends NLS
 	
 	public static String VALIDATE_SOURCE_FOLDER_NOT_SPECIFIED;
 	
+	public static String VALIDATE_SOURCE_FOLDER_ILLEGAL;
+	
 	public static String VALIDATE_SOURCE_FOLDER_DOES_NOT_EXIST;
 	
 	public static String VALIDATE_SOURCE_FOLDER_NOT_IN_PROJECT;

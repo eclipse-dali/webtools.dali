@@ -202,17 +202,22 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
 				JptCoreMessages.VALIDATE_SOURCE_FOLDER_NOT_SPECIFIED);
 		}
+		if (sourceFolderIsIllegal(sourceFolderPath)) {
+			return new Status(
+				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
+				JptCoreMessages.VALIDATE_SOURCE_FOLDER_ILLEGAL);
+		}
+		if (sourceFolderNotInProject(sourceFolderPath)) {
+			return new Status(
+				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
+				JptCoreMessages.bind(
+					JptCoreMessages.VALIDATE_SOURCE_FOLDER_NOT_IN_PROJECT, 
+					sourceFolderPath, projectName));
+		}
 		if (getVerifiedSourceFolder() == null) {
 			return new Status(
 				IStatus.WARNING, JptCorePlugin.PLUGIN_ID,
 				JptCoreMessages.bind(JptCoreMessages.VALIDATE_SOURCE_FOLDER_DOES_NOT_EXIST, sourceFolderPath));
-		}
-		if (getVerifiedSourceFolder().getProject() != getProject()) {
-			return new Status(
-				IStatus.WARNING, JptCorePlugin.PLUGIN_ID,
-				JptCoreMessages.bind(
-					JptCoreMessages.VALIDATE_SOURCE_FOLDER_NOT_IN_PROJECT, 
-					sourceFolderPath, projectName));
 		}
 		if (getVerifiedJavaSourceFolder() == null) {
 			return new Status(
@@ -288,6 +293,41 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	}
 	
 	/**
+	 * Return whether the path provided can not be a valid IFolder path
+	 */
+	private boolean sourceFolderIsIllegal(String folderPath) {
+		IProject project = getProject();
+		if (project == null) {
+			return false;
+		}
+		try {
+			project.getWorkspace().getRoot().getFolder(new Path(folderPath));
+		}
+		catch (IllegalArgumentException e) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Return whether the path provided is in the current project
+	 */
+	private boolean sourceFolderNotInProject(String folderPath) {
+		IProject project = getProject();
+		if (project == null) {
+			return false;
+		}
+		IFolder folder;
+		try {
+			folder = project.getWorkspace().getRoot().getFolder(new Path(folderPath));
+		}
+		catch (IllegalArgumentException e) {
+			return false;
+		}
+		return ! project.equals(folder.getProject());
+	}
+	
+	/**
 	 * Return an IFolder represented by the SOURCE_FOLDER property, verified
 	 * to exist
 	 */
@@ -324,7 +364,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 			return null;
 		}
 		IPackageFragmentRoot packageFragmentRoot = jProject.getPackageFragmentRoot(folder);
-		if (packageFragmentRoot == null) {
+		if (packageFragmentRoot == null || ! packageFragmentRoot.exists()) {
 			return null;
 		}
 		return folder;
