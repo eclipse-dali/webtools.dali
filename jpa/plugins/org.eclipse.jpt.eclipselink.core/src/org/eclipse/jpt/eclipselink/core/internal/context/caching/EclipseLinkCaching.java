@@ -35,6 +35,8 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	// key = Entity name ; value = Cache properties
 	private Map<String, CacheProperties> entitiesCacheProperties;
 
+	private static final long serialVersionUID = 1L;
+	
 	// ********** constructors **********
 	public EclipseLinkCaching(PersistenceUnit parent, ListValueModel<Property> propertyListAdapter) {
 		super(parent, propertyListAdapter);
@@ -199,7 +201,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public CacheType getDefaultCacheType() {
-		return DEFAULT_CACHE_TYPE;
+		return (this.cacheTypeDefault == null) ? DEFAULT_CACHE_TYPE : this.cacheTypeDefault;
 	}
 
 	// ********** CacheSize **********
@@ -223,7 +225,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public Integer getDefaultCacheSize() {
-		return DEFAULT_CACHE_SIZE;
+		return (this.cacheSizeDefault == null) ? DEFAULT_CACHE_SIZE : this.cacheSizeDefault;
 	}
 
 	// ********** SharedCache **********
@@ -249,7 +251,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	}
 
 	public Boolean getDefaultSharedCache() {
-		return DEFAULT_SHARED_CACHE;
+		return (this.sharedCacheDefault == null) ? DEFAULT_SHARED_CACHE : this.sharedCacheDefault;
 	}
 
 	// ********** CacheTypeDefault **********
@@ -395,6 +397,15 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 		return properties;
 	}
 
+	/**
+	 * Set all CacheProperties to default.
+	 */
+	private void clearCacheProperties(String entityName) {
+		this.setCacheType(null, entityName);
+		this.setCacheSize(null, entityName);
+		this.setSharedCache(null, entityName);
+	}
+
 	// ****** convenience methods *******
 	
 	private void putEntityCacheProperties(String entityName, CacheProperties properties) {
@@ -428,7 +439,6 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	private CacheProperties replaceEntity_(String entity, CacheProperties properties) {
 		CacheProperties old = this.entitiesCacheProperties.get(entity);
 		this.entitiesCacheProperties.put(entity, properties);
-		// fire change ?
 		return old;
 	}
 
@@ -436,6 +446,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 		if (!this.entitiesCacheProperties.containsKey(entity)) {
 			return;
 		}
+		this.clearCacheProperties(entity);
 		this.entitiesCacheProperties.remove(entity);
 		this.fireListChanged(ENTITIES_LIST_PROPERTY);
 	}

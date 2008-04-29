@@ -238,12 +238,12 @@ public class CachingValueModelTests extends PersistenceUnitTestCase
 
 	/** ****** Tests ******* */
 	public void testValue() {
-		/** ****** CacheType ******* */
+		/** ****** CacheType - defaults for entity level caching are equal to the persistence unit settings ******* */
 		this.verifyCacheTypeAAValue(CACHE_TYPE_TEST_VALUE);
-		assertEquals(Caching.DEFAULT_CACHE_TYPE, this.caching.getDefaultCacheType());
-		/** ****** SharedCache ******* */
+		assertEquals(this.caching.getCacheTypeDefault(), this.caching.getDefaultCacheType());
+		/** ****** SharedCache - defaults for entity level caching are equal to the persistence unit settings ******* */
 		this.verifySharedCacheAAValue(SHARED_CACHE_TEST_VALUE);
-		assertEquals(Caching.DEFAULT_SHARED_CACHE, this.caching.getDefaultSharedCache());
+		assertEquals(this.caching.getSharedCacheDefault(), this.caching.getDefaultSharedCache());
 		/** ****** CacheTypeDefault ******* */
 		this.verifyCacheTypeDefaultAAValue(CACHE_TYPE_DEFAULT_TEST_VALUE);
 		assertEquals(Caching.DEFAULT_CACHE_TYPE_DEFAULT, this.caching.getDefaultCacheTypeDefault());
