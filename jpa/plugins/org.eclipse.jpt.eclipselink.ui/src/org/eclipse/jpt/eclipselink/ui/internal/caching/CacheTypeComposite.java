@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.ui.internal.caching;
 import java.util.Collection;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.CacheType;
-import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
@@ -42,14 +41,14 @@ public class CacheTypeComposite extends AbstractPane<EntityCacheProperties>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Caching.CACHE_TYPE_PROPERTY);
+				propertyNames.add(EntityCacheProperties.CACHE_TYPE_PROPERTY);
 			}
 
 			@Override
 			protected CacheType[] choices() {
 				return CacheType.values();
 			}
-			
+
 			@Override
 			protected boolean sortChoices() {
 				return false;

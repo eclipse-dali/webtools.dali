@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
+import java.util.Arrays;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
@@ -542,7 +543,25 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	 * @category Remove
 	 */
 	protected void removeItems() {
+
+		// Keep track of the selected indices so we can select an item
+		// before the lowest index
+		int[] indices = selectionModel.selectedIndices();
+		Arrays.sort(indices);
+
+		// Notify the adapter to remove the selected items
 		adapter.removeSelectedItems(selectionModel);
+
+		// Select a new item
+		if (getListHolder().size() > 0) {
+			int index = Math.min(indices[0], getListHolder().size() - 1);
+			Object item = getListHolder().get(index);
+			selectedItemHolder.setValue(item);
+		}
+		// The list is empty, clear the value
+		else {
+			selectedItemHolder.setValue(null);
+		}
 	}
 
 	/**

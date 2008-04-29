@@ -17,13 +17,18 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 /**
  * EntityCacheProperties
  */
+@SuppressWarnings("nls")
 public class EntityCacheProperties extends AbstractModel {
 
 	private Caching caching;
 	private String entityName;
 
 	private static final long serialVersionUID = 1L;
-	
+
+	public static final String CACHE_SIZE_PROPERTY = Caching.CACHE_SIZE_PROPERTY;
+	public static final String CACHE_TYPE_PROPERTY = Caching.CACHE_TYPE_PROPERTY;
+	public static final String SHARED_CACHE_PROPERTY = Caching.SHARED_CACHE_DEFAULT_PROPERTY;
+
 	// ********** constructors **********
 	public EntityCacheProperties(Caching caching, String entityName) {
 		super();
@@ -41,6 +46,10 @@ public class EntityCacheProperties extends AbstractModel {
 
 	public CacheType getCacheType() {
 		return this.caching.getCacheType(this.entityName);
+	}
+
+	public Caching getCaching() {
+		return caching;
 	}
 
 	public Integer getDefaultCacheSize() {
@@ -63,16 +72,22 @@ public class EntityCacheProperties extends AbstractModel {
 		return this.caching.getDefaultSharedCache();
 	}
 
-	public void setCacheSize(Integer cachingSize) {
-		this.caching.setCacheSize(cachingSize, this.entityName);
+	public void setCacheSize(Integer cacheSize) {
+		Integer oldCacheSize = this.getCacheSize();
+		this.caching.setCacheSize(cacheSize, this.entityName);
+		this.firePropertyChanged(CACHE_SIZE_PROPERTY, oldCacheSize, cacheSize);
 	}
 
 	public void setCacheType(CacheType cacheType) {
+		CacheType oldCacheType = this.getCacheType();
 		this.caching.setCacheType(cacheType, this.entityName);
+		this.firePropertyChanged(CACHE_TYPE_PROPERTY, oldCacheType, cacheType);
 	}
 
 	public void setSharedCache(Boolean sharedCache) {
+		Boolean oldSharedCache = this.getSharedCache();
 		this.caching.setSharedCache(sharedCache, this.entityName);
+		this.firePropertyChanged(SHARED_CACHE_PROPERTY, oldSharedCache, sharedCache);
 	}
 
 	@Override
@@ -85,6 +100,7 @@ public class EntityCacheProperties extends AbstractModel {
 		return sb.toString();
 	}
 
+	@Override
 	public void toString(StringBuilder sb) {
 		sb.append("name: ");
 		sb.append(this.entityName);

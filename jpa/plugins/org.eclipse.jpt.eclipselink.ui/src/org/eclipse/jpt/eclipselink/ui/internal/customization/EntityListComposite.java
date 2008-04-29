@@ -21,6 +21,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.EntityDialog;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModelAdapter;
@@ -36,9 +37,17 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class EntityListComposite extends AbstractPane<Customization>
 {
+	private WritablePropertyValueModel<EntityCustomizerProperties> entityHolder;
+
 	public EntityListComposite(AbstractPane<Customization> parentComposite, Composite parent) {
 
 		super(parentComposite, parent);
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+		entityHolder = this.buildEntityHolder();
 	}
 
 	@Override
@@ -49,10 +58,8 @@ public class EntityListComposite extends AbstractPane<Customization>
 			EclipseLinkUiMessages.CustomizationEntityListComposite_groupTitle
 		);
 
-		WritablePropertyValueModel<EntityCustomizerProperties> entityHolder = this.buildEntityHolder();
-
 		// Entities add/remove list pane
-		AddRemoveListPane<Customization> listPane = new AddRemoveListPane<Customization>(
+		new AddRemoveListPane<Customization>(
 			this,
 			container,
 			this.buildEntitiesAdapter(),
@@ -98,7 +105,8 @@ public class EntityListComposite extends AbstractPane<Customization>
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				 Customization customization = subject();
+				Customization customization = subject();
+
 				for (Object item : listSelectionModel.selectedValues()) {
 					EntityCustomizerProperties entityCustomization = (EntityCustomizerProperties) item;
 					customization.removeEntity(entityCustomization.getEntityName());
@@ -113,9 +121,11 @@ public class EntityListComposite extends AbstractPane<Customization>
 
 		if (dialog.open() == Window.OK) {
 			String name = dialog.getSelectedName();
-			String entity = this.subject().addEntity(name);
+			this.subject().addEntity(name);
 
-			listSelectionModel.setSelectedValue(entity);
+			int index = CollectionTools.indexOf(this.subject().entities(), name);
+			EntityCustomizerProperties item = (EntityCustomizerProperties) listSelectionModel.getListModel().getElementAt(index);
+			entityHolder.setValue(item);
 		}
 	}
 
