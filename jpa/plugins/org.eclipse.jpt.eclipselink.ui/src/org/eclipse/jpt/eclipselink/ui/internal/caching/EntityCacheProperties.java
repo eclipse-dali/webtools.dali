@@ -22,6 +22,8 @@ public class EntityCacheProperties extends AbstractModel {
 	private Caching caching;
 	private String entityName;
 
+	private static final long serialVersionUID = 1L;
+	
 	// ********** constructors **********
 	public EntityCacheProperties(Caching caching, String entityName) {
 		super();
@@ -57,7 +59,7 @@ public class EntityCacheProperties extends AbstractModel {
 		return this.caching.getSharedCache(this.entityName);
 	}
 
-	public Boolean getSharedCacheDefault() {
+	public Boolean getDefaultSharedCache() {
 		return this.caching.getDefaultSharedCache();
 	}
 
@@ -71,5 +73,26 @@ public class EntityCacheProperties extends AbstractModel {
 
 	public void setSharedCache(Boolean sharedCache) {
 		this.caching.setSharedCache(sharedCache, this.entityName);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		StringTools.buildSimpleToStringOn(this, sb);
+		sb.append(" (");
+		this.toString(sb);
+		sb.append(')');
+		return sb.toString();
+	}
+
+	public void toString(StringBuilder sb) {
+		sb.append("name: ");
+		sb.append(this.entityName);
+		sb.append(", type: ");
+		sb.append(this.getCacheType());
+		sb.append(", size: ");
+		sb.append(this.getCacheSize());
+		sb.append(", isShared: ");
+		sb.append(this.getSharedCache());
 	}
 }

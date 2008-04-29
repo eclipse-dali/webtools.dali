@@ -40,7 +40,8 @@ public class SharedCacheComposite extends AbstractPane<EntityCacheProperties>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildSharedCacheHolder() {
-		return new PropertyAspectAdapter<EntityCacheProperties, Boolean>(getSubjectHolder(), Caching.SHARED_CACHE_PROPERTY) {
+		return new PropertyAspectAdapter<EntityCacheProperties, Boolean>(
+					getSubjectHolder(), Caching.SHARED_CACHE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSharedCache();
@@ -70,7 +71,7 @@ public class SharedCacheComposite extends AbstractPane<EntityCacheProperties>
 			@Override
 			protected String transform(Boolean value) {
 				if ((subject() != null) && (value == null)) {
-					Boolean defaultValue = subject().getSharedCacheDefault();
+					Boolean defaultValue = subject().getDefaultSharedCache();
 					if (defaultValue != null) {
 						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
 						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCachingTab_defaultSharedCacheLabel, defaultStringValue);
