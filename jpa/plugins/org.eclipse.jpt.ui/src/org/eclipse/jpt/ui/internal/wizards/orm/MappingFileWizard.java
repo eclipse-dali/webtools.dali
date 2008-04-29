@@ -19,6 +19,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
@@ -43,7 +44,7 @@ public class MappingFileWizard extends DataModelWizard
 	public MappingFileWizard(IDataModel dataModel) {
 		super(dataModel);
 		setWindowTitle(JptUiMessages.MappingFileWizard_title);
-		//setDefaultPageImageDescriptor(JptUiPlugin.getImageDescriptor(JptUiIcons.JPA_WIZ_BANNER));
+		setDefaultPageImageDescriptor(JptUiPlugin.getImageDescriptor(JptUiIcons.JPA_FILE_WIZ_BANNER));
 	}
 	
 	

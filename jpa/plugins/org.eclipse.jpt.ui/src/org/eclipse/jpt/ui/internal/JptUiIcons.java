@@ -26,15 +26,23 @@ public class JptUiIcons
 
 
 	// **************** General JPA icons **************************************
-
-	public static final String JPA_WIZ_BANNER = "full/wizban/jpa_facet_wizban"; //$NON-NLS-1$
-
+	
 	public static final String JPA_CONTENT = "full/obj16/jpa-content";  //$NON-NLS-1$
-
+	
 	public static final String JPA_FILE = "full/obj16/jpa-file";  //$NON-NLS-1$
-
+	
 	public static final String WARNING = "full/obj16/warning";  //$NON-NLS-1$
-
+	
+	
+	// **************** Wizard icons *******************************************
+	
+	public static final String JPA_WIZ_BANNER = "full/wizban/jpa_facet_wizban"; //$NON-NLS-1$
+	
+	public static final String ENTITY_WIZ_BANNER = "full/wizban/new_entity_wizban"; //$NON-NLS-1$
+	
+	public static final String JPA_FILE_WIZ_BANNER = "full/wizban/new_jpa_file_wizban"; //$NON-NLS-1$
+	
+	
 	// **************** Persistence icons **************************************
 
 	public static final String PERSISTENCE = "full/obj16/persistence";  //$NON-NLS-1$

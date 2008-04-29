@@ -12,7 +12,6 @@
 package org.eclipse.jpt.ui.internal.wizards.entity;
 
 import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IJavaProject;
@@ -46,7 +45,7 @@ public class EntityWizard extends DataModelWizard implements INewWizard {
     public EntityWizard(IDataModel model) {
 		super(model);
         setWindowTitle(EntityWizardMsg.ENTITY_WIZARD_TITLE);
-        setDefaultPageImageDescriptor(JptUiPlugin.getImageDescriptor(JptUiIcons.JPA_WIZ_BANNER));        
+        setDefaultPageImageDescriptor(JptUiPlugin.getImageDescriptor(JptUiIcons.ENTITY_WIZ_BANNER));        
 	}    
  
 	/**
