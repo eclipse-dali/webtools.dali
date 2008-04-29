@@ -46,11 +46,10 @@ public class CacheSizeComposite extends AbstractPane<EntityCacheProperties>
 	}
 
 	private WritablePropertyValueModel<Integer> buildCacheSizeHolder() {
-		return new PropertyAspectAdapter<EntityCacheProperties, Integer>(getSubjectHolder(), Caching.CACHE_SIZE_PROPERTY) {
+		return new PropertyAspectAdapter<EntityCacheProperties, Integer>(getSubjectHolder(), EntityCacheProperties.CACHE_SIZE_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
 				Integer value = subject.getCacheSize();
-
 				if (value == null) {
 					value = -1;
 				}
@@ -67,11 +66,24 @@ public class CacheSizeComposite extends AbstractPane<EntityCacheProperties>
 		};
 	}
 
-	private PropertyValueModel<Integer> buildDefaultCacheSizeHolder() {
-		return new TransformationPropertyValueModel<EntityCacheProperties, Integer>(getSubjectHolder()) {
+	private PropertyValueModel<Caching> buildCachingHolder() {
+		return new TransformationPropertyValueModel<EntityCacheProperties, Caching>(getSubjectHolder()) {
 			@Override
-			protected Integer transform_(EntityCacheProperties value) {
-				return value.getDefaultCacheSize();
+			protected Caching transform_(EntityCacheProperties value) {
+				return value.getCaching();
+			}
+		};
+	}
+
+	private PropertyValueModel<Integer> buildDefaultCacheSizeHolder() {
+		return new PropertyAspectAdapter<Caching, Integer>(buildCachingHolder(), Caching.CACHE_SIZE_DEFAULT_PROPERTY) {
+			@Override
+			protected Integer buildValue_() {
+				Integer value = subject.getCacheSizeDefault();
+				if (value == null) {
+					value = subject.getDefaultCacheSizeDefault();
+				}
+				return value;
 			}
 		};
 	}
