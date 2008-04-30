@@ -872,7 +872,6 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 	
 	public void testResolvedTargetEntity() throws Exception {
 		createTestEntityWithValidManyToOneMapping();
-		createTestTargetEntityAddress();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
@@ -882,6 +881,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		assertNull(manyToOneMapping.getResolvedTargetEntity());
 		
 		//add targetEntity to the persistence unit, now target entity should resolve
+		createTestTargetEntityAddress();
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		ListIterator<ClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		classRefs.next();

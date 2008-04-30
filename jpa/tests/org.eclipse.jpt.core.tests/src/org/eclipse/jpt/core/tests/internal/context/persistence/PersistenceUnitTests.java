@@ -636,10 +636,12 @@ public class PersistenceUnitTests extends ContextModelTestCase
 
 	public void testImpliedClassRefs() throws Exception {
 		createTestEntityWithPersistentInnerClass();
-		assertFalse(persistenceUnit().impliedClassRefs().hasNext());
+		ListIterator<ClassRef> classRefs = persistenceUnit().impliedClassRefs();
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, classRefs.next().getClassName());
+		assertEquals(FULLY_QUALIFIED_INNER_CLASS_NAME, classRefs.next().getClassName());
 		
 		jpaProject().setDiscoversAnnotatedClasses(true);
-		ListIterator<ClassRef> classRefs = persistenceUnit().impliedClassRefs();
+		classRefs = persistenceUnit().impliedClassRefs();
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, classRefs.next().getClassName());
 		assertEquals(FULLY_QUALIFIED_INNER_CLASS_NAME, classRefs.next().getClassName());
 		
@@ -1088,8 +1090,9 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		createTestEntity();
 		
 		//persistentType not listed in persistence.xml and discoverAnnotatedClasses is false
+		//still find the persistentType because of changes for bug 190317
 		assertFalse(jpaProject().discoversAnnotatedClasses());
-		assertNull(persistenceUnit.getPersistentType(FULLY_QUALIFIED_TYPE_NAME));
+		assertNotNull(persistenceUnit.getPersistentType(FULLY_QUALIFIED_TYPE_NAME));
 		
 		//test persistentType not listed in persistence.xml, discover annotated classes set to true
 		jpaProject().setDiscoversAnnotatedClasses(true);	

@@ -178,7 +178,6 @@ public class OrmJoinTableTests extends ContextModelTestCase
 	
 	public void testVirtualJoinTable() throws Exception {
 		createTestEntityWithValidManyToMany();
-		createTargetEntity();
 		
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 
@@ -187,8 +186,9 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();
 	
 		assertTrue(ormPersistentAttribute.isVirtual());
-		assertNull(ormJoinTable.getSpecifiedName());
+		assertEquals(null, ormJoinTable.getSpecifiedName());
 
+		createTargetEntity();
 		entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Project");
 
 		assertEquals(TYPE_NAME + "_Project", ormJoinTable.getSpecifiedName());
@@ -232,7 +232,6 @@ public class OrmJoinTableTests extends ContextModelTestCase
 	
 	public void testUpdateDefaultNameFromJavaTable() throws Exception {
 		createTestEntityWithValidManyToMany();
-		createTargetEntity();
 
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
@@ -240,8 +239,9 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		
 		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();
-		assertNull(ormJoinTable.getDefaultName());
+		assertEquals(null, ormJoinTable.getDefaultName());
 		
+		createTargetEntity();
 		OrmPersistentType targetPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Project");
 		assertEquals(TYPE_NAME + "_Project", ormJoinTable.getDefaultName());
 

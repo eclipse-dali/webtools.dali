@@ -187,7 +187,6 @@ public class JavaJoinTableTests extends ContextModelTestCase
 	
 	public void testDefaultName() throws Exception {
 		createTestEntityWithValidManyToMany();
-		createTargetEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		
@@ -198,6 +197,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertNull(joinTable.getDefaultName());
 
 		//add target entity to the persistence unit, now join table name is [table name]_[target table name]
+		createTargetEntity();
 		addXmlClassRef(PACKAGE_NAME + ".Project");
 		assertEquals(TYPE_NAME + "_Project", joinTable.getDefaultName());
 		

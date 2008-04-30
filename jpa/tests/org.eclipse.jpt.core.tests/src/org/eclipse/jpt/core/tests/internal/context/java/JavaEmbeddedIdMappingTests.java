@@ -165,7 +165,6 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 	
 	public void testDefaultEmbeddedIdMapping() throws Exception {
 		createTestEntityWithEmbeddedIdMapping();
-		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
@@ -176,6 +175,7 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof GenericJavaNullAttributeMapping);
 		assertTrue(persistentAttribute.getMapping().isDefault());
 		
+		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedMapping);
 		assertTrue(persistentAttribute.getMapping().isDefault());

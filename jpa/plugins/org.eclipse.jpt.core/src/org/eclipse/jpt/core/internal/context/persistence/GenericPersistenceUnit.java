@@ -931,7 +931,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		Iterator<IType> annotatedClasses = getJpaProject().annotatedClasses();
 		
 		
-		if (getJpaProject().discoversAnnotatedClasses() && !isExcludeUnlistedClasses()) {
+		if (!isExcludeUnlistedClasses()) {
 			while (impliedRefs.hasNext()) {
 				ClassRef classRef = impliedRefs.next();
 				boolean updated = false;

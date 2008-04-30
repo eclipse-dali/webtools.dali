@@ -469,14 +469,14 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		createTestEntityAnnotatedMethod();
 		createTestSubTypeWithFieldAnnotation();
 		
-		//parent is not added to the persistenceUnit, so even though it has an Entity
-		//annotation it should not be found as the parentPersistentType
+		//parent is not added to the persistenceUnit, but it should still be found
+		//as the parentPersistentType because of impliedClassRefs and changes for bug 190317
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
 		ListIterator<ClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		JavaPersistentType javaPersistentType = classRefs.next().getJavaPersistentType();
 		
-		assertNull(javaPersistentType.getParentPersistentType());
+		assertNotNull(javaPersistentType.getParentPersistentType());
 	}	
 	
 	//Entity extends Non-Entity extends Entity 

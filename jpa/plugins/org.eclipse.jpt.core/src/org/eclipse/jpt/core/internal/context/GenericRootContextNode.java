@@ -221,21 +221,27 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 			//handled with other validation
 			return;
 		}
+		if (getJpaProject().discoversAnnotatedClasses()) {
+			return;
+		}
 		Collection<IType> orphanedClasses = CollectionTools.collection(getJpaProject().annotatedClasses());
+		if (getPersistenceXml().getPersistence().persistenceUnitsSize() != 1) {
+			//context model currently only supports 1 persistenceUnit
+			return;
+		}
+		PersistenceUnit persistenceUnit = getPersistenceXml().getPersistence().persistenceUnits().next();
 		for (IType type : CollectionTools.iterable(getJpaProject().annotatedClasses())) {
-			for (PersistenceUnit persistenceUnit : CollectionTools.iterable(getPersistenceXml().getPersistence().persistenceUnits())) {
-				for (ClassRef classRef : CollectionTools.iterable(persistenceUnit.classRefs())) {
-					if (classRef.isFor(type.getFullyQualifiedName('.'))) {
-						orphanedClasses.remove(type);
-					}
+			for (ClassRef classRef : CollectionTools.iterable(persistenceUnit.specifiedClassRefs())) {
+				if (classRef.isFor(type.getFullyQualifiedName('.'))) {
+					orphanedClasses.remove(type);
 				}
-				for (MappingFileRef mappingFileRef : CollectionTools.iterable(persistenceUnit.mappingFileRefs())) {
-					if (mappingFileRef.getOrmXml() == null || mappingFileRef.getOrmXml().getEntityMappings() == null) {
-						continue;
-					}
-					if (mappingFileRef.getOrmXml().getEntityMappings().getPersistentType(type.getFullyQualifiedName('.')) != null) {
-						orphanedClasses.remove(type);
-					}
+			}
+			for (MappingFileRef mappingFileRef : CollectionTools.iterable(persistenceUnit.mappingFileRefs())) {
+				if (mappingFileRef.getOrmXml() == null || mappingFileRef.getOrmXml().getEntityMappings() == null) {
+					continue;
+				}
+				if (mappingFileRef.getOrmXml().getEntityMappings().getPersistentType(type.getFullyQualifiedName('.')) != null) {
+					orphanedClasses.remove(type);
 				}
 			}
 		}
@@ -246,6 +252,7 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CONTEXT,
+							new String[] {persistenceUnit.getName()},
 							javaResourcePersistentType.getResourceModel().getFile(),
 							javaResourcePersistentType.getMappingAnnotation().getTextRange(JDTTools.buildASTRoot(orphanedType)))
 					);

@@ -1021,7 +1021,6 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 	
 	public void testResolvedTargetEntity() throws Exception {
 		createTestEntityWithValidOneToOneMapping();
-		createTestTargetEntityAddress();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
@@ -1031,6 +1030,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		assertNull(oneToOneMapping.getResolvedTargetEntity());
 		
 		//add targetEntity to the persistence unit, now target entity should resolve
+		createTestTargetEntityAddress();
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		ListIterator<ClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		classRefs.next();
