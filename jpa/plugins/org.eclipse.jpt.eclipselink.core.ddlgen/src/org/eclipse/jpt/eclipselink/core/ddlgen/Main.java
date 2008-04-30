@@ -21,8 +21,6 @@ import java.util.Map.Entry;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import org.eclipse.persistence.jpa.config.PersistenceUnitProperties;
-
 /** 
  * This class creates a EclipseLink <code>EntityManagerFactory</code>, 
  * and executes the DDL generator with the command set in the properties: 
@@ -97,16 +95,27 @@ public class Main
 		this.eclipseLinkProperties = this.getProperties(this.eclipseLinkPropertiesPath);
 		
 		this.createDDLFileName = this.getConfigPropertyAsString( 
-						PersistenceUnitProperties.CREATE_JDBC_DDL_FILE, 
+						"eclipselink.create-ddl-jdbc-file-name",
 						this.eclipseLinkProperties,  
-						PersistenceUnitProperties.DEFAULT_CREATE_JDBC_FILE_NAME);
-		
+						"createDDL.jdbc");
+//TODO	
+//					SchemaGeneration.ECLIPSELINK_CREATE_FILE_NAME, 
+//					this.eclipseLinkProperties,  
+//					SchemaGeneration.DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME);
+
 		this.dropDDLFileName = this.getConfigPropertyAsString( 
-						PersistenceUnitProperties.DROP_JDBC_DDL_FILE, 
+						"eclipselink.drop-ddl-jdbc-file-name",
 						this.eclipseLinkProperties,  
-						PersistenceUnitProperties.DEFAULT_DROP_JDBC_FILE_NAME);
+						"dropDDL.jdbc");
+//TODO	
+//					SchemaGeneration.ECLIPSELINK_DROP_FILE_NAME, 
+//					this.eclipseLinkProperties,  
+//					SchemaGeneration.DEFAULT_SCHEMA_GENERATION_DROP_FILE_NAME);
 		
-		this.appLocation = this.eclipseLinkProperties.get(PersistenceUnitProperties.APP_LOCATION);
+		this.appLocation = this.eclipseLinkProperties.get(
+						"eclipselink.application-location");
+//TODO	
+//					SchemaGeneration.ECLIPSELINK_APPLICATION_LOCATION);
 		this.isDebugMode = this.getDebugMode(args);
 	}
 	
