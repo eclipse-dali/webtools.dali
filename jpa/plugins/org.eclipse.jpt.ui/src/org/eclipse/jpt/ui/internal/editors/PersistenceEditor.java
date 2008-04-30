@@ -10,9 +10,6 @@
 package org.eclipse.jpt.ui.internal.editors;
 
 import java.util.ListIterator;
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.IResourceChangeListener;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
@@ -31,7 +28,6 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
-import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.FormWidgetFactory;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListPropertyValueModelAdapter;
@@ -45,13 +41,10 @@ import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
@@ -77,18 +70,13 @@ public class PersistenceEditor extends FormEditor
 	/**
 	 * The XML text editor.
 	 */
-	private TextEditor editor;
+	private StructuredTextEditor editor;
 
 	/**
 	 * The root of the holders used to retrieve the persistence unit and be
 	 * notified when it changes.
 	 */
 	private WritablePropertyValueModel<IFileEditorInput> editorInputHolder;
-
-	/**
-	 * The listener used for being notified when the project is being closed.
-	 */
-	private IResourceChangeListener resourceChangeListener;
 
 	/**
 	 * The factory used to create the various widgets.
@@ -154,6 +142,7 @@ public class PersistenceEditor extends FormEditor
 	private void addXMLEditorPage() {
 		try {
 			editor = new StructuredTextEditor();
+			editor.setEditorPart(this);
 			int index = addPage(editor, getEditorInput());
 			setPageText(index, JptUiPersistenceMessages.PersistenceEditor_sourceTab);
 		}
@@ -216,31 +205,6 @@ public class PersistenceEditor extends FormEditor
 		};
 	}
 
-	private IResourceChangeListener buildResourceChangeListener() {
-		return new IResourceChangeListener() {
-			public void resourceChanged(final IResourceChangeEvent event) {
-
-				if (event.getType() == IResourceChangeEvent.PRE_CLOSE) {
-
-					SWTUtil.asyncExec(new Runnable() { public void run() {
-
-						IWorkbenchPage[] pages = getSite().getWorkbenchWindow().getPages();
-
-						for (int index = 0; index<pages.length; index++){
-
-							IFileEditorInput fileEditorInput = (IFileEditorInput) editor.getEditorInput();
-
-							if (fileEditorInput.getFile().getProject().equals(event.getResource())) {
-								IEditorPart editorPart = pages[index].findEditor(editor.getEditorInput());
-								pages[index].closeEditor(editorPart, true);
-							}
-						}
-					}});
-				}
-			}
-		};
-	}
-
 	private PropertyValueModel<JpaRootContextNode> buildRootContextNodeHolder() {
 		return new TransformationPropertyValueModel<JpaProject, JpaRootContextNode>(buildJpaProjectHolder()) {
 			@Override
@@ -260,19 +224,9 @@ public class PersistenceEditor extends FormEditor
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void close(boolean save) {
-		super.close(save);
-		editorInputHolder.setValue(null);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public void dispose() {
 
-		ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
-		resourceChangeListener = null;
+		editorInputHolder.setValue(null);
 
 		super.dispose();
 	}
@@ -317,11 +271,8 @@ public class PersistenceEditor extends FormEditor
 	 */
 	private void initialize() {
 
-		editorInputHolder      = buildEditorInputHolder();
-		widgetFactory          = buildWidgetFactory();
-		resourceChangeListener = buildResourceChangeListener();
-
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
+		widgetFactory      = buildWidgetFactory();
+		editorInputHolder  = buildEditorInputHolder();
 	}
 
 	/**
