@@ -40,7 +40,7 @@ public class ExceptionsComposite extends AbstractFormPane<Logging>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildExceptionsHolder() {
-		return new PropertyAspectAdapter<Logging, Boolean>(getSubjectHolder(), Logging.ECLIPSELINK_EXCEPTIONS) {
+		return new PropertyAspectAdapter<Logging, Boolean>(getSubjectHolder(), Logging.EXCEPTIONS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.getExceptions();
