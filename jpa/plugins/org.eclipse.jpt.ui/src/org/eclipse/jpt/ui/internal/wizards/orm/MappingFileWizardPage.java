@@ -192,18 +192,6 @@ public class MappingFileWizardPage extends DataModelWizardPage
 		persistenceUnitCombo.setLayoutData(data);
 		synchHelper.synchCombo(persistenceUnitCombo, PERSISTENCE_UNIT, null);
 		
-//		model.addListener(
-//			new IDataModelListener() {
-//				public void propertyChanged(final DataModelEvent event) {
-//					if (event.getPropertyName().equals(ADD_TO_PERSISTENCE_UNIT)) {
-//						Display.getCurrent().asyncExec(new Runnable() {
-//							public void run() {
-//								persistenceUnitCombo.setEnabled((Boolean) event.getProperty());
-//							}
-//						});
-//					}
-//				}
-//			});
 		new Label(composite, SWT.NONE);
 		
 //		classText.setFocus();
