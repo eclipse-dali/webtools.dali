@@ -122,7 +122,17 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	
 	@Override
 	public DataModelPropertyDescriptor[] getValidPropertyDescriptors(String propertyName) {
-		if (propertyName.equals(DEFAULT_ACCESS)) {
+		if (propertyName.equals(PROJECT_NAME)) {
+			return CollectionTools.array(
+				new TransformationIterator<IProject, DataModelPropertyDescriptor>(jpaIProjects()) {
+					@Override
+					protected DataModelPropertyDescriptor transform(IProject next) {
+						return new DataModelPropertyDescriptor(next.getName());
+					}
+				},
+				new DataModelPropertyDescriptor[0]);
+		}
+		else if (propertyName.equals(DEFAULT_ACCESS)) {
 			DataModelPropertyDescriptor[] accessTypes = new DataModelPropertyDescriptor[3];
 			accessTypes[0] = accessPropertyDescriptor(null);
 			accessTypes[1] = accessPropertyDescriptor(AccessType.FIELD);
@@ -145,7 +155,10 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	
 	@Override
 	public DataModelPropertyDescriptor getPropertyDescriptor(String propertyName) {
-		if (propertyName.equals(DEFAULT_ACCESS)) {
+		if (propertyName.equals(PROJECT_NAME)) {
+			return new DataModelPropertyDescriptor(getStringProperty(PROJECT_NAME));
+		}
+		else if (propertyName.equals(DEFAULT_ACCESS)) {
 			return accessPropertyDescriptor((AccessType) getProperty(DEFAULT_ACCESS)); 
 		}
 		else if (propertyName.equals(PERSISTENCE_UNIT)) {

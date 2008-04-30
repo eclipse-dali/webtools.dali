@@ -10,12 +10,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.wizards.orm;
 
-import java.util.Iterator;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -28,15 +26,11 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -54,7 +48,6 @@ import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.internal.datamodel.ui.DataModelWizardPage;
-import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 
 public class MappingFileWizardPage extends DataModelWizardPage
 	implements OrmFileCreationDataModelProperties
@@ -124,20 +117,7 @@ public class MappingFileWizardPage extends DataModelWizardPage
 		data.widthHint = 300;
 		data.horizontalSpan = 1;
 		projectNameCombo.setLayoutData(data);
-		projectNameCombo.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				super.widgetSelected(e);
-				// update source folder
-//					if (folderText != null) {					
-//						String sourceFolder = getDefaultJavaSourceFolder(ProjectUtilities.getProject(projectNameCombo.getText())).getFullPath().toOSString();					
-//						if (sourceFolder != null)
-//							folderText.setText(sourceFolder);
-//					}
-			}
-		});
 		synchHelper.synchCombo(projectNameCombo, PROJECT_NAME, null);
-		fillProjects();
 		new Label(composite, SWT.NONE);
 		
 		sourceFolderLabel = new Label(composite, SWT.NONE);
@@ -230,27 +210,6 @@ public class MappingFileWizardPage extends DataModelWizardPage
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, getInfopopID());
 	    Dialog.applyDialogFont(parent);
 		return composite;
-	}
-	
-	private void fillProjects() {
-		projectNameCombo.setItems(new String[0]);
-		for (Iterator<IProject> stream = jpaProjects(); stream.hasNext(); ) {
-			projectNameCombo.add(stream.next().getName());
-		}
-	}
-		
-	private Iterator<IProject> jpaProjects() {
-		return new FilteringIterator<IProject, IProject>(CollectionTools.iterator(ProjectUtilities.getAllProjects())) {
-			@Override
-			protected boolean accept(IProject project) {
-				try {
-					return FacetedProjectFramework.hasProjectFacet(project, JptCorePlugin.FACET_ID);
-				}
-				catch (CoreException ce) {
-					return false;
-				}
-			}
-		};
 	}
 	
 	private void handleSourceFolderButtonPressed() {
