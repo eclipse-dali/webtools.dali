@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.facet;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -20,6 +22,8 @@ import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.common.componentcore.datamodel.FacetInstallDataModelProvider;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelPropertyDescriptor;
@@ -71,6 +75,7 @@ public class JpaFacetDataModelProvider
 		Set<String> propertyNames = super.getPropertyNames();
 		propertyNames.add(PLATFORM_ID);
 		propertyNames.add(CONNECTION);
+		propertyNames.add(CONNECTION_ACTIVE);
 		propertyNames.add(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA);
 		propertyNames.add(USER_OVERRIDE_DEFAULT_SCHEMA);
 		propertyNames.add(RUNTIME);
@@ -80,7 +85,15 @@ public class JpaFacetDataModelProvider
 		propertyNames.add(CREATE_ORM_XML);
 		return propertyNames;
 	}
-
+	
+	@Override
+	public boolean isPropertyEnabled(String propertyName) {
+		if (propertyName.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
+			return getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA);
+		}
+		return super.isPropertyEnabled(propertyName);
+	}
+	
 	@Override
 	public Object getDefaultProperty(String propertyName) {
 		if (propertyName.equals(FACET_ID)) {
@@ -91,6 +104,9 @@ public class JpaFacetDataModelProvider
 		}
 		if (propertyName.equals(CONNECTION)) {
 			return "";
+		}
+		if (propertyName.equals(CONNECTION_ACTIVE)) {
+			return connectionIsActive();
 		}
 		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
 			return Boolean.FALSE;
@@ -115,7 +131,7 @@ public class JpaFacetDataModelProvider
 		}
 		return super.getDefaultProperty(propertyName);
 	}
-
+	
 	@Override
 	public boolean propertySet(String propertyName, Object propertyValue) {
 		boolean ok = super.propertySet(propertyName, propertyValue);
@@ -123,11 +139,36 @@ public class JpaFacetDataModelProvider
 			this.model.notifyPropertyChange(USE_SERVER_JPA_IMPLEMENTATION, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(DISCOVER_ANNOTATED_CLASSES, IDataModel.DEFAULT_CHG);
 		}
+		if (propertyName.equals(CONNECTION)) {
+			this.model.setBooleanProperty(CONNECTION_ACTIVE, connectionIsActive());
+			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.DEFAULT_CHG);
+			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.VALID_VALUES_CHG);
+		}
+		if (propertyName.equals(CONNECTION_ACTIVE)) {
+			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.DEFAULT_CHG);
+			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.VALID_VALUES_CHG);
+		}
+		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
+			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.ENABLE_CHG);
+			if (! (Boolean) propertyValue) {
+				this.model.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, null);
+			}
+		}
 		return ok;
 	}
 
 	@Override
 	public DataModelPropertyDescriptor[] getValidPropertyDescriptors(String propertyName) {
+		if (propertyName.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
+			return CollectionTools.array(
+				new TransformationIterator<String, DataModelPropertyDescriptor>(schemas()) {
+					@Override
+					protected DataModelPropertyDescriptor transform(String next) {
+						return new DataModelPropertyDescriptor(next);
+					}
+				},
+				new DataModelPropertyDescriptor[0]);
+		}
 		if (propertyName.equals(JPA_LIBRARY)) {
 			String[] libraries = CollectionTools.sort(JavaCore.getUserLibraryNames());
 			DataModelPropertyDescriptor[] descriptors = new DataModelPropertyDescriptor[libraries.length + 1];
@@ -173,12 +214,37 @@ public class JpaFacetDataModelProvider
 		return (runtime == null) ? false : runtime.supports(ejb30);
 	}
 	
-	private String getDefaultSchemaName() {
+	private ConnectionProfile getConnection() {
 		String connectionName = getStringProperty(CONNECTION);
-		ConnectionProfile connection = 
-			JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNamed(connectionName);
-		Schema defaultSchema = connection.getDefaultSchema();
+		return JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNamed(connectionName);
+	}
+	
+	private boolean connectionIsActive() {
+		return getConnection().isActive();
+	}
+	
+	private String getDefaultSchemaName() {
+		Schema defaultSchema = getConnection().getDefaultSchema();
 		return (defaultSchema == null) ? null : defaultSchema.getName();
+	}
+	
+	private Iterator<String> schemas() {
+		String setValue = getStringProperty(USER_OVERRIDE_DEFAULT_SCHEMA);
+		
+		List<String> schemas = CollectionTools.sort(CollectionTools.list(
+			new TransformationIterator<Schema, String>(getConnection().getDatabase().schemata()) {
+				@Override
+				protected String transform(Schema next) {
+					return next.getName();
+				}
+			}));
+		
+		if (! StringTools.stringIsEmpty(setValue) && ! schemas.contains(setValue)) {
+			return new CompositeIterator<String>(setValue, schemas.iterator());
+		}
+		else {
+			return schemas.iterator();
+		}
 	}
 
 

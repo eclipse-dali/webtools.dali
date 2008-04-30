@@ -33,7 +33,6 @@ import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.JptDbPlugin;
-import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
@@ -392,37 +391,9 @@ public class JpaProjectPropertiesPage
 			defaultSchemaLabel.setLayoutData(gd);
 			
 			defaultSchemaCombo = createCombo(group, 1, true);
-			defaultSchemaCombo.addSelectionListener(
-					new SelectionListener() {
-						public void widgetDefaultSelected(SelectionEvent e) {
-							widgetSelected(e);
-						}
-						
-						public void widgetSelected(SelectionEvent e) {
-							String schema = defaultSchemaCombo.getText();
-							model.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, schema);
-						}
-					}
-				);
-			fillSchemas();
-			
-			model.addListener(
-				new IDataModelListener() {
-					public void propertyChanged(DataModelEvent event) {
-						if (event.getPropertyName().equals(CONNECTION)) {
-							fillSchemas();
-						}
-						else if (event.getPropertyName().equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
-							boolean enabled = (Boolean) event.getProperty();
-							defaultSchemaLabel.setEnabled(enabled);
-							defaultSchemaCombo.setEnabled(enabled);
-							fillSchemas();
-						}
-						else if (event.getPropertyName().equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
-							defaultSchemaCombo.select(defaultSchemaCombo.indexOf((String) event.getProperty()));
-						}
-					}
-				});
+			synchHelper.synchCombo(
+				defaultSchemaCombo, USER_OVERRIDE_DEFAULT_SCHEMA, 
+				new Control[] {defaultSchemaLabel});
 			
 			performDefaults();
 		}
@@ -450,34 +421,13 @@ public class JpaProjectPropertiesPage
 			ConnectionProfile connection = getConnectionProfile();
 			connection.connect();
 			updateConnectLink();
-			fillSchemas();
+			model.setBooleanProperty(CONNECTION_ACTIVE, connection.isActive());
 			return;
 		}
 		
 		private void updateConnectLink() {
 			ConnectionProfile connectionProfile = getConnectionProfile();
 			connectLink.setEnabled(! connectionProfile.isNull() && ! connectionProfile.isConnected());
-		}
-		
-		private void fillSchemas() {
-			for (Iterator<String> stream = CollectionTools.sort(getConnectionProfile().getDatabase().schemaNames()); stream.hasNext(); ) {
-				defaultSchemaCombo.add(stream.next());
-			}
-			String userOverrideDefaultSchema = model.getStringProperty(USER_OVERRIDE_DEFAULT_SCHEMA);
-			if (userOverrideDefaultSchema != null && defaultSchemaCombo.indexOf(userOverrideDefaultSchema) < 0) {
-				defaultSchemaCombo.add(userOverrideDefaultSchema);
-			}
-			if (! model.getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
-				Schema defaultSchema = getConnectionProfile().getDefaultSchema();
-				String defaultSchemaName = (defaultSchema == null) ? null : defaultSchema.getName();
-				int defaultSchemaIndex = (defaultSchemaName == null) ? -1 : defaultSchemaCombo.indexOf(defaultSchemaName);
-				if (defaultSchemaIndex >= 0) {
-					defaultSchemaCombo.select(defaultSchemaIndex);
-				}
-				else {
-					defaultSchemaCombo.deselectAll();
-				}
-			}
 		}
 		
 		private ConnectionProfile getConnectionProfile() {

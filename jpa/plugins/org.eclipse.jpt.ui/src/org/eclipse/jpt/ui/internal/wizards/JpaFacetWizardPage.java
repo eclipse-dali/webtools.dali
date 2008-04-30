@@ -26,7 +26,6 @@ import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.JptDbPlugin;
-import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
@@ -251,7 +250,7 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 							}
 							model.setProperty(CONNECTION, connection);
 						}
-
+						
 						public void widgetDefaultSelected(SelectionEvent e) {
 							widgetSelected(e);
 						}
@@ -299,48 +298,18 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 			
 			overrideDefaultSchemaButton = createButton(group, 3, JptUiMessages.JpaFacetWizardPage_overrideDefaultSchemaLabel, SWT.CHECK);
 			overrideDefaultSchemaButton.setSelection(false);
-			synchHelper.synchCheckbox(overrideDefaultSchemaButton, USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA, new Control[0]);
+			synchHelper.synchCheckbox(overrideDefaultSchemaButton, USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA, null);
 			
 			defaultSchemaLabel = new Label(group, SWT.LEFT);
 			defaultSchemaLabel.setText(JptUiMessages.JpaFacetWizardPage_defaultSchemaLabel);
 			GridData gd = new GridData();
 			gd.horizontalSpan = 1;
 			defaultSchemaLabel.setLayoutData(gd);
-			defaultSchemaLabel.setEnabled(false);
 			
 			defaultSchemaCombo = createCombo(group, 1, true);
-			defaultSchemaCombo.setEnabled(false);
-			defaultSchemaCombo.addSelectionListener(
-					new SelectionListener() {
-						public void widgetDefaultSelected(SelectionEvent e) {
-							widgetSelected(e);
-						}
-						
-						public void widgetSelected(SelectionEvent e) {
-							String schema = defaultSchemaCombo.getText();
-							model.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, schema);
-						}
-					}
-				);
-			fillSchemas();
-			
-			model.addListener(
-				new IDataModelListener() {
-					public void propertyChanged(DataModelEvent event) {
-						if (event.getPropertyName().equals(CONNECTION)) {
-							fillSchemas();
-						}
-						else if (event.getPropertyName().equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
-							boolean enabled = (Boolean) event.getProperty();
-							defaultSchemaLabel.setEnabled(enabled);
-							defaultSchemaCombo.setEnabled(enabled);
-							fillSchemas();
-						}
-						else if (event.getPropertyName().equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
-							defaultSchemaCombo.select(defaultSchemaCombo.indexOf((String) event.getProperty()));
-						}
-					}
-				});
+			synchHelper.synchCombo(
+				defaultSchemaCombo, USER_OVERRIDE_DEFAULT_SCHEMA, 
+				new Control[] {defaultSchemaLabel});
 		}
 		
 		private void fillConnections() {
@@ -365,31 +334,14 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 		private void openConnectionProfile() {
 			ConnectionProfile connection = getConnectionProfile();
 			connection.connect();
+			model.setBooleanProperty(CONNECTION_ACTIVE, connection.isActive());
 			updateConnectLink();
-			fillSchemas();
 			return;
 		}
 		
 		private void updateConnectLink() {
 			ConnectionProfile connectionProfile = getConnectionProfile();
 			connectLink.setEnabled(! connectionProfile.isNull() && ! connectionProfile.isConnected());
-		}
-		
-		private void fillSchemas() {
-			for (Iterator<String> stream = CollectionTools.sort(getConnectionProfile().getDatabase().schemaNames()); stream.hasNext(); ) {
-				defaultSchemaCombo.add(stream.next());
-			}
-			if (! model.getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
-				Schema defaultSchema = getConnectionProfile().getDefaultSchema();
-				String defaultSchemaName = (defaultSchema == null) ? null : defaultSchema.getName();
-				int defaultSchemaIndex = (defaultSchemaName == null) ? -1 : defaultSchemaCombo.indexOf(defaultSchemaName);
-				if (defaultSchemaIndex >= 0) {
-					defaultSchemaCombo.select(defaultSchemaIndex);
-				}
-				else {
-					defaultSchemaCombo.deselectAll();
-				}
-			}
 		}
 		
 		private ConnectionProfile getConnectionProfile() {

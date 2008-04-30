@@ -24,6 +24,11 @@ public interface JpaFacetDataModelProperties extends IDataModelProperties
 	public static final String CONNECTION = "JpaFacetDataModelProperties.CONNECTION";
 	
 	/**
+	 * Required, type Boolean, identifies whether database connection is active
+	 */
+	public static final String CONNECTION_ACTIVE = "JpaFacetDataModelProperties.CONNECTION_ACTIVE";
+	
+	/**
 	 * Required, type Boolean, identifies if the user wishes to override default schema name
 	 */
 	public static final String USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA = 
