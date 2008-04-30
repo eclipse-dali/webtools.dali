@@ -15,7 +15,7 @@ import <%=anImport%>;
  *
  */ 
 public class <%=model.getIdClassName()%> 
-<% List interfaces = model.getInterfaces(); 
+<% List<String> interfaces = model.getInterfaces(); 
 	if (interfaces.size()>0) {%> implements <% }
 	for (int i=0; i<interfaces.size(); i++) {
 		String INTERFACE = (String) interfaces.get(i);

@@ -135,9 +135,9 @@ public class CreateEntityTemplateModel {
 	/**
 	 * @return list with the interfaces implemented from entity class 
 	 */
-	public List getInterfaces() {
+	public List<String> getInterfaces() {
 		List qualifiedInterfaces = getQualifiedInterfaces();
-		List interfaces = new ArrayList(qualifiedInterfaces.size());
+		List<String> interfaces = new ArrayList<String>(qualifiedInterfaces.size());
 		
 		Iterator iter = qualifiedInterfaces.iterator();
 		while (iter.hasNext()) {
