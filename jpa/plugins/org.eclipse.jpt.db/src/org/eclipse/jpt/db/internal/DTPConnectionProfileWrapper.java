@@ -159,7 +159,11 @@ final class DTPConnectionProfileWrapper
 	}
 
 	public String getUserName() {
-		return this.getProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
+		String userName = this.getProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
+		if (userName.contains(" ")){
+			return userName.split("\\s")[0];
+		}
+		return userName;
 	}
 
 	public String getUserPassword() {
