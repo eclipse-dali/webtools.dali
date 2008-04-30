@@ -5,6 +5,7 @@
          point="org.eclipse.jpt.core.jpaPlatform">
       <jpaPlatform
             class="org.eclipse.jpt.eclipselink.core.internal.EclipseLinkPlatform"
+            default="true"
             id="org.eclipse.eclipselink.platform"
             label="EclipseLink">
       </jpaPlatform>
