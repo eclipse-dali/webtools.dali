@@ -141,6 +141,13 @@ public class JpaPlatformRegistry {
 	}
 	
 	/**
+	 * Return whether the platform id is registered
+	 */
+	public boolean containsPlatform(String platformId) {
+		return this.jpaPlatformConfigurationElements.containsKey(platformId);
+	}
+	
+	/**
 	 * Return the label for the JPA platform with the specified ID.
 	 * This does not activate the JPA platform's plug-in.
 	 */

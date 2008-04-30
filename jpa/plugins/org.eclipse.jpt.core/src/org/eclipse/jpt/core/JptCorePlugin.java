@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
+import org.eclipse.jpt.core.internal.prefs.JpaPreferenceInitializer;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
@@ -272,9 +273,17 @@ public class JptCorePlugin extends Plugin {
 	 * Return the default JPA platform ID for creating new JPA projects
 	 */
 	public static String getDefaultJpaPlatformId() {
-		return Platform.getPreferencesService().get(
+		String platformId = 
+			Platform.getPreferencesService().get(
 				JpaPreferenceConstants.PREF_DEFAULT_JPA_PLATFORM, GenericJpaPlatform.ID,
 				new Preferences[] {getWorkspacePreferences(), getDefaultPreferences()});
+		if (! JpaPlatformRegistry.instance().containsPlatform(platformId)) {
+			platformId = 
+				Platform.getPreferencesService().get(
+					JpaPreferenceConstants.PREF_DEFAULT_JPA_PLATFORM, GenericJpaPlatform.ID,
+					new Preferences[] {getDefaultPreferences()});
+		}
+		return platformId;
 	}
 	
 	/**
