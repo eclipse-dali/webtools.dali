@@ -8,5 +8,6 @@
 			<accessrule kind="accessible" pattern="org/eclipse/jpt/utility/**"/>
 		</accessrules>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/persistence.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
