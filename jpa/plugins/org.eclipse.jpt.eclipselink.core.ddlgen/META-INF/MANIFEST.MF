@@ -5,6 +5,7 @@ Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.eclipselink.core.ddlgen;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-ClassPath: lib/persistence.jar
+Require-Bundle: org.eclipse.jpt.eclipselink.core;bundle-version="[1.0.0,2.0.0)"
 Export-Package: javax.persistence,
  javax.persistence.spi,
  org.eclipse.jpt.eclipselink.core.ddlgen

@@ -21,6 +21,8 @@ import java.util.Map.Entry;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
+
 /** 
  * This class creates a EclipseLink <code>EntityManagerFactory</code>, 
  * and executes the DDL generator with the command set in the properties: 
@@ -95,27 +97,18 @@ public class Main
 		this.eclipseLinkProperties = this.getProperties(this.eclipseLinkPropertiesPath);
 		
 		this.createDDLFileName = this.getConfigPropertyAsString( 
-						"eclipselink.create-ddl-jdbc-file-name",
+						SchemaGeneration.ECLIPSELINK_CREATE_FILE_NAME, 
 						this.eclipseLinkProperties,  
-						"createDDL.jdbc");
-//TODO	
-//					SchemaGeneration.ECLIPSELINK_CREATE_FILE_NAME, 
-//					this.eclipseLinkProperties,  
-//					SchemaGeneration.DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME);
+						SchemaGeneration.DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME);
 
-		this.dropDDLFileName = this.getConfigPropertyAsString( 
-						"eclipselink.drop-ddl-jdbc-file-name",
+		this.dropDDLFileName = this.getConfigPropertyAsString(
+						SchemaGeneration.ECLIPSELINK_DROP_FILE_NAME, 
 						this.eclipseLinkProperties,  
-						"dropDDL.jdbc");
-//TODO	
-//					SchemaGeneration.ECLIPSELINK_DROP_FILE_NAME, 
-//					this.eclipseLinkProperties,  
-//					SchemaGeneration.DEFAULT_SCHEMA_GENERATION_DROP_FILE_NAME);
+						SchemaGeneration.DEFAULT_SCHEMA_GENERATION_DROP_FILE_NAME); 
 		
 		this.appLocation = this.eclipseLinkProperties.get(
-						"eclipselink.application-location");
-//TODO	
-//					SchemaGeneration.ECLIPSELINK_APPLICATION_LOCATION);
+						SchemaGeneration.ECLIPSELINK_APPLICATION_LOCATION);
+
 		this.isDebugMode = this.getDebugMode(args);
 	}
 	
