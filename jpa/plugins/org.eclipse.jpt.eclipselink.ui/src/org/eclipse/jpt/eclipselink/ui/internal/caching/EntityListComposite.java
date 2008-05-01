@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.ui.internal.caching;
 
 import java.util.ListIterator;
-
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
@@ -134,8 +133,7 @@ public class EntityListComposite extends AbstractPane<Caching>
 	}
 
 	private JpaProject jpaProject() {
-		// TODO
-		return null;
+		return subject().getJpaProject();
 	}
 
 	private ListValueModel<EntityCacheProperties> buildEntityCachingListHolder() {

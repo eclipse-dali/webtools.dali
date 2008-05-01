@@ -199,8 +199,10 @@ public class TableItemModelAdapter {
    	}
 
    	public void propertyChanged(PropertyChangeEvent event) {
-   		Table table = tableItem.getParent();
-   		tableItemChanged(index, tableItem.getData(), table.getColumnCount() == 0);
+   		if (!tableItem.isDisposed()) {
+   			Table table = tableItem.getParent();
+   			tableItemChanged(index, tableItem.getData(), table.getColumnCount() == 0);
+   		}
    	}
    }
 }
