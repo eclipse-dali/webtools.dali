@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.prefs;
 import java.io.IOException;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.internal.ui.preferences.UserLibraryPreferencePage;
+import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.preference.IPersistentPreferenceStore;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
@@ -85,7 +85,7 @@ public class JpaPreferencePage extends PreferencePage
 			new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					((IWorkbenchPreferenceContainer) getContainer())
-						.openPage(UserLibraryPreferencePage.ID, null);
+						.openPage(JavaUI.ID_USER_LIBRARY_PREFERENCE_PAGE, null);
 				}
 			}
 		);

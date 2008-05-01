@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.wizards;
 
 import java.util.Iterator;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jdt.internal.ui.preferences.UserLibraryPreferencePage;
+import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -462,8 +462,8 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 			PreferenceDialog dlg =
 				PreferencesUtil.createPreferenceDialogOn(
 					getShell(),
-					UserLibraryPreferencePage.ID,
-					new String[] {UserLibraryPreferencePage.ID},
+					JavaUI.ID_USER_LIBRARY_PREFERENCE_PAGE,
+					new String[] {JavaUI.ID_USER_LIBRARY_PREFERENCE_PAGE},
 					null);
 			dlg.open();
 			model.notifyPropertyChange(JPA_LIBRARY, IDataModel.VALID_VALUES_CHG);
