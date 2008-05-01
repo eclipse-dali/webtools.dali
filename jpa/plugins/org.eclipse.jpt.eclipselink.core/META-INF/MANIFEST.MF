@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
+Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.eclipselink.core;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin
@@ -25,4 +26,3 @@ Export-Package: org.eclipse.jpt.eclipselink.core.internal;x-friends:="org.eclips
  org.eclipse.jpt.eclipselink.core.internal.context.schema.generation,
  org.eclipse.jpt.eclipselink.core.internal.ddlgen
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Bundle-Vendor: %providerName

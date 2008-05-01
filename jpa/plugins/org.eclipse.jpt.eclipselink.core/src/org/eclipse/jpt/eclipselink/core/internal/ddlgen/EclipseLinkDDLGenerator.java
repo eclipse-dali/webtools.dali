@@ -60,10 +60,11 @@ import org.eclipse.wst.validation.internal.operations.ValidatorJob;
  */
 public class EclipseLinkDDLGenerator
 {
+	static public String ECLIPSELINK_DDL_GEN_JAR_VERSION = "1.0.0";	//$NON-NLS-1$
 	static public String LAUNCH_CONFIG_NAME = "EclipseLink";   //$NON-NLS-1$
 	static public String DDL_GEN_PACKAGE_NAME = "org.eclipse.jpt.eclipselink.core.ddlgen";   //$NON-NLS-1$
 	static public String ECLIPSELINK_DDL_GEN_CLASS = DDL_GEN_PACKAGE_NAME + ".Main";	  //$NON-NLS-1$
-	static public String ECLIPSELINK_DDL_GEN_JAR = DDL_GEN_PACKAGE_NAME + ".jar";	//$NON-NLS-1$
+	static public String ECLIPSELINK_DDL_GEN_JAR = DDL_GEN_PACKAGE_NAME + "_" + ECLIPSELINK_DDL_GEN_JAR_VERSION + ".jar";	//$NON-NLS-1$
 	static public String PROPERTIES_FILE_NAME = "login.properties";	  //$NON-NLS-1$
 	static public String ECLIPSE_HOME = "ECLIPSE_HOME";	  //$NON-NLS-1$
 	static public String PLUGINS_DIR = "plugins";	  //$NON-NLS-1$
@@ -157,8 +158,8 @@ public class EclipseLinkDDLGenerator
 		
 		this.specifyProgramArguments(this.puName, propertiesFile); 
 		this.specifyWorkingDir(projectLocation); 
-		
-		this.specifyClasspathProperties(this.project, this.buildJdbcJarPath(), buildBootstrapJarPath());
+
+		this.specifyClasspathProperties(this.project, this.buildJdbcJarPath(), this.buildBootstrapJarPath());
 	}
 	
 	private void addLaunchListener() {
@@ -260,7 +261,7 @@ public class EclipseLinkDDLGenerator
 		
 		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
 	}
-	
+
 	private void specifyClasspathProperties(JpaProject project, IPath jdbcJar, IPath bootstrapJar) throws CoreException {
 		// DDL_GEN jar
 		IRuntimeClasspathEntry bootstrapEntry = JavaRuntime.newArchiveRuntimeClasspathEntry(bootstrapJar);
