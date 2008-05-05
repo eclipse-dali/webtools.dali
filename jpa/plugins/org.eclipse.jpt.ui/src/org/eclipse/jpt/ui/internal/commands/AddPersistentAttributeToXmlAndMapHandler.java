@@ -21,7 +21,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class AddPersistentAttributeToXmlAndMapHandler extends AbstractHandler
 {
-	@Override
 	@SuppressWarnings("unchecked")
 	public Object execute(ExecutionEvent executionEvent) throws ExecutionException {
 		IWorkbenchWindow window = 

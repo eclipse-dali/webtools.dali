@@ -21,7 +21,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class AddPersistentClassHandler extends AbstractHandler
 {
-	@Override
 	public Object execute(ExecutionEvent executionEvent) throws ExecutionException {
 		IWorkbenchWindow window = 
 			HandlerUtil.getActiveWorkbenchWindowChecked(executionEvent);

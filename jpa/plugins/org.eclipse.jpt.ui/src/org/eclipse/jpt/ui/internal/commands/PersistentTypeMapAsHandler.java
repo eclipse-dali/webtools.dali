@@ -16,6 +16,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.ui.internal.menus.PersistentTypeMapAsContribution;
 import org.eclipse.ui.ISources;
 import org.eclipse.ui.commands.IElementUpdater;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -59,10 +60,6 @@ public class PersistentTypeMapAsHandler extends AbstractHandler
 		super();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		// Retrieve the selection from the ExecutionEvent

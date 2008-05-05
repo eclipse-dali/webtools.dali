@@ -19,7 +19,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class RemovePersistentAttributeFromXmlHandler extends AbstractHandler
 {	
-	@Override
 	@SuppressWarnings("unchecked")
 	public Object execute(ExecutionEvent executionEvent) throws ExecutionException {
 		IStructuredSelection selection = 
