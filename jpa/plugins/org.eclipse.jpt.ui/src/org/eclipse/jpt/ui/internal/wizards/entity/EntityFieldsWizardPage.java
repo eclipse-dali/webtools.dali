@@ -51,7 +51,6 @@ public class EntityFieldsWizardPage extends DataModelWizardPage {
 	 * 
 	 * @see org.eclipse.jem.util.ui.wizard.WTPWizardPage#getValidationPropertyNames()
 	 */
-	@Override
 	protected String[] getValidationPropertyNames() {
 		return new String[]{IEntityDataModelProperties.ENTITY_FIELDS};
 	}
@@ -59,7 +58,6 @@ public class EntityFieldsWizardPage extends DataModelWizardPage {
 	/* Create the main composite and add to it the entity properties
 	 * @see org.eclipse.wst.common.frameworks.internal.datamodel.ui.DataModelWizardPage#createTopLevelComposite(org.eclipse.swt.widgets.Composite)
 	 */
-	@Override
 	protected Composite createTopLevelComposite(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
 		composite.setLayout(new GridLayout());
@@ -70,7 +68,7 @@ public class EntityFieldsWizardPage extends DataModelWizardPage {
 		composite.pack();
 				
 		entityNameText = createNameGroup(composite, EntityWizardMsg.ENTITY_NAME, IEntityDataModelProperties.ENTITY_NAME);		
-		Group group = createGroup(composite, EntityWizardMsg.TABLE_NAME_GROUP);
+		Group group = createGroup(composite, EntityWizardMsg.TABLE_NAME);
 		tableNameCheckButton= createCheckButton(group, EntityWizardMsg.USE_DEFAULT, IEntityDataModelProperties.TABLE_NAME_DEFAULT);		
 		tableNameText = createNameGroup(group, EntityWizardMsg.TABLE_NAME, IEntityDataModelProperties.TABLE_NAME);
 		tableNameText.setEnabled(!tableNameCheckButton.getSelection());
@@ -153,7 +151,6 @@ public class EntityFieldsWizardPage extends DataModelWizardPage {
 		button.setLayoutData(groupGridData);
 		button.setText(text);
 		button.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(SelectionEvent e) {
 				boolean isChecked = button.getSelection();
 				if (tableNameText != null) {
@@ -188,7 +185,6 @@ public class EntityFieldsWizardPage extends DataModelWizardPage {
 	 * @see org.eclipse.wst.common.frameworks.internal.operation.WTPOperationDataModelListener#propertyChanged(java.lang.String,
 	 *      java.lang.Object, java.lang.Object)
 	 */
-	@Override
 	public void propertyChanged(DataModelEvent event) {
 		String propertyName = event.getPropertyName();
 		if (IEntityDataModelProperties.MAPPED_AS_SUPERCLASS.equals(propertyName)) {

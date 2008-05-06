@@ -31,7 +31,6 @@ public class EntityWizardMsg extends NLS {
     public static String ENTITY;
     public static String MAPPED_AS_SUPERCLASS;
     public static String INHERITANCE_GROUP;
-    public static String INHERITANCE_CHECK_BOX;
     public static String XML_STORAGE_GROUP;
     public static String XML_SUPPORT;    
     public static String CHOOSE_XML;
@@ -43,14 +42,11 @@ public class EntityWizardMsg extends NLS {
     public static String TYPE_DIALOG_DESCRIPTION;
     public static String ENTITY_NAME;
     public static String TABLE_NAME;
-    public static String TABLE_NAME_GROUP;
     public static String USE_DEFAULT;
     public static String ENTITY_FIELDS;
     public static String KEY;
-    public static String NAME_COLUMN;
-    public static String TYPE_COLUMN;
-	public static String NAME_TEXT_FIELD;
-    public static String TYPE_TEXT_FIELD;
+    public static String NAME;
+    public static String TYPE;
     public static String BROWSE_BUTTON_LABEL;
     public static String ADD_BUTTON_LABEL;
     public static String EDIT_BUTTON_LABEL;
