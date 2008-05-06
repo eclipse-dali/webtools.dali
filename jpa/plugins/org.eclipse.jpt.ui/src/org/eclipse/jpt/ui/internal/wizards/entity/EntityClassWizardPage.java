@@ -141,7 +141,7 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 		Group group = createGroup(parent, EntityWizardMsg.INHERITANCE_GROUP);
 		entityButton = createRadioButton(group, EntityWizardMsg.ENTITY, IEntityDataModelProperties.ENTITY);
 		mapedAsSuperclassButton = createRadioButton(group, EntityWizardMsg.MAPPED_AS_SUPERCLASS, IEntityDataModelProperties.MAPPED_AS_SUPERCLASS);
-		inheritanceButton = createCheckButton(group, GridData.HORIZONTAL_ALIGN_FILL, 1/*horizontal span*/, EntityWizardMsg.INHERITANCE_GROUP, IEntityDataModelProperties.INHERITANCE);
+		inheritanceButton = createCheckButton(group, GridData.HORIZONTAL_ALIGN_FILL, 1/*horizontal span*/, EntityWizardMsg.INHERITANCE_CHECK_BOX, IEntityDataModelProperties.INHERITANCE);
 		createComboBox(group, IEntityDataModelProperties.INHERITANCE_STRATEGY);
 	}
 	

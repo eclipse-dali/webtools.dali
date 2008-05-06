@@ -93,7 +93,7 @@ public class EntityRowTableWizardSection extends Composite {
 	private Button removeButton;
 	private String title = EntityWizardMsg.ENTITY_FIELDS;
 	private String[] labelsForCombo = VALID_TYPES;
-	private String[] labelsForText = new String[]{EntityWizardMsg.TYPE, EntityWizardMsg.NAME};
+	private String[] labelsForText = new String[]{EntityWizardMsg.TYPE_TEXT_FIELD, EntityWizardMsg.NAME_TEXT_FIELD};
 	private IDataModel model;
 	private String propertyName;
 	private Image labelProviderImage = null;
@@ -200,10 +200,10 @@ public class EntityRowTableWizardSection extends Composite {
 		pkColumn.setResizable(false);
 
         TableColumn nameColumn = new TableColumn(mTableWidget, SWT.NONE);
-        nameColumn.setText(EntityWizardMsg.NAME);
+        nameColumn.setText(EntityWizardMsg.NAME_COLUMN);
 
         TableColumn typeColumn = new TableColumn(mTableWidget, SWT.NONE);
-        typeColumn.setText(EntityWizardMsg.TYPE);
+        typeColumn.setText(EntityWizardMsg.TYPE_COLUMN);
 
         this.addControlListener(new ControlAdapter() {
         	@Override
