@@ -9,25 +9,15 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistencexml.details;
 
-import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.ui.internal.platform.generic.PersistenceXmlItemLabelProvider;
-import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
-import org.eclipse.jpt.ui.jface.ItemLabelProvider;
+import org.eclipse.jpt.ui.internal.platform.generic.GenericNavigatorItemLabelProviderFactory;
 import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
 
 /**
  * EclipseLinkNavigatorItemLabelProviderFactory
  */
 public class EclipseLinkNavigatorItemLabelProviderFactory
-					implements ItemLabelProviderFactory
+	extends GenericNavigatorItemLabelProviderFactory
+	implements ItemLabelProviderFactory
 {
-	public ItemLabelProvider buildItemLabelProvider(
-						Object item, 
-						DelegatingContentAndLabelProvider contentAndLabelProvider) {
-		
-		if (item instanceof PersistenceXml) {
-			return new PersistenceXmlItemLabelProvider((PersistenceXml) item, contentAndLabelProvider);
-		}
-		return null;
-	}
+	
 }

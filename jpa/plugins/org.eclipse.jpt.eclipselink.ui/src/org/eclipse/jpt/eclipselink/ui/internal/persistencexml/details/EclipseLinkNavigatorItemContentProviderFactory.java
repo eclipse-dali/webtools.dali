@@ -9,29 +9,15 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistencexml.details;
 
-import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
-import org.eclipse.jpt.ui.internal.platform.generic.PersistenceXmlItemContentProvider;
-import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
-import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
+import org.eclipse.jpt.ui.internal.platform.generic.GenericNavigatorItemContentProviderFactory;
 import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 
 /**
  * EclipseLinkNavigatorItemContentProviderFactory
  */
 public class EclipseLinkNavigatorItemContentProviderFactory
-					implements TreeItemContentProviderFactory
+	extends GenericNavigatorItemContentProviderFactory
+	implements TreeItemContentProviderFactory
 {
-	public TreeItemContentProvider buildItemContentProvider(
-					Object item, 
-					DelegatingContentAndLabelProvider contentAndLabelProvider) {
-		
-		DelegatingTreeContentAndLabelProvider treeContentAndLabelProvider = 
-			(DelegatingTreeContentAndLabelProvider) contentAndLabelProvider;
-		
-		if (item instanceof PersistenceXml) {
-			return new PersistenceXmlItemContentProvider((PersistenceXml) item, treeContentAndLabelProvider);
-		}
-		return null;
-	}
+	
 }
