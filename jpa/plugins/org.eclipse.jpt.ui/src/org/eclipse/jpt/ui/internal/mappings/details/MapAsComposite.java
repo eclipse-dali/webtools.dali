@@ -66,6 +66,7 @@ import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
 public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 
 	private boolean dragEvent;
+	private boolean enabled;
 	private Cursor handCursor;
 	private MappingChangeHandler mappingChangeHandler;
 	private int mappingTypeLength;
@@ -222,6 +223,7 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 	 */
 	@Override
 	public void enableWidgets(boolean enabled) {
+		this.enabled = enabled;
 		super.enableWidgets(enabled);
 
 		if (!styledText.isDisposed()) {
@@ -241,7 +243,10 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 	 */
 	@Override
 	protected void initialize() {
+
 		super.initialize();
+
+		this.enabled = true;
 		this.mappingChangeHandler = buildMappingChangeHandler();
 	}
 
@@ -330,7 +335,7 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 		clearStyleRange();
 		updateText();
 
-		if (styledText.isEnabled()) {
+		if (enabled) {
 			updateLinkRange();
 		}
 	}
