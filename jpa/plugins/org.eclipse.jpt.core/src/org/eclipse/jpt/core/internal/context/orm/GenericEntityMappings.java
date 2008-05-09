@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.Generator;
@@ -782,10 +783,18 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	@Override
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
-		addGeneratorMessages(messages);
-		addQueryMessages(messages);
+		try {
+			addGeneratorMessages(messages);
+			addQueryMessages(messages);
+		} catch (Throwable exception) {
+			JptCorePlugin.log(exception);
+		}
 		for (OrmPersistentType ormPersistentType : CollectionTools.iterable(this.ormPersistentTypes())) {
-			ormPersistentType.addToMessages(messages);
+			try {
+				ormPersistentType.addToMessages(messages);
+			} catch (Throwable exception) {
+				JptCorePlugin.log(exception);			
+			}
 		}
 	}
 	

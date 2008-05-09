@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.PersistentAttribute;
@@ -481,13 +482,21 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	
 	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		this.mapping.addToMessages(messages, astRoot);	
+		try {
+			this.mapping.addToMessages(messages, astRoot);
+		} catch(Throwable t) {
+			JptCorePlugin.log(t);
+		}
 		addAttributeMessages(messages, astRoot);
 	}
 	
 	protected void addAttributeMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		for (JavaPersistentAttribute attributeContext : this.attributes) {
-			attributeContext.addToMessages(messages, astRoot);
+		for (JavaPersistentAttribute persistentAttribute : this.attributes) {
+			try {
+				persistentAttribute.addToMessages(messages, astRoot);
+			} catch(Throwable t) {
+				JptCorePlugin.log(t);
+			}
 		}
 	}
 	

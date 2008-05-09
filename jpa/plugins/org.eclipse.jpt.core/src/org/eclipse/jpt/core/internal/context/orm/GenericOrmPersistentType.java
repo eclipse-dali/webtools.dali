@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
@@ -867,10 +868,18 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
 
-		getMapping().addToMessages(messages);
+		try {
+			getMapping().addToMessages(messages);
+		} catch(Throwable t) {
+			JptCorePlugin.log(t);
+		}
 		
 		for (OrmPersistentAttribute persistentAttribute : CollectionTools.iterable(this.attributes())) {
-			persistentAttribute.addToMessages(messages);
+			try {
+				persistentAttribute.addToMessages(messages);
+			} catch(Throwable t) {
+				JptCorePlugin.log(t);
+			}
 		}
 	}
 	

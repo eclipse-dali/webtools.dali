@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -204,8 +205,12 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 					this.getValidationTextRange()));
 			}
 			else {
-				//bug 190062 - only add java validation messages if this class is not listed in a mapping file
-				getJavaPersistentType().addToMessages(messages);
+				try {
+					//bug 190062 - only add java validation messages if this class is not listed in a mapping file
+					getJavaPersistentType().addToMessages(messages);
+				} catch (Throwable t) {
+					JptCorePlugin.log(t);
+				}
 			}
 		}
 	}

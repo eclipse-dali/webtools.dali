@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.validation;
 
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -38,9 +39,17 @@ public class DefaultJpaValidationMessages
 	public static IMessage buildMessage(
 			int severity, String messageId, String[] parms, Object targetObject, TextRange textRange) {
 		IMessage message = new Message(BUNDLE, severity, messageId, parms, targetObject);
-		message.setLineNo(textRange.getLineNumber());
-		message.setOffset(textRange.getOffset());
-		message.setLength(textRange.getLength());
+		if (textRange == null) {
+			//log an exception and then continue without setting location information
+			//At least the user will still get the validation message and will
+			//be able to see other validation messages with valid textRanges
+			JptCorePlugin.log(new IllegalArgumentException("The textRange is null for messageId: " + messageId));
+		}
+		else {
+			message.setLineNo(textRange.getLineNumber());
+			message.setOffset(textRange.getOffset());
+			message.setLength(textRange.getLength());
+		}
 		return message;
 	}
 	
