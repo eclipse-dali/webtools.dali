@@ -54,7 +54,6 @@ import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaEntity;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.Inheritance;
@@ -703,29 +702,10 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	public int specifiedAttributeOverridesSize() {
 		return this.specifiedAttributeOverrides.size();
 	}
-//
-//	public OrmAttributeOverride addSpecifiedAttributeOverride(int index) {
-//		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl();
-//		OrmAttributeOverride attributeOverride = buildAttributeOverride(xmlAttributeOverride);
-//		this.specifiedAttributeOverrides.add(index, attributeOverride);
-//		this.typeMappingResource().getAttributeOverrides().add(index, xmlAttributeOverride);
-//		this.fireItemAdded(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
-//		return attributeOverride;
-//	}
 
 	protected void addSpecifiedAttributeOverride(int index, OrmAttributeOverride attributeOverride) {
 		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
-//	
-//	public void removeSpecifiedAttributeOverride(AttributeOverride attributeOverride) {
-//		removeSpecifiedAttributeOverride(this.specifiedAttributeOverrides.indexOf(attributeOverride));
-//	}
-//	
-//	public void removeSpecifiedAttributeOverride(int index) {
-//		OrmAttributeOverride removedAttributeOverride = this.specifiedAttributeOverrides.remove(index);
-//		this.typeMappingResource().getAttributeOverrides().remove(index);
-//		fireItemRemoved(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, removedAttributeOverride);
-//	}
 	
 	protected void removeSpecifiedAttributeOverride_(OrmAttributeOverride attributeOverride) {
 		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
@@ -761,29 +741,10 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	public int specifiedAssociationOverridesSize() {
 		return this.specifiedAssociationOverrides.size();
 	}
-//
-//	public OrmAssociationOverride addSpecifiedAssociationOverride(int index) {
-//		XmlAssociationOverride xmlAssociationOverride = OrmFactory.eINSTANCE.createXmlAssociationOverride();
-//		OrmAssociationOverride associationOverride = buildAssociationOverride(xmlAssociationOverride);
-//		this.specifiedAssociationOverrides.add(index, associationOverride);
-//		this.typeMappingResource().getAssociationOverrides().add(index, xmlAssociationOverride);
-//		this.fireItemAdded(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
-//		return associationOverride;
-//	}
 
 	protected void addSpecifiedAssociationOverride(int index, OrmAssociationOverride associationOverride) {
 		addItemToList(index, associationOverride, this.specifiedAssociationOverrides, Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
 	}
-
-//	public void removeSpecifiedAssociationOverride(AssociationOverride associationOverride) {
-//		removeSpecifiedAssociationOverride(this.specifiedAssociationOverrides.indexOf(associationOverride));
-//	}
-//	
-//	public void removeSpecifiedAssociationOverride(int index) {
-//		OrmAssociationOverride removedAssociationOverride = this.specifiedAssociationOverrides.remove(index);
-//		this.typeMappingResource().getAssociationOverrides().remove(index);
-//		fireItemRemoved(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, removedAssociationOverride);
-//	}
 	
 	protected void removeSpecifiedAssociationOverride_(OrmAssociationOverride associationOverride) {
 		removeItemFromList(associationOverride, this.specifiedAssociationOverrides, Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
@@ -795,6 +756,56 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		fireItemMoved(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 
+	public OrmAttributeOverride getAttributeOverrideNamed(String name) {
+		return (OrmAttributeOverride) getOverrideNamed(name, attributeOverrides());
+	}
+
+	public boolean containsAttributeOverride(String name) {
+		return containsOverride(name, attributeOverrides());
+	}
+
+	public boolean containsDefaultAttributeOverride(String name) {
+		return containsOverride(name, virtualAttributeOverrides());
+	}
+
+	public boolean containsSpecifiedAttributeOverride(String name) {
+		return containsOverride(name, specifiedAttributeOverrides());
+	}
+
+	public OrmAssociationOverride getAssociationOverrideNamed(String name) {
+		return (OrmAssociationOverride) getOverrideNamed(name, associationOverrides());
+	}
+
+	public boolean containsAssociationOverride(String name) {
+		return containsOverride(name, associationOverrides());
+	}
+
+	public boolean containsSpecifiedAssociationOverride(String name) {
+		return containsOverride(name, specifiedAssociationOverrides());
+	}
+
+	public boolean containsDefaultAssociationOverride(String name) {
+		return containsOverride(name, virtualAssociationOverrides());
+	}
+
+	private BaseOverride getOverrideNamed(String name, ListIterator<? extends BaseOverride> overrides) {
+		for (BaseOverride override : CollectionTools.iterable(overrides)) {
+			String overrideName = override.getName();
+			if (overrideName == null && name == null) {
+				return override;
+			}
+			if (overrideName != null && overrideName.equals(name)) {
+				return override;
+			}
+		}
+		return null;
+	}
+
+	private boolean containsOverride(String name, ListIterator<? extends BaseOverride> overrides) {
+		return getOverrideNamed(name, overrides) != null;
+	}
+
+	
 	public ListIterator<OrmNamedQuery> namedQueries() {
 		return new CloneListIterator<OrmNamedQuery>(this.namedQueries);
 	}
@@ -1499,9 +1510,35 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	// *************************************************************************
 	
 	public String getPrimaryKeyColumnName() {
-		return GenericJavaEntity.primaryKeyColumnName(getPersistentType().allAttributes());
+		return getPrimaryKeyColumnName(getPersistentType().allAttributes());
 	}
 	
+	//copied in GenericJavaEntity to avoid an API change for fixing bug 229423 in RC1
+	public String getPrimaryKeyColumnName(Iterator<PersistentAttribute> attributes) {
+		String pkColumnName = null;
+		for (Iterator<PersistentAttribute> stream = attributes; stream.hasNext();) {
+			PersistentAttribute attribute = stream.next();
+			String name = attribute.getPrimaryKeyColumnName();
+			if (name != null) {
+				//if the attribute is a primary key then we need to check if there is an attribute override
+				//and use its column name instead (bug 229423)
+				AttributeOverride attributeOverride = getAttributeOverrideNamed(attribute.getName());
+				if (attributeOverride != null) {
+					name = attributeOverride.getColumn().getName();
+				}
+			}
+			if (pkColumnName == null) {
+				pkColumnName = name;
+			}
+			else if (name != null) {
+				// if we encounter a composite primary key, return null
+				return null;
+			}
+		}
+		// if we encounter only a single primary key column name, return it
+		return pkColumnName;
+	}
+
 	//**********  Validation **************************
 	
 	@Override

@@ -265,7 +265,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	protected void initializeVirtualAttributeOverrides(JavaResourcePersistentType persistentTypeResource) {
 		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAttributes())) {
-			JavaAttributeOverride attributeOverride = attributeOverrideNamed(persistentAttribute.getName());
+			JavaAttributeOverride attributeOverride = getAttributeOverrideNamed(persistentAttribute.getName());
 			if (attributeOverride == null) {
 				this.virtualAttributeOverrides.add(buildVirtualAttributeOverride(persistentTypeResource, persistentAttribute));
 			}
@@ -283,7 +283,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	protected void initializeDefaultAssociationOverrides(JavaResourcePersistentType resourcePersistentType) {
 		for (Iterator<String> i = allOverridableAssociationNames(); i.hasNext(); ) {
 			String associationName = i.next();
-			JavaAssociationOverride associationOverride = associationOverrideNamed(associationName);
+			JavaAssociationOverride associationOverride = getAssociationOverrideNamed(associationName);
 			if (associationOverride == null) {
 				this.virtualAssociationOverrides.add(buildAssociationOverride(new NullAssociationOverride(resourcePersistentType, associationName)));
 			}
@@ -855,8 +855,8 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		removeItemFromList(attributeOverride, this.virtualAttributeOverrides, Entity.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST);
 	}
 
-	public JavaAttributeOverride attributeOverrideNamed(String name) {
-		return (JavaAttributeOverride) overrideNamed(name, attributeOverrides());
+	public JavaAttributeOverride getAttributeOverrideNamed(String name) {
+		return (JavaAttributeOverride) getOverrideNamed(name, attributeOverrides());
 	}
 
 	public boolean containsAttributeOverride(String name) {
@@ -871,8 +871,8 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		return containsOverride(name, specifiedAttributeOverrides());
 	}
 
-	public JavaAssociationOverride associationOverrideNamed(String name) {
-		return (JavaAssociationOverride) overrideNamed(name, associationOverrides());
+	public JavaAssociationOverride getAssociationOverrideNamed(String name) {
+		return (JavaAssociationOverride) getOverrideNamed(name, associationOverrides());
 	}
 
 	public boolean containsAssociationOverride(String name) {
@@ -887,7 +887,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		return containsOverride(name, virtualAssociationOverrides());
 	}
 
-	private BaseOverride overrideNamed(String name, ListIterator<? extends BaseOverride> overrides) {
+	private BaseOverride getOverrideNamed(String name, ListIterator<? extends BaseOverride> overrides) {
 		for (BaseOverride override : CollectionTools.iterable(overrides)) {
 			String overrideName = override.getName();
 			if (overrideName == null && name == null) {
@@ -901,7 +901,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	private boolean containsOverride(String name, ListIterator<? extends BaseOverride> overrides) {
-		return overrideNamed(name, overrides) != null;
+		return getOverrideNamed(name, overrides) != null;
 	}
 
 
@@ -1168,14 +1168,23 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	public String getPrimaryKeyColumnName() {
-		return primaryKeyColumnName(getPersistentType().allAttributes());
+		return getPrimaryKeyColumnName(getPersistentType().allAttributes());
 	}
 	
-	public static String primaryKeyColumnName(Iterator<PersistentAttribute> attributes) {
+	//copied in GenericOrmEntity to avoid an API change for fixing bug 229423 in RC1
+	public String getPrimaryKeyColumnName(Iterator<PersistentAttribute> attributes) {
 		String pkColumnName = null;
 		for (Iterator<PersistentAttribute> stream = attributes; stream.hasNext();) {
 			PersistentAttribute attribute = stream.next();
 			String name = attribute.getPrimaryKeyColumnName();
+			if (name != null) {
+				//if the attribute is a primary key then we need to check if there is an attribute override
+				//and use its column name instead (bug 229423)
+				AttributeOverride attributeOverride = getAttributeOverrideNamed(attribute.getName());
+				if (attributeOverride != null) {
+					name = attributeOverride.getColumn().getName();
+				}
+			}
 			if (pkColumnName == null) {
 				pkColumnName = name;
 			}
@@ -1186,7 +1195,6 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		}
 		// if we encounter only a single primary key column name, return it
 		return pkColumnName;
-	
 	}
 
 	@Override
@@ -1541,7 +1549,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 
 	protected void updateVirtualAttributeOverrides(JavaResourcePersistentType resourcePersistentType) {
 		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAttributes())) {
-			JavaAttributeOverride attributeOverride = attributeOverrideNamed(persistentAttribute.getName());
+			JavaAttributeOverride attributeOverride = getAttributeOverrideNamed(persistentAttribute.getName());
 			if (attributeOverride == null) {
 				addVirtualAttributeOverride(buildVirtualAttributeOverride(resourcePersistentType, persistentAttribute));
 			}
@@ -1589,7 +1597,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	protected void updateVirtualAssociationOverrides(JavaResourcePersistentType resourcePersistentType) {
 		for (Iterator<String> i = allOverridableAssociationNames(); i.hasNext(); ) {
 			String associationName = i.next();
-			JavaAssociationOverride associationOverride = associationOverrideNamed(associationName);
+			JavaAssociationOverride associationOverride = getAssociationOverrideNamed(associationName);
 			if (associationOverride == null) {
 				associationOverride = buildAssociationOverride(new NullAssociationOverride(resourcePersistentType, associationName));
 				addVirtualAssociationOverride(associationOverride);

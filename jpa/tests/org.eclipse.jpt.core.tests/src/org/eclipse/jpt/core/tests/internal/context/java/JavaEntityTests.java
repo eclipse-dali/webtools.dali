@@ -35,6 +35,7 @@ import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
@@ -2898,5 +2899,33 @@ public class JavaEntityTests extends ContextModelTestCase
 		javaEntity().setIdClass(null);
 		assertNull(javaEntity().getIdClass());
 		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
-	}	
+	}
+	
+	public void testGetPrimaryKeyColumnNameWithAttributeOverride() throws Exception {
+		createTestMappedSuperclass();
+		createTestSubType();
+		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		Iterator<ClassRef> classRefs = persistenceUnit().specifiedClassRefs();
+		JavaPersistentType entityPersistentType = classRefs.next().getJavaPersistentType();
+		JavaEntity javaEntity = (JavaEntity) entityPersistentType.getMapping();
+		JavaPersistentType mappedSuperclassPersistentType = classRefs.next().getJavaPersistentType();
+		
+		assertNull(javaEntity.getPrimaryKeyColumnName());
+
+		mappedSuperclassPersistentType.getAttributeNamed("id").setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		assertEquals("id", javaEntity.getPrimaryKeyColumnName());
+		
+		((JavaIdMapping) mappedSuperclassPersistentType.getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName("MY_ID");
+		assertEquals("MY_ID", javaEntity.getPrimaryKeyColumnName());
+		
+		JavaAttributeOverride javaAttributeOverride = javaEntity.virtualAttributeOverrides().next();
+		assertEquals("id", javaAttributeOverride.getName());
+		
+		javaAttributeOverride = (JavaAttributeOverride) javaAttributeOverride.setVirtual(false);
+		javaAttributeOverride.getColumn().setSpecifiedName("ID");
+		assertEquals("ID", javaEntity.getPrimaryKeyColumnName());
+	}
+
 }

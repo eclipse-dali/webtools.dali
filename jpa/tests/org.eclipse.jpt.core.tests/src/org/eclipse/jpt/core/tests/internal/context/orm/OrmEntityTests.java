@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
+import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
@@ -62,6 +63,10 @@ public class OrmEntityTests extends ContextModelTestCase
 	
 	private void createIdAnnotation() throws Exception {
 		this.createAnnotationAndMembers("Id", "");		
+	}
+	
+	private void createMappedSuperclassAnnotation() throws Exception{
+		this.createAnnotationAndMembers("MappedSuperclass", "");		
 	}
 	
 	private IType createTestEntityDefaultFieldAccess() throws Exception {
@@ -137,7 +142,37 @@ public class OrmEntityTests extends ContextModelTestCase
 		return this.javaProject.createType(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 
-	
+
+	private IType createTestMappedSuperclass() throws Exception {
+		createMappedSuperclassAnnotation();
+		
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.MAPPED_SUPERCLASS, JPA.ONE_TO_ONE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@MappedSuperclass");
+			}
+			
+			@Override
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
+				sb.append("private String foo;").append(CR);
+				sb.append(CR);
+				sb.append("    @OneToOne");
+				sb.append(CR);
+				sb.append("    private int address;").append(CR);
+				sb.append(CR);
+				sb.append("    @OneToOne");
+				sb.append(CR);
+				sb.append("    private int address2;").append(CR);
+				sb.append(CR);
+				sb.append("    ");
+			}
+		});
+	}
+
 	public void testUpdateSpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
@@ -1277,7 +1312,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		entityResource.getPrimaryKeyJoinColumns().remove(0);
 		assertFalse(ormEntity.specifiedPrimaryKeyJoinColumns().hasNext());
 	}
-	
+
 //	public void testAddSpecifiedAttributeOverride() throws Exception {
 //		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 //		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
@@ -1904,6 +1939,31 @@ public class OrmEntityTests extends ContextModelTestCase
 		ormEntity.setIdClass(null);
 		assertNull(ormEntity.getIdClass());
 		assertNull(entityResource.getIdClass());
+	}
+
+	
+	public void testGetPrimaryKeyColumnNameWithAttributeOverride() throws Exception {
+		createTestMappedSuperclass();
+		createTestSubType();
+		OrmPersistentType parentPersistentType = entityMappings().addOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType childPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
+		OrmEntity childXmlEntity = (OrmEntity) childPersistentType.getMapping();
+		
+		assertNull(childXmlEntity.getPrimaryKeyColumnName());
+
+		parentPersistentType.getAttributeNamed("id").makeSpecified(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		assertEquals("id", childXmlEntity.getPrimaryKeyColumnName());
+		
+		((OrmIdMapping) parentPersistentType.getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName("MY_ID");
+		assertEquals("MY_ID", childXmlEntity.getPrimaryKeyColumnName());
+
+		//TODO once bug 228718 is fixed
+//		OrmAttributeOverride ormAttributeOverride = childXmlEntity.virtualAttributeOverrides().next();
+//		assertEquals("id", ormAttributeOverride.getName());
+//		
+//		ormAttributeOverride = (OrmAttributeOverride) ormAttributeOverride.setVirtual(false);
+//		ormAttributeOverride.getColumn().setSpecifiedName("ID");
+//		assertEquals("ID", childXmlEntity.getPrimaryKeyColumnName());
 	}
 
 }
