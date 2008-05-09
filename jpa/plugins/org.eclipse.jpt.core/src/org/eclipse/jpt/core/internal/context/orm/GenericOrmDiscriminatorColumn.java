@@ -26,10 +26,6 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 	
 	protected DiscriminatorType defaultDiscriminatorType;
 
-//	protected static final int DEFAULT_LENGTH_EDEFAULT = 31;
-
-	protected Integer defaultLength;
-
 	protected Integer specifiedLength;
 
 	protected XmlEntity entity;
@@ -79,13 +75,7 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 	}
 
 	public Integer getDefaultLength() {
-		return this.defaultLength;
-	}
-	
-	protected void setDefaultLength(Integer newDefaultLength) {
-		Integer oldDefaultLength = this.defaultLength;
-		this.defaultLength = newDefaultLength;
-		firePropertyChanged(DEFAULT_LENGTH_PROPERTY, oldDefaultLength, newDefaultLength);
+		return DiscriminatorColumn.DEFAULT_LENGTH;
 	}
 
 	public Integer getSpecifiedLength() {
