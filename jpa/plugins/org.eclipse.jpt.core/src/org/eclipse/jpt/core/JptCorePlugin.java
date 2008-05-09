@@ -71,13 +71,6 @@ public class JptCorePlugin extends Plugin {
 	public static final String JPA_PLATFORM = PLUGIN_ID + ".platform";  //$NON-NLS-1$
 	
 	/**
-	 * The key for storing a JPA project's user overridden default schema name
-	 * in the Eclipse project's preferences.
-	 */
-	public static final String USER_OVERRIDE_DEFAULT_SCHEMA_NAME = 
-			PLUGIN_ID + ".userOverrideDefaultSchemaName";  //$NON-NLS-1$
-	
-	/**
 	 * The key for storing a JPA project's "discover" flag in the Eclipse
 	 * project's preferences.
 	 */
@@ -85,11 +78,18 @@ public class JptCorePlugin extends Plugin {
 
 	/**
 	 * The key for storing a JPA project's data source connection profile name
-	 * in the Eclipse project's persistent property's.
+	 * in the Eclipse project's persistent properties.
 	 */
 	public static final QualifiedName DATA_SOURCE_CONNECTION_PROFILE_NAME = 
 			new QualifiedName(PLUGIN_ID, "dataSource.connectionProfileName");  //$NON-NLS-1$
 
+	/**
+	 * The key for storing a JPA project's user overridden default schema name
+	 * in the Eclipse project's persistent properties.
+	 */
+	public static final QualifiedName USER_OVERRIDE_DEFAULT_SCHEMA_NAME = 
+			new QualifiedName(PLUGIN_ID, "userOverrideDefaultSchemaName");  //$NON-NLS-1$
+	
 	/**
 	 * The identifier for the JPA validation marker
 	 * (value <code>"org.eclipse.jpt.core.jpaProblemMarker"</code>).
@@ -319,29 +319,6 @@ public class JptCorePlugin extends Plugin {
 	}
 	
 	/**
-	 * Return the default schema name associated with the specified Eclipse project.
-	 * @see JpaProject#getUserOverrideDefaultSchemaName()
-	 */
-	public static String getUserOverrideDefaultSchemaName(IProject project) {
-		return getProjectPreferences(project).get(USER_OVERRIDE_DEFAULT_SCHEMA_NAME, null);
-	}
-	
-	/**
-	 * Set the default schema name associated with the specified Eclipse project.
-	 * @see JpaProject#setUserOverrideDefaultSchemaName()
-	 */
-	public static void setUserOverrideDefaultSchemaName(IProject project, String defaultSchemaName) {
-		IEclipsePreferences prefs = getProjectPreferences(project);
-		if (defaultSchemaName == null) {
-			prefs.remove(USER_OVERRIDE_DEFAULT_SCHEMA_NAME);
-		}
-		else {
-			prefs.put(USER_OVERRIDE_DEFAULT_SCHEMA_NAME, defaultSchemaName);
-		}
-		flush(prefs);
-	}
-	
-	/**
 	 * Return the JPA "discover" flag associated with the specified
 	 * Eclipse project.
 	 */
@@ -392,6 +369,33 @@ public class JptCorePlugin extends Plugin {
 			project.setPersistentProperty(DATA_SOURCE_CONNECTION_PROFILE_NAME, connectionProfileName);
 		} catch (CoreException ex) {
 			log(ex);
+		}
+	}
+	
+	/**
+	 * Return the default schema name associated with the specified Eclipse project.
+	 * @see JpaProject#getUserOverrideDefaultSchemaName()
+	 */
+	public static String getUserOverrideDefaultSchemaName(IProject project) {
+		try {
+			return project.getPersistentProperty(USER_OVERRIDE_DEFAULT_SCHEMA_NAME);
+		}
+		catch (CoreException ce) {
+			log(ce);
+			return null;
+		}
+	}
+	
+	/**
+	 * Set the default schema name associated with the specified Eclipse project.
+	 * @see JpaProject#setUserOverrideDefaultSchemaName()
+	 */
+	public static void setUserOverrideDefaultSchemaName(IProject project, String defaultSchemaName) {
+		try {
+			project.setPersistentProperty(USER_OVERRIDE_DEFAULT_SCHEMA_NAME, defaultSchemaName);
+		}
+		catch (CoreException ce) {
+			log(ce);
 		}
 	}
 
