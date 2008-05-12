@@ -111,6 +111,7 @@ public class EclipseLinkUiMessages extends NLS
 	public static String PersistenceXmlSchemaGenerationTab_ddlGenerationLocationLabel;
 
 	public static String DdlGenerationLocationComposite_dialogTitle;
+	public static String DdlGenerationLocationComposite_dialogMessage;
 
 	// Caching
 	public static String PersistenceXmlCachingTab_title;

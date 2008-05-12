@@ -10,10 +10,11 @@
 package org.eclipse.jpt.eclipselink.ui.internal.schema.generation;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
-import org.eclipse.jpt.ui.internal.widgets.FileChooserPane;
+import org.eclipse.jpt.ui.internal.widgets.FolderChooserPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
@@ -32,12 +33,13 @@ public class DdlGenerationLocationComposite extends AbstractPane<SchemaGeneratio
 
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		new FileChooserPane<SchemaGeneration>(this, container) {
+		
+		new FolderChooserPane<SchemaGeneration>(this, container) {
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<SchemaGeneration, String>(getSubjectHolder(), SchemaGeneration.APPLICATION_LOCATION_PROPERTY) {
+				return new PropertyAspectAdapter<SchemaGeneration, String>(
+										getSubjectHolder(), SchemaGeneration.APPLICATION_LOCATION_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 
@@ -75,18 +77,12 @@ public class DdlGenerationLocationComposite extends AbstractPane<SchemaGeneratio
 
 			@Override
 			protected String dialogMessage() {
-				//TODO
-				return "TODO";
+				return EclipseLinkUiMessages.DdlGenerationLocationComposite_dialogMessage;
 			}
 
 			@Override
 			protected String dialogTitle() {
 				return EclipseLinkUiMessages.DdlGenerationLocationComposite_dialogTitle;
-			}
-
-			@Override
-			protected IResource getDialogInput() {
-				return null;
 			}
 
 			@Override
