@@ -79,7 +79,11 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getMappingResource().getTextRange(astRoot);
+		TextRange textRange = null;
+		T mappingResource = getMappingResource();
+		if (mappingResource != null) {
+			textRange = mappingResource.getTextRange(astRoot);
+		}
 		return (textRange != null) ? textRange : this.getPersistentAttribute().getValidationTextRange(astRoot);
 	}
 	
