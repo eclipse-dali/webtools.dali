@@ -63,7 +63,7 @@ public class JpaPerspectiveFactory implements IPerspectiveFactory {
 		layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
 
 		// new actions - Java project creation wizard
-		layout.addNewWizardShortcut("org.eclipse.jpt.jpaProject"); //$NON-NLS-1$
+		layout.addNewWizardShortcut("org.eclipse.jpt.ui.wizard.newJpaProject"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewPackageCreationWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewClassCreationWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewInterfaceCreationWizard"); //$NON-NLS-1$
