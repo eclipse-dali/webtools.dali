@@ -262,7 +262,10 @@ public class EntityRowTableWizardSection extends Composite {
 	 */
 	private void handleAddButtonSelected() {
 		AddFieldDialog dialog = new AddFieldDialog(getShell(), title, labelsForCombo, labelsForText);
-		dialog.open();
+		int result = dialog.open();
+		if (result == Window.CANCEL) {
+			return;
+		}
 		EntityRow entityRow = dialog.getEntityRow();
 		addEntityRow(entityRow);
 		if (!entityRow.couldBeKey()) {
