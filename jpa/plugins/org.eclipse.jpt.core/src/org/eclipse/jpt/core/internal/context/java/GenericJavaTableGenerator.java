@@ -295,7 +295,9 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 		super.initializeFromResource(tableGenerator);
 		this.specifiedTable = this.specifiedTable(tableGenerator);
 		this.specifiedCatalog = this.specifiedCatalog(tableGenerator);
+		this.defaultCatalog = this.defaultCatalog();
 		this.specifiedSchema = this.specifiedSchema(tableGenerator);
+		this.defaultSchema = this.defaultSchema();
 		this.specifiedPkColumnName = this.specifiedPkColumnName(tableGenerator);
 		this.specifiedValueColumnName = this.specifiedValueColumnName(tableGenerator);
 		this.specifiedPkColumnValue = this.specifiedPkColumnValue(tableGenerator);
