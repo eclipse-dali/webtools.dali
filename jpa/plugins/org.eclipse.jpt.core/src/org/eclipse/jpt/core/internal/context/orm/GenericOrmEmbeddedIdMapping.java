@@ -30,7 +30,7 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmBaseEmbeddedMapping<
 	}
 	
 	public int getXmlSequence() {
-		return 7;
+		return 1;
 	}
 	
 	//*************** AttributeMapping implementation *********************

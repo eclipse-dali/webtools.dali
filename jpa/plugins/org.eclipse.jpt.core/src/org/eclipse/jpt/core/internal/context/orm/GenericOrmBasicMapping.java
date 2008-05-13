@@ -179,7 +179,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	}
 
 	public int getXmlSequence() {
-		return 1;
+		return 2;
 	}
 
 	@Override

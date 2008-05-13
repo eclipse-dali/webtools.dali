@@ -41,7 +41,7 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	}
 
 	public int getXmlSequence() {
-		return 2;
+		return 3;
 	}
 
 	public String getKey() {

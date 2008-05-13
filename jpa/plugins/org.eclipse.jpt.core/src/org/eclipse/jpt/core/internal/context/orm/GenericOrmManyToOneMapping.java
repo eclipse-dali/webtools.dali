@@ -27,7 +27,7 @@ public class GenericOrmManyToOneMapping extends AbstractOrmSingleRelationshipMap
 	}
 
 	public int getXmlSequence() {
-		return 3;
+		return 4;
 	}
 
 	public String getKey() {

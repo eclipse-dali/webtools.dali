@@ -43,7 +43,7 @@ public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapp
 	}
 
 	public int getXmlSequence() {
-		return 4;
+		return 5;
 	}
 
 	// ********** NonOwningMapping implementation **********

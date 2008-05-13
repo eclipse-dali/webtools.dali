@@ -30,7 +30,7 @@ public class GenericOrmEmbeddedMapping extends AbstractOrmBaseEmbeddedMapping<Xm
 	}
 
 	public int getXmlSequence() {
-		return 7;
+		return 8;
 	}
 
 	public String getKey() {

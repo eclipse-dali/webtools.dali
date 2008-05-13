@@ -141,7 +141,7 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 
 
 	public int getXmlSequence() {
-		return 5;
+		return 6;
 	}
 
 	public String getKey() {

@@ -30,7 +30,7 @@ public class GenericOrmTransientMapping extends AbstractOrmAttributeMapping<XmlT
 	}
 
 	public int getXmlSequence() {
-		return 8;
+		return 9;
 	}
 
 	public String getKey() {
