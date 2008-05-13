@@ -262,6 +262,18 @@ public class OrmTableGeneratorTests extends ContextModelTestCase
 		assertNull(tableGenerator.getSpecifiedSchema());
 	}
 	
+	public void testUpdateDefaultSchemaFromPersistenceUnitDefaults() throws Exception {
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		
+		assertNull(tableGenerator.getDefaultSchema());
+		
+		tableGenerator.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
+		assertEquals("FOO", tableGenerator.getDefaultSchema());
+		
+		tableGenerator.getEntityMappings().setSpecifiedSchema("BAR");
+		assertEquals("BAR", tableGenerator.getDefaultSchema());
+	}
+
 	public void testUpdateSpecifiedCatalog() throws Exception {
 		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
 		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);

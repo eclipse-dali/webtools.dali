@@ -121,6 +121,12 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 		return this.defaultCatalog;
 	}
 
+	protected void setDefaultCatalog(String newDefaultCatalog) {
+		String oldDefaultCatalog = this.defaultCatalog;
+		this.defaultCatalog = newDefaultCatalog;
+		firePropertyChanged(DEFAULT_CATALOG_PROPERTY, oldDefaultCatalog, newDefaultCatalog);
+	}
+
 	public String getSchema() {
 		return (this.getSpecifiedSchema() == null) ? getDefaultSchema() : this.getSpecifiedSchema();
 	}
@@ -306,7 +312,9 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 		super.update(tableGenerator);
 		this.setSpecifiedTable_(this.specifiedTable(tableGenerator));
 		this.setSpecifiedCatalog_(this.specifiedCatalog(tableGenerator));
+		this.setDefaultCatalog(this.defaultCatalog());
 		this.setSpecifiedSchema_(this.specifiedSchema(tableGenerator));
+		this.setDefaultSchema(this.defaultSchema());
 		this.setSpecifiedPkColumnName_(this.specifiedPkColumnName(tableGenerator));
 		this.setSpecifiedValueColumnName_(this.specifiedValueColumnName(tableGenerator));
 		this.setSpecifiedPkColumnValue_(this.specifiedPkColumnValue(tableGenerator));
@@ -360,6 +368,20 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 	
 	protected String specifiedPkColumnValue(TableGeneratorAnnotation tableGenerator) {
 		return tableGenerator.getPkColumnValue();
+	}
+
+	protected String defaultSchema() {
+		if (getEntityMappings() != null) {
+			return getEntityMappings().getSchema();
+		}
+		return getPersistenceUnit().getDefaultSchema();
+	}
+	
+	protected String defaultCatalog() {
+		if (getEntityMappings() != null) {
+			return getEntityMappings().getCatalog();
+		}
+		return getPersistenceUnit().getDefaultCatalog();
 	}
 
 	public Table getDbTable() {

@@ -13,16 +13,22 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
+import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
+import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -212,6 +218,34 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		assertEquals("mySchema", idMapping.getTableGenerator().getSpecifiedSchema());
 	}
 	
+	public void testUpdateDefaultSchemaFromPersistenceUnitDefaults() throws Exception {
+		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
+		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+
+		createTestEntityWithTableGenerator();
+		
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+		IdMapping idMapping = (IdMapping)  ormPersistentType.getJavaPersistentType().getAttributeNamed("id").getMapping();
+		
+		assertNull(idMapping.getTableGenerator().getDefaultSchema());
+		
+		ormEntity.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
+		assertEquals("FOO", idMapping.getTableGenerator().getDefaultSchema());
+		
+		ormEntity.getEntityMappings().setSpecifiedSchema("BAR");
+		assertEquals("BAR", idMapping.getTableGenerator().getDefaultSchema());
+		
+		ormEntity.getTable().setSpecifiedSchema("XML_SCHEMA");
+		assertEquals("BAR", idMapping.getTableGenerator().getDefaultSchema());
+
+		entityMappings().removeOrmPersistentType(0);
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		//default schema taken from persistence-unit-defaults not entity-mappings since the entity is not in an orm.xml file
+		assertEquals("FOO", ((IdMapping) javaPersistentType().getAttributeNamed("id").getMapping()).getTableGenerator().getDefaultSchema());
+	}
+
 	public void testSetSpecifiedSchema() throws Exception {
 		createTestEntityWithTableGenerator();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);

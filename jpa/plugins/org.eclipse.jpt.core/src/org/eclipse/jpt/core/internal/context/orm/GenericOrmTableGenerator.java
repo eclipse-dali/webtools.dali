@@ -111,6 +111,12 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 	public String getDefaultCatalog() {
 		return this.defaultCatalog;
 	}
+	
+	protected void setDefaultCatalog(String newDefaultCatalog) {
+		String oldDefaultCatalog = this.defaultCatalog;
+		this.defaultCatalog = newDefaultCatalog;
+		firePropertyChanged(TableGenerator.DEFAULT_CATALOG_PROPERTY, oldDefaultCatalog, newDefaultCatalog);
+	}
 
 	public String getSchema() {
 		return (this.getSpecifiedSchema() == null) ? getDefaultSchema() : this.getSpecifiedSchema();
@@ -140,7 +146,7 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 	protected void setDefaultSchema(String newDefaultSchema) {
 		String oldDefaultSchema = this.defaultSchema;
 		this.defaultSchema = newDefaultSchema;
-		firePropertyChanged(this.defaultSchema, oldDefaultSchema, newDefaultSchema);
+		firePropertyChanged(TableGenerator.DEFAULT_SCHEMA_PROPERTY, oldDefaultSchema, newDefaultSchema);
 	}
 
 	public String getPkColumnName() {
@@ -328,7 +334,9 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 		super.update(tableGenerator);
 		this.setSpecifiedTable_(this.specifiedTable(tableGenerator));
 		this.setSpecifiedCatalog_(this.specifiedCatalog(tableGenerator));
+		this.setDefaultCatalog(this.defaultCatalog());
 		this.setSpecifiedSchema_(this.specifiedSchema(tableGenerator));
+		this.setDefaultSchema(this.defaultSchema());
 		this.setSpecifiedPkColumnName_(this.specifiedPkColumnName(tableGenerator));
 		this.setSpecifiedValueColumnName_(this.specifiedValueColumnName(tableGenerator));
 		this.setSpecifiedPkColumnValue_(this.specifiedPkColumnValue(tableGenerator));
@@ -360,6 +368,14 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 		return tableGenerator.getPkColumnValue();
 	}
 	
+	protected String defaultSchema() {
+		return getEntityMappings().getSchema();
+	}
+	
+	protected String defaultCatalog() {
+		return getEntityMappings().getCatalog();
+	}
+
 	protected void updateUniqueConstraints(XmlTableGenerator tableGenerator) {
 		ListIterator<OrmUniqueConstraint> uniqueConstraints = uniqueConstraints();
 		ListIterator<XmlUniqueConstraint> resourceUniqueConstraints;
