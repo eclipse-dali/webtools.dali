@@ -45,7 +45,11 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 		this.column = getJpaFactory().buildOrmColumn(this, this);
 		this.initialize(xmlAttributeOverride);
 	}
-	
+	@Override
+	public OrmJpaContextNode getParent() {
+		return (OrmJpaContextNode) super.getParent();
+	}
+
 	public OrmAttributeOverride setVirtual(boolean virtual) {
 		return (OrmAttributeOverride) getOwner().setVirtual(virtual, this);
 	}
@@ -97,16 +101,9 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 		return getOwner().isVirtual(this);
 	}
 
-//	@Override
-//	public ITextRange validationTextRange() {
-//		if (node == null) {
-//			return getOwner().validationTextRange();
-//		}
-//		return super.validationTextRange();
-//	}
 	public TextRange getValidationTextRange() {
-		// TODO Auto-generated method stub
-		return null;
+		TextRange textRange = this.attributeOverride.getValidationTextRange();
+		return textRange == null ? getParent().getValidationTextRange() : textRange;
 	}
 
 
