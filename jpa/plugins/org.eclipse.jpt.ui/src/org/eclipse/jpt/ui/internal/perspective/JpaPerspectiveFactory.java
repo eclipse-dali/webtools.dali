@@ -12,6 +12,7 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
+import org.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.ui.progress.IProgressConstants;
 
 public class JpaPerspectiveFactory implements IPerspectiveFactory {
@@ -22,13 +23,13 @@ public class JpaPerspectiveFactory implements IPerspectiveFactory {
 		//Package area
 		IFolderLayout folder = layout.createFolder(
 				"left", IPageLayout.LEFT, (float) 0.25, editorArea); //$NON-NLS-1$
-		folder.addView(JavaUI.ID_PACKAGES);
+		folder.addView(ProjectExplorer.VIEW_ID);
 		folder.addPlaceholder(JavaUI.ID_TYPE_HIERARCHY);
 		folder.addPlaceholder(IPageLayout.ID_RES_NAV);
 
 		//Database Explorer area
 		layout.addView("org.eclipse.datatools.connectivity.DataSourceExplorerNavigator", //$NON-NLS-1$
-			IPageLayout.BOTTOM, (float) 0.60, JavaUI.ID_PACKAGES);
+			IPageLayout.BOTTOM, (float) 0.60, ProjectExplorer.VIEW_ID);
 
 		//Problems/Console area
 		IFolderLayout outputFolder = layout.createFolder(
@@ -58,6 +59,7 @@ public class JpaPerspectiveFactory implements IPerspectiveFactory {
 		layout.addShowViewShortcut(JavaUI.ID_JAVADOC_VIEW);
 
 		// views - standard workbench
+		layout.addShowViewShortcut(ProjectExplorer.VIEW_ID);
 		layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
 		layout.addShowViewShortcut(IPageLayout.ID_PROBLEM_VIEW);
 		layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);

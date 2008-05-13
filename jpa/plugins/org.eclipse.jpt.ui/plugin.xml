@@ -651,13 +651,16 @@
 <!-- =================================================================================== -->
 	
 	<extension
-		 point="org.eclipse.ui.perspectives">
+		point="org.eclipse.ui.perspectives">
+		
 		<perspective
-        class="org.eclipse.jpt.ui.internal.perspective.JpaPerspectiveFactory"
-        icon="icons/full/eview16/jpa_perspective.gif"
-        id="org.eclipse.jpt.ui.jpaPerspective"
-        name="%jpaPerspective"/>
+			id="org.eclipse.jpt.ui.jpaPerspective"
+			class="org.eclipse.jpt.ui.internal.perspective.JpaPerspectiveFactory"
+			name="%jpaPerspective"
+			icon="icons/full/eview16/jpa_perspective.gif"/>
+		
 	</extension>
+	
 	
 	<extension
 		point="org.eclipse.wst.common.project.facet.ui.images">
