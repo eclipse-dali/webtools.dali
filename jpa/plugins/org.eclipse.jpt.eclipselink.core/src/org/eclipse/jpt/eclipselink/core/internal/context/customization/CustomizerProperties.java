@@ -20,6 +20,7 @@ public class CustomizerProperties implements Cloneable, Serializable
 {
 	private String entityName;
 
+	// ********** EclipseLink properties **********
 	private String className;
 
 	private static final long serialVersionUID = 1L;
@@ -51,6 +52,10 @@ public class CustomizerProperties implements Cloneable, Serializable
 		 }
 	 }
 
+	public boolean isEmpty() {
+		return this.className == null;
+	}
+
 	// ********** getter/setter **********
 	public String getEntityName() {
 		return this.entityName;
@@ -75,7 +80,7 @@ public class CustomizerProperties implements Cloneable, Serializable
 	}
 
 	public void toString(StringBuilder sb) {
-		sb.append(", class: ");
+		sb.append(" class: ");
 		sb.append(this.className);
 		sb.append(", entityName: ");
 		sb.append(this.entityName);

@@ -388,9 +388,13 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	// ****** convenience methods *******
-	
+	/**
+	 * Put the given Entity CustomizerProperties in this entitiesCustomizerProperties map.
+	 * @param entityName - Entity name. The entity may be a new or an existing entity.
+	 * @param properties - Entity CustomizerProperties
+	 */
 	private void putEntityCustomizerProperties(String entityName, CustomizerProperties properties) {
-		this.addOrReplaceEntity(entityName, properties);
+		this.addOrReplacePropertiesForEntity(entityName, properties);
 	}
 	
 
@@ -406,10 +410,19 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	public String addEntity(String entity) {
-		return this.addOrReplaceEntity(entity, new CustomizerProperties(entity));
+		return this.addOrReplacePropertiesForEntity(entity, new CustomizerProperties(entity));
 	}
 
-	private String addOrReplaceEntity(String entity, CustomizerProperties properties) {
+	/**
+	 * Adds or Replaces the given Entity CustomizerProperties in 
+	 * this entitiesCustomizerProperties map.
+	 * If the specified Entity exists and the given CustomizerProperties is empty 
+	 * (i.e. all properties are null) the mapping will be removed from the map.
+	 * @param entity - Entity name
+	 * @param properties - Entity CustomizerProperties
+	 * @return
+	 */
+	private String addOrReplacePropertiesForEntity(String entity, CustomizerProperties properties) {
 		if (this.entitiesCustomizerProperties.containsKey(entity)) {
 			this.replaceEntity_(entity, properties);
 			return null;
@@ -419,14 +432,29 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		return entity;
 	}
 
+	/**
+	 * Replaces the given Entity CustomizerProperties in this
+	 * entitiesCustomizerProperties map.
+	 * If the Entity CustomizerProperties is empty (i.e. all properties is null) the 
+	 * mapping will be removed from the map.
+	 * @param entity - Entity name
+	 * @param properties - Entity CustomizerProperties
+	 * @return
+	 */
 	private CustomizerProperties replaceEntity_(String entity, CustomizerProperties properties) {
 		CustomizerProperties old = this.entitiesCustomizerProperties.get(entity);
-		this.entitiesCustomizerProperties.put(entity, properties);
+		if (properties.isEmpty()) {
+			this.entitiesCustomizerProperties.remove(entity);
+			this.fireListChanged(ENTITIES_LIST_PROPERTY);
+		}
+		else {
+			this.entitiesCustomizerProperties.put(entity, properties);
+		}
 		return old;
 	}
 
 	public void removeEntity(String entity) {
-		if (!this.entitiesCustomizerProperties.containsKey(entity)) {
+		if ( ! this.entitiesCustomizerProperties.containsKey(entity)) {
 			return;
 		}
 		this.clearCustomizerProperties(entity);

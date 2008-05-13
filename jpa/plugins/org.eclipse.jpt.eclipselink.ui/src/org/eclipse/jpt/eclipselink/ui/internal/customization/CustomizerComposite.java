@@ -51,7 +51,7 @@ public class CustomizerComposite extends AbstractPane<EntityCustomizerProperties
 							getSubjectHolder(), Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY) {
 					@Override
 					protected String buildValue_() {
-						return subject.getDescriptorCustomizer();
+						return this.subject.getDescriptorCustomizer();
 					}
 
 					@Override
@@ -60,8 +60,7 @@ public class CustomizerComposite extends AbstractPane<EntityCustomizerProperties
 						if (value.length() == 0) {
 							value = null;
 						}
-
-						subject.setDescriptorCustomizer(value);
+						this.subject.setDescriptorCustomizer(value);
 					}
 				};
 			}
