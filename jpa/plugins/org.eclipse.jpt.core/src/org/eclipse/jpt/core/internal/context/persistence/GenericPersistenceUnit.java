@@ -574,13 +574,13 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	protected Property addXmlProperty(XmlProperty xmlProperty, int index) {
 
 		Property property = buildProperty(xmlProperty);
-		this.properties.add(index, property);
 		
 		if (this.xmlPersistenceUnit.getProperties() == null) {
 			XmlProperties xmlProperties = PersistenceFactory.eINSTANCE.createXmlProperties();
 			this.xmlPersistenceUnit.setProperties(xmlProperties);
 		}
 		
+		this.properties.add(index, property);
 		this.xmlPersistenceUnit.getProperties().getProperties().add(index, xmlProperty);
 		this.fireItemAdded(PROPERTIES_LIST, index, property);
 		return property;
