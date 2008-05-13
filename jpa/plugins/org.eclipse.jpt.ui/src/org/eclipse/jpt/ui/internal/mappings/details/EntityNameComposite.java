@@ -68,7 +68,7 @@ public class EntityNameComposite extends AbstractPane<Entity>
 	}
 
 	private WritablePropertyValueModel<String> buildEntityNameHolder() {
-		return new PropertyAspectAdapter<Entity, String>(getSubjectHolder(), Entity.SPECIFIED_NAME_PROPERTY) {
+		return new PropertyAspectAdapter<Entity, String>(getSubjectHolder(), Entity.SPECIFIED_NAME_PROPERTY, Entity.DEFAULT_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 

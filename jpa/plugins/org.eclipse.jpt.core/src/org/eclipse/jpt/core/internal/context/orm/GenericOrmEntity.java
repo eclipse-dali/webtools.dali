@@ -1229,8 +1229,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 
 	protected String defaultName() {
-		//TODO add a test where the underyling java has a name set @Entity(name="foo")
-		//just by having the entity specified in xml we are overriding that name setting
+		if (!isMetadataComplete()) {
+			JavaEntity javaEntity = getJavaEntity();
+			if (javaEntity != null) {
+				return javaEntity.getName();
+			}
+		}
 		String className = getClass_();
 		if (className != null) {
 			return ClassTools.shortNameForClassNamed(className);

@@ -218,8 +218,8 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(TYPE_NAME, ormEntity.getDefaultName());
 		
 		ormEntity.getJavaEntity().setSpecifiedName("Foo");
-		//xml default name is not affect by what is specified in java
-		assertEquals(TYPE_NAME, ormEntity.getDefaultName());
+		//xml default entity name comes from java
+		assertEquals("Foo", ormEntity.getDefaultName());
 		
 		//set class in the resource model, verify context model updated
 		entityResource.setClassName("com.Bar");
@@ -228,6 +228,17 @@ public class OrmEntityTests extends ContextModelTestCase
 		//set class to null in the resource model
 		entityResource.setClassName(null);
 		assertNull(ormEntity.getDefaultName());
+		
+		entityResource.setClassName(FULLY_QUALIFIED_TYPE_NAME);
+		assertEquals("Foo", ormEntity.getDefaultName());
+		entityResource.setMetadataComplete(Boolean.TRUE);
+		assertEquals(TYPE_NAME, ormEntity.getDefaultName());
+		
+		ormEntity.getJavaEntity().setSpecifiedName("Foo1");
+		assertEquals(TYPE_NAME, ormEntity.getDefaultName());
+		
+		entityResource.setMetadataComplete(null);
+		assertEquals("Foo1", ormEntity.getDefaultName());
 	}
 	
 	public void testUpdateName() throws Exception {

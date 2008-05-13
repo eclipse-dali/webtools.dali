@@ -166,11 +166,30 @@ public class OrmTableTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateDefaultNameNoJava() throws Exception {
-		createTestEntity();
-		
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		assertEquals("Foo", ormEntity.getTable().getDefaultName());
+	}
+	
+	public void testUpdateDefaultNameFromEntityName() throws Exception {
+		createTestEntity();
+		
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+		
+		assertEquals(TYPE_NAME, ormEntity.getTable().getDefaultName());
+		ormEntity.setSpecifiedName("foo");
+		
+		assertEquals("foo", ormEntity.getTable().getDefaultName());
+		
+		ormEntity.setSpecifiedName(null);
+		assertEquals(TYPE_NAME, ormEntity.getTable().getDefaultName());
+		
+		ormEntity.getJavaEntity().setSpecifiedName("foo");
+		assertEquals("foo", ormEntity.getTable().getDefaultName());
+		
+		ormEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		assertEquals(TYPE_NAME, ormEntity.getTable().getDefaultName());
 	}
 	
 	public void testUpdateDefaultNameFromParent() throws Exception {

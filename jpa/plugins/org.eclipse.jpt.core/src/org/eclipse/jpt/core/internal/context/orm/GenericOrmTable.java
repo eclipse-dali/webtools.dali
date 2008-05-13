@@ -74,10 +74,9 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 	protected String defaultName() {
 		JavaTable javaTable = getJavaTable();
 		if (javaTable != null) {
-			if (getOrmEntity().isMetadataComplete() || (getTableResource() != null)) {
-				return javaTable.getDefaultName();
+			if (!getOrmEntity().isMetadataComplete() && getTableResource() == null && javaTable.getSpecifiedName() != null) {
+				return javaTable.getSpecifiedName();
 			}
-			return javaTable.getName();
 		}
 		Entity rootEntity = getOrmEntity().getRootEntity();
 		if (rootEntity != getOrmEntity()) {
