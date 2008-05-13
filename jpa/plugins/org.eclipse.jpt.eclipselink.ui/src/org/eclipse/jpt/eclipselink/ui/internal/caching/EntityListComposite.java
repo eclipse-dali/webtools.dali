@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.caching;
 
 import java.util.ListIterator;
+
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
@@ -112,9 +113,11 @@ public class EntityListComposite extends AbstractPane<Caching>
 
 		if (dialog.open() == Window.OK) {
 			String name = dialog.getSelectedName();
-			String entity = this.subject().addEntity(name);
-
-			listSelectionModel.setSelectedValue(entity);
+			if( ! this.subject().entityExists(name)) {
+				String entity = this.subject().addEntity(name);
+	
+				listSelectionModel.setSelectedValue(entity);
+			}
 		}
 	}
 

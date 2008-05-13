@@ -155,13 +155,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 		assertNotNull("No Event Fired.", this.entitiesEvent);
 		// verify event for the expected property
 		assertEquals("Wrong Event.", this.entitiesEvent.getAspectName(), Caching.ENTITIES_LIST_PROPERTY);
-		
-		// try to add it again
-		this.clearEvent();
-		this.caching.addEntity(ENTITY_TEST_2);
-		// verify event received
-		assertNull("Event was Fired.", this.entitiesEvent);
-		
+
 		// remove
 		this.clearEvent();
 		this.caching.removeEntity(ENTITY_TEST_2);

@@ -20,10 +20,9 @@ public class CacheProperties implements Cloneable, Serializable
 {
 	private String entityName;
 
+	// ********** EclipseLink properties **********
 	private CacheType type;
-
 	private Integer size;
-
 	private Boolean isShared;
 
 	private static final long serialVersionUID = 1L;
@@ -58,6 +57,12 @@ public class CacheProperties implements Cloneable, Serializable
 			 throw new InternalError();
 		 }
 	 }
+
+	public boolean isEmpty() {
+		return (this.type == null) &&
+					(this.size == null) &&
+					(this.isShared == null);
+	}
 
 	// ********** getter/setter **********
 	public String getEntityName() {

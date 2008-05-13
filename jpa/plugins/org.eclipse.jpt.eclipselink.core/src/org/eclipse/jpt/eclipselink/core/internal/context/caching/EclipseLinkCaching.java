@@ -407,13 +407,18 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	}
 
 	// ****** convenience methods *******
-	
+
+	/**
+	 * Put the given Entity CacheProperties in this entitiesCacheProperties map.
+	 * @param entityName - Entity name. The entity may be a new or an existing entity.
+	 * @param properties - Entity CacheProperties
+	 */
 	private void putEntityCacheProperties(String entityName, CacheProperties properties) {
-		this.addOrReplaceEntity(entityName, properties);
+		this.addOrReplacePropertiesForEntity(entityName, properties);
 	}
 
 	// ****** entities list *******
-	
+
 	public ListIterator<String> entities() {
 		return CollectionTools.list(this.entitiesCacheProperties.keySet()).listIterator();
 	}
@@ -422,12 +427,32 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 		return this.entitiesCacheProperties.size();
 	}
 
-	public String addEntity(String entity) {
-		return this.addOrReplaceEntity(entity, new CacheProperties(entity));
+	/* 
+	 * Verifies if this entitiesCacheProperties map contains the given Entity. 
+	 */
+	public boolean entityExists(String entity) {
+		return this.entitiesCacheProperties.containsKey(entity);
 	}
 
-	private String addOrReplaceEntity(String entity, CacheProperties properties) {
-		if (this.entitiesCacheProperties.containsKey(entity)) {
+	public String addEntity(String entity) {
+		if (entityExists(entity)) {
+			throw new IllegalStateException("Entity " + entity + " already exist.");
+		}
+		return this.addOrReplacePropertiesForEntity(entity, new CacheProperties(entity));
+	}
+
+	/**
+	 * Adds or replaces the given Entity CacheProperties in this
+	 * entitiesCacheProperties map. 
+	 * If the specified Entity exists and the given CacheProperties is empty 
+	 * (i.e. all properties are null) the mapping will be removed from the map.
+	 * 
+	 * @param entity - Entity name
+	 * @param properties - Entity CacheProperties
+	 * @return Entity name added
+	 */
+	private String addOrReplacePropertiesForEntity(String entity, CacheProperties properties) {
+		if (this.entityExists(entity)) {
 			this.replaceEntity_(entity, properties);
 			return null;
 		}
@@ -436,14 +461,29 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 		return entity;
 	}
 
+	/**
+	 * Replaces the given Entity CacheProperties in this
+	 * entitiesCacheProperties map.
+	 * If the given Entity CacheProperties is empty (i.e. all properties are null) the 
+	 * mapping will be removed from the map.
+	 * @param entity - Entity name
+	 * @param properties - Entity CacheProperties
+	 * @return Entity name replaced
+	 */
 	private CacheProperties replaceEntity_(String entity, CacheProperties properties) {
 		CacheProperties old = this.entitiesCacheProperties.get(entity);
-		this.entitiesCacheProperties.put(entity, properties);
+		if (properties.isEmpty()) {
+			this.entitiesCacheProperties.remove(entity);
+			this.fireListChanged(ENTITIES_LIST_PROPERTY);
+		}
+		else {
+			this.entitiesCacheProperties.put(entity, properties);
+		}
 		return old;
 	}
 
 	public void removeEntity(String entity) {
-		if (!this.entitiesCacheProperties.containsKey(entity)) {
+		if ( ! this.entityExists(entity)) {
 			return;
 		}
 		this.clearCacheProperties(entity);
