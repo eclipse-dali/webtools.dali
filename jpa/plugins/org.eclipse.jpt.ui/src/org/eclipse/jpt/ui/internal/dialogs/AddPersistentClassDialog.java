@@ -29,6 +29,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -63,6 +64,8 @@ public class AddPersistentClassDialog extends StatusDialog
 	private Button classBrowseButton;
 	
 	private ComboViewer mappingCombo;
+	
+	private OrmPersistentType addedType;
 		
 	
 	public AddPersistentClassDialog(Shell parentShell, EntityMappings entityMappings) {
@@ -269,7 +272,12 @@ public class AddPersistentClassDialog extends StatusDialog
 	
 	@Override
 	protected void okPressed() {
-		this.entityMappings.addOrmPersistentType(getMappingKey(), getClassName());
+		this.addedType = this.entityMappings.addOrmPersistentType(getMappingKey(), getClassName());
 		super.okPressed();
+	}
+	
+	public OrmPersistentType openAndReturnType() {
+		super.open();
+		return addedType;
 	}
 }

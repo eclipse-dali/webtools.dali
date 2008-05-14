@@ -15,14 +15,18 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.ui.internal.dialogs.AddPersistentClassDialog;
+import org.eclipse.jpt.ui.internal.selection.DefaultJpaSelection;
+import org.eclipse.jpt.ui.internal.selection.JpaSelectionManager;
+import org.eclipse.jpt.ui.internal.selection.SelectionManagerFactory;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public class AddPersistentClassHandler extends AbstractHandler
 {
 	public Object execute(ExecutionEvent executionEvent) throws ExecutionException {
-		IWorkbenchWindow window = 
+		final IWorkbenchWindow window = 
 			HandlerUtil.getActiveWorkbenchWindowChecked(executionEvent);
 		
 		IStructuredSelection selection 
@@ -36,7 +40,17 @@ public class AddPersistentClassHandler extends AbstractHandler
 			new AddPersistentClassDialog(window.getShell(), entityMappings);
 		dialog.create();
 		dialog.setBlockOnOpen(true);
-		dialog.open();
+		final OrmPersistentType type = dialog.openAndReturnType();
+		
+		if (type != null) {
+			window.getShell().getDisplay().asyncExec(
+				new Runnable() {
+					public void run() {
+						JpaSelectionManager selectionManager = SelectionManagerFactory.getSelectionManager(window);
+						selectionManager.select(new DefaultJpaSelection(type), null);
+					}
+				});
+		}
 		
 		return null;
 	}
