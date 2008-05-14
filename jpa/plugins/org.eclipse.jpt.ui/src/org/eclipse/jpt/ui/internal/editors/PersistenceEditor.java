@@ -90,6 +90,16 @@ public class PersistenceEditor extends FormEditor
 		super();
 		initialize();
 	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public Object getAdapter(Class adapterClass) {
+		Object adapter = super.getAdapter(adapterClass);
+		if (adapter == null) {
+			adapter = editor.getAdapter(adapterClass);
+		}
+		return adapter;
+	}
 
 	/**
 	 * {@inheritDoc}
