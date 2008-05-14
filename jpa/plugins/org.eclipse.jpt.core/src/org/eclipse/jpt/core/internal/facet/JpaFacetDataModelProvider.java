@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
+import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.Schema;
@@ -34,8 +35,7 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
 
-public class JpaFacetDataModelProvider
-	extends FacetInstallDataModelProvider
+public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 	implements JpaFacetDataModelProperties
 {
 	private static final String EJB_FACET_ID = IModuleConstants.JST_EJB_MODULE;
@@ -80,8 +80,10 @@ public class JpaFacetDataModelProvider
 		propertyNames.add(USER_OVERRIDE_DEFAULT_SCHEMA);
 		propertyNames.add(RUNTIME);
 		propertyNames.add(USE_SERVER_JPA_IMPLEMENTATION);
+		propertyNames.add(USE_USER_JPA_LIBRARY);
 		propertyNames.add(JPA_LIBRARY);
 		propertyNames.add(DISCOVER_ANNOTATED_CLASSES);
+		propertyNames.add(LIST_ANNOTATED_CLASSES);
 		propertyNames.add(CREATE_ORM_XML);
 		return propertyNames;
 	}
@@ -90,6 +92,9 @@ public class JpaFacetDataModelProvider
 	public boolean isPropertyEnabled(String propertyName) {
 		if (propertyName.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
 			return getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA);
+		}
+		if (propertyName.equals(JPA_LIBRARY)) {
+			return getBooleanProperty(USE_USER_JPA_LIBRARY);
 		}
 		return super.isPropertyEnabled(propertyName);
 	}
@@ -103,7 +108,7 @@ public class JpaFacetDataModelProvider
 			return JptCorePlugin.getDefaultJpaPlatformId();
 		}
 		if (propertyName.equals(CONNECTION)) {
-			return "";
+			return null;
 		}
 		if (propertyName.equals(CONNECTION_ACTIVE)) {
 			return connectionIsActive();
@@ -120,11 +125,17 @@ public class JpaFacetDataModelProvider
 		if (propertyName.equals(USE_SERVER_JPA_IMPLEMENTATION)) {
 			return Boolean.valueOf(this.runtimeSupportsEjb30(this.runtime()));
 		}
+		if (propertyName.equals(USE_USER_JPA_LIBRARY)) {
+			return ! getBooleanProperty(USE_SERVER_JPA_IMPLEMENTATION);
+		}
 		if (propertyName.equals(JPA_LIBRARY)) {
 			return JptCorePlugin.getDefaultJpaLibrary();
 		}
 		if (propertyName.equals(DISCOVER_ANNOTATED_CLASSES)) {
 			return Boolean.valueOf(this.runtimeSupportsEjb30(this.runtime()));
+		}
+		if (propertyName.equals(LIST_ANNOTATED_CLASSES)) {
+			return ! getBooleanProperty(DISCOVER_ANNOTATED_CLASSES);
 		}
 		if (propertyName.equals(CREATE_ORM_XML)) {
 			return Boolean.TRUE;
@@ -132,14 +143,22 @@ public class JpaFacetDataModelProvider
 		return super.getDefaultProperty(propertyName);
 	}
 	
+	
+	
 	@Override
 	public boolean propertySet(String propertyName, Object propertyValue) {
 		boolean ok = super.propertySet(propertyName, propertyValue);
 		if (propertyName.equals(RUNTIME)) {
 			this.model.notifyPropertyChange(USE_SERVER_JPA_IMPLEMENTATION, IDataModel.DEFAULT_CHG);
+			this.model.notifyPropertyChange(USE_USER_JPA_LIBRARY, IDataModel.DEFAULT_CHG);
+			// need to fire that the default change for using user library may have
+			// actually changed enablement for library
+			this.model.notifyPropertyChange(JPA_LIBRARY, IDataModel.ENABLE_CHG);
 			this.model.notifyPropertyChange(DISCOVER_ANNOTATED_CLASSES, IDataModel.DEFAULT_CHG);
+			this.model.notifyPropertyChange(LIST_ANNOTATED_CLASSES, IDataModel.DEFAULT_CHG);
 		}
 		if (propertyName.equals(CONNECTION)) {
+			this.model.notifyPropertyChange(CONNECTION, IDataModel.VALID_VALUES_CHG);
 			this.model.setBooleanProperty(CONNECTION_ACTIVE, connectionIsActive());
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.VALID_VALUES_CHG);
@@ -154,11 +173,48 @@ public class JpaFacetDataModelProvider
 				this.model.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, null);
 			}
 		}
+		if (propertyName.equals(USE_SERVER_JPA_IMPLEMENTATION)) {
+			this.model.setBooleanProperty(USE_USER_JPA_LIBRARY, ! (Boolean) propertyValue);
+		}
+		if (propertyName.equals(USE_USER_JPA_LIBRARY)) {
+			this.model.setBooleanProperty(USE_SERVER_JPA_IMPLEMENTATION, ! (Boolean) propertyValue);
+			this.model.notifyPropertyChange(JPA_LIBRARY, IDataModel.ENABLE_CHG);
+		}
+		if (propertyName.equals(DISCOVER_ANNOTATED_CLASSES)) {
+			this.model.setBooleanProperty(LIST_ANNOTATED_CLASSES, ! (Boolean) propertyValue);
+		}
+		if (propertyName.equals(LIST_ANNOTATED_CLASSES)) {
+			this.model.setBooleanProperty(DISCOVER_ANNOTATED_CLASSES, ! (Boolean) propertyValue);
+		}
 		return ok;
 	}
 
 	@Override
 	public DataModelPropertyDescriptor[] getValidPropertyDescriptors(String propertyName) {
+		if (propertyName.equals(PLATFORM_ID)) {
+			return CollectionTools.array(
+				new TransformationIterator<String, DataModelPropertyDescriptor>(
+						JpaPlatformRegistry.instance().jpaPlatformIds()) {
+					@Override
+					protected DataModelPropertyDescriptor transform(String platformId) {
+						return platformIdPropertyDescriptor(platformId);
+					}
+				},
+				new DataModelPropertyDescriptor[0]);
+		}
+		if (propertyName.equals(CONNECTION)) {
+			return CollectionTools.array(
+				new TransformationIterator<String, DataModelPropertyDescriptor>(
+						new CompositeIterator<String>(
+							null, 
+							JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNames())) {
+					@Override
+					protected DataModelPropertyDescriptor transform(String next) {
+						return connectionPropertyDescriptor(next);
+					}
+				},
+				new DataModelPropertyDescriptor[0]);
+		}
 		if (propertyName.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
 			return CollectionTools.array(
 				new TransformationIterator<String, DataModelPropertyDescriptor>(schemas()) {
@@ -182,6 +238,31 @@ public class JpaFacetDataModelProvider
 		}
 
 		return super.getValidPropertyDescriptors(propertyName);
+	}
+	
+	@Override
+	public DataModelPropertyDescriptor getPropertyDescriptor(String propertyName) {
+		if (propertyName.equals(PLATFORM_ID)) {
+			return platformIdPropertyDescriptor(getStringProperty(PLATFORM_ID));
+		}
+		if (propertyName.equals(CONNECTION)) {
+			return connectionPropertyDescriptor(getStringProperty(CONNECTION));
+		}
+		return super.getPropertyDescriptor(propertyName);
+	}
+	
+	private DataModelPropertyDescriptor platformIdPropertyDescriptor(String platformId) {
+		return new DataModelPropertyDescriptor(
+			platformId, JpaPlatformRegistry.instance().getJpaPlatformLabel(platformId));
+	}
+	
+	private DataModelPropertyDescriptor connectionPropertyDescriptor(String connection) {
+		if (StringTools.stringIsEmpty(connection)) {
+			return new DataModelPropertyDescriptor(null, JptCoreMessages.NONE);
+		}
+		else {
+			return new DataModelPropertyDescriptor(connection);
+		}
 	}
 
 	@Override

@@ -10,40 +10,27 @@
 package org.eclipse.jpt.ui.internal.properties;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Iterator;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
-import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -54,9 +41,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.common.frameworks.datamodel.DataModelEvent;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModelListener;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
@@ -230,9 +215,9 @@ public class JpaProjectPropertiesPage
 
 	private final class PlatformGroup
 	{
-		final ComboViewer platformCombo;
-
-
+		final Combo platformCombo;
+		
+		
 		public PlatformGroup(Composite composite) {
 			Group group = new Group(composite, SWT.NONE);
 			group.setText(JptUiMessages.JpaFacetWizardPage_platformLabel);
@@ -240,70 +225,20 @@ public class JpaProjectPropertiesPage
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			// TODO
 			// PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IDaliHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
-
-			platformCombo = new ComboViewer(createCombo(group, 1, true));
-			platformCombo.setContentProvider(
-					new IStructuredContentProvider() {
-						public Object[] getElements(Object inputElement) {
-							return CollectionTools.array(JpaPlatformRegistry.instance().jpaPlatformIds());
-						}
-
-						public void dispose() {
-							// do nothing
-						}
-
-						public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-							// do nothing
-						}
-					}
-				);
-			platformCombo.setLabelProvider(
-					new ILabelProvider() {
-						public Image getImage(Object element) {
-							return null;
-						}
-
-						public String getText(Object element) {
-							return JpaPlatformRegistry.instance().getJpaPlatformLabel((String) element);
-						}
-
-						public void addListener(ILabelProviderListener listener) {
-							// do nothing
-						}
-
-						public void removeListener(ILabelProviderListener listener) {
-							// do nothing
-						}
-
-						public void dispose() {
-							// do nothing
-						}
-
-						public boolean isLabelProperty(Object element, String property) {
-							return true;
-						}
-					}
-				);
-			platformCombo.addSelectionChangedListener(
-					new ISelectionChangedListener() {
-						public void selectionChanged(SelectionChangedEvent event) {
-							model.setProperty(PLATFORM_ID, ((StructuredSelection) platformCombo.getSelection()).getFirstElement());
-						}
-					}
-				);
-			// we need some input here, even if it means absolutely nothing
-			platformCombo.setInput("null input");
+			
+			platformCombo = createCombo(group, 1, true);
+			synchHelper.synchCombo(platformCombo, PLATFORM_ID, null);
+			
 			performDefaults();
 		}
-
+		
 		void performDefaults() {
 			String platformId = getJpaProject().getJpaPlatform().getId();
 			model.setProperty(PLATFORM_ID, platformId);
-			platformCombo.setSelection(new StructuredSelection(platformId));
 		}
 	}
-
-
+	
+	
 	private final class ConnectionGroup
 	{
 		final Combo connectionCombo;
@@ -327,24 +262,15 @@ public class JpaProjectPropertiesPage
 
 			connectionCombo = createCombo(group, 3, true);
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_CONNECTION);
+			synchHelper.synchCombo(connectionCombo, CONNECTION, null);
 			connectionCombo.addSelectionListener(
-					new SelectionListener() {
-						public void widgetDefaultSelected(SelectionEvent e) {
-							widgetSelected(e);
-						}
-
-						public void widgetSelected(SelectionEvent e) {
-							int index = connectionCombo.getSelectionIndex();
-							String connection = connectionCombo.getItem(index);
-							if (index == 0) {
-								connection = null;
-							}
-							model.setProperty(CONNECTION, connection);
-						}
+				new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						updateConnectLink();
 					}
-				);
-			fillConnections();
-
+				});
+			
 			connectionLink = new Link(group, SWT.NONE);
 			GridData data = new GridData(GridData.END, GridData.CENTER, false, false);
 			data.horizontalSpan = 2;
@@ -372,14 +298,6 @@ public class JpaProjectPropertiesPage
 						openConnectionProfile();
 					}
 				});
-			model.addListener(
-				new IDataModelListener() {
-					public void propertyChanged(DataModelEvent event) {
-						if (event.getPropertyName().equals(CONNECTION)) {
-							updateConnectLink();
-						}
-					}
-				});
 			
 			overrideDefaultSchemaButton = createButton(group, 3, JptUiMessages.JpaFacetWizardPage_overrideDefaultSchemaLabel, SWT.CHECK);
 			synchHelper.synchCheckbox(overrideDefaultSchemaButton, USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA, new Control[0]);
@@ -397,31 +315,19 @@ public class JpaProjectPropertiesPage
 			
 			performDefaults();
 		}
-
-		private void fillConnections() {
-			//clear out connection entries from previous login.
-			connectionCombo.removeAll();
-			connectionCombo.add(JptUiMessages.JpaFacetWizardPage_none);
-
-			for (Iterator<String> stream = JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNames(); stream.hasNext(); ) {
-				connectionCombo.add(stream.next());
-			}
-		}
 		
 		void openNewConnectionWizard() {
 			String connectionName = DTPUiTools.createNewProfile();
 			if (connectionName != null) {
-				fillConnections();
 				model.setProperty(CONNECTION, connectionName);
-				connectionCombo.select(connectionCombo.indexOf(connectionName));
 			}
 		}
 		
 		private void openConnectionProfile() {
 			ConnectionProfile connection = getConnectionProfile();
 			connection.connect();
-			updateConnectLink();
 			model.setBooleanProperty(CONNECTION_ACTIVE, connection.isActive());
+			updateConnectLink();
 			return;
 		}
 		
@@ -437,12 +343,6 @@ public class JpaProjectPropertiesPage
 		void performDefaults() {
 			String connectionName = getJpaProject().getDataSource().getConnectionProfileName();
 			model.setProperty(CONNECTION, connectionName);
-			if (StringTools.stringIsEmpty(connectionName)) {
-				connectionCombo.select(0);
-			}
-			else {
-				connectionCombo.setText(connectionName);
-			}
 			
 			String defaultSchema = getJpaProject().getUserOverrideDefaultSchemaName();
 			model.setProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA, defaultSchema != null);
@@ -466,51 +366,17 @@ public class JpaProjectPropertiesPage
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);
 
 			discoverClassesButton = createButton(group, 1, JptUiMessages.JpaFacetWizardPage_discoverClassesButton, SWT.RADIO);
-			discoverClassesButton.addSelectionListener(
-				new SelectionListener() {
-						public void widgetDefaultSelected(SelectionEvent e) {
-							widgetSelected(e);
-						}
-
-						public void widgetSelected(SelectionEvent e) {
-							model.setBooleanProperty(DISCOVER_ANNOTATED_CLASSES, true);
-						}
-					}
-				);
-
+			synchHelper.synchRadio(discoverClassesButton, DISCOVER_ANNOTATED_CLASSES, null);
+			
 			listClassesButton = createButton(group, 1, JptUiMessages.JpaFacetWizardPage_listClassesButton, SWT.RADIO);
-			listClassesButton.addSelectionListener(
-				new SelectionListener() {
-						public void widgetDefaultSelected(SelectionEvent e) {
-							widgetSelected(e);
-						}
-
-						public void widgetSelected(SelectionEvent e) {
-							model.setBooleanProperty(DISCOVER_ANNOTATED_CLASSES, false);
-						}
-					}
-				);
-
-			model.addListener(
-					new IDataModelListener() {
-						public void propertyChanged(DataModelEvent event) {
-							if (DISCOVER_ANNOTATED_CLASSES.equals(event.getPropertyName())) {
-								boolean discoverClasses = ((Boolean) event.getProperty()).booleanValue();
-								discoverClassesButton.setSelection(discoverClasses);
-								listClassesButton.setSelection(! discoverClasses);
-							}
-						}
-					}
-				);
-
+			synchHelper.synchRadio(listClassesButton, LIST_ANNOTATED_CLASSES, null);
+			
 			performDefaults();
 		}
-
+		
 		void performDefaults() {
 			boolean discoverClasses = getJpaProject().discoversAnnotatedClasses();
 			model.setProperty(DISCOVER_ANNOTATED_CLASSES, Boolean.valueOf(discoverClasses));
-			discoverClassesButton.setSelection(discoverClasses);
-			listClassesButton.setSelection(! discoverClasses);
 		}
 	}
 }

@@ -48,11 +48,21 @@ public interface JpaFacetDataModelProperties extends IDataModelProperties
 	public static final String RUNTIME = "JpaFacetDataModelProperties.RUNTIME";
 	
 	/**
-	 * Required, type boolean, identifies whether server runtime provides 
-	 * JPA implementation
+	 * Required, type boolean, opposite of USE_USER_JPA_LIBRARY, identifies whether 
+	 * server runtime provides JPA implementation
 	 * If this is true, then the property JPA_LIBRARY is not used
 	 */
 	public static final String USE_SERVER_JPA_IMPLEMENTATION = "JpaFacetDataModelProperties.USE_SERVER_JPA_IMPLEMENTATION";
+	
+	/**
+	 * Required, type boolean, opposite of USE_SERVER_JPA_IMPLEMENTATION, identifies
+	 * whether the user is providing his own JPA library 
+	 * (This additional setting is necessary in order to use synchHelper within
+	 * the wizard - there must be a unique property for each radio button. Stupid
+	 * but true)
+	 * If this is true, then the property JPA_LIBRARY is used
+	 */
+	public static final String USE_USER_JPA_LIBRARY = "JpaFacetDataModelProperties.USE_USER_JPA_LIBRARY";
 	
 	/**
 	 * Not required, type String, identifies JPA implementation library.
@@ -61,10 +71,21 @@ public interface JpaFacetDataModelProperties extends IDataModelProperties
 	public static final String JPA_LIBRARY = "JpaFacetDataModelProperties.JPA_LIBRARY";
 	
 	/**
-	 * Required, type boolean, identifies whether all annotated classes are to be automatically
-	 * included as part of all persistence units
+	 * Required, type boolean, opposite of LIST_ANNOTATED_CLASSES, identifies 
+	 * whether all annotated classes are to be automatically included as part of 
+	 * all persistence units
 	 */
 	public static final String DISCOVER_ANNOTATED_CLASSES = "JpaFacetDataModelProperties.DISCOVER_ANNOTATED_CLASSES";
+	
+	/**
+	 * Required, type boolean, opposite of DISCOVER_ANNOTATED_CLASSES, identifies
+	 * if annotated classes should be listed in the persistence.xml in order to
+	 * be considered part of a persistence unit
+	 * (This additional setting is necessary in order to use synchHelper within
+	 * the wizard - there must be a unique property for each radio button. Stupid
+	 * but true)
+	 */
+	public static final String LIST_ANNOTATED_CLASSES = "JpaFacetDataModelProperties.LIST_ANNOTATED_CLASSES";
 	
 	/**
 	 * Required, type boolean, details whether orm.xml should be created
