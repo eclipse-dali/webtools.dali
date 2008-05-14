@@ -11,6 +11,7 @@
  ***********************************************************************/
 package org.eclipse.jpt.ui.internal.wizards.entity;
 
+import static org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties.*;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -19,7 +20,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.model.EntityDataModelProvider;
-import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
 import org.eclipse.jst.j2ee.internal.plugin.J2EEEditorUtility;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.ui.INewWizard;
@@ -94,8 +94,8 @@ public class EntityWizard extends DataModelWizard implements INewWizard {
 	@Override
     protected void postPerformFinish() throws InvocationTargetException {      
         try {
-            String className = getDataModel().getStringProperty(INewJavaClassDataModelProperties.QUALIFIED_CLASS_NAME);
-            IProject p = (IProject) getDataModel().getProperty(INewJavaClassDataModelProperties.PROJECT);
+            String className = getDataModel().getStringProperty(QUALIFIED_CLASS_NAME);
+            IProject p = (IProject) getDataModel().getProperty(PROJECT);
             IJavaProject javaProject = J2EEEditorUtility.getJavaProject(p);
             IFile file = (IFile) javaProject.findType(className).getResource();
             openEditor(file);
@@ -110,19 +110,21 @@ public class EntityWizard extends DataModelWizard implements INewWizard {
      * @param file who should be opened
      */
     private void openEditor(final IFile file) {
-        if (file != null) {
-            getShell().getDisplay().asyncExec(new Runnable() {
-                public void run() {
-                    try {
-                        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                        IDE.openEditor(page, file, true);
-                    }
-                    catch (PartInitException e) {
-                    	JptUiPlugin.log(e);
-                    }
-                }
-            });
-        }
+    	if (getDataModel().getBooleanProperty(OPEN_IN_EDITOR)) {
+    		if (file != null) {
+    			getShell().getDisplay().asyncExec(new Runnable() {
+    				public void run() {
+    					try {
+    						IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+    						IDE.openEditor(page, file, true);
+    					}
+    					catch (PartInitException e) {
+    						JptUiPlugin.log(e);
+    					}
+    				}
+    			});
+    		}
+    	}
     }
     
     /* Implement the abstract method from IWorkbenchWizard
