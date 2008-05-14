@@ -252,15 +252,13 @@ public class JavaResourcePersistentAttributeImpl
 	}
 	
 	protected boolean isFinal(CompilationUnit astRoot) {
-		int flags = getMember().getBinding(astRoot).getModifiers();
-		
-		return Modifier.isFinal(flags);
+		IBinding binding = getMember().getBinding(astRoot);
+		return (binding == null) ? false : Modifier.isFinal(binding.getModifiers());
 	}
 		
 	protected boolean isPublic(CompilationUnit astRoot) {
-		int flags = getMember().getBinding(astRoot).getModifiers();
-		
-		return Modifier.isPublic(flags);
+		IBinding binding = getMember().getBinding(astRoot);	
+		return (binding == null) ? false : Modifier.isPublic(binding.getModifiers());
 	}
 	
 	protected String qualifiedReferenceEntityTypeName(CompilationUnit astRoot) {
