@@ -22,6 +22,8 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPropertyListener;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 public class TextEditorSelectionParticipant
@@ -59,16 +61,21 @@ public class TextEditorSelectionParticipant
 
 	public void selectionChanged(JpaSelectionEvent evt) {
 		JpaSelection newSelection = evt.getSelection();
-
+		
 		if ((newSelection == JpaSelection.NULL_SELECTION)
 			|| newSelection.equals(this.currentSelection)) {
 			return;
 		}
-
+		
+		if (getActiveTextEditor() != textEditor) {
+			return;
+		}
+		
 		this.forwardSelection = false;
 		TextRange textRange = newSelection.getSelectedNode().getSelectionTextRange();
 		if (textRange != null) {
 			this.textEditor.selectAndReveal(textRange.getOffset(), textRange.getLength());
+			this.currentSelection = newSelection;
 		}
 		this.forwardSelection = true;
 	}
@@ -103,7 +110,29 @@ public class TextEditorSelectionParticipant
 
 		return new DefaultJpaSelection(selectedNode);
 	}
-
+	
+	private IWorkbenchPage getActivePage() {
+		return textEditor.getEditorSite().getWorkbenchWindow().getActivePage();
+	}
+	
+	private IWorkbenchPart getActivePart() {
+		IWorkbenchPage activePage = getActivePage();
+		return (activePage == null) ? null: activePage.getActivePart();
+	}
+	
+	private IEditorPart getActiveEditor() {
+		IWorkbenchPage activePage = getActivePage();
+		return (activePage == null) ? null: activePage.getActiveEditor();
+	}
+	
+	private ITextEditor getActiveTextEditor() {
+		return getTextEditor(getActiveEditor());
+	}
+	
+	private ITextEditor getTextEditor(IWorkbenchPart part) {
+		return (part == null) ? null : (ITextEditor) part.getAdapter(ITextEditor.class);
+	}
+	
 	private JpaFile jpaFile() {
 		IEditorInput input = this.textEditor.getEditorInput();
 		if ( ! (input instanceof IFileEditorInput)) {
@@ -132,6 +161,26 @@ public class TextEditorSelectionParticipant
 	}
 
 	void editorSelectionChanged(SelectionChangedEvent event) {
+		// This is a bit kludgey.  We check to see if the selection event 
+		// occurred when a participating part is active (and so, ostensibly,
+		// *because* of the participating part).  If so, we reselect the valid 
+		// text.
+		IWorkbenchPart activePart = getActivePart();
+		if (getTextEditor(activePart) != textEditor && selectionManager.isRegistered(activePart)) {
+			if (currentSelection.isEmpty()) {
+				return;
+			}
+			
+			this.forwardSelection = false;
+			TextRange textRange = currentSelection.getSelectedNode().getSelectionTextRange();
+			if (textRange != null) {
+				this.textEditor.selectAndReveal(textRange.getOffset(), textRange.getLength());
+			}
+			this.forwardSelection = true;
+			
+			return;
+		}
+		
 		JpaSelection newSelection = this.calculateSelection();
 		if (newSelection.equals(this.currentSelection)) {
 			return;

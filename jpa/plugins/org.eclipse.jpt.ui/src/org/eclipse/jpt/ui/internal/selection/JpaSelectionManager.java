@@ -47,5 +47,11 @@ public interface JpaSelectionManager
 	 * It should not be necessary to deregister a part, as that happens when the 
 	 * part is closed.
 	 */
-	public void register(IWorkbenchPart part);	
+	public void register(IWorkbenchPart part);
+	
+	/**
+	 * Returns true if the part is currently registered to respond to selections
+	 * from this selection manager
+	 */
+	public boolean isRegistered(IWorkbenchPart part);
 }

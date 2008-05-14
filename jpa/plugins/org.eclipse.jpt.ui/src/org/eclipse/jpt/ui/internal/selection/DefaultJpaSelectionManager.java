@@ -152,6 +152,10 @@ public class DefaultJpaSelectionManager
 		initPart(part);
 	}
 	
+	public boolean isRegistered(IWorkbenchPart part) {
+		return selectionParticipants.get(part) != null;
+	}
+	
 	public void select(JpaSelection newSelection, JpaSelectionParticipant source) {
 		if (currentSelection.equals(newSelection)) {
 			return;
