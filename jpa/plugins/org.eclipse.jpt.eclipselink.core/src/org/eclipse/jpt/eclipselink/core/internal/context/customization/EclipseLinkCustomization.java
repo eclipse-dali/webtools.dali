@@ -409,7 +409,17 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		return this.entitiesCustomizerProperties.size();
 	}
 
+	/* 
+	 * Verifies if this entitiesCacheProperties map contains the given Entity. 
+	 */
+	public boolean entityExists(String entity) {
+		return this.entitiesCustomizerProperties.containsKey(entity);
+	}
+
 	public String addEntity(String entity) {
+		if (entityExists(entity)) {
+			throw new IllegalStateException("Entity " + entity + " already exist.");
+		}
 		return this.addOrReplacePropertiesForEntity(entity, new CustomizerProperties(entity));
 	}
 
@@ -423,7 +433,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	 * @return
 	 */
 	private String addOrReplacePropertiesForEntity(String entity, CustomizerProperties properties) {
-		if (this.entitiesCustomizerProperties.containsKey(entity)) {
+		if (entityExists(entity)) {
 			this.replaceEntity_(entity, properties);
 			return null;
 		}
@@ -454,7 +464,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	public void removeEntity(String entity) {
-		if ( ! this.entitiesCustomizerProperties.containsKey(entity)) {
+		if ( ! entityExists(entity)) {
 			return;
 		}
 		this.clearCustomizerProperties(entity);

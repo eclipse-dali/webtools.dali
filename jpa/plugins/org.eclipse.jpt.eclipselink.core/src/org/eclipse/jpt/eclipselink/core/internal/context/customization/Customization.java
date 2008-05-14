@@ -77,6 +77,7 @@ public interface Customization extends PersistenceUnitProperties
 
 	ListIterator<String> entities();
 	int entitiesSize();
+	boolean entityExists(String entity);
 	String addEntity(String entity);
 	void removeEntity(String entity);
 		String ENTITIES_LIST_PROPERTY = "entitiesListProperty";

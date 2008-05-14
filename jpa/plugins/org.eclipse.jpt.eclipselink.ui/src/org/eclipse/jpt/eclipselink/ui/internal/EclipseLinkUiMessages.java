@@ -151,6 +151,9 @@ public class EclipseLinkUiMessages extends NLS
 	public static String CachingEntityListComposite_groupTitle;
 	public static String CachingEntityListComposite_editButton;
 
+	public static String CachingEntityListComposite_dialogMessage;
+	public static String CachingEntityListComposite_dialogTitle;
+
 	// Customization
 	public static String PersistenceXmlCustomizationTab_title;
 	public static String PersistenceXmlCustomizationTab_sectionTitle;
@@ -176,6 +179,10 @@ public class EclipseLinkUiMessages extends NLS
 
 	public static String CustomizationEntityListComposite_groupTitle;
 	public static String CustomizationEntityListComposite_editButton;
+
+	public static String CustomizationEntityListComposite_dialogMessage;
+	public static String CustomizationEntityListComposite_dialogTitle;
+	
 	public static String PersistenceXmlCustomizationTab_customizerLabel;
 	public static String PersistenceXmlCustomizationTab_sessionCustomizerLabel;
 

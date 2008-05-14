@@ -69,7 +69,7 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	protected abstract void initializeProperties();
 
 	// ********** behavior **********
-	protected PersistenceUnit persistenceUnit() {
+	public PersistenceUnit persistenceUnit() {
 		return this.persistenceUnit;
 	}
 	

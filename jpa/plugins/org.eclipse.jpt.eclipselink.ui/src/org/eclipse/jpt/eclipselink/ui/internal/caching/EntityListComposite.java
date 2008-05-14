@@ -11,13 +11,27 @@ package org.eclipse.jpt.eclipselink.ui.internal.caching;
 
 import java.util.ListIterator;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.search.IJavaSearchScope;
+import org.eclipse.jdt.core.search.SearchEngine;
+import org.eclipse.jdt.ui.IJavaElementSearchConstants;
+import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.eclipselink.ui.internal.EntityDialog;
+import org.eclipse.jpt.eclipselink.ui.internal.JptEclipseLinkUiPlugin;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
@@ -30,6 +44,9 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.SelectionDialog;
+import org.eclipse.ui.progress.IProgressService;
 
 /**
  *  EntityListComposite
@@ -68,33 +85,13 @@ public class EntityListComposite extends AbstractPane<Caching>
 			entityHolder,
 			container
 		);
-
 		this.installPaneEnabler(entityHolder, pane);
 	}
-
-	private void installPaneEnabler(WritablePropertyValueModel<EntityCacheProperties> entityHolder,
-	                                EntityCachingPropertyComposite pane) {
-
-		new PaneEnabler(
-			this.buildPaneEnablerHolder(entityHolder),
-			pane
-		);
-	}
-
-	private PropertyValueModel<Boolean> buildPaneEnablerHolder(WritablePropertyValueModel<EntityCacheProperties> entityHolder) {
-		return new TransformationPropertyValueModel<EntityCacheProperties, Boolean>(entityHolder) {
-			@Override
-			protected Boolean transform_(EntityCacheProperties value) {
-				return value.entityNameIsValid();
-			}
-		};
-	}
-
+	
 	private AddRemoveListPane.Adapter buildEntitiesAdapter() {
 		return new AddRemoveListPane.AbstractAdapter() {
-
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				addEntityFromDialog(listSelectionModel);
+				addEntities(listSelectionModel);
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
@@ -106,19 +103,83 @@ public class EntityListComposite extends AbstractPane<Caching>
 			}
 		};
 	}
+	
+	private void addEntities(ObjectListSelectionModel listSelectionModel) {
 
-	private void addEntityFromDialog(ObjectListSelectionModel listSelectionModel) {
+		IType type = this.chooseEntity();
 
-		EntityDialog dialog = new EntityDialog(getControl().getShell(), jpaProject());
-
-		if (dialog.open() == Window.OK) {
-			String name = dialog.getSelectedName();
-			if( ! this.subject().entityExists(name)) {
-				String entity = this.subject().addEntity(name);
+		if (type != null) {
+			String entityName = this.getEntityName(type.getFullyQualifiedName());
+			if (entityName == null) {
+				entityName = type.getElementName();
+			}
+			
+			if( ! this.subject().entityExists(entityName)) {
+				String entity = this.subject().addEntity(entityName);
 	
 				listSelectionModel.setSelectedValue(entity);
 			}
 		}
+	}
+	
+	private String getEntityName(String fullyQualifiedTypeName) {
+
+		PersistentType persistentType = subject().persistenceUnit().getPersistentType(fullyQualifiedTypeName);
+
+		if (persistentType != null && persistentType.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
+			TypeMapping mapping = persistentType.getMapping();
+			if (mapping instanceof Entity) {
+				return ((Entity)mapping).getName();
+			}
+		}
+		return null;
+	}
+	
+	private IType chooseEntity() {
+
+		IPackageFragmentRoot root = packageFragmentRoot();
+		if (root == null) {
+			return null;
+		}
+		IJavaElement[] elements = new IJavaElement[] { root.getJavaProject() };
+		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements);
+		IProgressService service = PlatformUI.getWorkbench().getProgressService();
+		SelectionDialog typeSelectionDialog;
+
+		try {
+			typeSelectionDialog = JavaUI.createTypeDialog(
+				shell(),
+				service,
+				scope,
+				IJavaElementSearchConstants.CONSIDER_CLASSES,
+				false,
+				""
+			);
+		}
+		catch (JavaModelException e) {
+			JptEclipseLinkUiPlugin.log(e);
+			return null;
+		}
+		typeSelectionDialog.setTitle(EclipseLinkUiMessages.CachingEntityListComposite_dialogTitle);
+		typeSelectionDialog.setMessage(EclipseLinkUiMessages.CachingEntityListComposite_dialogMessage);
+
+		if (typeSelectionDialog.open() == Window.OK) {
+			return (IType) typeSelectionDialog.getResult()[0];
+		}
+		return null;
+	}
+
+	private IPackageFragmentRoot packageFragmentRoot() {
+		IProject project = subject().getJpaProject().getProject();
+		IJavaProject root = JavaCore.create(project);
+
+		try {
+			return root.getAllPackageFragmentRoots()[0];
+		}
+		catch (JavaModelException e) {
+			JptEclipseLinkUiPlugin.log(e);
+		}
+		return null;
 	}
 
 	private ILabelProvider buildEntityLabelProvider() {
@@ -133,10 +194,6 @@ public class EntityListComposite extends AbstractPane<Caching>
 
 	private WritablePropertyValueModel<EntityCacheProperties> buildEntityHolder() {
 		return new SimplePropertyValueModel<EntityCacheProperties>();
-	}
-
-	private JpaProject jpaProject() {
-		return subject().getJpaProject();
 	}
 
 	private ListValueModel<EntityCacheProperties> buildEntityCachingListHolder() {
@@ -158,6 +215,24 @@ public class EntityListComposite extends AbstractPane<Caching>
 			@Override
 			protected int size_() {
 				return this.subject.entitiesSize();
+			}
+		};
+	}
+
+	private void installPaneEnabler(WritablePropertyValueModel<EntityCacheProperties> entityHolder,
+	                                EntityCachingPropertyComposite pane) {
+
+		new PaneEnabler(
+			this.buildPaneEnablerHolder(entityHolder),
+			pane
+		);
+	}
+
+	private PropertyValueModel<Boolean> buildPaneEnablerHolder(WritablePropertyValueModel<EntityCacheProperties> entityHolder) {
+		return new TransformationPropertyValueModel<EntityCacheProperties, Boolean>(entityHolder) {
+			@Override
+			protected Boolean transform_(EntityCacheProperties value) {
+				return value.entityNameIsValid();
 			}
 		};
 	}

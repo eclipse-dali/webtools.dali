@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context;
 
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
@@ -22,12 +23,17 @@ public interface PersistenceUnitProperties extends Model, PropertyChangeListener
 	/**
 	 * Method used for identifying the given property.
 	 */
-	boolean itemIsProperty( Property item);
+	boolean itemIsProperty(Property item);
 
 	/**
 	 * Returns the property name used for change notification of the given property.
 	 */
-	String propertyIdFor( Property property);
+	String propertyIdFor(Property property);
+	
+	/**
+	 * Return the PersistenceUnit of this Properties.
+	 */
+	PersistenceUnit persistenceUnit();
 	
 	/**
 	 * Return the JPA project the PersistenceUnit belongs to.
