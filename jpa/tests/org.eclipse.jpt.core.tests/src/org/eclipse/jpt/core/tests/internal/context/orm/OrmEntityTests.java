@@ -871,9 +871,18 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(2, childOrmEntity.virtualSecondaryTablesSize());	
 	}
 
-	//test that inherited tables don't show up in this list
 	public void testAssociatedTables() throws Exception {
+		createTestEntityFieldAccess();
+		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
+		OrmEntity entity = (OrmEntity) persistentType.getMapping();
+		assertEquals(1, CollectionTools.size(entity.associatedTables()));
+		
+		entity.addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
+		assertEquals(2, CollectionTools.size(entity.associatedTables()));
+	
+		entity.addSpecifiedSecondaryTable(0).setSpecifiedName("BAR");
+		assertEquals(3, CollectionTools.size(entity.associatedTables()));
 	}
 	
 	public void testAssociatedTableNamesIncludingInherited() throws Exception {

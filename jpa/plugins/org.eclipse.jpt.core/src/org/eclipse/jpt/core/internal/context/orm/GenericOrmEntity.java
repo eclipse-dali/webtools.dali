@@ -428,8 +428,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 
 	public Iterator<Table> associatedTables() {
-		return new SingleElementIterator<Table>(getTable());
-		//TODO return new CompositeIterator(this.getTable(), this.getSecondaryTables().iterator());
+		return new CompositeIterator<Table>(this.getTable(), this.secondaryTables());
 	}
 
 	public Iterator<Table> associatedTablesIncludingInherited() {
