@@ -14,14 +14,18 @@ import java.util.Map;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.ui.internal.menus.PersistentAttributeMapAsContribution;
+import org.eclipse.jpt.ui.internal.selection.JpaSelection;
 import org.eclipse.ui.ISources;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.commands.IElementUpdater;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.menus.UIElement;
+import org.eclipse.ui.services.IEvaluationService;
 
 /**
  * This handler is responsible to change the mapping type of the selected
@@ -80,25 +84,55 @@ public class PersistentAttributeMapAsHandler extends AbstractHandler
 	
 	@SuppressWarnings("unchecked")
 	public void updateElement(UIElement element, Map parameters) {
-		// Retrieve the selection from the UIElement
+		// Retrieve the selection for the UIElement
 		IHandlerService handlerService =
 			(IHandlerService) element.getServiceLocator().getService(IHandlerService.class);
-		IStructuredSelection selection = 
-			(IStructuredSelection) handlerService.getCurrentState().getVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME);
+		Object selection = 
+			handlerService.getCurrentState().getVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME);
 		
-		String commonMappingKey = commonMappingKey(selection);
+		String commonMappingKey = null;
+		
+		// Bug 227226 - we can't be sure the selection is from the structure view,
+		// so we can't be sure it's an IStructuredSelection
+		if (! (selection instanceof IStructuredSelection)) {
+			// try workaround
+			IEvaluationService es 
+				= (IEvaluationService) element.getServiceLocator().getService(IEvaluationService.class);
+			IViewPart part = 
+				(IViewPart) es.getCurrentState().getVariable(ISources.ACTIVE_PART_NAME);
+			ISelection iSelection 
+				= (ISelection) part.getSite().getSelectionProvider().getSelection();
+			if (iSelection instanceof JpaSelection) {
+				JpaSelection jpaSelection = (JpaSelection) iSelection;
+				if (jpaSelection.getSelectedNode() instanceof PersistentAttribute) {
+					commonMappingKey = ((PersistentAttribute) jpaSelection.getSelectedNode()).getMappingKey();
+				}
+			}
+		}
+		else {
+			IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+			commonMappingKey = commonMappingKey(structuredSelection);
+		}
+		
 		String handlerMappingKey = (String) parameters.get(COMMAND_PARAMETER_ID);
 		if (handlerMappingKey != null) {
 			element.setChecked(handlerMappingKey.equals(commonMappingKey));
 		}
-
 	}
 	
 	@SuppressWarnings("unchecked")
 	protected String commonMappingKey(IStructuredSelection selection) {
 		String commonKey = null;
 		for (Iterator stream = selection.iterator(); stream.hasNext(); ) {
-			PersistentAttribute persistentAttribute = (PersistentAttribute) stream.next();
+			Object next = stream.next();
+			
+			// Bug 227226 - we can't be sure the selection is from the structure view,
+			// so we can't be sure it's an IStructuredSelection of PersistentAttributes
+			if (! (next instanceof PersistentAttribute)) {
+				return null;
+			}
+			PersistentAttribute persistentAttribute = (PersistentAttribute) next;
+			
 			if (commonKey == null) {
 				commonKey = persistentAttribute.getMappingKey();
 			}
