@@ -16,6 +16,14 @@ import org.eclipse.jdt.core.dom.Expression;
  * Define the protocol for converting an AST expression back and forth
  * from an arbitrary type (e.g. StringLiteral <=> String).
  * T is the type of the object to be converted to and from an expression.
+ * 
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * This interface is not intended to be implemented by clients.
  */
 public interface ExpressionConverter<T> {
 
