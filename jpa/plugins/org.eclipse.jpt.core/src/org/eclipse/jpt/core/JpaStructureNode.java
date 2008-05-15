@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 /**
  * Implement this interface for objects that appear in the Structure view
  * This is used by JpaSelection to determine selection in the editor.
- * Details pages are also provided for each IJpaStructureNode.
+ * Details pages are also provided for each JpaStructureNode.
  * 
  * I did not implement JpaContextNode and I'm not even sure we should implement
  * JpaNode.  It is possibly someone could want a structure node that is
@@ -35,7 +35,7 @@ public interface JpaStructureNode extends JpaNode
 	JpaStructureNode getStructureNode(int textOffset);
 	
 	/**
-	 * Return the text range do be used to select text in the editor
+	 * Return the text range to be used to select text in the editor
 	 * corresponding to this node.
 	 */
 	TextRange getSelectionTextRange();

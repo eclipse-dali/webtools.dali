@@ -163,6 +163,7 @@ public interface JpaFactory
 	
 	/**
 	 * Return true if a resource model will be provided for the given file
+	 * (this method should be moved to JpaPlatform)
 	 */
 	boolean hasRelevantContent(IFile file);
 	

@@ -14,7 +14,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ElementChangedEvent;
 
 /**
- * 
+ * A JpaProject contains Jpa files for all IFiles in the project that
+ * are relevant to the JpaPlatform.
+ * @see JpaFactory#hasRelevantContent(IFile), this method should be moved to JpaPlatform
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -65,20 +67,26 @@ public interface JpaFile extends JpaNode
 	String ROOT_STRUCTURE_NODES_COLLECTION = "rootStructureNodes";
 	
 	/**
-	 * Return the root context model object represented by this JPA file.
+	 * Return the root context model objects represented by this JPA file.
 	 */
 	Iterator<JpaStructureNode> rootStructureNodes();
 	
+	/**
+	 * Return the number of root context model objects represented by this JPA file.
+	 */
 	int rootStructureNodesSize();
 
 	/**
-	 * Set the root context model object represented by this JPA file.
+	 * Add a root context model object represented by this JPA file.
 	 * There is the potential for multiple root structure nodes 
-	 * for this JPA file.  For example a java file that is listed
+	 * for a particular key.  For example a java file that is listed
 	 * both as a <class> in the persistence.xml and as an <entity> in
 	 * an orm.xml file.  In this case the orm.xml file needs to set
 	 * the root structure node after the java class reference.
 	 * Last one in during project update wins.
+	 * 
+	 * Call removeRootStructureNode(Object) to clean up when a file is
+	 * deleted.
 	 */
 	void addRootStructureNode(Object key, JpaStructureNode rootStructureNode);	
 	
