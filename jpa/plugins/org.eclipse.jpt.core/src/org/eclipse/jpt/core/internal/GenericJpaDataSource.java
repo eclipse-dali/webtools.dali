@@ -19,7 +19,7 @@ import org.eclipse.jpt.db.ConnectionProfileRepository;
 import org.eclipse.jpt.db.JptDbPlugin;
 
 /**
- * 
+ * GenericJpaDataSource
  */
 public class GenericJpaDataSource
 	extends AbstractJpaNode
@@ -47,6 +47,7 @@ public class GenericJpaDataSource
 	 */
 	protected final ConnectionListener connectionListener;
 
+	private static final long serialVersionUID = 1L;
 
 	// ********** constructor/initialization **********
 
@@ -152,8 +153,9 @@ public class GenericJpaDataSource
 
 		// profile added or removed
 		public void connectionProfileReplaced(ConnectionProfile oldProfile, ConnectionProfile newProfile) {
-			if (oldProfile == GenericJpaDataSource.this.connectionProfile) {
-				GenericJpaDataSource.this.setConnectionProfile(newProfile);
+			if (GenericJpaDataSource.this.hasAConnection() &&
+				(oldProfile == GenericJpaDataSource.this.connectionProfile)) {
+					GenericJpaDataSource.this.setConnectionProfile(newProfile);
 			}
 		}
 
