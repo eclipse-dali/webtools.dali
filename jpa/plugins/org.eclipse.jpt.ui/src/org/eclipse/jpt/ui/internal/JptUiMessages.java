@@ -113,6 +113,7 @@ public class JptUiMessages extends NLS {
 	public static String MapAsComposite_unmappedAttributeText;
 	public static String MapAsComposite_unmappedTypeText;
 	public static String MapAsComposite_version;
+	public static String MapAsComposite_virtualAttributeText;
 	public static String MappingFileWizard_title;
 	public static String MappingFileWizardPage_title;
 	public static String MappingFileWizardPage_desc;

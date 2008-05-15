@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
 import java.util.Iterator;
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.ui.JpaPlatformUi;
@@ -110,8 +111,11 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 			public String labelText() {
 				String mappingKey = subject().getMappingKey();
 
-				if (mappingKey != null) {
+				if (mappingKey != MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
 					return JptUiMessages.MapAsComposite_mappedAttributeText;
+				}
+				if (subject().isVirtual()) {
+					return JptUiMessages.MapAsComposite_virtualAttributeText;
 				}
 
 				return JptUiMessages.MapAsComposite_unmappedAttributeText;
