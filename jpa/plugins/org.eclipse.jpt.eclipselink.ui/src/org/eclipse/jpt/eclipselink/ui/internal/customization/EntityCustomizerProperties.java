@@ -67,8 +67,10 @@ public class EntityCustomizerProperties extends AbstractModel {
 
 	public void setDescriptorCustomizer(String descriptorCustomizer) {
 		String old = this.getDescriptorCustomizer();
-		this.customization.setDescriptorCustomizer(descriptorCustomizer, this.entityName);
-		this.firePropertyChanged(DESCRIPTOR_CUSTOMIZER_PROPERTY, old, descriptorCustomizer);
+		if (this.attributeValueHasChanged(old, descriptorCustomizer)) {
+			this.customization.setDescriptorCustomizer(descriptorCustomizer, this.entityName);
+			this.firePropertyChanged(DESCRIPTOR_CUSTOMIZER_PROPERTY, old, descriptorCustomizer);
+		}
 	}
 
 	public JpaProject getJpaProject() {

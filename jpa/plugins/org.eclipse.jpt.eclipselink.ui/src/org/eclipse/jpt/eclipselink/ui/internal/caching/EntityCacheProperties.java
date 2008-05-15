@@ -104,22 +104,28 @@ public class EntityCacheProperties extends AbstractModel {
 
 	public void setCacheSize(Integer cacheSize) {
 		Integer oldCacheSize = this.getCacheSize();
-		this.caching.setCacheSize(cacheSize, this.entityName);
-		this.firePropertyChanged(CACHE_SIZE_PROPERTY, oldCacheSize, cacheSize);
+		if (this.attributeValueHasChanged(oldCacheSize, cacheSize)) {
+			this.caching.setCacheSize(cacheSize, this.entityName);
+			this.firePropertyChanged(CACHE_SIZE_PROPERTY, oldCacheSize, cacheSize);
+		}
 	}
 
 	public void setCacheType(CacheType cacheType) {
 		CacheType oldCacheType = this.getCacheType();
-		this.caching.setCacheType(cacheType, this.entityName);
-		this.firePropertyChanged(CACHE_TYPE_PROPERTY, oldCacheType, cacheType);
+		if (this.attributeValueHasChanged(oldCacheType, cacheType)) {
+			this.caching.setCacheType(cacheType, this.entityName);
+			this.firePropertyChanged(CACHE_TYPE_PROPERTY, oldCacheType, cacheType);
+		}
 	}
 
 	public void setSharedCache(Boolean sharedCache) {
 		Boolean oldSharedCache = this.getSharedCache();
-		this.caching.setSharedCache(sharedCache, this.entityName);
-		this.firePropertyChanged(SHARED_CACHE_PROPERTY, oldSharedCache, sharedCache);
+		if (this.attributeValueHasChanged(oldSharedCache, sharedCache)) {
+			this.caching.setSharedCache(sharedCache, this.entityName);
+			this.firePropertyChanged(SHARED_CACHE_PROPERTY, oldSharedCache, sharedCache);
+		}
 	}
-
+	
 	// ********** PropertyChangeListener **********
 	
 	private PropertyValueModel<CacheType> buildCacheTypeAA(PropertyValueModel<Caching> subjectHolder) {
