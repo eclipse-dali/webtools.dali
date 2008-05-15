@@ -49,7 +49,7 @@ public class TextEditorSelectionParticipant
 		this.editorInputListener = new EditorInputListener();
 		this.textEditor.addPropertyListener(this.editorInputListener);
 		this.editorSelectionListener = new EditorSelectionListener();
-		this.postSelectionProvider().addPostSelectionChangedListener(this.editorSelectionListener);
+		this.getPostSelectionProvider().addPostSelectionChangedListener(this.editorSelectionListener);
 		this.currentSelection = this.calculateSelection();
 	}
 
@@ -61,16 +61,16 @@ public class TextEditorSelectionParticipant
 
 	public void selectionChanged(JpaSelectionEvent evt) {
 		JpaSelection newSelection = evt.getSelection();
-		
+
 		if ((newSelection == JpaSelection.NULL_SELECTION)
 			|| newSelection.equals(this.currentSelection)) {
 			return;
 		}
-		
-		if (getActiveTextEditor() != textEditor) {
+
+		if (getActiveTextEditor() != this.textEditor) {
 			return;
 		}
-		
+
 		this.forwardSelection = false;
 		TextRange textRange = newSelection.getSelectedNode().getSelectionTextRange();
 		if (textRange != null) {
@@ -86,54 +86,57 @@ public class TextEditorSelectionParticipant
 
 	public void dispose() {
 		this.textEditor.removePropertyListener(this.editorInputListener);
-		this.postSelectionProvider().removePostSelectionChangedListener(this.editorSelectionListener);
+		this.getPostSelectionProvider().removePostSelectionChangedListener(this.editorSelectionListener);
 	}
 
 
 	// ********** internal methods **********
 
-	private JpaSelection calculateSelection() {
+	protected JpaSelection calculateSelection() {
 		ISelection selection = this.textEditor.getSelectionProvider().getSelection();
 		if (! (selection instanceof ITextSelection)) {
 			return JpaSelection.NULL_SELECTION;
 		}
 
-		JpaFile jpaFile = this.jpaFile();
+		JpaFile jpaFile = this.getJpaFile();
 		if (jpaFile == null) {
 			return JpaSelection.NULL_SELECTION;
 		}
 
-		JpaStructureNode selectedNode = jpaFile.getStructureNode(((ITextSelection) selection).getOffset());
-		if (selectedNode == null) {
-			return JpaSelection.NULL_SELECTION;
-		}
+		// the resource model might be out of synch when we get this event
+		// so we force it to update before we ask it for the "selected node";
+		// TODO synchronously update the context model?
+		jpaFile.updateFromResource();
+		return this.buildSelection(jpaFile.getStructureNode(((ITextSelection) selection).getOffset()));
+	}
 
-		return new DefaultJpaSelection(selectedNode);
+	protected JpaSelection buildSelection(JpaStructureNode selectedNode) {
+		return (selectedNode == null) ? JpaSelection.NULL_SELECTION : new DefaultJpaSelection(selectedNode);
+	}
+
+	protected IWorkbenchPage getActivePage() {
+		return this.textEditor.getEditorSite().getWorkbenchWindow().getActivePage();
 	}
 	
-	private IWorkbenchPage getActivePage() {
-		return textEditor.getEditorSite().getWorkbenchWindow().getActivePage();
-	}
-	
-	private IWorkbenchPart getActivePart() {
+	protected IWorkbenchPart getActivePart() {
 		IWorkbenchPage activePage = getActivePage();
 		return (activePage == null) ? null: activePage.getActivePart();
 	}
 	
-	private IEditorPart getActiveEditor() {
+	protected IEditorPart getActiveEditor() {
 		IWorkbenchPage activePage = getActivePage();
 		return (activePage == null) ? null: activePage.getActiveEditor();
 	}
 	
-	private ITextEditor getActiveTextEditor() {
+	protected ITextEditor getActiveTextEditor() {
 		return getTextEditor(getActiveEditor());
 	}
 	
-	private ITextEditor getTextEditor(IWorkbenchPart part) {
+	protected ITextEditor getTextEditor(IWorkbenchPart part) {
 		return (part == null) ? null : (ITextEditor) part.getAdapter(ITextEditor.class);
 	}
 	
-	private JpaFile jpaFile() {
+	protected JpaFile getJpaFile() {
 		IEditorInput input = this.textEditor.getEditorInput();
 		if ( ! (input instanceof IFileEditorInput)) {
 			return null;
@@ -141,38 +144,30 @@ public class TextEditorSelectionParticipant
 		return JptCorePlugin.getJpaFile(((IFileEditorInput) input).getFile());
 	}
 
-	private IPostSelectionProvider postSelectionProvider() {
+	protected IPostSelectionProvider getPostSelectionProvider() {
 		return (IPostSelectionProvider) this.textEditor.getSelectionProvider();
 	}
 
 
 	// ********** listener callbacks **********
 
-	void editorInputChanged() {
-		JpaSelection newSelection = this.calculateSelection();
-		if (newSelection.equals(this.currentSelection)) {
-			return;
-		}
-		this.currentSelection = newSelection;
-		
-		if (this.forwardSelection) {
-			this.selectionManager.select(newSelection, this);
-		}
+	protected void editorInputChanged() {
+		this.selectionChanged();
 	}
 
-	void editorSelectionChanged(SelectionChangedEvent event) {
+	protected void editorSelectionChanged(SelectionChangedEvent event) {
 		// This is a bit kludgey.  We check to see if the selection event 
 		// occurred when a participating part is active (and so, ostensibly,
 		// *because* of the participating part).  If so, we reselect the valid 
 		// text.
 		IWorkbenchPart activePart = getActivePart();
-		if (getTextEditor(activePart) != textEditor && selectionManager.isRegistered(activePart)) {
-			if (currentSelection.isEmpty()) {
+		if (getTextEditor(activePart) != this.textEditor && this.selectionManager.isRegistered(activePart)) {
+			if (this.currentSelection.isEmpty()) {
 				return;
 			}
 			
 			this.forwardSelection = false;
-			TextRange textRange = currentSelection.getSelectedNode().getSelectionTextRange();
+			TextRange textRange = this.currentSelection.getSelectedNode().getSelectionTextRange();
 			if (textRange != null) {
 				this.textEditor.selectAndReveal(textRange.getOffset(), textRange.getLength());
 			}
@@ -181,12 +176,16 @@ public class TextEditorSelectionParticipant
 			return;
 		}
 		
+		this.selectionChanged();
+	}
+
+	protected void selectionChanged() {
 		JpaSelection newSelection = this.calculateSelection();
 		if (newSelection.equals(this.currentSelection)) {
 			return;
 		}
 		this.currentSelection = newSelection;
-
+		
 		if (this.forwardSelection) {
 			this.selectionManager.select(newSelection, this);
 		}
@@ -195,8 +194,8 @@ public class TextEditorSelectionParticipant
 
 	// ********** listeners **********
 
-	private class EditorInputListener implements IPropertyListener {
-		EditorInputListener() {
+	protected class EditorInputListener implements IPropertyListener {
+		protected EditorInputListener() {
 			super();
 		}
 		public void propertyChanged(Object source, int propId) {
@@ -208,8 +207,8 @@ public class TextEditorSelectionParticipant
 	}
 
 
-	private class EditorSelectionListener implements ISelectionChangedListener {
-		EditorSelectionListener() {
+	protected class EditorSelectionListener implements ISelectionChangedListener {
+		protected EditorSelectionListener() {
 			super();
 		}
 		public void selectionChanged(SelectionChangedEvent event) {

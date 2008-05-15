@@ -11,8 +11,11 @@ package org.eclipse.jpt.core.utility.jdt;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IMethodBinding;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jpt.utility.MethodSignature;
 
 /**
+ * Property attribute: just some covariant overrides.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,8 +25,22 @@ import org.eclipse.jdt.core.dom.IMethodBinding;
  * 
  * This interface is not intended to be implemented by clients.
  */
+// TODO rename PropertyAttribute?
 public interface MethodAttribute extends Attribute {
 
+	/**
+	 * Covariant override.
+	 */
 	IMethodBinding getBinding(CompilationUnit astRoot);
+
+	/**
+	 * Covariant override.
+	 */
+	MethodDeclaration getBodyDeclaration(CompilationUnit astRoot);
+
+	/**
+	 * This method must be used instead of Member#matches(String, int).
+	 */
+	boolean matches(MethodSignature signature, int occurrence);
 
 }

@@ -9,12 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.resource.java.JavaResourceModel;
@@ -29,61 +33,67 @@ public class JpaCompilationUnitImpl
 	implements JpaCompilationUnit
 {
 	protected final JpaAnnotationProvider annotationProvider;
-	
+
 	protected final CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
-	
+
 	protected final AnnotationEditFormatter annotationEditFormatter;
-	
+
+	protected final JavaResourceModel javaResourceModel;
+
 	protected final ICompilationUnit compilationUnit;
-	
+
 	/**
-	 * The primary type of the CompilationUnit. Not going to handle
-	 * multiple Types defined in a compilation unit.  Entities must have
-	 * a public/protected no-arg constructor and there is no way to access
-	 * it in a non-public/protected class.
+	 * The primary type of the AST compilation unit. We are not going to handle
+	 * multiple types defined in a single compilation unit. Entities must have
+	 * a public/protected no-arg constructor, and there is no way to access
+	 * the constructor in a package class (which is what all top-level,
+	 * non-primary classes must be).
 	 */
 	protected JavaResourcePersistentType persistentType;	
-		public static final String PERSISTENT_TYPE_PROPERTY = "persistentTypeProperty";
-	
-	protected final JavaResourceModel javaResourceModel;
-	
+
+
+	// ********** construction **********
+
 	public JpaCompilationUnitImpl(
 			IFile file, 
 			JpaAnnotationProvider annotationProvider, 
 			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
 			AnnotationEditFormatter annotationEditFormatter,
 			JavaResourceModel javaResourceModel) {
-		// The jpa compilation unit is the root of its sub-tree
-		super(null);
+		super(null);  // the JPA compilation unit is the root of its sub-tree
 		this.annotationProvider = annotationProvider;
 		this.modifySharedDocumentCommandExecutorProvider = modifySharedDocumentCommandExecutorProvider;
 		this.annotationEditFormatter = annotationEditFormatter;
 		this.javaResourceModel = javaResourceModel;
-		this.compilationUnit = compilationUnitFrom(file);
-		this.initialize(JDTTools.buildASTRoot(this.compilationUnit));
+		this.compilationUnit = JavaCore.createCompilationUnitFrom(file);
+		this.openCompilationUnit();
+		this.persistentType = this.buildJavaResourcePersistentType();
 	}
-	
-	protected ICompilationUnit compilationUnitFrom(IFile file) {
-		ICompilationUnit cu = JavaCore.createCompilationUnitFrom(file);
+
+	protected void openCompilationUnit() {
 		try {
-			cu.open(null);
-		}
-		catch (JavaModelException jme) {
+			this.compilationUnit.open(null);
+		} catch (JavaModelException ex) {
 			// do nothing - we just won't have a primary type in this case
 		}
-		return cu;
 	}
-	
+
+	protected JavaResourcePersistentType buildJavaResourcePersistentType() {
+		return this.buildJavaResourcePersistentType(this.buildASTRoot());
+	}
+
+	protected JavaResourcePersistentType buildJavaResourcePersistentType(CompilationUnit astRoot) {
+		TypeDeclaration td = this.getPrimaryType(astRoot);
+		return (td == null) ? null : this.buildJavaResourcePersistentType(astRoot, td);
+	}
+
 	public void initialize(CompilationUnit astRoot) {
-		IType iType = this.compilationUnit.findPrimaryType();
-		if (iType != null) {
-			this.persistentType = buildJavaResourcePersistentType(iType, astRoot);
-		}
+		// never called?
 	}
-	
-	// **************** overrides **********************************************
-	
-	
+
+
+	// ********** overrides **********
+
 	@Override
 	protected boolean requiresParent() {
 		return false;
@@ -114,18 +124,15 @@ public class JpaCompilationUnitImpl
 		return this.javaResourceModel;
 	}
 	
-	
-	// *************************************************************************
-	
+
+	// ********** JpaCompilationUnit implementation **********
+
 	public ICompilationUnit getCompilationUnit() {
 		return this.compilationUnit;
 	}
 	
 	public JavaResourcePersistentType getJavaPersistentTypeResource(String fullyQualifiedTypeName) {
-		if (getPersistentType() != null) {
-			return getPersistentType().getJavaPersistentTypeResource(fullyQualifiedTypeName);
-		} 
-		return null;
+		return (this.persistentType == null) ? null : this.persistentType.getJavaPersistentTypeResource(fullyQualifiedTypeName);
 	}
 
 	/**
@@ -136,79 +143,97 @@ public class JpaCompilationUnitImpl
 		return this.persistentType;
 		//TODO should i only be returning this if it returns true to isPersistable?
 		//that's how we handle nestedTypes on JavaPersistentTypeResource
+		//return this.persistentType.isPersistable() ? this.persistentType : null;
+	}
+	
+	protected void setPersistentType(JavaResourcePersistentType persistentType) {
+		JavaResourcePersistentType old = this.persistentType;
+		this.persistentType = persistentType;
+		this.firePropertyChanged(PERSISTENT_TYPE_PROPERTY, old, persistentType);
+	}
 
-//		if (this.persistentType.isPersistable()) {
-//		return this.persistentType;
-//	}
-//	return null;
-	}
-	
-	protected void setPersistentType(JavaResourcePersistentType newPersistentType) {
-		JavaResourcePersistentType oldPersistentType = this.persistentType;
-		this.persistentType = newPersistentType;
-		firePropertyChanged(PERSISTENT_TYPE_PROPERTY, oldPersistentType, newPersistentType);
-	}
-	
-	private JavaResourcePersistentType buildJavaResourcePersistentType(IType iType, CompilationUnit astRoot) {
-		//TODO put this hook in to avoid the NPE that we get trying to initialize a persistentTypeResource
-		//from an annotation type.  Entered bug #    to handle the bigger issue of when we need to 
-		//not build a persistent type(annotation types) and when we need to have validation instead(final types)
-		try {
-			if (iType.isAnnotation() || iType.isEnum()) {
-				return null;
-			}
-		}
-		catch (JavaModelException e) {
-			throw new RuntimeException(e);
-		}
-
-		return 
-			JavaResourcePersistentTypeImpl.buildJavaResourcePersistentType(this, 
-				iType, 
-				getModifySharedDocumentCommandExecutorProvider(), 
-				getAnnotationEditFormatter(), 
-				astRoot);
-	}
-	
 	public void updateFromJava() {
-		updateFromJava(JDTTools.buildASTRoot(getCompilationUnit()));
-	}
-	
-	public void updateFromJava(CompilationUnit astRoot) {
-		IType iType = this.compilationUnit.findPrimaryType();
-		if (iType == null) {
-			setPersistentType(null);
-		}
-		else {
-			if (getPersistentType() == null) {
-				setPersistentType(buildJavaResourcePersistentType(iType, astRoot));
-			}
-			else {
-				getPersistentType().updateFromJava(astRoot);
-			}
-		}
-	}
-	
-	
-	public TextRange getTextRange(CompilationUnit astRoot) {
-		return null;//this.selectionTextRange();
+		this.updateFromJava(this.buildASTRoot());
 	}
 
-//	/**
-//	 * Return null for selection textRange.  Entire java file will appear selected when
-//	 * switching files otherwise
-//	 */
-//	public ITextRange selectionTextRange() {
-//		return null;
-//	}
-	
+	public void updateFromJava(CompilationUnit astRoot) {
+		TypeDeclaration td = this.getPrimaryType(astRoot);
+		if (td == null) {
+			this.setPersistentType(null);
+		} else {
+			if (this.persistentType == null) {
+				this.setPersistentType(this.buildJavaResourcePersistentType(astRoot, td));
+			} else {
+				this.persistentType.updateFromJava(astRoot);
+			}
+		}
+	}
+
+	public TextRange getTextRange(CompilationUnit astRoot) {
+		return null;
+	}
+
 	public void resourceChanged() {
 		this.javaResourceModel.resourceChanged();
 	}
 
 	public void resolveTypes() {
-		if (getPersistentType() != null) {
-			getPersistentType().resolveTypes(JDTTools.buildASTRoot(getCompilationUnit()));
+		if (this.persistentType != null) {
+			this.persistentType.resolveTypes(this.buildASTRoot());
 		}
 	}
+
+
+	// ********** internal **********
+
+	protected CompilationUnit buildASTRoot() {
+		return JDTTools.buildASTRoot(this.compilationUnit);
+	}
+
+	// TODO use JPA factory
+	protected JavaResourcePersistentType buildJavaResourcePersistentType(CompilationUnit astRoot, TypeDeclaration typeDeclaration) {
+		return JavaResourcePersistentTypeImpl.newInstance(this, typeDeclaration, astRoot);
+	}
+
+	/**
+	 * i.e. the type with the same name as the compilation unit;
+	 * return the first class or interface (ignore annotations and enums) with
+	 * the same name as the compilation unit (file);
+	 * NB: this type could be in error if there is an annotation or enum
+	 * with the same name preceding it in the compilation unit
+	 */
+	protected TypeDeclaration getPrimaryType(CompilationUnit astRoot) {
+		String primaryTypeName = this.getPrimaryTypeName();
+		for (AbstractTypeDeclaration atd : types(astRoot)) {
+			if ((atd.getNodeType() == ASTNode.TYPE_DECLARATION)
+					&& atd.getName().getFullyQualifiedName().equals(primaryTypeName)) {
+				return (TypeDeclaration) atd;
+			}
+		}
+		return null;
+	}
+
+	// minimize scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected static List<AbstractTypeDeclaration> types(CompilationUnit astRoot) {
+		return astRoot.types();
+	}
+
+	/**
+	 * i.e. the name of the compilation unit
+	 */
+	protected String getPrimaryTypeName() {
+		return removeJavaExtension(this.compilationUnit.getElementName());
+	}
+
+	protected static String removeJavaExtension(String fileName) {
+		int index = fileName.lastIndexOf(".java");
+		return (index == -1) ? fileName : fileName.substring(0, index);
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.persistentType.getName());
+	}
+
 }

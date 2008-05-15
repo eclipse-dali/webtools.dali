@@ -10,13 +10,14 @@
 package org.eclipse.jpt.core.internal.synch;
 
 import java.io.IOException;
+import java.util.Iterator;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -82,11 +83,11 @@ public class SynchronizeClassesJob extends WorkspaceJob
 		
 		persistenceUnitResource.getClasses().clear();
 		
-		monitor.worked(25);		
-		
-		for (IType type : CollectionTools.iterable(jpaProject.annotatedClasses())) {
-			String fullyQualifiedTypeName = type.getFullyQualifiedName('.');
-			if (!mappingFileContains(jpaProject, fullyQualifiedTypeName)) {
+		monitor.worked(25);
+
+		for (Iterator<String> stream = jpaProject.annotatedClassNames(); stream.hasNext(); ) {
+			String fullyQualifiedTypeName = stream.next();
+			if ( ! mappingFileContains(jpaProject, fullyQualifiedTypeName)) {
 				XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 				classRef.setJavaClass(fullyQualifiedTypeName);
 				persistenceUnitResource.getClasses().add(classRef);

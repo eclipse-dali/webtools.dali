@@ -27,4 +27,27 @@ public interface CommandExecutorProvider {
 	 */
 	CommandExecutor getCommandExecutor();
 
+
+	/**
+	 * Straightforward implementation of the command executor provider
+	 * interface the returns the default command executor.
+	 */
+	final class Default implements CommandExecutorProvider {
+		public static final CommandExecutorProvider INSTANCE = new Default();
+		public static CommandExecutorProvider instance() {
+			return INSTANCE;
+		}
+		// ensure single instance
+		private Default() {
+			super();
+		}
+		public CommandExecutor getCommandExecutor() {
+			return CommandExecutor.Default.instance();
+		}
+		@Override
+		public String toString() {
+			return "CommandExecutorProvider.Default";
+		}
+	}
+
 }

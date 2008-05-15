@@ -144,7 +144,7 @@ public final class SimpleJavaType
 
 	@Override
 	public boolean equals(Object o) {
-		return (o instanceof JavaType) ? this.equals((JavaType) o) : false;
+		return (this == o) ? true : (o instanceof JavaType) ? this.equals((JavaType) o) : false;
 	}
 
 	@Override
@@ -216,6 +216,9 @@ public final class SimpleJavaType
 		sb.append(')');
 		return sb.toString();
 	}
+
+
+	// ********** cloning **********
 
 	@Override
 	public Object clone() {

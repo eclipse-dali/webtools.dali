@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -193,16 +194,11 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 
 	public boolean contains(int offset, CompilationUnit astRoot) {
 		TextRange fullTextRange = this.getFullTextRange(astRoot);
-		if (fullTextRange == null) {
-			//This happens if the attribute no longer exists in the java.
-			//The text selection event is fired before the update from java so our
-			//model has not yet had a chance to update appropriately. The list of
-			//JavaPersistentAttriubtes is stale at this point.  For now, we are trying
-			//to avoid the NPE, not sure of the ultimate solution to these 2 threads accessing
-			//our model
-			return false;
-		}
-		return fullTextRange.includes(offset);
+		// 'fullTextRange' will be null if the attribute no longer exists in the java;
+		// the context model can be out of synch with the resource model
+		// when a selection event occurs before the context model has a
+		// chance to synch with the resource model via the update thread
+		return (fullTextRange == null) ? false : fullTextRange.includes(offset);
 	}
 
 
@@ -219,52 +215,55 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	}
 	
 	public TextRange getSelectionTextRange() {
-		return getSelectionTextRange(this.resourcePersistentAttribute.getMember().getAstRoot());
+		return getSelectionTextRange(this.buildASTRoot());
 	}
-	
 
-	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		this.resourcePersistentAttribute = resourcePersistentAttribute;
-		this.setName(this.name(resourcePersistentAttribute));
-		this.updateDefaultMapping(resourcePersistentAttribute);
-		this.updateSpecifiedMapping(resourcePersistentAttribute);
+	protected CompilationUnit buildASTRoot() {
+		return JDTTools.buildASTRoot(this.resourcePersistentAttribute.getJpaCompilationUnit().getCompilationUnit());
+	}
+
+	public void update(JavaResourcePersistentAttribute jrpa) {
+		this.resourcePersistentAttribute = jrpa;
+		this.setName(this.name(jrpa));
+		this.updateDefaultMapping(jrpa);
+		this.updateSpecifiedMapping(jrpa);
 	}
 	
-	protected String name(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		return resourcePersistentAttribute.getName();	
+	protected String name(JavaResourcePersistentAttribute jrpa) {
+		return jrpa.getName();	
 	}
 	
 	public String specifiedMappingAnnotationName() {
 		return (this.specifiedMapping == null) ? null : this.specifiedMapping.getAnnotationName();
 	}
 	
-	protected void updateSpecifiedMapping(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		String javaMappingAnnotationName = this.javaMappingAnnotationName(resourcePersistentAttribute);
+	protected void updateSpecifiedMapping(JavaResourcePersistentAttribute jrpa) {
+		String javaMappingAnnotationName = this.javaMappingAnnotationName(jrpa);
 		if (specifiedMappingAnnotationName() != javaMappingAnnotationName) {
-			setSpecifiedMapping(createJavaAttributeMappingFromAnnotation(javaMappingAnnotationName, resourcePersistentAttribute));
+			setSpecifiedMapping(createJavaAttributeMappingFromAnnotation(javaMappingAnnotationName, jrpa));
 		}
 		else {
 			if (getSpecifiedMapping() != null) {
-				getSpecifiedMapping().update(resourcePersistentAttribute);
+				getSpecifiedMapping().update(jrpa);
 			}
 		}
 	}
 	
-	protected void updateDefaultMapping(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+	protected void updateDefaultMapping(JavaResourcePersistentAttribute jrpa) {
 		String defaultMappingKey = getJpaPlatform().defaultJavaAttributeMappingKey(this);
 		if (getDefaultMapping().getKey() != defaultMappingKey) {
 			JavaAttributeMapping oldDefaultMapping = this.defaultMapping;
 			this.defaultMapping = getJpaPlatform().buildDefaultJavaAttributeMapping(this);
-			this.defaultMapping.initializeFromResource(resourcePersistentAttribute);
+			this.defaultMapping.initializeFromResource(jrpa);
 			firePropertyChanged(PersistentAttribute.DEFAULT_MAPPING_PROPERTY, oldDefaultMapping, this.defaultMapping);
 		}
 		else {
-			getDefaultMapping().update(resourcePersistentAttribute);
+			getDefaultMapping().update(jrpa);
 		}
 	}
 	
-	protected String javaMappingAnnotationName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		Annotation mappingAnnotation = (Annotation) resourcePersistentAttribute.getMappingAnnotation();
+	protected String javaMappingAnnotationName(JavaResourcePersistentAttribute jrpa) {
+		Annotation mappingAnnotation = (Annotation) jrpa.getMappingAnnotation();
 		if (mappingAnnotation != null) {
 			return mappingAnnotation.getAnnotationName();
 		}
@@ -278,12 +277,12 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		return getJpaPlatform().buildJavaAttributeMappingFromMappingKey(key, this);
 	}
 
-	protected JavaAttributeMapping createJavaAttributeMappingFromAnnotation(String annotationName, JavaResourcePersistentAttribute resourcePersistentAttribute) {
+	protected JavaAttributeMapping createJavaAttributeMappingFromAnnotation(String annotationName, JavaResourcePersistentAttribute jrpa) {
 		if (annotationName == null) {
 			return null;
 		}
 		JavaAttributeMapping mapping = getJpaPlatform().buildJavaAttributeMappingFromAnnotation(annotationName, this);
-		mapping.initializeFromResource(resourcePersistentAttribute);
+		mapping.initializeFromResource(jrpa);
 		return mapping;
 	}
 

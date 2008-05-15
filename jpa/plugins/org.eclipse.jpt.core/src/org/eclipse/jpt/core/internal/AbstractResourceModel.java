@@ -17,10 +17,10 @@ public abstract class AbstractResourceModel
 	extends AbstractModel
 	implements ResourceModel
 {
-	
 	protected final IFile file;
-	
+
 	protected AbstractResourceModel(IFile file) {
+		super();
 		this.file = file;
 	}
 	
@@ -28,9 +28,8 @@ public abstract class AbstractResourceModel
 		return this.file;
 	}
 	
-	public abstract Object getResource();
-
-	
 	public void dispose() {
+		// do nothing by default
 	}
+
 }

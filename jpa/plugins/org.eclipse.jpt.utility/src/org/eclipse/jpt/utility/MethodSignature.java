@@ -7,16 +7,14 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.utility.jdt;
+package org.eclipse.jpt.utility;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
+import java.io.PrintWriter;
 
 /**
- * Type: just some covariant overrides.
+ * This interface describes a Java method signature; i.e. its "name"
+ * and its "parameter types". The parameter types are referenced by name,
+ * allowing us to reference classes that are not (or cannot be) loaded.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -26,31 +24,40 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
  * 
  * This interface is not intended to be implemented by clients.
  */
-public interface Type extends Member {
+public interface MethodSignature
+	extends Comparable<MethodSignature>
+{
 
 	/**
-	 * Covariant override.
+	 * Return the method's name.
 	 */
-	ITypeBinding getBinding(CompilationUnit astRoot);
+	String getName();
 
 	/**
-	 * Covariant override.
+	 * Return the method's parameter types.
 	 */
-	TypeDeclaration getBodyDeclaration(CompilationUnit astRoot);
+	JavaType[] getParameterTypes();
+
+	boolean equals(String otherName, JavaType[] otherParameterTypes);
+
+	boolean equals(MethodSignature other);
 
 	/**
-	 * Return the type's nested types (does not include annotations or enums).
+	 * Return a string representation of the method signature:
+	 *     "foo(int, java.lang.String)"
 	 */
-	TypeDeclaration[] getTypes(CompilationUnit astRoot);
+	String getSignature();
 
 	/**
-	 * Return the type's fields.
+	 * Append a string representation of the method signature:
+	 *     "foo(int, java.lang.String)"
 	 */
-	FieldDeclaration[] getFields(CompilationUnit astRoot);
+	void appendSignatureTo(StringBuilder sb);
 
 	/**
-	 * Return the type's methods.
+	 * Print a string representation of the method signature:
+	 *     "foo(int, java.lang.String)"
 	 */
-	MethodDeclaration[] getMethods(CompilationUnit astRoot);
+	void printSignatureOn(PrintWriter pw);
 
 }

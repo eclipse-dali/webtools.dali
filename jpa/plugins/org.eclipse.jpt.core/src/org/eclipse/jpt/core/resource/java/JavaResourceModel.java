@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.ResourceModel;
  */
 public interface JavaResourceModel extends ResourceModel {
 
-	JpaCompilationUnit getResource();
+	JpaCompilationUnit getJpaCompilationUnit();
 
 	void resourceChanged();
 

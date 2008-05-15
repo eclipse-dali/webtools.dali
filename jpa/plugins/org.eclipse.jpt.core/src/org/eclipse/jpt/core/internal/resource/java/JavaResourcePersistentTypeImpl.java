@@ -9,91 +9,154 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
 
-import org.eclipse.jdt.core.IField;
-import org.eclipse.jdt.core.IMember;
-import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTFieldAttribute;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTMethodAttribute;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTType;
-import org.eclipse.jpt.core.internal.utility.jdt.JPTTools;
 import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
-import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.Type;
-import org.eclipse.jpt.utility.CommandExecutorProvider;
+import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.Counter;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 public class JavaResourcePersistentTypeImpl
 	extends AbstractJavaResourcePersistentMember<Type>
 	implements JavaResourcePersistentType
-{	
-	/**
-	 * store all member types including those that aren't persistable so we can include validation errors.
-	 */
-	private final Collection<JavaResourcePersistentType> nestedTypes;
-	
-	private final Collection<JavaResourcePersistentAttribute> attributes;
-	
-	private AccessType accessType;
-	
-	private String superClassQualifiedName;
-	
+{
 	private String qualifiedName;
-	
+
 	private String name;
-	
-	private boolean isAbstract;
-	
-	public JavaResourcePersistentTypeImpl(JavaResourceNode parent, Type type){
-		super(parent, type);
-		this.nestedTypes = new ArrayList<JavaResourcePersistentType>(); 
-		this.attributes = new ArrayList<JavaResourcePersistentAttribute>();
+
+	private String superClassQualifiedName;
+
+	private boolean abstract_;  // 'abstract' is a reserved word
+
+	/**
+	 * store all member types including those that aren't persistable so we can
+	 * generate validation errors
+	 */
+	private final Vector<JavaResourcePersistentType> nestedTypes;
+
+	private final Vector<JavaResourcePersistentAttribute> fields;
+
+	private final Vector<JavaResourcePersistentAttribute> methods;
+
+	private AccessType accessType;
+
+
+	// ********** construction **********
+
+	/**
+	 * build top-level persistent type
+	 */
+	// TODO use JPA factory
+	public static JavaResourcePersistentType newInstance(
+			JpaCompilationUnit jpaCompilationUnit,
+			TypeDeclaration typeDeclaration,
+			CompilationUnit astRoot) {
+		Type type = new JDTType(
+				typeDeclaration,
+				jpaCompilationUnit.getCompilationUnit(),
+				jpaCompilationUnit.getModifySharedDocumentCommandExecutorProvider(),
+				jpaCompilationUnit.getAnnotationEditFormatter());
+		JavaResourcePersistentType jrpt = new JavaResourcePersistentTypeImpl(jpaCompilationUnit, type);
+		jrpt.initialize(astRoot);
+		return jrpt;	
+	}
+
+	/**
+	 * build nested persistent type
+	 */
+	// TODO use JPA factory
+	protected static JavaResourcePersistentType newInstance(
+			JpaCompilationUnit jpaCompilationUnit,
+			Type declaringType,
+			TypeDeclaration typeDeclaration,
+			int occurrence,
+			CompilationUnit astRoot) {
+		Type type = new JDTType(
+				declaringType,
+				typeDeclaration,
+				occurrence,
+				jpaCompilationUnit.getCompilationUnit(),
+				jpaCompilationUnit.getModifySharedDocumentCommandExecutorProvider(),
+				jpaCompilationUnit.getAnnotationEditFormatter());
+		JavaResourcePersistentType jrpt = new JavaResourcePersistentTypeImpl(jpaCompilationUnit, type);
+		jrpt.initialize(astRoot);
+		return jrpt;	
+	}
+
+	public JavaResourcePersistentTypeImpl(JpaCompilationUnit jpaCompilationUnit, Type type) {
+		super(jpaCompilationUnit, type);
+		this.nestedTypes = new Vector<JavaResourcePersistentType>(); 
+		this.fields = new Vector<JavaResourcePersistentAttribute>();
+		this.methods = new Vector<JavaResourcePersistentAttribute>();
 	}
 
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
-		this.qualifiedName = this.qualifiedName(astRoot);
-		this.name = this.name(astRoot);
+		this.qualifiedName = this.buildQualifiedName(astRoot);
+		this.name = this.buildName(astRoot);
+		this.superClassQualifiedName = this.buildSuperClassQualifiedName(astRoot);
+		this.abstract_ = this.buildAbstract(astRoot);
 		this.initializeNestedTypes(astRoot);
-		this.initializePersistentProperties(astRoot);
-		this.accessType = this.calculateAccessType();
-		this.superClassQualifiedName = this.superClassQualifiedName(astRoot);
-		this.isAbstract = this.isAbstract(astRoot);
+		this.initializeFields(astRoot);
+		this.initializeMethods(astRoot);
+		this.accessType = this.buildAccessType();
 	}
-	
+
 	protected void initializeNestedTypes(CompilationUnit astRoot) {
-		for (IType declaredType : getMember().jdtTypes()) {
-			this.nestedTypes.add(buildJavaResourcePersistentType(declaredType, astRoot));
+		CounterMap counters = new CounterMap();
+		for (TypeDeclaration td : this.getMember().getTypes(astRoot)) {
+			String tdName = td.getName().getFullyQualifiedName();
+			int occurrence = counters.increment(tdName);
+			this.nestedTypes.add(this.buildNestedType(td, occurrence, astRoot));
 		}
 	}
-	
-	protected void initializePersistentProperties(CompilationUnit astRoot) {
-		for (IField field : getMember().jdtFields()) {
-			this.attributes.add(createJavaPersistentAttribute(field, astRoot));
-		}
-		for (IMethod method : getMember().jdtMethods()) {
-			this.attributes.add(createJavaPersistentAttribute(method, astRoot));
+
+	protected void initializeFields(CompilationUnit astRoot) {
+		CounterMap counters = new CounterMap();
+		for (FieldDeclaration fieldDeclaration : this.getMember().getFields(astRoot)) {
+			for (VariableDeclarationFragment fragment : fragments(fieldDeclaration)) {
+				String fieldName = fragment.getName().getFullyQualifiedName();
+				int occurrence = counters.increment(fieldName);
+				this.fields.add(this.buildField(fieldName, occurrence, astRoot));
+			}
 		}
 	}
-	
-	// ******** AbstractJavaPersistentResource implementation ********
+
+	protected void initializeMethods(CompilationUnit astRoot) {
+		CounterMap counters = new CounterMap();
+		for (MethodDeclaration methodDeclaration : this.getMember().getMethods(astRoot)) {
+			MethodSignature signature = JDTTools.buildMethodSignature(methodDeclaration);
+			int occurrence = counters.increment(signature);
+			this.methods.add(this.buildMethod(signature, occurrence, astRoot));
+		}
+	}
+
+
+	// ********** AbstractJavaResourcePersistentMember implementation **********
 
 	@Override
 	protected Annotation buildMappingAnnotation(String mappingAnnotationName) {
@@ -131,12 +194,6 @@ public class JavaResourcePersistentTypeImpl
 	}
 	
 	@Override
-	protected boolean calculatePersistability(CompilationUnit astRoot) {
-		return JPTTools.typeIsPersistable(getMember().getBinding(astRoot));
-	}
-
-
-	@Override
 	@SuppressWarnings("unchecked")
 	//overriding purely to suppress the warning you get at the class level
 	public ListIterator<NestableAnnotation> annotations(String nestableAnnotationName, String containerAnnotationName) {
@@ -157,290 +214,388 @@ public class JavaResourcePersistentTypeImpl
 		return super.annotations();
 	}
 
-	
-	// ******** JavaPersistentTypeResource implementation ********
-	public JavaResourcePersistentType getJavaPersistentTypeResource(String fullyQualifiedTypeName) {
-		if (getQualifiedName().equals(fullyQualifiedTypeName)) {
-			return this;
-		}
-		for (JavaResourcePersistentType jptr : CollectionTools.iterable(nestedTypes())) {
-			if (jptr.getQualifiedName().equals(fullyQualifiedTypeName)) {
-				return jptr;
-			}
-		}
-		return null;
-	}
-
-	public Iterator<JavaResourcePersistentType> nestedTypes() {
-		//TODO since we are filtering how do we handle the case where a type becomes persistable?
-		//what kind of change notificiation for that case?
-		return new FilteringIterator<JavaResourcePersistentType, JavaResourcePersistentType>(new CloneIterator<JavaResourcePersistentType>(this.nestedTypes)) {
-			@Override
-			protected boolean accept(JavaResourcePersistentType o) {
-				return o.isPersistable();
-			}
-		};
-	}
-	
-	protected JavaResourcePersistentType nestedTypeFor(IType type) {
-		for (JavaResourcePersistentType nestedType : this.nestedTypes) {
-			if (nestedType.isFor(type)) {
-				return nestedType;
-			}
-		}
-		return null;
-	}
-	
-	protected JavaResourcePersistentType addNestedType(IType nestedType, CompilationUnit astRoot) {
-		JavaResourcePersistentType persistentType = buildJavaResourcePersistentType(nestedType, astRoot);
-		addNestedType(persistentType);
-		return persistentType;
-	}
-
-	protected void addNestedType(JavaResourcePersistentType nestedType) {
-		addItemToCollection(nestedType, this.nestedTypes, NESTED_TYPES_COLLECTION);
-	}
-	
-	protected void removeNestedType(JavaResourcePersistentType nestedType) {
-		removeItemFromCollection(nestedType, this.nestedTypes, NESTED_TYPES_COLLECTION);
-	}
-	
-	protected JavaResourcePersistentType buildJavaResourcePersistentType(IType nestedType, CompilationUnit astRoot) {
-		return buildJavaResourcePersistentType(this, nestedType, getModifySharedDocumentCommandExecutorProvider(), getAnnotationEditFormatter(), astRoot);
-	}
-
-	public static JavaResourcePersistentType buildJavaResourcePersistentType(
-		JavaResourceNode parent, 
-		IType nestedType, 
-		CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
-		AnnotationEditFormatter annotationEditFormatter, 
-		CompilationUnit astRoot) {
-		
-		Type type = new JDTType(nestedType, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
-		JavaResourcePersistentTypeImpl javaPersistentType = new JavaResourcePersistentTypeImpl(parent, type);
-		javaPersistentType.initialize(astRoot);
-		return javaPersistentType;	
-	}
-	
-	public Iterator<JavaResourcePersistentAttribute> attributes() {
-		//TODO since we are filtering how do we handle the case where an attribute becomes persistable?
-		//what kind of change notificiation for that case?
-		return new FilteringIterator<JavaResourcePersistentAttribute, JavaResourcePersistentAttribute>(new CloneIterator<JavaResourcePersistentAttribute>(this.attributes)) {
-			@Override
-			protected boolean accept(JavaResourcePersistentAttribute o) {
-				return o.isPersistable();
-			}
-		};
-	}
-	
-	public Iterator<JavaResourcePersistentAttribute> fields() {
-		return new FilteringIterator<JavaResourcePersistentAttribute, JavaResourcePersistentAttribute>(attributes()) {
-			@Override
-			protected boolean accept(JavaResourcePersistentAttribute o) {
-				return o.isForField();
-			}
-		};
-	}
-	
-	public Iterator<JavaResourcePersistentAttribute> properties() {
-		return new FilteringIterator<JavaResourcePersistentAttribute, JavaResourcePersistentAttribute>(attributes()) {
-			@Override
-			protected boolean accept(JavaResourcePersistentAttribute o) {
-				return o.isForProperty();
-			}
-		};
-	}
-
-	protected JavaResourcePersistentAttribute addAttribute(IMember jdtMember, CompilationUnit astRoot) {
-		JavaResourcePersistentAttribute persistentAttribute = createJavaPersistentAttribute(jdtMember, astRoot);
-		addAttribute(persistentAttribute);
-		return persistentAttribute;
-	}
-	
-	protected void addAttribute(JavaResourcePersistentAttribute attribute) {
-		addItemToCollection(attribute, this.attributes, ATTRIBUTES_COLLECTION);
-	}
-
-	protected JavaResourcePersistentAttribute createJavaPersistentAttribute(IMember member, CompilationUnit astRoot) {
-		Attribute attribute = null;
-		if (member instanceof IField) {
-			attribute = new JDTFieldAttribute((IField) member, this.getModifySharedDocumentCommandExecutorProvider(), this.getAnnotationEditFormatter());
-		}
-		else if (member instanceof IMethod) {
-			attribute = new JDTMethodAttribute((IMethod) member, this.getModifySharedDocumentCommandExecutorProvider(), this.getAnnotationEditFormatter());
-		}
-		else {
-			throw new IllegalArgumentException();
-		}
-		JavaResourcePersistentAttribute javaPersistentAttribute = new JavaResourcePersistentAttributeImpl(this, attribute);
-		javaPersistentAttribute.initialize(astRoot);
-		return javaPersistentAttribute;
-	}
-	
-	protected void removeAttribute(JavaResourcePersistentAttribute attribute) {
-		removeItemFromCollection(attribute, this.attributes, ATTRIBUTES_COLLECTION);
-	}
-	
-	protected JavaResourcePersistentAttribute attributeFor(IMember member) {
-		for (JavaResourcePersistentAttribute persistentAttribute : this.attributes) {
-			if (persistentAttribute.isFor(member)) {
-				return persistentAttribute;
-			}
-		}
-		return null;
-	}
-	
-	public AccessType getAccess() {
-		return this.accessType;
-	}
-	
-	//seems we could have a public changeAccess() api which would
-	//move all annotations from fields to their corresponding methods or vice versa
-	//though of course it's more complicated than that since what if the
-	//corresponding field/method does not exist?
-	//making this internal since it should only be set based on changes in the source, the
-	//context model should not need to set this
-	protected void setAccess(AccessType newAccess) {
-		AccessType oldAccess = this.accessType;
-		this.accessType = newAccess;
-		firePropertyChanged(ACCESS_PROPERTY, oldAccess, newAccess);
-	}
-
-	public String getSuperClassQualifiedName() {
-		return this.superClassQualifiedName;
-	}
-	
-	private void setSuperClassQualifiedName(String newSuperClassQualifiedName) {
-		String oldSuperClassQualifiedName = this.superClassQualifiedName;
-		this.superClassQualifiedName = newSuperClassQualifiedName;
-		firePropertyChanged(SUPER_CLASS_QUALIFIED_NAME_PROPERTY, oldSuperClassQualifiedName, newSuperClassQualifiedName);
-	}
-
-	public String getQualifiedName() {
-		return this.qualifiedName;
-	}
-	
-	protected void setQualifiedName(String newQualifiedName) {
-		String oldQualifiedName = this.qualifiedName;
-		this.qualifiedName = newQualifiedName;
-		firePropertyChanged(QUALIFIED_NAME_PROPERTY, oldQualifiedName, newQualifiedName);
-	}
-	
-	public String getName() {
-		return this.name;
-	}
-	
-	protected void setName(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
-	}
-	
-	public boolean isAbstract() {
-		return this.isAbstract;
-	}
-	
-	protected void setAbstract(boolean newAbstract) {
-		boolean oldAbstract = this.isAbstract;
-		this.isAbstract = newAbstract;
-		firePropertyChanged(ABSTRACT_PROPERTY, oldAbstract, newAbstract);
-	}
-	
-	@Override
-	public void updateFromJava(CompilationUnit astRoot) {
-		super.updateFromJava(astRoot);
-		this.setQualifiedName(this.qualifiedName(astRoot));
-		this.setName(this.name(astRoot));
-		this.updateNestedTypes(astRoot);
-		this.updatePersistentAttributes(astRoot);
-		this.setAccess(this.calculateAccessType());
-		this.setSuperClassQualifiedName(this.superClassQualifiedName(astRoot));
-		this.setAbstract(isAbstract(astRoot));
-	}
-	
 	@Override
 	public void resolveTypes(CompilationUnit astRoot) {
 		super.resolveTypes(astRoot);
-		this.setSuperClassQualifiedName(this.superClassQualifiedName(astRoot));
 
-		for (JavaResourcePersistentAttribute attribute : this.attributes) {
-			attribute.resolveTypes(astRoot);
-		}
-		for (JavaResourcePersistentType persistentType : this.nestedTypes) {
-			persistentType.resolveTypes(astRoot);
-		}
-	}
-	
-	protected boolean isAbstract(CompilationUnit astRoot) {
-		return JPTTools.typeIsAbstract(getMember().getBinding(astRoot));
-	}
+		this.setSuperClassQualifiedName(this.buildSuperClassQualifiedName(astRoot));
 
-	protected String qualifiedName(CompilationUnit astRoot) {
-		return getMember().getBinding(astRoot).getQualifiedName();
-	}
-	
-	protected String name(CompilationUnit astRoot) {
-		return getMember().getBinding(astRoot).getName();
-	}
-	
-	protected void updateNestedTypes(CompilationUnit astRoot) {
-		IType[] declaredTypes = getMember().jdtTypes();
-		
-		List<JavaResourcePersistentType> nestedTypesToRemove = new ArrayList<JavaResourcePersistentType>(this.nestedTypes);
-		for (IType declaredType : declaredTypes) {
-			JavaResourcePersistentType nestedType = nestedTypeFor(declaredType);
-			if (nestedType == null) {
-				nestedType = addNestedType(declaredType, astRoot);
-			}
-			else {
-				nestedTypesToRemove.remove(nestedType);
-			}
-			nestedType.updateFromJava(astRoot);
+		for (Iterator<JavaResourcePersistentAttribute> stream = this.fields_(); stream.hasNext(); ) {
+			stream.next().resolveTypes(astRoot);
 		}
-		for (JavaResourcePersistentType nestedType : nestedTypesToRemove) {
-			removeNestedType(nestedType);
+
+		// a new type can trigger a method parameter type to be a resolved,
+		// fully-qualified name, so we need to rebuild our list of methods:
+		//     "setFoo(Foo)" is not the same as "setFoo(com.bar.Foo)"
+		// and, vice-versa, a removed type can "unresolve" a parameter type
+		this.updateMethods(astRoot);
+
+		for (Iterator<JavaResourcePersistentAttribute> stream = this.methods_(); stream.hasNext(); ) {
+			stream.next().resolveTypes(astRoot);
 		}
-	}
-	
-	protected void updatePersistentAttributes(CompilationUnit astRoot) {
-		List<JavaResourcePersistentAttribute> persistentAttributesToRemove = new ArrayList<JavaResourcePersistentAttribute>(this.attributes);
-		updatePersistentFields(astRoot, persistentAttributesToRemove);
-		updatePersistentProperties(astRoot, persistentAttributesToRemove);
-		for (JavaResourcePersistentAttribute persistentAttribute : persistentAttributesToRemove) {
-			removeAttribute(persistentAttribute);
+		for (Iterator<JavaResourcePersistentType> stream = this.nestedTypes_(); stream.hasNext(); ) {
+			stream.next().resolveTypes(astRoot);
 		}
-	}
-	
-	protected void updatePersistentFields(CompilationUnit astRoot, List<JavaResourcePersistentAttribute> persistentAttributesToRemove) {
-		updatePersistentAttributes(astRoot, persistentAttributesToRemove, getMember().jdtFields());
 	}
 
-	protected void updatePersistentProperties(CompilationUnit astRoot, List<JavaResourcePersistentAttribute> persistentAttributesToRemove) {
-		updatePersistentAttributes(astRoot, persistentAttributesToRemove, getMember().jdtMethods());
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
 	}
 
-	protected void updatePersistentAttributes(CompilationUnit astRoot, List<JavaResourcePersistentAttribute> persistentAttributesToRemove, IMember[] members) {
-		for (IMember member : members) {
-			JavaResourcePersistentAttribute persistentAttribute = attributeFor(member);
-			if (persistentAttribute == null) {
-				persistentAttribute = addAttribute(member, astRoot);
-			}
-			else {
-				persistentAttributesToRemove.remove(persistentAttribute);
-			}
-			persistentAttribute.updateFromJava(astRoot);
+
+	// ******** JavaResourcePersistentType implementation ********
+
+	public JavaResourcePersistentType getJavaPersistentTypeResource(String fullyQualifiedTypeName) {
+		// TODO not sure why a null name is coming through here...  ~bjv
+//		if (fullyQualifiedTypeName.equals(this.getQualifiedName())) {
+		if (this.getQualifiedName().equals(fullyQualifiedTypeName)) {
+			return this;
 		}
+		for (Iterator<JavaResourcePersistentType> stream = this.nestedTypes(); stream.hasNext(); ) {
+			JavaResourcePersistentType jrpt = stream.next();
+			// recurse
+			JavaResourcePersistentType nestedJRPT = jrpt.getJavaPersistentTypeResource(fullyQualifiedTypeName);
+			if (nestedJRPT != null) {
+				return nestedJRPT;
+			}
+		}
+		return null;
 	}
-	
+
+	/**
+	 * check only persistable attributes
+	 */
 	public boolean hasAnyAttributeAnnotations() {
-		for (JavaResourcePersistentAttribute attribute : CollectionTools.iterable(attributes())) {
-			if (attribute.hasAnyAnnotation()) {
+		for (Iterator<JavaResourcePersistentAttribute> stream = this.attributes(); stream.hasNext(); ) {
+			if (stream.next().hasAnyAnnotation()) {
 				return true;
 			}
 		}
 		return false;
 	}
 	
+
+	// ********** nested types **********
+
+	/**
+	 * return only persistable nested types
+	 */
+	public Iterator<JavaResourcePersistentType> nestedTypes() {
+		//TODO since we are filtering how do we handle the case where a type becomes persistable?
+		//what kind of change notificiation for that case?
+		return new FilteringIterator<JavaResourcePersistentType, JavaResourcePersistentType>(this.nestedTypes_()) {
+			@Override
+			protected boolean accept(JavaResourcePersistentType jrpt) {
+				return jrpt.isPersistable();
+			}
+		};
+	}
+
+	/**
+	 * *all* nested types
+	 */
+	protected Iterator<JavaResourcePersistentType> nestedTypes_() {
+		return new CloneIterator<JavaResourcePersistentType>(this.nestedTypes);
+	}
+
+	protected void addNestedType(JavaResourcePersistentType nestedType) {
+		this.addItemToCollection(nestedType, this.nestedTypes, NESTED_TYPES_COLLECTION);
+	}
+
+	protected void removeNestedType(JavaResourcePersistentType nestedType) {
+		this.removeItemFromCollection(nestedType, this.nestedTypes, NESTED_TYPES_COLLECTION);
+	}
+
+	protected void removeNestedTypes(Collection<JavaResourcePersistentType> remove) {
+		this.removeItemsFromCollection(remove, this.nestedTypes, NESTED_TYPES_COLLECTION);
+	}
+
+	protected JavaResourcePersistentType getNestedType(String typeName, int occurrence) {
+		for (Iterator<JavaResourcePersistentType> stream = this.nestedTypes_(); stream.hasNext(); ) {
+			JavaResourcePersistentType nestedType = stream.next();
+			if (nestedType.isFor(typeName, occurrence)) {
+				return nestedType;
+			}
+		}
+		return null;
+	}
+
+
+	// ********** attributes **********
+
+	/**
+	 * return only persistable attributes
+	 */
+	// TODO since we are filtering, how do we handle the case where an attribute becomes persistable?
+	// what kind of change notification for that case?
+	public Iterator<JavaResourcePersistentAttribute> attributes() {
+		return persistableMembers(this.attributes_());
+	}
+
+	/**
+	 * *all* fields and methods
+	 */
+	@SuppressWarnings("unchecked")
+	protected Iterator<JavaResourcePersistentAttribute> attributes_() {
+		return new CompositeIterator<JavaResourcePersistentAttribute>(this.fields_(), this.methods_());
+	}
+
+
+	// ********** fields **********
+
+	/**
+	 * return only persistable fields
+	 */
+	public Iterator<JavaResourcePersistentAttribute> fields() {
+		return persistableMembers(this.fields_());
+	}
+	
+	/**
+	 * *all* fields
+	 */
+	protected Iterator<JavaResourcePersistentAttribute> fields_() {
+		return new CloneIterator<JavaResourcePersistentAttribute>(this.fields);
+	}
+
+	protected void addField(JavaResourcePersistentAttribute attribute) {
+		this.addItemToCollection(attribute, this.fields, ATTRIBUTES_COLLECTION);
+	}
+
+	protected void removeField(JavaResourcePersistentAttribute attribute) {
+		this.removeItemFromCollection(attribute, this.fields, ATTRIBUTES_COLLECTION);
+	}
+
+	protected void removeFields(Collection<JavaResourcePersistentAttribute> remove) {
+		this.removeItemsFromCollection(remove, this.fields, ATTRIBUTES_COLLECTION);
+	}
+
+	protected JavaResourcePersistentAttribute getField(String fieldName, int occurrence) {
+		for (Iterator<JavaResourcePersistentAttribute> stream = this.fields_(); stream.hasNext(); ) {
+			JavaResourcePersistentAttribute field = stream.next();
+			if (field.isFor(fieldName, occurrence)) {
+				return field;
+			}
+		}
+		return null;
+	}
+
+
+	// ********** methods **********
+
+	/**
+	 * return only persistable properties
+	 */
+	public Iterator<JavaResourcePersistentAttribute> properties() {
+		return persistableMembers(this.methods_());
+	}
+
+	/**
+	 * *all* methods
+	 */
+	protected Iterator<JavaResourcePersistentAttribute> methods_() {
+		return new CloneIterator<JavaResourcePersistentAttribute>(this.methods);
+	}
+
+	protected void addMethod(JavaResourcePersistentAttribute attribute) {
+		this.addItemToCollection(attribute, this.methods, ATTRIBUTES_COLLECTION);
+	}
+
+	protected void removeMethod(JavaResourcePersistentAttribute attribute) {
+		this.removeItemFromCollection(attribute, this.methods, ATTRIBUTES_COLLECTION);
+	}
+
+	protected void removeMethods(Collection<JavaResourcePersistentAttribute> remove) {
+		this.removeItemsFromCollection(remove, this.methods, ATTRIBUTES_COLLECTION);
+	}
+
+	protected JavaResourcePersistentAttribute getMethod(MethodSignature signature, int occurrence) {
+		for (Iterator<JavaResourcePersistentAttribute> stream = this.methods_(); stream.hasNext(); ) {
+			JavaResourcePersistentAttribute method = stream.next();
+			if (method.isFor(signature, occurrence)) {
+				return method;
+			}
+		}
+		return null;
+	}
+
+
+	// ********** simple instance variables **********
+
+	public String getQualifiedName() {
+		return this.qualifiedName;
+	}
+
+	protected void setQualifiedName(String qualifiedName) {
+		String old = this.qualifiedName;
+		this.qualifiedName = qualifiedName;
+		this.firePropertyChanged(QUALIFIED_NAME_PROPERTY, old, qualifiedName);
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	protected void setName(String name) {
+		String old = this.name;
+		this.name = name;
+		this.firePropertyChanged(NAME_PROPERTY, old, name);
+	}
+
+	public String getSuperClassQualifiedName() {
+		return this.superClassQualifiedName;
+	}
+
+	protected void setSuperClassQualifiedName(String superClassQualifiedName) {
+		String old = this.superClassQualifiedName;
+		this.superClassQualifiedName = superClassQualifiedName;
+		this.firePropertyChanged(SUPER_CLASS_QUALIFIED_NAME_PROPERTY, old, superClassQualifiedName);
+	}
+
+	public boolean isAbstract() {
+		return this.abstract_;
+	}
+
+	protected void setAbstract(boolean abstract_) {
+		boolean old = this.abstract_;
+		this.abstract_ = abstract_;
+		this.firePropertyChanged(ABSTRACT_PROPERTY, old, abstract_);
+	}
+
+	public AccessType getAccess() {
+		return this.accessType;
+	}
+
+	// TODO
+	//seems we could have a public changeAccess() api which would
+	//move all annotations from fields to their corresponding methods or vice versa
+	//though of course it's more complicated than that since what if the
+	//corresponding field/method does not exist?
+	//making this internal since it should only be set based on changes in the source, the
+	//context model should not need to set this
+	protected void setAccess(AccessType accessType) {
+		AccessType old = this.accessType;
+		this.accessType = accessType;
+		this.firePropertyChanged(ACCESS_PROPERTY, old, accessType);
+	}
+
+
+	// ********** update from Java **********
+
+	@Override
+	public void updateFromJava(CompilationUnit astRoot) {
+		super.updateFromJava(astRoot);
+		this.setQualifiedName(this.buildQualifiedName(astRoot));
+		this.setName(this.buildName(astRoot));
+		this.setSuperClassQualifiedName(this.buildSuperClassQualifiedName(astRoot));
+		this.setAbstract(this.buildAbstract(astRoot));
+		this.updateNestedTypes(astRoot);
+		this.updateFields(astRoot);
+		this.updateMethods(astRoot);
+		this.setAccess(this.buildAccessType());
+	}
+
+	protected void updateNestedTypes(CompilationUnit astRoot) {
+		CounterMap counters = new CounterMap();
+		@SuppressWarnings("unchecked")
+		Vector<JavaResourcePersistentType> nestedTypesToRemove = (Vector<JavaResourcePersistentType>) this.nestedTypes.clone();
+		for (TypeDeclaration typeDeclaration : this.getMember().getTypes(astRoot)) {
+			String tdName = typeDeclaration.getName().getFullyQualifiedName();
+			int occurrence = counters.increment(tdName);
+
+			JavaResourcePersistentType nestedType = this.getNestedType(tdName, occurrence);
+			if (nestedType == null) {
+				this.addNestedType(this.buildNestedType(typeDeclaration, occurrence, astRoot));
+			} else {
+				nestedTypesToRemove.remove(nestedType);
+				nestedType.updateFromJava(astRoot);
+			}
+		}
+		this.removeNestedTypes(nestedTypesToRemove);
+	}
+
+	protected void updateFields(CompilationUnit astRoot) {
+		CounterMap counters = new CounterMap();
+		@SuppressWarnings("unchecked")
+		Vector<JavaResourcePersistentAttribute> fieldsToRemove = (Vector<JavaResourcePersistentAttribute>) this.fields.clone();
+		for (FieldDeclaration fieldDeclaration : this.getMember().getFields(astRoot)) {
+			for (VariableDeclarationFragment fragment : fragments(fieldDeclaration)) {
+				String fieldName = fragment.getName().getFullyQualifiedName();
+				int occurrence = counters.increment(fieldName);
+
+				JavaResourcePersistentAttribute field = this.getField(fieldName, occurrence);
+				if (field == null) {
+					this.addField(this.buildField(fieldName, occurrence, astRoot));
+				} else {
+					fieldsToRemove.remove(field);
+					field.updateFromJava(astRoot);
+				}
+			}
+		}
+		this.removeFields(fieldsToRemove);
+	}
+
+	protected void updateMethods(CompilationUnit astRoot) {
+		CounterMap counters = new CounterMap();
+		@SuppressWarnings("unchecked")
+		Vector<JavaResourcePersistentAttribute> methodsToRemove = (Vector<JavaResourcePersistentAttribute>) this.methods.clone();
+		for (MethodDeclaration methodDeclaration : this.getMember().getMethods(astRoot)) {
+			MethodSignature signature = JDTTools.buildMethodSignature(methodDeclaration);
+			int occurrence = counters.increment(signature);
+
+			JavaResourcePersistentAttribute method = this.getMethod(signature, occurrence);
+			if (method == null) {
+				this.addMethod(this.buildMethod(signature, occurrence, astRoot));
+			} else {
+				methodsToRemove.remove(method);
+				method.updateFromJava(astRoot);
+			}
+		}
+		this.removeMethods(methodsToRemove);
+	}
+
+
+	// ********** building state from AST **********
+
+	protected String buildQualifiedName(CompilationUnit astRoot) {
+		return this.getMember().getBinding(astRoot).getQualifiedName();
+	}
+
+	protected String buildName(CompilationUnit astRoot) {
+		return this.getMember().getBinding(astRoot).getName();
+	}
+
+	protected String buildSuperClassQualifiedName(CompilationUnit astRoot) {
+		ITypeBinding typeBinding = this.getMember().getBinding(astRoot);
+		if (typeBinding == null) {
+			return null;
+		}
+		ITypeBinding superClassTypeBinding = typeBinding.getSuperclass();
+		if (superClassTypeBinding == null) {
+			return null;
+		}
+		return superClassTypeBinding.getQualifiedName();
+	}
+
+	protected boolean buildAbstract(CompilationUnit astRoot) {
+		return Modifier.isAbstract(this.getMember().getBinding(astRoot).getModifiers());	
+	}
+
+	// TODO use JPA factory
+	protected JavaResourcePersistentType buildNestedType(TypeDeclaration nestedTypeDeclaration, int occurrence, CompilationUnit astRoot) {
+		return newInstance(this.getJpaCompilationUnit(), this.getMember(), nestedTypeDeclaration, occurrence, astRoot);
+	}
+
+	// TODO use JPA factory
+	protected JavaResourcePersistentAttribute buildField(String fieldName, int occurrence, CompilationUnit astRoot) {
+		return JavaResourcePersistentAttributeImpl.newInstance(this, this.getMember(), fieldName, occurrence, this.getJpaCompilationUnit(), astRoot);
+	}
+
+	// TODO use JPA factory
+	protected JavaResourcePersistentAttribute buildMethod(MethodSignature signature, int occurrence, CompilationUnit astRoot) {
+		return JavaResourcePersistentAttributeImpl.newInstance(this, this.getMember(), signature, occurrence, this.getJpaCompilationUnit(), astRoot);
+	}
+
 	/**
 	 * Return the AccessType currently implied by the Java source code:
 	 *     - if only Fields are annotated => FIELD
@@ -451,7 +606,7 @@ public class JavaResourcePersistentTypeImpl
 	 *     		- and properties exist, but no fields exist => PROPERTY
 	 *     		- and neither fields nor properties exist => null at this level (FIELD in the context model)
 	 */
-	private AccessType calculateAccessType() {
+	protected AccessType buildAccessType() {
 		boolean hasPersistableFields = false;
 		boolean hasPersistableProperties = false;
 		for (JavaResourcePersistentAttribute field : CollectionTools.iterable(fields())) {
@@ -475,22 +630,34 @@ public class JavaResourcePersistentTypeImpl
 		//no annotations exist, access is null at the resource model level
 		return null;
 	}
-	
-	private String superClassQualifiedName(CompilationUnit astRoot) {
-		ITypeBinding typeBinding = getMember().getBinding(astRoot);
-		if (typeBinding == null) {
-			return null;
-		}
-		ITypeBinding superClassTypeBinding = typeBinding.getSuperclass();
-		if (superClassTypeBinding == null) {
-			return null;
-		}
-		return superClassTypeBinding.getQualifiedName();
+
+
+	// ********** static methods **********
+
+	// minimize scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected static List<VariableDeclarationFragment> fragments(FieldDeclaration fd) {
+		return fd.fragments();
 	}
-	
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(getName());
+
+
+	// ********** StringCounter **********
+
+	protected static class CounterMap {
+		HashMap<Object, Counter> counters = new HashMap<Object, Counter>();
+
+		/**
+		 * Return the incremented count for the specified object.
+		 */
+		int increment(Object o) {
+			Counter counter = this.counters.get(o);
+			if (counter == null) {
+				counter = new Counter();
+				this.counters.put(o, counter);
+			}
+			counter.increment();
+			return counter.count();
+		}
 	}
 
 }

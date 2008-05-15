@@ -17,7 +17,6 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
@@ -746,10 +745,10 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected void initializeImpliedClassRefs(XmlPersistenceUnit xmlPersistenceUnit) {
-		if (getJpaProject().discoversAnnotatedClasses() && !isExcludeUnlistedClasses()) {
-			for (IType type : CollectionTools.iterable(getJpaProject().annotatedClasses())) {
-				if (! classIsSpecified(type.getFullyQualifiedName('.'))) {
-					impliedClassRefs.add(buildClassRef(type.getFullyQualifiedName('.')));
+		if (getJpaProject().discoversAnnotatedClasses() && ! isExcludeUnlistedClasses()) {
+			for (String typeName : CollectionTools.iterable(this.getJpaProject().annotatedClassNames())) {
+				if ( ! classIsSpecified(typeName)) {
+					impliedClassRefs.add(buildClassRef(typeName));
 				}
 			}
 		}
@@ -928,29 +927,29 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	protected void updateImpliedClassRefs(XmlPersistenceUnit persistenceUnit) {
 		Iterator<ClassRef> impliedRefs = impliedClassRefs();
-		Iterator<IType> annotatedClasses = getJpaProject().annotatedClasses();
+		Iterator<String> annotatedClassNames = getJpaProject().annotatedClassNames();
 		
 		
-		if (!isExcludeUnlistedClasses()) {
+		if ( ! isExcludeUnlistedClasses()) {
 			while (impliedRefs.hasNext()) {
 				ClassRef classRef = impliedRefs.next();
 				boolean updated = false;
-				while (! updated && annotatedClasses.hasNext()) {
-					IType annotatedClass = annotatedClasses.next();
-					if (! classIsSpecified(annotatedClass.getFullyQualifiedName('.'))) {
-						classRef.update(annotatedClass.getFullyQualifiedName('.'));
+				while (! updated && annotatedClassNames.hasNext()) {
+					String annotatedClassName = annotatedClassNames.next();
+					if ( ! classIsSpecified(annotatedClassName)) {
+						classRef.update(annotatedClassName);
 						updated = true;
 					}
 				}
-				if (! annotatedClasses.hasNext() && ! updated) {
+				if (! annotatedClassNames.hasNext() && ! updated) {
 					removeImpliedClassRef(classRef);
 				}
 			}
 			
-			while (annotatedClasses.hasNext()) {
-				IType annotatedClass = annotatedClasses.next();
-				if (! classIsSpecified(annotatedClass.getFullyQualifiedName('.'))) {
-					addImpliedClassRef(annotatedClass.getFullyQualifiedName('.'));
+			while (annotatedClassNames.hasNext()) {
+				String annotatedClassName = annotatedClassNames.next();
+				if ( ! classIsSpecified(annotatedClassName)) {
+					addImpliedClassRef(annotatedClassName);
 				}
 			}
 		}

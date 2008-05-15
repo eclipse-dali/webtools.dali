@@ -9,28 +9,46 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.utility.jdt;
 
-import org.eclipse.jdt.core.IMember;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
+import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
 
 /**
- * Combine behavior common to FieldAttribute and MethodAttribute.
+ * Combine behavior common to JDTFieldAttribute and JDTMethodAttribute.
+ * Not so sure this is useful....
  */
 public abstract class JDTAttribute
 	extends JDTMember
 	implements Attribute
 {
 
-	JDTAttribute(IMember jdtMember, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
-		super(jdtMember, modifySharedDocumentCommandExecutorProvider);
+	// ********** constructors **********
+
+	protected JDTAttribute(
+			Type declaringType,
+			String name,
+			int occurrence,
+			ICompilationUnit compilationUnit,
+			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
+		super(declaringType, name, occurrence, compilationUnit, modifySharedDocumentCommandExecutorProvider);
 	}
-	
-	JDTAttribute(IMember jdtMember, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider, AnnotationEditFormatter annotationEditFormatter) {
-		super(jdtMember, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
+
+	protected JDTAttribute(
+			Type declaringType,
+			String name,
+			int occurrence,
+			ICompilationUnit compilationUnit,
+			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
+			AnnotationEditFormatter annotationEditFormatter) {
+		super(declaringType, name, occurrence, compilationUnit, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
 	}
+
+
+	// ********** Member/Attribute implementation **********
 
 	public boolean isField() {
 		return false;
@@ -40,11 +58,13 @@ public abstract class JDTAttribute
 		return false;
 	}
 
-	/**
-	 * this will throw a NPE for a top-level type
-	 */
-	TypeDeclaration declaringTypeDeclaration(CompilationUnit astRoot) {
-		//assume no enums or annotation types since they have no field or method declarations
-		return (TypeDeclaration) this.declaringType().getBodyDeclaration(astRoot);
+
+	// ********** internal **********
+
+	protected TypeDeclaration getDeclaringTypeDeclaration(CompilationUnit astRoot) {
+		// assume the declaring type is not an enum or annotation
+		// since they do not have field or method declarations
+		return this.getDeclaringType().getBodyDeclaration(astRoot);
 	}
+
 }

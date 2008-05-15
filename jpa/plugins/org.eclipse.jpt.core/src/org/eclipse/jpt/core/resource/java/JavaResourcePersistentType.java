@@ -24,25 +24,23 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 public interface JavaResourcePersistentType extends JavaResourcePersistentMember
 {	
 	/**
-	 * Return only the persistable nestedTypes
+	 * Return only the immediately nested persistable nestedTypes
 	 */
 	Iterator<JavaResourcePersistentType> nestedTypes();
-		String NESTED_TYPES_COLLECTION = "nestedTypesCollection";
+		String NESTED_TYPES_COLLECTION = "nestedTypes";
 
 	/**
 	 * Return only the persistable attributes, those that respond true to
 	 * {@link JavaResourcePersistentAttribute#isPersistable()}
 	 * This returns fields and properties
-	 * @return
 	 */
 	Iterator<JavaResourcePersistentAttribute> attributes();
-		String ATTRIBUTES_COLLECTION = "attributesCollection";
+		String ATTRIBUTES_COLLECTION = "attributes";
 	
 	/**
 	 * Return only the persistable fields, those that respond true to
 	 * {@link JavaResourcePersistentAttribute#isPersistable()}
 	 * This returns filters out all properties and only returns fields
-	 * @return
 	 */
 	Iterator<JavaResourcePersistentAttribute> fields();
 
@@ -50,32 +48,32 @@ public interface JavaResourcePersistentType extends JavaResourcePersistentMember
 	 * Return only the persistable fields, those that respond true to
 	 * {@link JavaResourcePersistentAttribute#isPersistable()}
 	 * This returns filters out all fields and only returns properties
-	 * @return
 	 */
 	Iterator<JavaResourcePersistentAttribute> properties();
 	
+	// TODO rename to getJavaResourcePersistentType(String)
 	JavaResourcePersistentType getJavaPersistentTypeResource(String fullyQualifiedTypeName);
 
 	/**
 	 * Return the fully qualified type name
 	 */
 	String getQualifiedName();
-		String QUALIFIED_NAME_PROPERTY = "qualifiedNameProperty";
+		String QUALIFIED_NAME_PROPERTY = "qualifiedName";
 
 	/**
 	 * Return the fully unqualified type name
 	 */
 	String getName();
-		String NAME_PROPERTY = "nameProperty";
+		String NAME_PROPERTY = "name";
 
 	String getSuperClassQualifiedName();
-		String SUPER_CLASS_QUALIFIED_NAME_PROPERTY = "superClassQualifiedNameProperty";
+		String SUPER_CLASS_QUALIFIED_NAME_PROPERTY = "superClassQualifiedName";
 	
 	AccessType getAccess();
-		String ACCESS_PROPERTY = "accessProperty";
+		String ACCESS_PROPERTY = "access";
 		
 	boolean isAbstract();
-		String ABSTRACT_PROPERTY = "abstractProperty";	
+		String ABSTRACT_PROPERTY = "abstract";	
 		
 	Member getMember();
 	

@@ -13,6 +13,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 
 /**
+ * Attributes are either represented by fields ('foo') or properties/method
+ * pairs ('getFoo()'/'setFoo()').
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,6 +26,11 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
  */
 public interface Attribute extends Member {
 
+	/**
+	 * Return the attribute's name, as opposed to the member's name
+	 * (e.g. "getFoo()" returns "foo").
+	 */
+	// TODO rename to getName()?
 	String getAttributeName();
 
 	/**
@@ -32,8 +39,15 @@ public interface Attribute extends Member {
 	 */
 	ITypeBinding getTypeBinding(CompilationUnit astRoot);
 
+	/**
+	 * Return whether the attribute is a field.
+	 */
 	boolean isField();
 
+	/**
+	 * Return whether the attribute is a property/method pair.
+	 */
+	// TODO rename to isProperty()?
 	boolean isMethod();
 
 }

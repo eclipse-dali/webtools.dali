@@ -19,12 +19,18 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.CallbackChangeSupport;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 
+/**
+ * resource containment hierarchy
+ */
 public abstract class AbstractJavaResourceNode
 	extends AbstractModel
 	implements JavaResourceNode, CallbackChangeSupport.Source
 {
 	private final JavaResourceNode parent;
 
+
+	// ********** construction **********
+	
 	protected AbstractJavaResourceNode(JavaResourceNode parent) {
 		super();
 		this.checkParent(parent);
@@ -56,17 +62,31 @@ public abstract class AbstractJavaResourceNode
 		return new CallbackChangeSupport(this);
 	}
 
-	public JavaResourceNode getParent() {
-		return this.parent;
-	}
+
+	// ********** JavaResourceNode implementation **********
 	
 	public JpaCompilationUnit getJpaCompilationUnit() {
 		return this.parent.getJpaCompilationUnit();
 	}
 	
+	public JavaResourceModel getResourceModel() {
+		return this.getJpaCompilationUnit().getResourceModel();
+	}
+
+
+	// ********** CallbackChangeSupport.Source implementation **********
 	
-	// **************** JavaResource implementation ****************************
+	public void aspectChanged(String aspectName) {
+		this.getJpaCompilationUnit().resourceChanged();
+	}
+
+
+	// ********** convenience methods **********
 	
+	protected JavaResourceNode getParent() {
+		return this.parent;
+	}
+
 	public JpaAnnotationProvider getAnnotationProvider() {
 		return this.getJpaCompilationUnit().getAnnotationProvider();
 	}
@@ -79,15 +99,4 @@ public abstract class AbstractJavaResourceNode
 		return this.getJpaCompilationUnit().getAnnotationEditFormatter();
 	}
 
-	public JavaResourceModel getResourceModel() {
-		return this.getJpaCompilationUnit().getResourceModel();
-	}
-	
-	public String displayString() {
-		return toString();
-	}
-	
-	public void aspectChanged(String aspectName) {
-		this.getJpaCompilationUnit().resourceChanged();
-	}
 }

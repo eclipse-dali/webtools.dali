@@ -24,13 +24,14 @@ import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.BitTools;
 
+// TODO we need access to the JPA platform
 public class JavaResourceModelImpl
 	extends AbstractResourceModel
 	implements JavaResourceModel
 {
 	private final Collection<ResourceModelListener> resourceModelListeners;
 	
-	private final JpaCompilationUnit compilationUnitResource;
+	private final JpaCompilationUnit jpaCompilationUnit;
 	
 	
 	public JavaResourceModelImpl(
@@ -39,7 +40,8 @@ public class JavaResourceModelImpl
 			AnnotationEditFormatter annotationEditFormatter) {
 		super(file);
 		this.resourceModelListeners = new ArrayList<ResourceModelListener>();
-		this.compilationUnitResource = 
+		// TODO use JPA factory, via the platform
+		this.jpaCompilationUnit = 
 			new JpaCompilationUnitImpl(file, annotationProvider, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter, this);
 	}
 	
@@ -47,9 +49,8 @@ public class JavaResourceModelImpl
 		return JAVA_RESOURCE_TYPE;
 	}
 	
-	@Override
-	public JpaCompilationUnit getResource() {
-		return this.compilationUnitResource;
+	public JpaCompilationUnit getJpaCompilationUnit() {
+		return this.jpaCompilationUnit;
 	}
 	
 	public void addResourceModelChangeListener(ResourceModelListener listener) {
@@ -70,7 +71,7 @@ public class JavaResourceModelImpl
 	}
 
 	public void resourceChanged() {
-		if (getResource() == null) {
+		if (this.jpaCompilationUnit == null) {
 			throw new IllegalStateException("Change events should not be fired during construction");
 		}
 		for (ResourceModelListener listener : this.resourceModelListeners) {
@@ -113,16 +114,21 @@ public class JavaResourceModelImpl
 		}
 		if (delta.getKind() == IJavaElementDelta.REMOVED) {
 			//we get the java notification for removal before we get the resource notification.
-			//we do not need to handle this event and will get exceptions building an AstRoot if we try.
+			//we do not need to handle this event and will get exceptions building an astRoot if we try.
 			return;
 		}
-		if (delta.getElement().equals(this.compilationUnitResource.getCompilationUnit())) {
+		if (delta.getElement().equals(this.jpaCompilationUnit.getCompilationUnit())) {
 			//TODO possibly hop on the UI thread here so that we know only 1 thread is changing our model
-			this.compilationUnitResource.updateFromJava();
+			this.jpaCompilationUnit.updateFromJava();
 		}
 	}
 
-	public void resolveTypes() {
-		this.compilationUnitResource.resolveTypes();
+	public void updateFromResource() {
+		this.jpaCompilationUnit.updateFromJava();
 	}
+
+	public void resolveTypes() {
+		this.jpaCompilationUnit.resolveTypes();
+	}
+
 }

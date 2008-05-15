@@ -10,9 +10,7 @@
 package org.eclipse.jpt.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.model.Model;
 
 /**
@@ -24,22 +22,16 @@ import org.eclipse.jpt.utility.model.Model;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaResourceNode extends Model
-{
+public interface JavaResourceNode extends Model {
+
 	void initialize(CompilationUnit astRoot);
-	
+
 	JavaResourceModel getResourceModel();
-	
+
 	JpaCompilationUnit getJpaCompilationUnit();
-	
-	JpaAnnotationProvider getAnnotationProvider();
-	
-	CommandExecutorProvider getModifySharedDocumentCommandExecutorProvider();
-	
+
 	void updateFromJava(CompilationUnit astRoot);
-	
-	/**
-	 * Return the ITextRange 
-	 */
+
 	TextRange getTextRange(CompilationUnit astRoot);
+
 }

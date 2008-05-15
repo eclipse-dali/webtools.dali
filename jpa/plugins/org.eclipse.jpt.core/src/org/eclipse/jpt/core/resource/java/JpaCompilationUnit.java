@@ -10,7 +10,9 @@
 package org.eclipse.jpt.core.resource.java;
 
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
+import org.eclipse.jpt.utility.CommandExecutorProvider;
 
 /**
  * 
@@ -26,9 +28,15 @@ public interface JpaCompilationUnit extends JavaResourceNode {
 	ICompilationUnit getCompilationUnit();
 
 	JavaResourcePersistentType getPersistentType();
+		String PERSISTENT_TYPE_PROPERTY = "persistentType";
 
+	// TODO rename getJavaResourcePersistentType(String)
 	JavaResourcePersistentType getJavaPersistentTypeResource(String typeName);
 
+	JpaAnnotationProvider getAnnotationProvider();
+
+	CommandExecutorProvider getModifySharedDocumentCommandExecutorProvider();
+	
 	AnnotationEditFormatter getAnnotationEditFormatter();
 
 	void resourceChanged();

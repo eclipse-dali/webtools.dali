@@ -11,19 +11,23 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IBinding;
-import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.Modifier;
-import org.eclipse.jpt.core.internal.utility.jdt.JPTTools;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTFieldAttribute;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTMethodAttribute;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
+import org.eclipse.jpt.core.utility.jdt.MethodAttribute;
+import org.eclipse.jpt.core.utility.jdt.Type;
+import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class JavaResourcePersistentAttributeImpl
@@ -41,9 +45,53 @@ public class JavaResourcePersistentAttributeImpl
 	
 	private String qualifiedReferenceEntityElementTypeName;
 	
-	private boolean public_;
+	private boolean public_;  // 'public' is a reserved word
 	
-	private boolean final_;
+	private boolean final_;  // 'final' is a reserved word
+
+	/**
+	 * construct field attribute
+	 */
+	public static JavaResourcePersistentAttribute newInstance(
+			JavaResourcePersistentType parent,
+			Type declaringType,
+			String name,
+			int occurrence,
+			JpaCompilationUnit jpaCompilationUnit,
+			CompilationUnit astRoot) {
+		Attribute attribute = new JDTFieldAttribute(
+				declaringType,
+				name,
+				occurrence,
+				jpaCompilationUnit.getCompilationUnit(),
+				jpaCompilationUnit.getModifySharedDocumentCommandExecutorProvider(),
+				jpaCompilationUnit.getAnnotationEditFormatter());
+		JavaResourcePersistentAttribute field = new JavaResourcePersistentAttributeImpl(parent, attribute);
+		field.initialize(astRoot);
+		return field;
+	}
+	
+	/**
+	 * construct property attribute
+	 */
+	public static JavaResourcePersistentAttribute newInstance(
+			JavaResourcePersistentType parent,
+			Type declaringType,
+			MethodSignature signature,
+			int occurrence,
+			JpaCompilationUnit jpaCompilationUnit,
+			CompilationUnit astRoot) {
+		Attribute attribute = JDTMethodAttribute.newInstance(
+				declaringType,
+				signature,
+				occurrence,
+				jpaCompilationUnit.getCompilationUnit(),
+				jpaCompilationUnit.getModifySharedDocumentCommandExecutorProvider(),
+				jpaCompilationUnit.getAnnotationEditFormatter());
+		JavaResourcePersistentAttribute field = new JavaResourcePersistentAttributeImpl(parent, attribute);
+		field.initialize(astRoot);
+		return field;
+	}
 	
 	public JavaResourcePersistentAttributeImpl(JavaResourcePersistentType parent, Attribute attribute){
 		super(parent, attribute);
@@ -91,18 +139,6 @@ public class JavaResourcePersistentAttributeImpl
 	}
 
 	@Override
-	protected boolean calculatePersistability(CompilationUnit astRoot) {
-		IBinding binding = getMember().getBinding(astRoot);
-		if (binding == null) {
-			return false;
-		}
-		if (isForField()) {
-			return JPTTools.fieldIsPersistable((IVariableBinding) binding);
-		}
-		return JPTTools.methodIsPersistablePropertyGetter((IMethodBinding) binding);
-	}
-
-	@Override
 	@SuppressWarnings("unchecked")
 	//overriding purely to suppress the warning you get at the class level
 	public ListIterator<NestableAnnotation> annotations(String nestableAnnotationName, String containerAnnotationName) {
@@ -123,6 +159,11 @@ public class JavaResourcePersistentAttributeImpl
 		return super.annotations();
 	}
 	
+	@Override
+	public boolean isFor(MethodSignature signature, int occurrence) {
+		return ((MethodAttribute) this.getMember()).matches(signature, occurrence);
+	}
+
 	// ******** JavaPersistentAttributeResource implementation ********
 		
 	public boolean isForField() {
@@ -248,7 +289,7 @@ public class JavaResourcePersistentAttributeImpl
 	}
 
 	protected boolean typeIsBasic(CompilationUnit astRoot) {
-		return typeIsBasic(getMember().getTypeBinding(astRoot), astRoot.getAST());
+		return typeIsBasic(this.getMember().getTypeBinding(astRoot), astRoot.getAST());
 	}
 	
 	protected boolean isFinal(CompilationUnit astRoot) {
@@ -262,22 +303,22 @@ public class JavaResourcePersistentAttributeImpl
 	}
 	
 	protected String qualifiedReferenceEntityTypeName(CompilationUnit astRoot) {
-		ITypeBinding typeBinding = getMember().getTypeBinding(astRoot);
-		if (typeBinding == null) {
-			return null;
-		}
-		return buildReferenceEntityTypeName(typeBinding);
+		ITypeBinding typeBinding = this.getMember().getTypeBinding(astRoot);
+		return (typeBinding == null) ? null : buildReferenceEntityTypeName(typeBinding);
 	}
 
 	public static String buildReferenceEntityTypeName(ITypeBinding typeBinding) {
-		if (typeBinding != null && !typeBinding.isArray()) { // arrays cannot be entities
-			return typeBinding.getTypeDeclaration().getQualifiedName();
+		if (typeBinding == null) {
+			return null;
 		}
-		return null;
+		if (typeBinding.isArray()) {
+			return null;  // arrays cannot be entities
+		}
+		return typeBinding.getTypeDeclaration().getQualifiedName();
 	}
 	
 	protected String qualifiedReferenceEntityElementTypeName(CompilationUnit astRoot) {
-		ITypeBinding typeBinding = getMember().getTypeBinding(astRoot);
+		ITypeBinding typeBinding = this.getMember().getTypeBinding(astRoot);
 		if (typeBinding == null) {
 			return null;
 		}
@@ -293,8 +334,8 @@ public class JavaResourcePersistentAttributeImpl
 
 	
 	protected boolean typeIsContainer(CompilationUnit astRoot) {
-		String typeName = buildReferenceEntityTypeName(getMember().getTypeBinding(astRoot));
-		return typeName == null ? false : typeNamedIsContainer(typeName);
+		String typeName = buildReferenceEntityTypeName(this.getMember().getTypeBinding(astRoot));
+		return (typeName == null) ? false : typeNamedIsContainer(typeName);
 	}
 	
 	/**
@@ -313,11 +354,8 @@ public class JavaResourcePersistentAttributeImpl
 	};
 	
 	protected String qualifiedTypeName(CompilationUnit astRoot) {
-		ITypeBinding typeBinding = getMember().getTypeBinding(astRoot);
-		if (typeBinding == null) {
-			return null;
-		}
-		return typeBinding.getQualifiedName();
+		ITypeBinding typeBinding = this.getMember().getTypeBinding(astRoot);
+		return (typeBinding == null) ? null : typeBinding.getQualifiedName();
 	}
 
 	

@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
@@ -29,9 +29,11 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 
 public abstract class AbstractJavaResourcePersistentMember<E extends Member>
@@ -60,34 +62,15 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	}
 
 	public void initialize(CompilationUnit astRoot) {
-		getMember().getBodyDeclaration(astRoot).accept(initializeAnnotationVisitor(astRoot));
-		this.persistable = calculatePersistability(astRoot);		
+		getMember().getBodyDeclaration(astRoot).accept(this.buildInitialAnnotationVisitor(astRoot));
+		this.persistable = buildPersistable(astRoot);		
 	}
-	
-	protected ASTVisitor initializeAnnotationVisitor(final CompilationUnit astRoot) {
-		return new ASTVisitor() {
+
+	protected ASTVisitor buildInitialAnnotationVisitor(CompilationUnit astRoot) {
+		return new LocalASTVisitor(astRoot, this.getMember().getBodyDeclaration(astRoot)) {
 			@Override
-			public boolean visit(SingleMemberAnnotation node) {
-				return visit((org.eclipse.jdt.core.dom.Annotation) node);
-			}
-		
-			@Override
-			public boolean visit(NormalAnnotation node) {
-				return visit((org.eclipse.jdt.core.dom.Annotation) node);
-			}
-		
-			@Override
-			public boolean visit(MarkerAnnotation node) {
-				return visit((org.eclipse.jdt.core.dom.Annotation) node);
-			}
-			
-			private boolean visit(org.eclipse.jdt.core.dom.Annotation node) {
-				if (node.getParent() != getMember().getBodyDeclaration(astRoot)) {
-					//we don't want to look at annotations for child members, only this member
-					return false;
-				}
-				addInitialAnnotation(node, astRoot);
-				return false;
+			protected void visitChildAnnotation(org.eclipse.jdt.core.dom.Annotation node) {
+				AbstractJavaResourcePersistentMember.this.addInitialAnnotation(node, this.astRoot);
 			}
 		};
 	}
@@ -131,7 +114,10 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	
 	protected abstract boolean isPossibleMappingAnnotation(String annotationName);
 	
-	protected abstract boolean calculatePersistability(CompilationUnit astRoot);
+	protected boolean buildPersistable(CompilationUnit astRoot) {
+		return this.getMember().isPersistable(astRoot);
+	}
+
 
 	public Annotation getAnnotation(String annotationName) {
 		for (Iterator<Annotation> i = annotations(); i.hasNext(); ) {
@@ -202,11 +188,11 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected ContainerAnnotation<NestableAnnotation> containerAnnotation(String containerAnnotationName) {
+	protected ContainerAnnotation<NestableAnnotation> getContainerAnnotation(String containerAnnotationName) {
 		return (ContainerAnnotation<NestableAnnotation>) getAnnotation(containerAnnotationName);
 	}
 	
-	protected NestableAnnotation nestableAnnotation(String nestableAnnotationName) {
+	protected NestableAnnotation getNestableAnnotation(String nestableAnnotationName) {
 		return (NestableAnnotation) getAnnotation(nestableAnnotationName);
 	}
 	
@@ -218,7 +204,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	public NestableAnnotation addAnnotation(int index, String nestableAnnotationName, String containerAnnotationName) {
 		NestableAnnotation nestedAnnotation = (NestableAnnotation) getAnnotation(nestableAnnotationName);
 		
-		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
+		ContainerAnnotation<NestableAnnotation> containerAnnotation = getContainerAnnotation(containerAnnotationName);
 		
 		if (containerAnnotation != null) {
 			//ignore any nestableAnnotation and just add to the plural one
@@ -243,7 +229,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	}
 	
 	public void move(int targetIndex, int sourceIndex, String containerAnnotationName) {
-		move(targetIndex, sourceIndex, containerAnnotation(containerAnnotationName));
+		move(targetIndex, sourceIndex, getContainerAnnotation(containerAnnotationName));
 	}
 	
 	protected void move(int targetIndex, int sourceIndex, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
@@ -305,7 +291,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	}
 	
 	public void removeAnnotation(int index, String nestableAnnotationName, String containerAnnotationName) {
-		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
+		ContainerAnnotation<NestableAnnotation> containerAnnotation = getContainerAnnotation(containerAnnotationName);
 		if (containerAnnotation == null) {
 			Annotation annotation = getAnnotation(nestableAnnotationName);
 			removeAnnotation(annotation);
@@ -404,11 +390,11 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	
 	@SuppressWarnings("unchecked")
 	public ListIterator<NestableAnnotation> annotations(String nestableAnnotationName, String containerAnnotationName) {
-		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
+		ContainerAnnotation<NestableAnnotation> containerAnnotation = getContainerAnnotation(containerAnnotationName);
 		if (containerAnnotation != null) {
 			return containerAnnotation.nestedAnnotations();
 		}
-		NestableAnnotation nestableAnnotation = nestableAnnotation(nestableAnnotationName);
+		NestableAnnotation nestableAnnotation = getNestableAnnotation(nestableAnnotationName);
 		if (nestableAnnotation != null) {
 			return new SingleElementListIterator<NestableAnnotation>(nestableAnnotation);
 		}
@@ -416,16 +402,16 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {
-		updateAnnotations(astRoot);
-		setPersistable(calculatePersistability(astRoot));		
+		this.updateAnnotations(astRoot);
+		this.setPersistable(this.buildPersistable(astRoot));		
 	}
 	
 	public void resolveTypes(CompilationUnit astRoot) {
-		setPersistable(calculatePersistability(astRoot));		
+		this.setPersistable(this.buildPersistable(astRoot));		
 	}
 	
 	protected void updateAnnotations(CompilationUnit astRoot) {
-		getMember().getBodyDeclaration(astRoot).accept(annotationVisitor(astRoot));
+		getMember().getBodyDeclaration(astRoot).accept(this.buildUpdateAnnotationVisitor(astRoot));
 		removeMappingAnnotationsNotInSource(astRoot);
 		removeAnnotationsNotInSource(astRoot);
 	}
@@ -446,30 +432,11 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 		}	
 	}
 	
-	protected ASTVisitor annotationVisitor(final CompilationUnit astRoot) {
-		return new ASTVisitor() {
+	protected ASTVisitor buildUpdateAnnotationVisitor(CompilationUnit astRoot) {
+		return new LocalASTVisitor(astRoot, this.getMember().getBodyDeclaration(astRoot)) {
 			@Override
-			public boolean visit(SingleMemberAnnotation node) {
-				return visit((org.eclipse.jdt.core.dom.Annotation) node);
-			}
-		
-			@Override
-			public boolean visit(NormalAnnotation node) {
-				return visit((org.eclipse.jdt.core.dom.Annotation) node);
-			}
-		
-			@Override
-			public boolean visit(MarkerAnnotation node) {
-				return visit((org.eclipse.jdt.core.dom.Annotation) node);
-			}
-			
-			private boolean visit(org.eclipse.jdt.core.dom.Annotation node) {
-				if (node.getParent() != getMember().getBodyDeclaration(astRoot)) {
-					//we don't want to look at annotations for child members, only this member
-					return false;
-				}
-				addOrUpdateAnnotation(node, astRoot);
-				return false;
+			protected void visitChildAnnotation(org.eclipse.jdt.core.dom.Annotation node) {
+				AbstractJavaResourcePersistentMember.this.addOrUpdateAnnotation(node, this.astRoot);
 			}
 		};
 	}
@@ -503,10 +470,14 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 		}
 	}
 
-	public boolean isFor(IMember iMember) {
-		return getMember().wraps(iMember);
+	public boolean isFor(String memberName, int occurrence) {
+		return this.member.matches(memberName, occurrence);
 	}
-	
+
+	public boolean isFor(MethodSignature methodSignature, int occurrence) {
+		return false;
+	}
+
 	public boolean isPersistable() {
 		return this.persistable;
 	}
@@ -525,7 +496,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 	}
 
 	public TextRange fullTextRange(CompilationUnit astRoot) {
-		return this.getTextRange(getMember().getBodyDeclaration(astRoot));
+		return this.getTextRange(this.getMember().getBodyDeclaration(astRoot));
 	}
 
 	public TextRange getTextRange(CompilationUnit astRoot) {
@@ -540,4 +511,53 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 		return (astNode == null) ? null : new ASTNodeTextRange(astNode);
 	}
 
+	protected static <T extends JavaResourcePersistentMember> Iterator<T> persistableMembers(Iterator<T> attributes) {
+		return new FilteringIterator<T, T>(attributes) {
+			@Override
+			protected boolean accept(T attribute) {
+				return attribute.isPersistable();
+			}
+		};
+	}
+
+
+	// ********** AST visitor **********
+
+	protected abstract class LocalASTVisitor extends ASTVisitor {
+		protected final CompilationUnit astRoot;
+		protected final BodyDeclaration bodyDeclaration;
+
+		protected LocalASTVisitor(CompilationUnit astRoot, BodyDeclaration bodyDeclaration) {
+			super();
+			this.astRoot = astRoot;
+			this.bodyDeclaration = bodyDeclaration;
+		}
+
+		@Override
+		public boolean visit(SingleMemberAnnotation node) {
+			return visit_(node);
+		}
+	
+		@Override
+		public boolean visit(NormalAnnotation node) {
+			return visit_(node);
+		}
+	
+		@Override
+		public boolean visit(MarkerAnnotation node) {
+			return visit_(node);
+		}
+		
+		protected boolean visit_(org.eclipse.jdt.core.dom.Annotation node) {
+			// ignore annotations for child members, only this member
+			if (node.getParent() == this.bodyDeclaration) {
+				this.visitChildAnnotation(node);
+			}
+			return false;
+		}
+
+		protected abstract void visitChildAnnotation(org.eclipse.jdt.core.dom.Annotation node);
+
+	}
+	
 }

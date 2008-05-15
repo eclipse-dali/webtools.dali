@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -23,14 +24,11 @@ import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaPlatform;
@@ -392,31 +390,20 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 
 	// ********** more queries **********
 
-	public Iterator<IType> annotatedClasses() {
-		return new FilteringIterator<IType, IType>(
-				new TransformationIterator<JavaResourcePersistentType, IType>(annotatedJavaPersistentTypes()) {
-					@Override
-					protected IType transform(JavaResourcePersistentType next) {
-						try {
-							return getJavaProject().findType(next.getQualifiedName(), new NullProgressMonitor());
-						}
-						catch (JavaModelException jme) {
-							return null;
-						}
-					}
-				}) {
+	public Iterator<String> annotatedClassNames() {
+		return new TransformationIterator<JavaResourcePersistentType, String>(this.annotatedJavaPersistentTypes()) {
 			@Override
-			protected boolean accept(IType o) {
-				return o != null;
+			protected String transform(JavaResourcePersistentType next) {
+				return next.getQualifiedName();
 			}
 		};
 	}
 	
 	protected Iterator<JavaResourcePersistentType> annotatedJavaPersistentTypes() {
-		return new FilteringIterator<JavaResourcePersistentType, JavaResourcePersistentType>(javaResourcePersistentTypes()) {
+		return new FilteringIterator<JavaResourcePersistentType, JavaResourcePersistentType>(this.javaResourcePersistentTypes()) {
 			@Override
 			protected boolean accept(JavaResourcePersistentType persistentType) {
-				return persistentType == null ? false : persistentType.isPersisted();
+				return (persistentType == null) ? false : persistentType.isPersisted();
 			}
 		};
 	}
@@ -442,7 +429,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		return new TransformationIterator<JpaFile, JpaCompilationUnit>(this.javaJpaFiles()) {
 			@Override
 			protected JpaCompilationUnit transform(JpaFile jpaFile) {
-				return ((JavaResourceModel) jpaFile.getResourceModel()).getResource();
+				return ((JavaResourceModel) jpaFile.getResourceModel()).getJpaCompilationUnit();
 			}
 		};
 	}

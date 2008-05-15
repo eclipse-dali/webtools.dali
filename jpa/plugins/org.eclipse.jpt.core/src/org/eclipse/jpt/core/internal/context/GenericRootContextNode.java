@@ -14,7 +14,6 @@ import java.util.List;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaContextNode;
@@ -224,37 +223,37 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 		if (getJpaProject().discoversAnnotatedClasses()) {
 			return;
 		}
-		Collection<IType> orphanedClasses = CollectionTools.collection(getJpaProject().annotatedClasses());
+		Collection<String> orphanedClassNames = CollectionTools.collection(getJpaProject().annotatedClassNames());
 		if (getPersistenceXml().getPersistence().persistenceUnitsSize() != 1) {
 			//context model currently only supports 1 persistenceUnit
 			return;
 		}
 		PersistenceUnit persistenceUnit = getPersistenceXml().getPersistence().persistenceUnits().next();
-		for (IType type : CollectionTools.iterable(getJpaProject().annotatedClasses())) {
+		for (String typeName : CollectionTools.iterable(getJpaProject().annotatedClassNames())) {
 			for (ClassRef classRef : CollectionTools.iterable(persistenceUnit.specifiedClassRefs())) {
-				if (classRef.isFor(type.getFullyQualifiedName('.'))) {
-					orphanedClasses.remove(type);
+				if (classRef.isFor(typeName)) {
+					orphanedClassNames.remove(typeName);
 				}
 			}
 			for (MappingFileRef mappingFileRef : CollectionTools.iterable(persistenceUnit.mappingFileRefs())) {
 				if (mappingFileRef.getOrmXml() == null || mappingFileRef.getOrmXml().getEntityMappings() == null) {
 					continue;
 				}
-				if (mappingFileRef.getOrmXml().getEntityMappings().getPersistentType(type.getFullyQualifiedName('.')) != null) {
-					orphanedClasses.remove(type);
+				if (mappingFileRef.getOrmXml().getEntityMappings().getPersistentType(typeName) != null) {
+					orphanedClassNames.remove(typeName);
 				}
 			}
 		}
 		
-		for (IType orphanedType : orphanedClasses) {
-			JavaResourcePersistentType javaResourcePersistentType = getJpaProject().getJavaPersistentTypeResource(orphanedType.getFullyQualifiedName('.'));
+		for (String orphanedTypeName : orphanedClassNames) {
+			JavaResourcePersistentType javaResourcePersistentType = getJpaProject().getJavaPersistentTypeResource(orphanedTypeName);
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CONTEXT,
 							new String[] {persistenceUnit.getName()},
 							javaResourcePersistentType.getResourceModel().getFile(),
-							javaResourcePersistentType.getMappingAnnotation().getTextRange(JDTTools.buildASTRoot(orphanedType)))
+							javaResourcePersistentType.getMappingAnnotation().getTextRange(JDTTools.buildASTRoot(javaResourcePersistentType.getJpaCompilationUnit().getCompilationUnit())))
 					);
 		}
 	}

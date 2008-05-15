@@ -41,7 +41,12 @@ public class PersistenceResource extends JpaXmlResource
 	
 	@Override
 	public void javaElementChanged(ElementChangedEvent event) {
-		// TODO Auto-generated method stub	
+		// TODO
+	}
+	
+	@Override
+	public void updateFromResource() {
+		// TODO
 	}
 	
 	public XmlPersistence getPersistence() {

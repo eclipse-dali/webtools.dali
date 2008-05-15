@@ -40,6 +40,23 @@ public interface JpaFile extends JpaNode
 	 */
 	ResourceModel getResourceModel();
 	
+	/**
+	 * Forward the Java element changed event to the JPA file's content.
+	 */
+	void javaElementChanged(ElementChangedEvent event);
+
+	/**
+	 * Update the JPA resource model from the underlying resource.
+	 */
+	void updateFromResource();
+
+	/**
+	 * The JPA file has been removed from the JPA project. Clean up any
+	 * hooks to external resources etc.
+	 */
+	void dispose();
+	
+
 	// **************** root structure nodes *************************************
 	
 	/**
@@ -53,6 +70,7 @@ public interface JpaFile extends JpaNode
 	Iterator<JpaStructureNode> rootStructureNodes();
 	
 	int rootStructureNodesSize();
+
 	/**
 	 * Set the root context model object represented by this JPA file.
 	 * There is the potential for multiple root structure nodes 
@@ -65,20 +83,10 @@ public interface JpaFile extends JpaNode
 	void addRootStructureNode(Object key, JpaStructureNode rootStructureNode);	
 	
 	void removeRootStructureNode(Object key);
+
 	/**
 	 * Return the structure node best represented by the location in the file.
 	 */
 	JpaStructureNode getStructureNode(int textOffset);
 
-	/**
-	 * Forward the Java element changed event to the JPA file's content.
-	 */
-	void javaElementChanged(ElementChangedEvent event);
-
-	/**
-	 * The JPA file has been removed from the JPA project. Clean up any
-	 * hooks to external resources etc.
-	 */
-	void dispose();
-	
 }

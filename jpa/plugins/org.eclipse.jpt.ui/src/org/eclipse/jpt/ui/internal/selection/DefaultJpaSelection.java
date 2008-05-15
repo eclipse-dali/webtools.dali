@@ -11,13 +11,17 @@ package org.eclipse.jpt.ui.internal.selection;
 
 import org.eclipse.jpt.core.JpaStructureNode;
 
+/**
+ * Straightforward implementation of the JpaSelection interface.
+ */
 public class DefaultJpaSelection
 	implements JpaSelection
 {
-	private JpaStructureNode selectedNode;
+	private final JpaStructureNode selectedNode;
 
 
 	public DefaultJpaSelection(JpaStructureNode selectedNode) {
+		super();
 		if (selectedNode == null) {
 			throw new NullPointerException("A 'selectedNode' is required; otherwise use NULL_SELECTION.");
 		}
@@ -36,11 +40,11 @@ public class DefaultJpaSelection
 
 	@Override
 	public boolean equals(Object obj) {
-		if (! (obj instanceof DefaultJpaSelection)) {
+		if (! (obj instanceof JpaSelection)) {
 			return false;
 		}
-
-		return this.selectedNode.equals(((DefaultJpaSelection) obj).selectedNode);
+		JpaSelection other = (JpaSelection) obj;
+		return ( ! other.isEmpty()) && this.selectedNode.equals(other.getSelectedNode());
 	}
 
 	@Override
@@ -52,4 +56,5 @@ public class DefaultJpaSelection
 	public String toString() {
 		return this.selectedNode.toString();
 	}
+
 }

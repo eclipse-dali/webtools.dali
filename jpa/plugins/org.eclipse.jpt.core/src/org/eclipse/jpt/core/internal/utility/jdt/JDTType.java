@@ -9,121 +9,167 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.utility.jdt;
 
-import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jdt.core.IField;
-import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
-import org.eclipse.jdt.core.dom.BodyDeclaration;
+
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
 
+/**
+ * Adapt and extend a JDT type.
+ */
 public class JDTType
 	extends JDTMember
 	implements Type
 {
 
-	public JDTType(IType type, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
-		super(type, modifySharedDocumentCommandExecutorProvider);
+	/**
+	 * constructor for the compilation unit's primary type
+	 */
+	public JDTType(
+			TypeDeclaration typeDeclaration,  // exclude annotations and enums
+			ICompilationUnit compilationUnit,
+			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
+		this(typeDeclaration, compilationUnit, modifySharedDocumentCommandExecutorProvider, DefaultAnnotationEditFormatter.instance());
 	}
 
-	public JDTType(IType type, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider, AnnotationEditFormatter annotationEditFormatter) {
-		super(type, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
+	/**
+	 * constructor for the compilation unit's primary type
+	 */
+	public JDTType(
+			TypeDeclaration typeDeclaration,  // exclude annotations and enums
+			ICompilationUnit compilationUnit,
+			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
+			AnnotationEditFormatter annotationEditFormatter) {
+		this(null, typeDeclaration, 1, compilationUnit, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
 	}
 
-	@Override
-	public IType getJdtMember() {
-		return (IType) super.getJdtMember();
+	/**
+	 * constructor for nested types
+	 */
+	public JDTType(
+			Type declaringType,
+			TypeDeclaration typeDeclaration,  // exclude annotations and enums
+			int occurrence,
+			ICompilationUnit compilationUnit,
+			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
+		this(declaringType, typeDeclaration, occurrence, compilationUnit, modifySharedDocumentCommandExecutorProvider, DefaultAnnotationEditFormatter.instance());
 	}
 
-	public IType[] jdtTypes() {
-		try {
-			return getJdtMember().getTypes();
-		}
-		catch(JavaModelException e) {
-			throw new RuntimeException(e);
-		}
+	/**
+	 * constructor for nested types
+	 */
+	public JDTType(
+			Type declaringType,
+			TypeDeclaration typeDeclaration,  // exclude annotations and enums
+			int occurrence,
+			ICompilationUnit compilationUnit,
+			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
+			AnnotationEditFormatter annotationEditFormatter) {
+		super(declaringType, typeDeclaration.getName().getFullyQualifiedName(), occurrence, compilationUnit, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
 	}
-	
-	public IField[] jdtFields() {
-		try {
-			return getJdtMember().getFields();
-		}
-		catch(JavaModelException e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
-	public IMethod[] jdtMethods() {
-		try {
-			return getJdtMember().getMethods();
-		}
-		catch(JavaModelException e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
-	// ********** Member implementation **********
 
-	public AbstractTypeDeclaration getBodyDeclaration(CompilationUnit astRoot) {
-		Type declaringType = this.declaringType();
-		if (declaringType != null) {
-			return this.getTypeDeclaration(declaringType.getBodyDeclaration(astRoot));
-		}
-		return this.getTypeDeclaration(this.types(astRoot));
+	/**
+	 * constructor for testing
+	 */
+	public JDTType(Type declaringType, String name, int occurrence, ICompilationUnit compilationUnit) {
+		super(declaringType, name, occurrence, compilationUnit, CommandExecutorProvider.Default.instance(), DefaultAnnotationEditFormatter.instance());
 	}
-	
-	public AbstractTypeDeclaration getTypeDeclaration(AbstractTypeDeclaration declaringTypeDeclaration) {
-		return getTypeDeclaration(this.types(declaringTypeDeclaration));
-	}
-	
-	private AbstractTypeDeclaration getTypeDeclaration(List<AbstractTypeDeclaration> typeDeclarations) {
-		String name = this.getName();
-		for (AbstractTypeDeclaration typeDeclaration : typeDeclarations) {
-			if (typeDeclaration.getName().getFullyQualifiedName().equals(name)) {
-				return typeDeclaration;
-			}
-		}
-		return null;
-	}
+
+
+	// ********** Member/Type implementation **********
 
 	public ITypeBinding getBinding(CompilationUnit astRoot) {
-		return getBodyDeclaration(astRoot).resolveBinding();
+		return this.getBodyDeclaration(astRoot).resolveBinding();
+	}
+
+	/**
+	 * find the type's body declaration in the specified AST
+	 */
+	public TypeDeclaration getBodyDeclaration(CompilationUnit astRoot) {
+		Type declaringType = this.getDeclaringType();
+		return (declaringType == null) ?
+				this.getTopLevelTypeDeclaration(astRoot)
+			:
+				this.getNestedTypeDeclaration(declaringType.getBodyDeclaration(astRoot));
+	}
+
+	public boolean isPersistable(CompilationUnit astRoot) {
+		ITypeBinding binding = this.getBinding(astRoot);
+		return (binding == null) ? false : JPTTools.typeIsPersistable(binding);
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return new ASTNodeTextRange(getBodyDeclaration(astRoot).getName());
+		return new ASTNodeTextRange(this.getBodyDeclaration(astRoot).getName());
 	}
 
-	// ********** miscellaneous **********
+	public TypeDeclaration[] getTypes(CompilationUnit astRoot) {
+		return this.getBodyDeclaration(astRoot).getTypes();
+	}
 
+	public FieldDeclaration[] getFields(CompilationUnit astRoot) {
+		return this.getBodyDeclaration(astRoot).getFields();
+	}
+
+	public MethodDeclaration[] getMethods(CompilationUnit astRoot) {
+		return this.getBodyDeclaration(astRoot).getMethods();
+	}
+
+
+	// ********** internal **********
+
+	/**
+	 * return the first top-level type in the specified AST with a matching name
+	 */
+	protected TypeDeclaration getTopLevelTypeDeclaration(CompilationUnit astRoot) {
+		return this.getTypeDeclaration(types(astRoot));
+	}
+
+	protected TypeDeclaration getTypeDeclaration(List<TypeDeclaration> typeDeclarations) {
+		return this.getTypeDeclaration(typeDeclarations.toArray(new TypeDeclaration[typeDeclarations.size()]));
+	}
+
+	/**
+	 * return the nested type with a matching name and occurrence
+	 */
+	protected TypeDeclaration getNestedTypeDeclaration(TypeDeclaration declaringTypeDeclaration) {
+		return this.getTypeDeclaration(declaringTypeDeclaration.getTypes());
+	}
+
+	/**
+	 * return the type declaration corresponding to the type from the specified
+	 * set of type declarations (match name and occurrence)
+	 */
+	protected TypeDeclaration getTypeDeclaration(TypeDeclaration[] typeDeclarations) {
+		String name = this.getName_();
+		int occurrence = this.getOccurrence();
+		int count = 0;
+		for (TypeDeclaration typeDeclaration : typeDeclarations) {
+			if (typeDeclaration.getName().getFullyQualifiedName().equals(name)) {
+				count++;
+				if (count == occurrence) {
+					return typeDeclaration;
+				}
+			}
+		}
+		// return null if the type is no longer in the source code;
+		// this can happen when the context model has not yet
+		// been synchronized with the resource model but is still
+		// asking for an ASTNode (e.g. during a selection event)
+		return null;
+	}
+
+	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected List<AbstractTypeDeclaration> types(CompilationUnit astRoot) {
+	protected static List<TypeDeclaration> types(CompilationUnit astRoot) {
 		return astRoot.types();
 	}
-	
-	protected List<AbstractTypeDeclaration> types(AbstractTypeDeclaration typeDeclaration) {
-		List<AbstractTypeDeclaration> typeDeclarations = new ArrayList<AbstractTypeDeclaration>();
-		for (BodyDeclaration bodyDeclaration : bodyDeclarations(typeDeclaration))
-			if (bodyDeclaration.getNodeType() == ASTNode.TYPE_DECLARATION ||
-				bodyDeclaration.getNodeType() == ASTNode.ANNOTATION_TYPE_DECLARATION  ||
-				bodyDeclaration.getNodeType() == ASTNode.ENUM_DECLARATION) {
-				typeDeclarations.add((AbstractTypeDeclaration) bodyDeclaration);
-			}
-		return typeDeclarations;
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected List<BodyDeclaration> bodyDeclarations(AbstractTypeDeclaration typeDeclaration) {
-		return typeDeclaration.bodyDeclarations();
-	}
-	
 
 }

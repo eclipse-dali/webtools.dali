@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.db.ConnectionProfile;
@@ -185,14 +184,15 @@ public interface JpaProject extends JpaNode {
 	JpaRootContextNode getRootContext();
 	
 	/**
-	 * Return an iterator on all ITypes that are annotated within this project
+	 * Return the names of the JPA project's annotated classes.
 	 */
-	Iterator<IType> annotatedClasses();
+	Iterator<String> annotatedClassNames();
 	
 	/**
 	 * Return the Java persistent type resource for the specified fully qualified type name;
 	 * null, if none exists.
 	 */
+	// TODO rename getJavaResourcePersistentType(String)
 	JavaResourcePersistentType getJavaPersistentTypeResource(String typeName);
 	
 	

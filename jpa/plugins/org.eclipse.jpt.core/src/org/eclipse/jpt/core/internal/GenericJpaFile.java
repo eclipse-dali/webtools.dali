@@ -123,4 +123,9 @@ public class GenericJpaFile extends AbstractJpaNode implements JpaFile
 		sb.append(getResourceType());
 		sb.append(")");
 	}
+
+	public void updateFromResource() {
+		this.resourceModel.updateFromResource();
+	}
+
 }

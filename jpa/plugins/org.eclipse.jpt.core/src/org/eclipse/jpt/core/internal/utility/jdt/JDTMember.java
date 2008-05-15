@@ -13,8 +13,6 @@ import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBuffer;
 import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IMember;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jface.text.BadLocationException;
@@ -37,80 +35,100 @@ import org.eclipse.text.edits.TextEdit;
 public abstract class JDTMember
 	implements Member
 {
-
-	private final IMember jdtMember;
-
-	/** this will be null for a top-level type */
+	/** this will be null for the primary type */
 	private final Type declaringType;
 
+	/** the member's name (duh) */
+	private final String name;
+
+	/**
+	 * members can occur more than once in non-compiling source;
+	 * count starts at 1; the primary type will have occurrence 1
+	 */
+	private final int occurrence;
+
+	/**
+	 * the compilation unit (file) containing the member;
+	 * used for building an AST when we modify the member
+	 */
+	private final ICompilationUnit compilationUnit;
+
+	/**
+	 * this allows clients to provide a way to modify the compilation unit
+	 * (file) when it is open in an editor and should be modified on the UI
+	 * thread
+	 */
 	private final CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
 
+	/** this will format the member's annotations a bit */
 	private final AnnotationEditFormatter annotationEditFormatter;
 
-	// ********** constructor **********
+
+	// ********** constructors **********
 	
-	JDTMember(IMember jdtMember, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
-		this(jdtMember, modifySharedDocumentCommandExecutorProvider, DefaultAnnotationEditFormatter.instance());
+	protected JDTMember(
+			Type declaringType,
+			String name,
+			int occurrence,
+			ICompilationUnit compilationUnit,
+			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
+		this(declaringType, name, occurrence, compilationUnit, modifySharedDocumentCommandExecutorProvider, DefaultAnnotationEditFormatter.instance());
 	}
-	
-	JDTMember(IMember jdtMember, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider, AnnotationEditFormatter annotationEditFormatter) {
+
+	protected JDTMember(
+			Type declaringType,
+			String name,
+			int occurrence,
+			ICompilationUnit compilationUnit,
+			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
+			AnnotationEditFormatter annotationEditFormatter) {
 		super();
-		this.jdtMember = jdtMember;
-		IType jdtDeclaringType = jdtMember.getDeclaringType();
-		this.declaringType = (jdtDeclaringType == null) ? null : new JDTType(jdtDeclaringType, modifySharedDocumentCommandExecutorProvider);
+		this.declaringType = declaringType;
+		this.name = name;
+		this.occurrence = occurrence;
+		this.compilationUnit = compilationUnit;
 		this.modifySharedDocumentCommandExecutorProvider = modifySharedDocumentCommandExecutorProvider;
 		this.annotationEditFormatter = annotationEditFormatter;
 	}
 
 
-	// ********** accessors **********
-
-	protected IMember getJdtMember() {
-		return this.jdtMember;
-	}
-
-	public boolean wraps(IMember member) {
-		return this.jdtMember.exists()
-				&& this.jdtMember.equals(member);
-	}
-
-	/**
-	 * this will return null for a top-level type
-	 */
-	protected Type declaringType() {
-		return this.declaringType;
-	}
-
-
-	// ********** miscellaneous **********
-
-	protected ICompilationUnit getCompilationUnit() {
-		return this.jdtMember.getCompilationUnit();
-	}
-
-	public String getName() {
-		return this.jdtMember.getElementName();
-	}
-
-	/**
-	 * note: this creates a *new* AST
-	 */
-	public CompilationUnit getAstRoot() {
-		return JDTTools.buildASTRoot(this.jdtMember);
-	}
-
-	public ModifiedDeclaration getModifiedDeclaration() {
-		return this.getModifiedDeclaration(this.getAstRoot());
-	}
+	// ********** Member implementation **********
 
 	public ModifiedDeclaration getModifiedDeclaration(CompilationUnit astRoot) {
 		return new JDTModifiedDeclaration(this.getBodyDeclaration(astRoot));
 	}
 
+	public ModifiedDeclaration getModifiedDeclaration() {
+		return this.getModifiedDeclaration(this.buildASTRoot());
+	}
+
+	public boolean matches(String memberName, int occur) {
+		return memberName.equals(this.name) && (occur == this.occurrence);
+	}
+
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.getName());
-	}	
+		return StringTools.buildToStringFor(this, this.name);
+	}
+
+
+	// ********** internal **********
+
+	protected String getName_() {
+		return this.name;
+	}
+
+	protected int getOccurrence() {
+		return this.occurrence;
+	}
+
+	/**
+	 * this will return null for a top-level type
+	 */
+	protected Type getDeclaringType() {
+		return this.declaringType;
+	}
+
 
 	// ********** editing **********
 
@@ -138,25 +156,24 @@ public abstract class JDTMember
 	 *     - when editing via a plain text editor, make a working copy or else things are screwed
 	 *        up the second time you edit through the XmlPersistence XmlProperties View
 	 */
-	private void edit_(Editor editor) throws JavaModelException, BadLocationException {
-		ICompilationUnit compilationUnit = this.getCompilationUnit();
-		if ( ! compilationUnit.isWorkingCopy()) {
-			compilationUnit.becomeWorkingCopy(null);
+	protected void edit_(Editor editor) throws JavaModelException, BadLocationException {
+		if ( ! this.compilationUnit.isWorkingCopy()) {
+			this.compilationUnit.becomeWorkingCopy(null);
 		}
 
-		ITextFileBuffer buffer = FileBuffers.getTextFileBufferManager().getTextFileBuffer(compilationUnit.getResource().getFullPath(), LocationKind.NORMALIZE);
+		ITextFileBuffer buffer = FileBuffers.getTextFileBufferManager().getTextFileBuffer(this.compilationUnit.getResource().getFullPath(), LocationKind.NORMALIZE);
 		boolean sharedDocument = (buffer != null);  // documents are typically shared when they are already open in an editor
 		IDocument doc = sharedDocument ?
 				buffer.getDocument()
 			:
-				new Document(compilationUnit.getBuffer().getContents());
+				new Document(this.compilationUnit.getBuffer().getContents());
 
-		CompilationUnit astRoot = this.getAstRoot();
+		CompilationUnit astRoot = this.buildASTRoot();
 		astRoot.recordModifications();
 
 		editor.edit(this.getModifiedDeclaration(astRoot));
 
-		TextEdit edits = astRoot.rewrite(doc, compilationUnit.getJavaProject().getOptions(true));
+		TextEdit edits = astRoot.rewrite(doc, this.compilationUnit.getJavaProject().getOptions(true));
 		if (sharedDocument) {
 			this.getModifySharedDocumentCommandExecutor().execute(new ModifySharedDocumentCommand(edits, doc));
 		} else {
@@ -164,9 +181,9 @@ public abstract class JDTMember
 		}
 
 		if ( ! sharedDocument) {
-			compilationUnit.getBuffer().setContents(doc.get());
-			compilationUnit.commitWorkingCopy(true, null);  // true="force"
-			compilationUnit.discardWorkingCopy();
+			this.compilationUnit.getBuffer().setContents(doc.get());
+			this.compilationUnit.commitWorkingCopy(true, null);  // true="force"
+			this.compilationUnit.discardWorkingCopy();
 		}
 	}
 
@@ -174,16 +191,16 @@ public abstract class JDTMember
 	 * apply the specified edits to the specified document,
 	 * reformatting the document if necessary
 	 */
-	void applyEdits(TextEdit edits, IDocument doc) throws MalformedTreeException, BadLocationException {
+	protected void applyEdits(TextEdit edits, IDocument doc) throws MalformedTreeException, BadLocationException {
 		edits.apply(doc, TextEdit.UPDATE_REGIONS);
-		this.getAnnotationEditFormatter().format(doc, edits);
+		this.annotationEditFormatter.format(doc, edits);
 	}
 
-	private AnnotationEditFormatter getAnnotationEditFormatter() {
-		return this.annotationEditFormatter;
+	protected CompilationUnit buildASTRoot() {
+		return JDTTools.buildASTRoot(this.compilationUnit);
 	}
 
-	private CommandExecutor getModifySharedDocumentCommandExecutor() {
+	protected CommandExecutor getModifySharedDocumentCommandExecutor() {
 		return this.modifySharedDocumentCommandExecutorProvider.getCommandExecutor();
 	}
 
@@ -194,11 +211,11 @@ public abstract class JDTMember
 	 * simple command that calls back to the member to apply the edits
 	 * in the same way as if the document were not shared
 	 */
-	class ModifySharedDocumentCommand implements Command {
+	protected class ModifySharedDocumentCommand implements Command {
 		private final TextEdit edits;
 		private final IDocument doc;
 
-		ModifySharedDocumentCommand(TextEdit edits, IDocument doc) {
+		protected ModifySharedDocumentCommand(TextEdit edits, IDocument doc) {
 			super();
 			this.edits = edits;
 			this.doc = doc;

@@ -11,9 +11,9 @@ package org.eclipse.jpt.core.resource.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.MethodSignature;
 
 /**
  * 
@@ -34,8 +34,7 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	 * <p>Does not return duplicate annotations as this error is handled by the java compiler.
 	 */
 	<T extends JavaResourceNode> Iterator<T> mappingAnnotations();
-	
-		String MAPPING_ANNOTATIONS_COLLECTION = "mappingAnnotationsCollection";
+		String MAPPING_ANNOTATIONS_COLLECTION = "mappingAnnotations";
 	
 	int mappingAnnotationsSize();
 	/**
@@ -43,7 +42,6 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	 * In the case of multiples the first one will be returned as defined by the order of
 	 * {@link org.eclipse.jpt.core.internal.platform.GenericJpaPlatform#typeMappingAnnotationDefinitions()} or 
 	 * {@link org.eclipse.jpt.core.internal.platform.GenericJpaPlatform#attributeMappingAnnotationDefinitions()}
-	 * @return
 	 */
 	JavaResourceNode getMappingAnnotation();
 
@@ -53,7 +51,6 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	 * and "javax.persistence.MappedSuperclass"
 	 * Return the first if there are duplicates in the source code
 	 * @param annotationName - fully qualified annotation name
-	 * @return
 	 */
 	//TODO not sure we need this API, first 2 seem sufficient
 	JavaResourceNode getMappingAnnotation(String annotationName);
@@ -74,7 +71,7 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	 */
 	<T extends JavaResourceNode> Iterator<T>  annotations();
 	
-		String ANNOTATIONS_COLLECTION = "annotationsCollection";
+		String ANNOTATIONS_COLLECTION = "annotations";
 
 	int annotationsSize();
 
@@ -92,8 +89,6 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	/**
 	 * Returns the <code>JavaResource</code> with this fully qualifed annotation name. 
 	 * Return the first if there are duplicates in the source code.
-	 * @param annotationName
-	 * @return
 	 */
 	JavaResourceNode getAnnotation(String annotationName);
 	
@@ -101,8 +96,6 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	 * Returns the <code>JavaResource</code> with this fully qualifed annotation name. 
 	 * Return the first if there are duplicates in the source code.  Will not return null,
 	 * but a null Object instead if no annotation with this name exists in the java source.
-	 * @param annotationName
-	 * @return
 	 */
 	JavaResourceNode getNonNullAnnotation(String annotationName);
 
@@ -110,8 +103,6 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	 * Return a null implementation of <code>JavaResourceNode</code> with this fully qualifed annotation name.
 	 * The corresponding AnnotationDefinition needs to implement buildNullAnnotation()
 	 * {@link AnnotationDefinition#buildNullAnnotation(JavaResourcePersistentMember, org.eclipse.jpt.core.internal.jdtutility.Member)}
-	 * @param annotationName
-	 * @return
 	 */
 	JavaResourceNode getNullMappingAnnotation(String annotationName);
 
@@ -142,10 +133,9 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	
 	/**
 	 * Return whether the underlying JDT member is persistable according to the JPA spec
-	 * @return
 	 */
 	boolean isPersistable();
-		String PERSISTABLE_PROPERTY = "persistableProperty";
+		String PERSISTABLE_PROPERTY = "persistable";
 		
 	/**
 	 * Return whether the underlying JDT member is currently annotated as being persistent
@@ -154,13 +144,17 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	boolean isPersisted();
 
 	/**
-	 * Return true if this JavaPersistentResource represents the underlying JDT IMeber
-	 * @param member
-	 * @return
+	 * Return whether the Java resource persistent member is for the specified
+	 * member.
 	 */
-	boolean isFor(IMember member);
-	
-	
+	boolean isFor(String memberName, int occurrence);
+
+	/**
+	 * Return whether the Java resource persistent member is for the specified
+	 * method.
+	 */
+	boolean isFor(MethodSignature methodSignature, int occurrence);
+
 	/**
 	 * return the text range for the name of the persistent resource
 	 */

@@ -10,9 +10,11 @@
 package org.eclipse.jpt.core.utility.jdt;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.IVariableBinding;
 
 /**
+ * Field attribute: just some covariant overrides.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,6 +26,14 @@ import org.eclipse.jdt.core.dom.IVariableBinding;
  */
 public interface FieldAttribute extends Attribute {
 
+	/**
+	 * Covariant override.
+	 */
 	IVariableBinding getBinding(CompilationUnit astRoot);
+
+	/**
+	 * Covariant override.
+	 */
+	FieldDeclaration getBodyDeclaration(CompilationUnit astRoot);
 
 }

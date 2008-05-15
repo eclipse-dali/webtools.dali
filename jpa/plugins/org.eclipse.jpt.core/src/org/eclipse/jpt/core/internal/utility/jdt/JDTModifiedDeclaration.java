@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Annotation;
@@ -86,10 +85,6 @@ public class JDTModifiedDeclaration
 
 	public ICompilationUnit getICompilationUnit() {
 		return (ICompilationUnit) this.getCompilationUnit().getJavaElement();
-	}
-
-	public IType getType() {
-		return this.getCompilationUnit().getTypeRoot().findPrimaryType();
 	}
 
 	/**
