@@ -152,7 +152,7 @@ public class DatabaseReconnectWizardPage extends WizardPage
 	}
 
 	Schema getDefaultSchema() {
-		return getProjectConnectionProfile().getDefaultSchema();
+		return this.jpaProject.getDefaultSchema();
 	}
 
 	public String getSelectedConnectionProfileName() {
@@ -251,10 +251,6 @@ public class DatabaseReconnectWizardPage extends WizardPage
 			return jpaProject.getDataSource().getConnectionProfileName();
 		}
 
-		Schema getDefaultSchema() {
-			return getProjectConnectionProfile().getDefaultSchema();
-		}
-
 		private void openConnectionProfileNamed(String connectionProfileName) {
 			DatabaseReconnectWizardPage.this.removeConnectionListener();
 			DatabaseReconnectWizardPage.this.profile = this.connectionProfileNamed(connectionProfileName);
@@ -299,8 +295,8 @@ public class DatabaseReconnectWizardPage extends WizardPage
 			for (Iterator<String> stream = CollectionTools.sort(connectionProfile.getDatabase().schemaNames()); stream.hasNext();) {
 				this.schemaCombo.add(stream.next());
 			}
-			// set login user name as default schema
-			Schema schema = this.getDefaultSchema();
+			// get default schema name from the project
+			Schema schema = getDefaultSchema();
 			if (schema != null && schema.getName() != null) {
 				schema = connectionProfile.getDatabase().schemaNamed(schema.getName()); // verify
 																						// schema
