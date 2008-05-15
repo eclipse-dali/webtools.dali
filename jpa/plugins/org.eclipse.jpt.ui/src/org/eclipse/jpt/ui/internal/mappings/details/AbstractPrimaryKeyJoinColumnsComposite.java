@@ -31,8 +31,6 @@ import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListPropertyValueModelAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -64,9 +62,9 @@ import org.eclipse.swt.widgets.Group;
  * @version 2.0
  * @since 2.0
  */
-public class PrimaryKeyJoinColumnsComposite extends AbstractPane<Entity>
+public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> extends AbstractPane<T>
 {
-	private WritablePropertyValueModel<PrimaryKeyJoinColumn> joinColumnHolder;
+	protected WritablePropertyValueModel<PrimaryKeyJoinColumn> joinColumnHolder;
 
 	/**
 	 * Creates a new <code>PrimaryKeyJoinColumnsComposite</code>.
@@ -74,7 +72,7 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractPane<Entity>
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	public PrimaryKeyJoinColumnsComposite(AbstractPane<? extends Entity> subjectHolder,
+	public AbstractPrimaryKeyJoinColumnsComposite(AbstractPane<? extends T> subjectHolder,
 	                                      Composite parent) {
 
 		super(subjectHolder, parent);
@@ -87,7 +85,7 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractPane<Entity>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public PrimaryKeyJoinColumnsComposite(PropertyValueModel<? extends Entity> subjectHolder,
+	public AbstractPrimaryKeyJoinColumnsComposite(PropertyValueModel<? extends T> subjectHolder,
 	                                      Composite parent,
 	                                      WidgetFactory widgetFactory) {
 
@@ -124,19 +122,7 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractPane<Entity>
 		};
 	}
 
-	private PropertyValueModel<PrimaryKeyJoinColumn> buildDefaultJoinColumnHolder() {
-		return new PropertyAspectAdapter<Entity, PrimaryKeyJoinColumn>(getSubjectHolder(), Entity.DEFAULT_PRIMARY_KEY_JOIN_COLUMN) {
-			@Override
-			protected PrimaryKeyJoinColumn buildValue_() {
-				return subject.getDefaultPrimaryKeyJoinColumn();
-			}
-		};
-	}
-
-	private ListValueModel<PrimaryKeyJoinColumn> buildDefaultJoinColumnListHolder() {
-		return new PropertyListValueModelAdapter<PrimaryKeyJoinColumn>(buildDefaultJoinColumnHolder());
-
-	}
+	protected abstract ListValueModel<? extends PrimaryKeyJoinColumn> buildDefaultJoinColumnsListHolder();
 
 	private PostExecution<PrimaryKeyJoinColumnDialog> buildEditPrimaryKeyJoinColumnPostExecution() {
 		return new PostExecution<PrimaryKeyJoinColumnDialog>() {
@@ -239,10 +225,10 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractPane<Entity>
 	}
 
 	private ListValueModel<PrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListHolder() {
-		List<ListValueModel<PrimaryKeyJoinColumn>> list = new ArrayList<ListValueModel<PrimaryKeyJoinColumn>>();
+		List<ListValueModel<? extends PrimaryKeyJoinColumn>> list = new ArrayList<ListValueModel<? extends PrimaryKeyJoinColumn>>();
 		list.add(buildSpecifiedJoinColumnsListHolder());
-		list.add(buildDefaultJoinColumnListHolder());
-		return new CompositeListValueModel<ListValueModel<PrimaryKeyJoinColumn>, PrimaryKeyJoinColumn>(list);
+		list.add(buildDefaultJoinColumnsListHolder());
+		return new CompositeListValueModel<ListValueModel<? extends PrimaryKeyJoinColumn>, PrimaryKeyJoinColumn>(list);
 	}
 
 	private ListValueModel<PrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListModel() {
@@ -344,29 +330,16 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractPane<Entity>
 		setPopulating(true);
 
 		try {
-			Entity subject = subject();
-
 			// Add a join column by creating a specified one using the default
 			// one if it exists
 			if (selected) {
 
-				PrimaryKeyJoinColumn defaultJoinColumn = subject.getDefaultPrimaryKeyJoinColumn();
-
-				if (defaultJoinColumn != null) {
-					String columnName = defaultJoinColumn.getDefaultName();
-					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
-
-					PrimaryKeyJoinColumn pkJoinColumn = subject.addSpecifiedPrimaryKeyJoinColumn(0);
-					pkJoinColumn.setSpecifiedName(columnName);
-					pkJoinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
-
-					joinColumnHolder.setValue(pkJoinColumn);
-				}
+				switchDefaultToSpecified();
 			}
 			// Remove all the specified join columns
 			else {
-				for (int index = subject.specifiedPrimaryKeyJoinColumnsSize(); --index >= 0; ) {
-					subject.removeSpecifiedPrimaryKeyJoinColumn(index);
+				for (int index = subject().specifiedPrimaryKeyJoinColumnsSize(); --index >= 0; ) {
+					subject().removeSpecifiedPrimaryKeyJoinColumn(index);
 				}
 			}
 		}
@@ -375,6 +348,8 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractPane<Entity>
 		}
 	}
 
+	protected abstract void switchDefaultToSpecified();
+	
 	private class OverrideDefaultJoinColumnHolder extends ListPropertyValueModelAdapter<Boolean>
 	                                              implements WritablePropertyValueModel<Boolean> {
 

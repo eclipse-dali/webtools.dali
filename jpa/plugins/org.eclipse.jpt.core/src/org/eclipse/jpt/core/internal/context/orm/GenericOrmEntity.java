@@ -37,6 +37,7 @@ import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
@@ -622,8 +623,15 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 
 	public OrmPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("use defaultPrimaryKeyJoinColumns() instead");
+	}
+
+	protected void addDefaultPrimaryKeyJoinColumn(OrmPrimaryKeyJoinColumn defaultPkJoinColumn) {
+		addItemToList(defaultPkJoinColumn, this.defaultPrimaryKeyJoinColumns, OrmEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST);
+	}
+	
+	protected void removeDefaultPrimaryKeyJoinColumn(PrimaryKeyJoinColumn defaultPkJoinColumn) {
+		removeItemFromList(defaultPkJoinColumn, this.defaultPrimaryKeyJoinColumns, OrmEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
 	public ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
@@ -641,12 +649,22 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	public int specifiedPrimaryKeyJoinColumnsSize() {
 		return this.specifiedPrimaryKeyJoinColumns.size();
 	}
+	
+	public boolean containsSpecifiedPrimaryKeyJoinColumns() {
+		return !this.specifiedPrimaryKeyJoinColumns.isEmpty();
+	}	
 
 	public OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
-		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+		if (!this.defaultPrimaryKeyJoinColumns.isEmpty()) {
+			this.defaultPrimaryKeyJoinColumns.clear();
+		}
+		XmlPrimaryKeyJoinColumn xmlPrimaryKeyJoinColumn = OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl();
+		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = buildPrimaryKeyJoinColumn(xmlPrimaryKeyJoinColumn);
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
-		this.getTypeMappingResource().getPrimaryKeyJoinColumns().add(index, OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl());
+		this.getTypeMappingResource().getPrimaryKeyJoinColumns().add(index, xmlPrimaryKeyJoinColumn);
+
 		this.fireItemAdded(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
+		this.fireListCleared(OrmEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 		return primaryKeyJoinColumn;
 	}
 	
@@ -664,8 +682,17 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
 		OrmPrimaryKeyJoinColumn removedPrimaryKeyJoinColumn = this.specifiedPrimaryKeyJoinColumns.remove(index);
+		if (!containsSpecifiedPrimaryKeyJoinColumns()) {
+			//create the defaultJoinColumn now or this will happen during project update 
+			//after removing the join column from the resource model. That causes problems 
+			//in the UI because the change notifications end up in the wrong order.
+			initializeDefaultPrimaryKeyJoinColumns();
+		}
 		this.getTypeMappingResource().getPrimaryKeyJoinColumns().remove(index);
 		fireItemRemoved(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
+		if (!this.defaultPrimaryKeyJoinColumns.isEmpty()) {
+			fireListChanged(OrmEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST);
+		}
 	}
 
 	protected void removeSpecifiedPrimaryKeyJoinColumn_(OrmPrimaryKeyJoinColumn primaryKeyJoinColumn) {
@@ -1104,6 +1131,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		this.initializeSequenceGenerator(entity);
 		this.initializeTableGenerator(entity);
 		this.initializeSpecifiedPrimaryKeyJoinColumns(entity);
+		this.initializeDefaultPrimaryKeyJoinColumns();
 		this.initializeSpecifiedAttributeOverrides(entity);
 		this.initializeSpecifiedAssociationOverrides(entity);
 		this.initializeNamedQueries(entity);
@@ -1142,6 +1170,26 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 	}	
 	
+	protected void initializeDefaultPrimaryKeyJoinColumns() {
+		if (isMetadataComplete()) {
+			return;
+		}
+		if (getJavaEntity() == null) {
+			this.defaultPrimaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn(null));
+			return;
+		}
+		if (specifiedPrimaryKeyJoinColumnsSize() > 0) {
+			return;
+		}
+		ListIterator<JavaPrimaryKeyJoinColumn> javaPkJoinColumns = getJavaEntity().primaryKeyJoinColumns();
+		while(javaPkJoinColumns.hasNext()) {
+			JavaPrimaryKeyJoinColumn javaPkJoinColumn = javaPkJoinColumns.next();
+			if (javaPkJoinColumn.getName() != null) {
+				this.defaultPrimaryKeyJoinColumns.add(buildVirtualPrimaryKeyJoinColumn(javaPkJoinColumn));
+			}
+		}
+	}
+
 	protected void initializeTableGenerator(XmlEntity entity) {
 		if (entity.getTableGenerator() != null) {
 			this.tableGenerator = buildTableGenerator(entity.getTableGenerator());
@@ -1168,7 +1216,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 	protected void initializeSpecifiedPrimaryKeyJoinColumns(XmlEntity entity) {
 		for (XmlPrimaryKeyJoinColumn primaryKeyJoinColumn : entity.getPrimaryKeyJoinColumns()) {
-			this.specifiedPrimaryKeyJoinColumns.add(createPrimaryKeyJoinColumn(primaryKeyJoinColumn));
+			this.specifiedPrimaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn(primaryKeyJoinColumn));
 		}
 	}
 	
@@ -1220,6 +1268,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		this.updateSequenceGenerator(entity);
 		this.updateTableGenerator(entity);
 		this.updateSpecifiedPrimaryKeyJoinColumns(entity);
+		this.updateDefaultPrimaryKeyJoinColumns();
 		this.updateSpecifiedAttributeOverrides(entity);
 		this.updateSpecifiedAssociationOverrides(entity);
 		this.updateNamedQueries(entity);
@@ -1375,11 +1424,51 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 		
 		while (resourcePrimaryKeyJoinColumns.hasNext()) {
-			addSpecifiedPrimaryKeyJoinColumn(specifiedPrimaryKeyJoinColumnsSize(), createPrimaryKeyJoinColumn(resourcePrimaryKeyJoinColumns.next()));
+			addSpecifiedPrimaryKeyJoinColumn(specifiedPrimaryKeyJoinColumnsSize(), buildPrimaryKeyJoinColumn(resourcePrimaryKeyJoinColumns.next()));
 		}
 	}
 	
-	protected OrmPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn primaryKeyJoinColumn) {
+	//if there are any specified pkJoinColumns, then no default pkJoinColumns
+	//if the java has specified pkJoinColumns, then those are the default pkJoinColumns
+	//otherwise, just 1 pkJoinColumn, defaults being null if multiple primaryKey columns
+	protected void updateDefaultPrimaryKeyJoinColumns() {
+		ListIterator<OrmPrimaryKeyJoinColumn> defaultPkJoinColumns = defaultPrimaryKeyJoinColumns();
+		ListIterator<JavaPrimaryKeyJoinColumn> javaPkJoinColumns = EmptyListIterator.instance();
+		
+		if (getJavaEntity() != null && !isMetadataComplete() && specifiedPrimaryKeyJoinColumnsSize() == 0) {
+			javaPkJoinColumns = getJavaEntity().primaryKeyJoinColumns();
+		}
+		while (defaultPkJoinColumns.hasNext()) {
+			OrmPrimaryKeyJoinColumn defaultPkJoinColumn = defaultPkJoinColumns.next();
+			if (javaPkJoinColumns.hasNext()) {
+				JavaPrimaryKeyJoinColumn javaPkJoinColumn = javaPkJoinColumns.next();
+				defaultPkJoinColumn.update(new VirtualXmlPrimaryKeyJoinColumn(javaPkJoinColumn));
+			}
+			else {
+				if (defaultPrimaryKeyJoinColumnsSize() == 1) {
+					defaultPkJoinColumn.update(null);
+				}
+				else {
+					removeDefaultPrimaryKeyJoinColumn(defaultPkJoinColumn);
+				}
+			}
+		}
+		
+		while (javaPkJoinColumns.hasNext()) {
+			JavaPrimaryKeyJoinColumn javaPkJoinColumn = javaPkJoinColumns.next();
+			addDefaultPrimaryKeyJoinColumn(buildVirtualPrimaryKeyJoinColumn(javaPkJoinColumn));
+		}
+		
+		if (defaultPrimaryKeyJoinColumnsSize() == 0 && specifiedPrimaryKeyJoinColumnsSize() == 0) {
+			addDefaultPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn(null));
+		}
+	}
+	
+	protected OrmPrimaryKeyJoinColumn buildVirtualPrimaryKeyJoinColumn(JavaPrimaryKeyJoinColumn javaSecondaryTable) {
+		return buildPrimaryKeyJoinColumn(new VirtualXmlPrimaryKeyJoinColumn(javaSecondaryTable));
+	}
+	
+	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn primaryKeyJoinColumn) {
 		OrmPrimaryKeyJoinColumn ormPrimaryKeyJoinColumn = getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		ormPrimaryKeyJoinColumn.initialize(primaryKeyJoinColumn);
 		return ormPrimaryKeyJoinColumn;

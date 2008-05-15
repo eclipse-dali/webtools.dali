@@ -88,6 +88,7 @@ public interface OrmEntity extends OrmTypeMapping, Entity, OrmGeneratorHolder
 	ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns();
 	OrmPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
 	ListIterator<OrmPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns();
+		String DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST = "defaultPrimaryKeyJoinColumnsList";
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns();
 	OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);

@@ -106,6 +106,8 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 	}
 
 	protected abstract void buildSecondaryTablesComposite(Composite container);
+	
+	protected abstract void buildInheritanceComposite(Composite container);
 
 	private PropertyValueModel<Table> buildTableHolder() {
 		return new TransformationPropertyValueModel<Entity, Table>(getSubjectHolder()) {
@@ -167,7 +169,7 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 			JptUiMappingsMessages.EntityComposite_inheritance
 		);
 
-		new InheritanceComposite(this, container);
+		buildInheritanceComposite(container);
 	}
 
 	@Override

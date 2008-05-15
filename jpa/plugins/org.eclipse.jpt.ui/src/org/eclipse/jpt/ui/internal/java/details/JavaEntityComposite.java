@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * The pane used for a Java entity.
  *
- * @see OrmEntity
+ * @see JavaEntity
  * @see BaseJpaUiFactory - The factory creating this pane
  * @see JavaSecondaryTablesComposite
  *
@@ -44,5 +44,10 @@ public class JavaEntityComposite extends AbstractEntityComposite<JavaEntity>
 	@Override
 	protected void buildSecondaryTablesComposite(Composite container) {
 		new JavaSecondaryTablesComposite(this, container);
+	}
+	
+	@Override
+	protected void buildInheritanceComposite(Composite container) {
+		new JavaInheritanceComposite(this, container);
 	}
 }

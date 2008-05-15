@@ -11,43 +11,50 @@ package org.eclipse.jpt.ui.internal.orm.details;
 
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.mappings.details.AbstractEntityComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.AbstractInheritanceComposite;
+import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * The pane used for an ORM entity.
+ * The pane used for java inheritance.
  *
  * @see OrmEntity
- * @see BaseJpaUiFactory - The factory creating this pane
- * @see OrmSecondaryTablesComposite
+ * @see OrmPrimaryKeyJoinColumnsComposite
  *
  * @version 2.0
  * @since 1.0
  */
-public class OrmEntityComposite extends AbstractEntityComposite<OrmEntity>
-{
+public class OrmInheritanceComposite extends AbstractInheritanceComposite<OrmEntity> {
+
 	/**
-	 * Creates a new <code>OrmEntityComposite</code>.
+	 * Creates a new <code>OrmInheritanceComposite</code>.
+	 *
+	 * @param parentPane The parent container of this one
+	 * @param parent The parent container
+	 */
+	public OrmInheritanceComposite(AbstractPane<OrmEntity> parentPane,
+	                            Composite parent) {
+
+		super(parentPane, parent);
+	}
+
+	/**
+	 * Creates a new <code>OrmInheritanceComposite</code>.
 	 *
 	 * @param subjectHolder The holder of the subject <code>OrmEntity</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmEntityComposite(PropertyValueModel<? extends OrmEntity> subjectHolder,
-	                          Composite parent,
-	                          WidgetFactory widgetFactory) {
+	public OrmInheritanceComposite(PropertyValueModel<OrmEntity> subjectHolder,
+	                            Composite parent,
+	                            WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
 
 	@Override
-	protected void buildSecondaryTablesComposite(Composite container) {
-		new OrmSecondaryTablesComposite(this, container);
-	}
-	
-	@Override
-	protected void buildInheritanceComposite(Composite container) {
-		new OrmInheritanceComposite(this, container);
+	protected void buildPrimaryKeyJoinColumnsComposite(Composite container) {
+		new OrmPrimaryKeyJoinColumnsComposite(this, container);
 	}
 }

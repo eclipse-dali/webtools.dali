@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
+ *  Copyright (c) 2007, 2008 Oracle. 
  *  All rights reserved.  This program and the accompanying materials 
  *  are made available under the terms of the Eclipse Public License v1.0 
  *  which accompanies this distribution, and is available at 
@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
@@ -44,6 +45,10 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class OrmEntityTests extends ContextModelTestCase
 {
+	
+	protected static final String CHILD_TYPE_NAME = "AnnotationTestTypeChild";
+	protected static final String FULLY_QUALIFIED_CHILD_TYPE_NAME = PACKAGE_NAME + "." + CHILD_TYPE_NAME;
+
 	public OrmEntityTests(String name) {
 		super(name);
 	}
@@ -134,14 +139,25 @@ public class OrmEntityTests extends ContextModelTestCase
 					sb.append(CR);
 				sb.append("@Entity");
 				sb.append(CR);
-				sb.append("public class ").append("AnnotationTestTypeChild").append(" ");
-				sb.append("extends " + TYPE_NAME + " ");
+				sb.append("public class ").append(CHILD_TYPE_NAME).append(" ");
+				sb.append("extends ").append(TYPE_NAME).append(" ");
 				sb.append("{}").append(CR);
 			}
 		};
 		return this.javaProject.createType(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
-
+	
+	private IType createTestSubTypeUnmapped() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("public class ").append(CHILD_TYPE_NAME).append(" ");
+				sb.append("extends ").append(TYPE_NAME).append(" ");
+				sb.append("{}").append(CR);
+			}
+		};
+		return this.javaProject.createType(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
+	}
 
 	private IType createTestMappedSuperclass() throws Exception {
 		createMappedSuperclassAnnotation();
@@ -1344,6 +1360,106 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertFalse(ormEntity.specifiedPrimaryKeyJoinColumns().hasNext());
 	}
 
+	public void testDefaultPrimaryKeyJoinColumns() throws Exception {
+		createTestType();
+		createTestSubTypeUnmapped();
+		
+		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType childPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_CHILD_TYPE_NAME);
+		childPersistentType.getJavaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
+		
+		persistentType.getAttributeNamed("id").makeSpecified(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		
+		((OrmEntity) persistentType.getMapping()).setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		
+		OrmEntity childEntity = (OrmEntity) childPersistentType.getMapping();
+		
+		assertTrue(childEntity.defaultPrimaryKeyJoinColumns().hasNext());
+		assertEquals("id", childEntity.defaultPrimaryKeyJoinColumns().next().getDefaultName());
+		assertEquals("id", childEntity.defaultPrimaryKeyJoinColumns().next().getDefaultReferencedColumnName());
+		
+		childPersistentType.getJavaPersistentType().setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		persistentType.getJavaPersistentType().setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		
+		assertTrue(childEntity.defaultPrimaryKeyJoinColumns().hasNext());
+		assertEquals("id", childEntity.defaultPrimaryKeyJoinColumns().next().getDefaultName());
+		assertEquals("id", childEntity.defaultPrimaryKeyJoinColumns().next().getDefaultReferencedColumnName());
+		
+		OrmPrimaryKeyJoinColumn specifiedPkJoinColumn = childEntity.addSpecifiedPrimaryKeyJoinColumn(0);
+		specifiedPkJoinColumn.setSpecifiedName("FOO");
+		specifiedPkJoinColumn.setSpecifiedReferencedColumnName("BAR");
+		
+		assertFalse(childEntity.defaultPrimaryKeyJoinColumns().hasNext());
+		
+		//remove the pkJoinColumn from the context mode, verify context model has a default pkJoinColumn
+		childEntity.removeSpecifiedPrimaryKeyJoinColumn(0);
+		assertTrue(childEntity.defaultPrimaryKeyJoinColumns().hasNext());
+		assertEquals("id", childEntity.defaultPrimaryKeyJoinColumns().next().getDefaultName());
+		assertEquals("id", childEntity.defaultPrimaryKeyJoinColumns().next().getDefaultReferencedColumnName());
+
+		
+		childPersistentType.getJavaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
+		persistentType.getJavaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
+		
+		specifiedPkJoinColumn = childEntity.addSpecifiedPrimaryKeyJoinColumn(0);
+		specifiedPkJoinColumn.setSpecifiedName("FOO");
+		specifiedPkJoinColumn.setSpecifiedReferencedColumnName("BAR");		
+		assertFalse(childEntity.defaultPrimaryKeyJoinColumns().hasNext());
+		//now remove the pkJoinColumn from the resource model, verify context model updates and has a default pkJoinColumn
+		((XmlEntity)childEntity.getTypeMappingResource()).getPrimaryKeyJoinColumns().remove(0);
+		assertTrue(childEntity.defaultPrimaryKeyJoinColumns().hasNext());
+		assertEquals("id", childEntity.defaultPrimaryKeyJoinColumns().next().getDefaultName());
+		assertEquals("id", childEntity.defaultPrimaryKeyJoinColumns().next().getDefaultReferencedColumnName());
+	}
+	
+	public void testDefaultPrimaryKeyJoinColumnsFromJava() throws Exception {
+		createTestEntityFieldAccess();
+		createTestSubType();
+		
+		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType childPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_CHILD_TYPE_NAME);
+		
+		
+		((JavaEntity) persistentType.getJavaPersistentType().getMapping()).setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		
+		OrmEntity childEntity = (OrmEntity) childPersistentType.getMapping();
+		
+		assertTrue(childEntity.defaultPrimaryKeyJoinColumns().hasNext());
+		assertEquals("id", childEntity.defaultPrimaryKeyJoinColumns().next().getDefaultName());
+		assertEquals("id", childEntity.defaultPrimaryKeyJoinColumns().next().getDefaultReferencedColumnName());
+		
+		JavaEntity javaEntity = (JavaEntity) childPersistentType.getJavaPersistentType().getMapping();
+		JavaPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn = javaEntity.addSpecifiedPrimaryKeyJoinColumn(0);
+		javaPrimaryKeyJoinColumn.setSpecifiedName("FOO");
+		javaPrimaryKeyJoinColumn.setSpecifiedReferencedColumnName("BAR");
+		
+		JavaPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn2 = javaEntity.addSpecifiedPrimaryKeyJoinColumn(1);
+		javaPrimaryKeyJoinColumn2.setSpecifiedName("FOO2");
+		javaPrimaryKeyJoinColumn2.setSpecifiedReferencedColumnName("BAR2");
+		
+		childPersistentType.getJavaPersistentType().setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		persistentType.getJavaPersistentType().setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		
+		ListIterator<OrmPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns = childEntity.defaultPrimaryKeyJoinColumns();
+		OrmPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn = defaultPrimaryKeyJoinColumns.next();
+		assertEquals("FOO", defaultPrimaryKeyJoinColumn.getName());
+		assertEquals("BAR", defaultPrimaryKeyJoinColumn.getReferencedColumnName());
+		
+		defaultPrimaryKeyJoinColumn = defaultPrimaryKeyJoinColumns.next();
+		assertEquals("FOO2", defaultPrimaryKeyJoinColumn.getName());
+		assertEquals("BAR2", defaultPrimaryKeyJoinColumn.getReferencedColumnName());
+		assertFalse(defaultPrimaryKeyJoinColumns.hasNext());
+		
+		childEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		defaultPrimaryKeyJoinColumns = childEntity.defaultPrimaryKeyJoinColumns();
+		defaultPrimaryKeyJoinColumn = defaultPrimaryKeyJoinColumns.next();
+		assertEquals("id", defaultPrimaryKeyJoinColumn.getDefaultName());
+		assertEquals("id", defaultPrimaryKeyJoinColumn.getDefaultReferencedColumnName());
+		
+		assertFalse(defaultPrimaryKeyJoinColumns.hasNext());
+		
+	}
+	
 //	public void testAddSpecifiedAttributeOverride() throws Exception {
 //		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 //		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
