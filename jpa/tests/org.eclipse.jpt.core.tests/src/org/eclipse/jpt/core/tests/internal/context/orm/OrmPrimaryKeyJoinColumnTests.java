@@ -112,7 +112,7 @@ public class OrmPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		assertEquals("FOO", primaryKeyJoinColumnResource.getName());
 
 		entityResource.getPrimaryKeyJoinColumns().remove(0);
-		assertFalse(ormEntity.primaryKeyJoinColumns().hasNext());
+		assertFalse(ormEntity.specifiedPrimaryKeyJoinColumns().hasNext());
 		assertTrue(entityResource.getPrimaryKeyJoinColumns().isEmpty());
 	}
 	
@@ -164,7 +164,7 @@ public class OrmPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		assertEquals("FOO", primaryKeyJoinColumnResource.getReferencedColumnName());
 
 		entityResource.getPrimaryKeyJoinColumns().remove(0);
-		assertFalse(ormEntity.primaryKeyJoinColumns().hasNext());
+		assertFalse(ormEntity.specifiedPrimaryKeyJoinColumns().hasNext());
 		assertTrue(entityResource.getPrimaryKeyJoinColumns().isEmpty());
 	}
 	
@@ -273,7 +273,7 @@ public class OrmPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		assertEquals("FOO", primaryKeyJoinColumnResource.getColumnDefinition());
 
 		entityResource.getPrimaryKeyJoinColumns().remove(0);
-		assertFalse(ormEntity.primaryKeyJoinColumns().hasNext());
+		assertFalse(ormEntity.specifiedPrimaryKeyJoinColumns().hasNext());
 		assertTrue(entityResource.getPrimaryKeyJoinColumns().isEmpty());
 	}
 	
