@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,6 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -73,34 +72,29 @@ public class TestJavaProject extends TestFacetedProject {
 	 * The source should NOT contain a package declaration;
 	 * it will be added here.
 	 */
-	public IType createType(String packageName, String compilationUnitName, String source) throws CoreException {
-		return this.createType(this.createPackage(packageName), compilationUnitName, new SimpleSourceWriter(source));
+	public ICompilationUnit createCompilationUnit(String packageName, String compilationUnitName, String source) throws CoreException {
+		return this.createCompilationUnit(this.createPackage(packageName), compilationUnitName, new SimpleSourceWriter(source));
 	}
 
 	/**
 	 * The source should NOT contain a package declaration;
 	 * it will be added here.
 	 */
-	public IType createType(String packageName, String compilationUnitName, SourceWriter sourceWriter) throws CoreException {
-		return this.createType(this.createPackage(packageName), compilationUnitName, sourceWriter);
+	public ICompilationUnit createCompilationUnit(String packageName, String compilationUnitName, SourceWriter sourceWriter) throws CoreException {
+		return this.createCompilationUnit(this.createPackage(packageName), compilationUnitName, sourceWriter);
 	}
-	
+
 	/**
 	 * The source should NOT contain a package declaration;
 	 * it will be added here.
 	 */
-	public IType createType(IPackageFragment packageFragment, String compilationUnitName, SourceWriter sourceWriter) throws CoreException {
+	public ICompilationUnit createCompilationUnit(IPackageFragment packageFragment, String compilationUnitName, SourceWriter sourceWriter) throws CoreException {
 		StringBuilder sb = new StringBuilder(2000);
 		sb.append("package ").append(packageFragment.getElementName()).append(";").append(CR);
 		sb.append(CR);
 		sourceWriter.appendSourceTo(sb);
 		String source = sb.toString();
-		ICompilationUnit cu = packageFragment.createCompilationUnit(compilationUnitName, source, false, null);	// false = "no force"
-		return cu.findPrimaryType();
-	}
-
-	public IType findType(String fullyQualifiedName) throws JavaModelException {
-		return this.javaProject.findType(fullyQualifiedName);
+		return packageFragment.createCompilationUnit(compilationUnitName, source, false, null);	// false = "no force"
 	}
 
 

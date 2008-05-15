@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
@@ -38,7 +38,7 @@ public class QueryHintTests extends JavaResourceModelTestCase {
 			"String value();");
 	}
 	
-	private IType createTestNamedQueryWithQueryHints() throws Exception {
+	private ICompilationUnit createTestNamedQueryWithQueryHints() throws Exception {
 		createNamedQueryAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -53,8 +53,8 @@ public class QueryHintTests extends JavaResourceModelTestCase {
 	}
 
 	public void testGetName() throws Exception {
-		IType testType = this.createTestNamedQueryWithQueryHints();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestNamedQueryWithQueryHints();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		QueryHintAnnotation queryHint = namedQuery.hints().next();
@@ -62,8 +62,8 @@ public class QueryHintTests extends JavaResourceModelTestCase {
 	}
 
 	public void testSetName() throws Exception {
-		IType testType = this.createTestNamedQueryWithQueryHints();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestNamedQueryWithQueryHints();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		QueryHintAnnotation queryHint = namedQuery.hints().next();
@@ -72,6 +72,6 @@ public class QueryHintTests extends JavaResourceModelTestCase {
 		queryHint.setName("foo");
 		assertEquals("foo", queryHint.getName());
 		
-		assertSourceContains("@QueryHint(name=\"foo\", value=\"" + QUERY_HINT_VALUE + "\")");
+		assertSourceContains("@QueryHint(name=\"foo\", value=\"" + QUERY_HINT_VALUE + "\")", cu);
 	}
 }

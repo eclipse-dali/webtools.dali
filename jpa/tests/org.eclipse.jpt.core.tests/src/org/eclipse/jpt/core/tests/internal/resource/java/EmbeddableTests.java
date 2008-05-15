@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
 import org.eclipse.jpt.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -24,7 +24,7 @@ public class EmbeddableTests extends JavaResourceModelTestCase {
 		super(name);
 	}
 
-	private IType createTestEmbeddable() throws Exception {
+	private ICompilationUnit createTestEmbeddable() throws Exception {
 		this.createAnnotationAndMembers("Embeddable", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -38,7 +38,7 @@ public class EmbeddableTests extends JavaResourceModelTestCase {
 		});
 	}
 	
-	private IType createTestEmbeddableAndEntity() throws Exception {
+	private ICompilationUnit createTestEmbeddableAndEntity() throws Exception {
 		this.createAnnotationAndMembers("Embeddable", "");
 		this.createAnnotationAndMembers("Entity", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -55,16 +55,16 @@ public class EmbeddableTests extends JavaResourceModelTestCase {
 	}
 
 	public void testEmbeddable() throws Exception {
-		IType testType = this.createTestEmbeddable();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestEmbeddable();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		JavaResourceNode mappingAnnotation = typeResource.getMappingAnnotation();
 		assertTrue(mappingAnnotation instanceof EmbeddableAnnotation);
 	}
 	
 	public void testEmbeddableAndEntity() throws Exception {
-		IType testType = this.createTestEmbeddableAndEntity();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestEmbeddableAndEntity();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		JavaResourceNode mappingAnnotation = typeResource.getMappingAnnotation();
 		assertTrue(mappingAnnotation instanceof EmbeddableAnnotation);

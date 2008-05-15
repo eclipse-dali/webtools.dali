@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.tests.internal.platform;
 
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -78,7 +78,7 @@ public class JpaPlatformTests extends ContextModelTestCase
 		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
 	}
 
-	private IType createTestEntity() throws Exception {
+	private ICompilationUnit createTestEntity() throws Exception {
 		createEntityAnnotation();
 	
 		return this.createTestType(new DefaultAnnotationWriter() {

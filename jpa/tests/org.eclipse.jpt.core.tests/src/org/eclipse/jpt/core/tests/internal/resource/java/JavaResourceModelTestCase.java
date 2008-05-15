@@ -15,8 +15,8 @@ import org.eclipse.core.resources.IResourceProxy;
 import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IElementChangedListener;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.internal.utility.jdt.NullAnnotationEditFormatter;
 import org.eclipse.jpt.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.tests.internal.utility.jdt.AnnotationTestCase;
+import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 public class JavaResourceModelTestCase extends AnnotationTestCase
@@ -71,12 +72,12 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		}
 	}
 
-	protected IType createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		return this.javaProject.createType("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
+	protected ICompilationUnit createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
+		return this.javaProject.createCompilationUnit("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 	
-	protected IType createEnumAndMembers(String enumName, String enumBody) throws Exception {
-		return this.javaProject.createType("javax.persistence", enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
+	protected ICompilationUnit createEnumAndMembers(String enumName, String enumBody) throws Exception {
+		return this.javaProject.createCompilationUnit("javax.persistence", enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
 	}
 
 	//build up a dummy JpaProject that does not have JpaFiles in it and does not update from java changes
@@ -114,23 +115,23 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		return config;
 	}
 
-	protected JavaResourcePersistentType buildJavaTypeResource(IType testType) 
+	protected JavaResourcePersistentType buildJavaTypeResource(ICompilationUnit cu) 
 		throws CoreException {
-		this.javaResourceModel = buildJavaResourceModel(testType);
+		this.javaResourceModel = buildJavaResourceModel(cu);
 		this.javaResourceModel.resolveTypes();
-		return this.javaResourceModel.getResource().getPersistentType();
+		return this.javaResourceModel.getJpaCompilationUnit().getPersistentType();
 	}	
 	
-	protected JavaResourceModel buildJavaResourceModel(IType testType) throws CoreException {
+	protected JavaResourceModel buildJavaResourceModel(ICompilationUnit cu) throws CoreException {
 		if (this.javaResourceModel != null) {
 			throw new IllegalStateException();
 		}
-		IFile file = (IFile) testType.getResource();
+		IFile file = (IFile) cu.getResource();
 		JpaProject jpaProject = buildJpaProject();
 		return new JavaResourceModelImpl(
 			file, 
 			jpaProject.getJpaPlatform().getAnnotationProvider(),
-			MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER,
+			CommandExecutorProvider.Default.instance(),
 			NullAnnotationEditFormatter.instance());
 	}
 

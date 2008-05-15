@@ -1,18 +1,17 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
@@ -47,7 +46,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
 	}
 		
-	private IType createTestEntity() throws Exception {
+	private ICompilationUnit createTestEntity() throws Exception {
 		createEntityAnnotation();
 	
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -62,7 +61,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		});
 	}
 
-	private IType createTestEntityAnnotatedField() throws Exception {
+	private ICompilationUnit createTestEntityAnnotatedField() throws Exception {
 		createEntityAnnotation();
 		this.createAnnotationAndMembers("Id", "");
 	
@@ -83,7 +82,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		});
 	}
 
-	private IType createTestEntityAnnotatedMethod() throws Exception {
+	private ICompilationUnit createTestEntityAnnotatedMethod() throws Exception {
 		createEntityAnnotation();
 		this.createAnnotationAndMembers("Id", "");
 	
@@ -103,7 +102,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 			}
 		});
 	}
-	private IType createTestEntityAnnotatedFieldAndMethod() throws Exception {
+	private ICompilationUnit createTestEntityAnnotatedFieldAndMethod() throws Exception {
 		createEntityAnnotation();
 		this.createAnnotationAndMembers("Id", "");
 	
@@ -129,7 +128,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestSubType() throws Exception {
+	private ICompilationUnit createTestSubType() throws Exception {
 		return this.createTestType(PACKAGE_NAME, "AnnotationTestTypeChild.java", "AnnotationTestTypeChild", new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -147,7 +146,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		});
 	}
 
-	private IType createTestSubTypeWithFieldAnnotation() throws Exception {
+	private ICompilationUnit createTestSubTypeWithFieldAnnotation() throws Exception {
 		return this.createTestType(PACKAGE_NAME, "AnnotationTestTypeChild.java", "AnnotationTestTypeChild", new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -169,7 +168,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestSubTypeWithMethodAnnotation() throws Exception {
+	private ICompilationUnit createTestSubTypeWithMethodAnnotation() throws Exception {
 		return this.createTestType(PACKAGE_NAME, "AnnotationTestTypeChild.java", "AnnotationTestTypeChild", new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -191,7 +190,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestSubTypeNonPersistent() throws Exception {
+	private ICompilationUnit createTestSubTypeNonPersistent() throws Exception {
 		return this.createTestType(PACKAGE_NAME, "AnnotationTestTypeChild.java", "AnnotationTestTypeChild", new DefaultAnnotationWriter() {
 			@Override
 			public void appendExtendsImplementsTo(StringBuilder sb) {
@@ -200,7 +199,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		});
 	}
 
-	private IType createTestSubTypePersistentExtendsNonPersistent() throws Exception {
+	private ICompilationUnit createTestSubTypePersistentExtendsNonPersistent() throws Exception {
 		return this.createTestType(PACKAGE_NAME, "AnnotationTestTypeChild2.java", "AnnotationTestTypeChild2", new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

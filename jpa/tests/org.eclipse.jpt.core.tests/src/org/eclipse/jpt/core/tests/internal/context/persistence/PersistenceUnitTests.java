@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.tests.internal.context.persistence;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
@@ -1049,7 +1049,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
 	}
 
-	private IType createTestEntity() throws Exception {
+	private ICompilationUnit createTestEntity() throws Exception {
 		createEntityAnnotation();
 	
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -1064,7 +1064,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestEntityWithPersistentInnerClass() throws Exception {
+	private ICompilationUnit createTestEntityWithPersistentInnerClass() throws Exception {
 		createEntityAnnotation();
 	
 		return this.createTestType(new DefaultAnnotationWriter() {

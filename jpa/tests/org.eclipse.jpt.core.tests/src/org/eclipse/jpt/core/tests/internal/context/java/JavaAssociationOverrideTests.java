@@ -1,18 +1,18 @@
 /*******************************************************************************
- *  Copyright (c) 2008 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.IType;
+
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
@@ -54,7 +54,7 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 			"JoinColumn[] joinColumns();");		
 	}
 		
-	private IType createTestMappedSuperclass() throws Exception {
+	private ICompilationUnit createTestMappedSuperclass() throws Exception {
 		createMappedSuperclassAnnotation();
 		
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -78,7 +78,7 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 		});
 	}
 
-	private IType createTestEntityWithAssociationOverride() throws Exception {
+	private ICompilationUnit createTestEntityWithAssociationOverride() throws Exception {
 		createEntityAnnotation();
 		createAssociationOverrideAnnotation();
 	
@@ -95,7 +95,7 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 		});
 	}
 
-	private IType createTestSubType() throws Exception {
+	private void createTestSubType() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
 				sb.append(CR);
@@ -110,7 +110,7 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		return this.javaProject.createType(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 
 

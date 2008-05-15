@@ -1,18 +1,17 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeOverride;
@@ -87,7 +86,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 			"Column column();");		
 	}
 	
-	private IType createTestEntityEmbeddedMapping() throws Exception {
+	private ICompilationUnit createTestEntityEmbeddedMapping() throws Exception {
 		createEntityAnnotation();
 		createEmbeddedAnnotation();
 		createAttributeOverrideAnnotation();
@@ -115,7 +114,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		});
 	}	
 	
-	private IType createTestEmbeddableAddress() throws Exception {
+	private void createTestEmbeddableAddress() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
 				sb.append(CR);
@@ -148,9 +147,9 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 				sb.append("    private int zip;").append(CR);
 				sb.append(CR);
 				sb.append("}").append(CR);
-		}
+			}
 		};
-		return this.javaProject.createType(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}	
 
 	public void testUpdateName() throws Exception {

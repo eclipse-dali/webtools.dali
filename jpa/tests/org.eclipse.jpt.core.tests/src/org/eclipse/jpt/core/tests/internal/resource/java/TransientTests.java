@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -24,7 +24,7 @@ public class TransientTests extends JavaResourceModelTestCase {
 		super(name);
 	}
 
-	private IType createTestTransient() throws Exception {
+	private ICompilationUnit createTestTransient() throws Exception {
 		this.createAnnotationAndMembers("Transient", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -39,8 +39,8 @@ public class TransientTests extends JavaResourceModelTestCase {
 	}
 
 	public void testTransient() throws Exception {
-		IType testType = this.createTestTransient();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestTransient();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		JavaResourceNode mappingAnnotation = attributeResource.getMappingAnnotation();

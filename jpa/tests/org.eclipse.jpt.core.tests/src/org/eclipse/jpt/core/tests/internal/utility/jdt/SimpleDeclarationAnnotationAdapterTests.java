@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.utility.jdt;
 
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.Expression;
@@ -31,15 +32,15 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 	}
 
 	private void createAnnotation(String annotationName) throws Exception {
-		this.javaProject.createType("annot", annotationName + ".java", "public @interface " + annotationName + " {}");
+		this.javaProject.createCompilationUnit("annot", annotationName + ".java", "public @interface " + annotationName + " {}");
 	}
 
 	public void testAnnotation1() throws Exception {
 		this.createAnnotation("Foo");
-		this.createTestType("@annot.Foo");
+		ICompilationUnit cu = this.createTestType("@annot.Foo");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation(this.idField().getAstRoot());
+		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 		assertEquals("annot.Foo", annotation.getTypeName().getFullyQualifiedName());
 		assertTrue(annotation.isMarkerAnnotation());
@@ -47,10 +48,10 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 	public void testAnnotation2() throws Exception {
 		this.createAnnotation("Foo");
-		this.createTestType("@annot.Foo(1) @annot.Foo(2)");
+		ICompilationUnit cu = this.createTestType("@annot.Foo(1) @annot.Foo(2)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation(this.idField().getAstRoot());
+		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 		assertEquals("annot.Foo", annotation.getTypeName().getFullyQualifiedName());
 		assertTrue(annotation.isSingleMemberAnnotation());
@@ -61,10 +62,10 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 	public void testAnnotation3() throws Exception {
 		this.createAnnotation("Foo");
-		this.createTestType("annot.Foo", "@Foo");
+		ICompilationUnit cu = this.createTestType("annot.Foo", "@Foo");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation(this.idField().getAstRoot());
+		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 		assertEquals("Foo", annotation.getTypeName().getFullyQualifiedName());
 		assertTrue(annotation.isMarkerAnnotation());
@@ -72,101 +73,101 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 	public void testAnnotationNull1() throws Exception {
 		this.createAnnotation("Foo");
-		this.createTestType();
+		ICompilationUnit cu = this.createTestType();
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation(this.idField().getAstRoot());
+		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 	}
 
 	public void testAnnotationNull2() throws Exception {
 		this.createAnnotation("Foo");
 		this.createAnnotation("Fop");
-		this.createTestType("@annot.Fop");
+		ICompilationUnit cu = this.createTestType("@annot.Fop");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation(this.idField().getAstRoot());
+		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
-		this.assertSourceContains("@annot.Fop");
+		this.assertSourceContains("@annot.Fop", cu);
 	}
 
 	public void testAnnotationNull3() throws Exception {
 		this.createAnnotation("Foo");
-		this.createTestType("@annot.Foo");
+		ICompilationUnit cu = this.createTestType("@annot.Foo");
 		// un-qualified name
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("Foo");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation(this.idField().getAstRoot());
+		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
-		this.assertSourceContains("@annot.Foo");
+		this.assertSourceContains("@annot.Foo", cu);
 	}
 
 	public void testRemoveAnnotation1() throws Exception {
 		this.createAnnotation("Foo");
-		this.createTestType("@annot.Foo");
-		this.assertSourceContains("@annot.Foo");
+		ICompilationUnit cu = this.createTestType("@annot.Foo");
+		this.assertSourceContains("@annot.Foo", cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation(this.idField().getAstRoot());
+		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
 		aa.removeAnnotation();
-		this.assertSourceDoesNotContain("@annot.Foo");
+		this.assertSourceDoesNotContain("@annot.Foo", cu);
 	}
 
 	public void testRemoveAnnotation2() throws Exception {
 		this.createAnnotation("Foo");
-		this.createTestType("@annot.Foo(1) @annot.Foo(2)");
-		this.assertSourceContains("@annot.Foo(1) @annot.Foo(2)");
+		ICompilationUnit cu = this.createTestType("@annot.Foo(1) @annot.Foo(2)");
+		this.assertSourceContains("@annot.Foo(1) @annot.Foo(2)", cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation(this.idField().getAstRoot());
+		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
 		aa.removeAnnotation();
-		this.assertSourceDoesNotContain("@annot.Foo(1)");
-		this.assertSourceContains("@annot.Foo(2)");
+		this.assertSourceDoesNotContain("@annot.Foo(1)", cu);
+		this.assertSourceContains("@annot.Foo(2)", cu);
 	}
 
 	public void testNewMarkerAnnotation1() throws Exception {
 		this.createAnnotation("Foo");
-		this.createTestType();
-		this.assertSourceDoesNotContain("@annot.Foo");
+		ICompilationUnit cu = this.createTestType();
+		this.assertSourceDoesNotContain("@annot.Foo", cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation(this.idField().getAstRoot());
+		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
 		aa.newMarkerAnnotation();
-		this.assertSourceContains("import annot.Foo;");
-		this.assertSourceContains("@Foo");
+		this.assertSourceContains("import annot.Foo;", cu);
+		this.assertSourceContains("@Foo", cu);
 	}
 
 	public void testNewMarkerAnnotation2() throws Exception {
 		this.createAnnotation("Foo");
-		this.createTestType("@annot.Foo(88)");
+		ICompilationUnit cu = this.createTestType("@annot.Foo(88)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation(this.idField().getAstRoot());
+		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
 		aa.newMarkerAnnotation();
-		this.assertSourceContains("import annot.Foo;");
-		this.assertSourceContains("@Foo");
-		this.assertSourceDoesNotContain("@annot.Foo(88)");
+		this.assertSourceContains("import annot.Foo;", cu);
+		this.assertSourceContains("@Foo", cu);
+		this.assertSourceDoesNotContain("@annot.Foo(88)", cu);
 	}
 
 	public void testNewSingleMemberAnnotation() throws Exception {
 		this.createAnnotation("Foo");
-		this.createTestType();
-		this.assertSourceDoesNotContain("@Foo");
-		this.idField().edit(new Member.Editor() {
+		ICompilationUnit cu = this.createTestType();
+		this.assertSourceDoesNotContain("@Foo", cu);
+		this.idField(cu).edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
 				SimpleDeclarationAnnotationAdapterTests.this.editNewSingleMemberAnnotation(declaration);
 			}
 		});
-		this.assertSourceContains("import annot.Foo;");
-		this.assertSourceContains("@Foo(\"test string literal\")");
+		this.assertSourceContains("import annot.Foo;", cu);
+		this.assertSourceContains("@Foo(\"test string literal\")", cu);
 	}
 
 	void editNewSingleMemberAnnotation(ModifiedDeclaration declaration) {
@@ -181,15 +182,15 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 	public void testNewNormalAnnotation() throws Exception {
 		this.createAnnotation("Foo");
-		this.createTestType();
-		this.assertSourceDoesNotContain("@Foo");
-		this.idField().edit(new Member.Editor() {
+		ICompilationUnit cu = this.createTestType();
+		this.assertSourceDoesNotContain("@Foo", cu);
+		this.idField(cu).edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
 				SimpleDeclarationAnnotationAdapterTests.this.editNewNormalAnnotation(declaration);
 			}
 		});
-		this.assertSourceContains("import annot.Foo;");
-		this.assertSourceContains("@Foo(bar=\"test string literal\")");
+		this.assertSourceContains("import annot.Foo;", cu);
+		this.assertSourceContains("@Foo(bar=\"test string literal\")", cu);
 	}
 
 	void editNewNormalAnnotation(ModifiedDeclaration declaration) {

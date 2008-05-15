@@ -1,18 +1,17 @@
 /*******************************************************************************
- *  Copyright (c) 2008 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BasicMapping;
@@ -43,7 +42,7 @@ public class OrmPersistentAttributeTests extends ContextModelTestCase
 		persistenceResource().save(null);
 	}
 	
-	private IType createTestTypeNullAttributeMapping() throws Exception {
+	private ICompilationUnit createTestTypeNullAttributeMapping() throws Exception {
 	
 		return this.createTestType(new DefaultAnnotationWriter() {			
 			@Override
@@ -71,7 +70,7 @@ public class OrmPersistentAttributeTests extends ContextModelTestCase
 		this.createAnnotationAndMembers("OneToOne", "");		
 	}
 	
-	private IType createTestEntityIdMapping() throws Exception {
+	private ICompilationUnit createTestEntityIdMapping() throws Exception {
 		createEntityAnnotation();
 		createIdAnnotation();
 		createColumnAnnotation();
@@ -93,7 +92,7 @@ public class OrmPersistentAttributeTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestEntityOneToOneMapping() throws Exception {
+	private ICompilationUnit createTestEntityOneToOneMapping() throws Exception {
 		createEntityAnnotation();
 		createOneToOneAnnotation();
 	

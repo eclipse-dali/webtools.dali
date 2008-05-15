@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -23,7 +23,7 @@ public class LobTests extends JavaResourceModelTestCase {
 		super(name);
 	}
 
-	private IType createTestLob() throws Exception {
+	private ICompilationUnit createTestLob() throws Exception {
 		this.createAnnotationAndMembers("Lob", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -38,8 +38,8 @@ public class LobTests extends JavaResourceModelTestCase {
 	}
 	
 	public void testLob() throws Exception {
-		IType testType = this.createTestLob();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestLob();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		LobAnnotation lob = (LobAnnotation) attributeResource.getAnnotation(JPA.LOB);

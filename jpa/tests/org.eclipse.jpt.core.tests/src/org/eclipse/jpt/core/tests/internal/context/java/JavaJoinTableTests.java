@@ -1,18 +1,17 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.UniqueConstraint;
@@ -54,7 +53,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 			"String[] columnNames(); ");		
 	}
 
-	private IType createTestEntityWithManyToMany() throws Exception {
+	private ICompilationUnit createTestEntityWithManyToMany() throws Exception {
 		createEntityAnnotation();
 		createManyToManyAnnotation();
 		createJoinTableAnnotation();
@@ -75,7 +74,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestEntityWithValidManyToMany() throws Exception {
+	private ICompilationUnit createTestEntityWithValidManyToMany() throws Exception {
 		createEntityAnnotation();
 		createManyToManyAnnotation();
 		createJoinTableAnnotation();
@@ -97,7 +96,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		});
 	}
 
-	private IType createTargetEntity() throws Exception {
+	private void createTargetEntity() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
 				sb.append(CR);
@@ -119,7 +118,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 				sb.append(CR);
 			}
 		};
-		return this.javaProject.createType(PACKAGE_NAME, "Project.java", sourceWriter);
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Project.java", sourceWriter);
 	}
 	public void testUpdateSpecifiedName() throws Exception {
 		createTestEntityWithManyToMany();

@@ -10,7 +10,8 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
+
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
@@ -26,7 +27,7 @@ public class EntityTests extends JavaResourceModelTestCase {
 		super(name);
 	}
 
-	private IType createTestEntity() throws Exception {
+	private ICompilationUnit createTestEntity() throws Exception {
 		this.createAnnotationAndMembers("Entity", "String name();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -40,7 +41,7 @@ public class EntityTests extends JavaResourceModelTestCase {
 		});
 	}
 	
-	private IType createTestEntityWithName() throws Exception {
+	private ICompilationUnit createTestEntityWithName() throws Exception {
 		this.createAnnotationAndMembers("Entity", "String name();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -54,7 +55,7 @@ public class EntityTests extends JavaResourceModelTestCase {
 		});
 	}
 	
-	private IType createTestMappedSuperclassAndEntity() throws Exception {
+	private ICompilationUnit createTestMappedSuperclassAndEntity() throws Exception {
 		this.createAnnotationAndMembers("MappedSuperclass", "");
 		this.createAnnotationAndMembers("Entity", "String name();");
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -71,8 +72,8 @@ public class EntityTests extends JavaResourceModelTestCase {
 	}
 
 	public void testGetName() throws Exception {
-		IType testType = this.createTestEntityWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestEntityWithName();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		EntityAnnotation entity = (EntityAnnotation) typeResource.getMappingAnnotation(JPA.ENTITY);
 		assertTrue(entity != null);
@@ -80,8 +81,8 @@ public class EntityTests extends JavaResourceModelTestCase {
 	}
 
 	public void testGetNameNull() throws Exception {
-		IType testType = this.createTestEntity();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestEntity();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		EntityAnnotation entity = (EntityAnnotation) typeResource.getMappingAnnotation(JPA.ENTITY);
 		assertTrue(entity != null);
@@ -89,20 +90,20 @@ public class EntityTests extends JavaResourceModelTestCase {
 	}
 
 	public void testSetName() throws Exception {
-		IType testType = this.createTestEntity();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestEntity();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		EntityAnnotation entity = (EntityAnnotation) typeResource.getMappingAnnotation(JPA.ENTITY);
 		assertNull(entity.getName());
 		entity.setName("Foo");
 		assertEquals("Foo", entity.getName());
 		
-		assertSourceContains("@Entity(name=\"Foo\")");
+		assertSourceContains("@Entity(name=\"Foo\")", cu);
 	}
 	
 	public void testSetNameNull() throws Exception {
-		IType testType = this.createTestEntityWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestEntityWithName();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		EntityAnnotation entity = (EntityAnnotation) typeResource.getMappingAnnotation(JPA.ENTITY);
 		assertEquals(ENTITY_NAME, entity.getName());
@@ -110,13 +111,13 @@ public class EntityTests extends JavaResourceModelTestCase {
 		entity.setName(null);
 		assertNull(entity.getName());
 		
-		assertSourceContains("@Entity");
-		assertSourceDoesNotContain("@Entity(name=\"Foo\")");
+		assertSourceContains("@Entity", cu);
+		assertSourceDoesNotContain("@Entity(name=\"Foo\")", cu);
 	}
 	
 	public void testMappedSuperclassAndEntity() throws Exception {
-		IType testType = this.createTestMappedSuperclassAndEntity();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestMappedSuperclassAndEntity();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		JavaResourceNode mappingAnnotation = typeResource.getMappingAnnotation();
 		assertTrue(mappingAnnotation instanceof EntityAnnotation);

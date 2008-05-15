@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.IdAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
@@ -24,7 +24,7 @@ public class IdTests extends JavaResourceModelTestCase {
 		super(name);
 	}
 
-	private IType createTestId() throws Exception {
+	private ICompilationUnit createTestId() throws Exception {
 		this.createAnnotationAndMembers("Id", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -39,8 +39,8 @@ public class IdTests extends JavaResourceModelTestCase {
 	}
 
 	public void testId() throws Exception {
-		IType testType = this.createTestId();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestId();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		JavaResourceNode mappingAnnotation = attributeResource.getMappingAnnotation();

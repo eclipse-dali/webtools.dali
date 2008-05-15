@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.EnumType;
 import org.eclipse.jpt.core.resource.java.EnumeratedAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -24,7 +24,7 @@ public class EnumeratedTests extends JavaResourceModelTestCase {
 		super(name);
 	}
 
-	private IType createTestEnumerated() throws Exception {
+	private ICompilationUnit createTestEnumerated() throws Exception {
 		this.createAnnotationAndMembers("Enumerated", "EnumType value();");
 		this.createEnumAndMembers("EnumType", "ORDINAL, STRING");
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -39,7 +39,7 @@ public class EnumeratedTests extends JavaResourceModelTestCase {
 		});
 	}
 	
-	private IType createTestEnumeratedWithValue() throws Exception {
+	private ICompilationUnit createTestEnumeratedWithValue() throws Exception {
 		this.createAnnotationAndMembers("Enumerated", "EnumType value();");
 		this.createEnumAndMembers("EnumType", "ORDINAL, STRING");
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -55,8 +55,8 @@ public class EnumeratedTests extends JavaResourceModelTestCase {
 	}
 
 	public void testEnumerated() throws Exception {
-		IType testType = this.createTestEnumerated();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestEnumerated();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) attributeResource.getAnnotation(JPA.ENUMERATED);
@@ -64,8 +64,8 @@ public class EnumeratedTests extends JavaResourceModelTestCase {
 	}
 	
 	public void testGetValue() throws Exception {
-		IType testType = this.createTestEnumeratedWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestEnumeratedWithValue();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) attributeResource.getAnnotation(JPA.ENUMERATED);
@@ -73,19 +73,19 @@ public class EnumeratedTests extends JavaResourceModelTestCase {
 	}
 	
 	public void testSetValue() throws Exception {
-		IType testType = this.createTestEnumerated();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestEnumerated();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 
 		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) attributeResource.getAnnotation(JPA.ENUMERATED);
 
 		enumerated.setValue(EnumType.STRING);
 		
-		assertSourceContains("@Enumerated(STRING)");
+		assertSourceContains("@Enumerated(STRING)", cu);
 		
 		enumerated.setValue(null);
 		
-		assertSourceDoesNotContain("@Enumerated");
+		assertSourceDoesNotContain("@Enumerated", cu);
 	}
 
 }

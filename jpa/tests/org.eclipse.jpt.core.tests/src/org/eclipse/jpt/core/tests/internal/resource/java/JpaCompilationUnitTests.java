@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.resource.java.EntityAnnotation;
@@ -37,15 +37,10 @@ public class JpaCompilationUnitTests extends AnnotationTestCase {
 	}
 	
 	private void createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		this.javaProject.createType("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
+		this.javaProject.createCompilationUnit("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 	
-	private ICompilationUnit createTestCompilationUnit() throws Exception {
-		IType type = createTestEntity();
-		return type.getCompilationUnit();
-	}
-
-	private IType createTestEntity() throws Exception {
+	private ICompilationUnit createTestEntity() throws Exception {
 		this.createAnnotationAndMembers("Entity", "String name();");
 
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -64,11 +59,11 @@ public class JpaCompilationUnitTests extends AnnotationTestCase {
 		JpaProject jpaProject = ((TestJpaProject) this.javaProject).getJpaProject();
 		JpaFile jpaFile = jpaProject.getJpaFile((IFile) testCompilationUnit.getResource());
 		JavaResourceModel javaResourceModel = (JavaResourceModel) jpaFile.getResourceModel();
-		return javaResourceModel.getResource();
+		return javaResourceModel.getJpaCompilationUnit();
 	}
 	
 	public void testGetPersistentType() throws Exception {
-		ICompilationUnit compilationUnit = this.createTestCompilationUnit();
+		ICompilationUnit compilationUnit = this.createTestEntity();
 		JpaCompilationUnit jpaCompilationUnit = getJpaCompilationUnitResource(compilationUnit);
 		
 		assertTrue(jpaCompilationUnit.getPersistentType().getMappingAnnotation() instanceof EntityAnnotation);

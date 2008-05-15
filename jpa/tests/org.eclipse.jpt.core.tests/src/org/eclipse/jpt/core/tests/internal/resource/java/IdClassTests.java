@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -28,7 +28,7 @@ public class IdClassTests extends JavaResourceModelTestCase {
 		this.createAnnotationAndMembers("IdClass", "Class value();");
 	}
 	
-	private IType createTestIdClass() throws Exception {
+	private ICompilationUnit createTestIdClass() throws Exception {
 		createIdClassAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -42,7 +42,7 @@ public class IdClassTests extends JavaResourceModelTestCase {
 		});
 	}
 	
-	private IType createTestIdClassWithValue() throws Exception {
+	private ICompilationUnit createTestIdClassWithValue() throws Exception {
 		createIdClassAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -57,8 +57,8 @@ public class IdClassTests extends JavaResourceModelTestCase {
 	}
 
 	public void testIdClass() throws Exception {
-		IType testType = this.createTestIdClass();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestIdClass();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.getAnnotation(JPA.ID_CLASS);
 		assertNotNull(idClass);
@@ -66,16 +66,16 @@ public class IdClassTests extends JavaResourceModelTestCase {
 	}
 
 	public void testGetValue() throws Exception {
-		IType testType = this.createTestIdClassWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		ICompilationUnit cu = this.createTestIdClassWithValue();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
 		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.getAnnotation(JPA.ID_CLASS);
 		assertEquals(ID_CLASS_VALUE, idClass.getValue());
 	}
 
 	public void testSetValue() throws Exception {
-		IType testType = this.createTestIdClassWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		ICompilationUnit cu = this.createTestIdClassWithValue();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
 		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.getAnnotation(JPA.ID_CLASS);
 		assertEquals(ID_CLASS_VALUE, idClass.getValue());
@@ -83,19 +83,19 @@ public class IdClassTests extends JavaResourceModelTestCase {
 		idClass.setValue("foo");
 		assertEquals("foo", idClass.getValue());
 		
-		assertSourceContains("@IdClass(foo.class)");
+		assertSourceContains("@IdClass(foo.class)", cu);
 		
 		idClass.setValue(null);
 		
-		assertSourceDoesNotContain("@IdClass");
+		assertSourceDoesNotContain("@IdClass", cu);
 				
 		idClass = (IdClassAnnotation) typeResource.getAnnotation(JPA.ID_CLASS);
 		assertNull(idClass);
 	}
 	
 	public void testGetFullyQualifiedClass() throws Exception {
-		IType testType = this.createTestIdClassWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		ICompilationUnit cu = this.createTestIdClassWithValue();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 
 		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.getAnnotation(JPA.ID_CLASS);
 		assertNotNull(idClass.getValue());
@@ -105,7 +105,7 @@ public class IdClassTests extends JavaResourceModelTestCase {
 		idClass.setValue(TYPE_NAME);
 				
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, idClass.getFullyQualifiedClass());				
-		assertSourceContains("@IdClass(" + TYPE_NAME + ".class)");
+		assertSourceContains("@IdClass(" + TYPE_NAME + ".class)", cu);
 	}
 
 }

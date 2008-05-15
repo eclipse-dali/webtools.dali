@@ -1,18 +1,17 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
@@ -67,7 +66,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		this.createAnnotationAndMembers("OneToOne", "");		
 	}
 
-	private IType createTestTargetEntityAddress() throws Exception {
+	private void createTestTargetEntityAddress() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
 				sb.append(CR);
@@ -94,13 +93,13 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 				sb.append("    private int zip;").append(CR);
 				sb.append(CR);
 				sb.append("}").append(CR);
-		}
+			}
 		};
-		return this.javaProject.createType(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 
 	
-	private IType createTestEntityWithOneToOneMapping() throws Exception {
+	private ICompilationUnit createTestEntityWithOneToOneMapping() throws Exception {
 		createEntityAnnotation();
 		createOneToOneAnnotation();
 	
@@ -121,7 +120,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestEntityWithValidOneToOneMapping() throws Exception {
+	private ICompilationUnit createTestEntityWithValidOneToOneMapping() throws Exception {
 		createEntityAnnotation();
 		createOneToOneAnnotation();
 	
@@ -146,7 +145,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestEntityWithCollectionOneToOneMapping() throws Exception {
+	private ICompilationUnit createTestEntityWithCollectionOneToOneMapping() throws Exception {
 		createEntityAnnotation();
 		createOneToOneAnnotation();
 	
@@ -171,7 +170,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestEntityWithGenericizedCollectionOneToOneMapping() throws Exception {
+	private ICompilationUnit createTestEntityWithGenericizedCollectionOneToOneMapping() throws Exception {
 		createEntityAnnotation();
 		createOneToOneAnnotation();
 	

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.InheritanceAnnotation;
 import org.eclipse.jpt.core.resource.java.InheritanceType;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -23,7 +23,7 @@ public class InheritanceTests extends JavaResourceModelTestCase {
 		super(name);
 	}
 
-	private IType createTestInheritance() throws Exception {
+	private ICompilationUnit createTestInheritance() throws Exception {
 		this.createAnnotationAndMembers("Inheritance", "InheritanceType strategy() default SINGLE_TABLE;");
 		this.createEnumAndMembers("InheritanceType", "SINGLE_TABLE, JOINED, TABLE_PER_CLASS");
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -38,7 +38,7 @@ public class InheritanceTests extends JavaResourceModelTestCase {
 		});
 	}
 	
-	private IType createTestInheritanceWithStrategy() throws Exception {
+	private ICompilationUnit createTestInheritanceWithStrategy() throws Exception {
 		this.createAnnotationAndMembers("Inheritance", "InheritanceType strategy() default SINGLE_TABLE;");
 		this.createEnumAndMembers("InheritanceType", "SINGLE_TABLE, JOINED, TABLE_PER_CLASS");
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -54,33 +54,33 @@ public class InheritanceTests extends JavaResourceModelTestCase {
 	}
 
 	public void testInheritance() throws Exception {
-		IType testType = this.createTestInheritance();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestInheritance();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		InheritanceAnnotation inheritance = (InheritanceAnnotation) typeResource.getAnnotation(JPA.INHERITANCE);
 		assertNotNull(inheritance);
 	}
 	
 	public void testGetStrategy() throws Exception {
-		IType testType = this.createTestInheritanceWithStrategy();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestInheritanceWithStrategy();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		InheritanceAnnotation inheritance = (InheritanceAnnotation) typeResource.getAnnotation(JPA.INHERITANCE);
 		assertEquals(InheritanceType.JOINED, inheritance.getStrategy());
 	}
 	
 	public void testSetStrategy() throws Exception {
-		IType testType = this.createTestInheritance();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestInheritance();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 
 		InheritanceAnnotation inheritance = (InheritanceAnnotation) typeResource.getAnnotation(JPA.INHERITANCE);
 		inheritance.setStrategy(InheritanceType.TABLE_PER_CLASS);
 		
-		assertSourceContains("@Inheritance(strategy=TABLE_PER_CLASS)");
+		assertSourceContains("@Inheritance(strategy=TABLE_PER_CLASS)", cu);
 		
 		inheritance.setStrategy(null);
 		
-		assertSourceDoesNotContain("@Inheritance");
+		assertSourceDoesNotContain("@Inheritance", cu);
 	}
 
 }

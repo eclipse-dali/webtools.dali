@@ -1,18 +1,17 @@
 /*******************************************************************************
- *  Copyright (c) 2007, 2008 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
@@ -74,7 +73,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		this.createAnnotationAndMembers("MappedSuperclass", "");		
 	}
 	
-	private IType createTestEntityDefaultFieldAccess() throws Exception {
+	private ICompilationUnit createTestEntityDefaultFieldAccess() throws Exception {
 		createEntityAnnotation();
 	
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -89,7 +88,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestEntityFieldAccess() throws Exception {
+	private ICompilationUnit createTestEntityFieldAccess() throws Exception {
 		createEntityAnnotation();
 		createIdAnnotation();
 	
@@ -109,7 +108,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestEntityPropertyAccess() throws Exception {
+	private ICompilationUnit createTestEntityPropertyAccess() throws Exception {
 		createEntityAnnotation();
 		createIdAnnotation();
 		
@@ -129,7 +128,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		});
 	}
 
-	private IType createTestSubType() throws Exception {
+	private void createTestSubType() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
 				sb.append(CR);
@@ -144,10 +143,10 @@ public class OrmEntityTests extends ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		return this.javaProject.createType(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 	
-	private IType createTestSubTypeUnmapped() throws Exception {
+	private void createTestSubTypeUnmapped() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
 				sb.append(CR);
@@ -156,10 +155,11 @@ public class OrmEntityTests extends ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		return this.javaProject.createType(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 
-	private IType createTestMappedSuperclass() throws Exception {
+
+	private ICompilationUnit createTestMappedSuperclass() throws Exception {
 		createMappedSuperclassAnnotation();
 		
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -189,7 +189,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestAbstractType() throws Exception {
+	private void createTestAbstractType() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
 				sb.append(CR);
@@ -197,7 +197,7 @@ public class OrmEntityTests extends ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		return this.javaProject.createType(PACKAGE_NAME, FILE_NAME, sourceWriter);
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, FILE_NAME, sourceWriter);
 	}
 
 	public void testUpdateSpecifiedName() throws Exception {

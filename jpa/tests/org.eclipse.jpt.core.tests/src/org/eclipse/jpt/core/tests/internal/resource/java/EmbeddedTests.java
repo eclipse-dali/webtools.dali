@@ -10,7 +10,8 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
+
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.EmbeddedAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
@@ -24,7 +25,7 @@ public class EmbeddedTests extends JavaResourceModelTestCase {
 		super(name);
 	}
 
-	private IType createTestEmbedded() throws Exception {
+	private ICompilationUnit createTestEmbedded() throws Exception {
 		this.createAnnotationAndMembers("Embedded", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -39,8 +40,8 @@ public class EmbeddedTests extends JavaResourceModelTestCase {
 	}
 	
 	public void testEmbedded() throws Exception {
-		IType testType = this.createTestEmbedded();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestEmbedded();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		JavaResourceNode mappingAnnotation = attributeResource.getMappingAnnotation();

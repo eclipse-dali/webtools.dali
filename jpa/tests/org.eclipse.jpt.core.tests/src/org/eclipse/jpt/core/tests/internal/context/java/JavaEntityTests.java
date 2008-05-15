@@ -1,18 +1,17 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
@@ -142,7 +141,7 @@ public class JavaEntityTests extends ContextModelTestCase
 	}
 
 	
-	private IType createTestEntity() throws Exception {
+	private ICompilationUnit createTestEntity() throws Exception {
 		createEntityAnnotation();
 	
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -157,7 +156,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestAbstractEntity() throws Exception {
+	private void createTestAbstractEntity() throws Exception {
 		createEntityAnnotation();
 	
 		SourceWriter sourceWriter = new SourceWriter() {
@@ -173,10 +172,10 @@ public class JavaEntityTests extends ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		return this.javaProject.createType(PACKAGE_NAME, FILE_NAME, sourceWriter);
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, FILE_NAME, sourceWriter);
 	}
 
-	private IType createTestEntityAnnotationOnProperty() throws Exception {
+	private ICompilationUnit createTestEntityAnnotationOnProperty() throws Exception {
 		createEntityAnnotation();
 		createIdAnnotation();
 	
@@ -197,7 +196,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		});
 	}
 
-	private IType createTestMappedSuperclass() throws Exception {
+	private ICompilationUnit createTestMappedSuperclass() throws Exception {
 		createMappedSuperclassAnnotation();
 		
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -227,7 +226,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		});
 	}
 
-	private IType createTestEntityWithName() throws Exception {
+	private ICompilationUnit createTestEntityWithName() throws Exception {
 		createEntityAnnotation();
 	
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -242,7 +241,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestEntityWithTable() throws Exception {
+	private ICompilationUnit createTestEntityWithTable() throws Exception {
 		createEntityAnnotation();
 		createTableAnnotation();
 	
@@ -259,7 +258,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		});
 	}
 
-	private IType createTestSubType() throws Exception {
+	private void createTestSubType() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
 				sb.append(CR);
@@ -274,10 +273,10 @@ public class JavaEntityTests extends ContextModelTestCase
 				sb.append("{}").append(CR);
 			}
 		};
-		return this.javaProject.createType(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 
-	private IType createTestEntityWithInheritance() throws Exception {
+	private ICompilationUnit createTestEntityWithInheritance() throws Exception {
 		createEntityAnnotation();
 		createInheritanceAnnotation();
 	
@@ -294,7 +293,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestEntityWithDiscriminatorValue() throws Exception {
+	private ICompilationUnit createTestEntityWithDiscriminatorValue() throws Exception {
 		createEntityAnnotation();
 		createDiscriminatorValueAnnotation();
 	
@@ -311,7 +310,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestEntityWithSecondaryTable() throws Exception {
+	private ICompilationUnit createTestEntityWithSecondaryTable() throws Exception {
 		createEntityAnnotation();
 		createSecondaryTableAnnotation();
 	
@@ -328,7 +327,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		});
 	}
 
-	private IType createTestEntityWithSecondaryTables() throws Exception {
+	private ICompilationUnit createTestEntityWithSecondaryTables() throws Exception {
 		createEntityAnnotation();
 		createSecondaryTablesAnnotation();
 	
@@ -653,15 +652,15 @@ public class JavaEntityTests extends ContextModelTestCase
 	}	
 	
 	public void testSetTableNameWithNullTable() throws Exception {
-		createTestEntity();
+		ICompilationUnit cu = createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		Table table = javaEntity().getTable();
 		assertEquals(TYPE_NAME, table.getName());
-		assertSourceDoesNotContain("@Table");
+		assertSourceDoesNotContain("@Table", cu);
 		
 		table.setSpecifiedName(TABLE_NAME);
-		assertSourceContains("@Table(name=\"" + TABLE_NAME + "\")");
+		assertSourceContains("@Table(name=\"" + TABLE_NAME + "\")", cu);
 		
 		assertEquals(TABLE_NAME, javaEntity().getTableName());
 		assertEquals(TABLE_NAME, table.getName());

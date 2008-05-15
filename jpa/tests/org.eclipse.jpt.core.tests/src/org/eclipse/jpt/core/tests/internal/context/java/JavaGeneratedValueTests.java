@@ -1,17 +1,17 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
+
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.context.GeneratedValue;
 import org.eclipse.jpt.core.context.GenerationType;
 import org.eclipse.jpt.core.context.IdMapping;
@@ -36,7 +36,7 @@ public class JavaGeneratedValueTests extends ContextModelTestCase
 			"String generator() default \"\"; ");		
 	}
 
-	private IType createTestEntityWithGeneratedValue() throws Exception {
+	private ICompilationUnit createTestEntityWithGeneratedValue() throws Exception {
 		createEntityAnnotation();
 		createGeneratedValueAnnotation();
 	

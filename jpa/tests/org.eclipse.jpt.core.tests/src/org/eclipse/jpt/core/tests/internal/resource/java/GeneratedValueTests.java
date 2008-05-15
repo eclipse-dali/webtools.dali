@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.core.resource.java.GenerationType;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -34,7 +34,7 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 		createGenerationTypeEnum();
 	}
 	
-	private IType createTestGeneratedValue() throws Exception {
+	private ICompilationUnit createTestGeneratedValue() throws Exception {
 		createGeneratedValueAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -48,7 +48,7 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 		});
 	}
 	
-	private IType createTestGeneratedValueWithGenerator() throws Exception {
+	private ICompilationUnit createTestGeneratedValueWithGenerator() throws Exception {
 		createGeneratedValueAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -62,7 +62,7 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 		});
 	}
 	
-	private IType createTestGeneratedValueWithStrategy() throws Exception {
+	private ICompilationUnit createTestGeneratedValueWithStrategy() throws Exception {
 		createGeneratedValueAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -77,8 +77,8 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 	}
 
 	public void testGeneratedValue() throws Exception {
-		IType testType = this.createTestGeneratedValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestGeneratedValue();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getAnnotation(JPA.GENERATED_VALUE);
@@ -86,8 +86,8 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 	}
 
 	public void testGetGenerator() throws Exception {
-		IType testType = this.createTestGeneratedValueWithGenerator();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		ICompilationUnit cu = this.createTestGeneratedValueWithGenerator();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getAnnotation(JPA.GENERATED_VALUE);
@@ -95,8 +95,8 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 	}
 
 	public void testSetGenerator() throws Exception {
-		IType testType = this.createTestGeneratedValueWithGenerator();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		ICompilationUnit cu = this.createTestGeneratedValueWithGenerator();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getAnnotation(JPA.GENERATED_VALUE);
@@ -105,18 +105,18 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 		generatedValue.setGenerator("foo");
 		assertEquals("foo", generatedValue.getGenerator());
 		
-		assertSourceContains("@GeneratedValue(generator=\"foo\")");
+		assertSourceContains("@GeneratedValue(generator=\"foo\")", cu);
 		
 		generatedValue.setGenerator(null);
 		assertNull(generatedValue.getGenerator());
 		
-		assertSourceDoesNotContain("generator");
-		assertSourceContains("@GeneratedValue");
+		assertSourceDoesNotContain("generator", cu);
+		assertSourceContains("@GeneratedValue", cu);
 	}
 	
 	public void testGetStrategy() throws Exception {
-		IType testType = this.createTestGeneratedValueWithStrategy();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		ICompilationUnit cu = this.createTestGeneratedValueWithStrategy();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getAnnotation(JPA.GENERATED_VALUE);
@@ -124,8 +124,8 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 	}
 
 	public void testSetStrategy() throws Exception {
-		IType testType = this.createTestGeneratedValueWithStrategy();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		ICompilationUnit cu = this.createTestGeneratedValueWithStrategy();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getAnnotation(JPA.GENERATED_VALUE);
@@ -134,11 +134,11 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 		generatedValue.setStrategy(GenerationType.TABLE);
 		assertEquals(GenerationType.TABLE, generatedValue.getStrategy());
 		
-		assertSourceContains("@GeneratedValue(strategy=TABLE)");
+		assertSourceContains("@GeneratedValue(strategy=TABLE)", cu);
 		
 		generatedValue.setStrategy(null);
 		assertNull(generatedValue.getStrategy());
-		assertSourceDoesNotContain("strategy");
-		assertSourceContains("@GeneratedValue");
+		assertSourceDoesNotContain("strategy", cu);
+		assertSourceContains("@GeneratedValue", cu);
 	}
 }

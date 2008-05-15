@@ -1,18 +1,17 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
@@ -62,7 +61,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		this.createAnnotationAndMembers("ManyToOne", "");		
 	}
 
-	private IType createTestTargetEntityAddress() throws Exception {
+	private void createTestTargetEntityAddress() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
 				sb.append(CR);
@@ -91,10 +90,10 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 				sb.append("}").append(CR);
 		}
 		};
-		return this.javaProject.createType(PACKAGE_NAME, "Address.java", sourceWriter);
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
 
-	private IType createTestEntityWithManyToOneMapping() throws Exception {
+	private ICompilationUnit createTestEntityWithManyToOneMapping() throws Exception {
 		createEntityAnnotation();
 		createManyToOneAnnotation();
 	
@@ -115,7 +114,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestEntityWithValidManyToOneMapping() throws Exception {
+	private ICompilationUnit createTestEntityWithValidManyToOneMapping() throws Exception {
 		createEntityAnnotation();
 		createManyToOneAnnotation();
 	
@@ -140,7 +139,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestEntityWithCollectionManyToOneMapping() throws Exception {
+	private ICompilationUnit createTestEntityWithCollectionManyToOneMapping() throws Exception {
 		createEntityAnnotation();
 		createManyToOneAnnotation();
 	
@@ -165,7 +164,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		});
 	}
 	
-	private IType createTestEntityWithGenericizedCollectionManyToOneMapping() throws Exception {
+	private ICompilationUnit createTestEntityWithGenericizedCollectionManyToOneMapping() throws Exception {
 		createEntityAnnotation();
 		createManyToOneAnnotation();
 	

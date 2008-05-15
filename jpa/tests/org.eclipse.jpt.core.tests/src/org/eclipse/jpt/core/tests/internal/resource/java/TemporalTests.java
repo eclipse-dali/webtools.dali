@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -24,7 +24,7 @@ public class TemporalTests extends JavaResourceModelTestCase {
 		super(name);
 	}
 
-	private IType createTestTemporal() throws Exception {
+	private ICompilationUnit createTestTemporal() throws Exception {
 		this.createAnnotationAndMembers("Temporal", "TemporalType value();");
 		this.createEnumAndMembers("TemporalType", "DATE, TIME, TIMESTAMP");
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -39,7 +39,7 @@ public class TemporalTests extends JavaResourceModelTestCase {
 		});
 	}
 	
-	private IType createTestTemporalWithValue() throws Exception {
+	private ICompilationUnit createTestTemporalWithValue() throws Exception {
 		this.createAnnotationAndMembers("Temporal", "TemporalType value();");
 		this.createEnumAndMembers("TemporalType", "DATE, TIME, TIMESTAMP");
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -55,8 +55,8 @@ public class TemporalTests extends JavaResourceModelTestCase {
 	}
 
 	public void testTemporal() throws Exception {
-		IType testType = this.createTestTemporal();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestTemporal();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.getAnnotation(JPA.TEMPORAL);
@@ -64,8 +64,8 @@ public class TemporalTests extends JavaResourceModelTestCase {
 	}
 	
 	public void testGetValue() throws Exception {
-		IType testType = this.createTestTemporalWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestTemporalWithValue();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.getAnnotation(JPA.TEMPORAL);
@@ -73,19 +73,19 @@ public class TemporalTests extends JavaResourceModelTestCase {
 	}
 	
 	public void testSetValue() throws Exception {
-		IType testType = this.createTestTemporal();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestTemporal();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 
 		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.getAnnotation(JPA.TEMPORAL);
 
 		temporal.setValue(TemporalType.TIME);
 		
-		assertSourceContains("@Temporal(TIME)");
+		assertSourceContains("@Temporal(TIME)", cu);
 		
 		temporal.setValue(null);
 		
-		assertSourceDoesNotContain("@Temporal");
+		assertSourceDoesNotContain("@Temporal", cu);
 	}
 
 }

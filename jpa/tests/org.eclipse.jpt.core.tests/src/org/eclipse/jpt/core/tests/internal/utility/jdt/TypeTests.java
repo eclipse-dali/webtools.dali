@@ -9,14 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.utility.jdt;
 
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTType;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.ICompilationUnit;
 
 public class TypeTests extends AnnotationTestCase {
-
-	private IType jdtType;
-	private JDTType testType;
-
 
 	public TypeTests(String name) {
 		super(name);
@@ -25,19 +21,31 @@ public class TypeTests extends AnnotationTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.jdtType = this.createTestType();
-		this.testType = this.buildType(this.jdtType);
+	}
+
+	protected ICompilationUnit createCompilationUnit(String source) throws CoreException {
+		return this.javaProject.createCompilationUnit(PACKAGE_NAME, FILE_NAME, source);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		this.testType = null;
-		this.jdtType = null;
 		super.tearDown();
 	}
 
-	public void testName() throws Exception {
-		assertEquals(TYPE_NAME, this.testType.getName());
+	public void test1() throws Exception {
+		ICompilationUnit jdtCompilationUnit = this.createCompilationUnit(this.buildTest1Source());
+		assertNotNull(jdtCompilationUnit);
+	}
+
+	private String buildTest1Source() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("public class ").append(TYPE_NAME).append(" {").append(CR);
+		sb.append("    private int id;").append(CR);
+		sb.append("    public int getId() {").append(CR);
+		sb.append("        return this.id;").append(CR);
+		sb.append("    }").append(CR);
+		sb.append("}").append(CR);
+		return sb.toString();
 	}
 
 }

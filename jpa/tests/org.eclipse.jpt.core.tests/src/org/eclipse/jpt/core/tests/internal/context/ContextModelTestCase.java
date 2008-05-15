@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -183,11 +184,11 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		waitForWorkspaceJobs();
 	}
 	
-	protected IType createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		return this.javaProject.createType("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
+	protected ICompilationUnit createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
+		return this.javaProject.createCompilationUnit("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 	
-	protected IType createEnumAndMembers(String enumName, String enumBody) throws Exception {
-		return this.javaProject.createType("javax.persistence", enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
+	protected ICompilationUnit createEnumAndMembers(String enumName, String enumBody) throws Exception {
+		return this.javaProject.createCompilationUnit("javax.persistence", enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
 	}
 }

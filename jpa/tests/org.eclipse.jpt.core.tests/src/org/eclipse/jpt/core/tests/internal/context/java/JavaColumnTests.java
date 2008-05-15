@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Column;
@@ -50,7 +50,7 @@ public class JavaColumnTests extends ContextModelTestCase
 			"int scale() default 0;");		
 	}
 
-	private IType createTestEntity() throws Exception {
+	private ICompilationUnit createTestEntity() throws Exception {
 		createEntityAnnotation();
 
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -65,7 +65,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		});
 	}
 
-	private IType createTestEntityWithDefaultBasicColumn() throws Exception {
+	private ICompilationUnit createTestEntityWithDefaultBasicColumn() throws Exception {
 		createEntityAnnotation();
 		createColumnAnnotation();
 	
@@ -86,7 +86,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		});
 	}
 
-	private IType createTestEntityWithBasicColumnTableSet() throws Exception {
+	private ICompilationUnit createTestEntityWithBasicColumnTableSet() throws Exception {
 		createEntityAnnotation();
 		createColumnAnnotation();
 		createBasicAnnotation();
@@ -108,7 +108,7 @@ public class JavaColumnTests extends ContextModelTestCase
 			}
 		});
 	}
-	private IType createTestEntityWithBasicColumnColumnDefinitionSet() throws Exception {
+	private ICompilationUnit createTestEntityWithBasicColumnColumnDefinitionSet() throws Exception {
 		createEntityAnnotation();
 		createColumnAnnotation();
 		createBasicAnnotation();

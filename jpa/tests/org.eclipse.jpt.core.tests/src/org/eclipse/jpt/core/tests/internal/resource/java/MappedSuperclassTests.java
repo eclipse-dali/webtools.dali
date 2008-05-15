@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
@@ -24,7 +24,7 @@ public class MappedSuperclassTests extends JavaResourceModelTestCase {
 		super(name);
 	}
 
-	private IType createTestMappedSuperclass() throws Exception {
+	private ICompilationUnit createTestMappedSuperclass() throws Exception {
 		this.createAnnotationAndMembers("MappedSuperclass", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -38,7 +38,7 @@ public class MappedSuperclassTests extends JavaResourceModelTestCase {
 		});
 	}
 	
-	private IType createTestMappedSuperclassAndEntity() throws Exception {
+	private ICompilationUnit createTestMappedSuperclassAndEntity() throws Exception {
 		this.createAnnotationAndMembers("MappedSuperclass", "");
 		this.createAnnotationAndMembers("Entity", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -55,16 +55,16 @@ public class MappedSuperclassTests extends JavaResourceModelTestCase {
 	}
 
 	public void testMappedSuperclass() throws Exception {
-		IType testType = this.createTestMappedSuperclass();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestMappedSuperclass();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		JavaResourceNode mappingAnnotation = typeResource.getMappingAnnotation();
 		assertTrue(mappingAnnotation instanceof MappedSuperclassAnnotation);
 	}
 	
 	public void testMappedSuperclassAndEntity() throws Exception {
-		IType testType = this.createTestMappedSuperclassAndEntity();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestMappedSuperclassAndEntity();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		JavaResourceNode mappingAnnotation = typeResource.getMappingAnnotation();
 		assertTrue(mappingAnnotation instanceof EntityAnnotation);

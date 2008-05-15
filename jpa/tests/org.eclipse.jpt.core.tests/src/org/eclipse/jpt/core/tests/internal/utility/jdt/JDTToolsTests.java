@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.utility.jdt;
 
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTFieldAttribute;
@@ -24,23 +25,23 @@ public class JDTToolsTests extends AnnotationTestCase {
 	}
 
 	private void createEnumAndMembers(String enumName, String enumBody) throws Exception {
-		this.javaProject.createType("enums", enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
+		this.javaProject.createCompilationUnit("enums", enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
 	}
 
 	private void createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		this.javaProject.createType("annot", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
+		this.javaProject.createCompilationUnit("annot", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 
 	public void testResolveEnum1() throws Exception {
 		this.createEnumAndMembers("TestEnum", "FOO, BAR, BAZ");
 		this.createAnnotationAndMembers("TestAnnotation", "TestEnum foo();");
 
-		this.createTestType("@annot.TestAnnotation(foo=enums.TestEnum.BAZ)");
+		ICompilationUnit cu = this.createTestType("@annot.TestAnnotation(foo=enums.TestEnum.BAZ)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.TestAnnotation");
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
-		JDTFieldAttribute field = this.idField();
+		JDTFieldAttribute field = this.idField(cu);
 
-		String actual = JDTTools.resolveEnum((Name) daea.getExpression(field.getModifiedDeclaration(this.idField().getAstRoot())));
+		String actual = JDTTools.resolveEnum((Name) daea.getExpression(field.getModifiedDeclaration(this.buildASTRoot(cu))));
 		assertEquals("enums.TestEnum.BAZ", actual);
 	}
 
@@ -48,12 +49,12 @@ public class JDTToolsTests extends AnnotationTestCase {
 		this.createEnumAndMembers("TestEnum", "FOO, BAR, BAZ");
 		this.createAnnotationAndMembers("TestAnnotation", "TestEnum foo();");
 
-		this.createTestType("static enums.TestEnum.BAZ", "@annot.TestAnnotation(foo=BAZ)");
+		ICompilationUnit cu = this.createTestType("static enums.TestEnum.BAZ", "@annot.TestAnnotation(foo=BAZ)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.TestAnnotation");
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
-		JDTFieldAttribute field = this.idField();
+		JDTFieldAttribute field = this.idField(cu);
 
-		String actual = JDTTools.resolveEnum((Name) daea.getExpression(field.getModifiedDeclaration(this.idField().getAstRoot())));
+		String actual = JDTTools.resolveEnum((Name) daea.getExpression(field.getModifiedDeclaration(this.buildASTRoot(cu))));
 		assertEquals("enums.TestEnum.BAZ", actual);
 	}
 
@@ -61,12 +62,12 @@ public class JDTToolsTests extends AnnotationTestCase {
 		this.createEnumAndMembers("TestEnum", "FOO, BAR, BAZ");
 		this.createAnnotationAndMembers("TestAnnotation", "TestEnum foo();");
 
-		this.createTestType("static enums.TestEnum.*", "@annot.TestAnnotation(foo=BAZ)");
+		ICompilationUnit cu = this.createTestType("static enums.TestEnum.*", "@annot.TestAnnotation(foo=BAZ)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.TestAnnotation");
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
-		JDTFieldAttribute field = this.idField();
+		JDTFieldAttribute field = this.idField(cu);
 
-		String actual = JDTTools.resolveEnum((Name)daea.getExpression(field.getModifiedDeclaration(this.idField().getAstRoot())));
+		String actual = JDTTools.resolveEnum((Name)daea.getExpression(field.getModifiedDeclaration(this.buildASTRoot(cu))));
 		assertEquals("enums.TestEnum.BAZ", actual);
 	}
 
@@ -74,12 +75,12 @@ public class JDTToolsTests extends AnnotationTestCase {
 		this.createEnumAndMembers("TestEnum", "FOO, BAR, BAZ");
 		this.createAnnotationAndMembers("TestAnnotation", "TestEnum foo();");
 
-		this.createTestType("enums.TestEnum", "@annot.TestAnnotation(foo=TestEnum.BAZ)");
+		ICompilationUnit cu = this.createTestType("enums.TestEnum", "@annot.TestAnnotation(foo=TestEnum.BAZ)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.TestAnnotation");
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
-		JDTFieldAttribute field = this.idField();
+		JDTFieldAttribute field = this.idField(cu);
 
-		String actual = JDTTools.resolveEnum((Name) daea.getExpression(field.getModifiedDeclaration(this.idField().getAstRoot())));
+		String actual = JDTTools.resolveEnum((Name) daea.getExpression(field.getModifiedDeclaration(this.buildASTRoot(cu))));
 		assertEquals("enums.TestEnum.BAZ", actual);
 	}
 

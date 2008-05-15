@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.core.resource.java.FetchType;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -24,7 +24,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 		super(name);
 	}
 
-	private IType createTestBasic() throws Exception {
+	private ICompilationUnit createTestBasic() throws Exception {
 		this.createAnnotationAndMembers("Basic", "boolean optional() default true;");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -38,7 +38,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 		});
 	}
 	
-	private IType createTestBasicWithOptional() throws Exception {
+	private ICompilationUnit createTestBasicWithOptional() throws Exception {
 		this.createAnnotationAndMembers("Basic", "boolean optional() default true;");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -52,7 +52,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 		});
 	}
 	
-	private IType createTestBasicWithFetch() throws Exception {
+	private ICompilationUnit createTestBasicWithFetch() throws Exception {
 		this.createAnnotationAndMembers("Basic", "boolean optional() default true; FetchType fetch() default FetchType.EAGER;");
 		this.createEnumAndMembers("FetchType", "EAGER, LAZY");
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -68,8 +68,8 @@ public class BasicTests extends JavaResourceModelTestCase {
 	}
 
 	public void testBasic() throws Exception {
-		IType testType = this.createTestBasic();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestBasic();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
@@ -77,8 +77,8 @@ public class BasicTests extends JavaResourceModelTestCase {
 	}
 
 	public void testGetOptional() throws Exception {
-		IType testType = this.createTestBasicWithOptional();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		ICompilationUnit cu = this.createTestBasicWithOptional();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
@@ -86,8 +86,8 @@ public class BasicTests extends JavaResourceModelTestCase {
 	}
 
 	public void testSetOptional() throws Exception {
-		IType testType = this.createTestBasicWithOptional();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		ICompilationUnit cu = this.createTestBasicWithOptional();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
@@ -96,12 +96,12 @@ public class BasicTests extends JavaResourceModelTestCase {
 		basic.setOptional(false);
 		assertFalse(basic.getOptional());
 		
-		assertSourceContains("@Basic(optional=false)");
+		assertSourceContains("@Basic(optional=false)", cu);
 	}
 	
 	public void testSetOptionalNull() throws Exception {
-		IType testType = this.createTestBasicWithOptional();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		ICompilationUnit cu = this.createTestBasicWithOptional();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
@@ -110,13 +110,13 @@ public class BasicTests extends JavaResourceModelTestCase {
 		basic.setOptional(null);
 		assertNull(basic.getOptional());
 		
-		assertSourceContains("@Basic");
-		assertSourceDoesNotContain("optional");
+		assertSourceContains("@Basic", cu);
+		assertSourceDoesNotContain("optional", cu);
 	}
 	
 	public void testGetFetch() throws Exception {
-		IType testType = this.createTestBasicWithFetch();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		ICompilationUnit cu = this.createTestBasicWithFetch();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
@@ -124,8 +124,8 @@ public class BasicTests extends JavaResourceModelTestCase {
 	}
 
 	public void testSetFetch() throws Exception {
-		IType testType = this.createTestBasicWithFetch();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		ICompilationUnit cu = this.createTestBasicWithFetch();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
@@ -134,12 +134,12 @@ public class BasicTests extends JavaResourceModelTestCase {
 		basic.setFetch(FetchType.LAZY);
 		assertEquals(FetchType.LAZY, basic.getFetch());
 		
-		assertSourceContains("@Basic(fetch=LAZY)");
+		assertSourceContains("@Basic(fetch=LAZY)", cu);
 	}
 	
 	public void testSetFetchNull() throws Exception {
-		IType testType = this.createTestBasicWithFetch();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		ICompilationUnit cu = this.createTestBasicWithFetch();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
@@ -148,7 +148,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 		basic.setFetch(null);
 		assertNull(basic.getFetch());
 		
-		assertSourceContains("@Basic");
-		assertSourceDoesNotContain("fetch");
+		assertSourceContains("@Basic", cu);
+		assertSourceDoesNotContain("fetch", cu);
 	}
 }

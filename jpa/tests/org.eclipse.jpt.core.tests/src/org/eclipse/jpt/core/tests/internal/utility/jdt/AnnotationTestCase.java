@@ -12,14 +12,15 @@ package org.eclipse.jpt.core.tests.internal.utility.jdt;
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
-import junit.framework.TestCase;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.Annotation;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
@@ -29,15 +30,17 @@ import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTFieldAttribute;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTMethodAttribute;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTType;
 import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.utility.CommandExecutor;
-import org.eclipse.jpt.utility.CommandExecutorProvider;
+import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
+
+import junit.framework.TestCase;
 
 /**
  * Provide an easy(?) way to build an annotated source file.
@@ -48,16 +51,16 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 public abstract class AnnotationTestCase extends TestCase {
 	protected TestJavaProject javaProject;
 
-	protected static final String CR = System.getProperty("line.separator");
-	protected static final String SEP = File.separator;
-	protected static final String PROJECT_NAME = "AnnotationTestProject";
-	protected static final String PACKAGE_NAME = "test";
-	protected static final String TYPE_NAME = "AnnotationTestType";
-	protected static final String FULLY_QUALIFIED_TYPE_NAME = PACKAGE_NAME + "." + TYPE_NAME;
-	protected static final String FILE_NAME = TYPE_NAME + ".java";
-	protected static final IPath FILE_PATH = new Path("src" + SEP + PACKAGE_NAME + SEP + FILE_NAME);
+	public static final String CR = System.getProperty("line.separator");
+	public static final String SEP = File.separator;
+	public static final String PROJECT_NAME = "AnnotationTestProject";
+	public static final String PACKAGE_NAME = "test";
+	public static final String TYPE_NAME = "AnnotationTestType";
+	public static final String FULLY_QUALIFIED_TYPE_NAME = PACKAGE_NAME + "." + TYPE_NAME;
+	public static final String FILE_NAME = TYPE_NAME + ".java";
+	public static final IPath FILE_PATH = new Path("src" + SEP + PACKAGE_NAME + SEP + FILE_NAME);
 
-	protected static final String[] EMPTY_STRING_ARRAY = new String[0];
+	public static final String[] EMPTY_STRING_ARRAY = new String[0];
 
 
 	// ********** TestCase behavior **********
@@ -93,9 +96,9 @@ public abstract class AnnotationTestCase extends TestCase {
 		super.tearDown();
 	}
 
-	protected void dumpSource() throws Exception {
+	protected void dumpSource(ICompilationUnit cu) throws Exception {
 		System.out.println("*** " + this.getName() + " ****");
-		System.out.println(this.source());
+		System.out.println(this.getSource(cu));
 		System.out.println();
 	}
 
@@ -105,14 +108,14 @@ public abstract class AnnotationTestCase extends TestCase {
 	/**
 	 * create an un-annotated type
 	 */
-	protected IType createTestType() throws CoreException {
+	protected ICompilationUnit createTestType() throws CoreException {
 		return this.createTestType(new DefaultAnnotationWriter());
 	}
 
 	/**
 	 * shortcut for simply adding an annotation to the 'id' field
 	 */
-	protected IType createTestType(final String annotationImport, final String idFieldAnnotation) throws CoreException {
+	protected ICompilationUnit createTestType(final String annotationImport, final String idFieldAnnotation) throws CoreException {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -131,17 +134,17 @@ public abstract class AnnotationTestCase extends TestCase {
 	/**
 	 * shortcut for simply adding a fully-qualified annotation to the 'id' field
 	 */
-	protected IType createTestType(final String idFieldAnnotation) throws CoreException {
+	protected ICompilationUnit createTestType(final String idFieldAnnotation) throws CoreException {
 		return this.createTestType(null, idFieldAnnotation);
 	}
 
 	
-	protected IType createTestType(AnnotationWriter annotationWriter) throws CoreException {
-		return this.javaProject.createType(PACKAGE_NAME, FILE_NAME, this.createSourceWriter(annotationWriter));
+	protected ICompilationUnit createTestType(AnnotationWriter annotationWriter) throws CoreException {
+		return this.javaProject.createCompilationUnit(PACKAGE_NAME, FILE_NAME, this.createSourceWriter(annotationWriter));
 	}
 	
-	protected IType createTestType(String packageName, String fileName, String typeName, AnnotationWriter annotationWriter) throws CoreException {
-		return this.javaProject.createType(packageName, fileName, this.createSourceWriter(annotationWriter, typeName));
+	protected ICompilationUnit createTestType(String packageName, String fileName, String typeName, AnnotationWriter annotationWriter) throws CoreException {
+		return this.javaProject.createCompilationUnit(packageName, fileName, this.createSourceWriter(annotationWriter, typeName));
 	}
 
 	protected SourceWriter createSourceWriter(AnnotationWriter annotationWriter) {
@@ -218,74 +221,84 @@ public abstract class AnnotationTestCase extends TestCase {
 	protected TestJavaProject getJavaProject() {
 		return this.javaProject;
 	}
+
+	protected JDTType testType(ICompilationUnit cu) {
+		return this.buildType(TYPE_NAME, cu);
+	}
+
+	protected JDTType buildType(String name, ICompilationUnit cu) {
+		return this.buildType(name, 1, cu);
+	}
+
+	protected JDTType buildType(String name, int occurrence, ICompilationUnit cu) {
+		return this.buildType(null, name, 1, cu);
+	}
+
+	protected JDTType buildType(Type declaringType, String name, int occurrence, ICompilationUnit cu) {
+		return new JDTType(declaringType, name, occurrence, cu);
+	}
+
+	protected JDTFieldAttribute idField(ICompilationUnit cu) {
+		return this.buildField("id", cu);
+	}
+
+	protected JDTFieldAttribute nameField(ICompilationUnit cu) {
+		return this.buildField("name", cu);
+	}
+
+	protected JDTFieldAttribute buildField(String name, ICompilationUnit cu) {
+		return this.buildField(name, 1, cu);
+	}
+
+	protected JDTFieldAttribute buildField(String name, int occurrence, ICompilationUnit cu) {
+		return this.buildField(this.testType(cu), name, occurrence, cu);
+	}
+
+	protected JDTFieldAttribute buildField(Type declaringType, String name, int occurrence, ICompilationUnit cu) {
+		return new JDTFieldAttribute(declaringType, name, occurrence, cu);
+	}
+
+	protected JDTMethodAttribute idGetMethod(ICompilationUnit cu) {
+		return this.buildMethod("getId", cu);
+	}
 	
-	protected IType jdtType() throws JavaModelException {
-		return this.javaProject.findType(FULLY_QUALIFIED_TYPE_NAME);
+	protected JDTMethodAttribute idSetMethod(ICompilationUnit cu) {
+		return this.buildMethod("setId", new String[] {"int"}, cu);
 	}
 
-	protected JDTType testType() throws JavaModelException {
-		return this.buildType(this.jdtType());
+	protected JDTMethodAttribute nameGetMethod(ICompilationUnit cu) {
+		return this.buildMethod("getName", cu);
 	}
 
-	protected JDTType buildType(IType jdtType) {
-		return new JDTType(jdtType, this.modifySharedDocumentCommandExecutorProvider());
+	protected JDTMethodAttribute buildMethod(String name, ICompilationUnit cu) {
+		return this.buildMethod(name, EMPTY_STRING_ARRAY, cu);
 	}
 
-	protected JDTFieldAttribute idField() throws JavaModelException {
-		return this.fieldNamed("id");
+	protected JDTMethodAttribute buildMethod(String name, String[] parameterTypeNames, ICompilationUnit cu) {
+		return this.buildMethod(name, parameterTypeNames, 1, cu);
 	}
 
-	protected JDTFieldAttribute nameField() throws JavaModelException {
-		return this.fieldNamed("name");
+	protected JDTMethodAttribute buildMethod(String name, String[] parameterTypeNames, int occurrence, ICompilationUnit cu) {
+		return new JDTMethodAttribute(this.testType(cu), name, parameterTypeNames, occurrence, cu);
 	}
 
-	protected JDTFieldAttribute fieldNamed(String fieldName) throws JavaModelException {
-		return new JDTFieldAttribute(this.jdtType().getField(fieldName), this.modifySharedDocumentCommandExecutorProvider());
+	protected JDTMethodAttribute buildMethod(Type declaringType, String name, String[] parameterTypeNames, int occurrence, ICompilationUnit cu) {
+		return new JDTMethodAttribute(declaringType, name, parameterTypeNames, occurrence, cu);
 	}
 
-	protected JDTMethodAttribute idGetMethod() throws JavaModelException {
-		return this.methodNamed("getId");
-	}
-	
-	protected JDTMethodAttribute idSetMethod() throws JavaModelException {
-		return this.method("setId", new String[] {"I"});
+	protected String getSource(ICompilationUnit cu) throws JavaModelException {
+		return cu.getBuffer().getContents();
 	}
 
-	protected JDTMethodAttribute nameGetMethod() throws JavaModelException {
-		return this.methodNamed("getName");
+	protected CompilationUnit buildASTRoot(ICompilationUnit cu) {
+		return JDTTools.buildASTRoot(cu);
 	}
 
-	protected JDTMethodAttribute methodNamed(String methodName) throws JavaModelException {
-		return this.method(methodName, EMPTY_STRING_ARRAY);
-	}
-
-	protected JDTMethodAttribute method(String methodName, String[] parameterTypeSignatures) throws JavaModelException {
-		return new JDTMethodAttribute(this.jdtType().getMethod(methodName, parameterTypeSignatures), this.modifySharedDocumentCommandExecutorProvider());
-	}
-
-	protected String source() throws JavaModelException {
-		return this.jdtType().getOpenable().getBuffer().getContents();
-	}
-
-	/**
-	 * the tests will be run "headless" so use the default "shared document modifier"
-	 */
-	protected CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
-		return MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER;
-	}
-
-	protected static final CommandExecutorProvider MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER =
-		new CommandExecutorProvider() {
-			public CommandExecutor getCommandExecutor() {
-				return CommandExecutor.Default.instance();
-			}
-		};
-		
 
 	// ********** test validation **********
 
-	protected void assertSourceContains(String s) throws JavaModelException {
-		String source = this.source();
+	protected void assertSourceContains(String s, ICompilationUnit cu) throws JavaModelException {
+		String source = this.getSource(cu);
 		boolean found = source.indexOf(s) > -1;
 		if ( ! found) {
 			String msg = "source does not contain the expected string: " + s + " (see System console)";
@@ -297,8 +310,8 @@ public abstract class AnnotationTestCase extends TestCase {
 		}
 	}
 
-	protected void assertSourceDoesNotContain(String s) throws JavaModelException {
-		String source = this.source();
+	protected void assertSourceDoesNotContain(String s, ICompilationUnit cu) throws JavaModelException {
+		String source = this.getSource(cu);
 		int pos = source.indexOf(s);
 		if (pos != -1) {
 			String msg = "unexpected string in source (position: " + pos + "): " + s + " (see System console)";
@@ -338,7 +351,7 @@ public abstract class AnnotationTestCase extends TestCase {
 	/**
 	 * check for null member value pair
 	 */
-	protected Expression valueInternal(MemberValuePair pair) {
+	protected Expression value_(MemberValuePair pair) {
 		return (pair == null) ? null : pair.getValue();
 	}
 
@@ -348,7 +361,7 @@ public abstract class AnnotationTestCase extends TestCase {
 	 * Return null if the annotation has no such element.
 	 */
 	protected Expression annotationElementValue(NormalAnnotation annotation, String elementName) {
-		return this.valueInternal(this.memberValuePair(annotation, elementName));
+		return this.value_(this.memberValuePair(annotation, elementName));
 	}
 
 	/**

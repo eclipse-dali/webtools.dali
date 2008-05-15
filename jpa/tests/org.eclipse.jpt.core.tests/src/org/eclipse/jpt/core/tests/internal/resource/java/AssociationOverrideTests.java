@@ -10,7 +10,8 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
+
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -44,7 +45,7 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 				"String table() default \"\";");	
 	}
 
-	private IType createTestAssociationOverrideOnField() throws Exception {
+	private ICompilationUnit createTestAssociationOverrideOnField() throws Exception {
 		createAssociationOverrideAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -58,7 +59,7 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 		});
 	}
 	
-	private IType createTestAssociationOverrideWithJoinColumns() throws Exception {
+	private ICompilationUnit createTestAssociationOverrideWithJoinColumns() throws Exception {
 		createAssociationOverrideAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -73,8 +74,8 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 	}
 
 	public void testGetName() throws Exception {
-		IType testType = this.createTestAssociationOverrideOnField();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestAssociationOverrideOnField();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		AssociationOverrideAnnotation associationOverride = (AssociationOverrideAnnotation) attributeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
 
@@ -83,8 +84,8 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 	}
 
 	public void testSetName() throws Exception {
-		IType testType = this.createTestAssociationOverrideOnField();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestAssociationOverrideOnField();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		AssociationOverrideAnnotation associationOverride = (AssociationOverrideAnnotation) attributeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
 
@@ -93,12 +94,12 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 
 		associationOverride.setName("Foo");
 		assertEquals("Foo", associationOverride.getName());
-		assertSourceContains("@AssociationOverride(name=\"Foo\")");
+		assertSourceContains("@AssociationOverride(name=\"Foo\")", cu);
 	}
 	
 	public void testSetNameNull() throws Exception {
-		IType testType = this.createTestAssociationOverrideOnField();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestAssociationOverrideOnField();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		AssociationOverrideAnnotation associationOverride = (AssociationOverrideAnnotation) attributeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
 
@@ -107,14 +108,14 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 		associationOverride.setName(null);
 		assertNull(associationOverride.getName());
 		
-		assertSourceDoesNotContain("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\")");
-		assertSourceContains("@AssociationOverride");
+		assertSourceDoesNotContain("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\")", cu);
+		assertSourceContains("@AssociationOverride", cu);
 	}
 	
 	
 	public void testJoinColumns() throws Exception {
-		IType testType = this.createTestAssociationOverrideOnField();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestAssociationOverrideOnField();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		AssociationOverrideAnnotation associationOverride = (AssociationOverrideAnnotation) attributeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
@@ -123,8 +124,8 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 	}
 	
 	public void testJoinColumns2() throws Exception {
-		IType testType = this.createTestAssociationOverrideOnField();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestAssociationOverrideOnField();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		AssociationOverrideAnnotation associationOverride = (AssociationOverrideAnnotation) attributeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
@@ -137,8 +138,8 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 	}
 	
 	public void testJoinColumns3() throws Exception {
-		IType testType = this.createTestAssociationOverrideWithJoinColumns();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestAssociationOverrideWithJoinColumns();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		AssociationOverrideAnnotation associationOverride = (AssociationOverrideAnnotation) attributeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
@@ -147,8 +148,8 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 	}
 	
 	public void testAddJoinColumn() throws Exception {
-		IType testType = this.createTestAssociationOverrideOnField();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestAssociationOverrideOnField();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		AssociationOverrideAnnotation associationOverride = (AssociationOverrideAnnotation) attributeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
@@ -161,12 +162,12 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 		assertEquals("FOO", associationOverride.joinColumnAt(1).getName());
 		assertNull(associationOverride.joinColumnAt(2).getName());
 
-		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns = {@JoinColumn(name=\"BAR\"),@JoinColumn(name=\"FOO\"), @JoinColumn})");
+		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns = {@JoinColumn(name=\"BAR\"),@JoinColumn(name=\"FOO\"), @JoinColumn})", cu);
 	}
 	
 	public void testRemoveJoinColumn() throws Exception {
-		IType testType = this.createTestAssociationOverrideWithJoinColumns();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestAssociationOverrideWithJoinColumns();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		AssociationOverrideAnnotation associationOverride = (AssociationOverrideAnnotation) attributeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
@@ -177,30 +178,30 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 		assertEquals("BAR", joinColumns.next().getName());
 		assertNull(joinColumns.next().getName());
 		assertEquals(false, joinColumns.hasNext());
-		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns={@JoinColumn(name=\"FOO\"), @JoinColumn(name=\"BAR\"), @JoinColumn})");	
+		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns={@JoinColumn(name=\"FOO\"), @JoinColumn(name=\"BAR\"), @JoinColumn})", cu);
 		
 		associationOverride.removeJoinColumn(1);
 		joinColumns = associationOverride.joinColumns();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertNull(joinColumns.next().getName());
 		assertEquals(false, joinColumns.hasNext());
-		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns={@JoinColumn(name=\"FOO\"), @JoinColumn})");	
+		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns={@JoinColumn(name=\"FOO\"), @JoinColumn})", cu);
 
 		associationOverride.removeJoinColumn(0);
 		joinColumns = associationOverride.joinColumns();
 		assertNull(joinColumns.next().getName());
 		assertEquals(false, joinColumns.hasNext());
-		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns=@JoinColumn)");	
+		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns=@JoinColumn)", cu);
 
 		
 		associationOverride.setName(null);
 		associationOverride.removeJoinColumn(0);
-		assertSourceDoesNotContain("@AssociationOverride");
+		assertSourceDoesNotContain("@AssociationOverride", cu);
 	}
 	
 	public void testMoveJoinColumn() throws Exception {
-		IType testType = this.createTestAssociationOverrideWithJoinColumns();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestAssociationOverrideWithJoinColumns();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		AssociationOverrideAnnotation associationOverride = (AssociationOverrideAnnotation) attributeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
@@ -214,19 +215,19 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 		joinColumn.setTable("TABLE");
 		associationOverride.addJoinColumn(0).setName("FOO");
 		
-		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns={@JoinColumn(name=\"FOO\"), @JoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\"), @JoinColumn})");
+		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns={@JoinColumn(name=\"FOO\"), @JoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\"), @JoinColumn})", cu);
 
 		associationOverride.moveJoinColumn(2, 0);
 		assertEquals("BAR", associationOverride.joinColumnAt(0).getName());
 		assertNull(associationOverride.joinColumnAt(1).getName());
 		assertEquals("FOO", associationOverride.joinColumnAt(2).getName());
 		assertEquals(3, associationOverride.joinColumnsSize());
-		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns={@JoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\"), @JoinColumn, @JoinColumn(name=\"FOO\")})");
+		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns={@JoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\"), @JoinColumn, @JoinColumn(name=\"FOO\")})", cu);
 	}
 	
 	public void testMoveJoinColumn2() throws Exception {
-		IType testType = this.createTestAssociationOverrideWithJoinColumns();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		ICompilationUnit cu = this.createTestAssociationOverrideWithJoinColumns();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		AssociationOverrideAnnotation associationOverride = (AssociationOverrideAnnotation) attributeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
@@ -241,19 +242,19 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 		joinColumn.setTable("TABLE");
 		associationOverride.addJoinColumn(0).setName("FOO");
 		
-		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns={@JoinColumn(name=\"FOO\"), @JoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\"), @JoinColumn})");
+		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns={@JoinColumn(name=\"FOO\"), @JoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\"), @JoinColumn})", cu);
 
 		associationOverride.moveJoinColumn(0, 2);
 		assertNull(associationOverride.joinColumnAt(0).getName());
 		assertEquals("FOO", associationOverride.joinColumnAt(1).getName());
 		assertEquals("BAR", associationOverride.joinColumnAt(2).getName());
 		assertEquals(3, associationOverride.joinColumnsSize());
-		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns={@JoinColumn, @JoinColumn(name=\"FOO\"), @JoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\")})");
+		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns={@JoinColumn, @JoinColumn(name=\"FOO\"), @JoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\")})", cu);
 	}
 	
 	public void testSetJoinColumnName() throws Exception {
-		IType testType = this.createTestAssociationOverrideWithJoinColumns();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestAssociationOverrideWithJoinColumns();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		AssociationOverrideAnnotation associationOverride = (AssociationOverrideAnnotation) attributeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
@@ -267,6 +268,6 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 		joinColumn.setName("foo");
 		assertEquals("foo", joinColumn.getName());
 		
-		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns={@JoinColumn(name=\"foo\"), @JoinColumn})");
+		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns={@JoinColumn(name=\"foo\"), @JoinColumn})", cu);
 	}
 }

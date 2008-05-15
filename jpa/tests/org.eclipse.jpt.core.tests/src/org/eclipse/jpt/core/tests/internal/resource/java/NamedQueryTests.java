@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
@@ -39,7 +39,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 			"String value();");
 	}
 	
-	private IType createTestNamedQuery() throws Exception {
+	private ICompilationUnit createTestNamedQuery() throws Exception {
 		createNamedQueryAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -53,15 +53,15 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		});
 	}
 	
-	private IType createTestNamedQueryWithName() throws Exception {
+	private ICompilationUnit createTestNamedQueryWithName() throws Exception {
 		return createTestNamedQueryWithStringElement("name", QUERY_NAME);
 	}
 	
-	private IType createTestNamedQueryWithQuery() throws Exception {
+	private ICompilationUnit createTestNamedQueryWithQuery() throws Exception {
 		return createTestNamedQueryWithStringElement("query", QUERY_QUERY);
 	}
 	
-	private IType createTestNamedQueryWithStringElement(final String elementName, final String value) throws Exception {
+	private ICompilationUnit createTestNamedQueryWithStringElement(final String elementName, final String value) throws Exception {
 		createNamedQueryAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -75,7 +75,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		});
 	}
 
-	private IType createTestNamedQueryWithQueryHints() throws Exception {
+	private ICompilationUnit createTestNamedQueryWithQueryHints() throws Exception {
 		createNamedQueryAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -90,24 +90,24 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 	}
 
 	public void testNamedQuery() throws Exception {
-		IType testType = this.createTestNamedQuery();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		ICompilationUnit cu = this.createTestNamedQuery();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
 		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		assertNotNull(namedQuery);
 	}
 
 	public void testGetName() throws Exception {
-		IType testType = this.createTestNamedQueryWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestNamedQueryWithName();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		assertEquals(QUERY_NAME, namedQuery.getName());
 	}
 
 	public void testSetName() throws Exception {
-		IType testType = this.createTestNamedQueryWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestNamedQueryWithName();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		assertEquals(QUERY_NAME, namedQuery.getName());
@@ -115,25 +115,25 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		namedQuery.setName("foo");
 		assertEquals("foo", namedQuery.getName());
 		
-		assertSourceContains("@NamedQuery(name=\"foo\")");
+		assertSourceContains("@NamedQuery(name=\"foo\")", cu);
 		
 		namedQuery.setName(null);
 		assertNull(namedQuery.getName());
 		
-		assertSourceDoesNotContain("@NamedQuery");
+		assertSourceDoesNotContain("@NamedQuery", cu);
 	}
 
 	public void testGetQuery() throws Exception {
-		IType testType = this.createTestNamedQueryWithQuery();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestNamedQueryWithQuery();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		assertEquals(QUERY_QUERY, namedQuery.getQuery());
 	}
 
 	public void testSetQuery() throws Exception {
-		IType testType = this.createTestNamedQueryWithQuery();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestNamedQueryWithQuery();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		assertEquals(QUERY_QUERY, namedQuery.getQuery());
@@ -141,17 +141,17 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		namedQuery.setQuery("foo");
 		assertEquals("foo", namedQuery.getQuery());
 		
-		assertSourceContains("@NamedQuery(query=\"foo\")");
+		assertSourceContains("@NamedQuery(query=\"foo\")", cu);
 		
 		namedQuery.setQuery(null);
 		assertNull(namedQuery.getQuery());
 		
-		assertSourceDoesNotContain("@NamedQuery");
+		assertSourceDoesNotContain("@NamedQuery", cu);
 	}
 	
 	public void testHints() throws Exception {
-		IType testType = this.createTestNamedQuery();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestNamedQuery();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		
@@ -159,8 +159,8 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 	}
 	
 	public void testHints2() throws Exception {
-		IType testType = this.createTestNamedQuery();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestNamedQuery();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		
@@ -171,8 +171,8 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 	}
 	
 	public void testHints3() throws Exception {
-		IType testType = this.createTestNamedQueryWithQueryHints();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestNamedQueryWithQueryHints();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		
@@ -184,8 +184,8 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 	}
 	
 	public void testAddHint() throws Exception {
-		IType testType = this.createTestNamedQuery();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestNamedQuery();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		
@@ -197,12 +197,12 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		assertEquals("BAR", namedQuery.hintAt(0).getName());
 		assertEquals("FOO", namedQuery.hintAt(1).getName());
 		assertNull(namedQuery.hintAt(2).getName());
-		assertSourceContains("@NamedQuery(hints={@QueryHint(name=\"BAR\"),@QueryHint(name=\"FOO\"), @QueryHint})");
+		assertSourceContains("@NamedQuery(hints={@QueryHint(name=\"BAR\"),@QueryHint(name=\"FOO\"), @QueryHint})", cu);
 	}
 	
 	public void testRemoveHint() throws Exception {
-		IType testType = this.createTestNamedQueryWithQueryHints();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestNamedQueryWithQueryHints();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		namedQuery.addHint(0).setName("BAZ");
@@ -216,21 +216,21 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		assertEquals("BAZ", namedQuery.hintAt(0).getName());
 		assertEquals("BAR", namedQuery.hintAt(1).getName());
 		assertEquals(2, namedQuery.hintsSize());
-		assertSourceContains("@NamedQuery(hints={@QueryHint(name=\"BAZ\"), @QueryHint(name=\"BAR\", value=\"FOO\")})");
+		assertSourceContains("@NamedQuery(hints={@QueryHint(name=\"BAZ\"), @QueryHint(name=\"BAR\", value=\"FOO\")})", cu);
 		
 		namedQuery.removeHint(0);
 		assertEquals("BAR", namedQuery.hintAt(0).getName());
 		assertEquals(1, namedQuery.hintsSize());
-		assertSourceContains("@NamedQuery(hints=@QueryHint(name=\"BAR\", value=\"FOO\"))");
+		assertSourceContains("@NamedQuery(hints=@QueryHint(name=\"BAR\", value=\"FOO\"))", cu);
 		
 		namedQuery.removeHint(0);
 		assertEquals(0, namedQuery.hintsSize());
-		assertSourceDoesNotContain("@NamedQuery");
+		assertSourceDoesNotContain("@NamedQuery", cu);
 	}
 	
 	public void testMoveHint() throws Exception {
-		IType testType = this.createTestNamedQueryWithQueryHints();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestNamedQueryWithQueryHints();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		namedQuery.addHint(0).setName("BAZ");
@@ -246,12 +246,12 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		assertNull(namedQuery.hintAt(1).getName());
 		assertEquals("BAZ", namedQuery.hintAt(2).getName());
 		assertEquals(3, namedQuery.hintsSize());
-		assertSourceContains("@NamedQuery(hints={@QueryHint(name=\"BAR\", value=\"FOO\"), @QueryHint, @QueryHint(name=\"BAZ\")})");
+		assertSourceContains("@NamedQuery(hints={@QueryHint(name=\"BAR\", value=\"FOO\"), @QueryHint, @QueryHint(name=\"BAZ\")})", cu);
 	}
 	
 	public void testMoveHint2() throws Exception {
-		IType testType = this.createTestNamedQueryWithQueryHints();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		ICompilationUnit cu = this.createTestNamedQueryWithQueryHints();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
 		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(JPA.NAMED_QUERY);
 		namedQuery.addHint(0).setName("BAZ");
@@ -267,7 +267,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		assertEquals("BAZ", namedQuery.hintAt(1).getName());
 		assertEquals("BAR", namedQuery.hintAt(2).getName());
 		assertEquals(3, namedQuery.hintsSize());
-		assertSourceContains("@NamedQuery(hints={@QueryHint, @QueryHint(name=\"BAZ\"), @QueryHint(name=\"BAR\", value=\"FOO\")})");
+		assertSourceContains("@NamedQuery(hints={@QueryHint, @QueryHint(name=\"BAZ\"), @QueryHint(name=\"BAR\", value=\"FOO\")})", cu);
 	}
 	
 }
