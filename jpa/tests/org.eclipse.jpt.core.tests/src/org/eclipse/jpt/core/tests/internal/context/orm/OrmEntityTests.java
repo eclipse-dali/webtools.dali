@@ -172,6 +172,17 @@ public class OrmEntityTests extends ContextModelTestCase
 			}
 		});
 	}
+	
+	private IType createTestAbstractType() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("public abstract class ").append(TYPE_NAME).append(" ");
+				sb.append("{}").append(CR);
+			}
+		};
+		return this.javaProject.createType(PACKAGE_NAME, FILE_NAME, sourceWriter);
+	}
 
 	public void testUpdateSpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
@@ -1986,4 +1997,18 @@ public class OrmEntityTests extends ContextModelTestCase
 //		assertEquals("ID", childXmlEntity.getPrimaryKeyColumnName());
 	}
 
+	
+	public void testDiscriminatorValueIsAllowedConcreteClass() throws Exception {
+		createTestType();
+		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity entity = (OrmEntity) persistentType.getMapping();
+		assertTrue(entity.isDiscriminatorValueAllowed());
+	}
+
+	public void testDiscriminatorValueIsAllowedAbstractClass() throws Exception {
+		createTestAbstractType();
+		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity entity = (OrmEntity) persistentType.getMapping();
+		assertFalse(entity.isDiscriminatorValueAllowed());
+	}
 }

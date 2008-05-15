@@ -135,8 +135,7 @@ public interface Entity extends TypeMapping, GeneratorHolder, QueryHolder, IdCla
 	 * Return whether a DiscriminatorValue is allowed for this Entity
 	 * It is allowed if the IType is concrete (not abstract)
 	 */
-	//TODO add tests in java and xml for this
- 	boolean isDiscriminatorValueAllowed();
+	boolean isDiscriminatorValueAllowed();
  		String DISCRIMINATOR_VALUE_ALLOWED_PROPERTY = "discriminatorValueAllowedProperty";
 
 	

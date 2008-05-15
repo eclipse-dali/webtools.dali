@@ -56,6 +56,7 @@ import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.Inheritance;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
@@ -1247,7 +1248,8 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	protected boolean discriminatorValueIsAllowed() {
-		return getJavaEntity() == null ? false : getJavaEntity().isDiscriminatorValueAllowed();
+		JavaResourcePersistentType javaResourcePersistentType = getJavaResourcePersistentType();
+		return javaResourcePersistentType == null ? false : !javaResourcePersistentType.isAbstract();
 	}
 
 	protected void updateInheritance(Inheritance inheritanceResource) {

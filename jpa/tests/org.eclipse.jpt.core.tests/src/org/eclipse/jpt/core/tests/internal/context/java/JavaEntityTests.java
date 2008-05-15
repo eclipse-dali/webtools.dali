@@ -156,6 +156,25 @@ public class JavaEntityTests extends ContextModelTestCase
 			}
 		});
 	}
+	
+	private IType createTestAbstractEntity() throws Exception {
+		createEntityAnnotation();
+	
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ENTITY);
+					sb.append(";");
+					sb.append(CR);
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public abstract class ").append(TYPE_NAME).append(" ");
+				sb.append("{}").append(CR);
+			}
+		};
+		return this.javaProject.createType(PACKAGE_NAME, FILE_NAME, sourceWriter);
+	}
 
 	private IType createTestEntityAnnotationOnProperty() throws Exception {
 		createEntityAnnotation();
@@ -2927,5 +2946,16 @@ public class JavaEntityTests extends ContextModelTestCase
 		javaAttributeOverride.getColumn().setSpecifiedName("ID");
 		assertEquals("ID", javaEntity.getPrimaryKeyColumnName());
 	}
-
+	
+	public void testDiscriminatorValueIsAllowedConcreteClass() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		assertTrue(javaEntity().isDiscriminatorValueAllowed());
+	}
+	
+	public void testDiscriminatorValueIsAllowedAbstractClass() throws Exception {
+		createTestAbstractEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		assertFalse(javaEntity().isDiscriminatorValueAllowed());
+	}
 }

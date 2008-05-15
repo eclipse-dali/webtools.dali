@@ -20,7 +20,6 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
-import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.ui.internal.util.LabeledLabel;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
@@ -311,15 +310,6 @@ public class InheritanceComposite extends AbstractPane<Entity> {
 		};
 	}
 
-	private PropertyValueModel<Boolean> buildDiscriminatorValueBooleanHolder() {
-		return new PropertyAspectAdapter<Entity, Boolean>(getSubjectHolder(), Entity.DISCRIMINATOR_VALUE_ALLOWED_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return subject.isDiscriminatorValueAllowed();
-			}
-		};
-	}
-
 	private StringConverter<String> buildDiscriminatorValueConverter() {
 		return new StringConverter<String>() {
 			public String convertToString(String value) {
@@ -523,8 +513,6 @@ public class InheritanceComposite extends AbstractPane<Entity> {
 			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_VALUE
 		);
 
-		installDiscriminatorValueComboEnabler(discriminatorValueCombo);
-
 		// Discriminator Column sub-pane
 		Composite discriminatorColumnContainer = buildTitledPane(
 			buildSubPane(container, 10),
@@ -537,13 +525,6 @@ public class InheritanceComposite extends AbstractPane<Entity> {
 		new PrimaryKeyJoinColumnsComposite(
 			this,
 			buildSubPane(container, 5)
-		);
-	}
-
-	private void installDiscriminatorValueComboEnabler(CCombo discriminatorValueCombo) {
-		new ControlEnabler(
-			buildDiscriminatorValueBooleanHolder(),
-			discriminatorValueCombo
 		);
 	}
 
