@@ -147,7 +147,7 @@ public class JpaPlatformUiRegistry
 			+ "\" and \""
 			+ otherConfigElement.getContributor().getName()
 			+ "\" have registered a duplicate attribute \"id\" "
-			+ "for the extension element \"jpaVendor\".";
+			+ "for the extension element \"jpaPlatform\".";
 		JptUiPlugin.log(message);
 	}
 		

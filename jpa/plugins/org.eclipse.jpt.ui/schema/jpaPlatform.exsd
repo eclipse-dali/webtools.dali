@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.jpt.ui" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.eclipse.jpt.ui" id="jpaVendor" name="JPA UI Vendor"/>
+         <meta.schema plugin="org.eclipse.jpt.ui" id="jpaPlatform" name="JPA Platform UI"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -61,7 +61,7 @@
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The class that implements &lt;samp&gt;org.eclipse.jpt.ui.JpaPlatformUi&lt;/samp&gt;.
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.jpt.ui.JpaPlatformUi"/>
@@ -97,7 +97,6 @@
          [Enter API information here.]
       </documentation>
    </annotation>
-
 
    <annotation>
       <appinfo>
