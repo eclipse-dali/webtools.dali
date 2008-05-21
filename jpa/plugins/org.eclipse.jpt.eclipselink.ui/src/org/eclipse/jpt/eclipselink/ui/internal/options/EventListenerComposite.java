@@ -9,10 +9,15 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.options;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.eclipselink.core.internal.context.options.Options;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.eclipselink.ui.internal.JptEclipseLinkUiPlugin;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -42,10 +47,11 @@ public class EventListenerComposite extends AbstractPane<Options>
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<Options, String>(getSubjectHolder(), Options.SESSION_EVENT_LISTENER_PROPERTY) {
+				return new PropertyAspectAdapter<Options, String>(
+							this.getSubjectHolder(), Options.SESSION_EVENT_LISTENER_PROPERTY) {
 					@Override
 					protected String buildValue_() {
-						return subject.getEventListener();
+						return this.subject.getEventListener();
 					}
 
 					@Override
@@ -54,15 +60,14 @@ public class EventListenerComposite extends AbstractPane<Options>
 						if (value.length() == 0) {
 							value = null;
 						}
-
-						subject.setEventListener(value);
+						this.subject.setEventListener(value);
 					}
 				};
 			}
 
 			@Override
 			protected String className() {
-				return subject().getEventListener();
+				return this.subject().getEventListener();
 			}
 
 			@Override
@@ -72,16 +77,15 @@ public class EventListenerComposite extends AbstractPane<Options>
 
 			@Override
 			protected IPackageFragmentRoot packageFragmentRoot() {
-				//TODO
-//				IProject project = subject().getJpaProject().getProject();
-//				IJavaProject root = JavaCore.create(project);
-//
-//				try {
-//					return root.getAllPackageFragmentRoots()[0];
-//				}
-//				catch (JavaModelException e) {
-//					JptEclipseLinkUiPlugin.log(e);
-//				}
+				IProject project = this.subject().getJpaProject().getProject();
+				IJavaProject root = JavaCore.create(project);
+
+				try {
+					return root.getAllPackageFragmentRoots()[0];
+				}
+				catch (JavaModelException e) {
+					JptEclipseLinkUiPlugin.log(e);
+				}
 				return null;
 			}
 
@@ -91,7 +95,7 @@ public class EventListenerComposite extends AbstractPane<Options>
 
 				if (type != null) {
 					String className = type.getFullyQualifiedName('.');
-					subject().setEventListener(className);
+					this.subject().setEventListener(className);
 				}
 			}
 		};
