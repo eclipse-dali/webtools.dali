@@ -178,6 +178,53 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping().isDefault());
 	}
 	
+	public void testDefaultEmbeddedMappingGenericEmbeddable() throws Exception {
+		createTestEntityWithDefaultEmbeddedMapping();
+		createTestGenericEmbeddable();
+		addXmlClassRef(PACKAGE_NAME + ".Entity1");
+		addXmlClassRef(PACKAGE_NAME + ".Embeddable1");
+		
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		assertNull(persistentAttribute.getSpecifiedMapping());
+		assertNotNull(persistentAttribute.getMapping());
+		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
+		assertTrue(persistentAttribute.getMapping().isDefault());
+	}
+	
+	private void createTestEntityWithDefaultEmbeddedMapping() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ENTITY);
+					sb.append(";");
+					sb.append(CR);
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class Entity1 { ").append(CR);
+				sb.append("private Embeddable1<Integer> myEmbeddable;").append(CR);
+				sb.append(CR);
+			}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Entity1.java", sourceWriter);
+	}
+	
+	private void createTestGenericEmbeddable() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.EMBEDDABLE);
+					sb.append(";");
+					sb.append(CR);
+				sb.append("@Embeddable");
+				sb.append(CR);
+				sb.append("public class Embeddable1<T> {}").append(CR);
+			}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Embeddable1.java", sourceWriter);
+	}
+	
 	public void testMorphToVersionMapping() throws Exception {
 		createTestEntityWithEmbeddedMapping();
 		createEmbeddableType();

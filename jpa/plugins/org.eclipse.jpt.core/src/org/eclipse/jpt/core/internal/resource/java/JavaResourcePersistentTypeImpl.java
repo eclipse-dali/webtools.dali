@@ -574,7 +574,7 @@ public class JavaResourcePersistentTypeImpl
 		if (superClassTypeBinding == null) {
 			return null;
 		}
-		return superClassTypeBinding.getQualifiedName();
+		return superClassTypeBinding.getTypeDeclaration().getQualifiedName();
 	}
 
 	protected boolean buildAbstract(CompilationUnit astRoot) {

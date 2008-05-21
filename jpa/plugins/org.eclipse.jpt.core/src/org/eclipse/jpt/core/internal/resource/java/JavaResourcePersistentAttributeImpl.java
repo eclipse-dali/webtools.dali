@@ -355,7 +355,7 @@ public class JavaResourcePersistentAttributeImpl
 	
 	protected String qualifiedTypeName(CompilationUnit astRoot) {
 		ITypeBinding typeBinding = this.getMember().getTypeBinding(astRoot);
-		return (typeBinding == null) ? null : typeBinding.getQualifiedName();
+		return (typeBinding == null) ? null : typeBinding.getTypeDeclaration().getQualifiedName();
 	}
 
 	

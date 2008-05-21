@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
+import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JavaPersistentTypeTests extends ContextModelTestCase
@@ -696,5 +697,51 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		
 		assertNull(javaPersistentType().getAttributeNamed("foo"));
 	}
+	
+	public void testParentPersistentTypeGeneric() throws Exception {
+		createTestGenericEntity();
+		createTestGenericMappedSuperclass();
+		
+		addXmlClassRef(PACKAGE_NAME + ".Entity1");
+		addXmlClassRef(PACKAGE_NAME + ".Entity2");
+		
+		JavaPersistentType javaPersistentType = javaPersistentType();
+		assertEquals("test.Entity1", javaPersistentType.getName());
+		assertNotNull(javaPersistentType.getParentPersistentType());
+		
+		assertEquals("test.Entity2", javaPersistentType.getParentPersistentType().getName());
+	}
 
+	private void createTestGenericEntity() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ENTITY);
+					sb.append(";");
+					sb.append(CR);
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class Entity1 ");
+				sb.append("extends Entity2<Integer> {}").append(CR);
+			}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Entity1.java", sourceWriter);
+	}
+	
+	private void createTestGenericMappedSuperclass() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.MAPPED_SUPERCLASS);
+					sb.append(";");
+					sb.append(CR);
+				sb.append("@MappedSuperclass");
+				sb.append(CR);
+				sb.append("public class Entity2<K> {}").append(CR);
+			}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Entity2.java", sourceWriter);
+	}
 }
