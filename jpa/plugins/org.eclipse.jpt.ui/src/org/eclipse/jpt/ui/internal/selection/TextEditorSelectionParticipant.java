@@ -103,10 +103,6 @@ public class TextEditorSelectionParticipant
 			return JpaSelection.NULL_SELECTION;
 		}
 
-		// the resource model might be out of synch when we get this event
-		// so we force it to update before we ask it for the "selected node";
-		// TODO synchronously update the context model?
-		jpaFile.updateFromResource();
 		return this.buildSelection(jpaFile.getStructureNode(((ITextSelection) selection).getOffset()));
 	}
 
