@@ -364,7 +364,11 @@ public abstract class AbstractPane<T extends Model>
 	private PropertyChangeListener buildAspectChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-				updatePane(e.getPropertyName());
+				//subject() could have changed or is null because of the possibility of
+				//"jumping" on the UI thread here and a selection change occuring
+				if (e.getSource() == subject()) {
+					updatePane(e.getPropertyName());
+				}
 			}
 		};
 	}
