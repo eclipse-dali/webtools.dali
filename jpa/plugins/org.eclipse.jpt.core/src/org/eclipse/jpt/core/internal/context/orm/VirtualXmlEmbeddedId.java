@@ -10,15 +10,18 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ListIterator;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
+import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * VirtualEmbeddedId is an implementation of EmbeddedId used when there is 
@@ -29,8 +32,6 @@ public class VirtualXmlEmbeddedId extends AbstractJpaEObject implements XmlEmbed
 	JavaEmbeddedIdMapping javaEmbeddedIdMapping;
 
 	protected boolean metadataComplete;
-
-	protected EList<XmlAttributeOverride> virtualAttributeOverrides;
 	
 	protected OrmTypeMapping ormTypeMapping;
 	
@@ -39,22 +40,6 @@ public class VirtualXmlEmbeddedId extends AbstractJpaEObject implements XmlEmbed
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaEmbeddedIdMapping = javaEmbeddedIdMapping;
 		this.metadataComplete = metadataComplete;
-		this.initializeAttributeOverrides(javaEmbeddedIdMapping);
-	}
-	
-	protected void initializeAttributeOverrides(JavaEmbeddedIdMapping javaEmbeddedIdMapping) {
-		this.virtualAttributeOverrides = new BasicEList<XmlAttributeOverride>();
-		ListIterator<JavaAttributeOverride> javaAttributesOverrides;
-		if (this.metadataComplete) {
-			javaAttributesOverrides = javaEmbeddedIdMapping.virtualAttributeOverrides();
-		}
-		else {
-			javaAttributesOverrides = javaEmbeddedIdMapping.attributeOverrides();			
-		}
-		
-		while (javaAttributesOverrides.hasNext()) {
-			this.virtualAttributeOverrides.add(new VirtualXmlAttributeOverride(this.ormTypeMapping, javaAttributesOverrides.next(), this.metadataComplete));
-		}
 	}
 	
 	public String getName() {
@@ -65,44 +50,28 @@ public class VirtualXmlEmbeddedId extends AbstractJpaEObject implements XmlEmbed
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
 	}
 
-
 	public EList<XmlAttributeOverride> getAttributeOverrides() {
-		return this.virtualAttributeOverrides;
+		EList<XmlAttributeOverride> attributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_OVERRIDES);
+		ListIterator<JavaAttributeOverride> javaAttributeOverrides;
+		if (!this.metadataComplete) {
+			javaAttributeOverrides = this.javaEmbeddedIdMapping.attributeOverrides();
+		}
+		else {
+			javaAttributeOverrides = this.javaEmbeddedIdMapping.virtualAttributeOverrides();
+		}
+		for (JavaAttributeOverride javaAttributeOverride : CollectionTools.iterable(javaAttributeOverrides)) {
+			XmlColumn xmlColumn = new VirtualXmlColumn(this.ormTypeMapping, javaAttributeOverride.getColumn(), this.metadataComplete);
+			XmlAttributeOverride xmlAttributeOverride = new VirtualXmlAttributeOverride(javaAttributeOverride.getName(), xmlColumn);
+			attributeOverrides.add(xmlAttributeOverride);
+		}
+		return attributeOverrides;
 	}
 
 	public void update(JavaEmbeddedIdMapping javaEmbeddedIdMapping) {
 		this.javaEmbeddedIdMapping = javaEmbeddedIdMapping;
-		this.updateAttributeOverrides(javaEmbeddedIdMapping);
 	}
-	
-	protected void updateAttributeOverrides(JavaEmbeddedIdMapping javaEmbeddedIdMapping) {
-		ListIterator<JavaAttributeOverride> javaAttributesOverrides;
-		ListIterator<XmlAttributeOverride> virtualAttributeOverrides = this.virtualAttributeOverrides.listIterator();
-		if (this.metadataComplete) {
-			javaAttributesOverrides = javaEmbeddedIdMapping.virtualAttributeOverrides();
-		}
-		else {
-			javaAttributesOverrides = javaEmbeddedIdMapping.attributeOverrides();			
-		}
-		
-		while (javaAttributesOverrides.hasNext()) {
-			JavaAttributeOverride javaAttributeOverride = javaAttributesOverrides.next();
-			if (virtualAttributeOverrides.hasNext()) {
-				VirtualXmlAttributeOverride virtualAttributeOverride = (VirtualXmlAttributeOverride) virtualAttributeOverrides.next();
-				virtualAttributeOverride.update(javaAttributeOverride);
-			}
-			else {
-				this.virtualAttributeOverrides.add(new VirtualXmlAttributeOverride(this.ormTypeMapping, javaAttributeOverride, this.metadataComplete));
-			}
-		}
-		
-		while(virtualAttributeOverrides.hasNext()) {
-			this.virtualAttributeOverrides.remove(virtualAttributeOverrides.next());
-		}
-	}
-	
+
 	public TextRange getNameTextRange() {
 		return null;
 	}
-
 }

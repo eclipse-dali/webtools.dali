@@ -99,6 +99,7 @@ public interface OrmEntity extends OrmTypeMapping, Entity, OrmGeneratorHolder
 	ListIterator<OrmAttributeOverride> specifiedAttributeOverrides();
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmAttributeOverride> virtualAttributeOverrides();
+	OrmAttributeOverride getAttributeOverrideNamed(String name);
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmAssociationOverride> associationOverrides();

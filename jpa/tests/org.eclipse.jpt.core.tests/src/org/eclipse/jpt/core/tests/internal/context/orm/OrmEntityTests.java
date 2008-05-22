@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
@@ -1602,6 +1603,121 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		entityResource.getAttributeOverrides().remove(0);
 		assertFalse(ormEntity.specifiedAttributeOverrides().hasNext());
+	}
+	
+	public void testVirtualAttributeOverrides() throws Exception {
+		createTestMappedSuperclass();
+		createTestSubType();
+		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_CHILD_TYPE_NAME);
+		OrmPersistentType persistentType2 = entityMappings().addOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		
+		OrmEntity entity = (OrmEntity) persistentType.getMapping();
+		
+		assertEquals(3, entity.virtualAttributeOverridesSize());
+		ListIterator<OrmAttributeOverride> virtualAttributeOverrides = entity.virtualAttributeOverrides();
+		OrmAttributeOverride attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("id", attributeOverride.getName());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("name", attributeOverride.getName());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("foo", attributeOverride.getName());
+		
+		entity.virtualAttributeOverrides().next().setVirtual(false);
+		
+		assertEquals(2, entity.virtualAttributeOverridesSize());
+		virtualAttributeOverrides = entity.virtualAttributeOverrides();
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("name", attributeOverride.getName());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("foo", attributeOverride.getName());
+		
+		entity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		assertEquals(2, entity.virtualAttributeOverridesSize());
+		virtualAttributeOverrides = entity.virtualAttributeOverrides();
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("name", attributeOverride.getName());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("foo", attributeOverride.getName());
+		
+		entity.specifiedAttributeOverrides().next().setVirtual(true);
+		entity.setSpecifiedMetadataComplete(Boolean.FALSE);
+		entity.getJavaEntity().virtualAttributeOverrides().next().setVirtual(false);
+		entity.getJavaEntity().specifiedAttributeOverrides().next().getColumn().setSpecifiedName("FOO");
+		assertEquals(3, entity.virtualAttributeOverridesSize());
+		virtualAttributeOverrides = entity.virtualAttributeOverrides();
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("id", attributeOverride.getName());
+		assertEquals("FOO", attributeOverride.getColumn().getSpecifiedName());//TODO specified or default?
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("name", attributeOverride.getName());
+		assertEquals("name", attributeOverride.getColumn().getSpecifiedName());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("foo", attributeOverride.getName());
+		
+		persistentType2.getAttributeNamed("name").makeSpecified();
+		OrmBasicMapping basicMapping = (OrmBasicMapping) persistentType2.getAttributeNamed("name").getMapping();
+		basicMapping.getColumn().setSpecifiedName("MY_NAME");
+		
+		assertEquals(3, entity.virtualAttributeOverridesSize());
+		virtualAttributeOverrides = entity.virtualAttributeOverrides();
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("name", attributeOverride.getName());
+		assertEquals("MY_NAME", attributeOverride.getColumn().getSpecifiedName());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("id", attributeOverride.getName());
+		assertEquals("FOO", attributeOverride.getColumn().getSpecifiedName());//TODO specified or default?
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("foo", attributeOverride.getName());
+	}
+	
+	public void testVirtualAttributeOverridesNoJavaEntity() throws Exception {
+		createTestMappedSuperclass();
+		createTestSubType();
+		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_CHILD_TYPE_NAME);
+		entityMappings().addOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		
+		OrmEntity entity = (OrmEntity) persistentType.getMapping();
+		
+		persistentType.getJavaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
+		assertEquals(3, entity.virtualAttributeOverridesSize());
+		ListIterator<OrmAttributeOverride> virtualAttributeOverrides = entity.virtualAttributeOverrides();
+		OrmAttributeOverride attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("id", attributeOverride.getName());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("name", attributeOverride.getName());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("foo", attributeOverride.getName());
+	}
+	
+	public void testAttributeOverrideColumnDefaults() throws Exception {
+		createTestMappedSuperclass();
+		createTestSubType();
+		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_CHILD_TYPE_NAME);
+		entityMappings().addOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		
+		OrmEntity entity = (OrmEntity) persistentType.getMapping();
+		
+		entity.virtualAttributeOverrides().next().setVirtual(false);
+		
+		OrmAttributeOverride attributeOverride = entity.specifiedAttributeOverrides().next();
+		assertEquals("id", attributeOverride.getColumn().getDefaultName());
+		assertEquals(CHILD_TYPE_NAME, attributeOverride.getColumn().getDefaultTable());
+		
+		((JavaEntity) persistentType.getJavaPersistentType().getMapping()).getTable().setSpecifiedName("FOO");
+		assertEquals("id", attributeOverride.getColumn().getDefaultName());
+		assertEquals("FOO", attributeOverride.getColumn().getDefaultTable());
+		
+		entity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		assertEquals("id", attributeOverride.getColumn().getDefaultName());
+		assertEquals(CHILD_TYPE_NAME, attributeOverride.getColumn().getDefaultTable());
+		
+		entity.setSpecifiedMetadataComplete(Boolean.FALSE);
+		entity.getTable().setSpecifiedName("BAR");
+		assertEquals("id", attributeOverride.getColumn().getDefaultName());
+		assertEquals("BAR", attributeOverride.getColumn().getDefaultTable());
 	}
 	
 //	public void testAddSpecifiedAssociationOverride() throws Exception {

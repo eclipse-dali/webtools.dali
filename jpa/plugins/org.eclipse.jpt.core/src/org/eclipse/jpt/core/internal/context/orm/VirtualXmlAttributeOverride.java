@@ -9,34 +9,25 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
-import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 
 public class VirtualXmlAttributeOverride extends AbstractJpaEObject implements XmlAttributeOverride
 {
+
+	protected String name;
 	
-	protected JavaAttributeOverride javaAttributeOverride;
+	protected final XmlColumn column;
 
-	protected final VirtualXmlColumn column;
-
-	protected boolean metadataComplete;
-
-	protected VirtualXmlAttributeOverride(OrmTypeMapping ormTypeMapping, JavaAttributeOverride javaAttributeOverride, boolean metadataComplete) {
+	protected VirtualXmlAttributeOverride(String name, XmlColumn xmlColumn) {
 		super();
-		this.javaAttributeOverride = javaAttributeOverride;
-		this.metadataComplete = metadataComplete;
-		this.column = new VirtualXmlColumn(ormTypeMapping, javaAttributeOverride.getColumn(), metadataComplete);
+		this.name = name;
+		this.column = xmlColumn;
 	}
-
 	
 	public String getName() {
-		if (this.metadataComplete) {
-			return null;//TODO is this right??
-		}
-		return this.javaAttributeOverride.getName();
+		return this.name;
 	}
 
 	public void setName(String value) {
@@ -51,10 +42,4 @@ public class VirtualXmlAttributeOverride extends AbstractJpaEObject implements X
 	public void setColumn(XmlColumn value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
 	}
-	
-	public void update(JavaAttributeOverride javaAttributeOverride) {
-		this.javaAttributeOverride = javaAttributeOverride;
-		this.column.update(javaAttributeOverride.getColumn());
-	}
-
 }

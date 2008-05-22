@@ -282,6 +282,15 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		return this.parentPersistentType;
 	}
 
+	public void setParentPersistentType(PersistentType newParentPersistentType) {
+		if (attributeValueHasNotChanged(this.parentPersistentType, newParentPersistentType)) {
+			return;
+		}
+		PersistentType oldParentPersistentType = this.parentPersistentType;
+		this.parentPersistentType = newParentPersistentType;
+		firePropertyChanged(PersistentType.PARENT_PERSISTENT_TYPE_PROPERTY, oldParentPersistentType, newParentPersistentType);
+	}
+	
 	public boolean hasAnyAttributeMappingAnnotations() {
 		if (this.resourcePersistentType.hasAnyAttributeAnnotations()) {
 			return true;
@@ -436,8 +445,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 	
 	public void updateParentPersistentType(JavaResourcePersistentType persistentTypeResource) {
-		//TODO do we need any change notification for this?
-		this.parentPersistentType = parentPersistentType(persistentTypeResource);
+		setParentPersistentType(parentPersistentType(persistentTypeResource));
 	}
 	
 	protected PersistentType parentPersistentType(JavaResourcePersistentType persistentTypeResource) {

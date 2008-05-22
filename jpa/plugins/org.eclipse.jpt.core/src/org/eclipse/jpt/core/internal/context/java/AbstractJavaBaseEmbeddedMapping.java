@@ -182,8 +182,8 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 		removeItemFromList(attributeOverride, this.virtualAttributeOverrides, BaseEmbeddedMapping.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST);
 	}
 
-	public JavaAttributeOverride attributeOverrideNamed(String name) {
-		return (JavaAttributeOverride) overrideNamed(name, attributeOverrides());
+	public JavaAttributeOverride getAttributeOverrideNamed(String name) {
+		return (JavaAttributeOverride) getOverrideNamed(name, attributeOverrides());
 	}
 
 	public boolean containsAttributeOverride(String name) {
@@ -198,7 +198,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 		return containsOverride(name, specifiedAttributeOverrides());
 	}
 	
-	private BaseOverride overrideNamed(String name, ListIterator<? extends BaseOverride> overrides) {
+	protected BaseOverride getOverrideNamed(String name, ListIterator<? extends BaseOverride> overrides) {
 		for (BaseOverride override : CollectionTools.iterable(overrides)) {
 			String overrideName = override.getName();
 			if (overrideName == null && name == null) {
@@ -211,8 +211,8 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 		return null;
 	}
 
-	private boolean containsOverride(String name, ListIterator<? extends BaseOverride> overrides) {
-		return overrideNamed(name, overrides) != null;
+	protected boolean containsOverride(String name, ListIterator<? extends BaseOverride> overrides) {
+		return getOverrideNamed(name, overrides) != null;
 	}
 
 	public Embeddable embeddable() {
@@ -242,7 +242,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	protected void initializeDefaultAttributeOverrides(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		for (Iterator<String> i = allOverridableAttributeNames(); i.hasNext(); ) {
 			String attributeName = i.next();
-			JavaAttributeOverride attributeOverride = attributeOverrideNamed(attributeName);
+			JavaAttributeOverride attributeOverride = getAttributeOverrideNamed(attributeName);
 			if (attributeOverride == null) {
 				this.virtualAttributeOverrides.add(buildVirtualAttributeOverride(resourcePersistentAttribute, attributeName));
 			}
@@ -292,7 +292,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	protected void updateVirtualAttributeOverrides(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		for (Iterator<String> i = allOverridableAttributeNames(); i.hasNext(); ) {
 			String attributeName = i.next();
-			JavaAttributeOverride attributeOverride = attributeOverrideNamed(attributeName);
+			JavaAttributeOverride attributeOverride = getAttributeOverrideNamed(attributeName);
 			if (attributeOverride == null) {
 				addVirtualAttributeOverride(buildVirtualAttributeOverride(resourcePersistentAttribute, attributeName));
 			}

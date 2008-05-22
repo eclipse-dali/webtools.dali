@@ -167,6 +167,15 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	public PersistentType getParentPersistentType() {
 		return this.parentPersistentType;
 	}
+	
+	public void setParentPersistentType(PersistentType newParentPersistentType) {
+		if (attributeValueHasNotChanged(this.parentPersistentType, newParentPersistentType)) {
+			return;
+		}
+		PersistentType oldParentPersistentType = this.parentPersistentType;
+		this.parentPersistentType = newParentPersistentType;
+		firePropertyChanged(PersistentType.PARENT_PERSISTENT_TYPE_PROPERTY, oldParentPersistentType, newParentPersistentType);
+	}
 
 	public AccessType getAccess() {
 		return getMapping().getAccess();
@@ -545,12 +554,7 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	
 	protected void updateParentPersistentType() {
 		JavaPersistentType javaPersistentType = getJavaPersistentType();
-		if (javaPersistentType == null) {
-			//TODO change notification for this?
-			this.parentPersistentType = null;
-			return;
-		}
-		this.parentPersistentType = javaPersistentType.getParentPersistentType();
+		setParentPersistentType(javaPersistentType == null ? null : javaPersistentType.getParentPersistentType());
 	}
 
 	protected void updatePersistentAttributes(AbstractXmlTypeMapping typeMapping) {

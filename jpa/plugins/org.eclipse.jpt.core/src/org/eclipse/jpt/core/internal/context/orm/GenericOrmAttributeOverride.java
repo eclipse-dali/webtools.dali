@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseOverride;
+import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
@@ -88,13 +89,27 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 	}
 	
 	public String getDefaultColumnName() {
-		// TODO Auto-generated method stub
-		return null;
+		ColumnMapping columnMapping = getColumnMapping();
+		if (columnMapping == null) {
+			return null;
+		}
+		return columnMapping.getColumn().getName();
 	}
 	
 	public String getDefaultTableName() {
-		// TODO Auto-generated method stub
-		return null;
+		ColumnMapping columnMapping = getColumnMapping();
+		if (columnMapping == null) {
+			return null;
+		}
+		String tableName = columnMapping.getColumn().getSpecifiedTable();
+		if (tableName != null) {
+			return tableName;
+		}
+		return getOwner().getTypeMapping().getTableName();
+	}
+	
+	protected ColumnMapping getColumnMapping() {
+		return getOwner().getColumnMapping(getName());
 	}
 
 	public boolean isVirtual() {

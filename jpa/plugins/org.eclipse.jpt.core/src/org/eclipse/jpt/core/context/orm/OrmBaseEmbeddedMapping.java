@@ -30,4 +30,5 @@ public interface OrmBaseEmbeddedMapping extends BaseEmbeddedMapping, OrmAttribut
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmAttributeOverride> specifiedAttributeOverrides();
 
+	OrmAttributeOverride getAttributeOverrideNamed(String name);
 }

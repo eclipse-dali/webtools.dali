@@ -207,6 +207,12 @@ public interface Entity extends TypeMapping, GeneratorHolder, QueryHolder, IdCla
 		String SPECIFIED_ATTRIBUTE_OVERRIDES_LIST = "specifiedAttributeOverridesList";
 		String VIRTUAL_ATTRIBUTE_OVERRIDES_LIST = "virtualAttributeOverridesList";
 
+	/**
+	 * Return the attribute overrides, whether specified or default,
+	 * with the given name.
+	 */
+	AttributeOverride getAttributeOverrideNamed(String name);
+
 	// **************** association overrides **************************************
 	
 	/**

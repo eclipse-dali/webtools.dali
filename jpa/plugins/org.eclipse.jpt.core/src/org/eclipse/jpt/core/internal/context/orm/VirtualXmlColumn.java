@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.java.JavaColumn;
+import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
@@ -28,17 +28,17 @@ import org.eclipse.jpt.core.utility.TextRange;
 public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 {
 	
-	protected JavaColumn javaColumn;
+	protected Column column;
 
 	protected boolean metadataComplete;
 
 	protected OrmTypeMapping ormTypeMapping;
 	
 	
-	protected VirtualXmlColumn(OrmTypeMapping ormTypeMapping, JavaColumn javaColumn, boolean metadataComplete) {
+	protected VirtualXmlColumn(OrmTypeMapping ormTypeMapping, Column column, boolean metadataComplete) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
-		this.javaColumn = javaColumn;
+		this.column = column;
 		this.metadataComplete = metadataComplete;
 	}
 	
@@ -46,7 +46,7 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.javaColumn.getColumnDefinition();
+		return this.column.getColumnDefinition();
 	}
 
 	public void setColumnDefinition(String value) {
@@ -55,9 +55,9 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 
 	public Boolean getInsertable() {
 		if (this.metadataComplete) {
-			return this.javaColumn.getDefaultInsertable();
+			return this.column.getDefaultInsertable();
 		}
-		return this.javaColumn.getInsertable();
+		return this.column.getInsertable();
 	}
 
 	public void setInsertable(Boolean value) {
@@ -66,9 +66,9 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 
 	public Integer getLength() {
 		if (this.metadataComplete) {
-			return this.javaColumn.getDefaultLength();
+			return this.column.getDefaultLength();
 		}
-		return this.javaColumn.getLength();
+		return this.column.getLength();
 	}
 
 	public void setLength(Integer value) {
@@ -77,9 +77,9 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 
 	public String getName() {
 		if (this.metadataComplete) {
-			return this.javaColumn.getDefaultName();
+			return this.column.getDefaultName();
 		}
-		return this.javaColumn.getName();
+		return this.column.getName();
 	}
 
 	public void setName(String value) {
@@ -88,9 +88,9 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 
 	public Boolean getNullable() {
 		if (this.metadataComplete) {
-			return this.javaColumn.getDefaultNullable();
+			return this.column.getDefaultNullable();
 		}
-		return this.javaColumn.getNullable();
+		return this.column.getNullable();
 	}
 
 	public void setNullable(Boolean value) {
@@ -99,9 +99,9 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 
 	public Integer getPrecision() {
 		if (this.metadataComplete) {
-			return this.javaColumn.getDefaultPrecision();
+			return this.column.getDefaultPrecision();
 		}
-		return this.javaColumn.getPrecision();
+		return this.column.getPrecision();
 	}
 
 	public void setPrecision(Integer value) {
@@ -110,9 +110,9 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 
 	public Integer getScale() {
 		if (this.metadataComplete) {
-			return this.javaColumn.getDefaultScale();
+			return this.column.getDefaultScale();
 		}
-		return this.javaColumn.getScale();
+		return this.column.getScale();
 	}
 
 	public void setScale(Integer value) {
@@ -121,8 +121,8 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 
 	public String getTable() {
 		if (!this.metadataComplete) {
-			if (this.javaColumn.getSpecifiedTable() != null) {
-				return this.javaColumn.getSpecifiedTable();
+			if (this.column.getSpecifiedTable() != null) {
+				return this.column.getSpecifiedTable();
 			}	
 		}
 		return this.ormTypeMapping.getTableName();
@@ -134,9 +134,9 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 
 	public Boolean getUnique() {
 		if (this.metadataComplete) {
-			return this.javaColumn.getDefaultUnique();
+			return this.column.getDefaultUnique();
 		}
-		return this.javaColumn.getUnique();
+		return this.column.getUnique();
 	}
 
 	public void setUnique(Boolean value) {
@@ -145,17 +145,17 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 
 	public Boolean getUpdatable() {
 		if (this.metadataComplete) {
-			return this.javaColumn.getDefaultUpdatable();
+			return this.column.getDefaultUpdatable();
 		}
-		return this.javaColumn.getUpdatable();
+		return this.column.getUpdatable();
 	}
 
 	public void setUpdatable(Boolean value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
 	}
 	
-	public void update(JavaColumn javaColumn) {
-		this.javaColumn = javaColumn;
+	public void update(Column column) {
+		this.column = column;
 	}
 	
 	public TextRange getNameTextRange() {

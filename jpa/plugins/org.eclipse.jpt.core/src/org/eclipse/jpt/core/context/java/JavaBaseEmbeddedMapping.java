@@ -29,5 +29,7 @@ public interface JavaBaseEmbeddedMapping extends JavaAttributeMapping, BaseEmbed
 	ListIterator<JavaAttributeOverride> virtualAttributeOverrides();
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaAttributeOverride> specifiedAttributeOverrides();
+	
+	JavaAttributeOverride getAttributeOverrideNamed(String name);
 
 }

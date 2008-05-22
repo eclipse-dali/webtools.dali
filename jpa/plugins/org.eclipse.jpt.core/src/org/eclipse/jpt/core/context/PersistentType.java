@@ -60,6 +60,7 @@ public interface PersistentType extends JpaContextNode, JpaStructureNode
 	 * The parentPersistentType could be found in java or xml.
 	 */
 	PersistentType getParentPersistentType();
+		String PARENT_PERSISTENT_TYPE_PROPERTY = "parentPersistentTypeProperty";
 
 	/**
 	 * Return a read-only iterator of the contained {@link PersistentAttribute}

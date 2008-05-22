@@ -62,5 +62,11 @@ public interface BaseEmbeddedMapping extends AttributeMapping, AttributeOverride
 	 * Move the specified attribute override from the source index to the target index.
 	 */
 	void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex);
+	
+	/**
+	 * Return the attribute overrides, whether specified or default,
+	 * with the given name.
+	 */
+	AttributeOverride getAttributeOverrideNamed(String name);
 
 }

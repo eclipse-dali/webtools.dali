@@ -47,6 +47,7 @@ public interface JavaEntity extends JavaTypeMapping, Entity, JavaGeneratorHolder
 	ListIterator<JavaAttributeOverride> specifiedAttributeOverrides();
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaAttributeOverride> virtualAttributeOverrides();
+	JavaAttributeOverride getAttributeOverrideNamed(String name);
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaAssociationOverride> associationOverrides();
