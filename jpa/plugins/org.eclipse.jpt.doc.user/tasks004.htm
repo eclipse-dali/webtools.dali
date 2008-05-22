@@ -2,65 +2,59 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = January 22, 2008 9:11:17 -->
-<meta name="OAC_IGNORE_SKIP_NAV" content="true" />
+<!-- Run date = May 21, 2008 14:42:04 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-<title>Entity</title>
+<title>Managing the orm.xml file</title>
+ 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
 <meta name="date" content="2005-07-10T12:57:20+08:00" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Entity" />
-<meta name="relnum" content="M5 - Release 2.0.0" />
-<meta name="partnum" content="" />
+<meta name="doctitle" content="Managing the orm.xml file" />
+<meta name="relnum" content="Release 2.0" />
+<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 <link rel="start" href="../../index.htm" title="Home" type="text/html" />
 <link rel="contents" href="toc.htm" title="Contents" type="text/html" />
 </head>
 <body>
-<p><a id="BABGBIEE" name="BABGBIEE"></a></p>
-<div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Entity</h1>
-<p><a id="sthref76" name="sthref76"></a><a id="sthref77" name="sthref77"></a><a id="sthref78" name="sthref78"></a><a id="sthref79" name="sthref79"></a>An <span class="bold">Entity</span> is a persistent domain object.</p>
-<p>An entity <span class="italic">can be</span>:</p>
-<ul>
-<li>
-<p>Abstract or concrete classes. Entities may also extend non-entity classes as well as entity classes, and non-entity classes may extend entity classes.</p>
-</li>
-</ul>
-<p>An entity <span class="italic">must have</span>:</p>
-<ul>
-<li>
-<p>A no-arg constructor (public or protected); the entity class may have other constructors as well.</p>
-</li>
-</ul>
-<p><a id="sthref80" name="sthref80"></a><a id="sthref81" name="sthref81"></a><a id="sthref82" name="sthref82"></a>Each persistent entity must be mapped to a database table and contain a primary key. Persistent entities are identified by the <code>@Entity</code> annotation.</p>
-<p>Use this procedure to add persistence to an existing entity:</p>
+<div class="sect2"><!-- infolevel="all" infotype="General" --><a id="sthref46" name="sthref46"></a>
+<h1>Creating an orm.xml file</h1>
+<p>If you opt not to create an <code>orm.xml</code> file when you create a JPA project, you can create one using the <a href="reference005.htm#CIAIJCCE">Mapping File Wizard</a>.</p>
+<p>Use this procedure to create an <code>orm.xml</code> file:</p>
 <ol start="1">
 <li>
-<p>Open the Java class in the <span class="gui-object-title">Package Explorer.</span></p>
-</li>
-<li>
-<p>Select the class in the JPA Structure view.</p>
-</li>
-<li>
-<p>In the <span class="gui-object-title">JPA Details</span> view, use the <span class="gui-object-action">Map As</span> field to select <span class="gui-object-action">Entity</span>.</p>
-<div class="figure"><a id="sthref83" name="sthref83"></a>
-<p class="titleinfigure">Selecting Entity Persistence</p>
-<img src="img/persistence_view_entity.png" alt="Selecting entity persistence on the JPA Details view." title="Selecting entity persistence on the JPA Details view." /><br /></div>
+<p>From the Navigator or Package Explorer, select <span class="bold">File &gt; New &gt; Other</span>. The Select a Wizard dialog appears.</p>
+<div class="figure"><a id="sthref47" name="sthref47"></a>
+<p class="titleinfigure">The Select a Wizard Dialog</p>
+<img src="img/select_a_wizard_mapping.png" alt="The Select a Wizard dialog with Mapping file selected." title="The Select a Wizard dialog with Mapping file selected." /><br /></div>
 <!-- class="figure" --></li>
 <li>
-<p>Complete the remaining <a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a>.</p>
+<p>Select <span class="bold">Mapping File</span> and then click <span class="bold">Next</span>. The Mapping File page appears.</p>
+<div class="figure"><a id="sthref48" name="sthref48"></a>
+<p class="titleinfigure">The Mapping File Page</p>
+<img src="img/mapping_file_new.png" alt="The Mapping File page." title="The Mapping File page." /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>Define the properties in the page and click <span class="bold">Finish</span>. The <code>orm.xml</code> file appears in the src directory of the selected JPA project. You can manage the orm.xml file using the JPA Details view or through the XML Editor. See also <a href="ref_details_orm.htm#CACGDGHC">JPA Details view (for orm.xml)</a>.</p>
+<div align="center">
+<div class="inftblnote"><br />
+<table class="Note oac_no_warn" summary="" cellpadding="3" cellspacing="0">
+<tbody>
+<tr>
+<td align="left">
+<p class="notep1">Note:</p>
+The Mapping File Wizard will not allow you to proceed if you select a JPA project that already includes an <code>orm.xml</code> file.</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblnote" --></div>
 </li>
 </ol>
-<p>&nbsp;</p>
-<img src="img/ngrelt.png" alt="Related tasks" title="Related tasks" /><br />
-<br />
-<a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a><br />
-<a href="task_additonal_tables.htm#CIHGBIEI">Specifying additional tables</a><br />
-<a href="task_inheritance.htm#CIHCCCJD">Specifying entity inheritance</a><br /></div>
+</div>
 <!-- class="sect2" -->
 <!-- Start Footer -->
 <div class="footer">

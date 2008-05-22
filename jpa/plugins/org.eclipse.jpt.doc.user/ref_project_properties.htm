@@ -2,18 +2,18 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = January 22, 2008 9:11:24 -->
-<meta name="OAC_IGNORE_SKIP_NAV" content="true" />
+<!-- Run date = May 21, 2008 14:42:08 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <title>Project Properties page - JPA Options</title>
+ 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
 <meta name="date" content="2005-07-10T12:57:20+08:00" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Project Properties page - JPA Options" />
-<meta name="relnum" content="M5 - Release 2.0.0" />
-<meta name="partnum" content="" />
+<meta name="relnum" content="Release 2.0" />
+<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 <link rel="start" href="../../index.htm" title="Home" type="text/html" />
@@ -23,24 +23,24 @@
 <p><a id="BABJHBCI" name="BABJHBCI"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
 <h1>Project Properties page &ndash; JPA Options</h1>
-<p><a id="sthref227" name="sthref227"></a><a id="sthref228" name="sthref228"></a>Use the <span class="gui-object-title">JPA</span> options on the <span class="gui-object-title">Properties</span> page to select the database connection to use with the project.</p>
+<p><a id="sthref231" name="sthref231"></a><a id="sthref232" name="sthref232"></a>Use the <span class="gui-object-title">JPA</span> options on the <span class="gui-object-title">Properties</span> page to select the database connection to use with the project.</p>
 <p>This table lists the properties available in the <span class="gui-object-title">JPA Details page</span>.</p>
 <div class="inftblinformal">
 <table class="Informal" title="This table describes the options on the Persistence Properties page." summary="This table describes the options on the Persistence Properties page." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t13">Property</th>
-<th align="left" valign="bottom" id="r1c2-t13">Description</th>
+<th align="left" valign="bottom" id="r1c1-t28">Property</th>
+<th align="left" valign="bottom" id="r1c2-t28">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t13" headers="r1c1-t13"><a id="sthref229" name="sthref229"></a><a id="sthref230" name="sthref230"></a><a id="sthref231" name="sthref231"></a><a id="sthref232" name="sthref232"></a>Platform</td>
-<td align="left" headers="r2c1-t13 r1c2-t13">Select the vendor-specific platform.</td>
+<td align="left" id="r2c1-t28" headers="r1c1-t28"><a id="sthref233" name="sthref233"></a><a id="sthref234" name="sthref234"></a><a id="sthref235" name="sthref235"></a><a id="sthref236" name="sthref236"></a>Platform</td>
+<td align="left" headers="r2c1-t28 r1c2-t28">Select the vendor-specific platform.</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t13" headers="r1c1-t13"><a id="sthref233" name="sthref233"></a><a id="sthref234" name="sthref234"></a><a id="sthref235" name="sthref235"></a>Connection</td>
-<td align="left" headers="r3c1-t13 r1c2-t13">The database connection used to map the persistent entities.
+<td align="left" id="r3c1-t28" headers="r1c1-t28"><a id="sthref237" name="sthref237"></a><a id="sthref238" name="sthref238"></a><a id="sthref239" name="sthref239"></a>Connection</td>
+<td align="left" headers="r3c1-t28 r1c2-t28">The database connection used to map the persistent entities.
 <ul>
 <li>
 <p>To create a new connection, click <span class="bold">Add Connections</span>.</p>
@@ -52,8 +52,12 @@
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t13" headers="r1c1-t13">Persistent Class Management</td>
-<td align="left" headers="r4c1-t13 r1c2-t13">Specify if Dali will <span class="bold">discover annotated classes automatically</span>, or if the <span class="bold">annotated classes must be listed in the persistence.xml</span> file.
+<td align="left" id="r4c1-t28" headers="r1c1-t28">&nbsp;&nbsp;Override default schema from connection</td>
+<td align="left" headers="r4c1-t28 r1c2-t28">Select a schema other than the default one derived from the connection information. Use this option if the default schema is incorrect or cannot be used. For example, use this option when the deployment login differs from the design-time login.</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t28" headers="r1c1-t28">Persistent Class Management</td>
+<td align="left" headers="r5c1-t28 r1c2-t28">Specify if Dali will <span class="bold">discover annotated classes automatically</span>, or if the <span class="bold">annotated classes must be listed in the persistence.xml</span> file.
 <p><span class="bold">Note</span>: To insure application portability, you should explicitly list the managed persistence classes that are included in the persistence unit.</p>
 </td>
 </tr>
@@ -64,7 +68,7 @@
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
 <br />
-<a href="tasks022.htm#BABDBCBI">Modifying persistent project properties</a></div>
+<a href="tasks025.htm#BABDBCBI">Modifying persistent project properties</a></div>
 <!-- class="sect2" -->
 <!-- class="sect1" -->
 <!-- Start Footer -->

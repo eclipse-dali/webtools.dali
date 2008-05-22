@@ -2,137 +2,144 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = January 22, 2008 9:11:19 -->
-<meta name="OAC_IGNORE_SKIP_NAV" content="true" />
+<!-- Run date = May 21, 2008 14:42:05 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-<title>One-to-many mapping</title>
+<title>ID mapping</title>
+ 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
 <meta name="date" content="2005-07-10T12:57:20+08:00" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="One-to-many mapping" />
-<meta name="relnum" content="M5 - Release 2.0.0" />
-<meta name="partnum" content="" />
+<meta name="doctitle" content="ID mapping" />
+<meta name="relnum" content="Release 2.0" />
+<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 <link rel="start" href="../../index.htm" title="Home" type="text/html" />
 <link rel="contents" href="toc.htm" title="Contents" type="text/html" />
 </head>
 <body>
-<p><a id="BABHGEBD" name="BABHGEBD"></a></p>
+<p><a id="BABGCBHG" name="BABGCBHG"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>One-to-many mapping</h1>
-<p><a id="sthref140" name="sthref140"></a><a id="sthref141" name="sthref141"></a><a id="sthref142" name="sthref142"></a><a id="sthref143" name="sthref143"></a>Use a <span class="bold">One-to-Many Mapping</span> to define a relationship with one-to-many multiplicity.</p>
+<h1>ID mapping</h1>
+<p><a id="sthref107" name="sthref107"></a><a id="sthref108" name="sthref108"></a><a id="sthref109" name="sthref109"></a><a id="sthref110" name="sthref110"></a>Use an <span class="bold">ID Mapping</span> to specify the primary key of an entity. ID mappings may be used with a <a href="tasks006.htm#BABGBIEE">Entity</a> or <a href="tasks008.htm#BABDAGCI">Mapped superclass</a>. Each <a href="tasks006.htm#BABGBIEE">Entity</a> must have an ID mapping.</p>
 <ol start="1">
 <li>
-<p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, select the field to map. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected.</p>
+<p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, select the field to map.</p>
 </li>
 <li>
-<p>In the <span class="gui-object-title">Map As</span> field, select <span class="gui-object-action">One-to-many</span>.</p>
+<p>Right click the filed and then select <span class="bold">Map as &gt; ID</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected.</p>
 </li>
 <li>
-<p>Use this table to complete the <a href="ref_mapping_general.htm#CACBHFIJ">General information</a> fields JPA Details view.</p>
+<p>Use this table to complete the <a href="ref_mapping_general.htm#CACBHFIJ">General information</a> fields in the <span class="gui-object-title">JPA Details</span> view.</p>
 <div class="inftblruleinformal">
-<table class="RuleInformal" title="This table lists the fields in the General tab of the Persistence Properties view for this mapping." summary="This table lists the fields in the General tab of the Persistence Properties view for this mapping." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
+<table class="RuleInformal" title="This table lists the fields in the Persistence Properties view for this mapping." summary="This table lists the fields in the Persistence Properties view for this mapping." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t13">Property</th>
-<th align="left" valign="bottom" id="r1c2-t13">Description</th>
-<th align="left" valign="bottom" id="r1c3-t13">Default</th>
+<th align="left" valign="bottom" id="r1c1-t18">Property</th>
+<th align="left" valign="bottom" id="r1c2-t18">Description</th>
+<th align="left" valign="bottom" id="r1c3-t18">Default</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t13" headers="r1c1-t13">Target Entity</td>
-<td align="left" headers="r2c1-t13 r1c2-t13">The entity to which this attribute is mapped.</td>
-<td align="left" headers="r2c1-t13 r1c3-t13"><br /></td>
+<td align="left" id="r2c1-t18" headers="r1c1-t18">Entity Mapping Hyperlink</td>
+<td align="left" headers="r2c1-t18 r1c2-t18">Defines this mapping as an <span class="bold">ID Mapping</span>.
+<p>This field corresponds to the <code>@Id</code> annotation.</p>
+</td>
+<td align="left" headers="r2c1-t18 r1c3-t18">ID</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t13" headers="r1c1-t13">Fetch Type</td>
-<td align="left" headers="r3c1-t13 r1c2-t13">Defines how data is loaded from the database. See <a href="ref_mapping_general.htm#CACGGGHB">"Fetch Type"</a> for details.
+<td align="left" id="r3c1-t18" headers="r1c1-t18">Column</td>
+<td align="left" headers="r3c1-t18 r1c2-t18">The database column mapped to the entity attribute. See <a href="ref_mapping_general.htm#CACGCBHB">"Column"</a> for details.</td>
+<td align="left" headers="r3c1-t18 r1c3-t18">By default, the Column is assumed to be named identically to the attribute.</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t18" headers="r1c1-t18">Table</td>
+<td align="left" headers="r4c1-t18 r1c2-t18">The database table mapped to the entity attribute.</td>
+<td align="left" headers="r4c1-t18 r1c3-t18">By default, the Table is assumed to be identical to the table associated with the entity.</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t18" headers="r1c1-t18">Temporal</td>
+<td align="left" headers="r5c1-t18 r1c2-t18">Specifies the type of data. See <a href="ref_mapping_general.htm#CACEAJGD">"Temporal"</a> for details.
 <ul>
 <li>
-<p>Eager</p>
+<p>Date</p>
 </li>
 <li>
-<p>Lazy</p>
+<p>Time</p>
+</li>
+<li>
+<p>Timestamp</p>
 </li>
 </ul>
 </td>
-<td align="left" headers="r3c1-t13 r1c3-t13">Eager</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r4c1-t13" headers="r1c1-t13">Mapped By</td>
-<td align="left" headers="r4c1-t13 r1c2-t13">The database field that owns the relationship.</td>
-<td align="left" headers="r4c1-t13 r1c3-t13"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r5c1-t13" headers="r1c1-t13">Order By</td>
-<td align="left" headers="r5c1-t13 r1c2-t13">Specify the default order for objects returned from a query. See <a href="ref_mapping_general.htm#CACDADIH">"Order By"</a> for details.
-<ul>
-<li>
-<p>No ordering</p>
-</li>
-<li>
-<p>Primary key</p>
-</li>
-<li>
-<p>Custom</p>
-</li>
-</ul>
-</td>
-<td align="left" headers="r5c1-t13 r1c3-t13">No ordering</td>
+<td align="left" headers="r5c1-t18 r1c3-t18"><br /></td>
 </tr>
 </tbody>
 </table>
 <br /></div>
 <!-- class="inftblruleinformal" --></li>
 <li>
-<p>Use this table to complete the <a href="reference007.htm#CACBAEBC">Join Table Information</a> fields in the JPA Details view.</p>
+<p>Use this table to complete the fields in <a href="ref_primary_key.htm#CACFCCAB">Primary Key Generation information</a> area in the <span class="gui-object-title">JPA Details</span> view.</p>
 <div class="inftblruleinformal">
-<table class="RuleInformal" title="This table lists the fields in the Join Table tab of the Persistence Properties view for this mapping." summary="This table lists the fields in the Join Table tab of the Persistence Properties view for this mapping." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
+<table class="RuleInformal" title="This table lists the fields in the PK Generation tab." summary="This table lists the fields in the PK Generation tab." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t14">Property</th>
-<th align="left" valign="bottom" id="r1c2-t14">Description</th>
-<th align="left" valign="bottom" id="r1c3-t14">Default</th>
+<th align="left" valign="bottom" id="r1c1-t19">Property</th>
+<th align="left" valign="bottom" id="r1c2-t19">Description</th>
+<th align="left" valign="bottom" id="r1c3-t19">Default</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t14" headers="r1c1-t14">Name</td>
-<td align="left" headers="r2c1-t14 r1c2-t14">Name of the join table</td>
-<td align="left" headers="r2c1-t14 r1c3-t14">By default, the name is assumed to be the primary tables associated with the entities concatenated with an underscore.</td>
+<td align="left" id="r2c1-t19" headers="r1c1-t19">Primary Key Generation</td>
+<td align="left" headers="r2c1-t19 r1c2-t19">These fields define how the primary key is generated.</td>
+<td align="left" headers="r2c1-t19 r1c3-t19"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t14" headers="r1c1-t14">Join Columns</td>
-<td align="left" headers="r3c1-t14 r1c2-t14">Specify two or more join columns (that is, a primary key).</td>
-<td align="left" headers="r3c1-t14 r1c3-t14"><br /></td>
+<td align="left" id="r3c1-t19" headers="r1c1-t19">&nbsp;&nbsp;Strategy</td>
+<td align="left" headers="r3c1-t19 r1c2-t19">See <a href="ref_primary_key.htm#CACBAJBC">"Primary Key Generation"</a> for details.
+<ul>
+<li>
+<p>Auto</p>
+</li>
+<li>
+<p>Sequence</p>
+</li>
+<li>
+<p>Identity</p>
+</li>
+<li>
+<p>Table</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r3c1-t19 r1c3-t19">Auto</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t14" headers="r1c1-t14">Inverse Join Columns</td>
-<td align="left" headers="r4c1-t14 r1c2-t14">The join column on the owned (or inverse) side of the association: the owned entity's primary key column.</td>
-<td align="left" headers="r4c1-t14 r1c3-t14"><br /></td>
+<td align="left" id="r4c1-t19" headers="r1c1-t19">&nbsp;&nbsp;Generator&nbsp;Name</td>
+<td align="left" headers="r4c1-t19 r1c2-t19">Name of the primary key generator specified in the <span class="bold">Strategy</span></td>
+<td align="left" headers="r4c1-t19 r1c3-t19"><br /></td>
 </tr>
 </tbody>
 </table>
 <br /></div>
 <!-- class="inftblruleinformal" --></li>
 </ol>
+<p>Additional fields will appear in the <a href="ref_primary_key.htm#CACFCCAB">Primary Key Generation information</a> area, depending on the selected Strategy. See <a href="ref_persistence_map_view.htm#BABIFBAF">"JPA Details view (for attributes)"</a> for additional information.</p>
 <p>Eclipse adds the following annotations to the field:</p>
 <pre xml:space="preserve" class="oac_no_warn">
-@OneToMany(targetEntity=<span class="italic">&lt;TARGET_ENTITY&gt;</span>)
-@Column(name="<span class="italic">&lt;COLUMN&gt;</span>")
-
-
-@OneToMany(targetEntity=<span class="italic">&lt;TARGET_ENTITY&gt;</span>.class, cascade=CascadeType.<span class="italic">&lt;CASCADE_TYPE&gt;</span>, 
-    fetch = FetchType.<span class="italic">&lt;FETCH_TYPE&gt;</span>, mappedBy = "<span class="italic">&lt;MAPPED_BY&gt;</span>")@OrderBy("<span class="italic">&lt;ORDER_BY&gt;</span>")
-@JoinTable(name="<span class="italic">&lt;JOIN_TABLE_NAME&gt;</span>", joinColumns=@JoinColumn(name=
-    "<span class="italic">&lt;JOIN_COLUMN_NAME&gt;</span>", referencedColumnName="<span class="italic">&lt;JOIN_COLUMN_REFERENCED_COLUMN&gt;</span>"), 
-    inverseJoinColumns=@JoinColumn(name="<span class="italic">&lt;INVERSE_JOIN_COLUMN_NAME&gt;</span>", 
-    referencedColumnName="<span class="italic">&lt;INVERSE_JOIN_COLUMN_REFERENCED_COLUMN&gt;</span>"))
-
+@Id
+@Column(name="<span class="italic">&lt;COLUMN_NAME&gt;</span>", table="<span class="italic">&lt;TABLE_NAME&gt;</span>", insertable=<span class="italic">&lt;INSERTABLE&gt;</span>,
+    updatable=<span class="italic">&lt;UPDATABLE&gt;</span>)
+@Temporal(<span class="italic">&lt;TEMPORAL&gt;</span>)
+@GeneratedValue(strategy=GeneratorType.<span class="italic">&lt;STRATEGY&gt;</span>, generator="<span class="italic">&lt;GENERATOR_NAME&gt;</span>")@TableGenerator(name="<span class="italic">&lt;TABLE_GENERATOR_NAME&gt;</span>", table = "<span class="italic">&lt;TABLE_GENERATOR_TABLE&gt;</span>", 
+    pkColumnName = "<span class="italic">&lt;TABLE_GENERATOR_PK&gt;</span>", 
+    valueColumnName = "<span class="italic">&lt;TABLE_GENERATOR_VALUE_COLUMN&gt;</span>", 
+    pkColumnValue = "<span class="italic">&lt;TABLE_GENERATOR_PK_COLUMN_VALUE&gt;</span>")@SequenceGenerator(name="<span class="italic">&lt;SEQUENCE_GENERATOR_NAME&gt;</span>", 
+    sequenceName="<span class="italic">&lt;SEQUENCE_GENERATOR_SEQUENCE&gt;</span>")
 </pre>
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />

@@ -2,51 +2,63 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = January 22, 2008 9:11:17 -->
-<meta name="OAC_IGNORE_SKIP_NAV" content="true" />
+<!-- Run date = May 21, 2008 14:42:04 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-<title>Working with orm.xml file</title>
+<title>Synchronizing classes</title>
+ 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
 <meta name="date" content="2005-07-10T12:57:20+08:00" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Working with orm.xml file" />
-<meta name="relnum" content="M5 - Release 2.0.0" />
-<meta name="partnum" content="" />
+<meta name="doctitle" content="Synchronizing classes" />
+<meta name="relnum" content="Release 2.0" />
+<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 <link rel="start" href="../../index.htm" title="Home" type="text/html" />
 <link rel="contents" href="toc.htm" title="Contents" type="text/html" />
 </head>
 <body>
-<p><a id="CIHBCDCE" name="CIHBCDCE"></a></p>
+<p><a id="CIHFEBAI" name="CIHFEBAI"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Working with orm.xml file</h1>
-<p><a id="sthref70" name="sthref70"></a><a id="sthref71" name="sthref71"></a>You can work with the <code>orm.xml</code> by using the JPA Details view.</p>
-<p>Use this procedure to work with the <code>orm.xml</code> file:</p>
+<h1>Synchronizing classes</h1>
+<p>As you work with the classes in your Java project, you will need to update the <code>persistence.xml</code> file to reflect the changes. <a id="sthref41" name="sthref41"></a><a id="sthref42" name="sthref42"></a></p>
+<p>Use this procedure to synchronize the <code>persistence.xml</code> file:</p>
 <ol start="1">
 <li>
-<p>Right-click the <code>orm.xml</code> file in the <span class="gui-object-title">Package Explorer</span> and select <span class="gui-object-action">Open</span>.</p>
+<p>Right-click the <code>persistence.xml</code> file in the <span class="gui-object-title">Package Explorer</span> and select <span class="gui-object-action">JPA Tools &gt; Synchronize Classes</span>.</p>
+<div align="center">
+<div class="inftblnote"><br />
+<table class="Note oac_no_warn" summary="" cellpadding="3" cellspacing="0">
+<tbody>
+<tr>
+<td align="left">
+<p class="notep1">Note:</p>
+Use this function if you selected <span class="bold">Annotated classes must be listed in the persistence.xml option</span> in the <a href="ref_jpa_facet.htm#CACIFDIF">JPA Facet page</a>. In general, you do not have to use this function within the container.</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblnote" --></div>
+<div class="figure"><a id="sthref43" name="sthref43"></a>
+<p class="titleinfigure">Synchronizing the persistence.xml File</p>
+<img src="img/synchornize_classes.png" alt="This figure shows the JPA Tools &gt; Synchronize Classes option." title="This figure shows the JPA Tools &gt; Synchronize Classes option." /><br /></div>
+<!-- class="figure" -->
+<p>Dali adds the necessary <code>&lt;class&gt;</code> elements to the <code>persistence.xml</code> file.</p>
 </li>
 <li>
-<p>In the JPA Structure view, select <span class="bold">EntityMappings</span>.</p>
+<p>Use the <span class="gui-object-title">Persistence XML Editor</span> to continue editing the <code>persistence.xml</code> file.</p>
 </li>
-<li>
-<p>Use the JPA Details view to configure the entity mapping and persistence unit defaults.</p>
-<div class="figure"><a id="sthref72" name="sthref72"></a>
-<p class="titleinfigure">JPA Details view for EntityMappings (orm.xml)</p>
-<img src="img/details_entitymappings.png" alt="JPA Details view for orm.xml file." title="JPA Details view for orm.xml file." /><br /></div>
-<!-- class="figure" --></li>
 </ol>
 <img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
 <br />
-<a href="#CIHBCDCE">Working with orm.xml file</a><br />
-<a href="../org.eclipse.wst.xmleditor.doc.user/topics/cworkXML.html">Working with XML Files</a><br />
+<a href="tasks002.htm#CIHEJAIE">Using the XML Editor to edit the persistence.xml file</a>
 <p>&nbsp;</p>
 <img src="img/ngrelc.png" alt="Related concept" title="Related concept" /><br />
 <br />
-<a href="concepts003.htm#CHDBIJAC">The orm.xml file</a><br /></div>
+<a href="concepts002.htm#CHDHAGIH">The persistence.xml file</a><br />
+<br /></div>
 <!-- class="sect2" -->
 <!-- class="sect1" -->
 <!-- Start Footer -->

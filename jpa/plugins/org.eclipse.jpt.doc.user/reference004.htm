@@ -2,66 +2,104 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = January 22, 2008 9:11:22 -->
-<meta name="OAC_IGNORE_SKIP_NAV" content="true" />
+<!-- Run date = May 21, 2008 14:42:07 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-<title>Attribute overrides</title>
+<title>Entity Properties page</title>
+ 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
 <meta name="date" content="2005-07-10T12:57:20+08:00" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Attribute overrides" />
-<meta name="relnum" content="M5 - Release 2.0.0" />
-<meta name="partnum" content="" />
+<meta name="doctitle" content="Entity Properties page" />
+<meta name="relnum" content="Release 2.0" />
+<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 <link rel="start" href="../../index.htm" title="Home" type="text/html" />
 <link rel="contents" href="toc.htm" title="Contents" type="text/html" />
 </head>
 <body>
-<p><a id="CACIJBGH" name="CACIJBGH"></a></p>
+<p><a id="CIADECIA" name="CIADECIA"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Attribute overrides</h1>
-<p><a id="sthref189" name="sthref189"></a><a id="sthref190" name="sthref190"></a><a id="sthref191" name="sthref191"></a>Use the <span class="gui-object-title">Attribute Overrides</span> area in the <span class="gui-object-title">Java Details</span> view to override the default settings specified in the <a href="reference003.htm#CACCAGGC">General information</a> area of an attribute.</p>
-<p>This table lists the Attribute override fields available in the <span class="gui-object-title">JPA Details</span> view for each entity type.</p>
-<div class="inftblinformal">
-<table class="Informal" title="This table describes the options on the Persistence Properties view, General tab." summary="This table describes the options on the Persistence Properties view, General tab." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
+<h1>Entity Properties page</h1>
+<p>This table lists the properties of the Entity Properties page of the <a href="reference002.htm#CIAGGGDF">Create JPA Entity wizard</a>.</p>
+<div class="tblformal"><a id="sthref169" name="sthref169"></a><a id="sthref170" name="sthref170"></a>
+<p class="titleintable">&nbsp;</p>
+<table class="Formal" title="" summary="This table to be converted to informal." dir="ltr" border="1" width="100%" frame="hsides" rules="groups" cellpadding="3" cellspacing="0">
 <thead>
 <tr align="left" valign="top">
 <th align="left" valign="bottom" id="r1c1-t5">Property</th>
 <th align="left" valign="bottom" id="r1c2-t5">Description</th>
 <th align="left" valign="bottom" id="r1c3-t5">Default</th>
-<th align="left" valign="bottom" id="r1c4-t5">Available for Entity&nbsp;Type</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t5" headers="r1c1-t5">Attribute Overrides</td>
-<td align="left" headers="r2c1-t5 r1c2-t5">Specify a property or field to be overridden (from the default mappings). Select <span class="bold">Override Default</span>.</td>
-<td align="left" headers="r2c1-t5 r1c3-t5"><br /></td>
-<td align="left" headers="r2c1-t5 r1c4-t5"><a href="tasks004.htm#BABGBIEE">Entity</a><br /></td>
+<td align="left" id="r2c1-t5" headers="r1c1-t5">
+<p>Entity Name</p>
+</td>
+<td align="left" headers="r2c1-t5 r1c2-t5">
+<p>The name of the entity. By default, this value is the same as the one entered as the class name. If the entity name differs from the class name, then the entity name is added as an attribute. For example: <code>@Entity(name="EntityName")</code>.</p>
+</td>
+<td align="left" headers="r2c1-t5 r1c3-t5">
+<p>Determined by server.</p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t5" headers="r1c1-t5">Join Columns</td>
-<td align="left" headers="r3c1-t5 r1c2-t5"><br /></td>
-<td align="left" headers="r3c1-t5 r1c3-t5"><br /></td>
-<td align="left" headers="r3c1-t5 r1c4-t5"><a href="tasks004.htm#BABGBIEE">Entity</a><br /></td>
+<td align="left" id="r3c1-t5" headers="r1c1-t5">
+<p>Table Name</p>
+</td>
+<td align="left" headers="r3c1-t5 r1c2-t5">
+<p>Select <span class="bold">Use default</span> to match the name of the mapped table name to the entity name. Otherwise, clear the <span class="bold">Use default</span> option and enter the name in the <span class="italic">Table Name</span> field. These options result in the addition of the <code>@Table</code> option to the Java class file.</p>
+</td>
+<td align="left" headers="r3c1-t5 r1c3-t5">
+<p>Use default.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t5" headers="r1c1-t5">
+<p>Entity Fields</p>
+</td>
+<td align="left" headers="r4c1-t5 r1c2-t5">
+<p>Click the <span class="bold">Add</span> button to add persistence fields using the Entity Fields dialog. This dialog enable you to build a field by entering a field name and selecting among persistence types. The <span class="bold">Key</span> option enables you to mark a field as a primary key. The dialog's <span class="bold">Browse</span> function enables you to add other persistence types described in the JPA specification. The <span class="bold">Edit</span> button enables you to change the name or type set for a persistent field.</p>
+</td>
+<td align="left" headers="r4c1-t5 r1c3-t5"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t5" headers="r1c1-t5">
+<p>Access Type</p>
+</td>
+<td align="left" headers="r5c1-t5 r1c2-t5">
+<p>Select whether the entity's access to instance variables is field-based or property-based, as defined in the JPA specification.</p>
+<ul>
+<li>
+<p><span class="bold">Field-based</span> &ndash; Instance variables are accessed directly. All non-transient instance variables are persistent.</p>
+</li>
+<li>
+<p><span class="bold">Property-based</span> &ndash; Persistent state accessed through the property accessor methods. The property accessor methods must be <span class="bold">public</span> or <span class="bold">private</span>.</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r5c1-t5 r1c3-t5">
+<p>Field-based</p>
+</td>
 </tr>
 </tbody>
 </table>
 <br /></div>
-<!-- class="inftblinformal" -->
+<!-- class="tblformal" -->
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
 <br />
-<a href="reference003.htm#CACCAGGC">General information</a><br />
+<a href="tasks001.htm#BABFBJBG">Creating a JPA Entity</a><br />
 <a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a>
 <p>&nbsp;</p>
 <img src="img/ngrelr.png" alt="Related reference" title="Related reference" /><br />
 <br />
 <a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></div>
 <!-- class="sect3" -->
+<!-- class="sect2" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">

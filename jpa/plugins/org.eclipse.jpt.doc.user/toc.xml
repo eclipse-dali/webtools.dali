@@ -4,28 +4,8 @@
     <topic href="getting_started.htm" label="Getting started">
       <topic href="getting_started001.htm#BABEFHCD" label="Requirements and installation" />
       <topic href="getting_started002.htm#BABIGCJA" label="Dali quick start">
-        <topic href="getting_started003.htm#BABDFHDA" label="Creating a new project" />
-        <topic href="getting_started004.htm#BABFGDDG" label="Creating a Java persistent entity" />
-        <topic href="getting_started005.htm#BABHACAF" label="Mapping an entity" />
-      </topic>
-      <topic href="getting_started006.htm#BABCDECJ" label="Dali basic tutorial">
-        <topic href="getting_started007.htm#BABBBBID" label="Generate the tutorial database schema">
-          <topic href="getting_started008.htm#BABDHFCD" label="Create a database connection" />
-        </topic>
-        <topic href="getting_started009.htm#BABBBAIG" label="Create a JPA project" />
-        <topic href="getting_started010.htm#BABIJIGF" label="Create persistent Java entities">
-          <topic href="getting_started011.htm#BABDCBDD" label="Add fields to the entities" />
-          <topic href="getting_started012.htm#BABIHGGD" label="Associate the entity with a database table" />
-        </topic>
-        <topic href="getting_started013.htm#BABEBGBC" label="Create OR mappings">
-          <topic href="getting_started014.htm#BABGEFDI" label="Create ID mappings" />
-          <topic href="getting_started015.htm#BABEEFJA" label="Create basic mappings" />
-          <topic href="getting_started016.htm#BABGBGHF" label="Create one-to-one mappings" />
-          <topic href="getting_started017.htm#BABBEHEG" label="Create one-to-many mappings" />
-          <topic href="getting_started018.htm#BABCHIHI" label="Create many-to-one mappings" />
-          <topic href="getting_started019.htm#BABIDFFG" label="Create version mappings" />
-        </topic>
-      </topic>
+        <topic href="getting_started003.htm#BABDFHDA" label="Creating a new JPA project" />
+        <topic href="getting_started004.htm#BABFGDDG" label="Creating a Java persistent entity with persistent fields" />
     </topic>
     <topic href="concepts.htm" label=" Concepts">
       <topic href="concept_persistence.htm#BABCAHIC" label="Understanding Java persistence" />
@@ -37,39 +17,42 @@
     </topic>
     <topic href="tasks.htm" label=" Tasks">
       <topic href="task_create_new_project.htm#CIHHEJCJ" label="Creating a new JPA project" />
+      <topic href="tasks001.htm#BABFBJBG" label="Creating a JPA Entity" />
       <topic href="task_manage_persistence.htm#CIHDAJID" label="Managing the persistence.xml file">
-        <topic href="tasks001.htm#CIHEJAIE" label="Working with persistence.xml file" />
-        <topic href="tasks002.htm#CIHFEBAI" label="Synchronizing classes" />
+        <topic href="tasks002.htm#CIHEJAIE" label="Using the XML Editor to edit the persistence.xml file" />
+        <topic href="tasks003.htm#CIHFEBAI" label="Synchronizing classes" />
       </topic>
       <topic href="task_manage_orm.htm#CIHDGDCD" label="Managing the orm.xml file">
-        <topic href="tasks003.htm#CIHBCDCE" label="Working with orm.xml file" />
+        <topic href="tasks004.htm#sthref46" label="Creating an orm.xml file" />
+        <topic href="tasks005.htm#CIHBCDCE" label="Working with orm.xml file" />
       </topic>
       <topic href="task_add_persistence.htm#BABHICAI" label="Adding persistence to a class">
-        <topic href="tasks004.htm#BABGBIEE" label="Entity" />
-        <topic href="tasks005.htm#BABFEICE" label="Embeddable" />
-        <topic href="tasks006.htm#BABDAGCI" label="Mapped superclass" />
+        <topic href="tasks006.htm#BABGBIEE" label="Entity" />
+        <topic href="tasks007.htm#BABFEICE" label="Embeddable" />
+        <topic href="tasks008.htm#BABDAGCI" label="Mapped superclass" />
       </topic>
       <topic href="task_additonal_tables.htm#CIHGBIEI" label="Specifying additional tables" />
       <topic href="task_inheritance.htm#CIHCCCJD" label="Specifying entity inheritance" />
+      <topic href="tasks009.htm#BABIGBGG" label="Creating Named Queries" />
       <topic href="task_mapping.htm#BABDGBIJ" label="Mapping an entity">
-        <topic href="tasks007.htm#BABBABCE" label="Basic mapping" />
-        <topic href="tasks008.htm#BABCBHDF" label="Embedded mapping" />
-        <topic href="tasks009.htm#CIHDIAEE" label="Embedded ID mapping" />
-        <topic href="tasks010.htm#BABGCBHG" label="ID mapping" />
-        <topic href="tasks011.htm#BABEIEGD" label="Many-to-many mapping" />
-        <topic href="tasks012.htm#BABHFAFJ" label="Many-to-one mapping" />
-        <topic href="tasks013.htm#BABHGEBD" label="One-to-many mapping" />
-        <topic href="tasks014.htm#BABFHBCJ" label="One-to-one mapping" />
-        <topic href="tasks015.htm#BABHFHEI" label="Transient mapping" />
-        <topic href="tasks016.htm#BABHIBII" label="Version mapping" />
+        <topic href="tasks010.htm#BABBABCE" label="Basic mapping" />
+        <topic href="tasks011.htm#BABCBHDF" label="Embedded mapping" />
+        <topic href="tasks012.htm#CIHDIAEE" label="Embedded ID mapping" />
+        <topic href="tasks013.htm#BABGCBHG" label="ID mapping" />
+        <topic href="tasks014.htm#BABEIEGD" label="Many-to-many mapping" />
+        <topic href="tasks015.htm#BABHFAFJ" label="Many-to-one mapping" />
+        <topic href="tasks016.htm#BABHGEBD" label="One-to-many mapping" />
+        <topic href="tasks017.htm#BABFHBCJ" label="One-to-one mapping" />
+        <topic href="tasks018.htm#BABHFHEI" label="Transient mapping" />
+        <topic href="tasks019.htm#BABHIBII" label="Version mapping" />
       </topic>
-      <topic href="tasks017.htm#BABBAGFI" label="Generating entities from tables" />
-      <topic href="tasks018.htm#CIHJIGBE" label="Generating DDL from Entities" />
-      <topic href="tasks019.htm#BABFAIBA" label="Validating mappings and reporting problems">
-        <topic href="tasks020.htm#CIHFEDEI" label="Error messages" />
-        <topic href="tasks021.htm#CIHGEAIJ" label="Warning messages" />
+      <topic href="tasks020.htm#BABBAGFI" label="Generating entities from tables" />
+      <topic href="tasks021.htm#CIHJIGBE" label="Generating DDL from Entities" />
+      <topic href="tasks022.htm#BABFAIBA" label="Validating mappings and reporting problems">
+        <topic href="tasks023.htm#CIHFEDEI" label="Error messages" />
+        <topic href="tasks024.htm#CIHGEAIJ" label="Warning messages" />
       </topic>
-      <topic href="tasks022.htm#BABDBCBI" label="Modifying persistent project properties" />
+      <topic href="tasks025.htm#BABDBCBI" label="Modifying persistent project properties" />
     </topic>
     <topic label=" Reference">
       <topic label="Wizards">
@@ -77,43 +60,71 @@
           <topic href="ref_new_jpa_project.htm#CACBJAGC" label="New JPA Project page" />
           <topic href="ref_jpa_facet.htm#CACIFDIF" label="JPA Facet page" />
         </topic>
+        <topic href="reference002.htm#CIAGGGDF" label="Create JPA Entity wizard">
+          <topic href="reference003.htm#CIAFEIGF" label="Entity Class page" />
+          <topic href="reference004.htm#CIADECIA" label="Entity Properties page" />
+        </topic>
+        <topic href="reference005.htm#CIAIJCCE" label="Mapping File Wizard">
+          <topic href="reference006.htm#sthref171" label="Mapping File" />
+        </topic>
+        <topic href="reference007.htm#sthref174" label="Generate DDL from Entities Wizard" />
       </topic>
       <topic label="Property pages">
         <topic href="ref_persistence_prop_view.htm#BABFAEBB" label="JPA Details view (for entities)">
-          <topic href="reference003.htm#CACCAGGC" label="General information" />
-          <topic href="reference004.htm#CACIJBGH" label="Attribute overrides" />
-          <topic href="reference005.htm#CACBHIDA" label="Secondary table information" />
-          <topic href="reference006.htm#CACFHGHE" label="Inheritance information" />
+          <topic href="reference009.htm#CACCAGGC" label="General information" />
+          <topic href="reference010.htm#CACIJBGH" label="Attribute overrides" />
+          <topic href="reference011.htm#CACBHIDA" label="Secondary table information" />
+          <topic href="reference012.htm#CACFHGHE" label="Inheritance information" />
+          <topic href="reference013.htm#sthref187" label="Queries" />
         </topic>
         <topic href="ref_persistence_map_view.htm#BABIFBAF" label="JPA Details view (for attributes)">
           <topic href="ref_mapping_general.htm#CACBHFIJ" label="General information" />
-          <topic href="reference007.htm#CACBAEBC" label="Join Table Information" />
-          <topic href="reference008.htm#CACFCEJC" label="Join Columns Information" />
+          <topic href="reference014.htm#CACBAEBC" label="Join Table Information" />
+          <topic href="reference015.htm#CACFCEJC" label="Join Columns Information" />
           <topic href="ref_primary_key.htm#CACFCCAB" label="Primary Key Generation information" />
         </topic>
         <topic href="ref_details_orm.htm#CACGDGHC" label="JPA Details view (for orm.xml)">
-          <topic href="reference009.htm#CACCACGH" label="General information" />
-          <topic href="reference010.htm#CACEAGBG" label="Persistence Unit information" />
+          <topic href="reference016.htm#CACCACGH" label="General information" />
+          <topic href="reference017.htm#CACEAGBG" label="Persistence Unit information" />
         </topic>
         <topic href="ref_persistence_outline.htm#BABEGGFE" label="JPA Structure view" />
+        <topic href="reference018.htm#CIACCHID" label="persistence.xml Editor">
+          <topic href="reference019.htm#CIACIFGJ" label="General" />
+          <topic href="reference020.htm#CIAFFJIE" label="Connection" />
+          <topic href="reference021.htm#CIAJAFEG" label="Customization" />
+          <topic href="reference022.htm#CIABEDCH" label="Caching" />
+          <topic href="reference023.htm#CIABGHHI" label="Logging" />
+          <topic href="reference024.htm#CIAFJCHE" label="Options" />
+          <topic href="reference025.htm#CIACCFCB" label="Schema Generation" />
+          <topic href="reference026.htm#CIAHJDFF" label="Properties" />
+          <topic href="reference027.htm#CIAHCJAH" label="Source" />
+        </topic>
       </topic>
       <topic label="Preferences">
         <topic href="ref_project_properties.htm#BABJHBCI" label="Project Properties page - JPA Options" />
       </topic>
       <topic label="Dialogs">
         <topic href="task_generate_entities.htm#CACDAFJD" label="Generate Entities from Tables dialog" />
-        <topic href="reference013.htm#CACCGEHC" label="Edit Join Columns Dialog" />
+        <topic href="reference030.htm#CACCGEHC" label="Edit Join Columns Dialog" />
       </topic>
       <topic href="ref_persistence_perspective.htm#BABIFBDB" label="JPA Development perspective" />
       <topic label="Icons and buttons">
-        <topic href="reference015.htm#CACGEACG" label="Icons" />
-        <topic href="reference016.htm#CACDJCEI" label="Buttons" />
+        <topic href="reference032.htm#CACGEACG" label="Icons" />
+        <topic href="reference033.htm#CACDJCEI" label="Buttons" />
       </topic>
-      <topic href="reference017.htm#sthref242" label="Javadoc" />
-      <topic href="reference018.htm#CACBBDIB" label="Dali Developer Documentation" />
+      <topic href="reference034.htm#CACBBDIB" label="Dali Developer Documentation" />
     </topic>
-    <topic href="tips_and_tricks.htm" label="Tips and tricks" />
+    <topic href="tips_and_tricks.htm" label="Tips and tricks">
+      <topic href="whats_new001.htm#BGGCJHAG" label="Create JPA Entity Wizard" />
+      <topic href="whats_new002.htm#BGGIHJCJ" label="Named Query Support" />
+      <topic href="whats_new003.htm#BGGGACCD" label="persistence.xml Editor" />
+      <topic href="whats_new004.htm#BGGIICEF" label="Override the Default Schema for Connection" />
+      <topic href="whats_new005.htm#sthref252" label="New Mapping File Wizard" />
+      <topic href="whats_new006.htm#sthref253" label="Convert to Java Project" />
+      <topic href="whats_new007.htm#sthref254" label="Column Definition Support" />
+    </topic>
     <topic href="legal.htm" label=" Legal">
-      <topic href="about.html#sthref249" label="About this content" />
+      <topic href="about.htm#sthref256" label="About this content" />
     </topic>
+  </topic>
 </toc>

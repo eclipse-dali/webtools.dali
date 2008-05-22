@@ -2,94 +2,66 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = January 22, 2008 9:11:24 -->
-<meta name="OAC_IGNORE_SKIP_NAV" content="true" />
+<!-- Run date = May 21, 2008 14:42:07 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-<title>Persistence Unit information</title>
+<title>Attribute overrides</title>
+ 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
 <meta name="date" content="2005-07-10T12:57:20+08:00" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Persistence Unit information" />
-<meta name="relnum" content="M5 - Release 2.0.0" />
-<meta name="partnum" content="" />
+<meta name="doctitle" content="Attribute overrides" />
+<meta name="relnum" content="Release 2.0" />
+<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 <link rel="start" href="../../index.htm" title="Home" type="text/html" />
 <link rel="contents" href="toc.htm" title="Contents" type="text/html" />
 </head>
 <body>
-<p><a id="CACEAGBG" name="CACEAGBG"></a></p>
+<p><a id="CACIJBGH" name="CACIJBGH"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Persistence Unit information</h1>
-<p>This table lists the Persistence Unit information fields available in the <span class="gui-object-title">JPA Details</span> view for each entity type. These fields are contained in the <code>&lt;persistence-unit-metadata&gt;</code> element in the <code>orm.xml</code> file.</p>
-<div class="inftblruleinformal">
-<table class="RuleInformal" title="This table describes the options on the Persistence Properties view, General tab." summary="This table describes the options on the Persistence Properties view, General tab." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
+<h1>Attribute overrides</h1>
+<p><a id="sthref178" name="sthref178"></a><a id="sthref179" name="sthref179"></a><a id="sthref180" name="sthref180"></a>Use the <span class="gui-object-title">Attribute Overrides</span> area in the <span class="gui-object-title">JPA Details</span> view to override the default settings specified in the <a href="reference009.htm#CACCAGGC">General information</a> area of an attribute. Attribute overrides generally override/configure attribtues that are inherited or embedded.</p>
+<p>This table lists the Attribute override fields available in the <span class="gui-object-title">JPA Details</span> view for each entity type.</p>
+<div class="inftblinformal">
+<table class="Informal" title="This table describes the options on the Persistence Properties view, General tab." summary="This table describes the options on the Persistence Properties view, General tab." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t12">Property</th>
-<th align="left" valign="bottom" id="r1c2-t12">Description</th>
-<th align="left" valign="bottom" id="r1c3-t12">Default</th>
+<th align="left" valign="bottom" id="r1c1-t8">Property</th>
+<th align="left" valign="bottom" id="r1c2-t8">Description</th>
+<th align="left" valign="bottom" id="r1c3-t8">Default</th>
+<th align="left" valign="bottom" id="r1c4-t8">Available for Entity&nbsp;Type</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t12" headers="r1c1-t12">XML Mapping Data Complete</td>
-<td align="left" headers="r2c1-t12 r1c2-t12">Specifies that the Java classes in this persistence unit are fully specified by their metadata. Any annotations will be ignored.
-<p>This field corresponds to the <code>&lt;xml-mapping-metadata-complete&gt;</code> element in the <code>orm.xml</code> file.</p>
-</td>
-<td align="left" headers="r2c1-t12 r1c3-t12"><br /></td>
+<td align="left" id="r2c1-t8" headers="r1c1-t8">Attribute Overrides</td>
+<td align="left" headers="r2c1-t8 r1c2-t8">Specify a property or field to be overridden (from the default mappings). Select <span class="bold">Override Default</span>.</td>
+<td align="left" headers="r2c1-t8 r1c3-t8"><br /></td>
+<td align="left" headers="r2c1-t8 r1c4-t8"><a href="tasks006.htm#BABGBIEE">Entity</a><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t12" headers="r1c1-t12">Schema</td>
-<td align="left" headers="r3c1-t12 r1c2-t12">The database schema that contains the <span class="bold">Table</span>.
-<p>This field corresponds to the <code>&lt;schema&gt;</code> element in the <code>orm.xml</code> file.</p>
-</td>
-<td align="left" headers="r3c1-t12 r1c3-t12"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r4c1-t12" headers="r1c1-t12">Catalog</td>
-<td align="left" headers="r4c1-t12 r1c2-t12">The database catalog that contains the <span class="bold">Table</span>.
-<p>This field corresponds to the <code>&lt;catalog&gt;</code> element in the <code>orm.xml</code> file.</p>
-</td>
-<td align="left" headers="r4c1-t12 r1c3-t12"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r5c1-t12" headers="r1c1-t12">Access Type</td>
-<td align="left" headers="r5c1-t12 r1c2-t12">Specify how the entity its access instance variables.
-<ul>
-<li>
-<p>Property &ndash; Persistent state accessed through the property accessor methods. The property accessor methods must be <span class="bold">public</span> or <span class="bold">private</span>.</p>
-</li>
-<li>
-<p>Field &ndash; Instance variables are accessed directly. All non-transient instance variables are persistent.</p>
-</li>
-</ul>
-</td>
-<td align="left" headers="r5c1-t12 r1c3-t12">Property</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r6c1-t12" headers="r1c1-t12">Cascade Persist</td>
-<td align="left" headers="r6c1-t12 r1c2-t12">Adds cascade-persist to the set of cascade options in entity relationships of the persistence unit.
-<p>This field corresponds to the <code>&lt;cascade-persist&gt;</code> element in the <code>orm.xml</code> file.</p>
-</td>
-<td align="left" headers="r6c1-t12 r1c3-t12"><br /></td>
+<td align="left" id="r3c1-t8" headers="r1c1-t8">Join Columns</td>
+<td align="left" headers="r3c1-t8 r1c2-t8"><br /></td>
+<td align="left" headers="r3c1-t8 r1c3-t8"><br /></td>
+<td align="left" headers="r3c1-t8 r1c4-t8"><a href="tasks006.htm#BABGBIEE">Entity</a><br /></td>
 </tr>
 </tbody>
 </table>
 <br /></div>
-<!-- class="inftblruleinformal" -->
+<!-- class="inftblinformal" -->
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
 <br />
+<a href="reference009.htm#CACCAGGC">General information</a><br />
 <a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a>
 <p>&nbsp;</p>
 <img src="img/ngrelr.png" alt="Related reference" title="Related reference" /><br />
 <br />
 <a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></div>
 <!-- class="sect3" -->
-<!-- class="sect2" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
