@@ -145,14 +145,19 @@ public class JpaStructurePage extends Page
 		selectionChangedListeners.remove(listener);
 	}
 	
-	public JpaSelection getSelection() {
-		ITreeSelection viewerSelection = (ITreeSelection) viewer.getSelection();
+	public ITreeSelection getSelection() {
+		return (ITreeSelection) viewer.getSelection();
+	}
+	
+	public JpaSelection getJpaSelection() {
+		ITreeSelection viewerSelection = getSelection();
 		
 		if (viewerSelection.isEmpty() || viewerSelection.size() > 1) {
 			return JpaSelection.NULL_SELECTION;
 		}
 		return new DefaultJpaSelection((JpaStructureNode) viewerSelection.getFirstElement());
 	}
+	
 	
 	public void setSelection(ISelection selection) {
 		if (viewer != null) {

@@ -26,7 +26,7 @@ public class JpaStructureSelectionParticipant
 	}
 
 	public JpaSelection getSelection() {
-		return this.structureView.getSelection();
+		return this.structureView.getJpaSelection();
 	}
 	
 	public void selectionChanged(JpaSelectionEvent evt) {
@@ -63,7 +63,7 @@ public class JpaStructureSelectionParticipant
 		}
 
 		private JpaSelection structureViewSelection() {
-			return JpaStructureSelectionParticipant.this.structureView.getSelection();
+			return JpaStructureSelectionParticipant.this.structureView.getJpaSelection();
 		}
 	}
 }

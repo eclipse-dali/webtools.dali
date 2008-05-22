@@ -100,9 +100,9 @@ public class JpaStructureView extends PageBookView
         pageRecord.dispose();
 	}
 	
-	public JpaSelection getSelection() {
+	public JpaSelection getJpaSelection() {
 		if (getCurrentPage() != getDefaultPage()) {
-			return ((JpaStructurePage) getCurrentPage()).getSelection();
+			return ((JpaStructurePage) getCurrentPage()).getJpaSelection();
 		}
 		else {
 			return JpaSelection.NULL_SELECTION;
