@@ -573,14 +573,27 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 
 		// Select the new value
 		if (value != null) {
-			combo.setText(value);
+			if (!value.equals(combo.getText())) {
+				//this prevents the cursor from being set back to the beginning of the line (bug 234418).
+				//The reason we are hitting this updateSelectedItem() code at all
+				//is because the context model is  updating from the resource model
+				//in a way that causes change notifications to be fired (the annotation is added 
+				//to the resource model, change notification occurs on the update thread, 
+				//and then the name is set, these 2 threads can get in the wrong order).
+				//The valueChanged() method sets the populating flag to true, but in this case
+				//it is already set back to false when we receive notification back from the model
+				//because it has moved to the update thread and then jumps back on the UI thread.
+				combo.setText(value);
+			}
 		}
 		// Select the default value
 		else {
 			combo.select(0);
+			
+			//i think we can remove this, I don't believe the problem explained
+			//in the comments of this method is happening anymore. Not removing it now because we are working on 2.0RC3
+			combo.setSelection(new Point(0, 0));
 		}
-
-		combo.setSelection(new Point(0, 0));
 	}
 
 	/**
