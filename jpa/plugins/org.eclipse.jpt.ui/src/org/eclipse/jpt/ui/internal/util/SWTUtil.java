@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.util;
 
+import java.util.Locale;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.AssertionFailedException;
 import org.eclipse.jface.dialogs.Dialog;
@@ -105,7 +106,8 @@ public class SWTUtil {
 		StringBuilder sb = new StringBuilder();
 		sb.append(ClassTools.shortNameFor(compositeClass));
 		sb.append("_");
-		sb.append(value.toString().toLowerCase());
+		sb.append(value.toString().toLowerCase(Locale.ENGLISH));//bug 234953
+		//TODO in a future release we should not be converting the key using toLowerCase()
 
 		return (String) ClassTools.staticFieldValue(nlsClass, sb.toString());
 	}
