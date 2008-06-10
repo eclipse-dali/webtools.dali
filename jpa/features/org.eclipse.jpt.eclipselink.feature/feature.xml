@@ -25,22 +25,7 @@
    </url>
 
    <requires>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="org.eclipse.jdt.core"/>
-      <import plugin="org.eclipse.jpt.db"/>
-      <import plugin="org.eclipse.jpt.core"/>
-      <import plugin="org.eclipse.jpt.utility"/>
-      <import plugin="org.eclipse.wst.validation"/>
-      <import plugin="org.eclipse.emf.edit.ui"/>
-      <import plugin="org.eclipse.jpt.ui"/>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.ui.views.properties.tabbed"/>
-      <import plugin="org.eclipse.jdt.ui"/>
-      <import plugin="org.eclipse.debug.core"/>
-      <import plugin="org.eclipse.jdt.launching"/>
-      <import plugin="org.eclipse.ui.navigator"/>
+      <import feature="org.eclipse.jpt.feature" version="2.0.0"/>
    </requires>
 
    <plugin
