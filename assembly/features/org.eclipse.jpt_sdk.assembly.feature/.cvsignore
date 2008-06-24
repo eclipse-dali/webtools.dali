@@ -1,0 +1,4 @@
+*.bin.dist.zip
+build.xml
+features
+plugins
