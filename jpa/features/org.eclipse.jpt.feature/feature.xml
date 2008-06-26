@@ -26,16 +26,18 @@
 
    <requires>
       <import feature="org.eclipse.platform" version="3.4.0"/>
-      <import feature="org.eclipse.gef" version="3.4.0.v20080115-677-8082A5696H2748"/>
-      <import feature="org.eclipse.jdt" version="3.4.0.v20080529-1300-7o7tEAXEFpPqqiXlz0UCf7ek"/>
-      <import feature="org.eclipse.xsd" version="2.4.0.v200806021643"/>
-      <import feature="org.eclipse.emf.codegen" version="2.4.0.v200806021643"/>
-      <import feature="org.eclipse.emf.ecore" version="2.4.0.v200806021643"/>
-      <import feature="org.eclipse.jst.web_core.feature" version="3.0.0.qualifier"/>
-      <import feature="org.eclipse.jst.enterprise_core.feature" version="3.0.0.qualifier"/>
-      <import feature="org.eclipse.jst.enterprise_ui.feature" version="3.0.0.qualifier"/>
+      <import feature="org.eclipse.gef" version="3.4.0"/>
+      <import feature="org.eclipse.jdt" version="3.4.0"/>
+      <import feature="org.eclipse.xsd" version="2.4.0"/>
+      <import feature="org.eclipse.emf.codegen" version="2.4.0"/>
+      <import feature="org.eclipse.emf.ecore" version="2.4.0"/>
+      <import feature="org.eclipse.jst.web_core.feature" version="3.0.0"/>
+      <import feature="org.eclipse.jst.enterprise_core.feature" version="3.0.0"/>
+      <import feature="org.eclipse.jst.enterprise_ui.feature" version="3.0.0"/>
+      <import feature="org.eclipse.datatools.modelbase.feature" version="1.6.0"/>
+      <import feature="org.eclipse.datatools.enablement.feature" version="1.6.0"/>
       <import feature="org.eclipse.datatools.sqldevtools.feature" version="1.6.0"/>
-      <import feature="org.eclipse.datatools.connectivity.feature" version="1.6.0.v200805151245-7_7K0Dn-QXuj4G_rdCJkKhFDL"/>
+      <import feature="org.eclipse.datatools.connectivity.feature" version="1.6.0"/>
    </requires>
 
    <plugin
