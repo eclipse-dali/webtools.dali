@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.context.Query;
+import org.eclipse.jpt.core.context.QueryHolder;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
@@ -401,12 +402,12 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		OrmNamedQuery namedQuery = getJpaFactory().buildOrmNamedQuery(this);
 		this.namedQueries.add(index, namedQuery);
 		this.xmlEntityMappings.getNamedQueries().add(index, OrmFactory.eINSTANCE.createXmlNamedQuery());
-		this.fireItemAdded(EntityMappings.NAMED_QUERIES_LIST, index, namedQuery);
+		this.fireItemAdded(QueryHolder.NAMED_QUERIES_LIST, index, namedQuery);
 		return namedQuery;
 	}
 	
 	protected void addNamedQuery(int index, OrmNamedQuery namedQuery) {
-		addItemToList(index, namedQuery, this.namedQueries, EntityMappings.NAMED_QUERIES_LIST);
+		addItemToList(index, namedQuery, this.namedQueries, QueryHolder.NAMED_QUERIES_LIST);
 	}
 	
 	public void removeNamedQuery(NamedQuery namedQuery) {
@@ -416,16 +417,16 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	public void removeNamedQuery(int index) {
 		OrmNamedQuery namedQuery = this.namedQueries.remove(index);
 		this.xmlEntityMappings.getNamedQueries().remove(index);
-		fireItemRemoved(EntityMappings.NAMED_QUERIES_LIST, index, namedQuery);
+		fireItemRemoved(QueryHolder.NAMED_QUERIES_LIST, index, namedQuery);
 	}
 
 	protected void removeNamedQuery_(OrmNamedQuery namedQuery) {
-		removeItemFromList(namedQuery, this.namedQueries, EntityMappings.NAMED_QUERIES_LIST);
+		removeItemFromList(namedQuery, this.namedQueries, QueryHolder.NAMED_QUERIES_LIST);
 	}
 	
 	public void moveNamedQuery(int targetIndex, int sourceIndex) {
 		this.xmlEntityMappings.getNamedQueries().move(targetIndex, sourceIndex);
-		moveItemInList(targetIndex, sourceIndex, this.namedQueries, EntityMappings.NAMED_QUERIES_LIST);		
+		moveItemInList(targetIndex, sourceIndex, this.namedQueries, QueryHolder.NAMED_QUERIES_LIST);		
 	}
 	
 	public ListIterator<OrmNamedNativeQuery> namedNativeQueries() {
@@ -440,12 +441,12 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		OrmNamedNativeQuery namedNativeQuery = getJpaFactory().buildOrmNamedNativeQuery(this);
 		this.namedNativeQueries.add(index, namedNativeQuery);
 		this.xmlEntityMappings.getNamedNativeQueries().add(index, OrmFactory.eINSTANCE.createXmlNamedNativeQuery());
-		this.fireItemAdded(EntityMappings.NAMED_QUERIES_LIST, index, namedNativeQuery);
+		this.fireItemAdded(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
 		return namedNativeQuery;
 	}
 	
 	protected void addNamedNativeQuery(int index, OrmNamedNativeQuery namedNativeQuery) {
-		addItemToList(index, namedNativeQuery, this.namedNativeQueries, EntityMappings.NAMED_NATIVE_QUERIES_LIST);
+		addItemToList(index, namedNativeQuery, this.namedNativeQueries, QueryHolder.NAMED_NATIVE_QUERIES_LIST);
 	}
 	
 	public void removeNamedNativeQuery(NamedNativeQuery namedNativeQuery) {
@@ -455,16 +456,16 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	public void removeNamedNativeQuery(int index) {
 		OrmNamedNativeQuery namedNativeQuery = this.namedNativeQueries.remove(index);
 		this.xmlEntityMappings.getNamedNativeQueries().remove(index);
-		fireItemRemoved(NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
+		fireItemRemoved(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
 	}
 
 	protected void removeNamedNativeQuery_(OrmNamedNativeQuery namedNativeQuery) {
-		removeItemFromList(namedNativeQuery, this.namedNativeQueries, EntityMappings.NAMED_NATIVE_QUERIES_LIST);
+		removeItemFromList(namedNativeQuery, this.namedNativeQueries, QueryHolder.NAMED_NATIVE_QUERIES_LIST);
 	}
 	
 	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
 		this.xmlEntityMappings.getNamedNativeQueries().move(targetIndex, sourceIndex);
-		moveItemInList(targetIndex, sourceIndex, this.namedNativeQueries, EntityMappings.NAMED_NATIVE_QUERIES_LIST);		
+		moveItemInList(targetIndex, sourceIndex, this.namedNativeQueries, QueryHolder.NAMED_NATIVE_QUERIES_LIST);		
 	}
 
 	//TODO what about qualified name?  package + class

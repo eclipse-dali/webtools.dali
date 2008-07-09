@@ -103,15 +103,13 @@ public interface EntityMappings extends OrmJpaContextNode, JpaStructureNode, Que
 	OrmNamedQuery addNamedQuery(int index);
 	void removeNamedQuery(int index);
 	void moveNamedQuery(int targetIndex, int sourceIndex);
-		String NAMED_QUERIES_LIST = "namedQueriesList";
 
-		@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	ListIterator<OrmNamedNativeQuery> namedNativeQueries();
 	int namedNativeQueriesSize();
 	OrmNamedNativeQuery addNamedNativeQuery(int index);
 	void removeNamedNativeQuery(int index);
 	void moveNamedNativeQuery(int targetIndex, int sourceIndex);
-		String NAMED_NATIVE_QUERIES_LIST = "namedNativeQueriesList";
 
 		
 	
