@@ -99,17 +99,14 @@ public abstract class TableCombo<T extends JpaNode> extends AbstractDatabaseObje
 	 */
 	@Override
 	protected Iterator<String> values() {
+		Database database = database();
+		String schemaName = schemaName();
 
-		if (subject() != null) {
-			Database database = database();
-			String schemaName = schemaName();
+		if ((schemaName != null) && (database != null)) {
+			Schema schema = database.schemaNamed(schemaName);
 
-			if ((schemaName != null) && (database != null)) {
-				Schema schema = database.schemaNamed(schemaName);
-
-				if (schema != null) {
-					return schema.tableNames();
-				}
+			if (schema != null) {
+				return schema.tableNames();
 			}
 		}
 

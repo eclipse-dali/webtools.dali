@@ -325,7 +325,13 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected String schemaName() {
-				return subject().getSchema();
+				if (subject() != null) {
+					return subject().getSchema();
+				}
+				if (TableGeneratorComposite.this.subject().getEntityMappings() != null) {
+					return TableGeneratorComposite.this.subject().getEntityMappings().getSchema();
+				}
+				return TableGeneratorComposite.this.subject().getPersistenceUnit().getDefaultSchema();
 			}
 
 			@Override
