@@ -308,7 +308,7 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	@Override
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
-		this.updateSelection();
+		this.populateCombo();
 	}
 
 	/**
