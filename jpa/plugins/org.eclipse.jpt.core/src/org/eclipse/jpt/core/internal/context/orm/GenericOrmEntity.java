@@ -912,7 +912,9 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	public OrmNamedQuery addNamedQuery(int index) {
 		OrmNamedQuery namedQuery = getJpaFactory().buildOrmNamedQuery(this);
 		this.namedQueries.add(index, namedQuery);
-		this.getTypeMappingResource().getNamedQueries().add(index, OrmFactory.eINSTANCE.createXmlNamedQuery());
+		XmlNamedQuery xmlNamedQuery = OrmFactory.eINSTANCE.createXmlNamedQuery();
+		namedQuery.initialize(xmlNamedQuery);
+		this.getTypeMappingResource().getNamedQueries().add(index, xmlNamedQuery);
 		this.fireItemAdded(QueryHolder.NAMED_QUERIES_LIST, index, namedQuery);
 		return namedQuery;
 	}
@@ -952,6 +954,8 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	public OrmNamedNativeQuery addNamedNativeQuery(int index) {
 		OrmNamedNativeQuery namedNativeQuery = getJpaFactory().buildOrmNamedNativeQuery(this);
 		this.namedNativeQueries.add(index, namedNativeQuery);
+		XmlNamedNativeQuery xmlNamedNativeQuery = OrmFactory.eINSTANCE.createXmlNamedNativeQuery();
+		namedNativeQuery.initialize(xmlNamedNativeQuery);
 		this.getTypeMappingResource().getNamedNativeQueries().add(index, OrmFactory.eINSTANCE.createXmlNamedNativeQuery());
 		this.fireItemAdded(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
 		return namedNativeQuery;
