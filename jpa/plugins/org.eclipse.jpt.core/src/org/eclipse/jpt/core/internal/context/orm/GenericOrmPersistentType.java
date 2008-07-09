@@ -517,37 +517,28 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	}
 
 	public void update(XmlEntity entity) {
-		if (getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
-			((OrmEntity) getMapping()).update(entity);
-		}
-		else {
+		if (getMappingKey() != MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
 			setMappingKey_(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
-			((OrmEntity) getMapping()).initialize(entity);					
 		}
+		((OrmEntity) getMapping()).update(entity);
 		this.updateParentPersistentType();
 		this.updatePersistentAttributes(entity);
 	}
 	
 	public void update(XmlMappedSuperclass mappedSuperclass) {
-		if (getMappingKey() == MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY) {
-			((OrmMappedSuperclass) getMapping()).update(mappedSuperclass);
-		}
-		else {
+		if (getMappingKey() != MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY) {
 			setMappingKey_(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
-			((OrmMappedSuperclass) getMapping()).initialize(mappedSuperclass);
 		}
+		((OrmMappedSuperclass) getMapping()).update(mappedSuperclass);
 		this.updateParentPersistentType();
 		this.updatePersistentAttributes(mappedSuperclass);
 	}
 	
 	public void update(XmlEmbeddable embeddable) {
-		if (getMappingKey() == MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
-			((OrmEmbeddable) getMapping()).update(embeddable);
-		}
-		else {
+		if (getMappingKey() != MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
 			setMappingKey_(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
-			((OrmEmbeddable) getMapping()).initialize(embeddable);				
 		}
+		((OrmEmbeddable) getMapping()).update(embeddable);
 		this.updateParentPersistentType();
 		this.updatePersistentAttributes(embeddable);
 	}
