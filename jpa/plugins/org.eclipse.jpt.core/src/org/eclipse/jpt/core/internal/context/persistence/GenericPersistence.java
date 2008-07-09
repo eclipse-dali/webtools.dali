@@ -86,6 +86,7 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 			throw new IllegalArgumentException(new Integer(index).toString());
 		}
 		PersistenceUnit oldPersistenceUnit = persistenceUnit;
+		persistenceUnit.dispose();
 		persistenceUnit = null;
 		xmlPersistence.getPersistenceUnits().remove(index);
 		fireItemRemoved(PERSISTENCE_UNITS_LIST, index, oldPersistenceUnit);
@@ -97,6 +98,7 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected void removePersistenceUnit_(PersistenceUnit oldPersistenceUnit) {
+		persistenceUnit.dispose();
 		persistenceUnit = null;
 		fireItemRemoved(PERSISTENCE_UNITS_LIST, 0, oldPersistenceUnit);
 	}

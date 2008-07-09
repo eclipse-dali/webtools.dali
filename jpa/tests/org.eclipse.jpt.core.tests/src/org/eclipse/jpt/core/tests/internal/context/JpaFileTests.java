@@ -290,6 +290,36 @@ public class JpaFileTests extends ContextModelTestCase
 		assertEquals(persistenceUnit().impliedClassRefs().next(), javaJpaFile.rootStructureNodes().next().getParent());
 	}
 	
+	public void testJavaRootStructureNodesPersistenceUnitRemovedFromResourceModel() throws Exception {
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		ICompilationUnit cu = createTestEntity();
+		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
+		
+		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType();
+		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
+		
+		persistenceResource().getPersistence().getPersistenceUnits().remove(0);
+
+		assertFalse(javaJpaFile.rootStructureNodes().hasNext());
+		assertEquals(0, javaJpaFile.rootStructureNodesSize());
+	}
+	
+	public void testJavaRootStructureNodesPersistenceUnitRemoved() throws Exception {
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		ICompilationUnit cu = createTestEntity();
+		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
+		
+		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType();
+		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
+		
+		jpaProject().getRootContext().getPersistenceXml().getPersistence().removePersistenceUnit(0);
+
+		assertFalse(javaJpaFile.rootStructureNodes().hasNext());
+		assertEquals(0, javaJpaFile.rootStructureNodesSize());
+	}
+
 	public void testJavaRootStructureNodesOrmPersistentTypeRemoved() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
