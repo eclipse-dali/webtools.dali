@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.jpt.sdk"
+      id="org.eclipse.jpt_sdk.assembly.feature"
       label="%featureName"
       version="1.0.3.qualifier"
       provider-name="%providerName"
