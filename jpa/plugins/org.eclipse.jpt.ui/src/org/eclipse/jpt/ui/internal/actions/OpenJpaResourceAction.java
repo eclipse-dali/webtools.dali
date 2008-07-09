@@ -17,6 +17,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.selection.DefaultJpaSelection;
 import org.eclipse.jpt.ui.internal.selection.JpaSelectionManager;
@@ -39,6 +40,7 @@ public class OpenJpaResourceAction extends BaseSelectionListenerAction
 	}
 	
 	
+	@Override
 	public boolean updateSelection(IStructuredSelection s) {
 		selectedNode = null;
 		
@@ -47,6 +49,10 @@ public class OpenJpaResourceAction extends BaseSelectionListenerAction
 		}
 		
 		if (s.size() != 1) {
+			return false;
+		}
+		
+		if (s.getFirstElement() instanceof JpaRootContextNode) {
 			return false;
 		}
 		
