@@ -77,24 +77,21 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 	protected void initializeTableGenerator(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		TableGeneratorAnnotation tableGeneratorResource = tableGenerator(resourcePersistentAttribute);
 		if (tableGeneratorResource != null) {
-			this.tableGenerator = getJpaFactory().buildJavaTableGenerator(this);
-			this.tableGenerator.initializeFromResource(tableGeneratorResource);
+			this.tableGenerator = buildTableGenerator(tableGeneratorResource);
 		}
 	}
 	
 	protected void initializeSequenceGenerator(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		SequenceGeneratorAnnotation sequenceGeneratorResource = sequenceGenerator(resourcePersistentAttribute);
 		if (sequenceGeneratorResource != null) {
-			this.sequenceGenerator = getJpaFactory().buildJavaSequenceGenerator(this);
-			this.sequenceGenerator.initializeFromResource(sequenceGeneratorResource);
+			this.sequenceGenerator = buildSequenceGenerator(sequenceGeneratorResource);
 		}
 	}
 	
 	protected void initializeGeneratedValue(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		GeneratedValueAnnotation generatedValueResource = generatedValue(resourcePersistentAttribute);
 		if (generatedValueResource != null) {
-			this.generatedValue = getJpaFactory().buildJavaGeneratedValue(this);
-			this.generatedValue.initializeFromResource(generatedValueResource);
+			this.generatedValue = buildGeneratedValue(generatedValueResource);
 		}
 	}
 	
@@ -287,13 +284,18 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 		}
 		else {
 			if (getTableGenerator() == null) {
-				setTableGenerator(getJpaFactory().buildJavaTableGenerator(this));
-				getTableGenerator().initializeFromResource(tableGeneratorResource);
+				setTableGenerator(buildTableGenerator(tableGeneratorResource));
 			}
 			else {
 				getTableGenerator().update(tableGeneratorResource);
 			}
 		}
+	}
+	
+	protected JavaTableGenerator buildTableGenerator(TableGeneratorAnnotation tableGeneratorResource) {
+		JavaTableGenerator tableGenerator = getJpaFactory().buildJavaTableGenerator(this);
+		tableGenerator.initializeFromResource(tableGeneratorResource);
+		return tableGenerator;
 	}
 	
 	protected void updateSequenceGenerator(JavaResourcePersistentAttribute resourcePersistentAttribute) {
@@ -305,13 +307,18 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 		}
 		else {
 			if (getSequenceGenerator() == null) {
-				setSequenceGenerator(getJpaFactory().buildJavaSequenceGenerator(this));
-				getSequenceGenerator().initializeFromResource(sequenceGeneratorResource);
+				setSequenceGenerator(buildSequenceGenerator(sequenceGeneratorResource));
 			}
 			else {
 				getSequenceGenerator().update(sequenceGeneratorResource);
 			}
 		}
+	}
+	
+	protected JavaSequenceGenerator buildSequenceGenerator(SequenceGeneratorAnnotation sequenceGeneratorResource) {
+		JavaSequenceGenerator sequenceGenerator = getJpaFactory().buildJavaSequenceGenerator(this);
+		sequenceGenerator.initializeFromResource(sequenceGeneratorResource);
+		return sequenceGenerator;
 	}
 	
 	protected void updateGeneratedValue(JavaResourcePersistentAttribute resourcePersistentAttribute) {
@@ -323,8 +330,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 		}
 		else {
 			if (getGeneratedValue() == null) {
-				setGeneratedValue(getJpaFactory().buildJavaGeneratedValue(this));
-				getGeneratedValue().initializeFromResource(generatedValueResource);
+				setGeneratedValue(buildGeneratedValue(generatedValueResource));
 			}
 			else {
 				getGeneratedValue().update(generatedValueResource);
@@ -332,6 +338,12 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 		}
 	}
 	
+	protected JavaGeneratedValue buildGeneratedValue(GeneratedValueAnnotation generatedValueResource) {
+		JavaGeneratedValue generatedValue = getJpaFactory().buildJavaGeneratedValue(this);
+		generatedValue.initializeFromResource(generatedValueResource);
+		return generatedValue;
+	}
+
 	protected TableGeneratorAnnotation tableGenerator(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		return (TableGeneratorAnnotation) resourcePersistentAttribute.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 	}
