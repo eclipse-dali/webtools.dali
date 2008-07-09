@@ -178,7 +178,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		OrmTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = null;
 		this.getAttributeMapping().setTableGenerator(null);
-		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldTableGenerator, null);	
+		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, null);	
 	}
 	
 	public OrmTableGenerator getTableGenerator() {
