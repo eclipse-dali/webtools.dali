@@ -16,6 +16,8 @@ import org.eclipse.swt.widgets.Display;
 /**
  * Wrap another collection change listener and forward events to it on the SWT
  * UI thread.
+ * Forward *every* event asynchronously via the UI thread so the listener
+ * receives in the same order they were generated.
  */
 public class SWTCollectionChangeListenerWrapper
 	implements CollectionChangeListener
@@ -31,35 +33,19 @@ public class SWTCollectionChangeListenerWrapper
 	}
 
 	public void itemsAdded(CollectionChangeEvent event) {
-		if (this.isExecutingUIThread()) {
-			this.itemsAdded_(event);
-		} else {
-			this.executeOnUIThread(this.buildItemsAddedRunnable(event));
-		}
+		this.executeOnUIThread(this.buildItemsAddedRunnable(event));
 	}
 
 	public void itemsRemoved(CollectionChangeEvent event) {
-		if (this.isExecutingUIThread()) {
-			this.itemsRemoved_(event);
-		} else {
-			this.executeOnUIThread(this.buildItemsRemovedRunnable(event));
-		}
+		this.executeOnUIThread(this.buildItemsRemovedRunnable(event));
 	}
 
 	public void collectionCleared(CollectionChangeEvent event) {
-		if (this.isExecutingUIThread()) {
-			this.collectionCleared_(event);
-		} else {
-			this.executeOnUIThread(this.buildCollectionClearedRunnable(event));
-		}
+		this.executeOnUIThread(this.buildCollectionClearedRunnable(event));
 	}
 
 	public void collectionChanged(CollectionChangeEvent event) {
-		if (this.isExecutingUIThread()) {
-			this.collectionChanged_(event);
-		} else {
-			this.executeOnUIThread(this.buildCollectionChangedRunnable(event));
-		}
+		this.executeOnUIThread(this.buildCollectionChangedRunnable(event));
 	}
 
 	private Runnable buildItemsAddedRunnable(final CollectionChangeEvent event) {
@@ -108,10 +94,6 @@ public class SWTCollectionChangeListenerWrapper
 				return "collection changed";
 			}
 		};
-	}
-
-	private boolean isExecutingUIThread() {
-		return Display.getCurrent() != null;
 	}
 
 	/**
