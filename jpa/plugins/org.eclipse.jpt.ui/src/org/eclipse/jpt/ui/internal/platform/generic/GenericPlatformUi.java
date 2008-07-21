@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.platform.generic;
 
-import java.text.MessageFormat;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaProject;
@@ -45,8 +44,7 @@ public class GenericPlatformUi extends BaseJpaPlatformUi
 	}
 
 	protected void displayNotSupportedMessage(String title, String message) {
-	    String formattedMessage = MessageFormat.format(message, message);
 	    Shell currentShell = Display.getCurrent().getActiveShell();
-	    MessageDialog.openInformation(currentShell, title, formattedMessage);
+	    MessageDialog.openInformation(currentShell, title, message);
 	}
 }
