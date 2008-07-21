@@ -208,7 +208,6 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 
 				this.currentMappingComposite.populate();
 				this.typeMappingPageBook.showPage(this.currentMappingComposite.getControl());
-				this.repaintDetailsView(this.typeMappingPageBook);
 			}
 			catch (Exception e) {
 				JptUiPlugin.log(e);
@@ -243,6 +242,7 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 
 			this.typeMappingPageBook.showPage(this.buildLabel(this.typeMappingPageBook, ""));
 		}
+		this.repaintDetailsView(this.typeMappingPageBook);
 	}
 
 	/*

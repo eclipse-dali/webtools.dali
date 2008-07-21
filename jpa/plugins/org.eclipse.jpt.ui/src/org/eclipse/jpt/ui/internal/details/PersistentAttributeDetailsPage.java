@@ -255,7 +255,6 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 				this.currentMappingComposite.populate();
 				this.mappingPageBook.showPage(this.currentMappingComposite.getControl());
 				this.mappingPageChanged(this.currentMappingComposite);
-				this.repaintDetailsView(this.mappingPageBook);
 			}
 			catch (Exception e) {
 				JptUiPlugin.log(e);
@@ -289,6 +288,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 
 			this.mappingPageBook.showPage(this.buildLabel(this.mappingPageBook, ""));
 		}
+		this.repaintDetailsView(this.mappingPageBook);
 	}
 
 	/*
