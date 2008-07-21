@@ -261,7 +261,13 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 		return new FilteringIterator<OrmPersistentAttribute, OrmPersistentAttribute>(attributes()) {
 			@Override
 			protected boolean accept(OrmPersistentAttribute o) {
-				return attributeName.equals(o.getName());
+				if (attributeName == null && o.getName() == null) {
+					return true;
+				}
+				if (attributeName != null && attributeName.equals(o.getName())) {
+					return true;
+				}
+				return false;
 			}
 		};
 	}
