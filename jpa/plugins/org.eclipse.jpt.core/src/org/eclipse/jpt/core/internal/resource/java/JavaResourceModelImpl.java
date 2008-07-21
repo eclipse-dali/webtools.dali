@@ -85,8 +85,11 @@ public class JavaResourceModelImpl
 	
 	private void synchWithJavaDelta(IJavaElementDelta delta) {
 		switch (delta.getElement().getElementType()) {
-			case IJavaElement.JAVA_MODEL :
 			case IJavaElement.JAVA_PROJECT :
+				if (this.updateOnClasspathChanges(delta)) {
+					break;
+				}
+			case IJavaElement.JAVA_MODEL :
 			case IJavaElement.PACKAGE_FRAGMENT_ROOT :
 			case IJavaElement.PACKAGE_FRAGMENT :
 				this.synchChildrenWithJavaDelta(delta);
@@ -121,6 +124,18 @@ public class JavaResourceModelImpl
 			//TODO possibly hop on the UI thread here so that we know only 1 thread is changing our model
 			this.jpaCompilationUnit.updateFromJava();
 		}
+	}
+
+	//bug 235384 - we need to update all compilation units when a classpath change occurs.
+	//The persistence.jar could have been added/removed from the classpath which affects
+	//whether we know about the jpa annotations or not.
+	private boolean updateOnClasspathChanges(IJavaElementDelta delta) {
+		if (BitTools.flagIsSet(delta.getFlags(), IJavaElementDelta.F_RESOLVED_CLASSPATH_CHANGED) ||
+			BitTools.flagIsSet(delta.getFlags(), IJavaElementDelta.F_CLASSPATH_CHANGED)) {
+				this.jpaCompilationUnit.updateFromJava();
+				return true;
+		}
+		return false;
 	}
 
 	public void updateFromResource() {
