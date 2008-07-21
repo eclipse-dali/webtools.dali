@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jpt.core.JpaFile;
@@ -35,15 +35,15 @@ public class GenericJpaFile extends AbstractJpaNode implements JpaFile
 	protected final ResourceModel resourceModel;
 	
 	/**
-	 * The context model root node represented by this JPA file
+	 * The context model root nodes represented by this JPA file
 	 */
-	protected final Map<Object, JpaStructureNode> rootStructureNodes;
+	protected final Hashtable<Object, JpaStructureNode> rootStructureNodes;
 	
 	public GenericJpaFile(JpaProject jpaProject, IFile file, ResourceModel resourceModel) {
 		super(jpaProject);
 		this.file = file;
 		this.resourceModel = resourceModel;
-		this.rootStructureNodes = new HashMap<Object, JpaStructureNode>();
+		this.rootStructureNodes = new Hashtable<Object, JpaStructureNode>();
 	}
 
 	@Override
@@ -71,17 +71,22 @@ public class GenericJpaFile extends AbstractJpaNode implements JpaFile
 	public int rootStructureNodesSize() {
 		return this.rootStructureNodes.size();
 	}
-	
+
+	// TODO move events outside of 'synchronized' block?
+	// need fireItemReplaced(String, Object, Object) for Collection?
 	public void addRootStructureNode(Object key, JpaStructureNode rootStructureNode) {
-		if (this.rootStructureNodes.get(key) == rootStructureNode) {
-			return;
+		synchronized (this.rootStructureNodes) {
+			JpaStructureNode node = this.rootStructureNodes.get(key);
+			if (node == rootStructureNode) {
+				return;  // no duplicates
+			}
+			if (node != null) {
+				this.rootStructureNodes.remove(key);
+				this.fireItemRemoved(JpaFile.ROOT_STRUCTURE_NODES_COLLECTION, node);
+			}
+			this.rootStructureNodes.put(key, rootStructureNode);
+			this.fireItemAdded(JpaFile.ROOT_STRUCTURE_NODES_COLLECTION, rootStructureNode);
 		}
-		if (this.rootStructureNodes.containsKey(key)) {
-			JpaStructureNode removedStructureNode = this.rootStructureNodes.remove(key);
-			fireItemRemoved(JpaFile.ROOT_STRUCTURE_NODES_COLLECTION, removedStructureNode);
-		}
-		this.rootStructureNodes.put(key, rootStructureNode);
-		fireItemAdded(JpaFile.ROOT_STRUCTURE_NODES_COLLECTION, rootStructureNode);
 	}
 	
 	public void removeRootStructureNode(Object key) {
@@ -99,16 +104,19 @@ public class GenericJpaFile extends AbstractJpaNode implements JpaFile
 		return null;
 	}
 	
+	protected Iterator<Object> rootStructureNodeKeys() {
+		return new CloneIterator<Object>(this.rootStructureNodes.keySet());
+	}
+
 	public String getResourceType() {
 		return getResourceModel().getResourceType();
 	}
 	
 	public void dispose() {
 		getResourceModel().dispose();
-		
-		Set<Object> keys = this.rootStructureNodes.keySet();
-		for (Object key : keys) {
-			removeRootStructureNode(key);
+
+		for (Iterator<Object> stream = this.rootStructureNodeKeys(); stream.hasNext(); ) {
+			this.removeRootStructureNode(stream.next());
 		}
 	}
 	
