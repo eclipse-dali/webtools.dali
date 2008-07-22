@@ -229,12 +229,12 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 		}
 		if (getVerifiedSourceFolder() == null) {
 			return new Status(
-				IStatus.WARNING, JptCorePlugin.PLUGIN_ID,
+				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
 				JptCoreMessages.bind(JptCoreMessages.VALIDATE_SOURCE_FOLDER_DOES_NOT_EXIST, sourceFolderPath));
 		}
 		if (getVerifiedJavaSourceFolder() == null) {
 			return new Status(
-				IStatus.WARNING, JptCorePlugin.PLUGIN_ID,
+				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
 				JptCoreMessages.bind(JptCoreMessages.VALIDATE_SOURCE_FOLDER_NOT_SOURCE_FOLDER, sourceFolderPath));
 		}
 		if (getExistingOrmFile() != null) {
