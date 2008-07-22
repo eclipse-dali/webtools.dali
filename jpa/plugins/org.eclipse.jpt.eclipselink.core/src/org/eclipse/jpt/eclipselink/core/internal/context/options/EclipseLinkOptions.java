@@ -28,6 +28,7 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	private String sessionsXml;
 	private Boolean includeDescriptorQueries;
 	private TargetDatabase targetDatabase;
+	private String targetServer; // storing EclipseLinkStringValue since value can be TargetServer or custom class
 	private String eventListener;
 
 
@@ -51,8 +52,23 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 			this.getBooleanValue(ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES);
 		this.targetDatabase = 
 			this.getEnumValue(ECLIPSELINK_TARGET_DATABASE, TargetDatabase.values());
+		this.targetServer = this.getTargetServerFromPersistenceXml();
 		this.eventListener = 
 			this.getStringValue(ECLIPSELINK_SESSION_EVENT_LISTENER);
+	}
+	
+	protected String getTargetServerFromPersistenceXml() {
+
+		TargetServer standardTargetServer = this.getEnumValue(ECLIPSELINK_TARGET_SERVER, TargetServer.values());
+		if( ! this.persistenceUnit().containsProperty(ECLIPSELINK_TARGET_SERVER)) {
+			return(null);
+		}
+		else if(standardTargetServer == null) {
+			return(this.getStringValue(ECLIPSELINK_TARGET_SERVER)); // custom targetServer
+		}
+		else {
+			return(getEclipseLinkStringValueOf(standardTargetServer));
+		}
 	}
 
 	// ********** behavior **********
@@ -76,6 +92,9 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 			ECLIPSELINK_TARGET_DATABASE,
 			TARGET_DATABASE_PROPERTY);
 		propertyNames.put(
+			ECLIPSELINK_TARGET_SERVER,
+			TARGET_SERVER_PROPERTY);
+		propertyNames.put(
 			ECLIPSELINK_SESSION_EVENT_LISTENER,
 			SESSION_EVENT_LISTENER_PROPERTY);
 	}
@@ -90,6 +109,9 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 		}
 		else if (aspectName.equals(TARGET_DATABASE_PROPERTY)) {
 			this.targetDatabaseChanged(event);
+		}
+		else if (aspectName.equals(TARGET_SERVER_PROPERTY)) {
+			this.targetServerChanged(event);
 		}
 		else if (aspectName.equals(SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY)) {
 			this.includeDescriptorQueriesChanged(event);
@@ -196,6 +218,68 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	
 	public TargetDatabase getDefaultTargetDatabase() {
 		return DEFAULT_TARGET_DATABASE;
+	}
+
+	// ********** TargetServer **********
+	/**
+	 * Returns TargetServer or custom targetServer class.
+	 * 
+	 * @return EclipseLink string value for TargetServer enum or custom targetServer class
+	 */
+	public String getTargetServer() {
+		return this.targetServer;
+	}
+
+	/**
+	 * Sets EclipseLink targetServer.
+	 * 
+	 * @param newTargetServer - TargetServer
+	 */
+	public void setTargetServer(TargetServer newTargetServer) {
+		if( newTargetServer == null) {
+			this.setTargetServer_((String) null);
+			return;
+		}
+		this.setTargetServer_(getEclipseLinkStringValueOf(newTargetServer));
+	}
+
+	/**
+	 * Sets EclipseLink targetServer or custom targetServer.
+	 * 
+	 * @param newTargetServer -
+	 *            Can be a EclipseLink TargetServer literal or
+	 *            a fully qualified class name of a custom targetServer.
+	 */
+	public void setTargetServer(String newTargetServer) {
+		if( newTargetServer == null) {
+			this.setTargetServer_((String) null);
+			return;
+		}
+		TargetServer customTargetServer = TargetServer.getTargetServerFor(newTargetServer);
+		if(customTargetServer == null) {	// custom TargetServer class
+			this.setTargetServer_(newTargetServer);
+		}
+		else {
+			this.setTargetServer(customTargetServer);
+		}
+	}
+	
+	private void setTargetServer_(String newTargetServer) {
+		String old = this.targetServer;
+		this.targetServer = newTargetServer;
+		this.putProperty(TARGET_SERVER_PROPERTY, newTargetServer);
+		this.firePropertyChanged(TARGET_SERVER_PROPERTY, old, newTargetServer);
+	}
+
+	private void targetServerChanged(PropertyChangeEvent event) {
+		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String old = this.targetServer;
+		this.targetServer = newValue;
+		this.firePropertyChanged(event.getAspectName(), old, newValue);
+	}
+	
+	public String getDefaultTargetServer() {
+		return DEFAULT_TARGET_SERVER;
 	}
 
 	// ********** EventListener **********

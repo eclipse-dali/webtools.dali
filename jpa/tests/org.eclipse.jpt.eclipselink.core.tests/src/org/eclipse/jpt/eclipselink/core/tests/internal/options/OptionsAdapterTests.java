@@ -18,6 +18,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.PersistenceUnitProperty
 import org.eclipse.jpt.eclipselink.core.internal.context.options.EclipseLinkOptions;
 import org.eclipse.jpt.eclipselink.core.internal.context.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.options.TargetDatabase;
+import org.eclipse.jpt.eclipselink.core.internal.context.options.TargetServer;
 import org.eclipse.jpt.eclipselink.core.tests.internal.PersistenceUnitTestCase;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
@@ -43,6 +44,10 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	public static final TargetDatabase TARGET_DATABASE_TEST_VALUE = TargetDatabase.cloudscape;
 	public static final TargetDatabase TARGET_DATABASE_TEST_VALUE_2 = TargetDatabase.oracle;
 
+	private static final String TARGET_SERVER_KEY = Options.ECLIPSELINK_TARGET_SERVER;
+	private static final TargetServer TARGET_SERVER_TEST_VALUE = TargetServer.weblogic_9;
+	private static final String TARGET_SERVER_TEST_VALUE_2 = "custom.targetServer.test";
+
 	public static final String INCLUDE_DESCRIPTOR_QUERIES_KEY = Options.ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES;
 	public static final Boolean INCLUDE_DESCRIPTOR_QUERIES_TEST_VALUE = false;
 	public static final Boolean INCLUDE_DESCRIPTOR_QUERIES_TEST_VALUE_2 = ! INCLUDE_DESCRIPTOR_QUERIES_TEST_VALUE;
@@ -64,6 +69,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 		this.options.addPropertyChangeListener(Options.SESSION_NAME_PROPERTY, propertyChangeListener);
 		this.options.addPropertyChangeListener(Options.SESSIONS_XML_PROPERTY, propertyChangeListener);
 		this.options.addPropertyChangeListener(Options.TARGET_DATABASE_PROPERTY, propertyChangeListener);
+		this.options.addPropertyChangeListener(Options.TARGET_SERVER_PROPERTY, propertyChangeListener);
 		this.options.addPropertyChangeListener(Options.SESSION_EVENT_LISTENER_PROPERTY, propertyChangeListener);
 		this.options.addPropertyChangeListener(
 			Options.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY, propertyChangeListener);
@@ -76,7 +82,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	 */
 	@Override
 	protected void populatePu() {
-		this.modelPropertiesSizeOriginal = 5;
+		this.modelPropertiesSizeOriginal = 6;
 		this.propertiesTotal = this.modelPropertiesSizeOriginal + 4; // 4 misc properties
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
@@ -87,6 +93,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 		this.persistenceUnitPut("misc.property.2", "value.2");
 		this.persistenceUnitPut("misc.property.3", "value.3");
 		this.persistenceUnitPut(TARGET_DATABASE_KEY, TARGET_DATABASE_TEST_VALUE);
+		this.persistenceUnitPut(TARGET_SERVER_KEY, TARGET_SERVER_TEST_VALUE);
 		this.persistenceUnitPut(SESSION_EVENT_LISTENER_KEY, SESSION_EVENT_LISTENER_TEST_VALUE);
 		this.persistenceUnitPut("misc.property.4", "value.4");
 		return;
@@ -194,6 +201,60 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 			TARGET_DATABASE_TEST_VALUE,
 			TARGET_DATABASE_TEST_VALUE_2);
 	}
+	
+	// ********** TargetServer tests **********
+	public void testSetTargetServer() throws Exception {
+		this.verifyModelInitialized(
+			TARGET_SERVER_KEY,
+			this.getEclipseLinkStringValueOf(TARGET_SERVER_TEST_VALUE)); // model is storing EclipseLinkStringValue
+		// verify set enum value
+		this.verifySetProperty(
+			TARGET_SERVER_KEY,
+			TARGET_SERVER_TEST_VALUE,
+			TARGET_SERVER_TEST_VALUE_2);
+		// verify set custom and literal value
+		this.verifySetTargetServer(
+			TARGET_SERVER_KEY,
+			TARGET_SERVER_TEST_VALUE,
+			TARGET_SERVER_TEST_VALUE_2);
+	}
+
+	public void testAddRemoveTargetServer() throws Exception {
+		this.verifyAddRemoveProperty(
+			TARGET_SERVER_KEY,
+			TARGET_SERVER_TEST_VALUE,
+			TARGET_SERVER_TEST_VALUE_2);
+	}
+	
+	/**
+	 * Verifies setting custom targetServer and literals.
+	 */
+	protected void verifySetTargetServer(String elKey, Object testValue1, Object testValue2) throws Exception {
+		Property property = this.persistenceUnit().getProperty(elKey);
+		String propertyName = this.model().propertyIdFor(property);
+		// test set custom targetServer.
+		this.clearEvent();
+		this.setProperty(propertyName, testValue2);
+		this.verifyPutProperty(propertyName, testValue2);
+
+		// test set (TargetServer) null
+		this.clearEvent();
+		this.options.setTargetServer((TargetServer) null);
+		assertFalse(this.persistenceUnit().containsProperty(elKey));
+		this.verifyPutProperty(propertyName, null);
+		
+		// test set enum literal
+		this.clearEvent();
+		this.setProperty(propertyName, testValue1.toString());
+		assertTrue(this.persistenceUnit().containsProperty(elKey));
+		this.verifyPutProperty(propertyName, this.getEclipseLinkStringValueOf(testValue1));
+
+		// test set (String) null
+		this.clearEvent();
+		this.options.setTargetServer((String) null);
+		assertFalse(this.persistenceUnit().containsProperty(elKey));
+		this.verifyPutProperty(propertyName, null);
+	}
 
 	// ********** EventListener tests **********
 	public void testSetEventListener() throws Exception {
@@ -226,6 +287,12 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 			this.options.setTargetDatabase((TargetDatabase) newValue);
 		else if (propertyName.equals(Options.SESSION_EVENT_LISTENER_PROPERTY))
 			this.options.setEventListener((String) newValue);
+		else if (propertyName.equals(Options.TARGET_SERVER_PROPERTY)) {
+			if (newValue.getClass().isEnum())
+				this.options.setTargetServer((TargetServer) newValue);
+			else
+				this.options.setTargetServer((String) newValue);
+		}
 		else
 			this.throwMissingDefinition("setProperty", propertyName);
 	}
@@ -243,9 +310,23 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 			modelValue = this.options.getTargetDatabase();
 		else if (propertyName.equals(Options.SESSION_EVENT_LISTENER_PROPERTY))
 			modelValue = this.options.getEventListener();
+		else if (propertyName.equals(Options.TARGET_SERVER_PROPERTY))
+			modelValue = this.options.getTargetServer();
 		else
 			this.throwMissingDefinition("getProperty", propertyName);
 		return modelValue;
+	}
+	
+	@Override
+	protected void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
+		Object expectedValue_ = expectedValue;
+		if (propertyName.equals(Options.TARGET_SERVER_PROPERTY)) {
+			
+			expectedValue_ = (expectedValue != null && expectedValue.getClass().isEnum()) ?
+				this.getEclipseLinkStringValueOf(TARGET_SERVER_TEST_VALUE) : // model is storing EclipseLinkStringValue
+				expectedValue;
+		}
+		super.verifyPutProperty(propertyName, expectedValue_);
 	}
 	
 	protected PersistenceUnitProperties model() {

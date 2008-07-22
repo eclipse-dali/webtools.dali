@@ -48,6 +48,8 @@ public class EclipseLinkOptionsComposite
 		
 		new TargetDatabaseComposite(this, composite);
 		
+		new TargetServerComposite(this, composite);
+		
 		new EventListenerComposite(this, composite);
 		
 		new IncludeDescriptorQueriesComposite(this, composite);

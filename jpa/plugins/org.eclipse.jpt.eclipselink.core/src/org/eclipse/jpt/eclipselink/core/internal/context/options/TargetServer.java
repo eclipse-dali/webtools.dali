@@ -14,14 +14,36 @@ package org.eclipse.jpt.eclipselink.core.internal.context.options;
  */
 public enum TargetServer {
 			none,
-			oc4j_10_1_3,
-			oc4j_11_1_1,
-			sunas9;
+			oc4j,
+			sunas9,
+			websphere,
+			websphere_6_1,
+			weblogic,
+			weblogic_9,
+			weblogic_10,
+			jboss;
 
 	// EclipseLink value string
 	static final String NONE = "None";
-	static final String OC4J_10_1_3 = "OC4J_10_1_3";
-	static final String OC4J_11_1_1 = "OC4J_11_1_1";
+	static final String OC4J = "OC4J";
 	static final String SUNAS9 = "SunAS9";
+	static final String WEBSPHERE = "WebSphere";
+	static final String WEBSPHERE_6_1 = "WebSphere_6_1";
+	static final String WEBLOGIC = "WebLogic";
+	static final String WEBLOGIC_9 = "WebLogic_9";
+	static final String WEBLOGIC_10 = "WebLogic_10";
+	static final String JBOSS = "JBoss";
 
+	/**
+	 * Return the TargetServer value corresponding to the given literal.
+	 */
+	public static TargetServer getTargetServerFor(String literal) {
+		
+		for( TargetServer targetServer : TargetServer.values()) {
+			if(targetServer.toString().equals(literal)) {
+				return targetServer;
+			}
+		}
+		return null;
+	}
 }

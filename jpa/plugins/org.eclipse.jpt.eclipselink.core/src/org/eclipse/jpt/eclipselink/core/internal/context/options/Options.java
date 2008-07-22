@@ -9,6 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.options;
 
+import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.PersistenceUnitProperties;
 
 /**
@@ -48,6 +49,16 @@ public interface Options extends PersistenceUnitProperties
 		static final String ECLIPSELINK_TARGET_DATABASE = "eclipselink.target-database";
 		static final TargetDatabase DEFAULT_TARGET_DATABASE = TargetDatabase.auto;
 
+	String getDefaultTargetServer();
+	String getTargetServer();
+	void setTargetServer(String newTargetServer);
+	void setTargetServer(TargetServer newTargetServer);
+		static final String TARGET_SERVER_PROPERTY = "targetServerProperty";
+		// EclipseLink key string
+		static final String ECLIPSELINK_TARGET_SERVER = "eclipselink.target-server";
+		static final String DEFAULT_TARGET_SERVER = 
+			EclipseLinkPersistenceUnitProperties.getEclipseLinkStringValueOf(TargetServer.none);
+
 	String getDefaultEventListener();
 	String getEventListener();
 	void setEventListener(String newEventListener);
@@ -56,6 +67,5 @@ public interface Options extends PersistenceUnitProperties
 		static final String ECLIPSELINK_SESSION_EVENT_LISTENER = "eclipselink.session-event-listener";
 		static final String DEFAULT_SESSION_EVENT_LISTENER = null;	// no default
 		
-	static final String ECLIPSELINK_TARGET_SERVER = "eclipselink.target-server";
 
 }

@@ -257,6 +257,18 @@ public class EclipseLinkUiMessages extends NLS
 	public static String TargetDatabaseComposite_sqlserver;
 	public static String TargetDatabaseComposite_sybase;
 	public static String TargetDatabaseComposite_timesten;
+	   
+	public static String PersistenceXmlOptionsTab_targetServerLabel;
+
+	public static String TargetServerComposite_none;
+	public static String TargetServerComposite_oc4j;
+	public static String TargetServerComposite_sunas9;
+	public static String TargetServerComposite_websphere;
+	public static String TargetServerComposite_websphere_6_1;
+	public static String TargetServerComposite_weblogic;
+	public static String TargetServerComposite_weblogic_9;
+	public static String TargetServerComposite_weblogic_10;
+	public static String TargetServerComposite_jboss;
 
 	// DDLGeneration
 	public static String EclipseLinkDDLGeneratorUi_generatingDDLWarningTitle;
