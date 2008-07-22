@@ -41,13 +41,15 @@ public interface Options extends PersistenceUnitProperties
 		static final String ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES = "eclipselink.session.include.descriptor.queries";
 		static final Boolean DEFAULT_SESSION_INCLUDE_DESCRIPTOR_QUERIES = Boolean.TRUE;
 		
-	TargetDatabase getDefaultTargetDatabase();
-	TargetDatabase getTargetDatabase();
-	void setTargetDatabase(TargetDatabase newTargetDatabase); // put
+	String getDefaultTargetDatabase();
+	String getTargetDatabase();
+	void setTargetDatabase(String newTargetDatabase);
+	void setTargetDatabase(TargetDatabase newTargetDatabase);
 		static final String TARGET_DATABASE_PROPERTY = "targetDatabaseProperty";
 		// EclipseLink key string
 		static final String ECLIPSELINK_TARGET_DATABASE = "eclipselink.target-database";
-		static final TargetDatabase DEFAULT_TARGET_DATABASE = TargetDatabase.auto;
+		static final String DEFAULT_TARGET_DATABASE = 
+			EclipseLinkPersistenceUnitProperties.getEclipseLinkStringValueOf(TargetDatabase.auto);
 
 	String getDefaultTargetServer();
 	String getTargetServer();
@@ -66,6 +68,5 @@ public interface Options extends PersistenceUnitProperties
 		// EclipseLink key string
 		static final String ECLIPSELINK_SESSION_EVENT_LISTENER = "eclipselink.session-event-listener";
 		static final String DEFAULT_SESSION_EVENT_LISTENER = null;	// no default
-		
 
 }

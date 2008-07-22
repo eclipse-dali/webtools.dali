@@ -9,77 +9,179 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.options;
 
-import java.util.Collection;
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.options.TargetDatabase;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringConverter;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
+import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
+import org.eclipse.jpt.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * TargetDatabaseComposite
  */
-public class TargetDatabaseComposite extends AbstractFormPane<Options>
+public class TargetDatabaseComposite extends AbstractPane<Options>
 {
 	/**
 	 * Creates a new <code>TargetDatabaseComposite</code>.
-	 * 
-	 * @param parentController
-	 *            The parent container of this one
-	 * @param parent
-	 *            The parent container
+	 *
+	 * @param parentPane The parent container of this one
+	 * @param parent The parent container
 	 */
 	public TargetDatabaseComposite(
-				AbstractFormPane<? extends Options> parentComposite, 
-				Composite parent) {
-		
-		super(parentComposite, parent);
+								AbstractPane<? extends Options> parentPane,
+	                           Composite parent) {
+
+		super(parentPane, parent);
 	}
 
-	private EnumFormComboViewer<Options, TargetDatabase> buildTargetDatabaseCombo(Composite container) {
-		return new EnumFormComboViewer<Options, TargetDatabase>(this, container) {
+	private PropertyValueModel<String> buildDefaultTargetDatabaseHolder() {
+		return new PropertyAspectAdapter<Options, String>(this.getSubjectHolder(), Options.DEFAULT_TARGET_DATABASE) {
 			@Override
-			protected void addPropertyNames(Collection<String> propertyNames) {
-				super.addPropertyNames(propertyNames);
-				propertyNames.add(Options.TARGET_DATABASE_PROPERTY);
-			}
-
-			@Override
-			protected TargetDatabase[] choices() {
-				return TargetDatabase.values();
-			}
-
-			@Override
-			protected TargetDatabase defaultValue() {
-				return this.subject().getDefaultTargetDatabase();
-			}
-
-			@Override
-			protected String displayString(TargetDatabase value) {
-				return this.buildDisplayString(EclipseLinkUiMessages.class, TargetDatabaseComposite.this, value);
-			}
-
-			@Override
-			protected TargetDatabase getValue() {
-				return this.subject().getTargetDatabase();
-			}
-
-			@Override
-			protected void setValue(TargetDatabase value) {
-				this.subject().setTargetDatabase(value);
+			protected String buildValue_() {
+				return TargetDatabaseComposite.this.defaultValue(subject);
 			}
 		};
 	}
 
+	private ListValueModel<String> buildDefaultTargetDatabaseListHolder() {
+		return new PropertyListValueModelAdapter<String>(
+			this.buildDefaultTargetDatabaseHolder()
+		);
+	}
+
+	private String buildDisplayString(String targetDatabaseName) {
+		
+		return SWTUtil.buildDisplayString(
+			EclipseLinkUiMessages.class, 
+			this.getClass(), 
+			TargetDatabase.valueOf(targetDatabaseName));
+	}
+
+	private Comparator<String> buildTargetDatabaseComparator() {
+		return new Comparator<String>() {
+			public int compare(String targetDatabase1, String targetDatabase2) {
+				targetDatabase1 = buildDisplayString(targetDatabase1);
+				targetDatabase2 = buildDisplayString(targetDatabase2);
+				return Collator.getInstance().compare(targetDatabase1, targetDatabase2);
+			}
+		};
+	}
+
+	private StringConverter<String> buildTargetDatabaseConverter() {
+		return new StringConverter<String>() {
+			public String convertToString(String value) {
+				try {
+					TargetDatabase.valueOf(value);
+					value = buildDisplayString(value);
+				}
+				catch (Exception e) {
+					// Ignore since the value is not a TargetDatabase
+				}
+				return value;
+			}
+		};
+	}
+
+	private WritablePropertyValueModel<String> buildTargetDatabaseHolder() {
+		return new PropertyAspectAdapter<Options, String>(this.getSubjectHolder(), Options.TARGET_DATABASE_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+
+				String name = subject.getTargetDatabase();
+				if (name == null) {
+					name = TargetDatabaseComposite.this.defaultValue(subject);
+				}
+				return name;
+			}
+
+			@Override
+			protected void setValue_(String value) {
+
+				if (defaultValue(subject).equals(value)) {
+					value = null;
+				}
+				subject.setTargetDatabase(value);
+			}
+		};
+	}
+
+	private ListValueModel<String> buildTargetDatabaseListHolder() {
+		ArrayList<ListValueModel<String>> holders = new ArrayList<ListValueModel<String>>(2);
+		holders.add(buildDefaultTargetDatabaseListHolder());
+		holders.add(buildTargetDatabasesListHolder());
+		return new CompositeListValueModel<ListValueModel<String>, String>(holders);
+	}
+
+	private Iterator<String> buildTargetDatabases() {
+		return new TransformationIterator<TargetDatabase, String>(CollectionTools.iterator(TargetDatabase.values())) {
+			@Override
+			protected String transform(TargetDatabase next) {
+				return next.name();
+			}
+		};
+	}
+
+	private CollectionValueModel<String> buildTargetDatabasesCollectionHolder() {
+		return new SimpleCollectionValueModel<String>(
+			CollectionTools.collection(buildTargetDatabases())
+		);
+	}
+
+	private ListValueModel<String> buildTargetDatabasesListHolder() {
+		return new SortedListValueModelAdapter<String>(
+			buildTargetDatabasesCollectionHolder(),
+			buildTargetDatabaseComparator()
+		);
+	}
+
+	private String defaultValue(Options subject) {
+		String defaultValue = subject.getDefaultTargetDatabase();
+
+		if (defaultValue != null) {
+			return NLS.bind(
+				EclipseLinkUiMessages.PersistenceXmlOptionsTab_defaultWithOneParam,
+				defaultValue
+			);
+		}
+		else {
+			return EclipseLinkUiMessages.PersistenceXmlOptionsTab_defaultEmpty;
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-		this.buildLabeledComposite(
-				container,
-				EclipseLinkUiMessages.PersistenceXmlOptionsTab_targetDatabaseLabel,
-				this.buildTargetDatabaseCombo(container),
-				null // TODO IJpaHelpContextIds.
+
+		CCombo combo = buildLabeledEditableCCombo(
+			container,
+			EclipseLinkUiMessages.PersistenceXmlOptionsTab_targetDatabaseLabel,
+			this.buildTargetDatabaseListHolder(),
+			this.buildTargetDatabaseHolder(),
+			this.buildTargetDatabaseConverter(),
+			null		// EclipseLinkHelpContextIds.TARGET_DATABASE_NAME
 		);
+
+		SWTUtil.attachDefaultValueHandler(combo);
 	}
 }

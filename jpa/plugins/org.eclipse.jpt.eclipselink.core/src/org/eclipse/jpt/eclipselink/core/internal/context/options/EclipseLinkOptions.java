@@ -27,7 +27,7 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	private String sessionName;
 	private String sessionsXml;
 	private Boolean includeDescriptorQueries;
-	private TargetDatabase targetDatabase;
+	private String targetDatabase; // storing EclipseLinkStringValue since value can be TargetDatabase or custom class
 	private String targetServer; // storing EclipseLinkStringValue since value can be TargetServer or custom class
 	private String eventListener;
 
@@ -50,11 +50,24 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 			this.getStringValue(ECLIPSELINK_SESSIONS_XML);
 		this.includeDescriptorQueries = 
 			this.getBooleanValue(ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES);
-		this.targetDatabase = 
-			this.getEnumValue(ECLIPSELINK_TARGET_DATABASE, TargetDatabase.values());
+		this.targetDatabase = this.getTargetDatabaseFromPersistenceXml();
 		this.targetServer = this.getTargetServerFromPersistenceXml();
 		this.eventListener = 
 			this.getStringValue(ECLIPSELINK_SESSION_EVENT_LISTENER);
+	}
+	
+	protected String getTargetDatabaseFromPersistenceXml() {
+
+		TargetDatabase standardTargetDatabase = this.getEnumValue(ECLIPSELINK_TARGET_DATABASE, TargetDatabase.values());
+		if( ! this.persistenceUnit().containsProperty(ECLIPSELINK_TARGET_DATABASE)) {
+			return(null);
+		}
+		else if(standardTargetDatabase == null) {
+			return(this.getStringValue(ECLIPSELINK_TARGET_DATABASE)); // custom targetDatabase
+		}
+		else {
+			return(getEclipseLinkStringValueOf(standardTargetDatabase));
+		}
 	}
 	
 	protected String getTargetServerFromPersistenceXml() {
@@ -197,26 +210,64 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	}
 
 	// ********** TargetDatabase **********
-	public TargetDatabase getTargetDatabase() {
+	/**
+	 * Returns TargetDatabase or custom targetDatabase class.
+	 * 
+	 * @return EclipseLink string value for TargetDatabase enum or custom targetDatabase class
+	 */
+	public String getTargetDatabase() {
 		return this.targetDatabase;
 	}
-	
+
+	/**
+	 * Sets EclipseLink targetDatabase.
+	 * 
+	 * @param newTargetDatabase - TargetDatabase
+	 */
 	public void setTargetDatabase(TargetDatabase newTargetDatabase) {
-		TargetDatabase old = this.targetDatabase;
+		if( newTargetDatabase == null) {
+			this.setTargetDatabase_((String) null);
+			return;
+		}
+		this.setTargetDatabase_(getEclipseLinkStringValueOf(newTargetDatabase));
+	}
+
+	/**
+	 * Sets EclipseLink targetDatabase or custom targetDatabase.
+	 * 
+	 * @param newTargetDatabase -
+	 *            Can be a EclipseLink TargetDatabase literal or
+	 *            a fully qualified class name of a custom targetDatabase.
+	 */
+	public void setTargetDatabase(String newTargetDatabase) {
+		if( newTargetDatabase == null) {
+			this.setTargetDatabase_((String) null);
+			return;
+		}
+		TargetDatabase customTargetDatabase = TargetDatabase.getTargetDatabaseFor(newTargetDatabase);
+		if(customTargetDatabase == null) {	// custom TargetDatabase class
+			this.setTargetDatabase_(newTargetDatabase);
+		}
+		else {
+			this.setTargetDatabase(customTargetDatabase);
+		}
+	}
+	
+	private void setTargetDatabase_(String newTargetDatabase) {
+		String old = this.targetDatabase;
 		this.targetDatabase = newTargetDatabase;
 		this.putProperty(TARGET_DATABASE_PROPERTY, newTargetDatabase);
 		this.firePropertyChanged(TARGET_DATABASE_PROPERTY, old, newTargetDatabase);
 	}
 
 	private void targetDatabaseChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
-		TargetDatabase newValue = getEnumValueOf(stringValue, TargetDatabase.values());
-		TargetDatabase old = this.targetDatabase;
+		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String old = this.targetDatabase;
 		this.targetDatabase = newValue;
 		this.firePropertyChanged(event.getAspectName(), old, newValue);
 	}
 	
-	public TargetDatabase getDefaultTargetDatabase() {
+	public String getDefaultTargetDatabase() {
 		return DEFAULT_TARGET_DATABASE;
 	}
 
