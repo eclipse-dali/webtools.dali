@@ -24,7 +24,7 @@ public enum TargetDatabase {
 			hsql,
 			informix,
 			javadb,
-			mysql4,
+			mysqlplatform,
 			oracle,
 			pointbase,
 			postgresql,
@@ -45,7 +45,7 @@ public enum TargetDatabase {
     static final String HSQL = "HSQL";
     static final String INFORMIX = "Informix";
     static final String JAVADB = "JavaDB";
-    static final String MYSQL4 = "MySQL4";
+    static final String MYSQLPLATFORM = "MySQLPlatform";
     static final String ORACLE = "Oracle";
     static final String POINTBASE = "PointBase";
     static final String POSTGRESQL = "PostgreSQL";
@@ -54,5 +54,16 @@ public enum TargetDatabase {
     static final String SYBASE = "Sybase";
     static final String TIMESTEN = "TimesTen";
 
+	/**
+	 * Return the TargetDatabase value corresponding to the given literal.
+	 */
+	public static TargetDatabase getTargetDatabaseFor(String literal) {
+		
+		for( TargetDatabase targetDatabase : TargetDatabase.values()) {
+			if(targetDatabase.toString().equals(literal)) {
+				return targetDatabase;
+			}
+		}
+		return null;
+	}
 }
-
