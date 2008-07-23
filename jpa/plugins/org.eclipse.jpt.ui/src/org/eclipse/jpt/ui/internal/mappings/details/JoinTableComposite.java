@@ -227,6 +227,21 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(Table.DEFAULT_NAME_PROPERTY);
 				propertyNames.add(Table.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(Table.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(Table.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.add(Table.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(Table.SPECIFIED_CATALOG_PROPERTY);
+			}
+
+			@Override
+			protected void propertyChanged(String propertyName) {
+				super.propertyChanged(propertyName);
+				if (propertyName == Table.DEFAULT_SCHEMA_PROPERTY 
+					|| propertyName == Table.SPECIFIED_SCHEMA_PROPERTY
+					|| propertyName == Table.DEFAULT_CATALOG_PROPERTY
+					|| propertyName == Table.SPECIFIED_CATALOG_PROPERTY ) {
+					repopulate();
+				}
 			}
 
 			@Override
