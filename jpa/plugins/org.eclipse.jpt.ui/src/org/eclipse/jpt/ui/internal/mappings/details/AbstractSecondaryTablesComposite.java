@@ -85,8 +85,12 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 			String schema = dialog.getSelectedSchema();
 			SecondaryTable secondaryTable = this.subject().addSpecifiedSecondaryTable(index);
 			secondaryTable.setSpecifiedName(name);
-			secondaryTable.setSpecifiedCatalog(catalog);
-			secondaryTable.setSpecifiedSchema(schema);
+			if (!dialog.isDefaultCatalogSelected()) {
+				secondaryTable.setSpecifiedCatalog(catalog);
+			}
+			if (!dialog.isDefaultSchemaSelected()) {
+				secondaryTable.setSpecifiedSchema(schema);
+			}
 
 			listSelectionModel.setSelectedValue(secondaryTable);
 		}
@@ -110,11 +114,15 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 		};
 	}
 
+	protected SecondaryTableDialog buildSecondaryTableDialogForAdd() {
+		return new SecondaryTableDialog(getControl().getShell(), subject().getJpaProject(), subject().getTable().getDefaultSchema(), subject().getTable().getDefaultCatalog());
+	}
+	
 	protected AddRemoveListPane.Adapter buildSecondaryTablesAdapter() {
 		return new AddRemoveListPane.AbstractAdapter() {
 
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				SecondaryTableDialog dialog = new SecondaryTableDialog(getControl().getShell(), subject());
+				SecondaryTableDialog dialog = buildSecondaryTableDialogForAdd();
 				addSecondaryTableFromDialog(dialog, listSelectionModel);
 			}
 
@@ -131,7 +139,7 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 			@Override
 			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
 				SecondaryTable secondaryTable = (SecondaryTable) listSelectionModel.selectedValue();
-				SecondaryTableDialog dialog = new SecondaryTableDialog(getControl().getShell(), secondaryTable, subject());
+				SecondaryTableDialog dialog = new SecondaryTableDialog(getControl().getShell(), secondaryTable, subject().getJpaProject());
 				editSecondaryTableFromDialog(dialog, secondaryTable);
 			}
 

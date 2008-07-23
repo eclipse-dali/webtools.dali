@@ -156,6 +156,21 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(TableGenerator.DEFAULT_TABLE_PROPERTY);
 				propertyNames.add(TableGenerator.SPECIFIED_TABLE_PROPERTY);
+				propertyNames.add(TableGenerator.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(TableGenerator.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.add(TableGenerator.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(TableGenerator.SPECIFIED_CATALOG_PROPERTY);
+			}
+
+			@Override
+			protected void propertyChanged(String propertyName) {
+				super.propertyChanged(propertyName);
+				if (propertyName == TableGenerator.DEFAULT_SCHEMA_PROPERTY 
+					|| propertyName == TableGenerator.SPECIFIED_SCHEMA_PROPERTY
+					|| propertyName == TableGenerator.DEFAULT_CATALOG_PROPERTY
+					|| propertyName == TableGenerator.SPECIFIED_CATALOG_PROPERTY ) {
+					repopulate();
+				}
 			}
 
 			@Override

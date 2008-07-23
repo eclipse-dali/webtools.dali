@@ -21,6 +21,7 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractSecondaryTablesComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.PrimaryKeyJoinColumnsInSecondaryTableComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.SecondaryTableDialog;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
@@ -173,6 +174,12 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 	                                    AddRemoveListPane<Entity> listPane) {
 
 		new PaneEnabler(defineInXmlHolder, listPane);
+	}
+
+	@Override
+	protected SecondaryTableDialog buildSecondaryTableDialogForAdd() {
+		//defaultSchema and defaultCatalog should not be taken from the Table in this case.  The table default schema could be what is the specified schema on the java table.
+		return new SecondaryTableDialog(getControl().getShell(), subject().getJpaProject(), subject().getEntityMappings().getDefaultSchema(), subject().getEntityMappings().getDefaultCatalog());
 	}
 
 	private class DefineInXmlHolder extends ListPropertyValueModelAdapter<Boolean>
