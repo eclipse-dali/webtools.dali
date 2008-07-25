@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.connection;
 
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -27,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class PersistenceXmlConnectionTab
 	extends AbstractFormPane<Connection>
-	implements JpaPageComposite<PersistenceUnit>
+	implements JpaPageComposite
 {
 	// ********** constructors/initialization **********
 	public PersistenceXmlConnectionTab(

@@ -52,7 +52,7 @@ public class OrmEntityUiProvider implements TypeMappingUiProvider<OrmEntity>
 		return JpaMappingImageHelper.imageForTypeMapping(getMappingKey());
 	}
 
-	public JpaComposite<OrmEntity> buildPersistentTypeMappingComposite(
+	public JpaComposite buildPersistentTypeMappingComposite(
 		JpaUiFactory factory,
 		PropertyValueModel<OrmEntity> subjectHolder,
 		Composite parent,

@@ -53,7 +53,7 @@ public class ManyToManyMappingUiProvider
 		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
 	}
 
-	public JpaComposite<ManyToManyMapping> buildAttributeMappingComposite(
+	public JpaComposite buildAttributeMappingComposite(
 		JpaUiFactory factory,
 		PropertyValueModel<ManyToManyMapping> subjectHolder,
 		Composite parent,

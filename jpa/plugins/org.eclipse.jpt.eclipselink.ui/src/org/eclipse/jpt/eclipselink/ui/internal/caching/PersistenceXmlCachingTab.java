@@ -9,7 +9,6 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.caching;
 
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -27,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class PersistenceXmlCachingTab 
 								extends AbstractFormPane<Caching>
-								implements JpaPageComposite<PersistenceUnit>
+								implements JpaPageComposite
 {
 	public PersistenceXmlCachingTab(
 			PropertyValueModel<Caching> subjectHolder,

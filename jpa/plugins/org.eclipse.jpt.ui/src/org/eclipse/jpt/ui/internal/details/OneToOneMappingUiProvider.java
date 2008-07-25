@@ -54,7 +54,7 @@ public class OneToOneMappingUiProvider
 		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
 	}
 
-	public JpaComposite<OneToOneMapping> buildAttributeMappingComposite(
+	public JpaComposite buildAttributeMappingComposite(
 		JpaUiFactory factory,
 		PropertyValueModel<OneToOneMapping> subjectHolder,
 		Composite parent,

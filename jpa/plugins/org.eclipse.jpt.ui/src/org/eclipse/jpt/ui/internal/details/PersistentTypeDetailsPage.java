@@ -41,9 +41,9 @@ import org.eclipse.ui.part.PageBook;
 @SuppressWarnings("nls")
 public abstract class PersistentTypeDetailsPage<T extends PersistentType> extends AbstractJpaDetailsPage<T>
 {
-	private JpaComposite<? extends TypeMapping> currentMappingComposite;
+	private JpaComposite currentMappingComposite;
 	private String currentMappingKey;
-	private Map<String, JpaComposite<? extends TypeMapping>> mappingComposites;
+	private Map<String, JpaComposite> mappingComposites;
 	private PageBook typeMappingPageBook;
 
 	/**
@@ -77,7 +77,7 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 	}
 
 	@SuppressWarnings("unchecked")
-	protected JpaComposite<TypeMapping> buildMappingComposite(PageBook pageBook,
+	protected JpaComposite buildMappingComposite(PageBook pageBook,
 	                                                            String key)  {
 
 		TypeMappingUiProvider<TypeMapping> uiProvider =
@@ -153,11 +153,11 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.mappingComposites = new HashMap<String, JpaComposite<? extends TypeMapping>>();
+		this.mappingComposites = new HashMap<String, JpaComposite>();
 	}
 
-	private JpaComposite<? extends TypeMapping> mappingCompositeFor(String key) {
-		JpaComposite<? extends TypeMapping> mappingComposite = this.mappingComposites.get(key);
+	private JpaComposite mappingCompositeFor(String key) {
+		JpaComposite mappingComposite = this.mappingComposites.get(key);
 		if (mappingComposite != null) {
 			return mappingComposite;
 		}

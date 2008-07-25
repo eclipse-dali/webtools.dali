@@ -64,7 +64,7 @@ import org.eclipse.swt.widgets.TableItem;
  */
 @SuppressWarnings("nls")
 public class PersistenceUnitPropertiesComposite extends AbstractPane<PersistenceUnit>
-                                                implements JpaPageComposite<PersistenceUnit>
+                                                implements JpaPageComposite
 {
 	private WritablePropertyValueModel<Property> propertyHolder;
 	private TablePane tablePane;

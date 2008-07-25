@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 public class VersionMappingComposite extends AbstractFormPane<VersionMapping>
-                                     implements JpaComposite<VersionMapping>
+                                     implements JpaComposite
 {
 	/**
 	 * Creates a new <code>VersionMappingComposite</code>.

@@ -67,7 +67,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 public class BasicMappingComposite extends AbstractFormPane<BasicMapping>
-                                   implements JpaComposite<BasicMapping>
+                                   implements JpaComposite
 {
 	/**
 	 * Creates a new <code>BasicMappingComposite</code>.

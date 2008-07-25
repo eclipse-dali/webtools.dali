@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Control;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaComposite<T> {
+public interface JpaComposite {
 
 	/**
 	 * Notifies this composite it should populates its widgets using the given

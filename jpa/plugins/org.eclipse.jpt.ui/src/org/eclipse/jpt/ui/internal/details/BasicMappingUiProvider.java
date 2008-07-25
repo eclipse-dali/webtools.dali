@@ -42,7 +42,7 @@ public class BasicMappingUiProvider
 		return INSTANCE;
 	}
 
-	public JpaComposite<BasicMapping> buildAttributeMappingComposite(
+	public JpaComposite buildAttributeMappingComposite(
 		JpaUiFactory factory,
 		PropertyValueModel<BasicMapping> subjectHolder,
 		Composite parent,

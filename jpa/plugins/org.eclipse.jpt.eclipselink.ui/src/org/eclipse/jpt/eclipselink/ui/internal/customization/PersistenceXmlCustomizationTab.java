@@ -9,7 +9,6 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.customization;
 
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -27,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class PersistenceXmlCustomizationTab 
 								extends AbstractFormPane<Customization>
-								implements JpaPageComposite<PersistenceUnit>
+								implements JpaPageComposite
 {
 	public PersistenceXmlCustomizationTab(
 			PropertyValueModel<Customization> subjectHolder,

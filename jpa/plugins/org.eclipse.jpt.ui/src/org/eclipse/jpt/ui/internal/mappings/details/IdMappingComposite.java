@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 public class IdMappingComposite extends AbstractFormPane<IdMapping>
-                                implements JpaComposite<IdMapping>
+                                implements JpaComposite
 {
 	/**
 	 * Creates a new <code>IdMappingComposite</code>.

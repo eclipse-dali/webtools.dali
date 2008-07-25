@@ -39,7 +39,7 @@ public interface TypeMappingUiProvider<T extends TypeMapping> extends MappingUiP
 	 * @param widgetFactory The factory used to create the various widgets
 	 * @return The composite displaying the information for a certain mapping
 	 */
-	JpaComposite<T> buildPersistentTypeMappingComposite(
+	JpaComposite buildPersistentTypeMappingComposite(
 		JpaUiFactory factory,
 		PropertyValueModel<T> subjectHolder,
 		Composite parent,

@@ -45,15 +45,15 @@ public class EclipseLinkUiFactory extends BaseJpaUiFactory
 	}
 	
 	@Override
-	public ListIterator<JpaPageComposite<PersistenceUnit>> createPersistenceUnitComposites(
+	public ListIterator<JpaPageComposite> createPersistenceUnitComposites(
 						PropertyValueModel<PersistenceUnit> subjectHolder,
 						Composite parent,
 						WidgetFactory widgetFactory) {
 		
 		PropertyValueModel<EclipseLinkPersistenceUnit> eclipseLinkPersistenceUnitHolder = 
 			this.buildEclipseLinkPersistenceUnitHolder(subjectHolder);
-		ArrayList<JpaPageComposite<PersistenceUnit>> pages = 
-			new ArrayList<JpaPageComposite<PersistenceUnit>>(8);
+		ArrayList<JpaPageComposite> pages = 
+			new ArrayList<JpaPageComposite>(8);
 
 		pages.add(new PersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory));
 		

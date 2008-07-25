@@ -54,7 +54,7 @@ public class EmbeddedIdMappingUiProvider
 		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
 	}
 
-	public JpaComposite<EmbeddedIdMapping> buildAttributeMappingComposite(
+	public JpaComposite buildAttributeMappingComposite(
 		JpaUiFactory factory,
 		PropertyValueModel<EmbeddedIdMapping> subjectHolder,
 		Composite parent,

@@ -64,7 +64,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 public class ManyToManyMappingComposite extends AbstractFormPane<ManyToManyMapping>
-                                        implements JpaComposite<ManyToManyMapping>
+                                        implements JpaComposite
 {
 	/**
 	 * Creates a new <code>ManyToManyMappingComposite</code>.

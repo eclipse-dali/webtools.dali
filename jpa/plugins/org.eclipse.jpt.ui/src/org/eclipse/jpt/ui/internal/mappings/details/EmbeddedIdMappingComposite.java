@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 public class EmbeddedIdMappingComposite extends AbstractEmbeddedMappingComposite<EmbeddedIdMapping>
-                                        implements JpaComposite<EmbeddedIdMapping>
+                                        implements JpaComposite
 {
 	/**
 	 * Creates a new <code>EmbeddedIdMappingComposite</code>.

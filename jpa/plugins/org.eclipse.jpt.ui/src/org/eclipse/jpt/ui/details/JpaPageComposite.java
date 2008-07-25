@@ -21,7 +21,7 @@ import org.eclipse.swt.graphics.Image;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaPageComposite<T> extends JpaComposite<T> {
+public interface JpaPageComposite extends JpaComposite {
 
 	/**
 	 * Returns the help ID. This ID will be used if the help button is invoked.

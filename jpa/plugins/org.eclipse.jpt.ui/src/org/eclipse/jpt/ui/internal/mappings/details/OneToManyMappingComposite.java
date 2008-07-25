@@ -64,7 +64,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 public class OneToManyMappingComposite extends AbstractFormPane<OneToManyMapping>
-                                       implements JpaComposite<OneToManyMapping>
+                                       implements JpaComposite
 {
 	/**
 	 * Creates a new <code>OneToManyMappingComposite</code>.

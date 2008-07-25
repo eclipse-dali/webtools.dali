@@ -57,7 +57,7 @@ public class DefaultEmbeddedMappingUiProvider
 		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
 	}
 
-	public JpaComposite<EmbeddedMapping> buildAttributeMappingComposite(
+	public JpaComposite buildAttributeMappingComposite(
 		JpaUiFactory factory,
 		PropertyValueModel<EmbeddedMapping> subjectHolder,
 		Composite parent,

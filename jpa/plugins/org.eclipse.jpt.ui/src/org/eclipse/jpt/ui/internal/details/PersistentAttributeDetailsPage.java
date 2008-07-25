@@ -42,9 +42,9 @@ import org.eclipse.ui.part.PageBook;
 @SuppressWarnings("nls")
 public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribute> extends AbstractJpaDetailsPage<T>
 {
-	private JpaComposite<AttributeMapping> currentMappingComposite;
+	private JpaComposite currentMappingComposite;
 	private String currentMappingKey;
-	private Map<String, JpaComposite<AttributeMapping>> mappingComposites;
+	private Map<String, JpaComposite> mappingComposites;
 	private PageBook mappingPageBook;
 
 	/**
@@ -99,7 +99,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	}
 
 	@SuppressWarnings("unchecked")
-	protected JpaComposite<AttributeMapping> buildMappingComposite(PageBook pageBook,
+	protected JpaComposite buildMappingComposite(PageBook pageBook,
 	                                                               String mappingKey) {
 
 		AttributeMappingUiProvider<AttributeMapping> uiProvider =
@@ -171,7 +171,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.mappingComposites = new HashMap<String, JpaComposite<AttributeMapping>>();
+		this.mappingComposites = new HashMap<String, JpaComposite>();
 	}
 
 	/*
@@ -188,8 +188,8 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		}
 	}
 
-	private JpaComposite<AttributeMapping> mappingCompositeFor(String key) {
-		JpaComposite<AttributeMapping> composite = this.mappingComposites.get(key);
+	private JpaComposite mappingCompositeFor(String key) {
+		JpaComposite composite = this.mappingComposites.get(key);
 		if (composite != null) {
 			return composite;
 		}
@@ -203,7 +203,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		return composite;
 	}
 
-	protected void mappingPageChanged(JpaComposite<AttributeMapping> mappingComposite) {
+	protected void mappingPageChanged(JpaComposite mappingComposite) {
 	}
 
 	private AttributeMappingUiProvider<? extends AttributeMapping> mappingUIProvider(String key) {

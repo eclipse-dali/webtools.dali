@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.schema.generation;
 
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -24,7 +23,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class PersistenceXmlSchemaGenerationTab
 	extends AbstractFormPane<SchemaGeneration>
-	implements JpaPageComposite<PersistenceUnit>
+	implements JpaPageComposite
 {
 	// ********** constructors/initialization **********
 	public PersistenceXmlSchemaGenerationTab(

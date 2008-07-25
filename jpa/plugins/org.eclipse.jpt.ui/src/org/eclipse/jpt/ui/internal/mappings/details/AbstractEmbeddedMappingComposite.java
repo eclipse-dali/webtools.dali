@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 public abstract class AbstractEmbeddedMappingComposite<T extends BaseEmbeddedMapping> extends AbstractFormPane<T>
-                                      implements JpaComposite<T>
+                                      implements JpaComposite
 {
 	/**
 	 * Creates a new <code>AbstractEmbeddedMappingComposite</code>.

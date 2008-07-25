@@ -57,7 +57,7 @@ public class DefaultBasicMappingUiProvider
 		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
 	}
 
-	public JpaComposite<BasicMapping> buildAttributeMappingComposite(JpaUiFactory factory,
+	public JpaComposite buildAttributeMappingComposite(JpaUiFactory factory,
 		PropertyValueModel<BasicMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory) {

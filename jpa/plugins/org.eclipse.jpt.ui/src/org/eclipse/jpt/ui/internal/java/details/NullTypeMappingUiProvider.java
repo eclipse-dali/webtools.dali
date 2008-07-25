@@ -56,7 +56,7 @@ public class NullTypeMappingUiProvider implements TypeMappingUiProvider<TypeMapp
 		);
 	}
 
-	public JpaComposite<TypeMapping> buildPersistentTypeMappingComposite(
+	public JpaComposite buildPersistentTypeMappingComposite(
 		JpaUiFactory jpaUiFactory,
 		PropertyValueModel<TypeMapping> subjectHolder,
 		Composite parent,
@@ -67,7 +67,7 @@ public class NullTypeMappingUiProvider implements TypeMappingUiProvider<TypeMapp
 
 
 	public static class NullComposite extends AbstractFormPane<TypeMapping>
-	                                  implements JpaComposite<TypeMapping>
+	                                  implements JpaComposite
 	{
 		NullComposite(PropertyValueModel<TypeMapping> subjectHolder,
 		              Composite parent,

@@ -50,7 +50,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.0
  */
 public class PersistenceUnitConnectionComposite extends AbstractFormPane<PersistenceUnit>
-                                                implements JpaPageComposite<PersistenceUnit>
+                                                implements JpaPageComposite
 {
 	/**
 	 * Creates a new <code>PersistenceUnitConnectionComposite</code>.

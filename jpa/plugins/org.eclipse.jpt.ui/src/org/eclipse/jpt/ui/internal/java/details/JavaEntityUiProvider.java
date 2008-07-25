@@ -52,7 +52,7 @@ public class JavaEntityUiProvider implements TypeMappingUiProvider<JavaEntity>
 		return JpaMappingImageHelper.imageForTypeMapping(getMappingKey());
 	}
 
-	public JpaComposite<JavaEntity> buildPersistentTypeMappingComposite(
+	public JpaComposite buildPersistentTypeMappingComposite(
 		JpaUiFactory factory,
 		PropertyValueModel<JavaEntity> subjectHolder,
 		Composite parent,

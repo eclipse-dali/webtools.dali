@@ -127,14 +127,14 @@ public class PersistenceEditor extends FormEditor
 		JpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
 		JpaUiFactory uiFactory = jpaPlatformUI.getJpaUiFactory();
 
-		ListIterator<JpaPageComposite<PersistenceUnit>> pages = uiFactory.createPersistenceUnitComposites(
+		ListIterator<JpaPageComposite> pages = uiFactory.createPersistenceUnitComposites(
 			buildPersistenceUnitHolder(),
 			getContainer(),
 			widgetFactory
 		);
 
 		while (pages.hasNext()) {
-			JpaPageComposite<PersistenceUnit> page = pages.next();
+			JpaPageComposite page = pages.next();
 
 			try {
 				FormPage formPage = new Page(page);
@@ -313,14 +313,14 @@ public class PersistenceEditor extends FormEditor
 		 * The wrapped page that actually contains the widgets to show with this
 		 * form page.
 		 */
-		private final JpaPageComposite<PersistenceUnit> page;
+		private final JpaPageComposite page;
 
 		/**
 		 * Creates a new <code>Page</code>.
 		 *
 		 * @param page The wrapped <code>JpaPageComposite</code>
 		 */
-		private Page(JpaPageComposite<PersistenceUnit> page) {
+		private Page(JpaPageComposite page) {
 
 			super(PersistenceEditor.this,
 			      page.getClass().getName(),

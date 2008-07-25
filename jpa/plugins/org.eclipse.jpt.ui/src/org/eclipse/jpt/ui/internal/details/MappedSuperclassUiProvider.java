@@ -52,7 +52,7 @@ public class MappedSuperclassUiProvider implements TypeMappingUiProvider<MappedS
 		return JpaMappingImageHelper.imageForTypeMapping(getMappingKey());
 	}
 
-	public JpaComposite<MappedSuperclass> buildPersistentTypeMappingComposite(
+	public JpaComposite buildPersistentTypeMappingComposite(
 		JpaUiFactory factory,
 		PropertyValueModel<MappedSuperclass> subjectHolder,
 		Composite parent,

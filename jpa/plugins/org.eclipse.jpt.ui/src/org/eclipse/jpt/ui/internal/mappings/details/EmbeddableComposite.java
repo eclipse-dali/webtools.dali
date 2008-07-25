@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.0
  */
 public class EmbeddableComposite extends AbstractFormPane<Embeddable>
-                                 implements JpaComposite<Embeddable>
+                                 implements JpaComposite
 {
 	/**
 	 * Creates a new <code>EmbeddableComposite</code>.

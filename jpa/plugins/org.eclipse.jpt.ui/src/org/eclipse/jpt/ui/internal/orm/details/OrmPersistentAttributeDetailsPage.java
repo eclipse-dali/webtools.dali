@@ -166,7 +166,7 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void mappingPageChanged(JpaComposite<AttributeMapping> mappingComposite) {
+	protected void mappingPageChanged(JpaComposite mappingComposite) {
 		if (mappingComposite == null) {
 			return;
 		}

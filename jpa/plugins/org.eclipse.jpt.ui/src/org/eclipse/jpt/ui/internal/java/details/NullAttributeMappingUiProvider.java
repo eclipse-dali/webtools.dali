@@ -67,7 +67,7 @@ public class NullAttributeMappingUiProvider
 	/*
 	 * (non-Javadoc)
 	 */
-	public JpaComposite<AttributeMapping> buildAttributeMappingComposite(
+	public JpaComposite buildAttributeMappingComposite(
 		JpaUiFactory factory,
 		PropertyValueModel<AttributeMapping> subjectHolder,
 		Composite parent,
@@ -77,7 +77,7 @@ public class NullAttributeMappingUiProvider
 	}
 
 	public static class NullComposite extends AbstractFormPane<AttributeMapping>
-	                                  implements JpaComposite<AttributeMapping>{
+	                                  implements JpaComposite{
 
 		NullComposite(PropertyValueModel<AttributeMapping> subjectHolder,
 		              Composite parent,

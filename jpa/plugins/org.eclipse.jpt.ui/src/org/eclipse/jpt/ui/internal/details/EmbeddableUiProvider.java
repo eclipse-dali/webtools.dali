@@ -52,7 +52,7 @@ public class EmbeddableUiProvider implements TypeMappingUiProvider<Embeddable>
 		return JpaMappingImageHelper.imageForTypeMapping(getMappingKey());
 	}
 
-	public JpaComposite<Embeddable> buildPersistentTypeMappingComposite(
+	public JpaComposite buildPersistentTypeMappingComposite(
 		JpaUiFactory factory,
 		PropertyValueModel<Embeddable> subjectHolder,
 		Composite parent,

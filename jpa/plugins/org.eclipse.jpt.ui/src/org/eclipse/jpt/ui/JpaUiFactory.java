@@ -60,7 +60,7 @@ public interface JpaUiFactory
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite<BasicMapping> createBasicMappingComposite(
+	JpaComposite createBasicMappingComposite(
 		PropertyValueModel<BasicMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
@@ -73,7 +73,7 @@ public interface JpaUiFactory
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite<Embeddable> createEmbeddableComposite(
+	JpaComposite createEmbeddableComposite(
 		PropertyValueModel<Embeddable> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
@@ -86,7 +86,7 @@ public interface JpaUiFactory
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite<EmbeddedIdMapping> createEmbeddedIdMappingComposite(
+	JpaComposite createEmbeddedIdMappingComposite(
 		PropertyValueModel<EmbeddedIdMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
@@ -99,7 +99,7 @@ public interface JpaUiFactory
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite<EmbeddedMapping> createEmbeddedMappingComposite(
+	JpaComposite createEmbeddedMappingComposite(
 		PropertyValueModel<EmbeddedMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
@@ -112,7 +112,7 @@ public interface JpaUiFactory
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite<JavaEntity> createJavaEntityComposite(
+	JpaComposite createJavaEntityComposite(
 		PropertyValueModel<JavaEntity> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
@@ -125,7 +125,7 @@ public interface JpaUiFactory
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite<OrmEntity> createOrmEntityComposite(
+	JpaComposite createOrmEntityComposite(
 		PropertyValueModel<OrmEntity> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
@@ -138,7 +138,7 @@ public interface JpaUiFactory
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite<IdMapping> createIdMappingComposite(
+	JpaComposite createIdMappingComposite(
 		PropertyValueModel<IdMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
@@ -151,7 +151,7 @@ public interface JpaUiFactory
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite<ManyToManyMapping> createManyToManyMappingComposite(
+	JpaComposite createManyToManyMappingComposite(
 		PropertyValueModel<ManyToManyMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
@@ -164,7 +164,7 @@ public interface JpaUiFactory
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite<ManyToOneMapping> createManyToOneMappingComposite(
+	JpaComposite createManyToOneMappingComposite(
 		PropertyValueModel<ManyToOneMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
@@ -177,7 +177,7 @@ public interface JpaUiFactory
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite<MappedSuperclass> createMappedSuperclassComposite(
+	JpaComposite createMappedSuperclassComposite(
 		PropertyValueModel<MappedSuperclass> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
@@ -190,7 +190,7 @@ public interface JpaUiFactory
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite<OneToManyMapping> createOneToManyMappingComposite(
+	JpaComposite createOneToManyMappingComposite(
 		PropertyValueModel<OneToManyMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
@@ -203,7 +203,7 @@ public interface JpaUiFactory
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite<OneToOneMapping> createOneToOneMappingComposite(
+	JpaComposite createOneToOneMappingComposite(
 		PropertyValueModel<OneToOneMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
@@ -218,7 +218,7 @@ public interface JpaUiFactory
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	ListIterator<JpaPageComposite<PersistenceUnit>> createPersistenceUnitComposites(
+	ListIterator<JpaPageComposite> createPersistenceUnitComposites(
 		PropertyValueModel<PersistenceUnit> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
@@ -231,7 +231,7 @@ public interface JpaUiFactory
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite<TransientMapping> createTransientMappingComposite(
+	JpaComposite createTransientMappingComposite(
 		PropertyValueModel<TransientMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
@@ -244,7 +244,7 @@ public interface JpaUiFactory
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite<VersionMapping> createVersionMappingComposite(
+	JpaComposite createVersionMappingComposite(
 		PropertyValueModel<VersionMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);

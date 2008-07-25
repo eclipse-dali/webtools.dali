@@ -39,7 +39,7 @@ public interface AttributeMappingUiProvider<T extends AttributeMapping> extends 
 	 * @param widgetFactory The factory used to create the various widgets
 	 * @return The composite displaying the information for a certain mapping
 	 */
-	JpaComposite<T> buildAttributeMappingComposite(
+	JpaComposite buildAttributeMappingComposite(
 		JpaUiFactory factory,
 		PropertyValueModel<T> subjectHolder,
 		Composite parent,

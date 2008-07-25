@@ -53,7 +53,7 @@ public class ManyToOneMappingUiProvider
 		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
 	}
 
-	public JpaComposite<ManyToOneMapping> buildAttributeMappingComposite(
+	public JpaComposite buildAttributeMappingComposite(
 		JpaUiFactory factory,
 		PropertyValueModel<ManyToOneMapping> subjectHolder,
 		Composite parent,
