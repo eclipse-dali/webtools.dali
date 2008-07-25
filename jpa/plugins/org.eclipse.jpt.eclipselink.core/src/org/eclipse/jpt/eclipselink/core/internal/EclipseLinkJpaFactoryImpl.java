@@ -9,15 +9,22 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal;
 
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaCachingImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEntityImpl;
 
-public class EclipseLinkFactory extends GenericJpaFactory
+public class EclipseLinkJpaFactoryImpl extends GenericJpaFactory implements EclipseLinkJpaFactory
 {
-	protected EclipseLinkFactory() {
+	protected EclipseLinkJpaFactoryImpl() {
 		super();
 	}
 
@@ -25,4 +32,14 @@ public class EclipseLinkFactory extends GenericJpaFactory
 	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit persistenceUnit) {
 		return new EclipseLinkPersistenceUnit(parent, persistenceUnit);
 	}
+	
+	@Override
+	public EclipseLinkJavaEntity buildJavaEntity(JavaPersistentType parent) {
+		return new EclipseLinkJavaEntityImpl(parent);
+	}
+	
+	public EclipseLinkJavaCaching buildEclipseLinkJavaCaching(JavaTypeMapping parent) {
+		return new EclipseLinkJavaCachingImpl(parent);
+	}
+
 }

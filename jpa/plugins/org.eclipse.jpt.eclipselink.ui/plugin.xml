@@ -5,7 +5,7 @@
    <extension
          point="org.eclipse.jpt.ui.jpaPlatform">
       <jpaPlatform
-            class="org.eclipse.jpt.eclipselink.ui.internal.platform.EclipseLinkPlatformUI"
+            class="org.eclipse.jpt.eclipselink.ui.internal.platform.EclipseLinkJpaPlatformUI"
             id="org.eclipse.eclipselink.platform">
       </jpaPlatform>
    </extension>

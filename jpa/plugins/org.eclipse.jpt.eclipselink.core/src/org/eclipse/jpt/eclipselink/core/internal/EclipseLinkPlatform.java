@@ -24,18 +24,18 @@ public class EclipseLinkPlatform extends GenericJpaPlatform
 
 	@Override
 	public String getId() {
-		return ID;
+		return EclipseLinkPlatform.ID;
 	}
 
 	// ********* Model construction / updating *********
 	@Override
 	protected JpaFactory buildJpaFactory() {
-		return new EclipseLinkFactory();
+		return new EclipseLinkJpaFactoryImpl();
 	}
 
-	// ********* java annotation support *********
+	// ********* java annotation support *********	
 	@Override
-	public JpaAnnotationProvider getAnnotationProvider() {
-		return super.getAnnotationProvider();
+	protected JpaAnnotationProvider buildAnnotationProvider() {
+		return new EclipseLinkJpaAnnotationProvider();
 	}
 }

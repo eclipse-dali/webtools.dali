@@ -18,9 +18,10 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.eclipselink.ui.EclipseLinkJpaUiFactory;
+import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactoryImpl;
 import org.eclipse.jpt.eclipselink.ui.internal.ddlgen.EclipseLinkDDLGeneratorUi;
 import org.eclipse.jpt.eclipselink.ui.internal.persistencexml.details.PersistenceDetailsProvider;
-import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
@@ -32,9 +33,9 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * EclipseLinkPlatformUI
  */
-public class EclipseLinkPlatformUI extends BaseJpaPlatformUi
+public class EclipseLinkJpaPlatformUI extends BaseJpaPlatformUi
 {
-	public EclipseLinkPlatformUI() {
+	public EclipseLinkJpaPlatformUI() {
 		super();
 	}
 
@@ -44,8 +45,8 @@ public class EclipseLinkPlatformUI extends BaseJpaPlatformUi
 	}
 
 	@Override
-	protected JpaUiFactory createJpaUiFactory() {
-		return new EclipseLinkUiFactory();
+	protected EclipseLinkJpaUiFactory createJpaUiFactory() {
+		return new EclipseLinkJpaUiFactoryImpl();
 	}
 
 	public void generateDDL(JpaProject project, IStructuredSelection selection) {

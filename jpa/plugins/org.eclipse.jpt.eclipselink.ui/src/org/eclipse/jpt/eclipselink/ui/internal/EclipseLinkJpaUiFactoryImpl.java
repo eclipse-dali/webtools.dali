@@ -7,11 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.eclipselink.ui.internal.platform;
+package org.eclipse.jpt.eclipselink.ui.internal;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
-
+import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
@@ -20,13 +20,16 @@ import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customiza
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.internal.context.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
+import org.eclipse.jpt.eclipselink.ui.EclipseLinkJpaUiFactory;
 import org.eclipse.jpt.eclipselink.ui.internal.caching.PersistenceXmlCachingTab;
 import org.eclipse.jpt.eclipselink.ui.internal.connection.PersistenceXmlConnectionTab;
 import org.eclipse.jpt.eclipselink.ui.internal.customization.PersistenceXmlCustomizationTab;
+import org.eclipse.jpt.eclipselink.ui.internal.java.details.EclipseLinkJavaEntityComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.logging.PersistenceXmlLoggingTab;
 import org.eclipse.jpt.eclipselink.ui.internal.options.PersistenceXmlOptionsTab;
 import org.eclipse.jpt.eclipselink.ui.internal.schema.generation.PersistenceXmlSchemaGenerationTab;
 import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitGeneralComposite;
@@ -36,14 +39,23 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * EclipseLinkUiFactory
+ * EclipseLinkJpaUiFactory
  */
-public class EclipseLinkUiFactory extends BaseJpaUiFactory
+public class EclipseLinkJpaUiFactoryImpl extends BaseJpaUiFactory implements EclipseLinkJpaUiFactory
 {
-	public EclipseLinkUiFactory() {
+	public EclipseLinkJpaUiFactoryImpl() {
 		super();
 	}
 	
+	@Override
+	public JpaComposite createJavaEntityComposite(
+		PropertyValueModel<JavaEntity> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
+
+		return new EclipseLinkJavaEntityComposite(subjectHolder, parent, widgetFactory);
+	}
+
 	@Override
 	public ListIterator<JpaPageComposite> createPersistenceUnitComposites(
 						PropertyValueModel<PersistenceUnit> subjectHolder,
