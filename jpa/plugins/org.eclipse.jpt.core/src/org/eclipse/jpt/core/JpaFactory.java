@@ -116,8 +116,9 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 
 /**
- * Use JpaFactory to create any core (e.g. JpaProject), resource 
- * (e.g. PersistenceResource), or context (e.g. AttributeMapping) model objects.
+ * Use JpaFactory to build any core (e.g. JpaProject) model object or any
+ * java (e.g. JavaEntity), orm (e.g. EntityMappings), or 
+ * persistence (e.g. PersistenceUnit) context model objects.
  * 
  * Assumes a base JPA project context structure 
  * corresponding to the JPA spec:
