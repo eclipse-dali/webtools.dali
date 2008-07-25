@@ -34,8 +34,6 @@
       <import feature="org.eclipse.jst.web_core.feature" version="3.0.0"/>
       <import feature="org.eclipse.jst.enterprise_core.feature" version="3.0.0"/>
       <import feature="org.eclipse.jst.enterprise_ui.feature" version="3.0.0"/>
-      <import feature="org.eclipse.datatools.modelbase.feature" version="1.6.0"/>
-      <import feature="org.eclipse.datatools.enablement.feature" version="1.6.0"/>
       <import feature="org.eclipse.datatools.sqldevtools.feature" version="1.6.0"/>
       <import feature="org.eclipse.datatools.connectivity.feature" version="1.6.0"/>
    </requires>
