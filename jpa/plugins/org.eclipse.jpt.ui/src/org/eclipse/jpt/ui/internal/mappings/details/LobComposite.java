@@ -10,12 +10,10 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.BasicMapping;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -38,20 +36,6 @@ public class LobComposite extends AbstractFormPane<BasicMapping>
 	                    Composite parent) {
 
 		super(parentPane, parent);
-	}
-
-	/**
-	 * Creates a new <code>LobComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IBasicMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public LobComposite(PropertyValueModel<? extends BasicMapping> subjectHolder,
-	                    Composite parent,
-	                    WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
 	}
 
 	private PropertyAspectAdapter<BasicMapping, Boolean> buildLobHolder() {

@@ -13,12 +13,10 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractPrimaryKeyJoinColumnsComposite;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -41,20 +39,6 @@ public class OrmPrimaryKeyJoinColumnsComposite extends AbstractPrimaryKeyJoinCol
 	                                      Composite parent) {
 
 		super(subjectHolder, parent);
-	}
-
-	/**
-	 * Creates a new <code>OrmPrimaryKeyJoinColumnsComposite</code>.
-	 *
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public OrmPrimaryKeyJoinColumnsComposite(PropertyValueModel<? extends OrmEntity> subjectHolder,
-	                                      Composite parent,
-	                                      WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override

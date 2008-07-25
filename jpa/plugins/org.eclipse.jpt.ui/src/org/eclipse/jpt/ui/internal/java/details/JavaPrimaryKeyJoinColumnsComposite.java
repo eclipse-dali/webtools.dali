@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.java.details;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractPrimaryKeyJoinColumnsComposite;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -41,20 +40,6 @@ public class JavaPrimaryKeyJoinColumnsComposite extends AbstractPrimaryKeyJoinCo
 	                                      Composite parent) {
 
 		super(subjectHolder, parent);
-	}
-
-	/**
-	 * Creates a new <code>JavaPrimaryKeyJoinColumnsComposite</code>.
-	 *
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public JavaPrimaryKeyJoinColumnsComposite(PropertyValueModel<? extends JavaEntity> subjectHolder,
-	                                      Composite parent,
-	                                      WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override

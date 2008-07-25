@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.widgets;
 
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Point;
@@ -50,20 +49,6 @@ public abstract class EnumDialogComboViewer<T extends Model, V> extends Abstract
 	                                Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
-	}
-
-	/**
-	 * Creates a new <code>EnumDialogComboViewer</code>.
-	 *
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various widgets
-	 */
-	protected EnumDialogComboViewer(PropertyValueModel<? extends T> subjectHolder,
-	                                Composite parent,
-	                                WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
 	}
 
 	/*

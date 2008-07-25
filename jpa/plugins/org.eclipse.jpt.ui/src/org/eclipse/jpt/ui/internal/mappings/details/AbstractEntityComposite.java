@@ -118,17 +118,18 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 		};
 	}
 
-	private void initializeAttributeOverridesPane(Composite container) {
+	@Override
+	protected void initializeLayout(Composite container) {
 
-		container = buildCollapsableSection(
-			buildSubPane(container, 5),
-			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
-		);
-
-		new OverridesComposite(this, container);
+		initializeGeneralPane(container);
+		initializeQueriesPane(container);
+		initializeInheritancePane(container);
+		initializeAttributeOverridesPane(container);
+		initializeGeneratorsPane(container);
+		initializeSecondaryTablesPane(container);
 	}
 
-	private void initializeGeneralPane(Composite container) {
+	protected void initializeGeneralPane(Composite container) {
 
 		int groupBoxMargin = groupBoxMargin();
 
@@ -152,38 +153,7 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 		);
 	}
 
-	private void initializeGeneratorsPane(Composite container) {
-
-		container = buildCollapsableSection(
-			container,
-			JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration
-		);
-
-		new GeneratorsComposite(this, container);
-	}
-
-	private void initializeInheritancePane(Composite container) {
-
-		container = buildCollapsableSection(
-			container,
-			JptUiMappingsMessages.EntityComposite_inheritance
-		);
-
-		buildInheritanceComposite(container);
-	}
-
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		initializeGeneralPane(container);
-		initializeAttributeOverridesPane(container);
-		initializeSecondaryTablesPane(container);
-		initializeInheritancePane(container);
-		initializeQueriesPane(container);
-		initializeGeneratorsPane(container);
-	}
-
-	private void initializeQueriesPane(Composite container) {
+	protected void initializeQueriesPane(Composite container) {
 
 		container = buildCollapsableSection(
 			container,
@@ -193,7 +163,37 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 		new QueriesComposite(this, container);
 	}
 
-	private void initializeSecondaryTablesPane(Composite container) {
+	protected void initializeAttributeOverridesPane(Composite container) {
+
+		container = buildCollapsableSection(
+			container,
+			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
+		);
+
+		new OverridesComposite(this, container);
+	}
+
+	protected void initializeInheritancePane(Composite container) {
+
+		container = buildCollapsableSection(
+			container,
+			JptUiMappingsMessages.EntityComposite_inheritance
+		);
+
+		buildInheritanceComposite(container);
+	}
+
+	protected void initializeGeneratorsPane(Composite container) {
+
+		container = buildCollapsableSection(
+			container,
+			JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration
+		);
+
+		new GeneratorsComposite(this, container);
+	}
+
+	protected void initializeSecondaryTablesPane(Composite container) {
 
 		container = buildCollapsableSection(
 			container,

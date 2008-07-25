@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
@@ -34,7 +33,6 @@ import org.eclipse.jpt.utility.internal.model.value.ListPropertyValueModelAdapte
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
@@ -76,20 +74,6 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 	                                      Composite parent) {
 
 		super(subjectHolder, parent);
-	}
-
-	/**
-	 * Creates a new <code>PrimaryKeyJoinColumnsComposite</code>.
-	 *
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public AbstractPrimaryKeyJoinColumnsComposite(PropertyValueModel<? extends T> subjectHolder,
-	                                      Composite parent,
-	                                      WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
 	}
 
 	private void addJoinColumn(PrimaryKeyJoinColumnStateObject stateObject) {

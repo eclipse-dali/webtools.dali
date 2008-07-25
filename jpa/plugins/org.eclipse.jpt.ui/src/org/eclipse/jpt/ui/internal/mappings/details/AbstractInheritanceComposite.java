@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
@@ -103,20 +102,6 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Abs
 	                            Composite parent) {
 
 		super(parentPane, parent, false);
-	}
-
-	/**
-	 * Creates a new <code>InheritanceComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IEntity</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public AbstractInheritanceComposite(PropertyValueModel<? extends T> subjectHolder,
-	                            Composite parent,
-	                            WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
 	}
 
 	private WritablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {

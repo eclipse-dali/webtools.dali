@@ -10,10 +10,8 @@
 package org.eclipse.jpt.ui.internal.java.details;
 
 import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractInheritanceComposite;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -37,20 +35,6 @@ public class JavaInheritanceComposite extends AbstractInheritanceComposite<JavaE
 	                            Composite parent) {
 
 		super(parentPane, parent);
-	}
-
-	/**
-	 * Creates a new <code>JavaInheritanceComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>JavaEntity</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public JavaInheritanceComposite(PropertyValueModel<JavaEntity> subjectHolder,
-	                            Composite parent,
-	                            WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
 	}
 
 	@Override
