@@ -46,7 +46,7 @@ public class DefaultCacheSizeComposite extends AbstractPane<Caching>
 	}
 
 	private WritablePropertyValueModel<Integer> buildCacheSizeHolder() {
-		return new PropertyAspectAdapter<Caching, Integer>(getSubjectHolder(), Caching.CACHE_SIZE_PROPERTY) {
+		return new PropertyAspectAdapter<Caching, Integer>(getSubjectHolder(), Caching.CACHE_SIZE_DEFAULT_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
 				Integer value = subject.getCacheSizeDefault();
