@@ -1,11 +1,12 @@
 <?xml version='1.0' encoding='iso-8859-1'?>
 <!-- User Guide -->
-  <toc label="Dali Java Persistence Tools User Guide">
+  <toc label="Dali Java Persistence Tools User Guide"><topic label="Dali Java Persistence Tools User Guide">
     <topic href="getting_started.htm" label="Getting started">
       <topic href="getting_started001.htm#BABEFHCD" label="Requirements and installation" />
       <topic href="getting_started002.htm#BABIGCJA" label="Dali quick start">
         <topic href="getting_started003.htm#BABDFHDA" label="Creating a new JPA project" />
         <topic href="getting_started004.htm#BABFGDDG" label="Creating a Java persistent entity with persistent fields" />
+      </topic>
     </topic>
     <topic href="concepts.htm" label=" Concepts">
       <topic href="concept_persistence.htm#BABCAHIC" label="Understanding Java persistence" />
@@ -23,7 +24,7 @@
         <topic href="tasks003.htm#CIHFEBAI" label="Synchronizing classes" />
       </topic>
       <topic href="task_manage_orm.htm#CIHDGDCD" label="Managing the orm.xml file">
-        <topic href="tasks004.htm#sthref46" label="Creating an orm.xml file" />
+        <topic href="tasks004.htm#sthref48" label="Creating an orm.xml file" />
         <topic href="tasks005.htm#CIHBCDCE" label="Working with orm.xml file" />
       </topic>
       <topic href="task_add_persistence.htm#BABHICAI" label="Adding persistence to a class">
@@ -65,9 +66,9 @@
           <topic href="reference004.htm#CIADECIA" label="Entity Properties page" />
         </topic>
         <topic href="reference005.htm#CIAIJCCE" label="Mapping File Wizard">
-          <topic href="reference006.htm#sthref171" label="Mapping File" />
+          <topic href="reference006.htm#sthref173" label="Mapping File" />
         </topic>
-        <topic href="reference007.htm#sthref174" label="Generate DDL from Entities Wizard" />
+        <topic href="reference007.htm#sthref176" label="Generate DDL from Entities Wizard" />
       </topic>
       <topic label="Property pages">
         <topic href="ref_persistence_prop_view.htm#BABFAEBB" label="JPA Details view (for entities)">
@@ -75,7 +76,7 @@
           <topic href="reference010.htm#CACIJBGH" label="Attribute overrides" />
           <topic href="reference011.htm#CACBHIDA" label="Secondary table information" />
           <topic href="reference012.htm#CACFHGHE" label="Inheritance information" />
-          <topic href="reference013.htm#sthref187" label="Queries" />
+          <topic href="reference013.htm#sthref189" label="Queries" />
         </topic>
         <topic href="ref_persistence_map_view.htm#BABIFBAF" label="JPA Details view (for attributes)">
           <topic href="ref_mapping_general.htm#CACBHFIJ" label="General information" />
@@ -119,12 +120,12 @@
       <topic href="whats_new002.htm#BGGIHJCJ" label="Named Query Support" />
       <topic href="whats_new003.htm#BGGGACCD" label="persistence.xml Editor" />
       <topic href="whats_new004.htm#BGGIICEF" label="Override the Default Schema for Connection" />
-      <topic href="whats_new005.htm#sthref252" label="New Mapping File Wizard" />
-      <topic href="whats_new006.htm#sthref253" label="Convert to Java Project" />
-      <topic href="whats_new007.htm#sthref254" label="Column Definition Support" />
+      <topic href="whats_new005.htm#sthref253" label="New Mapping File Wizard" />
+      <topic href="whats_new006.htm#sthref254" label="Convert to Java Project" />
+      <topic href="whats_new007.htm#sthref255" label="Column Definition Support" />
     </topic>
     <topic href="legal.htm" label=" Legal">
-      <topic href="about.htm#sthref256" label="About this content" />
+      <topic href="about.htm#sthref257" label="About this content" />
     </topic>
   </topic>
 </toc>

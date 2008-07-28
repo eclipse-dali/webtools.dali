@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = May 21, 2008 14:42:04 -->
+<!-- Run date = July 23, 2008 8:59:45 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <title>Specifying entity inheritance</title>
  
@@ -16,14 +16,14 @@
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<link rel="start" href="../../index.htm" title="Home" type="text/html" />
-<link rel="contents" href="toc.htm" title="Contents" type="text/html" />
+<!-- start-->
+<!-- contents -->
 </head>
 <body>
 <p><a id="CIHCCCJD" name="CIHCCCJD"></a></p>
 <div class="sect1"><!-- infolevel="all" infotype="General" -->
 <h1>Specifying entity inheritance</h1>
-<p><a id="sthref78" name="sthref78"></a><a id="sthref79" name="sthref79"></a>An entity may inherit properties from other entities. You can specify a specific strategy to use for inheritance.</p>
+<p><a id="sthref80" name="sthref80"></a><a id="sthref81" name="sthref81"></a>An entity may inherit properties from other entities. You can specify a specific strategy to use for inheritance.</p>
 <p>Use this procedure to specify inheritance (<code>@Inheritance)</code> for an existing entity (<code>@Entity</code>):</p>
 <ol start="1">
 <li>
@@ -31,7 +31,7 @@
 </li>
 <li>
 <p>In the <span class="gui-object-title">JPA Details</span> view, select the <span class="gui-object-action">Inheritance</span> information.</p>
-<div class="figure"><a id="sthref80" name="sthref80"></a>
+<div class="figure"><a id="sthref82" name="sthref82"></a>
 <p class="titleinfigure">Specifying Inheritance</p>
 <img src="img/inheritance_tab.png" alt="Selecting the Inheritance area on the JPA Details view." title="Selecting the Inheritance area on the JPA Details view." /><br /></div>
 <!-- class="figure" --></li>
@@ -62,7 +62,7 @@
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t14" headers="r1c1-t14"><a id="sthref81" name="sthref81"></a><a id="sthref82" name="sthref82"></a>Discriminator Column</td>
+<td align="left" id="r2c1-t14" headers="r1c1-t14"><a id="sthref83" name="sthref83"></a><a id="sthref84" name="sthref84"></a>Discriminator Column</td>
 <td align="left" headers="r2c1-t14 r1c2-t14">Name of the discriminator column when using a <span class="bold">Single</span> or <span class="bold">Joined</span> inheritance strategy.
 <p>This field corresponds to the <code>@DiscriminatorColumn</code> annotation.</p>
 </td>
@@ -74,7 +74,7 @@
 <td align="left" headers="r3c1-t14 r1c3-t14">String</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t14" headers="r1c1-t14"><a id="sthref83" name="sthref83"></a><a id="sthref84" name="sthref84"></a>Discriminator Value</td>
+<td align="left" id="r4c1-t14" headers="r1c1-t14"><a id="sthref85" name="sthref85"></a><a id="sthref86" name="sthref86"></a>Discriminator Value</td>
 <td align="left" headers="r4c1-t14 r1c2-t14">Specify the discriminator value used to differentiate an entity in this inheritance hierarchy. The value must conform to the specified <span class="bold">Discriminator Type</span>.
 <p>This field corresponds to the <code>@DiscriminatorValue</code> annotation.</p>
 </td>
@@ -102,13 +102,13 @@
     referencedColumnName = "<span class="italic">&lt;REFERENCED_COLUMN_NAME&gt;</span>")
 
 </pre>
-<p><a id="sthref85" name="sthref85"></a><a id="sthref86" name="sthref86"></a><a id="sthref87" name="sthref87"></a>The following figures illustrates the different inheritance strategies.</p>
-<div class="figure"><a id="sthref88" name="sthref88"></a>
+<p><a id="sthref87" name="sthref87"></a><a id="sthref88" name="sthref88"></a><a id="sthref89" name="sthref89"></a>The following figures illustrates the different inheritance strategies.</p>
+<div class="figure"><a id="sthref90" name="sthref90"></a>
 <p class="titleinfigure">Single Table Inheritance</p>
 <img src="img/inheritance_single.png" alt="This figure illustrates entity inheritance in a single table." title="This figure illustrates entity inheritance in a single table." /><br /></div>
 <!-- class="figure" -->
-<div class="figure"><a id="sthref89" name="sthref89"></a>
-<p class="titleinfigure"><a id="sthref90" name="sthref90"></a><a id="sthref91" name="sthref91"></a>Joined Table Inheritance</p>
+<div class="figure"><a id="sthref91" name="sthref91"></a>
+<p class="titleinfigure"><a id="sthref92" name="sthref92"></a><a id="sthref93" name="sthref93"></a>Joined Table Inheritance</p>
 <img src="img/inheritance_join.png" alt="This figure illustrates a joined subclass inheritance strategy." title="This figure illustrates a joined subclass inheritance strategy." /><br /></div>
 <!-- class="figure" -->
 <br />
