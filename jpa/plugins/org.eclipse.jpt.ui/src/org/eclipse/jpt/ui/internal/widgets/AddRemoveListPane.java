@@ -411,7 +411,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		};
 	}
 
-	private ITableLabelProvider buiTableLabelProvider(IBaseLabelProvider labelProvider) {
+	private ITableLabelProvider buildTableLabelProvider(IBaseLabelProvider labelProvider) {
 		return new TableLabelProvider((ILabelProvider) labelProvider);
 	}
 
@@ -448,7 +448,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 			buildSelectedItemHolder(),
 			table,
 			buildColumnAdapter(),
-			buiTableLabelProvider(labelProvider)
+			buildTableLabelProvider(labelProvider)
 		);
 
 		model.addSelectionChangeListener(buildSelectionListener());
