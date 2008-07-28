@@ -218,9 +218,13 @@ public class EclipseLinkUiMessages extends NLS
 	public static String PersistenceXmlLoggingTab_sessionLabelDefault;
 	public static String PersistenceXmlLoggingTab_exceptionsLabel;
 	public static String PersistenceXmlLoggingTab_exceptionsLabelDefault;
-	public static String PersistenceXmlLoggingTab_logFileLabel;
-	public static String PersistenceXmlLoggingTab_logFileLabelDefault;
+	
 	public static String PersistenceXmlLoggingTab_loggersLabel;
+	public static String PersistenceXmlLoggingTab_loggingFileLabel;
+	public static String PersistenceXmlLoggingTab_loggingFileLabelDefault;
+
+	public static String LoggingFileLocationComposite_dialogTitle;
+	public static String LoggingFileLocationComposite_dialogMessage;
 
 	// Session Options
 	public static String PersistenceXmlOptionsTab_title;

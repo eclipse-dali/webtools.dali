@@ -56,6 +56,9 @@ public class EclipseLinkLoggingComposite
 
 		// Exceptions:
 		new ExceptionsComposite(this, composite);
+
+		// LoggingFile:
+		new LoggingFileLocationComposite(this, composite);
 		
 		// Logger:
 		new LoggerComposite(this, composite);
