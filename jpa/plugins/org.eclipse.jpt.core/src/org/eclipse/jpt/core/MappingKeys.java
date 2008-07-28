@@ -18,8 +18,9 @@ package org.eclipse.jpt.core;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface MappingKeys
-{
+@SuppressWarnings("nls")
+public interface MappingKeys {
+
 	String ENTITY_TYPE_MAPPING_KEY = "entity";
 	String MAPPED_SUPERCLASS_TYPE_MAPPING_KEY = "mappedSuperclass";
 	String EMBEDDABLE_TYPE_MAPPING_KEY = "embeddable";
@@ -36,4 +37,5 @@ public interface MappingKeys
 	String EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY = "embeddedId";
 	String TRANSIENT_ATTRIBUTE_MAPPING_KEY = "transient";
 	String NULL_ATTRIBUTE_MAPPING_KEY = null;
+
 }

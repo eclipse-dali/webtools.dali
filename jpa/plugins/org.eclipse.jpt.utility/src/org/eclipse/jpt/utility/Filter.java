@@ -45,7 +45,7 @@ public interface Filter<T> {
 		}
 		@Override
 		public String toString() {
-			return "Filter.Null";
+			return "Filter.Null";  //$NON-NLS-1$
 		}
 	}
 
@@ -66,7 +66,7 @@ public interface Filter<T> {
 		}
 		@Override
 		public String toString() {
-			return "Filter.Disabled";
+			return "Filter.Disabled";  //$NON-NLS-1$
 		}
 	}
 

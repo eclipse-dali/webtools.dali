@@ -93,7 +93,7 @@ public interface JpaProject extends JpaNode {
 	 * ID string used when userOverrideDefaultSchemaName property is changed.
 	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
 	 */
-	String USER_OVERRIDE_DEFAULT_SCHEMA_NAME_PROPERTY = "userOverrideDefaultSchemaName";
+	String USER_OVERRIDE_DEFAULT_SCHEMA_NAME_PROPERTY = "userOverrideDefaultSchemaName"; //$NON-NLS-1$
 	
 	/**
 	 * Return the name of the schema to be used as a default for the project
@@ -119,7 +119,7 @@ public interface JpaProject extends JpaNode {
 	 * ID string used when discoversAnnotatedClasses property is changed.
 	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
 	 */
-	String DISCOVERS_ANNOTATED_CLASSES_PROPERTY = "discoversAnnotatedClasses";
+	String DISCOVERS_ANNOTATED_CLASSES_PROPERTY = "discoversAnnotatedClasses"; //$NON-NLS-1$
 	
 	/**
 	 * Return whether the JPA project will "discover" annotated classes
@@ -142,7 +142,7 @@ public interface JpaProject extends JpaNode {
 	 * ID string used when jpaFiles collection is changed.
 	 * @see org.eclipse.jpt.utility.model.Model#addCollectionChangeListener(String, org.eclipse.jpt.utility.model.listener.CollectionChangeListener)
 	 */
-	String JPA_FILES_COLLECTION = "jpaFiles";
+	String JPA_FILES_COLLECTION = "jpaFiles"; //$NON-NLS-1$
 
 	/**
 	 * Return the JPA project's JPA files.
@@ -325,7 +325,7 @@ public interface JpaProject extends JpaNode {
 			}
 			@Override
 			public String toString() {
-				return "IJpaProject.Updater.Null";
+				return "JpaProject.Updater.Null"; //$NON-NLS-1$
 			}
 		}
 
