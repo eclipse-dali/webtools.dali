@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = May 21, 2008 14:42:02 -->
+<!-- Run date = July 23, 2008 8:59:41 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <title>Creating a Java persistent entity with persistent fields</title>
  
@@ -16,14 +16,14 @@
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<link rel="start" href="../../index.htm" title="Home" type="text/html" />
-<link rel="contents" href="toc.htm" title="Contents" type="text/html" />
+<!-- start-->
+<!-- contents -->
 </head>
 <body>
 <p><a id="BABFGDDG" name="BABFGDDG"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
 <h1>Creating a Java persistent entity with persistent fields</h1>
-<p><a id="sthref8" name="sthref8"></a>This quick start shows how to create a new persistent Java entity. We will create an entity to associate with a database table. You will also need to add the ADDRESS table to your database.</p>
+<p><a id="sthref10" name="sthref10"></a>This quick start shows how to create a new persistent Java entity. We will create an entity to associate with a database table. You will also need to add the ADDRESS table to your database.</p>
 <ol start="1">
 <li>
 <p>Select the JPA project in the Navigator or Package Explorer and then click <span class="bold">New &gt; Other</span>. The Select a Wizard dialog appears.</p>
@@ -35,7 +35,7 @@
 <p>Enter the package name (such as <code>quickstart.demo.model</code>), the class name (such as <code>Address</code>) and then click <span class="bold">Next</span>. The <a href="reference004.htm#CIADECIA">Entity Properties page</a> appears, which enables you to define the persistence fields, which you will map to the columns of a database table.</p>
 </li>
 <li>
-<p>Use the <a id="sthref9" name="sthref9"></a><a id="sthref10" name="sthref10"></a> Entity Fields dialog (invoked by clicking <span class="bold">Add</span>) to add persistence fields to the Address class:</p>
+<p><a id="sthref11" name="sthref11"></a><a id="sthref12" name="sthref12"></a>Use the Entity Fields dialog (invoked by clicking <span class="bold">Add</span>) to add persistence fields to the Address class:</p>
 <pre xml:space="preserve" class="oac_no_warn">
 private Long id;
 private String city;
@@ -73,12 +73,12 @@ VARCHAR2(80) CITY
 <p>Address.java includes the <code>@Entity</code> annotation, the persistence fields, as well as <code>getter</code> and <code>setter</code> methods for each of the fields.</p>
 </li>
 </ol>
-<div class="figure"><a id="sthref11" name="sthref11"></a>
+<div class="figure"><a id="sthref13" name="sthref13"></a>
 <p class="titleinfigure">Address Entity in Address.java</p>
 <img src="img/java_editor_address.png" alt="Java editor with the Address entity." title="Java editor with the Address entity." /><br /></div>
 <!-- class="figure" -->
 <p>Eclipse also displays the <span class="bold">Address</span> entity in the JPA Structure view:</p>
-<div class="figure"><a id="sthref12" name="sthref12"></a>
+<div class="figure"><a id="sthref14" name="sthref14"></a>
 <p class="titleinfigure">Address Entity in the JPA Structure View</p>
 <img src="img/address_java_JPA_structure_quickstart.png" alt="Address.java in the JPA Structure View." title="Address.java in the JPA Structure View." /><br /></div>
 <!-- class="figure" -->
@@ -101,7 +101,7 @@ Depending on your database connection type, you may need to specify the <span cl
 </table>
 <br /></div>
 <!-- class="inftblnote" --></div>
-<div class="figure"><a id="sthref13" name="sthref13"></a>
+<div class="figure"><a id="sthref15" name="sthref15"></a>
 <p class="titleinfigure">JPA Details View for Address Entity</p>
 <img src="img/address.java_jpa_details.png" alt="Address.java in the JPA Details view." title="Address.java in the JPA Details view." /><br /></div>
 <!-- class="figure" --></li>
@@ -132,7 +132,7 @@ After associating the entity with the database table, you should update the <cod
 </li>
 <li>
 <p>In the JPA Details view, select <span class="bold">ADDRESS_ID</span> in the Name field:</p>
-<div class="figure"><a id="sthref14" name="sthref14"></a>
+<div class="figure"><a id="sthref16" name="sthref16"></a>
 <p class="titleinfigure">JPA Details View for the addressId Field</p>
 <img src="img/address_id_details_quickstart.png" alt="The JPA Details view for the Address entity&rsquo;s id attribute." title="The JPA Details view for the Address entity&rsquo;s id attribute." /><br /></div>
 <!-- class="figure" -->
@@ -183,8 +183,7 @@ After associating the entity with the database table, you should update the <cod
 <br /></div>
 <!-- class="inftblhruleinformal" --></li>
 </ol>
-<p>Notice that Dali will automatically map some fields to the correct database column (such as the <span class="bold">city</span> field to the CITY column) if the names are identical.</p>
-<p>Refer to the to map a complete object model using basic and relational mappings.</p>
+<p>Dali automatically maps some fields to the correct database column (such as the city field to the City column) if the names are identical.</p>
 </div>
 <!-- class="sect2" -->
 <!-- class="sect1" -->
