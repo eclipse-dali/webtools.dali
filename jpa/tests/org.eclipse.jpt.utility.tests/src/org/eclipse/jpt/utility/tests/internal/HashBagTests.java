@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,6 +21,7 @@ import org.eclipse.jpt.utility.internal.HashBag;
 
 import junit.framework.TestCase;
 
+@SuppressWarnings("nls")
 public class HashBagTests extends TestCase {
 	private HashBag<String> bag;
 
@@ -314,6 +315,59 @@ public class HashBagTests extends TestCase {
 
 		// start over
 		iterator = this.bag.uniqueIterator();
+		this.bag.add("five");
+		exCaught = false;
+		try {
+			iterator.next();
+		} catch (ConcurrentModificationException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
+	public void testEntries() {
+		int i = 0;
+		Iterator<Bag.Entry<String>> iterator = this.bag.entries();
+		assertTrue(iterator.hasNext());
+		while (iterator.hasNext()) {
+			iterator.next();
+			i++;
+		}
+		assertEquals(5, i);
+		assertFalse(iterator.hasNext());
+
+		boolean exCaught = false;
+		Object element = null;
+		try {
+			element = iterator.next();
+			fail(element.toString());
+		} catch (NoSuchElementException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+
+		// start over
+		iterator = this.bag.entries();
+		Bag.Entry<String> next = null;
+		while (iterator.hasNext()) {
+			next = iterator.next();
+			if (next.getElement().equals("four")) {
+				iterator.remove();
+				break;
+			}
+		}
+		assertEquals(7, this.bag.size());
+
+		exCaught = false;
+		try {
+			iterator.remove();
+		} catch (IllegalStateException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+
+		// start over
+		iterator = this.bag.entries();
 		this.bag.add("five");
 		exCaught = false;
 		try {

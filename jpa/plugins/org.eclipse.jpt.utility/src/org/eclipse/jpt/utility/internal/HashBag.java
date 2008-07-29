@@ -54,9 +54,10 @@ import java.util.NoSuchElementException;
  * 
  * @see	Collections#synchronizedCollection(Collection)
  */
-
-public class HashBag<E> extends AbstractCollection<E>
-			implements Bag<E>, Cloneable, Serializable {
+public class HashBag<E>
+	extends AbstractCollection<E>
+	implements Bag<E>, Cloneable, Serializable
+{
 
 	/** The hash table. */
 	transient Entry<E>[] table;
@@ -496,10 +497,11 @@ public class HashBag<E> extends AbstractCollection<E>
 		}
 	}
 
+
 	/**
 	 * Hash table collision list entry.
 	 */
-	private static class Entry<E> {
+	private static class Entry<E> implements Bag.Entry<E> {
 		int hash;
 		E object;
 		int count;
@@ -526,28 +528,74 @@ public class HashBag<E> extends AbstractCollection<E>
 					(this.next == null ? null : this.next.clone()));
 		}
 
+		// ***** Bag.Entry implementation
+		public E getElement() {
+			return this.object;
+		}
+
+		public int getCount() {
+			return this.count;
+		}
+
+		public int setCount(int count) {
+			if (count <= 0) {
+				throw new IllegalArgumentException("count must be greater than zero: " + count);
+			}
+			int old = this.count;
+			this.count = count;
+			return old;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if ( ! (o instanceof Bag.Entry)) {
+				return false;
+			}
+			@SuppressWarnings("unchecked")
+			Bag.Entry e = (Bag.Entry) o;
+			if (this.count != e.getCount()) {
+				return false;
+			}
+			Object o1 = this.object;
+			Object o2 = e.getElement();
+			if (o1 == o2) {
+				return true;
+			}
+			if (o1 == null) {
+				return false;
+			}
+			return o1.equals(o2);
+		}
+
+		@Override
+		public int hashCode() {
+			E o = this.object;
+			return (o == null) ? 0 : (this.count * o.hashCode());
+		}
+
 		@Override
 		public String toString() {
 			return this.object + "=>" + this.count;
 		}
 	}
 
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterator<E> iterator() {
-		if (this.count == 0) {
-			return EMPTY_ITERATOR;
-		}
-		return new HashIterator();
+		return (this.count == 0) ? EMPTY_ITERATOR : new HashIterator();
 	}
 
 	@SuppressWarnings("unchecked")
 	public Iterator<E> uniqueIterator() {
-		if (this.count == 0) {
-			return EMPTY_ITERATOR;
-		}
-		return new UniqueIterator();
+		return (this.count == 0) ? EMPTY_ITERATOR : new UniqueIterator();
 	}
+
+	@SuppressWarnings("unchecked")
+	public Iterator<Bag.Entry<E>> entries() {
+		return (this.count == 0) ? EMPTY_ITERATOR : new EntryIterator();
+	}
+
 
 	/**
 	 * Empty iterator that does just about nothing.
@@ -575,12 +623,13 @@ public class HashBag<E> extends AbstractCollection<E>
 		}
 	}
 
+
 	private class HashIterator implements Iterator<E> {
-		Entry<E>[] localTable = HashBag.this.table;
-		int index = this.localTable.length;	// start at the end of the table
-		Entry<E> nextEntry = null;
-		int nextEntryCount = 0;
-		Entry<E> lastReturnedEntry = null;
+		private Entry<E>[] localTable = HashBag.this.table;
+		private int index = this.localTable.length;	// start at the end of the table
+		private Entry<E> nextEntry = null;
+		private int nextEntryCount = 0;
+		private Entry<E> lastReturnedEntry = null;
 
 		/**
 		 * The modCount value that the iterator believes that the backing
@@ -668,11 +717,11 @@ public class HashBag<E> extends AbstractCollection<E>
 	}
 
 
-	private class UniqueIterator implements Iterator<E> {
-		Entry<E>[] localTable = HashBag.this.table;
-		int index = this.localTable.length;	// start at the end of the table
-		Entry<E> nextEntry = null;
-		Entry<E> lastReturnedEntry = null;
+	private class EntryIterator implements Iterator<Entry<E>> {
+		private Entry<E>[] localTable = HashBag.this.table;
+		private int index = this.localTable.length;	// start at the end of the table
+		private Entry<E> nextEntry = null;
+		private Entry<E> lastReturnedEntry = null;
 
 		/**
 		 * The modCount value that the iterator believes that the backing
@@ -681,7 +730,7 @@ public class HashBag<E> extends AbstractCollection<E>
 		 */
 		private int expectedModCount = HashBag.this.modCount;
 
-		UniqueIterator() {
+		EntryIterator() {
 			super();
 		}
 
@@ -698,7 +747,7 @@ public class HashBag<E> extends AbstractCollection<E>
 			return e != null;
 		}
 
-		public E next() {
+		public Entry<E> next() {
 			if (HashBag.this.modCount != this.expectedModCount) {
 				throw new ConcurrentModificationException();
 			}
@@ -716,7 +765,7 @@ public class HashBag<E> extends AbstractCollection<E>
 			}
 			Entry<E> e = this.lastReturnedEntry = this.nextEntry;
 			this.nextEntry = e.next;
-			return e.object;
+			return e;
 		}
 
 		public void remove() {
@@ -745,6 +794,28 @@ public class HashBag<E> extends AbstractCollection<E>
 				}
 			}
 			throw new ConcurrentModificationException();
+		}
+
+	}
+
+
+	private class UniqueIterator implements Iterator<E> {
+		private EntryIterator entryIterator = new EntryIterator();
+		
+		UniqueIterator() {
+			super();
+		}
+
+		public boolean hasNext() {
+			return this.entryIterator.hasNext();
+		}
+
+		public E next() {
+			return this.entryIterator.next().object;
+		}
+
+		public void remove() {
+			this.entryIterator.remove();
 		}
 
 	}

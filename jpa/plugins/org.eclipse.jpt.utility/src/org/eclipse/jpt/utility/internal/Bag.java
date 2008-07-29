@@ -73,6 +73,63 @@ public interface Bag<E> extends java.util.Collection<E> {
 	 */
 	java.util.Iterator<E> uniqueIterator();
 
+	/**
+	 * Return an iterator that returns an entry for each item in the bag
+	 * once and only once, irrespective of how many times
+	 * the item was added to the bag. The entry will indicate the item's
+	 * count.
+	 */
+	java.util.Iterator<Entry<E>> entries();
+
+
+	/**
+	 * A bag entry (element-count pair).
+	 * The <code>Bag.entries</code> method returns an iterator whose
+	 * elements are of this class. The <i>only</i> way to obtain a reference
+	 * to a bag entry is from the iterator returned by this method. These
+	 * <code>Bag.Entry</code> objects are valid <i>only</i> for the duration
+	 * of the iteration; more formally, the behavior of a bag entry is
+	 * undefined if the backing bag has been modified after the entry was
+	 * returned by the iterator, except through the <code>setCount</code>
+	 * operation on the bag entry.
+	 */
+	interface Entry<E> {
+
+		/**
+		 * Return the entry's element.
+		 */
+		E getElement();
+
+		/**
+		 * Return entry's count; i.e. the number of times the entry's element
+		 * occurs in the bag.
+		 * @see Bag#count(Object)
+		 */
+		int getCount();
+
+		/**
+		 * Set the entry's count; i.e. the number of times the entry's element
+		 * occurs in the bag. The new count must be a positive number.
+		 * Return the previous count of the entry's element.
+		 * NB: Use the iterator's <code>remove</code> method to set the
+		 * count to zero.
+		 */
+		int setCount(int count);
+
+		/**
+		 * Return whether the entry is equal to the specified object;
+		 * i.e. the specified object is a <code>Bag.Entry</code> and its
+		 * element and count are the same as the entry's.
+		 */
+		boolean equals(Object obj);
+
+		/**
+		 * Return the entry's hash code.
+		 */
+		int hashCode();
+
+	}
+
 
 	final class Empty<E> extends AbstractCollection<E> implements Bag<E>, Serializable {
 		@SuppressWarnings("unchecked")
@@ -98,6 +155,9 @@ public interface Bag<E> extends java.util.Collection<E> {
 		}
 		public int count(Object o) {
 			return 0;
+		}
+		public Iterator<Bag.Entry<E>> entries() {
+			return EmptyIterator.instance();
 		}
 		public boolean remove(Object o, int count) {
 			return false;

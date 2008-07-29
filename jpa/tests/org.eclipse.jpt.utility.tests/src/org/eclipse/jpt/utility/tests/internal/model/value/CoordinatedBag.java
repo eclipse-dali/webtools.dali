@@ -104,6 +104,10 @@ class CoordinatedBag<E> implements Bag<E>, CollectionChangeListener {
 		return this.bag.uniqueIterator();
 	}
 
+	public Iterator<Bag.Entry<E>> entries() {
+		return this.bag.entries();
+	}
+
 	// ********** CollectionChangeListener implementation **********
 
 	public void itemsAdded(CollectionChangeEvent e) {

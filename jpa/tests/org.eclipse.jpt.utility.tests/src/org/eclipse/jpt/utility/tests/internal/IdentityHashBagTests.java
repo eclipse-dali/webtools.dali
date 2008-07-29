@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,6 +20,7 @@ import org.eclipse.jpt.utility.internal.IdentityHashBag;
 
 import junit.framework.TestCase;
 
+@SuppressWarnings("nls")
 public class IdentityHashBagTests extends TestCase {
 	private IdentityHashBag<String> bag;
 	private String one = "one";
@@ -323,6 +324,60 @@ public class IdentityHashBagTests extends TestCase {
 
 		// start over
 		iterator = this.bag.uniqueIterator();
+		String five = "five";
+		this.bag.add(five);
+		exCaught = false;
+		try {
+			iterator.next();
+		} catch (ConcurrentModificationException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
+	public void testEntries() {
+		int i = 0;
+		Iterator<org.eclipse.jpt.utility.internal.Bag.Entry<String>> iterator = this.bag.entries();
+		assertTrue(iterator.hasNext());
+		while (iterator.hasNext()) {
+			iterator.next();
+			i++;
+		}
+		assertEquals(5, i);
+		assertFalse(iterator.hasNext());
+
+		boolean exCaught = false;
+		Object element = null;
+		try {
+			element = iterator.next();
+			fail(element.toString());
+		} catch (NoSuchElementException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+
+		// start over
+		iterator = this.bag.entries();
+		org.eclipse.jpt.utility.internal.Bag.Entry<String> next = null;
+		while (iterator.hasNext()) {
+			next = iterator.next();
+			if (next.getElement().equals(this.four)) {
+				iterator.remove();
+				break;
+			}
+		}
+		assertEquals(7, this.bag.size());
+
+		exCaught = false;
+		try {
+			iterator.remove();
+		} catch (IllegalStateException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+
+		// start over
+		iterator = this.bag.entries();
 		String five = "five";
 		this.bag.add(five);
 		exCaught = false;
