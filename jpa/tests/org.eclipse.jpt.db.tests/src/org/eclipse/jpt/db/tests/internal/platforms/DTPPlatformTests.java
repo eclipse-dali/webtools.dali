@@ -11,10 +11,16 @@ package org.eclipse.jpt.db.tests.internal.platforms;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.NoSuchElementException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.CoreException;
@@ -23,6 +29,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.datatools.connectivity.ConnectionProfileException;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
+import org.eclipse.datatools.connectivity.IManagedConnection;
 import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.datatools.connectivity.drivers.IDriverMgmtConstants;
 import org.eclipse.datatools.connectivity.drivers.IPropertySet;
@@ -30,385 +37,832 @@ import org.eclipse.datatools.connectivity.drivers.PropertySetImpl;
 import org.eclipse.datatools.connectivity.drivers.XMLFileManager;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.datatools.connectivity.internal.ConnectivityPlugin;
+import org.eclipse.datatools.connectivity.sqm.core.connection.ConnectionInfo;
+import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
+import org.eclipse.jpt.db.Catalog;
+import org.eclipse.jpt.db.Column;
+import org.eclipse.jpt.db.ConnectionListener;
 import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.ConnectionProfileRepository;
+import org.eclipse.jpt.db.ConnectionProfileFactory;
+import org.eclipse.jpt.db.ConnectionProfileListener;
 import org.eclipse.jpt.db.Database;
+import org.eclipse.jpt.db.DatabaseFinder;
+import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
+import org.eclipse.jpt.db.Sequence;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.db.ForeignKey.ColumnPair;
 import org.eclipse.jpt.db.tests.internal.JptDbTestsPlugin;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.IndentingPrintWriter;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.ResultSetIterator;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
 /**
- *  Base class for all supported DTP platform.
+ * Base class for testing DTP wrappers on various databases.
  */
+@SuppressWarnings("nls")
 public abstract class DTPPlatformTests extends TestCase {
 
-    protected ConnectionProfileRepository connectionRepository;
-    
-    private Properties platformProperties;
-	private String currentDbVendor;
-	private String currentDbVersion;
+	/**
+	 * The platform properties are loaded from a Java properties file in the
+	 * 'org.eclipse.jpt.db.tests/config' directory. Each database platform has
+	 * its own properties file (e.g. 'derby101.properties').
+	 */
+	private Properties platformProperties;
 
-	private static final String PLATFORM_CONFIG_DIRECTORY = "config";	//$NON-NLS-1$
-	
-	private static final String PROFILE_NAME_PROPERTY = "profileName";	//$NON-NLS-1$
-	private static final String PROFILE_DESCRIPTION_PROPERTY = "profileDescription";	//$NON-NLS-1$
-	private static final String USER_NAME_PROPERTY = "userName";	//$NON-NLS-1$
-	private static final String USER_PASSWORD_PROPERTY = "userPassword";	//$NON-NLS-1$
-	private static final String DB_DRIVER_JAR_PROPERTY = "databasedriverJarList";	//$NON-NLS-1$
-	private static final String DB_NAME_PROPERTY = "databaseName";	//$NON-NLS-1$
-	private static final String DB_URL_PROPERTY = "databaseUrl";	//$NON-NLS-1$
-	
-	private static final String PROFILE_NAME_DEFAULT = "jpatest";	//$NON-NLS-1$
-	private static final String PROFILE_DESCRIPTION_DEFAULT = "JDBC Profile for JPA Testing";	//$NON-NLS-1$
-	private static final String USER_NAME_DEFAULT = "userName";	//$NON-NLS-1$
-	private static final String USER_PASSWORD_DEFAULT = "";	//$NON-NLS-1$
-	private static final String DB_NAME_DEFAULT = "testdb";	//$NON-NLS-1$
-	
-	private static final String MISSING_PROPERTY_MESSAGE = "Enter missing property in platform config file (config/database.properties)";	
+	/**
+	 * This is the Dali connection profile wrapper.
+	 */
+	protected ConnectionProfile connectionProfile;
 
-    public DTPPlatformTests( String name) {
-        super( name);
-        
-        this.connectionRepository = JptDbPlugin.instance().getConnectionProfileRepository();
-    }
 
-    @Override
-	protected void setUp() throws Exception {
-        super.setUp();
-        
-        if( this.platformIsNew()) {
-        	this.loadPlatformProperties();
-        	
-        	this.buildDriverDefinitionFile( IDriverMgmtConstants.DRIVER_FILE);
-        	this.buildConnectionProfile( this.profileName());
-        	this.currentDbVendor = this.databaseVendor();
-        	this.currentDbVersion = this.databaseVersion();
-        }
-        this.verifyProfileNamed( this.profileName());
+	// ********** constants **********
+
+	private static final String PLATFORM_CONFIG_DIRECTORY = "config";
+
+	private static final String DB_USER_ID_PROPERTY = "userID";
+		private static final String DB_USER_ID_DEFAULT = "user";
+
+	private static final String DB_PASSWORD_PROPERTY = "password";
+		private static final String DB_PASSWORD_DEFAULT = "";
+
+	private static final String DB_DRIVER_JARS_PROPERTY = "jars";
+		// required - no default
+
+	private static final String DB_URL_PROPERTY = "url";
+		// required - no default
+
+	private static final String DB_DATABASE_PROPERTY = "database";
+		private static final String DB_DATABASE_DEFAULT = "testdb";
+
+
+
+	// ********** constructor **********
+
+	protected DTPPlatformTests(String name) {
+		super(name);
 	}
 
-    @Override
+
+	// ********** set-up/tear-down **********
+
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+
+		this.platformProperties = this.loadPlatformProperties();
+		this.buildDTPDriverDefinitionFile();
+		this.buildDTPConnectionProfile();
+		this.connectionProfile = this.getConnectionProfileFactory().buildConnectionProfile(this.getProfileName(), DatabaseFinder.Default.instance());
+	}
+
+	@Override
 	protected void tearDown() throws Exception {
-        super.tearDown();
+		this.connectionProfile = null;
+		this.platformProperties = null;
+
+		super.tearDown();
+	}
+
+	// ***** platform properties file
+	private Properties loadPlatformProperties() throws IOException {
+		Properties p = new Properties();
+		p.load(this.buildPlatformPropertiesFileURL().openStream());
+		return p;
+	}
+
+	private URL buildPlatformPropertiesFileURL() {
+		return Platform.getBundle(this.getTestPluginBundleID()).getEntry(this.getPlatformPropertiesFilePath());
+	}
+
+	private String getTestPluginBundleID() {
+		return JptDbTestsPlugin.BUNDLE_ID;
+	}
+
+	private String getPlatformPropertiesFilePath() {
+		return this.getPlatformPropertiesDirectoryName() + '/' + this.getPlatformPropertiesFileName();
+	}
+
+	private String getPlatformPropertiesDirectoryName() {
+		return PLATFORM_CONFIG_DIRECTORY;
+	}
+
+	/**
+	 * Each database platform has a separate properties file in the 'config'
+	 * directory that must be customized by whomever is executing the tests.
+	 */
+	protected abstract String getPlatformPropertiesFileName();
+
+	// ***** driver definition file
+	private void buildDTPDriverDefinitionFile() throws CoreException {
+		XMLFileManager.setStorageLocation(this.getDTPDriverDefinitionLocation());
+		XMLFileManager.setFileName(this.getDTPDriverFileName());
+
+		IPropertySet[] sets = XMLFileManager.loadPropertySets();
+		for (IPropertySet set : sets) {
+			if (set.getID().equals(this.getDriverDefinitionID())) {
+				return;  // property sets live across tests
+			}
+		}
+
+		XMLFileManager.saveNamedPropertySet(this.buildDTPDriverDefinitionPropertySets());
+
+		// verify the file was created:
+		File driverDefinitioneFile = this.getDTPDriverDefinitionLocation().append(this.getDTPDriverFileName()).toFile();
+		assertTrue(driverDefinitioneFile.exists());
+	}
+
+	private IPath getDTPDriverDefinitionLocation() {
+		return ConnectivityPlugin.getDefault().getStateLocation();
+	}
+
+	private String getDTPDriverFileName() {
+		return IDriverMgmtConstants.DRIVER_FILE;
+	}
+
+	private IPropertySet[] buildDTPDriverDefinitionPropertySets() {
+		IPropertySet[] propertySets = new IPropertySet[1];
+		PropertySetImpl propertySet = new PropertySetImpl(this.getDriverName(), this.getDriverDefinitionID());
+		propertySet.setProperties(this.getDriverDefinitionID(), this.buildDTPDriverDefinitionProperties());
+		propertySets[0] = propertySet;
+		return propertySets;
+	}
+
+	protected abstract String getDriverName();
+
+	protected abstract String getDriverDefinitionID();
+
+	private Properties buildDTPDriverDefinitionProperties() {
+		Properties p = new Properties();
+		p.setProperty(ConnectionProfile.DRIVER_DEFINITION_TYPE_PROP_ID, this.getDriverDefinitionType());
+		p.setProperty(ConnectionProfile.DRIVER_JAR_LIST_PROP_ID, this.getJDBCDriverJarList());
+		p.setProperty(IJDBCDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID, this.getDatabaseVendor());
+		p.setProperty(IJDBCDriverDefinitionConstants.DATABASE_VERSION_PROP_ID, this.getDatabaseVersion());
+		p.setProperty(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID, this.getDriverClass());
+		p.setProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID, this.getJDBCURL());
+		p.setProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID, this.getUserID());
+		p.setProperty(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID, this.getPassword());
+		p.setProperty(IJDBCDriverDefinitionConstants.DATABASE_NAME_PROP_ID, this.getDatabaseName());
+		return p;
+	}
+
+	protected abstract String getDriverDefinitionType();
+
+	/**
+	 * The JAR list is workspace-specific and is set in the properties file.
+	 */
+	private String getJDBCDriverJarList() {
+		return this.getRequiredPlatformProperty(DB_DRIVER_JARS_PROPERTY);
+	}
+
+	protected abstract String getDatabaseVendor();
+
+	protected abstract String getDatabaseVersion();
+
+	protected abstract String getDriverClass();
+
+	/**
+	 * The database URL is workspace-specific and is set in the properties file
+	 * for some databases.
+	 */
+	private String getJDBCURL() {
+		return this.platformProperties.getProperty(DB_URL_PROPERTY, this.getDefaultJDBCURL());
+	}
+
+	protected String getDefaultJDBCURL() {
+		return "";
+	}
+
+	/**
+	 * The user ID is optional and can be set in the properties file.
+	 */
+	protected String getUserID() {
+		return this.platformProperties.getProperty(DB_USER_ID_PROPERTY, DB_USER_ID_DEFAULT);
+	}
+
+	/**
+	 * The password is optional and can be set in the properties file.
+	 */
+	private String getPassword() {
+		return this.platformProperties.getProperty(DB_PASSWORD_PROPERTY, DB_PASSWORD_DEFAULT);
+	}
+
+	/**
+	 * The database name is optional and can be set in the properties file.
+	 */
+	protected String getDatabaseName() {
+		return this.platformProperties.getProperty(DB_DATABASE_PROPERTY, DB_DATABASE_DEFAULT);
+	}
+
+	// ***** DTP connection profile
+	private void buildDTPConnectionProfile() throws ConnectionProfileException {
+		if (this.getDTPProfileManager().getProfileByName(this.getProfileName()) != null) {
+			return;  // profiles live across tests
+		}
+		this.createProfile(this.getProfileName());
+		assertNotNull(this.getDTPProfileManager().getProfileByName(this.getProfileName()));
+	}
+
+	protected void createProfile(String profileName) throws ConnectionProfileException {
+		this.getDTPProfileManager().createProfile(
+				profileName,
+				this.getProfileDescription(),
+				this.getProviderID(),
+				this.buildDTPConnectionProfileProperties()
+		);
+	}
+
+	protected abstract String getProfileName();
+
+	protected abstract String getProfileDescription();
+
+	protected String getProviderID() {
+		return ConnectionProfile.CONNECTION_PROFILE_TYPE;
+	}
+	 
+	private Properties buildDTPConnectionProfileProperties() {
+		Properties p = new Properties();
+		p.setProperty(IJDBCDriverDefinitionConstants.DATABASE_NAME_PROP_ID, this.getDatabaseName());
+		p.setProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID, this.getUserID());
+		p.setProperty(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID, this.getPassword());
+		p.setProperty(ConnectionProfile.DRIVER_DEFINITION_PROP_ID, this.getDriverDefinitionID());
+
+		p.setProperty(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID, this.getDriverClass());
+		p.setProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID, this.getJDBCURL());
+		p.setProperty(IJDBCDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID, this.getDatabaseVendor());
+		p.setProperty(IJDBCDriverDefinitionConstants.DATABASE_VERSION_PROP_ID, this.getDatabaseVersion());
+
+		p.setProperty(ConnectionProfile.DATABASE_SAVE_PWD_PROP_ID, this.passwordIsSaved());
+		return p;
+	}
+
+	private String passwordIsSaved() {
+		return "true";
 	}
 
 
 	// ********** tests **********
 
+	public void testConnectionProfileListener() throws ConnectionProfileException {
+		TestConnectionProfileListener listener = new TestConnectionProfileListener();
+		this.getConnectionProfileFactory().addConnectionProfileListener(listener);
+
+		String cpName1 = this.getProfileName() + "1";
+		this.createProfile(cpName1);
+		IConnectionProfile dtpCP = this.getDTPProfileManager().getProfileByName(cpName1);
+		assertNotNull(dtpCP);
+
+		assertEquals(cpName1, listener.addedName);
+		listener.clear();
+
+		String cpName2 = this.getProfileName() + "2";
+		this.getDTPProfileManager().modifyProfile(dtpCP, cpName2, null);
+		assertEquals(cpName1, listener.renamedOldName);
+		assertEquals(cpName2, listener.renamedNewName);
+		listener.clear();
+
+		ConnectionProfile cp = this.getConnectionProfileFactory().buildConnectionProfile(cpName2);
+		assertNotNull(cp);
+
+		this.getDTPProfileManager().deleteProfile(dtpCP);
+		assertEquals(cpName2, listener.removedName);
+		listener.clear();
+
+		cp = this.getConnectionProfileFactory().buildConnectionProfile(cpName2);
+		assertNull(cp);
+
+		this.getConnectionProfileFactory().removeConnectionProfileListener(listener);
+	}
+
+	public void testName() {
+		assertEquals(this.getProfileName(), this.connectionProfile.getName());
+	}
+
 	public void testConnection() throws Exception {
+		assertTrue(this.connectionProfile.isInactive());
+		assertTrue(this.connectionProfile.isDisconnected());
+		this.connectionProfile.connect();
+		assertTrue(this.connectionProfile.isActive());
+		assertTrue(this.connectionProfile.isConnected());
 
-		this.connect();
-		
-        this.verifyDatabaseVersionNumber();
-        this.verifyDatabaseContent();
+		this.verifyDatabaseVersionNumber();
+		this.verifyDatabaseVendor();
+		this.verifyDatabaseContent();
 
-        this.disconnect();
-    }
-    
-	public void testGetProfiles() {
-		// Getting the profile directly from DTP ProfileManager
-		IConnectionProfile[] profiles = ProfileManager.getInstance().getProfiles();
-		Assert.assertNotNull( profiles);
-		Assert.assertTrue( profiles.length > 0);
+		this.connectionProfile.disconnect();
+		assertTrue(this.connectionProfile.isInactive());
+		assertTrue(this.connectionProfile.isDisconnected());
 	}
 
-	public void testGetProfilesByProvider() {
-		// Get Profiles By ProviderID
-		IConnectionProfile[] profiles = ProfileManager.getInstance().getProfileByProviderID( this.getProfile().getProviderID());
-		Assert.assertNotNull( profiles);
-		Assert.assertTrue( profiles.length > 0);
-	}
-	
-	public void testGetProfileByName() {
-		// Get Profile By Name
-		IConnectionProfile dtpProfile = this.getDTPProfile();
-		Assert.assertNotNull( dtpProfile);
-		Assert.assertTrue( dtpProfile.getName().equals( this.profileName()));
-	}
-	
-	public void testGetProfileByInstanceId() {
-		// Get Profile By InstanceID
-		IConnectionProfile dtpProfile = ProfileManager.getInstance().getProfileByInstanceID( this.getProfile().getInstanceID());
-		Assert.assertNotNull( dtpProfile);
-		Assert.assertTrue( dtpProfile.getName().equals( this.profileName()));
+	private void verifyDatabaseVersionNumber() {
+		Database database = this.connectionProfile.getDatabase();
+		assertNotNull(database);
+
+		String actual = database.getVersion();
+		String expected = this.getDatabaseVersion();
+		String errorMessage = "expected: " + expected + " - actual: " + actual;
+		// partial match is good enough
+		assertTrue(errorMessage, actual.indexOf(expected) != -1);
 	}
 
-	public void testWorkingOffline() {
-		
-		if( this.getProfile().supportsWorkOfflineMode()) {
-
-			if( ! this.getProfile().canWorkOffline()) {
-				this.connect();
-				this.saveWorkOfflineData();
-				this.disconnect();
-				
-				Assert.assertTrue( this.getProfile().canWorkOffline());
-			}
-			this.workOffline();
-			
-			Assert.assertTrue( this.getProfile().isActive());
-			Assert.assertTrue( this.getProfile().isWorkingOffline());
-
-			this.disconnect();
-		}
+	private void verifyDatabaseVendor() {
+		Database database = this.connectionProfile.getDatabase();
+		String actual = database.getVendor();
+		String expected = this.getDatabaseVendor();
+		assertEquals(expected, actual);
 	}
-		
-	// ********** internal tests **********
 
-    private void verifyDatabaseVersionNumber() {
-    	Database database = this.getProfile().getDatabase();
-    	Assert.assertNotNull( database);
-    	
-        String actualVersionNumber = database.getVersion();
-        String expectedVersionNumber = this.databaseVersion();
-        String errorMessage = "Expected version number: " + expectedVersionNumber + " but the actual version number was: " + actualVersionNumber;
-        assertTrue( errorMessage, actualVersionNumber.indexOf( expectedVersionNumber) != -1);
+	private void verifyDatabaseContent() {
+		Database database = this.connectionProfile.getDatabase();
+		assertTrue(database.schemataSize() > 0);
 
-        String actualVendor = database.getVendor();
-        String expectedVendor = this.databaseVendor();
-        errorMessage = "Expected vendor: " + expectedVendor + " but the actual vendor was: " + actualVendor;
-        assertEquals( errorMessage, actualVendor, expectedVendor);
-    }
-    
-    private void verifyDatabaseContent() {
-    	Database database = this.getProfile().getDatabase();
-    	Assert.assertTrue( database.schemataSize() > 0);
-		
-        Schema schema = database.schemaNamed( this.getProfile().getUserName());
-		if( schema != null) {
-			Assert.assertTrue( schema.sequencesSize() >= 0);
-			
-			Object[] tableNames = CollectionTools.array( schema.tableNames());
-			if( tableNames.length >= 1) {
-				Table table = schema.tableNamed(( String)tableNames[ 0]);
-				Assert.assertTrue( table.columnsSize() >= 0);
-				Assert.assertTrue( table.foreignKeysSize() >= 0);
-				Assert.assertTrue( table.primaryKeyColumnsSize() >= 0);
+		Schema schema = database.getDefaultSchema();
+		if (schema != null) {
+			if (schema.tablesSize() > 0) {
+				Table table = schema.tables().next();
+				assertTrue(table.columnsSize() >= 0);
+				assertTrue(table.primaryKeyColumnsSize() >= 0);
+				assertTrue(table.foreignKeysSize() >= 0);
 			}
 		}
-    }
-
-    private void verifyProfileNamed( String profileName) {
-    	
-    	ConnectionProfile profile = this.getProfileNamed( profileName);
-    	Assert.assertTrue( "ConnectionProfile not found", profileName.equals( profile.getName()));
-    }
-
-	// ***** Platform specific behavior *****
-
-    protected abstract String databaseVendor();
-    protected abstract String databaseVersion();
-
-    protected abstract String driverName();
-    protected abstract String driverDefinitionType();
-    protected abstract String driverDefinitionId();
-    protected abstract String driverClass();
-
-    protected abstract String getConfigName();
-
-	// ***** Behavior *****
-
-    protected void connect() {
-
-        this.getProfile().connect();
-		Assert.assertTrue( "Could not connect.", this.getProfile().isActive());
-		Assert.assertFalse( "Connection corrupted.", this.getProfile().isWorkingOffline());
-    }
-    
-    protected void disconnect() {
-    	
-    	this.getProfile().disconnect();
-        Assert.assertFalse( "Disconnect failed.", this.getProfile().isActive());
-    }
-
-	private void workOffline() {
-		IStatus status = this.getProfile().workOffline();
-
-		Assert.assertTrue( "Could not work offline.", status.isOK());
 	}
 
-	private void saveWorkOfflineData() {
-		IStatus status = this.getProfile().saveWorkOfflineData();
-
-		Assert.assertTrue( "Could not save offline data.", status.isOK());
-	}
-    
-	// ********** queries **********
-
-    protected Schema getSchemaNamed( String schemaName) { 
-
-	    return this.getProfile().getDatabase().schemaNamed( schemaName);
-    }
-	
-    protected Collection<Table> getTables() {
-		
-        Schema schema = this.getSchemaNamed( this.getProfile().getUserName());
-		if( schema == null) {
-			return new ArrayList<Table>();
+	public void testOffline() {
+		if ( ! this.connectionProfile.supportsWorkOfflineMode()) {
+			return;
 		}
-		return CollectionTools.collection( schema.tables());
-    }
 
-    protected Table getTableNamed( String tableName) { 
+		this.prepareForOfflineWork();
 
-	    Schema schema =  this.getSchemaNamed( this.getProfile().getUserName());
-	    Assert.assertNotNull( schema);
-	
-		return schema.tableNamed( tableName);
-    }
+		IStatus status = this.connectionProfile.workOffline();
+		assertTrue(status.isOK());
+		assertTrue(this.connectionProfile.isActive());
+		assertTrue(this.connectionProfile.isWorkingOffline());
 
-    protected String providerId() {
-        return ConnectionProfile.CONNECTION_PROFILE_TYPE;
-    }
-     
-    protected String passwordIsSaved() {
-        return "true";
-    }
-
-
-    protected IConnectionProfile getDTPProfile() {
-		return ProfileManager.getInstance().getProfileByName( this.profileName());
-    }
-	
-    protected String profileName() {
-    	return this.platformProperties.getProperty( PROFILE_NAME_PROPERTY, PROFILE_NAME_DEFAULT);
-    }    
-    
-    protected String profileDescription() {
-    	return this.platformProperties.getProperty( PROFILE_DESCRIPTION_PROPERTY, PROFILE_DESCRIPTION_DEFAULT);
-    }    
-    
-    protected String userName() {
-    	return this.platformProperties.getProperty( USER_NAME_PROPERTY, USER_NAME_DEFAULT);
-    }
-    
-    protected String userPassword() {
-    	return this.platformProperties.getProperty( USER_PASSWORD_PROPERTY, USER_PASSWORD_DEFAULT);
-    }    
-    
-    protected String databaseName() {
-    	return this.platformProperties.getProperty( DB_NAME_PROPERTY, DB_NAME_DEFAULT);
-    }
-    
-    protected String databasedriverJarList() {
-    	String dbDriverJarList = this.platformProperties.getProperty( DB_DRIVER_JAR_PROPERTY);
-    	if ( StringTools.stringIsEmpty( dbDriverJarList)) {
-    		throw new NoSuchElementException( MISSING_PROPERTY_MESSAGE);
-    	}
-    	return dbDriverJarList;
-    }
-    
-    protected String databaseUrl() {
-    	String dbUrl = this.platformProperties.getProperty( DB_URL_PROPERTY);
-    	if ( StringTools.stringIsEmpty( dbUrl)) {
-    		throw new NoSuchElementException( MISSING_PROPERTY_MESSAGE);
-    	}
-    	return dbUrl;
-    }
-
-    protected ConnectionProfile getProfile() {
-
-    	return this.getProfileNamed( this.profileName());
-    }
-
-    protected ConnectionProfile getProfileNamed( String profileName) {
-    	
-    	return this.connectionRepository.connectionProfileNamed( profileName);
-    }
-   
-    private String getTestPluginBundleId() {
-		return JptDbTestsPlugin.BUNDLE_ID;
+		this.connectionProfile.disconnect();
+		assertTrue(this.connectionProfile.isInactive());
+		assertTrue(this.connectionProfile.isDisconnected());
 	}
 
-	private IPath getDriverDefinitionLocation() {
-		return ConnectivityPlugin.getDefault().getStateLocation();
-	}
-	
-	private String getConfigPath() {
-    	return this.getConfigDir() + "/" + this.getConfigName();
-    }
-	
-	private String getConfigDir() {
-    	return PLATFORM_CONFIG_DIRECTORY;
-    }
-
-	private boolean platformIsNew() {
-		return( !this.databaseVendor().equals( this.currentDbVendor) || this.databaseVersion().equals( this.currentDbVersion));
-	}
-	
-    private void loadPlatformProperties() throws IOException {
-		
-		if( this.platformProperties == null) {
-			URL configUrl = Platform.getBundle( this.getTestPluginBundleId()).getEntry( this.getConfigPath());
-
-			this.platformProperties = new Properties();
-			this.platformProperties.load( configUrl.openStream());
-		}
-	}
-	
-	private Properties buildDriverProperties() {
-		Properties driverProperties = new Properties();
-		driverProperties.setProperty( ConnectionProfile.DRIVER_DEFINITION_TYPE_PROP_ID, this.driverDefinitionType());
-		driverProperties.setProperty( ConnectionProfile.DRIVER_JAR_LIST_PROP_ID, this.databasedriverJarList());
-		driverProperties.setProperty( IJDBCDriverDefinitionConstants.USERNAME_PROP_ID, this.userName());
-		driverProperties.setProperty( IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID, this.driverClass());
-		driverProperties.setProperty( IJDBCDriverDefinitionConstants.DATABASE_NAME_PROP_ID, this.databaseName());
-		driverProperties.setProperty( IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID, this.userPassword());
-		driverProperties.setProperty( IJDBCDriverDefinitionConstants.URL_PROP_ID, this.databaseUrl());
-		driverProperties.setProperty( IJDBCDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID, this.databaseVendor());
-		driverProperties.setProperty( IJDBCDriverDefinitionConstants.DATABASE_VERSION_PROP_ID, this.databaseVersion());
-		return driverProperties;
-	}
-
-	private Properties buildBasicProperties() {
-		Properties basicProperties = new Properties();
-		basicProperties.setProperty( IJDBCDriverDefinitionConstants.DATABASE_NAME_PROP_ID, this.databaseName());
-		basicProperties.setProperty( IJDBCDriverDefinitionConstants.USERNAME_PROP_ID, this.userName());
-		basicProperties.setProperty( IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID, this.userPassword());
-		basicProperties.setProperty( ConnectionProfile.DRIVER_DEFINITION_PROP_ID, this.driverDefinitionId());
-		
-		basicProperties.setProperty( IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID, this.driverClass());
-		basicProperties.setProperty( IJDBCDriverDefinitionConstants.URL_PROP_ID, this.databaseUrl());
-		basicProperties.setProperty( IJDBCDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID, this.databaseVendor());
-		basicProperties.setProperty( IJDBCDriverDefinitionConstants.DATABASE_VERSION_PROP_ID, this.databaseVersion());
-		
-		basicProperties.setProperty( ConnectionProfile.DATABASE_SAVE_PWD_PROP_ID, this.passwordIsSaved());
-		return basicProperties;
-	}
-
-	private void buildConnectionProfile( String profileName) throws ConnectionProfileException {
-		
-		ProfileManager profileManager = ProfileManager.getInstance();
-		Assert.assertNotNull( profileManager);
-		
-		IConnectionProfile dtpProfile = this.getDTPProfile();
-		if( dtpProfile == null) {
-			Properties basicProperties = buildBasicProperties();
-			ProfileManager.getInstance().createProfile( profileName, this.profileDescription(), this.providerId(), basicProperties);
+	protected void prepareForOfflineWork() {
+		if ( ! this.connectionProfile.canWorkOffline()) {
+			this.connectionProfile.connect();
+			IStatus status = this.connectionProfile.saveWorkOfflineData();
+			assertTrue(status.isOK());
+			this.connectionProfile.disconnect();
+			assertTrue(this.connectionProfile.canWorkOffline());
 		}
 	}
 
-	private void buildDriverDefinitionFile( String driverFileName) throws CoreException {
-		
-		XMLFileManager.setStorageLocation( this.getDriverDefinitionLocation());
-		XMLFileManager.setFileName( driverFileName);
-		IPropertySet[] propsets = new IPropertySet[ 1];
-		String driverName = this.driverName();
-		String driverId = this.driverDefinitionId();
-		PropertySetImpl propertySet = new PropertySetImpl( driverName, driverId);
-		propertySet.setProperties( driverId, this.buildDriverProperties());
-		propsets[ 0] = propertySet;
+	public void testConnectionListenerConnect() {
+		assertTrue(this.connectionProfileHasNoListeners());
+		TestConnectionListener listener = new TestConnectionListener();
+		this.connectionProfile.addConnectionListener(listener);
+		assertTrue(this.connectionProfileHasAnyListeners());
 
-		XMLFileManager.saveNamedPropertySet( propsets);
-		
-		File driverDefinitioneFile =  this.getDriverDefinitionLocation().append( driverFileName).toFile();
-		Assert.assertTrue( driverDefinitioneFile.exists());
+		this.connectionProfile.connect();
+		assertSame(this.connectionProfile, listener.openedProfile);
+		listener.clear();
+
+		this.connectionProfile.disconnect();
+		assertSame(this.connectionProfile, listener.okToCloseProfile);
+		assertSame(this.connectionProfile, listener.aboutToCloseProfile);
+		assertSame(this.connectionProfile, listener.closedProfile);
+
+		this.connectionProfile.removeConnectionListener(listener);
+		assertTrue(this.connectionProfileHasNoListeners());
 	}
-	
+
+	public void testConnectionListenerOffline() {
+		TestConnectionListener listener = new TestConnectionListener();
+		this.connectionProfile.addConnectionListener(listener);
+
+		this.prepareForOfflineWork();
+		listener.clear();
+
+		this.connectionProfile.workOffline();
+		assertSame(this.connectionProfile, listener.openedProfile);
+		listener.clear();
+
+		this.connectionProfile.disconnect();
+		assertSame(this.connectionProfile, listener.okToCloseProfile);
+		assertSame(this.connectionProfile, listener.aboutToCloseProfile);
+		assertSame(this.connectionProfile, listener.closedProfile);
+		listener.clear();
+
+		this.connectionProfile.removeConnectionListener(listener);
+	}
+
+	public void testConnectionListenerDatabase() {
+		this.connectionProfile.connect();
+		TestConnectionListener listener = new TestConnectionListener();
+		this.connectionProfile.addConnectionListener(listener);
+
+		((ICatalogObject) this.getDTPDatabase()).refresh();
+		assertSame(this.connectionProfile.getDatabase(), listener.changedDatabase);
+
+		this.connectionProfile.removeConnectionListener(listener);
+		this.connectionProfile.disconnect();
+	}
+
+	public void testConnectionListenerCatalog() {
+		this.connectionProfile.connect();
+		if ( ! this.connectionProfile.getDatabase().supportsCatalogs()) {
+			this.connectionProfile.disconnect();
+			return;
+		}
+			
+		TestConnectionListener listener = new TestConnectionListener();
+		this.connectionProfile.addConnectionListener(listener);
+
+		// take the first catalog
+		org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog = this.getFirstDTPCatalog();
+		Catalog catalog = this.connectionProfile.getDatabase().getCatalogNamed(dtpCatalog.getName());
+		((ICatalogObject) dtpCatalog).refresh();
+		assertSame(catalog, listener.changedCatalog);
+
+		this.connectionProfile.removeConnectionListener(listener);
+		this.connectionProfile.disconnect();
+	}
+
+	public void testConnectionListenerSchema() {
+		this.connectionProfile.connect();
+		TestConnectionListener listener = new TestConnectionListener();
+		this.connectionProfile.addConnectionListener(listener);
+
+		org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema = null;
+		Schema schema = null;
+		if (this.connectionProfile.getDatabase().supportsCatalogs()) {
+			org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog = this.getFirstDTPCatalog();
+			dtpSchema = (org.eclipse.datatools.modelbase.sql.schema.Schema) dtpCatalog.getSchemas().get(0);
+			schema = this.connectionProfile.getDatabase().getCatalogNamed(dtpCatalog.getName()).getSchemaNamed(dtpSchema.getName());
+		} else {
+			dtpSchema = (org.eclipse.datatools.modelbase.sql.schema.Schema) this.getDTPDatabase().getSchemas().get(0);
+			schema = this.connectionProfile.getDatabase().getSchemaNamed(dtpSchema.getName());
+		}
+		((ICatalogObject) dtpSchema).refresh();
+		assertSame(schema, listener.changedSchema);
+
+		this.connectionProfile.removeConnectionListener(listener);
+		this.connectionProfile.disconnect();
+	}
+
+
+	// ********** convenience methods **********
+
+	protected ConnectionProfileFactory getConnectionProfileFactory() {
+		return JptDbPlugin.instance().getConnectionProfileFactory();
+	}
+
+	protected ConnectionProfile getConnectionProfile() {
+		return this.connectionProfile;
+	}
+
+	protected Database getDatabase() {
+		return this.connectionProfile.getDatabase();
+	}
+
+	protected Catalog getCatalogNamed(String catalogName) {
+		return this.connectionProfile.getDatabase().getCatalogNamed(catalogName);
+	}
+
+	protected Schema getSchemaNamed(String schemaName) {
+		return this.connectionProfile.getDatabase().getSchemaNamed(schemaName);
+	}
+
+	protected String getRequiredPlatformProperty(String propertyKey) {
+		String propertyValue = this.platformProperties.getProperty(propertyKey);
+		if (StringTools.stringIsEmpty(propertyValue)) {
+			throw new IllegalArgumentException("The database platform properties file '" + this.getPlatformPropertiesFilePath()
+					+ "' is missing a value for the property '" + propertyKey + "'.");
+		}
+		return propertyValue;
+	}
+
+	protected boolean connectionProfileHasAnyListeners() {
+		return connectionProfileHasAnyListeners(this.connectionProfile);
+	}
+
+	protected static boolean connectionProfileHasAnyListeners(ConnectionProfile cp) {
+		return ((Boolean) ClassTools.executeMethod(cp, "hasAnyListeners")).booleanValue();
+	}
+
+	protected boolean connectionProfileHasNoListeners() {
+		return connectionProfileHasNoListeners(this.connectionProfile);
+	}
+
+	protected static boolean connectionProfileHasNoListeners(ConnectionProfile cp) {
+		return ((Boolean) ClassTools.executeMethod(cp, "hasNoListeners")).booleanValue();
+	}
+
+
+	// ********** DTP model **********
+
+	protected ProfileManager getDTPProfileManager() {
+		return ProfileManager.getInstance();
+	}
+
+	protected IConnectionProfile getDTPConnectionProfile() {
+		return getDTPConnectionProfile(this.connectionProfile);
+	}
+
+	protected static IConnectionProfile getDTPConnectionProfile(ConnectionProfile cp) {
+		return (IConnectionProfile) ClassTools.fieldValue(cp, "dtpConnectionProfile");
+	}
+
+	protected IManagedConnection getDTPManagedConnection() {
+		return (IManagedConnection) ClassTools.fieldValue(this.connectionProfile, "dtpManagedConnection");
+	}
+
+	protected org.eclipse.datatools.modelbase.sql.schema.Database getDTPDatabase() {
+		return getDTPDatabase(this.connectionProfile.getDatabase());
+	}
+
+	protected static org.eclipse.datatools.modelbase.sql.schema.Database getDTPDatabase(Database database) {
+		return (org.eclipse.datatools.modelbase.sql.schema.Database) ClassTools.fieldValue(database, "dtpDatabase");
+	}
+
+	protected org.eclipse.datatools.modelbase.sql.schema.Catalog getFirstDTPCatalog() {
+		return (org.eclipse.datatools.modelbase.sql.schema.Catalog) this.getDTPDatabase().getCatalogs().get(0);
+	}
+
+	protected org.eclipse.datatools.modelbase.sql.schema.Catalog getDTPCatalogNamed(String name) {
+		return getDTPCatalog(this.getDatabase().getCatalogNamed(name));
+	}
+
+	protected static org.eclipse.datatools.modelbase.sql.schema.Catalog getDTPCatalog(Catalog catalog) {
+		return (org.eclipse.datatools.modelbase.sql.schema.Catalog) ClassTools.fieldValue(catalog, "dtpCatalog");
+	}
+
+	protected org.eclipse.datatools.modelbase.sql.schema.Schema getDTPSchemaNamed(String name) {
+		return getDTPSchema(this.getDatabase().getSchemaNamed(name));
+	}
+
+	protected static org.eclipse.datatools.modelbase.sql.schema.Schema getDTPSchema(Schema schema) {
+		return (org.eclipse.datatools.modelbase.sql.schema.Schema) ClassTools.fieldValue(schema, "dtpSchema");
+	}
+
+
+	// ********** execute SQL **********
+
+	/**
+	 * ignore any errors (useful for dropping database objects that might
+	 * not be there)
+	 */
+	protected void executeUpdateIgnoreErrors(String sql) {
+		try {
+			this.executeUpdate(sql);
+		} catch (Exception ex) {
+			// ignore
+		}
+	}
+
+	protected void executeUpdate(String sql) throws SQLException {
+		Statement jdbcStatement = this.createJDBCStatement();
+		jdbcStatement.executeUpdate(sql);
+		jdbcStatement.close();
+	}
+
+	protected List<Object[]> execute(String sql) throws SQLException {
+		Statement jdbcStatement = this.createJDBCStatement();
+		jdbcStatement.execute(sql);
+		ResultSet resultSet = jdbcStatement.getResultSet();
+		ResultSetMetaData metaData = resultSet.getMetaData();
+		int columnCount = metaData.getColumnCount();
+		ArrayList<Object[]> rows = new ArrayList<Object[]>();
+		for (Iterator<Object[]> stream = new ResultSetIterator<Object[]>(resultSet, new LocalResultSetIteratorAdapter(columnCount)); stream.hasNext(); ) {
+			rows.add(stream.next());
+		}
+		jdbcStatement.close();
+		return rows;
+	}
+
+	public class LocalResultSetIteratorAdapter implements ResultSetIterator.Adapter<Object[]> {
+		private int columnCount;
+		public LocalResultSetIteratorAdapter(int columnCount) {
+			super();
+			this.columnCount = columnCount;
+		}
+		public Object[] buildNext(ResultSet rs) throws SQLException {
+			Object[] row = new Object[this.columnCount];
+			for (int i = 0; i < row.length; i++) {
+				row[i] = rs.getObject(i + 1);
+			}
+			return row;
+		}
+	}
+
+	protected Statement createJDBCStatement() throws SQLException {
+		return this.getJDBCConnection().createStatement();
+	}
+
+	protected Connection getJDBCConnection() {
+		return ((ConnectionInfo) this.getDTPManagedConnection().getConnection().getRawConnection()).getSharedConnection();
+	}
+
+
+	// ********** dump database schema **********
+
+	/**
+	 * dump all the database metadata to the console
+	 */
+	protected void dumpDatabase() {
+		IndentingPrintWriter pw = new IndentingPrintWriter(new OutputStreamWriter(System.out));
+		// synchronize the console so everything is contiguous
+		synchronized (System.out) {
+			this.dumpDatabaseOn(pw);
+		}
+		pw.flush();
+	}
+
+	protected void dumpDatabaseOn(IndentingPrintWriter pw) {
+		Database database = this.connectionProfile.getDatabase();
+		pw.print("database: ");
+		pw.println(database.getName());
+		if (database.supportsCatalogs()) {
+			for (Iterator<Catalog> stream = database.catalogs(); stream.hasNext(); ) {
+				this.dumpCatalogOn(stream.next(), pw);
+			}
+		} else {
+			this.dumpSchemaOnContainerOn(database, pw);
+		}
+	}
+
+	protected void dumpCatalogOn(Catalog catalog, IndentingPrintWriter pw) {
+		pw.print("catalog: ");
+		pw.println(catalog.getName());
+		pw.indent();
+		this.dumpSchemaOnContainerOn(catalog, pw);
+		pw.undent();
+	}
+
+	protected void dumpSchemaOnContainerOn(SchemaContainer schemaContainer, IndentingPrintWriter pw) {
+		for (Iterator<Schema> stream = schemaContainer.schemata(); stream.hasNext(); ) {
+			this.dumpSchemaOn(stream.next(), pw);
+		}
+	}
+
+	protected void dumpSchemaOn(Schema schema, IndentingPrintWriter pw) {
+		pw.print("schema: ");
+		pw.println(schema.getName());
+		pw.indent();
+		for (Iterator<Table> stream = schema.tables(); stream.hasNext(); ) {
+			this.dumpTableOn(stream.next(), pw);
+		}
+		for (Iterator<Sequence> stream = schema.sequences(); stream.hasNext(); ) {
+			this.dumpSequenceOn(stream.next(), pw);
+		}
+		pw.undent();
+	}
+
+	protected void dumpTableOn(Table table, IndentingPrintWriter pw) {
+		pw.print("table: ");
+		pw.println(table.getName());
+		pw.indent();
+		for (Iterator<Column> stream = table.columns(); stream.hasNext(); ) {
+			this.dumpColumnOn(stream.next(), pw);
+		}
+		for (Iterator<ForeignKey> stream = table.foreignKeys(); stream.hasNext(); ) {
+			this.dumpForeignKeyOn(stream.next(), pw);
+		}
+		pw.undent();
+	}
+
+	protected void dumpColumnOn(Column column, IndentingPrintWriter pw) {
+		pw.print("column: ");
+		pw.print(column.getName());
+		pw.print(" : ");
+		pw.print(column.getDataTypeName());
+		if (column.isPrimaryKeyColumn()) {
+			pw.print(" [primary key]");
+		}
+		pw.println();
+	}
+
+	protected void dumpForeignKeyOn(ForeignKey foreignKey, IndentingPrintWriter pw) {
+		pw.print("foreign key: ");
+		pw.print(foreignKey.getName());
+		pw.print("=>");
+		pw.print(foreignKey.getReferencedTable().getName());
+		pw.print(" (");
+		for (Iterator<ColumnPair> stream = foreignKey.columnPairs(); stream.hasNext(); ) {
+			ColumnPair cp = stream.next();
+			pw.print(cp.getBaseColumn().getName());
+			pw.print("=>");
+			pw.print(cp.getReferencedColumn().getName());
+			if (stream.hasNext()) {
+				pw.print(", ");
+			}
+		}
+		pw.print(')');
+		pw.println();
+	}
+
+	protected void dumpSequenceOn(Sequence sequence, IndentingPrintWriter pw) {
+		pw.print("sequence: ");
+		pw.println(sequence.getName());
+	}
+
+
+	// ********** connection profile listener **********
+
+	protected class TestConnectionProfileListener implements ConnectionProfileListener {
+		public String addedName;
+		public String removedName;
+		public String renamedOldName;
+		public String renamedNewName;
+
+		public void connectionProfileAdded(String name) {
+			this.addedName = name;
+		}
+		public void connectionProfileRemoved(String name) {
+			this.removedName = name;
+		}
+		public void connectionProfileRenamed(String oldName, String newName) {
+			this.renamedOldName = oldName;
+			this.renamedNewName = newName;
+		}
+		public void clear() {
+			this.addedName = null;
+			this.removedName = null;
+			this.renamedOldName = null;
+			this.renamedNewName = null;
+		}
+	}
+
+
+	// ********** connection listener **********
+
+	protected class TestConnectionListener implements ConnectionListener {
+		public ConnectionProfile openedProfile;
+		public ConnectionProfile modifiedProfile;
+		public ConnectionProfile okToCloseProfile;
+		public ConnectionProfile aboutToCloseProfile;
+		public ConnectionProfile closedProfile;
+		public Database changedDatabase;
+		public Catalog changedCatalog;
+		public Schema changedSchema;
+		public Sequence changedSequence;
+		public Table changedTable;
+		public Column changedColumn;
+		public ForeignKey changedForeignKey;
+
+		public void opened(ConnectionProfile profile) {
+			this.openedProfile = profile;
+		}
+		public void modified(ConnectionProfile profile) {
+			this.modifiedProfile = profile;
+		}
+		public boolean okToClose(ConnectionProfile profile) {
+			this.okToCloseProfile = profile;
+			return true;
+		}
+		public void aboutToClose(ConnectionProfile profile) {
+			this.aboutToCloseProfile = profile;
+		}
+		public void closed(ConnectionProfile profile) {
+			this.closedProfile = profile;
+		}
+		public void databaseChanged(ConnectionProfile profile, Database database) {
+			this.changedDatabase = database;
+		}
+		public void catalogChanged(ConnectionProfile profile, Catalog catalog) {
+			this.changedCatalog = catalog;
+		}
+		public void schemaChanged(ConnectionProfile profile, Schema schema) {
+			this.changedSchema = schema;
+		}
+		public void sequenceChanged(ConnectionProfile profile, Sequence sequence) {
+			this.changedSequence = sequence;
+		}
+		public void tableChanged(ConnectionProfile profile, Table table) {
+			this.changedTable = table;
+		}
+		public void columnChanged(ConnectionProfile profile, Column column) {
+			this.changedColumn = column;
+		}
+		public void foreignKeyChanged(ConnectionProfile profile, ForeignKey foreignKey) {
+			this.changedForeignKey = foreignKey;
+		}
+		public void clear() {
+			this.openedProfile = null;
+			this.modifiedProfile = null;
+			this.okToCloseProfile = null;
+			this.aboutToCloseProfile = null;
+			this.closedProfile = null;
+			this.changedDatabase = null;
+			this.changedCatalog = null;
+			this.changedSchema = null;
+			this.changedSequence = null;
+			this.changedTable = null;
+			this.changedColumn = null;
+			this.changedForeignKey = null;
+		}
+	}
+
 }

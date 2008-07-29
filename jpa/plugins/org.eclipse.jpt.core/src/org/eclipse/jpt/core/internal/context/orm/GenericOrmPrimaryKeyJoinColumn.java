@@ -91,7 +91,7 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 
 	public Column getDbReferencedColumn() {
 		Table table = this.dbReferencedColumnTable();
-		return (table == null) ? null : table.columnNamed(this.getReferencedColumnName());
+		return (table == null) ? null : table.getColumnNamed(this.getReferencedColumnName());
 	}
 
 	public Table dbReferencedColumnTable() {

@@ -11,13 +11,19 @@ package org.eclipse.jpt.utility.tests.internal;
 
 import java.io.StringWriter;
 import java.io.Writer;
+
 import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.StringTools;
 
+@SuppressWarnings("nls")
 public class StringToolsTests extends TestCase {
 
 	public StringToolsTests(String name) {
 		super(name);
+	}
+
+	private static void assertEquals(String expected, char[] actual) {
+		assertEquals(expected, new String(actual));
 	}
 
 	// ********** padding/truncating **********
@@ -35,11 +41,11 @@ public class StringToolsTests extends TestCase {
 	}
 
 	public void testPadCharArray() {
-		assertEquals("fred", new String(StringTools.pad(new char[] { 'f', 'r', 'e', 'd' }, 4)));
-		assertEquals("fred  ", new String(StringTools.pad(new char[] { 'f', 'r', 'e', 'd' }, 6)));
+		assertEquals("fred", StringTools.pad(new char[] { 'f', 'r', 'e', 'd' }, 4));
+		assertEquals("fred  ", StringTools.pad(new char[] { 'f', 'r', 'e', 'd' }, 6));
 		boolean exThrown = false;
 		try {
-			assertEquals("fr", new String(StringTools.pad(new char[] { 'f', 'r', 'e', 'd' }, 2)));
+			assertEquals("fr", StringTools.pad(new char[] { 'f', 'r', 'e', 'd' }, 2));
 		} catch (IllegalArgumentException ex) {
 			exThrown = true;
 		}
@@ -116,9 +122,9 @@ public class StringToolsTests extends TestCase {
 	}
 
 	public void testPadOrTruncateCharArray() {
-		assertEquals("fred", new String(StringTools.padOrTruncate(new char[] { 'f', 'r', 'e', 'd' }, 4)));
-		assertEquals("fred  ", new String(StringTools.padOrTruncate(new char[] { 'f', 'r', 'e', 'd' }, 6)));
-		assertEquals("fr", new String(StringTools.padOrTruncate(new char[] { 'f', 'r', 'e', 'd' }, 2)));
+		assertEquals("fred", StringTools.padOrTruncate(new char[] { 'f', 'r', 'e', 'd' }, 4));
+		assertEquals("fred  ", StringTools.padOrTruncate(new char[] { 'f', 'r', 'e', 'd' }, 6));
+		assertEquals("fr", StringTools.padOrTruncate(new char[] { 'f', 'r', 'e', 'd' }, 2));
 	}
 
 	public void testPadOrTruncateOnWriter() {
@@ -170,11 +176,11 @@ public class StringToolsTests extends TestCase {
 	}
 
 	public void testZeroPadCharArray() {
-		assertEquals("1234", new String(StringTools.zeroPad(new char[] { '1', '2', '3', '4' }, 4)));
-		assertEquals("001234", new String(StringTools.zeroPad(new char[] { '1', '2', '3', '4' }, 6)));
+		assertEquals("1234", StringTools.zeroPad(new char[] { '1', '2', '3', '4' }, 4));
+		assertEquals("001234", StringTools.zeroPad(new char[] { '1', '2', '3', '4' }, 6));
 		boolean exThrown = false;
 		try {
-			assertEquals("12", new String(StringTools.zeroPad(new char[] { '1', '2', '3', '4' }, 2)));
+			assertEquals("12", StringTools.zeroPad(new char[] { '1', '2', '3', '4' }, 2));
 		} catch (IllegalArgumentException ex) {
 			exThrown = true;
 		}
@@ -251,9 +257,9 @@ public class StringToolsTests extends TestCase {
 	}
 
 	public void testZeroPadOrTruncateCharArray() {
-		assertEquals("1234", new String(StringTools.zeroPadOrTruncate(new char[] { '1', '2', '3', '4' }, 4)));
-		assertEquals("001234", new String(StringTools.zeroPadOrTruncate(new char[] { '1', '2', '3', '4' }, 6)));
-		assertEquals("34", new String(StringTools.zeroPadOrTruncate(new char[] { '1', '2', '3', '4' }, 2)));
+		assertEquals("1234", StringTools.zeroPadOrTruncate(new char[] { '1', '2', '3', '4' }, 4));
+		assertEquals("001234", StringTools.zeroPadOrTruncate(new char[] { '1', '2', '3', '4' }, 6));
+		assertEquals("34", StringTools.zeroPadOrTruncate(new char[] { '1', '2', '3', '4' }, 2));
 	}
 
 	public void testZeroPadOrTruncateOnWriter() {
@@ -409,7 +415,7 @@ public class StringToolsTests extends TestCase {
 	}
 
 	private void verifyRemoveFirstOccurrenceCharArray(String string, char charToRemove, String expectedString) {
-		assertEquals(expectedString, new String(StringTools.removeFirstOccurrence(string.toCharArray(), charToRemove)));
+		assertEquals(expectedString, StringTools.removeFirstOccurrence(string.toCharArray(), charToRemove));
 	}
 
 	public void testRemoveFirstOccurrenceOnWriter() {
@@ -473,7 +479,7 @@ public class StringToolsTests extends TestCase {
 	}
 
 	private void verifyRemoveAllOccurrencesCharArray(String string, char charToRemove, String expectedString) {
-		assertEquals(expectedString, new String(StringTools.removeAllOccurrences(string.toCharArray(), charToRemove)));
+		assertEquals(expectedString, StringTools.removeAllOccurrences(string.toCharArray(), charToRemove));
 	}
 
 	public void testRemoveAllOccurrencesOnWriter() {
@@ -516,61 +522,61 @@ public class StringToolsTests extends TestCase {
 	}
 
 	public void testRemoveAllWhitespace() {
-		this.verifyRemoveAllWhitespace("Employee Fred\t", ' ', "EmployeeFred");
-		this.verifyRemoveAllWhitespace("\tEmployee\n", ' ', "Employee");
-		this.verifyRemoveAllWhitespace("Employee \t Foo", ' ', "EmployeeFoo");
-		this.verifyRemoveAllWhitespace(" Emp\tloyee \n Foo", ' ', "EmployeeFoo");
+		this.verifyRemoveAllWhitespace("Employee Fred\t", "EmployeeFred");
+		this.verifyRemoveAllWhitespace("\tEmployee\n", "Employee");
+		this.verifyRemoveAllWhitespace("Employee \t Foo", "EmployeeFoo");
+		this.verifyRemoveAllWhitespace(" Emp\tloyee \n Foo", "EmployeeFoo");
 	}
 
-	private void verifyRemoveAllWhitespace(String string, char charToRemove, String expectedString) {
+	private void verifyRemoveAllWhitespace(String string, String expectedString) {
 		assertEquals(expectedString, StringTools.removeAllWhitespace(string));
 	}
 
 	public void testRemoveAllWhitespaceCharArray() {
-		this.verifyRemoveAllWhitespaceCharArray("Employee Fred\t", ' ', "EmployeeFred");
-		this.verifyRemoveAllWhitespaceCharArray("\tEmployee\n", ' ', "Employee");
-		this.verifyRemoveAllWhitespaceCharArray("Employee \t Foo", ' ', "EmployeeFoo");
-		this.verifyRemoveAllWhitespaceCharArray(" Emp\tloyee \n Foo", ' ', "EmployeeFoo");
+		this.verifyRemoveAllWhitespaceCharArray("Employee Fred\t", "EmployeeFred");
+		this.verifyRemoveAllWhitespaceCharArray("\tEmployee\n", "Employee");
+		this.verifyRemoveAllWhitespaceCharArray("Employee \t Foo", "EmployeeFoo");
+		this.verifyRemoveAllWhitespaceCharArray(" Emp\tloyee \n Foo", "EmployeeFoo");
 	}
 
-	private void verifyRemoveAllWhitespaceCharArray(String string, char charToRemove, String expectedString) {
-		assertEquals(expectedString, new String(StringTools.removeAllWhitespace(string.toCharArray())));
+	private void verifyRemoveAllWhitespaceCharArray(String string, String expectedString) {
+		assertEquals(expectedString, StringTools.removeAllWhitespace(string.toCharArray()));
 	}
 
 	public void testRemoveAllWhitespaceOnWriter() {
-		this.verifyRemoveAllWhitespaceOnWriter("Employee Fred\t", ' ', "EmployeeFred");
-		this.verifyRemoveAllWhitespaceOnWriter("\tEmployee\n", ' ', "Employee");
-		this.verifyRemoveAllWhitespaceOnWriter("Employee \t Foo", ' ', "EmployeeFoo");
-		this.verifyRemoveAllWhitespaceOnWriter(" Emp\tloyee \n Foo", ' ', "EmployeeFoo");
+		this.verifyRemoveAllWhitespaceOnWriter("Employee Fred\t", "EmployeeFred");
+		this.verifyRemoveAllWhitespaceOnWriter("\tEmployee\n", "Employee");
+		this.verifyRemoveAllWhitespaceOnWriter("Employee \t Foo", "EmployeeFoo");
+		this.verifyRemoveAllWhitespaceOnWriter(" Emp\tloyee \n Foo", "EmployeeFoo");
 	}
 
-	private void verifyRemoveAllWhitespaceOnWriter(String string, char charToRemove, String expectedString) {
+	private void verifyRemoveAllWhitespaceOnWriter(String string, String expectedString) {
 		Writer writer = new StringWriter();
 		StringTools.removeAllWhitespaceOn(string, writer);
 		assertEquals(expectedString, writer.toString());
 	}
 
 	public void testRemoveAllWhitespaceOnStringBuffer() {
-		this.verifyRemoveAllWhitespaceOnStringBuffer("Employee Fred\t", ' ', "EmployeeFred");
-		this.verifyRemoveAllWhitespaceOnStringBuffer("\tEmployee\n", ' ', "Employee");
-		this.verifyRemoveAllWhitespaceOnStringBuffer("Employee \t Foo", ' ', "EmployeeFoo");
-		this.verifyRemoveAllWhitespaceOnStringBuffer(" Emp\tloyee \n Foo", ' ', "EmployeeFoo");
+		this.verifyRemoveAllWhitespaceOnStringBuffer("Employee Fred\t", "EmployeeFred");
+		this.verifyRemoveAllWhitespaceOnStringBuffer("\tEmployee\n", "Employee");
+		this.verifyRemoveAllWhitespaceOnStringBuffer("Employee \t Foo", "EmployeeFoo");
+		this.verifyRemoveAllWhitespaceOnStringBuffer(" Emp\tloyee \n Foo", "EmployeeFoo");
 	}
 
-	private void verifyRemoveAllWhitespaceOnStringBuffer(String string, char charToRemove, String expectedString) {
+	private void verifyRemoveAllWhitespaceOnStringBuffer(String string, String expectedString) {
 		StringBuffer sb = new StringBuffer();
 		StringTools.removeAllWhitespaceOn(string, sb);
 		assertEquals(expectedString, sb.toString());
 	}
 
 	public void testRemoveAllWhitespaceOnStringBuilder() {
-		this.verifyRemoveAllWhitespaceOnStringBuilder("Employee Fred\t", ' ', "EmployeeFred");
-		this.verifyRemoveAllWhitespaceOnStringBuilder("\tEmployee\n", ' ', "Employee");
-		this.verifyRemoveAllWhitespaceOnStringBuilder("Employee \t Foo", ' ', "EmployeeFoo");
-		this.verifyRemoveAllWhitespaceOnStringBuilder(" Emp\tloyee \n Foo", ' ', "EmployeeFoo");
+		this.verifyRemoveAllWhitespaceOnStringBuilder("Employee Fred\t", "EmployeeFred");
+		this.verifyRemoveAllWhitespaceOnStringBuilder("\tEmployee\n", "Employee");
+		this.verifyRemoveAllWhitespaceOnStringBuilder("Employee \t Foo", "EmployeeFoo");
+		this.verifyRemoveAllWhitespaceOnStringBuilder(" Emp\tloyee \n Foo", "EmployeeFoo");
 	}
 
-	private void verifyRemoveAllWhitespaceOnStringBuilder(String string, char charToRemove, String expectedString) {
+	private void verifyRemoveAllWhitespaceOnStringBuilder(String string, String expectedString) {
 		StringBuilder sb = new StringBuilder();
 		StringTools.removeAllWhitespaceOn(string, sb);
 		assertEquals(expectedString, sb.toString());
@@ -605,7 +611,7 @@ public class StringToolsTests extends TestCase {
 	}
 
 	private void verifyCapitalizeCharArray(String expected, char[] string) {
-		assertEquals(expected, new String(StringTools.capitalize(string)));
+		assertEquals(expected, StringTools.capitalize(string));
 	}
 
 	public void testCapitalizeString() {
@@ -729,7 +735,7 @@ public class StringToolsTests extends TestCase {
 	}
 
 	private void verifyUncapitalizeCharArray(String expected, char[] string) {
-		assertEquals(expected, new String(StringTools.uncapitalize(string)));
+		assertEquals(expected, StringTools.uncapitalize(string));
 	}
 
 	public void testUncapitalizeString() {
@@ -918,7 +924,43 @@ public class StringToolsTests extends TestCase {
 		assertFalse(StringTools.charactersAreEqualIgnoreCase('A', 'b'));
 	}
 
-	// ********** conversions **********
+	public void testStringIsUppercase() {
+		this.verifyStringIsUppercase("FOO");
+		this.verifyStringIsUppercase("FOO2");
+		this.verifyStringIsUppercase("F O O");
+		this.denyStringIsUppercase("Foo");
+		this.denyStringIsUppercase("");
+	}
+
+	private void verifyStringIsUppercase(String s) {
+		assertTrue(StringTools.stringIsUppercase(s));
+		assertTrue(StringTools.stringIsUppercase(s.toCharArray()));
+	}
+
+	private void denyStringIsUppercase(String s) {
+		assertFalse(StringTools.stringIsUppercase(s));
+		assertFalse(StringTools.stringIsUppercase(s.toCharArray()));
+	}
+
+	public void testStringIsLowercase() {
+		this.verifyStringIsLowercase("foo");
+		this.verifyStringIsLowercase("foo2");
+		this.verifyStringIsLowercase("f o o");
+		this.denyStringIsLowercase("Foo");
+		this.denyStringIsLowercase("");
+	}
+
+	private void verifyStringIsLowercase(String s) {
+		assertTrue(StringTools.stringIsLowercase(s));
+		assertTrue(StringTools.stringIsLowercase(s.toCharArray()));
+	}
+
+	private void denyStringIsLowercase(String s) {
+		assertFalse(StringTools.stringIsLowercase(s));
+		assertFalse(StringTools.stringIsLowercase(s.toCharArray()));
+	}
+
+	// ********** convert camel-case to all-caps **********
 
 	public void testConvertCamelCaseToAllCaps() {
 		assertEquals("TEST", StringTools.convertCamelCaseToAllCaps("test"));
@@ -1047,6 +1089,8 @@ public class StringToolsTests extends TestCase {
 		assertEquals(expected, sb.toString());
 	}
 
+	// ********** convert underscores to all-caps **********
+
 	public void testConvertUnderscoresToCamelCase() {
 		assertEquals("test", StringTools.convertUnderscoresToCamelCase("TEST", false));
 		assertEquals("test", StringTools.convertUnderscoresToCamelCase("TEST_", false));
@@ -1171,6 +1215,395 @@ public class StringToolsTests extends TestCase {
 		StringBuffer sb = new StringBuffer();
 		StringTools.convertUnderscoresToCamelCaseOn(string, capitalizeFirstLetter, sb);
 		assertEquals(expected, sb.toString());
+	}
+
+	// ********** delimiting **********
+
+	public void testStringIsQuoted() {
+		this.denyStringIsQuoted("foo");
+		this.verifyStringIsQuoted("\"foo\"");
+
+		this.denyStringIsQuoted("");
+		this.verifyStringIsQuoted("\"\"");
+
+		this.denyStringIsQuoted("\"");
+		this.denyStringIsQuoted(" ");
+		this.denyStringIsQuoted("''");
+		this.denyStringIsQuoted("'foo'");
+	}
+
+	private void verifyStringIsQuoted(String s) {
+		assertTrue(StringTools.stringIsQuoted(s));
+		assertTrue(StringTools.stringIsQuoted(s.toCharArray()));
+	}
+
+	private void denyStringIsQuoted(String s) {
+		assertFalse(StringTools.stringIsQuoted(s));
+		assertFalse(StringTools.stringIsQuoted(s.toCharArray()));
+	}
+
+	public void testStringIsParenthetical() {
+		this.denyStringIsParenthetical("foo");
+		this.verifyStringIsParenthetical("(foo)");
+
+		this.denyStringIsParenthetical("");
+		this.verifyStringIsParenthetical("()");
+
+		this.denyStringIsParenthetical("(");
+		this.denyStringIsParenthetical(" ");
+		this.denyStringIsParenthetical("''");
+		this.denyStringIsParenthetical("'foo'");
+	}
+
+	private void verifyStringIsParenthetical(String s) {
+		assertTrue(StringTools.stringIsParenthetical(s));
+		assertTrue(StringTools.stringIsParenthetical(s.toCharArray()));
+	}
+
+	private void denyStringIsParenthetical(String s) {
+		assertFalse(StringTools.stringIsParenthetical(s));
+		assertFalse(StringTools.stringIsParenthetical(s.toCharArray()));
+	}
+
+	public void testStringIsBracketed() {
+		this.denyStringIsBracketed("foo");
+		this.verifyStringIsBracketed("[foo]");
+
+		this.denyStringIsBracketed("");
+		this.verifyStringIsBracketed("[]");
+
+		this.denyStringIsBracketed("[");
+		this.denyStringIsBracketed(" ");
+		this.denyStringIsBracketed("''");
+		this.denyStringIsBracketed("'foo'");
+	}
+
+	private void verifyStringIsBracketed(String s) {
+		assertTrue(StringTools.stringIsBracketed(s));
+		assertTrue(StringTools.stringIsBracketed(s.toCharArray()));
+	}
+
+	private void denyStringIsBracketed(String s) {
+		assertFalse(StringTools.stringIsBracketed(s));
+		assertFalse(StringTools.stringIsBracketed(s.toCharArray()));
+	}
+
+	public void testStringIsBraced() {
+		this.denyStringIsBraced("foo");
+		this.verifyStringIsBraced("{foo}");
+
+		this.denyStringIsBraced("");
+		this.verifyStringIsBraced("{}");
+
+		this.denyStringIsBraced("{");
+		this.denyStringIsBraced(" ");
+		this.denyStringIsBraced("''");
+		this.denyStringIsBraced("'foo'");
+	}
+
+	private void verifyStringIsBraced(String s) {
+		assertTrue(StringTools.stringIsBraced(s));
+		assertTrue(StringTools.stringIsBraced(s.toCharArray()));
+	}
+
+	private void denyStringIsBraced(String s) {
+		assertFalse(StringTools.stringIsBraced(s));
+		assertFalse(StringTools.stringIsBraced(s.toCharArray()));
+	}
+
+	public void testStringIsChevroned() {
+		this.denyStringIsChevroned("foo");
+		this.verifyStringIsChevroned("<foo>");
+
+		this.denyStringIsChevroned("");
+		this.verifyStringIsChevroned("<>");
+
+		this.denyStringIsChevroned("{");
+		this.denyStringIsChevroned(" ");
+		this.denyStringIsChevroned("''");
+		this.denyStringIsChevroned("'foo'");
+	}
+
+	private void verifyStringIsChevroned(String s) {
+		assertTrue(StringTools.stringIsChevroned(s));
+		assertTrue(StringTools.stringIsChevroned(s.toCharArray()));
+	}
+
+	private void denyStringIsChevroned(String s) {
+		assertFalse(StringTools.stringIsChevroned(s));
+		assertFalse(StringTools.stringIsChevroned(s.toCharArray()));
+	}
+
+	public void testStringIsDelimited() {
+		this.denyStringIsDelimited("foo", '?');
+		this.verifyStringIsDelimited("?foo?", '?');
+
+		this.denyStringIsDelimited("", '?');
+		this.verifyStringIsDelimited("\"\"", '"');
+		this.verifyStringIsDelimited("?xx?", '?');
+		this.denyStringIsDelimited("?xx]", '?');
+
+		this.denyStringIsDelimited("\"", '"');
+		this.denyStringIsDelimited(" ", ' ');
+		this.denyStringIsDelimited("''", '"');
+		this.denyStringIsDelimited("'foo'", '?');
+	}
+
+	private void verifyStringIsDelimited(String s, char c) {
+		assertTrue(StringTools.stringIsDelimited(s, c));
+		assertTrue(StringTools.stringIsDelimited(s.toCharArray(), c));
+	}
+
+	private void denyStringIsDelimited(String s, char c) {
+		assertFalse(StringTools.stringIsDelimited(s, c));
+		assertFalse(StringTools.stringIsDelimited(s.toCharArray(), c));
+	}
+
+	public void testStringIsDelimited2() {
+		this.denyStringIsDelimited2("foo", '[', ']');
+		this.verifyStringIsDelimited2("{foo}", '{', '}');
+
+		this.denyStringIsDelimited2("", '[', ']');
+		this.verifyStringIsDelimited2("[]", '[', ']');
+		this.verifyStringIsDelimited2("[xx]", '[', ']');
+		this.denyStringIsDelimited2("?xx]", '[', ']');
+
+		this.denyStringIsDelimited2("\"", '[', ']');
+		this.denyStringIsDelimited2(" ", '[', ']');
+		this.denyStringIsDelimited2("''", '[', ']');
+		this.denyStringIsDelimited2("'foo'", '[', ']');
+	}
+
+	private void verifyStringIsDelimited2(String s, char start, char end) {
+		assertTrue(StringTools.stringIsDelimited(s, start, end));
+		assertTrue(StringTools.stringIsDelimited(s.toCharArray(), start, end));
+	}
+
+	private void denyStringIsDelimited2(String s, char start, char end) {
+		assertFalse(StringTools.stringIsDelimited(s, start, end));
+		assertFalse(StringTools.stringIsDelimited(s.toCharArray(), start, end));
+	}
+
+	// ********** unwrapping **********
+
+	public void testUnwrap() {
+		this.verifyUnwrap("\"foo\"", "foo");
+		this.verifyUnwrap("\"\"", "");
+		this.verifyUnwrap("'foo'", "foo");
+	}
+
+	private void verifyUnwrap(String s, String expected) {
+		assertEquals(expected, StringTools.unwrap(s));
+		assertEquals(expected, StringTools.unwrap(s.toCharArray()));
+	}
+
+	public void testUnwrapInt() {
+		this.verifyUnwrapInt("\"foo\"", 2, "o");
+		this.verifyUnwrapInt("\"\"foo\"\"", 2, "foo");
+		this.verifyUnwrapInt("'foo'", 2, "o");
+	}
+
+	private void verifyUnwrapInt(String s, int count, String expected) {
+		assertEquals(expected, StringTools.unwrap(s, count));
+		assertEquals(expected, StringTools.unwrap(s.toCharArray(), count));
+	}
+
+	public void testUnwrapIntException() {
+		this.denyUnwrapInt("\"\"", 2);
+		this.denyUnwrapInt("'o'", 2);
+	}
+
+	private void denyUnwrapInt(String s, int count) {
+		boolean exCaught = false;
+		try {
+			String bogus = StringTools.unwrap(s, count);
+			fail("invalid string: " + bogus);
+		} catch (IllegalArgumentException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+
+		exCaught = false;
+		try {
+			char[] bogus = StringTools.unwrap(s.toCharArray(), count);
+			fail("invalid string: " + new String(bogus));
+		} catch (IllegalArgumentException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
+	public void testUnwrapOnWriter() {
+		this.verifyUnwrapOnWriter("\"foo\"", "foo");
+		this.verifyUnwrapOnWriter("\"\"", "");
+		this.verifyUnwrapOnWriter("'foo'", "foo");
+	}
+
+	private void verifyUnwrapOnWriter(String s, String expected) {
+		Writer writer = new StringWriter();
+		StringTools.unwrapOn(s, writer);
+		assertEquals(expected, writer.toString());
+
+		writer = new StringWriter();
+		StringTools.unwrapOn(s.toCharArray(), writer);
+		assertEquals(expected, writer.toString());
+	}
+
+	public void testUnwrapOnStringBuffer() {
+		this.verifyUnwrapOnStringBuffer("\"foo\"", "foo");
+		this.verifyUnwrapOnStringBuffer("\"\"", "");
+		this.verifyUnwrapOnStringBuffer("'foo'", "foo");
+	}
+
+	private void verifyUnwrapOnStringBuffer(String s, String expected) {
+		StringBuffer sb = new StringBuffer();
+		StringTools.unwrapOn(s, sb);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuffer();
+		StringTools.unwrapOn(s.toCharArray(), sb);
+		assertEquals(expected, sb.toString());
+	}
+
+	public void testUnwrapOnStringBuilder() {
+		this.verifyUnwrapOnStringBuilder("\"foo\"", "foo");
+		this.verifyUnwrapOnStringBuilder("\"\"", "");
+		this.verifyUnwrapOnStringBuilder("'foo'", "foo");
+	}
+
+	private void verifyUnwrapOnStringBuilder(String s, String expected) {
+		StringBuilder sb = new StringBuilder();
+		StringTools.unwrapOn(s, sb);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringTools.unwrapOn(s.toCharArray(), sb);
+		assertEquals(expected, sb.toString());
+	}
+
+	public void testUnwrapOnWriterCount() {
+		this.verifyUnwrapOnWriterCount("\"foo\"", 2, "o");
+		this.verifyUnwrapOnWriterCount("\"\"\"\"", 2, "");
+		this.verifyUnwrapOnWriterCount("XXfooXX", 2, "foo");
+	}
+
+	private void verifyUnwrapOnWriterCount(String s, int count, String expected) {
+		Writer writer = new StringWriter();
+		StringTools.unwrapOn(s, count, writer);
+		assertEquals(expected, writer.toString());
+
+		writer = new StringWriter();
+		StringTools.unwrapOn(s.toCharArray(), count, writer);
+		assertEquals(expected, writer.toString());
+	}
+
+	public void testUnwrapOnStringBufferCount() {
+		this.verifyUnwrapOnStringBufferCount("\"foo\"", 2, "o");
+		this.verifyUnwrapOnStringBufferCount("\"\"\"\"", 2, "");
+		this.verifyUnwrapOnStringBufferCount("XXfooXX", 2, "foo");
+	}
+
+	private void verifyUnwrapOnStringBufferCount(String s, int count, String expected) {
+		StringBuffer sb = new StringBuffer();
+		StringTools.unwrapOn(s, count, sb);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuffer();
+		StringTools.unwrapOn(s.toCharArray(), count, sb);
+		assertEquals(expected, sb.toString());
+	}
+
+	public void testUnwrapOnStringBuilderCount() {
+		this.verifyUnwrapOnStringBuilderCount("\"foo\"", 2, "o");
+		this.verifyUnwrapOnStringBuilderCount("\"\"\"\"", 2, "");
+		this.verifyUnwrapOnStringBuilderCount("XXfooXX", 2, "foo");
+	}
+
+	private void verifyUnwrapOnStringBuilderCount(String s, int count, String expected) {
+		StringBuilder sb = new StringBuilder();
+		StringTools.unwrapOn(s, count, sb);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringTools.unwrapOn(s.toCharArray(), count, sb);
+		assertEquals(expected, sb.toString());
+	}
+
+	// ********** converting to Java string literal **********
+
+	public void testConvertToJavaStringLiteral() {
+		this.verifyConvertToJavaStringLiteral("", "\"\"");
+		this.verifyConvertToJavaStringLiteral("\"\"", "\"\\\"\\\"\"");
+		this.verifyConvertToJavaStringLiteral("'foo'", "\"'foo'\"");
+		this.verifyConvertToJavaStringLiteral("foo\bbar", "\"foo\\bbar\"");
+		this.verifyConvertToJavaStringLiteral("foo\n\tbar", "\"foo\\n\\tbar\"");
+		this.verifyConvertToJavaStringLiteral("foo\"bar", "\"foo\\\"bar\"");
+		this.verifyConvertToJavaStringLiteral("foo\\bar", "\"foo\\\\bar\"");
+	}
+
+	private void verifyConvertToJavaStringLiteral(String s, String expected) {
+		assertEquals(expected, StringTools.convertToJavaStringLiteral(s));
+		assertEquals(expected, StringTools.convertToJavaStringLiteral(s.toCharArray()));
+	}
+
+	public void testConvertToJavaStringLiteralOnStringBuffer() {
+		this.verifyConvertToJavaStringLiteralOnStringBuffer("", "\"\"");
+		this.verifyConvertToJavaStringLiteralOnStringBuffer("\"\"", "\"\\\"\\\"\"");
+		this.verifyConvertToJavaStringLiteralOnStringBuffer("'foo'", "\"'foo'\"");
+		this.verifyConvertToJavaStringLiteralOnStringBuffer("foo\bbar", "\"foo\\bbar\"");
+		this.verifyConvertToJavaStringLiteralOnStringBuffer("foo\n\tbar", "\"foo\\n\\tbar\"");
+		this.verifyConvertToJavaStringLiteralOnStringBuffer("foo\"bar", "\"foo\\\"bar\"");
+		this.verifyConvertToJavaStringLiteralOnStringBuffer("foo\\bar", "\"foo\\\\bar\"");
+	}
+
+	private void verifyConvertToJavaStringLiteralOnStringBuffer(String s, String expected) {
+		StringBuffer sb = new StringBuffer();
+		StringTools.convertToJavaStringLiteralOn(s, sb);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuffer();
+		StringTools.convertToJavaStringLiteralOn(s.toCharArray(), sb);
+		assertEquals(expected, sb.toString());
+	}
+
+	public void testConvertToJavaStringLiteralOnStringBuilder() {
+		this.verifyConvertToJavaStringLiteralOnStringBuilder("", "\"\"");
+		this.verifyConvertToJavaStringLiteralOnStringBuilder("\"\"", "\"\\\"\\\"\"");
+		this.verifyConvertToJavaStringLiteralOnStringBuilder("'foo'", "\"'foo'\"");
+		this.verifyConvertToJavaStringLiteralOnStringBuilder("foo\bbar", "\"foo\\bbar\"");
+		this.verifyConvertToJavaStringLiteralOnStringBuilder("foo\n\tbar", "\"foo\\n\\tbar\"");
+		this.verifyConvertToJavaStringLiteralOnStringBuilder("foo\"bar", "\"foo\\\"bar\"");
+		this.verifyConvertToJavaStringLiteralOnStringBuilder("foo\\bar", "\"foo\\\\bar\"");
+	}
+
+	private void verifyConvertToJavaStringLiteralOnStringBuilder(String s, String expected) {
+		StringBuilder sb = new StringBuilder();
+		StringTools.convertToJavaStringLiteralOn(s, sb);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringTools.convertToJavaStringLiteralOn(s.toCharArray(), sb);
+		assertEquals(expected, sb.toString());
+	}
+
+	public void testConvertToJavaStringLiteralOnWriter() {
+		this.verifyConvertToJavaStringLiteralOnWriter("", "\"\"");
+		this.verifyConvertToJavaStringLiteralOnWriter("\"\"", "\"\\\"\\\"\"");
+		this.verifyConvertToJavaStringLiteralOnWriter("'foo'", "\"'foo'\"");
+		this.verifyConvertToJavaStringLiteralOnWriter("foo\bbar", "\"foo\\bbar\"");
+		this.verifyConvertToJavaStringLiteralOnWriter("foo\n\tbar", "\"foo\\n\\tbar\"");
+		this.verifyConvertToJavaStringLiteralOnWriter("foo\"bar", "\"foo\\\"bar\"");
+		this.verifyConvertToJavaStringLiteralOnWriter("foo\\bar", "\"foo\\\\bar\"");
+	}
+
+	private void verifyConvertToJavaStringLiteralOnWriter(String s, String expected) {
+		Writer writer = new StringWriter();
+		StringTools.convertToJavaStringLiteralOn(s, writer);
+		assertEquals(expected, writer.toString());
+
+		writer = new StringWriter();
+		StringTools.convertToJavaStringLiteralOn(s.toCharArray(), writer);
+		assertEquals(expected, writer.toString());
 	}
 
 }

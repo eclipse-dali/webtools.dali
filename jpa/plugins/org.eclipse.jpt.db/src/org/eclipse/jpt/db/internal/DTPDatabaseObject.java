@@ -9,12 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
-import org.eclipse.jpt.db.Database;
+import org.eclipse.jpt.db.DatabaseObject;
 
 /**
- * "internal" database
+ * DTP database object
  */
-interface InternalDatabase extends Database {
-	DTPCatalogWrapper getDefaultCatalog();
-	void dispose();
+public interface DTPDatabaseObject extends DatabaseObject {
+
+	/**
+	 * covariant override
+	 */
+	DTPConnectionProfileWrapper getConnectionProfile();
+
 }

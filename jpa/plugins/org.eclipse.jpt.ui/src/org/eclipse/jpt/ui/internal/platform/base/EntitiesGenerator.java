@@ -1,15 +1,14 @@
 /*******************************************************************************
-* Copyright (c) 2007, 2008 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.ui.internal.platform.base;
 
-import java.util.Collection;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
@@ -25,7 +24,6 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.synch.SynchronizeClassesJob;
-import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.gen.internal.EntityGenerator;
 import org.eclipse.jpt.gen.internal.PackageGenerator;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -43,61 +41,65 @@ import org.eclipse.swt.widgets.Shell;
 /**
  *  EntitiesGenerator
  */
-public class EntitiesGenerator
-{
+public class EntitiesGenerator {
 	private JpaProject project;
 	private IStructuredSelection selection;
 
-	// ********** constructors **********
 
-	static public void generate( JpaProject project, IStructuredSelection selection) {
-		if(project == null) {
-			throw new NullPointerException();
-		}
-		new EntitiesGenerator( project, selection).generate();
+	// ********** construction **********
+
+	static public void generate(JpaProject project, IStructuredSelection selection) {
+		new EntitiesGenerator(project, selection).generate();
 	}
 	
-	public EntitiesGenerator() {
+	private EntitiesGenerator(JpaProject project, IStructuredSelection selection) {
 		super();
-	}
-
-	private EntitiesGenerator( JpaProject project, IStructuredSelection selection) {
-		super();
+		if (project == null) {
+			throw new NullPointerException();
+		}
 		this.project = project;
 		this.selection = selection;
 	}
 
-	// ********** behavior **********
 
+	// ********** generate **********
+
+	/**
+	 * prompt the user with a wizard;
+	 * schedule a job to generate the entities;
+	 * optionally schedule a job to synchronize persistence.xml to
+	 * run afterwards
+	 */
 	protected void generate() {
 		GenerateEntitiesWizard wizard = new GenerateEntitiesWizard(this.project, this.selection);
 		
 		WizardDialog dialog = new WizardDialog(this.getCurrentShell(), wizard);
 		dialog.create();
 		int returnCode = dialog.open();
-		if (returnCode == Window.OK) {
-			WorkspaceJob genEntitiesRunnable = new GenerateEntitiesRunnable(
-					wizard.getPackageGeneratorConfig(),
-					wizard.getEntityGeneratorConfig(),
-					wizard.getSelectedTables(),
-					wizard.synchronizePersistenceXml(),
-					new OverwriteConfirmer(this.getCurrentShell())
-			);
-			
-			WorkspaceJob synchClassesRunnable = null;
-			
-			if (wizard.synchronizePersistenceXml()) {
-				// we currently only support *one* persistence.xml file per project
-				PersistenceXml persistenceXml = this.project.getRootContext().getPersistenceXml();
-				if (persistenceXml != null) {
-					//TODO casting to IFile - just trying to get rid of all compiler errors for now
-					synchClassesRunnable = new SynchronizeClassesJob((IFile) persistenceXml.getResource());
-				}
+		if (returnCode != Window.OK) {
+			return;
+		}
+
+		PackageGenerator.Config pConfig = wizard.getPackageGeneratorConfig();
+		EntityGenerator.Config eConfig = wizard.getEntityGeneratorConfig();
+		eConfig.setOverwriteConfirmer(new OverwriteConfirmer(this.getCurrentShell()));
+
+		WorkspaceJob genEntitiesJob = new GenerateEntitiesJob(pConfig, eConfig);
+		
+		WorkspaceJob synchClassesJob = null;
+		
+		if (wizard.synchronizePersistenceXml()) {
+			// we currently only support *one* persistence.xml file per project
+			PersistenceXml persistenceXml = this.project.getRootContext().getPersistenceXml();
+			if (persistenceXml != null) {
+				// TODO casting to IFile - just trying to get rid of all compiler errors for now
+				synchClassesJob = new SynchronizeClassesJob((IFile) persistenceXml.getResource());
 			}
-			genEntitiesRunnable.schedule();
-			if (synchClassesRunnable != null) {
-				synchClassesRunnable.schedule();
-			}
+		}
+
+		genEntitiesJob.schedule();
+		if (synchClassesJob != null) {
+			synchClassesJob.schedule();
 		}
 	}
 	
@@ -105,36 +107,31 @@ public class EntitiesGenerator
 	    return Display.getCurrent().getActiveShell();
 	}
 	  
-	// ********** runnable **********
 
-	static class GenerateEntitiesRunnable extends WorkspaceJob {
+	// ********** generate entities job **********
+
+	static class GenerateEntitiesJob extends WorkspaceJob {
 		private final PackageGenerator.Config packageConfig;
 		private final EntityGenerator.Config entityConfig;
-		private final Collection<Table> selectedTables;
-		private final EntityGenerator.OverwriteConfirmer overwriteConfirmer;
 		
-		GenerateEntitiesRunnable(
+		GenerateEntitiesJob(
 				PackageGenerator.Config packageConfig,
-				EntityGenerator.Config entityConfig,
-				Collection<Table> selectedTables,
-				boolean synchronizePersistenceXml,
-				EntityGenerator.OverwriteConfirmer overwriteConfirmer
+				EntityGenerator.Config entityConfig
 		) {
-			super("Generating Entities");
+			super(JptUiMessages.EntitiesGenerator_jobName);
 			this.packageConfig = packageConfig;
 			this.entityConfig = entityConfig;
-			this.selectedTables = selectedTables;
-			this.overwriteConfirmer = overwriteConfirmer;
-			setRule(packageConfig.getPackageFragment().getJavaProject().getProject());
+			this.setRule(packageConfig.getPackageFragment().getJavaProject().getProject());
 		}
 
 		@Override
 		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-			PackageGenerator.generateEntities(this.packageConfig, this.entityConfig, this.selectedTables, this.overwriteConfirmer, monitor);			
+			PackageGenerator.generateEntities(this.packageConfig, this.entityConfig, monitor);
 			return Status.OK_STATUS;
 		}
 
 	}
+
 
 	// ********** overwrite confirmer **********
 
@@ -159,9 +156,8 @@ public class EntitiesGenerator
 		}
 
 		private boolean promptUser(String className) {
-			
 			final OverwriteConfirmerDialog dialog = new OverwriteConfirmerDialog(this.shell, className);
-			//get on the UI thread synchronously, need feedback before continuing
+			// get on the UI thread synchronously, need feedback before continuing
 			this.shell.getDisplay().syncExec(new Runnable() {
 				public void run() {
 					dialog.open();
@@ -172,12 +168,15 @@ public class EntitiesGenerator
 			}
 			if (dialog.yes()) {
 				return true;
-			} else if (dialog.yesToAll()) {
+			}
+			if (dialog.yesToAll()) {
 				this.overwriteAll = true;
 				return true;
-			} else if (dialog.no()) {
+			}
+			if (dialog.no()) {
 				return false;
-			} else if (dialog.noToAll()) {
+			}
+			if (dialog.noToAll()) {
 				this.skipAll = true;
 				return false;
 			}
@@ -186,7 +185,8 @@ public class EntitiesGenerator
 
 	}
 
-	// ********** dialog **********
+
+	// ********** overwrite dialog **********
 
 	static class OverwriteConfirmerDialog extends Dialog {
 		private final String className;

@@ -68,40 +68,35 @@ public abstract class ColumnCombo<T extends JpaNode> extends AbstractDatabaseObj
 	}
 
 	/**
-	 * Returns the databas tables that is used to retrieve the column names.
+	 * Returns the database table that supplies the column names.
+	 * Assume the subject is not null.
 	 *
-	 * @return The table of which its columns are displayed in the combo
+	 * @return The database table that supplies the column names.
 	 */
-	protected abstract Table table();
+	protected abstract Table getDBTable_();
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Returns the database table that supplies the column names.
+	 *
+	 * @return The database table that supplies the column names.
 	 */
+	protected Table getDBTable() {
+		return (this.subject() == null) ? null : this.getDBTable_();
+
+	}
+
 	@Override
 	protected void tableChanged(Table table) {
 		super.tableChanged(table);
-
-		if ((subject() != null) && (table() == table)) {
-			doPopulate();
+		if (this.getDBTable() == table) {
+			this.doPopulate();
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Iterator<String> values() {
-
-		if (subject() == null) {
-			return EmptyIterator.instance();
-		}
-
-		Table table = table();
-
-		if (table != null) {
-			return table.columnNames();
-		}
-
-		return EmptyIterator.<String>instance();
+		Table table = this.getDBTable();
+		return (table == null) ? EmptyIterator.<String>instance() : table.columnNames();
 	}
+
 }

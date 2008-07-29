@@ -17,12 +17,9 @@ import org.eclipse.jpt.db.Sequence;
  *  Wrap a DTP Sequence
  */
 final class DTPSequenceWrapper
-	extends DTPWrapper
+	extends DTPDatabaseObjectWrapper
 	implements Sequence
 {
-	// backpointer to parent
-	private final DTPSchemaWrapper schema;
-
 	// the wrapped DTP sequence
 	private final org.eclipse.datatools.modelbase.sql.schema.Sequence dtpSequence;
 
@@ -31,7 +28,6 @@ final class DTPSequenceWrapper
 
 	DTPSequenceWrapper(DTPSchemaWrapper schema, org.eclipse.datatools.modelbase.sql.schema.Sequence dtpSequence) {
 		super(schema, dtpSequence);
-		this.schema = schema;
 		this.dtpSequence = dtpSequence;
 	}
 
@@ -39,16 +35,20 @@ final class DTPSequenceWrapper
 	// ********** DTPWrapper implementation **********
 
 	@Override
-	synchronized void catalogObjectChanged(int eventType) {
-		this.getConnectionProfile().sequenceChanged(this, eventType);
+	synchronized void catalogObjectChanged() {
+		super.catalogObjectChanged();
+		this.getConnectionProfile().sequenceChanged(this);
 	}
 
 
 	// ********** Sequence implementation **********
 
-	@Override
 	public String getName() {
 		return this.dtpSequence.getName();
+	}
+
+	public DTPSchemaWrapper getSchema() {
+		return (DTPSchemaWrapper) this.getParent();
 	}
 
 
@@ -65,12 +65,9 @@ final class DTPSequenceWrapper
 		return this.dtpSequence == sequence;
 	}
 
-	boolean isCaseSensitive() {
-		return this.schema.isCaseSensitive();
-	}
-
-	DTPDatabaseWrapper database() {
-		return this.schema.database();
+	@Override
+	void clear() {
+		// no state to clear
 	}
 
 }

@@ -20,11 +20,8 @@ package org.eclipse.jpt.db;
  * 
  * This interface is not intended to be implemented by clients.
  */
-public interface Catalog extends Comparable<Catalog> {
-
-	/**
-	 * Return the catalog's name.
-	 */
-	String getName();
-
+public interface Catalog
+	extends SchemaContainer, Comparable<Catalog>
+{
+	// nothing yet
 }

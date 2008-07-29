@@ -22,12 +22,23 @@ import org.eclipse.jpt.utility.JavaType;
  * 
  * This interface is not intended to be implemented by clients.
  */
-public interface Column extends Comparable<Column> {
+public interface Column
+	extends DatabaseObject, Comparable<Column>
+{
+	/**
+	 * Return the column's table.
+	 */
+	Table getTable();
 
 	/**
-	 * Return the column's name.
+	 * Return whether the column is part of it's table's primary key.
 	 */
-	String getName();
+	boolean isPrimaryKeyColumn();
+
+	/**
+	 * Return whether the column is part of one of it's table's foreign keys.
+	 */
+	boolean isForeignKeyColumn();
 
 	/**
 	 * Return the name of the column's datatype.
@@ -35,29 +46,13 @@ public interface Column extends Comparable<Column> {
 	String getDataTypeName();
 
 	/**
-	 * Return a Java-appropriate version of the column's name.
+	 * Return whether the column's datatype is a LOB type
+	 * (i.e. BLOB, CLOB, or NCLOB).
 	 */
-	String getJavaFieldName();
+	boolean dataTypeIsLOB();
 
-	/**
-	 * Return whether the column's name matches the specified Java identifier,
-	 * respecting the database's case-sensitivity.
-	 */
-	boolean matchesJavaFieldName(String javaFieldName);
 
-	/**
-	 * Return a Java type declaration that is reasonably
-	 * similar to the column's data type and suitable for use as a
-	 * primary key field.
-	 */
-	String getPrimaryKeyJavaTypeDeclaration();
-
-	/**
-	 * Return a Java type that is reasonably
-	 * similar to the column's data type and suitable for use as a
-	 * primary key field.
-	 */
-	JavaType getPrimaryKeyJavaType();
+	// ********** Java type **********
 
 	/**
 	 * Return a Java type declaration that is reasonably
@@ -72,9 +67,17 @@ public interface Column extends Comparable<Column> {
 	JavaType getJavaType();
 
 	/**
-	 * Return whether the column's datatype is a LOB type
-	 * (i.e. BLOB, CLOB, or NCLOB).
+	 * Return a Java type declaration that is reasonably
+	 * similar to the column's data type and suitable for use as a
+	 * primary key field.
 	 */
-	boolean dataTypeIsLOB();
+	String getPrimaryKeyJavaTypeDeclaration();
+
+	/**
+	 * Return a Java type that is reasonably
+	 * similar to the column's data type and suitable for use as a
+	 * primary key field.
+	 */
+	JavaType getPrimaryKeyJavaType();
 
 }

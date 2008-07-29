@@ -25,7 +25,8 @@ import org.eclipse.datatools.sqltools.core.DatabaseIdentifier;
 import org.eclipse.datatools.sqltools.core.profile.ProfileUtil;
 import org.eclipse.jpt.db.ConnectionListener;
 import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.DatabaseFinder;
+import org.eclipse.jpt.db.DatabaseObject;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 
@@ -33,42 +34,47 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
  *  Wrap a DTP ConnectionProfile
  */
 final class DTPConnectionProfileWrapper
-	implements ConnectionProfile, ConnectionProfileHolder
+	implements DTPDatabaseObject, ConnectionProfile
 {
 	// the wrapped DTP connection profile
 	private final IConnectionProfile dtpConnectionProfile;
 
+	// finder supplied by the JPA platform (determines case-sensitivity, etc.)
+	private final DatabaseFinder finder;
+
+	// callback passed to the finder
+	private final DatabaseFinder.DefaultCallback databaseFinderCallback;
+
 	// the DTP managed connection we listen to
 	private final IManagedConnection dtpManagedConnection;
 
-	// forward events from the DTP connection profile's managed connections
+	// forward events from the DTP managed connection above;
+	// we listen and propagate events iff we have listeners ourselves
 	private final LocalConnectionListener connectionListener;
 
-	// lazy-initialized - can be a "null" database
-	private InternalDatabase database;
+	// lazy-initialized, and deleted at disconnect
+	private DTPDatabaseWrapper database;
 
 
 	// ********** constants **********
 
-	public static final String LIVE_DTP_CONNECTION_TYPE = "java.sql.Connection";  //$NON-NLS-1$
+	private static final String LIVE_DTP_CONNECTION_TYPE = "java.sql.Connection";  //$NON-NLS-1$
 
-	public static final String OFFLINE_DTP_CONNECTION_TYPE = ConnectionInfo.class.getName();
+	private static final String OFFLINE_DTP_CONNECTION_TYPE = ConnectionInfo.class.getName();
 
-	public static final String DATABASE_PRODUCT_PROP_ID = "org.eclipse.datatools.connectivity.server.version";  //$NON-NLS-1$
-
-	public static final String POSTGRESQL_VENDOR = "postgres";  //$NON-NLS-1$
-
-	public static final String POSTGRESQL_DEFAULT_SCHEMA_NAME = "public";  //$NON-NLS-1$
+	private static final String DATABASE_PRODUCT_PROP_ID = "org.eclipse.datatools.connectivity.server.version";  //$NON-NLS-1$
 
 
 	// ********** constructor **********
 
-	DTPConnectionProfileWrapper(IConnectionProfile dtpConnectionProfile) {
+	DTPConnectionProfileWrapper(IConnectionProfile dtpConnectionProfile, DatabaseFinder finder) {
 		super();
 		this.dtpConnectionProfile = dtpConnectionProfile;
+		this.finder = finder;
+		this.databaseFinderCallback = new DatabaseFinderCallback();
 		this.dtpManagedConnection = this.buildDTPManagedConnection();
 		this.connectionListener = new LocalConnectionListener();
-		this.dtpManagedConnection.addConnectionListener(this.connectionListener);
+		// don't listen to the managed connection yet
 	}
 
 	private IManagedConnection buildDTPManagedConnection() {
@@ -78,33 +84,92 @@ final class DTPConnectionProfileWrapper
 	}
 
 
-	// ********** ConnectionProfileHolder implementation **********
-
-	public DTPConnectionProfileWrapper getConnectionProfile() {
-		return this;
-	}
-
-
-	// ********** ConnectionProfile implementation **********
+	// ********** DatabaseObject implementation **********
 
 	public String getName() {
 		return this.dtpConnectionProfile.getName();
 	}
 
-	public boolean isNull() {
-		return false;
+	public String getAnnotationIdentifier(String javaIdentifier) {
+		// connection profiles should not be in Java annotations
+		throw new UnsupportedOperationException();
 	}
 
-	public void connect() {
-		if (this.isDisconnected()) {
-			this.checkStatus(this.dtpConnectionProfile.connect());
+	public String getAnnotationIdentifier() {
+		// connection profiles should not be in Java annotations
+		throw new UnsupportedOperationException();
+	}
+
+
+	// ********** DTPDatabaseObject implementation **********
+
+	public DTPConnectionProfileWrapper getConnectionProfile() {
+		return this;
+	}
+
+	public synchronized DTPDatabaseWrapper getDatabase() {
+		if (this.database == null) {
+			this.database = this.buildDatabase();
 		}
-	}
-	
-	public void disconnect() {
-		this.checkStatus(this.dtpConnectionProfile.disconnect());
+		return this.database;
 	}
 
+
+	// ********** ConnectionProfile implementation **********
+
+	// ***** properties
+	public String getProviderID() {
+		return this.dtpConnectionProfile.getProviderId();
+	}
+
+	public String getInstanceID() {
+		return this.dtpConnectionProfile.getInstanceID();
+	}
+
+	public String getDatabaseName() {
+		return this.getProperty(IJDBCDriverDefinitionConstants.DATABASE_NAME_PROP_ID);
+	}
+
+	public String getDatabaseProduct() {
+		return this.getProperty(DATABASE_PRODUCT_PROP_ID);
+	}
+
+	public String getDatabaseVendor() {
+		return this.getProperty(IJDBCDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID);
+	}
+
+	public String getDatabaseVersion() {
+		return this.getProperty(IJDBCDriverDefinitionConstants.DATABASE_VERSION_PROP_ID);
+	}
+
+	public String getDriverClassName() {
+		return this.getProperty(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID);
+	}
+
+	public String getURL() {
+		return this.getProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID);
+	}
+
+	public String getUserName() {
+		String userName = this.getProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
+		// 208946 handle username like "sys as sysdba" on Oracle
+		int index = userName.indexOf(' ');
+		return (index == -1) ? userName : userName.substring(0, index);
+	}
+
+	public String getUserPassword() {
+		return this.getProperty(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID);
+	}
+
+	public String getDriverDefinitionID() {
+		return this.getProperty(DRIVER_DEFINITION_PROP_ID);
+	}
+
+	public String getDriverJarList() {
+		return DriverManager.getInstance().getDriverInstanceByID(this.getDriverDefinitionID()).getJarList();
+	}
+
+	// ***** connection
 	public boolean isActive() {
 		return this.isConnected() || this.isWorkingOffline();
 	}
@@ -122,6 +187,17 @@ final class DTPConnectionProfileWrapper
 		return ! this.isConnected();
 	}
 
+	public void connect() {
+		if (this.isDisconnected()) {
+			this.checkStatus(this.dtpConnectionProfile.connect());
+		}
+	}
+	
+	public void disconnect() {
+		this.checkStatus(this.dtpConnectionProfile.disconnect());
+	}
+
+	// ***** off-line support
 	public boolean isWorkingOffline() {
 		return this.dtpManagedConnection.isWorkingOffline();
 	}
@@ -130,91 +206,57 @@ final class DTPConnectionProfileWrapper
 		return this.dtpConnectionProfile.supportsWorkOfflineMode();
 	}
 
-	public boolean canWorkOffline() {
-		return this.dtpConnectionProfile.canWorkOffline();
-	}
-
 	public IStatus saveWorkOfflineData() {
 		return this.dtpConnectionProfile.saveWorkOfflineData();
 	}
 	
+	public boolean canWorkOffline() {
+		return this.dtpConnectionProfile.canWorkOffline();
+	}
+
 	public IStatus workOffline() {
 		return this.dtpConnectionProfile.workOffline();
 	}
 	
-	public String getDatabaseVendor() {
-		return this.getProperty(IJDBCDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID);
-	}
-
-	public String getDatabaseName() {
-		return this.getProperty(IJDBCDriverDefinitionConstants.DATABASE_NAME_PROP_ID);
-	}
-
-	public String getDatabaseProduct() {
-		return this.getProperty(DATABASE_PRODUCT_PROP_ID);
-	}
-
-	public String getDatabaseVersion() {
-		return this.getProperty(IJDBCDriverDefinitionConstants.DATABASE_VERSION_PROP_ID);
-	}
-
-	public String getUserName() {
-		String userName = this.getProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
-		if (userName.contains(" ")){
-			return userName.split("\\s")[0];
+	// ***** listeners
+	public synchronized void addConnectionListener(ConnectionListener listener) {
+		if (this.hasNoListeners()) {  // first listener added
+			this.startListening();
 		}
-		return userName;
-	}
-
-	public String getUserPassword() {
-		return this.getProperty(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID);
-	}
-
-	public synchronized InternalDatabase getDatabase() {
-		if (this.database == null) {
-			this.database = this.buildDatabase();
-		}
-		return this.database;
-	}
-
-	public DTPCatalogWrapper getDefaultCatalog() {
-		return this.getDatabase().getDefaultCatalog();
-	}
-
-	public void addConnectionListener(ConnectionListener listener) {
 		this.connectionListener.addConnectionListener(listener);
 	}
 
-	public void removeConnectionListener(ConnectionListener listener) {
+	private void startListening() {
+		this.dtpManagedConnection.addConnectionListener(this.connectionListener);
+		if (this.database != null) {  // don't trigger database creation
+			if (this.isConnected()) {  // DTP does not change when off-line
+				this.database.startListening();
+			}
+		}
+	}
+
+	public synchronized void removeConnectionListener(ConnectionListener listener) {
 		this.connectionListener.removeConnectionListener(listener);
+		if (this.hasNoListeners()) {  // last listener removed
+			this.stopListening();
+		}
 	}
 
-	public Schema getDefaultSchema() {
-		return this.getDatabase().schemaNamed(this.getDefaultSchemaName());
+	private void stopListening() {
+		if (this.database != null) {  // don't trigger database creation
+			if (this.isConnected()) {  // DTP does not change when off-line
+				this.database.stopListening();
+			}
+		}
+		this.dtpManagedConnection.removeConnectionListener(this.connectionListener);
 	}
 
-	public String getDriverClassName() {
-		return this.getProperty(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID);
+	boolean hasNoListeners() {
+		return this.connectionListener.hasNoListeners();
 	}
 
-	public String getUrl() {
-		return this.getProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID);
-	}
-
-	public String getInstanceID() {
-		return this.dtpConnectionProfile.getInstanceID();
-	}
-
-	public String getProviderID() {
-		return this.dtpConnectionProfile.getProviderId();
-	}
-
-	public String getDriverDefinitionID() {
-		return this.getProperty(DRIVER_DEFINITION_PROP_ID);
-	}
-
-	public String getDriverJarList() {
-		return DriverManager.getInstance().getDriverInstanceByID(this.getDriverDefinitionID()).getJarList();
+	boolean hasAnyListeners() {
+		return this.connectionListener.hasAnyListeners();
 	}
 
 
@@ -225,14 +267,16 @@ final class DTPConnectionProfileWrapper
 			return;
 		}
 		if (status.isMultiStatus()) {
-			status = status.getChildren()[0];  // take the first one?
+			for (IStatus child : status.getChildren()) {
+				this.checkStatus(child);  // recurse, looking for the first error
+			}
 		}
 		throw new RuntimeException(status.getMessage(), status.getException());
 	}
 
-	private InternalDatabase buildDatabase() {
+	private DTPDatabaseWrapper buildDatabase() {
 		if (this.isInactive()) {
-			return NullDatabase.instance();
+			return null;
 		}
 
 		if (this.isWorkingOffline()) {
@@ -248,66 +292,65 @@ final class DTPConnectionProfileWrapper
 		// so, some hackery here to handle hackery there
 		return new DTPDatabaseWrapper(this, ProfileUtil.getDatabase(new DatabaseIdentifier(this.getName(), this.getDatabaseName()), true));
 	}
-	
-	boolean wraps(IConnectionProfile dtpCP) {
-		return this.dtpConnectionProfile == dtpCP;
-	}
 
-	void databaseChanged(DTPDatabaseWrapper db, int eventType) {
-		this.connectionListener.databaseChanged(db, eventType);
-	}
-
-	void catalogChanged(DTPCatalogWrapper catalog, int eventType) {
-		this.connectionListener.catalogChanged(catalog, eventType);
-	}
-
-	void schemaChanged(DTPSchemaWrapper schema, int eventType) {
-		this.connectionListener.schemaChanged(schema, eventType);
-	}
-
-	void sequenceChanged(DTPSequenceWrapper sequence, int eventType) {
-		this.connectionListener.sequenceChanged(sequence, eventType);
-	}
-
-	void tableChanged(DTPTableWrapper table, int eventType) {
-		this.connectionListener.tableChanged(table, eventType);
-	}
-
-	void columnChanged(DTPColumnWrapper column, int eventType) {
-		this.connectionListener.columnChanged(column, eventType);
-	}
-
-	void foreignKeyChanged(DTPForeignKeyWrapper foreignKey, int eventType) {
-		this.connectionListener.foreignKeyChanged(foreignKey, eventType);
+	synchronized void clearDatabase() {
+		if (this.database != null) {
+			if (this.isConnected()) {  // DTP does not change when off-line
+				this.database.stopListening();
+			}
+			this.database = null;
+		}
 	}
 
 	/**
-	 * private - use #getDefaultSchema() : Schema instead
+	 * This is called by whenever we need to find a component by name
+	 * (e.g. Table.getColumnNamed(String)). We channel all the calls to here
+	 * and then we delegate to the JPA platform-supplied "database finder".
 	 */
-	private String getDefaultSchemaName() {
-		if (this.getDatabase().getVendor().equalsIgnoreCase(POSTGRESQL_VENDOR)) {
-			return POSTGRESQL_DEFAULT_SCHEMA_NAME;
-		}
-		return this.getUserName();
+	<T extends DatabaseObject> T getDatabaseObjectNamed(T[] databaseObjects, String name) {
+		return this.finder.getDatabaseObjectNamed(databaseObjects, name, this.databaseFinderCallback);
+	}
+
+	/**
+	 * The default "database finder" calls back to here so we can delegate to
+	 * the database, which contains all the state necessary to properly match
+	 * identifiers.
+	 */
+	<T extends DatabaseObject> T getDatabaseObjectNamed_(T[] databaseObjects, String name) {
+		// the database should not be null here - call its internal method
+		return this.database.getDatabaseObjectNamed_(databaseObjects, name);
+	}
+
+	void databaseChanged(DTPDatabaseWrapper db) {
+		this.connectionListener.databaseChanged(db);
+	}
+
+	void catalogChanged(DTPCatalogWrapper catalog) {
+		this.connectionListener.catalogChanged(catalog);
+	}
+
+	void schemaChanged(DTPSchemaWrapper schema) {
+		this.connectionListener.schemaChanged(schema);
+	}
+
+	void sequenceChanged(DTPSequenceWrapper sequence) {
+		this.connectionListener.sequenceChanged(sequence);
+	}
+
+	void tableChanged(DTPTableWrapper table) {
+		this.connectionListener.tableChanged(table);
+	}
+
+	void columnChanged(DTPColumnWrapper column) {
+		this.connectionListener.columnChanged(column);
+	}
+
+	void foreignKeyChanged(DTPForeignKeyWrapper foreignKey) {
+		this.connectionListener.foreignKeyChanged(foreignKey);
 	}
 
 	private String getProperty(String propertyName) {
 		return this.dtpConnectionProfile.getBaseProperties().getProperty(propertyName);
-	}
-
-
-	// ********** disposal **********
-
-	synchronized void dispose() {
-		this.disposeDatabase();
-		this.dtpManagedConnection.removeConnectionListener(this.connectionListener);
-	}
-
-	synchronized void disposeDatabase() {
-		if (this.database != null) {
-			this.database.dispose();
-			this.database = null;
-		}
 	}
 
 
@@ -332,7 +375,7 @@ final class DTPConnectionProfileWrapper
 	 * This listener translates and forwards IManagedConnectionListener and
 	 * IManagedConnectionOfflineListener events to ConnectionListeners.
 	 */
-	private class LocalConnectionListener implements IManagedConnectionOfflineListener {
+	class LocalConnectionListener implements IManagedConnectionOfflineListener {
 		private Vector<ConnectionListener> listeners = new Vector<ConnectionListener>();
 
 		LocalConnectionListener() {
@@ -351,12 +394,20 @@ final class DTPConnectionProfileWrapper
 			return new CloneIterator<ConnectionListener>(this.listeners);
 		}
 
+		boolean hasNoListeners() {
+			return this.listeners.isEmpty();
+		}
+
+		boolean hasAnyListeners() {
+			return ! this.listeners.isEmpty();
+		}
+
 
 		// ********** IManagedConnectionListener implementation **********
 
+		// off-line or inactive => live
 		public void opened(ConnectEvent event) {
-			// clear the (possibly "null") database so it will be rebuilt with the "live" data
-			DTPConnectionProfileWrapper.this.disposeDatabase();
+			// do not build the database here - it is built on-demand
 			// forward event to listeners
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().opened(DTPConnectionProfileWrapper.this);
@@ -393,9 +444,10 @@ final class DTPConnectionProfileWrapper
 			}
 		}
 
+		// live or off-line => inactive
 		public void closed(ConnectEvent event) {
 			// clear the database
-			DTPConnectionProfileWrapper.this.disposeDatabase();
+			DTPConnectionProfileWrapper.this.clearDatabase();
 			// forward event to listeners
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().closed(DTPConnectionProfileWrapper.this);
@@ -407,77 +459,87 @@ final class DTPConnectionProfileWrapper
 
 		// live => off-line
 		public boolean okToDetach(ConnectEvent event) {
-			// don't forward the event to listeners (?)
-			return true;
+			// convert the event to an "ok to close" event;
+			// we are "closing" the live connection
+			return this.okToClose(event);
 		}
 		
 		// live => off-line
 		public void aboutToDetach(ConnectEvent event) {
-			// don't forward the event; the database will be cleared and
-			// listeners will be notified once the "offline" connection is "opened/workingOffline"
+			// convert the event to a "close" event;
+			// we are "closing" the live connection
+			this.closed(event);
 		}
 
-		// live => off-line
+		// inactive or live => off-line
 		public void workingOffline(ConnectEvent event) {
-			// clear the (possibly null) database so it will be rebuilt with the "off-line" data
-			DTPConnectionProfileWrapper.this.disposeDatabase();
-			// convert the event to an "open" event and forward it to listeners
-			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
-				stream.next().opened(DTPConnectionProfileWrapper.this);
-			}
+			// convert the event to an "open" event;
+			// we are "opening" the off-line connection
+			this.opened(event);
 		}
 
 		// off-line => live
 		public void aboutToAttach(ConnectEvent event) {
-			// don't forward the event; the database will be cleared and
-			// listeners will be notified once the "live" connection is "opened"
+			// convert the event to an "close" event;
+			// we are "closing" the off-line connection
+			this.closed(event);
 		}
 
 
 		// ********** internal methods **********
 
-		void databaseChanged(DTPDatabaseWrapper db, int eventType) {
+		void databaseChanged(DTPDatabaseWrapper db) {
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().databaseChanged(DTPConnectionProfileWrapper.this, db);
 			}
 		}
 
-		void catalogChanged(DTPCatalogWrapper catalog, int eventType) {
+		void catalogChanged(DTPCatalogWrapper catalog) {
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().catalogChanged(DTPConnectionProfileWrapper.this, catalog);
 			}
 		}
 
-		void schemaChanged(DTPSchemaWrapper schema, int eventType) {
+		void schemaChanged(DTPSchemaWrapper schema) {
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().schemaChanged(DTPConnectionProfileWrapper.this, schema);
 			}
 		}
 
-		void sequenceChanged(DTPSequenceWrapper sequence, int eventType) {
+		void sequenceChanged(DTPSequenceWrapper sequence) {
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().sequenceChanged(DTPConnectionProfileWrapper.this, sequence);
 			}
 		}
 
-		void tableChanged(DTPTableWrapper table, int eventType) {
+		void tableChanged(DTPTableWrapper table) {
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().tableChanged(DTPConnectionProfileWrapper.this, table);
 			}
 		}
 
-		void columnChanged(DTPColumnWrapper column, int eventType) {
+		void columnChanged(DTPColumnWrapper column) {
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().columnChanged(DTPConnectionProfileWrapper.this, column);
 			}
 		}
 
-		void foreignKeyChanged(DTPForeignKeyWrapper foreignKey, int eventType) {
+		void foreignKeyChanged(DTPForeignKeyWrapper foreignKey) {
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().foreignKeyChanged(DTPConnectionProfileWrapper.this, foreignKey);
 			}
 		}
 
+	}
+
+
+	// ********** default DatabaseFinder **********
+
+	class DatabaseFinderCallback implements DatabaseFinder.DefaultCallback {
+		public <T extends DatabaseObject> T getDatabaseObjectNamed(T[] databaseObjects, String name) {
+			// call back to the internal method
+			return DTPConnectionProfileWrapper.this.getDatabaseObjectNamed_(databaseObjects, name);
+		}
 	}
 
 }

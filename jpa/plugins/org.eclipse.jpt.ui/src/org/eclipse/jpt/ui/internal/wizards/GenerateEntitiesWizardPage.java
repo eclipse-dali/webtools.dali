@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.wizards;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.ui.wizards.NewTypeWizardPage;
@@ -32,12 +32,13 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.gen.internal.EntityGenTools;
 import org.eclipse.jpt.gen.internal.EntityGenerator;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.util.TableLayoutComposite;
-import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.NameTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -53,14 +54,22 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.PlatformUI;
 
-// TODO determine name collisions
+// TODO add numerous settings to UI...
+// TODO validate list of user-approved entity names:
+//     no duplicates (case-sensitive)
+//     valid Java identifiers @see NameTools.stringConsistsOfJavaIdentifierCharacters(String)
+//     no Java reserved words @see NameTools.JAVA_RESERVED_WORDS_SET
 class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 
 	CheckboxTableViewer tableTable;
+	Button synchronizeClassesCheckBox;
 
-	private boolean convertToCamelCase = true;
+	// TODO if this flag changes we need to re-calculate the entity names...
+	// (at the moment, it does not change because it is not visible to the user...)
+	private boolean convertToJavaStyleIdentifiers = true;
 	private boolean fieldAccessType = true;
 	private String collectionTypeName = Set.class.getName();
+	private String collectionAttributeNameSuffix = "_collection"; //$NON-NLS-1$
 	private int fieldVisibility = EntityGenerator.Config.PRIVATE;
 	private int methodVisibility = EntityGenerator.Config.PUBLIC;
 	private boolean generateGettersAndSetters = true;
@@ -68,10 +77,15 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 	private boolean serializable = true;
 	private boolean generateSerialVersionUID = true;
 	private boolean generateEmbeddedIdForCompoundPK = true;
-	private boolean synchronizePersistenceXml = false;
-	private Map<Table, String> overrideEntityNames;
+	private String embeddedIdAttributeName = "pk";  //$NON-NLS-1$
+	private String primaryKeyMemberClassName = "PK";  //$NON-NLS-1$
+
+	// key = table; value = entity name
+	private HashMap<Table, String> entityNames;
 	
-	static final String[] TABLE_TABLE_COLUMN_PROPERTIES = { "table", "entityName" };
+	private boolean synchronizePersistenceXml = false;
+
+	static final String[] TABLE_TABLE_COLUMN_PROPERTIES = { "table", "entityName" }; //$NON-NLS-1$ //$NON-NLS-2$
 	private static final int TABLE_COLUMN_INDEX = 0;
 	private static final int ENTITY_NAME_COLUMN_INDEX = 1;
 	
@@ -108,17 +122,9 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		createContainerControls(composite, nColumns);	
 		createPackageControls(composite, nColumns);	
 		
-		final Button synchronizeClassesCheckBox = new Button(composite, SWT.CHECK);
+		this.synchronizeClassesCheckBox = new Button(composite, SWT.CHECK);
 		synchronizeClassesCheckBox.setText(JptUiMessages.GenerateEntitiesWizardPage_synchronizeClasses);
-		synchronizeClassesCheckBox.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// do nothing
-			}
-		
-			public void widgetSelected(SelectionEvent e) {
-				setSynchronizePersistenceXml(synchronizeClassesCheckBox.getSelection());
-			}
-		});
+		synchronizeClassesCheckBox.addSelectionListener(this.buildSynchClassesSelectionListener());
 		
 		Group tablesGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		tablesGroup.setLayout(new GridLayout(2, false));
@@ -134,32 +140,49 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		createTablesSelectionControl(tablesGroup);
 		createButtonComposite(tablesGroup);
 		
-		GenerateEntitiesWizard generateEntitiesWizard = ((GenerateEntitiesWizard)this.getWizard());
-		Collection<Table> possibleTables = generateEntitiesWizard.getPossibleTables();
-		initTablesSelectionControl(possibleTables);
+		this.initTablesSelectionControl();
 		
 		//set initial selection state of the synchronize classes checkbox
-		synchronizeClassesCheckBox.setSelection(!generateEntitiesWizard.getJpaProject().discoversAnnotatedClasses());
+		synchronizeClassesCheckBox.setSelection( ! this.getGenEntitiesWizard().getJpaProject().discoversAnnotatedClasses());
 		setSynchronizePersistenceXml(synchronizeClassesCheckBox.getSelection());
 		
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.tableTable.getControl(), JpaHelpContextIds.DIALOG_GENERATE_ENTITIES_TABLES);
 		
 		setControl(composite);
-		this.setPageComplete( false);
+		this.setPageComplete(false);
 	}
 
-	private void selectAllTables(){
+	private GenerateEntitiesWizard getGenEntitiesWizard() {
+		return (GenerateEntitiesWizard) this.getWizard();
+	}
+
+	void selectAllTables(){
 		this.tableTable.setAllChecked(true);
 		doStatusUpdate();
 	}
 	
-	private void deselectAllTables(){
+	void deselectAllTables(){
 		this.tableTable.setAllChecked(false);
 		doStatusUpdate();
 	}
 	
-	private void initTablesSelectionControl(Collection<Table> possibleTables) {
-		this.overrideEntityNames = new HashMap<Table, String>(possibleTables.size());
+	private void initTablesSelectionControl() {
+		this.setPossibleTables(this.getGenEntitiesWizard().getPossibleTables());
+	}
+
+	void setPossibleTables(Collection<Table> possibleTables) {
+		if (this.tableTable == null) {
+			return;  // the wizard has called this method before our widgets are built
+		}
+		this.entityNames = new HashMap<Table, String>(possibleTables.size());
+		for (Table table : possibleTables) {
+			String tableName = table.getName();
+			String entityName = (this.convertToJavaStyleIdentifiers) ?
+							EntityGenTools.convertToUniqueJavaStyleClassName(tableName, entityNames.values())
+						:
+							NameTools.uniqueNameFor(tableName, entityNames.values());
+			this.entityNames.put(table, entityName);
+		}
 		this.tableTable.setInput(possibleTables);
 	}
 
@@ -197,7 +220,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		
 		this.tableTable.addPostSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
-				handleTablesListSelectionChanged(event);
+				handleTablesListSelectionChanged();
 			}
 		});
 		
@@ -215,7 +238,6 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 	}
 	
 	private void createButtonComposite(Group tablesGroup){
-		
 		Composite buttonComposite = new Composite(tablesGroup, SWT.NULL);
 		GridLayout buttonLayout = new GridLayout(1, false);
 		buttonComposite.setLayout(buttonLayout);
@@ -229,31 +251,14 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		GridData gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		selectAllButton.setLayoutData(gridData);
-		selectAllButton.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// do nothing
-			}
-		
-			public void widgetSelected(SelectionEvent e) {
-				selectAllTables();
-				
-			}
-		});
+		selectAllButton.addSelectionListener(this.buildSelectAllButtonSelectionListener());
 		
 		Button deselectAllButton = new Button(buttonComposite, SWT.PUSH);
 		deselectAllButton.setText(JptUiMessages.General_deselectAll);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		deselectAllButton.setLayoutData(gridData);
-		deselectAllButton.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// do nothing
-			}
-		
-			public void widgetSelected(SelectionEvent e) {
-				deselectAllTables();
-			}
-		});
+		deselectAllButton.addSelectionListener(this.buildDeselectAllButtonSelectionListener());
 	}
 	
 	
@@ -264,10 +269,9 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 
 	void editEntityNameIfPossible(){
 		Object[] selected = ((IStructuredSelection) this.tableTable.getSelection()).toArray();
-		if (selected.length != 1) {
-			return;
+		if (selected.length == 1) {
+			this.tableTable.editElement(selected[0], ENTITY_NAME_COLUMN_INDEX);
 		}
-		this.tableTable.editElement(selected[0], ENTITY_NAME_COLUMN_INDEX);
 	}
 	
 	private void addCellEditors() {
@@ -280,9 +284,9 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		this.tableTable.setCellModifier(this.buildTableTableCellModifier());
 	}
 
-	void handleTablesListSelectionChanged(SelectionChangedEvent event) {
+	void handleTablesListSelectionChanged() {
 		this.setPageComplete(true);
-		if ( ! this.hasTablesSelected()) {
+		if (this.noTablesAreSelected()) {
 			this.setPageComplete(false);
 		}
 	}
@@ -299,23 +303,20 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		return new TableTableCellModifier();
 	}
 	
-	Collection<Table> getSelectedTables() {
-		ArrayList<Table> selectedTables = new ArrayList<Table>();
-		for (Object selectedTable : this.tableTable.getCheckedElements())
-			selectedTables.add((Table) selectedTable);
+	Map<Table, String> getSelectedTables() {
+		Object[] checkedElements = this.tableTable.getCheckedElements();
+		HashMap<Table, String> selectedTables = new HashMap<Table, String>(checkedElements.length);
+		for (Object checkedElement : checkedElements) {
+			Table table = (Table) checkedElement;
+			selectedTables.put(table, this.entityNames.get(table));
+		}
 		return selectedTables;
 	}
-	
-	private boolean hasTablesSelected() {
-		return (this.tableTable != null) ? (this.getSelectedTables().size() > 0) : false;
-	}
-	
-	void updateTablesListViewer(Collection<Table> possibleTables) {
-		if (this.tableTable != null) {
-			this.initTablesSelectionControl(possibleTables);
-		}
-	}
 
+	private boolean noTablesAreSelected() {
+		return (this.tableTable == null) ? true : (this.tableTable.getCheckedElements().length == 0);
+	}
+	
 	@Override
 	protected void handleFieldChanged(String fieldName) {
 		super.handleFieldChanged(fieldName);
@@ -339,34 +340,25 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 	@Override
 	protected void updateStatus(IStatus status) {
 		super.updateStatus(status);
-		if (this.isPageComplete() && ! this.hasTablesSelected()) {
+		if (this.isPageComplete() && this.noTablesAreSelected()) {
 			this.setPageComplete(false);
 		}
 	}
 
-	String entityName(Table table) {
-		String overrideEntityName = this.overrideEntityNames.get(table);
-		return (overrideEntityName != null) ? overrideEntityName : this.defaultEntityName(table);
+	String getEntityName(Table table) {
+		return this.entityNames.get(table);
 	}
 
-	private String defaultEntityName(Table table) {
-		String entityName = table.getShortJavaClassName();
-		if (this.convertToCamelCase) {
-			entityName = StringTools.convertUnderscoresToCamelCase(entityName);
-		}
-		return entityName;
+	/**
+	 * return whether the new entity name is different from the old entity name
+	 */
+	boolean setEntityName(Table table, String entityName) {
+		String old = this.entityNames.put(table, entityName);
+		return ! entityName.equals(old);
 	}
 
-	void setOverrideEntityName(Table table, String name) {
-		if (table.getShortJavaClassName().equals(name)) {
-			this.overrideEntityNames.remove(table);
-		} else {
-			this.overrideEntityNames.put(table, name);
-		}
-	}
-
-	boolean convertToCamelCase() {
-		return this.convertToCamelCase;
+	boolean convertToJavaStyleIdentifiers() {
+		return this.convertToJavaStyleIdentifiers;
 	}
 
 	boolean fieldAccessType() {
@@ -375,6 +367,10 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 
 	String getCollectionTypeName() {
 		return this.collectionTypeName;
+	}
+
+	String getCollectionAttributeNameSuffix() {
+		return this.collectionAttributeNameSuffix;
 	}
 
 	int getFieldVisibility() {
@@ -409,22 +405,58 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		return this.synchronizePersistenceXml;
 	}
 	
-	private void setSynchronizePersistenceXml(boolean synchronizePersistenceXml){
+	void setSynchronizePersistenceXml(boolean synchronizePersistenceXml){
 		this.synchronizePersistenceXml = synchronizePersistenceXml;
 	}
+
+	String getEmbeddedIdAttributeName() {
+		return this.embeddedIdAttributeName;
+	}
+
+	String getPrimaryKeyMemberClassName() {
+		return this.primaryKeyMemberClassName;
+	}
 	
-	/**
-	 * key = table
-	 * value = override entity name
-	 */
-	Map<Table, String> getOverrideEntityNames() {
-		return this.overrideEntityNames;
+	private SelectionListener buildSelectAllButtonSelectionListener() {
+		return new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent event) {
+				// nothing special for "default" (double-click?)
+				this.widgetSelected(event);
+			}
+			public void widgetSelected(SelectionEvent event) {
+				selectAllTables();
+			}
+		};
+	}
+	
+	private SelectionListener buildDeselectAllButtonSelectionListener() {
+		return new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent event) {
+				// nothing special for "default" (double-click?)
+				this.widgetSelected(event);
+			}
+			public void widgetSelected(SelectionEvent event) {
+				deselectAllTables();
+			}
+		};
+	}
+	
+	private SelectionListener buildSynchClassesSelectionListener() {
+		return new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent event) {
+				// nothing special for "default" (double-click?)
+				this.widgetSelected(event);
+			}
+			public void widgetSelected(SelectionEvent event) {
+				setSynchronizePersistenceXml(synchronizeClassesCheckBox.getSelection());
+			}
+		};
 	}
 
 
 	// ********** inner classes **********
 
-	private class TableTableLabelProvider extends LabelProvider implements ITableLabelProvider {
+	class TableTableLabelProvider extends LabelProvider implements ITableLabelProvider {
 
 		TableTableLabelProvider() {
 			super();
@@ -448,15 +480,15 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 					return ((Table) element).getName();
 
 				case ENTITY_NAME_COLUMN_INDEX:
-					return GenerateEntitiesWizardPage.this.entityName((Table) element);
+					return GenerateEntitiesWizardPage.this.getEntityName((Table) element);
 			}
-			throw new IllegalArgumentException("invalid column index: " + columnIndex);
+			throw new IllegalArgumentException("invalid column index: " + columnIndex); //$NON-NLS-1$
 		}
 
 	}
 
 
-	private class TableTableContentProvider implements IStructuredContentProvider {
+	static class TableTableContentProvider implements IStructuredContentProvider {
 
 		TableTableContentProvider() {
 			super();
@@ -477,7 +509,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 	}
 
 
-	private class TableTableCellModifier implements ICellModifier {
+	class TableTableCellModifier implements ICellModifier {
 
 		TableTableCellModifier() {
 			super();
@@ -489,7 +521,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 
 		public Object getValue(Object element, String property) {
 			if (property.equals(TABLE_TABLE_COLUMN_PROPERTIES[ENTITY_NAME_COLUMN_INDEX])) {
-				return GenerateEntitiesWizardPage.this.entityName((Table) element);
+				return GenerateEntitiesWizardPage.this.getEntityName((Table) element);
 			}
 			return null;
 		}
@@ -501,14 +533,13 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 			if ( ! (element instanceof Table)) {
 				return;
 			}
-
-			boolean unchanged = false;
 			Table table = (Table) element;
+
+			boolean changed = true;
 			if (property.equals(TABLE_TABLE_COLUMN_PROPERTIES[ENTITY_NAME_COLUMN_INDEX])) {
-				unchanged = GenerateEntitiesWizardPage.this.entityName(table).equals(value);
-				GenerateEntitiesWizardPage.this.setOverrideEntityName(table, (String) value);
+				changed = GenerateEntitiesWizardPage.this.setEntityName(table, (String) value);
 			}
-			if (! unchanged) {
+			if (changed) {
 				GenerateEntitiesWizardPage.this.tableTable.update(table, new String[] { property });
 			}
 		}

@@ -9,167 +9,179 @@
  ******************************************************************************/
 package org.eclipse.jpt.gen.internal;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
+/**
+ * Build a GenTable for each db.Table passed in.
+ * Determine all the relations among the tables in the scope:
+ *     many-to-many
+ *     many-to-one
+ *     one-to-many
+ * Make a first pass to determine each entity table's Java attribute names,
+ * because we will need them on subsequent passes.
+ */
 class GenScope {
-	private final Map<Table, GenTable> genTables = new HashMap<Table, GenTable>();
+	private final EntityGenerator.Config entityConfig;
+	private final HashMap<Table, GenTable> genTables;
 
-	private IProgressMonitor progressMonitor;
-	
+
 	// ********** construction/initialization **********
 
-	GenScope(Collection<Table> tables, EntityGenerator.Config entityConfig, IProgressMonitor progressMonitor) {
+	GenScope(EntityGenerator.Config entityConfig, IProgressMonitor progressMonitor) {
 		super();
-		this.initialize(tables, entityConfig, progressMonitor);
+		this.entityConfig = entityConfig;
+		this.genTables = new HashMap<Table, GenTable>(entityConfig.tablesSize());
+		SubMonitor sm = SubMonitor.convert(progressMonitor, JptGenMessages.GenScope_taskName, 4);
+
+		this.buildGenTables();
+		sm.worked(1);
+		this.checkCanceled(sm);
+
+		this.buildManyToManyRelations();
+		sm.worked(1);
+		this.checkCanceled(sm);
+
+		this.buildManyToOneRelations();  // this will also build the corresponding one-to-many relations
+		sm.worked(1);
+		this.checkCanceled(sm);
+
+		this.buildAttributeNames();
+		sm.worked(1);
+		this.checkCanceled(sm);
 	}
 
-	private void checkCanceled() {
-		if (this.progressMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}		
-	}
-	
-	private void initialize(Collection<Table> tables, EntityGenerator.Config entityConfig, IProgressMonitor monitor) {
-		this.progressMonitor = monitor;
-		this.buildGenTables(tables, entityConfig);
-		checkCanceled();
-		this.configureManyToManyRelations();
-		checkCanceled();
-		this.configureManyToOneRelations();
-		checkCanceled();
-		this.configureFieldNames();
-		checkCanceled();
-	}
-
-	private void buildGenTables(Collection<Table> tables, EntityGenerator.Config entityConfig) {
-		int size = tables.size();
-		// pass around a growing list of the entity names so we can avoid duplicates
-		Set<String> entityNames = new HashSet<String>(size);
-		for (Table table : tables) {
-			this.buildGenTable(table, entityConfig, entityNames);
-			this.progressMonitor.worked(40/size);
+	private void buildGenTables() {
+		for (Iterator<Table> stream = entityConfig.tables(); stream.hasNext(); ) {
+			Table table = stream.next();
+			this.genTables.put(table, new GenTable(this, table));
 		}
-	}
-
-	private void buildGenTable(Table table, EntityGenerator.Config entityConfig, Collection<String> entityNames) {
-		this.genTables.put(table, new GenTable(this, table, entityConfig, entityNames));
 	}
 
 	/**
 	 * find all the "join" tables
 	 */
-	private void configureManyToManyRelations() {
-		int tablesSize = CollectionTools.size(this.tables());
-
-		//first time takes the longest, should we take that into account?
-		for (Iterator<GenTable> stream = this.tables(); stream.hasNext(); ) {
-			checkCanceled();
-			stream.next().configureManyToManyRelations();
-			this.progressMonitor.worked(730/tablesSize);
+	private void buildManyToManyRelations() {
+		for (Iterator<GenTable> stream = this.genTables(); stream.hasNext(); ) {
+			stream.next().buildJoinTableRelation();
 		}
+
 		// revert any "join" table that is referenced by another table back to an "entity" table
-		Set<GenTable> referencedTables = this.buildReferencedTables();
-		tablesSize = CollectionTools.size(this.joinTables());
-		for (Iterator<GenTable> stream = this.joinTables(); stream.hasNext(); ) {
+		HashSet<GenTable> referencedGenTables = this.buildReferencedGenTables();
+		for (Iterator<GenTable> stream = this.joinGenTables(); stream.hasNext(); ) {
 			GenTable joinGenTable = stream.next();
-			if (referencedTables.contains(joinGenTable)) {
+			if (referencedGenTables.contains(joinGenTable)) {
 				joinGenTable.clearJoinTableRelation();
 			}
-			this.progressMonitor.worked(40/tablesSize);
 		}
 	}
 
 	/**
-	 * find all the many-to-one and one-to-many relations
+	 * find all the many-to-one and corresponding one-to-many relations
 	 */
-	private void configureManyToOneRelations() {
-		int tablesSize = CollectionTools.size(this.entityTables());
-		for (Iterator<GenTable> stream = this.entityTables(); stream.hasNext(); ) {
-			stream.next().configureManyToOneRelations();
-			this.progressMonitor.worked(50/tablesSize);
+	private void buildManyToOneRelations() {
+		for (Iterator<GenTable> stream = this.entityGenTables(); stream.hasNext(); ) {
+			stream.next().buildManyToOneRelations();
 		}
 	}
 
 	/**
-	 * determine all the Java field names up-front because we will
+	 * determine all the Java attribute names up-front because we will
 	 * need them for things like 'mappedBy' annotation elements
 	 */
-	private void configureFieldNames() {
-		int tablesSize = CollectionTools.size(this.entityTables());
-		for (Iterator<GenTable> stream = this.entityTables(); stream.hasNext(); ) {
-			stream.next().configureFieldNames();
-			this.progressMonitor.worked(50/tablesSize);
+	private void buildAttributeNames() {
+		for (Iterator<GenTable> stream = this.entityGenTables(); stream.hasNext(); ) {
+			stream.next().buildAttributeNames();
 		}
 	}
 
 
 	// ********** package API **********
 
+	EntityGenerator.Config getEntityConfig() {
+		return this.entityConfig;
+	}
+
 	/**
 	 * return only the gen tables that are suitable for generating
 	 * entities (i.e. exclude the "join" tables)
 	 */
-	Iterator<GenTable> entityTables() {
-		return new FilteringIterator<GenTable, GenTable>(this.tables()) {
+	Iterator<GenTable> entityGenTables() {
+		return new FilteringIterator<GenTable, GenTable>(this.genTables()) {
 			@Override
-			protected boolean accept(GenTable next) {
-				return ! next.isJoinTable();
+			protected boolean accept(GenTable genTable) {
+				return ! genTable.isJoinTable();
 			}
 		};
 	}
 
-	int numEntityTables() {
-		return CollectionTools.size(entityTables());
+	int entityTablesSize() {
+		return CollectionTools.size(this.entityGenTables());
 	}
-	
+
 	/**
-	 * return the gen table corresponding to the specified table
+	 * return the gen table corresponding to the specified db table;
+	 * return null if the gen table is not "in-scope" (e.g. a db foreign key
+	 * might have a reference to a db table that was not included in the
+	 * scope, so we won't have a corresponding gen table)
 	 */
-	GenTable genTable(Table table) {
+	GenTable getGenTable(Table table) {
 		return this.genTables.get(table);
 	}
 
 
-	// ********** internal API **********
+	// ********** internal methods **********
 
-	private Iterator<GenTable> tables() {
+	private Iterator<GenTable> genTables() {
 		return this.genTables.values().iterator();
+	}
+
+	private int genTablesSize() {
+		return this.genTables.size();
 	}
 
 	/**
 	 * return only the "join" gen tables
 	 */
-	private Iterator<GenTable> joinTables() {
-		return new FilteringIterator<GenTable, GenTable>(this.tables()) {
+	private Iterator<GenTable> joinGenTables() {
+		return new FilteringIterator<GenTable, GenTable>(this.genTables()) {
 			@Override
-			protected boolean accept(GenTable next) {
-				return next.isJoinTable();
+			protected boolean accept(GenTable genTable) {
+				return genTable.isJoinTable();
 			}
 		};
 	}
 
 	/**
-	 * build a set of the tables that are referenced by other tables
+	 * build a set of the gen tables that are referenced by other gen tables
 	 * in the scope
 	 */
-	private Set<GenTable> buildReferencedTables() {
-		int size = CollectionTools.size(this.tables());
-		Set<GenTable> referencedTables = new HashSet<GenTable>(this.genTables.size());
-		for (Iterator<GenTable> stream = this.tables(); stream.hasNext(); ) {
-			stream.next().addReferencedTablesTo(referencedTables);
-			this.progressMonitor.worked(20/size);
+	private HashSet<GenTable> buildReferencedGenTables() {
+		HashSet<GenTable> referencedGenTables = new HashSet<GenTable>(this.genTablesSize());
+		for (Iterator<GenTable> stream = this.genTables(); stream.hasNext(); ) {
+			stream.next().addReferencedGenTablesTo(referencedGenTables);
 		}
-		return referencedTables;
+		return referencedGenTables;
+	}
+
+	private void checkCanceled(IProgressMonitor progressMonitor) {
+		if (progressMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
+	}
+
+	@Override
+	public String toString() {
+		return StringTools.buildToStringFor(this, this.genTables);
 	}
 
 }

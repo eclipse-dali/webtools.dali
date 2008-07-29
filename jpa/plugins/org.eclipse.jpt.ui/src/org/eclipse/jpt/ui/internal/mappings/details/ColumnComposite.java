@@ -168,7 +168,7 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 			}
 
 			@Override
-			protected Table table() {
+			protected Table getDBTable_() {
 				return subject().getDbTable();
 			}
 

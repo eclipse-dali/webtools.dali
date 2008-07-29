@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.connection;
 
 import java.util.Comparator;
 import java.util.Iterator;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -20,6 +21,7 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.db.ConnectionProfile;
+import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -31,6 +33,7 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
 
 /**
@@ -146,41 +149,55 @@ public class JdbcConnectionPropertiesComposite extends AbstractPane<Connection>
 		new JdbcBindParametersComposite(this, container);
 	}
 
-	private void promptConnection() {
+	void promptConnection() {
 
-		ConnecionSelectionDialog dialog = new ConnecionSelectionDialog();
+		ConnectionSelectionDialog dialog = new ConnectionSelectionDialog();
 
-		if (dialog.open() == IDialogConstants.OK_ID) {
-
-			String name = (String) dialog.getResult()[0];
-			ConnectionProfile profile = JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNamed(name);
-
-			Connection connection = subject();
-			connection.setUrl(profile.getUrl());
-			connection.setUser(profile.getUserName());
-			connection.setPassword(profile.getUserPassword());
-			connection.setDriver(profile.getDriverClassName());
+		if (dialog.open() != IDialogConstants.OK_ID) {
+			return;
 		}
+
+		String name = (String) dialog.getResult()[0];
+		ConnectionProfile cp = this.getConnectionProfileFactory().buildConnectionProfile(name);
+
+		Connection connection = subject();
+		connection.setUrl((cp == null) ? "" : cp.getURL());
+		connection.setUser((cp == null) ? "" : cp.getUserName());
+		connection.setPassword((cp == null) ? "" : cp.getUserPassword());
+		connection.setDriver((cp == null) ? "" : cp.getDriverClassName());
+	}
+
+	ConnectionProfileFactory getConnectionProfileFactory() {
+		// we allow the user to select any connection profile and simply
+		// take the settings from it (user, password, etc.) and give them
+		// to the EclipseLink connection, so we go
+		// to the db plug-in directly to get the factory
+		return JptDbPlugin.instance().getConnectionProfileFactory();
+	}
+
+	// broaden access a bit
+	Shell shell_() {
+		return this.shell();
 	}
 
 	/**
 	 * This dialog shows the list of possible connection names and lets the user
 	 * the option to filter them using a search field.
 	 */
-	protected class ConnecionSelectionDialog extends FilteredItemsSelectionDialog {
+	protected class ConnectionSelectionDialog extends FilteredItemsSelectionDialog {
 
 		/**
 		 * Creates a new <code>MappingSelectionDialog</code>.
 		 */
-		private ConnecionSelectionDialog() {
-			super(JdbcConnectionPropertiesComposite.this.shell(), false);
+		protected ConnectionSelectionDialog() {
+			super(JdbcConnectionPropertiesComposite.this.shell_(), false);
 			setMessage(EclipseLinkUiMessages.JdbcConnectionPropertiesComposite_ConnectionDialog_Message);
 			setTitle(EclipseLinkUiMessages.JdbcConnectionPropertiesComposite_ConnectionDialog_Title);
 			setListLabelProvider(buildLabelProvider());
 			setDetailsLabelProvider(buildLabelProvider());
 		}
 
-		private ILabelProvider buildLabelProvider() {
+		protected ILabelProvider buildLabelProvider() {
 			return new LabelProvider() {
 				@Override
 				public Image getImage(Object element) {
@@ -222,13 +239,17 @@ public class JdbcConnectionPropertiesComposite extends AbstractPane<Connection>
 
 			try {
 				// Add the connection names to the dialog
-				for (Iterator<String> names = JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNames(); names.hasNext(); ) {
-					provider.add(names.next(), itemsFilter);
+				for (Iterator<String> stream = this.connectionProfileNames(); stream.hasNext(); ) {
+					provider.add(stream.next(), itemsFilter);
 				}
 			}
 			finally {
 				monitor.done();
 			}
+		}
+
+		private Iterator<String> connectionProfileNames() {
+			return JdbcConnectionPropertiesComposite.this.getConnectionProfileFactory().connectionProfileNames();
 		}
 
 		/*

@@ -72,7 +72,7 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 			table = getDefaultTable();
 		}
 
-		return schema.tableNamed(table);
+		return schema.getTableNamed(table);
 	}
 
 	/*

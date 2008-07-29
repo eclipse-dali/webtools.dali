@@ -338,11 +338,11 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode imple
 
 	public org.eclipse.jpt.db.Table getDbTable() {
 		Schema schema = this.getDbSchema();
-		return (schema == null) ? null : schema.tableNamed(this.getName());
+		return (schema == null) ? null : schema.getTableNamed(this.getName());
 	}
 
 	public Schema getDbSchema() {
-		return this.getDatabase().schemaNamed(this.getSchema());
+		return this.getDataSource().getSchemaNamed(this.getSchema());
 	}
 
 	public boolean hasResolvedSchema() {
@@ -404,7 +404,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode imple
 	}
 
 	private Iterator<String> candidateSchemas() {
-		return this.getDatabase().schemaNames();
+		return this.getDataSource().schemaNames();
 	}
 
 	private Iterator<String> candidateSchemas(Filter<String> filter) {
@@ -416,7 +416,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode imple
 	}
 
 	private Iterator<String> candidateCatalogs() {
-		return this.getDatabase().catalogNames();
+		return this.getDataSource().catalogNames();
 	}
 
 	private Iterator<String> candidateCatalogs(Filter<String> filter) {

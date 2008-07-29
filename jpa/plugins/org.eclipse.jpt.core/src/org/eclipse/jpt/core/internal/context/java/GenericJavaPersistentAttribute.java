@@ -250,7 +250,7 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	}
 	
 	protected void updateDefaultMapping(JavaResourcePersistentAttribute jrpa) {
-		String defaultMappingKey = getJpaPlatform().defaultJavaAttributeMappingKey(this);
+		String defaultMappingKey = getJpaPlatform().getDefaultJavaAttributeMappingKey(this);
 		if (getDefaultMapping().getKey() != defaultMappingKey) {
 			JavaAttributeMapping oldDefaultMapping = this.defaultMapping;
 			this.defaultMapping = getJpaPlatform().buildDefaultJavaAttributeMapping(this);

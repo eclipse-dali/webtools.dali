@@ -21,14 +21,14 @@ public class AllPlatformTests {
 		TestSuite suite = new TestSuite(AllPlatformTests.class.getPackage().getName());
 
 // TODO - Uncomment the platform to test.
-//			suite.addTestSuite(Derby101Tests.class);
-//			suite.addTestSuite(Oracle9iTests.class);
+//			suite.addTestSuite(DerbyTests.class);
+//			suite.addTestSuite(MySQLTests.class);
 //			suite.addTestSuite(Oracle10gTests.class);
 //			suite.addTestSuite(Oracle10gXETests.class);
-//			suite.addTestSuite(SQLServer2005Tests.class);
-//			suite.addTestSuite(MySQL41Tests.class);
-//			suite.addTestSuite(PostgreSQL824Tests.class);
-//			suite.addTestSuite(Sybase12Tests.class);
+//			suite.addTestSuite(Oracle9iTests.class);
+//			suite.addTestSuite(PostgreSQLTests.class);
+//			suite.addTestSuite(SQLServerTests.class);
+//			suite.addTestSuite(SybaseTests.class);
 
         return suite;
     }

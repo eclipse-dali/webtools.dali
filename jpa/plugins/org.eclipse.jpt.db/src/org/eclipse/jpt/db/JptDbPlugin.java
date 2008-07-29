@@ -10,12 +10,12 @@
 package org.eclipse.jpt.db;
 
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.jpt.db.internal.DTPConnectionProfileRepository;
+import org.eclipse.jpt.db.internal.DTPConnectionProfileFactory;
 import org.osgi.framework.BundleContext;
 
 /**
  * The JPT DB plug-in lifecycle implementation.
- * Globally available connection profile repository.
+ * Globally available connection profile factory.
  * 
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,7 +24,7 @@ import org.osgi.framework.BundleContext;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public class JptDbPlugin extends Plugin {
-	private DTPConnectionProfileRepository connectionProfileRepository;
+	private DTPConnectionProfileFactory connectionProfileFactory;
 
 	private static JptDbPlugin INSTANCE;  // sorta-final
 
@@ -49,8 +49,8 @@ public class JptDbPlugin extends Plugin {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		this.connectionProfileRepository = DTPConnectionProfileRepository.instance();
-        this.connectionProfileRepository.start();
+		this.connectionProfileFactory = DTPConnectionProfileFactory.instance();
+        this.connectionProfileFactory.start();
 	}
 
 	/**
@@ -58,14 +58,14 @@ public class JptDbPlugin extends Plugin {
 	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		this.connectionProfileRepository.stop();
-		this.connectionProfileRepository = null;
+		this.connectionProfileFactory.stop();
+		this.connectionProfileFactory = null;
 		INSTANCE = null;
 		super.stop(context);
 	}
 
-	public ConnectionProfileRepository getConnectionProfileRepository() {
-		return this.connectionProfileRepository;
+	public ConnectionProfileFactory getConnectionProfileFactory() {
+		return this.connectionProfileFactory;
 	}
 
 }

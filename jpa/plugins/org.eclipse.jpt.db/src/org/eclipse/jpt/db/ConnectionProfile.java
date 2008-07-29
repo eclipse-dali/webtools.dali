@@ -23,32 +23,17 @@ import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionCons
  * 
  * This interface is not intended to be implemented by clients.
  */
-public interface ConnectionProfile extends Comparable<ConnectionProfile> {
+public interface ConnectionProfile
+	extends DatabaseObject, Comparable<ConnectionProfile>
+{
 
-	/**
-	 * Return the connection profile's name.
-	 */
-	String getName();
+	// ********** properties **********
 
 	/**
 	 * Return the connection profile's database.
-	 * Return a "null" database if the connection profile is inactive.
+	 * Return null if the connection profile is inactive.
 	 */
 	Database getDatabase();
-
-	/**
-	 * Return the connection profile's "default" catalog.
-	 * Return null if the connection profile's database does not support
-	 * catalogs.
-	 */
-	Catalog getDefaultCatalog();
-
-	/**
-	 * Return the connection profile's default schema.
-	 * In most cases the default schema's name will match the user name.
-	 * It may be null.
-	 */
-	Schema getDefaultSchema();
 
 	/**
 	 * Return ID of the provider managing the DTP profile.
@@ -88,7 +73,7 @@ public interface ConnectionProfile extends Comparable<ConnectionProfile> {
 	/**
 	 * Return the default connection URL.
 	 */
-	String getUrl();
+	String getURL();
 
 	/**
 	 * Return the default user name.
@@ -111,13 +96,23 @@ public interface ConnectionProfile extends Comparable<ConnectionProfile> {
 	 */
 	String getDriverJarList();
 
+
+	// ********** connection **********
+
 	/**
 	 * Return whether the profile is either connected to a live database
 	 * session or working off-line (i.e. it has access to meta-data).
 	 * @see isConnected()
-	 * @see isWorkingOfflin()
+	 * @see isWorkingOffline()
 	 */
 	boolean isActive();
+
+	/**
+	 * Return whether the profile is neither connected to a live database
+	 * session nor working off-line (i.e. it has access to meta-data).
+	 * @see isActive()
+	 */
+	boolean isInactive();
 
 	/**
 	 * Return whether the profile is connected to a live database session
@@ -128,14 +123,27 @@ public interface ConnectionProfile extends Comparable<ConnectionProfile> {
 	boolean isConnected();
 
 	/**
+	 * Return whether the profile is not connected to a live database session
+	 * (i.e. the meta-data comes from the database), as opposed to working
+	 * off-line.
+	 * @see #isConnected()
+	 */
+	boolean isDisconnected();
+
+	/**
 	 * Connect to the database.
+	 * @see #disconnect()
 	 */
 	void connect();
 
 	/**
 	 * Disconnect from the database.
+	 * @see #connect()
 	 */
 	void disconnect();
+
+
+	// ********** off-line support **********
 
 	/**
 	 * Return whether the profile is working off-line (i.e. the meta-data
@@ -169,10 +177,8 @@ public interface ConnectionProfile extends Comparable<ConnectionProfile> {
 	 */
 	IStatus workOffline();
 
-	/**
-	 * Return whether the connection profile is a "null" connection profile.
-	 */
-	boolean isNull();
+
+	// ********** listeners **********
 
 	/**
 	 * Add the specified connection listener to the connection profile.
@@ -183,6 +189,9 @@ public interface ConnectionProfile extends Comparable<ConnectionProfile> {
 	 * Remove the specified connection listener from the connection profile.
 	 */
 	void removeConnectionListener(ConnectionListener listener);
+
+
+	// ********** constants **********
 
 	String CONNECTION_PROFILE_TYPE = "org.eclipse.datatools.connectivity.db.generic.connectionProfile";  //$NON-NLS-1$
 	String DRIVER_DEFINITION_PROP_ID = "org.eclipse.datatools.connectivity.driverDefinitionID";  //$NON-NLS-1$

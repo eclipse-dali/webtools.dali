@@ -72,7 +72,7 @@ public class EclipseLinkDDLGeneratorUi
 			return;
 		}
 		
-		GenerateDDLWizard wizard = new GenerateDDLWizard(this.project, this.selection);
+		GenerateDDLWizard wizard = new GenerateDDLWizard(this.project);
 		WizardDialog dialog = new WizardDialog(this.getCurrentShell(), wizard);
 		dialog.create();
 		if(wizard.getPageCount() > 0) {

@@ -671,10 +671,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		@Override
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 			org.eclipse.jpt.db.Table dbTable = super.getDbTable(tableName);
-			if (dbTable != null) {
-				return dbTable;
-			}
-			return getTypeMapping().getDbTable(tableName);
+			return (dbTable != null) ? dbTable : getTypeMapping().getDbTable(tableName);
 		}
 
 		public org.eclipse.jpt.db.Table getDbReferencedColumnTable() {

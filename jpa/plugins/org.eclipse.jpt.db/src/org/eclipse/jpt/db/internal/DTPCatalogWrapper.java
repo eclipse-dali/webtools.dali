@@ -21,9 +21,6 @@ final class DTPCatalogWrapper
 	extends DTPSchemaContainerWrapper
 	implements Catalog
 {
-	// backpointer to parent
-	private final DTPDatabaseWrapper database;
-
 	// the wrapped DTP catalog
 	private final org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog;
 
@@ -32,7 +29,6 @@ final class DTPCatalogWrapper
 
 	DTPCatalogWrapper(DTPDatabaseWrapper database, org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog) {
 		super(database, dtpCatalog);
-		this.database = database;
 		this.dtpCatalog = dtpCatalog;
 	}
 
@@ -40,43 +36,54 @@ final class DTPCatalogWrapper
 	// ********** DTPWrapper implementation **********
 
 	@Override
-	synchronized void catalogObjectChanged(int eventType) {
-		super.catalogObjectChanged(eventType);
-		this.getConnectionProfile().catalogChanged(this, eventType);
+	synchronized void catalogObjectChanged() {
+		super.catalogObjectChanged();
+		this.getConnectionProfile().catalogChanged(this);
 	}
 
 
-	// ********** Catalog implementation **********
-
-	@Override
-	public String getName() {
-		return this.dtpCatalog.getName();
-	}
-
-
-	// ***** schemata
+	// ********** DTPSchemaContainerWrapper implementation **********
 
 	@Override
 	@SuppressWarnings("unchecked")
-	List<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata() {
+	List<org.eclipse.datatools.modelbase.sql.schema.Schema> getDTPSchemata() {
 		return this.dtpCatalog.getSchemas();
 	}
 
-
-	// ********** internal methods **********
-
-	boolean wraps(org.eclipse.datatools.modelbase.sql.schema.Catalog catalog) {
-		return this.dtpCatalog == catalog;
+	@Override
+	DTPCatalogWrapper getCatalog() {
+		return this;
 	}
 
 	@Override
-	boolean isCaseSensitive() {
-		return this.database.isCaseSensitive();
+	DTPSchemaWrapper getSchema(org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema) {
+		return this.wraps(dtpSchema.getCatalog()) ?
+						this.getSchema_(dtpSchema)
+					:
+						this.getDatabase().getSchema(dtpSchema);
 	}
 
 	@Override
-	DTPDatabaseWrapper database() {
-		return this.database;
+	DTPTableWrapper getTable(org.eclipse.datatools.modelbase.sql.tables.Table dtpTable) {
+		return this.wraps(dtpTable.getSchema().getCatalog()) ?
+						this.getTable_(dtpTable)
+					:
+						this.getDatabase().getTable(dtpTable);
+	}
+
+	@Override
+	DTPColumnWrapper getColumn(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
+		return this.wraps(dtpColumn.getTable().getSchema().getCatalog()) ?
+						this.getColumn_(dtpColumn)
+					:
+						this.getDatabase().getColumn(dtpColumn);
+	}
+
+
+	// ********** DatabaseObject implementation **********
+
+	public String getName() {
+		return this.dtpCatalog.getName();
 	}
 
 
@@ -84,6 +91,13 @@ final class DTPCatalogWrapper
 
 	public int compareTo(Catalog catalog) {
 		return Collator.getInstance().compare(this.getName(), catalog.getName());
+	}
+
+
+	// ********** internal methods **********
+
+	boolean wraps(org.eclipse.datatools.modelbase.sql.schema.Catalog catalog) {
+		return this.dtpCatalog == catalog;
 	}
 
 }

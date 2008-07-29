@@ -91,7 +91,7 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 
 	public Column getDbReferencedColumn() {
 		Table table = this.getDbReferencedColumnTable();
-		return (table == null) ? null : table.columnNamed(this.getReferencedColumnName());
+		return (table == null) ? null : table.getColumnNamed(this.getReferencedColumnName());
 	}
 
 	@Override

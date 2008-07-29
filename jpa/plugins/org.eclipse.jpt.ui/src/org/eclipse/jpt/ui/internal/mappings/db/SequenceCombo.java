@@ -68,17 +68,10 @@ public abstract class SequenceCombo<T extends JpaNode> extends AbstractDatabaseO
 
 	protected abstract Schema schema();
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Iterator<String> values() {
 		Schema schema = schema();
-
-		if (schema != null) {
-			return schema.sequenceNames();
-		}
-
-		return EmptyIterator.instance();
+		return (schema == null) ? EmptyIterator.<String>instance() : schema.sequenceNames();
 	}
+
 }

@@ -388,11 +388,11 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 
 	public Table getDbTable() {
 		Schema schema = this.getDbSchema();
-		return (schema == null) ? null : schema.tableNamed(this.getTable());
+		return (schema == null) ? null : schema.getTableNamed(this.getTable());
 	}
 
 	public Schema getDbSchema() {
-		return this.getDatabase().schemaNamed(this.getSchema());
+		return this.getDataSource().getSchemaNamed(this.getSchema());
 	}
 
 }

@@ -12,7 +12,7 @@ package org.eclipse.jpt.db;
 import java.util.Iterator;
 
 /**
- * Database connection profile repository
+ * Database connection profile factory
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,38 +22,38 @@ import java.util.Iterator;
  * 
  * This interface is not intended to be implemented by clients.
  */
-public interface ConnectionProfileRepository {
+public interface ConnectionProfileFactory {
 
 	/**
-	 * Return the repository's connection profiles.
-	 */
-	Iterator<ConnectionProfile> connectionProfiles();
-
-	/**
-	 * Return the number of connection profiles in the repository.
-	 */
-	int connectionProfilesSize();
-
-	/**
-	 * Return the repository's connection profile names.
+	 * Return the names of the DTP connection profiles the factory can wrap with
+	 * new connection profiles.
 	 */
 	Iterator<String> connectionProfileNames();
 
 	/**
-	 * Return whether the repository contains a connection profile
-	 * with the specified name.
+	 * Build and return a connection profile that wraps the DTP connection
+	 * profile with the specified name.
+	 * Return null if there is no DTP connection profile with the specified
+	 * name.
+	 * Use the specified database finder to allow clients to control how
+	 * database objects are found based on their names.
 	 */
-	boolean containsConnectionProfileNamed(String name);
+	ConnectionProfile buildConnectionProfile(String name, DatabaseFinder finder);
 
 	/**
-	 * Return the connection profile with the specified name.
-	 * Return a "null" connection profile if the repository does not
-	 * have a connection profile with the specified name.
+	 * Build and return a connection profile that wraps the DTP connection
+	 * profile with the specified name.
+	 * Return null if there is no DTP connection profile with the specified
+	 * name.
+	 * Clients should use this method when a JPA platform is unavailable
+	 * (e.g. during project creation). The returned connection profile will
+	 * not be able to search for database objects by any names other than
+	 * those supplied by the factory.
 	 */
-	ConnectionProfile connectionProfileNamed(String name);
+	ConnectionProfile buildConnectionProfile(String name);
 
 	/**
-	 * Add a listener that will be notified of changes to the repository's
+	 * Add a listener that will be notified of changes to the DTP
 	 * connection profiles.
 	 */
 	void addConnectionProfileListener(ConnectionProfileListener listener);

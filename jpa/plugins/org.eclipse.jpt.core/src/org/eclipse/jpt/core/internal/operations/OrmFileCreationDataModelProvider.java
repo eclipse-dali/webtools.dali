@@ -37,6 +37,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelProvider;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelPropertyDescriptor;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -171,18 +172,14 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 		if (accessType == null) {
 			return new DataModelPropertyDescriptor(null, JptCoreMessages.NONE);
 		}
-		else {
-			return new DataModelPropertyDescriptor(accessType, accessType.getName());
-		}
+		return new DataModelPropertyDescriptor(accessType, accessType.getName());
 	}
 	
-	private DataModelPropertyDescriptor persistenceUnitPropertyDescriptor(String persistenceUnitName) {
+	DataModelPropertyDescriptor persistenceUnitPropertyDescriptor(String persistenceUnitName) {
 		if (StringTools.stringIsEmpty(persistenceUnitName)) {
 			return new DataModelPropertyDescriptor(null, JptCoreMessages.NONE);
 		}
-		else {
-			return new DataModelPropertyDescriptor(persistenceUnitName);
-		}
+		return new DataModelPropertyDescriptor(persistenceUnitName);
 	}
 	
 	
@@ -223,19 +220,19 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 		if (sourceFolderNotInProject(sourceFolderPath)) {
 			return new Status(
 				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
-				JptCoreMessages.bind(
+				NLS.bind(
 					JptCoreMessages.VALIDATE_SOURCE_FOLDER_NOT_IN_PROJECT, 
 					sourceFolderPath, projectName));
 		}
 		if (getVerifiedSourceFolder() == null) {
 			return new Status(
 				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
-				JptCoreMessages.bind(JptCoreMessages.VALIDATE_SOURCE_FOLDER_DOES_NOT_EXIST, sourceFolderPath));
+				NLS.bind(JptCoreMessages.VALIDATE_SOURCE_FOLDER_DOES_NOT_EXIST, sourceFolderPath));
 		}
 		if (getVerifiedJavaSourceFolder() == null) {
 			return new Status(
 				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
-				JptCoreMessages.bind(JptCoreMessages.VALIDATE_SOURCE_FOLDER_NOT_SOURCE_FOLDER, sourceFolderPath));
+				NLS.bind(JptCoreMessages.VALIDATE_SOURCE_FOLDER_NOT_SOURCE_FOLDER, sourceFolderPath));
 		}
 		if (getExistingOrmFile() != null) {
 			return new Status(
@@ -253,12 +250,12 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 			if (StringTools.stringIsEmpty(pUnitName)) {
 				return new Status(
 					IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
-					JptCoreMessages.bind(JptCoreMessages.VALIDATE_PERSISTENCE_UNIT_DOES_NOT_SPECIFIED, pUnitName));
+					NLS.bind(JptCoreMessages.VALIDATE_PERSISTENCE_UNIT_DOES_NOT_SPECIFIED, pUnitName));
 			}
 			if (getPersistenceUnit() == null) {
 				return new Status(
 					IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
-					JptCoreMessages.bind(JptCoreMessages.VALIDATE_PERSISTENCE_UNIT_NOT_IN_PROJECT, pUnitName, projectName));
+					NLS.bind(JptCoreMessages.VALIDATE_PERSISTENCE_UNIT_NOT_IN_PROJECT, pUnitName, projectName));
 			}
 		}
 		return Status.OK_STATUS;
@@ -458,12 +455,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 						(jpaProject == null) ? null : jpaProject.getRootContext().getPersistenceXml();
 					Persistence persistence = 
 						(persistenceXml == null) ? null : persistenceXml.getPersistence();
-					if (persistence == null) {
-						return EmptyIterator.instance();
-					}
-					else {
-						return persistence.persistenceUnits();
-					}
+					return (persistence == null) ? EmptyIterator.<PersistenceUnit>instance() : persistence.persistenceUnits();
 				}
 			});
 	}

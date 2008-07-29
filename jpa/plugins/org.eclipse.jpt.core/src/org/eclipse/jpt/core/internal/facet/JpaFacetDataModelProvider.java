@@ -9,9 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.facet;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaCore;
@@ -19,11 +21,14 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.db.ConnectionProfile;
+import org.eclipse.jpt.db.ConnectionProfileFactory;
+import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.common.componentcore.datamodel.FacetInstallDataModelProvider;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -111,7 +116,7 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 			return null;
 		}
 		if (propertyName.equals(CONNECTION_ACTIVE)) {
-			return connectionIsActive();
+			return Boolean.valueOf(connectionIsActive());
 		}
 		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
 			return Boolean.FALSE;
@@ -126,7 +131,7 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 			return Boolean.valueOf(this.runtimeSupportsEjb30(this.runtime()));
 		}
 		if (propertyName.equals(USE_USER_JPA_LIBRARY)) {
-			return ! getBooleanProperty(USE_SERVER_JPA_IMPLEMENTATION);
+			return Boolean.valueOf( ! getBooleanProperty(USE_SERVER_JPA_IMPLEMENTATION));
 		}
 		if (propertyName.equals(JPA_LIBRARY)) {
 			return JptCorePlugin.getDefaultJpaLibrary();
@@ -135,7 +140,7 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 			return Boolean.valueOf(this.runtimeSupportsEjb30(this.runtime()));
 		}
 		if (propertyName.equals(LIST_ANNOTATED_CLASSES)) {
-			return ! getBooleanProperty(DISCOVER_ANNOTATED_CLASSES);
+			return Boolean.valueOf( ! getBooleanProperty(DISCOVER_ANNOTATED_CLASSES));
 		}
 		if (propertyName.equals(CREATE_ORM_XML)) {
 			return Boolean.TRUE;
@@ -169,25 +174,27 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		}
 		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.ENABLE_CHG);
-			if (! (Boolean) propertyValue) {
+			if (! ((Boolean) propertyValue).booleanValue()) {
 				this.model.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, null);
 			}
 		}
 		if (propertyName.equals(USE_SERVER_JPA_IMPLEMENTATION)) {
-			this.model.setBooleanProperty(USE_USER_JPA_LIBRARY, ! (Boolean) propertyValue);
+			this.model.setBooleanProperty(USE_USER_JPA_LIBRARY, ! ((Boolean) propertyValue).booleanValue());
 		}
 		if (propertyName.equals(USE_USER_JPA_LIBRARY)) {
-			this.model.setBooleanProperty(USE_SERVER_JPA_IMPLEMENTATION, ! (Boolean) propertyValue);
+			this.model.setBooleanProperty(USE_SERVER_JPA_IMPLEMENTATION, ! ((Boolean) propertyValue).booleanValue());
 			this.model.notifyPropertyChange(JPA_LIBRARY, IDataModel.ENABLE_CHG);
 		}
 		if (propertyName.equals(DISCOVER_ANNOTATED_CLASSES)) {
-			this.model.setBooleanProperty(LIST_ANNOTATED_CLASSES, ! (Boolean) propertyValue);
+			this.model.setBooleanProperty(LIST_ANNOTATED_CLASSES, ! ((Boolean) propertyValue).booleanValue());
 		}
 		if (propertyName.equals(LIST_ANNOTATED_CLASSES)) {
-			this.model.setBooleanProperty(DISCOVER_ANNOTATED_CLASSES, ! (Boolean) propertyValue);
+			this.model.setBooleanProperty(DISCOVER_ANNOTATED_CLASSES, ! ((Boolean) propertyValue).booleanValue());
 		}
 		return ok;
 	}
+
+	private static final DataModelPropertyDescriptor[] EMPTY_DMPD_ARRAY = new DataModelPropertyDescriptor[0];
 
 	@Override
 	public DataModelPropertyDescriptor[] getValidPropertyDescriptors(String propertyName) {
@@ -200,35 +207,35 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 						return platformIdPropertyDescriptor(platformId);
 					}
 				},
-				new DataModelPropertyDescriptor[0]);
+				EMPTY_DMPD_ARRAY);
 		}
 		if (propertyName.equals(CONNECTION)) {
 			return CollectionTools.array(
 				new TransformationIterator<String, DataModelPropertyDescriptor>(
 						new CompositeIterator<String>(
 							null, 
-							JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNames())) {
+							this.getConnectionProfileFactory().connectionProfileNames())) {
 					@Override
 					protected DataModelPropertyDescriptor transform(String next) {
 						return connectionPropertyDescriptor(next);
 					}
 				},
-				new DataModelPropertyDescriptor[0]);
+				EMPTY_DMPD_ARRAY);
 		}
 		if (propertyName.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
 			return CollectionTools.array(
-				new TransformationIterator<String, DataModelPropertyDescriptor>(schemas()) {
+				new TransformationIterator<String, DataModelPropertyDescriptor>(schemaNames()) {
 					@Override
 					protected DataModelPropertyDescriptor transform(String next) {
 						return new DataModelPropertyDescriptor(next);
 					}
 				},
-				new DataModelPropertyDescriptor[0]);
+				EMPTY_DMPD_ARRAY);
 		}
 		if (propertyName.equals(JPA_LIBRARY)) {
 			String[] libraries = CollectionTools.sort(JavaCore.getUserLibraryNames());
 			DataModelPropertyDescriptor[] descriptors = new DataModelPropertyDescriptor[libraries.length + 1];
-			descriptors[0] = new DataModelPropertyDescriptor("", RUNTIME_NONE);
+			descriptors[0] = new DataModelPropertyDescriptor("", RUNTIME_NONE); //$NON-NLS-1$
 
 			int i = 1;
 			for (String library : libraries) {
@@ -251,18 +258,16 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		return super.getPropertyDescriptor(propertyName);
 	}
 	
-	private DataModelPropertyDescriptor platformIdPropertyDescriptor(String platformId) {
+	DataModelPropertyDescriptor platformIdPropertyDescriptor(String platformId) {
 		return new DataModelPropertyDescriptor(
 			platformId, JpaPlatformRegistry.instance().getJpaPlatformLabel(platformId));
 	}
 	
-	private DataModelPropertyDescriptor connectionPropertyDescriptor(String connection) {
-		if (StringTools.stringIsEmpty(connection)) {
-			return new DataModelPropertyDescriptor(null, JptCoreMessages.NONE);
-		}
-		else {
-			return new DataModelPropertyDescriptor(connection);
-		}
+	DataModelPropertyDescriptor connectionPropertyDescriptor(String connection) {
+		return StringTools.stringIsEmpty(connection) ?
+					new DataModelPropertyDescriptor(null, JptCoreMessages.NONE)
+				:
+					new DataModelPropertyDescriptor(connection);
 	}
 
 	@Override
@@ -291,41 +296,69 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 	}
 
 	private boolean runtimeSupportsEjb30(IRuntime runtime) {
-		IProjectFacetVersion ejb30 = ProjectFacetsManager.getProjectFacet(EJB_FACET_ID).getVersion("3.0");
+		IProjectFacetVersion ejb30 = ProjectFacetsManager.getProjectFacet(EJB_FACET_ID).getVersion("3.0"); //$NON-NLS-1$
 		return (runtime == null) ? false : runtime.supports(ejb30);
 	}
-	
-	private ConnectionProfile getConnection() {
-		String connectionName = getStringProperty(CONNECTION);
-		return JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNamed(connectionName);
+
+	private String getConnectionName() {
+		return this.getStringProperty(CONNECTION);
 	}
 	
+	private ConnectionProfile getConnectionProfile() {
+		return this.buildConnectionProfile(this.getConnectionName());
+	}
+
+	private ConnectionProfileFactory getConnectionProfileFactory() {
+		// we don't have a JPA project yet, so go to the db plug-in directly to get the factory
+		return JptDbPlugin.instance().getConnectionProfileFactory();
+	}
+
+	private ConnectionProfile buildConnectionProfile(String name) {
+		return this.getConnectionProfileFactory().buildConnectionProfile(name);
+	}
+
 	private boolean connectionIsActive() {
-		return getConnection().isActive();
+		return this.connectionIsActive(this.getConnectionName());
+	}
+
+	private boolean connectionIsActive(String connectionName) {
+		ConnectionProfile cp = this.buildConnectionProfile(connectionName);
+		return (cp != null) && cp.isActive();
 	}
 	
 	private String getDefaultSchemaName() {
-		Schema defaultSchema = getConnection().getDefaultSchema();
-		return (defaultSchema == null) ? null : defaultSchema.getName();
+		ConnectionProfile cp = this.getConnectionProfile();
+		if (cp == null) {
+			return null;
+		}
+		Database db = cp.getDatabase();
+		if (db == null) {
+			return null;
+		}
+		Schema schema = db.getDefaultSchema();
+		return (schema == null) ? null : schema.getName();
 	}
-	
-	private Iterator<String> schemas() {
+
+	private List<String> buildSortedSchemaNames() {
+		ConnectionProfile cp = this.getConnectionProfile();
+		if (cp == null) {
+			return Collections.emptyList();
+		}
+		Database db = cp.getDatabase();
+		if (db == null) {
+			return Collections.emptyList();
+		}
+		return CollectionTools.sort(CollectionTools.list(db.schemaNames()));
+	}
+
+	private Iterator<String> schemaNames() {
 		String setValue = getStringProperty(USER_OVERRIDE_DEFAULT_SCHEMA);
+		List<String> schemaNames = this.buildSortedSchemaNames();
 		
-		List<String> schemas = CollectionTools.sort(CollectionTools.list(
-			new TransformationIterator<Schema, String>(getConnection().getDatabase().schemata()) {
-				@Override
-				protected String transform(Schema next) {
-					return next.getName();
-				}
-			}));
-		
-		if (! StringTools.stringIsEmpty(setValue) && ! schemas.contains(setValue)) {
-			return new CompositeIterator<String>(setValue, schemas.iterator());
+		if (StringTools.stringIsEmpty(setValue) || schemaNames.contains(setValue)) {
+			return schemaNames.iterator();
 		}
-		else {
-			return schemas.iterator();
-		}
+		return new CompositeIterator<String>(setValue, schemaNames.iterator());
 	}
 
 
@@ -339,10 +372,14 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 	}
 
 	private IStatus validateConnectionName(String connectionName) {
-		if (StringTools.stringIsEmpty(connectionName)) {
-			return OK_STATUS;
-		}
-		return JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNamed(connectionName).isActive() ?
+		return StringTools.stringIsEmpty(connectionName) ?
+				OK_STATUS
+			:
+				this.getConnectionStatus(connectionName);
+	}
+
+	private IStatus getConnectionStatus(String connectionName) {
+		return this.connectionIsActive(connectionName) ?
 				OK_STATUS
 			:
 				CONNECTION_NOT_CONNECTED_STATUS;

@@ -13,45 +13,56 @@ package org.eclipse.jpt.db.tests.internal.platforms;
 /**
  *  Oracle 9i Thin Driver Test
  */
+@SuppressWarnings("nls")
 public class Oracle9iTests extends DTPPlatformTests {
 
-    public Oracle9iTests( String name) {
-        super( name);
-    }
-
-    @Override
-	protected String databaseVendor() {
-		return "Oracle";
+	public Oracle9iTests( String name) {
+		super( name);
 	}
 
-    @Override
-	protected String databaseVersion() {
-		return "9";
+	@Override
+	protected String getPlatformPropertiesFileName() {
+		return "oracle9i.properties";
 	}
 
-    @Override
-	protected String driverClass() {
-		return "oracle.jdbc.OracleDriver";
+	@Override
+	protected String getDriverName() {
+		return "Oracle 9i Thin Driver";
 	}
 
-    @Override
-	protected String driverDefinitionId() {
+	@Override
+	protected String getDriverDefinitionID() {
 		return "DriverDefn.Oracle Thin Driver";
 	}
 
-    @Override
-	protected String driverDefinitionType() {
+	@Override
+	protected String getDriverDefinitionType() {
 		return "org.eclipse.datatools.enablement.oracle.9.driverTemplate";
 	}
 
-    @Override
-	protected String driverName() {
-		return "Oracle 9i Thin Driver";
+	@Override
+	protected String getDatabaseVendor() {
+		return "Oracle";
 	}
-	
-    @Override
-    protected String getConfigName() {
-    	return "oracle9i.properties";
-    }
+
+	@Override
+	protected String getDatabaseVersion() {
+		return "9";
+	}
+
+	@Override
+	protected String getDriverClass() {
+		return "oracle.jdbc.OracleDriver";
+	}
+
+	@Override
+	protected String getProfileName() {
+		return "Oracle9i";
+	}
+
+	@Override
+	protected String getProfileDescription() {
+		return "Oracle9i JDBC Profile [Test]";
+	}
 
 }

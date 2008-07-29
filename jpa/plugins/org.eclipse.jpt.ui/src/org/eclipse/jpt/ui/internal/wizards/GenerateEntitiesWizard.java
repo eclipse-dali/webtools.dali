@@ -11,13 +11,18 @@ package org.eclipse.jpt.ui.internal.wizards;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
+
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jpt.core.EntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ConnectionProfile;
+import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.gen.internal.EntityGenerator;
@@ -25,105 +30,132 @@ import org.eclipse.jpt.gen.internal.PackageGenerator;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
+/**
+ * two pages:
+ *   - a Database Connection page that allows the user to select a connection
+ *     and a schema
+ *   - a Generate Entities page that allows the user to select which tables in
+ *     the selected schema are to be used and to configure Entity names
+ */
 public class GenerateEntitiesWizard extends Wizard {	
 
-	private JpaProject jpaProject;
+	private final JpaProject jpaProject;
 
-	private IStructuredSelection selection;
+	private final IStructuredSelection selection;
 
-	/** this page is only built when the project is not connected to the db */
-	private DatabaseReconnectWizardPage dbSettingsPage;
+	private DatabaseConnectionWizardPage dbSettingsPage;
 
 	private GenerateEntitiesWizardPage generateEntitiesPage;
 
-	private PackageGenerator.Config packageGeneratorConfig;
+	private final PackageGenerator.Config packageGeneratorConfig;
 
-	private EntityGenerator.Config entityGeneratorConfig;
+	private final EntityGenerator.Config entityGeneratorConfig;
 
 	private boolean synchronizePersistenceXml;
-	
-	private Collection<Table> selectedTables;
 
-	public GenerateEntitiesWizard( JpaProject jpaProject, IStructuredSelection selection) {
+
+	public GenerateEntitiesWizard(JpaProject jpaProject, IStructuredSelection selection) {
 		super();
 		this.jpaProject = jpaProject;
 		this.selection = selection;
 		this.packageGeneratorConfig = new PackageGenerator.Config();
 		this.entityGeneratorConfig = new EntityGenerator.Config();
-		this.setWindowTitle( JptUiMessages.GenerateEntitiesWizard_generateEntities);
+		this.setWindowTitle(JptUiMessages.GenerateEntitiesWizard_generateEntities);
 	}
-	
+
 	@Override
 	public void addPages() {
 		super.addPages();
-		this.dbSettingsPage = new DatabaseReconnectWizardPage( this.jpaProject);
+		this.dbSettingsPage = new DatabaseConnectionWizardPage(this.jpaProject);
+		this.dbSettingsPage.addListener(new DatabasePageListener());
 		this.addPage(this.dbSettingsPage);
 		this.generateEntitiesPage = new GenerateEntitiesWizardPage();
-		this.addPage( this.generateEntitiesPage);
-		this.generateEntitiesPage.init( this.selection);
+		this.addPage(this.generateEntitiesPage);
+		this.generateEntitiesPage.init(this.selection);
 	}
 	
 	@Override
-	public boolean performFinish() {
-		this.packageGeneratorConfig.setPackageFragment( this.buildPackageFragment());
+	public boolean canFinish() {
+		return this.generateEntitiesPage.isPageComplete();
+	}
 
-		this.entityGeneratorConfig.setConvertToCamelCase( this.generateEntitiesPage.convertToCamelCase());
-		this.entityGeneratorConfig.setFieldAccessType( this.generateEntitiesPage.fieldAccessType());
-		this.entityGeneratorConfig.setCollectionTypeName( this.generateEntitiesPage.getCollectionTypeName());
-		this.entityGeneratorConfig.setFieldVisibility( this.generateEntitiesPage.getFieldVisibility());
-		this.entityGeneratorConfig.setMethodVisibility( this.generateEntitiesPage.getMethodVisibility());
-		this.entityGeneratorConfig.setGenerateGettersAndSetters( this.generateEntitiesPage.generateGettersAndSetters());
-		this.entityGeneratorConfig.setGenerateDefaultConstructor( this.generateEntitiesPage.generateDefaultConstructor());
-		this.entityGeneratorConfig.setSerializable( this.generateEntitiesPage.serializable());
-		this.entityGeneratorConfig.setGenerateSerialVersionUID( this.generateEntitiesPage.generateSerialVersionUID());
-		this.entityGeneratorConfig.setGenerateEmbeddedIdForCompoundPK( this.generateEntitiesPage.generateEmbeddedIdForCompoundPK());
-		this.entityGeneratorConfig.setOverrideEntityNames( this.generateEntitiesPage.getOverrideEntityNames());
+	@Override
+	public boolean performFinish() {
+		this.packageGeneratorConfig.setPackageFragment(this.buildPackageFragment());
+
+		this.entityGeneratorConfig.setConvertToJavaStyleIdentifiers(this.generateEntitiesPage.convertToJavaStyleIdentifiers());
+		this.entityGeneratorConfig.setFieldAccessType(this.generateEntitiesPage.fieldAccessType());
+		this.entityGeneratorConfig.setCollectionTypeName(this.generateEntitiesPage.getCollectionTypeName());
+		this.entityGeneratorConfig.setCollectionAttributeNameSuffix(this.generateEntitiesPage.getCollectionAttributeNameSuffix());
+		this.entityGeneratorConfig.setFieldVisibility(this.generateEntitiesPage.getFieldVisibility());
+		this.entityGeneratorConfig.setMethodVisibility(this.generateEntitiesPage.getMethodVisibility());
+		this.entityGeneratorConfig.setGenerateGettersAndSetters(this.generateEntitiesPage.generateGettersAndSetters());
+		this.entityGeneratorConfig.setGenerateDefaultConstructor(this.generateEntitiesPage.generateDefaultConstructor());
+		this.entityGeneratorConfig.setSerializable(this.generateEntitiesPage.serializable());
+		this.entityGeneratorConfig.setGenerateSerialVersionUID(this.generateEntitiesPage.generateSerialVersionUID());
+		this.entityGeneratorConfig.setGenerateEmbeddedIdForCompoundPK(this.generateEntitiesPage.generateEmbeddedIdForCompoundPK());
+		this.entityGeneratorConfig.setEmbeddedIdAttributeName(this.generateEntitiesPage.getEmbeddedIdAttributeName());
+		this.entityGeneratorConfig.setPrimaryKeyMemberClassName(this.generateEntitiesPage.getPrimaryKeyMemberClassName());
+		for (Map.Entry<Table, String> entry : this.generateEntitiesPage.getSelectedTables().entrySet()) {
+			this.entityGeneratorConfig.addTable(entry.getKey(), entry.getValue());
+		}
+		// the name builder comes from the JPA platform
+		this.entityGeneratorConfig.setDatabaseAnnotationNameBuilder(this.buildDatabaseAnnotationNameBuilder());
 
 		this.synchronizePersistenceXml = this.generateEntitiesPage.synchronizePersistenceXml();
 		
-		this.selectedTables = this.generateEntitiesPage.getSelectedTables();
 		return true;
 	}
-	
+
+	private EntityGenerator.DatabaseAnnotationNameBuilder buildDatabaseAnnotationNameBuilder() {
+		return new LocalDatabaseAnnotationNameBuilder(this.jpaProject.getJpaPlatform().getEntityGeneratorDatabaseAnnotationNameBuilder());
+	}
+
 	private IPackageFragment buildPackageFragment() {
 		IPackageFragmentRoot packageFragmentRoot = this.generateEntitiesPage.getPackageFragmentRoot();
 		IPackageFragment packageFragment = this.generateEntitiesPage.getPackageFragment();
 		
-		if ( packageFragment == null) {
-			packageFragment= packageFragmentRoot.getPackageFragment( ""); //$NON-NLS-1$
+		if (packageFragment == null) {
+			packageFragment= packageFragmentRoot.getPackageFragment(""); //$NON-NLS-1$
 		}
 		
-		if ( packageFragment.exists()) {
+		if (packageFragment.exists()) {
 			return packageFragment;
 		}
 
 		try {
-			return packageFragmentRoot.createPackageFragment( packageFragment.getElementName(), true, null);
+			return packageFragmentRoot.createPackageFragment(packageFragment.getElementName(), true, null);
 		} 
-		catch ( JavaModelException ex) {
-			throw new RuntimeException( ex);
+		catch (JavaModelException ex) {
+			throw new RuntimeException(ex);
 		}
 	}
-	
+
+
+	// ********** intra-wizard methods **********
+
 	Collection<Table> getPossibleTables() {
-		if ( this.dbSettingsPage != null) {
-			return this.dbSettingsPage.getTables();
-		}
-		return ( this.projectDefaultSchemaExists()) ? CollectionTools.collection( this.getDefaultSchema().tables()) : Collections.<Table>emptyList();
+		return this.buildTables(this.dbSettingsPage.getSelectedSchema());
 	}
-	
-	ConnectionProfile getProjectConnectionProfile() {
-		return this.jpaProject.getConnectionProfile();
-	}
-	
+
 	JpaProject getJpaProject(){
 		return this.jpaProject;
 	}
 
-	Schema getDefaultSchema() {
-		return getJpaProject().getDefaultSchema();
+	void selectedSchemaChanged(Schema schema) {
+		this.generateEntitiesPage.setPossibleTables(this.buildTables(schema));
 	}
-	
+
+	private Collection<Table> buildTables(Schema schema) {
+		return (schema == null) ?
+						Collections.<Table>emptySet()
+					:
+						CollectionTools.collection(schema.tables());
+	}
+
+
+	// ********** public methods - settings **********
+
 	public PackageGenerator.Config getPackageGeneratorConfig() {
 		return this.packageGeneratorConfig;
 	}
@@ -132,34 +164,54 @@ public class GenerateEntitiesWizard extends Wizard {
 		return this.entityGeneratorConfig;
 	}
 
-	public Collection<Table> getSelectedTables() {
-		return this.selectedTables;
-	}
-	
 	public boolean synchronizePersistenceXml(){
 		return this.synchronizePersistenceXml;
 	}
-	
-    @Override
-	public boolean canFinish() {
-        boolean canFinish = true;
-        if ( ! this.generateEntitiesPage.isPageComplete()) {
-        	canFinish = false;
-        }
-        return canFinish;
-    }
 
-	private boolean projectDefaultSchemaExists() {
-		return ( this.getDefaultSchema() != null);
-	}
-	
+
+	// ********** name builder adapter **********
+
 	/**
-	 * updatePossibleTables is called when schema’s PossibleTables changed.
-	 * The dbSettingsPage is mainly the source of changes, 
-	 * and the generateEntitiesPage needs to be kept in sync.
+	 * adapt the JPA platform-supplied builder to the builder interface
+	 * expected by the entity generator
 	 */
-	void updatePossibleTables( Collection<Table> possibleTables) {
-		this.generateEntitiesPage.updateTablesListViewer( possibleTables);
+	static class LocalDatabaseAnnotationNameBuilder implements EntityGenerator.DatabaseAnnotationNameBuilder {
+		private EntityGeneratorDatabaseAnnotationNameBuilder builder;
+		LocalDatabaseAnnotationNameBuilder(EntityGeneratorDatabaseAnnotationNameBuilder builder) {
+			super();
+			this.builder = builder;
+		}
+		public String buildTableAnnotationName(String entityName, Table table) {
+			return this.builder.buildTableAnnotationName(entityName, table);
+		}
+		public String buildColumnAnnotationName(String attributeName, Column column) {
+			return this.builder.buildColumnAnnotationName(attributeName, column);
+		}
+		public String buildJoinColumnAnnotationName(String attributeName, ForeignKey foreignKey) {
+			return this.builder.buildJoinColumnAnnotationName(attributeName, foreignKey);
+		}
+		public String buildJoinColumnAnnotationName(Column column) {
+			return this.builder.buildJoinColumnAnnotationName(column);
+		}
+		public String buildJoinTableAnnotationName(Table table) {
+			return this.builder.buildJoinTableAnnotationName(table);
+		}
+	}
+
+
+	// ********** database page listener **********
+
+	/**
+	 * listen for when the Database Connection page changes its selected schema
+	 * so we can keep the Generate Entities page in synch
+	 */
+	class DatabasePageListener implements DatabaseConnectionWizardPage.Listener {
+		public void selectedConnectionProfileChanged(ConnectionProfile connectionProfile) {
+			// ignore
+		}
+		public void selectedSchemaChanged(Schema schema) {
+			GenerateEntitiesWizard.this.selectedSchemaChanged(schema);
+		}
 	}
 
 }

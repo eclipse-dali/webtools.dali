@@ -303,20 +303,24 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	}
 
 	/**
-	 * Returns the JPA project's connection profile, which is never
-	 * <code>null</code>.
+	 * Returns whether the JPA project's connection profile is active.
+	 *
+	 * @return Whether the JPA project's connection profile is active.
+	 */
+	protected final boolean connectionProfileIsActive() {
+		JpaProject jpaProject = this.jpaProject();
+		return (jpaProject == null) ? false : jpaProject.getDataSource().connectionProfileIsActive();
+	}
+
+	/**
+	 * Returns the JPA project's connection profile.
 	 *
 	 * @return The connection set in the project's properties or <code>null</code>
 	 * if it could not being retrieved
 	 */
 	protected final ConnectionProfile connectionProfile() {
-		JpaProject jpaProject = jpaProject();
-
-		if (jpaProject != null) {
-			return jpaProject.getConnectionProfile();
-		}
-
-		return null;
+		JpaProject jpaProject = this.jpaProject();
+		return (jpaProject == null) ? null : jpaProject.getConnectionProfile();
 	}
 
 	/**
@@ -326,7 +330,8 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 * connection profile was set or the
 	 */
 	protected final Database database() {
-		return connectionProfile().getDatabase();
+		ConnectionProfile cp = this.connectionProfile();
+		return (cp == null) ? null : cp.getDatabase();
 	}
 
 	/**
@@ -342,13 +347,12 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 */
 	@Override
 	protected void disengageListeners(T subject) {
-		super.disengageListeners(subject);
-
-		JpaProject jpaProject = jpaProject();
-
-		if (jpaProject != null) {
-			jpaProject.getConnectionProfile().removeConnectionListener(this.connectionListener);
+		ConnectionProfile cp = this.connectionProfile();
+		if (cp != null) {
+			cp.removeConnectionListener(this.connectionListener);
 		}
+
+		super.disengageListeners(subject);
 	}
 
 	/*
@@ -381,10 +385,9 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	protected void engageListeners(T subject) {
 		super.engageListeners(subject);
 
-		JpaProject jpaProject = jpaProject();
-
-		if (jpaProject != null) {
-			jpaProject.getConnectionProfile().addConnectionListener(this.connectionListener);
+		ConnectionProfile cp = this.connectionProfile();
+		if (cp != null) {
+			cp.addConnectionListener(this.connectionListener);
 		}
 	}
 
@@ -472,10 +475,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 		combo.removeAll();
 		populateDefaultValue();
 
-		ConnectionProfile connectionProfile = connectionProfile();
-
-		if ((connectionProfile != null) && connectionProfile.isActive()) {
-
+		if (this.connectionProfileIsActive()) {
 			for (Iterator<String> iter = CollectionTools.sort(values()); iter.hasNext(); ) {
 				combo.add(iter.next());
 			}
@@ -675,4 +675,5 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 * choices to be added to the combo
 	 */
 	protected abstract Iterator<String> values();
+
 }

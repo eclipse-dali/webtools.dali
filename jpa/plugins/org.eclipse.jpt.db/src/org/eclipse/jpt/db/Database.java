@@ -10,7 +10,6 @@
 package org.eclipse.jpt.db;
 
 import java.util.Iterator;
-import org.eclipse.datatools.connectivity.sqm.core.definition.DatabaseDefinition;
 
 /**
  * Database
@@ -23,12 +22,11 @@ import org.eclipse.datatools.connectivity.sqm.core.definition.DatabaseDefinition
  * 
  * This interface is not intended to be implemented by clients.
  */
-public interface Database extends SchemaContainer, Comparable<Database> {
+public interface Database
+	extends SchemaContainer, Comparable<Database>
+{
 
-	/**
-	 * Return the database's name.
-	 */
-	String getName();
+	// ********** properties **********
 
 	/**
 	 * Return the database's vendor.
@@ -41,14 +39,14 @@ public interface Database extends SchemaContainer, Comparable<Database> {
 	String getVersion();
 
 	/**
-	 * Return whether the database's identifiers are case-sensitive.
+	 * Return the database's default schema.
+	 * In most cases the default schema's name will match the user name.
+	 * It may be null.
 	 */
-	boolean isCaseSensitive();
+	Schema getDefaultSchema();
 
-	/**
-	 * Return the database's DTP database definition.
-	 */
-	DatabaseDefinition getDtpDefinition();
+
+	// ********** catalogs **********
 
 	/**
 	 * Return whether the database supports catalogs.
@@ -71,20 +69,26 @@ public interface Database extends SchemaContainer, Comparable<Database> {
 	Iterator<String> catalogNames();
 
 	/**
-	 * Return whether the database contains a catalog with the specified name,
-	 * respecting the database's case-sensitivity.
-	 */
-	boolean containsCatalogNamed(String name);
-
-	/**
-	 * Return the catalog in the database with the specified name,
-	 * respecting the database's case-sensitivity.
-	 */
-	Catalog catalogNamed(String name);
-
-	/**
 	 * Return the database's "default" catalog.
+	 * Return null if the database does not support catalogs.
 	 */
 	Catalog getDefaultCatalog();
+
+	/**
+	 * Return the catalog with specified name. The name should be an SQL
+	 * identifier (i.e. quoted when case-sensitive, unquoted when
+	 * case-insensitive).
+	 */
+	Catalog getCatalogNamed(String name);
+
+
+	// ********** search utility **********
+
+	/**
+	 * Return the database object from the specified list with specified name.
+	 * The name should be an SQL identifier (i.e. quoted when case-sensitive,
+	 * unquoted when case-insensitive).
+	 */
+	<T extends DatabaseObject> T getDatabaseObjectNamed(T[] databaseObjects, String name);
 
 }

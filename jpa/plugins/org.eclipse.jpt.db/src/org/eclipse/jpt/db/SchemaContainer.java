@@ -22,7 +22,9 @@ import java.util.Iterator;
  * 
  * This interface is not intended to be implemented by clients.
  */
-public interface SchemaContainer {
+public interface SchemaContainer
+	extends DatabaseObject
+{
 
 	/**
 	 * Return the container's schemata.
@@ -40,15 +42,10 @@ public interface SchemaContainer {
 	Iterator<String> schemaNames();
 
 	/**
-	 * Return whether the container contains a schema with the specified name,
-	 * respecting the database's case-sensitivity.
+	 * Return the schema with specified name. The name should be an SQL
+	 * identifier (i.e. quoted when case-sensitive, unquoted when
+	 * case-insensitive).
 	 */
-	boolean containsSchemaNamed(String name);
-
-	/**
-	 * Return the schema in the container with the specified name,
-	 * respecting the database's case-sensitivity.
-	 */
-	Schema schemaNamed(String name);
+	Schema getSchemaNamed(String name);
 
 }

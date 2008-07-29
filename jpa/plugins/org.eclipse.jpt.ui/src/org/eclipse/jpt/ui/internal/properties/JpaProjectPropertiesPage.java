@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.properties;
 
 import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
@@ -317,27 +318,33 @@ public class JpaProjectPropertiesPage
 		}
 		
 		void openNewConnectionWizard() {
-			String connectionName = DTPUiTools.createNewProfile();
+			String connectionName = DTPUiTools.createNewConnectionProfile();
 			if (connectionName != null) {
 				model.setProperty(CONNECTION, connectionName);
 			}
 		}
 		
-		private void openConnectionProfile() {
-			ConnectionProfile connection = getConnectionProfile();
-			connection.connect();
-			model.setBooleanProperty(CONNECTION_ACTIVE, connection.isActive());
-			updateConnectLink();
+		void openConnectionProfile() {
+			ConnectionProfile cp = this.getConnectionProfile();
+			if (cp != null) {
+				cp.connect();
+			}
+			model.setBooleanProperty(CONNECTION_ACTIVE, (cp != null) && cp.isActive());
+			this.updateConnectLink(cp);
 			return;
 		}
 		
-		private void updateConnectLink() {
-			ConnectionProfile connectionProfile = getConnectionProfile();
-			connectLink.setEnabled(! connectionProfile.isNull() && ! connectionProfile.isConnected());
+		void updateConnectLink(ConnectionProfile cp) {
+			connectLink.setEnabled((cp != null) && cp.isDisconnected());
+		}
+		
+		void updateConnectLink() {
+			this.updateConnectLink(this.getConnectionProfile());
 		}
 		
 		private ConnectionProfile getConnectionProfile() {
-			return JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNamed(model.getStringProperty(CONNECTION));
+			// we just use the connection profile to log in, so go to the db plug-in
+			return JptDbPlugin.instance().getConnectionProfileFactory().buildConnectionProfile(model.getStringProperty(CONNECTION));
 		}
 
 		void performDefaults() {
@@ -345,7 +352,7 @@ public class JpaProjectPropertiesPage
 			model.setProperty(CONNECTION, connectionName);
 			
 			String defaultSchema = getJpaProject().getUserOverrideDefaultSchemaName();
-			model.setProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA, defaultSchema != null);
+			model.setProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA, Boolean.valueOf(defaultSchema != null));
 			model.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, defaultSchema);
 		}
 	}

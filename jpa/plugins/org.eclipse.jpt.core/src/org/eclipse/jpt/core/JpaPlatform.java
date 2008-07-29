@@ -10,11 +10,14 @@
 package org.eclipse.jpt.core;
 
 import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.db.ConnectionProfileFactory;
+import org.eclipse.jpt.db.DatabaseFinder;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -52,7 +55,7 @@ public interface JpaPlatform
 	void setId(String theId);
 
 	
-	// **************** Model construction / updating **************************
+	// **************** Model construction/updating **************************
 	
 	/**
 	 * Construct a JPA file for the specified file, to be added to the specified 
@@ -79,12 +82,12 @@ public interface JpaPlatform
 	JpaAnnotationProvider getAnnotationProvider();
 	
 	
-	// **************** Java type mapping support ********************************
+	// **************** Java type mapping providers ********************************
 	
 	/**
 	 * Build a Java type mapping with the given mapping key and parent.  Throws a IllegalArgumentException
 	 * if the typeMappingKey is not supported by this platform.
-	 * Override {@link #GenericJpaPlatform.addJavaTypeMappingProvidersTo(Collection<JavaTypeMappingProvider>)}
+	 * Override {@link org.eclipse.jpt.core.internal.platform.GenericJpaPlatform#addJavaTypeMappingProvidersTo(List<JavaTypeMappingProvider>)}
 	 * to add new supported type mappings to the platform
 	 */
 	JavaTypeMapping buildJavaTypeMappingFromMappingKey(String typeMappingKey, JavaPersistentType parent);
@@ -92,17 +95,18 @@ public interface JpaPlatform
 	/**
 	 * Build a Java type mapping with the given mapping annotation and parent.  Throws a IllegalArgumentException
 	 * if the mapping annotation is not supported by this platform.
-	 * Override {@link #GenericJpaPlatform.addJavaTypeMappingProvidersTo(Collection<JavaTypeMappingProvider>)}
+	 * Override {@link org.eclipse.jpt.core.internal.platform.GenericJpaPlatform#addJavaTypeMappingProvidersTo(List<JavaTypeMappingProvider>)}
 	 * to add new supported type mappings to the platform
 	 */
 	JavaTypeMapping buildJavaTypeMappingFromAnnotation(String mappingAnnotationName, JavaPersistentType parent);
 
-	// **************** Java attribute mapping support ********************************
+
+	// **************** Java attribute mapping providers ********************************
 
 	/**
 	 * Build a Java attribute mapping with the given mapping key and parent.  Throws a IllegalArgumentException
 	 * if the attributeMappingKey is not supported by this platform.
-	 * Override {@link #GenericJpaPlatform.addJavaAttributeMappingProvidersTo(Collection<JavaAttributeMappingProvider>)}
+	 * Override {@link org.eclipse.jpt.core.internal.platform.GenericJpaPlatform#addJavaAttributeMappingProvidersTo(List<JavaAttributeMappingProvider>)}
 	 * to add new supported attribute mappings to the platform
 	 */
 	JavaAttributeMapping buildJavaAttributeMappingFromMappingKey(String attributeMappingKey, JavaPersistentAttribute parent);
@@ -110,7 +114,7 @@ public interface JpaPlatform
 	/**
 	 * Build a Java attribute mapping with the given mapping annotation and parent.  Throws a IllegalArgumentException
 	 * if the mapping annotation is not supported by this platform.
-	 * Override {@link #GenericJpaPlatform.addJavaAttributeMappingProvidersTo(Collection<JavaAttributeMappingProvider>)}
+	 * Override {@link org.eclipse.jpt.core.internal.platform.GenericJpaPlatform#addJavaAttributeMappingProvidersTo(List<JavaAttributeMappingProvider>)}
 	 * to add new supported attribute mappings to the platform
 	 */
 	JavaAttributeMapping buildJavaAttributeMappingFromAnnotation(String mappingAnnotationName, JavaPersistentAttribute parent);
@@ -118,7 +122,7 @@ public interface JpaPlatform
 	/**
 	 * Build a default Java attribute mapping with the given mapping annotation and parent.  Throws a IllegalArgumentException
 	 * if the mapping annotation is not supported by this platform.
-	 * Override {@link #GenericJpaPlatform.addDefaultJavaAttributeMappingProvidersTo(Collection<DefaultJavaAttributeMappingProvider>)}
+	 * Override {@link org.eclipse.jpt.core.internal.platform.GenericJpaPlatform#addDefaultJavaAttributeMappingProvidersTo(List<DefaultJavaAttributeMappingProvider>)}
 	 * to add new supported attribute mappings to the platform
 	 */
 	JavaAttributeMapping buildDefaultJavaAttributeMapping(JavaPersistentAttribute parent);
@@ -126,15 +130,39 @@ public interface JpaPlatform
 	/**
 	 * Return the attribute mapping key corresponding to the default atribute mapping
 	 * that applies to the Java persistent attribute.  This will be based on the attribute's
-	 * type.  See {@link DefaultJavaAttributeMappingProvider.#defaultApplies(JavaPersistentAttribute)}
+	 * type.  See {@link org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider#defaultApplies(JavaPersistentAttribute)}
 	 */
-	String defaultJavaAttributeMappingKey(JavaPersistentAttribute persistentAttribute);
-	
-	// *************************************************************************
+	String getDefaultJavaAttributeMappingKey(JavaPersistentAttribute persistentAttribute);
+
+
+	// ************** Validation ***********************************************************
 	
 	/**
 	 * Adds validation messages to the growing list of messages for a given project
 	 */
 	void addToMessages(JpaProject project, List<IMessage> messages);
 	
+
+	// ************* Database ************************************************************
+	
+	/**
+	 * Return a connection repository that can be used to query the database
+	 * about database metadata.
+	 */
+	ConnectionProfileFactory getConnectionProfileFactory();
+
+	/**
+	 * Return an entity generator database annotation name builder, which is
+	 * used by Entity Generation to determine whether and how the entity generator
+	 * prints the names of various database objects.
+	 */
+	EntityGeneratorDatabaseAnnotationNameBuilder getEntityGeneratorDatabaseAnnotationNameBuilder();
+
+	/**
+	 * Return a finder that can be used to look up various objects (schemata,
+	 * tables, columns, etc.) on the database, respecting the platform's and
+	 * database's case-sensitivity.
+	 */
+	DatabaseFinder getDatabaseFinder();
+
 }

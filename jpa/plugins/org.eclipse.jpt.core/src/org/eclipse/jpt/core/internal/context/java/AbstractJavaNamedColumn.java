@@ -129,7 +129,7 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	
 	public Column getDbColumn() {
 		Table table = this.getDbTable();
-		return (table == null) ? null : table.columnNamed(this.getName());
+		return (table == null) ? null : table.getColumnNamed(this.getName());
 	}
 
 	public Table getDbTable() {
@@ -168,6 +168,11 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 
 	private Iterator<String> quotedCandidateNames(Filter<String> filter) {
 		return StringTools.quote(this.candidateNames(filter));
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getName());
 	}
 	
 	

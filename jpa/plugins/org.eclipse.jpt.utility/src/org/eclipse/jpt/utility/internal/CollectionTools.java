@@ -882,7 +882,11 @@ public final class CollectionTools {
 	 * java.util.Arrays#contains(char[] array, char value)
 	 */
 	public static boolean contains(char[] array, char value) {
-		for (int i = array.length; i-- > 0; ) {
+		return contains(array, value, array.length);
+	}
+
+	private static boolean contains(char[] array, char value, int arrayLength) {
+		for (int i = arrayLength; i-- > 0; ) {
 			if (array[i] == value) {
 				return true;
 			}
@@ -896,7 +900,11 @@ public final class CollectionTools {
 	 * java.util.Arrays#contains(int[] array, int value)
 	 */
 	public static boolean contains(int[] array, int value) {
-		for (int i = array.length; i-- > 0; ) {
+		return contains(array, value, array.length);
+	}
+
+	private static boolean contains(int[] array, int value, int arrayLength) {
+		for (int i = arrayLength; i-- > 0; ) {
 			if (array[i] == value) {
 				return true;
 			}
@@ -2785,7 +2793,7 @@ public final class CollectionTools {
 		int[] indices = new int[array1Length];
 		int j = 0;
 		for (int i = 0; i < array1Length; i++) {
-			if (contains(array2, array1[i])) {
+			if (contains(array2, array1[i], array2Length)) {
 				indices[j++] = i;
 			}
 		}
@@ -2825,7 +2833,7 @@ public final class CollectionTools {
 		int[] indices = new int[array1Length];
 		int j = 0;
 		for (int i = 0; i < array1Length; i++) {
-			if (contains(array2, array1[i])) {
+			if (contains(array2, array1[i], array2Length)) {
 				indices[j++] = i;
 			}
 		}
@@ -3426,7 +3434,7 @@ public final class CollectionTools {
 
 		public Iterator<E> iterator() {
 			if (this.iterator == null) {
-				throw new IllegalStateException("This method has already been called.");
+				throw new IllegalStateException("This method has already been called."); //$NON-NLS-1$
 			}
 			Iterator<E> result = this.iterator;
 			this.iterator = null;

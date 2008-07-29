@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jpt.db.Column;
@@ -27,91 +26,88 @@ import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 /**
  * associate a table with the various relations that will be used when
- * generating the entity
+ * generating the entity corresponding to the table
  */
 class GenTable {
 	private final GenScope scope;
 	private final Table table;
-	private final EntityGenerator.Config entityConfig;
-	private final String entityName;
+
+	// these relations cannot be built until after we have built all the scope's tables
 	private ManyToManyRelation joinTableRelation;
-	private Collection<ManyToManyRelation> ownedManyToManyRelations = new ArrayList<ManyToManyRelation>();
-	private Collection<ManyToManyRelation> nonOwnedManyToManyRelations = new ArrayList<ManyToManyRelation>();
-	private Collection<ManyToOneRelation> manyToOneRelations = new ArrayList<ManyToOneRelation>();
-	private Collection<OneToManyRelation> oneToManyRelations = new ArrayList<OneToManyRelation>();
-	private Set<Column> foreignKeyColumns = new HashSet<Column>();
+	private final ArrayList<ManyToManyRelation> ownedManyToManyRelations = new ArrayList<ManyToManyRelation>();
+	private final ArrayList<ManyToManyRelation> nonOwnedManyToManyRelations = new ArrayList<ManyToManyRelation>();
+	private final ArrayList<ManyToOneRelation> manyToOneRelations = new ArrayList<ManyToOneRelation>();
+	private final ArrayList<OneToManyRelation> oneToManyRelations = new ArrayList<OneToManyRelation>();
+	private final HashSet<Column> foreignKeyColumns = new HashSet<Column>();
 
-	// key=column/relation; value=name
-	private final Map<Object, String> fieldNames = new HashMap<Object, String>();
-
+	// key=column/relation; value=entity attribute (field/property) name
+	private final HashMap<Object, String> attributeNames = new HashMap<Object, String>();
+	// key to 'attributeNames' for the optional embedded ID attribute name
 	private static final Object EMBEDDED_ID_VIRTUAL_COLUMN = new Object();
 
 
 	// ********** construction/initialization **********
 
-	GenTable(GenScope scope, Table table, EntityGenerator.Config entityConfig, Collection<String> entityNames) {
+	GenTable(GenScope scope, Table table) {
 		super();
 		this.scope = scope;
 		this.table = table;
-		this.entityConfig = entityConfig;
-		this.entityName = this.buildEntityName(entityNames);
-	}
-
-	private String buildEntityName(Collection<String> entityNames) {
-		String name = this.table.getShortJavaClassName();
-		String overrideEntityName = this.entityConfig.getOverrideEntityName(this.table);
-		if (overrideEntityName == null) {
-			if (this.entityConfig.convertToCamelCase()) {
-				// camel-casing can convert a name back to a reserved word (e.g. "package_" -> "package")
-				name = NameTools.convertToJavaIdentifier(StringTools.convertUnderscoresToCamelCase(name));
-			}
-		} else {
-			name = overrideEntityName;
-		}
-		name = NameTools.uniqueNameForIgnoreCase(name, entityNames);
-		entityNames.add(name);
-		return name;
 	}
 
 
 	// ********** package API **********
 
-	/**
-	 * determine whether the table is a "join" table within the table's scope
-	 */
-	void configureManyToManyRelations() {
-		if (this.table.foreignKeysSize() != 2) {
-			// the table must have exactly 2 foreign keys
-			return;
-		}
-		for (Iterator<Column> stream = this.table.columns(); stream.hasNext(); ) {
-			if ( ! this.table.foreignKeyBaseColumnsContains(stream.next())) {
-				// all the table's columns must belong to one (or both) of the 2 foreign keys
-				return;
-			}
-		}
-		Iterator<ForeignKey> fKeys = this.table.foreignKeys();
-		ForeignKey owningFK = fKeys.next();
-		ForeignKey nonOwningFK = fKeys.next();
-		GenTable owningTable = this.scope.genTable(owningFK.getReferencedTable());
-		GenTable nonOwningTable = this.scope.genTable(nonOwningFK.getReferencedTable());
-		if ((owningTable == null) || (nonOwningTable == null)) {
-			// both tables must be in the scope
-			return;
-		}
-		this.joinTableRelation = new ManyToManyRelation(this, owningFK, owningTable, nonOwningFK, nonOwningTable);
+	EntityGenerator.Config getEntityConfig() {
+		return this.scope.getEntityConfig();
 	}
 
-	void addReferencedTablesTo(Set<GenTable> referencedTables) {
+	/**
+	 * determine whether the table is a "join" table within the table's scope;
+	 * this can be removed, later, if we find another table references the,
+	 * seemingly, join table
+	 * @see #clearJoinTableRelation() (and callers)
+	 */
+	void buildJoinTableRelation() {
+		if ( ! this.table.isPossibleJoinTable()) {
+			return;  // the table must have exactly 2 foreign keys
+		}
+		ForeignKey owningFK = this.table.getJoinTableOwningForeignKey();
+		GenTable owningGenTable = this.scope.getGenTable(owningFK.getReferencedTable());
+		if (owningGenTable == null) {
+			return;  // both tables must be in the scope
+		}
+		ForeignKey nonOwningFK = this.table.getJoinTableNonOwningForeignKey();
+		GenTable nonOwningGenTable = this.scope.getGenTable(nonOwningFK.getReferencedTable());
+		if (nonOwningGenTable == null) {
+			return;  // both tables must be in the scope
+		}
+		this.joinTableRelation = new ManyToManyRelation(
+											this,
+											owningFK,
+											owningGenTable,
+											nonOwningFK,
+											nonOwningGenTable
+										);
+	}
+
+	/**
+	 * used by the scope to figure out whether "join" tables should be
+	 * converted to "entity" tables
+	 */
+	void addReferencedGenTablesTo(Set<GenTable> referencedTables) {
 		for (Iterator<ForeignKey> stream = this.table.foreignKeys(); stream.hasNext(); ) {
 			ForeignKey fk = stream.next();
-			GenTable genTable = this.scope.genTable(fk.getReferencedTable());
+			GenTable genTable = this.scope.getGenTable(fk.getReferencedTable());
 			if (genTable != null) {
 				referencedTables.add(genTable);
 			}
 		}
 	}
 
+	/**
+	 * the scope clears the join table relation if there are any references
+	 * to the join table from other tables in the scope
+	 */
 	void clearJoinTableRelation() {
 		this.joinTableRelation.clear();
 		this.joinTableRelation = null;
@@ -120,34 +116,38 @@ class GenTable {
 	/**
 	 * find "in-scope" foreign keys
 	 */
-	void configureManyToOneRelations() {
+	void buildManyToOneRelations() {
 		for (Iterator<ForeignKey> stream = this.table.foreignKeys(); stream.hasNext(); ) {
 			ForeignKey fk = stream.next();
-			GenTable referencedtable = this.scope.genTable(fk.getReferencedTable());
-			if (referencedtable == null) {
-				continue;  // skip to next FK
+			GenTable referencedGenTable = this.scope.getGenTable(fk.getReferencedTable());
+			if (referencedGenTable != null) {
+				this.manyToOneRelations.add(new ManyToOneRelation(this, fk, referencedGenTable));
 			}
-			this.manyToOneRelations.add(new ManyToOneRelation(this, fk, referencedtable));
 		}
 	}
 
 	/**
 	 * now that all the relations are in place, we can configure the Java
-	 * field names
+	 * attribute names
 	 */
-	void configureFieldNames() {
-		Set<Column> columns = CollectionTools.set(this.table.columns());
-		if ((this.table.primaryKeyColumnsSize() > 1) && this.entityConfig.generateEmbeddedIdForCompoundPK()) {
-			// if we are going to generate an EmbeddedId field, add it to
-			// 'fieldNames' so we don't collide with it later, when generating
-			// field names for the columns etc.
-			this.configureFieldName(EMBEDDED_ID_VIRTUAL_COLUMN, "pk");
+	void buildAttributeNames() {
+		if ((this.table.primaryKeyColumnsSize() > 1) && this.getEntityConfig().generateEmbeddedIdForCompoundPK()) {
+			// if we are going to generate an EmbeddedId attribute, add it to
+			// 'attributeNames' so we don't collide with it later, when generating
+			// attribute names for the columns etc.
+			this.configureAttributeName(EMBEDDED_ID_VIRTUAL_COLUMN, this.getEntityConfig().getEmbeddedIdAttributeName());
 		}
-		this.configureManyToOneFieldNames(columns);
-		this.configureBasicFieldNames(columns);
-		this.configureOneToManyFieldNames();
-		this.configureOwnedManyToManyFieldNames();
-		this.configureNonOwnedManyToManyFieldNames();
+
+		// gather up all the table's columns...
+		Set<Column> columns = CollectionTools.set(this.table.columns(), this.table.columnsSize());
+		// ...remove the columns that belong exclusively to many-to-one foreign keys...
+		this.buildManyToOneAttributeNames(columns);
+		// ...and use the remaining columns to generate "basic" attribute names
+		this.buildBasicAttributeNames(columns);
+
+		this.buildOneToManyAttributeNames();
+		this.buildOwnedManyToManyAttributeNames();
+		this.buildNonOwnedManyToManyAttributeNames();
 	}
 
 	/**
@@ -157,8 +157,8 @@ class GenTable {
 	Iterator<Column> readOnlyPrimaryKeyColumns() {
 		return new FilteringIterator<Column, Column>(this.table.primaryKeyColumns()) {
 			@Override
-			protected boolean accept(Column column) {
-				return GenTable.this.foreignKeyColumnsContains(column);
+			protected boolean accept(Column pkColumn) {
+				return pkColumn.isForeignKeyColumn();
 			}
 		};
 	}
@@ -170,8 +170,8 @@ class GenTable {
 	Iterator<Column> writablePrimaryKeyColumns() {
 		return new FilteringIterator<Column, Column>(this.table.primaryKeyColumns()) {
 			@Override
-			protected boolean accept(Column column) {
-				return ! GenTable.this.foreignKeyColumnsContains(column);
+			protected boolean accept(Column pkColumn) {
+				return ! pkColumn.isForeignKeyColumn();
 			}
 		};
 	}
@@ -184,8 +184,7 @@ class GenTable {
 		return new FilteringIterator<Column, Column>(this.table.columns()) {
 			@Override
 			protected boolean accept(Column column) {
-				return ! (GenTable.this.primaryKeyColumnsContains(column)
-						|| GenTable.this.foreignKeyColumnsContains(column));
+				return ! (column.isPrimaryKeyColumn() || column.isForeignKeyColumn());
 			}
 		};
 	}
@@ -195,7 +194,7 @@ class GenTable {
 	}
 
 	String getEntityName() {
-		return this.entityName;
+		return this.getEntityConfig().getEntityName(this.table);
 	}
 
 	boolean isJoinTable() {
@@ -222,10 +221,6 @@ class GenTable {
 		this.oneToManyRelations.add(relation);
 	}
 
-	String javaFieldName() {
-		return this.table.getJavaFieldName();
-	}
-
 	Iterator<ManyToOneRelation> manyToOneRelations() {
 		return this.manyToOneRelations.iterator();
 	}
@@ -243,103 +238,111 @@ class GenTable {
 	}
 
 	/**
-	 * the key can be a column or relation
+	 * the key can be a column or relation or #EMBEDDED_ID_VIRTUAL_COLUMN
 	 */
-	private String fieldNameForInternal(Object o) {
-		return this.fieldNames.get(o);
+	private String getAttributeNameFor_(Object o) {
+		return this.attributeNames.get(o);
 	}
 
 	/**
-	 * this will return null if we don't want an embedded id field
+	 * this will return null if we don't want an embedded id attribute
 	 */
-	String fieldNameForEmbeddedId() {
-		return this.fieldNameForInternal(EMBEDDED_ID_VIRTUAL_COLUMN);
+	String getAttributeNameForEmbeddedId() {
+		return this.getAttributeNameFor_(EMBEDDED_ID_VIRTUAL_COLUMN);
 	}
 
-	String fieldNameFor(Column column) {
-		return this.fieldNameForInternal(column);
+	String getAttributeNameFor(Column column) {
+		return this.getAttributeNameFor_(column);
 	}
 
-	String fieldNameFor(ManyToOneRelation relation) {
-		return this.fieldNameForInternal(relation);
+	String getAttributeNameFor(ManyToOneRelation relation) {
+		return this.getAttributeNameFor_(relation);
 	}
 
-	String fieldNameFor(OneToManyRelation relation) {
-		return this.fieldNameForInternal(relation);
+	String getAttributeNameFor(OneToManyRelation relation) {
+		return this.getAttributeNameFor_(relation);
 	}
 
-	String fieldNameFor(ManyToManyRelation relation) {
-		return this.fieldNameForInternal(relation);
+	String getAttributeNameFor(ManyToManyRelation relation) {
+		return this.getAttributeNameFor_(relation);
 	}
 
-	String name() {
+	String getName() {
 		return this.table.getName();
+	}
+
+	boolean joinTableNameIsDefault() {
+		return this.table.joinTableNameIsDefault();
 	}
 
 
 	// ********** internal API **********
 
 	/**
-	 * while we are figuring out the names for the m:1 fields, remove from the
+	 * while we are figuring out the names for the m:1 attributes, remove from the
 	 * specified set of columns the columns that are only part of the foreign keys
+	 * (leaving the remaining columns for basic attributes)
 	 */
-	private void configureManyToOneFieldNames(Set<Column> columns) {
+	private void buildManyToOneAttributeNames(Set<Column> columns) {
 		for (ManyToOneRelation relation : this.manyToOneRelations) {
 			CollectionTools.removeAll(columns, relation.getForeignKey().nonPrimaryKeyBaseColumns());
 			CollectionTools.addAll(this.foreignKeyColumns, relation.getForeignKey().baseColumns());
-			relation.setMappedBy(this.configureFieldName(relation, relation.javaFieldName()));
+			relation.setMappedBy(this.configureAttributeName(relation, relation.getAttributeName()));
 		}
-	}
-
-	private String configureFieldName(Object o, String fieldName) {
-		fieldName = this.camelCaseFieldName(fieldName);
-		fieldName = NameTools.uniqueNameFor(fieldName, this.fieldNames.values());
-		this.fieldNames.put(o, fieldName);
-		return fieldName;
-	}
-
-	private String camelCaseFieldName(String name) {
-		return this.entityConfig.convertToCamelCase() ?
-			// camel-casing can convert a name back to a reserved word (e.g. "package_" -> "package")
-			NameTools.convertToJavaIdentifier(StringTools.convertUnderscoresToCamelCase(name, false))  // false = don't capitalize first letter
-		:
-			name;
 	}
 
 	/**
-	 * build a unique field name for the specified "basic" columns,
+	 * build a unique attribute name for the specified "basic" columns,
 	 * checking for name collisions
 	 */
-	private void configureBasicFieldNames(Set<Column> columns) {
+	private void buildBasicAttributeNames(Set<Column> columns) {
 		for (Column column : columns) {
-			this.configureFieldName(column, column.getJavaFieldName());
+			this.configureAttributeName(column, column.getName());
 		}
 	}
 
-	private void configureOneToManyFieldNames() {
+	private void buildOneToManyAttributeNames() {
 		for (OneToManyRelation relation : this.oneToManyRelations) {
-			this.configureFieldName(relation, relation.javaFieldName());
+			this.configureAttributeName(relation, relation.getJavaAttributeName());
 		}
 	}
 
-	private void configureOwnedManyToManyFieldNames() {
+	private void buildOwnedManyToManyAttributeNames() {
 		for (ManyToManyRelation relation : this.ownedManyToManyRelations) {
-			relation.setMappedBy(this.configureFieldName(relation, relation.javaFieldNameFor(this)));
+			relation.setMappedBy(this.configureAttributeName(relation, relation.getOwnedJavaAttributeName()));
 		}
 	}
 
-	private void configureNonOwnedManyToManyFieldNames() {
+	private void buildNonOwnedManyToManyAttributeNames() {
 		for (ManyToManyRelation relation : this.nonOwnedManyToManyRelations) {
-			this.configureFieldName(relation, relation.javaFieldNameFor(this));
+			this.configureAttributeName(relation, relation.getNonOwnedJavaAttributeName());
 		}
 	}
 
-	boolean foreignKeyColumnsContains(Column column) {
-		return this.foreignKeyColumns.contains(column);
+	/**
+	 * Convert the specified attribute name to something unique for the entity,
+	 * converting it to something Java-like if the config flag is set.
+	 * Store the calculated name so we can get it back later, when we
+	 * are generating source.
+	 */
+	private String configureAttributeName(Object o, String attributeName) {
+		String result = attributeName;
+		Collection<String> existingAttributeNames = this.attributeNames.values();
+		if (this.getEntityConfig().convertToJavaStyleIdentifiers()) {
+			result = EntityGenTools.convertToUniqueJavaStyleAttributeName(result, existingAttributeNames);
+		} else {
+			// first, convert the attribute name to a legal Java identifier
+			result = NameTools.convertToJavaIdentifier(result);
+			// then make sure it's unique
+			result = NameTools.uniqueNameForIgnoreCase(attributeName, existingAttributeNames);
+		}
+		this.attributeNames.put(o, result);
+		return result;
 	}
 
-	boolean primaryKeyColumnsContains(Column column) {
-		return this.table.primaryKeyColumnsContains(column);
+	@Override
+	public String toString() {
+		return StringTools.buildToStringFor(this, this.table);
 	}
 
 }

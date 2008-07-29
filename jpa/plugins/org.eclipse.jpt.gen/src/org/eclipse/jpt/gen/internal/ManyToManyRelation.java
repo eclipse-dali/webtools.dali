@@ -10,67 +10,85 @@
 package org.eclipse.jpt.gen.internal;
 
 import org.eclipse.jpt.db.ForeignKey;
+import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * This object is shared by the two gen tables that make up the relation.
  * Upon construction, 'mappedBy' will be 'null'. The first gen table to be
  * used to generate an entity will fill in 'mappedBy' with the appropriate
- * field/property name.
+ * attribute (field/property) name.
  */
 class ManyToManyRelation {
-	private final GenTable joinTable;
+	private final GenTable joinGenTable;
 	private final ForeignKey owningForeignKey;
-	private final GenTable owningTable;
+	private final GenTable owningGenTable;
 	private final ForeignKey nonOwningForeignKey;
-	private final GenTable nonOwningTable;
-	private String mappedBy;
+	private final GenTable nonOwningGenTable;
+	private String mappedBy;  // set while generating entities
 
 
-	ManyToManyRelation(GenTable joinTable, ForeignKey owningForeignKey, GenTable owningTable, ForeignKey nonOwningForeignKey, GenTable nonOwningTable) {
+	ManyToManyRelation(
+			GenTable joinGenTable,
+			ForeignKey owningForeignKey,
+			GenTable owningGenTable,
+			ForeignKey nonOwningForeignKey,
+			GenTable nonOwningGenTable
+	) {
 		super();
-		this.joinTable = joinTable;
+		this.joinGenTable = joinGenTable;
 
 		this.owningForeignKey = owningForeignKey;
-		this.owningTable = owningTable;
-		owningTable.addOwnedManyToManyRelation(this);
+		this.owningGenTable = owningGenTable;
+		owningGenTable.addOwnedManyToManyRelation(this);
 
 		this.nonOwningForeignKey = nonOwningForeignKey;
-		this.nonOwningTable = nonOwningTable;
-		nonOwningTable.addNonOwnedManyToManyRelation(this);
+		this.nonOwningGenTable = nonOwningGenTable;
+		nonOwningGenTable.addNonOwnedManyToManyRelation(this);
 	}
 
-	GenTable getJoinTable() {
-		return this.joinTable;
+	GenTable getJoinGenTable() {
+		return this.joinGenTable;
 	}
 
 	ForeignKey getOwningForeignKey() {
 		return this.owningForeignKey;
 	}
 
-	GenTable getOwningTable() {
-		return this.owningTable;
+	GenTable getOwningGenTable() {
+		return this.owningGenTable;
 	}
 
 	ForeignKey getNonOwningForeignKey() {
 		return this.nonOwningForeignKey;
 	}
 
-	GenTable getNonOwningTable() {
-		return this.nonOwningTable;
+	GenTable getNonOwningGenTable() {
+		return this.nonOwningGenTable;
 	}
 
-	private GenTable otherTable(GenTable table) {
-		return (table == this.owningTable) ? this.nonOwningTable : this.owningTable;
+	String getOwnedJavaAttributeName() {
+		return this.nonOwningGenTable.getName() + this.getCollectionAttributeNameSuffix();
 	}
 
-	String javaFieldNameFor(GenTable table) {
-		// TODO i18n?
-		return this.otherTable(table).javaFieldName() + "_collection";
+	String getNonOwnedJavaAttributeName() {
+		return this.owningGenTable.getName() + this.getCollectionAttributeNameSuffix();
 	}
 
+	private String getCollectionAttributeNameSuffix() {
+		return this.getEntityConfig().getCollectionAttributeNameSuffix();
+	}
+
+	private EntityGenerator.Config getEntityConfig() {
+		return this.joinGenTable.getEntityConfig();
+	}
+
+	/**
+	 * the scope clears the join table relation if there are any references
+	 * to the join table
+	 */
 	void clear() {
-		this.owningTable.removeOwnedManyToManyRelation(this);
-		this.nonOwningTable.removeNonOwnedManyToManyRelation(this);
+		this.owningGenTable.removeOwnedManyToManyRelation(this);
+		this.nonOwningGenTable.removeNonOwnedManyToManyRelation(this);
 	}
 
 	String getMappedBy() {
@@ -81,24 +99,21 @@ class ManyToManyRelation {
 		this.mappedBy = mappedBy;
 	}
 
-	String owningEntityName() {
-		return this.owningTable.getEntityName();
+	String getOwningEntityName() {
+		return this.owningGenTable.getEntityName();
 	}
 
-	String nonOwningEntityName() {
-		return this.nonOwningTable.getEntityName();
+	String getNonOwningEntityName() {
+		return this.nonOwningGenTable.getEntityName();
 	}
 
 	boolean joinTableNameIsDefault() {
-		return this.joinTable.name().equals(this.getOwningTable().name() + "_" + this.getNonOwningTable().name());
+		return this.joinGenTable.joinTableNameIsDefault();
 	}
 
-	boolean joinColumnsIsDefaultFor(String javaFieldName) {
-		return this.owningForeignKey.isDefaultFor(javaFieldName);
-	}
-
-	boolean inverseJoinColumnsIsDefaultFor(String javaFieldName) {
-		return this.nonOwningForeignKey.isDefaultFor(javaFieldName);
+	@Override
+	public String toString() {
+		return StringTools.buildToStringFor(this, this.joinGenTable);
 	}
 
 }

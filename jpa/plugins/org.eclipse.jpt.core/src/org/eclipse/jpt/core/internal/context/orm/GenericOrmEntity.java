@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
@@ -37,7 +38,6 @@ import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
@@ -192,15 +192,33 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return getTable().getDbTable();
 	}
 
+	private static final org.eclipse.jpt.db.Table[] EMPTY_DB_TABLE_ARRAY = new org.eclipse.jpt.db.Table[0];
+
 	@Override
 	public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-		for (Iterator<Table> stream = this.associatedTablesIncludingInherited(); stream.hasNext();) {
-			org.eclipse.jpt.db.Table dbTable = stream.next().getDbTable();
-			if (dbTable != null && dbTable.matchesShortJavaClassName(tableName)) {
-				return dbTable;
+		// the JPA platform searches database objects for us
+		return this.getDataSource().getDatabaseObjectNamed(
+						CollectionTools.array(this.associatedDbTablesIncludingInherited(), EMPTY_DB_TABLE_ARRAY),
+						tableName
+					);
+	}
+
+	private Iterator<org.eclipse.jpt.db.Table> associatedDbTablesIncludingInherited() {
+		return new FilteringIterator<org.eclipse.jpt.db.Table, org.eclipse.jpt.db.Table>(this.associatedDbTablesIncludingInherited_()) {
+			@Override
+			protected boolean accept(org.eclipse.jpt.db.Table t) {
+				return t != null;
 			}
-		}
-		return null;
+		};
+	}
+
+	private Iterator<org.eclipse.jpt.db.Table> associatedDbTablesIncludingInherited_() {
+		return new TransformationIterator<Table, org.eclipse.jpt.db.Table>(this.associatedTablesIncludingInherited()) {
+			@Override
+			protected org.eclipse.jpt.db.Table transform(Table t) {
+				return t.getDbTable();
+			}
+		};
 	}
 	
 	@Override
@@ -209,9 +227,8 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	public JavaEntity getJavaEntity() {
-		JavaPersistentType javaPersistentType = getJavaPersistentType();
-		if (javaPersistentType != null && javaPersistentType.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
-			return (JavaEntity) javaPersistentType.getMapping();
+		if (this.javaPersistentType != null && this.javaPersistentType.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
+			return (JavaEntity) this.javaPersistentType.getMapping();
 		}
 		return null;
 	}
@@ -285,7 +302,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	public OrmSecondaryTable addSpecifiedSecondaryTable(int index) {
 		if (!secondaryTablesDefinedInXml()) {
-			throw new IllegalStateException("Virtual secondary tables exist, must first call setSecondaryTablesDefinedInXml(true)");
+			throw new IllegalStateException("Virtual secondary tables exist, must first call setSecondaryTablesDefinedInXml(true)"); //$NON-NLS-1$
 		}
 		XmlSecondaryTable secondaryTableResource = OrmFactory.eINSTANCE.createXmlSecondaryTableImpl();
 		OrmSecondaryTable secondaryTable =  buildSecondaryTable(secondaryTableResource);
@@ -369,8 +386,8 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	 */
 	protected void specifySecondaryTablesInXml() {
 		if (virtualSecondaryTablesSize() != 0) {
-			List<OrmSecondaryTable> virtualSecondaryTables = CollectionTools.list(this.virtualSecondaryTables());
-			List<OrmSecondaryTable> virtualSecondaryTable2 = CollectionTools.list(this.virtualSecondaryTables());
+			List<OrmSecondaryTable> virtualSecondaryTables1 = CollectionTools.list(this.virtualSecondaryTables());
+			List<OrmSecondaryTable> virtualSecondaryTables2 = CollectionTools.list(this.virtualSecondaryTables());
 			//remove all the virtual secondary tables without firing change notification.
 			for (OrmSecondaryTable virtualSecondaryTable : CollectionTools.iterable(virtualSecondaryTables())) {
 				this.virtualSecondaryTables.remove(virtualSecondaryTable);				
@@ -378,7 +395,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 			//add specified secondary tables for each virtual secondary table. If the virtual secondary tables
 			//are not removed first, they will be removed as a side effect of adding the first specified secondary table.
 			//This screws up the change notification to the UI, since that change notification is in a different thread
-			for (OrmSecondaryTable virtualSecondaryTable : virtualSecondaryTable2) {
+			for (OrmSecondaryTable virtualSecondaryTable : virtualSecondaryTables2) {
 				XmlSecondaryTable secondaryTableResource = OrmFactory.eINSTANCE.createXmlSecondaryTableImpl();
 				OrmSecondaryTable specifiedSecondaryTable =  buildSecondaryTable(secondaryTableResource);
 				this.specifiedSecondaryTables.add(specifiedSecondaryTable);
@@ -386,14 +403,14 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 				specifiedSecondaryTable.initializeFrom(virtualSecondaryTable);
 			}
 			//fire change notification at the end
-			fireItemsRemoved(OrmEntity.VIRTUAL_SECONDARY_TABLES_LIST, 0, virtualSecondaryTables);
+			fireItemsRemoved(OrmEntity.VIRTUAL_SECONDARY_TABLES_LIST, 0, virtualSecondaryTables1);
 			fireItemsAdded(Entity.SPECIFIED_SECONDARY_TABLES_LIST, 0, this.specifiedSecondaryTables);		
 		}
 	}
 	
 	protected void removeSecondaryTablesFromXml() {
 		if (specifiedSecondaryTablesSize() != 0) {
-			List<OrmSecondaryTable> specifiedSecondaryTables = CollectionTools.list(this.specifiedSecondaryTables());
+			List<OrmSecondaryTable> specifiedSecondaryTablesCopy = CollectionTools.list(this.specifiedSecondaryTables());
 			for (OrmSecondaryTable specifiedSecondaryTable : CollectionTools.iterable(specifiedSecondaryTables())) {
 				int index = this.specifiedSecondaryTables.indexOf(specifiedSecondaryTable);
 				this.specifiedSecondaryTables.remove(specifiedSecondaryTable);
@@ -402,7 +419,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 				}
 				getTypeMappingResource().getSecondaryTables().remove(index);
 			}
-			fireItemsRemoved(Entity.SPECIFIED_SECONDARY_TABLES_LIST, 0, specifiedSecondaryTables);
+			fireItemsRemoved(Entity.SPECIFIED_SECONDARY_TABLES_LIST, 0, specifiedSecondaryTablesCopy);
 			if (this.virtualSecondaryTables.size() != 0) {
 				fireItemsAdded(OrmEntity.VIRTUAL_SECONDARY_TABLES_LIST, 0, this.virtualSecondaryTables);
 			}
@@ -516,7 +533,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 	public OrmSequenceGenerator addSequenceGenerator() {
 		if (getSequenceGenerator() != null) {
-			throw new IllegalStateException("sequenceGenerator already exists");
+			throw new IllegalStateException("sequenceGenerator already exists"); //$NON-NLS-1$
 		}
 		this.sequenceGenerator = getJpaFactory().buildOrmSequenceGenerator(this);
 		getTypeMappingResource().setSequenceGenerator(OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl());
@@ -526,7 +543,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	public void removeSequenceGenerator() {
 		if (getSequenceGenerator() == null) {
-			throw new IllegalStateException("sequenceGenerator does not exist, cannot be removed");
+			throw new IllegalStateException("sequenceGenerator does not exist, cannot be removed"); //$NON-NLS-1$
 		}
 		OrmSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
 		this.sequenceGenerator = null;
@@ -546,7 +563,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 	public OrmTableGenerator addTableGenerator() {
 		if (getTableGenerator() != null) {
-			throw new IllegalStateException("tableGenerator already exists");
+			throw new IllegalStateException("tableGenerator already exists"); //$NON-NLS-1$
 		}
 		this.tableGenerator = getJpaFactory().buildOrmTableGenerator(this);
 		getTypeMappingResource().setTableGenerator(OrmFactory.eINSTANCE.createXmlTableGeneratorImpl());
@@ -556,7 +573,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	public void removeTableGenerator() {
 		if (getTableGenerator() == null) {
-			throw new IllegalStateException("tableGenerator does not exist, cannot be removed");
+			throw new IllegalStateException("tableGenerator does not exist, cannot be removed"); //$NON-NLS-1$
 		}
 		OrmTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = null;
@@ -625,7 +642,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 
 	public OrmPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn() {
-		throw new UnsupportedOperationException("use defaultPrimaryKeyJoinColumns() instead");
+		throw new UnsupportedOperationException("use defaultPrimaryKeyJoinColumns() instead"); //$NON-NLS-1$
 	}
 
 	protected void addDefaultPrimaryKeyJoinColumn(OrmPrimaryKeyJoinColumn defaultPkJoinColumn) {
@@ -1032,9 +1049,9 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 	public Entity getParentEntity() {
 		for (Iterator<PersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
-			TypeMapping typeMapping = i.next().getMapping();
-			if (typeMapping != this && typeMapping instanceof Entity) {
-				return (Entity) typeMapping;
+			TypeMapping tm = i.next().getMapping();
+			if (tm != this && tm instanceof Entity) {
+				return (Entity) tm;
 			}
 		}
 		return this;
@@ -1270,9 +1287,9 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator tableGeneratorResource) {
-		OrmTableGenerator tableGenerator = getJpaFactory().buildOrmTableGenerator(this);
-		tableGenerator.initialize(tableGeneratorResource);
-		return tableGenerator;
+		OrmTableGenerator generator = getJpaFactory().buildOrmTableGenerator(this);
+		generator.initialize(tableGeneratorResource);
+		return generator;
 	}
 
 	protected void initializeSequenceGenerator(XmlEntity entity) {
@@ -1282,9 +1299,9 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator xmlSequenceGenerator) {
-		OrmSequenceGenerator sequenceGenerator = getJpaFactory().buildOrmSequenceGenerator(this);
-		sequenceGenerator.initialize(xmlSequenceGenerator);
-		return sequenceGenerator;
+		OrmSequenceGenerator generator = getJpaFactory().buildOrmSequenceGenerator(this);
+		generator.initialize(xmlSequenceGenerator);
+		return generator;
 	}
 
 	protected void initializeSpecifiedPrimaryKeyJoinColumns(XmlEntity entity) {
@@ -1598,7 +1615,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	protected void updateVirtualAttributeOverrides() {
 		Iterator<PersistentAttribute> overridableAttributes = allOverridableAttributes();
-		ListIterator<OrmAttributeOverride> virtualAttributeOverrides = virtualAttributeOverrides();
+		ListIterator<OrmAttributeOverride> virtualAttributeOverridesCopy = virtualAttributeOverrides();
 		
 		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(overridableAttributes)) {
 			OrmAttributeOverride ormAttributeOverride = getAttributeOverrideNamed(persistentAttribute.getName());
@@ -1610,8 +1627,8 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 				javaAttributeOverride = getJavaEntity().getAttributeOverrideNamed(persistentAttribute.getName());
 			}
 			if (ormAttributeOverride != null) {
-				if (virtualAttributeOverrides.hasNext()) {
-					OrmAttributeOverride virtualAttributeOverride = virtualAttributeOverrides.next();
+				if (virtualAttributeOverridesCopy.hasNext()) {
+					OrmAttributeOverride virtualAttributeOverride = virtualAttributeOverridesCopy.next();
 					virtualAttributeOverride.update(buildVirtualXmlAttributeOverride(persistentAttribute, javaAttributeOverride));
 				}
 				else {
@@ -1622,7 +1639,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 				addVirtualAttributeOverride(buildVirtualAttributeOverride(persistentAttribute, javaAttributeOverride));
 			}
 		}
-		for (OrmAttributeOverride virtualAttributeOverride : CollectionTools.iterable(virtualAttributeOverrides)) {
+		for (OrmAttributeOverride virtualAttributeOverride : CollectionTools.iterable(virtualAttributeOverridesCopy)) {
 			removeVirtualAttributeOverride(virtualAttributeOverride);
 		}
 	}
@@ -1663,11 +1680,11 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	protected void updateNamedQueries(XmlEntity entity) {
-		ListIterator<OrmNamedQuery> namedQueries = namedQueries();
+		ListIterator<OrmNamedQuery> queries = namedQueries();
 		ListIterator<XmlNamedQuery> resourceNamedQueries = new CloneListIterator<XmlNamedQuery>(entity.getNamedQueries());//prevent ConcurrentModificiationException
 		
-		while (namedQueries.hasNext()) {
-			OrmNamedQuery namedQuery = namedQueries.next();
+		while (queries.hasNext()) {
+			OrmNamedQuery namedQuery = queries.next();
 			if (resourceNamedQueries.hasNext()) {
 				namedQuery.update(resourceNamedQueries.next());
 			}
@@ -1688,11 +1705,11 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 
 	protected void updateNamedNativeQueries(XmlEntity entity) {
-		ListIterator<OrmNamedNativeQuery> namedNativeQueries = namedNativeQueries();
+		ListIterator<OrmNamedNativeQuery> queries = namedNativeQueries();
 		ListIterator<XmlNamedNativeQuery> resourceNamedNativeQueries = new CloneListIterator<XmlNamedNativeQuery>(entity.getNamedNativeQueries());//prevent ConcurrentModificiationException
 		
-		while (namedNativeQueries.hasNext()) {
-			OrmNamedNativeQuery namedQuery = namedNativeQueries.next();
+		while (queries.hasNext()) {
+			OrmNamedNativeQuery namedQuery = queries.next();
 			if (resourceNamedNativeQueries.hasNext()) {
 				namedQuery.update(resourceNamedNativeQueries.next());
 			}

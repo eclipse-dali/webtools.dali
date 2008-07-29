@@ -16,6 +16,7 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.NameTools;
 
+@SuppressWarnings("nls")
 public class NameToolsTests extends TestCase {
 
 	public NameToolsTests(String name) {
@@ -146,17 +147,6 @@ public class NameToolsTests extends TestCase {
 		assertEquals("Oracle3", NameTools.uniqueNameFor("Oracle", strings.iterator()));
 	}
 
-	public void testUniqueJavaNameForCollection() {
-		Collection<String> strings = new ArrayList<String>();
-		strings.add("Oracle");
-		strings.add("Oracle");
-		strings.add("Oracle2");
-		strings.add("Oracle1");
-
-		assertEquals("private2", NameTools.uniqueJavaNameFor("private", strings.iterator()));
-		assertEquals("class2", NameTools.uniqueJavaNameFor("class", strings.iterator()));
-	}
-
 	public void testBuildQualifiedDatabaseObjectName() {
 		assertEquals("catalog.schema.name", NameTools.buildQualifiedDatabaseObjectName("catalog", "schema", "name"));
 		assertEquals("catalog..name", NameTools.buildQualifiedDatabaseObjectName("catalog", null, "name"));
@@ -222,6 +212,15 @@ public class NameToolsTests extends TestCase {
 		}
 		assertTrue(exCaught);
 
+	}
+
+	public void testStringIsLegalJavaIdentifier() {
+		assertFalse(NameTools.stringIsLegalJavaIdentifier("class"));
+		assertTrue(NameTools.stringIsLegalJavaIdentifier("clasS"));
+
+		assertFalse(NameTools.stringIsLegalJavaIdentifier("7foo"));
+		assertFalse(NameTools.stringIsLegalJavaIdentifier("foo@bar"));
+		assertTrue(NameTools.stringIsLegalJavaIdentifier("_foo"));
 	}
 
 }

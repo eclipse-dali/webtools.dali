@@ -243,7 +243,7 @@ public class GenericPersistenceUnitDefaults extends AbstractOrmJpaContextNode
 	}
 
 	protected String projectDefaultCatalogName() {
-		Catalog catalog = getJpaProject().getConnectionProfile().getDefaultCatalog();
+		Catalog catalog = this.getJpaProject().getDataSource().getDefaultCatalog();
 		return (catalog == null) ? null : catalog.getName();
 	}
 

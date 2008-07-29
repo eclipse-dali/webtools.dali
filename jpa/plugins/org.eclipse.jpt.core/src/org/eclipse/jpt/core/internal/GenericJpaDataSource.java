@@ -9,14 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
+import java.util.Iterator;
+
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionAdapter;
 import org.eclipse.jpt.db.ConnectionListener;
 import org.eclipse.jpt.db.ConnectionProfile;
+import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.ConnectionProfileListener;
-import org.eclipse.jpt.db.ConnectionProfileRepository;
-import org.eclipse.jpt.db.JptDbPlugin;
+import org.eclipse.jpt.db.Database;
+import org.eclipse.jpt.db.DatabaseObject;
+import org.eclipse.jpt.db.Schema;
 
 /**
  * GenericJpaDataSource
@@ -31,10 +36,6 @@ public class GenericJpaDataSource
 	 */
 	protected String connectionProfileName;
 
-	/**
-	 * this should never be null; if we do not have a connection, this will be
-	 * a "null" connection profile
-	 */
 	protected transient ConnectionProfile connectionProfile;
 
 	/**
@@ -51,20 +52,22 @@ public class GenericJpaDataSource
 
 	// ********** constructor/initialization **********
 
-	private ConnectionProfileRepository getConnectionProfileRepository() {
-		return JptDbPlugin.instance().getConnectionProfileRepository();
-	}
-
 	public GenericJpaDataSource(JpaProject jpaProject, String connectionProfileName) {
 		super(jpaProject);
 
 		this.connectionProfileListener = this.buildConnectionProfileListener();
-		this.getConnectionProfileRepository().addConnectionProfileListener(this.connectionProfileListener);
+		this.getConnectionProfileFactory().addConnectionProfileListener(this.connectionProfileListener);
 
 		this.connectionListener = this.buildConnectionListener();
 		this.connectionProfileName = connectionProfileName;
-		this.connectionProfile = this.connectionProfileNamed(connectionProfileName);
-		this.connectionProfile.addConnectionListener(this.connectionListener);
+		this.connectionProfile = this.buildConnectionProfile(connectionProfileName);
+		if (this.connectionProfile != null) {
+			this.connectionProfile.addConnectionListener(this.connectionListener);
+		}
+	}
+
+	protected ConnectionProfileFactory getConnectionProfileFactory() {
+		return this.getJpaPlatform().getConnectionProfileFactory();
 	}
 
 	protected ConnectionProfileListener buildConnectionProfileListener() {
@@ -76,7 +79,7 @@ public class GenericJpaDataSource
 	}
 
 
-	// ********** IJpaDataSource implementation **********
+	// ********** JpaDataSource implementation **********
 
 	public String getConnectionProfileName() {
 		return this.connectionProfileName;
@@ -87,45 +90,87 @@ public class GenericJpaDataSource
 		this.connectionProfileName = connectionProfileName;
 		this.firePropertyChanged(CONNECTION_PROFILE_NAME_PROPERTY, old, connectionProfileName);
 		 // synch the connection profile when the name changes
-		this.setConnectionProfile(this.connectionProfileNamed(connectionProfileName));
+		this.setConnectionProfile(this.buildConnectionProfile(connectionProfileName));
 	}
 
-	@Override
 	public ConnectionProfile getConnectionProfile() {
 		return this.connectionProfile;
 	}
 
-	public boolean hasAConnection() {
-		return ! this.connectionProfile.isNull();
+	@Override
+	public boolean connectionProfileIsActive() {
+		ConnectionProfile cp = this.connectionProfile;
+		return (cp != null) && cp.isActive();
+	}
+
+	public Database getDatabase() {
+		ConnectionProfile cp = this.connectionProfile;
+		return (cp == null) ? null : cp.getDatabase();
+	}
+
+	public Iterator<String> catalogNames() {
+		Database db = this.getDatabase();
+		return (db == null) ? null : db.catalogNames();
+	}
+
+	public Catalog getCatalogNamed(String name) {
+		Database db = this.getDatabase();
+		return (db == null) ? null : db.getCatalogNamed(name);
+	}
+
+	public Catalog getDefaultCatalog() {
+		Database db = this.getDatabase();
+		return (db == null) ? null : db.getDefaultCatalog();
+	}
+
+	public Iterator<String> schemaNames() {
+		Database db = this.getDatabase();
+		return (db == null) ? null : db.schemaNames();
+	}
+
+	public Schema getSchemaNamed(String name) {
+		Database db = this.getDatabase();
+		return (db == null) ? null : db.getSchemaNamed(name);
+	}
+
+	public Schema getDefaultSchema() {
+		Database db = this.getDatabase();
+		return (db == null) ? null : db.getDefaultSchema();
+	}
+
+	public <T extends DatabaseObject> T getDatabaseObjectNamed(T[] databaseObjects, String name) {
+		Database db = this.getDatabase();
+		return (db == null) ? null : db.getDatabaseObjectNamed(databaseObjects, name);
 	}
 
 	public void dispose() {
-		this.connectionProfile.removeConnectionListener(this.connectionListener);
-		this.getConnectionProfileRepository().removeConnectionProfileListener(this.connectionProfileListener);
+		if (this.connectionProfile != null) {
+			this.connectionProfile.removeConnectionListener(this.connectionListener);
+		}
+		this.getConnectionProfileFactory().removeConnectionProfileListener(this.connectionProfileListener);
 	}
 
 
 	// ********** internal methods **********
 
-	private ConnectionProfile connectionProfileNamed(String name) {
-		return this.getConnectionProfileRepository().connectionProfileNamed(name);
+	protected ConnectionProfile buildConnectionProfile(String name) {
+		return this.getConnectionProfileFactory().buildConnectionProfile(name, this.getJpaPlatform().getDatabaseFinder());
 	}
 
 	protected void setConnectionProfile(ConnectionProfile connectionProfile) {
 		ConnectionProfile old = this.connectionProfile;
-		this.connectionProfile.removeConnectionListener(this.connectionListener);
+		if (old != null) {
+			old.removeConnectionListener(this.connectionListener);
+		}
 		this.connectionProfile = connectionProfile;
-		this.connectionProfile.addConnectionListener(this.connectionListener);
+		if (connectionProfile != null) {
+			connectionProfile.addConnectionListener(this.connectionListener);
+		}
 		this.firePropertyChanged(CONNECTION_PROFILE_PROPERTY, old, connectionProfile);
 	}
 
 
 	// ********** overrides **********
-
-	@Override
-	public boolean connectionProfileIsActive() {
-		return this.connectionProfile.isActive();
-	}
 
 	@Override
 	public void toString(StringBuilder sb) {
@@ -136,26 +181,42 @@ public class GenericJpaDataSource
 	// ********** member classes **********
 
 	/**
-	 * Listen for a connection profile with our name being added or removed.
+	 * Listen for a connection profile with our name being removed.
 	 * Also listen for our connection's name being changed.
 	 */
 	protected class LocalConnectionProfileListener implements ConnectionProfileListener {
+
 		protected LocalConnectionProfileListener() {
 			super();
 		}
 
-		// possible name change
-		public void connectionProfileChanged(ConnectionProfile profile) {
-			if (profile == GenericJpaDataSource.this.connectionProfile) {
-				GenericJpaDataSource.this.setConnectionProfileName(profile.getName());
+		public void connectionProfileAdded(String name) {
+			// check to see if a connection profile with our name was added
+			// (assume our connection profile is null)
+			if (GenericJpaDataSource.this.connectionProfile == null) {
+				if (name.equals(GenericJpaDataSource.this.getConnectionProfileName())) {
+					GenericJpaDataSource.this.setConnectionProfileName(name);  // this will trigger creation of CP
+				}
 			}
 		}
 
-		// profile added or removed
-		public void connectionProfileReplaced(ConnectionProfile oldProfile, ConnectionProfile newProfile) {
-			if (GenericJpaDataSource.this.hasAConnection() &&
-				(oldProfile == GenericJpaDataSource.this.connectionProfile)) {
-					GenericJpaDataSource.this.setConnectionProfile(newProfile);
+		public void connectionProfileRemoved(String name) {
+			if (GenericJpaDataSource.this.connectionProfile == null) {
+				return;
+			}
+			if (name.equals(GenericJpaDataSource.this.connectionProfile.getName())) {
+				GenericJpaDataSource.this.setConnectionProfile(null);
+			}
+		}
+
+		public void connectionProfileRenamed(String oldName, String newName) {
+			if (GenericJpaDataSource.this.connectionProfile == null) {
+				return;
+			}
+			// the connection profile will already have the new name,
+			// we just need to synch the name held by the data source
+			if (newName.equals(GenericJpaDataSource.this.connectionProfile.getName())) {
+				GenericJpaDataSource.this.setConnectionProfileName(newName);
 			}
 		}
 

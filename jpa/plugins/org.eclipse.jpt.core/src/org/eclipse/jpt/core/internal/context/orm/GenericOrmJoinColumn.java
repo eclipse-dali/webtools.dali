@@ -88,7 +88,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 
 	public Column getDbReferencedColumn() {
 		Table table = dbReferencedColumnTable();
-		return (table == null) ? null : table.columnNamed(getReferencedColumnName());
+		return (table == null) ? null : table.getColumnNamed(getReferencedColumnName());
 	}
 
 	public boolean isReferencedColumnResolved() {

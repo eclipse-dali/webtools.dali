@@ -17,6 +17,7 @@ import org.eclipse.datatools.connectivity.sqm.core.definition.DatabaseDefinition
 import org.eclipse.datatools.connectivity.sqm.internal.core.RDBCorePlugin;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Database;
+import org.eclipse.jpt.db.DatabaseObject;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -29,33 +30,48 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
  */
 final class DTPDatabaseWrapper
 	extends DTPSchemaContainerWrapper
-	implements InternalDatabase
+	implements Database
 {
-	// backpointer to parent
-	private final DTPConnectionProfileWrapper connectionProfile;
-
 	// the wrapped DTP database
 	private final org.eclipse.datatools.modelbase.sql.schema.Database dtpDatabase;
 
 	// lazy-initialized
 	private DTPCatalogWrapper[] catalogs;
 
-	// lazy-initialized
+	// lazy-initialized - but it can be 'null' so we use a flag
 	private DTPCatalogWrapper defaultCatalog;
 	private boolean defaultCatalogCalculated = false;
 
-	// TODO allow user to configure?
-	private boolean caseSensitive = false;
-
 
 	private static final DTPCatalogWrapper[] EMPTY_CATALOGS = new DTPCatalogWrapper[0];
+
+
+	// ********** constants **********
+
+	private static final String POSTGRESQL_PUBLIC_SCHEMA_NAME = "public";  //$NON-NLS-1$
+
+
+	// ********** vendors **********
+
+	static final String DERBY_VENDOR = "Derby";  //$NON-NLS-1$
+	static final String HSQLDB_VENDOR = "HSQLDB";  //$NON-NLS-1$
+	static final String DB2_UDB_I_SERIES_VENDOR = "DB2 UDB iSeries";  //$NON-NLS-1$
+	static final String DB2_UDB_VENDOR = "DB2 UDB";  //$NON-NLS-1$
+	static final String DB2_UDB_Z_SERIES_VENDOR = "DB2 UDB zSeries";  //$NON-NLS-1$
+	static final String INFORMIX_VENDOR = "Informix";  //$NON-NLS-1$
+	static final String SQL_SERVER_VENDOR = "SQL Server";  //$NON-NLS-1$
+	static final String MYSQL_VENDOR = "MySql";  //$NON-NLS-1$
+	static final String ORACLE_VENDOR = "Oracle";  //$NON-NLS-1$
+	static final String POSTGRES_VENDOR = "postgres";  //$NON-NLS-1$
+	static final String MAXDB_VENDOR = "MaxDB";  //$NON-NLS-1$
+	static final String SYBASE_ASA_VENDOR = "Sybase_ASA";  //$NON-NLS-1$
+	static final String SYBASE_ASE_VENDOR = "Sybase_ASE";  //$NON-NLS-1$
 
 
 	// ********** constructor **********
 
 	DTPDatabaseWrapper(DTPConnectionProfileWrapper connectionProfile, org.eclipse.datatools.modelbase.sql.schema.Database dtpDatabase) {
 		super(connectionProfile, dtpDatabase);
-		this.connectionProfile = connectionProfile;
 		this.dtpDatabase = dtpDatabase;
 	}
 
@@ -63,18 +79,54 @@ final class DTPDatabaseWrapper
 	// ********** DTPWrapper implementation **********
 
 	@Override
-	synchronized void catalogObjectChanged(int eventType) {
-		super.catalogObjectChanged(eventType);
-		this.getConnectionProfile().databaseChanged(this, eventType);
+	synchronized void catalogObjectChanged() {
+		super.catalogObjectChanged();
+		this.getConnectionProfile().databaseChanged(this);
+	}
+
+	@Override
+	public DTPDatabaseWrapper getDatabase() {
+		return this;
+	}
+
+
+	// ********** DTPSchemaContainerWrapper implementation **********
+
+	@Override
+	@SuppressWarnings("unchecked")
+	List<org.eclipse.datatools.modelbase.sql.schema.Schema> getDTPSchemata() {
+		return this.dtpDatabase.getSchemas();
+	}
+
+	@Override
+	DTPCatalogWrapper getCatalog() {
+		return null;  // catalog not supported
+	}
+
+	@Override
+	DTPSchemaWrapper getSchema(org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema) {
+		return this.getSchema_(dtpSchema);
+	}
+
+	@Override
+	DTPTableWrapper getTable(org.eclipse.datatools.modelbase.sql.tables.Table dtpTable) {
+		return this.getTable_(dtpTable);
+	}
+
+	@Override
+	DTPColumnWrapper getColumn(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
+		return this.getColumn_(dtpColumn);
+	}
+
+
+	// ********** DatabaseObject implementation **********
+
+	public String getName() {
+		return this.dtpDatabase.getName();
 	}
 
 
 	// ********** Database implementation **********
-
-	@Override
-	public String getName() {
-		return this.dtpDatabase.getName();
-	}
 
 	public String getVendor() {
 		return this.dtpDatabase.getVendor();
@@ -84,39 +136,25 @@ final class DTPDatabaseWrapper
 		return this.dtpDatabase.getVersion();
 	}
 
-	public DatabaseDefinition getDtpDefinition() {
-		return RDBCorePlugin.getDefault().getDatabaseDefinitionRegistry().getDefinition(this.dtpDatabase);
-	}
-
-	// ***** caseSensitive
-
+	// override to make method public since it's in the Database interface
 	@Override
-	public boolean isCaseSensitive() {
-		return this.caseSensitive;
-	}
-
-	// TODO
-	public void setCaseSensitive(boolean caseSensitive) {
-		this.caseSensitive = caseSensitive;
+	public <T extends DatabaseObject> T getDatabaseObjectNamed(T[] databaseObjects, String name) {
+		return super.getDatabaseObjectNamed(databaseObjects, name);
 	}
 
 	// ***** catalogs
 
 	public boolean supportsCatalogs() {
 		// if the DTP database does not have any schemata, it must have catalogs...
-		List<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata = this.dtpSchemata();
+		List<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata = this.getDTPSchemata();
 		return (dtpSchemata == null) || dtpSchemata.isEmpty();
 	}
 
 	public Iterator<Catalog> catalogs() {
-		return new ArrayIterator<Catalog>(this.catalogs_());
+		return new ArrayIterator<Catalog>(this.getCatalogs());
 	}
 
-	private Iterator<DTPCatalogWrapper> catalogWrappers() {
-		return new ArrayIterator<DTPCatalogWrapper>(this.catalogs_());
-	}
-
-	private synchronized DTPCatalogWrapper[] catalogs_() {
+	private synchronized DTPCatalogWrapper[] getCatalogs() {
 		if (this.catalogs == null) {
 			this.catalogs = this.buildCatalogs();
 		}
@@ -124,7 +162,7 @@ final class DTPDatabaseWrapper
 	}
 
 	private DTPCatalogWrapper[] buildCatalogs() {
-		List<org.eclipse.datatools.modelbase.sql.schema.Catalog> dtpCatalogs = this.dtpCatalogs();
+		List<org.eclipse.datatools.modelbase.sql.schema.Catalog> dtpCatalogs = this.getDTPCatalogs();
 		if ((dtpCatalogs == null) || dtpCatalogs.isEmpty()) {
 			return EMPTY_CATALOGS;
 		}
@@ -137,49 +175,21 @@ final class DTPDatabaseWrapper
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	private List<org.eclipse.datatools.modelbase.sql.schema.Catalog> dtpCatalogs() {
+	private List<org.eclipse.datatools.modelbase.sql.schema.Catalog> getDTPCatalogs() {
 		return this.dtpDatabase.getCatalogs();
 	}
 
 	public int catalogsSize() {
-		return this.catalogs_().length;
+		return this.getCatalogs().length;
 	}
 
 	public Iterator<String> catalogNames() {
-		return new TransformationIterator<DTPCatalogWrapper, String>(this.catalogWrappers()) {
+		return new TransformationIterator<Catalog, String>(this.catalogs()) {
 			@Override
-			protected String transform(DTPCatalogWrapper catalog) {
+			protected String transform(Catalog catalog) {
 				 return catalog.getName();
 			}
 		};
-	}
-
-	public boolean containsCatalogNamed(String name) {
-		return this.catalogNamed(name) != null;
-	}
-
-	public DTPCatalogWrapper catalogNamed(String name) {
-		return this.isCaseSensitive() ? this.catalogNamedCaseSensitive(name) : this.catalogNamedIgnoreCase(name);
-	}
-	
-	private DTPCatalogWrapper catalogNamedCaseSensitive(String name) {
-		for (Iterator<DTPCatalogWrapper> stream = this.catalogWrappers(); stream.hasNext(); ) {
-			DTPCatalogWrapper catalog = stream.next();
-			if (catalog.getName().equals(name)) {
-				return catalog;
-			}
-		}
-		return null;
-	}
-	
-	private DTPCatalogWrapper catalogNamedIgnoreCase(String name) {
-		for (Iterator<DTPCatalogWrapper> stream = this.catalogWrappers(); stream.hasNext(); ) {
-			DTPCatalogWrapper catalog = stream.next();
-			if (StringTools.stringsAreEqualIgnoreCase(catalog.getName(), name)) {
-				return catalog;
-			}
-		}
-		return null;
 	}
 
 	public synchronized DTPCatalogWrapper getDefaultCatalog() {
@@ -194,16 +204,15 @@ final class DTPDatabaseWrapper
 		if ( ! this.supportsCatalogs()) {
 			return null;
 		}
-		String userName = this.connectionProfile.getUserName();
-		for (Iterator<DTPCatalogWrapper> stream = this.catalogWrappers(); stream.hasNext(); ) {
-			DTPCatalogWrapper catalog = stream.next();
-			if (catalog.getName().length() == 0) {
-				return catalog;  // special catalog that contains all schemata
+		for (DTPCatalogWrapper catalog : this.getCatalogs()) {
+			String catalogName = catalog.getName();
+			if (catalogName.length() == 0) {
+				return catalog;  // special catalog that contains all schemata (Derby)
 			}
-			if (catalog.getName().equals(userName)) {
+			if (catalogName.equals(this.getConnectionProfile().getUserName())) {
 				return catalog;  // user name is default catalog
 			}
-			if (catalog.getName().equals(this.getName())) {
+			if (catalogName.equals(this.getName())) {
 				return catalog;  // special catalog with same name as DB (PostgreSQL)
 			}
 		}
@@ -213,9 +222,8 @@ final class DTPDatabaseWrapper
 	/**
 	 * return the catalog for the specified DTP catalog
 	 */
-	DTPCatalogWrapper catalog(org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog) {
-		for (Iterator<DTPCatalogWrapper> stream = this.catalogWrappers(); stream.hasNext(); ) {
-			DTPCatalogWrapper catalog = stream.next();
+	DTPCatalogWrapper getCatalog(org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog) {
+		for (DTPCatalogWrapper catalog : this.getCatalogs()) {
 			if (catalog.wraps(dtpCatalog)) {
 				return catalog;
 			}
@@ -223,20 +231,224 @@ final class DTPDatabaseWrapper
 		throw new IllegalArgumentException("invalid DTP catalog: " + dtpCatalog);  //$NON-NLS-1$
 	}
 
+	public DTPCatalogWrapper getCatalogNamed(String name) {
+		return this.getDatabaseObjectNamed(this.getCatalogs(), name);
+	}
+
 	// ***** schemata
 
 	@Override
-	@SuppressWarnings("unchecked")
-	List<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata() {
-		return this.dtpDatabase.getSchemas();
+	synchronized DTPSchemaWrapper[] getSchemata() {
+		DTPCatalogWrapper cat = this.getDefaultCatalog();
+		return (cat == null) ? super.getSchemata() : cat.getSchemata();
 	}
 
-	@Override
-	synchronized DTPSchemaWrapper[] schemata_() {
-		return (this.supportsCatalogs()) ?
-			this.getDefaultCatalog().schemata_()
-		:
-			super.schemata_();
+	public DTPSchemaWrapper getDefaultSchema() {
+		DTPSchemaWrapper schema = this.getSchemaNamed(this.getConnectionProfile().getUserName());
+		if (schema != null) {
+			return schema;
+		}
+		// PostgreSQL has a "schema search path" - the default is:
+		//     "$user",public
+		// so if "$user" is not found, return public
+		if (this.getVendor().equals(POSTGRES_VENDOR)) {
+			return this.getSchemaNamed(POSTGRESQL_PUBLIC_SCHEMA_NAME);
+		}
+		// MySQL database has a single schema with the same name as the database
+		if (this.getVendor().equals(MYSQL_VENDOR)) {
+			return this.getSchemaNamed(this.getName());
+		}
+		return null;
+	}
+
+
+	// ********** identifiers **********
+
+	/**
+	 * Return the database object with the specified name. If the name is
+	 * "delimited" (typically with double-quotes), it will be used without any
+	 * folding. If the name is "normal" (i.e. not delimited), it will be
+	 * folded to the appropriate case (typically uppercase).
+	 * @see #identifierIsDelimited(String)
+	 * @see #foldIdentifier(String)
+	 * 
+	 * Since the database has the appropriate state to compare identifiers,
+	 * the connection profile delegates to here when using the default
+	 * "database finder".
+	 */
+	// TODO convert embedded quotes?
+	<T extends DatabaseObject> T getDatabaseObjectNamed_(T[] databaseObjects, String name) {
+		name = this.normalizeIdentifier(name);
+		for (T dbObject : databaseObjects) {
+			if (dbObject.getName().equals(name)) {
+				return dbObject;
+			}
+		}
+		return null;
+	}
+
+	private String normalizeIdentifier(String identifier) {
+		if (this.identifierIsDelimited(identifier)) {
+			return StringTools.unwrap(identifier);
+		}
+		return this.foldIdentifier(identifier);
+	}
+
+	/**
+	 * Return whether the specified identifier is "delimited" for the current
+	 * database (typically with double-quotes).
+	 */
+	private boolean identifierIsDelimited(String identifier) {
+		if (this.vendorAllowsQuoteDelimiters()
+				&& StringTools.stringIsQuoted(identifier)) {
+			return true;
+		}
+		if (this.vendorAllowsBracketDelimiters()
+				&& StringTools.stringIsBracketed(identifier)) {
+			return true;
+		}
+		if (this.vendorAllowsBacktickDelimiters()
+				&& StringTools.stringIsDelimited(identifier, BACKTICK)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Return whether the database allows identifiers to delimited with
+	 * quotes: "FOO".
+	 */
+	boolean vendorAllowsQuoteDelimiters() {
+		// all platforms allow identifiers to be delimited by quotes
+		return true;
+	}
+
+	/**
+	 * Return whether the database allows identifiers to delimited with
+	 * brackets: [FOO].
+	 */
+	boolean vendorAllowsBracketDelimiters() {
+		String vendor = this.getVendor();
+		return vendor.equals(SQL_SERVER_VENDOR)
+				|| vendor.equals(SYBASE_ASE_VENDOR)
+				|| vendor.equals(SYBASE_ASA_VENDOR);
+	}
+
+	/**
+	 * Return whether the database allows identifiers to delimited with
+	 * backticks: `FOO`.
+	 */
+	boolean vendorAllowsBacktickDelimiters() {
+		String vendor = this.getVendor();
+		return vendor.equals(MYSQL_VENDOR);
+	}
+
+	private static final char BACKTICK = '`';
+
+	/**
+	 * Fold the specified identifier to the appropriate case.
+	 * The SQL-92 spec says a "normal" (non-delimited) identifier should be
+	 * folded to uppercase; but some databases do otherwise (e.g. PostgreSQL).
+	 * 
+	 * According to on-line documentation I could find:  ~bjv
+	 * The following databases fold to uppercase:
+	 *     Derby
+	 *     Oracle
+	 *     DB2
+	 *     HSQLDB
+	 *     MaxDB
+	 * The following databases fold to lowercase:
+	 *     PostgreSQL
+	 *     Informix
+	 *     MySQL  (sorta - depends on underlying O/S file system and env var)
+	 * The following databases do not fold:
+	 *     MS SQL Server (might depend on collation setting...)
+	 *     Sybase (might depend on collation setting...)
+	 */
+	private String foldIdentifier(String identifier) {
+		if (this.vendorFoldsToLowercase()) {
+			return identifier.toLowerCase();
+		}
+		if (this.vendorFoldsToUppercase()) {
+			return identifier.toUpperCase();
+		}
+		if (this.vendorDoesNotFold()) {
+			return identifier;
+		}
+		throw new IllegalStateException("unknown vendor folding: " + this.getVendor()); //$NON-NLS-1$
+	}
+
+	/**
+	 * Return whether the database folds non-delimited identifiers to lowercase.
+	 */
+	boolean vendorFoldsToLowercase() {
+		String vendor = this.getVendor();
+		return vendor.equals(POSTGRES_VENDOR)
+				|| vendor.equals(INFORMIX_VENDOR);
+	}
+
+	/**
+	 * Return whether the database does not fold non-delimited identifiers to
+	 * lowercase.
+	 */
+	boolean vendorDoesNotFoldToLowercase() {
+		return ! this.vendorFoldsToLowercase();
+	}
+
+	/**
+	 * Return whether the database folds non-delimited identifiers to uppercase.
+	 */
+	boolean vendorFoldsToUppercase() {
+		return this.vendorFolds()
+				&& this.vendorDoesNotFoldToLowercase();
+	}
+
+	/**
+	 * Return whether the database does not fold non-delimited identifiers to
+	 * uppercase.
+	 */
+	boolean vendorDoesNotFoldToUppercase() {
+		return ! this.vendorFoldsToUppercase();
+	}
+
+	/**
+	 * Return whether the database folds non-delimited identifiers to either
+	 * uppercase or lowercase.
+	 */
+	boolean vendorFolds() {
+		return ! this.vendorDoesNotFold();
+	}
+
+	/**
+	 * Return whether the database does not fold non-delimited identifiers to
+	 * either uppercase or lowercase (i.e. the identifier is used unmodified).
+	 * These guys are bit flaky, so we force an exact match.
+	 * (e.g. MySQL folds database and table names to lowercase on Windows
+	 * by default; but that default can be changed by the
+	 * 'lower_case_table_names' system variable. This because databases are
+	 * stored as directories and tables are stored as files in the underlying
+	 * O/S, and the case-sensitivity of the names is determined by the behavior
+	 * of filenames on the O/S. Then, to complicate things,
+	 * none of the other identifiers, like table and column names, are folded;
+	 * but they are case-insensitive, unless delimited. See
+	 * http://dev.mysql.com/doc/refman/6.0/en/identifier-case-sensitivity.html.)
+	 */
+	boolean vendorDoesNotFold() {
+		String vendor = this.getVendor();
+		return vendor.equals(SQL_SERVER_VENDOR)
+				|| vendor.equals(SYBASE_ASE_VENDOR)
+				|| vendor.equals(SYBASE_ASA_VENDOR)
+				|| vendor.equals(MYSQL_VENDOR);
+	}
+
+	/**
+	 * Delimit the specified identifier in a vendor-appropriate fashion.
+	 */
+	String delimitIdentifier(String identifier) {
+		if (this.vendorAllowsQuoteDelimiters()) {
+			return StringTools.quote(identifier);
+		}
+		throw new IllegalStateException("unknown vendor delimiters: " + this.getVendor()); //$NON-NLS-1$
 	}
 
 
@@ -249,53 +461,60 @@ final class DTPDatabaseWrapper
 
 	// ********** internal methods **********
 
-	boolean wraps(org.eclipse.datatools.modelbase.sql.schema.Database database) {
-		return this.dtpDatabase == database;
+	DatabaseDefinition getDTPDefinition() {
+		return RDBCorePlugin.getDefault().getDatabaseDefinitionRegistry().getDefinition(this.dtpDatabase);
 	}
 
-	/**
-	 * return the table for the specified DTP table
-	 */
-	DTPTableWrapper table(org.eclipse.datatools.modelbase.sql.tables.Table dtpTable) {
-		return this.schema(dtpTable.getSchema()).table(dtpTable);
+
+	// ********** listening **********
+
+	@Override
+	synchronized void startListening() {
+		if (this.catalogs != null) {
+			this.startCatalogs();
+		}
+		super.startListening();
 	}
 
-	/**
-	 * return the column for the specified DTP column
-	 */
-	DTPColumnWrapper column(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
-		return this.table(dtpColumn.getTable()).column(dtpColumn);
+	private void startCatalogs() {
+		for (DTPCatalogWrapper catalog : this.catalogs) {
+			catalog.startListening();
+		}
 	}
 
 	@Override
-	DTPDatabaseWrapper database() {
-		return this;
-	}
-	
-
-	// ********** disposal **********
-
-	// must be public because it is defined in InternalDatabase interface
-	@Override
-	public synchronized void dispose() {
-		super.dispose();
+	synchronized void stopListening() {
+		if (this.catalogs != null) {
+			this.stopCatalogs();
+		}
+		super.stopListening();
 	}
 
+	private void stopCatalogs() {
+		for (DTPCatalogWrapper catalog : this.catalogs) {
+			catalog.stopListening();
+		}
+	}
+
+
+	// ********** clear **********
+
 	@Override
-	void dispose_() {
+	void clear() {
 		this.defaultCatalogCalculated = false;
 		this.defaultCatalog = null;
-		this.disposeCatalogs();
-		super.dispose_();
+		if (this.catalogs != null) {
+			this.clearCatalogs();
+		}
+		super.clear();
 	}
 
-	private void disposeCatalogs() {
-		if (this.catalogs != null) {
-			for (DTPCatalogWrapper catalog : this.catalogs) {
-				catalog.dispose();
-			}
-			this.catalogs = null;
+	private void clearCatalogs() {
+		this.stopCatalogs();
+		for (DTPCatalogWrapper catalog : this.catalogs) {
+			catalog.clear();
 		}
+		this.catalogs = null;
 	}
 
 }

@@ -9,14 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.gen.internal;
 
-import java.util.Collection;
 import java.util.Iterator;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.gen.internal.EntityGenerator.OverwriteConfirmer;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * This generator will generate a package of entities for a set of tables.
@@ -25,52 +24,65 @@ public class PackageGenerator {
 	private final Config config;
 	private final EntityGenerator.Config entityConfig;
 	private final GenScope scope;
-	private final OverwriteConfirmer overwriteConfirmer;
-	private final IProgressMonitor monitor;
 
 
 	// ********** public API **********
 
-	public static void generateEntities(Config config, EntityGenerator.Config entityConfig, Collection<Table> tables, OverwriteConfirmer overwriteConfirmer, IProgressMonitor monitor) {
-		if ((config == null) || (entityConfig == null) || (tables == null)) {
+	public static void generateEntities(
+			Config config,
+			EntityGenerator.Config entityConfig,
+			IProgressMonitor progressMonitor
+	) {
+		if ((config == null) || (entityConfig == null)) {
 			throw new NullPointerException();
 		}
-		new PackageGenerator(config, entityConfig, tables, overwriteConfirmer, monitor).generateEntities();
+		SubMonitor sm = SubMonitor.convert(progressMonitor, JptGenMessages.PackageGenerator_taskName, 100);
+		new PackageGenerator(config, entityConfig, sm.newChild(10)).generateEntities(sm.newChild(90));
 	}
 
 
 	// ********** construction/initialization **********
 
-	private PackageGenerator(Config config, EntityGenerator.Config entityConfig, Collection<Table> tables, OverwriteConfirmer overwriteConfirmer, IProgressMonitor monitor) {
+	private PackageGenerator(
+			Config config,
+			EntityGenerator.Config entityConfig,
+			IProgressMonitor progressMonitor
+	) {
 		super();
 		this.config = config;
 		this.entityConfig = entityConfig;
-		this.scope = new GenScope(tables, entityConfig, monitor);
-		this.overwriteConfirmer = overwriteConfirmer;
-		this.monitor = monitor;
+		this.scope = new GenScope(entityConfig, progressMonitor);
 	}
 
 
 	// ********** generation **********
 
-	private void generateEntities() {
-		int size = CollectionTools.size(this.scope.entityTables());
-		for (Iterator<GenTable> stream = this.scope.entityTables(); stream.hasNext(); ) {
-			checkCanceled();
-			this.buildEntity(stream.next());
-			this.monitor.worked(50/size);
+	private void generateEntities(IProgressMonitor progressMonitor) {
+		SubMonitor sm = SubMonitor.convert(progressMonitor, this.scope.entityTablesSize());
+		for (Iterator<GenTable> stream = this.scope.entityGenTables(); stream.hasNext(); ) {
+			this.checkCanceled(sm);
+			this.generateEntity(stream.next(), sm.newChild(1));
 		}
 	}
 
-	private void checkCanceled() {
-		if (this.monitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}		
+	private void generateEntity(GenTable genTable, IProgressMonitor progressMonitor) {
+		EntityGenerator.generateEntity(
+				this.entityConfig,
+				this.config.getPackageFragment(),
+				genTable,
+				progressMonitor
+		);
 	}
-	
 
-	private void buildEntity(GenTable genTable) {
-		EntityGenerator.generateEntity(this.entityConfig, this.config.getPackageFragment(), genTable, overwriteConfirmer, this.monitor);
+	private void checkCanceled(IProgressMonitor progressMonitor) {
+		if (progressMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
+	}
+
+	@Override
+	public String toString() {
+		return StringTools.buildToStringFor(this, this.scope);
 	}
 
 
@@ -82,6 +94,7 @@ public class PackageGenerator {
 		public IPackageFragment getPackageFragment() {
 			return this.packageFragment;
 		}
+
 		public void setPackageFragment(IPackageFragment packageFragment) {
 			this.packageFragment = packageFragment;
 		}

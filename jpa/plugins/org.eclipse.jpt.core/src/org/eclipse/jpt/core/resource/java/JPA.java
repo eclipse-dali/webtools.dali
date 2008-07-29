@@ -19,11 +19,13 @@ package org.eclipse.jpt.core.resource.java;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
+// TODO move to utility?
+@SuppressWarnings("nls")
 public interface JPA {
 
 	// JPA package
 	String PACKAGE = "javax.persistence";
-	String PACKAGE_ = PACKAGE + ".";
+	String PACKAGE_ = PACKAGE + '.';
 
 
 	// ********** API **********
@@ -218,14 +220,14 @@ public interface JPA {
 
 	// JPA enums
 	String GENERATION_TYPE = PACKAGE_ + "GenerationType";
-		String GENERATION_TYPE_ = GENERATION_TYPE + ".";
+		String GENERATION_TYPE_ = GENERATION_TYPE + '.';
 		String GENERATION_TYPE__AUTO = GENERATION_TYPE_ + "AUTO";
 		String GENERATION_TYPE__IDENTITY = GENERATION_TYPE_ + "IDENTITY";
 		String GENERATION_TYPE__SEQUENCE = GENERATION_TYPE_ + "SEQUENCE";
 		String GENERATION_TYPE__TABLE = GENERATION_TYPE_ + "TABLE";
 
 	String CASCADE_TYPE = PACKAGE_ + "CascadeType";
-		String CASCADE_TYPE_ = CASCADE_TYPE + ".";
+		String CASCADE_TYPE_ = CASCADE_TYPE + '.';
 		String CASCADE_TYPE__ALL = CASCADE_TYPE_ + "ALL";
 		String CASCADE_TYPE__MERGE = CASCADE_TYPE_ + "MERGE";
 		String CASCADE_TYPE__PERSIST = CASCADE_TYPE_ + "PERSIST";
@@ -233,39 +235,39 @@ public interface JPA {
 		String CASCADE_TYPE__REMOVE = CASCADE_TYPE_ + "REMOVE";
 
 	String DISCRIMINATOR_TYPE = PACKAGE_ + "DiscriminatorType";
-		String DISCRIMINATOR_TYPE_ = DISCRIMINATOR_TYPE + ".";
+		String DISCRIMINATOR_TYPE_ = DISCRIMINATOR_TYPE + '.';
 		String DISCRIMINATOR_TYPE__CHAR = DISCRIMINATOR_TYPE_ + "CHAR";
 		String DISCRIMINATOR_TYPE__INTEGER = DISCRIMINATOR_TYPE_ + "INTEGER";
 		String DISCRIMINATOR_TYPE__STRING = DISCRIMINATOR_TYPE_ + "STRING";
 
 	String ENUM_TYPE = PACKAGE_ + "EnumType";
-		String ENUM_TYPE_ = ENUM_TYPE + ".";
+		String ENUM_TYPE_ = ENUM_TYPE + '.';
 		String ENUM_TYPE__ORDINAL = ENUM_TYPE_ + "ORDINAL";
 		String ENUM_TYPE__STRING = ENUM_TYPE_ + "STRING";
 
 	String FETCH_TYPE = PACKAGE_ + "FetchType";
-		String FETCH_TYPE_ = FETCH_TYPE + ".";
+		String FETCH_TYPE_ = FETCH_TYPE + '.';
 		String FETCH_TYPE__EAGER = FETCH_TYPE_ + "EAGER";
 		String FETCH_TYPE__LAZY = FETCH_TYPE_ + "LAZY";
 
 	String FLUSH_MODE_TYPE = PACKAGE_ + "FlushModeType";
-		String FLUSH_MODE_TYPE_ = FLUSH_MODE_TYPE + ".";
+		String FLUSH_MODE_TYPE_ = FLUSH_MODE_TYPE + '.';
 		String FLUSH_MODE_TYPE__AUTO = FLUSH_MODE_TYPE_ + "AUTO";
 		String FLUSH_MODE_TYPE__COMMIT = FLUSH_MODE_TYPE_ + "COMMIT";
 
 	String INHERITANCE_TYPE = PACKAGE_ + "InheritanceType";
-		String INHERITANCE_TYPE_ = INHERITANCE_TYPE + ".";
+		String INHERITANCE_TYPE_ = INHERITANCE_TYPE + '.';
 		String INHERITANCE_TYPE__JOINED = INHERITANCE_TYPE_ + "JOINED";
 		String INHERITANCE_TYPE__SINGLE_TABLE = INHERITANCE_TYPE_ + "SINGLE_TABLE";
 		String INHERITANCE_TYPE__TABLE_PER_CLASS = INHERITANCE_TYPE_ + "TABLE_PER_CLASS";
 
 	String PERSISTENCE_CONTEXT_TYPE = PACKAGE_ + "PersistenceContextType";
-		String PERSISTENCE_CONTEXT_TYPE_ = PERSISTENCE_CONTEXT_TYPE + ".";
+		String PERSISTENCE_CONTEXT_TYPE_ = PERSISTENCE_CONTEXT_TYPE + '.';
 		String PERSISTENCE_CONTEXT_TYPE__EXTENDED = PERSISTENCE_CONTEXT_TYPE_ + "EXTENDED";
 		String PERSISTENCE_CONTEXT_TYPE__TRANSACTION = PERSISTENCE_CONTEXT_TYPE_ + "TRANSACTION";
 
 	String TEMPORAL_TYPE = PACKAGE_ + "TemporalType";
-		String TEMPORAL_TYPE_ = TEMPORAL_TYPE + ".";
+		String TEMPORAL_TYPE_ = TEMPORAL_TYPE + '.';
 		String TEMPORAL_TYPE__DATE = TEMPORAL_TYPE_ + "DATE";
 		String TEMPORAL_TYPE__TIME = TEMPORAL_TYPE_ + "TIME";
 		String TEMPORAL_TYPE__TIMESTAMP = TEMPORAL_TYPE_ + "TIMESTAMP";
@@ -290,7 +292,7 @@ public interface JPA {
 
 	// JPA SPI package
 	String SPI_PACKAGE = PACKAGE_ + "spi";
-	String SPI_PACKAGE_ = SPI_PACKAGE + ".";
+	String SPI_PACKAGE_ = SPI_PACKAGE + '.';
 
 	// JPA SPI interfaces
 	String ENTITY_MANAGER_FACTORY_PROVIDER = SPI_PACKAGE_ + "EntityManagerFactoryProvider";

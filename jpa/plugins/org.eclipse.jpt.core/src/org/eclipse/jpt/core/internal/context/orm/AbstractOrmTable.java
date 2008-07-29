@@ -260,11 +260,11 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	
 	public org.eclipse.jpt.db.Table getDbTable() {
 		Schema schema = this.getDbSchema();
-		return (schema == null) ? null : schema.tableNamed(getName());
+		return (schema == null) ? null : schema.getTableNamed(getName());
 	}
 
 	public Schema getDbSchema() {
-		return getConnectionProfile().getDatabase().schemaNamed(getSchema());
+		return this.getDataSource().getSchemaNamed(getSchema());
 	}
 
 	public boolean hasResolvedSchema() {

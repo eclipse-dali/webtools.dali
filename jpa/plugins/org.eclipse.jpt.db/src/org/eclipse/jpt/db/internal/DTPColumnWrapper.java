@@ -18,47 +18,23 @@ import org.eclipse.datatools.modelbase.sql.datatypes.PrimitiveType;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.utility.JavaType;
 import org.eclipse.jpt.utility.internal.ClassTools;
-import org.eclipse.jpt.utility.internal.NameTools;
 import org.eclipse.jpt.utility.internal.SimpleJavaType;
 
 /**
  *  Wrap a DTP Column
  */
 final class DTPColumnWrapper
-	extends DTPWrapper
+	extends DTPDatabaseObjectWrapper
 	implements Column
 {
-	// backpointer to parent
-	private final DTPTableWrapper table;
-
 	// the wrapped DTP column
 	private final org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn;
-
-
-	// ***** some constants used when converting the column to a Java field
-	// TODO Object is the default?
-	private static final JavaType DEFAULT_JAVA_TYPE = new SimpleJavaType(java.lang.Object.class);
-
-	private static final JavaType BLOB_JAVA_TYPE = new SimpleJavaType(java.sql.Blob.class);
-	private static final JavaType BYTE_ARRAY_JAVA_TYPE = new SimpleJavaType(byte[].class);
-
-	private static final JavaType CLOB_JAVA_TYPE = new SimpleJavaType(java.sql.Clob.class);
-	private static final JavaType STRING_JAVA_TYPE = new SimpleJavaType(java.lang.String.class);
-
-	private static final JavaType UTIL_DATE_JAVA_TYPE = new SimpleJavaType(java.util.Date.class);
-	private static final JavaType SQL_DATE_JAVA_TYPE = new SimpleJavaType(java.sql.Date.class);
-	private static final JavaType SQL_TIME_JAVA_TYPE = new SimpleJavaType(java.sql.Time.class);
-	private static final JavaType SQL_TIMESTAMP_JAVA_TYPE = new SimpleJavaType(java.sql.Timestamp.class);
-
-	private static final JavaType BIG_DECIMAL_JAVA_TYPE = new SimpleJavaType(java.math.BigDecimal.class);
-	private static final JavaType LONG_JAVA_TYPE = new SimpleJavaType(long.class);
 
 
 	// ********** constructor **********
 
 	DTPColumnWrapper(DTPTableWrapper table, org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
 		super(table, dtpColumn);
-		this.table = table;
 		this.dtpColumn = dtpColumn;
 	}
 
@@ -66,16 +42,28 @@ final class DTPColumnWrapper
 	// ********** DTPWrapper implementation **********
 
 	@Override
-	synchronized void catalogObjectChanged(int eventType) {
-		this.getConnectionProfile().columnChanged(this, eventType);
+	synchronized void catalogObjectChanged() {
+		super.catalogObjectChanged();
+		this.getConnectionProfile().columnChanged(this);
 	}
 
 
 	// ********** Column implementation **********
 
-	@Override
 	public String getName() {
 		return this.dtpColumn.getName();
+	}
+
+	public DTPTableWrapper getTable() {
+		return (DTPTableWrapper) this.getParent();
+	}
+
+	public boolean isPrimaryKeyColumn() {
+		return this.getTable().primaryKeyColumnsContains(this);
+	}
+
+	public boolean isForeignKeyColumn() {
+		return this.getTable().foreignKeyBaseColumnsContains(this);
 	}
 
 	public String getDataTypeName() {
@@ -83,19 +71,16 @@ final class DTPColumnWrapper
 		return (dataType == null) ? null : dataType.getName();
 	}
 
-	public String getJavaFieldName() {
-		String jName = this.getName();
-		if ( ! this.isCaseSensitive()) {
-			jName = jName.toLowerCase();
-		}
-		return NameTools.convertToJavaIdentifier(jName);
+	public String getJavaTypeDeclaration() {
+		return this.getJavaType().declaration();
 	}
 
-	public boolean matchesJavaFieldName(String javaFieldName) {
-		return this.isCaseSensitive() ?
-			this.getName().equals(javaFieldName)
+	public JavaType getJavaType() {
+		DataType dataType = this.dtpColumn.getDataType();
+		return (dataType instanceof PredefinedDataType) ?
+			convertToJPAJavaType(this.getJavaType((PredefinedDataType) dataType))
 		:
-			this.getName().equalsIgnoreCase(javaFieldName);
+			DEFAULT_JAVA_TYPE;
 	}
 
 	public String getPrimaryKeyJavaTypeDeclaration() {
@@ -103,7 +88,61 @@ final class DTPColumnWrapper
 	}
 
 	public JavaType getPrimaryKeyJavaType() {
-		return this.jpaSpecCompliantPrimaryKeyJavaType(this.getJavaType());
+		return convertToJPAPrimaryKeyJavaType(this.getJavaType());
+	}
+
+	private JavaType getJavaType(PredefinedDataType dataType) {
+		// this is just a bit hacky: moving from a type declaration to a class name to a type declaration...
+		String dtpJavaClassName = this.getDefinition(dataType).getJavaClassName();
+		return new SimpleJavaType(ClassTools.classNameForTypeDeclaration(dtpJavaClassName));
+	}
+
+	private PredefinedDataTypeDefinition getDefinition(PredefinedDataType dataType) {
+		return this.getDatabase().getDTPDefinition().getPredefinedDataTypeDefinition(dataType.getName());
+	}
+
+	public boolean dataTypeIsLOB() {
+		DataType dataType = this.dtpColumn.getDataType();
+		return (dataType instanceof PredefinedDataType) ?
+						primitiveTypeIsLob(((PredefinedDataType) dataType).getPrimitiveType())
+					:
+						false;
+	}
+
+
+	// ********** Comparable implementation **********
+
+	public int compareTo(Column column) {
+		return Collator.getInstance().compare(this.getName(), column.getName());
+	}
+
+
+	// ********** internal methods **********
+
+	boolean wraps(org.eclipse.datatools.modelbase.sql.tables.Column column) {
+		return this.dtpColumn == column;
+	}
+
+	@Override
+	void clear() {
+		// no state to clear
+	}
+
+
+	// ********** static methods **********
+
+	/**
+	 * The JDBC spec says JDBC drivers should be able to map BLOBs and CLOBs
+	 * directly, but the JPA spec does not allow them.
+	 */
+	private static JavaType convertToJPAJavaType(JavaType javaType) {
+		if (javaType.equals(BLOB_JAVA_TYPE)) {
+			return BYTE_ARRAY_JAVA_TYPE;
+		}
+		if (javaType.equals(CLOB_JAVA_TYPE)) {
+			return STRING_JAVA_TYPE;
+		}
+		return javaType;
 	}
 
 	/**
@@ -115,7 +154,7 @@ final class DTPColumnWrapper
 	 *     java.util.Date
 	 *     java.sql.Date
 	 */
-	private JavaType jpaSpecCompliantPrimaryKeyJavaType(JavaType javaType) {
+	private static JavaType convertToJPAPrimaryKeyJavaType(JavaType javaType) {
 		if (javaType.isVariablePrimitive()
 				|| javaType.isVariablePrimitiveWrapper()
 				|| javaType.equals(STRING_JAVA_TYPE)
@@ -136,76 +175,29 @@ final class DTPColumnWrapper
 		return STRING_JAVA_TYPE;
 	}
 
-	public String getJavaTypeDeclaration() {
-		return this.getJavaType().declaration();
-	}
-
-	public JavaType getJavaType() {
-		DataType dataType = this.dtpColumn.getDataType();
-		return (dataType instanceof PredefinedDataType) ?
-			this.jpaSpecCompliantJavaType(this.javaType((PredefinedDataType) dataType))
-		:
-			DEFAULT_JAVA_TYPE;
-	}
-
-	private JavaType javaType(PredefinedDataType dataType) {
-		// this is just a bit hacky: moving from a type declaration to a class name to a type declaration...
-		String dtpJavaClassName = this.predefinedDataTypeDefinition(dataType).getJavaClassName();
-		return new SimpleJavaType(ClassTools.classNameForTypeDeclaration(dtpJavaClassName));
-	}
-
-	private PredefinedDataTypeDefinition predefinedDataTypeDefinition(PredefinedDataType dataType) {
-		return this.database().getDtpDefinition().getPredefinedDataTypeDefinition(dataType.getName());
-	}
-
-	/**
-	 * The JDBC spec says JDBC drivers should be able to map BLOBs and CLOBs
-	 * directly, but the JPA spec does not allow them.
-	 */
-	private JavaType jpaSpecCompliantJavaType(JavaType javaType) {
-		if (javaType.equals(BLOB_JAVA_TYPE)) {
-			return BYTE_ARRAY_JAVA_TYPE;
-		}
-		if (javaType.equals(CLOB_JAVA_TYPE)) {
-			return STRING_JAVA_TYPE;
-		}
-		return javaType;
-	}
-
-	public boolean dataTypeIsLOB() {
-		DataType dataType = this.dtpColumn.getDataType();
-		return (dataType instanceof PredefinedDataType) ?
-			this.primitiveTypeIsLob(((PredefinedDataType) dataType).getPrimitiveType())
-		:
-			false;
-	}
-
-	private boolean primitiveTypeIsLob(PrimitiveType primitiveType) {
+	private static boolean primitiveTypeIsLob(PrimitiveType primitiveType) {
 		return (primitiveType == PrimitiveType.BINARY_LARGE_OBJECT_LITERAL)
 				|| (primitiveType == PrimitiveType.CHARACTER_LARGE_OBJECT_LITERAL)
 				|| (primitiveType == PrimitiveType.NATIONAL_CHARACTER_LARGE_OBJECT_LITERAL);
 	}
 
 
-	// ********** Comparable implementation **********
+	// ***** some constants used when converting the column to a Java attribute
+	// TODO Object is the default?
+	private static final JavaType DEFAULT_JAVA_TYPE = new SimpleJavaType(java.lang.Object.class);
 
-	public int compareTo(Column column) {
-		return Collator.getInstance().compare(this.getName(), column.getName());
-	}
+	private static final JavaType BLOB_JAVA_TYPE = new SimpleJavaType(java.sql.Blob.class);
+	private static final JavaType BYTE_ARRAY_JAVA_TYPE = new SimpleJavaType(byte[].class);
 
+	private static final JavaType CLOB_JAVA_TYPE = new SimpleJavaType(java.sql.Clob.class);
+	private static final JavaType STRING_JAVA_TYPE = new SimpleJavaType(java.lang.String.class);
 
-	// ********** internal methods **********
+	private static final JavaType UTIL_DATE_JAVA_TYPE = new SimpleJavaType(java.util.Date.class);
+	private static final JavaType SQL_DATE_JAVA_TYPE = new SimpleJavaType(java.sql.Date.class);
+	private static final JavaType SQL_TIME_JAVA_TYPE = new SimpleJavaType(java.sql.Time.class);
+	private static final JavaType SQL_TIMESTAMP_JAVA_TYPE = new SimpleJavaType(java.sql.Timestamp.class);
 
-	boolean wraps(org.eclipse.datatools.modelbase.sql.tables.Column column) {
-		return this.dtpColumn == column;
-	}
-
-	boolean isCaseSensitive() {
-		return this.table.isCaseSensitive();
-	}
-
-	DTPDatabaseWrapper database() {
-		return this.table.database();
-	}
+	private static final JavaType BIG_DECIMAL_JAVA_TYPE = new SimpleJavaType(java.math.BigDecimal.class);
+	private static final JavaType LONG_JAVA_TYPE = new SimpleJavaType(long.class);
 
 }

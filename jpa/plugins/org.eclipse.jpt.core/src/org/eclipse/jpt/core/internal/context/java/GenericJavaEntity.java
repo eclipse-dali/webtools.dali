@@ -345,15 +345,33 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		return getTable().getDbTable();
 	}
 
+	private static final org.eclipse.jpt.db.Table[] EMPTY_DB_TABLE_ARRAY = new org.eclipse.jpt.db.Table[0];
+
 	@Override
 	public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-		for (Iterator<Table> stream = this.associatedTablesIncludingInherited(); stream.hasNext();) {
-			org.eclipse.jpt.db.Table dbTable = stream.next().getDbTable();
-			if (dbTable != null && dbTable.matchesShortJavaClassName(tableName)) {
-				return dbTable;
+		// the JPA platform searches database objects for us
+		return this.getDataSource().getDatabaseObjectNamed(
+						CollectionTools.array(this.associatedDbTablesIncludingInherited(), EMPTY_DB_TABLE_ARRAY),
+						tableName
+					);
+	}
+
+	private Iterator<org.eclipse.jpt.db.Table> associatedDbTablesIncludingInherited() {
+		return new FilteringIterator<org.eclipse.jpt.db.Table, org.eclipse.jpt.db.Table>(this.associatedDbTablesIncludingInherited_()) {
+			@Override
+			protected boolean accept(org.eclipse.jpt.db.Table t) {
+				return t != null;
 			}
-		}
-		return null;
+		};
+	}
+
+	private Iterator<org.eclipse.jpt.db.Table> associatedDbTablesIncludingInherited_() {
+		return new TransformationIterator<Table, org.eclipse.jpt.db.Table>(this.associatedTablesIncludingInherited()) {
+			@Override
+			protected org.eclipse.jpt.db.Table transform(Table t) {
+				return t.getDbTable();
+			}
+		};
 	}
 
 	@Override
@@ -578,7 +596,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	public JavaTableGenerator addTableGenerator() {
 		if (getTableGenerator() != null) {
-			throw new IllegalStateException("tableGenerator already exists");
+			throw new IllegalStateException("tableGenerator already exists"); //$NON-NLS-1$
 		}
 		this.tableGenerator = getJpaFactory().buildJavaTableGenerator(this);
 		TableGeneratorAnnotation tableGeneratorResource = (TableGeneratorAnnotation) this.javaResourcePersistentType.addAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
@@ -589,7 +607,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	public void removeTableGenerator() {
 		if (getTableGenerator() == null) {
-			throw new IllegalStateException("tableGenerator does not exist, cannot be removed");
+			throw new IllegalStateException("tableGenerator does not exist, cannot be removed"); //$NON-NLS-1$
 		}
 		JavaTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = null;
@@ -609,7 +627,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 
 	public JavaSequenceGenerator addSequenceGenerator() {
 		if (getSequenceGenerator() != null) {
-			throw new IllegalStateException("sequenceGenerator already exists");
+			throw new IllegalStateException("sequenceGenerator already exists"); //$NON-NLS-1$
 		}
 		this.sequenceGenerator = getJpaFactory().buildJavaSequenceGenerator(this);
 		SequenceGeneratorAnnotation sequenceGeneratorResource = (SequenceGeneratorAnnotation) this.javaResourcePersistentType.addAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
@@ -620,7 +638,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	public void removeSequenceGenerator() {
 		if (getSequenceGenerator() == null) {
-			throw new IllegalStateException("sequenceGenerator does not exist, cannot be removed");
+			throw new IllegalStateException("sequenceGenerator does not exist, cannot be removed"); //$NON-NLS-1$
 		}
 		JavaSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
 		this.sequenceGenerator = null;
@@ -1330,8 +1348,8 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
 		
-	protected String specifiedName(EntityAnnotation entityResource) {
-		return entityResource.getName();
+	protected String specifiedName(EntityAnnotation entityAnnotation) {
+		return entityAnnotation.getName();
 	}
 	
 	protected String defaultName(JavaResourcePersistentType persistentTypeResource) {
@@ -1438,9 +1456,9 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected JavaTableGenerator buildTableGenerator(TableGeneratorAnnotation tableGeneratorResource) {
-		JavaTableGenerator tableGenerator = getJpaFactory().buildJavaTableGenerator(this);
-		tableGenerator.initializeFromResource(tableGeneratorResource);
-		return tableGenerator;
+		JavaTableGenerator generator = getJpaFactory().buildJavaTableGenerator(this);
+		generator.initializeFromResource(tableGeneratorResource);
+		return generator;
 	}
 	
 	protected TableGeneratorAnnotation tableGenerator(JavaResourcePersistentType persistentTypeResource) {
@@ -1465,9 +1483,9 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected JavaSequenceGenerator buildSequenceGenerator(SequenceGeneratorAnnotation sequenceGeneratorResource) {
-		JavaSequenceGenerator sequenceGenerator = getJpaFactory().buildJavaSequenceGenerator(this);
-		sequenceGenerator.initializeFromResource(sequenceGeneratorResource);
-		return sequenceGenerator;
+		JavaSequenceGenerator generator = getJpaFactory().buildJavaSequenceGenerator(this);
+		generator.initializeFromResource(sequenceGeneratorResource);
+		return generator;
 	}
 	
 	protected SequenceGeneratorAnnotation sequenceGenerator(JavaResourcePersistentType persistentTypeResource) {
@@ -1619,11 +1637,11 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	protected void updateNamedQueries(JavaResourcePersistentType resourcePersistentType) {
-		ListIterator<JavaNamedQuery> namedQueries = namedQueries();
+		ListIterator<JavaNamedQuery> queries = namedQueries();
 		ListIterator<JavaResourceNode> resourceNamedQueries = resourcePersistentType.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		
-		while (namedQueries.hasNext()) {
-			JavaNamedQuery namedQuery = namedQueries.next();
+		while (queries.hasNext()) {
+			JavaNamedQuery namedQuery = queries.next();
 			if (resourceNamedQueries.hasNext()) {
 				namedQuery.update((NamedQueryAnnotation) resourceNamedQueries.next());
 			}
@@ -1638,11 +1656,11 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected void updateNamedNativeQueries(JavaResourcePersistentType resourcePersistentType) {
-		ListIterator<JavaNamedNativeQuery> namedNativeQueries = namedNativeQueries();
+		ListIterator<JavaNamedNativeQuery> queries = namedNativeQueries();
 		ListIterator<JavaResourceNode> resourceNamedNativeQueries = resourcePersistentType.annotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		
-		while (namedNativeQueries.hasNext()) {
-			JavaNamedNativeQuery namedQuery = namedNativeQueries.next();
+		while (queries.hasNext()) {
+			JavaNamedNativeQuery namedQuery = queries.next();
 			if (resourceNamedNativeQueries.hasNext()) {
 				namedQuery.update((NamedNativeQueryAnnotation) resourceNamedNativeQueries.next());
 			}
@@ -1670,9 +1688,9 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	protected void updateIdClass(JavaResourcePersistentType resourcePersistentType) {
-		IdClassAnnotation idClass = (IdClassAnnotation) resourcePersistentType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
-		if (idClass != null) {
-			setIdClass_(idClass.getValue());
+		IdClassAnnotation annotation = (IdClassAnnotation) resourcePersistentType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		if (annotation != null) {
+			setIdClass_(annotation.getValue());
 		}
 		else {
 			setIdClass_(null);

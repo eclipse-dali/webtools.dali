@@ -12,16 +12,16 @@ package org.eclipse.jpt.core.internal;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.ResourceModel;
-import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.CallbackChangeSupport;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
@@ -47,11 +47,11 @@ public abstract class AbstractJpaNode
 	protected void checkParent(JpaNode p) {
 		if (p == null) {
 			if (this.requiresParent()) {
-				throw new IllegalArgumentException("'parent' cannot be null");
+				throw new IllegalArgumentException("'parent' cannot be null"); //$NON-NLS-1$
 			}
 		} else {
 			if (this.forbidsParent()) {
-				throw new IllegalArgumentException("'parent' must be null");
+				throw new IllegalArgumentException("'parent' must be null"); //$NON-NLS-1$
 			}
 		}
 	}
@@ -108,20 +108,17 @@ public abstract class AbstractJpaNode
 	}
 
 	protected JpaFile getJpaFile(ResourceModel resourceModel) {
-		return getJpaProject().getJpaFile(resourceModel.getFile());
+		return this.getJpaProject().getJpaFile(resourceModel.getFile());
 	}
 
-	protected ConnectionProfile getConnectionProfile() {
-		return this.getJpaProject().getConnectionProfile();
-	}
-
-	protected Database getDatabase() {
-		return this.getConnectionProfile().getDatabase();
+	protected JpaDataSource getDataSource() {
+		return this.getJpaProject().getDataSource();
 	}
 
 	public boolean connectionProfileIsActive() {
-		return this.getConnectionProfile().isActive();
+		return this.getDataSource().connectionProfileIsActive();
 	}
+
 
 	// ********** update model **********
 
@@ -154,7 +151,7 @@ public abstract class AbstractJpaNode
 		}
 	}
 
-	protected void addNonUpdateAspectNamesTo(Set<String> nonUpdateAspectNames) {
+	protected void addNonUpdateAspectNamesTo(@SuppressWarnings("unused") Set<String> nonUpdateAspectNames) {
 	// when you override this method, don't forget to include:
 	//	super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
 	}

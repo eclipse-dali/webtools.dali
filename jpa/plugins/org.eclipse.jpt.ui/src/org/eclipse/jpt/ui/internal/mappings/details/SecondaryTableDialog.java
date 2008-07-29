@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import java.util.Iterator;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.SecondaryTable;
@@ -34,7 +33,7 @@ import org.eclipse.swt.widgets.Shell;
 public class SecondaryTableDialog extends Dialog {
 
 	//if creating a new SecondaryTable, this will be null,
-	//specify the defaultSchema and defaultCatalog instead in the appropriate construtor
+	//specify 'defaultSchema' and 'defaultCatalog' instead in the appropriate constructor
 	private SecondaryTable secondaryTable;
 	private JpaProject jpaProject;
 	private String defaultSchema;
@@ -142,48 +141,46 @@ public class SecondaryTableDialog extends Dialog {
 	}
 
 	protected Database getDatabase() {
-		return this.getConnectionProfile().getDatabase();
+		ConnectionProfile cp = this.getConnectionProfile();
+		return (cp == null) ? null : cp.getDatabase();
 	}
 
 	private ConnectionProfile getConnectionProfile() {
 		return this.jpaProject.getConnectionProfile();
 	}
 
-	protected Schema getDefaultTableSchema() {
-		if (this.secondaryTable != null) {
-			return getTableSchema(this.secondaryTable.getDefaultSchema());
-		}
-		return getTableSchema(this.defaultSchema);
+	protected Schema getSchemaNamed(String name) {
+		Database db = this.getDatabase();
+		return (db == null) ? null : db.getSchemaNamed(name);
 	}
 
-	
-	protected Schema getTableSchema() {
-		if (this.secondaryTable != null) {
-			return getTableSchema(this.secondaryTable.getSchema());
-		}
-		return getTableSchema(this.defaultSchema);
+	protected Schema getDefaultTableSchema() {
+		return this.getSchemaNamed(this.getDefaultTableSchemaName());
 	}
-	
-	protected Schema getTableSchema(String schemaName) {
-		Database database = this.getDatabase();
-		if (database != null) {
-			return database.schemaNamed(schemaName);
-		}
-		return null;
+
+	protected String getDefaultTableSchemaName() {
+		return (this.secondaryTable != null) ? this.secondaryTable.getDefaultSchema() : this.defaultSchema;
+	}
+
+	protected Schema getTableSchema() {
+		return this.getSchemaNamed(this.getTableSchemaName());
+	}
+
+	protected String getTableSchemaName() {
+		return (this.secondaryTable != null) ? this.secondaryTable.getSchema() : this.defaultSchema;
 	}
 
 	protected void populateNameCombo() {
 		Schema schema = this.getTableSchema();
 		if (schema != null) {
-			Iterator<String> tables = schema.tableNames();
-			for (Iterator<String> stream = CollectionTools.sort( tables); stream.hasNext(); ) {
-				this.nameCombo.add(stream.next());
+			for (String name : CollectionTools.sortedSet(schema.tableNames())) {
+				this.nameCombo.add(name);
 			}
 		}
 
-		if (getSecondaryTable() != null) {
-			if (getSecondaryTable().getSpecifiedName() != null) {
-				this.nameCombo.setText(getSecondaryTable().getSpecifiedName());
+		if (this.secondaryTable != null) {
+			if (this.secondaryTable.getSpecifiedName() != null) {
+				this.nameCombo.setText(this.secondaryTable.getSpecifiedName());
 			}
 		}
 	}
@@ -197,16 +194,15 @@ public class SecondaryTableDialog extends Dialog {
 			schema = this.getDefaultTableSchema();
 		}
 		else if (this.schemaCombo.getText() != null) {
-			schema = this.getTableSchema(this.schemaCombo.getText());
+			schema = this.getSchemaNamed(this.schemaCombo.getText());
 		}
 		else {
 			schema = this.getTableSchema();
 		}
 		
 		if (schema != null) {
-			Iterator<String> tables = schema.tableNames();
-			for (Iterator<String> stream = CollectionTools.sort( tables); stream.hasNext(); ) {
-				this.nameCombo.add(stream.next());
+			for (String name : CollectionTools.sortedSet(schema.tableNames())) {
+				this.nameCombo.add(name);
 			}
 		}
 		
@@ -214,28 +210,21 @@ public class SecondaryTableDialog extends Dialog {
 	}
 	
 	protected void populateSchemaCombo() {
-		String defaultSchema;
-		if (getSecondaryTable() != null) {
-			defaultSchema = getSecondaryTable().getDefaultSchema();
-		}
-		else {
-			defaultSchema = this.defaultSchema;
-		}
-		if (defaultSchema != null) {
-			this.schemaCombo.add(NLS.bind(JptUiMappingsMessages.SecondaryTableDialog_defaultSchema, defaultSchema));
+		String defaultSchemaName = this.getDefaultTableSchemaName();
+		if (defaultSchemaName != null) {
+			this.schemaCombo.add(NLS.bind(JptUiMappingsMessages.SecondaryTableDialog_defaultSchema, defaultSchemaName));
 		}
 		Database database = this.getDatabase();
 
 		if (database != null) {
-			Iterator<String> schemata = database.schemaNames();
-			for (Iterator<String> stream = CollectionTools.sort(schemata); stream.hasNext(); ) {
-				this.schemaCombo.add(stream.next());
+			for (String name : CollectionTools.sortedSet(database.schemaNames())) {
+				this.schemaCombo.add(name);
 			}
 		}
 
-		if (getSecondaryTable() != null) {
-			if (getSecondaryTable().getSpecifiedSchema() != null) {
-				this.schemaCombo.setText(getSecondaryTable().getSpecifiedSchema());
+		if (this.secondaryTable != null) {
+			if (this.secondaryTable.getSpecifiedSchema() != null) {
+				this.schemaCombo.setText(this.secondaryTable.getSpecifiedSchema());
 			}
 			else {
 				this.schemaCombo.select(0);
@@ -246,30 +235,27 @@ public class SecondaryTableDialog extends Dialog {
 		}
 	}
 
+	protected String getDefaultTableCatalogName() {
+		return (this.secondaryTable != null) ? this.secondaryTable.getDefaultCatalog() : this.defaultCatalog;
+	}
+
 	protected void populateCatalogCombo() {
-		String defaultCatalog;
-		if (getSecondaryTable() != null) {
-			defaultCatalog = getSecondaryTable().getDefaultCatalog();
-		}
-		else {
-			defaultCatalog = this.defaultCatalog;
-		}
-		if (defaultCatalog != null) {
-			this.catalogCombo.add(NLS.bind(JptUiMappingsMessages.SecondaryTableDialog_defaultCatalog, defaultCatalog));
+		String defaultCatalogName = this.getDefaultTableCatalogName();
+		if (defaultCatalogName != null) {
+			this.catalogCombo.add(NLS.bind(JptUiMappingsMessages.SecondaryTableDialog_defaultCatalog, defaultCatalogName));
 		}
 
 		Database database = this.getDatabase();
 
 		if (database != null) {
-			Iterator<String> catalogs = database.catalogNames();
-			for (Iterator<String> stream = CollectionTools.sort(catalogs); stream.hasNext(); ) {
-				this.catalogCombo.add(stream.next());
+			for (String name : CollectionTools.sortedSet(database.catalogNames())) {
+				this.catalogCombo.add(name);
 			}
 		}
 
-		if (getSecondaryTable() != null) {
-			if (getSecondaryTable().getSpecifiedCatalog() != null) {
-				this.catalogCombo.setText(getSecondaryTable().getSpecifiedCatalog());
+		if (this.secondaryTable != null) {
+			if (this.secondaryTable.getSpecifiedCatalog() != null) {
+				this.catalogCombo.setText(this.secondaryTable.getSpecifiedCatalog());
 			}
 			else {
 				this.catalogCombo.select(0);
@@ -321,11 +307,11 @@ public class SecondaryTableDialog extends Dialog {
 	public boolean close() {
 		this.selectedName = this.nameCombo.getText();
 		this.selectedSchema = this.schemaCombo.getText();
-		if (this.selectedSchema.equals("")) {
+		if (this.selectedSchema.equals("")) { //$NON-NLS-1$
 			this.selectedSchema = null;
 		}
 		this.selectedCatalog = this.catalogCombo.getText();
-		if (this.selectedCatalog.equals("")) {
+		if (this.selectedCatalog.equals("")) { //$NON-NLS-1$
 			this.selectedCatalog = null;
 		}
 		this.defaultSchemaSelected = this.schemaCombo.getSelectionIndex() == 0;

@@ -22,12 +22,17 @@ import java.util.Iterator;
  * 
  * This interface is not intended to be implemented by clients.
  */
-public interface Table extends Comparable<Table> {
+public interface Table
+	extends DatabaseObject, Comparable<Table>
+{
 
 	/**
-	 * Return the table's name.
+	 * Return the table's schema.
 	 */
-	String getName();
+	Schema getSchema();
+
+
+	// ********** columns **********
 
 	/**
 	 * Return the table's columns.
@@ -45,16 +50,14 @@ public interface Table extends Comparable<Table> {
 	Iterator<String> columnNames();
 
 	/**
-	 * Return whether the table contains a column with the specified name,
-	 * respecting the database's case-sensitivity.
+	 * Return the column with specified name. The name should be an SQL
+	 * identifier (i.e. quoted when case-sensitive, unquoted when
+	 * case-insensitive).
 	 */
-	boolean containsColumnNamed(String name);
+	Column getColumnNamed(String name);
 
-	/**
-	 * Return the column in the table with the specified name,
-	 * respecting the database's case-sensitivity.
-	 */
-	Column columnNamed(String name);
+
+	// ********** primary key columns **********
 
 	/**
 	 * Return the table's primary key columns.
@@ -62,21 +65,18 @@ public interface Table extends Comparable<Table> {
 	Iterator<Column> primaryKeyColumns();
 
 	/**
-	 * Return the table's single primary key column. Throw an
-	 * IllegalStateException if the table has more than one primary key column.
-	 */
-	Column primaryKeyColumn();
-
-	/**
 	 * Return the number of primary key columns the table contains.
 	 */
 	int primaryKeyColumnsSize();
 
 	/**
-	 * Return whether the specified column is one of the table's primary key
-	 * columns.
+	 * Return the table's single primary key column. Throw an
+	 * IllegalStateException if the table has more than one primary key column.
 	 */
-	boolean primaryKeyColumnsContains(Column column);
+	Column getPrimaryKeyColumn();
+
+
+	// ********** foreign keys **********
 
 	/**
 	 * Return the table's foreign keys.
@@ -88,28 +88,35 @@ public interface Table extends Comparable<Table> {
 	 */
 	int foreignKeysSize();
 
-	/**
-	 * Return whether the specified column is a "base" column
-	 * for any of the table's foreign keys.
-	 */
-	boolean foreignKeyBaseColumnsContains(Column column);
+
+	// ********** join table support **********
 
 	/**
-	 * Return the table's name, converted to a Java-appropriate class
-	 * identifier, respecting the database's case-sensitivity.
+	 * Return whether the table is possibly a "join" table
+	 * (i.e. it contains only 2 foreign keys). Whether the table *actually* is
+	 * a "join" table is determined by the semantics of the database design.
 	 */
-	String getShortJavaClassName();
+	boolean isPossibleJoinTable();
 
 	/**
-	 * Return whether the table's name matches the specified Java-appropriate
-	 * identifier, respecting the database's case-sensitivity.
+	 * Assuming the table is a "join" table, return the foreign key to the
+	 * "owning" table.
+	 * @see #isPossibleJoinTable()
 	 */
-	boolean matchesShortJavaClassName(String shortJavaClassName);
+	ForeignKey getJoinTableOwningForeignKey();
 
 	/**
-	 * Return the table's name, converted to a Java-appropriate field
-	 * identifier, respecting the database's case-sensitivity.
+	 * Assuming the table is a "join" table, return the foreign key to the
+	 * "non-owning" table.
+	 * @see #isPossibleJoinTable()
 	 */
-	public String getJavaFieldName();
+	ForeignKey getJoinTableNonOwningForeignKey();
+
+	/**
+	 * Assuming the table is a "join" table, return whether its name matches
+	 * the JPA default (i.e. "OWNINGTABLE_NONOWNINGTABLE").
+	 * @see #isPossibleJoinTable()
+	 */
+	boolean joinTableNameIsDefault();
 
 }

@@ -20,11 +20,15 @@ package org.eclipse.jpt.db;
  */
 public class ConnectionProfileAdapter implements ConnectionProfileListener {
 
-	public void connectionProfileChanged(ConnectionProfile profile) {
+	public void connectionProfileAdded(String name) {
 		// do nothing
 	}
 
-	public void connectionProfileReplaced(ConnectionProfile oldProfile, ConnectionProfile newProfile) {
+	public void connectionProfileRemoved(String name) {
+		// do nothing
+	}
+
+	public void connectionProfileRenamed(String oldName, String newName) {
 		// do nothing
 	}
 

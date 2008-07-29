@@ -15,6 +15,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.db.ConnectionProfile;
+import org.eclipse.jpt.db.DatabaseFinder;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
@@ -239,27 +240,29 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 		}
 		
 		private void openNewConnectionWizard() {
-			String connectionName = DTPUiTools.createNewProfile();
+			String connectionName = DTPUiTools.createNewConnectionProfile();
 			if (connectionName != null) {
 				model.setProperty(CONNECTION, connectionName);
 			}
 		}
 		
 		private void openConnectionProfile() {
-			ConnectionProfile connection = getConnectionProfile();
-			connection.connect();
-			model.setBooleanProperty(CONNECTION_ACTIVE, connection.isActive());
-			updateConnectLink();
-			return;
+			ConnectionProfile cp = getConnectionProfile();
+			if (cp != null) {
+				cp.connect();
+				model.setBooleanProperty(CONNECTION_ACTIVE, cp.isActive());
+				updateConnectLink();
+			}
 		}
 		
 		private void updateConnectLink() {
-			ConnectionProfile connectionProfile = getConnectionProfile();
-			connectLink.setEnabled(! connectionProfile.isNull() && ! connectionProfile.isConnected());
+			ConnectionProfile cp = this.getConnectionProfile();
+			connectLink.setEnabled((cp != null) && cp.isDisconnected());
 		}
 		
 		private ConnectionProfile getConnectionProfile() {
-			return JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNamed(model.getStringProperty(CONNECTION));
+			// we just use the connection profile to log in, so go the the db plug-in
+			return JptDbPlugin.instance().getConnectionProfileFactory().buildConnectionProfile(model.getStringProperty(CONNECTION));
 		}
 	}
 

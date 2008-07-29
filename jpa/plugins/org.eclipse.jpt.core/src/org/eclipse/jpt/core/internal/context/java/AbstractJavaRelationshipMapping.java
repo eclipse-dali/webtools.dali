@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
-import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.utility.Filter;
@@ -189,10 +188,4 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 		return StringTools.quote(this.candidateMappedByAttributeNames(filter));
 	}
 
-
-	// ********** static methods **********
-
-	public boolean targetEntityIsValid(String targetEntity) {
-		return MappingTools.targetEntityIsValid(targetEntity);
-	}
 }

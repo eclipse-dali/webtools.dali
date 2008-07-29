@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.context;
 
 import java.util.Iterator;
-import java.util.StringTokenizer;
+
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.Embeddable;
@@ -22,34 +22,7 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 
 public class MappingTools
-{	
-	public static boolean targetEntityIsValid(String targetEntity) {
-		if (targetEntity == null) {
-			return true;
-		}
-		// balance is # of name tokens - # of period tokens seen so far
-		// initially 0; finally 1; should never drop < 0 or > 1
-		int balance = 0;
-		for (StringTokenizer t = new StringTokenizer(targetEntity, ".", true); t.hasMoreTokens();) {
-			String s = t.nextToken();
-			if (s.indexOf('.') >= 0) {
-				// this is a delimiter
-				if (s.length() > 1) {
-					// too many periods in a row
-					return false;
-				}
-				balance--;
-				if (balance < 0) {
-					return false;
-				}
-			} else {
-				// this is an identifier segment
-				balance++;
-			}
-		}
-		return (balance == 1);
-	}
-	
+{
 	/**
 	 * Default join table name from the JPA spec:
 	 * 	The concatenated names of the two associated primary
@@ -73,7 +46,7 @@ public class MappingTools
 		if (targetTableName == null) {
 			return null;
 		}
-		return owningTableName + "_" + targetTableName;
+		return owningTableName + '_' + targetTableName;
 	}
 
 	/**
@@ -105,7 +78,7 @@ public class MappingTools
 		if (targetColumn == null) {
 			return null;
 		}
-		return prefix + "_" + targetColumn;
+		return prefix + '_' + targetColumn;
 	}
 
 	/**

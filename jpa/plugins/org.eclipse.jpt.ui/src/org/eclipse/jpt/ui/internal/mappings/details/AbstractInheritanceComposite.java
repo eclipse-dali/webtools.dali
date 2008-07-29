@@ -228,7 +228,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Abs
 			}
 
 			@Override
-			protected Table table() {
+			protected Table getDBTable_() {
 				return subject().getDbTable();
 			}
 

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.db;
 
 /**
- * A ProfileListener is notified of any changes to the connection profiles.
+ * A ProfileListener is notified of any changes to the DTP connection profiles.
  * 
  * @see org.eclipse.datatools.connectivity.IProfileListener
  * 
@@ -23,17 +23,18 @@ package org.eclipse.jpt.db;
 public interface ConnectionProfileListener {
 
 	/**
-	 * The specified old profile has been replaced with the specified
-	 * new profile. The old profile is a "null" profile when a profile is
-	 * added. The new profile is a "null" profile when a profile is
-	 * removed.
+	 * The specified profile has been added.
 	 */
-	public void connectionProfileReplaced(ConnectionProfile oldProfile, ConnectionProfile newProfile);
+	public void connectionProfileAdded(String name);
 
 	/**
-	 * The specified profile has been modified. Modification includes
-	 * changes to any properties, the name, auto-connect flag, etc.
+	 * The specified profile has been removed.
 	 */
-	public void connectionProfileChanged(ConnectionProfile profile);
+	public void connectionProfileRemoved(String name);
+
+	/**
+	 * The specified profile has been renamed.
+	 */
+	public void connectionProfileRenamed(String oldName, String newName);
 
 }

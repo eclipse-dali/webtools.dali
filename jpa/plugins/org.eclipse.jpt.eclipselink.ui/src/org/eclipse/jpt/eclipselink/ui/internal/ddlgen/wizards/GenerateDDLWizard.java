@@ -9,13 +9,11 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.ddlgen.wizards;
 
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.JptDbPlugin;
-import org.eclipse.jpt.ui.internal.wizards.DatabaseReconnectWizardPage;
+import org.eclipse.jpt.ui.internal.wizards.DatabaseConnectionWizardPage;
 
 /**
  *  GenerateDDLWizard
@@ -24,53 +22,41 @@ public class GenerateDDLWizard extends Wizard {
 
 	private JpaProject jpaProject;
 
-	private IStructuredSelection selection;
+	private DatabaseConnectionWizardPage dbSettingsPage;
 
-	private DatabaseReconnectWizardPage dbSettingsPage;
-
-	public GenerateDDLWizard(JpaProject jpaProject, IStructuredSelection selection) {
+	public GenerateDDLWizard(JpaProject jpaProject) {
 		super();
 		this.jpaProject = jpaProject;
-		this.selection = selection;
-		this.setWindowTitle("DDL Generation");
+		this.setWindowTitle("DDL Generation");  // TODO
 	}
 	
+	@Override
 	public void addPages() {
 		super.addPages();
-		if ( ! this.jpaProjectHasConnection()) {
-			this.dbSettingsPage = new DatabaseReconnectWizardPage(this.jpaProject);
+		if (this.getProjectConnectionProfile() == null) {
+			this.dbSettingsPage = new DatabaseConnectionWizardPage(this.jpaProject);
 			this.addPage(this.dbSettingsPage);
 		}
 	}
 	
-	@SuppressWarnings("restriction")
+	@Override
 	public boolean performFinish() {
-        String name = getProjectConnectionProfile().getName();
-		if ( ! this.jpaProjectHasConnection()) {
-
-			String connectionProfileName = this.dbSettingsPage.getSelectedConnectionProfileName();
-			ConnectionProfile profile = JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNamed( connectionProfileName);
-			if( profile.isNull()) {
-				this.dbSettingsPage.clearConnectionProfileName();
-				return false;
-			}
-			this.setProjectConnectionProfileName(connectionProfileName);
+        if (this.getProjectConnectionProfile() != null) {
+        	return true;
+        }
+		ConnectionProfile cp = this.dbSettingsPage.getSelectedConnectionProfile();
+		if (cp == null) {
+			return false;
 		}
+		this.setProjectConnectionProfileName(cp.getName());
 		return true;
 	}
     
-    public boolean canFinish() {
-        boolean canFinish = true;
-        if ( ! this.dbSettingsPage.isPageComplete()) {
-        	canFinish = false;
-        }
-        return canFinish;
+    @Override
+	public boolean canFinish() {
+        return this.dbSettingsPage.isPageComplete();
     }
     
-	private boolean jpaProjectHasConnection() {
-		return ! this.getProjectConnectionProfile().isNull();
-	}
-	
 	private ConnectionProfile getProjectConnectionProfile() {
 		return this.jpaProject.getConnectionProfile();
 	}

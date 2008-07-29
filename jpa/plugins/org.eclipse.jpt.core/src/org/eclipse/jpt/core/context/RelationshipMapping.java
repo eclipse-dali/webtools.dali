@@ -35,11 +35,6 @@ public interface RelationshipMapping extends AttributeMapping, Fetchable
 	Entity getResolvedTargetEntity();
 		String RESOLVED_TARGET_ENTITY_PROPERTY = "resolvedTargetEntityProperty";
 	
-	/**
-	 * Return whether the specified 'targetEntity' is valid.
-	 */
-	boolean targetEntityIsValid(String targetEntity);
-
 	
 	// **************** cascade **************************************
 

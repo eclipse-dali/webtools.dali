@@ -17,6 +17,7 @@ import org.eclipse.jpt.utility.Command;
  * This class provides synchronized access to a boolean value.
  * It also provides protocol for suspending a thread until the
  * boolean value is set to true or false, with optional time-outs.
+ * @see BooleanHolder
  */
 public class SynchronizedBoolean
 	implements Cloneable, Serializable
@@ -93,6 +94,15 @@ public class SynchronizedBoolean
 	public boolean isFalse() {
 		synchronized (this.mutex) {
 			return ! this.value;
+		}
+	}
+
+	/**
+	 * Return whether the current boolean value is the specified value.
+	 */
+	public boolean is(boolean v) {
+		synchronized (this.mutex) {
+			return this.value == v;
 		}
 	}
 

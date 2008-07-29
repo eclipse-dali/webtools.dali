@@ -100,10 +100,6 @@ public class EclipseLinkDDLGenerator
 		return this.project.getJpaPlatform();
 	}
 	
-	protected ConnectionProfile getConnectionProfile() {
-		return this.project.getConnectionProfile();
-	}
-
 	protected ILaunch getLaunch() {
 		return this.launch;
 	}
@@ -198,7 +194,12 @@ public class EclipseLinkDDLGenerator
 	}
 	
 	private IPath buildJdbcJarPath() {
-		return new Path(this.project.getConnectionProfile().getDriverJarList());
+		return new Path(this.getProjectConnectionDriverJarList());
+	}
+	
+	private String getProjectConnectionDriverJarList() {
+		ConnectionProfile cp = this.project.getConnectionProfile();
+		return (cp == null) ? "" : cp.getDriverJarList(); //$NON-NLS-1$
 	}
 	
 	private IPath buildBootstrapJarPath() {
@@ -342,23 +343,23 @@ public class EclipseLinkDDLGenerator
 	}
 	
 	private void buildLoginProperties(Properties properties) {
-		ConnectionProfile profile = this.getConnectionProfile();
+		ConnectionProfile cp = this.project.getConnectionProfile();
 
 		this.putProperty(properties,  
 			Connection.ECLIPSELINK_BIND_PARAMETERS,
 			"false");
 		this.putProperty(properties, 
 			Connection.ECLIPSELINK_DRIVER,
-			profile.getDriverClassName());
+			(cp == null) ? "" : cp.getDriverClassName());
 		this.putProperty(properties,
 			Connection.ECLIPSELINK_URL,
-			profile.getUrl());
+			(cp == null) ? "" : cp.getURL());
 		this.putProperty(properties,
 			Connection.ECLIPSELINK_USER,
-			profile.getUserName());
+			(cp == null) ? "" : cp.getUserName());
 		this.putProperty(properties,
 			Connection.ECLIPSELINK_PASSWORD,
-			profile.getUserPassword());
+			(cp == null) ? "" : cp.getUserPassword());
 		this.putProperty(properties,
 			Logging.ECLIPSELINK_LEVEL,
 			LoggingLevel.FINEST);

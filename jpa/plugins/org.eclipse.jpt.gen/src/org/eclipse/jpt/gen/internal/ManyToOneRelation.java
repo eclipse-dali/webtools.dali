@@ -10,36 +10,47 @@
 package org.eclipse.jpt.gen.internal;
 
 import org.eclipse.jpt.db.ForeignKey;
+import org.eclipse.jpt.utility.internal.StringTools;
 
+/**
+ * This object is held by the "base" gen table and, indirectly via a
+ * one-to-many relation, the "referenced" gen table.
+ * The "mapped by" attribute (field/property) name is set while the
+ * "base" table is calculating its attribute names.
+ */
 class ManyToOneRelation {
-	private final GenTable baseTable;  // the "many" side
+	private final GenTable baseGenTable;  // the "many" side (e.g. Detail)
 	private final ForeignKey foreignKey;
-	private final GenTable referencedTable;  // the "one" side
-	private String mappedBy;
+	private final GenTable referencedGenTable;  // the "one" side (e.g. Master)
+	private String mappedBy;  // set while generating entities; used by partner one-to-many relation
 
 
-	ManyToOneRelation(GenTable baseTable, ForeignKey foreignKey, GenTable referencedTable) {
+	ManyToOneRelation(
+			GenTable baseGenTable,
+			ForeignKey foreignKey,
+			GenTable referencedGenTable
+	) {
 		super();
-		this.baseTable = baseTable;
+		this.baseGenTable = baseGenTable;
 		this.foreignKey = foreignKey;
-		this.referencedTable = referencedTable;
-		referencedTable.addOneToManyRelation(new OneToManyRelation(this));
+		this.referencedGenTable = referencedGenTable;
+		referencedGenTable.addOneToManyRelation(new OneToManyRelation(this));
 	}
 
-	GenTable getBaseTable() {
-		return this.baseTable;
+	GenTable getBaseGenTable() {
+		return this.baseGenTable;
 	}
 
 	ForeignKey getForeignKey() {
 		return this.foreignKey;
 	}
 
-	GenTable getReferencedTable() {
-		return this.referencedTable;
+	GenTable getReferencedGenTable() {
+		return this.referencedGenTable;
 	}
 
-	String javaFieldName() {
-		return this.foreignKey.getJavaFieldName();
+	String getAttributeName() {
+		return this.foreignKey.getAttributeName();
 	}
 
 	String getMappedBy() {
@@ -50,12 +61,21 @@ class ManyToOneRelation {
 		this.mappedBy = mappedBy;
 	}
 
-	String baseEntityName() {
-		return this.baseTable.getEntityName();
+	String getBaseEntityName() {
+		return this.baseGenTable.getEntityName();
 	}
 
-	String referencedEntityName() {
-		return this.referencedTable.getEntityName();
+	String getReferencedEntityName() {
+		return this.referencedGenTable.getEntityName();
+	}
+
+	EntityGenerator.Config getEntityConfig() {
+		return this.baseGenTable.getEntityConfig();
+	}
+
+	@Override
+	public String toString() {
+		return StringTools.buildToStringFor(this, this.foreignKey);
 	}
 
 }

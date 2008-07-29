@@ -26,12 +26,9 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
  *  Wrap a DTP ForeignKey
  */
 final class DTPForeignKeyWrapper
-	extends DTPWrapper
+	extends DTPDatabaseObjectWrapper
 	implements ForeignKey
 {
-	// backpointer to parent
-	private final DTPTableWrapper baseTable;
-
 	// the wrapped DTP foreign key
 	private final org.eclipse.datatools.modelbase.sql.constraints.ForeignKey dtpForeignKey;
 
@@ -41,16 +38,15 @@ final class DTPForeignKeyWrapper
 	// lazy-initialized
 	private LocalColumnPair[] columnPairs;
 
-	// lazy-initialized
-	private String defaultEntityFieldName;
-	private boolean defaultEntityFieldNameCalculated = false;
+	// lazy-initialized - but it can be 'null' so we use a flag
+	private String defaultAttributeName;
+	private boolean defaultAttributeNameCalculated = false;
 
 
 	// ********** constructor **********
 
 	DTPForeignKeyWrapper(DTPTableWrapper baseTable, org.eclipse.datatools.modelbase.sql.constraints.ForeignKey dtpForeignKey) {
 		super(baseTable, dtpForeignKey);
-		this.baseTable = baseTable;
 		this.dtpForeignKey = dtpForeignKey;
 	}
 
@@ -58,39 +54,52 @@ final class DTPForeignKeyWrapper
 	// ********** DTPWrapper implementation **********
 
 	@Override
-	synchronized void catalogObjectChanged(int eventType) {
-		// clear stuff so it will be rebuilt
-		this.dispose_();
-		this.getConnectionProfile().foreignKeyChanged(this, eventType);
+	synchronized void catalogObjectChanged() {
+		super.catalogObjectChanged();
+		this.getConnectionProfile().foreignKeyChanged(this);
+	}
+
+	@Override
+	public String toString() {
+		return StringTools.buildToStringFor(this, this.getName() + ": " + Arrays.asList(this.getColumnPairs()));  //$NON-NLS-1$
 	}
 
 
 	// ********** ForeignKey implementation **********
 
-	@Override
 	public String getName() {
 		return this.dtpForeignKey.getName();
 	}
 
 	public DTPTableWrapper getBaseTable() {
-		return this.baseTable;
+		return (DTPTableWrapper) this.getParent();
 	}
 
 	public synchronized DTPTableWrapper getReferencedTable() {
 		if (this.referencedTable == null) {
-			this.referencedTable = this.baseTable.table(this.dtpForeignKey.getUniqueConstraint().getBaseTable());
+			this.referencedTable = this.getBaseTable().getTable(this.dtpForeignKey.getUniqueConstraint().getBaseTable());
 		}
 		return this.referencedTable;
+	}
+
+	public boolean referencesSingleColumnPrimaryKey() {
+		if (this.columnPairsSize() != 1) {
+			return false;
+		}
+		if (this.getReferencedTable().primaryKeyColumnsSize() != 1) {
+			return false;
+		}
+		return this.getColumnPair().getReferencedColumn() == this.getReferencedTable().getPrimaryKeyColumn();
 	}
 
 	// ***** column pairs
 
 	public Iterator<ColumnPair> columnPairs() {
-		return new ArrayIterator<ColumnPair>(this.columnPairs_());
+		return new ArrayIterator<ColumnPair>(this.getColumnPairs());
 	}
 
-	public LocalColumnPair columnPair() {
-		LocalColumnPair[] pairs = this.columnPairs_();
+	public LocalColumnPair getColumnPair() {
+		LocalColumnPair[] pairs = this.getColumnPairs();
 		if (pairs.length != 1) {
 			throw new IllegalStateException("multiple column pairs: " + pairs.length);  //$NON-NLS-1$
 		}
@@ -98,10 +107,10 @@ final class DTPForeignKeyWrapper
 	}
 
 	private Iterator<LocalColumnPair> localColumnPairs() {
-		return new ArrayIterator<LocalColumnPair>(this.columnPairs_());
+		return new ArrayIterator<LocalColumnPair>(this.getColumnPairs());
 	}
 
-	private synchronized LocalColumnPair[] columnPairs_() {
+	private synchronized LocalColumnPair[] getColumnPairs() {
 		if (this.columnPairs == null) {
 			this.columnPairs = this.buildColumnPairs();
 		}
@@ -109,43 +118,44 @@ final class DTPForeignKeyWrapper
 	}
 
 	private LocalColumnPair[] buildColumnPairs() {
-		List<org.eclipse.datatools.modelbase.sql.tables.Column> baseColumns = this.dtpBaseColumns();
+		List<org.eclipse.datatools.modelbase.sql.tables.Column> baseColumns = this.getDTPBaseColumns();
 		int size = baseColumns.size();
-		List<org.eclipse.datatools.modelbase.sql.tables.Column> refColumns = this.dtpRefColumns();
+		List<org.eclipse.datatools.modelbase.sql.tables.Column> refColumns = this.getDTPReferenceColumns();
 		if (refColumns.size() != size) {
-			throw new IllegalStateException(this.getBaseTable().getName() + "." + this.getName() +  //$NON-NLS-1$
+			throw new IllegalStateException(this.getBaseTable().getName() + '.' + this.getName() +
 								" - mismatched sizes: " + size + " vs. " + refColumns.size());  //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		LocalColumnPair[] result = new LocalColumnPair[baseColumns.size()];
 		for (int i = baseColumns.size(); i-- > 0; ) {
-			DTPColumnWrapper baseColumn = this.baseTable.column(baseColumns.get(i));
-			DTPColumnWrapper refColumn = this.baseTable.column(refColumns.get(i));
-			result[i] = new LocalColumnPair(baseColumn, refColumn);
+			result[i] = new LocalColumnPair(
+								this.getBaseTable().getColumn(baseColumns.get(i)),
+								this.getBaseTable().getColumn(refColumns.get(i))
+						);
 		}
 		return result;
 	}
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	private List<org.eclipse.datatools.modelbase.sql.tables.Column> dtpBaseColumns() {
+	private List<org.eclipse.datatools.modelbase.sql.tables.Column> getDTPBaseColumns() {
 		return this.dtpForeignKey.getMembers();
 	}
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	private List<org.eclipse.datatools.modelbase.sql.tables.Column> dtpRefColumns() {
+	private List<org.eclipse.datatools.modelbase.sql.tables.Column> getDTPReferenceColumns() {
 		return this.dtpForeignKey.getUniqueConstraint().getMembers();
 	}
 
 	public int columnPairsSize() {
-		return this.columnPairs_().length;
+		return this.getColumnPairs().length;
 	}
 
 	public Iterator<Column> baseColumns() {
 		return new TransformationIterator<LocalColumnPair, Column>(this.localColumnPairs()) {
 			@Override
 			protected Column transform(LocalColumnPair pair) {
-				return pair.baseColumn();
+				return pair.getBaseColumn();
 			}
 		};
 	}
@@ -158,7 +168,7 @@ final class DTPForeignKeyWrapper
 		return new FilteringIterator<Column, Column>(this.baseColumns()) {
 			@Override
 			protected boolean accept(Column column) {
-				return ! DTPForeignKeyWrapper.this.getBaseTable().primaryKeyColumnsContains(column);
+				return ! column.isPrimaryKeyColumn();
 			}
 		};
 	}
@@ -167,41 +177,33 @@ final class DTPForeignKeyWrapper
 		return new TransformationIterator<LocalColumnPair, Column>(this.localColumnPairs()) {
 			@Override
 			protected Column transform(LocalColumnPair columnPair) {
-				return columnPair.referencedColumn();
+				return columnPair.getReferencedColumn();
 			}
 		};
 	}
 
-	// ***** default entity field name
+	// ***** attribute name
 
-	/**
-	 * If the name of the "base" column adheres to the EJB standard for a
-	 * default mapping (i.e. it ends with an underscore followed by the name
-	 * of the "referenced" column, and the "referenced" column is the single
-	 * primary key column of the "referenced" table), return the corresponding
-	 * default entity field name:
-	 *     ForeignKey(EMP.CUBICLE_ID => CUBICLE.ID) => "CUBICLE"
-	 * Return a null if it does not adhere to the EJB standard:
-	 *     ForeignKey(EMP.CUBICLE_ID => CUBICLE.CUBICLE_ID) => null
-	 */
-	private synchronized String defaultEntityFieldName() {
-		if ( ! this.defaultEntityFieldNameCalculated) {
-			this.defaultEntityFieldNameCalculated = true;
-			this.defaultEntityFieldName = this.buildDefaultEntityFieldName();
-		}
-		return this.defaultEntityFieldName;
+	public String getAttributeName() {
+		String defaultName = this.getDefaultAttributeName();
+		return (defaultName != null) ? defaultName : this.getNonDefaultAttributeName();
 	}
 
-	/**
-	 * @see #defaultEntityFieldName()
-	 */
-	private String buildDefaultEntityFieldName() {
+	public synchronized String getDefaultAttributeName() {
+		if ( ! this.defaultAttributeNameCalculated) {
+			this.defaultAttributeNameCalculated = true;
+			this.defaultAttributeName = this.buildDefaultAttributeName();
+		}
+		return this.defaultAttributeName;
+	}
+
+	private String buildDefaultAttributeName() {
 		if ( ! this.referencesSingleColumnPrimaryKey()) {
 			return null;
 		}
-		LocalColumnPair columnPair = this.columnPairs_()[0];
-		String baseColName = columnPair.baseColumn().getName();
-		String refColName = columnPair.referencedColumn().getName();
+		LocalColumnPair columnPair = this.getColumnPair();
+		String baseColName = columnPair.getBaseColumn().getName();
+		String refColName = columnPair.getReferencedColumn().getName();
 		if (baseColName.length() <= (refColName.length() + 1)) {
 			return null;
 		}
@@ -212,65 +214,68 @@ final class DTPForeignKeyWrapper
 		if (baseColName.charAt(_index) != '_') {
 			return null;
 		}
-		String name = baseColName.substring(0, _index);
-		return this.isCaseSensitive() ? name : name.toLowerCase();
-	}
-
-	// ***** miscellaneous
-
-	public String getJavaFieldName() {
-		String fieldName = this.defaultEntityFieldName();
-		return (fieldName != null) ? fieldName : this.nonDefaultEntityFieldName();
-	}
-
-	public boolean defaultMatchesJavaFieldName(String javaFieldName) {
-		return this.isCaseSensitive() ?
-			javaFieldName.equals(this.defaultEntityFieldName())
-		:
-			javaFieldName.equalsIgnoreCase(this.defaultEntityFieldName());
-	}
-
-	public boolean isDefaultFor(String javaFieldName) {
-		if (this.columnPairsSize() != 1) {
-			return false;
-		}
-
-		if (this.getReferencedTable().primaryKeyColumnsSize() != 1) {
-			return false;
-		}
-
-		LocalColumnPair columnPair = this.columnPairs_()[0];
-		Column pkColumn = this.getReferencedTable().primaryKeyColumn();
-		if (columnPair.referencedColumn() != pkColumn) {
-			return false;
-		}
-
-		return columnPair.baseColumn().matchesJavaFieldName(javaFieldName + "_" + pkColumn.getName());  //$NON-NLS-1$
-	}
-
-	public boolean referencesSingleColumnPrimaryKey() {
-		if (this.columnPairsSize() != 1) {
-			return false;
-		}
-		if (this.getReferencedTable().primaryKeyColumnsSize() != 1) {
-			return false;
-		}
-
-		return this.columnPair().referencedColumn() == this.getReferencedTable().primaryKeyColumn();
+		return baseColName.substring(0, _index);
 	}
 
 	/**
-	 * If this is a simple (single-column) foreign key, return the java field
-	 * name of the single base column. If this is a compound foreign key,
-	 * return the java field name of the referenced table.
+	 * If this is a simple (single-column) foreign key, use the name of the
+	 * single base column to build a name. If this is a compound foreign key,
+	 * return the name of the referenced table.
 	 */
 	// TODO if there is only one FK to a given table, use the table's name instead of the column's name?
-	// TODO if the FK column name ends with the PK column name, strip the PK column name?
-	private String nonDefaultEntityFieldName() {
+	private String getNonDefaultAttributeName() {
 		return (this.columnPairsSize() == 1) ?
-			this.columnPair().baseColumn().getJavaFieldName()
-		:
-			this.getReferencedTable().getJavaFieldName();
+						this.getNonDefaultAttributeNameFromBaseColumn()
+					:
+						this.getReferencedTable().getName();
+	}
+
+	/**
+	 * The underscore check is helpful when the referenced column is NOT the
+	 * primary key of the referenced table (i.e. it has only a UNIQUE constraint).
+	 *     ForeignKey(EMP.CUBICLE_ID => CUBICLE.ID) => "CUBICLE"
+	 *     ForeignKey(EMP.CUBICLEID => CUBICLE.ID) => "CUBICLE"
+	 *     ForeignKey(EMP.CUBICLE_PK => CUBICLE.ID) => "CUBICLE_PK"
+	 */
+	private String getNonDefaultAttributeNameFromBaseColumn() {
+		LocalColumnPair columnPair = this.getColumnPair();
+		String baseColName = columnPair.getBaseColumn().getName();
+		String refColName = columnPair.getReferencedColumn().getName();
+		int len = baseColName.length();
+		int refLen = refColName.length();
+		if ((len > refLen) && baseColName.endsWith(refColName)) {
+			len = len - refLen;
+			if ((len > 1) && baseColName.charAt(len - 1) == '_') {
+				len = len - 1;
+			}
+		}
+		return baseColName.substring(0, len);
+	}
+
+	/**
+	 * Examples:
+	 * Oracle etc.
+	 *     ForeignKey(FOO_ID => ID) vs. "foo" => null
+	 *     ForeignKey(FOO_ID => FOO_ID) vs. "foo" => "FOO_ID"
+	 *     ForeignKey(FOO => ID) vs. "foo" => "FOO"
+	 *     ForeignKey(Foo_ID => ID) vs. "foo" => "\"Foo_ID\""
+	 *     
+	 * PostgreSQL etc.
+	 *     ForeignKey(foo_id => id) vs. "foo" => null
+	 *     ForeignKey(foo_id => foo_id) vs. "foo" => "foo_id"
+	 *     ForeignKey(foo => id) vs. "foo" => "foo"
+	 *     ForeignKey(Foo_ID => ID) vs. "foo" => "\"Foo_ID\""
+	 *     
+	 * SQL Server etc.
+	 *     ForeignKey(foo_ID => ID) vs. "foo" => null
+	 *     ForeignKey(FOO_ID => FOO_ID) vs. "foo" => "FOO_ID"
+	 *     ForeignKey(FOO => ID) vs. "foo" => "FOO"
+	 *     ForeignKey(Foo_ID => ID) vs. "foo" => "Foo_ID"
+	 */
+	public String getJoinColumnAnnotationIdentifier(String attributeName) {
+		String defaultBaseColumnName = attributeName + '_' + this.getReferencedTable().getPrimaryKeyColumn().getName();
+		String baseColumnName = this.getColumnPair().getBaseColumn().getName();
+		return this.getAnnotationIdentifier(defaultBaseColumnName, baseColumnName);
 	}
 
 
@@ -287,33 +292,12 @@ final class DTPForeignKeyWrapper
 		return this.dtpForeignKey == foreignKey;
 	}
 
-	boolean isCaseSensitive() {
-		return this.baseTable.isCaseSensitive();
-	}
-
-	DTPDatabaseWrapper database() {
-		return this.baseTable.database();
-	}
-
 	@Override
-	public String toString() {
-		return StringTools.buildToStringFor(this, this.getName() + ": " + Arrays.asList(this.columnPairs_()));  //$NON-NLS-1$
-	}
-
-
-	// ********** disposal **********
-
-	@Override
-	synchronized void dispose() {
-		this.dispose_();
-		super.dispose();
-	}
-
-	private void dispose_() {
+	void clear() {
 		// the foreign key does not "contain" any other objects,
-		// so we don't need to forward the #dispose()
-		this.defaultEntityFieldNameCalculated = false;
-		this.defaultEntityFieldName = null;
+		// so we don't need to forward the #clear()
+		this.defaultAttributeNameCalculated = false;
+		this.defaultAttributeName = null;
 		this.columnPairs =  null;
 		this.referencedTable = null;
 	}
@@ -327,30 +311,24 @@ final class DTPForeignKeyWrapper
 
 		LocalColumnPair(DTPColumnWrapper baseColumn, DTPColumnWrapper referencedColumn) {
 			super();
+			if ((baseColumn == null) || (referencedColumn == null)) {
+				throw new NullPointerException();
+			}
 			this.baseColumn = baseColumn;
 			this.referencedColumn = referencedColumn;
 		}
 
-
-		// ********** ColumnPair implementation **********
-
-		public DTPColumnWrapper baseColumn() {
+		public DTPColumnWrapper getBaseColumn() {
 			return this.baseColumn;
 		}
 
-		public DTPColumnWrapper referencedColumn() {
+		public DTPColumnWrapper getReferencedColumn() {
 			return this.referencedColumn;
 		}
 
-
-		// ********** Comparable implementation **********
-
 		public int compareTo(ColumnPair columnPair) {
-			return Collator.getInstance().compare(this.baseColumn().getName(), columnPair.baseColumn().getName());
+			return Collator.getInstance().compare(this.getBaseColumn().getName(), columnPair.getBaseColumn().getName());
 		}
-
-
-		// ********** Object overrides **********
 
 		@Override
 		public String toString() {

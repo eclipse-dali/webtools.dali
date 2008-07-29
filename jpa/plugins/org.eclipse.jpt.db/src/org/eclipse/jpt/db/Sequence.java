@@ -20,11 +20,13 @@ package org.eclipse.jpt.db;
  * 
  * This interface is not intended to be implemented by clients.
  */
-public interface Sequence extends Comparable<Sequence> {
+public interface Sequence
+	extends DatabaseObject, Comparable<Sequence>
+{
 
 	/**
-	 * Return the sequence's name.
+	 * Return the sequence's schema.
 	 */
-	String getName();
+	Schema getSchema();
 
 }

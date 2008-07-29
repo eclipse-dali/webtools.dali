@@ -23,12 +23,17 @@ import java.util.Iterator;
  * 
  * This interface is not intended to be implemented by clients.
  */
-public interface Schema extends Comparable<Schema> {
-
+public interface Schema
+	extends DatabaseObject, Comparable<Schema>
+{
 	/**
-	 * Return the schema's name.
+	 * Return the schema's catalog. Return null if the schema's database does
+	 * not support catalogs.
 	 */
-	String getName();
+	Catalog getCatalog();
+
+
+	// ********** tables **********
 
 	/**
 	 * Return the schema's tables.
@@ -46,16 +51,14 @@ public interface Schema extends Comparable<Schema> {
 	Iterator<String> tableNames();
 
 	/**
-	 * Return whether the schema contains a table with the specified name,
-	 * respecting the database's case-sensitivity.
+	 * Return the table with specified name. The name should be an SQL
+	 * identifier (i.e. quoted when case-sensitive, unquoted when
+	 * case-insensitive).
 	 */
-	boolean containsTableNamed(String name);
+	Table getTableNamed(String name);
 
-	/**
-	 * Return the table in the schema with the specified name,
-	 * respecting the database's case-sensitivity.
-	 */
-	Table tableNamed(String name);
+
+	// ********** sequences **********
 
 	/**
 	 * Return the schema's sequences.
@@ -73,15 +76,10 @@ public interface Schema extends Comparable<Schema> {
 	Iterator<String> sequenceNames();
 
 	/**
-	 * Return whether the schema contains a sequence with the specified name,
-	 * respecting the database's case-sensitivity.
+	 * Return the sequence with specified name. The name should be an SQL
+	 * identifier (i.e. quoted when case-sensitive, unquoted when
+	 * case-insensitive).
 	 */
-	boolean containsSequenceNamed(String name);
-
-	/**
-	 * Return the sequence in the schema with the specified name,
-	 * respecting the database's case-sensitivity.
-	 */
-	Sequence sequenceNamed(String name);
+	Sequence getSequenceNamed(String name);
 
 }

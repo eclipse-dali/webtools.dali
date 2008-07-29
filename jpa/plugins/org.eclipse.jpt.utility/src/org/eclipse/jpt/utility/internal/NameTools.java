@@ -10,9 +10,11 @@
 package org.eclipse.jpt.utility.internal;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.SortedSet;
+
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 /**
@@ -21,33 +23,10 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 public final class NameTools {
 
 	/**
-	 * Given a "root" name and a set of existing names, generate a unique,
-	 * Java-legal name that is either the "root" name or some variation on
-	 * the "root" name (e.g. "root2", "root3",...).
-	 * The names are case-sensitive.
-	 */
-	public static String uniqueJavaNameFor(String rootName, Iterator<String> existingNames) {
-		Collection<String> existingNames2 = CollectionTools.set(existingNames);
-		existingNames2.addAll(JAVA_RESERVED_WORDS_SET);
-		return uniqueNameFor(rootName, existingNames2, rootName);
-	}
-	
-	/**
-	 * Given a "root" name and a set of existing names, generate a unique,
-	 * Java-legal name that is either the "root" name or some variation on
-	 * the "root" name (e.g. "root2", "root3",...).
-	 * The names are case-sensitive.
-	 */
-	public static String uniqueJavaNameFor(String rootName, Collection<String> existingNames) {
-		Collection<String> existingNames2 = new HashSet<String>(existingNames);
-		existingNames2.addAll(JAVA_RESERVED_WORDS_SET);
-		return uniqueNameFor(rootName, existingNames2, rootName);
-	}
-
-	/**
 	 * Given a "root" name and a set of existing names, generate a unique
 	 * name that is either the "root" name or some variation on the "root"
-	 * name (e.g. "root2", "root3",...). The names are case-sensitive.
+	 * name (e.g. "root2", "root3",...). The names are case-sensitive
+	 * (i.e. "Root" and "root" are both allowed).
 	 */
 	public static String uniqueNameFor(String rootName, Iterator<String> existingNames) {
 		return uniqueNameFor(rootName, CollectionTools.set(existingNames));
@@ -56,7 +35,8 @@ public final class NameTools {
 	/**
 	 * Given a "root" name and a set of existing names, generate a unique
 	 * name that is either the "root" name or some variation on the "root"
-	 * name (e.g. "root2", "root3",...). The names are case-sensitive.
+	 * name (e.g. "root2", "root3",...). The names are case-sensitive
+	 * (i.e. "Root" and "root" are both allowed).
 	 */
 	public static String uniqueNameFor(String rootName, Collection<String> existingNames) {
 		return uniqueNameFor(rootName, existingNames, rootName);
@@ -65,7 +45,8 @@ public final class NameTools {
 	/**
 	 * Given a "root" name and a set of existing names, generate a unique
 	 * name that is either the "root" name or some variation on the "root"
-	 * name (e.g. "root2", "root3",...). The names are NOT case-sensitive.
+	 * name (e.g. "root2", "root3",...). The names are NOT case-sensitive
+	 * (i.e. "Root" and "root" are NOT both allowed).
 	 */
 	public static String uniqueNameForIgnoreCase(String rootName, Iterator<String> existingNames) {
 		return uniqueNameForIgnoreCase(rootName, CollectionTools.set(existingNames));
@@ -74,7 +55,8 @@ public final class NameTools {
 	/**
 	 * Given a "root" name and a set of existing names, generate a unique
 	 * name that is either the "root" name or some variation on the "root"
-	 * name (e.g. "root2", "root3",...). The names are NOT case-sensitive.
+	 * name (e.g. "root2", "root3",...). The names are NOT case-sensitive
+	 * (i.e. "Root" and "root" are NOT both allowed).
 	 */
 	public static String uniqueNameForIgnoreCase(String rootName, Collection<String> existingNames) {
 		return uniqueNameFor(rootName, convertToLowerCase(existingNames), rootName.toLowerCase());
@@ -103,8 +85,8 @@ public final class NameTools {
 	 * Convert the specified collection of strings to a collection of the same
 	 * strings converted to lower case.
 	 */
-	private static Collection<String> convertToLowerCase(Collection<String> strings) {
-		Collection<String> result = new HashBag<String>(strings.size());
+	private static HashSet<String> convertToLowerCase(Collection<String> strings) {
+		HashSet<String> result = new HashSet<String>(strings.size());
 		for (String string : strings) {
 			result.add(string.toLowerCase());
 		}
@@ -145,6 +127,7 @@ public final class NameTools {
 	 * These words cannot be used as identifiers (i.e. names).
 	 * http://java.sun.com/docs/books/tutorial/java/nutsandbolts/_keywords.html
 	 */
+	@SuppressWarnings("nls")
 	public static final String[] JAVA_RESERVED_WORDS = new String[] {
 				"abstract",
 				"assert",  // jdk 1.4
@@ -206,7 +189,8 @@ public final class NameTools {
 	 * These words cannot be used as identifiers (i.e. names).
 	 * http://java.sun.com/docs/books/tutorial/java/nutsandbolts/_keywords.html
 	 */
-	public static final Set<String> JAVA_RESERVED_WORDS_SET = CollectionTools.set(JAVA_RESERVED_WORDS);
+	public static final SortedSet<String> JAVA_RESERVED_WORDS_SET = 
+		Collections.unmodifiableSortedSet(CollectionTools.sortedSet(JAVA_RESERVED_WORDS));
 
 	/**
 	 * Return the set of Java programming language reserved words.
@@ -215,6 +199,59 @@ public final class NameTools {
 	 */
 	public static Iterator<String> javaReservedWords() {
 		return new ArrayIterator<String>(JAVA_RESERVED_WORDS);
+	}
+
+	/**
+	 * Return whether the specified string consists of Java identifier
+	 * characters (but may be a reserved word).
+	 */
+	public static boolean stringConsistsOfJavaIdentifierCharacters(String string) {
+		if (string.length() == 0) {
+			return false;
+		}
+		return stringConsistsOfJavaIdentifierCharacters_(string.toCharArray());
+	}
+
+	/**
+	 * Return whether the specified string consists of Java identifier
+	 * characters (but may be a reserved word).
+	 */
+	public static boolean stringConsistsOfJavaIdentifierCharacters(char[] string) {
+		if (string.length == 0) {
+			return false;
+		}
+		return stringConsistsOfJavaIdentifierCharacters_(string);
+	}
+
+	/**
+	 * The specified string must not be empty.
+	 */
+	private static boolean stringConsistsOfJavaIdentifierCharacters_(char[] string) {
+		if ( ! Character.isJavaIdentifierStart(string[0])) {
+			return false;
+		}
+		for (int i = string.length; i-- > 1; ) {  // NB: end with 1
+			if ( ! Character.isJavaIdentifierPart(string[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Return whether the specified string is a valid Java identifier.
+	 */
+	public static boolean stringIsLegalJavaIdentifier(String string) {
+		return stringConsistsOfJavaIdentifierCharacters(string)
+				&& ! JAVA_RESERVED_WORDS_SET.contains(string);
+	}
+
+	/**
+	 * Return whether the specified string is a valid Java identifier.
+	 */
+	public static boolean stringIsLegalJavaIdentifier(char[] string) {
+		return stringConsistsOfJavaIdentifierCharacters(string)
+				&& ! JAVA_RESERVED_WORDS_SET.contains(new String(string));
 	}
 
 	/**
@@ -263,8 +300,7 @@ public final class NameTools {
 	 * to the string until it is not a Java reserved word.
 	 */
 	public static char[] convertToJavaIdentifier(char[] string, char c) {
-		int length = string.length;
-		if (length == 0) {
+		if (string.length == 0) {
 			return string;
 		}
 		if (JAVA_RESERVED_WORDS_SET.contains(new String(string))) {
@@ -277,7 +313,7 @@ public final class NameTools {
 	}
 
 	/**
-	 * The specified must not be empty.
+	 * The specified string must not be empty.
 	 * Return whether the string was modified.
 	 */
 	private static boolean convertToJavaIdentifier_(char[] string, char c) {
@@ -299,13 +335,13 @@ public final class NameTools {
 
 	private static void checkCharIsJavaIdentifierStart(char c) {
 		if ( ! Character.isJavaIdentifierStart(c)) {
-			throw new IllegalArgumentException("invalid Java identifier start char: '" + c + "'");
+			throw new IllegalArgumentException("invalid Java identifier start char: '" + c + '\'');  //$NON-NLS-1$
 		}
 	}
 
 	private static void checkCharIsJavaIdentifierPart(char c) {
 		if ( ! Character.isJavaIdentifierPart(c)) {
-			throw new IllegalArgumentException("invalid Java identifier part char: '" + c + "'");
+			throw new IllegalArgumentException("invalid Java identifier part char: '" + c + '\'');  //$NON-NLS-1$
 		}
 	}
 

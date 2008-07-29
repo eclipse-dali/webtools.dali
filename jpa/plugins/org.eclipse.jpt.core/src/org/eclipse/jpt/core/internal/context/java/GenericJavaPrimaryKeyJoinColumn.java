@@ -100,7 +100,7 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 
 	public Column getDbReferencedColumn() {
 		Table table = this.getDbReferencedColumnTable();
-		return (table == null) ? null : table.columnNamed(this.getReferencedColumnName());
+		return (table == null) ? null : table.getColumnNamed(this.getReferencedColumnName());
 	}
 
 	public Table getDbReferencedColumnTable() {
@@ -164,6 +164,13 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 	//TODO not correct when we start supporting primaryKeyJoinColumns in 1-1 mappings
 	protected String defaultReferencedColumnName() {
 		return defaultName();
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append("=>");
+		sb.append(this.getReferencedColumnName());
 	}
 
 }

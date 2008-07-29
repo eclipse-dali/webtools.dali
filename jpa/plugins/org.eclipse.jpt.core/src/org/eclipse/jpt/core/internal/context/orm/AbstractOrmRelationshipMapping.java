@@ -137,10 +137,6 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 		return null;
 	}
 	
-	public boolean targetEntityIsValid(String targetEntity) {
-		return MappingTools.targetEntityIsValid(targetEntity);
-	}
-	
 	@Override
 	public void initialize(T relationshipMapping) {
 		super.initialize(relationshipMapping);

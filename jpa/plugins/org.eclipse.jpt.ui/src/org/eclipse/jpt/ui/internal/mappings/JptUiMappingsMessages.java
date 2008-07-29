@@ -1,9 +1,9 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2008 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,13 +12,12 @@ package org.eclipse.jpt.ui.internal.mappings;
 import org.eclipse.osgi.util.NLS;
 
 /**
- * The localized strings used by the mapping panes.
+ * Localized messages used by Dali mapping panes.
  *
  * @version 2.0
  * @since 1.0
  */
-@SuppressWarnings("nls")
-public class JptUiMappingsMessages extends NLS {
+public class JptUiMappingsMessages {
 
 	public static String AccessTypeCombo_default;
 	public static String AttributeOverridesComposite_attributeOverrides;
@@ -266,11 +265,14 @@ public class JptUiMappingsMessages extends NLS {
 	public static String TemporalTypeComposite_time;
 	public static String TemporalTypeComposite_timestamp;
 
+	private static final String BUNDLE_NAME = "jpt_ui_mappings"; //$NON-NLS-1$
+	private static final Class<?> BUNDLE_CLASS = JptUiMappingsMessages.class;
 	static {
-		NLS.initializeMessages("jpt_ui_mappings", JptUiMappingsMessages.class);
+		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
 	}
 
 	private JptUiMappingsMessages() {
 		throw new UnsupportedOperationException();
 	}
+
 }

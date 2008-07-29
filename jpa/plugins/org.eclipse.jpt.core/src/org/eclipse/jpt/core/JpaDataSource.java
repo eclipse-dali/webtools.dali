@@ -9,7 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
+import java.util.Iterator;
+
+import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionProfile;
+import org.eclipse.jpt.db.Database;
+import org.eclipse.jpt.db.DatabaseObject;
+import org.eclipse.jpt.db.Schema;
 
 /**
  * 
@@ -38,7 +44,7 @@ public interface JpaDataSource extends JpaNode {
 	 * ID string used when connectionProfileName property is changed
 	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
 	 */
-	public static final String CONNECTION_PROFILE_NAME_PROPERTY = "connectionProfileName";
+	public static final String CONNECTION_PROFILE_NAME_PROPERTY = "connectionProfileName"; //$NON-NLS-1$
 	
 	/**
 	 * The data source's connection profile should never be null.
@@ -50,12 +56,26 @@ public interface JpaDataSource extends JpaNode {
 	 * ID string used when connectionProfile property is changed
 	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
 	 */
-	public static final String CONNECTION_PROFILE_PROPERTY = "connectionProfile";
+	public static final String CONNECTION_PROFILE_PROPERTY = "connectionProfile"; //$NON-NLS-1$
 	
 	boolean connectionProfileIsActive();
 	
-	boolean hasAConnection();
+	Database getDatabase();
+
+	Iterator<String> catalogNames();
+
+	Catalog getCatalogNamed(String name);
 	
+	Catalog getDefaultCatalog();
+	
+	Iterator<String> schemaNames();
+
+	Schema getSchemaNamed(String name);
+
+	Schema getDefaultSchema();
+
+	<T extends DatabaseObject> T getDatabaseObjectNamed(T[] databaseObjects, String name);
+
 	void dispose();
 
 }

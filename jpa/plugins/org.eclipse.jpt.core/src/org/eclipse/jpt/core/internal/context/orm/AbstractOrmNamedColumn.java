@@ -126,7 +126,7 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 
 	public Column getDbColumn() {
 		Table table = this.getDbTable();
-		return (table == null) ? null : table.columnNamed(getName());
+		return (table == null) ? null : table.getColumnNamed(getName());
 	}
 
 	public Table getDbTable() {

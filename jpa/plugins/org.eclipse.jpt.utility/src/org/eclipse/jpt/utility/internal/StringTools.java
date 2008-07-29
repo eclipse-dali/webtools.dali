@@ -18,14 +18,42 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
  * Convenience methods related to the java.lang.String class.
+ * 
+ * As of jdk 1.5, it's tempting to convert all of these methods to use
+ * java.lang.Appendable (instead of StringBuffer, StringBuilder, and Writer);
+ * but all the Appendable methods throw java.io.IOException (yech) and we
+ * [might?] get a bit better performance invoking methods on classes than
+ * we get on interfaces. :-)
  */
 public final class StringTools {
 
 	/** carriage return */
-	public static final String CR = System.getProperty("line.separator");
+	public static final String CR = System.getProperty("line.separator");  //$NON-NLS-1$
 
 	/** double quote */
 	public static final char QUOTE = '"';
+
+	/** parenthesis */
+	public static final char OPEN_PARENTHESIS = '(';
+	public static final char CLOSE_PARENTHESIS = ')';
+
+	/** brackets */
+	public static final char OPEN_BRACKET = '[';
+	public static final char CLOSE_BRACKET = ']';
+
+	/** brackets */
+	public static final char OPEN_BRACE = '{';
+	public static final char CLOSE_BRACE = '}';
+
+	/** brackets */
+	public static final char OPEN_CHEVRON = '<';
+	public static final char CLOSE_CHEVRON = '>';
+
+	/** empty string */
+	public static final String EMPTY_STRING = ""; //$NON-NLS-1$
+
+	/** empty char array */
+	public static final char[] EMPTY_CHAR_ARRAY = new char[0];
 
 
 
@@ -86,7 +114,7 @@ public final class StringTools {
 	public static String pad(String string, int length, char c) {
 		int stringLength = string.length();
 		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		if (stringLength == length) {
 			return string;
@@ -105,7 +133,7 @@ public final class StringTools {
 	public static void padOn(String string, int length, char c, Writer writer) {
 		int stringLength = string.length();
 		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		if (stringLength == length) {
 			writeStringOn(string, writer);
@@ -125,7 +153,7 @@ public final class StringTools {
 	public static void padOn(String string, int length, char c, StringBuffer sb) {
 		int stringLength = string.length();
 		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		if (stringLength == length) {
 			sb.append(string);
@@ -145,7 +173,7 @@ public final class StringTools {
 	public static void padOn(String string, int length, char c, StringBuilder sb) {
 		int stringLength = string.length();
 		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		if (stringLength == length) {
 			sb.append(string);
@@ -209,7 +237,7 @@ public final class StringTools {
 	public static char[] pad(char[] string, int length, char c) {
 		int stringLength = string.length;
 		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		if (stringLength == length) {
 			return string;
@@ -228,7 +256,7 @@ public final class StringTools {
 	public static void padOn(char[] string, int length, char c, Writer writer) {
 		int stringLength = string.length;
 		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		if (stringLength == length) {
 			writeStringOn(string, writer);
@@ -248,7 +276,7 @@ public final class StringTools {
 	public static void padOn(char[] string, int length, char c, StringBuffer sb) {
 		int stringLength = string.length;
 		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		if (stringLength == length) {
 			sb.append(string);
@@ -268,7 +296,7 @@ public final class StringTools {
 	public static void padOn(char[] string, int length, char c, StringBuilder sb) {
 		int stringLength = string.length;
 		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		if (stringLength == length) {
 			sb.append(string);
@@ -712,7 +740,7 @@ public final class StringTools {
 	public static String frontPad(String string, int length, char c) {
 		int stringLength = string.length();
 		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		if (stringLength == length) {
 			return string;
@@ -731,7 +759,7 @@ public final class StringTools {
 	public static void frontPadOn(String string, int length, char c, Writer writer) {
 		int stringLength = string.length();
 		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		if (stringLength == length) {
 			writeStringOn(string, writer);
@@ -751,7 +779,7 @@ public final class StringTools {
 	public static void frontPadOn(String string, int length, char c, StringBuffer sb) {
 		int stringLength = string.length();
 		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		if (stringLength == length) {
 			sb.append(string);
@@ -771,7 +799,7 @@ public final class StringTools {
 	public static void frontPadOn(String string, int length, char c, StringBuilder sb) {
 		int stringLength = string.length();
 		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		if (stringLength == length) {
 			sb.append(string);
@@ -835,7 +863,7 @@ public final class StringTools {
 	public static char[] frontPad(char[] string, int length, char c) {
 		int stringLength = string.length;
 		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		if (stringLength == length) {
 			return string;
@@ -854,7 +882,7 @@ public final class StringTools {
 	public static void frontPadOn(char[] string, int length, char c, Writer writer) {
 		int stringLength = string.length;
 		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		if (stringLength == length) {
 			writeStringOn(string, writer);
@@ -874,7 +902,7 @@ public final class StringTools {
 	public static void frontPadOn(char[] string, int length, char c, StringBuffer sb) {
 		int stringLength = string.length;
 		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		if (stringLength == length) {
 			sb.append(string);
@@ -894,7 +922,7 @@ public final class StringTools {
 	public static void frontPadOn(char[] string, int length, char c, StringBuilder sb) {
 		int stringLength = string.length;
 		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		if (stringLength == length) {
 			sb.append(string);
@@ -1511,6 +1539,308 @@ public final class StringTools {
 	}
 
 
+	// ********** delimiting **********
+
+	/**
+	 * Return whether the specified string is quoted: "\"foo\"".
+	 */
+	public static boolean stringIsQuoted(String string) {
+		return stringIsDelimited(string, QUOTE);
+	}
+
+	/**
+	 * Return whether the specified string is parenthetical: "(foo)".
+	 */
+	public static boolean stringIsParenthetical(String string) {
+		return stringIsDelimited(string, OPEN_PARENTHESIS, CLOSE_PARENTHESIS);
+	}
+
+	/**
+	 * Return whether the specified string is bracketed: "[foo]".
+	 */
+	public static boolean stringIsBracketed(String string) {
+		return stringIsDelimited(string, OPEN_BRACKET, CLOSE_BRACKET);
+	}
+
+	/**
+	 * Return whether the specified string is braced: "{foo}".
+	 */
+	public static boolean stringIsBraced(String string) {
+		return stringIsDelimited(string, OPEN_BRACE, CLOSE_BRACE);
+	}
+
+	/**
+	 * Return whether the specified string is chevroned: "<foo>".
+	 */
+	public static boolean stringIsChevroned(String string) {
+		return stringIsDelimited(string, OPEN_CHEVRON, CLOSE_CHEVRON);
+	}
+
+	/**
+	 * Return whether the specified string is delimited by the specified
+	 * character.
+	 */
+	public static boolean stringIsDelimited(String string, char c) {
+		return stringIsDelimited(string, c, c);
+	}
+
+	/**
+	 * Return whether the specified string is delimited by the specified
+	 * characters.
+	 */
+	public static boolean stringIsDelimited(String string, char start, char end) {
+		int len = string.length();
+		if (len < 2) {
+			return false;
+		}
+		return stringIsDelimited(string.toCharArray(), start, end, len);
+	}
+
+	/**
+	 * Return whether the specified string is quoted: "\"foo\"".
+	 */
+	public static boolean stringIsQuoted(char[] string) {
+		return stringIsDelimited(string, QUOTE);
+	}
+
+	/**
+	 * Return whether the specified string is parenthetical: "(foo)".
+	 */
+	public static boolean stringIsParenthetical(char[] string) {
+		return stringIsDelimited(string, OPEN_PARENTHESIS, CLOSE_PARENTHESIS);
+	}
+
+	/**
+	 * Return whether the specified string is bracketed: "[foo]".
+	 */
+	public static boolean stringIsBracketed(char[] string) {
+		return stringIsDelimited(string, OPEN_BRACKET, CLOSE_BRACKET);
+	}
+
+	/**
+	 * Return whether the specified string is braced: "{foo}".
+	 */
+	public static boolean stringIsBraced(char[] string) {
+		return stringIsDelimited(string, OPEN_BRACE, CLOSE_BRACE);
+	}
+
+	/**
+	 * Return whether the specified string is chevroned: "<foo>".
+	 */
+	public static boolean stringIsChevroned(char[] string) {
+		return stringIsDelimited(string, OPEN_CHEVRON, CLOSE_CHEVRON);
+	}
+
+	/**
+	 * Return whether the specified string is delimited by the specified
+	 * character.
+	 */
+	public static boolean stringIsDelimited(char[] string, char c) {
+		return stringIsDelimited(string, c, c);
+	}
+
+	/**
+	 * Return whether the specified string is delimited by the specified
+	 * characters.
+	 */
+	public static boolean stringIsDelimited(char[] string, char start, char end) {
+		int len = string.length;
+		if (len < 2) {
+			return false;
+		}
+		return stringIsDelimited(string, start, end, len);
+	}
+
+	private static boolean stringIsDelimited(char[] s, char start, char end, int len) {
+		return (s[0] == start) && (s[len - 1] == end);
+	}
+
+
+	// ********** unwrapping **********
+
+	/**
+	 * Remove the first and last characters from the specified string.
+	 * If the string is too short to be unwrapped, throw an
+	 * IllegalArgumentException.
+	 */
+	public static String unwrap(String string) {
+		return unwrap(string, 1);
+	}
+
+	/**
+	 * Remove the first and last count characters from the specified string.
+	 * If the string is too short to be unwrapped, throw an
+	 * IllegalArgumentException.
+	 */
+	public static String unwrap(String string, int count) {
+		int len = string.length() - (2 * count);
+		if (len < 0) {
+			throw new IllegalArgumentException("invalid string: \"" + string + '"'); //$NON-NLS-1$
+		}
+		if (len == 0) {
+			return EMPTY_STRING;
+		}
+		return new String(unwrap(string.toCharArray(), len, count));
+	}
+
+	/**
+	 * Remove the first and last characters from the specified string.
+	 * If the string is too short to be unwrapped, throw an
+	 * IllegalArgumentException.
+	 */
+	public static char[] unwrap(char[] string) {
+		return unwrap(string, 1);
+	}
+
+	/**
+	 * Remove the first and last count characters from the specified string.
+	 * If the string is too short to be unwrapped, throw an
+	 * IllegalArgumentException.
+	 */
+	public static char[] unwrap(char[] string, int count) {
+		int len = string.length - (2 * count);
+		if (len < 0) {
+			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
+		}
+		if (len == 0) {
+			return EMPTY_CHAR_ARRAY;
+		}
+		return unwrap(string, len, count);
+	}
+
+	private static char[] unwrap(char[] string, int len, int count) {
+		char[] result = new char[len];
+		System.arraycopy(string, count, result, 0, len);
+		return result;
+	}
+
+	/**
+	 * Unwrap the specified string.
+	 */
+	public static void unwrapOn(String string, Writer writer) {
+		unwrapOn(string, 1, writer);
+	}
+
+	/**
+	 * Unwrap the specified string of count characters.
+	 */
+	public static void unwrapOn(String string, int count, Writer writer) {
+		int len = string.length() - (2 * count);
+		if (len < 0) {
+			throw new IllegalArgumentException("invalid string: \"" + string + '"'); //$NON-NLS-1$
+		}
+		if (len == 0) {
+			return;
+		}
+		writeStringOn(string, count, len, writer);
+	}
+
+	/**
+	 * Unwrap the specified string.
+	 */
+	public static void unwrapOn(String string, StringBuffer sb) {
+		unwrapOn(string, 1, sb);
+	}
+
+	/**
+	 * Unwrap the specified string of count characters.
+	 */
+	public static void unwrapOn(String string, int count, StringBuffer sb) {
+		int len = string.length() - (2 * count);
+		if (len < 0) {
+			throw new IllegalArgumentException("invalid string: \"" + string + '"'); //$NON-NLS-1$
+		}
+		if (len == 0) {
+			return;
+		}
+		sb.append(string, count, count + len);
+	}
+
+	/**
+	 * Unwrap the specified string.
+	 */
+	public static void unwrapOn(String string, StringBuilder sb) {
+		unwrapOn(string, 1, sb);
+	}
+
+	/**
+	 * Unwrap the specified string of count characters.
+	 */
+	public static void unwrapOn(String string, int count, StringBuilder sb) {
+		int len = string.length() - (2 * count);
+		if (len < 0) {
+			throw new IllegalArgumentException("invalid string: \"" + string + '"'); //$NON-NLS-1$
+		}
+		if (len == 0) {
+			return;
+		}
+		sb.append(string, count, count + len);
+	}
+
+	/**
+	 * Unwrap the specified string.
+	 */
+	public static void unwrapOn(char[] string, Writer writer) {
+		unwrapOn(string, 1, writer);
+	}
+
+	/**
+	 * Unwrap the specified string of count characters.
+	 */
+	public static void unwrapOn(char[] string, int count, Writer writer) {
+		int len = string.length - (2 * count);
+		if (len < 0) {
+			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
+		}
+		if (len == 0) {
+			return;
+		}
+		writeStringOn(string, count, len, writer);
+	}
+
+	/**
+	 * Unwrap the specified string.
+	 */
+	public static void unwrapOn(char[] string, StringBuffer sb) {
+		unwrapOn(string, 1, sb);
+	}
+
+	/**
+	 * Unwrap the specified string of count characters.
+	 */
+	public static void unwrapOn(char[] string, int count, StringBuffer sb) {
+		int len = string.length - (2 * count);
+		if (len < 0) {
+			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
+		}
+		if (len == 0) {
+			return;
+		}
+		sb.append(string, count, len);
+	}
+
+	/**
+	 * Unwrap the specified string.
+	 */
+	public static void unwrapOn(char[] string, StringBuilder sb) {
+		unwrapOn(string, 1, sb);
+	}
+
+	/**
+	 * Unwrap the specified string of count characters.
+	 */
+	public static void unwrapOn(char[] string, int count, StringBuilder sb) {
+		int len = string.length - (2 * count);
+		if (len < 0) {
+			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
+		}
+		if (len == 0) {
+			return;
+		}
+		sb.append(string, count, len);
+	}
+
+
 	// ********** removing characters **********
 
 	/**
@@ -1547,7 +1877,7 @@ public final class StringTools {
 		if (index == -1) {
 			writeStringOn(string, writer);
 		} else {
-			removeFirstOccurrenceOn_(string.toCharArray(), c, writer, index);
+			removeCharAtIndexOn(string.toCharArray(), index, writer);
 		}
 	}
 
@@ -1561,7 +1891,7 @@ public final class StringTools {
 		if (index == -1) {
 			sb.append(string);
 		} else {
-			removeFirstOccurrenceOn_(string.toCharArray(), c, sb, index);
+			removeCharAtIndexOn(string.toCharArray(), index, sb);
 		}
 	}
 
@@ -1575,7 +1905,7 @@ public final class StringTools {
 		if (index == -1) {
 			sb.append(string);
 		} else {
-			removeFirstOccurrenceOn_(string.toCharArray(), c, sb, index);
+			removeCharAtIndexOn(string.toCharArray(), index, sb);
 		}
 	}
 
@@ -1616,11 +1946,11 @@ public final class StringTools {
 		if (index == -1) {
 			writeStringOn(string, writer);
 		} else {
-			removeFirstOccurrenceOn_(string, c, writer, index);
+			removeCharAtIndexOn(string, index, writer);
 		}
 	}
 
-	private static void removeFirstOccurrenceOn_(char[] string, char c, Writer writer, int index) {
+	private static void removeCharAtIndexOn(char[] string, int index, Writer writer) {
 		int last = string.length - 1;
 		if (index == 0) {
 			// character found at the front of string
@@ -1645,11 +1975,11 @@ public final class StringTools {
 		if (index == -1) {
 			sb.append(string);
 		} else {
-			removeFirstOccurrenceOn_(string, c, sb, index);
+			removeCharAtIndexOn(string, index, sb);
 		}
 	}
 
-	private static void removeFirstOccurrenceOn_(char[] string, char c, StringBuffer sb, int index) {
+	private static void removeCharAtIndexOn(char[] string, int index, StringBuffer sb) {
 		int last = string.length - 1;
 		if (index == 0) {
 			// character found at the front of string
@@ -1674,11 +2004,11 @@ public final class StringTools {
 		if (index == -1) {
 			sb.append(string);
 		} else {
-			removeFirstOccurrenceOn_(string, c, sb, index);
+			removeCharAtIndexOn(string, index, sb);
 		}
 	}
 
-	private static void removeFirstOccurrenceOn_(char[] string, char c, StringBuilder sb, int index) {
+	private static void removeCharAtIndexOn(char[] string, int index, StringBuilder sb) {
 		int last = string.length - 1;
 		if (index == 0) {
 			// character found at the front of string
@@ -2488,7 +2818,7 @@ public final class StringTools {
 	public static String buildToStringFor(Object o, Object additionalInfo) {
 		StringBuilder sb = new StringBuilder();
 		buildSimpleToStringOn(o, sb);
-		sb.append(" (");
+		sb.append(" (");  //$NON-NLS-1$
 		sb.append(additionalInfo);
 		sb.append(')');
 		return sb.toString();
@@ -2538,10 +2868,14 @@ public final class StringTools {
 	 * only whitespace characters.
 	 */
 	public static boolean stringIsEmpty(String string) {
-		if ((string == null) || (string.length() == 0)) {
+		if (string == null) {
 			return true;
 		}
-		return stringIsEmpty_(string.toCharArray());
+		int len = string.length();
+		if (len == 0) {
+			return true;
+		}
+		return stringIsEmpty_(string.toCharArray(), len);
 	}
 
 	/**
@@ -2549,19 +2883,39 @@ public final class StringTools {
 	 * only whitespace characters.
 	 */
 	public static boolean stringIsEmpty(char[] string) {
-		if ((string == null) || (string.length == 0)) {
+		if (string == null) {
 			return true;
 		}
-		return stringIsEmpty_(string);
+		int len = string.length;
+		if (len == 0) {
+			return true;
+		}
+		return stringIsEmpty_(string, len);
 	}
 
-	private static boolean stringIsEmpty_(char[] s) {
-		for (int i = s.length; i-- > 0; ) {
+	private static boolean stringIsEmpty_(char[] s, int len) {
+		for (int i = len; i-- > 0; ) {
 			if ( ! Character.isWhitespace(s[i])) {
 				return false;
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Return whether the specified string is non-null, non-empty, and does
+	 * not contain only whitespace characters.
+	 */
+	public static boolean stringIsNotEmpty(String string) {
+		return ! stringIsEmpty(string);
+	}
+
+	/**
+	 * Return whether the specified string is non-null, non-empty, and does
+	 * not contain only whitespace characters.
+	 */
+	public static boolean stringIsNotEmpty(char[] string) {
+		return ! stringIsEmpty(string);
 	}
 
 	/**
@@ -2589,10 +2943,11 @@ public final class StringTools {
 		if ((s1 == null) || (s2 == null)) {
 			return false;  // one is null but the other is not
 		}
-		if (s1.length != s2.length) {
+		int len = s1.length;
+		if (len != s2.length) {
 			return false;
 		}
-		for (int i = s1.length; i-- > 0; ) {
+		for (int i = len; i-- > 0; ) {
 			if ( ! charactersAreEqualIgnoreCase(s1[i], s2[i])) {
 				return false;
 			}
@@ -2605,10 +2960,11 @@ public final class StringTools {
 	 * ignoring case.
 	 */
 	public static boolean stringStartsWithIgnoreCase(char[] string, char[] prefix) {
-		if (string.length < prefix.length) {
+		int prefixLength = prefix.length;
+		if (string.length < prefixLength) {
 			return false;
 		}
-		for (int i = prefix.length; i-- > 0; ) {
+		for (int i = prefixLength; i-- > 0; ) {
 			if ( ! charactersAreEqualIgnoreCase(string[i], prefix[i])) {
 				return false;
 			}
@@ -2635,7 +2991,44 @@ public final class StringTools {
 				|| (Character.toLowerCase(c1) == Character.toLowerCase(c2));
 	}
 
-	// ********** conversions **********
+	/**
+	 * Return whether the specified string is uppercase.
+	 */
+	public static boolean stringIsUppercase(String string) {
+		return (string.length() == 0) ? false : stringIsUppercase_(string);
+	}
+
+	/**
+	 * Return whether the specified string is uppercase.
+	 */
+	public static boolean stringIsUppercase(char[] string) {
+		return (string.length == 0) ? false : stringIsUppercase_(new String(string));
+	}
+
+	private static boolean stringIsUppercase_(String string) {
+		return string.equals(string.toUpperCase());
+	}
+
+	/**
+	 * Return whether the specified string is lowercase.
+	 */
+	public static boolean stringIsLowercase(String string) {
+		return (string.length() == 0) ? false : stringIsLowercase_(string);
+	}
+
+	/**
+	 * Return whether the specified string is lowercase.
+	 */
+	public static boolean stringIsLowercase(char[] string) {
+		return (string.length == 0) ? false : stringIsLowercase_(new String(string));
+	}
+
+	private static boolean stringIsLowercase_(String string) {
+		return string.equals(string.toLowerCase());
+	}
+
+
+	// ********** convert camel case to all caps **********
 
 	/**
 	 * Convert the specified "camel case" string to an "all caps" string:
@@ -2977,6 +3370,9 @@ public final class StringTools {
 		return Character.isLowerCase(next);
 	}
 
+
+	// ********** convert underscores to camel case **********
+
 	/**
 	 * Convert the specified "underscore" string to a "camel case" string:
 	 * "LARGE_PROJECT" -> "LargeProject"
@@ -3181,6 +3577,206 @@ public final class StringTools {
 	}
 
 
+	// ********** convert to Java string literal **********
+
+	public static final String EMPTY_JAVA_STRING_LITERAL = "\"\"";  //$NON-NLS-1$
+	public static final char[] EMPTY_JAVA_STRING_LITERAL_CHAR_ARRAY = EMPTY_JAVA_STRING_LITERAL.toCharArray();
+
+	public static String convertToJavaStringLiteral(String string) {
+		int len = string.length();
+		if (len == 0) {
+			return EMPTY_JAVA_STRING_LITERAL;
+		}
+		StringBuilder sb = new StringBuilder(len + 5);
+		convertToJavaStringLiteralOn_(string.toCharArray(), sb, len);
+		return sb.toString();
+	}
+
+	public static char[] convertToJavaStringLiteral(char[] string) {
+		int len = string.length;
+		if (len == 0) {
+			return EMPTY_JAVA_STRING_LITERAL_CHAR_ARRAY;
+		}
+		StringBuilder sb = new StringBuilder(len + 5);
+		convertToJavaStringLiteralOn_(string, sb, len);
+		len = sb.length();
+		char[] result = new char[len];
+		sb.getChars(0, len, result, 0);
+		return result;
+	}
+
+	public static void convertToJavaStringLiteralOn(String string, StringBuffer sb) {
+		int len = string.length();
+		if (len == 0) {
+			sb.append(EMPTY_JAVA_STRING_LITERAL);
+		} else {
+			convertToJavaStringLiteralOn_(string.toCharArray(), sb, len);
+		}
+	}
+
+	public static void convertToJavaStringLiteralOn(char[] string, StringBuffer sb) {
+		int len = string.length;
+		if (len == 0) {
+			sb.append(EMPTY_JAVA_STRING_LITERAL);
+		} else {
+			convertToJavaStringLiteralOn_(string, sb, len);
+		}
+	}
+
+	/*
+	 * no length checks
+	 */
+	private static void convertToJavaStringLiteralOn_(char[] string, StringBuffer sb, int len) {
+		sb.ensureCapacity(sb.length() + len + 5);
+		sb.append(QUOTE);
+		for (char c : string) {
+			switch (c) {
+				case '\b':  // backspace
+					sb.append("\\b");  //$NON-NLS-1$
+					break;
+				case '\t':  // horizontal tab
+					sb.append("\\t");  //$NON-NLS-1$
+					break;
+				case '\n':  // line-feed LF
+					sb.append("\\n");  //$NON-NLS-1$
+					break;
+				case '\f':  // form-feed FF
+					sb.append("\\f");  //$NON-NLS-1$
+					break;
+				case '\r':  // carriage-return CR
+					sb.append("\\r");  //$NON-NLS-1$
+					break;
+				case '"':  // double-quote
+					sb.append("\\\"");  //$NON-NLS-1$
+					break;
+//				case '\'':  // single-quote
+//					sb.append("\\'");  //$NON-NLS-1$
+//					break;
+				case '\\':  // backslash
+					sb.append("\\\\");  //$NON-NLS-1$
+					break;
+				default:
+					sb.append(c);
+					break;
+			}
+		}
+		sb.append(QUOTE);
+	}
+
+	public static void convertToJavaStringLiteralOn(String string, StringBuilder sb) {
+		int len = string.length();
+		if (len == 0) {
+			sb.append(EMPTY_JAVA_STRING_LITERAL);
+		} else {
+			convertToJavaStringLiteralOn_(string.toCharArray(), sb, len);
+		}
+	}
+
+	public static void convertToJavaStringLiteralOn(char[] string, StringBuilder sb) {
+		int len = string.length;
+		if (len == 0) {
+			sb.append(EMPTY_JAVA_STRING_LITERAL);
+		} else {
+			convertToJavaStringLiteralOn_(string, sb, len);
+		}
+	}
+
+	/*
+	 * no length checks
+	 */
+	private static void convertToJavaStringLiteralOn_(char[] string, StringBuilder sb, int len) {
+		sb.ensureCapacity(sb.length() + len + 5);
+		sb.append(QUOTE);
+		for (char c : string) {
+			switch (c) {
+				case '\b':  // backspace
+					sb.append("\\b");  //$NON-NLS-1$
+					break;
+				case '\t':  // horizontal tab
+					sb.append("\\t");  //$NON-NLS-1$
+					break;
+				case '\n':  // line-feed LF
+					sb.append("\\n");  //$NON-NLS-1$
+					break;
+				case '\f':  // form-feed FF
+					sb.append("\\f");  //$NON-NLS-1$
+					break;
+				case '\r':  // carriage-return CR
+					sb.append("\\r");  //$NON-NLS-1$
+					break;
+				case '"':  // double-quote
+					sb.append("\\\"");  //$NON-NLS-1$
+					break;
+//				case '\'':  // single-quote
+//					sb.append("\\'");  //$NON-NLS-1$
+//					break;
+				case '\\':  // backslash
+					sb.append("\\\\");  //$NON-NLS-1$
+					break;
+				default:
+					sb.append(c);
+					break;
+			}
+		}
+		sb.append(QUOTE);
+	}
+
+	public static void convertToJavaStringLiteralOn(String string, Writer writer) {
+		if (string.length() == 0) {
+			writeStringOn(EMPTY_JAVA_STRING_LITERAL, writer);
+		} else {
+			convertToJavaStringLiteralOn_(string.toCharArray(), writer);
+		}
+	}
+
+	public static void convertToJavaStringLiteralOn(char[] string, Writer writer) {
+		if (string.length == 0) {
+			writeStringOn(EMPTY_JAVA_STRING_LITERAL, writer);
+		} else {
+			convertToJavaStringLiteralOn_(string, writer);
+		}
+	}
+
+	/*
+	 * no length checks
+	 */
+	private static void convertToJavaStringLiteralOn_(char[] string, Writer writer) {
+		writeCharOn(QUOTE, writer);
+		for (char c : string) {
+			switch (c) {
+				case '\b':  // backspace
+					writeStringOn("\\b", writer);  //$NON-NLS-1$
+					break;
+				case '\t':  // horizontal tab
+					writeStringOn("\\t", writer);  //$NON-NLS-1$
+					break;
+				case '\n':  // line-feed LF
+					writeStringOn("\\n", writer);  //$NON-NLS-1$
+					break;
+				case '\f':  // form-feed FF
+					writeStringOn("\\f", writer);  //$NON-NLS-1$
+					break;
+				case '\r':  // carriage-return CR
+					writeStringOn("\\r", writer);  //$NON-NLS-1$
+					break;
+				case '"':  // double-quote
+					writeStringOn("\\\"", writer);  //$NON-NLS-1$
+					break;
+//				case '\'':  // single-quote
+//					writeStringOn("\\'", writer);  //$NON-NLS-1$
+//					break;
+				case '\\':  // backslash
+					writeStringOn("\\\\", writer);  //$NON-NLS-1$
+					break;
+				default:
+					writeCharOn(c, writer);
+					break;
+			}
+		}
+		writeCharOn(QUOTE, writer);
+	}
+
+
 	// ********** convenience **********
 
 	public static char[] convertToCharArray(StringBuffer sb) {
@@ -3206,6 +3802,14 @@ public final class StringTools {
 	}
 
 	private static void writeStringOn(char[] string, int off, int len, Writer writer) {
+		try {
+			writer.write(string, off, len);
+		} catch (IOException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
+	private static void writeStringOn(String string, int off, int len, Writer writer) {
 		try {
 			writer.write(string, off, len);
 		} catch (IOException ex) {

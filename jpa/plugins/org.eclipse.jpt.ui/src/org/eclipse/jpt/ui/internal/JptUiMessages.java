@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- *
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,13 +12,12 @@ package org.eclipse.jpt.ui.internal;
 import org.eclipse.osgi.util.NLS;
 
 /**
- * The resource strings used by the JPT UI classes.
+ * Localized messages used by Dali UI.
  *
  * @version 2.0
  * @since 1.0
  */
-@SuppressWarnings("nls")
-public class JptUiMessages extends NLS {
+public class JptUiMessages {
 
 	public static String AbstractChooserPane_browseButton;
 	public static String AddPersistentAttributeDialog_attributeLabel;
@@ -137,12 +136,16 @@ public class JptUiMessages extends NLS {
 	public static String PersistenceItemLabelProviderFactory_persistenceLabel;
 	public static String PersistentAttributePage_mapAs;
 	public static String PersistentTypePage_mapAs;
+	public static String EntitiesGenerator_jobName;
 
+	private static final String BUNDLE_NAME = "jpt_ui"; //$NON-NLS-1$
+	private static final Class<?> BUNDLE_CLASS = JptUiMessages.class;
 	static {
-		NLS.initializeMessages("jpt_ui", JptUiMessages.class);
+		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
 	}
 
 	private JptUiMessages() {
 		throw new UnsupportedOperationException();
 	}
+
 }

@@ -9,7 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.extension.resource;
 
-import java.util.Collection;
+import java.util.List;
+
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
@@ -36,13 +37,13 @@ public class TestJpaPlatform extends GenericJpaPlatform
 	}
 	
 	@Override
-	protected void addJavaTypeMappingProvidersTo(Collection<JavaTypeMappingProvider> providers) {
+	protected void addJavaTypeMappingProvidersTo(List<JavaTypeMappingProvider> providers) {
 		super.addJavaTypeMappingProvidersTo(providers);
 		providers.add(JavaTestTypeMappingProvider.instance());
 	}
 	
 	@Override
-	protected void addJavaAttributeMappingProvidersTo(Collection<JavaAttributeMappingProvider> providers) {
+	protected void addJavaAttributeMappingProvidersTo(List<JavaAttributeMappingProvider> providers) {
 		super.addJavaAttributeMappingProvidersTo(providers);
 		providers.add(JavaTestAttributeMappingProvider.instance());
 	}

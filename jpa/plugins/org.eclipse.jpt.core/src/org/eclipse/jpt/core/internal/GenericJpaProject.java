@@ -242,28 +242,22 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		return this.jpaPlatform;
 	}
 
+	@Override
 	public JpaDataSource getDataSource() {
 		return this.dataSource;
 	}
 
-	@Override
 	public ConnectionProfile getConnectionProfile() {
 		return this.dataSource.getConnectionProfile();
 	}
-	
+
 	public Schema getDefaultSchema() {
-		Schema defaultSchema = getUserOverrideDefaultSchema();
-		if (defaultSchema != null) {
-			return defaultSchema;
-		}
-		return getConnectionProfile().getDefaultSchema();
+		Schema schema = this.getUserOverrideDefaultSchema();
+		return (schema != null) ? schema : this.getDataSource().getDefaultSchema();
 	}
 	
 	public Schema getUserOverrideDefaultSchema() {
-		if (this.userOverrideDefaultSchemaName == null) {
-			return null;
-		}
-		return getConnectionProfile().getDatabase().schemaNamed(this.userOverrideDefaultSchemaName);
+		return (this.userOverrideDefaultSchemaName == null) ? null : this.getDataSource().getSchemaNamed(this.userOverrideDefaultSchemaName);
 	}
 	
 	
@@ -372,7 +366,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		jpaFile.getResourceModel().removeResourceModelChangeListener(this.resourceModelListener);
 		jpaFile.dispose();
 		if ( ! this.removeItemFromCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION)) {
-			throw new IllegalArgumentException("JPA file: " + jpaFile.getFile().getName());
+			throw new IllegalArgumentException("JPA file: " + jpaFile.getFile().getName()); //$NON-NLS-1$
 		}
 	}
 
@@ -493,7 +487,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	protected boolean okToProceedForConnectionValidation = true;
 	
 	protected void addNoConnectionMessage(List<IMessage> messages) {
-		if (! this.getDataSource().hasAConnection()) {
+		if (this.getConnectionProfile() == null) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
@@ -517,7 +511,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		okToProceedForConnectionValidation = true;
 	}
 	
-	protected void addMultiplePersistenceXmlMessage(List<IMessage> messages) {
+	protected void addMultiplePersistenceXmlMessage(@SuppressWarnings("unused") List<IMessage> messages) {
 //		if (validPersistenceXmlFiles.size() > 1) {
 //			messages.add(
 //					JpaValidationMessages.buildMessage(
@@ -535,7 +529,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	protected static final String WEB_PROJECT_ROOT_DEPLOY_LOCATION = J2EEConstants.WEB_INF_CLASSES;
 
 	public String getRootDeployLocation() {
-		return this.isWebProject() ? WEB_PROJECT_ROOT_DEPLOY_LOCATION : "";
+		return this.isWebProject() ? WEB_PROJECT_ROOT_DEPLOY_LOCATION : ""; //$NON-NLS-1$
 	}
 
 	protected static final String JST_WEB_MODULE = IModuleConstants.JST_WEB_MODULE;
@@ -688,7 +682,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	 */
 	public void update() {
 		if (this.updater == null) {
-			throw new IllegalStateException("updater is null, use setUpdater(Updater) after construction of GenericJpaProject");
+			throw new IllegalStateException("updater is null, use #setUpdater(Updater) after construction of GenericJpaProject"); //$NON-NLS-1$
 		}
 		this.updater.update();
 	}

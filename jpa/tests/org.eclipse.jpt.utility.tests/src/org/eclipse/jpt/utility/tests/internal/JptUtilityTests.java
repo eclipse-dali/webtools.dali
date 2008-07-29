@@ -29,6 +29,7 @@ public class JptUtilityTests {
 		suite.addTest(JptUtilityNodeTests.suite());
 
 		suite.addTestSuite(BitToolsTests.class);
+		suite.addTestSuite(BooleanHolderTests.class);
 		suite.addTestSuite(ClasspathTests.class);
 		suite.addTestSuite(ClassToolsTests.class);
 		suite.addTestSuite(CollectionToolsTests.class);
@@ -42,6 +43,7 @@ public class JptUtilityTests {
 		suite.addTestSuite(JDBCTypeTests.class);
 		suite.addTestSuite(MethodSignatureTests.class);
 		suite.addTestSuite(NameToolsTests.class);
+		suite.addTestSuite(RangeTests.class);
 		suite.addTestSuite(ReverseComparatorTests.class);
 		suite.addTestSuite(SimpleAssociationTests.class);
 		suite.addTestSuite(SimpleStackTests.class);
