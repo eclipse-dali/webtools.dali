@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context;
 
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.context.JpaContextNode;
 
 /**
  * 
@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkCaching extends JavaJpaContextNode
+public interface EclipseLinkCaching extends JpaContextNode
 {
 	//***************** shared ************************
 	
