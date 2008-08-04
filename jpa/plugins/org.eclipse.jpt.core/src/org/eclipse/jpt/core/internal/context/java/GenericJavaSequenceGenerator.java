@@ -29,8 +29,8 @@ public class GenericJavaSequenceGenerator extends AbstractJavaGenerator
 		return (SequenceGeneratorAnnotation) super.getGeneratorResource();
 	}
 
-	public void initializeFromResource(SequenceGeneratorAnnotation sequenceGenerator) {
-		super.initializeFromResource(sequenceGenerator);
+	public void initialize(SequenceGeneratorAnnotation sequenceGenerator) {
+		super.initialize(sequenceGenerator);
 		this.specifiedSequenceName = this.specifiedSequenceName(sequenceGenerator);
 	}
 	

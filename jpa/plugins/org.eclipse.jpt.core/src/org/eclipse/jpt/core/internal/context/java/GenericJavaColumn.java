@@ -30,8 +30,8 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 	}
 	
 	@Override
-	public void initializeFromResource(ColumnAnnotation column) {
-		super.initializeFromResource(column);
+	public void initialize(ColumnAnnotation column) {
+		super.initialize(column);
 		this.specifiedLength = this.specifiedLength(column);
 		this.specifiedPrecision = this.specifiedPrecision(column);
 		this.specifiedScale = this.specifiedScale(column);

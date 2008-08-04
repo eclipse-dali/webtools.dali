@@ -27,8 +27,8 @@ public class GenericJavaNamedQuery extends AbstractJavaQuery implements JavaName
 		return (NamedQueryAnnotation) super.getQueryResource();
 	}
 
-	public void initializeFromResource(NamedQueryAnnotation queryResource) {
-		super.initializeFromResource(queryResource);
+	public void initialize(NamedQueryAnnotation queryResource) {
+		super.initialize(queryResource);
 	}
 	
 	public void update(NamedQueryAnnotation queryResource) {

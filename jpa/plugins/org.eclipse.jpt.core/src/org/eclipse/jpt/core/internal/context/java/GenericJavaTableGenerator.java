@@ -291,8 +291,8 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 
 	// ********** java resource model -> java context model **********
 	
-	public void initializeFromResource(TableGeneratorAnnotation tableGenerator) {
-		super.initializeFromResource(tableGenerator);
+	public void initialize(TableGeneratorAnnotation tableGenerator) {
+		super.initialize(tableGenerator);
 		this.specifiedTable = this.specifiedTable(tableGenerator);
 		this.specifiedCatalog = this.specifiedCatalog(tableGenerator);
 		this.defaultCatalog = this.defaultCatalog();

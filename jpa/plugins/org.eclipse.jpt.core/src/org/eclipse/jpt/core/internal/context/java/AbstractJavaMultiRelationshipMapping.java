@@ -296,14 +296,14 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 	
 	@Override
-	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.initializeFromResource(resourcePersistentAttribute);
+	public void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.initialize(resourcePersistentAttribute);
 		MapKeyAnnotation mapKey = this.getMapKeyResource(resourcePersistentAttribute);
 		if (mapKey != null) {
 			this.mapKey = mapKey.getName();
 		}
 		this.initializeOrderBy(this.getOrderByResource());
-		this.joinTable.initializeFromResource(resourcePersistentAttribute);
+		this.joinTable.initialize(resourcePersistentAttribute);
 	}
 	
 	@Override

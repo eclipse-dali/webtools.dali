@@ -61,9 +61,9 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 	}
 
 	@Override
-	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.initializeFromResource(resourcePersistentAttribute);
-		this.column.initializeFromResource(this.getColumnResource());
+	public void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.initialize(resourcePersistentAttribute);
+		this.column.initialize(this.getColumnResource());
 		this.specifiedEnumerated = this.specifiedEnumerated(this.getEnumeratedResource());
 		this.lob = this.lob(resourcePersistentAttribute);
 		this.temporal = this.temporal(this.getTemporalResource());

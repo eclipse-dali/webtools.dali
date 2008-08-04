@@ -46,9 +46,9 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	}
 	
 	@Override
-	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.initializeFromResource(resourcePersistentAttribute);
-		this.column.initializeFromResource(this.getColumnResource());
+	public void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.initialize(resourcePersistentAttribute);
+		this.column.initialize(this.getColumnResource());
 		this.temporal = this.temporal(this.temporalResource());
 	}
 	

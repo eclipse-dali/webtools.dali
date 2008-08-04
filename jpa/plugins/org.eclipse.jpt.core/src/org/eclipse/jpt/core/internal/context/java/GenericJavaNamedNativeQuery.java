@@ -66,8 +66,8 @@ public class GenericJavaNamedNativeQuery extends AbstractJavaQuery
 		firePropertyChanged(NamedNativeQuery.RESULT_SET_MAPPING_PROPERTY, oldResultSetMapping, newResultSetMapping);
 	}
 
-	public void initializeFromResource(NamedNativeQueryAnnotation queryResource) {
-		super.initializeFromResource(queryResource);
+	public void initialize(NamedNativeQueryAnnotation queryResource) {
+		super.initialize(queryResource);
 		this.resultClass = queryResource.getResultClass();
 		this.resultSetMapping = queryResource.getResultSetMapping();
 	}

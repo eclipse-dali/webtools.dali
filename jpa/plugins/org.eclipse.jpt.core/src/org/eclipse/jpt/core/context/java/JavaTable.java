@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
  */
 public interface JavaTable extends Table, JavaJpaContextNode
 {
-	void initializeFromResource(JavaResourcePersistentMember persistentResource);
+	void initialize(JavaResourcePersistentMember persistentResource);
 	
 	void update(JavaResourcePersistentMember persistentResource);
 

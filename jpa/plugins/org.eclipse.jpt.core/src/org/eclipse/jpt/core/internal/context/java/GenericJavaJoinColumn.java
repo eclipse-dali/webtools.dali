@@ -143,9 +143,9 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	}
 	
 	@Override
-	public void initializeFromResource(JoinColumnAnnotation joinColumn) {
+	public void initialize(JoinColumnAnnotation joinColumn) {
 		this.joinColumn = joinColumn;
-		super.initializeFromResource(joinColumn);
+		super.initialize(joinColumn);
 		this.specifiedReferencedColumnName = joinColumn.getReferencedColumnName();
 		this.defaultReferencedColumnName = this.defaultReferencedColumnName();
 	}

@@ -32,7 +32,7 @@ public abstract class AbstractJavaGenerator extends AbstractJavaJpaContextNode
 		super(parent);
 	}
 
-	public void initializeFromResource(GeneratorAnnotation generatorResource) {
+	public void initialize(GeneratorAnnotation generatorResource) {
 		this.generatorResource = generatorResource;
 		this.name = this.name(generatorResource);
 		this.specifiedInitialValue = this.specifiedInitialValue(generatorResource);

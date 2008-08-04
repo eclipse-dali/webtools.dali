@@ -64,9 +64,9 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 	}
 
 	@Override
-	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.initializeFromResource(resourcePersistentAttribute);
-		this.column.initializeFromResource(this.getColumnResource());
+	public void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.initialize(resourcePersistentAttribute);
+		this.column.initialize(this.getColumnResource());
 		this.temporal = this.temporal(this.getTemporalResource());
 		this.initializeTableGenerator(resourcePersistentAttribute);
 		this.initializeSequenceGenerator(resourcePersistentAttribute);
@@ -165,7 +165,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 		}
 		this.generatedValue = getJpaFactory().buildJavaGeneratedValue(this);
 		GeneratedValueAnnotation generatedValueResource = (GeneratedValueAnnotation) getResourcePersistentAttribute().addAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
-		this.generatedValue.initializeFromResource(generatedValueResource);
+		this.generatedValue.initialize(generatedValueResource);
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, null, this.generatedValue);
 		return this.generatedValue;
 	}
@@ -196,7 +196,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 		}
 		this.tableGenerator = getJpaFactory().buildJavaTableGenerator(this);
 		TableGeneratorAnnotation tableGeneratorResource = (TableGeneratorAnnotation) getResourcePersistentAttribute().addAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
-		this.tableGenerator.initializeFromResource(tableGeneratorResource);
+		this.tableGenerator.initialize(tableGeneratorResource);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
 		return this.tableGenerator;
 	}
@@ -228,7 +228,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 		
 		this.sequenceGenerator = getJpaFactory().buildJavaSequenceGenerator(this);
 		SequenceGeneratorAnnotation sequenceGeneratorResource = (SequenceGeneratorAnnotation) getResourcePersistentAttribute().addAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
-		this.sequenceGenerator.initializeFromResource(sequenceGeneratorResource);
+		this.sequenceGenerator.initialize(sequenceGeneratorResource);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
 		return this.sequenceGenerator;
 	}
@@ -294,7 +294,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 	
 	protected JavaTableGenerator buildTableGenerator(TableGeneratorAnnotation tableGeneratorResource) {
 		JavaTableGenerator tableGenerator = getJpaFactory().buildJavaTableGenerator(this);
-		tableGenerator.initializeFromResource(tableGeneratorResource);
+		tableGenerator.initialize(tableGeneratorResource);
 		return tableGenerator;
 	}
 	
@@ -317,7 +317,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 	
 	protected JavaSequenceGenerator buildSequenceGenerator(SequenceGeneratorAnnotation sequenceGeneratorResource) {
 		JavaSequenceGenerator sequenceGenerator = getJpaFactory().buildJavaSequenceGenerator(this);
-		sequenceGenerator.initializeFromResource(sequenceGeneratorResource);
+		sequenceGenerator.initialize(sequenceGeneratorResource);
 		return sequenceGenerator;
 	}
 	
@@ -340,7 +340,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 	
 	protected JavaGeneratedValue buildGeneratedValue(GeneratedValueAnnotation generatedValueResource) {
 		JavaGeneratedValue generatedValue = getJpaFactory().buildJavaGeneratedValue(this);
-		generatedValue.initializeFromResource(generatedValueResource);
+		generatedValue.initialize(generatedValueResource);
 		return generatedValue;
 	}
 

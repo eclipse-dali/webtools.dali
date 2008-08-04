@@ -43,7 +43,7 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 
 	// ******************* initialization from java resource model ********************
 	
-	protected void initializeFromResource(T column) {
+	protected void initialize(T column) {
 		this.specifiedName = column.getName();
 		this.defaultName = this.defaultName();
 		this.columnDefinition = column.getColumnDefinition();	

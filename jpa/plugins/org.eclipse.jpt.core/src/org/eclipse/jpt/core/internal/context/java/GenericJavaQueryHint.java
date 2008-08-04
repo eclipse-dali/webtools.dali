@@ -51,7 +51,7 @@ public class GenericJavaQueryHint extends AbstractJavaJpaContextNode implements 
 	}
 
 
-	public void initializeFromResource(QueryHintAnnotation queryHint) {
+	public void initialize(QueryHintAnnotation queryHint) {
 		this.queryHint = queryHint;
 		this.name = queryHint.getName();
 		this.value = queryHint.getValue();

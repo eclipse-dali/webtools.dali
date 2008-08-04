@@ -252,7 +252,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode imple
 	
 
 	
-	protected void initializeFromResource(TableAnnotation table) {
+	protected void initialize(TableAnnotation table) {
 		this.defaultName = this.defaultName();
 		this.defaultSchema = this.defaultSchema();
 		this.defaultCatalog = this.defaultCatalog();

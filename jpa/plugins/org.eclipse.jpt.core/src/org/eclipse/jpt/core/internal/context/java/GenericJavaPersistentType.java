@@ -310,7 +310,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	
 	protected void initializeMapping(JavaResourcePersistentType persistentTypeResource) {
 		this.mapping  = getJpaPlatform().buildJavaTypeMappingFromAnnotation(this.javaMappingAnnotationName(persistentTypeResource), this);
-		this.mapping.initializeFromResource(persistentTypeResource);
+		this.mapping.initialize(persistentTypeResource);
 	}
 	
 	protected void initializePersistentAttributes(JavaResourcePersistentType persistentTypeResource) {
@@ -404,7 +404,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	
 	protected JavaTypeMapping createJavaTypeMappingFromAnnotation(String annotationName, JavaResourcePersistentType jrpt) {
 		JavaTypeMapping typeMapping = getJpaPlatform().buildJavaTypeMappingFromAnnotation(annotationName, this);
-		typeMapping.initializeFromResource(jrpt);
+		typeMapping.initialize(jrpt);
 		return typeMapping;
 	}
 
@@ -440,7 +440,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	
 	protected JavaPersistentAttribute createAttribute(JavaResourcePersistentAttribute persistentAttributeResource) {
 		JavaPersistentAttribute javaPersistentAttribute = getJpaFactory().buildJavaPersistentAttribute(this);
-		javaPersistentAttribute.initializeFromResource(persistentAttributeResource);
+		javaPersistentAttribute.initialize(persistentAttributeResource);
 		return javaPersistentAttribute;
 	}
 	
@@ -473,7 +473,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		if (possibleParent != null) {
 			return possibleParent;
 		}
-		JavaResourcePersistentType jrpt = getJpaProject().getJavaPersistentTypeResource(fullyQualifiedTypeName);
+		JavaResourcePersistentType jrpt = getJpaProject().getJavaResourcePersistentType(fullyQualifiedTypeName);
 		return (jrpt == null) ? null : this.possibleParent(jrpt.getSuperClassQualifiedName());
 	}
 	

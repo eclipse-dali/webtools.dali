@@ -31,7 +31,7 @@ public interface JavaGeneratedValue extends GeneratedValue, JavaJpaContextNode
 	 */
 	TextRange getGeneratorTextRange(CompilationUnit astRoot);
 	
-	void initializeFromResource(GeneratedValueAnnotation generatedValue);
+	void initialize(GeneratedValueAnnotation generatedValue);
 	
 	void update(GeneratedValueAnnotation generatedValue);
 

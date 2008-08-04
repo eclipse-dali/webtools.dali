@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 public interface JavaTableGenerator
 	extends JavaGenerator, TableGenerator
 {
-	void initializeFromResource(TableGeneratorAnnotation generator);
+	void initialize(TableGeneratorAnnotation generator);
 	
 	void update(TableGeneratorAnnotation generator);
 	

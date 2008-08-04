@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
  */
 public interface JavaJoinColumn extends JoinColumn, JavaBaseJoinColumn, JavaBaseColumn
 {
-	void initializeFromResource(JoinColumnAnnotation joinColumn);
+	void initialize(JoinColumnAnnotation joinColumn);
 	
 	boolean connectionProfileIsActive();
 	

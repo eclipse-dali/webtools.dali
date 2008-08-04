@@ -103,7 +103,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 		return false;
 	}
 
-	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+	public void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		this.resourcePersistentAttribute = resourcePersistentAttribute;
 		initialize(getMappingResource());
 	}

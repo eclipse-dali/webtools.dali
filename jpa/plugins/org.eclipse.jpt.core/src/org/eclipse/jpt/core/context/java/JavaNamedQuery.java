@@ -28,7 +28,7 @@ public interface JavaNamedQuery
 
 	ListIterator<JavaQueryHint> hints();
 
-	void initializeFromResource(NamedQueryAnnotation queryResource);
+	void initialize(NamedQueryAnnotation queryResource);
 
 	void update(NamedQueryAnnotation queryResource);
 

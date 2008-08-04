@@ -33,14 +33,14 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 		super(parent, owner);
 	}
 
-	public void initializeFromResource(JavaResourcePersistentMember persistentResource) {
+	public void initialize(JavaResourcePersistentMember persistentResource) {
 		this.persistenceResource = persistentResource;
-		this.initializeFromResource(this.getColumnResource());
+		this.initialize(this.getColumnResource());
 	}
 	
 	@Override
-	public void initializeFromResource(DiscriminatorColumnAnnotation column) {
-		super.initializeFromResource(column);
+	public void initialize(DiscriminatorColumnAnnotation column) {
+		super.initialize(column);
 		this.specifiedDiscriminatorType = this.discriminatorType(column);
 		this.specifiedLength = this.length(column);
 	}

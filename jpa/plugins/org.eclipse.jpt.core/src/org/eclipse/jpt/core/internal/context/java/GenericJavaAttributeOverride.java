@@ -105,9 +105,9 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	}
 	
 	//************* java resource model -> java context model **************	
-	public void initializeFromResource(AttributeOverrideAnnotation attributeOverrideResource) {
-		super.initializeFromResource(attributeOverrideResource);
-		this.column.initializeFromResource(this.getColumnResource());
+	public void initialize(AttributeOverrideAnnotation attributeOverrideResource) {
+		super.initialize(attributeOverrideResource);
+		this.column.initialize(this.getColumnResource());
 	}
 
 	public void update(AttributeOverrideAnnotation attributeOverrideResource) {

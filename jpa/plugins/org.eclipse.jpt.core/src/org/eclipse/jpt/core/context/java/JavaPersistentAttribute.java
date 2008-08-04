@@ -35,7 +35,7 @@ public interface JavaPersistentAttribute extends PersistentAttribute, JavaJpaCon
 	
 	JavaPersistentType getPersistentType();
 	
-	void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute);
+	void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute);
 
 	void update(JavaResourcePersistentAttribute resourcePersistentAttribute);
 	

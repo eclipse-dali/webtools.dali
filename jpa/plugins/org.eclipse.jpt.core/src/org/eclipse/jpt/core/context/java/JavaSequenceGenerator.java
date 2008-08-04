@@ -25,7 +25,7 @@ public interface JavaSequenceGenerator
 	extends JavaGenerator, SequenceGenerator
 {
 
-	void initializeFromResource(SequenceGeneratorAnnotation generator);
+	void initialize(SequenceGeneratorAnnotation generator);
 	
 	void update(SequenceGeneratorAnnotation generator);
 

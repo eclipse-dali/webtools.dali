@@ -38,9 +38,9 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 	}
 
 	@Override
-	public void initializeFromResource(PrimaryKeyJoinColumnAnnotation column) {
+	public void initialize(PrimaryKeyJoinColumnAnnotation column) {
 		this.primaryKeyJoinColumnResource = column;
-		super.initializeFromResource(column);
+		super.initialize(column);
 		this.specifiedReferencedColumnName = this.specifiedReferencedColumnName(column);
 		this.defaultReferencedColumnName = this.defaultReferencedColumnName();
 	}

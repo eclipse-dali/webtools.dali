@@ -31,7 +31,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.OneToOneAnnotation;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumns;
+import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnsAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -84,8 +84,8 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 	public JavaPrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index) {
 		JavaPrimaryKeyJoinColumn pkJoinColumn = getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, createJoinColumnOwner());
 		this.primaryKeyJoinColumns.add(index, pkJoinColumn);
-		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = (PrimaryKeyJoinColumnAnnotation) getResourcePersistentAttribute().addAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME);
-		pkJoinColumn.initializeFromResource(pkJoinColumnResource);
+		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = (PrimaryKeyJoinColumnAnnotation) getResourcePersistentAttribute().addAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+		pkJoinColumn.initialize(pkJoinColumnResource);
 		this.fireItemAdded(OneToOneMapping.PRIMAY_KEY_JOIN_COLUMNS_LIST, index, pkJoinColumn);
 		return pkJoinColumn;
 	}
@@ -100,7 +100,7 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 	
 	public void removePrimaryKeyJoinColumn(int index) {
 		JavaPrimaryKeyJoinColumn removedPkJoinColumn = this.primaryKeyJoinColumns.remove(index);
-		getResourcePersistentAttribute().removeAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME);
+		getResourcePersistentAttribute().removeAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(OneToOneMapping.PRIMAY_KEY_JOIN_COLUMNS_LIST, index, removedPkJoinColumn);
 	}
 
@@ -110,7 +110,7 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 	
 	public void movePrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.primaryKeyJoinColumns, targetIndex, sourceIndex);
-		getResourcePersistentAttribute().move(targetIndex, sourceIndex, PrimaryKeyJoinColumns.ANNOTATION_NAME);
+		getResourcePersistentAttribute().move(targetIndex, sourceIndex, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		fireItemMoved(OneToOneMapping.PRIMAY_KEY_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -183,13 +183,13 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 	
 	
 	@Override
-	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.initializeFromResource(resourcePersistentAttribute);
+	public void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.initialize(resourcePersistentAttribute);
 		this.initializePrimaryKeyJoinColumns(resourcePersistentAttribute);
 	}
 	
 	protected void initializePrimaryKeyJoinColumns(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		ListIterator<JavaResourceNode> annotations = resourcePersistentAttribute.annotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME);
+		ListIterator<JavaResourceNode> annotations = resourcePersistentAttribute.annotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
 			this.primaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn((PrimaryKeyJoinColumnAnnotation) annotations.next()));
@@ -198,7 +198,7 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 
 	protected JavaPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(PrimaryKeyJoinColumnAnnotation primaryKeyJoinColumnResource) {
 		JavaPrimaryKeyJoinColumn pkJoinColumn = getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, createJoinColumnOwner());
-		pkJoinColumn.initializeFromResource(primaryKeyJoinColumnResource);
+		pkJoinColumn.initialize(primaryKeyJoinColumnResource);
 		return pkJoinColumn;
 	}
 	
@@ -216,7 +216,7 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 	
 	protected void updatePrimaryKeyJoinColumns(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		ListIterator<JavaPrimaryKeyJoinColumn> pkJoinColumns = primaryKeyJoinColumns();
-		ListIterator<JavaResourceNode> resourcePkJoinColumns = resourcePersistentAttribute.annotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME);
+		ListIterator<JavaResourceNode> resourcePkJoinColumns = resourcePersistentAttribute.annotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		
 		while (pkJoinColumns.hasNext()) {
 			JavaPrimaryKeyJoinColumn pkJoinColumn = pkJoinColumns.next();

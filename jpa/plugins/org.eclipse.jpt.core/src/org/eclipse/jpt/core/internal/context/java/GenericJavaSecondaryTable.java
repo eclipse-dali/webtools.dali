@@ -129,7 +129,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 		JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
 		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = this.secondaryTableResource.addPkJoinColumn(index);
-		primaryKeyJoinColumn.initializeFromResource(pkJoinColumnResource);
+		primaryKeyJoinColumn.initialize(pkJoinColumnResource);
 		this.fireItemAdded(SecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
 		if (oldDefaultPkJoinColumn != null) {
 			this.firePropertyChanged(SecondaryTable.DEFAULT_PRIMARY_KEY_JOIN_COLUMN, oldDefaultPkJoinColumn, null);
@@ -178,8 +178,8 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 	
 	//********************* updating ************************
 	
-	public void initializeFromResource(SecondaryTableAnnotation secondaryTable) {
-		super.initializeFromResource(secondaryTable);
+	public void initialize(SecondaryTableAnnotation secondaryTable) {
+		super.initialize(secondaryTable);
 		this.secondaryTableResource = secondaryTable;
 		this.initializeSpecifiedPrimaryKeyJoinColumns(secondaryTable);
 		this.initializeDefaultPrimaryKeyJoinColumn(secondaryTable);
@@ -246,7 +246,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 	
 	protected JavaPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(PrimaryKeyJoinColumnAnnotation primaryKeyJoinColumnResource) {
 		JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
-		primaryKeyJoinColumn.initializeFromResource(primaryKeyJoinColumnResource);
+		primaryKeyJoinColumn.initialize(primaryKeyJoinColumnResource);
 		return primaryKeyJoinColumn;
 	}
 	

@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
  */
 public interface JavaPrimaryKeyJoinColumn extends PrimaryKeyJoinColumn, JavaBaseJoinColumn
 {
-	void initializeFromResource(PrimaryKeyJoinColumnAnnotation primaryKeyJoinColumn);
+	void initialize(PrimaryKeyJoinColumnAnnotation primaryKeyJoinColumn);
 	
 	void update(PrimaryKeyJoinColumnAnnotation primaryKeyJoinColumn);
 

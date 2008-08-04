@@ -34,7 +34,7 @@ public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode im
 		this.owner = owner;
 	}
 	
-	protected void initializeFromResource(OverrideAnnotation overrideResource) {
+	protected void initialize(OverrideAnnotation overrideResource) {
 		this.overrideResource = overrideResource;
 		this.name = this.name(overrideResource);
 	}

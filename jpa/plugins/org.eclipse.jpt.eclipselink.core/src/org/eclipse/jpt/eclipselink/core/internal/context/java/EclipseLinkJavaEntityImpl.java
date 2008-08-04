@@ -43,8 +43,8 @@ public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements Ecli
 	}
 	
 	@Override
-	public void initializeFromResource(JavaResourcePersistentType resourcePersistentType) {
-		super.initializeFromResource(resourcePersistentType);
+	public void initialize(JavaResourcePersistentType resourcePersistentType) {
+		super.initialize(resourcePersistentType);
 		this.eclipseLinkCaching.initialize(resourcePersistentType);
 	}
 }

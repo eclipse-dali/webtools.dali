@@ -91,7 +91,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
 		JoinColumnAnnotation joinColumnResource = getOverrideResource().addJoinColumn(index);
-		joinColumn.initializeFromResource(joinColumnResource);
+		joinColumn.initialize(joinColumnResource);
 		this.fireItemAdded(AssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		return joinColumn;
 	}
@@ -144,8 +144,8 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 		return null;
 	}
 
-	public void initializeFromResource(AssociationOverrideAnnotation associationOverride) {
-		super.initializeFromResource(associationOverride);
+	public void initialize(AssociationOverrideAnnotation associationOverride) {
+		super.initialize(associationOverride);
 		this.name = associationOverride.getName();
 		initializeSpecifiedJoinColumns(associationOverride);
 	}
@@ -185,7 +185,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	
 	protected JavaJoinColumn createJoinColumn(JoinColumnAnnotation joinColumnResource) {
 		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
-		joinColumn.initializeFromResource(joinColumnResource);
+		joinColumn.initialize(joinColumnResource);
 		return joinColumn;
 	}
 

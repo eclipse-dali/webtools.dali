@@ -30,9 +30,9 @@ public class GenericJavaTable extends AbstractJavaTable implements JavaTable
 		super(parent);
 	}
 	
-	public void initializeFromResource(JavaResourcePersistentMember persistentResource) {
+	public void initialize(JavaResourcePersistentMember persistentResource) {
 		this.persistentResource = persistentResource;
-		initializeFromResource(getTableResource());
+		initialize(getTableResource());
 	}
 
 	

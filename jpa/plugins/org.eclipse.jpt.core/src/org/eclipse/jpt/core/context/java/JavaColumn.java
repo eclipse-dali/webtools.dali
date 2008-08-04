@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
  */
 public interface JavaColumn extends Column, JavaBaseColumn
 {
-	void initializeFromResource(ColumnAnnotation columnResource);
+	void initialize(ColumnAnnotation columnResource);
 	
 	void update(ColumnAnnotation columnResource);
 	

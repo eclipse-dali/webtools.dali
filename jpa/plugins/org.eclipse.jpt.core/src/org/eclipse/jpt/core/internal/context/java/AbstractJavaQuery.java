@@ -119,7 +119,7 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 		fireItemMoved(Query.HINTS_LIST, targetIndex, sourceIndex);		
 	}
 	
-	protected void initializeFromResource(QueryAnnotation queryAnnotation) {
+	protected void initialize(QueryAnnotation queryAnnotation) {
 		this.queryAnnotation = queryAnnotation;
 		this.name = queryAnnotation.getName();
 		this.query = queryAnnotation.getQuery();
@@ -162,7 +162,7 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 
 	protected JavaQueryHint createQueryHint(QueryHintAnnotation hintResource) {
 		JavaQueryHint queryHint =  getJpaFactory().buildJavaQueryHint(this);
-		queryHint.initializeFromResource(hintResource);
+		queryHint.initialize(hintResource);
 		return queryHint;
 	}
 

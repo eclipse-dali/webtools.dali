@@ -118,7 +118,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 		this.specifiedAttributeOverrides.add(index, newAttributeOverride);
 		
 		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) getResourcePersistentAttribute().addAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
-		newAttributeOverride.initializeFromResource(attributeOverrideResource);
+		newAttributeOverride.initialize(attributeOverrideResource);
 		
 		int defaultIndex = this.virtualAttributeOverrides.indexOf(oldAttributeOverride);
 		this.virtualAttributeOverrides.remove(defaultIndex);
@@ -222,8 +222,8 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	
 	
 	@Override
-	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.initializeFromResource(resourcePersistentAttribute);
+	public void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.initialize(resourcePersistentAttribute);
 		this.initializeAttributeOverrides(resourcePersistentAttribute);
 		this.initializeDefaultAttributeOverrides(resourcePersistentAttribute);
 		this.embeddable = MappingTools.getEmbeddableFor(getPersistentAttribute());
@@ -234,7 +234,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 		
 		while(annotations.hasNext()) {
 			JavaAttributeOverride attributeOverride = getJpaFactory().buildJavaAttributeOverride(this, this);
-			attributeOverride.initializeFromResource((AttributeOverrideAnnotation) annotations.next());
+			attributeOverride.initialize((AttributeOverrideAnnotation) annotations.next());
 			this.specifiedAttributeOverrides.add(attributeOverride);
 		}
 	}
@@ -276,7 +276,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	
 	protected JavaAttributeOverride buildAttributeOverride(AttributeOverrideAnnotation attributeOverrideResource) {
 		JavaAttributeOverride attributeOverride = getJpaFactory().buildJavaAttributeOverride(this, this);
-		attributeOverride.initializeFromResource(attributeOverrideResource);
+		attributeOverride.initialize(attributeOverrideResource);
 		return attributeOverride;
 	}
 	

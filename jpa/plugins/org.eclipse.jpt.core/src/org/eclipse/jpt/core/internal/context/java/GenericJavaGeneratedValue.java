@@ -32,7 +32,7 @@ public class GenericJavaGeneratedValue extends AbstractJavaJpaContextNode implem
 		super(parent);
 	}
 
-	public void initializeFromResource(GeneratedValueAnnotation generatedValue) {
+	public void initialize(GeneratedValueAnnotation generatedValue) {
 		this.generatedValueResource = generatedValue;
 		this.strategy = this.strategy(generatedValue);
 		this.generator = this.generator(generatedValue);

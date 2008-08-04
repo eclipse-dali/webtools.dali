@@ -139,8 +139,8 @@ public class GenericJavaMappedSuperclass extends AbstractJavaTypeMapping
 	}
 
 	@Override
-	public void initializeFromResource(JavaResourcePersistentType persistentTypeResource) {
-		super.initializeFromResource(persistentTypeResource);
+	public void initialize(JavaResourcePersistentType persistentTypeResource) {
+		super.initialize(persistentTypeResource);
 		this.initializeIdClass(persistentTypeResource);
 	}
 

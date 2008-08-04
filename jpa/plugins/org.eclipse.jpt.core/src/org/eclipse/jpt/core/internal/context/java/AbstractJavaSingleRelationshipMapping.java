@@ -116,7 +116,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
 		JoinColumnAnnotation joinColumnResource = (JoinColumnAnnotation) getResourcePersistentAttribute().addAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
-		joinColumn.initializeFromResource(joinColumnResource);
+		joinColumn.initialize(joinColumnResource);
 		this.fireItemAdded(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		if (oldDefaultJoinColumn != null) {
 			this.firePropertyChanged(SingleRelationshipMapping.DEFAULT_JOIN_COLUMN, oldDefaultJoinColumn, null);
@@ -187,8 +187,8 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 
 
 	@Override
-	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.initializeFromResource(resourcePersistentAttribute);
+	public void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.initialize(resourcePersistentAttribute);
 		this.initializeSpecifiedJoinColumns(resourcePersistentAttribute);
 		this.initializeDefaultJoinColumn(resourcePersistentAttribute);
 	}
@@ -269,7 +269,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 
 	protected JavaJoinColumn buildJoinColumn(JoinColumnAnnotation joinColumnResource) {
 		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
-		joinColumn.initializeFromResource(joinColumnResource);
+		joinColumn.initialize(joinColumnResource);
 		return joinColumn;
 	}
 	

@@ -25,7 +25,7 @@ public interface JavaAttributeOverride extends AttributeOverride, JavaJpaContext
 {
 	JavaColumn getColumn();
 	
-	void initializeFromResource(AttributeOverrideAnnotation attributeOverride);
+	void initialize(AttributeOverrideAnnotation attributeOverride);
 	
 	void update(AttributeOverrideAnnotation attributeOverride);
 	

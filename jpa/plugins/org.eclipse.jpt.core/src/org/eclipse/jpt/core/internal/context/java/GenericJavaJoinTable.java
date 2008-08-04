@@ -178,7 +178,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
 		JoinColumnAnnotation joinColumnResource = this.getTableResource().addJoinColumn(index);
-		joinColumn.initializeFromResource(joinColumnResource);
+		joinColumn.initialize(joinColumnResource);
 		this.fireItemAdded(JoinTable.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		if (oldDefaultJoinColumn != null) {
 			this.firePropertyChanged(JoinTable.DEFAULT_JOIN_COLUMN, oldDefaultJoinColumn, null);
@@ -279,7 +279,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		JavaJoinColumn inverseJoinColumn = getJpaFactory().buildJavaJoinColumn(this, createInverseJoinColumnOwner());
 		this.specifiedInverseJoinColumns.add(index, inverseJoinColumn);
 		JoinColumnAnnotation joinColumnResource = this.getTableResource().addInverseJoinColumn(index);
-		inverseJoinColumn.initializeFromResource(joinColumnResource);
+		inverseJoinColumn.initialize(joinColumnResource);
 		this.fireItemAdded(JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, index, inverseJoinColumn);
 		if (oldDefaultInverseJoinColumn != null) {
 			this.firePropertyChanged(JoinTable.DEFAULT_INVERSE_JOIN_COLUMN, oldDefaultInverseJoinColumn, null);
@@ -359,10 +359,10 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		return new InverseJoinColumnOwner();
 	}
 
-	public void initializeFromResource(JavaResourcePersistentAttribute attributeResource) {
+	public void initialize(JavaResourcePersistentAttribute attributeResource) {
 		this.attributeResource = attributeResource;
 		JoinTableAnnotation joinTable = getTableResource();
-		this.initializeFromResource(joinTable);
+		this.initialize(joinTable);
 		this.initializeSpecifiedJoinColumns(joinTable);
 		this.initializeDefaultJoinColumn(joinTable);
 		this.initializeSpecifiedInverseJoinColumns(joinTable);
@@ -483,13 +483,13 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	
 	protected JavaJoinColumn buildJoinColumn(JoinColumnAnnotation joinColumnResource) {
 		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
-		joinColumn.initializeFromResource(joinColumnResource);
+		joinColumn.initialize(joinColumnResource);
 		return joinColumn;
 	}
 	
 	protected JavaJoinColumn buildInverseJoinColumn(JoinColumnAnnotation joinColumnResource) {
 		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createInverseJoinColumnOwner());
-		joinColumn.initializeFromResource(joinColumnResource);
+		joinColumn.initialize(joinColumnResource);
 		return joinColumn;
 	}
 

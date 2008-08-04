@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
  */
 public interface JavaTypeMapping extends TypeMapping, JavaJpaContextNode
 {
-	void initializeFromResource(JavaResourcePersistentType persistentTypeResource);
+	void initialize(JavaResourcePersistentType persistentTypeResource);
 	
 	void update(JavaResourcePersistentType persistentTypeResource);
 	

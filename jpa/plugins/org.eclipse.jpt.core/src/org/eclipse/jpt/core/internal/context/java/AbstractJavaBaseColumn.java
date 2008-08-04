@@ -42,8 +42,8 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	}
 	
 	@Override
-	protected void initializeFromResource(T column) {
-		super.initializeFromResource(column);
+	protected void initialize(T column) {
+		super.initialize(column);
 		this.defaultTable = this.defaultTable();
 		this.specifiedTable = this.specifiedTable(column);
 		this.specifiedUnique = this.specifiedUnique(column);

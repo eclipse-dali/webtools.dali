@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.resource.java.QueryHintAnnotation;
  */
 public interface JavaQueryHint extends QueryHint, JavaJpaContextNode
 {
-	void initializeFromResource(QueryHintAnnotation queryHint);
+	void initialize(QueryHintAnnotation queryHint);
 	
 	void update(QueryHintAnnotation queryHint);
 }
