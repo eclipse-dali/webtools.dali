@@ -20,13 +20,13 @@ import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.NestablePrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumns;
+import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnsAnnotation;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class PrimaryKeyJoinColumnsImpl extends AbstractResourceAnnotation<Member> implements PrimaryKeyJoinColumns
+public class PrimaryKeyJoinColumnsImpl extends AbstractResourceAnnotation<Member> implements PrimaryKeyJoinColumnsAnnotation
 {
 	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -140,11 +140,11 @@ public class PrimaryKeyJoinColumnsImpl extends AbstractResourceAnnotation<Member
 			super();
 		}
 
-		public PrimaryKeyJoinColumns buildAnnotation(JavaResourcePersistentMember parent, Member member) {
+		public PrimaryKeyJoinColumnsAnnotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new PrimaryKeyJoinColumnsImpl(parent, member);
 		}
 		
-		public PrimaryKeyJoinColumns buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
+		public PrimaryKeyJoinColumnsAnnotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

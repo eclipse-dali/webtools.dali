@@ -18,7 +18,7 @@ package org.eclipse.jpt.core.resource.java;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface PrimaryKeyJoinColumns extends ContainerAnnotation<NestablePrimaryKeyJoinColumn>
+public interface PrimaryKeyJoinColumnsAnnotation extends ContainerAnnotation<NestablePrimaryKeyJoinColumn>
 {
 	String ANNOTATION_NAME = JPA.PRIMARY_KEY_JOIN_COLUMNS;
 
