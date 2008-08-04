@@ -212,7 +212,7 @@ public class JavaTableTests extends ContextModelTestCase
 		
 		assertEquals("foo", javaEntity().getTable().getSpecifiedName());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		assertEquals("foo", table.getName());
@@ -226,7 +226,7 @@ public class JavaTableTests extends ContextModelTestCase
 		
 		assertNull(javaEntity().getTable().getSpecifiedName());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 	
 		assertNull(table);
@@ -236,7 +236,7 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		table.setName("foo");
 		
@@ -250,7 +250,7 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		table.setCatalog("myCatalog");
@@ -313,7 +313,7 @@ public class JavaTableTests extends ContextModelTestCase
 		Table table = javaEntity().getTable();
 		table.setSpecifiedCatalog("myCatalog");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableResource = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		assertEquals("myCatalog", tableResource.getCatalog());
@@ -326,7 +326,7 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation table = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		table.setSchema("mySchema");
@@ -352,7 +352,7 @@ public class JavaTableTests extends ContextModelTestCase
 		Table table = javaEntity().getTable();
 		table.setSpecifiedSchema("mySchema");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableResource = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		assertEquals("mySchema", tableResource.getSchema());
@@ -369,7 +369,7 @@ public class JavaTableTests extends ContextModelTestCase
 		ListIterator<JavaUniqueConstraint> uniqueConstraints = javaEntity().getTable().uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableAnnotation = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		tableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		tableAnnotation.addUniqueConstraint(0).addColumnName(0, "bar");
@@ -388,7 +388,7 @@ public class JavaTableTests extends ContextModelTestCase
 		
 		assertEquals(0,  javaEntity().getTable().uniqueConstraintsSize());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableAnnotation = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		tableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		tableAnnotation.addUniqueConstraint(1).addColumnName(0, "bar");
@@ -406,7 +406,7 @@ public class JavaTableTests extends ContextModelTestCase
 		table.addUniqueConstraint(0).addColumnName(0, "BAR");
 		table.addUniqueConstraint(0).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableAnnotation = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = tableAnnotation.uniqueConstraints();
 		
@@ -426,7 +426,7 @@ public class JavaTableTests extends ContextModelTestCase
 		table.addUniqueConstraint(1).addColumnName(0, "BAR");
 		table.addUniqueConstraint(0).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableAnnotation = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = tableAnnotation.uniqueConstraints();
 		
@@ -446,7 +446,7 @@ public class JavaTableTests extends ContextModelTestCase
 		table.addUniqueConstraint(1).addColumnName(0, "BAR");
 		table.addUniqueConstraint(2).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableAnnotation = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		assertEquals(3, tableAnnotation.uniqueConstraintsSize());
@@ -491,7 +491,7 @@ public class JavaTableTests extends ContextModelTestCase
 		table.addUniqueConstraint(1).addColumnName(0, "BAR");
 		table.addUniqueConstraint(2).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableAnnotation = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 		
 		assertEquals(3, tableAnnotation.uniqueConstraintsSize());
@@ -526,7 +526,7 @@ public class JavaTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Table table = javaEntity().getTable();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableAnnotation = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 	
 		tableAnnotation.addUniqueConstraint(0).addColumnName("FOO");

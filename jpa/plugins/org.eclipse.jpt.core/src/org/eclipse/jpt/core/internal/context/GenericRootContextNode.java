@@ -246,7 +246,7 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 		}
 		
 		for (String orphanedTypeName : orphanedClassNames) {
-			JavaResourcePersistentType javaResourcePersistentType = getJpaProject().getJavaPersistentTypeResource(orphanedTypeName);
+			JavaResourcePersistentType javaResourcePersistentType = getJpaProject().getJavaResourcePersistentType(orphanedTypeName);
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,

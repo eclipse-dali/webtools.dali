@@ -61,7 +61,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		javaPersistentType().setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		assertTrue(javaPersistentType().getMapping() instanceof Entity);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		assertNull(typeResource.getMappingAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME));
 		assertNotNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 	}
@@ -76,7 +76,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		javaPersistentType().setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		assertTrue(javaPersistentType().getMapping() instanceof Embeddable);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		assertNull(typeResource.getMappingAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 	}
@@ -91,7 +91,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		javaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
 		assertTrue(javaPersistentType().getMapping() instanceof JavaNullTypeMapping);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		assertNull(typeResource.getMappingAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 	}
@@ -202,7 +202,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 
 		assertNull(mappedSuperclass.getIdClass());
@@ -234,7 +234,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 
 		assertNull(mappedSuperclass.getIdClass());

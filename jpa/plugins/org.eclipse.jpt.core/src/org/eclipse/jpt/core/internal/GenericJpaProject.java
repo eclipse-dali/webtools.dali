@@ -429,7 +429,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	}
 
 	// look for binary stuff here...
-	public JavaResourcePersistentType getJavaPersistentTypeResource(String typeName) {
+	public JavaResourcePersistentType getJavaResourcePersistentType(String typeName) {
 		for (JpaCompilationUnit jpCompilationUnitResource : CollectionTools.iterable(this.jpaCompilationUnitResources())) {
 			JavaResourcePersistentType jptr =  jpCompilationUnitResource.getJavaPersistentTypeResource(typeName);
 			if (jptr != null) {

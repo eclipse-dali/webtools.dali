@@ -192,8 +192,7 @@ public interface JpaProject extends JpaNode {
 	 * Return the Java persistent type resource for the specified fully qualified type name;
 	 * null, if none exists.
 	 */
-	// TODO rename getJavaResourcePersistentType(String)
-	JavaResourcePersistentType getJavaPersistentTypeResource(String typeName);
+	JavaResourcePersistentType getJavaResourcePersistentType(String typeName);
 	
 	
 	// **************** jpa model synchronization and lifecycle ****************

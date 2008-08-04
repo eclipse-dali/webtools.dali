@@ -92,7 +92,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		assertEquals(TABLE_GENERATOR_NAME, idMapping.getTableGenerator().getName());
 
 		//change resource model tableGenerator name, verify the context model is updated
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);
 		
@@ -112,7 +112,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		
 		assertEquals("foo", idMapping.getTableGenerator().getName());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);
 		
@@ -130,7 +130,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		
 		assertNull(idMapping.getTableGenerator());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);
 		
@@ -144,7 +144,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) javaPersistentType().getAttributeNamed("id").getMapping();
 		
 		assertNull(idMapping.getTableGenerator().getCatalog());
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -175,7 +175,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) javaPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getTableGenerator().setSpecifiedCatalog("myCatalog");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -193,7 +193,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) javaPersistentType().getAttributeNamed("id").getMapping();
 		
 		assertNull(idMapping.getTableGenerator().getSchema());
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -252,7 +252,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) javaPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getTableGenerator().setSpecifiedSchema("mySchema");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -270,7 +270,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) javaPersistentType().getAttributeNamed("id").getMapping();
 		
 		assertNull(idMapping.getTableGenerator().getPkColumnName());
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -301,7 +301,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) javaPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getTableGenerator().setSpecifiedPkColumnName("myPkColumnName");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -319,7 +319,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) javaPersistentType().getAttributeNamed("id").getMapping();
 		
 		assertNull(idMapping.getTableGenerator().getValueColumnName());
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -350,7 +350,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) javaPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getTableGenerator().setSpecifiedValueColumnName("myValueColumnName");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -368,7 +368,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) javaPersistentType().getAttributeNamed("id").getMapping();
 		
 		assertNull(idMapping.getTableGenerator().getPkColumnValue());
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -399,7 +399,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) javaPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getTableGenerator().setSpecifiedPkColumnValue("myPkColumnValue");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -417,7 +417,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) javaPersistentType().getAttributeNamed("id").getMapping();
 		
 		assertEquals(TableGenerator.DEFAULT_INITIAL_VALUE, idMapping.getTableGenerator().getInitialValue());
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -448,7 +448,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) javaPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getTableGenerator().setSpecifiedInitialValue(Integer.valueOf(20));
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -467,7 +467,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		
 		assertEquals(Generator.DEFAULT_ALLOCATION_SIZE, idMapping.getTableGenerator().getAllocationSize());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -498,7 +498,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) javaPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getTableGenerator().setSpecifiedAllocationSize(Integer.valueOf(25));
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -520,7 +520,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		ListIterator<JavaUniqueConstraint> uniqueConstraints = tableGenerator.uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGeneratorAnnotation = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		tableGeneratorAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
@@ -542,7 +542,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 
 		assertEquals(0,  tableGenerator.uniqueConstraintsSize());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGeneratorAnnotation = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		tableGeneratorAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
@@ -561,7 +561,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		tableGenerator.addUniqueConstraint(0).addColumnName(0, "BAR");
 		tableGenerator.addUniqueConstraint(0).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGeneratorAnnotation = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = tableGeneratorAnnotation.uniqueConstraints();
@@ -582,7 +582,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		tableGenerator.addUniqueConstraint(1).addColumnName(0, "BAR");
 		tableGenerator.addUniqueConstraint(0).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGeneratorAnnotation = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = tableGeneratorAnnotation.uniqueConstraints();
@@ -603,7 +603,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		tableGenerator.addUniqueConstraint(1).addColumnName(0, "BAR");
 		tableGenerator.addUniqueConstraint(2).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGeneratorAnnotation = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -649,7 +649,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		tableGenerator.addUniqueConstraint(1).addColumnName(0, "BAR");
 		tableGenerator.addUniqueConstraint(2).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGeneratorAnnotation = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 		
@@ -685,7 +685,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		TableGenerator tableGenerator = ((IdMapping) javaPersistentType().getAttributeNamed("id").getMapping()).getTableGenerator();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		TableGeneratorAnnotation tableGeneratorAnnotation = (TableGeneratorAnnotation) attributeResource.getAnnotation(JPA.TABLE_GENERATOR);	
 	
