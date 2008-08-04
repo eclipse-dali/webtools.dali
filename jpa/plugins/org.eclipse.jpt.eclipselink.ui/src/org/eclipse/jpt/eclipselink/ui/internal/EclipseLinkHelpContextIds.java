@@ -30,6 +30,7 @@ public interface EclipseLinkHelpContextIds {
 	public static final String CACHING_ALWAYS_REFRESH = PREFIX + "caching_alwaysRefresh";
 	public static final String CACHING_REFRESH_ONLY_IF_NEWER = PREFIX + "caching_refreshOnlyIfNewer";
 	public static final String CACHING_DISABLE_HITS = PREFIX + "caching_disableHits";
+	public static final String CACHING_CACHE_COORDINATION_TYPE = PREFIX + "caching_cacheCoordinationType";
 	
 		
 }

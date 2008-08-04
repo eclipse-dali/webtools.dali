@@ -29,5 +29,4 @@ public interface EclipseLinkJavaCaching extends EclipseLinkCaching
 	void initialize(JavaResourcePersistentType resourcePersistentType);
 	
 	void update(JavaResourcePersistentType resourcePersistentType);
-
 }

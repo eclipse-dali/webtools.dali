@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
 
 /**
  * 
@@ -24,8 +24,8 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJavaEntity extends JavaEntity
+public interface EclipseLinkJavaEntity extends EclipseLinkEntity, JavaEntity
 {
-	EclipseLinkCaching getCaching();
+	EclipseLinkJavaCaching getCaching();
 
 }

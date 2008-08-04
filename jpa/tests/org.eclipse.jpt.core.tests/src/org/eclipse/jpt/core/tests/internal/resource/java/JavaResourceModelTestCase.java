@@ -73,11 +73,19 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	}
 
 	protected ICompilationUnit createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		return this.javaProject.createCompilationUnit("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
+		return createAnnotationAndMembers("javax.persistence", annotationName, annotationBody);
+	}
+	
+	protected ICompilationUnit createAnnotationAndMembers(String packageName, String annotationName, String annotationBody) throws Exception {
+		return this.javaProject.createCompilationUnit(packageName, annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 	
 	protected ICompilationUnit createEnumAndMembers(String enumName, String enumBody) throws Exception {
-		return this.javaProject.createCompilationUnit("javax.persistence", enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
+		return createEnumAndMembers("javax.persistence", enumName, enumBody);
+	}
+	
+	protected ICompilationUnit createEnumAndMembers(String packageName, String enumName, String enumBody) throws Exception {
+		return this.javaProject.createCompilationUnit(packageName, enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
 	}
 
 	//build up a dummy JpaProject that does not have JpaFiles in it and does not update from java changes
@@ -106,7 +114,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		}
 	}
 
-	private JpaProject.Config buildJpaProjectConfig(IProject project) {
+	protected JpaProject.Config buildJpaProjectConfig(IProject project) {
 		SimpleJpaProjectConfig config = new SimpleJpaProjectConfig();
 		config.setProject(project);
 		config.setJpaPlatform(JptCorePlugin.getJpaPlatform(project));

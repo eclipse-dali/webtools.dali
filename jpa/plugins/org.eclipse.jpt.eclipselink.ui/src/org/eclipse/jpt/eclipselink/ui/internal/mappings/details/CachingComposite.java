@@ -74,8 +74,11 @@ public class CachingComposite extends AbstractFormPane<EclipseLinkCaching>
 		new CacheTypeComposite(this, subPane),
 		new AlwaysRefreshComposite(this, subPane),
 		new RefreshOnlyIfNewerComposite(this, subPane),
-		new DisableHitsComposite(this, subPane)
+		new DisableHitsComposite(this, subPane),
+		new CacheCoordinationTypeComposite(this, subPane)
 			);
+			
+		new ExistenceCheckingComposite(this, buildSubPane(container, 8));
 	}
 
 

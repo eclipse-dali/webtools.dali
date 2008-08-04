@@ -17,7 +17,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.Entity;
@@ -82,12 +81,16 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	
 	@Override
 	protected TestJavaProject buildJavaProject(boolean autoBuild) throws Exception {
-		return buildJpaProject(BASE_PROJECT_NAME, autoBuild, null);
+		return buildJpaProject(BASE_PROJECT_NAME, autoBuild, buildJpaConfigDataModel());
 	}
 	
 	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild, IDataModel jpaConfig) 
 			throws Exception {
 		return TestJpaProject.buildJpaProject(projectName, autoBuild, jpaConfig);
+	}
+	
+	protected IDataModel buildJpaConfigDataModel() {
+		return null;
 	}
 	
 	protected JpaProject jpaProject() {
@@ -185,10 +188,19 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	protected ICompilationUnit createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		return this.javaProject.createCompilationUnit("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
+		return createAnnotationAndMembers("javax.persistence", annotationName, annotationBody);
+	}
+	
+	protected ICompilationUnit createAnnotationAndMembers(String packageName, String annotationName, String annotationBody) throws Exception {
+		return this.javaProject.createCompilationUnit(packageName, annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 	
 	protected ICompilationUnit createEnumAndMembers(String enumName, String enumBody) throws Exception {
-		return this.javaProject.createCompilationUnit("javax.persistence", enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
+		return createEnumAndMembers("javax.persistence", enumName, enumBody);
 	}
+	
+	protected ICompilationUnit createEnumAndMembers(String packageName, String enumName, String enumBody) throws Exception {
+		return this.javaProject.createCompilationUnit(packageName, enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
+	}
+
 }

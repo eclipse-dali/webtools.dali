@@ -14,6 +14,9 @@ import org.eclipse.jpt.core.internal.resource.java.AbstractResourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.BooleanExpressionConverter;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.NestedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.NumberIntegerExpressionConverter;
 import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.Annotation;
@@ -27,8 +30,10 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.CacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheType;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.TimeOfDayAnnotation;
 
 
 public class CacheImpl extends AbstractResourceAnnotation<Type> implements CacheAnnotation
@@ -36,39 +41,47 @@ public class CacheImpl extends AbstractResourceAnnotation<Type> implements Cache
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private final AnnotationElementAdapter<String> typeAdapter;
+	private final AnnotationElementAdapter<Integer> sizeAdapter;
 	private final AnnotationElementAdapter<Boolean> sharedAdapter;
+	private final AnnotationElementAdapter<Integer> expiryAdapter;
 	private final AnnotationElementAdapter<Boolean> alwaysRefreshAdapter;
 	private final AnnotationElementAdapter<Boolean> refreshOnlyIfNewerAdapter;
 	private final AnnotationElementAdapter<Boolean> disableHitsAdapter;
+	private final AnnotationElementAdapter<String> coordinationTypeAdapter;
+	private final MemberAnnotationAdapter expiryTimeOfDayAdapter;
 	
 	private static final DeclarationAnnotationElementAdapter<String> TYPE_ADAPTER = buildTypeAdapter();
+	private static final DeclarationAnnotationElementAdapter<Integer> SIZE_ADAPTER = buildSizeAdapter();
 	private static final DeclarationAnnotationElementAdapter<Boolean> SHARED_ADAPTER = buildSharedAdapter();
+	private static final DeclarationAnnotationElementAdapter<Integer> EXPIRY_ADAPTER = buildExpiryAdapter();
 	private static final DeclarationAnnotationElementAdapter<Boolean> ALWAYS_REFRESH_ADAPTER = buildAlwaysRefreshAdapter();
 	private static final DeclarationAnnotationElementAdapter<Boolean> REFRESH_ONLY_IF_NEWER_ADAPTER = buildRefreshOnlyIfNewerAdapter();
 	private static final DeclarationAnnotationElementAdapter<Boolean> DISABLE_HITS_ADAPTER = buildDisableHitsAdapter();
+	private static final DeclarationAnnotationElementAdapter<String> COORDINATION_TYPE_ADAPTER = buildCoordinationTypeAdapter();
+	private static final NestedDeclarationAnnotationAdapter EXPIRY_TIME_OF_DAY_ADAPTER = buildExpiryTimeOfDayAnnotationAdapter();
 	
 	
 	private CacheType type;
+	private Integer size;
 	private Boolean shared;
+	private Integer expiry;
+	private TimeOfDayAnnotation expiryTimeOfDay;
 	private Boolean alwaysRefresh;
 	private Boolean refreshOnlyIfNewer;
 	private Boolean disableHits;
+	private CacheCoordinationType coordinationType;
 	
 	protected CacheImpl(JavaResourcePersistentType parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.typeAdapter = new ShortCircuitAnnotationElementAdapter<String>(type, TYPE_ADAPTER);
+		this.sizeAdapter = new ShortCircuitAnnotationElementAdapter<Integer>(type, SIZE_ADAPTER);
 		this.sharedAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(type, SHARED_ADAPTER);
+		this.expiryAdapter = new ShortCircuitAnnotationElementAdapter<Integer>(type, EXPIRY_ADAPTER);
 		this.alwaysRefreshAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(type, ALWAYS_REFRESH_ADAPTER);
 		this.refreshOnlyIfNewerAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(type, REFRESH_ONLY_IF_NEWER_ADAPTER);
 		this.disableHitsAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(type, DISABLE_HITS_ADAPTER);
-	}
-	
-	public void initialize(CompilationUnit astRoot) {
-		this.type = this.type(astRoot);
-		this.shared = this.shared(astRoot);
-		this.alwaysRefresh = this.alwaysRefresh(astRoot);
-		this.refreshOnlyIfNewer = this.refreshOnlyIfNewer(astRoot);
-		this.disableHits = this.disableHits(astRoot);
+		this.coordinationTypeAdapter = new ShortCircuitAnnotationElementAdapter<String>(type, COORDINATION_TYPE_ADAPTER);
+		this.expiryTimeOfDayAdapter = new MemberAnnotationAdapter(type, EXPIRY_TIME_OF_DAY_ADAPTER);
 	}
 	
 	public String getAnnotationName() {
@@ -91,6 +104,20 @@ public class CacheImpl extends AbstractResourceAnnotation<Type> implements Cache
 		firePropertyChanged(TYPE_PROPERTY, oldType, newType);
 	}
 	
+	public Integer getSize() {
+		return this.size;
+	}
+
+	public void setSize(Integer newSize) {
+		if (attributeValueHasNotChanged(this.size, newSize)) {
+			return;
+		}
+		Integer oldSize = this.size;
+		this.size = newSize;
+		this.sizeAdapter.setValue(newSize);
+		firePropertyChanged(SIZE_PROPERTY, oldSize, newSize);
+	}
+
 	public Boolean getShared() {
 		return this.shared;
 	}
@@ -103,6 +130,30 @@ public class CacheImpl extends AbstractResourceAnnotation<Type> implements Cache
 		this.shared = newShared;
 		this.sharedAdapter.setValue(newShared);
 		firePropertyChanged(SHARED_PROPERTY, oldShared, newShared);
+	}
+	
+	public Integer getExpiry() {
+		return this.expiry;
+	}
+
+	public void setExpiry(Integer newExpiry) {
+		if (attributeValueHasNotChanged(this.expiry, newExpiry)) {
+			return;
+		}
+		Integer oldExpiry = this.expiry;
+		this.expiry = newExpiry;
+		this.expiryAdapter.setValue(newExpiry);
+		firePropertyChanged(EXPIRY_PROPERTY, oldExpiry, newExpiry);
+	}
+	
+	public TimeOfDayAnnotation getExpiryTimeOfDay() {
+		return this.expiryTimeOfDay;
+	}
+	
+	protected void setExpiryTimeOfDay(TimeOfDayAnnotation newExpiryTimeOfDay) {
+		TimeOfDayAnnotation oldExpiryTimeOfDay = this.expiryTimeOfDay;
+		this.expiryTimeOfDay = newExpiryTimeOfDay;
+		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, oldExpiryTimeOfDay, newExpiryTimeOfDay);
 	}
 	
 	public Boolean getAlwaysRefresh() {
@@ -147,28 +198,121 @@ public class CacheImpl extends AbstractResourceAnnotation<Type> implements Cache
 		firePropertyChanged(DISABLE_HITS_PROPERTY, oldDisableHits, newDisableHits);
 	}
 	
+	public CacheCoordinationType getCoordinationType() {
+		return this.coordinationType;
+	}
+	
+	public void setCoordinationType(CacheCoordinationType newCoordinationType) {
+		if (attributeValueHasNotChanged(this.coordinationType, newCoordinationType)) {
+			return;
+		}
+		CacheCoordinationType oldCoordinationType = this.coordinationType;
+		this.coordinationType = newCoordinationType;
+		this.coordinationTypeAdapter.setValue(CacheCoordinationType.toJavaAnnotationValue(newCoordinationType));
+		firePropertyChanged(TYPE_PROPERTY, oldCoordinationType, newCoordinationType);
+	}
+	
 	public TextRange getTypeTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(TYPE_ADAPTER, astRoot);
+	}
+	
+	public TextRange getSizeTextRange(CompilationUnit astRoot) {
+		return this.getElementTextRange(SIZE_ADAPTER, astRoot);
 	}
 	
 	public TextRange getSharedTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(SHARED_ADAPTER, astRoot);
 	}
 	
-	public void updateFromJava(CompilationUnit astRoot) {
+	public TextRange getExpiryTextRange(CompilationUnit astRoot) {
+		return this.getElementTextRange(EXPIRY_ADAPTER, astRoot);
+	}
+	
+	public TextRange getExpiryTimeOfDayTextRange(CompilationUnit astRoot) {
+		return null;//TODO return this.getElementTextRange(EXPIRY_TIME_OF_DAY_ADAPTER, astRoot);
+	}
+	
+	public TextRange getAlwaysRefreshTextRange(CompilationUnit astRoot) {
+		return this.getElementTextRange(ALWAYS_REFRESH_ADAPTER, astRoot);
+	}
+	
+	public TextRange getRefreshOnlyIfNewerTextRange(CompilationUnit astRoot) {
+		return this.getElementTextRange(REFRESH_ONLY_IF_NEWER_ADAPTER, astRoot);
+	}
+	
+	public TextRange getDisablesHitsTextRange(CompilationUnit astRoot) {
+		return this.getElementTextRange(DISABLE_HITS_ADAPTER, astRoot);
+	}
+	
+	public TextRange getCoordinationTypeTextRange(CompilationUnit astRoot) {
+		return this.getElementTextRange(COORDINATION_TYPE_ADAPTER, astRoot);
+	}
+	
+	public void initialize(CompilationUnit astRoot) {
+		this.type = this.type(astRoot);
+		this.size = this.size(astRoot);
+		this.shared = this.shared(astRoot);
+		this.expiry = this.expiry(astRoot);
+		this.initializeExpiryTimeOfDay(astRoot);
+		this.alwaysRefresh = this.alwaysRefresh(astRoot);
+		this.refreshOnlyIfNewer = this.refreshOnlyIfNewer(astRoot);
+		this.disableHits = this.disableHits(astRoot);
+		this.coordinationType = this.coordinationType(astRoot);
+	}
+
+	protected void initializeExpiryTimeOfDay(CompilationUnit astRoot) {
+		if (this.expiryTimeOfDayAdapter.getAnnotation(astRoot) != null) {
+			this.expiryTimeOfDay = createTimeOfDayAnnotation();
+			this.expiryTimeOfDay.initialize(astRoot);
+		}
+	}
+
+	public void update(CompilationUnit astRoot) {
 		this.setType(this.type(astRoot));
+		this.setSize(this.size(astRoot));
 		this.setShared(this.shared(astRoot));
+		this.setExpiry(this.expiry(astRoot));
+		this.updateExpiryTimeOfDay(astRoot);
 		this.setAlwaysRefresh(this.alwaysRefresh(astRoot));
 		this.setRefreshOnlyIfNewer(this.refreshOnlyIfNewer(astRoot));
 		this.setDisableHits(this.disableHits(astRoot));
+		this.setCoordinationType(this.coordinationType(astRoot));
+	}
+	
+	protected void updateExpiryTimeOfDay(CompilationUnit astRoot) {
+		if (this.expiryTimeOfDayAdapter.getAnnotation(astRoot) == null) {
+			this.setExpiryTimeOfDay(null);
+		}
+		else {
+			if (getExpiryTimeOfDay() != null) {
+				getExpiryTimeOfDay().update(astRoot);
+			}
+			else {
+				TimeOfDayAnnotation expiryTimeOfDay = createTimeOfDayAnnotation();
+				expiryTimeOfDay.initialize(astRoot);
+				setExpiryTimeOfDay(expiryTimeOfDay);
+			}
+		}
 	}
 	
 	protected CacheType type(CompilationUnit astRoot) {
 		return CacheType.fromJavaAnnotationValue(this.typeAdapter.getValue(astRoot));
 	}
 	
+	protected Integer size(CompilationUnit astRoot) {
+		return this.sizeAdapter.getValue(astRoot);
+	}
+	
 	protected Boolean shared(CompilationUnit astRoot) {
 		return this.sharedAdapter.getValue(astRoot);
+	}
+	
+	protected Integer expiry(CompilationUnit astRoot) {
+		return this.expiryAdapter.getValue(astRoot);
+	}
+	
+	protected TimeOfDayAnnotation createTimeOfDayAnnotation() {
+		return new TimeOfDayImpl(this, getMember(), EXPIRY_TIME_OF_DAY_ADAPTER);
 	}
 
 	protected Boolean alwaysRefresh(CompilationUnit astRoot) {
@@ -183,28 +327,47 @@ public class CacheImpl extends AbstractResourceAnnotation<Type> implements Cache
 		return this.disableHitsAdapter.getValue(astRoot);
 	}
 	
+	protected CacheCoordinationType coordinationType(CompilationUnit astRoot) {
+		return CacheCoordinationType.fromJavaAnnotationValue(this.coordinationTypeAdapter.getValue(astRoot));
+	}
+	
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<String> buildTypeAdapter() {
-		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__TYPE, false);
+		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__TYPE);
+	}
+	
+	private static DeclarationAnnotationElementAdapter<Integer> buildSizeAdapter() {
+		return new ConversionDeclarationAnnotationElementAdapter<Integer>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__SIZE, NumberIntegerExpressionConverter.instance());
 	}
 	
 	private static DeclarationAnnotationElementAdapter<Boolean> buildSharedAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__SHARED, false, BooleanExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__SHARED, BooleanExpressionConverter.instance());
+	}
+	
+	private static DeclarationAnnotationElementAdapter<Integer> buildExpiryAdapter() {
+		return new ConversionDeclarationAnnotationElementAdapter<Integer>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__EXPIRY, NumberIntegerExpressionConverter.instance());
 	}
 	
 	private static DeclarationAnnotationElementAdapter<Boolean> buildAlwaysRefreshAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__ALWAYS_REFRESH, false, BooleanExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__ALWAYS_REFRESH, BooleanExpressionConverter.instance());
 	}
 	
 	private static DeclarationAnnotationElementAdapter<Boolean> buildRefreshOnlyIfNewerAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__REFRESH_ONLY_IF_NEWER, false, BooleanExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__REFRESH_ONLY_IF_NEWER, BooleanExpressionConverter.instance());
 	}
 	
 	private static DeclarationAnnotationElementAdapter<Boolean> buildDisableHitsAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__DISABLE_HITS, false, BooleanExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__DISABLE_HITS, BooleanExpressionConverter.instance());
 	}
-	
+
+	private static DeclarationAnnotationElementAdapter<String> buildCoordinationTypeAdapter() {
+		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__COORDINATION_TYPE);
+	}
+
+	private static NestedDeclarationAnnotationAdapter buildExpiryTimeOfDayAnnotationAdapter() {
+		return new NestedDeclarationAnnotationAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.CACHE__EXPIRY_TIME_OF_DAY, EclipseLinkJPA.TIME_OF_DAY);
+	}
 	
 	public static class CacheAnnotationDefinition implements AnnotationDefinition
 	{
@@ -230,7 +393,7 @@ public class CacheImpl extends AbstractResourceAnnotation<Type> implements Cache
 		}
 		
 		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
-			return new NullCacheAnnotation(parent);
+			return new NullCacheAnnotation((JavaResourcePersistentType) parent);
 		}
 
 		public String getAnnotationName() {

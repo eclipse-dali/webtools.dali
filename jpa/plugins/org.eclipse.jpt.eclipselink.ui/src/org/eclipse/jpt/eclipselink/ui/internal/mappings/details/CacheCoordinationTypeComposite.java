@@ -9,7 +9,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.eclipselink.core.context.CacheType;
+import org.eclipse.jpt.eclipselink.core.context.CacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
@@ -21,9 +21,9 @@ import org.eclipse.swt.widgets.Composite;
  * Here is the layout of this pane:
  * <pre>
  * ----------------------------------------------------------------------------
- * |       ------------------------------------------------------------------ |
- * | Type: |                                                              |v| |
- * |       ------------------------------------------------------------------ |
+ * |                    ----------------------------------------------------- |
+ * | Coordination Type: |                                                 |v| |
+ * |                    ----------------------------------------------------- |
  * ----------------------------------------------------------------------------</pre>
  *
  * @see EclipseLinkCaching
@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class CacheTypeComposite extends AbstractFormPane<EclipseLinkCaching> {
+public class CacheCoordinationTypeComposite extends AbstractFormPane<EclipseLinkCaching> {
 
 	/**
 	 * Creates a new <code>CacheTypeComposite</code>.
@@ -40,50 +40,50 @@ public class CacheTypeComposite extends AbstractFormPane<EclipseLinkCaching> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public CacheTypeComposite(AbstractFormPane<? extends EclipseLinkCaching> parentPane,
+	public CacheCoordinationTypeComposite(AbstractFormPane<? extends EclipseLinkCaching> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent);
 	}
 
-	private EnumFormComboViewer<EclipseLinkCaching, CacheType> buildCacheTypeCombo(Composite container) {
+	private EnumFormComboViewer<EclipseLinkCaching, CacheCoordinationType> buildCacheCoordinationTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<EclipseLinkCaching, CacheType>(this, container) {
+		return new EnumFormComboViewer<EclipseLinkCaching, CacheCoordinationType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(EclipseLinkCaching.DEFAULT_TYPE_PROPERTY);
-				propertyNames.add(EclipseLinkCaching.SPECIFIED_TYPE_PROPERTY);
+				propertyNames.add(EclipseLinkCaching.DEFAULT_COORDINATION_TYPE_PROPERTY);
+				propertyNames.add(EclipseLinkCaching.SPECIFIED_COORDINATION_TYPE_PROPERTY);
 			}
 
 			@Override
-			protected CacheType[] choices() {
-				return CacheType.values();
+			protected CacheCoordinationType[] choices() {
+				return CacheCoordinationType.values();
 			}
 
 			@Override
-			protected CacheType defaultValue() {
-				return subject().getDefaultType();
+			protected CacheCoordinationType defaultValue() {
+				return subject().getDefaultCoordinationType();
 			}
 
 			@Override
-			protected String displayString(CacheType value) {
+			protected String displayString(CacheCoordinationType value) {
 				return buildDisplayString(
 					EclipseLinkUiMappingsMessages.class,
-					CacheTypeComposite.this,
+					CacheCoordinationTypeComposite.this,
 					value
 				);
 			}
 
 			@Override
-			protected CacheType getValue() {
-				return subject().getSpecifiedType();
+			protected CacheCoordinationType getValue() {
+				return subject().getSpecifiedCoordinationType();
 			}
 
 			@Override
-			protected void setValue(CacheType value) {
-				subject().setSpecifiedType(value);
+			protected void setValue(CacheCoordinationType value) {
+				subject().setSpecifiedCoordinationType(value);
 			}
 			
 			@Override
@@ -98,9 +98,9 @@ public class CacheTypeComposite extends AbstractFormPane<EclipseLinkCaching> {
 
 		buildLabeledComposite(
 			container,
-			EclipseLinkUiMappingsMessages.CacheTypeComposite_label,
-			buildCacheTypeCombo(container),
-			EclipseLinkHelpContextIds.CACHING_CACHE_TYPE
+			EclipseLinkUiMappingsMessages.CacheCoordinationTypeComposite_label,
+			buildCacheCoordinationTypeCombo(container),
+			EclipseLinkHelpContextIds.CACHING_CACHE_COORDINATION_TYPE
 		);
 	}
 }

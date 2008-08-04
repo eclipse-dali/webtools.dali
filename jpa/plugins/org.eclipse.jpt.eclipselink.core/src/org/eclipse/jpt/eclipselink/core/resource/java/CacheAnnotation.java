@@ -42,9 +42,20 @@ public interface CacheAnnotation extends JavaResourceNode
 	 * Set to null to remove the type element.
 	 */
 	void setType(CacheType type);
-		String TYPE_PROPERTY = "typeProperty";
+		String TYPE_PROPERTY = "typeProperty";	
+
+	/**
+	 * Corresponds to the size element of the Cache annotation.
+	 * Returns null if the size valuePair does not exist in the annotation
+	 */
+	Integer getSize();
 	
-		
+	/**
+	 * Corresponds to the size element of the Cache annotation.
+	 * Set to null to remove the size valuePair from the annotation
+	 */
+	void setSize(Integer size);
+		String SIZE_PROPERTY = "sizeProperty";
 		
 	/**
 	 * Corresponds to the shared element of the Cache annotation.
@@ -59,34 +70,22 @@ public interface CacheAnnotation extends JavaResourceNode
 	void setShared(Boolean shared);
 		String SHARED_PROPERTY = "sharedProperty";
 
+	
+	/**
+	 * Corresponds to the expiry element of the Cache annotation.
+	 * Returns null if the expiry valuePair does not exist in the annotation
+	 */
+	Integer getExpiry();
+	
+	/**
+	 * Corresponds to the expiry element of the Cache annotation.
+	 * Set to null to remove the expiry valuePair from the annotation
+	 */
+	void setExpiry(Integer expiry);
+		String EXPIRY_PROPERTY = "expiryProperty";
 
-//	/**
-//	 * Corresponds to the size element of the Cache annotation.
-//	 * Returns null if the size valuePair does not exist in the annotation
-//	 */
-//	Integer getSize();
-//	
-//	/**
-//	 * Corresponds to the size element of the javax.persistence.Column annotation.
-//	 * Set to null to remove the size valuePair from the annotation
-//	 */
-//	void setSize(Integer size);
-//		String SIZE_PROPERTY = "sizeProperty";
-		
-//	/**
-//	 * Corresponds to the expiry element of the Cache annotation.
-//	 * Returns null if the expiry valuePair does not exist in the annotation
-//	 */
-//	Integer getExpiry();
-//	
-//	/**
-//	 * Corresponds to the expiry element of the javax.persistence.Column annotation.
-//	 * Set to null to remove the expiry valuePair from the annotation
-//	 */
-//	void setExpiry(Integer expiry);
-//		String EXPIRY_PROPERTY = "expiryProperty";
-//
-//TimeOfDay
+	TimeOfDayAnnotation getExpiryTimeOfDay();
+		String EXPIRY_TIME_OF_DAY_PROPERTY = "expiryTimeOfDayProperty";
 		
 	/**
 	 * Corresponds to the alwaysRefresh element of the Cache annotation.
@@ -128,6 +127,20 @@ public interface CacheAnnotation extends JavaResourceNode
 		String DISABLE_HITS_PROPERTY = "disableHitsProperty";
 		
 	/**
+	 * Corresponds to the type element of the Cache annotation.
+	 * Returns null if the type element does not exist in java.
+	 */
+	CacheCoordinationType getCoordinationType();
+	
+	/**
+	 * Corresponds to the type element of the Cache annotation.
+	 * Set to null to remove the type element.
+	 */
+	void setCoordinationType(CacheCoordinationType coordinationType);
+		String COORDINATION_TYPE_PROPERTY = "coordinationTypeProperty";
+
+			
+	/**
 	 * Return the {@link TextRange} for the type element.  If the type element 
 	 * does not exist return the {@link TextRange} for the Cache annotation.
 	 */
@@ -137,6 +150,48 @@ public interface CacheAnnotation extends JavaResourceNode
 	 * Return the {@link TextRange} for the shared element.  If the shared element 
 	 * does not exist return the {@link TextRange} for the Cache annotation.
 	 */
+	TextRange getSizeTextRange(CompilationUnit astRoot);
+	
+	/**
+	 * Return the {@link TextRange} for the shared element.  If the shared element 
+	 * does not exist return the {@link TextRange} for the Cache annotation.
+	 */
 	TextRange getSharedTextRange(CompilationUnit astRoot);
+	
+	/**
+	 * Return the {@link TextRange} for the expiry element.  If the expiry element 
+	 * does not exist return the {@link TextRange} for the Cache annotation.
+	 */
+	TextRange getExpiryTextRange(CompilationUnit astRoot);
+	
+	/**
+	 * Return the {@link TextRange} for the expiryTimeOfDay element.  If the expiryTimeOfDay element 
+	 * does not exist return the {@link TextRange} for the Cache annotation.
+	 */
+	TextRange getExpiryTimeOfDayTextRange(CompilationUnit astRoot);
+	
+	/**
+	 * Return the {@link TextRange} for the alwaysRefresh element.  If the alwaysRefresh element 
+	 * does not exist return the {@link TextRange} for the Cache annotation.
+	 */
+	TextRange getAlwaysRefreshTextRange(CompilationUnit astRoot);
+	
+	/**
+	 * Return the {@link TextRange} for the refreshOnlyIfNewer element.  If the refreshOnlyIfNewer element 
+	 * does not exist return the {@link TextRange} for the Cache annotation.
+	 */
+	TextRange getRefreshOnlyIfNewerTextRange(CompilationUnit astRoot);
+	
+	/**
+	 * Return the {@link TextRange} for the disableHits element.  If the disableHits element 
+	 * does not exist return the {@link TextRange} for the Cache annotation.
+	 */
+	TextRange getDisablesHitsTextRange(CompilationUnit astRoot);
+	
+	/**
+	 * Return the {@link TextRange} for the coordinationType element.  If the coordinationType element 
+	 * does not exist return the {@link TextRange} for the Cache annotation.
+	 */
+	TextRange getCoordinationTypeTextRange(CompilationUnit astRoot);
 	
 }

@@ -13,6 +13,7 @@ import java.util.Collection;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.CacheImpl.CacheAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.ExistenceCheckingImpl.ExistenceCheckingAnnotationDefinition;
 
 public class EclipseLinkJpaAnnotationProvider
 	extends GenericJpaAnnotationProvider
@@ -22,6 +23,7 @@ public class EclipseLinkJpaAnnotationProvider
 	protected void addTypeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
 		super.addTypeAnnotationDefinitionsTo(definitions);
 		definitions.add(CacheAnnotationDefinition.instance());
+		definitions.add(ExistenceCheckingAnnotationDefinition.instance());
 	}
 
 }

@@ -30,6 +30,12 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	public static String CacheTypeComposite_none;
 	public static String EclipseLinkJavaEntityComposite_caching;
 
+	public static String CacheCoordinationTypeComposite_label;
+	public static String CacheCoordinationTypeComposite_send_object_changes;
+	public static String CacheCoordinationTypeComposite_invalidate_changed_objects;
+	public static String CacheCoordinationTypeComposite_send_new_objects_with_changes;
+	public static String CacheCoordinationTypeComposite_none;
+
 	public static String CachingComposite_sharedLabelDefault;
 	public static String CachingComposite_sharedLabel;
 	public static String AlwaysRefreshComposite_alwaysRefreshDefault;
@@ -38,6 +44,14 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	public static String RefreshOnlyIfNewerComposite_refreshOnlyIfNewerLabel;
 	public static String DisableHitsComposite_disableHitsDefault;
 	public static String DisableHitsComposite_disableHitsLabel;
+	
+	public static String ExistenceCheckingComposite_label;
+	public static String ExistenceCheckingComposite_check_cache;
+	public static String ExistenceCheckingComposite_check_database;
+	public static String ExistenceCheckingComposite_assume_existence;
+	public static String ExistenceCheckingComposite_assume_non_existence;
+	
+	
 	
 	static {
 		NLS.initializeMessages("eclipselink_ui_mappings", EclipseLinkUiMappingsMessages.class);

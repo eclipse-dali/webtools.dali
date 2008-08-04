@@ -12,20 +12,22 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.AbstractJavaResourceNode;
 import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.CacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheType;
+import org.eclipse.jpt.eclipselink.core.resource.java.TimeOfDayAnnotation;
 
 public class NullCacheAnnotation extends AbstractJavaResourceNode implements CacheAnnotation, Annotation
 {
-	protected NullCacheAnnotation(JavaResourcePersistentMember parent) {
+	protected NullCacheAnnotation(JavaResourcePersistentType parent) {
 		super(parent);
 	}
 	
 	@Override
-	public JavaResourcePersistentMember getParent() {
-		return (JavaResourcePersistentMember) super.getParent();
+	public JavaResourcePersistentType getParent() {
+		return (JavaResourcePersistentType) super.getParent();
 	}
 	
 	public String getAnnotationName() {
@@ -62,6 +64,16 @@ public class NullCacheAnnotation extends AbstractJavaResourceNode implements Cac
 		}
 	}
 
+	public Integer getSize() {
+		return null;
+	}
+	
+	public void setSize(Integer size) {
+		if (size != null) {
+			createCacheResource().setSize(size);
+		}
+	}
+	
 	public Boolean getShared() {
 		return null;
 	}
@@ -70,6 +82,20 @@ public class NullCacheAnnotation extends AbstractJavaResourceNode implements Cac
 		if (shared != null) {
 			createCacheResource().setShared(shared);
 		}
+	}
+	
+	public Integer getExpiry() {
+		return null;
+	}
+	
+	public void setExpiry(Integer expiry) {
+		if (expiry != null) {
+			createCacheResource().setExpiry(expiry);
+		}		
+	}
+	
+	public TimeOfDayAnnotation getExpiryTimeOfDay() {
+		return null;
 	}
 	
 	public Boolean getAlwaysRefresh() {
@@ -102,6 +128,16 @@ public class NullCacheAnnotation extends AbstractJavaResourceNode implements Cac
 		}
 	}
 	
+	public CacheCoordinationType getCoordinationType() {
+		return null;
+	}
+	
+	public void setCoordinationType(CacheCoordinationType coordinationType) {
+		if (coordinationType != null) {
+			createCacheResource().setCoordinationType(coordinationType);
+		}
+	}
+	
 	public TextRange getTextRange(CompilationUnit astRoot) {
 		return null;
 	}
@@ -110,11 +146,39 @@ public class NullCacheAnnotation extends AbstractJavaResourceNode implements Cac
 		return null;
 	}
 
+	public TextRange getSizeTextRange(CompilationUnit astRoot) {
+		return null;
+	}
+	
 	public TextRange getSharedTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	
-	public void updateFromJava(CompilationUnit astRoot) {
+	public TextRange getExpiryTextRange(CompilationUnit astRoot) {
+		return null;
+	}
+	
+	public TextRange getExpiryTimeOfDayTextRange(CompilationUnit astRoot) {
+		return null;
+	}
+	
+	public TextRange getAlwaysRefreshTextRange(CompilationUnit astRoot) {
+		return null;
+	}
+	
+	public TextRange getRefreshOnlyIfNewerTextRange(CompilationUnit astRoot) {
+		return null;
+	}
+	
+	public TextRange getDisablesHitsTextRange(CompilationUnit astRoot) {
+		return null;
+	}
+	
+	public TextRange getCoordinationTypeTextRange(CompilationUnit astRoot) {
+		return null;
+	}
+	
+	public void update(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
 

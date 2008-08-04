@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaEntity;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 
@@ -27,7 +26,7 @@ public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements Ecli
 	}
 
 	
-	public EclipseLinkCaching getCaching() {
+	public EclipseLinkJavaCaching getCaching() {
 		return this.eclipseLinkCaching;
 	}
 	
