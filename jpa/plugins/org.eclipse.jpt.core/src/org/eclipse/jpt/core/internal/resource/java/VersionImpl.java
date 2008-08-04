@@ -36,7 +36,7 @@ public class VersionImpl extends AbstractResourceAnnotation<Attribute> implement
 		return ANNOTATION_NAME;
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		//no annotation members
 	}
 	

@@ -36,7 +36,7 @@ public class TransientImpl extends AbstractResourceAnnotation<Attribute> impleme
 		return ANNOTATION_NAME;
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		//no annotation members
 	}
 	

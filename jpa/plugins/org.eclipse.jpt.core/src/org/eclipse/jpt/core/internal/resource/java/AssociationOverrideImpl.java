@@ -128,8 +128,8 @@ public class AssociationOverrideImpl
 	}
 
 	@Override
-	public void updateFromJava(CompilationUnit astRoot) {
-		super.updateFromJava(astRoot);
+	public void update(CompilationUnit astRoot) {
+		super.update(astRoot);
 		this.updateJoinColumnsFromJava(astRoot);
 	}
 	
@@ -237,8 +237,8 @@ public class AssociationOverrideImpl
 			AssociationOverrideImpl.this.removeAnnotation();
 		}
 
-		public void updateFromJava(CompilationUnit astRoot) {
-			AssociationOverrideImpl.this.updateFromJava(astRoot);
+		public void update(CompilationUnit astRoot) {
+			AssociationOverrideImpl.this.update(astRoot);
 		}
 		
 		public TextRange getTextRange(CompilationUnit astRoot) {

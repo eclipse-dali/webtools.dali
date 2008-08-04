@@ -68,7 +68,7 @@ public class TemporalImpl extends AbstractResourceAnnotation<Attribute> implemen
 		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		this.setValue(this.value(astRoot));
 	}
 	

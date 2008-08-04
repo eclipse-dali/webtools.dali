@@ -48,7 +48,7 @@ public class NullEmbedded extends AbstractJavaResourceNode implements EmbeddedAn
 	}
 
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
 

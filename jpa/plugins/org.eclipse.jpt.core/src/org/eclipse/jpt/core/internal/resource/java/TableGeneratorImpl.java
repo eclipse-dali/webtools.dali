@@ -303,8 +303,8 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 
 	// ********** java annotations -> persistence model **********
 	@Override
-	public void updateFromJava(CompilationUnit astRoot) {
-		super.updateFromJava(astRoot);
+	public void update(CompilationUnit astRoot) {
+		super.update(astRoot);
 		this.setTable(this.table(astRoot));
 		this.setCatalog(this.catalog(astRoot));
 		this.setSchema(this.schema(astRoot));
@@ -435,8 +435,8 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 			TableGeneratorImpl.this.removeAnnotation();
 		}
 
-		public void updateFromJava(CompilationUnit astRoot) {
-			TableGeneratorImpl.this.updateFromJava(astRoot);
+		public void update(CompilationUnit astRoot) {
+			TableGeneratorImpl.this.update(astRoot);
 		}
 		
 		public TextRange getTextRange(CompilationUnit astRoot) {

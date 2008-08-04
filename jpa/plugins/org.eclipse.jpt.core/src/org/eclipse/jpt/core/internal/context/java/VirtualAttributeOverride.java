@@ -87,7 +87,7 @@ public class VirtualAttributeOverride extends AbstractJavaResourceNode implement
 		return (AttributeOverrideAnnotation) getParent().addAnnotation(getAnnotationName());
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	
 	}

@@ -30,7 +30,7 @@ public interface JavaResourceNode extends Model {
 
 	JpaCompilationUnit getJpaCompilationUnit();
 
-	void updateFromJava(CompilationUnit astRoot);
+	void update(CompilationUnit astRoot);
 
 	TextRange getTextRange(CompilationUnit astRoot);
 

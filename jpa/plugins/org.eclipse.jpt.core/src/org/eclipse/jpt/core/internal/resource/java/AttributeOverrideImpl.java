@@ -97,14 +97,14 @@ public class AttributeOverrideImpl
 	}
 	
 	@Override
-	public void updateFromJava(CompilationUnit astRoot) {
-		super.updateFromJava(astRoot);
+	public void update(CompilationUnit astRoot) {
+		super.update(astRoot);
 		if (this.columnAdapter.getAnnotation(astRoot) == null) {
 			this.setColumn(null);
 		}
 		else {
 			if (getColumn() != null) {
-				getColumn().updateFromJava(astRoot);
+				getColumn().update(astRoot);
 			}
 			else {
 				ColumnImpl column = ColumnImpl.createAttributeOverrideColumn(this, getMember(), getDeclarationAnnotationAdapter());

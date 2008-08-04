@@ -401,7 +401,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 		return EmptyListIterator.instance();
 	}
 	
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		this.updateAnnotations(astRoot);
 		this.setPersistable(this.buildPersistable(astRoot));		
 	}
@@ -449,7 +449,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 		if (isPossibleAnnotation(qualifiedAnnotationName)) {
 			Annotation annotation = getAnnotation(qualifiedAnnotationName);
 			if (annotation != null) {
-				annotation.updateFromJava(astRoot);
+				annotation.update(astRoot);
 			}
 			else {
 				annotation = buildAnnotation(qualifiedAnnotationName);
@@ -460,7 +460,7 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 		else if (isPossibleMappingAnnotation(qualifiedAnnotationName)) {
 			Annotation annotation = getMappingAnnotation(qualifiedAnnotationName);
 			if (annotation != null) {
-				annotation.updateFromJava(astRoot);
+				annotation.update(astRoot);
 			}
 			else {
 				annotation = buildMappingAnnotation(qualifiedAnnotationName);

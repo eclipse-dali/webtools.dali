@@ -96,7 +96,7 @@ public class NullAssociationOverride extends AbstractJavaResourceNode implements
 		return (AssociationOverrideAnnotation) getParent().addAnnotation(getAnnotationName());
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	
 	}

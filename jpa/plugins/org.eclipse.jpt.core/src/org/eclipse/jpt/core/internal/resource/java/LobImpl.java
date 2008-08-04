@@ -32,7 +32,7 @@ public class LobImpl extends AbstractResourceAnnotation<Attribute> implements Lo
 		//nothing to initialize
 	}
 	
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		//nothing to update
 	}
 

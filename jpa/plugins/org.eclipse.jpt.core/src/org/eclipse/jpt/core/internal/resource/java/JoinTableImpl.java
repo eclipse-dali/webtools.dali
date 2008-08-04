@@ -94,8 +94,8 @@ public class JoinTableImpl extends AbstractResourceTable implements JoinTableAnn
 	}
 	
 	@Override
-	public void updateFromJava(CompilationUnit astRoot) {
-		super.updateFromJava(astRoot);
+	public void update(CompilationUnit astRoot) {
+		super.update(astRoot);
 		this.updateJoinColumnsFromJava(astRoot);
 		this.updateInverseJoinColumnsFromJava(astRoot);
 	}
@@ -346,8 +346,8 @@ public class JoinTableImpl extends AbstractResourceTable implements JoinTableAnn
 			JoinTableImpl.this.removeAnnotation();
 		}
 
-		public void updateFromJava(CompilationUnit astRoot) {
-			JoinTableImpl.this.updateFromJava(astRoot);
+		public void update(CompilationUnit astRoot) {
+			JoinTableImpl.this.update(astRoot);
 		}
 		
 		public TextRange getTextRange(CompilationUnit astRoot) {

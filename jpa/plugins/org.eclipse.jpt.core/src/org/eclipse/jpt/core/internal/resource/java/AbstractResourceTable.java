@@ -211,7 +211,7 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 		return this.elementTouches(this.schemaDeclarationAdapter, pos, astRoot);
 	}
 	
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		this.setName(this.name(astRoot));
 		this.setSchema(this.schema(astRoot));
 		this.setCatalog(this.catalog(astRoot));
@@ -323,8 +323,8 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 			AbstractResourceTable.this.removeAnnotation();
 		}
 
-		public void updateFromJava(CompilationUnit astRoot) {
-			AbstractResourceTable.this.updateFromJava(astRoot);
+		public void update(CompilationUnit astRoot) {
+			AbstractResourceTable.this.update(astRoot);
 		}
 		
 		public TextRange getTextRange(CompilationUnit astRoot) {

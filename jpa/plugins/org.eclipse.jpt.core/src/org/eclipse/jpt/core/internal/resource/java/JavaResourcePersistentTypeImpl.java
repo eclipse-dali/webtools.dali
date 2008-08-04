@@ -483,8 +483,8 @@ public class JavaResourcePersistentTypeImpl
 	// ********** update from Java **********
 
 	@Override
-	public void updateFromJava(CompilationUnit astRoot) {
-		super.updateFromJava(astRoot);
+	public void update(CompilationUnit astRoot) {
+		super.update(astRoot);
 		this.setQualifiedName(this.buildQualifiedName(astRoot));
 		this.setName(this.buildName(astRoot));
 		this.setSuperClassQualifiedName(this.buildSuperClassQualifiedName(astRoot));
@@ -508,7 +508,7 @@ public class JavaResourcePersistentTypeImpl
 				this.addNestedType(this.buildNestedType(typeDeclaration, occurrence, astRoot));
 			} else {
 				nestedTypesToRemove.remove(nestedType);
-				nestedType.updateFromJava(astRoot);
+				nestedType.update(astRoot);
 			}
 		}
 		this.removeNestedTypes(nestedTypesToRemove);
@@ -528,7 +528,7 @@ public class JavaResourcePersistentTypeImpl
 					this.addField(this.buildField(fieldName, occurrence, astRoot));
 				} else {
 					fieldsToRemove.remove(field);
-					field.updateFromJava(astRoot);
+					field.update(astRoot);
 				}
 			}
 		}
@@ -548,7 +548,7 @@ public class JavaResourcePersistentTypeImpl
 				this.addMethod(this.buildMethod(signature, occurrence, astRoot));
 			} else {
 				methodsToRemove.remove(method);
-				method.updateFromJava(astRoot);
+				method.update(astRoot);
 			}
 		}
 		this.removeMethods(methodsToRemove);

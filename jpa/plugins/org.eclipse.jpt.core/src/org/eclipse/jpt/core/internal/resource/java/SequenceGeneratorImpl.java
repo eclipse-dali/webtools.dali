@@ -97,8 +97,8 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 
 	// ********** java annotations -> persistence model **********
 	@Override
-	public void updateFromJava(CompilationUnit astRoot) {
-		super.updateFromJava(astRoot);
+	public void update(CompilationUnit astRoot) {
+		super.update(astRoot);
 		this.setSequenceName(this.sequenceName(astRoot));
 	}
 	

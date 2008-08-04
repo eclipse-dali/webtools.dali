@@ -63,7 +63,7 @@ public class NullEnumerated extends AbstractJavaResourceNode implements Enumerat
 		}		
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
 

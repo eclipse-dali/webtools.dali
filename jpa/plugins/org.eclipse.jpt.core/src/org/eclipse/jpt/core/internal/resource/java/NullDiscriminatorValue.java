@@ -61,7 +61,7 @@ public class NullDiscriminatorValue extends AbstractJavaResourceNode implements 
 		return (DiscriminatorValueAnnotation) getParent().addAnnotation(getAnnotationName());
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	
 	}

@@ -63,7 +63,7 @@ public class NullTemporal extends AbstractJavaResourceNode implements TemporalAn
 		}		
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -134,7 +134,7 @@ public abstract class NullBaseTable extends AbstractJavaResourceNode implements 
 		return false;
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
 

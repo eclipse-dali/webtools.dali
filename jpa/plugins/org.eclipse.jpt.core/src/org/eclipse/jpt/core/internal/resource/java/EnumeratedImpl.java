@@ -68,7 +68,7 @@ public class EnumeratedImpl extends AbstractResourceAnnotation<Attribute> implem
 		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
 	}
 	
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		this.setValue(this.value(astRoot));
 	}
 	

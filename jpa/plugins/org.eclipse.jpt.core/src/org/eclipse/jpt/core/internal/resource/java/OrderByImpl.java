@@ -68,7 +68,7 @@ public class OrderByImpl extends AbstractResourceAnnotation<Attribute> implement
 		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		this.setValue(this.value(astRoot));
 	}
 	

@@ -97,8 +97,8 @@ public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation impleme
 	}
 
 	@Override
-	public void updateFromJava(CompilationUnit astRoot) {
-		super.updateFromJava(astRoot);
+	public void update(CompilationUnit astRoot) {
+		super.update(astRoot);
 		this.setOptional(this.optional(astRoot));
 	}
 	

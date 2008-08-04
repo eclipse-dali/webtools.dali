@@ -73,7 +73,7 @@ public class NullBasic extends AbstractJavaResourceNode implements BasicAnnotati
 		}				
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
 

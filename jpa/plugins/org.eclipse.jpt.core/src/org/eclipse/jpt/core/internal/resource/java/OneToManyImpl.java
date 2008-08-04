@@ -99,8 +99,8 @@ public class OneToManyImpl extends AbstractRelationshipMappingAnnotation impleme
 	}
 
 	@Override
-	public void updateFromJava(CompilationUnit astRoot) {
-		super.updateFromJava(astRoot);
+	public void update(CompilationUnit astRoot) {
+		super.update(astRoot);
 		this.setMappedBy(this.mappedBy(astRoot));
 	}
 

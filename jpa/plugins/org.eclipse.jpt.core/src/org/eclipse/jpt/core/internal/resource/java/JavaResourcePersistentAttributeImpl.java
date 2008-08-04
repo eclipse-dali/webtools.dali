@@ -267,8 +267,8 @@ public class JavaResourcePersistentAttributeImpl
 	}
 
 	@Override
-	public void updateFromJava(CompilationUnit astRoot) {
-		super.updateFromJava(astRoot);
+	public void update(CompilationUnit astRoot) {
+		super.update(astRoot);
 		this.setTypeIsBasic(this.typeIsBasic(astRoot));
 		this.setQualifiedTypeName(this.qualifiedTypeName(astRoot));
 		this.setQualifiedReferenceEntityTypeName(this.qualifiedReferenceEntityTypeName(astRoot));

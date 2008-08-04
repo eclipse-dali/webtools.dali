@@ -153,10 +153,10 @@ public class JpaCompilationUnitImpl
 	}
 
 	public void updateFromJava() {
-		this.updateFromJava(this.buildASTRoot());
+		this.update(this.buildASTRoot());
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		TypeDeclaration td = this.getPrimaryType(astRoot);
 		if (td == null) {
 			this.setPersistentType(null);
@@ -164,7 +164,7 @@ public class JpaCompilationUnitImpl
 			if (this.persistentType == null) {
 				this.setPersistentType(this.buildJavaResourcePersistentType(astRoot, td));
 			} else {
-				this.persistentType.updateFromJava(astRoot);
+				this.persistentType.update(astRoot);
 			}
 		}
 	}

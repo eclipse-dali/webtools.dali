@@ -128,7 +128,7 @@ public class UniqueConstraintImpl extends AbstractResourceAnnotation<Member> imp
 		return this.elementTouches(this.columnNamesDeclarationAdapter, pos, astRoot);
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		this.updateColumnNamesFromJava(astRoot);
 	}
 

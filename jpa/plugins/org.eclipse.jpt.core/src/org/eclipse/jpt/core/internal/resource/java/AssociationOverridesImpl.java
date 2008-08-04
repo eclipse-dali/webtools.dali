@@ -110,7 +110,7 @@ public class AssociationOverridesImpl extends AbstractResourceAnnotation<Member>
 		return "value";
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);
 	}
 	

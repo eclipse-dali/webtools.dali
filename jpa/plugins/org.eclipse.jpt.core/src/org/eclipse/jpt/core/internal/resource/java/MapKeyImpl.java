@@ -72,7 +72,7 @@ public class MapKeyImpl extends AbstractResourceAnnotation<Attribute> implements
 		return this.elementTouches(NAME_ADAPTER, pos, astRoot);
 	}
 	
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		this.setName(this.name(astRoot));
 	}
 	

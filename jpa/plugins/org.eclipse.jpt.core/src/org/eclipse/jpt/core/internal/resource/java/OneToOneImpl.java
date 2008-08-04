@@ -127,8 +127,8 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 	}
 
 	@Override
-	public void updateFromJava(CompilationUnit astRoot) {
-		super.updateFromJava(astRoot);
+	public void update(CompilationUnit astRoot) {
+		super.update(astRoot);
 		this.setOptional(this.optional(astRoot));
 		this.setMappedBy(this.mappedByAdapter.getValue(astRoot));
 	}

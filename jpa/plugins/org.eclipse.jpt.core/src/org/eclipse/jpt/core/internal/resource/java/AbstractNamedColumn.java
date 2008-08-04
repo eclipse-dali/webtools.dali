@@ -130,7 +130,7 @@ public abstract class AbstractNamedColumn extends AbstractResourceAnnotation<Mem
 		return this.elementTouches(this.nameDeclarationAdapter, pos, astRoot);
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		this.setName(this.name(astRoot));
 		this.setColumnDefinition(this.columnDefinition(astRoot));
 	}

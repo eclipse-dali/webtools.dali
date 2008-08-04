@@ -260,7 +260,7 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractReso
 		return getElementTextRange(this.cascadeDeclarationAdapter, astRoot);
 	}
 	
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		this.setFetch(this.fetch(astRoot));
 		this.setTargetEntity(this.targetEntity(astRoot));
 		this.setFullyQualifiedTargetEntity(this.fullyQualifiedTargetEntity(astRoot));

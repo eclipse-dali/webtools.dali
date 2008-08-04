@@ -112,7 +112,7 @@ public class NamedNativeQueriesImpl extends AbstractResourceAnnotation<Type> imp
 		CollectionTools.move(this.namedNativeQueries, targetIndex, sourceIndex);
 	}
 	
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);
 	}
 	

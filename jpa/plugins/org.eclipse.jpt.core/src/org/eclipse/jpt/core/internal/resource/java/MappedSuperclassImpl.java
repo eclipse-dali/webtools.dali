@@ -37,7 +37,7 @@ public class MappedSuperclassImpl extends AbstractResourceAnnotation<Type> imple
 		return ANNOTATION_NAME;
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		//no annotation members
 	}
 	

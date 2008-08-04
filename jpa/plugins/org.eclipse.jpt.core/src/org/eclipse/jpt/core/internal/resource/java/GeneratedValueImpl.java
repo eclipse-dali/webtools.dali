@@ -96,7 +96,7 @@ public class GeneratedValueImpl extends AbstractResourceAnnotation<Member> imple
 	}
 
 	// ********** java annotations -> persistence model **********
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		this.setStrategy(this.strategy(astRoot));
 		this.setGenerator(this.generator(astRoot));
 	}

@@ -71,7 +71,7 @@ public class EntityImpl extends AbstractResourceAnnotation<Type> implements Enti
 	}
 	
 	//*********** JavaResource implementation ****************
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		this.setName(this.name(astRoot));
 	}
 

@@ -165,8 +165,8 @@ public class SecondaryTableImpl extends AbstractResourceTable implements Nestabl
 	}
 
 	@Override
-	public void updateFromJava(CompilationUnit astRoot) {
-		super.updateFromJava(astRoot);
+	public void update(CompilationUnit astRoot) {
+		super.update(astRoot);
 		this.updatePkJoinColumnsFromJava(astRoot);
 	}
 	
@@ -274,8 +274,8 @@ public class SecondaryTableImpl extends AbstractResourceTable implements Nestabl
 			SecondaryTableImpl.this.removeAnnotation();
 		}
 
-		public void updateFromJava(CompilationUnit astRoot) {
-			SecondaryTableImpl.this.updateFromJava(astRoot);
+		public void update(CompilationUnit astRoot) {
+			SecondaryTableImpl.this.update(astRoot);
 		}
 		
 		public TextRange getTextRange(CompilationUnit astRoot) {

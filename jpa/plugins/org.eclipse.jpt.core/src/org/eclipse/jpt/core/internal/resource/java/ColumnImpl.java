@@ -178,8 +178,8 @@ public class ColumnImpl extends BaseColumnImpl implements ColumnAnnotation, Nest
 	}
 
 	@Override
-	public void updateFromJava(CompilationUnit astRoot) {
-		super.updateFromJava(astRoot);
+	public void update(CompilationUnit astRoot) {
+		super.update(astRoot);
 		this.setLength(this.length(astRoot));
 		this.setPrecision(this.precision(astRoot));
 		this.setScale(this.scale(astRoot));

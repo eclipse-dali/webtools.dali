@@ -184,7 +184,7 @@ public class ContainerAnnotationTools
 				if (containerAnnotation.getNestableAnnotationName().equals(JDTTools.resolveAnnotation(node))) {
 					NestableAnnotation nestedAnnotation = containerAnnotation.nestedAnnotationFor(node);
 					if (nestedAnnotation != null) {
-						nestedAnnotation.updateFromJava(astRoot);
+						nestedAnnotation.update(astRoot);
 					}
 					else {
 						nestedAnnotation = containerAnnotation.add(containerAnnotation.nestedAnnotationsSize());

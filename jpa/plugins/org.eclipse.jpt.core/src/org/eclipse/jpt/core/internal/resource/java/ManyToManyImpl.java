@@ -93,8 +93,8 @@ public class ManyToManyImpl extends AbstractRelationshipMappingAnnotation implem
 	}
 	
 	@Override
-	public void updateFromJava(CompilationUnit astRoot) {
-		super.updateFromJava(astRoot);
+	public void update(CompilationUnit astRoot) {
+		super.update(astRoot);
 		this.setMappedBy(this.mappedBy(astRoot));
 	}
 	

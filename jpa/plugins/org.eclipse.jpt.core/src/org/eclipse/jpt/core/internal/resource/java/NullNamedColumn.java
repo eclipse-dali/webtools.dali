@@ -60,7 +60,7 @@ public abstract class NullNamedColumn extends AbstractJavaResourceNode implement
 		}		
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
 

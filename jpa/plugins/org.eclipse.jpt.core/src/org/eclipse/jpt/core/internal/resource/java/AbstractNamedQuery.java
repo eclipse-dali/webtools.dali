@@ -170,7 +170,7 @@ public abstract class AbstractNamedQuery extends AbstractResourceAnnotation<Type
 		return this.getElementTextRange(this.queryDeclarationAdapter, astRoot);
 	}
 	
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		this.setName(this.name(astRoot));
 		this.setQuery(this.query(astRoot));
 		this.updateQueryHintsFromJava(astRoot);
@@ -293,8 +293,8 @@ public abstract class AbstractNamedQuery extends AbstractResourceAnnotation<Type
 			AbstractNamedQuery.this.removeAnnotation();
 		}
 
-		public void updateFromJava(CompilationUnit astRoot) {
-			AbstractNamedQuery.this.updateFromJava(astRoot);
+		public void update(CompilationUnit astRoot) {
+			AbstractNamedQuery.this.update(astRoot);
 		}
 		
 		public TextRange getTextRange(CompilationUnit astRoot) {

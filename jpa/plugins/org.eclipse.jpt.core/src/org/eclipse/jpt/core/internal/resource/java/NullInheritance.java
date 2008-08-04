@@ -63,7 +63,7 @@ public class NullInheritance extends AbstractJavaResourceNode implements Inherit
 		return (InheritanceAnnotation) getParent().addAnnotation(getAnnotationName());
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	
 	}

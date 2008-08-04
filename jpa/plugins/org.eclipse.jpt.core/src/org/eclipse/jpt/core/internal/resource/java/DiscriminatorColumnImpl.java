@@ -114,8 +114,8 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 	}
 	
 	@Override
-	public void updateFromJava(CompilationUnit astRoot) {
-		super.updateFromJava(astRoot);
+	public void update(CompilationUnit astRoot) {
+		super.update(astRoot);
 		this.setLength(this.length(astRoot));
 		this.setDiscriminatorType(this.discriminatorType(astRoot));
 	}

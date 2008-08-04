@@ -201,8 +201,8 @@ public abstract class BaseColumnImpl extends AbstractNamedColumn implements Base
 
 
 	@Override
-	public void updateFromJava(CompilationUnit astRoot) {
-		super.updateFromJava(astRoot);
+	public void update(CompilationUnit astRoot) {
+		super.update(astRoot);
 		this.setTable(this.table(astRoot));
 		this.setUnique(this.unique(astRoot));
 		this.setNullable(this.nullable(astRoot));

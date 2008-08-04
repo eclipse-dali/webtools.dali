@@ -134,7 +134,7 @@ public abstract class GeneratorImpl extends AbstractResourceAnnotation<Member> i
 	}
 
 	// ********** java annotations -> persistence model **********
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		this.setName(this.name(astRoot));
 		this.setAllocationSize(this.allocationSize(astRoot));
 		this.setInitialValue(this.initialValue(astRoot));

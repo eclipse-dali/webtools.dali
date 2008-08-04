@@ -67,7 +67,7 @@ public class InheritanceImpl extends AbstractResourceAnnotation<Type> implements
 		return this.getElementTextRange(STRATEGY_ADAPTER, astRoot);
 	}
 	
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		this.setStrategy(this.strategy(astRoot));
 	}
 	

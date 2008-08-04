@@ -116,7 +116,7 @@ public class SecondaryTablesImpl extends AbstractResourceAnnotation<Member> impl
 		CollectionTools.move(this.secondaryTables, targetIndex, sourceIndex);
 	}
 	
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void update(CompilationUnit astRoot) {
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);
 	}
 	
