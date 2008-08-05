@@ -114,14 +114,6 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 		if (propertyName.equals(SUPERCLASS) && EMPTY_STRING.equals(getStringProperty(propertyName))) {
 			return WTPCommonPlugin.OK_STATUS;
 		}
-		//Should be check existing of the class with the relevant name
-		if (propertyName.equals(CLASS_NAME)) {
-			String classNameValue = getStringProperty(propertyName);
-			result = super.validateJavaClassName(getStringProperty(propertyName));
-			if (result.isOK()){
-				return super.canCreateTypeInClasspath(classNameValue);
-			}
-		}		
 		if (propertyName.equals(XML_NAME)) {
 //			String xmlName = getStringProperty(propertyName);
 //			xmlName = xmlName.substring(xmlName.lastIndexOf(File.separator) + 1);
