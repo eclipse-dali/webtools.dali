@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.SimpleJpaProjectConfig;
 import org.eclipse.jpt.core.tests.internal.resource.java.JavaResourceModelTestCase;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatform;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkPlatform;
 
 public class EclipseLinkJavaResourceModelTestCase extends JavaResourceModelTestCase
 {	
@@ -38,7 +38,7 @@ public class EclipseLinkJavaResourceModelTestCase extends JavaResourceModelTestC
 
 	@Override
 	protected JpaProject.Config buildJpaProjectConfig(IProject project) {
-		JptCorePlugin.setJpaPlatformId(project, EclipseLinkJpaPlatform.ID);
+		JptCorePlugin.setJpaPlatformId(project, EclipseLinkPlatform.ID);
 		
 		SimpleJpaProjectConfig config = new SimpleJpaProjectConfig();
 		config.setProject(project);
