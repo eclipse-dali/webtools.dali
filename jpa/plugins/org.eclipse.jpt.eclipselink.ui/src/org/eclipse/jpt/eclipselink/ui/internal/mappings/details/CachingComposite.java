@@ -9,13 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -70,18 +74,32 @@ public class CachingComposite extends AbstractFormPane<EclipseLinkCaching>
 
 		Composite subPane = buildSubPane(container, 0, 16);
 
-			new PaneEnabler(buildSharedCacheEnabler(),
-		new CacheTypeComposite(this, subPane),
-		new AlwaysRefreshComposite(this, subPane),
-		new RefreshOnlyIfNewerComposite(this, subPane),
-		new DisableHitsComposite(this, subPane),
-		new CacheCoordinationTypeComposite(this, subPane)
-			);
+		Collection<AbstractPane<?>> panes = new ArrayList<AbstractPane<?>>();
+		
+		panes.add(new CacheTypeComposite(this, subPane));
+		panes.add(new CacheSizeComposite(this, subPane));
+		
+		// Advanced sub-pane
+		Composite advancedSection = buildCollapsableSubSection(
+			subPane,
+			EclipseLinkUiMappingsMessages.CachingComposite_advanced,
+			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
+		);
+
+		initializeAdvancedPane(buildSubPane(advancedSection, 0, 16), panes);
+			
+		new PaneEnabler(buildSharedCacheEnabler(), panes);
 			
 		new ExistenceCheckingComposite(this, buildSubPane(container, 8));
 	}
-
-
+	
+	private void initializeAdvancedPane(Composite container, Collection<AbstractPane<?>> panes) {
+		panes.add(new AlwaysRefreshComposite(this, container));
+		panes.add(new RefreshOnlyIfNewerComposite(this, container));
+		panes.add(new DisableHitsComposite(this, container));
+		panes.add(new CacheCoordinationTypeComposite(this, container));
+	}
+	
 	private PropertyValueModel<Boolean> buildSharedCacheEnabler() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_SHARED_PROPERTY) {
 			@Override
