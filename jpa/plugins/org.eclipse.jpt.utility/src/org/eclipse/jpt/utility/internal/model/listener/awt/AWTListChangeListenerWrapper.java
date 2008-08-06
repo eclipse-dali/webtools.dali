@@ -17,8 +17,6 @@ import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 /**
  * Wrap another list change listener and forward events to it on the AWT
  * event queue.
- * Forward *every* event asynchronously via the UI thread so the listener
- * receives in the same order they were generated.
  */
 public class AWTListChangeListenerWrapper
 	implements ListChangeListener
@@ -34,27 +32,51 @@ public class AWTListChangeListenerWrapper
 	}
 
 	public void itemsAdded(ListChangeEvent event) {
-		this.executeOnEventQueue(this.buildItemsAddedRunnable(event));
+		if (EventQueue.isDispatchThread()) {
+			this.itemsAdded_(event);
+		} else {
+			this.executeOnEventQueue(this.buildItemsAddedRunnable(event));
+		}
 	}
 
 	public void itemsRemoved(ListChangeEvent event) {
-		this.executeOnEventQueue(this.buildItemsRemovedRunnable(event));
+		if (EventQueue.isDispatchThread()) {
+			this.itemsRemoved_(event);
+		} else {
+			this.executeOnEventQueue(this.buildItemsRemovedRunnable(event));
+		}
 	}
 
 	public void itemsMoved(ListChangeEvent event) {
-		this.executeOnEventQueue(this.buildItemsMovedRunnable(event));
+		if (EventQueue.isDispatchThread()) {
+			this.itemsMoved_(event);
+		} else {
+			this.executeOnEventQueue(this.buildItemsMovedRunnable(event));
+		}
 	}
 
 	public void itemsReplaced(ListChangeEvent event) {
-		this.executeOnEventQueue(this.buildItemsReplacedRunnable(event));
+		if (EventQueue.isDispatchThread()) {
+			this.itemsReplaced_(event);
+		} else {
+			this.executeOnEventQueue(this.buildItemsReplacedRunnable(event));
+		}
 	}
 
 	public void listCleared(ListChangeEvent event) {
-		this.executeOnEventQueue(this.buildListClearedRunnable(event));
+		if (EventQueue.isDispatchThread()) {
+			this.listCleared_(event);
+		} else {
+			this.executeOnEventQueue(this.buildListClearedRunnable(event));
+		}
 	}
 
 	public void listChanged(ListChangeEvent event) {
-		this.executeOnEventQueue(this.buildListChangedRunnable(event));
+		if (EventQueue.isDispatchThread()) {
+			this.listChanged_(event);
+		} else {
+			this.executeOnEventQueue(this.buildListChangedRunnable(event));
+		}
 	}
 
 	private Runnable buildItemsAddedRunnable(final ListChangeEvent event) {

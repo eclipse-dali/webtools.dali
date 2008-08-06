@@ -17,8 +17,6 @@ import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 /**
  * Wrap another collection change listener and forward events to it on the AWT
  * event queue.
- * Forward *every* event asynchronously via the UI thread so the listener
- * receives in the same order they were generated.
  */
 public class AWTCollectionChangeListenerWrapper
 	implements CollectionChangeListener
@@ -34,19 +32,35 @@ public class AWTCollectionChangeListenerWrapper
 	}
 
 	public void itemsAdded(CollectionChangeEvent event) {
-		this.executeOnEventQueue(this.buildItemsAddedRunnable(event));
+		if (EventQueue.isDispatchThread()) {
+			this.itemsAdded_(event);
+		} else {
+			this.executeOnEventQueue(this.buildItemsAddedRunnable(event));
+		}
 	}
 
 	public void itemsRemoved(CollectionChangeEvent event) {
-		this.executeOnEventQueue(this.buildItemsRemovedRunnable(event));
+		if (EventQueue.isDispatchThread()) {
+			this.itemsRemoved_(event);
+		} else {
+			this.executeOnEventQueue(this.buildItemsRemovedRunnable(event));
+		}
 	}
 
 	public void collectionCleared(CollectionChangeEvent event) {
-		this.executeOnEventQueue(this.buildCollectionClearedRunnable(event));
+		if (EventQueue.isDispatchThread()) {
+			this.collectionCleared_(event);
+		} else {
+			this.executeOnEventQueue(this.buildCollectionClearedRunnable(event));
+		}
 	}
 
 	public void collectionChanged(CollectionChangeEvent event) {
-		this.executeOnEventQueue(this.buildCollectionChangedRunnable(event));
+		if (EventQueue.isDispatchThread()) {
+			this.collectionChanged_(event);
+		} else {
+			this.executeOnEventQueue(this.buildCollectionChangedRunnable(event));
+		}
 	}
 
 	private Runnable buildItemsAddedRunnable(final CollectionChangeEvent event) {

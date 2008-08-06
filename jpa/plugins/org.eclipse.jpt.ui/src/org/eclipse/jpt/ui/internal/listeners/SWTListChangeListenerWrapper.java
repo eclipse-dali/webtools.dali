@@ -16,8 +16,6 @@ import org.eclipse.swt.widgets.Display;
 /**
  * Wrap another list change listener and forward events to it on the SWT
  * UI thread.
- * Forward *every* event asynchronously via the UI thread so the listener
- * receives in the same order they were generated.
  */
 public class SWTListChangeListenerWrapper
 	implements ListChangeListener
@@ -33,27 +31,51 @@ public class SWTListChangeListenerWrapper
 	}
 
 	public void itemsAdded(ListChangeEvent event) {
-		this.executeOnUIThread(this.buildItemsAddedRunnable(event));
+		if (this.isExecutingUIThread()) {
+			this.itemsAdded_(event);
+		} else {
+			this.executeOnUIThread(this.buildItemsAddedRunnable(event));
+		}
 	}
 
 	public void itemsRemoved(ListChangeEvent event) {
-		this.executeOnUIThread(this.buildItemsRemovedRunnable(event));
+		if (this.isExecutingUIThread()) {
+			this.itemsRemoved_(event);
+		} else {
+			this.executeOnUIThread(this.buildItemsRemovedRunnable(event));
+		}
 	}
 
 	public void itemsMoved(ListChangeEvent event) {
-		this.executeOnUIThread(this.buildItemsMovedRunnable(event));
+		if (this.isExecutingUIThread()) {
+			this.itemsMoved_(event);
+		} else {
+			this.executeOnUIThread(this.buildItemsMovedRunnable(event));
+		}
 	}
 
 	public void itemsReplaced(ListChangeEvent event) {
-		this.executeOnUIThread(this.buildItemsReplacedRunnable(event));
+		if (this.isExecutingUIThread()) {
+			this.itemsReplaced_(event);
+		} else {
+			this.executeOnUIThread(this.buildItemsReplacedRunnable(event));
+		}
 	}
 
 	public void listCleared(ListChangeEvent event) {
-		this.executeOnUIThread(this.buildCollectionClearedRunnable(event));
+		if (this.isExecutingUIThread()) {
+			this.listCleared_(event);
+		} else {
+			this.executeOnUIThread(this.buildCollectionClearedRunnable(event));
+		}
 	}
 
 	public void listChanged(ListChangeEvent event) {
-		this.executeOnUIThread(this.buildCollectionChangedRunnable(event));
+		if (this.isExecutingUIThread()) {
+			this.listChanged_(event);
+		} else {
+			this.executeOnUIThread(this.buildCollectionChangedRunnable(event));
+		}
 	}
 
 	private Runnable buildItemsAddedRunnable(final ListChangeEvent event) {
@@ -126,6 +148,10 @@ public class SWTListChangeListenerWrapper
 				return "list changed";
 			}
 		};
+	}
+
+	private boolean isExecutingUIThread() {
+		return Display.getCurrent() != null;
 	}
 
 	/**

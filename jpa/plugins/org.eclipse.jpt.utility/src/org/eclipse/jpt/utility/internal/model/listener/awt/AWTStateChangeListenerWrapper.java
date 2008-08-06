@@ -17,8 +17,6 @@ import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 /**
  * Wrap another state change listener and forward events to it on the AWT
  * event queue.
- * Forward *every* event asynchronously via the UI thread so the listener
- * receives in the same order they were generated.
  */
 public class AWTStateChangeListenerWrapper
 	implements StateChangeListener
@@ -34,7 +32,11 @@ public class AWTStateChangeListenerWrapper
 	}
 
 	public void stateChanged(StateChangeEvent event) {
-		this.executeOnEventQueue(this.buildRunnable(event));
+		if (EventQueue.isDispatchThread()) {
+			this.stateChanged_(event);
+		} else {
+			this.executeOnEventQueue(this.buildRunnable(event));
+		}
 	}
 
 	private Runnable buildRunnable(final StateChangeEvent event) {

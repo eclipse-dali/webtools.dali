@@ -16,8 +16,6 @@ import org.eclipse.swt.widgets.Display;
 /**
  * Wrap another tree change listener and forward events to it on the SWT
  * UI thread.
- * Forward *every* event asynchronously via the UI thread so the listener
- * receives in the same order they were generated.
  */
 public class SWTTreeChangeListenerWrapper
 	implements TreeChangeListener
@@ -33,19 +31,35 @@ public class SWTTreeChangeListenerWrapper
 	}
 
 	public void nodeAdded(TreeChangeEvent event) {
-		this.executeOnUIThread(this.buildNodeAddedRunnable(event));
+		if (this.isExecutingUIThread()) {
+			this.nodeAdded_(event);
+		} else {
+			this.executeOnUIThread(this.buildNodeAddedRunnable(event));
+		}
 	}
 
 	public void nodeRemoved(TreeChangeEvent event) {
-		this.executeOnUIThread(this.buildNodeRemovedRunnable(event));
+		if (this.isExecutingUIThread()) {
+			this.nodeRemoved_(event);
+		} else {
+			this.executeOnUIThread(this.buildNodeRemovedRunnable(event));
+		}
 	}
 
 	public void treeCleared(TreeChangeEvent event) {
-		this.executeOnUIThread(this.buildTreeClearedRunnable(event));
+		if (this.isExecutingUIThread()) {
+			this.treeCleared_(event);
+		} else {
+			this.executeOnUIThread(this.buildTreeClearedRunnable(event));
+		}
 	}
 
 	public void treeChanged(TreeChangeEvent event) {
-		this.executeOnUIThread(this.buildTreeChangedRunnable(event));
+		if (this.isExecutingUIThread()) {
+			this.treeChanged_(event);
+		} else {
+			this.executeOnUIThread(this.buildTreeChangedRunnable(event));
+		}
 	}
 
 	private Runnable buildNodeAddedRunnable(final TreeChangeEvent event) {
@@ -94,6 +108,10 @@ public class SWTTreeChangeListenerWrapper
 				return "tree changed";
 			}
 		};
+	}
+
+	private boolean isExecutingUIThread() {
+		return Display.getCurrent() != null;
 	}
 
 	/**
