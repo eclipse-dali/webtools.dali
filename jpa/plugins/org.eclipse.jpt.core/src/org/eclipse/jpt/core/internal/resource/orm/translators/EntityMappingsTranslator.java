@@ -35,10 +35,10 @@ public class EntityMappingsTranslator extends RootTranslator
 	
 	private Translator[] createChildren() {
 		return new Translator[] {
+			createVersionTranslator(),
 			new ConstantAttributeTranslator(XML_NS, PERSISTENCE_NS_URL),
 			new ConstantAttributeTranslator(XML_NS_XSI, XSI_NS_URL),
 			new ConstantAttributeTranslator(XSI_SCHEMA_LOCATION, PERSISTENCE_NS_URL + ' ' + ORM_SCHEMA_LOC_1_0),
-			createVersionTranslator(),
 			createDescriptionTranslator(),
 			createPersistenceUnitMetadataTranslator(),
 			createPackageTranslator(),
