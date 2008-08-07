@@ -45,6 +45,7 @@ public class PersistenceModelTests extends TestCase
 		assertNotNull(artifactEdit);
 		PersistenceResource resource = artifactEdit.getResource("META-INF/persistence.xml");
 		assertNotNull(resource);
+		artifactEdit.dispose();
 	}
 	
 	public void testModelLoad2() {
@@ -52,5 +53,6 @@ public class PersistenceModelTests extends TestCase
 		assertNotNull(artifactEdit);
 		PersistenceResource resource = artifactEdit.getResource("META-INF/persistence.xml");
 		assertNotNull(resource);
+		artifactEdit.dispose();
 	}
 }
