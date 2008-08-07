@@ -19,11 +19,15 @@
 
 	<!-- This target defines the tests that need to be run. -->
 	<target name="suite">
+	    <property name="jpt-folder" value="${eclipse-home}/jpt_folder"/>
+	    <delete dir="${jpt-folder}" quiet="true"/>
+		
 		<ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
+		    <property name="data-dir" value="${jpt-folder}"/>
 			<property name="plugin-name" value="${plugin-name}"/>
 			<property name="classname" value="org.eclipse.jpt.eclipselink.core.tests.internal.JptEclipseLinkCoreTests" />
 			<property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}"/>
-			<property name="extraVMargs" value=""/>
+			<property name="extraVMargs" value="-Dorg.eclipse.jpt.jpa.jar=${testDir}/${jptPersistenceLibDir}"/>
 		</ant>
 	</target>
 
