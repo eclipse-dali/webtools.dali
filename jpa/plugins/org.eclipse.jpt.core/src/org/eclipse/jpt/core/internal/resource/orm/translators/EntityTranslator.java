@@ -9,6 +9,7 @@
 package org.eclipse.jpt.core.internal.resource.orm.translators;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.jpt.core.internal.resource.common.translators.EmptyTagBooleanTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 public class EntityTranslator extends Translator

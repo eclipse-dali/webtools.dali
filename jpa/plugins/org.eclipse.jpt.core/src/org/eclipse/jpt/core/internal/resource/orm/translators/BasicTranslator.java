@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.resource.orm.translators;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.resource.common.translators.BooleanTranslator;
+import org.eclipse.jpt.core.internal.resource.common.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
