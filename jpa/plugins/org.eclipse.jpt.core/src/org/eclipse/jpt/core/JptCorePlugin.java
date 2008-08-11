@@ -228,7 +228,7 @@ public class JptCorePlugin extends Plugin {
 	 * Tweak the specified deployment URI if the specified project
 	 * has a web facet.
 	 */
-	private static String getDeploymentURI(IProject project, String defaultURI) {
+	public static String getDeploymentURI(IProject project, String defaultURI) {
 		return projectHasWebFacet(project) ?
 				WEB_PROJECT_DEPLOY_PREFIX + "/" + defaultURI
 			:
