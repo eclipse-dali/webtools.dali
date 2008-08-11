@@ -9,13 +9,17 @@ Bundle-ClassPath: .
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.resources;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.core.runtime;bundle-version="[3.4.0,4.0.0)",
- org.eclipse.emf.ecore;bundle-version="[2.4.0,3.0.0)",
- org.eclipse.jdt.core;bundle-version="[3.4.0,4.0.0)",
- org.eclipse.jpt.db;bundle-version="[1.1.1,2.0.0)",
- org.eclipse.jpt.core;bundle-version="[2.0.0,3.0.0)",
- org.eclipse.jpt.utility;bundle-version="[1.2.0,2.0.0)",
  org.eclipse.debug.core;bundle-version="[3.4.0,4.0.0)",
+ org.eclipse.emf.ecore;bundle-version="[2.4.0,3.0.0)",
+ org.eclipse.emf.ecore.xmi;bundle-version="2.4.0",
+ org.eclipse.jdt.core;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.jdt.launching;bundle-version="[3.4.0,4.0.0)",
+ org.eclipse.jpt.core;bundle-version="[2.0.0,3.0.0)",
+ org.eclipse.jpt.db;bundle-version="[1.1.1,2.0.0)",
+ org.eclipse.jpt.utility;bundle-version="[1.2.0,2.0.0)",
+ org.eclipse.wst.common.emf;bundle-version="1.1.200",
+ org.eclipse.wst.common.emfworkbench.integration;bundle-version="1.1.200",
+ org.eclipse.wst.common.modulecore;bundle-version="1.1.201",
  org.eclipse.wst.validation;bundle-version="[1.2.0,2.0.0)"
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.jpt.eclipselink.core,
@@ -31,6 +35,8 @@ Export-Package: org.eclipse.jpt.eclipselink.core,
  org.eclipse.jpt.eclipselink.core.internal.context.options,
  org.eclipse.jpt.eclipselink.core.internal.context.schema.generation,
  org.eclipse.jpt.eclipselink.core.internal.ddlgen,
+ org.eclipse.jpt.eclipselink.core.internal.resource.elorm.translators,
  org.eclipse.jpt.eclipselink.core.internal.resource.java,
+ org.eclipse.jpt.eclipselink.core.resource.elorm,
  org.eclipse.jpt.eclipselink.core.resource.java
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
