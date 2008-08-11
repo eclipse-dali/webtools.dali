@@ -10,10 +10,8 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal;
 
 import java.io.File;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.eclipselink.core.tests.internal.caching.JptEclipseLinkCoreCachingTests;
 import org.eclipse.jpt.eclipselink.core.tests.internal.connection.JptEclipseLinkCoreConnectionTests;
@@ -21,7 +19,7 @@ import org.eclipse.jpt.eclipselink.core.tests.internal.context.JptEclipseLinkCor
 import org.eclipse.jpt.eclipselink.core.tests.internal.customization.JptEclipseLinkCoreCustomizationTests;
 import org.eclipse.jpt.eclipselink.core.tests.internal.logging.JptEclipseLinkCoreLoggingTests;
 import org.eclipse.jpt.eclipselink.core.tests.internal.options.JptEclipseLinkCoreOptionsTests;
-//import org.eclipse.jpt.eclipselink.core.tests.internal.resource.JptEclipselinkCoreResourceModelTests;
+import org.eclipse.jpt.eclipselink.core.tests.internal.resource.JptEclipselinkCoreResourceModelTests;
 import org.eclipse.jpt.eclipselink.core.tests.internal.schema.generation.JptEclipseLinkCoreSchemaGenerationTests;
 
 /**
@@ -41,7 +39,7 @@ public class JptEclipseLinkCoreTests
 			suite.addTest(JptEclipseLinkCoreCustomizationTests.suite());
 			suite.addTest(JptEclipseLinkCoreCachingTests.suite());
 			suite.addTest(JptEclipseLinkCoreSchemaGenerationTests.suite());
-//			suite.addTest(JptEclipselinkCoreResourceModelTests.suite());
+			suite.addTest(JptEclipselinkCoreResourceModelTests.suite());
 			suite.addTest(JptEclipseLinkCoreContextModelTests.suite());
 		}
 		else {

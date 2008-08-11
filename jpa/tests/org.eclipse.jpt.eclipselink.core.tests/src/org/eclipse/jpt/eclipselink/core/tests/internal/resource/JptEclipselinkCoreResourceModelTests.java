@@ -14,6 +14,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.eclipselink.core.tests.internal.resource.java.JptEclipseLinkCoreJavaResourceModelTests;
+import org.eclipse.jpt.eclipselink.core.tests.internal.resource.orm.EclipseLinkOrmResourceModelTests;
 
 public class JptEclipselinkCoreResourceModelTests extends TestCase
 {
@@ -24,6 +25,7 @@ public class JptEclipselinkCoreResourceModelTests extends TestCase
 	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptEclipselinkCoreResourceModelTests.class.getName());
 		suite.addTest(JptEclipseLinkCoreJavaResourceModelTests.suite(all));
+		suite.addTestSuite(EclipseLinkOrmResourceModelTests.class);
 		return suite;
 	}
 
