@@ -71,8 +71,10 @@
 			base-type="org.eclipse.core.runtime.xml"
 			file-names="orm.xml">
 			<describer
-				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
-				<parameter name="element" value="entity-mappings"/>
+				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
+				<parameter 
+					name="element" 
+					value="{http://java.sun.com/xml/ns/persistence/orm}entity-mappings"/>
 			</describer>
 		</content-type>
   		
@@ -82,8 +84,10 @@
 			base-type="org.eclipse.core.runtime.xml"
 			file-names="persistence.xml">
 			<describer
-				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
-				<parameter name="element" value="persistence"/>
+				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
+				<parameter 
+					name="element" 
+					value="{http://java.sun.com/xml/ns/persistence}persistence"/>
 			</describer>
 		</content-type>
  	
