@@ -32,7 +32,7 @@ public class JptEclipseLinkCoreTests
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptEclipseLinkCoreTests.class.getPackage().getName());
 		
-		if(jpaJarPropertyExist() && jpaJarFileExist()) {
+		if(jpaJarPropertyExists() && jpaJarFileExists()) {
 			suite.addTest(JptEclipseLinkCoreConnectionTests.suite());
 			suite.addTest(JptEclipseLinkCoreOptionsTests.suite());
 			suite.addTest(JptEclipseLinkCoreLoggingTests.suite());
@@ -43,7 +43,7 @@ public class JptEclipseLinkCoreTests
 			suite.addTest(JptEclipseLinkCoreContextModelTests.suite());
 		}
 		else {
-			String message = ( ! jpaJarPropertyExist()) ?
+			String message = ( ! jpaJarPropertyExists()) ?
 				"missing Java system property: \"" + JPA_JAR_PROPERTY + "\"" :
 				"missing JPA jar file: \"" + getJpaJarProperty() + "\"";
 			suite.addTest(TestSuite.warning(message));
@@ -51,12 +51,12 @@ public class JptEclipseLinkCoreTests
 		return suite;
 	}
 	
-	public static boolean jpaJarPropertyExist() {
+	public static boolean jpaJarPropertyExists() {
 		String jpaJarName = getJpaJarProperty();
 		return jpaJarName != null;
 	}
 	
-	public static boolean jpaJarFileExist() {
+	public static boolean jpaJarFileExists() {
 		File file = new File(getJpaJarProperty());
 		return file.exists();
 	}
