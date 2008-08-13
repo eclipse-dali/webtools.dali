@@ -9,18 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.EntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -105,14 +110,48 @@ public class GenericJpaPlatform
 		return new GenericJpaFactory();
 	}
 
+	//TODO Something still needs to change here with this API.  buildJpaFile is having to do too much
+	//and it is odd to return null from it.  We should probably have API that returns the 
+	//contentTypeId if it is relevant to the platform, then we would only ever call buildJpaFile
+	//if that was non-null.  Or the buildJpaFile api should just be removed completely
 	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file) {
-		if (this.getJpaFactory().hasRelevantContent(file)) {
-			ResourceModel resourceModel = this.getJpaFactory().buildResourceModel(jpaProject, file);
-			return this.getJpaFactory().buildJpaFile(jpaProject, file, resourceModel);
+		if (! JavaCore.create(file.getProject()).isOnClasspath(file)) {
+			return null;
+		}
+		IContentType contentType = this.contentType(file);
+		if (contentType == null) {
+			return null;
+		}
+		String contentTypeId = contentType.getId();
+		if (supportsContentType(contentTypeId)) {
+			ResourceModel resourceModel = getJpaFactory().buildResourceModel(jpaProject, file, contentTypeId);
+			return getJpaFactory().buildJpaFile(jpaProject, file, resourceModel);
+		}
+		
+		return null;
+	}
+	
+	protected boolean supportsContentType(String contentTypeId) {
+		return contentTypeId.equals(JavaCore.JAVA_SOURCE_CONTENT_TYPE)
+				|| contentTypeId.equals(JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE)
+				|| contentTypeId.equals(JptCorePlugin.ORM_XML_CONTENT_TYPE);
+	}
+	
+	// attempting to get the contentType based on the file contents.
+	// have to check the file contents instead of just the file name
+	// because for xml we base it on the rootElement name
+	private IContentType contentType(IFile file) {
+		try {
+			return Platform.getContentTypeManager().findContentTypeFor(file.getContents(), file.getName());
+		}
+		catch (IOException ex) {
+			JptCorePlugin.log(ex);
+		}
+		catch (CoreException ex) {
+			JptCorePlugin.log(ex);
 		}
 		return null;
 	}
-
 
 	// **************** Java annotation support ********************************
 

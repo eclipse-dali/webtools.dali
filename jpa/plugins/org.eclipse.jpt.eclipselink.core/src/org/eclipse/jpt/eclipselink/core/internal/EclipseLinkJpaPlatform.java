@@ -13,18 +13,18 @@ import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
 
-public class EclipseLinkPlatform extends GenericJpaPlatform
+public class EclipseLinkJpaPlatform extends GenericJpaPlatform
 {
 	public static String ID = "org.eclipse.eclipselink.platform";
 
 	// ********* constructor *********
-	public EclipseLinkPlatform() {
+	public EclipseLinkJpaPlatform() {
 		super();
 	}
 
 	@Override
 	public String getId() {
-		return EclipseLinkPlatform.ID;
+		return EclipseLinkJpaPlatform.ID;
 	}
 
 	// ********* Model construction / updating *********
@@ -38,4 +38,11 @@ public class EclipseLinkPlatform extends GenericJpaPlatform
 	protected JpaAnnotationProvider buildAnnotationProvider() {
 		return new EclipseLinkJpaAnnotationProvider();
 	}
+	
+	@Override
+	protected boolean supportsContentType(String contentTypeId) {
+		return contentTypeId.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE) ||
+			super.supportsContentType(contentTypeId);
+	}
+	
 }

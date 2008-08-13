@@ -157,23 +157,14 @@ public interface JpaFactory
 	/**
 	 * Construct a JPA file for the specified file and with the specified resource
 	 * model, to be added to the specified JPA project.
-	 * This should be non-null iff (if and only if) {@link #hasRelevantContent(IFile)}
-	 * returns true.
 	 */
 	JpaFile buildJpaFile(JpaProject jpaProject, IFile file, ResourceModel resourceModel);
 	
 	/**
-	 * Return true if a resource model will be provided for the given file
-	 * (this method should be moved to JpaPlatform)
+	 * Build a resource model to be associated with the given file, non-null.
+	 * Throws an IllegalArgumentException is contentTypeId is not supported
 	 */
-	boolean hasRelevantContent(IFile file);
-	
-	/**
-	 * Build a resource model to be associated with the given file.
-	 * This should be non-null iff (if and only if) {@link #hasRelevantContent(IFile)}
-	 * returns true. 
-	 */
-	ResourceModel buildResourceModel(JpaProject jpaProject, IFile file);
+	ResourceModel buildResourceModel(JpaProject jpaProject, IFile file, String contentTypeId);
 	
 	/**
 	 * Build a (/an updated) root context node to be associated with the given 

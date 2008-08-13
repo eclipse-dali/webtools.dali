@@ -15,9 +15,12 @@ import java.util.List;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.eclipselink.core.EclipseLinkResourceModel;
 import org.eclipse.jpt.eclipselink.ui.EclipseLinkJpaUiFactory;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactoryImpl;
 import org.eclipse.jpt.eclipselink.ui.internal.ddlgen.EclipseLinkDDLGeneratorUi;
@@ -27,6 +30,7 @@ import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
+import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -37,6 +41,20 @@ public class EclipseLinkJpaPlatformUI extends BaseJpaPlatformUi
 {
 	public EclipseLinkJpaPlatformUI() {
 		super();
+	}
+	
+	// **************** structure view content *********************************
+
+	@Override
+	public JpaStructureProvider buildStructureProvider(JpaFile jpaFile) {
+		ResourceModel resourceModel = jpaFile.getResourceModel();
+		String resourceType = resourceModel.getResourceType();
+
+		if (resourceType == EclipseLinkResourceModel.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+//TODO		return new OrmResourceModelStructureProvider((OrmResourceModel) resourceModel);
+		}
+
+		return super.buildStructureProvider(jpaFile);
 	}
 
 	// ********* navigator content *********

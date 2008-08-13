@@ -9,11 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
-import java.io.IOException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFactory;
@@ -232,37 +229,7 @@ public class GenericJpaFactory implements JpaFactory
 	
 	// **************** Resource objects **************************************
 	
-	public boolean hasRelevantContent(IFile file) {
-		if (! JavaCore.create(file.getProject()).isOnClasspath(file)) {
-			return false;
-		}
-		IContentType contentType = this.contentType(file);
-		if (contentType == null) {
-			return false;
-		}
-		String contentTypeId = contentType.getId();
-		return supportsContentType(contentTypeId);
-	}
-	
-	protected boolean supportsContentType(String contentTypeId) {
-		return contentTypeId.equals(JavaCore.JAVA_SOURCE_CONTENT_TYPE)
-				|| contentTypeId.equals(JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE)
-				|| contentTypeId.equals(JptCorePlugin.ORM_XML_CONTENT_TYPE);
-	}
-	
-	public ResourceModel buildResourceModel(JpaProject jpaProject, IFile file) {
-		if (! JavaCore.create(jpaProject.getProject()).isOnClasspath(file)) {
-			throw new IllegalArgumentException("The file" + file + " is not on the project classpath");
-		}
-		IContentType contentType = this.contentType(file);
-		if (contentType == null) {
-			throw new IllegalArgumentException("The file" + file + " does not have a supported content type");
-		}
-		String contentTypeId = contentType.getId();
-		return buildResourceModel(jpaProject, file, contentTypeId);
-	}
-	
-	protected ResourceModel buildResourceModel(JpaProject jpaProject, IFile file, String contentTypeId) {
+	public ResourceModel buildResourceModel(JpaProject jpaProject, IFile file, String contentTypeId) {
 		if (JavaCore.JAVA_SOURCE_CONTENT_TYPE.equals(contentTypeId)) {
 			return buildJavaResourceModel(jpaProject, file);
 		}
@@ -273,7 +240,7 @@ public class GenericJpaFactory implements JpaFactory
 			return buildOrmResourceModel(file);
 		}
 		
-		return null;
+		throw new IllegalArgumentException("The file" + file + " with content type id " + contentTypeId + " is not supported");
 	}
 	
 	protected ResourceModel buildJavaResourceModel(JpaProject jpaProject, IFile file) {
@@ -289,22 +256,6 @@ public class GenericJpaFactory implements JpaFactory
 	
 	protected ResourceModel buildOrmResourceModel(IFile file) {
 		return new OrmResourceModel(file);
-	}
-	
-	// attempting to get the contentType based on the file contents.
-	// have to check the file contents instead of just the file name
-	// because for xml we base it on the rootElement name
-	private IContentType contentType(IFile file) {
-		try {
-			return Platform.getContentTypeManager().findContentTypeFor(file.getContents(), file.getName());
-		}
-		catch (IOException ex) {
-			JptCorePlugin.log(ex);
-		}
-		catch (CoreException ex) {
-			JptCorePlugin.log(ex);
-		}
-		return null;
 	}
 	
 	

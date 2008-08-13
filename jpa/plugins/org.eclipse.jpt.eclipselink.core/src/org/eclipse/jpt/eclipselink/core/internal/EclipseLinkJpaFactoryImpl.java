@@ -9,6 +9,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.persistence.Persistence;
@@ -21,6 +24,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaCachingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEntityImpl;
+import org.eclipse.jpt.eclipselink.core.resource.elorm.EclipseLinkOrmResourceModel;
 
 public class EclipseLinkJpaFactoryImpl extends GenericJpaFactory implements EclipseLinkJpaFactory
 {
@@ -40,6 +44,18 @@ public class EclipseLinkJpaFactoryImpl extends GenericJpaFactory implements Ecli
 	
 	public EclipseLinkJavaCaching buildEclipseLinkJavaCaching(JavaTypeMapping parent) {
 		return new EclipseLinkJavaCachingImpl(parent);
+	}
+	
+	@Override
+	public ResourceModel buildResourceModel(JpaProject jpaProject, IFile file, String contentTypeId) {
+		if (JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE.equals(contentTypeId)) {
+			return buildEclipseLinkOrmResourceModel(file);
+		}
+		return super.buildResourceModel(jpaProject, file, contentTypeId);
+	}
+	
+	protected ResourceModel buildEclipseLinkOrmResourceModel(IFile file) {
+		return new EclipseLinkOrmResourceModel(file);
 	}
 
 }
