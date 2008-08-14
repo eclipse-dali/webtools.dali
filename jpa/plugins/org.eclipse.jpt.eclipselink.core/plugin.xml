@@ -26,7 +26,7 @@
 		
 		<jpaPlatform
 			id="org.eclipse.eclipselink.platform"
-            class="org.eclipse.jpt.eclipselink.core.internal.EclipseLinkPlatform"
+            class="org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatform"
 			label="%ECLIPSELINK_PLATFORM">
 		</jpaPlatform>
 		
