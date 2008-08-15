@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -141,14 +142,25 @@ public class GenericJpaPlatform
 	// have to check the file contents instead of just the file name
 	// because for xml we base it on the rootElement name
 	private IContentType contentType(IFile file) {
+		InputStream inputStream = null;
 		try {
-			return Platform.getContentTypeManager().findContentTypeFor(file.getContents(), file.getName());
+			inputStream = file.getContents();
+			return Platform.getContentTypeManager().findContentTypeFor(inputStream, file.getName());
 		}
 		catch (IOException ex) {
 			JptCorePlugin.log(ex);
 		}
 		catch (CoreException ex) {
 			JptCorePlugin.log(ex);
+		}
+		finally {
+			try {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+			} catch (IOException ex) {
+				JptCorePlugin.log(ex);
+			}
 		}
 		return null;
 	}
