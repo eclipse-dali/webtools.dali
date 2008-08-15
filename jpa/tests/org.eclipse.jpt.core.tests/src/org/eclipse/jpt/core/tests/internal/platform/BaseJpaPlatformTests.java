@@ -11,7 +11,6 @@
 package org.eclipse.jpt.core.tests.internal.platform;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 
 public class BaseJpaPlatformTests extends TestCase
@@ -31,8 +30,7 @@ public class BaseJpaPlatformTests extends TestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		ProjectUtility.deleteAllProjects();
-		jpaProject = this.buildJpaProject(PROJECT_NAME, false);  // false = no auto-build
+		this.jpaProject = this.buildJpaProject(PROJECT_NAME, false);  // false = no auto-build
 	}
 
 	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild) throws Exception {
@@ -41,8 +39,8 @@ public class BaseJpaPlatformTests extends TestCase
 
 	@Override
 	protected void tearDown() throws Exception {
-		ProjectUtility.deleteAllProjects();
-		jpaProject = null;
+		this.jpaProject.getProject().delete(true, true, null);
+		this.jpaProject = null;
 		super.tearDown();
 	}
 	

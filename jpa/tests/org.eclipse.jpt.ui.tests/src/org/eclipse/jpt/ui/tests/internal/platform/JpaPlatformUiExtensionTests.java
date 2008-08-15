@@ -6,7 +6,6 @@ import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.core.tests.extension.resource.ExtensionTestPlugin;
 import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatform;
 import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformUi;
-import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 
 public class JpaPlatformUiExtensionTests extends TestCase
@@ -42,8 +41,7 @@ public class JpaPlatformUiExtensionTests extends TestCase
 
 	@Override
 	protected void tearDown() throws Exception {
-		//testProject.dispose();
-		ProjectUtility.deleteAllProjects();
+		this.testProject.getProject().delete(true, true, null);
 		this.testProject = null;
 		super.tearDown();
 	}

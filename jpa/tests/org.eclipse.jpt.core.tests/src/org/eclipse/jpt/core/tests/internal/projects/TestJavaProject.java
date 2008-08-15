@@ -36,7 +36,7 @@ public class TestJavaProject extends TestFacetedProject {
 	
 	public static TestJavaProject buildJavaProject(String baseProjectName, boolean autoBuild)
 			throws CoreException {
-		return new TestJavaProject(uniqueProjectName(baseProjectName), autoBuild);
+		return new TestJavaProject(baseProjectName, autoBuild);
 	}
 	
 	

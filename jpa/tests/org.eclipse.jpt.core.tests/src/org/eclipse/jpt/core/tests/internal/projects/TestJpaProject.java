@@ -32,7 +32,7 @@ public class TestJpaProject extends TestJavaProject {
 
 	public static TestJpaProject buildJpaProject(String baseProjectName, boolean autoBuild, IDataModel jpaConfig)
 			throws CoreException {
-		return new TestJpaProject(uniqueProjectName(baseProjectName), autoBuild, jpaConfig);
+		return new TestJpaProject(baseProjectName, autoBuild, jpaConfig);
 	}
 
 	public static TestJpaProject buildJpaProject(String baseProjectName, boolean autoBuild)

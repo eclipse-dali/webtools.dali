@@ -27,7 +27,7 @@ public class TestFacetedProject extends TestPlatformProject {
 	
 	public static TestFacetedProject buildFacetedProject(String baseProjectName, boolean autoBuild)
 			throws CoreException {
-		return new TestFacetedProject(uniqueProjectName(baseProjectName), autoBuild);
+		return new TestFacetedProject(baseProjectName, autoBuild);
 	}
 	
 	

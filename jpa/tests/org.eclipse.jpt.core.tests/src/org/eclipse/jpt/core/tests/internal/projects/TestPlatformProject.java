@@ -38,11 +38,7 @@ public class TestPlatformProject {
 	
 	public static TestPlatformProject buildPlatformProject(String baseProjectName, boolean autoBuild)
 			throws CoreException {
-		return new TestPlatformProject(uniqueProjectName(baseProjectName), autoBuild);
-	}
-	
-	public static String uniqueProjectName(String baseProjectName) {
-		return baseProjectName + String.valueOf(System.currentTimeMillis()).substring(7);
+		return new TestPlatformProject(baseProjectName, autoBuild);
 	}
 	
 	

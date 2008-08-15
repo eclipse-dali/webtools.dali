@@ -11,7 +11,6 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.resource.orm;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.resource.elorm.EclipseLinkOrmArtifactEdit;
@@ -33,13 +32,12 @@ public class EclipseLinkOrmResourceModelTests extends TestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		ProjectUtility.deleteAllProjects();
-		jpaProject = TestJpaProject.buildJpaProject(BASE_PROJECT_NAME, false); // false = no auto-build
+		this.jpaProject = TestJpaProject.buildJpaProject(BASE_PROJECT_NAME, false); // false = no auto-build
 		
 		EclipseLinkOrmArtifactEdit ae = 
-			EclipseLinkOrmArtifactEdit.getArtifactEditForWrite(jpaProject.getProject());
+			EclipseLinkOrmArtifactEdit.getArtifactEditForWrite(this.jpaProject.getProject());
 		EclipseLinkOrmResource resource = 
-			ae.getResource(JptEclipseLinkCorePlugin.getDefaultEclipseLinkOrmXmlDeploymentURI(jpaProject.getProject()));
+			ae.getResource(JptEclipseLinkCorePlugin.getDefaultEclipseLinkOrmXmlDeploymentURI(this.jpaProject.getProject()));
 
 		// 202811 - do not add content if it is already present
 		if (resource.getEntityMappings() == null) {
@@ -54,13 +52,14 @@ public class EclipseLinkOrmResourceModelTests extends TestCase
 	
 	@Override
 	protected void tearDown() throws Exception {
-		jpaProject = null;
+		this.jpaProject.getProject().delete(true, true, null);
+		this.jpaProject = null;
 		super.tearDown();
 	}
 	
 	public void testModelLoad() {
 		EclipseLinkOrmArtifactEdit artifactEdit = 
-			EclipseLinkOrmArtifactEdit.getArtifactEditForRead(jpaProject.getProject());
+			EclipseLinkOrmArtifactEdit.getArtifactEditForRead(this.jpaProject.getProject());
 		assertNotNull(artifactEdit);
 		EclipseLinkOrmResource resource = artifactEdit.getResource("META-INF/eclipselink-orm.xml");
 		assertNotNull(resource);
@@ -69,7 +68,7 @@ public class EclipseLinkOrmResourceModelTests extends TestCase
 	
 	public void testModelLoad2() {
 		EclipseLinkOrmArtifactEdit artifactEdit = 
-			EclipseLinkOrmArtifactEdit.getArtifactEditForRead(jpaProject.getProject());
+			EclipseLinkOrmArtifactEdit.getArtifactEditForRead(this.jpaProject.getProject());
 		assertNotNull(artifactEdit);
 		EclipseLinkOrmResource resource = artifactEdit.getResource("META-INF/eclipselink-orm.xml");
 		assertNotNull(resource);

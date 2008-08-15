@@ -60,22 +60,11 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	@Override
-	protected void deleteAllProjects()  throws Exception{
-		//don't delete projects, creating a new one with a new name
-		//workspace will be deleted next time tests are run.
-		//not saying this is the ultimate solution, but it will work for now
-		//until we can figure out how to properly delete projects in tests
-	}
-	
-	@Override
 	protected void tearDown() throws Exception {
-		//at least delete the project from the workspace since, deleting from the file system doesn't work well.
-		//tests run too slow otherwise because so many projects are created in the workspace
 		this.persistenceArtifactEdit.dispose();
 		this.persistenceArtifactEdit = null;
 		this.ormArtifactEdit.dispose();
 		this.ormArtifactEdit = null;
-		getJavaProject().getProject().delete(false, true, null);
 		super.tearDown();
 	}
 	
@@ -182,9 +171,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	protected void deleteResource(Resource resource) throws CoreException {
-		System.gc();
 		WorkbenchResourceHelper.deleteResource(resource);
-		waitForWorkspaceJobs();
 	}
 	
 	protected ICompilationUnit createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
