@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -39,6 +40,10 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	
 	protected static final String INNER_CLASS_NAME = "InnerAnnotationTestType";
 	protected static final String FULLY_QUALIFIED_INNER_CLASS_NAME = PACKAGE_NAME + "." + TYPE_NAME + "." + INNER_CLASS_NAME;
+
+	public static final String OTHER_TYPE_NAME = "OtherTestType";
+	public static final String FULLY_QUALIFIED_OTHER_TYPE_NAME = PACKAGE_NAME + "." + OTHER_TYPE_NAME;
+
 
 	public PersistenceUnitTests(String name) {
 		super(name);
@@ -653,8 +658,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		removeXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		classRefs = persistenceUnit().impliedClassRefs();
-		assertEquals(FULLY_QUALIFIED_TYPE_NAME, classRefs.next().getClassName());
 		assertEquals(FULLY_QUALIFIED_INNER_CLASS_NAME, classRefs.next().getClassName());
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, classRefs.next().getClassName());
 		
 		entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		classRefs = persistenceUnit().impliedClassRefs();
@@ -675,7 +680,35 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertFalse(classRefs.hasNext());
 	}
 	
-	public void testUpdateExcludeUnlistedClasses() {
+	public void testRenamePersistentTypeImpliedClassRefs() throws Exception {
+		getJavaProject().getJpaProject().setDiscoversAnnotatedClasses(true);
+		ICompilationUnit testType = createTestEntity();
+		ICompilationUnit otherTestType = this.createTestOtherTypeEntity();
+		
+		ListIterator<ClassRef> classRefs = persistenceUnit().impliedClassRefs();
+		ClassRef testTypeClassRef = classRefs.next();
+		ClassRef otherTestTypeClassRef = classRefs.next();
+		
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, testTypeClassRef.getClassName());
+		assertEquals(FULLY_QUALIFIED_OTHER_TYPE_NAME, otherTestTypeClassRef.getClassName());
+		
+		JavaPersistentType testJavaPersistentType = testTypeClassRef.getJavaPersistentType();
+		JavaPersistentType otherTestJavaPersistentType = otherTestTypeClassRef.getJavaPersistentType();
+		
+		testType.findPrimaryType().rename("TestType2", false, null);
+		
+		classRefs = persistenceUnit().impliedClassRefs();
+		otherTestTypeClassRef = classRefs.next();
+		testTypeClassRef = classRefs.next();
+		
+		assertEquals(FULLY_QUALIFIED_OTHER_TYPE_NAME, otherTestTypeClassRef.getClassName());
+		assertEquals("test.TestType2", testTypeClassRef.getClassName());
+		
+		assertEquals(otherTestJavaPersistentType, otherTestTypeClassRef.getJavaPersistentType());
+		assertNotSame(testJavaPersistentType, testTypeClassRef.getJavaPersistentType());
+	}
+	
+	public void testUpdateExcludeUnlistedClasses() throws Exception {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
 		PersistenceUnit persistenceUnit = persistenceUnit();
 		
@@ -1064,6 +1097,20 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		});
 	}
 	
+	private ICompilationUnit createTestOtherTypeEntity() throws Exception {
+		return this.createTestType(PACKAGE_NAME, OTHER_TYPE_NAME + ".java", OTHER_TYPE_NAME, new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY);
+			}
+				@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+
+		});
+	}
+
 	private ICompilationUnit createTestEntityWithPersistentInnerClass() throws Exception {
 		createEntityAnnotation();
 	

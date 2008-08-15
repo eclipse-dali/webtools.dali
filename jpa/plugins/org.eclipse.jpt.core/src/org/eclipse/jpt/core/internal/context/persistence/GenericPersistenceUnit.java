@@ -798,7 +798,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		updateMappingFileRefs(persistenceUnit);
 		//update implied classRefs last since they depend on both
 		//specified classRefs and mappingFileRefs
-		updateImpliedClassRefs(persistenceUnit);
+		updateImpliedClassRefs();
 		updateExcludeUnlistedClasses(persistenceUnit);
 		updateProperties(persistenceUnit);
 		updatePersistenceUnitDefaults();
@@ -906,57 +906,66 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		return getJpaFactory().buildMappingFileRef(this, xmlMappingFileRef);
 	}
 	
+	//this is not being changed to match updateImpliedClassRefs.  In the xml,
+	//changing the class name does not imply that a new object needs to be created.
+	//If anything we should be matching ClassRefs with the corresponding XmlJavaClassRef
+	//and if there is not one the ClassRef would be removed.  We would not want to 
+	//do a name match as is done for the implied class refs.
 	protected void updateSpecifiedClassRefs(XmlPersistenceUnit persistenceUnit) {
-		Iterator<ClassRef> stream = specifiedClassRefs();
-		Iterator<XmlJavaClassRef> stream2 = new CloneIterator<XmlJavaClassRef>(persistenceUnit.getClasses());//prevent ConcurrentModificiationException
+		Iterator<ClassRef> contextClassRefs = specifiedClassRefs();
+		Iterator<XmlJavaClassRef> resourceClassRefs = new CloneIterator<XmlJavaClassRef>(persistenceUnit.getClasses());//prevent ConcurrentModificiationException
 		
-		while (stream.hasNext()) {
-			ClassRef classRef = stream.next();
-			if (stream2.hasNext()) {
-				classRef.update(stream2.next());
+		while (contextClassRefs.hasNext()) {
+			ClassRef contextClassRef = contextClassRefs.next();
+			if (resourceClassRefs.hasNext()) {
+				contextClassRef.update(resourceClassRefs.next());
 			}
 			else {
-				removeSpecifiedClassRef_(classRef);
+				removeSpecifiedClassRef_(contextClassRef);
 			}
 		}
 		
-		while (stream2.hasNext()) {
-			addSpecifiedClassRef_(buildClassRef(stream2.next()));
+		while (resourceClassRefs.hasNext()) {
+			addSpecifiedClassRef_(buildClassRef(resourceClassRefs.next()));
 		}
 	}
 	
-	protected void updateImpliedClassRefs(XmlPersistenceUnit persistenceUnit) {
-		Iterator<ClassRef> impliedRefs = impliedClassRefs();
+	protected void updateImpliedClassRefs() {
+		if (isExcludeUnlistedClasses()) {
+			for (ClassRef classRef : CollectionTools.iterable(impliedClassRefs())) {
+				removeImpliedClassRef(classRef);
+			}
+			return;
+		}
+		
 		Iterator<String> annotatedClassNames = getJpaProject().annotatedClassNames();
+		Collection<ClassRef> impliedRefsToRemove = CollectionTools.collection(impliedClassRefs());
+		Collection<ClassRef> impliedRefsToUpdate = new ArrayList<ClassRef>();
 		
-		
-		if ( ! isExcludeUnlistedClasses()) {
-			while (impliedRefs.hasNext()) {
-				ClassRef classRef = impliedRefs.next();
-				boolean updated = false;
-				while (! updated && annotatedClassNames.hasNext()) {
-					String annotatedClassName = annotatedClassNames.next();
-					if ( ! classIsSpecified(annotatedClassName)) {
-						classRef.update(annotatedClassName);
-						updated = true;
+		while (annotatedClassNames.hasNext()) {
+			String annotatedClassName = annotatedClassNames.next();
+			boolean impliedRefFound = false;
+			if (!classIsSpecified(annotatedClassName)) {
+				for (ClassRef classRef : impliedRefsToRemove) {
+					if (annotatedClassName.equals(classRef.getClassName())) {
+						impliedRefsToRemove.remove(classRef);
+						impliedRefsToUpdate.add(classRef);
+						impliedRefFound = true;
+						break;
 					}
 				}
-				if (! annotatedClassNames.hasNext() && ! updated) {
-					removeImpliedClassRef(classRef);
-				}
-			}
-			
-			while (annotatedClassNames.hasNext()) {
-				String annotatedClassName = annotatedClassNames.next();
-				if ( ! classIsSpecified(annotatedClassName)) {
+				if (!impliedRefFound) {
 					addImpliedClassRef(annotatedClassName);
 				}
 			}
 		}
-		else {
-			for (ClassRef classRef : CollectionTools.iterable(impliedClassRefs())) {
-				removeImpliedClassRef(classRef);
-			}
+		for (ClassRef classRef : impliedRefsToRemove) {
+			removeImpliedClassRef(classRef);
+		}
+		//first handle adding/remove of the implied class refs, then update the others last, 
+		//this causes less churn in the update process
+		for (ClassRef classRef : impliedRefsToUpdate) {
+			classRef.update(classRef.getClassName());
 		}
 	}
 	

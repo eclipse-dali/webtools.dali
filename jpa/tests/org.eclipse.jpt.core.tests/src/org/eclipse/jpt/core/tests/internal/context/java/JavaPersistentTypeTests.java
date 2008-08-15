@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IField;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
@@ -698,6 +699,32 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		assertNull(javaPersistentType().getAttributeNamed("foo"));
 	}
 	
+	public void testRenameAttribute() throws Exception {
+		ICompilationUnit testType = createTestEntityAnnotatedField();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		ListIterator<JavaPersistentAttribute> attributes = javaPersistentType().attributes();
+		JavaPersistentAttribute idAttribute = attributes.next();
+		JavaPersistentAttribute nameAttribute = attributes.next();
+		
+		
+		assertEquals("id", idAttribute.getName());
+		assertEquals("name", nameAttribute.getName());
+		
+		IField idField = testType.findPrimaryType().getField("id");
+		idField.rename("id2", false, null);
+		
+		attributes = javaPersistentType().attributes();
+		JavaPersistentAttribute nameAttribute2 = attributes.next();
+		JavaPersistentAttribute id2Attribute = attributes.next();
+
+		assertNotSame(idAttribute, id2Attribute);
+		assertEquals("id2", id2Attribute.getName());
+		assertEquals(nameAttribute, nameAttribute2);
+		assertEquals("name", nameAttribute2.getName());
+		assertFalse(attributes.hasNext());
+	}
+
 	public void testParentPersistentTypeGeneric() throws Exception {
 		createTestGenericEntity();
 		createTestGenericMappedSuperclass();
