@@ -29,14 +29,14 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 	protected Integer specifiedAllocationSize;
 	protected Integer defaultAllocationSize;
 
-	protected T generatorResource;
+	protected T resourceGenerator;
 
 	protected AbstractOrmGenerator(OrmJpaContextNode parent) {
 		super(parent);
 	}
 
 	public boolean isVirtual() {
-		return getGeneratorResource().isVirtual();
+		return getResourceGenerator().isVirtual();
 	}
 	
 	@Override
@@ -51,7 +51,7 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		getGeneratorResource().setName(newName);
+		getResourceGenerator().setName(newName);
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
@@ -72,7 +72,7 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 	public void setSpecifiedInitialValue(Integer newSpecifiedInitialValue) {
 		Integer oldSpecifiedInitialValue = this.specifiedInitialValue;
 		this.specifiedInitialValue = newSpecifiedInitialValue;
-		getGeneratorResource().setInitialValue(newSpecifiedInitialValue);
+		getResourceGenerator().setInitialValue(newSpecifiedInitialValue);
 		firePropertyChanged(SPECIFIED_INITIAL_VALUE_PROPERTY, oldSpecifiedInitialValue, newSpecifiedInitialValue);
 	}
 	
@@ -103,7 +103,7 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 	public void setSpecifiedAllocationSize(Integer newSpecifiedAllocationSize) {
 		Integer oldSpecifiedAllocationSize = this.specifiedAllocationSize;
 		this.specifiedAllocationSize = newSpecifiedAllocationSize;
-		getGeneratorResource().setAllocationSize(newSpecifiedAllocationSize);
+		getResourceGenerator().setAllocationSize(newSpecifiedAllocationSize);
 		firePropertyChanged(SPECIFIED_ALLOCATION_SIZE_PROPERTY, oldSpecifiedAllocationSize, newSpecifiedAllocationSize);
 	}
 	
@@ -124,19 +124,19 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 	}
 
 	
-	public void initialize(T generatorResource) {
-		this.generatorResource = generatorResource;
-		this.name = this.name(generatorResource);
-		this.specifiedInitialValue = this.specifiedInitialValue(generatorResource);
-		this.specifiedAllocationSize = this.specifiedAllocationSize(generatorResource);
+	protected void initialize(T resourceGenerator) {
+		this.resourceGenerator = resourceGenerator;
+		this.name = this.name(resourceGenerator);
+		this.specifiedInitialValue = this.specifiedInitialValue(resourceGenerator);
+		this.specifiedAllocationSize = this.specifiedAllocationSize(resourceGenerator);
 		//TODO defaults
 	}
 	
-	public void update(T generatorResource) {
-		this.generatorResource = generatorResource;
-		this.setName_(this.name(generatorResource));
-		this.setSpecifiedInitialValue_(this.specifiedInitialValue(generatorResource));
-		this.setSpecifiedAllocationSize_(this.specifiedAllocationSize(generatorResource));
+	protected void update(T resourceGenerator) {
+		this.resourceGenerator = resourceGenerator;
+		this.setName_(this.name(resourceGenerator));
+		this.setSpecifiedInitialValue_(this.specifiedInitialValue(resourceGenerator));
+		this.setSpecifiedAllocationSize_(this.specifiedAllocationSize(resourceGenerator));
 		//TODO defaults
 	}
 	
@@ -148,8 +148,8 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 		return this.getName().equals(generator.getName()) && generator instanceof JavaGenerator;
 	}
 
-	protected T getGeneratorResource() {
-		return this.generatorResource;
+	protected T getResourceGenerator() {
+		return this.resourceGenerator;
 	}
 	
 	protected String name(XmlGenerator generatorResource) {
@@ -165,12 +165,12 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 	}
 
 	public TextRange getValidationTextRange() {
-		TextRange validationTextRange = this.getGeneratorResource().getValidationTextRange();
+		TextRange validationTextRange = this.getResourceGenerator().getValidationTextRange();
 		return validationTextRange != null ? validationTextRange : getParent().getValidationTextRange();
 	}
 	
 	public TextRange getNameTextRange() {
-		TextRange nameTextRange = this.getGeneratorResource().getNameTextRange();
+		TextRange nameTextRange = this.getResourceGenerator().getNameTextRange();
 		return nameTextRange != null ? nameTextRange : getValidationTextRange();
 	}
 }

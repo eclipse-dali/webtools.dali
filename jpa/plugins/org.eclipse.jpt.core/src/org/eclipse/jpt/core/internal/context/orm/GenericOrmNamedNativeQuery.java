@@ -24,8 +24,8 @@ public class GenericOrmNamedNativeQuery extends AbstractOrmQuery<XmlNamedNativeQ
 	protected String resultSetMapping;
 
 
-	public GenericOrmNamedNativeQuery(OrmJpaContextNode parent) {
-		super(parent);
+	public GenericOrmNamedNativeQuery(OrmJpaContextNode parent, XmlNamedNativeQuery resourceQuery) {
+		super(parent, resourceQuery);
 	}
 	
 	public String getResultClass() {
@@ -35,7 +35,7 @@ public class GenericOrmNamedNativeQuery extends AbstractOrmQuery<XmlNamedNativeQ
 	public void setResultClass(String newResultClass) {
 		String oldResultClass = this.resultClass;
 		this.resultClass = newResultClass;
-		getQueryResource().setResultClass(newResultClass);
+		getResourceQuery().setResultClass(newResultClass);
 		firePropertyChanged(NamedNativeQuery.RESULT_CLASS_PROPERTY, oldResultClass, newResultClass);
 	}
 
@@ -46,23 +46,23 @@ public class GenericOrmNamedNativeQuery extends AbstractOrmQuery<XmlNamedNativeQ
 	public void setResultSetMapping(String newResultSetMapping) {
 		String oldResultSetMapping = this.resultSetMapping;
 		this.resultSetMapping = newResultSetMapping;
-		getQueryResource().setResultSetMapping(newResultSetMapping);
+		getResourceQuery().setResultSetMapping(newResultSetMapping);
 		firePropertyChanged(NamedNativeQuery.RESULT_SET_MAPPING_PROPERTY, oldResultSetMapping, newResultSetMapping);
 	}
 
 
 	@Override
-	public void initialize(XmlNamedNativeQuery queryResource) {
-		super.initialize(queryResource);
-		this.resultClass = queryResource.getResultClass();
-		this.resultSetMapping = queryResource.getResultSetMapping();
+	protected void initialize(XmlNamedNativeQuery resourceQuery) {
+		super.initialize(resourceQuery);
+		this.resultClass = resourceQuery.getResultClass();
+		this.resultSetMapping = resourceQuery.getResultSetMapping();
 	}
 	
 	@Override
-	public void update(XmlNamedNativeQuery queryResource) {
-		super.update(queryResource);
-		this.setResultClass(queryResource.getResultClass());
-		this.setResultSetMapping(queryResource.getResultSetMapping());
+	public void update(XmlNamedNativeQuery resourceQuery) {
+		super.update(resourceQuery);
+		this.setResultClass(resourceQuery.getResultClass());
+		this.setResultSetMapping(resourceQuery.getResultSetMapping());
 	}
 
 }

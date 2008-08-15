@@ -73,25 +73,25 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	/**
 	 * Return null if no table resource element exists
 	 */
-	protected abstract XmlBaseTable getTableResource();
+	protected abstract XmlBaseTable getResourceTable();
 
-	protected abstract void removeTableResource();
+	protected abstract void removeResourceTable();
 	
-	protected abstract void addTableResource();
+	protected abstract void addResourceTable();
 	
 	public void setSpecifiedName(String newSpecifiedName) {
 		String oldSpecifiedName = this.specifiedName;
 		this.specifiedName = newSpecifiedName;
 		if (oldSpecifiedName != newSpecifiedName) {
-			if (this.getTableResource() != null) {
-				this.getTableResource().setName(newSpecifiedName);						
-				if (this.getTableResource().isAllFeaturesUnset()) {
-					removeTableResource();
+			if (this.getResourceTable() != null) {
+				this.getResourceTable().setName(newSpecifiedName);						
+				if (this.getResourceTable().isAllFeaturesUnset()) {
+					removeResourceTable();
 				}
 			}
 			else if (newSpecifiedName != null) {
-				addTableResource();
-				getTableResource().setName(newSpecifiedName);
+				addResourceTable();
+				getResourceTable().setName(newSpecifiedName);
 			}
 		}
 		firePropertyChanged(Table.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
@@ -125,15 +125,15 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 		String oldSpecifiedCatalog = this.specifiedCatalog;
 		this.specifiedCatalog = newSpecifiedCatalog;
 		if (oldSpecifiedCatalog != newSpecifiedCatalog) {
-			if (this.getTableResource() != null) {
-				this.getTableResource().setCatalog(newSpecifiedCatalog);						
-				if (this.getTableResource().isAllFeaturesUnset()) {
-					removeTableResource();
+			if (this.getResourceTable() != null) {
+				this.getResourceTable().setCatalog(newSpecifiedCatalog);						
+				if (this.getResourceTable().isAllFeaturesUnset()) {
+					removeResourceTable();
 				}
 			}
 			else if (newSpecifiedCatalog != null) {
-				addTableResource();
-				getTableResource().setCatalog(newSpecifiedCatalog);
+				addResourceTable();
+				getResourceTable().setCatalog(newSpecifiedCatalog);
 			}
 		}
 		firePropertyChanged(Table.SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
@@ -167,15 +167,15 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 		String oldSpecifiedSchema = this.specifiedSchema;
 		this.specifiedSchema = newSpecifiedSchema;
 		if (oldSpecifiedSchema != newSpecifiedSchema) {
-			if (this.getTableResource() != null) {
-				this.getTableResource().setSchema(newSpecifiedSchema);						
-				if (this.getTableResource().isAllFeaturesUnset()) {
-					removeTableResource();
+			if (this.getResourceTable() != null) {
+				this.getResourceTable().setSchema(newSpecifiedSchema);						
+				if (this.getResourceTable().isAllFeaturesUnset()) {
+					removeResourceTable();
 				}
 			}
 			else if (newSpecifiedSchema != null) {
-				addTableResource();
-				getTableResource().setSchema(newSpecifiedSchema);
+				addResourceTable();
+				getResourceTable().setSchema(newSpecifiedSchema);
 			}
 		}
 
@@ -214,11 +214,11 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 		OrmUniqueConstraint uniqueConstraint =  buildUniqueConstraint(uniqueConstraintResource);
 		this.uniqueConstraints.add(index, uniqueConstraint);
 		
-		if (this.getTableResource() == null) {
-			addTableResource();
+		if (this.getResourceTable() == null) {
+			addResourceTable();
 		}
 		
-		getTableResource().getUniqueConstraints().add(index, uniqueConstraintResource);
+		getResourceTable().getUniqueConstraints().add(index, uniqueConstraintResource);
 		fireItemAdded(Table.UNIQUE_CONSTRAINTS_LIST, index, uniqueConstraint);
 		return uniqueConstraint;
 	}
@@ -234,7 +234,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	
 	public void removeUniqueConstraint(int index) {
 		OrmUniqueConstraint removedUniqueConstraint = this.uniqueConstraints.remove(index);
-		getTableResource().getUniqueConstraints().remove(index);
+		getResourceTable().getUniqueConstraints().remove(index);
 		fireItemRemoved(Table.UNIQUE_CONSTRAINTS_LIST, index, removedUniqueConstraint);
 	}
 	
@@ -244,7 +244,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.uniqueConstraints, targetIndex, sourceIndex);
-		this.getTableResource().getUniqueConstraints().move(targetIndex, sourceIndex);
+		this.getResourceTable().getUniqueConstraints().move(targetIndex, sourceIndex);
 		fireItemMoved(Table.UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -323,21 +323,18 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	protected abstract String defaultCatalog();
 	
 	protected void updateUniqueConstraints(XmlBaseTable table) {
-		ListIterator<OrmUniqueConstraint> uniqueConstraints = uniqueConstraints();
-		ListIterator<XmlUniqueConstraint> resourceUniqueConstraints;
-		if (table == null) {
-			resourceUniqueConstraints = EmptyListIterator.instance();
-		}
-		else {
+		ListIterator<OrmUniqueConstraint> contextUniqueConstraints = uniqueConstraints();
+		ListIterator<XmlUniqueConstraint> resourceUniqueConstraints = EmptyListIterator.instance();
+		if (table != null) {
 			resourceUniqueConstraints = new CloneListIterator<XmlUniqueConstraint>(table.getUniqueConstraints());//prevent ConcurrentModificiationException
 		}
-		while (uniqueConstraints.hasNext()) {
-			OrmUniqueConstraint uniqueConstraint = uniqueConstraints.next();
+		while (contextUniqueConstraints.hasNext()) {
+			OrmUniqueConstraint contextUniqueConstraint = contextUniqueConstraints.next();
 			if (resourceUniqueConstraints.hasNext()) {
-				uniqueConstraint.update(resourceUniqueConstraints.next());
+				contextUniqueConstraint.update(resourceUniqueConstraints.next());
 			}
 			else {
-				removeUniqueConstraint_(uniqueConstraint);
+				removeUniqueConstraint_(contextUniqueConstraint);
 			}
 		}
 		
@@ -346,8 +343,8 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 		}
 	}
 
-	protected OrmUniqueConstraint buildUniqueConstraint(XmlUniqueConstraint xmlUniqueConstraint) {
-		return getJpaFactory().buildOrmUniqueConstraint(this, this, xmlUniqueConstraint);
+	protected OrmUniqueConstraint buildUniqueConstraint(XmlUniqueConstraint resourceUniqueConstraint) {
+		return getJpaFactory().buildOrmUniqueConstraint(this, this, resourceUniqueConstraint);
 	}
 	
 
@@ -356,8 +353,8 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	}
 
 	protected TextRange getNameTextRange() {
-		if (getTableResource() != null) {
-			TextRange textRange = getTableResource().getNameTextRange();
+		if (getResourceTable() != null) {
+			TextRange textRange = getResourceTable().getNameTextRange();
 			if (textRange != null) {
 				return textRange;
 			}
@@ -366,8 +363,8 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	}
 	
 	protected TextRange getCatalogTextRange() {
-		if (getTableResource() != null) {
-			TextRange textRange = getTableResource().getCatalogTextRange();
+		if (getResourceTable() != null) {
+			TextRange textRange = getResourceTable().getCatalogTextRange();
 			if (textRange != null) {
 				return textRange;
 			}
@@ -376,8 +373,8 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	}
 	
 	protected TextRange getSchemaTextRange() {
-		if (getTableResource() != null) {
-			TextRange textRange = getTableResource().getSchemaTextRange();
+		if (getResourceTable() != null) {
+			TextRange textRange = getResourceTable().getSchemaTextRange();
 			if (textRange != null) {
 				return textRange;
 			}
@@ -386,8 +383,8 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	}
 	
 	public TextRange getValidationTextRange() {
-		if (getTableResource() != null) {
-			TextRange textRange = this.getTableResource().getValidationTextRange();
+		if (getResourceTable() != null) {
+			TextRange textRange = this.getResourceTable().getValidationTextRange();
 			if (textRange != null) {
 				return textRange;
 			}

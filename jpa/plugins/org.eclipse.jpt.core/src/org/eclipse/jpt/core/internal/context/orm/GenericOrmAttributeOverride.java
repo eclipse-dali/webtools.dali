@@ -35,16 +35,16 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 
 	private final Owner owner;
 
-	protected XmlAttributeOverride attributeOverride;
+	protected XmlAttributeOverride resourceAttributeOverride;
 	
 
 	protected final OrmColumn column;
 
-	public GenericOrmAttributeOverride(OrmJpaContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride) {
+	public GenericOrmAttributeOverride(OrmJpaContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride resourceAttributeOverride) {
 		super(parent);
 		this.owner = owner;
 		this.column = getJpaFactory().buildOrmColumn(this, this);
-		this.initialize(xmlAttributeOverride);
+		this.initialize(resourceAttributeOverride);
 	}
 	@Override
 	public OrmJpaContextNode getParent() {
@@ -66,7 +66,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		this.attributeOverride.setName(newName);
+		this.resourceAttributeOverride.setName(newName);
 		firePropertyChanged(BaseOverride.NAME_PROPERTY, oldName, newName);
 	}
 
@@ -117,38 +117,38 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 	}
 
 	public TextRange getValidationTextRange() {
-		TextRange textRange = this.attributeOverride.getValidationTextRange();
+		TextRange textRange = this.resourceAttributeOverride.getValidationTextRange();
 		return textRange == null ? getParent().getValidationTextRange() : textRange;
 	}
 
 
 	//***************** IXmlColumn.Owner implementation ****************
 	
-	public XmlColumn getColumnResource() {
-		return this.attributeOverride.getColumn();
+	public XmlColumn getResourceColumn() {
+		return this.resourceAttributeOverride.getColumn();
 	}
 	
-	public void addColumnResource() {
-		this.attributeOverride.setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
+	public void addResourceColumn() {
+		this.resourceAttributeOverride.setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
 	}
 	
-	public void removeColumnResource() {
-		this.attributeOverride.setColumn(null);
+	public void removeResourceColumn() {
+		this.resourceAttributeOverride.setColumn(null);
 	}
 	
 	
 	//***************** updating ****************
 	
-	protected void initialize(XmlAttributeOverride attributeOverride) {
-		this.attributeOverride = attributeOverride;
-		this.name = attributeOverride.getName();
-		this.column.initialize(attributeOverride.getColumn());
+	protected void initialize(XmlAttributeOverride resourceAttributeOverride) {
+		this.resourceAttributeOverride = resourceAttributeOverride;
+		this.name = resourceAttributeOverride.getName();
+		this.column.initialize(resourceAttributeOverride.getColumn());
 	}
 	
-	public void update(XmlAttributeOverride attributeOverride) {
-		this.attributeOverride = attributeOverride;
-		this.setName_(attributeOverride.getName());
-		this.column.update(attributeOverride.getColumn());
+	public void update(XmlAttributeOverride resourceAttributeOverride) {
+		this.resourceAttributeOverride = resourceAttributeOverride;
+		this.setName_(resourceAttributeOverride.getName());
+		this.column.update(resourceAttributeOverride.getColumn());
 	}
 	
 	//****************** validation ********************

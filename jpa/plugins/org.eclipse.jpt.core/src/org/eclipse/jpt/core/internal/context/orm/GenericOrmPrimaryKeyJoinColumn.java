@@ -25,10 +25,11 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 
 	protected String defaultReferencedColumnName;
 
-	protected XmlPrimaryKeyJoinColumn primaryKeyJoinColumn;
+	protected XmlPrimaryKeyJoinColumn resourcePkJoinColumn;
 	
-	public GenericOrmPrimaryKeyJoinColumn(OrmJpaContextNode parent, OrmBaseJoinColumn.Owner owner) {
+	public GenericOrmPrimaryKeyJoinColumn(OrmJpaContextNode parent, OrmBaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
 		super(parent, owner);
+		this.initialize(resourcePkJoinColumn);
 	}
 
 	public void initializeFrom(PrimaryKeyJoinColumn oldPkJoinColumn) {
@@ -37,18 +38,18 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	}
 	
 	@Override
-	protected XmlPrimaryKeyJoinColumn getColumnResource() {
-		return this.primaryKeyJoinColumn;
+	protected XmlPrimaryKeyJoinColumn getResourceColumn() {
+		return this.resourcePkJoinColumn;
 	}
 	
 	@Override
-	protected void addColumnResource() {
+	protected void addResourceColumn() {
 		//primaryKeyJoinColumns are part of a collection, the pk-join-column element will be removed/added
 		//when the XmlPrimaryKeyJoinColumn is removed/added to the XmlEntity collection
 	}
 	
 	@Override
-	protected void removeColumnResource() {
+	protected void removeResourceColumn() {
 		//primaryKeyJoinColumns are part of a collection, the pk-join-column element will be removed/added
 		//when the XmlPrimaryKeyJoinColumn is removed/added to the XmlEntity collection
 	}
@@ -64,7 +65,7 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	public void setSpecifiedReferencedColumnName(String newSpecifiedReferencedColumnName) {
 		String oldSpecifiedReferencedColumnName = this.specifiedReferencedColumnName;
 		this.specifiedReferencedColumnName = newSpecifiedReferencedColumnName;
-		getColumnResource().setReferencedColumnName(newSpecifiedReferencedColumnName);
+		getResourceColumn().setReferencedColumnName(newSpecifiedReferencedColumnName);
 		firePropertyChanged(SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
 	}
 	
@@ -108,8 +109,8 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	}
 
 	public TextRange getReferencedColumnNameTextRange() {
-		if (getColumnResource() != null) {
-			TextRange textRange = getColumnResource().getReferencedColumnNameTextRange();
+		if (getResourceColumn() != null) {
+			TextRange textRange = getResourceColumn().getReferencedColumnNameTextRange();
 			if (textRange != null) {
 				return textRange;
 			}
@@ -123,18 +124,18 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	}
 	
 	@Override
-	public void initialize(XmlPrimaryKeyJoinColumn column) {
-		this.primaryKeyJoinColumn = column;
-		super.initialize(column);
-		this.specifiedReferencedColumnName = specifiedReferencedColumnName(column);
+	protected void initialize(XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
+		this.resourcePkJoinColumn = resourcePkJoinColumn;
+		super.initialize(resourcePkJoinColumn);
+		this.specifiedReferencedColumnName = specifiedReferencedColumnName(resourcePkJoinColumn);
 		this.defaultReferencedColumnName = defaultReferencedColumnName();
 	}
 	
 	@Override
-	public void update(XmlPrimaryKeyJoinColumn column) {
-		this.primaryKeyJoinColumn = column;
-		super.update(column);
-		this.setSpecifiedReferencedColumnName_(specifiedReferencedColumnName(column));
+	public void update(XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
+		this.resourcePkJoinColumn = resourcePkJoinColumn;
+		super.update(resourcePkJoinColumn);
+		this.setSpecifiedReferencedColumnName_(specifiedReferencedColumnName(resourcePkJoinColumn));
 		this.setDefaultReferencedColumnName(defaultReferencedColumnName());
 	}
 	

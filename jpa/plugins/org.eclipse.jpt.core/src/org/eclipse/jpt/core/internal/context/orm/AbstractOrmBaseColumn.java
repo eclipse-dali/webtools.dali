@@ -68,15 +68,15 @@ public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends
 		String oldSpecifiedTable = this.specifiedTable;
 		this.specifiedTable = newSpecifiedTable;
 		if (oldSpecifiedTable != newSpecifiedTable) {
-			if (this.getColumnResource() != null) {
-				this.getColumnResource().setTable(newSpecifiedTable);						
-				if (this.getColumnResource().isAllFeaturesUnset()) {
-					removeColumnResource();
+			if (this.getResourceColumn() != null) {
+				this.getResourceColumn().setTable(newSpecifiedTable);						
+				if (this.getResourceColumn().isAllFeaturesUnset()) {
+					removeResourceColumn();
 				}
 			}
 			else if (newSpecifiedTable != null) {
-				addColumnResource();
-				getColumnResource().setTable(newSpecifiedTable);
+				addResourceColumn();
+				getResourceColumn().setTable(newSpecifiedTable);
 			}
 		}
 		firePropertyChanged(BaseColumn.SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
@@ -114,15 +114,15 @@ public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends
 		Boolean oldSpecifiedUnique = this.specifiedUnique;
 		this.specifiedUnique = newSpecifiedUnique;
 		if (oldSpecifiedUnique != newSpecifiedUnique) {
-			if (this.getColumnResource() != null) {
-				this.getColumnResource().setUnique(newSpecifiedUnique);						
-				if (this.getColumnResource().isAllFeaturesUnset()) {
-					removeColumnResource();
+			if (this.getResourceColumn() != null) {
+				this.getResourceColumn().setUnique(newSpecifiedUnique);						
+				if (this.getResourceColumn().isAllFeaturesUnset()) {
+					removeResourceColumn();
 				}
 			}
 			else if (newSpecifiedUnique != null) {
-				addColumnResource();
-				getColumnResource().setUnique(newSpecifiedUnique);
+				addResourceColumn();
+				getResourceColumn().setUnique(newSpecifiedUnique);
 			}
 		}
 		firePropertyChanged(BaseColumn.SPECIFIED_UNIQUE_PROPERTY, oldSpecifiedUnique, newSpecifiedUnique);
@@ -150,15 +150,15 @@ public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends
 		Boolean oldSpecifiedNullable = this.specifiedNullable;
 		this.specifiedNullable = newSpecifiedNullable;
 		if (oldSpecifiedNullable != newSpecifiedNullable) {
-			if (this.getColumnResource() != null) {
-				this.getColumnResource().setNullable(newSpecifiedNullable);						
-				if (this.getColumnResource().isAllFeaturesUnset()) {
-					removeColumnResource();
+			if (this.getResourceColumn() != null) {
+				this.getResourceColumn().setNullable(newSpecifiedNullable);						
+				if (this.getResourceColumn().isAllFeaturesUnset()) {
+					removeResourceColumn();
 				}
 			}
 			else if (newSpecifiedNullable != null) {
-				addColumnResource();
-				getColumnResource().setNullable(newSpecifiedNullable);
+				addResourceColumn();
+				getResourceColumn().setNullable(newSpecifiedNullable);
 			}
 		}
 		firePropertyChanged(BaseColumn.SPECIFIED_NULLABLE_PROPERTY, oldSpecifiedNullable, newSpecifiedNullable);
@@ -186,15 +186,15 @@ public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends
 		Boolean oldSpecifiedInsertable = this.specifiedInsertable;
 		this.specifiedInsertable = newSpecifiedInsertable;
 		if (oldSpecifiedInsertable != newSpecifiedInsertable) {
-			if (this.getColumnResource() != null) {
-				this.getColumnResource().setInsertable(newSpecifiedInsertable);						
-				if (this.getColumnResource().isAllFeaturesUnset()) {
-					removeColumnResource();
+			if (this.getResourceColumn() != null) {
+				this.getResourceColumn().setInsertable(newSpecifiedInsertable);						
+				if (this.getResourceColumn().isAllFeaturesUnset()) {
+					removeResourceColumn();
 				}
 			}
 			else if (newSpecifiedInsertable != null) {
-				addColumnResource();
-				getColumnResource().setInsertable(newSpecifiedInsertable);
+				addResourceColumn();
+				getResourceColumn().setInsertable(newSpecifiedInsertable);
 			}
 		}
 		firePropertyChanged(BaseColumn.SPECIFIED_INSERTABLE_PROPERTY, oldSpecifiedInsertable, newSpecifiedInsertable);
@@ -222,15 +222,15 @@ public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends
 		Boolean oldSpecifiedUpdatable = this.specifiedUpdatable;
 		this.specifiedUpdatable = newSpecifiedUpdatable;
 		if (oldSpecifiedUpdatable != newSpecifiedUpdatable) {
-			if (this.getColumnResource() != null) {
-				this.getColumnResource().setUpdatable(newSpecifiedUpdatable);						
-				if (this.getColumnResource().isAllFeaturesUnset()) {
-					removeColumnResource();
+			if (this.getResourceColumn() != null) {
+				this.getResourceColumn().setUpdatable(newSpecifiedUpdatable);						
+				if (this.getResourceColumn().isAllFeaturesUnset()) {
+					removeResourceColumn();
 				}
 			}
 			else if (newSpecifiedUpdatable != null) {
-				addColumnResource();
-				getColumnResource().setUpdatable(newSpecifiedUpdatable);
+				addResourceColumn();
+				getResourceColumn().setUpdatable(newSpecifiedUpdatable);
 			}
 		}
 		firePropertyChanged(BaseColumn.SPECIFIED_UPDATABLE_PROPERTY, oldSpecifiedUpdatable, newSpecifiedUpdatable);
@@ -249,8 +249,8 @@ public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends
 
 
 	public TextRange getTableTextRange() {
-		if (getColumnResource() != null) {
-			TextRange textRange = getColumnResource().getTableTextRange();
+		if (getResourceColumn() != null) {
+			TextRange textRange = getResourceColumn().getTableTextRange();
 			if (textRange != null) {
 				return textRange;
 			}

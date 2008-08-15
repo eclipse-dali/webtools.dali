@@ -26,7 +26,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 {
 
-	protected XmlEntity entity;
+	protected XmlEntity resourceEntity;
 	
 	public GenericOrmTable(OrmEntity parent) {
 		super(parent);
@@ -37,18 +37,18 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 	}
 	
 	@Override
-	protected XmlTable getTableResource() {
-		return this.entity.getTable();
+	protected XmlTable getResourceTable() {
+		return this.resourceEntity.getTable();
 	}
 	
 	@Override
-	protected void removeTableResource() {
-		this.entity.setTable(null);
+	protected void removeResourceTable() {
+		this.resourceEntity.setTable(null);
 	}
 	
 	@Override
-	protected void addTableResource() {
-		this.entity.setTable(OrmFactory.eINSTANCE.createXmlTable());
+	protected void addResourceTable() {
+		this.resourceEntity.setTable(OrmFactory.eINSTANCE.createXmlTable());
 		
 	}
 	
@@ -60,21 +60,21 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 		return null;
 	}
 	
-	public void initialize(XmlEntity entity) {
-		this.entity = entity;
-		this.initialize(this.getTableResource());
+	public void initialize(XmlEntity resourceEntity) {
+		this.resourceEntity = resourceEntity;
+		this.initialize(this.getResourceTable());
 	}
 	
-	public void update(XmlEntity entity) {
-		this.entity = entity;
-		this.update(this.getTableResource());
+	public void update(XmlEntity resourceEntity) {
+		this.resourceEntity = resourceEntity;
+		this.update(this.getResourceTable());
 	}
 
 	@Override
 	protected String defaultName() {
 		JavaTable javaTable = getJavaTable();
 		if (javaTable != null) {
-			if (!getOrmEntity().isMetadataComplete() && getTableResource() == null && javaTable.getSpecifiedName() != null) {
+			if (!getOrmEntity().isMetadataComplete() && getResourceTable() == null && javaTable.getSpecifiedName() != null) {
 				return javaTable.getSpecifiedName();
 			}
 		}
@@ -91,7 +91,7 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 	protected String defaultSchema() {
 		JavaTable javaTable = getJavaTable();
 		if (javaTable != null ) {
-			if (getOrmEntity().isMetadataComplete() || (getTableResource() != null)) {
+			if (getOrmEntity().isMetadataComplete() || (getResourceTable() != null)) {
 				return javaTable.getDefaultSchema();
 			}
 			return javaTable.getSchema();
@@ -109,7 +109,7 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 	protected String defaultCatalog() {
 		JavaTable javaTable = getJavaTable();
 		if (javaTable != null) {
-			if (getOrmEntity().isMetadataComplete() || (getTableResource() != null)) {
+			if (getOrmEntity().isMetadataComplete() || (getResourceTable() != null)) {
 				return javaTable.getDefaultCatalog();
 			}
 			return javaTable.getCatalog();

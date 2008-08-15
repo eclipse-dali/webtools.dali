@@ -126,15 +126,15 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 
 	//***************** IXmlColumn.Owner implementation ****************
 	
-	public XmlColumn getColumnResource() {
+	public XmlColumn getResourceColumn() {
 		return this.getAttributeMapping().getColumn();
 	}
 	
-	public void addColumnResource() {
+	public void addResourceColumn() {
 		this.getAttributeMapping().setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
 	}
 	
-	public void removeColumnResource() {
+	public void removeResourceColumn() {
 		this.getAttributeMapping().setColumn(null);
 	}
 	

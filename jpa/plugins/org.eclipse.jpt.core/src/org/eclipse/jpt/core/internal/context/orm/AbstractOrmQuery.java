@@ -35,15 +35,16 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 
 	protected final List<OrmQueryHint> hints;
 
-	protected E queryResource;
+	protected E resourceQuery;
 	
-	protected AbstractOrmQuery(OrmJpaContextNode parent) {
+	protected AbstractOrmQuery(OrmJpaContextNode parent, E resourceQuery) {
 		super(parent);
 		this.hints = new ArrayList<OrmQueryHint>();
+		this.initialize(resourceQuery);
 	}
 
-	protected E getQueryResource() {
-		return this.queryResource;
+	protected E getResourceQuery() {
+		return this.resourceQuery;
 	}
 	
 	public String getName() {
@@ -53,7 +54,7 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		this.getQueryResource().setName(newName);
+		this.getResourceQuery().setName(newName);
 		firePropertyChanged(Query.NAME_PROPERTY, oldName, newName);
 	}
 
@@ -64,7 +65,7 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 	public void setQuery(String newQuery) {
 		String oldQuery = this.query;
 		this.query = newQuery;
-		this.getQueryResource().setQuery(newQuery);
+		this.getResourceQuery().setQuery(newQuery);
 		firePropertyChanged(Query.QUERY_PROPERTY, oldQuery, newQuery);
 	}
 
@@ -77,11 +78,12 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 	}
 	
 	public OrmQueryHint addHint(int index) {
-		OrmQueryHint queryHint = getJpaFactory().buildOrmQueryHint(this);
-		this.hints.add(index, queryHint);
-		this.getQueryResource().getHints().add(index, OrmFactory.eINSTANCE.createXmlQueryHint());
-		this.fireItemAdded(Query.HINTS_LIST, index, queryHint);
-		return queryHint;
+		XmlQueryHint resourceQueryHint = OrmFactory.eINSTANCE.createXmlQueryHint();
+		OrmQueryHint contextQueryHint = buildQueryHint(resourceQueryHint);
+		this.hints.add(index, contextQueryHint);
+		this.getResourceQuery().getHints().add(index, resourceQueryHint);
+		this.fireItemAdded(Query.HINTS_LIST, index, contextQueryHint);
+		return contextQueryHint;
 	}
 
 	protected void addHint(int index, OrmQueryHint queryHint) {
@@ -94,7 +96,7 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 	
 	public void removeHint(int index) {
 		OrmQueryHint queryHint = this.hints.remove(index);
-		this.queryResource.getHints().remove(index);
+		this.getResourceQuery().getHints().remove(index);
 		fireItemRemoved(Query.HINTS_LIST, index, queryHint);
 	}
 
@@ -103,54 +105,51 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 	}
 	
 	public void moveHint(int targetIndex, int sourceIndex) {
-		this.queryResource.getHints().move(targetIndex, sourceIndex);
+		this.getResourceQuery().getHints().move(targetIndex, sourceIndex);
 		moveItemInList(targetIndex, sourceIndex, this.hints, Query.HINTS_LIST);		
-		
 	}
 
 	
-	public void initialize(E queryResource) {
-		this.queryResource = queryResource;
-		this.name = queryResource.getName();
-		this.query = queryResource.getQuery();
-		this.initializeHints(queryResource);
+	protected void initialize(E resourceQuery) {
+		this.resourceQuery = resourceQuery;
+		this.name = resourceQuery.getName();
+		this.query = resourceQuery.getQuery();
+		this.initializeHints(resourceQuery);
 	}
 	
-	protected void initializeHints(E queryResource) {
-		for (XmlQueryHint queryhint : queryResource.getHints()) {
-			this.hints.add(createHint(queryhint));
+	protected void initializeHints(E resourceQuery) {
+		for (XmlQueryHint resourceQueryHint : resourceQuery.getHints()) {
+			this.hints.add(buildQueryHint(resourceQueryHint));
 		}
 	}
 
-	protected OrmQueryHint createHint(XmlQueryHint queryHint) {
-		OrmQueryHint ormQueryHint = getJpaFactory().buildOrmQueryHint(this);
-		ormQueryHint.initialize(queryHint);
-		return ormQueryHint;
+	protected OrmQueryHint buildQueryHint(XmlQueryHint resourceQueryHint) {
+		return getJpaFactory().buildOrmQueryHint(this, resourceQueryHint);
 	}
 	
-	public void update(E queryResource) {
-		this.queryResource = queryResource;
-		this.setName(queryResource.getName());
-		this.setQuery(queryResource.getQuery());
-		this.updateHints(queryResource);
+	public void update(E resourceQuery) {
+		this.resourceQuery = resourceQuery;
+		this.setName(resourceQuery.getName());
+		this.setQuery(resourceQuery.getQuery());
+		this.updateHints(resourceQuery);
 	}
 	
-	protected void updateHints(E queryResource) {
-		ListIterator<OrmQueryHint> hints = hints();
-		ListIterator<XmlQueryHint> resourceHints = new CloneListIterator<XmlQueryHint>(queryResource.getHints());//prevent ConcurrentModificiationException
+	protected void updateHints(E resourceQuery) {
+		ListIterator<OrmQueryHint> contextHints = hints();
+		ListIterator<XmlQueryHint> resourceHints = new CloneListIterator<XmlQueryHint>(resourceQuery.getHints());//prevent ConcurrentModificiationException
 		
-		while (hints.hasNext()) {
-			OrmQueryHint hint = hints.next();
+		while (contextHints.hasNext()) {
+			OrmQueryHint contextHint = contextHints.next();
 			if (resourceHints.hasNext()) {
-				hint.update(resourceHints.next());
+				contextHint.update(resourceHints.next());
 			}
 			else {
-				removeHint_(hint);
+				removeHint_(contextHint);
 			}
 		}
 		
 		while (resourceHints.hasNext()) {
-			addHint(hintsSize(), createHint(resourceHints.next()));
+			addHint(hintsSize(), buildQueryHint(resourceHints.next()));
 		}
 	}
 	
@@ -163,10 +162,10 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.getQueryResource().getValidationTextRange();
+		return this.getResourceQuery().getValidationTextRange();
 	}
 	
 	public TextRange getNameTextRange() {
-		return this.getQueryResource().getNameTextRange();
+		return this.getResourceQuery().getNameTextRange();
 	}
 }

@@ -31,10 +31,11 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 
 	protected String defaultReferencedColumnName;
 
-	protected XmlJoinColumn joinColumn;
+	protected XmlJoinColumn resourceJoinColumn;
 
-	public GenericOrmJoinColumn(OrmJpaContextNode parent, OrmJoinColumn.Owner owner) {
+	public GenericOrmJoinColumn(OrmJpaContextNode parent, OrmJoinColumn.Owner owner, XmlJoinColumn resourceJoinColumn) {
 		super(parent, owner);
+		this.initialize(resourceJoinColumn);
 	}
 
 	public void initializeFrom(JoinColumn oldColumn) {
@@ -53,7 +54,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 	public void setSpecifiedReferencedColumnName(String newSpecifiedReferencedColumnName) {
 		String oldSpecifiedReferencedColumnName = this.specifiedReferencedColumnName;
 		this.specifiedReferencedColumnName = newSpecifiedReferencedColumnName;
-		getColumnResource().setReferencedColumnName(newSpecifiedReferencedColumnName);
+		getResourceColumn().setReferencedColumnName(newSpecifiedReferencedColumnName);
 		firePropertyChanged(SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
 	}
 	
@@ -96,8 +97,8 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 	}
 
 	public TextRange getReferencedColumnNameTextRange() {
-		if (getColumnResource() != null) {
-			TextRange textRange = getColumnResource().getReferencedColumnNameTextRange();
+		if (getResourceColumn() != null) {
+			TextRange textRange = getResourceColumn().getReferencedColumnNameTextRange();
 			if (textRange != null) {
 				return textRange;
 			}
@@ -107,41 +108,41 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 
 
 	@Override
-	protected XmlJoinColumn getColumnResource() {
-		return this.joinColumn;
+	protected XmlJoinColumn getResourceColumn() {
+		return this.resourceJoinColumn;
 	}
 
 	@Override
-	protected void addColumnResource() {
+	protected void addResourceColumn() {
 		//joinColumns are part of a collection, the join-column element will be removed/added
 		//when the XmlJoinColumn is removed/added to the XmlEntity collection
 	}
 	
 	@Override
-	protected void removeColumnResource() {
+	protected void removeResourceColumn() {
 		//joinColumns are part of a collection, the pk-join-column element will be removed/added
 		//when the XmlJoinColumn is removed/added to the XmlEntity collection
 	}
 	
 	
 	@Override
-	public void initialize(XmlJoinColumn column) {
-		this.joinColumn = column;
-		super.initialize(column);
-		this.specifiedReferencedColumnName = specifiedReferencedColumnName(column);
+	protected void initialize(XmlJoinColumn resourceJoinColumn) {
+		this.resourceJoinColumn = resourceJoinColumn;
+		super.initialize(resourceJoinColumn);
+		this.specifiedReferencedColumnName = specifiedReferencedColumnName(resourceJoinColumn);
 		this.defaultReferencedColumnName = defaultReferencedColumnName();
 	}
 	
 	@Override
-	public void update(XmlJoinColumn column) {
-		this.joinColumn = column;
-		super.update(column);
-		this.setSpecifiedReferencedColumnName_(specifiedReferencedColumnName(column));
+	public void update(XmlJoinColumn resourceJoinColumn) {
+		this.resourceJoinColumn = resourceJoinColumn;
+		super.update(resourceJoinColumn);
+		this.setSpecifiedReferencedColumnName_(specifiedReferencedColumnName(resourceJoinColumn));
 		this.setDefaultReferencedColumnName(defaultReferencedColumnName());
 	}
 
-	protected String specifiedReferencedColumnName(XmlJoinColumn column) {
-		return column == null ? null : column.getReferencedColumnName();
+	protected String specifiedReferencedColumnName(XmlJoinColumn resourceJoinColumn) {
+		return resourceJoinColumn == null ? null : resourceJoinColumn.getReferencedColumnName();
 	}
 
 	@Override

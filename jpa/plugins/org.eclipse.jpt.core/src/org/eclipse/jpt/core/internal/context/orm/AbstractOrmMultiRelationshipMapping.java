@@ -173,15 +173,15 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 		String oldMapKey = this.mapKey;
 		this.mapKey = newMapKey;
 		if (oldMapKey != newMapKey) {
-			if (this.getMapKeyResource() != null) {
-				this.getMapKeyResource().setName(newMapKey);						
-				if (this.getMapKeyResource().isAllFeaturesUnset()) {
-					removeMapKeyResource();
+			if (this.getResourceMapKey() != null) {
+				this.getResourceMapKey().setName(newMapKey);						
+				if (this.getResourceMapKey().isAllFeaturesUnset()) {
+					removeResourceMapKey();
 				}
 			}
 			else if (newMapKey != null) {
-				addMapKeyResource();
-				getMapKeyResource().setName(newMapKey);
+				addResourceMapKey();
+				getResourceMapKey().setName(newMapKey);
 			}
 		}
 		firePropertyChanged(MAP_KEY_PROPERTY, oldMapKey, newMapKey);
@@ -193,15 +193,15 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 		firePropertyChanged(MAP_KEY_PROPERTY, oldMapKey, newMapKey);
 	}
 	
-	protected MapKey getMapKeyResource() {
+	protected MapKey getResourceMapKey() {
 		return getAttributeMapping().getMapKey();
 	}
 	
-	protected void removeMapKeyResource() {
+	protected void removeResourceMapKey() {
 		getAttributeMapping().setMapKey(null);
 	}
 	
-	protected void addMapKeyResource() {
+	protected void addResourceMapKey() {
 		getAttributeMapping().setMapKey(OrmFactory.eINSTANCE.createMapKeyImpl());
 	}
 
@@ -290,11 +290,11 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 	}
 	
 	@Override
-	protected String defaultTargetEntity(JavaResourcePersistentAttribute persistentAttributeResource) {
-		if (!persistentAttributeResource.typeIsContainer()) {
+	protected String defaultTargetEntity(JavaResourcePersistentAttribute jrpa) {
+		if (!jrpa.typeIsContainer()) {
 			return null;
 		}
-		return persistentAttributeResource.getQualifiedReferenceEntityElementTypeName();
+		return jrpa.getQualifiedReferenceEntityElementTypeName();
 	}
 
 	//****************** validation ******************8

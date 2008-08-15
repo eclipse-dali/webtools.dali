@@ -50,15 +50,15 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 		DiscriminatorType oldDiscriminatorType = this.specifiedDiscriminatorType;
 		this.specifiedDiscriminatorType = newSpecifiedDiscriminatorType;
 		if (oldDiscriminatorType != newSpecifiedDiscriminatorType) {
-			if (this.getColumnResource() != null) {
-				this.getColumnResource().setDiscriminatorType(DiscriminatorType.toOrmResourceModel(newSpecifiedDiscriminatorType));
-				if (this.getColumnResource().isAllFeaturesUnset()) {
-					removeColumnResource();
+			if (this.getResourceColumn() != null) {
+				this.getResourceColumn().setDiscriminatorType(DiscriminatorType.toOrmResourceModel(newSpecifiedDiscriminatorType));
+				if (this.getResourceColumn().isAllFeaturesUnset()) {
+					removeResourceColumn();
 				}
 			}
 			else if (newSpecifiedDiscriminatorType != null) {
-				addColumnResource();
-				this.getColumnResource().setDiscriminatorType(DiscriminatorType.toOrmResourceModel(newSpecifiedDiscriminatorType));
+				addResourceColumn();
+				this.getResourceColumn().setDiscriminatorType(DiscriminatorType.toOrmResourceModel(newSpecifiedDiscriminatorType));
 			}
 		}
 		firePropertyChanged(DiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY, oldDiscriminatorType, newSpecifiedDiscriminatorType);
@@ -86,15 +86,15 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 		Integer oldSpecifiedLength = this.specifiedLength;
 		this.specifiedLength = newSpecifiedLength;
 		if (oldSpecifiedLength != newSpecifiedLength) {
-			if (this.getColumnResource() != null) {
-				this.getColumnResource().setLength(newSpecifiedLength);
-				if (this.getColumnResource().isAllFeaturesUnset()) {
-					removeColumnResource();
+			if (this.getResourceColumn() != null) {
+				this.getResourceColumn().setLength(newSpecifiedLength);
+				if (this.getResourceColumn().isAllFeaturesUnset()) {
+					removeResourceColumn();
 				}
 			}
 			else if (newSpecifiedLength != null) {
-				addColumnResource();
-				getColumnResource().setLength(newSpecifiedLength);
+				addResourceColumn();
+				getResourceColumn().setLength(newSpecifiedLength);
 			}
 		}
 		firePropertyChanged(SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
@@ -114,28 +114,28 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 	
 	
 	@Override
-	protected XmlDiscriminatorColumn getColumnResource() {
+	protected XmlDiscriminatorColumn getResourceColumn() {
 		return this.entity.getDiscriminatorColumn();
 	}
 	
 	@Override
-	protected void addColumnResource() {
+	protected void addResourceColumn() {
 		this.entity.setDiscriminatorColumn(OrmFactory.eINSTANCE.createXmlDiscriminatorColumn());		
 	}
 	
 	@Override
-	protected void removeColumnResource() {
+	protected void removeResourceColumn() {
 		this.entity.setDiscriminatorColumn(null);
 	}
 	
 	public void initialize(XmlEntity entity) {
 		this.entity = entity;
-		this.initialize(this.getColumnResource());
+		this.initialize(this.getResourceColumn());
 	}
 	
 	public void update(XmlEntity entity) {
 		this.entity = entity;
-		this.update(this.getColumnResource());
+		this.update(this.getResourceColumn());
 	}
 
 	

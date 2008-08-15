@@ -28,19 +28,24 @@ public interface OrmColumn extends Column, OrmBaseColumn
 	
 	void initializeFrom(Column oldColumn);
 	void initialize(XmlColumn column);
+	
+	/**
+	 * Update the OrmColumn context model object to match the XmlColumn 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlColumn column);
 
-		/**
+	/**
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)
 	 */
 	interface Owner extends OrmBaseColumn.Owner
 	{
-		XmlColumn getColumnResource();
+		XmlColumn getResourceColumn();
 		
-		void addColumnResource();
+		void addResourceColumn();
 		
-		void removeColumnResource();
+		void removeResourceColumn();
 	}
 
 }
