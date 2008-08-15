@@ -25,9 +25,13 @@ import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
 public interface JavaSecondaryTable extends SecondaryTable, JavaJpaContextNode
 {
 
-	void initialize(SecondaryTableAnnotation secondaryTable);
+	void initialize(SecondaryTableAnnotation secondaryTableResource);
 	
-	void update(SecondaryTableAnnotation secondaryTable);
+	/**
+	 * Update the JavaSecondaryTable context model object to match the SecondaryTableAnnotation 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(SecondaryTableAnnotation secondaryTableResource);
 
 
 	//****************** covariant overrides *******************

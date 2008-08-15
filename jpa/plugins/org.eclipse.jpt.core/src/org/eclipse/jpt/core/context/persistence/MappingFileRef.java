@@ -60,6 +60,10 @@ public interface MappingFileRef extends PersistenceJpaContextNode, JpaStructureN
 	
 	// **************** udpating ***********************************************
 	
+	/**
+	 * Update the MappingFileRef context model object to match the XmlMappingFileRef 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlMappingFileRef mappingFileRef);
 	
 	

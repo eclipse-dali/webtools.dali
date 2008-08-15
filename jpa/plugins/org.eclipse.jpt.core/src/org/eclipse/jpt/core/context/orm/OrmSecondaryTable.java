@@ -25,6 +25,10 @@ import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
 public interface OrmSecondaryTable extends SecondaryTable, OrmJpaContextNode
 {
 
+	/**
+	 * Update the OrmSecondaryTable context model object to match the XmlSecondaryTable 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlSecondaryTable secondaryTable);
 
 	void initializeFrom(SecondaryTable oldSecondaryTable);

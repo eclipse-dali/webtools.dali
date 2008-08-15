@@ -28,5 +28,9 @@ public interface OrmIdMapping extends IdMapping, OrmColumnMapping, OrmAttributeM
 	
 	void initialize(XmlId id);
 
+	/**
+	 * Update the OrmIdMapping context model object to match the XmlId 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlId id);
 }

@@ -63,5 +63,9 @@ public interface OrmXml extends OrmJpaContextNode, JpaStructureNode
 
 	// **************** updating **********************************************
 	
+	/**
+	 * Update the OrmXml context model object to match the OrmResource 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(OrmResource ormResource);
 }

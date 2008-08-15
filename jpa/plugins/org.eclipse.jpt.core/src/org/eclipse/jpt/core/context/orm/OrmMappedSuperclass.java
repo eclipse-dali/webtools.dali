@@ -26,6 +26,10 @@ public interface OrmMappedSuperclass extends MappedSuperclass, OrmTypeMapping
 {
 	void initialize(XmlMappedSuperclass mappedSuperclass);
 
+	/**
+	 * Update the OrmMappedSuperclass context model object to match the XmlMappedSuperclass 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlMappedSuperclass mappedSuperclass);
 	
 	Iterator<OrmPersistentAttribute> overridableAttributes();

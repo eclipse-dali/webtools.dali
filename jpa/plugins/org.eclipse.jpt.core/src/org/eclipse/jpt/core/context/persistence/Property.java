@@ -42,5 +42,9 @@ public interface Property extends PersistenceJpaContextNode
 	
 	// **************** updating ***********************************************
 		
+	/**
+	 * Update the Property context model object to match the XmlProperty 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlProperty property);
 }

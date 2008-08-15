@@ -26,6 +26,10 @@ public interface OrmOneToManyMapping extends OneToManyMapping, OrmMultiRelations
 
 	void initialize(XmlOneToMany xmlOneToMany);
 
+	/**
+	 * Update the OrmOneToManyMapping context model object to match the XmlOneToMany 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlOneToMany xmlOneToMany);
 	
 }

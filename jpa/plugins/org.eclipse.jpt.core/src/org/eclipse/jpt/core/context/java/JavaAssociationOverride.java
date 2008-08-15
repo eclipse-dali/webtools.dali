@@ -34,6 +34,10 @@ public interface JavaAssociationOverride extends AssociationOverride, JavaJpaCon
 	
 	void initialize(AssociationOverrideAnnotation associationOverride);
 	
+	/**
+	 * Update the JavaAssociationOverride context model object to match the AssociationOverrideAnnotation 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(AssociationOverrideAnnotation associationOverride);
 	
 }

@@ -27,6 +27,10 @@ public interface OrmOneToOneMapping extends OneToOneMapping, OrmSingleRelationsh
 
 	void initialize(XmlOneToOne oneToOne);
 
+	/**
+	 * Update the OrmOneToOneMapping context model object to match the XmlOneToOne 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlOneToOne oneToOne);
 	
 	

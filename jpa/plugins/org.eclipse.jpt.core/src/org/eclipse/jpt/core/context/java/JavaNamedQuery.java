@@ -28,8 +28,12 @@ public interface JavaNamedQuery
 
 	ListIterator<JavaQueryHint> hints();
 
-	void initialize(NamedQueryAnnotation queryResource);
+	void initialize(NamedQueryAnnotation resourceNamedQuery);
 
-	void update(NamedQueryAnnotation queryResource);
+	/**
+	 * Update the JavaNamedQuery context model object to match the NamedQueryAnnotation 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(NamedQueryAnnotation resourceNamedQuery);
 
 }

@@ -30,5 +30,9 @@ public interface OrmEmbeddedMapping extends EmbeddedMapping, OrmBaseEmbeddedMapp
 
 	void initialize(XmlEmbedded embedded);
 
+	/**
+	 * Update the OrmEmbeddedMapping context model object to match the XmlEmbedded 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlEmbedded embedded);
 }

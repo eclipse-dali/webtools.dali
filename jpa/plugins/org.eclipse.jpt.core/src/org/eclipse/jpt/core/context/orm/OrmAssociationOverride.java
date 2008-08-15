@@ -35,5 +35,9 @@ public interface OrmAssociationOverride extends AssociationOverride, OrmJpaConte
 
 	OrmJoinColumn addSpecifiedJoinColumn(int index);
 
+	/**
+	 * Update the OrmAssociationOverride context model object to match the XmlAssociationOverride 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlAssociationOverride associationOverride);
 }

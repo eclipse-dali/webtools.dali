@@ -24,9 +24,13 @@ import org.eclipse.jpt.core.resource.orm.XmlEntity;
  */
 public interface OrmTable extends Table, OrmJpaContextNode
 {
-	void initialize(XmlEntity entity);
+	void initialize(XmlEntity resourceEntity);
 
-	void update(XmlEntity entity);
+	/**
+	 * Update the OrmTable context model object to match the XmlEntity 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(XmlEntity resourceEntity);
 
 	
 	//****************** covariant overrides *******************

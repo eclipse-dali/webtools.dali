@@ -25,5 +25,9 @@ public interface OrmBasicMapping extends BasicMapping, OrmAttributeMapping, OrmC
 {
 	void initialize(XmlBasic basic);
 
+	/**
+	 * Update the OrmBasicMapping context model object to match the XmlBasic 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlBasic basic);
 }

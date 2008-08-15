@@ -114,10 +114,22 @@ public interface OrmPersistentType extends PersistentType, OrmJpaContextNode
 		
 	void initialize(XmlEmbeddable embeddable);
 	
+	/**
+	 * Update the OrmPersistentType context model object to match the XmlEntity 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlEntity entity);
 	
+	/**
+	 * Update the OrmPersistentType context model object to match the XmlMappedSuperclass 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlMappedSuperclass mappedSuperclass);
 	
+	/**
+	 * Update the OrmPersistentType context model object to match the XmlEmbeddable 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlEmbeddable embeddable);
 
 	

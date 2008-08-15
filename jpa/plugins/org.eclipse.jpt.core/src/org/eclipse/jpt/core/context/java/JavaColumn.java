@@ -23,9 +23,13 @@ import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
  */
 public interface JavaColumn extends Column, JavaBaseColumn
 {
-	void initialize(ColumnAnnotation columnResource);
+	void initialize(ColumnAnnotation resourceColumn);
 	
-	void update(ColumnAnnotation columnResource);
+	/**
+	 * Update the JavaColumn context model object to match the ColumnAnnotation 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(ColumnAnnotation resourceColumn);
 	
 	boolean connectionProfileIsActive();
 	

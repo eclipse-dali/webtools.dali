@@ -25,8 +25,12 @@ public interface JavaSequenceGenerator
 	extends JavaGenerator, SequenceGenerator
 {
 
-	void initialize(SequenceGeneratorAnnotation generator);
+	void initialize(SequenceGeneratorAnnotation generatorResource);
 	
-	void update(SequenceGeneratorAnnotation generator);
+	/**
+	 * Update the JavaSequenceGenerator context model object to match the SequenceGeneratorAnnotation 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(SequenceGeneratorAnnotation generatorResource);
 
 }

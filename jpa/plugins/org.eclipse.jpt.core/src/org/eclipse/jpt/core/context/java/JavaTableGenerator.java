@@ -25,9 +25,13 @@ import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 public interface JavaTableGenerator
 	extends JavaGenerator, TableGenerator
 {
-	void initialize(TableGeneratorAnnotation generator);
+	void initialize(TableGeneratorAnnotation resourceGenerator);
 	
-	void update(TableGeneratorAnnotation generator);
+	/**
+	 * Update the JavaTableGenerator context model object to match the TableGeneratorAnnotation 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(TableGeneratorAnnotation resourceGenerator);
 	
 	
 	//****************** covariant overrides *******************

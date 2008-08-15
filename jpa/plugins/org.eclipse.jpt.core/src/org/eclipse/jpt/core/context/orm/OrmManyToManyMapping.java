@@ -26,5 +26,9 @@ public interface OrmManyToManyMapping extends ManyToManyMapping, OrmMultiRelatio
 
 	void initialize(XmlManyToMany xmlManyToMany);
 
+	/**
+	 * Update the OrmManyToManyMapping context model object to match the XmlManyToMany 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlManyToMany xmlManyToMany);
 }

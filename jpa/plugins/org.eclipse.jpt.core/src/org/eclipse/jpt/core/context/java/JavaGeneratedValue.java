@@ -31,8 +31,12 @@ public interface JavaGeneratedValue extends GeneratedValue, JavaJpaContextNode
 	 */
 	TextRange getGeneratorTextRange(CompilationUnit astRoot);
 	
-	void initialize(GeneratedValueAnnotation generatedValue);
+	void initialize(GeneratedValueAnnotation resourceGeneratedValue);
 	
-	void update(GeneratedValueAnnotation generatedValue);
+	/**
+	 * Update the JavaGeneratedValue context model object to match the GeneratedValueAnnotation 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(GeneratedValueAnnotation resourceGeneratedValue);
 
 }

@@ -23,8 +23,12 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
  */
 public interface JavaDiscriminatorColumn extends JavaNamedColumn, DiscriminatorColumn
 {	
-	void initialize(JavaResourcePersistentMember persistentResource);
+	void initialize(JavaResourcePersistentMember jrpm);
 	
-	void update(JavaResourcePersistentMember persistentResource);
+	/**
+	 * Update the JavaDiscriminatorColumn context model object to match the JavaResourcePersistentMember 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(JavaResourcePersistentMember jrpm);
 
 }

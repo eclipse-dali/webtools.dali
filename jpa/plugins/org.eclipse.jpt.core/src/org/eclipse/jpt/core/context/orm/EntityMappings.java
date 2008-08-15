@@ -125,6 +125,10 @@ public interface EntityMappings extends OrmJpaContextNode, JpaStructureNode, Que
 	
 	// **************** updating ***********************************************
 		
+	/**
+	 * Update the EntityMappings context model object to match the XmlEntityMappings 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlEntityMappings entityMappings);
 	
 	// *************************************************************************

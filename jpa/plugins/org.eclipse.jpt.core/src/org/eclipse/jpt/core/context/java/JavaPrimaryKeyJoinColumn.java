@@ -25,6 +25,10 @@ public interface JavaPrimaryKeyJoinColumn extends PrimaryKeyJoinColumn, JavaBase
 {
 	void initialize(PrimaryKeyJoinColumnAnnotation primaryKeyJoinColumn);
 	
+	/**
+	 * Update the JavaPrimaryKeyJoinColumn context model object to match the PrimaryKeyJoinColumnAnnotation 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(PrimaryKeyJoinColumnAnnotation primaryKeyJoinColumn);
 
 }

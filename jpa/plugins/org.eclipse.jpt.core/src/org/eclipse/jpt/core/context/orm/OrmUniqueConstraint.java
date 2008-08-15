@@ -23,5 +23,9 @@ import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
  */
 public interface OrmUniqueConstraint extends UniqueConstraint, OrmJpaContextNode
 {
+	/**
+	 * Update the OrmUniqueConstraint context model object to match the XmlUniqueConstraint 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlUniqueConstraint uniqueConstraint);
 }

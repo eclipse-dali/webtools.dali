@@ -68,6 +68,10 @@ public interface OrmEntity extends OrmTypeMapping, Entity, OrmGeneratorHolder
 
 	void initialize(XmlEntity entity);
 
+	/**
+	 * Update the OrmEntity context model object to match the XmlEntity 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlEntity entity);
 	
 	

@@ -71,8 +71,17 @@ public interface ClassRef extends PersistenceJpaContextNode, JpaStructureNode
 	
 	// **************** update **************************************
 	
+	/**
+	 * Update the ClassRef context model object to match the XmlJavaClassRef 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlJavaClassRef classRef);
 	
+	/**
+	 * Update the ClassRef context model object to match the className. This is used
+	 * for impliedClassRefs in the PersistenceUnit.
+	 * see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(String className);
 	
 	

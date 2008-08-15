@@ -25,5 +25,9 @@ public interface OrmDiscriminatorColumn extends DiscriminatorColumn, OrmNamedCol
 {
 	void initialize(XmlEntity entity);
 
+	/**
+	 * Update the OrmDiscriminatorColumn context model object to match the XmlEntity 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlEntity entity);
 }

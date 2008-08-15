@@ -25,5 +25,9 @@ public interface JavaUniqueConstraint extends UniqueConstraint, JavaJpaContextNo
 {
 	void initialize(UniqueConstraintAnnotation uniqueConstraintAnnotation);
 	
+	/**
+	 * Update the JavaUniqueConstraint context model object to match the UniqueConstraintAnnotation 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(UniqueConstraintAnnotation uniqueConstraintAnnotation);
 }

@@ -25,5 +25,9 @@ public interface OrmAttributeOverride extends AttributeOverride, OrmJpaContextNo
 {
 	OrmColumn getColumn();
 
+	/**
+	 * Update the OrmAttributeOverride context model object to match the XmlAttributeOverride 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlAttributeOverride attributeOverride);
 }

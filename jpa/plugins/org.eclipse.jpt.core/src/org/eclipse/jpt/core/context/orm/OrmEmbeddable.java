@@ -26,6 +26,10 @@ public interface OrmEmbeddable extends Embeddable, OrmTypeMapping
 {
 	void initialize(XmlEmbeddable mappedSuperclass);
 
+	/**
+	 * Update the OrmEmbeddable context model object to match the XmlEmbeddable 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlEmbeddable mappedSuperclass);
 	
 	Iterator<OrmPersistentAttribute> overridableAttributes();

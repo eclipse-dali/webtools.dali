@@ -24,9 +24,13 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
  */
 public interface JavaTypeMapping extends TypeMapping, JavaJpaContextNode
 {
-	void initialize(JavaResourcePersistentType persistentTypeResource);
+	void initialize(JavaResourcePersistentType jrpt);
 	
-	void update(JavaResourcePersistentType persistentTypeResource);
+	/**
+	 * Update the JavaTypeMapping context model object to match the JavaResourcePersistentType 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(JavaResourcePersistentType jrpt);
 	
 	String getAnnotationName();
 	

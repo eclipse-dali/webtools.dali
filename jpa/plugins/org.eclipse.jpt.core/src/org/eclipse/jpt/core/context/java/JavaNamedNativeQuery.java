@@ -28,8 +28,12 @@ public interface JavaNamedNativeQuery
 
 	ListIterator<JavaQueryHint> hints();
 
-	void initialize(NamedNativeQueryAnnotation queryResource);
+	void initialize(NamedNativeQueryAnnotation resourceQuery);
 
-	void update(NamedNativeQueryAnnotation queryResource);
+	/**
+	 * Update the JavaNamedNativeQuery context model object to match the NamedNativeQueryAnnotation 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(NamedNativeQueryAnnotation resourceQuery);
 
 }

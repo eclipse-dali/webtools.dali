@@ -450,6 +450,10 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	
 	// **************** updating ***********************************************
 	
+	/**
+	 * Update the PersistenceUnit context model object to match the XmlPersistenceUnit 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlPersistenceUnit persistenceUnit);
 	
 	

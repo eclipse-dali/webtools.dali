@@ -25,5 +25,9 @@ public interface OrmVersionMapping extends VersionMapping, OrmColumnMapping, Orm
 {
 	void initialize(XmlVersion version);
 
+	/**
+	 * Update the OrmVersionMapping context model object to match the XmlVersion 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlVersion version);
 }

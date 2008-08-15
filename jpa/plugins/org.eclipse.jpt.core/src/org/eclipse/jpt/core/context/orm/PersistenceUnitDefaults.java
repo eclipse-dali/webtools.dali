@@ -54,6 +54,10 @@ public interface PersistenceUnitDefaults extends OrmJpaContextNode
 	String CASCADE_PERSIST_PROPERTY = "cascadePersistProperty";
 	
 	
+	/**
+	 * Update the PersistenceUnitDefaults context model object to match the XmlEntityMappings 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlEntityMappings entityMappings);
 
 }

@@ -23,11 +23,15 @@ import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
  */
 public interface JavaJoinColumn extends JoinColumn, JavaBaseJoinColumn, JavaBaseColumn
 {
-	void initialize(JoinColumnAnnotation joinColumn);
+	void initialize(JoinColumnAnnotation resourceJoinColumn);
 	
 	boolean connectionProfileIsActive();
 	
-	void update(JoinColumnAnnotation joinColumn);
+	/**
+	 * Update the JavaJoinColumn context model object to match the JoinColumnAnnotation 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(JoinColumnAnnotation resourceJoinColumn);
 
 	Owner getOwner();
 	

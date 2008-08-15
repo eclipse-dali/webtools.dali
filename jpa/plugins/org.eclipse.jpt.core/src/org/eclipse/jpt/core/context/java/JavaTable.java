@@ -24,9 +24,13 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
  */
 public interface JavaTable extends Table, JavaJpaContextNode
 {
-	void initialize(JavaResourcePersistentMember persistentResource);
+	void initialize(JavaResourcePersistentMember jrpm);
 	
-	void update(JavaResourcePersistentMember persistentResource);
+	/**
+	 * Update the JavaTable context model object to match the JavaResourcePersistentMember 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(JavaResourcePersistentMember jrpm);
 
 	
 	//****************** covariant overrides *******************

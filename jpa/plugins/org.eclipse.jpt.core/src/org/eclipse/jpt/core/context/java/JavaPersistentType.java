@@ -45,6 +45,10 @@ public interface JavaPersistentType extends PersistentType, JavaJpaContextNode
 	boolean hasAnyAttributeMappingAnnotations();
 
 	
-	void update(JavaResourcePersistentType persistentTypeResource);
+	/**
+	 * Update the JavaPersistentType context model object to match the JavaResourcePersistentType 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(JavaResourcePersistentType jrpt);
 
 }

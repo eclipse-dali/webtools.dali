@@ -114,26 +114,70 @@ public interface OrmPersistentAttribute extends PersistentAttribute, OrmJpaConte
 	
 	void initialize(XmlNullAttributeMapping xmlNullAttributeMapping);
 	
+	/**
+	 * Update the OrmPersistentAttribute context model object to match the XmlId 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlId id);
 	
+	/**
+	 * Update the OrmPersistentAttribute context model object to match the XmlEmbeddedId 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlEmbeddedId embeddedId);
 
+	/**
+	 * Update the OrmPersistentAttribute context model object to match the XmlBasic 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlBasic basic);
 	
+	/**
+	 * Update the OrmPersistentAttribute context model object to match the XmlVersion 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlVersion version);
 	
+	/**
+	 * Update the OrmPersistentAttribute context model object to match the XmlManyToOne 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlManyToOne manyToOne);
 	
+	/**
+	 * Update the OrmPersistentAttribute context model object to match the XmlOneToMany 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlOneToMany oneToMany);
 	
+	/**
+	 * Update the OrmPersistentAttribute context model object to match the XmlOneToOne 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlOneToOne oneToOne);
 	
+	/**
+	 * Update the OrmPersistentAttribute context model object to match the XmlManyToMany 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlManyToMany manyToMany);
 
+	/**
+	 * Update the OrmPersistentAttribute context model object to match the XmlEmbedded 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlEmbedded embedded);
 	
+	/**
+	 * Update the OrmPersistentAttribute context model object to match the XmlTransient 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlTransient transientResource);
 	
+	/**
+	 * Update the OrmPersistentAttribute context model object to match the XmlNullAttributeMapping 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlNullAttributeMapping xmlNullAttributeMapping);
 
 }

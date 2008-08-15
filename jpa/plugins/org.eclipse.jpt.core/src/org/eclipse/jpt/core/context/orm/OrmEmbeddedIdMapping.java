@@ -30,5 +30,9 @@ public interface OrmEmbeddedIdMapping extends EmbeddedIdMapping, OrmBaseEmbedded
 
 	void initialize(XmlEmbeddedId embeddedId);
 
-	 void update(XmlEmbeddedId embeddedId);
+	/**
+	 * Update the OrmEmbeddedIdMapping context model object to match the XmlEmbeddedId 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(XmlEmbeddedId embeddedId);
 }

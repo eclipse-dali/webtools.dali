@@ -25,5 +25,9 @@ public interface OrmTransientMapping extends TransientMapping, OrmAttributeMappi
 {
 	void initialize(XmlTransient transientResource);
 
+	/**
+	 * Update the OrmTransientMapping context model object to match the XmlTransient 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlTransient transientResource);
 }

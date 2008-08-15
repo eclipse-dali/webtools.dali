@@ -52,5 +52,9 @@ public interface PersistenceXml extends PersistenceJpaContextNode, JpaStructureN
 	
 	// **************** updating **********************************************
 	
+	/**
+	 * Update the PersistenceXml context model object to match the PersistenceResource 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(PersistenceResource persistenceResource);
 }

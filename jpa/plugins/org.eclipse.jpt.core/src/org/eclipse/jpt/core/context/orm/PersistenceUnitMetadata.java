@@ -28,6 +28,10 @@ public interface PersistenceUnitMetadata extends OrmJpaContextNode
 
 	PersistenceUnitDefaults getPersistenceUnitDefaults();
 		
+	/**
+	 * Update the PersistenceUnitMetadata context model object to match the XmlEntityMappings 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlEntityMappings entityMappings);
 
 }

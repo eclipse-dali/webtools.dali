@@ -27,6 +27,10 @@ public interface JavaAttributeOverride extends AttributeOverride, JavaJpaContext
 	
 	void initialize(AttributeOverrideAnnotation attributeOverride);
 	
+	/**
+	 * Update the JavaAttributeOverride context model object to match the AttributeOverrideAnnotation 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(AttributeOverrideAnnotation attributeOverride);
 	
 }
