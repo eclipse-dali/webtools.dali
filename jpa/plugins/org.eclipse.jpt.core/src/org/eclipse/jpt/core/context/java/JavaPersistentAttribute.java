@@ -34,10 +34,13 @@ public interface JavaPersistentAttribute extends PersistentAttribute, JavaJpaCon
 	JavaTypeMapping getTypeMapping();
 	
 	JavaPersistentType getPersistentType();
-	
-	void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute);
 
-	void update(JavaResourcePersistentAttribute resourcePersistentAttribute);
+	/**
+	 * Update the JavaPersistentAttribute context model object to match the JavaResourcePersistentAttribute
+	 * resource model object passed in to the constructor.   
+	 * see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update();
 	
 	JavaResourcePersistentAttribute getResourcePersistentAttribute();
 	

@@ -315,13 +315,12 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	public OrmSequenceGenerator addSequenceGenerator(int index) {
-		OrmSequenceGenerator ormSequenceGenerator = getJpaFactory().buildOrmSequenceGenerator(this);
-		this.sequenceGenerators.add(index, ormSequenceGenerator);
-		XmlSequenceGenerator sequenceGenerator = OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
-		ormSequenceGenerator.initialize(sequenceGenerator);
-		this.xmlEntityMappings.getSequenceGenerators().add(index, sequenceGenerator);
-		fireItemAdded(SEQUENCE_GENERATORS_LIST, index, ormSequenceGenerator);
-		return ormSequenceGenerator;
+		XmlSequenceGenerator resourceSequenceGenerator = OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
+		OrmSequenceGenerator contextSequenceGenerator =  buildSequenceGenerator(resourceSequenceGenerator);
+		this.sequenceGenerators.add(index, contextSequenceGenerator);
+		this.xmlEntityMappings.getSequenceGenerators().add(index, resourceSequenceGenerator);
+		fireItemAdded(SEQUENCE_GENERATORS_LIST, index, contextSequenceGenerator);
+		return contextSequenceGenerator;
 	}
 
 	protected void addSequenceGenerator(int index, OrmSequenceGenerator sequenceGenerator) {
@@ -357,13 +356,12 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	public OrmTableGenerator addTableGenerator(int index) {
-		OrmTableGenerator xmlTableGenerator = getJpaFactory().buildOrmTableGenerator(this);
-		this.tableGenerators.add(index, xmlTableGenerator);
-		XmlTableGenerator tableGenerator = OrmFactory.eINSTANCE.createXmlTableGeneratorImpl();
-		xmlTableGenerator.initialize(tableGenerator);
-		this.xmlEntityMappings.getTableGenerators().add(index, tableGenerator);
-		fireItemAdded(TABLE_GENERATORS_LIST, index, xmlTableGenerator);
-		return xmlTableGenerator;
+		XmlTableGenerator resourceTableGenerator = OrmFactory.eINSTANCE.createXmlTableGeneratorImpl();
+		OrmTableGenerator contextTableGenerator = buildTableGenerator(resourceTableGenerator);
+		this.tableGenerators.add(index, contextTableGenerator);
+		this.xmlEntityMappings.getTableGenerators().add(index, resourceTableGenerator);
+		fireItemAdded(TABLE_GENERATORS_LIST, index, contextTableGenerator);
+		return contextTableGenerator;
 	}
 	
 	protected void addTableGenerator(int index, OrmTableGenerator tableGenerator) {
@@ -399,11 +397,12 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	public OrmNamedQuery addNamedQuery(int index) {
-		OrmNamedQuery namedQuery = getJpaFactory().buildOrmNamedQuery(this);
-		this.namedQueries.add(index, namedQuery);
-		this.xmlEntityMappings.getNamedQueries().add(index, OrmFactory.eINSTANCE.createXmlNamedQuery());
-		this.fireItemAdded(QueryHolder.NAMED_QUERIES_LIST, index, namedQuery);
-		return namedQuery;
+		XmlNamedQuery resourceNamedQuery = OrmFactory.eINSTANCE.createXmlNamedQuery();
+		OrmNamedQuery contextNamedQuery = buildNamedQuery(resourceNamedQuery);
+		this.namedQueries.add(index, contextNamedQuery);
+		this.xmlEntityMappings.getNamedQueries().add(index, resourceNamedQuery);
+		this.fireItemAdded(QueryHolder.NAMED_QUERIES_LIST, index, contextNamedQuery);
+		return contextNamedQuery;
 	}
 	
 	protected void addNamedQuery(int index, OrmNamedQuery namedQuery) {
@@ -438,9 +437,10 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	public OrmNamedNativeQuery addNamedNativeQuery(int index) {
-		OrmNamedNativeQuery namedNativeQuery = getJpaFactory().buildOrmNamedNativeQuery(this);
+		XmlNamedNativeQuery resourceNamedNativeQuery = OrmFactory.eINSTANCE.createXmlNamedNativeQuery();
+		OrmNamedNativeQuery namedNativeQuery = buildNamedNativeQuery(resourceNamedNativeQuery);
 		this.namedNativeQueries.add(index, namedNativeQuery);
-		this.xmlEntityMappings.getNamedNativeQueries().add(index, OrmFactory.eINSTANCE.createXmlNamedNativeQuery());
+		this.xmlEntityMappings.getNamedNativeQueries().add(index, resourceNamedNativeQuery);
 		this.fireItemAdded(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
 		return namedNativeQuery;
 	}
@@ -639,15 +639,15 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	protected void updateTableGenerators(XmlEntityMappings entityMappings) {
-		ListIterator<OrmTableGenerator> tableGenerators = tableGenerators();
+		ListIterator<OrmTableGenerator> contextTableGenerators = tableGenerators();
 		ListIterator<XmlTableGenerator> resourceTableGenerators = new CloneListIterator<XmlTableGenerator>(entityMappings.getTableGenerators());//prevent ConcurrentModificiationException
-		while (tableGenerators.hasNext()) {
-			OrmTableGenerator tableGenerator = tableGenerators.next();
+		while (contextTableGenerators.hasNext()) {
+			OrmTableGenerator contextTableGenerator = contextTableGenerators.next();
 			if (resourceTableGenerators.hasNext()) {
-				tableGenerator.update(resourceTableGenerators.next());
+				contextTableGenerator.update(resourceTableGenerators.next());
 			}
 			else {
-				removeTableGenerator_(tableGenerator);
+				removeTableGenerator_(contextTableGenerator);
 			}
 		}
 		
@@ -656,22 +656,20 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		}
 	}
 
-	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator tableGeneratorResource) {
-		OrmTableGenerator tableGenerator = getJpaFactory().buildOrmTableGenerator(this);
-		tableGenerator.initialize(tableGeneratorResource);
-		return tableGenerator;
+	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator resourceTableGenerator) {
+		return getJpaFactory().buildOrmTableGenerator(this, resourceTableGenerator);
 	}
 
 	protected void updateSequenceGenerators(XmlEntityMappings entityMappings) {
-		ListIterator<OrmSequenceGenerator> sequenceGenerators = sequenceGenerators();
+		ListIterator<OrmSequenceGenerator> contextSequenceGenerators = sequenceGenerators();
 		ListIterator<XmlSequenceGenerator> resourceSequenceGenerators = new CloneListIterator<XmlSequenceGenerator>(entityMappings.getSequenceGenerators());//prevent ConcurrentModificiationException
-		while (sequenceGenerators.hasNext()) {
-			OrmSequenceGenerator sequenceGenerator = sequenceGenerators.next();
+		while (contextSequenceGenerators.hasNext()) {
+			OrmSequenceGenerator contextSequenceGenerator = contextSequenceGenerators.next();
 			if (resourceSequenceGenerators.hasNext()) {
-				sequenceGenerator.update(resourceSequenceGenerators.next());
+				contextSequenceGenerator.update(resourceSequenceGenerators.next());
 			}
 			else {
-				removeSequenceGenerator_(sequenceGenerator);
+				removeSequenceGenerator_(contextSequenceGenerator);
 			}
 		}
 		
@@ -680,23 +678,21 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		}
 	}
 
-	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator sequenceGeneratorResource) {
-		OrmSequenceGenerator sequenceGenerator = getJpaFactory().buildOrmSequenceGenerator(this);
-		sequenceGenerator.initialize(sequenceGeneratorResource);
-		return sequenceGenerator;
+	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator resourceSequenceGenerator) {
+		return getJpaFactory().buildOrmSequenceGenerator(this, resourceSequenceGenerator);
 	}
 	
 	protected void updateNamedQueries(XmlEntityMappings entityMappings) {
-		ListIterator<OrmNamedQuery> namedQueries = namedQueries();
+		ListIterator<OrmNamedQuery> contextNamedQueries = namedQueries();
 		ListIterator<XmlNamedQuery> resourceNamedQueries = new CloneListIterator<XmlNamedQuery>(entityMappings.getNamedQueries());//prevent ConcurrentModificiationException
 		
-		while (namedQueries.hasNext()) {
-			OrmNamedQuery namedQuery = namedQueries.next();
+		while (contextNamedQueries.hasNext()) {
+			OrmNamedQuery contextNamedQuery = contextNamedQueries.next();
 			if (resourceNamedQueries.hasNext()) {
-				namedQuery.update(resourceNamedQueries.next());
+				contextNamedQuery.update(resourceNamedQueries.next());
 			}
 			else {
-				removeNamedQuery_(namedQuery);
+				removeNamedQuery_(contextNamedQuery);
 			}
 		}
 		
@@ -705,10 +701,8 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		}
 	}
 
-	protected OrmNamedQuery buildNamedQuery(XmlNamedQuery namedQuery) {
-		OrmNamedQuery ormNamedQuery = getJpaFactory().buildOrmNamedQuery(this);
-		ormNamedQuery.initialize(namedQuery);
-		return ormNamedQuery;
+	protected OrmNamedQuery buildNamedQuery(XmlNamedQuery resourceNamedQuery) {
+		return getJpaFactory().buildOrmNamedQuery(this, resourceNamedQuery);
 	}
 
 	protected void updateNamedNativeQueries(XmlEntityMappings entityMappings) {
@@ -730,10 +724,8 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		}
 	}
 
-	protected OrmNamedNativeQuery buildNamedNativeQuery(XmlNamedNativeQuery namedQuery) {
-		OrmNamedNativeQuery ormNamedNativeQuery =getJpaFactory().buildOrmNamedNativeQuery(this);
-		ormNamedNativeQuery.initialize(namedQuery);
-		return ormNamedNativeQuery;
+	protected OrmNamedNativeQuery buildNamedNativeQuery(XmlNamedNativeQuery resourceNamedQuery) {
+		return getJpaFactory().buildOrmNamedNativeQuery(this, resourceNamedQuery);
 	}
 	
 	protected void updatePersistenceUnitGeneratorsAndQueries() {

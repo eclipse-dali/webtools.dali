@@ -117,16 +117,16 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 			//cause change notifications to be sent to the UI in the wrong order
 			this.defaultPrimaryKeyJoinColumn = null;
 		}
-		XmlPrimaryKeyJoinColumn xmlPrimaryKeyJoinColumn = OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl();
-		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = createPrimaryKeyJoinColumn(xmlPrimaryKeyJoinColumn);
-		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
-		this.secondaryTable.getPrimaryKeyJoinColumns().add(index, xmlPrimaryKeyJoinColumn);
+		XmlPrimaryKeyJoinColumn resourcePkJoinColumn = OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl();
+		OrmPrimaryKeyJoinColumn contextPkJoinColumn = buildPrimaryKeyJoinColumn(resourcePkJoinColumn);
+		this.specifiedPrimaryKeyJoinColumns.add(index, contextPkJoinColumn);
+		this.secondaryTable.getPrimaryKeyJoinColumns().add(index, resourcePkJoinColumn);
 		
-		this.fireItemAdded(SecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
+		this.fireItemAdded(SecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, contextPkJoinColumn);
 		if (oldDefaultPkJoinColumn != null) {
 			this.firePropertyChanged(SecondaryTable.DEFAULT_PRIMARY_KEY_JOIN_COLUMN, oldDefaultPkJoinColumn, null);
 		}
-		return primaryKeyJoinColumn;
+		return contextPkJoinColumn;
 	}
 	
 	protected OrmBaseJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
@@ -147,7 +147,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 			//create the defaultJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
-			this.defaultPrimaryKeyJoinColumn = createPrimaryKeyJoinColumn(null);
+			this.defaultPrimaryKeyJoinColumn = buildPrimaryKeyJoinColumn(null);
 		}
 		this.secondaryTable.getPrimaryKeyJoinColumns().remove(index);
 		fireItemRemoved(SecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
@@ -173,19 +173,19 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 	}
 	
 	@Override
-	protected void addTableResource() {
+	protected void addResourceTable() {
 		//secondaryTables are part of a collection, the secondary-table element will be removed/added
 		//when the XmlSecondaryTable is removed/added to the XmlEntity collection
 	}
 	
 	@Override
-	protected void removeTableResource() {
+	protected void removeResourceTable() {
 		//secondaryTables are part of a collection, the secondary-table element will be removed/added
 		//when the XmlSecondaryTable is removed/added to the XmlEntity collection
 	}
 
 	@Override
-	protected XmlSecondaryTable getTableResource() {
+	protected XmlSecondaryTable getResourceTable() {
 		return this.secondaryTable;
 	}
 
@@ -197,8 +197,8 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 	}
 	
 	protected void initializeSpecifiedPrimaryKeyJoinColumns(XmlSecondaryTable secondaryTable) {
-		for (XmlPrimaryKeyJoinColumn primaryKeyJoinColumn : secondaryTable.getPrimaryKeyJoinColumns()) {
-			this.specifiedPrimaryKeyJoinColumns.add(createPrimaryKeyJoinColumn(primaryKeyJoinColumn));
+		for (XmlPrimaryKeyJoinColumn resourcePkJoinColumn : secondaryTable.getPrimaryKeyJoinColumns()) {
+			this.specifiedPrimaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn(resourcePkJoinColumn));
 		}
 	}
 	
@@ -210,7 +210,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 		if (!shouldBuildDefaultPrimaryKeyJoinColumn()) {
 			return;
 		}
-		this.defaultPrimaryKeyJoinColumn = createPrimaryKeyJoinColumn(null);
+		this.defaultPrimaryKeyJoinColumn = buildPrimaryKeyJoinColumn(null);
 	}	
 
 	public void update(XmlSecondaryTable secondaryTable) {
@@ -235,7 +235,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 		}
 		
 		while (resourcePrimaryKeyJoinColumns.hasNext()) {
-			addSpecifiedPrimaryKeyJoinColumn(specifiedPrimaryKeyJoinColumnsSize(), createPrimaryKeyJoinColumn(resourcePrimaryKeyJoinColumns.next()));
+			addSpecifiedPrimaryKeyJoinColumn(specifiedPrimaryKeyJoinColumnsSize(), buildPrimaryKeyJoinColumn(resourcePrimaryKeyJoinColumns.next()));
 		}
 	}
 	
@@ -245,17 +245,15 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 			return;
 		}
 		if (getDefaultPrimaryKeyJoinColumn() == null) {
-			this.setDefaultPrimaryKeyJoinColumn(createPrimaryKeyJoinColumn(null));
+			this.setDefaultPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn(null));
 		}
 		else {
 			this.defaultPrimaryKeyJoinColumn.update(null);
 		}
 	}	
 
-	protected OrmPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn xmlPrimaryKeyJoinColumn) {
-		OrmPrimaryKeyJoinColumn ormPrimaryKeyJoinColumn = getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
-		ormPrimaryKeyJoinColumn.initialize(xmlPrimaryKeyJoinColumn);
-		return ormPrimaryKeyJoinColumn;
+	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
+		return getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner(), resourcePkJoinColumn);
 	}
 
 	@Override

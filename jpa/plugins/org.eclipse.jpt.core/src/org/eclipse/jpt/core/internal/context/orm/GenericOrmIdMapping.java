@@ -105,8 +105,9 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		if (getGeneratedValue() != null) {
 			throw new IllegalStateException("gemeratedValue already exists");
 		}
-		this.generatedValue = getJpaFactory().buildOrmGeneratedValue(this);
-		this.getAttributeMapping().setGeneratedValue(OrmFactory.eINSTANCE.createXmlGeneratedValueImpl());
+		XmlGeneratedValue resourceGeneratedValue = OrmFactory.eINSTANCE.createXmlGeneratedValueImpl();
+		this.generatedValue = buildGeneratedValue(resourceGeneratedValue);
+		this.getAttributeMapping().setGeneratedValue(resourceGeneratedValue);
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, null, this.generatedValue);
 		return this.generatedValue;
 	}
@@ -135,8 +136,9 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		if (getSequenceGenerator() != null) {
 			throw new IllegalStateException("sequenceGenerator already exists");
 		}
-		this.sequenceGenerator = getJpaFactory().buildOrmSequenceGenerator(this);
-		this.getAttributeMapping().setSequenceGenerator(OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl());
+		XmlSequenceGenerator resourceSequenceGenerator = OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
+		this.sequenceGenerator = buildSequenceGenerator(resourceSequenceGenerator);
+		this.getAttributeMapping().setSequenceGenerator(resourceSequenceGenerator);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
 		return this.sequenceGenerator;
 	}
@@ -165,8 +167,9 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		if (getTableGenerator() != null) {
 			throw new IllegalStateException("tableGenerator already exists");
 		}
-		this.tableGenerator = getJpaFactory().buildOrmTableGenerator(this);
-		this.getAttributeMapping().setTableGenerator(OrmFactory.eINSTANCE.createXmlTableGeneratorImpl());
+		XmlTableGenerator resourceTableGenerator = OrmFactory.eINSTANCE.createXmlTableGeneratorImpl();
+		this.tableGenerator = buildTableGenerator(resourceTableGenerator);
+		this.getAttributeMapping().setTableGenerator(resourceTableGenerator);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
 		return this.tableGenerator;
 	}
@@ -260,10 +263,8 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		}
 	}
 	
-	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator xmlSequenceGenerator) {
-		OrmSequenceGenerator sequenceGenerator = getJpaFactory().buildOrmSequenceGenerator(this);
-		sequenceGenerator.initialize(xmlSequenceGenerator);
-		return sequenceGenerator;
+	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator resourceSequenceGenerator) {
+		return getJpaFactory().buildOrmSequenceGenerator(this, resourceSequenceGenerator);
 	}
 
 	protected void initializeTableGenerator(XmlId id) {
@@ -272,10 +273,8 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		}
 	}
 	
-	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator tableGeneratorResource) {
-		OrmTableGenerator tableGenerator = getJpaFactory().buildOrmTableGenerator(this);
-		tableGenerator.initialize(tableGeneratorResource);
-		return tableGenerator;
+	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator resourceTableGenerator) {
+		return getJpaFactory().buildOrmTableGenerator(this, resourceTableGenerator);
 	}
 
 	protected void initializeGeneratedValue(XmlId id) {
@@ -284,10 +283,8 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		}
 	}
 	
-	protected OrmGeneratedValue buildGeneratedValue(XmlGeneratedValue xmlGeneratedValue) {
-		OrmGeneratedValue ormGeneratedValue = getJpaFactory().buildOrmGeneratedValue(this);
-		ormGeneratedValue.initialize(xmlGeneratedValue);
-		return ormGeneratedValue;
+	protected OrmGeneratedValue buildGeneratedValue(XmlGeneratedValue resourceGeneratedValue) {
+		return getJpaFactory().buildOrmGeneratedValue(this, resourceGeneratedValue);
 	}
 	@Override
 	public void update(XmlId id) {
@@ -341,7 +338,6 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		else {
 			if (getGeneratedValue() == null) {
 				setGeneratedValue(buildGeneratedValue(id.getGeneratedValue()));
-				getGeneratedValue().initialize(id.getGeneratedValue());
 			}
 			else {
 				getGeneratedValue().update(id.getGeneratedValue());
@@ -361,15 +357,15 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 
 	//***************** IXmlColumn.Owner implementation ****************
 	
-	public XmlColumn getColumnResource() {
+	public XmlColumn getResourceColumn() {
 		return this.getAttributeMapping().getColumn();
 	}
 	
-	public void addColumnResource() {
+	public void addResourceColumn() {
 		this.getAttributeMapping().setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
 	}
 	
-	public void removeColumnResource() {
+	public void removeResourceColumn() {
 		this.getAttributeMapping().setColumn(null);
 	}
 	

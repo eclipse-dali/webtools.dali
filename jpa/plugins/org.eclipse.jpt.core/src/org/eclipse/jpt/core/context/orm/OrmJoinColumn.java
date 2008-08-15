@@ -24,10 +24,12 @@ import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 public interface OrmJoinColumn extends JoinColumn, OrmBaseJoinColumn, OrmBaseColumn
 {
 	void initializeFrom(JoinColumn oldColumn);
-	
-	void initialize(XmlJoinColumn column);
-	
-	void update(XmlJoinColumn column);
+		
+	/**
+	 * Update the OrmJoinColumn context model object to match the XmlJoinColumn 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(XmlJoinColumn resourceJoinColumn);
 	
 	Owner getOwner();
 

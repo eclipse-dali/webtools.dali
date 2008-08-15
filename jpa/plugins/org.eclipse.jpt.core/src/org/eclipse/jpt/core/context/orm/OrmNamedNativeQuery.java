@@ -26,8 +26,10 @@ public interface OrmNamedNativeQuery extends OrmQuery, NamedNativeQuery
 {
 	ListIterator<OrmQueryHint> hints();
 
-	void initialize(XmlNamedNativeQuery queryResource);
-
-	void update(XmlNamedNativeQuery queryResource);
+	/**
+	 * Update the OrmNamedNativeQuery context model object to match the XmlNamedNativeQuery 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(XmlNamedNativeQuery resourceQuery);
 
 }

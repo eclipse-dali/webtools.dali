@@ -24,10 +24,11 @@ public class GenericOrmGeneratedValue extends AbstractOrmJpaContextNode implemen
 	protected String specifiedGenerator;
 	protected String defaultGenerator;
 
-	protected XmlGeneratedValue generatedValue;
+	protected XmlGeneratedValue resourceGeneratedValue;
 	
-	public GenericOrmGeneratedValue(OrmJpaContextNode parent) {
+	public GenericOrmGeneratedValue(OrmJpaContextNode parent, XmlGeneratedValue resourceGeneratedValue) {
 		super(parent);
+		this.initialize(resourceGeneratedValue);
 	}
 	
 	@Override
@@ -50,7 +51,7 @@ public class GenericOrmGeneratedValue extends AbstractOrmJpaContextNode implemen
 	public void setSpecifiedStrategy(GenerationType newSpecifiedStrategy) {
 		GenerationType oldStrategy = this.specifiedStrategy;
 		this.specifiedStrategy = newSpecifiedStrategy;
-		this.generatedValue.setStrategy(GenerationType.toOrmResourceModel(newSpecifiedStrategy));
+		this.resourceGeneratedValue.setStrategy(GenerationType.toOrmResourceModel(newSpecifiedStrategy));
 		firePropertyChanged(SPECIFIED_STRATEGY_PROPERTY, oldStrategy, newSpecifiedStrategy);
 	}
 	
@@ -81,7 +82,7 @@ public class GenericOrmGeneratedValue extends AbstractOrmJpaContextNode implemen
 	public void setSpecifiedGenerator(String newSpecifiedGenerator) {
 		String oldGenerator = this.specifiedGenerator;
 		this.specifiedGenerator = newSpecifiedGenerator;
-		this.generatedValue.setGenerator(newSpecifiedGenerator);
+		this.resourceGeneratedValue.setGenerator(newSpecifiedGenerator);
 		firePropertyChanged(SPECIFIED_GENERATOR_PROPERTY, oldGenerator, newSpecifiedGenerator);
 	}
 
@@ -92,39 +93,39 @@ public class GenericOrmGeneratedValue extends AbstractOrmJpaContextNode implemen
 	}
 
 	public TextRange getGeneratorTextRange() {
-		TextRange textRange =  this.generatedValue.getGeneratorTextRange();
+		TextRange textRange =  this.resourceGeneratedValue.getGeneratorTextRange();
 		return textRange != null ? textRange : getValidationTextRange();
 	}
 
 	
 	// ********** resource model -> java context model **********
 
-	public void initialize(XmlGeneratedValue generatedValue) {
-		this.generatedValue = generatedValue;
-		this.specifiedStrategy = this.strategy(generatedValue);
-		this.specifiedGenerator = this.generator(generatedValue);
+	protected void initialize(XmlGeneratedValue resourceGeneratedValue) {
+		this.resourceGeneratedValue = resourceGeneratedValue;
+		this.specifiedStrategy = this.strategy(resourceGeneratedValue);
+		this.specifiedGenerator = this.generator(resourceGeneratedValue);
 		//TODO
 		this.defaultGenerator = null;
 	}
 
-	public void update(XmlGeneratedValue generatedValue) {
-		this.generatedValue = generatedValue;
-		this.setSpecifiedStrategy_(this.strategy(generatedValue));
-		this.setSpecifiedGenerator_(this.generator(generatedValue));
+	public void update(XmlGeneratedValue resourceGeneratedValue) {
+		this.resourceGeneratedValue = resourceGeneratedValue;
+		this.setSpecifiedStrategy_(this.strategy(resourceGeneratedValue));
+		this.setSpecifiedGenerator_(this.generator(resourceGeneratedValue));
 		//TODO
 		this.setDefaultGenerator(null);
 	}
 
-	protected GenerationType strategy(XmlGeneratedValue generatedValue) {
-		return GenerationType.fromOrmResourceModel(generatedValue.getStrategy());
+	protected GenerationType strategy(XmlGeneratedValue resourceGeneratedValue) {
+		return GenerationType.fromOrmResourceModel(resourceGeneratedValue.getStrategy());
 	}
 	
-	protected String generator(XmlGeneratedValue generatedValue) {
-		return generatedValue.getGenerator();
+	protected String generator(XmlGeneratedValue resourceGeneratedValue) {
+		return resourceGeneratedValue.getGenerator();
 	}
 	
 	public TextRange getValidationTextRange() {
-		TextRange validationTextRange = this.generatedValue.getValidationTextRange();
+		TextRange validationTextRange = this.resourceGeneratedValue.getValidationTextRange();
 		return validationTextRange != null ? validationTextRange : getParent().getValidationTextRange();
 	}
 }

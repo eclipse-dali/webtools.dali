@@ -535,8 +535,9 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		if (getSequenceGenerator() != null) {
 			throw new IllegalStateException("sequenceGenerator already exists"); //$NON-NLS-1$
 		}
-		this.sequenceGenerator = getJpaFactory().buildOrmSequenceGenerator(this);
-		getTypeMappingResource().setSequenceGenerator(OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl());
+		XmlSequenceGenerator resourceSequenceGenerator = OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
+		this.sequenceGenerator = buildSequenceGenerator(resourceSequenceGenerator);
+		getTypeMappingResource().setSequenceGenerator(resourceSequenceGenerator);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
 		return this.sequenceGenerator;
 	}
@@ -565,8 +566,9 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		if (getTableGenerator() != null) {
 			throw new IllegalStateException("tableGenerator already exists"); //$NON-NLS-1$
 		}
-		this.tableGenerator = getJpaFactory().buildOrmTableGenerator(this);
-		getTypeMappingResource().setTableGenerator(OrmFactory.eINSTANCE.createXmlTableGeneratorImpl());
+		XmlTableGenerator resourceTableGenerator = OrmFactory.eINSTANCE.createXmlTableGeneratorImpl();
+		this.tableGenerator = buildTableGenerator(resourceTableGenerator);
+		getTypeMappingResource().setTableGenerator(resourceTableGenerator);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
 		return this.tableGenerator;
 	}
@@ -677,14 +679,14 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		if (!this.defaultPrimaryKeyJoinColumns.isEmpty()) {
 			this.defaultPrimaryKeyJoinColumns.clear();
 		}
-		XmlPrimaryKeyJoinColumn xmlPrimaryKeyJoinColumn = OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl();
-		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = buildPrimaryKeyJoinColumn(xmlPrimaryKeyJoinColumn);
-		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
-		this.getTypeMappingResource().getPrimaryKeyJoinColumns().add(index, xmlPrimaryKeyJoinColumn);
+		XmlPrimaryKeyJoinColumn resourcePkJoinColumn = OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl();
+		OrmPrimaryKeyJoinColumn contextPkJoinColumn = buildPrimaryKeyJoinColumn(resourcePkJoinColumn);
+		this.specifiedPrimaryKeyJoinColumns.add(index, contextPkJoinColumn);
+		this.getTypeMappingResource().getPrimaryKeyJoinColumns().add(index, resourcePkJoinColumn);
 
-		this.fireItemAdded(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
+		this.fireItemAdded(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, contextPkJoinColumn);
 		this.fireListCleared(OrmEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST);
-		return primaryKeyJoinColumn;
+		return contextPkJoinColumn;
 	}
 	
 	protected OrmBaseJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
@@ -927,13 +929,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	public OrmNamedQuery addNamedQuery(int index) {
-		OrmNamedQuery namedQuery = getJpaFactory().buildOrmNamedQuery(this);
-		this.namedQueries.add(index, namedQuery);
-		XmlNamedQuery xmlNamedQuery = OrmFactory.eINSTANCE.createXmlNamedQuery();
-		namedQuery.initialize(xmlNamedQuery);
-		this.getTypeMappingResource().getNamedQueries().add(index, xmlNamedQuery);
-		this.fireItemAdded(QueryHolder.NAMED_QUERIES_LIST, index, namedQuery);
-		return namedQuery;
+		XmlNamedQuery resourceNamedQuery = OrmFactory.eINSTANCE.createXmlNamedQuery();
+		OrmNamedQuery contextNamedQuery = buildNamedQuery(resourceNamedQuery);
+		this.namedQueries.add(index, contextNamedQuery);
+		this.getTypeMappingResource().getNamedQueries().add(index, resourceNamedQuery);
+		this.fireItemAdded(QueryHolder.NAMED_QUERIES_LIST, index, contextNamedQuery);
+		return contextNamedQuery;
 	}
 	
 	protected void addNamedQuery(int index, OrmNamedQuery namedQuery) {
@@ -969,13 +970,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	public OrmNamedNativeQuery addNamedNativeQuery(int index) {
-		OrmNamedNativeQuery namedNativeQuery = getJpaFactory().buildOrmNamedNativeQuery(this);
-		this.namedNativeQueries.add(index, namedNativeQuery);
-		XmlNamedNativeQuery xmlNamedNativeQuery = OrmFactory.eINSTANCE.createXmlNamedNativeQuery();
-		namedNativeQuery.initialize(xmlNamedNativeQuery);
-		this.getTypeMappingResource().getNamedNativeQueries().add(index, OrmFactory.eINSTANCE.createXmlNamedNativeQuery());
-		this.fireItemAdded(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
-		return namedNativeQuery;
+		XmlNamedNativeQuery resourceNamedNativeQuery = OrmFactory.eINSTANCE.createXmlNamedNativeQuery();
+		OrmNamedNativeQuery contextNamedNativeQuery = buildNamedNativeQuery(resourceNamedNativeQuery);
+		this.namedNativeQueries.add(index, contextNamedNativeQuery);
+		this.getTypeMappingResource().getNamedNativeQueries().add(index, resourceNamedNativeQuery);
+		this.fireItemAdded(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, contextNamedNativeQuery);
+		return contextNamedNativeQuery;
 	}
 	
 	protected void addNamedNativeQuery(int index, OrmNamedNativeQuery namedNativeQuery) {
@@ -1286,10 +1286,8 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 	}
 	
-	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator tableGeneratorResource) {
-		OrmTableGenerator generator = getJpaFactory().buildOrmTableGenerator(this);
-		generator.initialize(tableGeneratorResource);
-		return generator;
+	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator resourceTableGenerator) {
+		return getJpaFactory().buildOrmTableGenerator(this, resourceTableGenerator);
 	}
 
 	protected void initializeSequenceGenerator(XmlEntity entity) {
@@ -1298,15 +1296,13 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 	}
 	
-	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator xmlSequenceGenerator) {
-		OrmSequenceGenerator generator = getJpaFactory().buildOrmSequenceGenerator(this);
-		generator.initialize(xmlSequenceGenerator);
-		return generator;
+	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator resourceSequenceGenerator) {
+		return getJpaFactory().buildOrmSequenceGenerator(this, resourceSequenceGenerator);
 	}
 
 	protected void initializeSpecifiedPrimaryKeyJoinColumns(XmlEntity entity) {
-		for (XmlPrimaryKeyJoinColumn primaryKeyJoinColumn : entity.getPrimaryKeyJoinColumns()) {
-			this.specifiedPrimaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn(primaryKeyJoinColumn));
+		for (XmlPrimaryKeyJoinColumn resourcePkJoinColumn : entity.getPrimaryKeyJoinColumns()) {
+			this.specifiedPrimaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn(resourcePkJoinColumn));
 		}
 	}
 	
@@ -1478,34 +1474,34 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return buildSecondaryTable(new VirtualXmlSecondaryTable(javaSecondaryTable));
 	}
 	
-	protected void updateTableGenerator(XmlEntity entity) {
-		if (entity.getTableGenerator() == null) {
+	protected void updateTableGenerator(XmlEntity resourceEntity) {
+		if (resourceEntity.getTableGenerator() == null) {
 			if (getTableGenerator() != null) {
 				setTableGenerator(null);
 			}
 		}
 		else {
 			if (getTableGenerator() == null) {
-				setTableGenerator(buildTableGenerator(entity.getTableGenerator()));
+				setTableGenerator(buildTableGenerator(resourceEntity.getTableGenerator()));
 			}
 			else {
-				getTableGenerator().update(entity.getTableGenerator());
+				getTableGenerator().update(resourceEntity.getTableGenerator());
 			}
 		}
 	}
 	
-	protected void updateSequenceGenerator(XmlEntity entity) {
-		if (entity.getSequenceGenerator() == null) {
+	protected void updateSequenceGenerator(XmlEntity resourceEntity) {
+		if (resourceEntity.getSequenceGenerator() == null) {
 			if (getSequenceGenerator() != null) {
 				setSequenceGenerator(null);
 			}
 		}
 		else {
 			if (getSequenceGenerator() == null) {
-				setSequenceGenerator(buildSequenceGenerator(entity.getSequenceGenerator()));
+				setSequenceGenerator(buildSequenceGenerator(resourceEntity.getSequenceGenerator()));
 			}
 			else {
-				getSequenceGenerator().update(entity.getSequenceGenerator());
+				getSequenceGenerator().update(resourceEntity.getSequenceGenerator());
 			}
 		}
 	}
@@ -1530,21 +1526,21 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	protected void updateSpecifiedPrimaryKeyJoinColumns(XmlEntity entity) {
-		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = specifiedPrimaryKeyJoinColumns();
-		ListIterator<XmlPrimaryKeyJoinColumn> resourcePrimaryKeyJoinColumns = new CloneListIterator<XmlPrimaryKeyJoinColumn>(entity.getPrimaryKeyJoinColumns());//prevent ConcurrentModificiationException
+		ListIterator<OrmPrimaryKeyJoinColumn> contextPkJoinColumns = specifiedPrimaryKeyJoinColumns();
+		ListIterator<XmlPrimaryKeyJoinColumn> resourcePkJoinColumns = new CloneListIterator<XmlPrimaryKeyJoinColumn>(entity.getPrimaryKeyJoinColumns());//prevent ConcurrentModificiationException
 		
-		while (primaryKeyJoinColumns.hasNext()) {
-			OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = primaryKeyJoinColumns.next();
-			if (resourcePrimaryKeyJoinColumns.hasNext()) {
-				primaryKeyJoinColumn.update(resourcePrimaryKeyJoinColumns.next());
+		while (contextPkJoinColumns.hasNext()) {
+			OrmPrimaryKeyJoinColumn contextPkJoinColumn = contextPkJoinColumns.next();
+			if (resourcePkJoinColumns.hasNext()) {
+				contextPkJoinColumn.update(resourcePkJoinColumns.next());
 			}
 			else {
-				removeSpecifiedPrimaryKeyJoinColumn_(primaryKeyJoinColumn);
+				removeSpecifiedPrimaryKeyJoinColumn_(contextPkJoinColumn);
 			}
 		}
 		
-		while (resourcePrimaryKeyJoinColumns.hasNext()) {
-			addSpecifiedPrimaryKeyJoinColumn(specifiedPrimaryKeyJoinColumnsSize(), buildPrimaryKeyJoinColumn(resourcePrimaryKeyJoinColumns.next()));
+		while (resourcePkJoinColumns.hasNext()) {
+			addSpecifiedPrimaryKeyJoinColumn(specifiedPrimaryKeyJoinColumnsSize(), buildPrimaryKeyJoinColumn(resourcePkJoinColumns.next()));
 		}
 	}
 	
@@ -1588,10 +1584,8 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return buildPrimaryKeyJoinColumn(new VirtualXmlPrimaryKeyJoinColumn(javaSecondaryTable));
 	}
 	
-	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn primaryKeyJoinColumn) {
-		OrmPrimaryKeyJoinColumn ormPrimaryKeyJoinColumn = getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
-		ormPrimaryKeyJoinColumn.initialize(primaryKeyJoinColumn);
-		return ormPrimaryKeyJoinColumn;
+	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
+		return getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner(), resourcePkJoinColumn);
 	}
 
 	protected void updateSpecifiedAttributeOverrides(XmlEntity entity) {
@@ -1698,10 +1692,8 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 	}
 
-	protected OrmNamedQuery buildNamedQuery(XmlNamedQuery namedQuery) {
-		OrmNamedQuery ormNamedQuery = getJpaFactory().buildOrmNamedQuery(this);
-		ormNamedQuery.initialize(namedQuery);
-		return ormNamedQuery;
+	protected OrmNamedQuery buildNamedQuery(XmlNamedQuery resourceNamedQuery) {
+		return getJpaFactory().buildOrmNamedQuery(this, resourceNamedQuery);
 	}
 
 	protected void updateNamedNativeQueries(XmlEntity entity) {
@@ -1723,10 +1715,8 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 	}
 
-	protected OrmNamedNativeQuery buildNamedNativeQuery(XmlNamedNativeQuery namedQuery) {
-		OrmNamedNativeQuery ormNamedNativeQuery = getJpaFactory().buildOrmNamedNativeQuery(this);
-		ormNamedNativeQuery.initialize(namedQuery);
-		return ormNamedNativeQuery;
+	protected OrmNamedNativeQuery buildNamedNativeQuery(XmlNamedNativeQuery resourceNamedNativeQuery) {
+		return getJpaFactory().buildOrmNamedNativeQuery(this, resourceNamedNativeQuery);
 	}
 	
 	protected void updateIdClass(XmlIdClass idClassResource) {

@@ -40,29 +40,30 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 
 	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
 
-	public GenericJavaPersistentAttribute(JavaPersistentType parent) {
+	public GenericJavaPersistentAttribute(JavaPersistentType parent, JavaResourcePersistentAttribute jrpa) {
 		super(parent);
+		this.initialize(jrpa);
 	}
 	
 	public String getId() {
 		return JavaStructureNodes.PERSISTENT_ATTRIBUTE_ID;
 	}
 
-	public void initialize(JavaResourcePersistentAttribute persistentAttributeResource) {
-		this.resourcePersistentAttribute = persistentAttributeResource;
-		this.name = this.name(persistentAttributeResource);
-		initializeDefaultMapping(persistentAttributeResource);
-		initializeSpecifiedMapping(persistentAttributeResource);
+	protected void initialize(JavaResourcePersistentAttribute jrpa) {
+		this.resourcePersistentAttribute = jrpa;
+		this.name = this.name(jrpa);
+		initializeDefaultMapping(jrpa);
+		initializeSpecifiedMapping(jrpa);
 	}
 	
-	protected void initializeDefaultMapping(JavaResourcePersistentAttribute persistentAttributeResource) {
+	protected void initializeDefaultMapping(JavaResourcePersistentAttribute jrpa) {
 		this.defaultMapping = getJpaPlatform().buildDefaultJavaAttributeMapping(this);
-		this.defaultMapping.initialize(persistentAttributeResource);
+		this.defaultMapping.initialize(jrpa);
 	}
 
-	protected void initializeSpecifiedMapping(JavaResourcePersistentAttribute persistentAttributeResource) {
-		String javaMappingAnnotationName = this.javaMappingAnnotationName(persistentAttributeResource);
-		this.specifiedMapping = createJavaAttributeMappingFromAnnotation(javaMappingAnnotationName, persistentAttributeResource);
+	protected void initializeSpecifiedMapping(JavaResourcePersistentAttribute jrpa) {
+		String javaMappingAnnotationName = this.javaMappingAnnotationName(jrpa);
+		this.specifiedMapping = createJavaAttributeMappingFromAnnotation(javaMappingAnnotationName, jrpa);
 	}
 	
 	public JavaResourcePersistentAttribute getResourcePersistentAttribute() {
@@ -222,11 +223,10 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		return JDTTools.buildASTRoot(this.resourcePersistentAttribute.getJpaCompilationUnit().getCompilationUnit());
 	}
 
-	public void update(JavaResourcePersistentAttribute jrpa) {
-		this.resourcePersistentAttribute = jrpa;
-		this.setName(this.name(jrpa));
-		this.updateDefaultMapping(jrpa);
-		this.updateSpecifiedMapping(jrpa);
+	public void update() {
+		this.setName(this.name(this.resourcePersistentAttribute));
+		this.updateDefaultMapping(this.resourcePersistentAttribute);
+		this.updateSpecifiedMapping(this.resourcePersistentAttribute);
 	}
 	
 	protected String name(JavaResourcePersistentAttribute jrpa) {

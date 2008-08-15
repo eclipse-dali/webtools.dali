@@ -40,15 +40,15 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 
 	private final AssociationOverride.Owner owner;
 
-	protected XmlAssociationOverride associationOverride;
+	protected XmlAssociationOverride resourceAssociationOverride;
 
 
-	public GenericOrmAssociationOverride(OrmJpaContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride associationOverride) {
+	public GenericOrmAssociationOverride(OrmJpaContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride resourceAssociationOverride) {
 		super(parent);
 		this.owner = owner;
 		this.specifiedJoinColumns = new ArrayList<OrmJoinColumn>();
 		this.defaultJoinColumns = new ArrayList<OrmJoinColumn>();
-		this.initialize(associationOverride);
+		this.initialize(resourceAssociationOverride);
 	}
 	
 	public OrmAssociationOverride setVirtual(boolean virtual) {
@@ -68,7 +68,7 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		this.associationOverride.setName(newName);
+		this.resourceAssociationOverride.setName(newName);
 		firePropertyChanged(BaseOverride.NAME_PROPERTY, oldName, newName);
 	}
 
@@ -98,11 +98,12 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 	}
 	
 	public OrmJoinColumn addSpecifiedJoinColumn(int index) {
-		OrmJoinColumn joinColumn = getJpaFactory().buildOrmJoinColumn(this, createJoinColumnOwner());
-		this.specifiedJoinColumns.add(index, joinColumn);
-		this.associationOverride.getJoinColumns().add(index, OrmFactory.eINSTANCE.createXmlJoinColumnImpl());
-		this.fireItemAdded(AssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
-		return joinColumn;
+		XmlJoinColumn resourceJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumnImpl();
+		OrmJoinColumn contextJoinColumn = buildJoinColumn(resourceJoinColumn);
+		this.specifiedJoinColumns.add(index, contextJoinColumn);
+		this.resourceAssociationOverride.getJoinColumns().add(index, resourceJoinColumn);
+		this.fireItemAdded(AssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST, index, contextJoinColumn);
+		return contextJoinColumn;
 	}
 	
 	protected OrmJoinColumn.Owner createJoinColumnOwner() {
@@ -115,7 +116,7 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 	
 	public void removeSpecifiedJoinColumn(int index) {
 		OrmJoinColumn removedJoinColumn = this.specifiedJoinColumns.remove(index);
-		this.associationOverride.getJoinColumns().remove(index);
+		this.resourceAssociationOverride.getJoinColumns().remove(index);
 		fireItemRemoved(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 	}
 
@@ -124,7 +125,7 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 	}
 	
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
-		this.associationOverride.getJoinColumns().move(targetIndex, sourceIndex);
+		this.resourceAssociationOverride.getJoinColumns().move(targetIndex, sourceIndex);
 		moveItemInList(targetIndex, sourceIndex, this.specifiedJoinColumns, AssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST);		
 	}
 
@@ -136,47 +137,45 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 		return getOwner().isVirtual(this);
 	}
 	
-	protected void initialize(XmlAssociationOverride associationOverride) {
-		this.associationOverride = associationOverride;
-		this.name = associationOverride.getName();
-		initializeSpecifiedJoinColumns(associationOverride);
+	protected void initialize(XmlAssociationOverride resourceAssociationOverride) {
+		this.resourceAssociationOverride = resourceAssociationOverride;
+		this.name = resourceAssociationOverride.getName();
+		initializeSpecifiedJoinColumns(resourceAssociationOverride);
 	}
 	
-	protected void initializeSpecifiedJoinColumns(XmlAssociationOverride associationOverride) {
-		for (XmlJoinColumn joinColumn : associationOverride.getJoinColumns()) {
-			this.specifiedJoinColumns.add(createJoinColumn(joinColumn));
+	protected void initializeSpecifiedJoinColumns(XmlAssociationOverride resourceAssociationOverride) {
+		for (XmlJoinColumn joinColumn : resourceAssociationOverride.getJoinColumns()) {
+			this.specifiedJoinColumns.add(buildJoinColumn(joinColumn));
 		}
 	}
 
-	public void update(XmlAssociationOverride associationOverride) {
-		this.associationOverride = associationOverride;
-		this.setName(associationOverride.getName());
-		updateSpecifiedJoinColumns(associationOverride);
+	public void update(XmlAssociationOverride resourceAssociationOverride) {
+		this.resourceAssociationOverride = resourceAssociationOverride;
+		this.setName(resourceAssociationOverride.getName());
+		updateSpecifiedJoinColumns(resourceAssociationOverride);
 	}	
 	
-	protected void updateSpecifiedJoinColumns(XmlAssociationOverride associationOverride) {
-		ListIterator<OrmJoinColumn> joinColumns = specifiedJoinColumns();
-		ListIterator<XmlJoinColumn> resourceJoinColumns = new CloneListIterator<XmlJoinColumn>(associationOverride.getJoinColumns());//prevent ConcurrentModificiationException
+	protected void updateSpecifiedJoinColumns(XmlAssociationOverride resourceAssociationOverride) {
+		ListIterator<OrmJoinColumn> contextJoinColumns = specifiedJoinColumns();
+		ListIterator<XmlJoinColumn> resourceJoinColumns = new CloneListIterator<XmlJoinColumn>(resourceAssociationOverride.getJoinColumns());//prevent ConcurrentModificiationException
 		
-		while (joinColumns.hasNext()) {
-			OrmJoinColumn joinColumn = joinColumns.next();
+		while (contextJoinColumns.hasNext()) {
+			OrmJoinColumn contextJoinColumn = contextJoinColumns.next();
 			if (resourceJoinColumns.hasNext()) {
-				joinColumn.update(resourceJoinColumns.next());
+				contextJoinColumn.update(resourceJoinColumns.next());
 			}
 			else {
-				removeSpecifiedJoinColumn(joinColumn);
+				removeSpecifiedJoinColumn(contextJoinColumn);
 			}
 		}
 		
 		while (resourceJoinColumns.hasNext()) {
-			addSpecifiedJoinColumn(specifiedJoinColumnsSize(), createJoinColumn(resourceJoinColumns.next()));
+			addSpecifiedJoinColumn(specifiedJoinColumnsSize(), buildJoinColumn(resourceJoinColumns.next()));
 		}
 	}
 	
-	protected OrmJoinColumn createJoinColumn(XmlJoinColumn joinColumn) {
-		OrmJoinColumn ormJoinColumn = getJpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner());
-		ormJoinColumn.initialize(joinColumn);
-		return ormJoinColumn;
+	protected OrmJoinColumn buildJoinColumn(XmlJoinColumn resourceJoinColumn) {
+		return getJpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner(), resourceJoinColumn);
 	}
 
 	public TextRange getValidationTextRange() {

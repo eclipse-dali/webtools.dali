@@ -29,7 +29,9 @@ public interface OrmGeneratedValue extends GeneratedValue, OrmJpaContextNode
 	 */
 	TextRange getGeneratorTextRange();
 
-	void initialize(XmlGeneratedValue generatedValue);
-
+	/**
+	 * Update the OrmGeneratedValue context model object to match the XmlGeneratedValue 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlGeneratedValue generatedValue);
 }

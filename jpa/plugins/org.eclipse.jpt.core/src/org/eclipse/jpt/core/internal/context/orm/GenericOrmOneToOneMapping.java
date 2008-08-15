@@ -75,13 +75,12 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 	}
 	
 	public OrmPrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index) {
-		OrmPrimaryKeyJoinColumn pkJoinColumn = getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, new JoinColumnOwner());
-		XmlPrimaryKeyJoinColumn xmlPkJoinColumn = OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl();
-		this.primaryKeyJoinColumns.add(index, pkJoinColumn);
-		this.getAttributeMapping().getPrimaryKeyJoinColumns().add(index, xmlPkJoinColumn);
-		pkJoinColumn.initialize(xmlPkJoinColumn);
-		this.fireItemAdded(OneToOneMapping.PRIMAY_KEY_JOIN_COLUMNS_LIST, index, pkJoinColumn);
-		return pkJoinColumn;
+		XmlPrimaryKeyJoinColumn resourcePkJoinColumn = OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl();
+		OrmPrimaryKeyJoinColumn contextPkJoinColumn = buildPrimaryKeyJoinColumn(resourcePkJoinColumn);
+		this.primaryKeyJoinColumns.add(index, contextPkJoinColumn);
+		this.getAttributeMapping().getPrimaryKeyJoinColumns().add(index, resourcePkJoinColumn);
+		this.fireItemAdded(OneToOneMapping.PRIMAY_KEY_JOIN_COLUMNS_LIST, index, contextPkJoinColumn);
+		return contextPkJoinColumn;
 	}
 
 	protected void addPrimaryKeyJoinColumn(int index, OrmPrimaryKeyJoinColumn joinColumn) {
@@ -249,15 +248,13 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 		if (oneToOne == null) {
 			return;
 		}
-		for (XmlPrimaryKeyJoinColumn pkJoinColumn : oneToOne.getPrimaryKeyJoinColumns()) {
-			this.primaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn(pkJoinColumn));
+		for (XmlPrimaryKeyJoinColumn resourcePkJoinColumn : oneToOne.getPrimaryKeyJoinColumns()) {
+			this.primaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn(resourcePkJoinColumn));
 		}
 	}
 	
-	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn xmlPkJoinColumn) {
-		OrmPrimaryKeyJoinColumn ormPkJoinColumn = getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, new JoinColumnOwner());
-		ormPkJoinColumn.initialize(xmlPkJoinColumn);
-		return ormPkJoinColumn;
+	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
+		return getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, new JoinColumnOwner(), resourcePkJoinColumn);
 	}	
 
 	

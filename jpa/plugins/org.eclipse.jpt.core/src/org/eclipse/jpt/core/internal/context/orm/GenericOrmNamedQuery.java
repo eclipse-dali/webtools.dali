@@ -17,8 +17,8 @@ import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 public class GenericOrmNamedQuery extends AbstractOrmQuery<XmlNamedQuery> implements OrmNamedQuery
 {
 
-	public GenericOrmNamedQuery(OrmJpaContextNode parent) {
-		super(parent);
+	public GenericOrmNamedQuery(OrmJpaContextNode parent, XmlNamedQuery resourceNamedQuery) {
+		super(parent, resourceNamedQuery);
 	}
 
 }

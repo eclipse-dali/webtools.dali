@@ -24,8 +24,11 @@ import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
  */
 public interface OrmTableGenerator extends TableGenerator, OrmGenerator, OrmJpaContextNode
 {
-	void initialize(XmlTableGenerator tableGenerator);
 
+	/**
+	 * Update the OrmTableGenerator context model object to match the XmlTableGenerator 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlTableGenerator tableGenerator);
 	
 	//****************** covariant overrides *******************

@@ -51,9 +51,10 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 	protected final List<OrmUniqueConstraint> uniqueConstraints;
 
 	
-	public GenericOrmTableGenerator(OrmJpaContextNode parent) {
+	public GenericOrmTableGenerator(OrmJpaContextNode parent, XmlTableGenerator resourceTableGenerator) {
 		super(parent);
 		this.uniqueConstraints = new ArrayList<OrmUniqueConstraint>();
+		this.initialize(resourceTableGenerator);
 	}
 
 	public String getTable() {
@@ -67,7 +68,7 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 	public void setSpecifiedTable(String newSpecifiedTable) {
 		String oldSpecifiedTable = this.specifiedTable;
 		this.specifiedTable = newSpecifiedTable;
-		getGeneratorResource().setTable(newSpecifiedTable);
+		getResourceGenerator().setTable(newSpecifiedTable);
 		firePropertyChanged(SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
 	}
 	
@@ -98,7 +99,7 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 	public void setSpecifiedCatalog(String newSpecifiedCatalog) {
 		String oldSpecifiedCatalog = this.specifiedCatalog;
 		this.specifiedCatalog = newSpecifiedCatalog;
-		getGeneratorResource().setCatalog(newSpecifiedCatalog);
+		getResourceGenerator().setCatalog(newSpecifiedCatalog);
 		firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
 	}
 	
@@ -129,7 +130,7 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 	public void setSpecifiedSchema(String newSpecifiedSchema) {
 		String oldSpecifiedSchema = this.specifiedSchema;
 		this.specifiedSchema = newSpecifiedSchema;
-		getGeneratorResource().setSchema(newSpecifiedSchema);
+		getResourceGenerator().setSchema(newSpecifiedSchema);
 		firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
 	}
 
@@ -160,7 +161,7 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 	public void setSpecifiedPkColumnName(String newSpecifiedPkColumnName) {
 		String oldSpecifiedPkColumnName = this.specifiedPkColumnName;
 		this.specifiedPkColumnName = newSpecifiedPkColumnName;
-		getGeneratorResource().setPkColumnName(newSpecifiedPkColumnName);
+		getResourceGenerator().setPkColumnName(newSpecifiedPkColumnName);
 		firePropertyChanged(SPECIFIED_PK_COLUMN_NAME_PROPERTY, oldSpecifiedPkColumnName, newSpecifiedPkColumnName);
 	}
 	
@@ -191,7 +192,7 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 	public void setSpecifiedValueColumnName(String newSpecifiedValueColumnName) {
 		String oldSpecifiedValueColumnName = this.specifiedValueColumnName;
 		this.specifiedValueColumnName = newSpecifiedValueColumnName;
-		getGeneratorResource().setValueColumnName(newSpecifiedValueColumnName);
+		getResourceGenerator().setValueColumnName(newSpecifiedValueColumnName);
 		firePropertyChanged(SPECIFIED_VALUE_COLUMN_NAME_PROPERTY, oldSpecifiedValueColumnName, newSpecifiedValueColumnName);
 	}
 
@@ -222,7 +223,7 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 	public void setSpecifiedPkColumnValue(String newSpecifiedPkColumnValue) {
 		String oldSpecifiedPkColumnValue = this.specifiedPkColumnValue;
 		this.specifiedPkColumnValue = newSpecifiedPkColumnValue;
-		getGeneratorResource().setPkColumnValue(newSpecifiedPkColumnValue);
+		getResourceGenerator().setPkColumnValue(newSpecifiedPkColumnValue);
 		firePropertyChanged(SPECIFIED_PK_COLUMN_VALUE_PROPERTY, oldSpecifiedPkColumnValue, newSpecifiedPkColumnValue);
 	}
 
@@ -254,12 +255,12 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 	}
 	
 	public OrmUniqueConstraint addUniqueConstraint(int index) {
-		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
-		OrmUniqueConstraint uniqueConstraint =  buildUniqueConstraint(uniqueConstraintResource);
-		this.uniqueConstraints.add(index, uniqueConstraint);
-		getGeneratorResource().getUniqueConstraints().add(index, uniqueConstraintResource);
-		fireItemAdded(TableGenerator.UNIQUE_CONSTRAINTS_LIST, index, uniqueConstraint);
-		return uniqueConstraint;
+		XmlUniqueConstraint resourceUniqueConstraint = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		OrmUniqueConstraint contextUniqueConstraint =  buildUniqueConstraint(resourceUniqueConstraint);
+		this.uniqueConstraints.add(index, contextUniqueConstraint);
+		getResourceGenerator().getUniqueConstraints().add(index, resourceUniqueConstraint);
+		fireItemAdded(TableGenerator.UNIQUE_CONSTRAINTS_LIST, index, contextUniqueConstraint);
+		return contextUniqueConstraint;
 	}
 	
 	protected void addUniqueConstraint(int index, OrmUniqueConstraint uniqueConstraint) {
@@ -273,7 +274,7 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 	
 	public void removeUniqueConstraint(int index) {
 		OrmUniqueConstraint removedUniqueConstraint = this.uniqueConstraints.remove(index);
-		getGeneratorResource().getUniqueConstraints().remove(index);
+		getResourceGenerator().getUniqueConstraints().remove(index);
 		fireItemRemoved(TableGenerator.UNIQUE_CONSTRAINTS_LIST, index, removedUniqueConstraint);
 	}
 	
@@ -283,7 +284,7 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 	
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.uniqueConstraints, targetIndex, sourceIndex);
-		this.getGeneratorResource().getUniqueConstraints().move(targetIndex, sourceIndex);
+		this.getResourceGenerator().getUniqueConstraints().move(targetIndex, sourceIndex);
 		fireItemMoved(TableGenerator.UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -309,7 +310,7 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 	// ********** orm resource model -> context model **********
 
 	@Override
-	public void initialize(XmlTableGenerator tableGenerator) {
+	protected void initialize(XmlTableGenerator tableGenerator) {
 		super.initialize(tableGenerator);
 		this.specifiedTable = this.specifiedTable(tableGenerator);
 		this.specifiedCatalog = this.specifiedCatalog(tableGenerator);
@@ -379,7 +380,7 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 	}
 
 	protected void updateUniqueConstraints(XmlTableGenerator tableGenerator) {
-		ListIterator<OrmUniqueConstraint> uniqueConstraints = uniqueConstraints();
+		ListIterator<OrmUniqueConstraint> contextUniqueConstraints = uniqueConstraints();
 		ListIterator<XmlUniqueConstraint> resourceUniqueConstraints;
 		if (tableGenerator == null) {
 			resourceUniqueConstraints = EmptyListIterator.instance();
@@ -388,13 +389,13 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 			resourceUniqueConstraints = new CloneListIterator<XmlUniqueConstraint>(tableGenerator.getUniqueConstraints());//prevent ConcurrentModificiationException
 		}
 		
-		while (uniqueConstraints.hasNext()) {
-			OrmUniqueConstraint uniqueConstraint = uniqueConstraints.next();
+		while (contextUniqueConstraints.hasNext()) {
+			OrmUniqueConstraint contextUniqueConstraint = contextUniqueConstraints.next();
 			if (resourceUniqueConstraints.hasNext()) {
-				uniqueConstraint.update(resourceUniqueConstraints.next());
+				contextUniqueConstraint.update(resourceUniqueConstraints.next());
 			}
 			else {
-				removeUniqueConstraint_(uniqueConstraint);
+				removeUniqueConstraint_(contextUniqueConstraint);
 			}
 		}
 		
@@ -403,8 +404,8 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 		}
 	}
 
-	protected OrmUniqueConstraint buildUniqueConstraint(XmlUniqueConstraint xmlUniqueConstraint) {
-		return getJpaFactory().buildOrmUniqueConstraint(this, this, xmlUniqueConstraint);
+	protected OrmUniqueConstraint buildUniqueConstraint(XmlUniqueConstraint resourceUniqueConstraint) {
+		return getJpaFactory().buildOrmUniqueConstraint(this, this, resourceUniqueConstraint);
 	}
 
 }

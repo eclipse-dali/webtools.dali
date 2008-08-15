@@ -23,7 +23,10 @@ import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
  */
 public interface OrmSequenceGenerator extends SequenceGenerator, OrmGenerator, OrmJpaContextNode
 {
-	void initialize(XmlSequenceGenerator sequenceGenerator);
-
+	
+	/**
+	 * Update the OrmSequenceGenerator context model object to match the XmlSequenceGenerator 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlSequenceGenerator sequenceGenerator);
 }

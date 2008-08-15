@@ -101,12 +101,21 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.context.persistence.Property;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
+import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
+import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
+import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
+import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
+import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
+import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
@@ -179,9 +188,9 @@ public interface JpaFactory
 	
 	PersistenceXml buildPersistenceXml(JpaRootContextNode parent, PersistenceResource persistenceResource);
 	
-	Persistence buildPersistence(PersistenceXml parent, XmlPersistence xmlPersistence);
+	Persistence buildPersistence(PersistenceXml parent, XmlPersistence resourcePersistence);
 	
-	PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit persistenceUnit);
+	PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit resourcePersistenceUnit);
 	
 	/**
 	 * xmlMappingFileRef is allowed to be null, this would be used for the implied mapping file ref
@@ -219,11 +228,11 @@ public interface JpaFactory
 	
 	OrmSecondaryTable buildOrmSecondaryTable(OrmEntity parent, XmlSecondaryTable xmlSecondaryTable);
 	
-	OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(OrmJpaContextNode parent, OrmBaseJoinColumn.Owner owner);
+	OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(OrmJpaContextNode parent, OrmBaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePkJoinColumn);
 	
 	OrmJoinTable buildOrmJoinTable(OrmRelationshipMapping parent);
 	
-	OrmJoinColumn buildOrmJoinColumn(OrmJpaContextNode parent, OrmJoinColumn.Owner owner);
+	OrmJoinColumn buildOrmJoinColumn(OrmJpaContextNode parent, OrmJoinColumn.Owner owner, XmlJoinColumn resourceJoinColumn);
 	
 	OrmAttributeOverride buildOrmAttributeOverride(OrmJpaContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride);
 	
@@ -233,17 +242,17 @@ public interface JpaFactory
 	
 	OrmColumn buildOrmColumn(OrmJpaContextNode parent, OrmColumn.Owner owner);
 	
-	OrmGeneratedValue buildOrmGeneratedValue(OrmJpaContextNode parent);
+	OrmGeneratedValue buildOrmGeneratedValue(OrmJpaContextNode parent, XmlGeneratedValue resourceGeneratedValue);
 	
-	OrmSequenceGenerator buildOrmSequenceGenerator(OrmJpaContextNode parent);
+	OrmSequenceGenerator buildOrmSequenceGenerator(OrmJpaContextNode parent, XmlSequenceGenerator resourceSequenceGenerator);
 	
-	OrmTableGenerator buildOrmTableGenerator(OrmJpaContextNode parent);
+	OrmTableGenerator buildOrmTableGenerator(OrmJpaContextNode parent, XmlTableGenerator resourceTableGenerator);
 	
-	OrmNamedNativeQuery buildOrmNamedNativeQuery(OrmJpaContextNode parent);
+	OrmNamedNativeQuery buildOrmNamedNativeQuery(OrmJpaContextNode parent, XmlNamedNativeQuery resourceNamedQuery);
 
-	OrmNamedQuery buildOrmNamedQuery(OrmJpaContextNode parent);
+	OrmNamedQuery buildOrmNamedQuery(OrmJpaContextNode parent, XmlNamedQuery resourceNamedQuery);
 	
-	OrmQueryHint buildOrmQueryHint(OrmQuery parent);
+	OrmQueryHint buildOrmQueryHint(OrmQuery parent, XmlQueryHint resourceQueryhint);
 
 	OrmBasicMapping buildOrmBasicMapping(OrmPersistentAttribute parent);
 	
@@ -267,11 +276,11 @@ public interface JpaFactory
 	
 	OrmAttributeMapping buildOrmNullAttributeMapping(OrmPersistentAttribute parent);
 	
-	OrmUniqueConstraint buildOrmUniqueConstraint(OrmJpaContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint xmlUniqueConstraint);
+	OrmUniqueConstraint buildOrmUniqueConstraint(OrmJpaContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint);
 	
 	// **************** java context objects ***********************************
 	
-	JavaPersistentType buildJavaPersistentType(JpaContextNode parent, JavaResourcePersistentType resourcePersistentType);
+	JavaPersistentType buildJavaPersistentType(JpaContextNode parent, JavaResourcePersistentType jrpt);
 	
 	JavaEntity buildJavaEntity(JavaPersistentType parent);
 	
@@ -281,7 +290,7 @@ public interface JpaFactory
 	
 	JavaTypeMapping buildJavaNullTypeMapping(JavaPersistentType parent);
 	
-	JavaPersistentAttribute buildJavaPersistentAttribute(JavaPersistentType parent);
+	JavaPersistentAttribute buildJavaPersistentAttribute(JavaPersistentType parent, JavaResourcePersistentAttribute jrpa);
 
 	JavaBasicMapping buildJavaBasicMapping(JavaPersistentAttribute parent);
 	

@@ -22,8 +22,9 @@ public class GenericOrmSequenceGenerator extends AbstractOrmGenerator<XmlSequenc
 
 	protected String defaultSequenceName;
 
-	public GenericOrmSequenceGenerator(OrmJpaContextNode parent) {
+	public GenericOrmSequenceGenerator(OrmJpaContextNode parent, XmlSequenceGenerator resourceSequenceGenerator) {
 		super(parent);
+		this.initialize(resourceSequenceGenerator);
 	}
 
 	public String getSequenceName() {
@@ -37,7 +38,7 @@ public class GenericOrmSequenceGenerator extends AbstractOrmGenerator<XmlSequenc
 	public void setSpecifiedSequenceName(String newSpecifiedSequenceName) {
 		String oldSpecifiedSequenceName = this.specifiedSequenceName;
 		this.specifiedSequenceName = newSpecifiedSequenceName;
-		getGeneratorResource().setSequenceName(newSpecifiedSequenceName);
+		getResourceGenerator().setSequenceName(newSpecifiedSequenceName);
 		firePropertyChanged(SPECIFIED_SEQUENCE_NAME_PROPERTY, oldSpecifiedSequenceName, newSpecifiedSequenceName);
 	}
 	
@@ -58,7 +59,7 @@ public class GenericOrmSequenceGenerator extends AbstractOrmGenerator<XmlSequenc
 	}
 
 	@Override
-	public void initialize(XmlSequenceGenerator sequenceGenerator) {
+	protected void initialize(XmlSequenceGenerator sequenceGenerator) {
 		super.initialize(sequenceGenerator);
 		this.specifiedSequenceName = this.specifiedSequenceName(sequenceGenerator);
 		//TODO default sequence name

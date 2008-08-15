@@ -26,7 +26,9 @@ public interface OrmNamedQuery extends OrmQuery, NamedQuery
 {	
 	ListIterator<OrmQueryHint> hints();
 	
-	void initialize(XmlNamedQuery queryResource);
-
+	/**
+	 * Update the OrmNamedQuery context model object to match the XmlNamedQuery 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlNamedQuery queryResource);
 }

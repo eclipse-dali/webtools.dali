@@ -23,10 +23,11 @@ public class GenericOrmQueryHint extends AbstractOrmJpaContextNode implements Or
 
 	protected String value;
 
-	protected XmlQueryHint queryHint;
+	protected XmlQueryHint resourceQueryHint;
 	
-	public GenericOrmQueryHint(OrmQuery parent) {
+	public GenericOrmQueryHint(OrmQuery parent, XmlQueryHint resourceQueryHint) {
 		super(parent);
+		this.initialize(resourceQueryHint);
 	}
 
 	public String getName() {
@@ -36,7 +37,7 @@ public class GenericOrmQueryHint extends AbstractOrmJpaContextNode implements Or
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		this.queryHint.setName(newName);
+		this.resourceQueryHint.setName(newName);
 		firePropertyChanged(QueryHint.NAME_PROPERTY, oldName, newName);
 	}
 
@@ -47,23 +48,23 @@ public class GenericOrmQueryHint extends AbstractOrmJpaContextNode implements Or
 	public void setValue(String newValue) {
 		String oldValue = this.value;
 		this.value = newValue;
-		this.queryHint.setValue(newValue);
+		this.resourceQueryHint.setValue(newValue);
 		firePropertyChanged(QueryHint.VALUE_PROPERTY, oldValue, newValue);
 	}
 
-	public void initialize(XmlQueryHint queryHint) {
-		this.queryHint = queryHint;
-		this.name = queryHint.getName();
-		this.value = queryHint.getValue();
+	protected void initialize(XmlQueryHint resourceQueryHint) {
+		this.resourceQueryHint = resourceQueryHint;
+		this.name = resourceQueryHint.getName();
+		this.value = resourceQueryHint.getValue();
 	}
 	
-	public void update(XmlQueryHint queryHint) {
-		this.queryHint = queryHint;
-		this.setName(queryHint.getName());
-		this.setValue(queryHint.getValue());
+	public void update(XmlQueryHint resourceQueryHint) {
+		this.resourceQueryHint = resourceQueryHint;
+		this.setName(resourceQueryHint.getName());
+		this.setValue(resourceQueryHint.getValue());
 	}
 	
 	public TextRange getValidationTextRange() {
-		return this.queryHint.getValidationTextRange();
+		return this.resourceQueryHint.getValidationTextRange();
 	}
 }

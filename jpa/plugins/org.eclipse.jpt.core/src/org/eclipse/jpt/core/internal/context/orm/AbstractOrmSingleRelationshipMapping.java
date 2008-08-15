@@ -118,15 +118,15 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 			//cause change notifications to be sent to the UI in the wrong order
 			this.defaultJoinColumn = null;
 		}
-		XmlJoinColumn xmlJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumnImpl();
-		OrmJoinColumn joinColumn = buildJoinColumn(xmlJoinColumn);
-		this.specifiedJoinColumns.add(index, joinColumn);
-		this.getAttributeMapping().getJoinColumns().add(index, xmlJoinColumn);
-		this.fireItemAdded(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
+		XmlJoinColumn resourceJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumnImpl();
+		OrmJoinColumn contextJoinColumn = buildJoinColumn(resourceJoinColumn);
+		this.specifiedJoinColumns.add(index, contextJoinColumn);
+		this.getAttributeMapping().getJoinColumns().add(index, resourceJoinColumn);
+		this.fireItemAdded(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, contextJoinColumn);
 		if (oldDefaultJoinColumn != null) {
 			this.firePropertyChanged(SingleRelationshipMapping.DEFAULT_JOIN_COLUMN, oldDefaultJoinColumn, null);
 		}
-		return joinColumn;
+		return contextJoinColumn;
 	}
 
 	protected void addSpecifiedJoinColumn(int index, OrmJoinColumn joinColumn) {
@@ -201,8 +201,8 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 		if (singleRelationshipMapping == null) {
 			return;
 		}
-		for (XmlJoinColumn joinColumn : singleRelationshipMapping.getJoinColumns()) {
-			this.specifiedJoinColumns.add(buildJoinColumn(joinColumn));
+		for (XmlJoinColumn resourceJoinColumn : singleRelationshipMapping.getJoinColumns()) {
+			this.specifiedJoinColumns.add(buildJoinColumn(resourceJoinColumn));
 		}
 	}
 	
@@ -217,10 +217,8 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 		this.defaultJoinColumn = buildJoinColumn(null);
 	}	
 	
-	protected OrmJoinColumn buildJoinColumn(XmlJoinColumn joinColumn) {
-		OrmJoinColumn ormJoinColumn = getJpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner());
-		ormJoinColumn.initialize(joinColumn);
-		return ormJoinColumn;
+	protected OrmJoinColumn buildJoinColumn(XmlJoinColumn resourceJoinColumn) {
+		return getJpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner(), resourceJoinColumn);
 	}	
 
 	@Override
@@ -232,19 +230,19 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	}
 	
 	protected void updateSpecifiedJoinColumns(T singleRelationshipMapping) {
-		ListIterator<OrmJoinColumn> joinColumns = specifiedJoinColumns();
+		ListIterator<OrmJoinColumn> contextJoinColumns = specifiedJoinColumns();
 		ListIterator<XmlJoinColumn> resourceJoinColumns = EmptyListIterator.instance();
 		if (singleRelationshipMapping != null) {
 			resourceJoinColumns = new CloneListIterator<XmlJoinColumn>(singleRelationshipMapping.getJoinColumns());//prevent ConcurrentModificiationException
 		}
 		
-		while (joinColumns.hasNext()) {
-			OrmJoinColumn joinColumn = joinColumns.next();
+		while (contextJoinColumns.hasNext()) {
+			OrmJoinColumn contextJoinColumn = contextJoinColumns.next();
 			if (resourceJoinColumns.hasNext()) {
-				joinColumn.update(resourceJoinColumns.next());
+				contextJoinColumn.update(resourceJoinColumns.next());
 			}
 			else {
-				removeSpecifiedJoinColumn_(joinColumn);
+				removeSpecifiedJoinColumn_(contextJoinColumn);
 			}
 		}
 		

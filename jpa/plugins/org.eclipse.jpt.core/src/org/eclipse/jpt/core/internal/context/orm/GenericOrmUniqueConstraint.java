@@ -26,15 +26,15 @@ public class GenericOrmUniqueConstraint extends AbstractOrmJpaContextNode
 	
 	protected final List<String> columnNames;
 	
-	protected XmlUniqueConstraint uniqueConstraint;
+	protected XmlUniqueConstraint resourceUniqueConstraint;
 	
 	protected UniqueConstraint.Owner owner;
 	
-	public GenericOrmUniqueConstraint(OrmJpaContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint uniqueConstraint) {
+	public GenericOrmUniqueConstraint(OrmJpaContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint) {
 		super(parent);
 		this.owner = owner;
 		this.columnNames = new ArrayList<String>();
-		this.initialize(uniqueConstraint);
+		this.initialize(resourceUniqueConstraint);
 	}
 	
 	public ListIterator<String> columnNames() {
@@ -47,7 +47,7 @@ public class GenericOrmUniqueConstraint extends AbstractOrmJpaContextNode
 
 	public void addColumnName(int index, String columnName) {
 		this.columnNames.add(index, columnName);
-		this.uniqueConstraint.getColumnNames().add(index, columnName);
+		this.resourceUniqueConstraint.getColumnNames().add(index, columnName);
 		fireItemAdded(UniqueConstraint.COLUMN_NAMES_LIST, index, columnName);		
 	}	
 	
@@ -62,7 +62,7 @@ public class GenericOrmUniqueConstraint extends AbstractOrmJpaContextNode
 
 	public void removeColumnName(int index) {
 		String removedColumnName = this.columnNames.remove(index);
-		this.uniqueConstraint.getColumnNames().remove(index);
+		this.resourceUniqueConstraint.getColumnNames().remove(index);
 		fireItemRemoved(UniqueConstraint.COLUMN_NAMES_LIST, index, removedColumnName);
 	}
 	
@@ -73,17 +73,17 @@ public class GenericOrmUniqueConstraint extends AbstractOrmJpaContextNode
 
 	public void moveColumnName(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.columnNames, targetIndex, sourceIndex);
-		this.uniqueConstraint.getColumnNames().move(targetIndex, sourceIndex);
+		this.resourceUniqueConstraint.getColumnNames().move(targetIndex, sourceIndex);
 		fireItemMoved(UniqueConstraint.COLUMN_NAMES_LIST, targetIndex, sourceIndex);		
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.uniqueConstraint.getValidationTextRange();
+		return this.resourceUniqueConstraint.getValidationTextRange();
 	}
 	
-	protected void initialize(XmlUniqueConstraint uniqueConstraint) {
-		this.uniqueConstraint = uniqueConstraint;
-		this.initializeColumnNames(uniqueConstraint);
+	protected void initialize(XmlUniqueConstraint resourceUniqueConstraint) {
+		this.resourceUniqueConstraint = resourceUniqueConstraint;
+		this.initializeColumnNames(resourceUniqueConstraint);
 	}
 	
 	protected void initializeColumnNames(XmlUniqueConstraint uniqueConstraint) {
@@ -94,13 +94,13 @@ public class GenericOrmUniqueConstraint extends AbstractOrmJpaContextNode
 		}
 	}
 	
-	public void update(XmlUniqueConstraint uniqueConstraint) {
-		this.uniqueConstraint = uniqueConstraint;
-		this.updateColumnNames(uniqueConstraint);
+	public void update(XmlUniqueConstraint resourceUniqueConstraint) {
+		this.resourceUniqueConstraint = resourceUniqueConstraint;
+		this.updateColumnNames(resourceUniqueConstraint);
 	}
 	
-	protected void updateColumnNames(XmlUniqueConstraint uniqueConstraint) {
-		ListIterator<String> xmlColumnNames = new CloneListIterator<String>(uniqueConstraint.getColumnNames());
+	protected void updateColumnNames(XmlUniqueConstraint resourceUniqueConstraint) {
+		ListIterator<String> xmlColumnNames = new CloneListIterator<String>(resourceUniqueConstraint.getColumnNames());
 		
 		int index = 0;
 		for (String xmlColumnName : CollectionTools.iterable(xmlColumnNames)) {

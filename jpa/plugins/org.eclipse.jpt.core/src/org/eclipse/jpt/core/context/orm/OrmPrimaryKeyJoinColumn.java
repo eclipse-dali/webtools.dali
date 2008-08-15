@@ -22,9 +22,11 @@ import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmPrimaryKeyJoinColumn extends PrimaryKeyJoinColumn, OrmBaseJoinColumn
-{
-	void initialize(XmlPrimaryKeyJoinColumn column);
-	
+{	
+	/**
+	 * Update the OrmPrimaryKeyJoinColumn context model object to match the XmlPrimaryKeyJoinColumn 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
 	void update(XmlPrimaryKeyJoinColumn column);
 	
 	void initializeFrom(PrimaryKeyJoinColumn oldPkJoinColumn);

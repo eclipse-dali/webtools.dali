@@ -23,7 +23,9 @@ import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
  */
 public interface OrmQueryHint extends QueryHint, OrmJpaContextNode
 {
-	void initialize(XmlQueryHint queryHint);
-
-	void update(XmlQueryHint queryHint);
+	/**
+	 * Update the OrmQueryHint context model object to match the XmlQueryHint 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(XmlQueryHint resourceQueryHint);
 }
