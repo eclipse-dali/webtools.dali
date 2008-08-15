@@ -24,15 +24,11 @@ import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.Schem
  */
 public class EclipseLinkPersistenceUnit extends GenericPersistenceUnit
 {
-	private EclipseLinkProperties eclipseLinkProperties;
+	private final EclipseLinkProperties eclipseLinkProperties;
 
 	// ********** constructors/initialization **********
 	public EclipseLinkPersistenceUnit(Persistence parent, XmlPersistenceUnit persistenceUnit) {
 		super(parent, persistenceUnit);
-	}
-
-	protected void initialize(XmlPersistenceUnit xmlPersistenceUnit) {
-		super.initialize(xmlPersistenceUnit);
 		this.eclipseLinkProperties = new EclipseLinkJpaProperties(this);
 	}
 
