@@ -6,6 +6,9 @@
 	<echo message="eclipse place ${eclipse-home}" />
 	<!-- sets the properties plugin-name -->
 	<property name="plugin-name" value="org.eclipse.jpt.eclipselink.core.tests"/>
+    <echo level="debug" message="testRoot: ${testRoot}" />
+    <fail message="testRoot must be set" unless="testRoot" />
+    <property file="${testRoot}/testServer.properties"/>
 
 	<!-- This target holds all initialization code that needs to be done for -->
 	<!-- all tests that are to be run. Initialization for individual tests -->
