@@ -3,14 +3,14 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.eclipselink.ui;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: org.eclipse.jpt.eclipselink.ui.JptEclipseLinkUiPlugin
 Bundle-ClassPath: .
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.emf.edit.ui;bundle-version="[2.4.0,3.0.0)",
  org.eclipse.jpt.utility;bundle-version="[1.2.0,2.0.0)",
- org.eclipse.jpt.db;bundle-version="[1.1.1,2.0.0)",
+ org.eclipse.jpt.db;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.jpt.core;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.jpt.ui;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.ui;bundle-version="[3.4.0,4.0.0)",
