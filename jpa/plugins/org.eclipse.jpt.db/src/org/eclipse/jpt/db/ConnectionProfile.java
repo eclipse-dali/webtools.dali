@@ -96,6 +96,10 @@ public interface ConnectionProfile
 	 */
 	String getDriverJarList();
 
+	/**
+	 * Return the name of the Driver instance
+	 */
+	public String getDriverName();
 
 	// ********** connection **********
 

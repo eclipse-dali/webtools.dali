@@ -169,6 +169,10 @@ final class DTPConnectionProfileWrapper
 		return DriverManager.getInstance().getDriverInstanceByID(this.getDriverDefinitionID()).getJarList();
 	}
 
+	public String getDriverName() {
+		return DriverManager.getInstance().getDriverInstanceByID(this.getDriverDefinitionID()).getName();
+	}
+
 	// ***** connection
 	public boolean isActive() {
 		return this.isConnected() || this.isWorkingOffline();
