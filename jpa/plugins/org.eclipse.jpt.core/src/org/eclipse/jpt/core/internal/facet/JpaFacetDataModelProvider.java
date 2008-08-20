@@ -81,6 +81,9 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		propertyNames.add(PLATFORM_ID);
 		propertyNames.add(CONNECTION);
 		propertyNames.add(CONNECTION_ACTIVE);
+		propertyNames.add(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH);
+		propertyNames.add(DB_DRIVER_NAME);
+		propertyNames.add(DB_DRIVER_JARS);
 		propertyNames.add(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA);
 		propertyNames.add(USER_OVERRIDE_DEFAULT_SCHEMA);
 		propertyNames.add(RUNTIME);
@@ -97,6 +100,12 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 	public boolean isPropertyEnabled(String propertyName) {
 		if (propertyName.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
 			return getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA);
+		}
+		if (propertyName.equals(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)) {
+			return getConnectionProfile() != null;
+		}
+		if (propertyName.equals(DB_DRIVER_NAME)) {
+			return getBooleanProperty(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH);
 		}
 		if (propertyName.equals(JPA_LIBRARY)) {
 			return getBooleanProperty(USE_USER_JPA_LIBRARY);
@@ -117,6 +126,15 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		}
 		if (propertyName.equals(CONNECTION_ACTIVE)) {
 			return Boolean.valueOf(connectionIsActive());
+		}
+		if (propertyName.equals(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)) {
+			return Boolean.FALSE;
+		}
+		if (propertyName.equals(DB_DRIVER_NAME)) {
+			return getDefaultDriverName();
+		}
+		if (propertyName.equals(DB_DRIVER_JARS)) {
+			return getDefaultDriverJars();
 		}
 		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
 			return Boolean.FALSE;
@@ -165,12 +183,24 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (propertyName.equals(CONNECTION)) {
 			this.model.notifyPropertyChange(CONNECTION, IDataModel.VALID_VALUES_CHG);
 			this.model.setBooleanProperty(CONNECTION_ACTIVE, connectionIsActive());
+			this.model.notifyPropertyChange(DB_DRIVER_NAME, IDataModel.DEFAULT_CHG);
+			this.model.notifyPropertyChange(DB_DRIVER_NAME, IDataModel.VALID_VALUES_CHG);
+			this.model.notifyPropertyChange(DB_DRIVER_JARS, IDataModel.DEFAULT_CHG);
+			this.model.notifyPropertyChange(DB_DRIVER_JARS, IDataModel.VALID_VALUES_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.VALID_VALUES_CHG);
 		}
 		if (propertyName.equals(CONNECTION_ACTIVE)) {
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.VALID_VALUES_CHG);
+		}
+		if (propertyName.equals(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)) {
+			this.model.notifyPropertyChange(DB_DRIVER_NAME, IDataModel.ENABLE_CHG);
+			this.model.notifyPropertyChange(DB_DRIVER_JARS, IDataModel.ENABLE_CHG);
+			if (! ((Boolean) propertyValue).booleanValue()) {
+				this.model.setProperty(DB_DRIVER_NAME, null);
+				this.model.setProperty(DB_DRIVER_JARS, null);
+			}
 		}
 		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.ENABLE_CHG);
@@ -218,6 +248,16 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 					@Override
 					protected DataModelPropertyDescriptor transform(String next) {
 						return connectionPropertyDescriptor(next);
+					}
+				},
+				EMPTY_DMPD_ARRAY);
+		}
+		if (propertyName.equals(DB_DRIVER_NAME)) {
+			return CollectionTools.array(
+				new TransformationIterator<String, DataModelPropertyDescriptor>(driverNames()) {
+					@Override
+					protected DataModelPropertyDescriptor transform(String next) {
+						return new DataModelPropertyDescriptor(next);
 					}
 				},
 				EMPTY_DMPD_ARRAY);
@@ -278,6 +318,10 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (name.equals(CONNECTION)) {
 			return this.validateConnectionName(this.getStringProperty(name));
 		}
+		if (name.equals(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)
+				|| name.equals(DB_DRIVER_NAME)) {
+			return this.validateDbDriverName();
+		}
 		if (name.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)
 				|| name.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
 			return this.validateUserOverrideDefaultSchema();
@@ -325,7 +369,23 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		ConnectionProfile cp = this.buildConnectionProfile(connectionName);
 		return (cp != null) && cp.isActive();
 	}
-	
+
+	private String getDefaultDriverName() {
+		ConnectionProfile cp = this.getConnectionProfile();
+		if (cp == null) {
+			return null;
+		}
+		return cp.getDriverName();
+	}
+
+	private String getDefaultDriverJars() {
+		ConnectionProfile cp = this.getConnectionProfile();
+		if (cp == null) {
+			return null;
+		}
+		return cp.getDriverJarList();
+	}
+
 	private String getDefaultSchemaName() {
 		ConnectionProfile cp = this.getConnectionProfile();
 		if (cp == null) {
@@ -359,6 +419,12 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 			return schemaNames.iterator();
 		}
 		return new CompositeIterator<String>(setValue, schemaNames.iterator());
+	}
+	
+	private Iterator<String> driverNames() {
+		String setValue = getStringProperty(DB_DRIVER_NAME);
+		
+		return new CompositeIterator<String>(setValue, EmptyIterator.<String> instance());
 	}
 
 
@@ -413,6 +479,10 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 
 	private IStatus validatePersistentClassManagement(boolean discoverAnnotatedClasses) {
 		// TODO warning if "discovery" is used, but no runtime specified ??
+		return OK_STATUS;
+	}
+
+	private IStatus validateDbDriverName() {
 		return OK_STATUS;
 	}
 

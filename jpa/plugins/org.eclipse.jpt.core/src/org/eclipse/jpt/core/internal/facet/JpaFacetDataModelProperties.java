@@ -38,7 +38,25 @@ public interface JpaFacetDataModelProperties extends IDataModelProperties
 	 * Not required, type String, identifies the user overridden default schema name
 	 */
 	public static final String USER_OVERRIDE_DEFAULT_SCHEMA = 
-			"JpaFacetDataModelProperties.USER_OVERRIDE_DEFAULT_SCHEMA";
+		"JpaFacetDataModelProperties.USER_OVERRIDE_DEFAULT_SCHEMA";
+
+	/**
+	 * Required, type Boolean, identifies if the user wishes to add the database driver jars to the classpath
+	 */
+	public static final String USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH = 
+		"JpaFacetDataModelProperties.USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH";
+
+	/**
+	 * Not required, type String, identifies the database driver library added to the classpath
+	 */
+	public static final String DB_DRIVER_NAME = 
+			"JpaFacetDataModelProperties.DB_DRIVER_NAME";
+
+	/**
+	 * Not required, type String, identifies the database driver jars added to the classpath
+	 */
+	public static final String DB_DRIVER_JARS = 
+			"JpaFacetDataModelProperties.DB_DRIVER_JARS";
 	
 	/**
 	 * Internal, type IRuntime, identifies runtime associated with project

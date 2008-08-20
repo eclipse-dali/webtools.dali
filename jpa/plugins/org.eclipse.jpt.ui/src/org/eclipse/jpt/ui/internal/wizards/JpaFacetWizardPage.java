@@ -15,7 +15,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.DatabaseFinder;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
@@ -32,7 +31,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
@@ -118,6 +116,9 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 		return new String[] {
 			PLATFORM_ID,
 			CONNECTION,
+			USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH,
+			DB_DRIVER_NAME,
+			DB_DRIVER_JARS,
 			USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA,
 			USER_OVERRIDE_DEFAULT_SCHEMA,
 			USE_SERVER_JPA_IMPLEMENTATION,
@@ -171,6 +172,12 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 		
 		private Link connectLink;
 		
+		private final Button addDriverLibraryButton;
+		
+		private final Label driverLibraryLabel;
+		
+		private final Combo driverLibraryCombo;
+
 		private final Button overrideDefaultSchemaButton;
 		
 		private final Label defaultSchemaLabel;
@@ -223,13 +230,28 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 					}
 				});
 			
+			addDriverLibraryButton = createButton(group, 3, JptUiMessages.JpaFacetWizardPage_addDriverLibraryLabel, SWT.CHECK);
+			addDriverLibraryButton.setSelection(false);
+			synchHelper.synchCheckbox(addDriverLibraryButton, USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH, null);
+
+			driverLibraryLabel = new Label(group, SWT.LEFT);
+			driverLibraryLabel.setText(JptUiMessages.JpaFacetWizardPage_driverLibraryLabel);
+			GridData gd = new GridData();
+			gd.horizontalSpan = 1;
+			driverLibraryLabel.setLayoutData(gd);
+			
+			driverLibraryCombo = createCombo(group, 1, true);
+			synchHelper.synchCombo(
+				driverLibraryCombo, DB_DRIVER_NAME, 
+				new Control[] {driverLibraryLabel});
+
 			overrideDefaultSchemaButton = createButton(group, 3, JptUiMessages.JpaFacetWizardPage_overrideDefaultSchemaLabel, SWT.CHECK);
 			overrideDefaultSchemaButton.setSelection(false);
 			synchHelper.synchCheckbox(overrideDefaultSchemaButton, USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA, null);
 			
 			defaultSchemaLabel = new Label(group, SWT.LEFT);
 			defaultSchemaLabel.setText(JptUiMessages.JpaFacetWizardPage_defaultSchemaLabel);
-			GridData gd = new GridData();
+			gd = new GridData();
 			gd.horizontalSpan = 1;
 			defaultSchemaLabel.setLayoutData(gd);
 			
@@ -258,6 +280,7 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 		private void updateConnectLink() {
 			ConnectionProfile cp = this.getConnectionProfile();
 			connectLink.setEnabled((cp != null) && cp.isDisconnected());
+			addDriverLibraryButton.setEnabled(cp != null);
 		}
 		
 		private ConnectionProfile getConnectionProfile() {

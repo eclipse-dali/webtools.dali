@@ -66,6 +66,9 @@ public class JpaFacetInstallDelegate
 		if (dataModel.getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
 			JptCorePlugin.setUserOverrideDefaultSchemaName(project, dataModel.getStringProperty(USER_OVERRIDE_DEFAULT_SCHEMA));
 		}
+
+		this.addDbDriverLibraryToClasspath(javaProject, dataModel, monitor);
+
 		JptCorePlugin.setDiscoverAnnotatedClasses(project, dataModel.getBooleanProperty(DISCOVER_ANNOTATED_CLASSES));
 		
 		// defaults settings
@@ -107,6 +110,36 @@ public class JpaFacetInstallDelegate
 		javaProject.setRawClasspath(newClasspath, monitor);
 	}
 
+	private void addDbDriverLibraryToClasspath(IJavaProject javaProject, IDataModel dataModel, IProgressMonitor monitor) throws CoreException {
+		if( ! dataModel.getBooleanProperty(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)) {
+			return;
+		}
+		String driverJars = dataModel.getStringProperty(DB_DRIVER_JARS);
+		if (StringTools.stringIsEmpty(driverJars)) {
+			return;
+		}
+		
+		// build the Driver library to be added to the classpath
+		IClasspathEntry driverJarEntry = 
+			JavaCore.newLibraryEntry(
+				new Path(driverJars), null, null, true	
+			);
+
+		// if the Driver jar is already there, do nothing
+		IClasspathEntry[] classpath = javaProject.getRawClasspath();
+		if (CollectionTools.contains(classpath, driverJarEntry)) {
+			return;
+		}
+
+		// add the Driver jar to the classpath
+		int len = classpath.length;
+		IClasspathEntry[] newClasspath = new IClasspathEntry[len + 1];
+		System.arraycopy(classpath, 0, newClasspath, 0, len);
+		newClasspath[len] = driverJarEntry;
+		javaProject.setRawClasspath(newClasspath, monitor);
+	}
+	
+	
 	private static final IClasspathAttribute[] EMPTY_CLASSPATH_ATTRIBUTES = new IClasspathAttribute[0];
 
 	private IClasspathAttribute[] buildClasspathAttributes(IProject project) {

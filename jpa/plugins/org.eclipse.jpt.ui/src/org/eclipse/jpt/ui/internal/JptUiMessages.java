@@ -62,6 +62,7 @@ public class JptUiMessages {
 	public static String GenericPlatformUiDialog_notSupportedMessageTitle;
 	public static String JpaContent_label;
 	public static String JpaDetailsView_viewNotAvailable;
+	public static String JpaFacetWizardPage_addDriverLibraryLabel;
 	public static String JpaFacetWizardPage_connectionLabel;
 	public static String JpaFacetWizardPage_connectionLink;
 	public static String JpaFacetWizardPage_connectLink;
@@ -69,6 +70,7 @@ public class JptUiMessages {
 	public static String JpaFacetWizardPage_defaultSchemaLabel;
 	public static String JpaFacetWizardPage_description;
 	public static String JpaFacetWizardPage_discoverClassesButton;
+	public static String JpaFacetWizardPage_driverLibraryLabel;
 	public static String JpaFacetWizardPage_jpaImplementationLabel;
 	public static String JpaFacetWizardPage_jpaPrefsLink;
 	public static String JpaFacetWizardPage_listClassesButton;
