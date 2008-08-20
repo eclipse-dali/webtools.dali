@@ -92,22 +92,11 @@ public class JpaFacetInstallDelegate
 		IClasspathAttribute[] attributes = this.buildClasspathAttributes(javaProject.getProject());
 		IClasspathEntry jpaLibraryEntry = 
 			JavaCore.newContainerEntry(
-				new Path(JavaCore.USER_LIBRARY_CONTAINER_ID + "/" + jpaLibrary),
+				new Path(JavaCore.USER_LIBRARY_CONTAINER_ID + "/" + jpaLibrary), //$NON-NLS-1$
 				null, attributes, true
 			);
 
-		// if the JPA library is already there, do nothing
-		IClasspathEntry[] classpath = javaProject.getRawClasspath();
-		if (CollectionTools.contains(classpath, jpaLibraryEntry)) {
-			return;
-		}
-
-		// add the JPA library to the classpath
-		int len = classpath.length;
-		IClasspathEntry[] newClasspath = new IClasspathEntry[len + 1];
-		System.arraycopy(classpath, 0, newClasspath, 0, len);
-		newClasspath[len] = jpaLibraryEntry;
-		javaProject.setRawClasspath(newClasspath, monitor);
+		this.addClasspathEntryToProject(jpaLibraryEntry, javaProject, monitor);
 	}
 
 	private void addDbDriverLibraryToClasspath(IJavaProject javaProject, IDataModel dataModel, IProgressMonitor monitor) throws CoreException {
@@ -119,27 +108,32 @@ public class JpaFacetInstallDelegate
 			return;
 		}
 		
-		// build the Driver library to be added to the classpath
-		IClasspathEntry driverJarEntry = 
-			JavaCore.newLibraryEntry(
-				new Path(driverJars), null, null, true	
-			);
+		String[] driverJarArray = driverJars.split(","); //$NON-NLS-1$
+		for(String driverJar : driverJarArray) {
+			IClasspathEntry driverJarEntry = 
+				JavaCore.newLibraryEntry(
+					new Path(driverJar), null, null, true	
+				);
+			this.addClasspathEntryToProject(driverJarEntry, javaProject, monitor);
+		}
+	}
+	
+	private void addClasspathEntryToProject(IClasspathEntry classpathEntry, IJavaProject javaProject, IProgressMonitor monitor) throws CoreException {
 
-		// if the Driver jar is already there, do nothing
+		// if the classpathEntry is already there, do nothing
 		IClasspathEntry[] classpath = javaProject.getRawClasspath();
-		if (CollectionTools.contains(classpath, driverJarEntry)) {
+		if (CollectionTools.contains(classpath, classpathEntry)) {
 			return;
 		}
 
-		// add the Driver jar to the classpath
+		// add the given classpathEntry to the project classpath
 		int len = classpath.length;
 		IClasspathEntry[] newClasspath = new IClasspathEntry[len + 1];
 		System.arraycopy(classpath, 0, newClasspath, 0, len);
-		newClasspath[len] = driverJarEntry;
+		newClasspath[len] = classpathEntry;
 		javaProject.setRawClasspath(newClasspath, monitor);
 	}
-	
-	
+
 	private static final IClasspathAttribute[] EMPTY_CLASSPATH_ATTRIBUTES = new IClasspathAttribute[0];
 
 	private IClasspathAttribute[] buildClasspathAttributes(IProject project) {
