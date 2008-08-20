@@ -33,41 +33,41 @@ public interface JpaDataSource extends JpaNode {
 	 * The connection profile is looked up based on this setting.
 	 */
 	String getConnectionProfileName();
-	
+
 	/**
 	 * Set the data source's connection profile name.
 	 * The connection profile is looked up based on this setting.
 	 */
 	void setConnectionProfileName(String connectionProfileName);
-	
+
 	/**
 	 * ID string used when connectionProfileName property is changed
 	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
 	 */
 	public static final String CONNECTION_PROFILE_NAME_PROPERTY = "connectionProfileName"; //$NON-NLS-1$
-	
+
 	/**
-	 * The data source's connection profile should never be null.
-	 * If we do not have a connection, return a "null" connection profile.
+	 * If we do not have a connection, the data source's connection profile is
+	 * null.
 	 */
 	ConnectionProfile getConnectionProfile();
-	
+
 	/**
 	 * ID string used when connectionProfile property is changed
 	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
 	 */
 	public static final String CONNECTION_PROFILE_PROPERTY = "connectionProfile"; //$NON-NLS-1$
-	
+
 	boolean connectionProfileIsActive();
-	
+
 	Database getDatabase();
 
 	Iterator<String> catalogNames();
 
 	Catalog getCatalogNamed(String name);
-	
+
 	Catalog getDefaultCatalog();
-	
+
 	Iterator<String> schemaNames();
 
 	Schema getSchemaNamed(String name);
