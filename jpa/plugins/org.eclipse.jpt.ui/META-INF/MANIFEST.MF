@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.ui;singleton:=true
-Bundle-Version: 2.0.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-Activator: org.eclipse.jpt.ui.JptUiPlugin
 Bundle-ClassPath: .
 Bundle-Localization: plugin
@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.core.expressions;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.jem.util;bundle-version="[2.0.100,3.0.0)",
  org.eclipse.jface.text;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.jpt.core;bundle-version="[2.0.0,3.0.0)",
- org.eclipse.jpt.db;bundle-version="[1.1.1,2.0.0)",
+ org.eclipse.jpt.db;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.jpt.db.ui;bundle-version="[1.0.1,2.0.0)",
  org.eclipse.jpt.gen;bundle-version="[1.1.0,2.0.0)",
  org.eclipse.jpt.utility;bundle-version="[1.2.0,2.0.0)",
