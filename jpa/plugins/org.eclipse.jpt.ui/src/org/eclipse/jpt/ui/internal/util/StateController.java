@@ -231,7 +231,7 @@ abstract class StateController
 	private PropertyChangeListener buildBooleanChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent event) {
-				updateState(booleanValue(booleanHolder.getValue()));
+				updateState();
 			}
 
 			@Override
@@ -291,7 +291,7 @@ abstract class StateController
 	 * Updates the state of the control holders.
 	 */
 	protected void updateState() {
-		this.updateState(booleanValue(booleanHolder.getValue()));
+		this.updateState(booleanValue(this.booleanHolder.getValue()));
 	}
 
 	/**
