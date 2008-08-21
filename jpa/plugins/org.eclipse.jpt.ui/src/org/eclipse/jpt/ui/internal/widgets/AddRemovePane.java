@@ -262,38 +262,67 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		return new ListChangeListener() {
 
 			public void itemsAdded(ListChangeEvent e) {
+				AddRemovePane.this.itemsAdded(e);
 			}
 
 			public void itemsMoved(ListChangeEvent e) {
+				AddRemovePane.this.itemsMoved(e);
 			}
 
 			public void itemsRemoved(ListChangeEvent e) {
-				Object selectedItem = selectedItemHolder.getValue();
-
-				if (selectedItem == null) {
-					updateButtons();
-					return;
-				}
-
-				if (CollectionTools.contains(e.items(), selectedItem)) {
-					selectedItemHolder.setValue(null);
-					updateButtons();
-				}
+				AddRemovePane.this.itemsRemoved(e);
 			}
 
 			public void itemsReplaced(ListChangeEvent e) {
+				AddRemovePane.this.itemsReplaced(e);
 			}
 
 			public void listChanged(ListChangeEvent e) {
+				AddRemovePane.this.listChanged(e);
 			}
 
 			public void listCleared(ListChangeEvent e) {
-				selectedItemHolder.setValue(null);
-				updateButtons();
+				AddRemovePane.this.listCleared(e);
 			}
 		};
 	}
 
+	protected void itemsAdded(ListChangeEvent e) {
+		
+	}
+	
+	protected void itemsMoved(ListChangeEvent e) {
+		
+	}
+	
+	protected void itemsRemoved(ListChangeEvent e) {
+		Object selectedItem = this.selectedItemHolder.getValue();
+
+		if (selectedItem == null) {
+			updateButtons();
+			return;
+		}
+
+		if (CollectionTools.contains(e.items(), selectedItem)) {
+			this.selectedItemHolder.setValue(null);
+			updateButtons();
+		}		
+	}
+	
+	protected void itemsReplaced(ListChangeEvent e) {
+		
+	}
+	
+	protected void listChanged(ListChangeEvent e) {
+		
+	}
+	
+	protected void listCleared(ListChangeEvent e) {
+		this.selectedItemHolder.setValue(null);
+		updateButtons();
+	}
+	
+	
 	/**
 	 * @category Option
 	 */

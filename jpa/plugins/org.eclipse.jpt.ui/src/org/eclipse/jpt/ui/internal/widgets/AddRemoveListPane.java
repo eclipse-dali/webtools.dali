@@ -13,7 +13,6 @@ import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.ui.internal.swt.TableModelAdapter;
@@ -25,7 +24,6 @@ import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionMod
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -210,48 +208,52 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		};
 	}
 
-	private ListChangeListener buildListChangeListener() {
-		return new SWTListChangeListenerWrapper(buildListChangeListener_());
+	@Override
+	protected void itemsAdded(ListChangeEvent e) {
+		super.itemsAdded(e);
+		if (!this.table.isDisposed()) {
+			this.table.getParent().layout();
+		}		
 	}
-
-	private ListChangeListener buildListChangeListener_() {
-		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent e) {
-				if (!table.isDisposed()) {
-					table.getParent().layout();
-				}
-			}
-
-			public void itemsMoved(ListChangeEvent e) {
-				if (!table.isDisposed()) {
-					table.getParent().layout();
-				}
-			}
-
-			public void itemsRemoved(ListChangeEvent e) {
-				if (!table.isDisposed()) {
-					table.getParent().layout();
-				}
-			}
-
-			public void itemsReplaced(ListChangeEvent e) {
-				if (!table.isDisposed()) {
-					table.getParent().layout();
-				}
-			}
-
-			public void listChanged(ListChangeEvent e) {
-				if (!table.isDisposed()) {
-					table.getParent().layout();
-				}
-			}
-
-			public void listCleared(ListChangeEvent e) {
-				if (!table.isDisposed()) {
-					table.getParent().layout();
-				}
-			}
-		};
+	
+	@Override
+	protected void itemsMoved(ListChangeEvent e) {
+		super.itemsMoved(e);
+		if (!this.table.isDisposed()) {
+			this.table.getParent().layout();
+		}		
+	}
+	
+	@Override
+	protected void itemsRemoved(ListChangeEvent e) {
+		super.itemsRemoved(e);
+		if (!this.table.isDisposed()) {
+			this.table.getParent().layout();
+		}		
+	}
+	
+	@Override
+	protected void itemsReplaced(ListChangeEvent e) {
+		super.itemsReplaced(e);
+		if (!this.table.isDisposed()) {
+			this.table.getParent().layout();
+		}		
+	}
+	
+	@Override
+	protected void listChanged(ListChangeEvent e) {
+		super.listChanged(e);
+		if (!this.table.isDisposed()) {
+			this.table.getParent().layout();
+		}				
+	}
+	
+	@Override
+	protected void listCleared(ListChangeEvent e) {
+		super.listCleared(e);
+		if (!this.table.isDisposed()) {
+			this.table.getParent().layout();
+		}		
 	}
 
 	private SimplePropertyValueModel<Object> buildSelectedItemHolder() {
@@ -456,11 +458,6 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		selectedItemHolder.addPropertyChangeListener(
 			PropertyValueModel.VALUE,
 			buildSelectedItemPropertyChangeListener()
-		);
-
-		listHolder.addListChangeListener(
-			ListValueModel.LIST_VALUES,
-			buildListChangeListener()
 		);
 
 		initializeTable(table);
