@@ -68,7 +68,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEmbeddedMapping>
 {
-	private WritablePropertyValueModel<AttributeOverride> attributeOverrideHolder;
+	private WritablePropertyValueModel<AttributeOverride> selectedAttributeOverrideHolder;
 
 	/**
 	 * Creates a new <code>EmbeddedAttributeOverridesComposite</code>.
@@ -161,7 +161,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 	}
 
 	private PropertyValueModel<Boolean> buildOverrideDefaultAttributeOverrideEnablerHolder() {
-		return new TransformationPropertyValueModel<AttributeOverride, Boolean>(attributeOverrideHolder) {
+		return new TransformationPropertyValueModel<AttributeOverride, Boolean>(this.selectedAttributeOverrideHolder) {
 			@Override
 			protected Boolean transform(AttributeOverride value) {
 				return (value != null);
@@ -170,10 +170,10 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 	}
 
 	private WritablePropertyValueModel<Boolean> buildOverrideDefaultAttributeOverrideHolder() {
-		return new TransformationWritablePropertyValueModel<AttributeOverride, Boolean>(attributeOverrideHolder) {
+		return new TransformationWritablePropertyValueModel<AttributeOverride, Boolean>(this.selectedAttributeOverrideHolder) {
 			@Override
 			public void setValue(Boolean value) {
-				updateAssociationOverride(value);
+				updateAttributeOverride(value);
 			}
 
 			@Override
@@ -204,12 +204,12 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 		{
 			@Override
 			protected ListIterator<AttributeOverride> listIterator_() {
-				return subject.specifiedAttributeOverrides();
+				return this.subject.specifiedAttributeOverrides();
 			}
 
 			@Override
 			public int size_() {
-				return subject.specifiedAttributeOverridesSize();
+				return this.subject.specifiedAttributeOverridesSize();
 			}
 		};
 	}
@@ -220,7 +220,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.attributeOverrideHolder = buildAttributeOverrideHolder();
+		this.selectedAttributeOverrideHolder = buildAttributeOverrideHolder();
 	}
 
 	private AddRemoveListPane<BaseEmbeddedMapping> initializeAttributeOverridesList(Composite container) {
@@ -230,7 +230,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 			buildSubPane(container, 8),
 			buildAttributeOverridesAdapter(),
 			buildAttributeOverridesListModel(),
-			attributeOverrideHolder,
+			this.selectedAttributeOverrideHolder,
 			buildAttributeOverrideLabelProvider(),
 			JpaHelpContextIds.MAPPING_EMBEDDED_ATTRIBUTE_OVERRIDES
 		)
@@ -279,7 +279,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 		// Column widgets
 		ColumnComposite columnComposite = new ColumnComposite(
 			this,
-			buildColumnHolder(attributeOverrideHolder),
+			buildColumnHolder(this.selectedAttributeOverrideHolder),
 			container
 		);
 
@@ -301,7 +301,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 		);
 	}
 
-	private void updateAssociationOverride(boolean selected) {
+	private void updateAttributeOverride(boolean selected) {
 
 		if (isPopulating()) {
 			return;
@@ -310,10 +310,11 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 		setPopulating(true);
 
 		try {
-			AttributeOverride override = this.attributeOverrideHolder.getValue();
-
-			AttributeOverride newOverride = override.setVirtual(!selected);
-			this.attributeOverrideHolder.setValue(newOverride);
+			AttributeOverride selectedOverride = this.selectedAttributeOverrideHolder.getValue();
+			AttributeOverride newOverride = selectedOverride.setVirtual(!selected);
+			
+			//select the new override so the UI remains consistent
+			this.selectedAttributeOverrideHolder.setValue(newOverride);
 		}
 		finally {
 			setPopulating(false);
