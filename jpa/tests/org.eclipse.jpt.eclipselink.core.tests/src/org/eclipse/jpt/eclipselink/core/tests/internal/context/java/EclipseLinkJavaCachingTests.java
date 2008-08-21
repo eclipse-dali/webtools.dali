@@ -23,9 +23,9 @@ import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.ExistenceCheckingAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class EclispeLinkJavaCachingTests extends EclipseLinkJavaContextModelTestCase
+public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTestCase
 {	
-	public EclispeLinkJavaCachingTests(String name) {
+	public EclipseLinkJavaCachingTests(String name) {
 		super(name);
 	}
 	
