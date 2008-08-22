@@ -52,13 +52,18 @@ public class EntityNameComposite extends AbstractPane<Entity>
 		super(parentPane, parent);
 	}
 
-	private PropertyValueModel<String> buildDefaultEntityNameHolder() {
-		return new PropertyAspectAdapter<Entity, String>(getSubjectHolder(), Entity.DEFAULT_NAME_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				return defaultValue(subject);
-			}
-		};
+	@Override
+	protected void initializeLayout(Composite container) {
+
+		CCombo combo = buildLabeledEditableCCombo(
+			container,
+			JptUiMappingsMessages.EntityNameComposite_name,
+			buildDefaultEntityNameListHolder(),
+			buildEntityNameHolder(),
+			JpaHelpContextIds.ENTITY_NAME
+		);
+
+		SWTUtil.attachDefaultValueHandler(combo);
 	}
 
 	private ListValueModel<String> buildDefaultEntityNameListHolder() {
@@ -67,15 +72,24 @@ public class EntityNameComposite extends AbstractPane<Entity>
 		);
 	}
 
+	private PropertyValueModel<String> buildDefaultEntityNameHolder() {
+		return new PropertyAspectAdapter<Entity, String>(getSubjectHolder(), Entity.DEFAULT_NAME_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+				return defaultValue(this.subject);
+			}
+		};
+	}
+
 	private WritablePropertyValueModel<String> buildEntityNameHolder() {
 		return new PropertyAspectAdapter<Entity, String>(getSubjectHolder(), Entity.SPECIFIED_NAME_PROPERTY, Entity.DEFAULT_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 
-				String name = subject.getSpecifiedName();
+				String name = this.subject.getSpecifiedName();
 
 				if (name == null) {
-					name = defaultValue(subject);
+					name = defaultValue(this.subject);
 				}
 
 				return name;
@@ -84,11 +98,11 @@ public class EntityNameComposite extends AbstractPane<Entity>
 			@Override
 			protected void setValue_(String value) {
 
-				if (defaultValue(subject).equals(value)) {
+				if (defaultValue(this.subject).equals(value)) {
 					value = null;
 				}
 
-				subject.setSpecifiedName(value);
+				this.subject.setSpecifiedName(value);
 			}
 		};
 	}
@@ -102,25 +116,6 @@ public class EntityNameComposite extends AbstractPane<Entity>
 				defaultValue
 			);
 		}
-		else {
-			return JptUiMappingsMessages.EntityGeneralSection_nameDefaultEmpty;
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		CCombo combo = buildLabeledEditableCCombo(
-			container,
-			JptUiMappingsMessages.EntityNameComposite_name,
-			buildDefaultEntityNameListHolder(),
-			buildEntityNameHolder(),
-			JpaHelpContextIds.ENTITY_NAME
-		);
-
-		SWTUtil.attachDefaultValueHandler(combo);
+		return JptUiMappingsMessages.EntityGeneralSection_nameDefaultEmpty;
 	}
 }
