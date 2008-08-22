@@ -24,6 +24,8 @@ public class JptUtilityModelValueTests {
 		suite.addTest(JptUtilityModelValueSwingTests.suite());
 		
 		suite.addTestSuite(BufferedWritablePropertyValueModelTests.class);
+		suite.addTestSuite(CachingTransformationPropertyValueModelTests.class);
+		suite.addTestSuite(CachingTransformationWritablePropertyValueModelTests.class);
 		suite.addTestSuite(CollectionAspectAdapterTests.class);
 		suite.addTestSuite(CollectionListValueModelAdapterTests.class);
 		suite.addTestSuite(CollectionPropertyValueModelAdapterTests.class);

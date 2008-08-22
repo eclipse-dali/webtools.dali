@@ -32,6 +32,7 @@ import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Transformer;
+import org.eclipse.jpt.utility.internal.model.value.CachingTransformationWritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -82,7 +83,9 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 {
 	private Composite columnPane;
 	private Composite joinColumnsPane;
-	private WritablePropertyValueModel<BaseOverride> overrideHolder;
+	private WritablePropertyValueModel<BaseOverride> selectedOverrideHolder;
+	private WritablePropertyValueModel<Boolean> overrideVirtualAttributeOverrideHolder;
+	private WritablePropertyValueModel<Boolean> overrideVirtualAssociationOverrideHolder;
 
 	/**
 	 * Creates a new <code>OverridesComposite</code>.
@@ -110,21 +113,142 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		super(subjectHolder, parent, widgetFactory);
 	}
 
+	@Override
+	protected void initialize() {
+		super.initialize();
+		this.selectedOverrideHolder = buildSelectedOverrideHolder();
+	}
+
+	private WritablePropertyValueModel<BaseOverride> buildSelectedOverrideHolder() {
+		return new SimplePropertyValueModel<BaseOverride>();
+	}
+
+
+	@Override
+	protected void initializeLayout(Composite container) {
+
+		// Overrides group pane
+		container = buildTitledPane(
+			container,
+			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
+		);
+
+		// Overrides list pane
+		initializeOverridesList(container);
+
+		// Property pane
+		PageBook pageBook = buildPageBook(container);
+		initializeJoinColumnsPane(pageBook);
+		initializeColumnPane(pageBook);
+		installOverrideControlSwitcher(this.selectedOverrideHolder, pageBook);
+	}
+
+	private AddRemoveListPane<Entity> initializeOverridesList(Composite container) {
+
+		return new AddRemoveListPane<Entity>(
+			this,
+			buildSubPane(container, 8),
+			buildOverridesAdapter(),
+			buildOverridesListModel(),
+			this.selectedOverrideHolder,
+			buildOverrideLabelProvider(),
+			JpaHelpContextIds.ENTITY_ATTRIBUTE_OVERRIDES
+		)
+		{
+			@Override
+			protected void initializeButtonPane(Composite container, String helpId) {
+			}
+
+			@Override
+			protected void updateButtons() {
+			}
+		};
+	}
+	
+	private void initializeColumnPane(PageBook pageBook) {
+
+		int groupBoxMargin = groupBoxMargin();
+		this.columnPane = buildSubPane(pageBook, 5);
+
+		// Override Default check box
+		buildCheckBox(
+			buildSubPane(this.columnPane, 0, groupBoxMargin, 0, groupBoxMargin),
+			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
+			getOverrideVirtualAttributeOverrideHolder()
+		);
+
+		// Column widgets (for IOverrideAttribute)
+		ColumnComposite columnComposite = new ColumnComposite(
+			this,
+			buildColumnHolder(buildAttributeOverrideHolder()),
+			this.columnPane,
+			false
+		);
+
+		this.columnPane.setVisible(false);
+		installColumnsPaneEnabler(columnComposite);
+	}
+
+	private void installColumnsPaneEnabler(ColumnComposite pane) {
+		new PaneEnabler(
+			getOverrideVirtualAttributeOverrideHolder(),
+			pane
+		);
+	}
+
+	private void initializeJoinColumnsPane(PageBook pageBook) {
+
+		this.joinColumnsPane = buildSubPane(pageBook);
+
+		// Override Default check box
+		buildCheckBox(
+			buildSubPane(this.joinColumnsPane, 5, groupBoxMargin()),
+			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
+			getOverrideVirtualAssociationOverrideHolder()
+		);
+
+		Group joinColumnsGroupPane = buildTitledPane(
+			this.joinColumnsPane,
+			JptUiMappingsMessages.OverridesComposite_joinColumn
+		);
+
+		// Join Columns list pane (for IOverrideAssociation)
+		JoinColumnsComposite<AssociationOverride> joinColumnsComposite =
+			new JoinColumnsComposite<AssociationOverride>(
+				this,
+				buildAssociationOverrideHolder(),
+				joinColumnsGroupPane,
+				buildJoinColumnsEditor(),
+				false
+			);
+
+		this.joinColumnsPane.setVisible(false);
+		installJoinColumnsPaneEnabler(joinColumnsComposite);
+	}
+
+	private void installJoinColumnsPaneEnabler(JoinColumnsComposite<AssociationOverride> pane) {
+		new PaneEnabler(
+			getOverrideVirtualAssociationOverrideHolder(),
+			pane
+		);
+	}
+
+	private void installOverrideControlSwitcher(PropertyValueModel<BaseOverride> overrideHolder,
+	                                            PageBook pageBook) {
+
+		new ControlSwitcher(
+			overrideHolder,
+			buildPaneTransformer(),
+			pageBook
+		);
+	}
+
 	private void addJoinColumn(AssociationOverride subject) {
 
 		JoinColumnInAssociationOverrideDialog dialog =
 			new JoinColumnInAssociationOverrideDialog(shell(), subject, null);
 
 		dialog.openDialog(buildAddJoinColumnPostExecution());
-	}
-
-	private void addJoinColumn(JoinColumnInAssociationOverrideStateObject stateObject) {
-
-		AssociationOverride associationOverride = stateObject.getOwner();
-		int index = associationOverride.specifiedJoinColumnsSize();
-
-		JoinColumn joinColumn = associationOverride.addSpecifiedJoinColumn(index);
-		stateObject.updateJoinColumn(joinColumn);
 	}
 
 	private PostExecution<JoinColumnInAssociationOverrideDialog> buildAddJoinColumnPostExecution() {
@@ -137,8 +261,17 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		};
 	}
 
+	private void addJoinColumn(JoinColumnInAssociationOverrideStateObject stateObject) {
+
+		AssociationOverride associationOverride = stateObject.getOwner();
+		int index = associationOverride.specifiedJoinColumnsSize();
+
+		JoinColumn joinColumn = associationOverride.addSpecifiedJoinColumn(index);
+		stateObject.updateJoinColumn(joinColumn);
+	}
+
 	private WritablePropertyValueModel<AssociationOverride> buildAssociationOverrideHolder() {
-		return new TransformationWritablePropertyValueModel<BaseOverride, AssociationOverride>(overrideHolder) {
+		return new TransformationWritablePropertyValueModel<BaseOverride, AssociationOverride>(this.selectedOverrideHolder) {
 			@Override
 			protected AssociationOverride transform_(BaseOverride value) {
 				return (value instanceof AssociationOverride) ? (AssociationOverride) value : null;
@@ -147,7 +280,7 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 	}
 
 	private WritablePropertyValueModel<AttributeOverride> buildAttributeOverrideHolder() {
-		return new TransformationWritablePropertyValueModel<BaseOverride, AttributeOverride>(overrideHolder) {
+		return new TransformationWritablePropertyValueModel<BaseOverride, AttributeOverride>(this.selectedOverrideHolder) {
 			@Override
 			protected AttributeOverride transform_(BaseOverride value) {
 				return (value instanceof AttributeOverride) ? (AttributeOverride) value : null;
@@ -168,12 +301,12 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		return new ListAspectAdapter<Entity, AssociationOverride>(getSubjectHolder(), Entity.VIRTUAL_ASSOCIATION_OVERRIDES_LIST) {
 			@Override
 			protected ListIterator<AssociationOverride> listIterator_() {
-				return subject.virtualAssociationOverrides();
+				return this.subject.virtualAssociationOverrides();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.virtualAssociationOverridesSize();
+				return this.subject.virtualAssociationOverridesSize();
 			}
 		};
 	}
@@ -182,12 +315,12 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		return new ListAspectAdapter<Entity, AttributeOverride>(getSubjectHolder(), Entity.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST) {
 			@Override
 			protected ListIterator<AttributeOverride> listIterator_() {
-				return subject.virtualAttributeOverrides();
+				return this.subject.virtualAttributeOverrides();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.virtualAttributeOverridesSize();
+				return this.subject.virtualAttributeOverridesSize();
 			}
 		};
 	}
@@ -206,8 +339,15 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		return new JoinColumnsProvider();
 	}
 
-	private WritablePropertyValueModel<Boolean> buildOverrideDefaultAssociationOverrideHolder() {
-		return new TransformationWritablePropertyValueModel<AssociationOverride, Boolean>(buildAssociationOverrideHolder()) {
+	protected WritablePropertyValueModel<Boolean> getOverrideVirtualAssociationOverrideHolder() {
+		if (this.overrideVirtualAssociationOverrideHolder == null) {
+			this.overrideVirtualAssociationOverrideHolder = buildOverrideVirtualAssociationOverrideHolder();
+		}
+		return this.overrideVirtualAssociationOverrideHolder;
+	}
+
+	private WritablePropertyValueModel<Boolean> buildOverrideVirtualAssociationOverrideHolder() {
+		return new CachingTransformationWritablePropertyValueModel<AssociationOverride, Boolean>(buildAssociationOverrideHolder()) {
 			@Override
 			public void setValue(Boolean value) {
 				updateOverride(value);
@@ -220,8 +360,16 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildOverrideDefaultAttributeOverrideHolder() {
-		return new TransformationWritablePropertyValueModel<AttributeOverride, Boolean>(buildAttributeOverrideHolder()) {
+	protected WritablePropertyValueModel<Boolean> getOverrideVirtualAttributeOverrideHolder() {
+		if (this.overrideVirtualAttributeOverrideHolder == null) {
+			this.overrideVirtualAttributeOverrideHolder = buildOverrideVirtualAttributeOverrideHolder();
+		}
+		return this.overrideVirtualAttributeOverrideHolder;
+	}
+
+
+	private WritablePropertyValueModel<Boolean> buildOverrideVirtualAttributeOverrideHolder() {
+		return new CachingTransformationWritablePropertyValueModel<AttributeOverride, Boolean>(buildAttributeOverrideHolder()) {
 			@Override
 			public void setValue(Boolean value) {
 				updateOverride(value);
@@ -259,10 +407,6 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		sb.append(overrideType);
 		sb.append(") ");
 		return sb.toString();
-	}
-
-	private WritablePropertyValueModel<BaseOverride> buildOverrideHolder() {
-		return new SimplePropertyValueModel<BaseOverride>();
 	}
 
 	private ILabelProvider buildOverrideLabelProvider() {
@@ -351,7 +495,7 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		JoinColumnInAssociationOverrideDialog dialog =
 			new JoinColumnInAssociationOverrideDialog(
 				shell(),
-				(AssociationOverride) overrideHolder.getValue(),
+				(AssociationOverride) this.selectedOverrideHolder.getValue(),
 				joinColumn
 			);
 
@@ -362,136 +506,6 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initialize() {
-		super.initialize();
-		overrideHolder = buildOverrideHolder();
-	}
-
-	private void initializeColumnPane(PageBook pageBook) {
-
-		int groupBoxMargin = groupBoxMargin();
-		columnPane = buildSubPane(pageBook, 5);
-
-		// Override Default check box
-		buildCheckBox(
-			buildSubPane(columnPane, 0, groupBoxMargin, 0, groupBoxMargin),
-			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
-			buildOverrideDefaultAttributeOverrideHolder()
-		);
-
-		// Column widgets (for IOverrideAttribute)
-		ColumnComposite columnComposite = new ColumnComposite(
-			this,
-			buildColumnHolder(buildAttributeOverrideHolder()),
-			columnPane,
-			false
-		);
-
-		columnPane.setVisible(false);
-		installColumnsPaneEnabler(columnComposite);
-	}
-
-	private void initializeJoinColumnsPane(PageBook pageBook) {
-
-		joinColumnsPane = buildSubPane(pageBook);
-
-		// Override Default check box
-		buildCheckBox(
-			buildSubPane(joinColumnsPane, 5, groupBoxMargin()),
-			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
-			buildOverrideDefaultAssociationOverrideHolder()
-		);
-
-		Group joinColumnsGroupPane = buildTitledPane(
-			joinColumnsPane,
-			JptUiMappingsMessages.OverridesComposite_joinColumn
-		);
-
-		// Join Columns list pane (for IOverrideAssociation)
-		JoinColumnsComposite<AssociationOverride> joinColumnsComposite =
-			new JoinColumnsComposite<AssociationOverride>(
-				this,
-				buildAssociationOverrideHolder(),
-				joinColumnsGroupPane,
-				buildJoinColumnsEditor(),
-				false
-			);
-
-		joinColumnsPane.setVisible(false);
-		installJoinColumnsPaneEnabler(joinColumnsComposite);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		// Overrides group pane
-		container = buildTitledPane(
-			container,
-			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
-		);
-
-		// Overrides list pane
-		initializeOverridesList(container);
-
-		// Property pane
-		PageBook pageBook = buildPageBook(container);
-		initializeJoinColumnsPane(pageBook);
-		initializeColumnPane(pageBook);
-		installOverrideControlSwitcher(overrideHolder, pageBook);
-	}
-
-	private AddRemoveListPane<Entity> initializeOverridesList(Composite container) {
-
-		return new AddRemoveListPane<Entity>(
-			this,
-			buildSubPane(container, 8),
-			buildOverridesAdapter(),
-			buildOverridesListModel(),
-			overrideHolder,
-			buildOverrideLabelProvider(),
-			JpaHelpContextIds.ENTITY_ATTRIBUTE_OVERRIDES
-		)
-		{
-			@Override
-			protected void initializeButtonPane(Composite container, String helpId) {
-			}
-
-			@Override
-			protected void updateButtons() {
-			}
-		};
-	}
-
-	private void installColumnsPaneEnabler(ColumnComposite pane) {
-		new PaneEnabler(
-			buildOverrideDefaultAttributeOverrideHolder(),
-			pane
-		);
-	}
-
-	private void installJoinColumnsPaneEnabler(JoinColumnsComposite<AssociationOverride> pane) {
-		new PaneEnabler(
-			buildOverrideDefaultAssociationOverrideHolder(),
-			pane
-		);
-	}
-
-	private void installOverrideControlSwitcher(PropertyValueModel<BaseOverride> overrideHolder,
-	                                            PageBook pageBook) {
-
-		new ControlSwitcher(
-			overrideHolder,
-			buildPaneTransformer(),
-			pageBook
-		);
-	}
 
 	private void updateOverride(boolean selected) {
 
@@ -502,10 +516,10 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		setPopulating(true);
 
 		try {
-			BaseOverride override = overrideHolder.getValue();
+			BaseOverride override = this.selectedOverrideHolder.getValue();
 
 			BaseOverride newOverride = override.setVirtual(!selected);
-			overrideHolder.setValue(newOverride);
+			this.selectedOverrideHolder.setValue(newOverride);
 		}
 		finally {
 			setPopulating(false);

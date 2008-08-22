@@ -73,9 +73,9 @@ public class TransformationPropertyValueModel<T1, T2>
 	protected void valueChanged(PropertyChangeEvent event) {
 		// transform the values before propagating the change event
 	    @SuppressWarnings("unchecked")
-		Object oldValue = this.transform((T1) event.getOldValue());
+		Object oldValue = this.transformOld((T1) event.getOldValue());
 	    @SuppressWarnings("unchecked")
-		Object newValue = this.transform((T1) event.getNewValue());
+		Object newValue = this.transformNew((T1) event.getNewValue());
 		this.firePropertyChanged(VALUE, oldValue, newValue);
 	}
 
@@ -97,6 +97,23 @@ public class TransformationPropertyValueModel<T1, T2>
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * Transform the specified old value and return the result.
+	 * In this case just call {@link #transform(Object)}, override to change.
+	 * This is called by #valueChanged(PropertyChangeEvent).
+	 */
+	protected T2 transformOld(T1 value) {
+		return this.transform(value);
+	}
+	
+	/**
+	 * Transform the specified new value and return the result.
+	 * In this case just call {@link #transform(Object)}, override to change.
+	 * This is called by #valueChanged(PropertyChangeEvent).
+	 */
+	protected T2 transformNew(T1 value) {
+		return this.transform(value);
+	}
 
 	// ********** default transformer **********
 

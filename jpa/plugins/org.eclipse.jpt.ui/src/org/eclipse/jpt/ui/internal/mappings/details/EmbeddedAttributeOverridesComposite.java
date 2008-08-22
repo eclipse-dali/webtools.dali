@@ -27,12 +27,12 @@ import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.model.value.CachingTransformationWritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.TransformationWritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -70,6 +70,8 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 {
 	private WritablePropertyValueModel<AttributeOverride> selectedAttributeOverrideHolder;
 
+	private WritablePropertyValueModel<Boolean> overrideVirtualAttributeOverrideHolder;
+	
 	/**
 	 * Creates a new <code>EmbeddedAttributeOverridesComposite</code>.
 	 *
@@ -96,6 +98,87 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 		super(subjectHolder, parent, widgetFactory);
 	}
 
+	@Override
+	protected void initialize() {
+		super.initialize();
+		this.selectedAttributeOverrideHolder = buildAttributeOverrideHolder();
+	}
+
+	private AddRemoveListPane<BaseEmbeddedMapping> initializeAttributeOverridesList(Composite container) {
+
+		return new AddRemoveListPane<BaseEmbeddedMapping>(
+			this,
+			buildSubPane(container, 8),
+			buildAttributeOverridesAdapter(),
+			buildAttributeOverridesListModel(),
+			this.selectedAttributeOverrideHolder,
+			buildAttributeOverrideLabelProvider(),
+			JpaHelpContextIds.MAPPING_EMBEDDED_ATTRIBUTE_OVERRIDES
+		)
+		{
+			@Override
+			protected void initializeButtonPane(Composite container, String helpId) {
+			}
+
+			@Override
+			protected void updateButtons() {
+			}
+		};
+	}
+
+	@Override
+	protected void initializeLayout(Composite container) {
+
+		// Attribute Overrides group box
+		container = buildTitledPane(
+			container,
+			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
+		);
+
+		// Attribute Overrides list
+		initializeAttributeOverridesList(container);
+
+		// Property pane
+		initializePropertyPane(buildSubPane(container, 5, 0));
+	}
+
+	private void initializePropertyPane(Composite container) {
+
+		// Override Default check box
+		Button overrideDefaultButton = buildCheckBox(
+			buildSubPane(container, 0, groupBoxMargin()),
+			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
+			getOverrideVirtualAttributeOverrideHolder()
+		);
+
+		removeFromEnablementControl(overrideDefaultButton);
+		installOverrideDefaultButtonEnabler(overrideDefaultButton);
+
+		// Column widgets
+		ColumnComposite columnComposite = new ColumnComposite(
+			this,
+			buildColumnHolder(this.selectedAttributeOverrideHolder),
+			container
+		);
+
+		installColumnCompositeEnabler(columnComposite);
+		removeFromEnablementControl(columnComposite.getControl());
+	}
+
+	private void installColumnCompositeEnabler(ColumnComposite columnComposite) {
+		new PaneEnabler(
+			getOverrideVirtualAttributeOverrideHolder(),
+			columnComposite
+		);
+	}
+
+	private void installOverrideDefaultButtonEnabler(Button overrideDefaultButton) {
+		new ControlEnabler(
+			buildOverrideVirtualAttributeOverrideEnablerHolder(),
+			overrideDefaultButton
+		);
+	}
+	
 	private WritablePropertyValueModel<AttributeOverride> buildAttributeOverrideHolder() {
 		return new SimplePropertyValueModel<AttributeOverride>();
 	}
@@ -123,7 +206,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 	private ListValueModel<AttributeOverride> buildAttributeOverridesListHolder() {
 		List<ListValueModel<AttributeOverride>> list = new ArrayList<ListValueModel<AttributeOverride>>();
 		list.add(buildSpecifiedAttributeOverridesListHolder());
-		list.add(buildDefaultAttributeOverridesListHolder());
+		list.add(buildVirtualAttributeOverridesListHolder());
 		return new CompositeListValueModel<ListValueModel<AttributeOverride>, AttributeOverride>(list);
 	}
 
@@ -143,7 +226,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 		};
 	}
 
-	private ListValueModel<AttributeOverride> buildDefaultAttributeOverridesListHolder() {
+	private ListValueModel<AttributeOverride> buildVirtualAttributeOverridesListHolder() {
 		return new ListAspectAdapter<BaseEmbeddedMapping, AttributeOverride>(
 			this.getSubjectHolder(),
 			BaseEmbeddedMapping.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST)
@@ -160,7 +243,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 		};
 	}
 
-	private PropertyValueModel<Boolean> buildOverrideDefaultAttributeOverrideEnablerHolder() {
+	private PropertyValueModel<Boolean> buildOverrideVirtualAttributeOverrideEnablerHolder() {
 		return new TransformationPropertyValueModel<AttributeOverride, Boolean>(this.selectedAttributeOverrideHolder) {
 			@Override
 			protected Boolean transform(AttributeOverride value) {
@@ -169,8 +252,15 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildOverrideDefaultAttributeOverrideHolder() {
-		return new TransformationWritablePropertyValueModel<AttributeOverride, Boolean>(this.selectedAttributeOverrideHolder) {
+	protected WritablePropertyValueModel<Boolean> getOverrideVirtualAttributeOverrideHolder() {
+		if (this.overrideVirtualAttributeOverrideHolder == null) {
+			this.overrideVirtualAttributeOverrideHolder = buildOverrideVirtualAttributeOverrideHolder();
+		}
+		return this.overrideVirtualAttributeOverrideHolder;
+	}
+	
+	private WritablePropertyValueModel<Boolean> buildOverrideVirtualAttributeOverrideHolder() {
+		return new CachingTransformationWritablePropertyValueModel<AttributeOverride, Boolean>(this.selectedAttributeOverrideHolder) {
 			@Override
 			public void setValue(Boolean value) {
 				updateAttributeOverride(value);
@@ -214,92 +304,6 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.selectedAttributeOverrideHolder = buildAttributeOverrideHolder();
-	}
-
-	private AddRemoveListPane<BaseEmbeddedMapping> initializeAttributeOverridesList(Composite container) {
-
-		return new AddRemoveListPane<BaseEmbeddedMapping>(
-			this,
-			buildSubPane(container, 8),
-			buildAttributeOverridesAdapter(),
-			buildAttributeOverridesListModel(),
-			this.selectedAttributeOverrideHolder,
-			buildAttributeOverrideLabelProvider(),
-			JpaHelpContextIds.MAPPING_EMBEDDED_ATTRIBUTE_OVERRIDES
-		)
-		{
-			@Override
-			protected void initializeButtonPane(Composite container, String helpId) {
-			}
-
-			@Override
-			protected void updateButtons() {
-			}
-		};
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		// Attribute Overrides group box
-		container = buildTitledPane(
-			container,
-			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
-		);
-
-		// Attribute Overrides list
-		initializeAttributeOverridesList(container);
-
-		// Property pane
-		initializePropertyPane(buildSubPane(container, 5, 0));
-	}
-
-	private void initializePropertyPane(Composite container) {
-
-		// Override Default check box
-		Button overrideDefaultButton = buildCheckBox(
-			buildSubPane(container, 0, groupBoxMargin()),
-			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
-			buildOverrideDefaultAttributeOverrideHolder()
-		);
-
-		removeFromEnablementControl(overrideDefaultButton);
-		installOverrideDefaultButtonEnabler(overrideDefaultButton);
-
-		// Column widgets
-		ColumnComposite columnComposite = new ColumnComposite(
-			this,
-			buildColumnHolder(this.selectedAttributeOverrideHolder),
-			container
-		);
-
-		installColumnCompositeEnabler(columnComposite);
-		removeFromEnablementControl(columnComposite.getControl());
-	}
-
-	private void installColumnCompositeEnabler(ColumnComposite columnComposite) {
-		new PaneEnabler(
-			buildOverrideDefaultAttributeOverrideHolder(),
-			columnComposite
-		);
-	}
-
-	private void installOverrideDefaultButtonEnabler(Button overrideDefaultButton) {
-		new ControlEnabler(
-			buildOverrideDefaultAttributeOverrideEnablerHolder(),
-			overrideDefaultButton
-		);
-	}
 
 	private void updateAttributeOverride(boolean selected) {
 
