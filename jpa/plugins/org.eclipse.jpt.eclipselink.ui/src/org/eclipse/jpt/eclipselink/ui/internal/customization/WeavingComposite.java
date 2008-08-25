@@ -14,14 +14,14 @@ import java.util.Collection;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Weaving;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * WeavingComposite
  */
-public class WeavingComposite extends AbstractFormPane<Customization>
+public class WeavingComposite extends FormPane<Customization>
 {
 	/**
 	 * Creates a new <code>WeavingComposite</code>.
@@ -32,13 +32,13 @@ public class WeavingComposite extends AbstractFormPane<Customization>
 	 *            The parent container
 	 */
 	public WeavingComposite(
-					AbstractFormPane<? extends Customization> parentComposite, 
+					FormPane<? extends Customization> parentComposite, 
 					Composite parent) {
 
 		super( parentComposite, parent);
 	}
 
-	private EnumFormComboViewer<Customization, Weaving> buildWeavingCombo(Composite container) {
+	private EnumFormComboViewer<Customization, Weaving> addWeavingCombo(Composite container) {
 		return new EnumFormComboViewer<Customization, Weaving>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -47,13 +47,13 @@ public class WeavingComposite extends AbstractFormPane<Customization>
 			}
 
 			@Override
-			protected Weaving[] choices() {
+			protected Weaving[] getChoices() {
 				return Weaving.values();
 			}
 
 			@Override
-			protected Weaving defaultValue() {
-				return subject().getDefaultWeaving();
+			protected Weaving getDefaultValue() {
+				return getSubject().getDefaultWeaving();
 			}
 
 			@Override
@@ -63,12 +63,12 @@ public class WeavingComposite extends AbstractFormPane<Customization>
 
 			@Override
 			protected Weaving getValue() {
-				return subject().getWeaving();
+				return getSubject().getWeaving();
 			}
 
 			@Override
 			protected void setValue(Weaving value) {
-				subject().setWeaving(value);
+				getSubject().setWeaving(value);
 			}
 		};
 	}
@@ -76,10 +76,10 @@ public class WeavingComposite extends AbstractFormPane<Customization>
 	@Override
 	protected void initializeLayout( Composite container) {
 
-		this.buildLabeledComposite(
+		this.addLabeledComposite(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingLabel,
-			this.buildWeavingCombo( container),
+			this.addWeavingCombo( container),
 			null		// TODO IJpaHelpContextIds.
 		);
 	}

@@ -14,14 +14,14 @@ import java.util.Collection;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.OutputMode;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * OutputModeComposite
  */
-public class OutputModeComposite extends AbstractFormPane<SchemaGeneration>
+public class OutputModeComposite extends FormPane<SchemaGeneration>
 {
 	/**
 	 * Creates a new <code>OutputModeComposite</code>.
@@ -32,13 +32,13 @@ public class OutputModeComposite extends AbstractFormPane<SchemaGeneration>
 	 *            The parent container
 	 */
 	public OutputModeComposite(
-				AbstractFormPane<? extends SchemaGeneration> parentComposite, 
+				FormPane<? extends SchemaGeneration> parentComposite, 
 				Composite parent) {
 		
 		super(parentComposite, parent);
 	}
 
-	private EnumFormComboViewer<SchemaGeneration, OutputMode> buildOutputModeCombo(Composite container) {
+	private EnumFormComboViewer<SchemaGeneration, OutputMode> addBuildOutputModeCombo(Composite container) {
 		return new EnumFormComboViewer<SchemaGeneration, OutputMode>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -47,13 +47,13 @@ public class OutputModeComposite extends AbstractFormPane<SchemaGeneration>
 			}
 
 			@Override
-			protected OutputMode[] choices() {
+			protected OutputMode[] getChoices() {
 				return OutputMode.values();
 			}
 
 			@Override
-			protected OutputMode defaultValue() {
-				return this.subject().getDefaultOutputMode();
+			protected OutputMode getDefaultValue() {
+				return this.getSubject().getDefaultOutputMode();
 			}
 
 			@Override
@@ -63,22 +63,22 @@ public class OutputModeComposite extends AbstractFormPane<SchemaGeneration>
 
 			@Override
 			protected OutputMode getValue() {
-				return this.subject().getOutputMode();
+				return this.getSubject().getOutputMode();
 			}
 
 			@Override
 			protected void setValue(OutputMode value) {
-				this.subject().setOutputMode(value);
+				this.getSubject().setOutputMode(value);
 			}
 		};
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		this.buildLabeledComposite(
+		this.addLabeledComposite(
 				container,
 				EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_outputModeLabel,
-				this.buildOutputModeCombo(container),
+				this.addBuildOutputModeCombo(container),
 				null // TODO IJpaHelpContextIds.
 		);
 	}

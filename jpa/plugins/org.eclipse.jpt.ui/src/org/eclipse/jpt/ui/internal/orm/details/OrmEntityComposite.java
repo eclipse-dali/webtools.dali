@@ -42,12 +42,12 @@ public class OrmEntityComposite extends AbstractEntityComposite<OrmEntity>
 	}
 
 	@Override
-	protected void buildSecondaryTablesComposite(Composite container) {
+	protected void addSecondaryTablesComposite(Composite container) {
 		new OrmSecondaryTablesComposite(this, container);
 	}
 	
 	@Override
-	protected void buildInheritanceComposite(Composite container) {
+	protected void addInheritanceComposite(Composite container) {
 		new OrmInheritanceComposite(this, container);
 	}
 }

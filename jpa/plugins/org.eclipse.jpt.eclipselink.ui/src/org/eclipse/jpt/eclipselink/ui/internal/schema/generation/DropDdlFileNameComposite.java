@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.schema.generation;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  DropDdlFileNameComposite
  */
-public class DropDdlFileNameComposite extends AbstractPane<SchemaGeneration>
+public class DropDdlFileNameComposite extends Pane<SchemaGeneration>
 {
 	/**
 	 * Creates a new <code>DropDdlFileNameComposite</code>.
@@ -34,7 +34,7 @@ public class DropDdlFileNameComposite extends AbstractPane<SchemaGeneration>
 	 * @param parent The parent container
 	 */
 	public DropDdlFileNameComposite(
-								AbstractPane<? extends SchemaGeneration> parentPane,
+								Pane<? extends SchemaGeneration> parentPane,
 	                           Composite parent) {
 
 		super(parentPane, parent);
@@ -44,7 +44,7 @@ public class DropDdlFileNameComposite extends AbstractPane<SchemaGeneration>
 		return new PropertyAspectAdapter<SchemaGeneration, String>(this.getSubjectHolder(), SchemaGeneration.DEFAULT_SCHEMA_GENERATION_DROP_FILE_NAME) {
 			@Override
 			protected String buildValue_() {
-				return DropDdlFileNameComposite.this.defaultValue(subject);
+				return DropDdlFileNameComposite.this.getDefaultValue(subject);
 			}
 		};
 	}
@@ -62,7 +62,7 @@ public class DropDdlFileNameComposite extends AbstractPane<SchemaGeneration>
 
 				String name = subject.getDropFileName();
 				if (name == null) {
-					name = DropDdlFileNameComposite.this.defaultValue(subject);
+					name = DropDdlFileNameComposite.this.getDefaultValue(subject);
 				}
 				return name;
 			}
@@ -70,7 +70,7 @@ public class DropDdlFileNameComposite extends AbstractPane<SchemaGeneration>
 			@Override
 			protected void setValue_(String value) {
 
-				if (DropDdlFileNameComposite.this.defaultValue(subject).equals(value)) {
+				if (DropDdlFileNameComposite.this.getDefaultValue(subject).equals(value)) {
 					value = null;
 				}
 				subject.setDropFileName(value);
@@ -78,7 +78,7 @@ public class DropDdlFileNameComposite extends AbstractPane<SchemaGeneration>
 		};
 	}
 
-	private String defaultValue(SchemaGeneration subject) {
+	private String getDefaultValue(SchemaGeneration subject) {
 		String defaultValue = subject.getDefaultDropFileName();
 
 		if (defaultValue != null) {
@@ -98,7 +98,7 @@ public class DropDdlFileNameComposite extends AbstractPane<SchemaGeneration>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		CCombo combo = buildLabeledEditableCCombo(
+		CCombo combo = addLabeledEditableCCombo(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_dropDdlFileNameLabel,
 			this.buildDefaultDropDdlFileNameListHolder(),

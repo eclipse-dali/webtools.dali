@@ -47,10 +47,10 @@ abstract class StateController
 	private PropertyValueModel<Boolean> booleanHolder;
 
 	/**
-	 * The collection of <code>IControlHolder</code>s whose state is kept in sync
+	 * The collection of <code>ControlHolder</code>s whose state is kept in sync
 	 * with the boolean holder's value.
 	 */
-	private Collection<IControlHolder> controlHolders;
+	private Collection<ControlHolder> controlHolders;
 
 	/**
 	 * The default setting for the state; for when the underlying model is
@@ -71,11 +71,11 @@ abstract class StateController
 	 * <code>false</code>.
 	 *
 	 * @param booleanHolder A value model on the underlying boolean model
-	 * @param controlHolders The collection of <code>IControlHolder</code>s whose
+	 * @param controlHolders The collection of <code>ControlHolder</code>s whose
 	 * state is kept in sync with the boolean holder's value
 	 */
 	StateController(PropertyValueModel<Boolean> booleanHolder,
-	                Collection<IControlHolder> controlHolders) {
+	                Collection<ControlHolder> controlHolders) {
 
 		this(booleanHolder, controlHolders, false);
 	}
@@ -85,13 +85,13 @@ abstract class StateController
 	 * <code>false</code>.
 	 *
 	 * @param booleanHolder A value model on the underlying boolean model
-	 * @param controlHolders The collection of <code>IControlHolder</code>s whose
+	 * @param controlHolders The collection of <code>ControlHolder</code>s whose
 	 * state is kept in sync with the boolean holder's value
 	 * @param defaultValue The value to use when the underlying model is
 	 * <code>null</code>
 	 */
 	StateController(PropertyValueModel<Boolean> booleanHolder,
-	                Collection<IControlHolder> controlHolders,
+	                Collection<ControlHolder> controlHolders,
 	                boolean defaultValue) {
 
 		this();
@@ -103,11 +103,11 @@ abstract class StateController
 	 * <code>false</code>.
 	 *
 	 * @param booleanHolder A value model on the underlying boolean model
-	 * @param controlHolder The <code>IControlHolder</code> whose state is kept
+	 * @param controlHolder The <code>ControlHolder</code> whose state is kept
 	 * in sync with the boolean holder's value
 	 */
 	StateController(PropertyValueModel<Boolean> booleanHolder,
-	                IControlHolder controlHolder) {
+	                ControlHolder controlHolder) {
 
 		this(booleanHolder, controlHolder, false);
 	}
@@ -117,11 +117,11 @@ abstract class StateController
 	 * <code>false</code>.
 	 *
 	 * @param booleanHolder A value model on the underlying boolean model
-	 * @param controlHolders The collection of <code>IControlHolder</code>s whose
+	 * @param controlHolders The collection of <code>ControlHolder</code>s whose
 	 * state is kept in sync with the boolean holder's value
 	 */
 	StateController(PropertyValueModel<Boolean> booleanHolder,
-	                IControlHolder... controlHolders) {
+	                ControlHolder... controlHolders) {
 
 		this(booleanHolder, CollectionTools.collection(controlHolders), false);
 	}
@@ -131,29 +131,29 @@ abstract class StateController
 	 * <code>false</code>.
 	 *
 	 * @param booleanHolder A value model on the underlying boolean model
-	 * @param controlHolder The <code>IControlHolder</code> whose state is kept
+	 * @param controlHolder The <code>ControlHolder</code> whose state is kept
 	 * in sync with the boolean holder's value
 	 * @param defaultValue The value to use when the underlying model is
 	 * <code>null</code>
 	 */
 	StateController(PropertyValueModel<Boolean> booleanHolder,
-	                IControlHolder controlHolder,
+	                ControlHolder controlHolder,
 	                boolean defaultValue) {
 
-		this(booleanHolder, new IControlHolder[] { controlHolder }, false);
+		this(booleanHolder, new ControlHolder[] { controlHolder }, false);
 	}
 
 	/**
 	 * Creates a new <code>StateController</code>.
 	 *
 	 * @param booleanHolder A value model on the underlying boolean model
-	 * @param controlHolders The collection of <code>IControlHolder</code>s whose
+	 * @param controlHolders The collection of <code>ControlHolder</code>s whose
 	 * state is kept in sync with the boolean holder's value
 	 * @param defaultValue The value to use when the underlying model is
 	 * <code>null</code>
 	 */
 	StateController(PropertyValueModel<Boolean> booleanHolder,
-	                IControlHolder[] controlHolders,
+	                ControlHolder[] controlHolders,
 	                boolean defaultValue) {
 
 		this();
@@ -166,11 +166,11 @@ abstract class StateController
 	 *
 	 * @param booleanHolder A value model on the underlying boolean model
 	 * @param controlHolders An iterator on the collection of
-	 * <code>IControlHolder</code>s whose state is kept in sync with the boolean
+	 * <code>ControlHolder</code>s whose state is kept in sync with the boolean
 	 * holder's value
 	 */
 	StateController(PropertyValueModel<Boolean> booleanHolder,
-	                Iterator<IControlHolder> controlHolders) {
+	                Iterator<ControlHolder> controlHolders) {
 
 		this(booleanHolder, CollectionTools.collection(controlHolders), false);
 	}
@@ -180,13 +180,13 @@ abstract class StateController
 	 *
 	 * @param booleanHolder A value model on the underlying boolean model
 	 * @param controlHolders An iterator on the collection of
-	 * <code>IControlHolder</code>s whose state is kept in sync with the boolean
+	 * <code>ControlHolder</code>s whose state is kept in sync with the boolean
 	 * holder's value
 	 * @param defaultValue The value to use when the underlying model is
 	 * <code>null</code>
 	 */
 	StateController(PropertyValueModel<Boolean> booleanHolder,
-	                Iterator<IControlHolder> controlHolders,
+	                Iterator<ControlHolder> controlHolders,
 	                boolean defaultValue) {
 
 		this();
@@ -243,12 +243,12 @@ abstract class StateController
 
 	/**
 	 * Returns an <code>Iterator</code> over the collection of
-	 * <code>IControlHolder</code>s.
+	 * <code>ControlHolder</code>s.
 	 *
-	 * @return The iteration of <code>IControlHolder</code>s
+	 * @return The iteration of <code>ControlHolder</code>s
 	 */
-	protected final Iterator<IControlHolder> controlHolders() {
-		return new CloneIterator<IControlHolder>(this.controlHolders);
+	protected final Iterator<ControlHolder> controlHolders() {
+		return new CloneIterator<ControlHolder>(this.controlHolders);
 	}
 
 	/**
@@ -263,19 +263,19 @@ abstract class StateController
 	 * Initializes this <code>StateController</code> with the given state.
 	 *
 	 * @param booleanHolder A value model on the underlying boolean model
-	 * @param controlHolders A <code>IControlHolder</code>s whose enablement state
+	 * @param controlHolders A <code>ControlHolder</code>s whose enablement state
 	 * is kept in sync with the boolean holder's value
 	 * @param defaultValue The value to use when the underlying model is
 	 * <code>null</code>
 	 */
 	protected void initialize(PropertyValueModel<Boolean> booleanHolder,
-									  Collection<IControlHolder> controlHolders,
+									  Collection<ControlHolder> controlHolders,
 									  boolean defaultValue) {
 
 		Assert.isNotNull(booleanHolder,  "The holder of the boolean value cannot be null");
 		Assert.isNotNull(controlHolders, "The collection of ControlHolders cannot be null");
 
-		this.controlHolders = new ArrayList<IControlHolder>(controlHolders);
+		this.controlHolders = new ArrayList<ControlHolder>(controlHolders);
 		this.defaultValue   = defaultValue;
 		this.booleanHolder  = booleanHolder;
 
@@ -300,7 +300,7 @@ abstract class StateController
 	 * @param state The new state the widgets need to have
 	 */
 	protected void updateState(boolean state) {
-		for (IControlHolder controlHolder : this.controlHolders) {
+		for (ControlHolder controlHolder : this.controlHolders) {
 			controlHolder.updateState(state);
 		}
 	}
@@ -308,7 +308,7 @@ abstract class StateController
 	/**
 	 * The holder of the actual widget.
 	 */
-	static interface IControlHolder {
+	static interface ControlHolder {
 
 		/**
 		 * Updates the state of the wrapped control.

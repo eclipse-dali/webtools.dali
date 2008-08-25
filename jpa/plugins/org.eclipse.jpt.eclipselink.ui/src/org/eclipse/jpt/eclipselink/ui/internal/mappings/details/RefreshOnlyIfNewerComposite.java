@@ -13,7 +13,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class RefreshOnlyIfNewerComposite extends AbstractFormPane<EclipseLinkCaching>
+public class RefreshOnlyIfNewerComposite extends FormPane<EclipseLinkCaching>
 {
 	/**
 	 * Creates a new <code>OptionalComposite</code>.
@@ -38,7 +38,7 @@ public class RefreshOnlyIfNewerComposite extends AbstractFormPane<EclipseLinkCac
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public RefreshOnlyIfNewerComposite(AbstractFormPane<? extends EclipseLinkCaching> parentPane,
+	public RefreshOnlyIfNewerComposite(FormPane<? extends EclipseLinkCaching> parentPane,
 	                         Composite parent)
 	{
 		super(parentPane, parent);
@@ -77,9 +77,9 @@ public class RefreshOnlyIfNewerComposite extends AbstractFormPane<EclipseLinkCac
 			@Override
 			protected String transform(Boolean value) {
 
-				if ((subject() != null) && (value == null)) {
+				if ((getSubject() != null) && (value == null)) {
 
-					Boolean defaultValue = subject().getDefaultRefreshOnlyIfNewer();
+					Boolean defaultValue = getSubject().getDefaultRefreshOnlyIfNewer();
 
 					if (defaultValue != null) {
 
@@ -104,7 +104,7 @@ public class RefreshOnlyIfNewerComposite extends AbstractFormPane<EclipseLinkCac
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		buildTriStateCheckBoxWithDefault(
+		addTriStateCheckBoxWithDefault(
 			container,
 			EclipseLinkUiMappingsMessages.RefreshOnlyIfNewerComposite_refreshOnlyIfNewerLabel,
 			buildRefreshOnlyIfNewerHolder(),

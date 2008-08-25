@@ -13,7 +13,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customiza
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
  *  PersistenceXmlCustomizationTabItem
  */
 public class PersistenceXmlCustomizationTab 
-								extends AbstractFormPane<Customization>
+								extends FormPane<Customization>
 								implements JpaPageComposite
 {
 	public PersistenceXmlCustomizationTab(
@@ -58,7 +58,7 @@ public class PersistenceXmlCustomizationTab
 	// ********** Layout **********
 	
 	@Override
-	protected Composite buildContainer(Composite parent) {
+	protected Composite addContainer(Composite parent) {
 		GridLayout layout = new GridLayout(1, true);
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
@@ -68,7 +68,7 @@ public class PersistenceXmlCustomizationTab
 		layout.marginRight = 0;
 		layout.verticalSpacing = 15;
 		
-		Composite container = buildPane(parent, layout);
+		Composite container = addPane(parent, layout);
 		updateGridData(container);
 		
 		return container;

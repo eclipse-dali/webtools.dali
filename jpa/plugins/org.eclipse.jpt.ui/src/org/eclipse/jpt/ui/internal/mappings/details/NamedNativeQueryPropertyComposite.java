@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -56,7 +56,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class NamedNativeQueryPropertyComposite extends AbstractPane<NamedNativeQuery>
+public class NamedNativeQueryPropertyComposite extends Pane<NamedNativeQuery>
 {
 	private ClassChooserPane<NamedNativeQuery> resultClassChooserPane;
 
@@ -67,14 +67,14 @@ public class NamedNativeQueryPropertyComposite extends AbstractPane<NamedNativeQ
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public NamedNativeQueryPropertyComposite(AbstractPane<?> parentPane,
+	public NamedNativeQueryPropertyComposite(Pane<?> parentPane,
 	                                         PropertyValueModel<? extends NamedNativeQuery> subjectHolder,
 	                                         Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
 	}
 
-	private ClassChooserPane<NamedNativeQuery> buildClassChooser(Composite container) {
+	private ClassChooserPane<NamedNativeQuery> addClassChooser(Composite container) {
 
 		return new ClassChooserPane<NamedNativeQuery>(this, container) {
 
@@ -94,18 +94,18 @@ public class NamedNativeQueryPropertyComposite extends AbstractPane<NamedNativeQ
 			}
 
 			@Override
-			protected String className() {
-				return subject().getResultClass();
+			protected String getClassName() {
+				return getSubject().getResultClass();
 			}
 
 			@Override
-			protected String labelText() {
+			protected String getLabelText() {
 				return JptUiMappingsMessages.NamedNativeQueryPropertyComposite_resultClass;
 			}
 
 			@Override
-			protected IPackageFragmentRoot packageFragmentRoot() {
-				IProject project = subject().getJpaProject().getProject();
+			protected IPackageFragmentRoot getPackageFragmentRoot() {
+				IProject project = getSubject().getJpaProject().getProject();
 				IJavaProject root = JavaCore.create(project);
 
 				try {
@@ -124,7 +124,7 @@ public class NamedNativeQueryPropertyComposite extends AbstractPane<NamedNativeQ
 
 				if (type != null) {
 					String className = type.getFullyQualifiedName('.');
-					subject().setResultClass(className);
+					getSubject().setResultClass(className);
 				}
 			}
 		};
@@ -160,19 +160,20 @@ public class NamedNativeQueryPropertyComposite extends AbstractPane<NamedNativeQ
 	protected void initializeLayout(Composite container) {
 
 		// Result class chooser
-		resultClassChooserPane = buildClassChooser(container);
+		resultClassChooserPane = addClassChooser(container);
 
 		// Query text area
-		buildLabeledMultiLineText(
+		addLabeledMultiLineText(
 			container,
 			JptUiMappingsMessages.NamedNativeQueryPropertyComposite_query,
 			buildQueryHolder(),
-			4
+			4,
+			null
 		);
 
 		// Query Hints pane
-		container = buildTitledPane(
-			buildSubPane(container, 5),
+		container = addTitledGroup(
+			addSubPane(container, 5),
 			JptUiMappingsMessages.NamedNativeQueryPropertyComposite_queryHintsGroupBox
 		);
 

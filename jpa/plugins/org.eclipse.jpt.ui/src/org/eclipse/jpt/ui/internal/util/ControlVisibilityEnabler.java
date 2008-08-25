@@ -145,11 +145,11 @@ public class ControlVisibilityEnabler extends StateController
 		super(booleanHolder, wrap(controls), defaultValue);
 	}
 
-	private static Collection<IControlHolder> wrap(Iterator<? extends Control> controls) {
-		return CollectionTools.collection(new TransformationIterator<Control, IControlHolder>(controls) {
+	private static Collection<ControlHolder> wrap(Iterator<? extends Control> controls) {
+		return CollectionTools.collection(new TransformationIterator<Control, ControlHolder>(controls) {
 			@Override
-			protected IControlHolder transform(Control control) {
-				return new ControlHolder(control);
+			protected ControlHolder transform(Control control) {
+				return new ControlVisibilityHolder(control);
 			}
 		});
 	}
@@ -157,10 +157,10 @@ public class ControlVisibilityEnabler extends StateController
 	/**
 	 * This holder holds onto a <code>Control</code> and update its visible state.
 	 */
-	private static class ControlHolder implements IControlHolder {
+	private static class ControlVisibilityHolder implements ControlHolder {
 		private final Control control;
 
-		ControlHolder(Control control) {
+		ControlVisibilityHolder(Control control) {
 			super();
 			this.control = control;
 		}

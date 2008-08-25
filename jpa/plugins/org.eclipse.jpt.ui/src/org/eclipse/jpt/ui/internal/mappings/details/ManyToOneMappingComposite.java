@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -60,7 +60,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class ManyToOneMappingComposite extends AbstractFormPane<ManyToOneMapping>
+public class ManyToOneMappingComposite extends FormPane<ManyToOneMapping>
                                        implements JpaComposite
 {
 	/**
@@ -86,8 +86,8 @@ public class ManyToOneMappingComposite extends AbstractFormPane<ManyToOneMapping
 		};
 	}
 
-	private Composite buildPane(Composite container, int groupBoxMargin) {
-		return buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+	private Composite addPane(Composite container, int groupBoxMargin) {
+		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 	}
 
 	/*
@@ -96,8 +96,8 @@ public class ManyToOneMappingComposite extends AbstractFormPane<ManyToOneMapping
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		int groupBoxMargin = groupBoxMargin();
-		Composite subPane = buildPane(container, groupBoxMargin);
+		int groupBoxMargin = getGroupBoxMargin();
+		Composite subPane = addPane(container, groupBoxMargin);
 
 		// Target Entity widgets
 		new TargetEntityComposite(this, subPane);
@@ -106,7 +106,7 @@ public class ManyToOneMappingComposite extends AbstractFormPane<ManyToOneMapping
 		new FetchTypeComposite(this, subPane);
 
 		// Optional check box
-		new OptionalComposite(this, buildSubPane(subPane, 4));
+		new OptionalComposite(this, addSubPane(subPane, 4));
 
 		// Cascade widgets
 		new CascadeComposite(this, buildCascadeHolder(), container);

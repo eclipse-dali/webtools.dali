@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.customization;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -21,9 +21,9 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  *  PersistenceUnitCustomizationComposite
  */
-public class EclipseLinkCustomizationComposite extends AbstractFormPane<Customization>
+public class EclipseLinkCustomizationComposite extends FormPane<Customization>
 {
-	public EclipseLinkCustomizationComposite(AbstractFormPane<Customization> subjectHolder,
+	public EclipseLinkCustomizationComposite(FormPane<Customization> subjectHolder,
 	                                       Composite container) {
 
 		super(subjectHolder, container);
@@ -36,13 +36,13 @@ public class EclipseLinkCustomizationComposite extends AbstractFormPane<Customiz
 		section.setDescription(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_sectionDescription);
 		section.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		Composite composite = this.buildSubPane(section);
+		Composite composite = this.addSubPane(section);
 		section.setClient(composite);
 
 		// Default pane
-		int groupBoxMargin = this.groupBoxMargin();
+		int groupBoxMargin = this.getGroupBoxMargin();
 
-		Composite defaultPane = this.buildSubPane(
+		Composite defaultPane = this.addSubPane(
 			composite,
 			0, groupBoxMargin, 0, groupBoxMargin
 		);

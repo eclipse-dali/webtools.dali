@@ -13,14 +13,14 @@ import java.util.Collection;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * TransactionTypeComposite
  */
-public class TransactionTypeComposite extends AbstractFormPane<Connection>
+public class TransactionTypeComposite extends FormPane<Connection>
 {
 	/**
 	 * Creates a new <code>TransactionTypeComposite</code>.
@@ -31,13 +31,13 @@ public class TransactionTypeComposite extends AbstractFormPane<Connection>
 	 *            The parent container
 	 */
 	public TransactionTypeComposite(
-					AbstractFormPane<? extends Connection> parentComposite,
+					FormPane<? extends Connection> parentComposite,
 					Composite parent) {
 
 		super( parentComposite, parent);
 	}
 
-	private EnumFormComboViewer<Connection, PersistenceUnitTransactionType> buildTransactionTypeCombo(Composite container) {
+	private EnumFormComboViewer<Connection, PersistenceUnitTransactionType> addTransactionTypeCombo(Composite container) {
 		return new EnumFormComboViewer<Connection, PersistenceUnitTransactionType>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -46,13 +46,13 @@ public class TransactionTypeComposite extends AbstractFormPane<Connection>
 			}
 
 			@Override
-			protected PersistenceUnitTransactionType[] choices() {
+			protected PersistenceUnitTransactionType[] getChoices() {
 				return PersistenceUnitTransactionType.values();
 			}
 
 			@Override
-			protected PersistenceUnitTransactionType defaultValue() {
-				return subject().getDefaultTransactionType();
+			protected PersistenceUnitTransactionType getDefaultValue() {
+				return getSubject().getDefaultTransactionType();
 			}
 
 			@Override
@@ -62,12 +62,12 @@ public class TransactionTypeComposite extends AbstractFormPane<Connection>
 
 			@Override
 			protected PersistenceUnitTransactionType getValue() {
-				return subject().getTransactionType();
+				return getSubject().getTransactionType();
 			}
 
 			@Override
 			protected void setValue(PersistenceUnitTransactionType value) {
-				subject().setTransactionType(value);
+				getSubject().setTransactionType(value);
 
 				if (value == PersistenceUnitTransactionType.RESOURCE_LOCAL) {
 					clearJTAProperties();
@@ -80,11 +80,11 @@ public class TransactionTypeComposite extends AbstractFormPane<Connection>
 	}
 
 	private void clearJTAProperties() {
-		subject().setJtaDataSource(null);
+		getSubject().setJtaDataSource(null);
 	}
 
 	private void clearResourceLocalProperties() {
-		Connection connection = subject();
+		Connection connection = getSubject();
 		connection.setNonJtaDataSource(null);
 		connection.setDriver(null);
 		connection.setUrl(null);
@@ -101,10 +101,10 @@ public class TransactionTypeComposite extends AbstractFormPane<Connection>
 	@Override
 	protected void initializeLayout( Composite container) {
 
-		this.buildLabeledComposite(
+		this.addLabeledComposite(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_transactionTypeLabel,
-			this.buildTransactionTypeCombo( container),
+			this.addTransactionTypeCombo( container),
 			null		// TODO IJpaHelpContextIds.
 		);
 	}

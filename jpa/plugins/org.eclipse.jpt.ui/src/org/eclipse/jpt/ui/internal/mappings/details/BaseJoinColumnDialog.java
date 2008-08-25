@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractValidatingDialog;
+import org.eclipse.jpt.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Shell;
  * @version 2.0
  * @since 1.0
  */
-public abstract class BaseJoinColumnDialog<T extends BaseJoinColumnStateObject> extends AbstractValidatingDialog<T> {
+public abstract class BaseJoinColumnDialog<T extends BaseJoinColumnStateObject> extends ValidatingDialog<T> {
 
 	/**
 	 * Either the join column to edit or <code>null</code> if this state object
@@ -58,7 +58,7 @@ public abstract class BaseJoinColumnDialog<T extends BaseJoinColumnStateObject> 
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected String description() {
+	protected String getDescription() {
 		return JptUiMappingsMessages.JoinColumnDialog_description;
 	}
 
@@ -66,7 +66,7 @@ public abstract class BaseJoinColumnDialog<T extends BaseJoinColumnStateObject> 
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected String descriptionTitle() {
+	protected String getDescriptionTitle() {
 
 		if (joinColumn == null) {
 			return JptUiMappingsMessages.JoinColumnDialog_addJoinColumnDescriptionTitle;
@@ -99,7 +99,7 @@ public abstract class BaseJoinColumnDialog<T extends BaseJoinColumnStateObject> 
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected String title() {
+	protected String getTitle() {
 
 		if (joinColumn == null) {
 			return JptUiMappingsMessages.JoinColumnDialog_addJoinColumnTitle;

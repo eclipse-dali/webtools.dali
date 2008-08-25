@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.schema.generation;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  CreateDdlFileNameComposite
  */
-public class CreateDdlFileNameComposite extends AbstractPane<SchemaGeneration>
+public class CreateDdlFileNameComposite extends Pane<SchemaGeneration>
 {
 	/**
 	 * Creates a new <code>CreateDdlFileNameComposite</code>.
@@ -34,7 +34,7 @@ public class CreateDdlFileNameComposite extends AbstractPane<SchemaGeneration>
 	 * @param parent The parent container
 	 */
 	public CreateDdlFileNameComposite(
-								AbstractPane<? extends SchemaGeneration> parentPane,
+								Pane<? extends SchemaGeneration> parentPane,
 	                           Composite parent) {
 
 		super(parentPane, parent);
@@ -44,7 +44,7 @@ public class CreateDdlFileNameComposite extends AbstractPane<SchemaGeneration>
 		return new PropertyAspectAdapter<SchemaGeneration, String>(this.getSubjectHolder(), SchemaGeneration.DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME) {
 			@Override
 			protected String buildValue_() {
-				return CreateDdlFileNameComposite.this.defaultValue(subject);
+				return CreateDdlFileNameComposite.this.getDefaultValue(subject);
 			}
 		};
 	}
@@ -62,7 +62,7 @@ public class CreateDdlFileNameComposite extends AbstractPane<SchemaGeneration>
 
 				String name = subject.getCreateFileName();
 				if (name == null) {
-					name = CreateDdlFileNameComposite.this.defaultValue(subject);
+					name = CreateDdlFileNameComposite.this.getDefaultValue(subject);
 				}
 				return name;
 			}
@@ -70,7 +70,7 @@ public class CreateDdlFileNameComposite extends AbstractPane<SchemaGeneration>
 			@Override
 			protected void setValue_(String value) {
 
-				if (defaultValue(subject).equals(value)) {
+				if (getDefaultValue(subject).equals(value)) {
 					value = null;
 				}
 				subject.setCreateFileName(value);
@@ -78,7 +78,7 @@ public class CreateDdlFileNameComposite extends AbstractPane<SchemaGeneration>
 		};
 	}
 
-	private String defaultValue(SchemaGeneration subject) {
+	private String getDefaultValue(SchemaGeneration subject) {
 		String defaultValue = subject.getDefaultCreateFileName();
 
 		if (defaultValue != null) {
@@ -98,7 +98,7 @@ public class CreateDdlFileNameComposite extends AbstractPane<SchemaGeneration>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		CCombo combo = buildLabeledEditableCCombo(
+		CCombo combo = addLabeledEditableCCombo(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_createDdlFileNameLabel,
 			this.buildDefaultCreateDdlFileNameListHolder(),

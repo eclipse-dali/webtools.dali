@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -41,7 +41,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class CascadeComposite extends AbstractFormPane<Cascade>
+public class CascadeComposite extends FormPane<Cascade>
 {
 	/**
 	 * Creates a new <code>CascadeComposite</code>.
@@ -50,7 +50,7 @@ public class CascadeComposite extends AbstractFormPane<Cascade>
 	 * @param subjectHolder The holder of the subject <code>ICascade</code>
 	 * @param parent The parent container
 	 */
-	public CascadeComposite(AbstractFormPane<? extends RelationshipMapping> parentPane,
+	public CascadeComposite(FormPane<? extends RelationshipMapping> parentPane,
 	                        PropertyValueModel<? extends Cascade> subjectHolder,
 		                     Composite parent) {
 
@@ -148,47 +148,52 @@ public class CascadeComposite extends AbstractFormPane<Cascade>
 	protected void initializeLayout(Composite container) {
 
 		// Cascade group
-		Group cascadeGroup = buildTitledPane(
+		Group cascadeGroup = addTitledGroup(
 			container,
 			JptUiMappingsMessages.CascadeComposite_cascadeTitle
 		);
 
 		// Container of the check boxes
-		container = buildSubPane(cascadeGroup, 5, 8, 0, 0, 0);
+		container = addSubPane(cascadeGroup, 5, 8, 0, 0, 0);
 
 		// All check box
-		buildCheckBox(
+		addCheckBox(
 			container,
 			JptUiMappingsMessages.CascadeComposite_all,
-			buildCascadeTypeAllHolder()
+			buildCascadeTypeAllHolder(),
+			null
 		);
 
 		// Persist check box
-		buildCheckBox(
+		addCheckBox(
 			container,
 			JptUiMappingsMessages.CascadeComposite_persist,
-			buildCascadeTypePersistHolder()
+			buildCascadeTypePersistHolder(),
+			null
 		);
 
 		// Merge check box
-		buildCheckBox(
+		addCheckBox(
 			container,
 			JptUiMappingsMessages.CascadeComposite_merge,
-			buildCascadeTypeMergeHolder()
+			buildCascadeTypeMergeHolder(),
+			null
 		);
 
 		// Remove check box
-		buildCheckBox(
+		addCheckBox(
 			container,
 			JptUiMappingsMessages.CascadeComposite_remove,
-			buildCascadeTypeRemoveHolder()
+			buildCascadeTypeRemoveHolder(),
+			null
 		);
 
 		// Refresh check box
-		buildCheckBox(
+		addCheckBox(
 			container,
 			JptUiMappingsMessages.CascadeComposite_refresh,
-			buildCascadeTypeRefreshHolder()
+			buildCascadeTypeRefreshHolder(),
+			null
 		);
 	}
 }

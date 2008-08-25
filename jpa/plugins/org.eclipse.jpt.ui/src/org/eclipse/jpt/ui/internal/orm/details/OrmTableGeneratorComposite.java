@@ -18,7 +18,7 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -51,7 +51,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
+public class OrmTableGeneratorComposite extends Pane<OrmTableGenerator>
 {
 	/**
 	 * Creates a new <code>OrmTableGeneratorComposite</code>.
@@ -60,7 +60,7 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public OrmTableGeneratorComposite(AbstractPane<?> parentPane,
+	public OrmTableGeneratorComposite(Pane<?> parentPane,
 	                                  PropertyValueModel<OrmTableGenerator> subjectHolder,
 	                                  Composite parent) {
 
@@ -81,7 +81,7 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 		};
 	}
 
-	private ColumnCombo<OrmTableGenerator> buildPkColumnNameCombo(Composite parent) {
+	private ColumnCombo<OrmTableGenerator> addPkColumnNameCombo(Composite parent) {
 
 		return new ColumnCombo<OrmTableGenerator>(this, parent) {
 
@@ -93,28 +93,28 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultPkColumnName();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultPkColumnName();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedPkColumnName(value);
+				getSubject().setSpecifiedPkColumnName(value);
 			}
 
 			@Override
-			protected Table getDBTable_() {
-				return subject().getDbTable();
+			protected Table getDbTable_() {
+				return getSubject().getDbTable();
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedPkColumnName();
+			protected String getValue() {
+				return getSubject().getSpecifiedPkColumnName();
 			}
 		};
 	}
 
-	private ColumnCombo<OrmTableGenerator> buildPkColumnValueCombo(Composite parent) {
+	private ColumnCombo<OrmTableGenerator> addPkColumnValueCombo(Composite parent) {
 
 		return new ColumnCombo<OrmTableGenerator>(this, parent) {
 
@@ -126,28 +126,28 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultPkColumnValue();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultPkColumnValue();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedPkColumnValue(value);
+				getSubject().setSpecifiedPkColumnValue(value);
 			}
 
 			@Override
-			protected Table getDBTable_() {
-				return subject().getDbTable();
+			protected Table getDbTable_() {
+				return getSubject().getDbTable();
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedPkColumnValue();
+			protected String getValue() {
+				return getSubject().getSpecifiedPkColumnValue();
 			}
 		};
 	}
 
-	private TableCombo<OrmTableGenerator> buildTableNameCombo(Composite parent) {
+	private TableCombo<OrmTableGenerator> addTableNameCombo(Composite parent) {
 
 		return new TableCombo<OrmTableGenerator>(this, parent) {
 
@@ -174,33 +174,33 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultTable();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultTable();
 			}
 
 			@Override
-			protected String schemaName() {
-				return subject().getSchema();
+			protected String getSchemaName() {
+				return getSubject().getSchema();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedTable(value);
+				getSubject().setSpecifiedTable(value);
 			}
 
 			@Override
-			protected Table table() {
-				return subject().getDbTable();
+			protected Table getDbTable() {
+				return getSubject().getDbTable();
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedTable();
+			protected String getValue() {
+				return getSubject().getSpecifiedTable();
 			}
 		};
 	}
 
-	private ColumnCombo<OrmTableGenerator> buildValueColumnCombo(Composite parent) {
+	private ColumnCombo<OrmTableGenerator> addValueColumnCombo(Composite parent) {
 
 		return new ColumnCombo<OrmTableGenerator>(this, parent) {
 
@@ -212,23 +212,23 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultValueColumnName();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultValueColumnName();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedValueColumnName(value);
+				getSubject().setSpecifiedValueColumnName(value);
 			}
 
 			@Override
-			protected Table getDBTable_() {
-				return subject().getDbTable();
+			protected Table getDbTable_() {
+				return getSubject().getDbTable();
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedValueColumnName();
+			protected String getValue() {
+				return getSubject().getSpecifiedValueColumnName();
 			}
 		};
 	}
@@ -240,7 +240,7 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 	protected void initializeLayout(Composite container) {
 
 		// Name widgets
-		buildLabeledText(
+		addLabeledText(
 			container,
 			JptUiOrmMessages.OrmTableGeneratorComposite_name,
 			buildGeneratorNameHolder(),
@@ -248,34 +248,34 @@ public class OrmTableGeneratorComposite extends AbstractPane<OrmTableGenerator>
 		);
 
 		// Table widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiOrmMessages.OrmTableGeneratorComposite_table,
-			buildTableNameCombo(container),
+			addTableNameCombo(container),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_TABLE
 		);
 
 		// Primary Key Column widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiOrmMessages.OrmTableGeneratorComposite_pkColumn,
-			buildPkColumnNameCombo(container),
+			addPkColumnNameCombo(container),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN
 		);
 
 		// Value Column widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiOrmMessages.OrmTableGeneratorComposite_valueColumn,
-			buildValueColumnCombo(container),
+			addValueColumnCombo(container),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_VALUE_COLUMN
 		);
 
 		// Primary Key Column Value widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiOrmMessages.OrmTableGeneratorComposite_pkColumnValue,
-			buildPkColumnValueCombo(container),
+			addPkColumnValueCombo(container),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN_VALUE
 		);
 	}

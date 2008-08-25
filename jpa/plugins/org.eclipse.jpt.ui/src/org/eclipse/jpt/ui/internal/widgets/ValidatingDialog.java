@@ -18,7 +18,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * This dialog is similar to it superclass, <code>AbstractDialog</code>, with
+ * This dialog is similar to it superclass, <code>Dialog</code>, with
  * the added value of an error message label below the main panel. A subclass
  * can set this error message as needed so that it can inform the user something
  * incorrect has been entered.
@@ -30,24 +30,24 @@ import org.eclipse.swt.widgets.Shell;
  * @version 2.0
  * @since 2.0
  */
-public abstract class AbstractValidatingDialog<T extends Node> extends AbstractDialog<T> {
+public abstract class ValidatingDialog<T extends Node> extends Dialog<T> {
 
 	/**
-	 * Creates a new <code>AbstractValidatingDialog</code>.
+	 * Creates a new <code>ValidatingDialog</code>.
 	 *
 	 * @param parent The parent shell
 	 */
-	public AbstractValidatingDialog(Shell parent) {
+	public ValidatingDialog(Shell parent) {
 		super(parent);
 	}
 
 	/**
-	 * Creates a new <code>AbstractValidatingDialog</code>.
+	 * Creates a new <code>ValidatingDialog</code>.
 	 *
 	 * @param parent The parent shell
 	 * @param title The dialog's title
 	 */
-	public AbstractValidatingDialog(Shell parent, String title) {
+	public ValidatingDialog(Shell parent, String title) {
 		super(parent, title);
 	}
 
@@ -64,7 +64,7 @@ public abstract class AbstractValidatingDialog<T extends Node> extends AbstractD
 			}
 
 			public void validate() {
-				AbstractValidatingDialog.this.validate();
+				ValidatingDialog.this.validate();
 			}
 		};
 	}
@@ -81,7 +81,7 @@ public abstract class AbstractValidatingDialog<T extends Node> extends AbstractD
 	 *
 	 * @return The description under the description's title
 	 */
-	protected String description() {
+	protected String getDescription() {
 		return null;
 	}
 
@@ -91,7 +91,7 @@ public abstract class AbstractValidatingDialog<T extends Node> extends AbstractD
 	 * @return The image of the description pane or <code>null</code> if none is
 	 * required
 	 */
-	protected Image descriptionImage() {
+	protected Image getDescriptionImage() {
 		return null;
 	}
 
@@ -100,7 +100,7 @@ public abstract class AbstractValidatingDialog<T extends Node> extends AbstractD
 	 *
 	 * @return The title shown in the description pane
 	 */
-	protected String descriptionTitle() {
+	protected String getDescriptionTitle() {
 		return null;
 	}
 
@@ -110,7 +110,7 @@ public abstract class AbstractValidatingDialog<T extends Node> extends AbstractD
 	@Override
 	protected Point getInitialSize() {
 		Point result = getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT);
-		Point paneSize = pane().getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		Point paneSize = getPane().getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT);
 		int width = convertHorizontalDLUsToPixels(400);
 		result.x = Math.max(width, paneSize.x);
 		return result;
@@ -133,21 +133,21 @@ public abstract class AbstractValidatingDialog<T extends Node> extends AbstractD
 		super.initializeUI();
 
 		// Update the description title
-		String descriptionTitle = descriptionTitle();
+		String descriptionTitle = getDescriptionTitle();
 
 		if (descriptionTitle != null) {
 			setTitle(descriptionTitle);
 		}
 
 		// Update the description title
-		String description = description();
+		String description = getDescription();
 
 		if (description != null) {
 			setMessage(description);
 		}
 
 		// Update the description image
-		Image image = descriptionImage();
+		Image image = getDescriptionImage();
 
 		if (image != null) {
 			setTitleImage(image);
@@ -171,8 +171,8 @@ public abstract class AbstractValidatingDialog<T extends Node> extends AbstractD
 	 * not be shown.
 	 */
 	private void updateErrorMessage() {
-		if (subject().hasBranchProblems()) {
-			Problem problem = subject().branchProblems().next();
+		if (getSubject().hasBranchProblems()) {
+			Problem problem = getSubject().branchProblems().next();
 			setErrorMessage(problem.messageKey(), problem.messageArguments());
 		}
 		// TODO: It would be nice to add warnings to the model
@@ -191,8 +191,8 @@ public abstract class AbstractValidatingDialog<T extends Node> extends AbstractD
 	 * the OK button.
 	 */
 	private void validate() {
-		subject().validateBranch();
+		getSubject().validateBranch();
 		updateErrorMessage();
-		getButton(OK).setEnabled(!subject().hasBranchProblems());
+		getButton(OK).setEnabled(!getSubject().hasBranchProblems());
 	}
 }

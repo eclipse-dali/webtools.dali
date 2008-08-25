@@ -17,7 +17,7 @@ import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -76,7 +76,7 @@ public class NullAttributeMappingUiProvider
 		return new NullComposite(subjectHolder, parent, widgetFactory);
 	}
 
-	public static class NullComposite extends AbstractFormPane<AttributeMapping>
+	public static class NullComposite extends FormPane<AttributeMapping>
 	                                  implements JpaComposite{
 
 		NullComposite(PropertyValueModel<AttributeMapping> subjectHolder,

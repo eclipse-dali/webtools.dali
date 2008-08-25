@@ -11,15 +11,15 @@ package org.eclipse.jpt.eclipselink.ui.internal.connection;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  *  ConnectionPropertiesComposite
  */
-public class ConnectionPropertiesComposite extends AbstractPane<Connection>
+public class ConnectionPropertiesComposite extends Pane<Connection>
 {
-	public ConnectionPropertiesComposite(AbstractPane<Connection> parentComposite, Composite parent) {
+	public ConnectionPropertiesComposite(Pane<Connection> parentComposite, Composite parent) {
 
 		super(parentComposite, parent);
 	}
@@ -27,7 +27,7 @@ public class ConnectionPropertiesComposite extends AbstractPane<Connection>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		container = buildTitledPane(
+		container = addTitledGroup(
 			container,
 			EclipseLinkUiMessages.ConnectionPropertiesComposite_Database_GroupBox
 		);

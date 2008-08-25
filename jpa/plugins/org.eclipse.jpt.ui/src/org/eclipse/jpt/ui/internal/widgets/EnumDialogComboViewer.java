@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public abstract class EnumDialogComboViewer<T extends Model, V> extends AbstractEnumComboViewer<T, V>
+public abstract class EnumDialogComboViewer<T extends Model, V> extends EnumComboViewer<T, V>
 {
 	/**
 	 * Creates a new <code>EnumDialogComboViewer</code>.
@@ -31,7 +31,7 @@ public abstract class EnumDialogComboViewer<T extends Model, V> extends Abstract
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various widgets
 	 */
-	protected EnumDialogComboViewer(AbstractDialogPane<? extends T> parentPane,
+	protected EnumDialogComboViewer(DialogPane<? extends T> parentPane,
 	                                Composite parent) {
 
 		super(parentPane, parent);
@@ -44,7 +44,7 @@ public abstract class EnumDialogComboViewer<T extends Model, V> extends Abstract
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various widgets
 	 */
-	protected EnumDialogComboViewer(AbstractDialogPane<?> parentPane,
+	protected EnumDialogComboViewer(DialogPane<?> parentPane,
 	                                PropertyValueModel<? extends T> subjectHolder,
 	                                Composite parent) {
 
@@ -55,8 +55,8 @@ public abstract class EnumDialogComboViewer<T extends Model, V> extends Abstract
 	 * (non-Javadoc)
 	 */
 	@Override
-	ComboViewer buildComboViewer(Composite container) {
-		ComboViewer comboViewer = buildComboViewer(container, buildLabelProvider());
+	ComboViewer addComboViewer(Composite container) {
+		ComboViewer comboViewer = addComboViewer(container, buildLabelProvider());
 		comboViewer.getCombo().setVisibleItemCount(Integer.MAX_VALUE);
 		return comboViewer;
 	}

@@ -107,7 +107,7 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 		return nullable;
 	}
 
-	protected abstract Schema getSchema();
+	protected abstract Schema getDbSchema();
 
 	public Boolean getUnique() {
 		return unique;
@@ -133,7 +133,7 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 	}
 
 	@Override
-	protected String initialTable() {
+	protected String getInitialTable() {
 		JoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn == null) {
@@ -176,7 +176,7 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 	 */
 	@Override
 	public ListIterator<String> tables() {
-		Schema schema = getSchema();
+		Schema schema = getDbSchema();
 
 		if (schema == null) {
 			return EmptyListIterator.instance();

@@ -124,7 +124,7 @@ public class PersistenceEditor extends FormEditor
 		}
 
 		String platformId = jpaProject.getJpaPlatform().getId();
-		JpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
+		JpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
 		JpaUiFactory uiFactory = jpaPlatformUI.getJpaUiFactory();
 
 		ListIterator<JpaPageComposite> pages = uiFactory.createPersistenceUnitComposites(

@@ -17,7 +17,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -45,7 +45,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class MappedByComposite extends AbstractFormPane<NonOwningMapping>
+public class MappedByComposite extends FormPane<NonOwningMapping>
 {
 	private CCombo combo;
 
@@ -55,7 +55,7 @@ public class MappedByComposite extends AbstractFormPane<NonOwningMapping>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public MappedByComposite(AbstractFormPane<? extends NonOwningMapping> parentPane,
+	public MappedByComposite(FormPane<? extends NonOwningMapping> parentPane,
 	                         Composite parent) {
 
 		super(parentPane, parent);
@@ -116,7 +116,7 @@ public class MappedByComposite extends AbstractFormPane<NonOwningMapping>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		combo = buildLabeledEditableCCombo(
+		combo = addLabeledEditableCCombo(
 			container,
 			JptUiMappingsMessages.NonOwningMapping_mappedByLabel,
 			buildComboModifyListener(),
@@ -131,7 +131,7 @@ public class MappedByComposite extends AbstractFormPane<NonOwningMapping>
 		combo.removeAll();
 		combo.add(JptUiMappingsMessages.NoneSelected);
 
-		NonOwningMapping subject = subject();
+		NonOwningMapping subject = getSubject();
 
 		if (subject != null) {
 			Iterator<String> iter = subject.candidateMappedByAttributeNames();
@@ -168,7 +168,7 @@ public class MappedByComposite extends AbstractFormPane<NonOwningMapping>
 	 */
 	private void updateSelectedItem() {
 
-		NonOwningMapping subject = subject();
+		NonOwningMapping subject = getSubject();
 		String value = (subject != null) ? subject.getMappedBy() : null;
 
 		if (value != null) {
@@ -183,7 +183,7 @@ public class MappedByComposite extends AbstractFormPane<NonOwningMapping>
 
 	private void valueChanged(String value) {
 
-		NonOwningMapping subject = subject();
+		NonOwningMapping subject = getSubject();
 		String oldValue = (subject != null) ? subject.getMappedBy() : null;
 
 		// Check for null value

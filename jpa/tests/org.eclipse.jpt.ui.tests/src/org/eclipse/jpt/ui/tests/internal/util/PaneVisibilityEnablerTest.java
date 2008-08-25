@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.tests.internal.util;
 
 import org.eclipse.jpt.ui.internal.util.PaneVisibilityEnabler;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.AbstractDialogPane;
+import org.eclipse.jpt.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.swt.SWT;
@@ -46,7 +46,7 @@ public final class PaneVisibilityEnablerTest {
 		SimplePropertyValueModel<Boolean> booleanHolder =
 			new SimplePropertyValueModel<Boolean>(true);
 
-		AbstractDialogPane<Node> pane = new AbstractDialogPane<Node>(
+		DialogPane<Node> pane = new DialogPane<Node>(
 			new SimplePropertyValueModel<Node>(),
 			parent)
 		{

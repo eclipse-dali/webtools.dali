@@ -28,23 +28,23 @@ import org.eclipse.ui.help.IWorkbenchHelpSystem;
  * The abstract implementation of a dialog using a "state object" (model object)
  * for behavior.
  * <p>
- * The main pane of this dialog should be extending <code>AbstractDialogPane</code>
+ * The main pane of this dialog should be extending <code>DialogPane</code>
  * for creating the right type of widgets and it has the "state object" (subject)
  * behavior built-in.
  *
  * @see Node
- * @see AbstractDialogPane
+ * @see DialogPane
  *
  * @version 2.0
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
+public abstract class Dialog<T extends Node> extends TitleAreaDialog
 {
 	/**
 	 * The main content pane of this dialog.
 	 */
-	private AbstractDialogPane<?> pane;
+	private DialogPane<?> pane;
 
 	/**
 	 * The holder of the "state object" used by this dialog.
@@ -58,21 +58,21 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 	private String title;
 
 	/**
-	 * Creates a new <code>AbstractDialog</code>.
+	 * Creates a new <code>Dialog</code>.
 	 *
 	 * @param parent The parent shell
 	 */
-	protected AbstractDialog(Shell parent) {
+	protected Dialog(Shell parent) {
 		this(parent, "");
 	}
 
 	/**
-	 * Creates a new <code>AbstractDialog</code>.
+	 * Creates a new <code>Dialog</code>.
 	 *
 	 * @param parent The parent shell
 	 * @param title The dialog's title
 	 */
-	protected AbstractDialog(Shell parent, String title) {
+	protected Dialog(Shell parent, String title) {
 		super(parent);
 		this.title = title;
 		initialize();
@@ -86,7 +86,7 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 	 * @param container The container to which the widgets should be added to,
 	 * the layout is already set
 	 */
-	protected abstract AbstractDialogPane<?> buildLayout(Composite container);
+	protected abstract DialogPane<?> buildLayout(Composite container);
 
 	/**
 	 * Creates the state object (model object) that will be used to keep track
@@ -131,7 +131,7 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 	@Override
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		shell.setText(title());
+		shell.setText(getTitle());
 	}
 
 	/**
@@ -217,7 +217,7 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 
 	/**
 	 * Determines whether the description area (where a title, description and
-	 * image) should be visible or hidden. <code>AbstractValidatingDialog</code>
+	 * image) should be visible or hidden. <code>ValidatingDialog</code>
 	 * automatically show the description area in order to show problems.
 	 *
 	 * @return <code>false</code> by default, which means the methods used to
@@ -235,7 +235,7 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 	 *
 	 * @category Helper
 	 */
-	protected final IWorkbenchHelpSystem helpSystem() {
+	protected final IWorkbenchHelpSystem getHelpSystem() {
 		return PlatformUI.getWorkbench().getHelpSystem();
 	}
 
@@ -284,7 +284,7 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 	 * @param postExecution This interface let the caller to invoke a piece of
 	 * code once the dialog is disposed
 	 */
-	public final void openDialog(PostExecution<? extends AbstractDialog<T>> execution) {
+	public final void openDialog(PostExecution<? extends Dialog<T>> execution) {
 		SWTUtil.setUserInterfaceActive(false);
 		SWTUtil.show(this, execution);
 	}
@@ -294,7 +294,7 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 	 *
 	 * @return The pane showing the custom widgets
 	 */
-	AbstractDialogPane<?> pane() {
+	DialogPane<?> getPane() {
 		return pane;
 	}
 
@@ -304,7 +304,7 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 	 * @return The subject of this dialog or <code>null</code> if no subject was
 	 * used
 	 */
-	public T subject() {
+	public T getSubject() {
 		return subjectHolder.getValue();
 	}
 
@@ -312,9 +312,9 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 	 * Returns the holder of the subject.
 	 *
 	 * @return The subject holder used to be passed to the dialog pane, which is
-	 * an instance of <code>AbstractDialogPane</code>
+	 * an instance of <code>DialogPane</code>
 	 */
-	protected final PropertyValueModel<T> subjectHolder() {
+	protected final PropertyValueModel<T> getSubjectHolder() {
 		return subjectHolder;
 	}
 
@@ -325,7 +325,7 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 	 *
 	 * @return Either the title passed to the constructor or a different title
 	 */
-	protected String title() {
+	protected String getTitle() {
 		return title;
 	}
 

@@ -11,17 +11,17 @@ package org.eclipse.jpt.eclipselink.ui.internal.schema.generation;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * EclipseLinkSchemaGenerationComposite
  */
 public class EclipseLinkSchemaGenerationComposite
-	extends AbstractFormPane<SchemaGeneration>
+	extends FormPane<SchemaGeneration>
 {
 	public EclipseLinkSchemaGenerationComposite(
-					AbstractFormPane<SchemaGeneration> subjectHolder,
+					FormPane<SchemaGeneration> subjectHolder,
 					Composite container) {
 		super(subjectHolder, container, false);
 	}
@@ -29,7 +29,7 @@ public class EclipseLinkSchemaGenerationComposite
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		container = buildSection(
+		container = addSection(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_sectionTitle,
 			EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_sectionDescription

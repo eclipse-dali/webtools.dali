@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
 import org.eclipse.jpt.eclipselink.ui.JptEclipseLinkUiPlugin;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  SessionCustomizerComposite
  */
-public class SessionCustomizerComposite extends AbstractPane<Customization>
+public class SessionCustomizerComposite extends Pane<Customization>
 {
 	/**
 	 * Creates a new <code>SessionCustomizerComposite</code>.
@@ -35,7 +35,7 @@ public class SessionCustomizerComposite extends AbstractPane<Customization>
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public SessionCustomizerComposite(AbstractPane<? extends Customization> parentPane,
+	public SessionCustomizerComposite(Pane<? extends Customization> parentPane,
                            Composite parent) {
 
 		super(parentPane, parent);
@@ -66,18 +66,18 @@ public class SessionCustomizerComposite extends AbstractPane<Customization>
 			}
 
 			@Override
-			protected String className() {
-				return subject().getSessionCustomizer();
+			protected String getClassName() {
+				return getSubject().getSessionCustomizer();
 			}
 
 			@Override
-			protected String labelText() {
+			protected String getLabelText() {
 				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_sessionCustomizerLabel;
 			}
 
 			@Override
-			protected IPackageFragmentRoot packageFragmentRoot() {
-				IProject project = subject().getJpaProject().getProject();
+			protected IPackageFragmentRoot getPackageFragmentRoot() {
+				IProject project = getSubject().getJpaProject().getProject();
 				IJavaProject root = JavaCore.create(project);
 
 				try {
@@ -95,7 +95,7 @@ public class SessionCustomizerComposite extends AbstractPane<Customization>
 
 				if (type != null) {
 					String className = type.getFullyQualifiedName('.');
-					subject().setSessionCustomizer(className);
+					getSubject().setSessionCustomizer(className);
 				}
 			}
 		};

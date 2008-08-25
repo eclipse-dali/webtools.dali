@@ -14,7 +14,7 @@ import java.util.Collection;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.DdlGenerationType;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
  * DdlGenerationTypeComposite
  */
 public class DdlGenerationTypeComposite
-	extends AbstractFormPane<SchemaGeneration>
+	extends FormPane<SchemaGeneration>
 {
 	/**
 	 * Creates a new <code>DdlGenerationTypeComposite</code>.
@@ -33,13 +33,13 @@ public class DdlGenerationTypeComposite
 	 *            The parent container
 	 */
 	public DdlGenerationTypeComposite(
-					AbstractFormPane<? extends SchemaGeneration> parentComposite, 
+					FormPane<? extends SchemaGeneration> parentComposite, 
 					Composite parent) {
 		
 		super(parentComposite, parent);
 	}
 
-	private EnumFormComboViewer<SchemaGeneration, DdlGenerationType> buildDdlGenerationTypeCombo(Composite container) {
+	private EnumFormComboViewer<SchemaGeneration, DdlGenerationType> addDdlGenerationTypeCombo(Composite container) {
 		return new EnumFormComboViewer<SchemaGeneration, DdlGenerationType>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -48,13 +48,13 @@ public class DdlGenerationTypeComposite
 			}
 
 			@Override
-			protected DdlGenerationType[] choices() {
+			protected DdlGenerationType[] getChoices() {
 				return DdlGenerationType.values();
 			}
 
 			@Override
-			protected DdlGenerationType defaultValue() {
-				return this.subject().getDefaultDdlGenerationType();
+			protected DdlGenerationType getDefaultValue() {
+				return this.getSubject().getDefaultDdlGenerationType();
 			}
 
 			@Override
@@ -64,12 +64,12 @@ public class DdlGenerationTypeComposite
 
 			@Override
 			protected DdlGenerationType getValue() {
-				return this.subject().getDdlGenerationType();
+				return this.getSubject().getDdlGenerationType();
 			}
 
 			@Override
 			protected void setValue(DdlGenerationType value) {
-				this.subject().setDdlGenerationType(value);
+				this.getSubject().setDdlGenerationType(value);
 			}
 		};
 	}
@@ -77,10 +77,10 @@ public class DdlGenerationTypeComposite
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		this.buildLabeledComposite(
+		this.addLabeledComposite(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_ddlGenerationTypeLabel,
-			buildDdlGenerationTypeCombo( container),
+			addDdlGenerationTypeCombo( container),
 			null		// TODO IJpaHelpContextIds.
 		);
 	}

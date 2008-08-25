@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.orm.details;
 
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Text;
  * @version 2.0
  * @since 1.0
  */
-public class OrmJavaAttributeChooser extends AbstractFormPane<OrmAttributeMapping>
+public class OrmJavaAttributeChooser extends FormPane<OrmAttributeMapping>
 {
 	private Text text;
 
@@ -35,7 +35,7 @@ public class OrmJavaAttributeChooser extends AbstractFormPane<OrmAttributeMappin
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public OrmJavaAttributeChooser(AbstractFormPane<?> parentPane,
+	public OrmJavaAttributeChooser(FormPane<?> parentPane,
 	                               PropertyValueModel<OrmAttributeMapping> subjectHolder,
 	                               Composite parent) {
 
@@ -80,7 +80,7 @@ public class OrmJavaAttributeChooser extends AbstractFormPane<OrmAttributeMappin
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		text = buildLabeledText(
+		text = addLabeledText(
 			container,
 			JptUiOrmMessages.OrmJavaAttributeChooser_javaAttribute,
 			buildNameHolder()

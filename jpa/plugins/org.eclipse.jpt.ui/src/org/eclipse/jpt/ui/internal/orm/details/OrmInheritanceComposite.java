@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.orm.details;
 
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractInheritanceComposite;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -31,14 +31,14 @@ public class OrmInheritanceComposite extends AbstractInheritanceComposite<OrmEnt
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OrmInheritanceComposite(AbstractPane<OrmEntity> parentPane,
+	public OrmInheritanceComposite(Pane<OrmEntity> parentPane,
 	                            Composite parent) {
 
 		super(parentPane, parent);
 	}
 
 	@Override
-	protected void buildPrimaryKeyJoinColumnsComposite(Composite container) {
+	protected void addPrimaryKeyJoinColumnsComposite(Composite container) {
 		new OrmPrimaryKeyJoinColumnsComposite(this, container);
 	}
 }

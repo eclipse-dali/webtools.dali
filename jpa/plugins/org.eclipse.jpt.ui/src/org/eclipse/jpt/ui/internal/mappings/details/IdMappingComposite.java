@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -48,7 +48,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class IdMappingComposite extends AbstractFormPane<IdMapping>
+public class IdMappingComposite extends FormPane<IdMapping>
                                 implements JpaComposite
 {
 	/**
@@ -74,8 +74,8 @@ public class IdMappingComposite extends AbstractFormPane<IdMapping>
 		};
 	}
 
-	private Composite buildPane(Composite container, int groupBoxMargin) {
-		return buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+	private Composite addPane(Composite container, int groupBoxMargin) {
+		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 	}
 
 	/*
@@ -84,15 +84,15 @@ public class IdMappingComposite extends AbstractFormPane<IdMapping>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		int groupBoxMargin = groupBoxMargin();
+		int groupBoxMargin = getGroupBoxMargin();
 
 		// Column widgets
 		new ColumnComposite(this, buildColumnHolder(), container);
 
 		// Temporal Type widgets
-		new TemporalTypeComposite(this, buildPane(container, groupBoxMargin));
+		new TemporalTypeComposite(this, addPane(container, groupBoxMargin));
 
 		// Generation pane
-		new GenerationComposite(this, buildSubPane(container, 10));
+		new GenerationComposite(this, addSubPane(container, 10));
 	}
 }

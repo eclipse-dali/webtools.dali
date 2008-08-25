@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class NamedQueryPropertyComposite extends AbstractPane<NamedQuery>
+public class NamedQueryPropertyComposite extends Pane<NamedQuery>
 {
 	/**
 	 * Creates a new <code>NamedQueryPropertyComposite</code>.
@@ -52,7 +52,7 @@ public class NamedQueryPropertyComposite extends AbstractPane<NamedQuery>
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public NamedQueryPropertyComposite(AbstractPane<?> parentPane,
+	public NamedQueryPropertyComposite(Pane<?> parentPane,
 	                                   PropertyValueModel<? extends NamedQuery> subjectHolder,
 	                                   Composite parent) {
 
@@ -80,16 +80,17 @@ public class NamedQueryPropertyComposite extends AbstractPane<NamedQuery>
 	protected void initializeLayout(Composite container) {
 
 		// Query text area
-		buildLabeledMultiLineText(
+		addLabeledMultiLineText(
 			container,
 			JptUiMappingsMessages.NamedQueryPropertyComposite_query,
 			buildQueryHolder(),
-			4
+			4,
+			null
 		);
 
 		// Query Hints pane
-		container = buildTitledPane(
-			buildSubPane(container, 5),
+		container = addTitledGroup(
+			addSubPane(container, 5),
 			JptUiMappingsMessages.NamedQueryPropertyComposite_queryHintsGroupBox
 		);
 

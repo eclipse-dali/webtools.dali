@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.swt.widgets.Composite;
 
@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class LobComposite extends AbstractFormPane<BasicMapping>
+public class LobComposite extends FormPane<BasicMapping>
 {
 	/**
 	 * Creates a new <code>LobComposite</code>.
@@ -32,7 +32,7 @@ public class LobComposite extends AbstractFormPane<BasicMapping>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public LobComposite(AbstractFormPane<? extends BasicMapping> parentPane,
+	public LobComposite(FormPane<? extends BasicMapping> parentPane,
 	                    Composite parent) {
 
 		super(parentPane, parent);
@@ -60,7 +60,7 @@ public class LobComposite extends AbstractFormPane<BasicMapping>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		buildCheckBox(
+		addCheckBox(
 			container,
 			JptUiMappingsMessages.BasicGeneralSection_lobLabel,
 			buildLobHolder(),

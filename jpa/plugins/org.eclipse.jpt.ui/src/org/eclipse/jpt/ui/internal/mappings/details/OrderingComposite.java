@@ -15,7 +15,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -50,7 +50,7 @@ import org.eclipse.swt.widgets.Text;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class OrderingComposite extends AbstractFormPane<MultiRelationshipMapping>
+public class OrderingComposite extends FormPane<MultiRelationshipMapping>
 {
 	private Text customOrderingText;
 
@@ -60,7 +60,7 @@ public class OrderingComposite extends AbstractFormPane<MultiRelationshipMapping
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OrderingComposite(AbstractFormPane<? extends MultiRelationshipMapping> parentPane,
+	public OrderingComposite(FormPane<? extends MultiRelationshipMapping> parentPane,
 	                         Composite parent) {
 
 		super(parentPane, parent);
@@ -116,21 +116,21 @@ public class OrderingComposite extends AbstractFormPane<MultiRelationshipMapping
 	protected void initializeLayout(Composite container) {
 
 		// Order By group
-		Group orderByGroup = buildTitledPane(
+		Group orderByGroup = addTitledGroup(
 			container,
 			JptUiMappingsMessages.OrderByComposite_orderByGroup,
 			JpaHelpContextIds.MAPPING_ORDER_BY);
 
 		// No Ordering radio button
-		buildRadioButton(
-			buildSubPane(orderByGroup, 8),
+		addRadioButton(
+			addSubPane(orderByGroup, 8),
 			JptUiMappingsMessages.OrderByComposite_noOrdering,
 			buildNoOrderingHolder(),
 			JpaHelpContextIds.MAPPING_ORDER_BY_NO_ORDERING
 		);
 
 		// Order by Primary Key radio button
-		buildRadioButton(
+		addRadioButton(
 			orderByGroup,
 			JptUiMappingsMessages.OrderByComposite_primaryKeyOrdering,
 			buildPrimaryKeyOrderingHolder(),
@@ -138,7 +138,7 @@ public class OrderingComposite extends AbstractFormPane<MultiRelationshipMapping
 		);
 
 		// Custom Ordering radio button
-		buildRadioButton(
+		addRadioButton(
 			orderByGroup,
 			JptUiMappingsMessages.OrderByComposite_customOrdering,
 			buildCustomOrderingHolder(),
@@ -146,8 +146,8 @@ public class OrderingComposite extends AbstractFormPane<MultiRelationshipMapping
 		);
 
 		// Custom Ordering text field
-		customOrderingText = buildText(
-			buildSubPane(orderByGroup, 0, 16),
+		customOrderingText = addUnmanagedText(
+			addSubPane(orderByGroup, 0, 16),
 			JpaHelpContextIds.MAPPING_ORDER_BY
 		);
 
@@ -202,8 +202,8 @@ public class OrderingComposite extends AbstractFormPane<MultiRelationshipMapping
 	}
 	private void populateCustomOrdering() {
 
-		if ((subject() != null) && subject().getOrderBy() != null) {
-			customOrderingText.setText(subject().getOrderBy());
+		if ((getSubject() != null) && getSubject().getOrderBy() != null) {
+			customOrderingText.setText(getSubject().getOrderBy());
 		}
 		else  {
 			customOrderingText.setText("");
@@ -227,7 +227,7 @@ public class OrderingComposite extends AbstractFormPane<MultiRelationshipMapping
 		setPopulating(true);
 
 		try {
-			subject().setOrderBy(value);
+			getSubject().setOrderBy(value);
 		}
 		finally {
 			setPopulating(false);

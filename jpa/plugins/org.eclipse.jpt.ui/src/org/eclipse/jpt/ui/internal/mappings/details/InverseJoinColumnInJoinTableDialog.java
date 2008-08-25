@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
-import org.eclipse.jpt.ui.internal.widgets.AbstractDialogPane;
+import org.eclipse.jpt.ui.internal.widgets.DialogPane;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -45,9 +45,9 @@ public class InverseJoinColumnInJoinTableDialog extends BaseJoinColumnDialog<Inv
 	 * non-Javadoc)
 	 */
 	@Override
-	protected AbstractDialogPane<InverseJoinColumnInJoinTableStateObject> buildLayout(Composite container) {
+	protected DialogPane<InverseJoinColumnInJoinTableStateObject> buildLayout(Composite container) {
 		return new JoinColumnDialogPane<InverseJoinColumnInJoinTableStateObject>(
-			subjectHolder(),
+			getSubjectHolder(),
 			container
 		)
 		

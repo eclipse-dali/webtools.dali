@@ -13,12 +13,13 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -39,7 +40,7 @@ import org.eclipse.swt.widgets.Text;
  * @version 2.0
  * @since 2.0
  */
-public class PersistenceUnitConnectionDatabaseComposite extends AbstractPane<PersistenceUnit>
+public class PersistenceUnitConnectionDatabaseComposite extends Pane<PersistenceUnit>
 {
 	/**
 	 * Creates a new <code>PersistenceUnitConnectionDatabaseComposite</code>.
@@ -47,7 +48,7 @@ public class PersistenceUnitConnectionDatabaseComposite extends AbstractPane<Per
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public PersistenceUnitConnectionDatabaseComposite(AbstractPane<PersistenceUnit> subjectHolder,
+	public PersistenceUnitConnectionDatabaseComposite(Pane<PersistenceUnit> subjectHolder,
 	                                                  Composite container) {
 
 		super(subjectHolder, container);
@@ -125,29 +126,38 @@ public class PersistenceUnitConnectionDatabaseComposite extends AbstractPane<Per
 	protected void initializeLayout(Composite container) {
 
 		// JTA Datasource Name widgets
-		Text text = buildLabeledText(
+		Label label = addUnmanagedLabel(
+			container, 
+			JptUiPersistenceMessages.PersistenceUnitConnectionDatabaseComposite_jtaDatasourceName);
+		Text text = addUnmanagedText(
 			container,
-			JptUiPersistenceMessages.PersistenceUnitConnectionDatabaseComposite_jtaDatasourceName,
-			buildJTADatasourceNameHolder()
+			buildJTADatasourceNameHolder(), 
+			null
 		);
-
-		installJTADatasourceNameEnabler(text);
-
+		addLabeledComposite(container, label, text, null);
+		
+		installJTADatasourceNameEnabler(text, label);
+		
+		
 		// Non-JTA Datasource Name widgets
-		text = buildLabeledText(
+		label = addUnmanagedLabel(
+			container, 
+			JptUiPersistenceMessages.PersistenceUnitConnectionDatabaseComposite_nonJtaDatasourceName);
+		text = addUnmanagedText(
 			container,
-			JptUiPersistenceMessages.PersistenceUnitConnectionDatabaseComposite_nonJtaDatasourceName,
-			buildNonJTADatasourceNameHolder()
+			buildNonJTADatasourceNameHolder(),
+			null
 		);
+		addLabeledComposite(container, label, text, null);
 
-		installNonJTADatasourceNameEnabler(text);
+		installNonJTADatasourceNameEnabler(text, label);
 	}
 
-	private void installJTADatasourceNameEnabler(Text text) {
-		new ControlEnabler(buildJTADatasourceNameBooleanHolder(), text);
+	private void installJTADatasourceNameEnabler(Text text, Label label) {
+		new ControlEnabler(buildJTADatasourceNameBooleanHolder(), text, label);
 	}
 
-	private void installNonJTADatasourceNameEnabler(Text text) {
-		new ControlEnabler(buildNonJTADatasourceNameBooleanHolder(), text);
+	private void installNonJTADatasourceNameEnabler(Text text, Label label) {
+		new ControlEnabler(buildNonJTADatasourceNameBooleanHolder(), text, label);
 	}
 }

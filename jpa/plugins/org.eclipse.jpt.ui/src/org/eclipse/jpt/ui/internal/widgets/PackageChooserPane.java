@@ -45,7 +45,7 @@ import org.eclipse.ui.dialogs.SelectionDialog;
  * @version 2.0
  * @since 2.0
  */
-public abstract class PackageChooserPane<T extends Model> extends AbstractChooserPane<T>
+public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 {
 	/**
 	 * The code completion manager.
@@ -58,7 +58,7 @@ public abstract class PackageChooserPane<T extends Model> extends AbstractChoose
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public PackageChooserPane(AbstractPane<? extends T> parentPane,
+	public PackageChooserPane(Pane<? extends T> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent);
@@ -71,7 +71,7 @@ public abstract class PackageChooserPane<T extends Model> extends AbstractChoose
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public PackageChooserPane(AbstractPane<?> parentPane,
+	public PackageChooserPane(Pane<?> parentPane,
 	                          PropertyValueModel<? extends T> subjectHolder,
 	                          Composite parent) {
 
@@ -94,7 +94,7 @@ public abstract class PackageChooserPane<T extends Model> extends AbstractChoose
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected Control buildMainControl(Composite container) {
+	protected Control addMainControl(Composite container) {
 
 		WritablePropertyValueModel<String> textHolder = buildTextHolder();
 
@@ -103,7 +103,7 @@ public abstract class PackageChooserPane<T extends Model> extends AbstractChoose
 			buildTextChangeListener()
 		);
 
-		Text text = buildText(container, textHolder);
+		Text text = addText(container, textHolder);
 
 		ControlContentAssistHelper.createTextContentAssistant(
 			text,
@@ -120,8 +120,8 @@ public abstract class PackageChooserPane<T extends Model> extends AbstractChoose
 	private PropertyChangeListener buildTextChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-				if (subject() != null) {
-					IPackageFragmentRoot root = packageFragmentRoot();
+				if (getSubject() != null) {
+					IPackageFragmentRoot root = getPackageFragmentRoot();
 
 					if (root != null) {
 						javaPackageCompletionProcessor.setPackageFragmentRoot(root);
@@ -150,8 +150,8 @@ public abstract class PackageChooserPane<T extends Model> extends AbstractChoose
 
 		try {
 			selectionDialog = JavaUI.createPackageDialog(
-				shell(),
-				packageFragmentRoot()
+				getShell(),
+				getPackageFragmentRoot()
 			);
 		}
 		catch (JavaModelException e) {
@@ -162,7 +162,7 @@ public abstract class PackageChooserPane<T extends Model> extends AbstractChoose
 		selectionDialog.setTitle(JptUiMessages.ClassChooserPane_dialogTitle);
 		selectionDialog.setMessage(JptUiMessages.ClassChooserPane_dialogMessage);
 
-		IPackageFragment pack = packageFragment();
+		IPackageFragment pack = getPackageFragment();
 
 		if (pack != null) {
 			selectionDialog.setInitialSelections(new Object[] { pack });
@@ -188,14 +188,14 @@ public abstract class PackageChooserPane<T extends Model> extends AbstractChoose
 		);
 	}
 
-	private IPackageFragment packageFragment() {
-		String packageName = packageName();
+	private IPackageFragment getPackageFragment() {
+		String packageName = getPackageName();
 
 		if (packageName == null) {
 			return null;
 		}
 
-		return packageFragmentRoot().getPackageFragment(packageName);
+		return getPackageFragmentRoot().getPackageFragment(packageName);
 	}
 
 	/**
@@ -204,14 +204,14 @@ public abstract class PackageChooserPane<T extends Model> extends AbstractChoose
 	 * @return Either the root of the package fragment or <code>null</code> if it
 	 * can't be retrieved
 	 */
-	protected abstract IPackageFragmentRoot packageFragmentRoot();
+	protected abstract IPackageFragmentRoot getPackageFragmentRoot();
 
 	/**
 	 * Returns the package name from its subject.
 	 *
 	 * @return The package name or <code>null</code> if none is defined
 	 */
-	protected abstract String packageName();
+	protected abstract String getPackageName();
 
 	/**
 	 * The browse button was clicked, its action invokes this action which should

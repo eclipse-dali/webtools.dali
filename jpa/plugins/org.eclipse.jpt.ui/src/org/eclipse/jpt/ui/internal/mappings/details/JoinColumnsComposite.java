@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
@@ -54,7 +54,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class JoinColumnsComposite<T extends JpaNode> extends AbstractFormPane<T>
+public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 {
 	/**
 	 * The editor used to perform the common behaviors defined in the list pane.
@@ -70,7 +70,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends AbstractFormPane<T>
 	 * @param joinColumnsEditor The editor used to perform the common behaviors
 	 * defined in the list pane
 	 */
-	public JoinColumnsComposite(AbstractFormPane<? extends T> parentPane,
+	public JoinColumnsComposite(FormPane<? extends T> parentPane,
 	                            Composite parent,
 	                            IJoinColumnsEditor<T> joinColumnsEditor) {
 
@@ -89,7 +89,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends AbstractFormPane<T>
 	 * @param joinColumnsEditor The editor used to perform the common behaviors
 	 * defined in the list pane
 	 */
-	public JoinColumnsComposite(AbstractFormPane<?> parentPane,
+	public JoinColumnsComposite(FormPane<?> parentPane,
 	                            PropertyValueModel<? extends T> subjectHolder,
 	                            Composite parent,
 	                            IJoinColumnsEditor<T> joinColumnsEditor,
@@ -117,7 +117,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends AbstractFormPane<T>
 		initializeLayout2();
 	}
 
-	private WritablePropertyValueModel<JoinColumn> buildJoinColumnHolder() {
+	private WritablePropertyValueModel<JoinColumn> buildSelectedJoinColumnHolder() {
 		return new SimplePropertyValueModel<JoinColumn>();
 	}
 
@@ -166,7 +166,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends AbstractFormPane<T>
 		return new AbstractAdapter() {
 
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				joinColumnsEditor.addJoinColumn(subject());
+				joinColumnsEditor.addJoinColumn(getSubject());
 			}
 
 			@Override
@@ -182,11 +182,11 @@ public class JoinColumnsComposite<T extends JpaNode> extends AbstractFormPane<T>
 			@Override
 			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
 				JoinColumn joinColumn = (JoinColumn) listSelectionModel.selectedValue();
-				joinColumnsEditor.editJoinColumn(subject(), joinColumn);
+				joinColumnsEditor.editJoinColumn(getSubject(), joinColumn);
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				joinColumnsEditor.removeJoinColumns(subject(), listSelectionModel.selectedIndices());
+				joinColumnsEditor.removeJoinColumns(getSubject(), listSelectionModel.selectedIndices());
 			}
 		};
 	}
@@ -262,15 +262,10 @@ public class JoinColumnsComposite<T extends JpaNode> extends AbstractFormPane<T>
 			getControl(),
 			buildJoinColumnsAdapter(),
 			buildJoinColumnsListModel(),
-			buildJoinColumnHolder(),
+			buildSelectedJoinColumnHolder(),
 			buildJoinColumnsListLabelProvider(),
 			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
 		);
-
-		// Remove the list pane from this pane's enablement control because its
-		// enablement is managed by a PaneEnabler registered with this pane
-		removeFromEnablementControl(listPane.getMainControl());
-		removeFromEnablementControl(listPane);
 	}
 
 	/**

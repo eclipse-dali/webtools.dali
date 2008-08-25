@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.logging;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.FolderChooserPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -21,9 +21,9 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  LoggingFileLocationComposite 
  */
-public class LoggingFileLocationComposite extends AbstractPane<Logging>
+public class LoggingFileLocationComposite extends Pane<Logging>
 {
-	public LoggingFileLocationComposite(AbstractPane<? extends Logging> parentPane,
+	public LoggingFileLocationComposite(Pane<? extends Logging> parentPane,
 	                                      Composite parent) {
 
 		super(parentPane, parent);
@@ -74,17 +74,17 @@ public class LoggingFileLocationComposite extends AbstractPane<Logging>
 			}
 
 			@Override
-			protected String dialogMessage() {
+			protected String getDialogMessage() {
 				return EclipseLinkUiMessages.LoggingFileLocationComposite_dialogMessage;
 			}
 
 			@Override
-			protected String dialogTitle() {
+			protected String getDialogTitle() {
 				return EclipseLinkUiMessages.LoggingFileLocationComposite_dialogTitle;
 			}
 
 			@Override
-			protected String labelText() {
+			protected String getLabelText() {
 				return EclipseLinkUiMessages.PersistenceXmlLoggingTab_loggingFileLabel;
 			}
 		};

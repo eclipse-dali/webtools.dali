@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractPrimaryKeyJoinColumnsComposite;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -36,7 +36,7 @@ public class JavaPrimaryKeyJoinColumnsComposite extends AbstractPrimaryKeyJoinCo
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	public JavaPrimaryKeyJoinColumnsComposite(AbstractPane<? extends JavaEntity> subjectHolder,
+	public JavaPrimaryKeyJoinColumnsComposite(Pane<? extends JavaEntity> subjectHolder,
 	                                      Composite parent) {
 
 		super(subjectHolder, parent);
@@ -58,13 +58,13 @@ public class JavaPrimaryKeyJoinColumnsComposite extends AbstractPrimaryKeyJoinCo
 	
 	@Override
 	protected void switchDefaultToSpecified() {
-		PrimaryKeyJoinColumn defaultJoinColumn = subject().getDefaultPrimaryKeyJoinColumn();
+		PrimaryKeyJoinColumn defaultJoinColumn = getSubject().getDefaultPrimaryKeyJoinColumn();
 
 		if (defaultJoinColumn != null) {
 			String columnName = defaultJoinColumn.getDefaultName();
 			String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
 
-			PrimaryKeyJoinColumn pkJoinColumn = subject().addSpecifiedPrimaryKeyJoinColumn(0);
+			PrimaryKeyJoinColumn pkJoinColumn = getSubject().addSpecifiedPrimaryKeyJoinColumn(0);
 			pkJoinColumn.setSpecifiedName(columnName);
 			pkJoinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
 

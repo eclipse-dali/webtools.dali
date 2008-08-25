@@ -15,7 +15,7 @@ import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public abstract class TableCombo<T extends JpaNode> extends AbstractDatabaseObjectCombo<T>
+public abstract class TableCombo<T extends JpaNode> extends DatabaseObjectCombo<T>
 {
 	/**
 	 * Creates a new <code>TableCombo</code>.
@@ -34,7 +34,7 @@ public abstract class TableCombo<T extends JpaNode> extends AbstractDatabaseObje
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TableCombo(AbstractPane<? extends T> parentPane,
+	public TableCombo(Pane<? extends T> parentPane,
 	                  Composite parent) {
 
 		super(parentPane, parent);
@@ -47,7 +47,7 @@ public abstract class TableCombo<T extends JpaNode> extends AbstractDatabaseObje
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public TableCombo(AbstractPane<?> parentPane,
+	public TableCombo(Pane<?> parentPane,
 	                  PropertyValueModel<? extends T> subjectHolder,
 	                  Composite parent) {
 
@@ -73,7 +73,7 @@ public abstract class TableCombo<T extends JpaNode> extends AbstractDatabaseObje
 	 *
 	 * @return The table's schema name
 	 */
-	protected abstract String schemaName();
+	protected abstract String getSchemaName();
 
 	/*
 	 * (non-Javadoc)
@@ -82,7 +82,7 @@ public abstract class TableCombo<T extends JpaNode> extends AbstractDatabaseObje
 	protected void tableChanged(Table table) {
 		super.tableChanged(table);
 
-		if (table == table()) {
+		if (table == getDbTable()) {
 			this.doPopulate();
 		}
 	}
@@ -92,7 +92,7 @@ public abstract class TableCombo<T extends JpaNode> extends AbstractDatabaseObje
 	 *
 	 * @return The selected table
 	 */
-	protected abstract Table table();
+	protected abstract Table getDbTable();
 
 	/*
 	 * (non-Javadoc)
@@ -100,12 +100,12 @@ public abstract class TableCombo<T extends JpaNode> extends AbstractDatabaseObje
 	@Override
 	protected Iterator<String> values() {
 
-		Database db = this.database();
+		Database db = this.getDatabase();
 		if (db == null) {
 			return EmptyIterator.instance();
 		}
 
-		String schemaName = this.schemaName();
+		String schemaName = this.getSchemaName();
 		if (schemaName == null) {
 			return EmptyIterator.instance();
 		}

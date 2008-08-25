@@ -17,7 +17,7 @@ import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -51,7 +51,7 @@ import org.eclipse.swt.widgets.Group;
  * @version 2.0
  * @since 1.0
  */
-public class TableComposite extends AbstractFormPane<Table>
+public class TableComposite extends FormPane<Table>
 {
 	/**
 	 * Creates a new <code>TableComposite</code>.
@@ -60,7 +60,7 @@ public class TableComposite extends AbstractFormPane<Table>
 	 * @param subjectHolder The holder of the subject
 	 * @param parent The parent container
 	 */
-	public TableComposite(AbstractFormPane<?> parentPane,
+	public TableComposite(FormPane<?> parentPane,
 	                      PropertyValueModel<? extends Table> subjectHolder,
 	                      Composite parent) {
 
@@ -81,7 +81,7 @@ public class TableComposite extends AbstractFormPane<Table>
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private CatalogCombo<Table> buildCatalogCombo(Composite container) {
+	private CatalogCombo<Table> addCatalogCombo(Composite container) {
 
 		return new CatalogCombo<Table>(this, container) {
 
@@ -93,23 +93,23 @@ public class TableComposite extends AbstractFormPane<Table>
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultCatalog();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultCatalog();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedCatalog(value);
+				getSubject().setSpecifiedCatalog(value);
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedCatalog();
+			protected String getValue() {
+				return getSubject().getSpecifiedCatalog();
 			}
 		};
 	}
 
-	private SchemaCombo<Table> buildSchemaCombo(Composite container) {
+	private SchemaCombo<Table> addSchemaCombo(Composite container) {
 
 		return new SchemaCombo<Table>(this, container) {
 
@@ -121,23 +121,23 @@ public class TableComposite extends AbstractFormPane<Table>
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultSchema();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultSchema();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedSchema(value);
+				getSubject().setSpecifiedSchema(value);
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedSchema();
+			protected String getValue() {
+				return getSubject().getSpecifiedSchema();
 			}
 		};
 	}
 
-	private TableCombo<Table> buildTableCombo(Composite container) {
+	private TableCombo<Table> addTableCombo(Composite container) {
 
 		return new TableCombo<Table>(this, container) {
 
@@ -164,28 +164,28 @@ public class TableComposite extends AbstractFormPane<Table>
 			}
 			
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultName();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultName();
 			}
 
 			@Override
-			protected String schemaName() {
-				return subject().getSchema();
+			protected String getSchemaName() {
+				return getSubject().getSchema();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedName(value);
+				getSubject().setSpecifiedName(value);
 			}
 
 			@Override
-			protected org.eclipse.jpt.db.Table table() {
-				return subject().getDbTable();
+			protected org.eclipse.jpt.db.Table getDbTable() {
+				return getSubject().getDbTable();
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedName();
+			protected String getValue() {
+				return getSubject().getSpecifiedName();
 			}
 		};
 	}
@@ -197,32 +197,32 @@ public class TableComposite extends AbstractFormPane<Table>
 	protected void initializeLayout(Composite container) {
 
 		// Table group pane
-		Group tableGroupPane = buildTitledPane(
+		Group tableGroupPane = addTitledGroup(
 			container,
 			JptUiMappingsMessages.TableComposite_tableSection
 		);
 
 		// Table widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			tableGroupPane,
 			JptUiMappingsMessages.TableChooser_label,
-			buildTableCombo(tableGroupPane),
+			addTableCombo(tableGroupPane),
 			JpaHelpContextIds.ENTITY_TABLE
 		);
 
 		// Catalog widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			tableGroupPane,
 			JptUiMappingsMessages.CatalogChooser_label,
-			buildCatalogCombo(tableGroupPane),
+			addCatalogCombo(tableGroupPane),
 			JpaHelpContextIds.ENTITY_CATALOG
 		);
 
 		// Schema widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			tableGroupPane,
 			JptUiMappingsMessages.SchemaChooser_label,
-			buildSchemaCombo(tableGroupPane),
+			addSchemaCombo(tableGroupPane),
 			JpaHelpContextIds.ENTITY_SCHEMA
 		);
 	}

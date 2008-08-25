@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public abstract class ColumnCombo<T extends JpaNode> extends AbstractDatabaseObjectCombo<T>
+public abstract class ColumnCombo<T extends JpaNode> extends DatabaseObjectCombo<T>
 {
 	/**
 	 * Creates a new <code>ColumnCombo</code>.
@@ -33,7 +33,7 @@ public abstract class ColumnCombo<T extends JpaNode> extends AbstractDatabaseObj
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public ColumnCombo(AbstractPane<? extends T> parentPane,
+	public ColumnCombo(Pane<? extends T> parentPane,
 	                   Composite parent) {
 
 		super(parentPane, parent);
@@ -46,7 +46,7 @@ public abstract class ColumnCombo<T extends JpaNode> extends AbstractDatabaseObj
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public ColumnCombo(AbstractPane<?> parentPane,
+	public ColumnCombo(Pane<?> parentPane,
 	                   PropertyValueModel<? extends T> subjectHolder,
 	                   Composite parent) {
 
@@ -73,29 +73,29 @@ public abstract class ColumnCombo<T extends JpaNode> extends AbstractDatabaseObj
 	 *
 	 * @return The database table that supplies the column names.
 	 */
-	protected abstract Table getDBTable_();
+	protected abstract Table getDbTable_();
 
 	/**
 	 * Returns the database table that supplies the column names.
 	 *
 	 * @return The database table that supplies the column names.
 	 */
-	protected Table getDBTable() {
-		return (this.subject() == null) ? null : this.getDBTable_();
+	protected Table getDbTable() {
+		return (this.getSubject() == null) ? null : this.getDbTable_();
 
 	}
 
 	@Override
 	protected void tableChanged(Table table) {
 		super.tableChanged(table);
-		if (this.getDBTable() == table) {
+		if (this.getDbTable() == table) {
 			this.doPopulate();
 		}
 	}
 
 	@Override
 	protected Iterator<String> values() {
-		Table table = this.getDBTable();
+		Table table = this.getDbTable();
 		return (table == null) ? EmptyIterator.<String>instance() : table.columnNames();
 	}
 

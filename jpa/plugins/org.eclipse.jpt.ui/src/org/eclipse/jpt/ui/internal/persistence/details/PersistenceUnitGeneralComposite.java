@@ -14,7 +14,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -68,7 +68,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class PersistenceUnitGeneralComposite extends AbstractFormPane<PersistenceUnit>
+public class PersistenceUnitGeneralComposite extends FormPane<PersistenceUnit>
                                              implements JpaPageComposite
 {
 	/**
@@ -99,7 +99,7 @@ public class PersistenceUnitGeneralComposite extends AbstractFormPane<Persistenc
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected Composite buildContainer(Composite parent) {
+	protected Composite addContainer(Composite parent) {
 
 		GridLayout layout = new GridLayout(1, true);
 		layout.marginHeight    = 0;
@@ -110,7 +110,7 @@ public class PersistenceUnitGeneralComposite extends AbstractFormPane<Persistenc
 		layout.marginRight     = 0;
 		layout.verticalSpacing = 15;
 
-		Composite container = buildPane(parent, layout);
+		Composite container = addPane(parent, layout);
 		updateGridData(container);
 
 		return container;
@@ -187,27 +187,27 @@ public class PersistenceUnitGeneralComposite extends AbstractFormPane<Persistenc
 
 	private void initializeGeneralPane(Composite container) {
 
-		container = buildSection(
+		container = addSection(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_general
 		);
 
 		// Name widgets
-		buildLabeledText(
+		addLabeledText(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_name,
 			buildPersistenceUnitNameHolder()
 		);
 
 		// Persistence Provider widgets
-		buildLabeledText(
+		addLabeledText(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_persistenceProvider,
 			buildPersistenceProviderHolder()
 		);
 
 		// Description widgets
-		buildLabeledText(
+		addLabeledText(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_description,
 			buildPersistenceUnitDescriptionHolder()
@@ -216,7 +216,7 @@ public class PersistenceUnitGeneralComposite extends AbstractFormPane<Persistenc
 
 	private void initializeJPAMappingDescriptorsPane(Composite container) {
 
-		container = buildSection(
+		container = addSection(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jpaMappingDescriptors,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jpaMappingDescriptors_description
@@ -243,7 +243,7 @@ public class PersistenceUnitGeneralComposite extends AbstractFormPane<Persistenc
 
 	private void initializeMappedClassesPane(Composite container) {
 
-		container = buildSection(
+		container = addSection(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_mappedClasses
 		);

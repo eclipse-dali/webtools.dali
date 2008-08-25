@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.logging;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * ExceptionsComposite
  */
-public class ExceptionsComposite extends AbstractFormPane<Logging>
+public class ExceptionsComposite extends FormPane<Logging>
 {
 	/**
 	 * Creates a new <code>ExceptionsComposite</code>.
@@ -33,7 +33,7 @@ public class ExceptionsComposite extends AbstractFormPane<Logging>
 	 *            The parent container
 	 */
 	public ExceptionsComposite(
-					AbstractFormPane<? extends Logging> parentComposite,
+					FormPane<? extends Logging> parentComposite,
 					Composite parent) {
 
 		super(parentComposite, parent);
@@ -69,8 +69,8 @@ public class ExceptionsComposite extends AbstractFormPane<Logging>
 		return new TransformationPropertyValueModel<Boolean, String>(buildExceptionsHolder()) {
 			@Override
 			protected String transform(Boolean value) {
-				if ((subject() != null) && (value == null)) {
-					Boolean defaultValue = subject().getDefaultExceptions();
+				if ((getSubject() != null) && (value == null)) {
+					Boolean defaultValue = getSubject().getDefaultExceptions();
 					if (defaultValue != null) {
 						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
 						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlLoggingTab_exceptionsLabelDefault, defaultStringValue);
@@ -84,7 +84,7 @@ public class ExceptionsComposite extends AbstractFormPane<Logging>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		this.buildTriStateCheckBoxWithDefault(
+		this.addTriStateCheckBoxWithDefault(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlLoggingTab_exceptionsLabel,
 			this.buildExceptionsHolder(),

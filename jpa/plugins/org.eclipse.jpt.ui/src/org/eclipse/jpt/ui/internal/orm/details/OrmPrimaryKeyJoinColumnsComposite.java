@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractPrimaryKeyJoinColumnsComposite;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -35,7 +35,7 @@ public class OrmPrimaryKeyJoinColumnsComposite extends AbstractPrimaryKeyJoinCol
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	public OrmPrimaryKeyJoinColumnsComposite(AbstractPane<? extends OrmEntity> subjectHolder,
+	public OrmPrimaryKeyJoinColumnsComposite(Pane<? extends OrmEntity> subjectHolder,
 	                                      Composite parent) {
 
 		super(subjectHolder, parent);
@@ -61,7 +61,7 @@ public class OrmPrimaryKeyJoinColumnsComposite extends AbstractPrimaryKeyJoinCol
 	
 	@Override
 	protected void switchDefaultToSpecified() {
-		ListIterator<OrmPrimaryKeyJoinColumn> defaultJoinColumns = subject().defaultPrimaryKeyJoinColumns();
+		ListIterator<OrmPrimaryKeyJoinColumn> defaultJoinColumns = getSubject().defaultPrimaryKeyJoinColumns();
 
 		int index = 0;
 		while (defaultJoinColumns.hasNext()) {
@@ -69,7 +69,7 @@ public class OrmPrimaryKeyJoinColumnsComposite extends AbstractPrimaryKeyJoinCol
 			String columnName = defaultJoinColumn.getName();
 			String referencedColumnName = defaultJoinColumn.getReferencedColumnName();
 
-			PrimaryKeyJoinColumn pkJoinColumn = subject().addSpecifiedPrimaryKeyJoinColumn(index++);
+			PrimaryKeyJoinColumn pkJoinColumn = getSubject().addSpecifiedPrimaryKeyJoinColumn(index++);
 			pkJoinColumn.setSpecifiedName(columnName);
 			pkJoinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
 		}

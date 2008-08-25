@@ -86,7 +86,7 @@ public class PrimaryKeyJoinColumnStateObject extends BaseJoinColumnStateObject
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected String initialTable() {
+	protected String getInitialTable() {
 		return getOwner().getTableName();
 	}
 
@@ -95,6 +95,6 @@ public class PrimaryKeyJoinColumnStateObject extends BaseJoinColumnStateObject
 	 */
 	@Override
 	public ListIterator<String> tables() {
-		return new SingleElementListIterator<String>(initialTable());
+		return new SingleElementListIterator<String>(getInitialTable());
 	}
 }

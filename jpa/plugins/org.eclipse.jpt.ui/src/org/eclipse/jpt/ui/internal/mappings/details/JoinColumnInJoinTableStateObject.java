@@ -60,16 +60,16 @@ public class JoinColumnInJoinTableStateObject extends JoinColumnStateObject
 
 	@Override
 	public Table getReferencedNameTable() {
-		return relationshipMapping().getTypeMapping().getPrimaryDbTable();
+		return getRelationshipMapping().getTypeMapping().getPrimaryDbTable();
 	}
 
 	@Override
-	protected Schema getSchema() {
+	protected Schema getDbSchema() {
 		return null;
 	}
 
 	@Override
-	protected String initialTable() {
+	protected String getInitialTable() {
 		return getOwner().getName();
 	}
 
@@ -83,12 +83,12 @@ public class JoinColumnInJoinTableStateObject extends JoinColumnStateObject
 	 *
 	 * @return The parent of the join table
 	 */
-	public RelationshipMapping relationshipMapping() {
+	public RelationshipMapping getRelationshipMapping() {
 		return getOwner().getParent();
 	}
 
 	@Override
 	public ListIterator<String> tables() {
-		return new SingleElementListIterator<String>(initialTable());
+		return new SingleElementListIterator<String>(getInitialTable());
 	}
 }

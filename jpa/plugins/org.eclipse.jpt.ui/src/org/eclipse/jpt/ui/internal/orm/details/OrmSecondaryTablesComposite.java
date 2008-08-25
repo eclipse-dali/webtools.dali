@@ -23,7 +23,7 @@ import org.eclipse.jpt.ui.internal.mappings.details.AbstractSecondaryTablesCompo
 import org.eclipse.jpt.ui.internal.mappings.details.PrimaryKeyJoinColumnsInSecondaryTableComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.SecondaryTableDialog;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
@@ -67,7 +67,7 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OrmSecondaryTablesComposite(AbstractFormPane<? extends OrmEntity> parentPane,
+	public OrmSecondaryTablesComposite(FormPane<? extends OrmEntity> parentPane,
 	                                   Composite parent) {
 
 		super(parentPane, parent);
@@ -134,7 +134,7 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		int groupBoxMargin = groupBoxMargin();
+		int groupBoxMargin = getGroupBoxMargin();
 
 		WritablePropertyValueModel<SecondaryTable> secondaryTableHolder =
 			buildSecondaryTableHolder();
@@ -143,16 +143,17 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 			buildDefineInXmlHolder();
 
 		// Override Define In XML check box
-		buildCheckBox(
-			buildSubPane(container, 0, groupBoxMargin),
+		addCheckBox(
+			addSubPane(container, 0, groupBoxMargin),
 			JptUiMappingsMessages.OrmSecondaryTablesComposite_defineInXml,
-			defineInXmlHolder
+			defineInXmlHolder,
+			null
 		);
 
 		// Secondary Tables add/remove list pane
 		AddRemoveListPane<Entity> listPane = new AddRemoveListPane<Entity>(
 			this,
-			buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
+			addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
 			buildSecondaryTablesAdapter(),
 			buildSecondaryTablesListModel(),
 			secondaryTableHolder,
@@ -179,7 +180,7 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 	@Override
 	protected SecondaryTableDialog buildSecondaryTableDialogForAdd() {
 		//defaultSchema and defaultCatalog should not be taken from the Table in this case.  The table default schema could be what is the specified schema on the java table.
-		return new SecondaryTableDialog(getControl().getShell(), subject().getJpaProject(), subject().getEntityMappings().getDefaultSchema(), subject().getEntityMappings().getDefaultCatalog());
+		return new SecondaryTableDialog(getControl().getShell(), getSubject().getJpaProject(), getSubject().getEntityMappings().getDefaultSchema(), getSubject().getEntityMappings().getDefaultCatalog());
 	}
 
 	private class DefineInXmlHolder extends ListPropertyValueModelAdapter<Boolean>
@@ -191,14 +192,14 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 
 		@Override
 		protected Boolean buildValue() {
-			if (subject() == null) {
+			if (getSubject() == null) {
 				return Boolean.FALSE;
 			}
-			return Boolean.valueOf(subject().secondaryTablesDefinedInXml());
+			return Boolean.valueOf(getSubject().secondaryTablesDefinedInXml());
 		}
 
 		public void setValue(Boolean value) {
-			subject().setSecondaryTablesDefinedInXml(value.booleanValue());
+			getSubject().setSecondaryTablesDefinedInXml(value.booleanValue());
 		}
 	}
 }

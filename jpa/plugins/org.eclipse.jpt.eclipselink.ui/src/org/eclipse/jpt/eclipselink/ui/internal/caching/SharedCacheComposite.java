@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListPropertyValueModelAdapter;
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  SharedCacheComposite
  */
-public class SharedCacheComposite extends AbstractPane<EntityCacheProperties>
+public class SharedCacheComposite extends Pane<EntityCacheProperties>
 {
 	private TriStateCheckBox sharedCacheCheckBox;
 
@@ -39,7 +39,7 @@ public class SharedCacheComposite extends AbstractPane<EntityCacheProperties>
 	 * @param parentController The parent container of this one
 	 * @param parent The parent container
 	 */
-	public SharedCacheComposite(AbstractPane<EntityCacheProperties> parentComposite,
+	public SharedCacheComposite(Pane<EntityCacheProperties> parentComposite,
 	                           Composite parent) {
 
 		super(parentComposite, parent);
@@ -143,7 +143,7 @@ public class SharedCacheComposite extends AbstractPane<EntityCacheProperties>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		this.sharedCacheCheckBox = this.buildTriStateCheckBoxWithDefault(
+		this.sharedCacheCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlCachingTab_sharedCacheLabel,
 			this.buildSharedCacheHolder(),

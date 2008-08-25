@@ -45,7 +45,7 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 			return getJoinColumn().getDefaultTable();
 		}
 
-		return typeMapping().getTableName();
+		return getTypeMapping().getTableName();
 	}
 
 	/*
@@ -53,7 +53,7 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 	 */
 	@Override
 	public Table getNameTable() {
-		return typeMapping().getPrimaryDbTable();
+		return getTypeMapping().getPrimaryDbTable();
 	}
 
 	/*
@@ -90,8 +90,8 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 	 * (non-Javadoc)
 	 */
 	@Override
-	public Schema getSchema() {
-		return typeMapping().getDbSchema();
+	public Schema getDbSchema() {
+		return getTypeMapping().getDbSchema();
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 	 *
 	 * @return The owner of the join column to create or to edit
 	 */
-	public TypeMapping typeMapping() {
+	public TypeMapping getTypeMapping() {
 		return getOwner().getOwner().getTypeMapping();
 	}
 }

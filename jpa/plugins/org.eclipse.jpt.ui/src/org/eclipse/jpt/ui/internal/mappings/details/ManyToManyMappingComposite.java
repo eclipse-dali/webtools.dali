@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -63,7 +63,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class ManyToManyMappingComposite extends AbstractFormPane<ManyToManyMapping>
+public class ManyToManyMappingComposite extends FormPane<ManyToManyMapping>
                                         implements JpaComposite
 {
 	/**
@@ -98,25 +98,25 @@ public class ManyToManyMappingComposite extends AbstractFormPane<ManyToManyMappi
 		};
 	}
 
-	private Composite buildPane(Composite container, int groupBoxMargin) {
-		return buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+	private Composite addPane(Composite container, int groupBoxMargin) {
+		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 	}
 
 	private void initializeGeneralPane(Composite container) {
 
-		int groupBoxMargin = groupBoxMargin();
+		int groupBoxMargin = getGroupBoxMargin();
 
 		// Target Entity widgets
-		new TargetEntityComposite(this, buildPane(container, groupBoxMargin));
+		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
 
 		// Fetch Type widgets
-		new FetchTypeComposite(this, buildPane(container, groupBoxMargin));
+		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
 
 		// Mapped By widgets
-		new MappedByComposite(this, buildPane(container, groupBoxMargin));
+		new MappedByComposite(this, addPane(container, groupBoxMargin));
 
 		// Cascade widgets
-		new CascadeComposite(this, buildCascadeHolder(), buildSubPane(container, 5));
+		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
 
 		// Ordering widgets
 		new OrderingComposite(this, container);
@@ -124,7 +124,7 @@ public class ManyToManyMappingComposite extends AbstractFormPane<ManyToManyMappi
 
 	private void initializeJoinTablePane(Composite container) {
 
-		container = buildCollapsableSection(
+		container = addCollapsableSection(
 			container,
 			JptUiMappingsMessages.MultiRelationshipMappingComposite_joinTable
 		);

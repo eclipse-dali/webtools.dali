@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.GeneratorHolder;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.ui.internal.util.LabeledLabel;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Spinner;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public abstract class GeneratorComposite<T extends Generator> extends AbstractPane<GeneratorHolder>
+public abstract class GeneratorComposite<T extends Generator> extends Pane<GeneratorHolder>
 {
 	/**
 	 * Creates a new <code>GeneratorComposite</code>.
@@ -47,7 +47,7 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public GeneratorComposite(AbstractPane<? extends GeneratorHolder> parentPane,
+	public GeneratorComposite(Pane<? extends GeneratorHolder> parentPane,
                              Composite parent) {
 
 		super(parentPane, parent);
@@ -73,7 +73,7 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 				if (value == -1) {
 					return;
 				}
-				retrieveGenerator(subject()).setSpecifiedAllocationSize(value);
+				retrieveGenerator(getSubject()).setSpecifiedAllocationSize(value);
 			}
 
 			@Override
@@ -107,9 +107,9 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 		};
 	}
 
-	private Control buildDefaultAllocationSizeLabel(Composite container) {
+	private Control addDefaultAllocationSizeLabel(Composite container) {
 
-		Label label = buildLabel(
+		Label label = addLabel(
 			container,
 			JptUiMappingsMessages.DefaultWithoutValue
 		);
@@ -159,9 +159,9 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 		};
 	}
 
-	private Control buildDefaultInitialValueLabel(Composite container) {
+	private Control addDefaultInitialValueLabel(Composite container) {
 
-		Label label = buildLabel(
+		Label label = addLabel(
 			container,
 			JptUiMappingsMessages.DefaultWithoutValue
 		);
@@ -199,10 +199,10 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 	protected abstract T buildGenerator(GeneratorHolder subject);
 
 	private PropertyValueModel<Generator> buildGeneratorHolder() {
-		return new PropertyAspectAdapter<GeneratorHolder, Generator>(getSubjectHolder(), propertyName()) {
+		return new PropertyAspectAdapter<GeneratorHolder, Generator>(getSubjectHolder(), getPropertyName()) {
 			@Override
 			protected Generator buildValue_() {
-				return GeneratorComposite.this.generator(subject);
+				return GeneratorComposite.this.getGenerator(subject);
 			}
 		};
 	}
@@ -223,7 +223,7 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 				if (value.length() == 0) {
 					return;
 				}
-				retrieveGenerator(subject()).setName(value);
+				retrieveGenerator(getSubject()).setName(value);
 			}
 
 			@Override
@@ -258,7 +258,7 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 				if (value == -1) {
 					return;
 				}
-				retrieveGenerator(subject()).setSpecifiedInitialValue(value);
+				retrieveGenerator(getSubject()).setSpecifiedInitialValue(value);
 			}
 
 			@Override
@@ -277,8 +277,8 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 	 * @return The <code>Generator</code> or <code>null</code> if it doesn't
 	 * exists
 	 */
-	protected final T generator() {
-		return (this.subject() == null) ? null : this.generator(this.subject());
+	protected final T getGenerator() {
+		return (this.getSubject() == null) ? null : this.getGenerator(this.getSubject());
 	}
 
 	/**
@@ -288,7 +288,7 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 	 * @return The <code>Generator</code> or <code>null</code> if it doesn't
 	 * exists
 	 */
-	protected abstract T generator(GeneratorHolder subject);
+	protected abstract T getGenerator(GeneratorHolder subject);
 
 	/**
 	 * Creates the labeled spinner responsible to edit the allocation size. The
@@ -299,14 +299,15 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 	 */
 	protected void initializeAllocationSizeWidgets(Composite container) {
 
-		Spinner spinner = buildLabeledSpinner(
+		Spinner spinner = addLabeledSpinner(
 			container,
 			JptUiMappingsMessages.GeneratorComposite_allocationSize,
 			buildAllocationSizeHolder(),
 			-1,
 			-1,
 			Integer.MAX_VALUE,
-			buildDefaultAllocationSizeLabel(container)
+			addDefaultAllocationSizeLabel(container),
+			null
 		);
 
 		updateGridData(container, spinner);
@@ -321,14 +322,15 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 	 */
 	protected void initializeInitialValueWidgets(Composite container) {
 
-		Spinner spinner = buildLabeledSpinner(
+		Spinner spinner = addLabeledSpinner(
 			container,
 			JptUiMappingsMessages.GeneratorComposite_initialValue,
 			buildInitialValueHolder(),
 			-1,
 			-1,
 			Integer.MAX_VALUE,
-			buildDefaultInitialValueLabel(container)
+			addDefaultInitialValueLabel(container),
+			null
 		);
 
 
@@ -340,8 +342,8 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 	 *
 	 * @return The JPA project or <code>null</code> if the subject is <code>null</code>
 	 */
-	protected final JpaProject jpaProject() {
-		return this.subject() == null ? null : this.subject().getJpaProject();
+	protected final JpaProject getJpaProject() {
+		return this.getSubject() == null ? null : this.getSubject().getJpaProject();
 	}
 
 	/**
@@ -350,7 +352,7 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 	 *
 	 * @return The property name associated with the generator
 	 */
-	protected abstract String propertyName();
+	protected abstract String getPropertyName();
 
 	/**
 	 * Retrieves the <code>Generator</code> and if it is <code>null</code>, then
@@ -360,7 +362,7 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractPa
 	 * @return The <code>Generator</code> which should never be <code>null</code>
 	 */
 	protected final T retrieveGenerator(GeneratorHolder subject) {
-		T generator = this.generator(subject);
+		T generator = this.getGenerator(subject);
 
 		if (generator == null) {
 			generator = this.buildGenerator(subject);

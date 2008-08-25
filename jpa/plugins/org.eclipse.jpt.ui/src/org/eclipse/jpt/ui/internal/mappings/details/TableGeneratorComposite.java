@@ -20,7 +20,7 @@ import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -77,13 +77,13 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TableGeneratorComposite(AbstractPane<? extends GeneratorHolder> parentPane,
+	public TableGeneratorComposite(Pane<? extends GeneratorHolder> parentPane,
 	                               Composite parent) {
 
 		super(parentPane, parent);
 	}
 
-	private CatalogCombo<TableGenerator> buildCatalogCombo(Composite container) {
+	private CatalogCombo<TableGenerator> addCatalogCombo(Composite container) {
 
 		return new CatalogCombo<TableGenerator>(this, buildTableGeneratorHolder(), container) {
 
@@ -97,13 +97,13 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			@Override
 			protected void buildSubject() {
 				TableGeneratorComposite.this.buildGenerator(
-					TableGeneratorComposite.this.subject()
+					TableGeneratorComposite.this.getSubject()
 				);
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultCatalog();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultCatalog();
 			}
 
 			@Override
@@ -112,18 +112,18 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			}
 
 			@Override
-			protected JpaProject jpaProject() {
-				return TableGeneratorComposite.this.jpaProject();
+			protected JpaProject getJpaProject() {
+				return TableGeneratorComposite.this.getJpaProject();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedCatalog(value);
+				getSubject().setSpecifiedCatalog(value);
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedCatalog();
+			protected String getValue() {
+				return getSubject().getSpecifiedCatalog();
 			}
 		};
 	}
@@ -136,7 +136,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 		return subject.addTableGenerator();
 	}
 
-	private ColumnCombo<TableGenerator> buildPkColumnNameCombo(Composite parent) {
+	private ColumnCombo<TableGenerator> addPkColumnNameCombo(Composite parent) {
 
 		return new ColumnCombo<TableGenerator>(this, buildTableGeneratorHolder(), parent) {
 
@@ -150,13 +150,13 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			@Override
 			protected void buildSubject() {
 				TableGeneratorComposite.this.buildGenerator(
-					TableGeneratorComposite.this.subject()
+					TableGeneratorComposite.this.getSubject()
 				);
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultPkColumnName();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultPkColumnName();
 			}
 
 			@Override
@@ -165,28 +165,28 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			}
 
 			@Override
-			protected JpaProject jpaProject() {
-				return TableGeneratorComposite.this.jpaProject();
+			protected JpaProject getJpaProject() {
+				return TableGeneratorComposite.this.getJpaProject();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedPkColumnName(value);
+				getSubject().setSpecifiedPkColumnName(value);
 			}
 
 			@Override
-			protected Table getDBTable_() {
-				return subject().getDbTable();
+			protected Table getDbTable_() {
+				return getSubject().getDbTable();
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedPkColumnName();
+			protected String getValue() {
+				return getSubject().getSpecifiedPkColumnName();
 			}
 		};
 	}
 
-	private ColumnCombo<TableGenerator> buildPkColumnValueCombo(Composite parent) {
+	private ColumnCombo<TableGenerator> addPkColumnValueCombo(Composite parent) {
 
 		return new ColumnCombo<TableGenerator>(this, buildTableGeneratorHolder(), parent) {
 
@@ -200,13 +200,13 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			@Override
 			protected void buildSubject() {
 				TableGeneratorComposite.this.buildGenerator(
-					TableGeneratorComposite.this.subject()
+					TableGeneratorComposite.this.getSubject()
 				);
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultPkColumnValue();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultPkColumnValue();
 			}
 
 			@Override
@@ -215,28 +215,28 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			}
 
 			@Override
-			protected JpaProject jpaProject() {
-				return TableGeneratorComposite.this.jpaProject();
+			protected JpaProject getJpaProject() {
+				return TableGeneratorComposite.this.getJpaProject();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedPkColumnValue(value);
+				getSubject().setSpecifiedPkColumnValue(value);
 			}
 
 			@Override
-			protected Table getDBTable_() {
-				return subject().getDbTable();
+			protected Table getDbTable_() {
+				return getSubject().getDbTable();
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedPkColumnValue();
+			protected String getValue() {
+				return getSubject().getSpecifiedPkColumnValue();
 			}
 		};
 	}
 
-	private SchemaCombo<TableGenerator> buildSchemaCombo(Composite container) {
+	private SchemaCombo<TableGenerator> addSchemaCombo(Composite container) {
 
 		return new SchemaCombo<TableGenerator>(this, buildTableGeneratorHolder(), container) {
 
@@ -250,13 +250,13 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			@Override
 			protected void buildSubject() {
 				TableGeneratorComposite.this.buildGenerator(
-					TableGeneratorComposite.this.subject()
+					TableGeneratorComposite.this.getSubject()
 				);
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultSchema();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultSchema();
 			}
 
 			@Override
@@ -265,18 +265,18 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			}
 
 			@Override
-			protected JpaProject jpaProject() {
-				return TableGeneratorComposite.this.jpaProject();
+			protected JpaProject getJpaProject() {
+				return TableGeneratorComposite.this.getJpaProject();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedSchema(value);
+				getSubject().setSpecifiedSchema(value);
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedSchema();
+			protected String getValue() {
+				return getSubject().getSpecifiedSchema();
 			}
 		};
 	}
@@ -290,7 +290,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 		};
 	}
 
-	private TableCombo<TableGenerator> buildTableNameCombo(Composite parent) {
+	private TableCombo<TableGenerator> addTableNameCombo(Composite parent) {
 
 		return new TableCombo<TableGenerator>(this, buildTableGeneratorHolder(), parent) {
 
@@ -319,13 +319,13 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			@Override
 			protected void buildSubject() {
 				TableGeneratorComposite.this.buildGenerator(
-					TableGeneratorComposite.this.subject()
+					TableGeneratorComposite.this.getSubject()
 				);
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultTable();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultTable();
 			}
 
 			@Override
@@ -334,39 +334,39 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			}
 
 			@Override
-			protected JpaProject jpaProject() {
-				return TableGeneratorComposite.this.jpaProject();
+			protected JpaProject getJpaProject() {
+				return TableGeneratorComposite.this.getJpaProject();
 			}
 
 			@Override
-			protected String schemaName() {
-				if (subject() != null) {
-					return subject().getSchema();
+			protected String getSchemaName() {
+				if (getSubject() != null) {
+					return getSubject().getSchema();
 				}
-				if (TableGeneratorComposite.this.subject().getEntityMappings() != null) {
-					return TableGeneratorComposite.this.subject().getEntityMappings().getSchema();
+				if (TableGeneratorComposite.this.getSubject().getEntityMappings() != null) {
+					return TableGeneratorComposite.this.getSubject().getEntityMappings().getSchema();
 				}
-				return TableGeneratorComposite.this.subject().getPersistenceUnit().getDefaultSchema();
+				return TableGeneratorComposite.this.getSubject().getPersistenceUnit().getDefaultSchema();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedTable(value);
+				getSubject().setSpecifiedTable(value);
 			}
 
 			@Override
-			protected Table table() {
-				return subject().getDbTable();
+			protected Table getDbTable() {
+				return getSubject().getDbTable();
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedTable();
+			protected String getValue() {
+				return getSubject().getSpecifiedTable();
 			}
 		};
 	}
 
-	private ColumnCombo<TableGenerator> buildValueColumnCombo(Composite parent) {
+	private ColumnCombo<TableGenerator> addValueColumnCombo(Composite parent) {
 
 		return new ColumnCombo<TableGenerator>(this, buildTableGeneratorHolder(), parent) {
 
@@ -380,13 +380,13 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			@Override
 			protected void buildSubject() {
 				TableGeneratorComposite.this.buildGenerator(
-					TableGeneratorComposite.this.subject()
+					TableGeneratorComposite.this.getSubject()
 				);
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultValueColumnName();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultValueColumnName();
 			}
 
 			@Override
@@ -395,23 +395,23 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			}
 
 			@Override
-			protected JpaProject jpaProject() {
-				return TableGeneratorComposite.this.jpaProject();
+			protected JpaProject getJpaProject() {
+				return TableGeneratorComposite.this.getJpaProject();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedValueColumnName(value);
+				getSubject().setSpecifiedValueColumnName(value);
 			}
 
 			@Override
-			protected Table getDBTable_() {
-				return subject().getDbTable();
+			protected Table getDbTable_() {
+				return getSubject().getDbTable();
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedValueColumnName();
+			protected String getValue() {
+				return getSubject().getSpecifiedValueColumnName();
 			}
 		};
 	}
@@ -420,7 +420,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected TableGenerator generator(GeneratorHolder subject) {
+	protected TableGenerator getGenerator(GeneratorHolder subject) {
 		return (subject != null) ? subject.getTableGenerator() : null;
 	}
 
@@ -431,7 +431,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	protected void initializeLayout(Composite container) {
 
 		// Name widgets
-		buildLabeledText(
+		addLabeledText(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_name,
 			buildGeneratorNameHolder(),
@@ -439,50 +439,50 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 		);
 
 		// Table widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_table,
-			buildTableNameCombo(container),
+			addTableNameCombo(container),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_TABLE
 		);
 
 		// Schema widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_schema,
-			buildSchemaCombo(container),
+			addSchemaCombo(container),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_SCHEMA
 		);
 
 		// Catalog widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_catalog,
-			buildCatalogCombo(container),
+			addCatalogCombo(container),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_CATALOG
 		);
 
 		// Primary Key Column widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_pkColumn,
-			buildPkColumnNameCombo(container),
+			addPkColumnNameCombo(container),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN
 		);
 
 		// Value Column widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_valueColumn,
-			buildValueColumnCombo(container),
+			addValueColumnCombo(container),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_VALUE_COLUMN
 		);
 
 		// Primary Key Column Value widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_pkColumnValue,
-			buildPkColumnValueCombo(container),
+			addPkColumnValueCombo(container),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN_VALUE
 		);
 
@@ -497,7 +497,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected String propertyName() {
+	protected String getPropertyName() {
 		return GeneratorHolder.TABLE_GENERATOR_PROPERTY;
 	}
 }

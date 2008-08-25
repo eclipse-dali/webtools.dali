@@ -12,7 +12,7 @@ import java.util.Collection;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.ExistenceType;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class ExistenceCheckingComposite extends AbstractFormPane<EclipseLinkCaching> {
+public class ExistenceCheckingComposite extends FormPane<EclipseLinkCaching> {
 
 	/**
 	 * Creates a new <code>ExistenceCheckingComposite</code>.
@@ -41,7 +41,7 @@ public class ExistenceCheckingComposite extends AbstractFormPane<EclipseLinkCach
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public ExistenceCheckingComposite(AbstractFormPane<? extends EclipseLinkCaching> parentPane,
+	public ExistenceCheckingComposite(FormPane<? extends EclipseLinkCaching> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent);
@@ -49,19 +49,20 @@ public class ExistenceCheckingComposite extends AbstractFormPane<EclipseLinkCach
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		Composite subPane = buildSubPane(container, 2, 8, 0, 0, 0);
+		Composite subPane = addSubPane(container, 2, 8, 0, 0, 0);
 		
 		
-		buildCheckBox(
+		addCheckBox(
 			subPane, 
 			EclipseLinkUiMappingsMessages.ExistenceCheckingComposite_label, 
-			buildExistenceCheckingHolder());
+			buildExistenceCheckingHolder(),
+			null);
 		
 		
-		buildExistenceCheckingTypeCombo(subPane);
+		addExistenceCheckingTypeCombo(subPane);
 	}
 
-	private EnumFormComboViewer<EclipseLinkCaching, ExistenceType> buildExistenceCheckingTypeCombo(Composite container) {
+	private EnumFormComboViewer<EclipseLinkCaching, ExistenceType> addExistenceCheckingTypeCombo(Composite container) {
 
 		return new EnumFormComboViewer<EclipseLinkCaching, ExistenceType>(this, container) {
 
@@ -73,13 +74,13 @@ public class ExistenceCheckingComposite extends AbstractFormPane<EclipseLinkCach
 			}
 
 			@Override
-			protected ExistenceType[] choices() {
+			protected ExistenceType[] getChoices() {
 				return ExistenceType.values();
 			}
 
 			@Override
-			protected ExistenceType defaultValue() {
-				return subject().getDefaultExistenceType();
+			protected ExistenceType getDefaultValue() {
+				return getSubject().getDefaultExistenceType();
 			}
 
 			@Override
@@ -93,12 +94,12 @@ public class ExistenceCheckingComposite extends AbstractFormPane<EclipseLinkCach
 
 			@Override
 			protected ExistenceType getValue() {
-				return subject().getSpecifiedExistenceType();
+				return getSubject().getSpecifiedExistenceType();
 			}
 
 			@Override
 			protected void setValue(ExistenceType value) {
-				subject().setSpecifiedExistenceType(value);
+				getSubject().setSpecifiedExistenceType(value);
 			}
 			
 			@Override

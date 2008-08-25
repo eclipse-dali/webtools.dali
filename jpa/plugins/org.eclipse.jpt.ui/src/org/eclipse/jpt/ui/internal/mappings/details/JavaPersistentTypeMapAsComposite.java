@@ -18,7 +18,7 @@ import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.java.details.NullTypeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -41,7 +41,7 @@ public class JavaPersistentTypeMapAsComposite extends PersistentTypeMapAsComposi
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public JavaPersistentTypeMapAsComposite(AbstractPane<? extends JavaPersistentType> parentPane,
+	public JavaPersistentTypeMapAsComposite(Pane<? extends JavaPersistentType> parentPane,
 	                                        Composite parent) {
 
 		super(parentPane, parent);
@@ -75,7 +75,7 @@ public class JavaPersistentTypeMapAsComposite extends PersistentTypeMapAsComposi
 	protected Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders() {
 
 		Collection<TypeMappingUiProvider<? extends TypeMapping>> providers =
-			CollectionTools.collection(jpaPlatformUi().javaTypeMappingUiProviders());
+			CollectionTools.collection(getJpaPlatformUi().javaTypeMappingUiProviders());
 
 		providers.remove(NullTypeMappingUiProvider.instance());
 		return providers.iterator();

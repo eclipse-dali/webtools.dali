@@ -74,7 +74,7 @@ public class JavaPersistentTypeDetailsPage extends PersistentTypeDetailsPage<Jav
 		// Map As composite
 		new JavaPersistentTypeMapAsComposite(
 			this,
-			buildSubPane(container, 0, 0, 5, 0)
+			addSubPane(container, 0, 0, 5, 0)
 		);
 
 		// Type properties page

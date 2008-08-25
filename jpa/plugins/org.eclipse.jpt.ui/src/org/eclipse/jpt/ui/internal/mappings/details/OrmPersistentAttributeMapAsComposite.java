@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -34,7 +34,7 @@ public class OrmPersistentAttributeMapAsComposite extends PersistentAttributeMap
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public OrmPersistentAttributeMapAsComposite(AbstractPane<? extends OrmPersistentAttribute> parentPane,
+	public OrmPersistentAttributeMapAsComposite(Pane<? extends OrmPersistentAttribute> parentPane,
 	                                            Composite parent) {
 
 		super(parentPane, parent);
@@ -45,7 +45,7 @@ public class OrmPersistentAttributeMapAsComposite extends PersistentAttributeMap
 	 */
 	@Override
 	protected Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders() {
-		return jpaPlatformUi().ormAttributeMappingUiProviders();
+		return getJpaPlatformUi().ormAttributeMappingUiProviders();
 	}
 
 	/*
@@ -53,6 +53,6 @@ public class OrmPersistentAttributeMapAsComposite extends PersistentAttributeMap
 	 */
 	@Override
 	protected Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
-		return jpaPlatformUi().defaultOrmAttributeMappingUiProviders();
+		return getJpaPlatformUi().defaultOrmAttributeMappingUiProviders();
 	}
 }

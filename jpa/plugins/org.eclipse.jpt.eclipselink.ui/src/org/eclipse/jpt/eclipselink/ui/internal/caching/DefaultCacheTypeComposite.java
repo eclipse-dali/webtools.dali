@@ -14,14 +14,14 @@ import java.util.Collection;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.CacheType;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * DefaultCacheTypeComposite
  */
-public class DefaultCacheTypeComposite extends AbstractFormPane<Caching>
+public class DefaultCacheTypeComposite extends FormPane<Caching>
 {
 	/**
 	 * Creates a new <code>DefaultCacheTypeComposite</code>.
@@ -32,7 +32,7 @@ public class DefaultCacheTypeComposite extends AbstractFormPane<Caching>
 	 *            The parent container
 	 */
 	public DefaultCacheTypeComposite(
-					AbstractFormPane<? extends Caching> parentComposite, 
+					FormPane<? extends Caching> parentComposite, 
 					Composite parent) {
 
 		super( parentComposite, parent);
@@ -47,7 +47,7 @@ public class DefaultCacheTypeComposite extends AbstractFormPane<Caching>
 			}
 
 			@Override
-			protected CacheType[] choices() {
+			protected CacheType[] getChoices() {
 				return CacheType.values();
 			}
 			
@@ -57,8 +57,8 @@ public class DefaultCacheTypeComposite extends AbstractFormPane<Caching>
 			}
 
 			@Override
-			protected CacheType defaultValue() {
-				return subject().getDefaultCacheTypeDefault();
+			protected CacheType getDefaultValue() {
+				return getSubject().getDefaultCacheTypeDefault();
 			}
 
 			@Override
@@ -68,12 +68,12 @@ public class DefaultCacheTypeComposite extends AbstractFormPane<Caching>
 
 			@Override
 			protected CacheType getValue() {
-				return subject().getCacheTypeDefault();
+				return getSubject().getCacheTypeDefault();
 			}
 
 			@Override
 			protected void setValue(CacheType value) {
-				subject().setCacheTypeDefault(value);
+				getSubject().setCacheTypeDefault(value);
 			}
 		};
 	}
@@ -81,7 +81,7 @@ public class DefaultCacheTypeComposite extends AbstractFormPane<Caching>
 	@Override
 	protected void initializeLayout( Composite container) {
 
-		this.buildLabeledComposite(
+		this.addLabeledComposite(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlCachingTab_defaultCacheTypeLabel,
 			this.buildDefaultCacheTypeCombo( container),

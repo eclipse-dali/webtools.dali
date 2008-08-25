@@ -109,7 +109,7 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 	protected PageBook buildTypeMappingPageBook(Composite parent) {
 
 		this.typeMappingPageBook = new PageBook(parent, SWT.NONE);
-		this.typeMappingPageBook.showPage(this.buildLabel(this.typeMappingPageBook, ""));
+		this.typeMappingPageBook.showPage(this.addLabel(this.typeMappingPageBook, ""));
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment       = SWT.FILL;
@@ -230,7 +230,7 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 
 				// Show an error message
 				// TODO: Replace the blank label with the error page
-				this.typeMappingPageBook.showPage(this.buildLabel(this.typeMappingPageBook, ""));
+				this.typeMappingPageBook.showPage(this.addLabel(this.typeMappingPageBook, ""));
 			}
 		}
 		// Clear the mapping pane and show a blank page
@@ -240,7 +240,7 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 				"PersistentTypeDetailsPage.populateMappingPage() no page to show"
 			);
 
-			this.typeMappingPageBook.showPage(this.buildLabel(this.typeMappingPageBook, ""));
+			this.typeMappingPageBook.showPage(this.addLabel(this.typeMappingPageBook, ""));
 		}
 		this.repaintDetailsView(this.typeMappingPageBook);
 	}
@@ -270,7 +270,7 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 	protected abstract Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders();
 
 	private void updateMappingPage() {
-		TypeMapping mapping = (this.subject() != null) ? this.subject().getMapping() : null;
+		TypeMapping mapping = (this.getSubject() != null) ? this.getSubject().getMapping() : null;
 		populateMappingPage(mapping == null ? null : mapping.getKey());
 	}
 }

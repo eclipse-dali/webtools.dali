@@ -26,7 +26,7 @@ import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.JptUiPlugin;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -40,14 +40,14 @@ import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
  *  JdbcConnectionPropertiesComposite
  */
 @SuppressWarnings("nls")
-public class JdbcConnectionPropertiesComposite extends AbstractPane<Connection>
+public class JdbcConnectionPropertiesComposite extends Pane<Connection>
 {
 	/**
 	 * The constant ID used to retrieve the dialog settings.
 	 */
 	private static final String DIALOG_SETTINGS = "org.eclipse.jpt.eclipselink.ui.dialogs.ConnectionDialog";
 
-	public JdbcConnectionPropertiesComposite(AbstractPane<Connection> parentComposite, Composite parent) {
+	public JdbcConnectionPropertiesComposite(Pane<Connection> parentComposite, Composite parent) {
 
 		super(parentComposite, parent);
 	}
@@ -115,7 +115,7 @@ public class JdbcConnectionPropertiesComposite extends AbstractPane<Connection>
 	protected void initializeLayout(Composite container) {
 
 		// Populate from Connection hyperlink
-		this.buildHyperLink(
+		this.addHyperlink(
 			container,
 			"Populate from Connection...",
 			buildPopulateFromConnectionAction()
@@ -125,21 +125,21 @@ public class JdbcConnectionPropertiesComposite extends AbstractPane<Connection>
 		new JdbcDriverComposite(this, container);
 
 		// Url
-		this.buildLabeledText(
+		this.addLabeledText(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_urlLabel,
 			buildUrlHolder()
 		);
 
 		// User
-		this.buildLabeledText(
+		this.addLabeledText(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_userLabel,
 			buildUserHolder()
 		);
 
 		// Password
-		this.buildLabeledPasswordText(
+		this.addLabeledPasswordText(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_passwordLabel,
 			buildPasswordHolder()
@@ -160,7 +160,7 @@ public class JdbcConnectionPropertiesComposite extends AbstractPane<Connection>
 		String name = (String) dialog.getResult()[0];
 		ConnectionProfile cp = this.getConnectionProfileFactory().buildConnectionProfile(name);
 
-		Connection connection = subject();
+		Connection connection = getSubject();
 		connection.setUrl((cp == null) ? "" : cp.getURL());
 		connection.setUser((cp == null) ? "" : cp.getUserName());
 		connection.setPassword((cp == null) ? "" : cp.getUserPassword());
@@ -176,8 +176,8 @@ public class JdbcConnectionPropertiesComposite extends AbstractPane<Connection>
 	}
 
 	// broaden access a bit
-	Shell shell_() {
-		return this.shell();
+	Shell getShell_() {
+		return this.getShell();
 	}
 
 	/**
@@ -190,7 +190,7 @@ public class JdbcConnectionPropertiesComposite extends AbstractPane<Connection>
 		 * Creates a new <code>MappingSelectionDialog</code>.
 		 */
 		protected ConnectionSelectionDialog() {
-			super(JdbcConnectionPropertiesComposite.this.shell_(), false);
+			super(JdbcConnectionPropertiesComposite.this.getShell_(), false);
 			setMessage(EclipseLinkUiMessages.JdbcConnectionPropertiesComposite_ConnectionDialog_Message);
 			setTitle(EclipseLinkUiMessages.JdbcConnectionPropertiesComposite_ConnectionDialog_Title);
 			setListLabelProvider(buildLabelProvider());

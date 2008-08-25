@@ -42,12 +42,12 @@ public class JavaEntityComposite extends AbstractEntityComposite<JavaEntity>
 	}
 
 	@Override
-	protected void buildSecondaryTablesComposite(Composite container) {
+	protected void addSecondaryTablesComposite(Composite container) {
 		new JavaSecondaryTablesComposite(this, container);
 	}
 	
 	@Override
-	protected void buildInheritanceComposite(Composite container) {
+	protected void addInheritanceComposite(Composite container) {
 		new JavaInheritanceComposite(this, container);
 	}
 }

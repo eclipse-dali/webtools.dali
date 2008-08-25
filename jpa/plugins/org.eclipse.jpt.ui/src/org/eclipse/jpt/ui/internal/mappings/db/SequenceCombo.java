@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public abstract class SequenceCombo<T extends JpaNode> extends AbstractDatabaseObjectCombo<T>
+public abstract class SequenceCombo<T extends JpaNode> extends DatabaseObjectCombo<T>
 {
 	/**
 	 * Creates a new <code>SequenceCombo</code>.
@@ -33,7 +33,7 @@ public abstract class SequenceCombo<T extends JpaNode> extends AbstractDatabaseO
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public SequenceCombo(AbstractPane<? extends T> parentPane, Composite parent)
+	public SequenceCombo(Pane<? extends T> parentPane, Composite parent)
 	{
 		super(parentPane, parent);
 	}
@@ -45,7 +45,7 @@ public abstract class SequenceCombo<T extends JpaNode> extends AbstractDatabaseO
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public SequenceCombo(AbstractPane<?> parentPane,
+	public SequenceCombo(Pane<?> parentPane,
 	                     PropertyValueModel<? extends T> subjectHolder,
 	                     Composite parent) {
 
@@ -66,11 +66,11 @@ public abstract class SequenceCombo<T extends JpaNode> extends AbstractDatabaseO
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	protected abstract Schema schema();
+	protected abstract Schema getSchema();
 
 	@Override
 	protected Iterator<String> values() {
-		Schema schema = schema();
+		Schema schema = getSchema();
 		return (schema == null) ? EmptyIterator.<String>instance() : schema.sequenceNames();
 	}
 

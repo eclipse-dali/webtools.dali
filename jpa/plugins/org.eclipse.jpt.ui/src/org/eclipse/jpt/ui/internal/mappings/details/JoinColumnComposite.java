@@ -21,7 +21,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
@@ -66,7 +66,7 @@ import org.eclipse.swt.widgets.Group;
  * @version 2.0
  * @since 2.0
  */
-public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapping>
+public class JoinColumnComposite extends FormPane<SingleRelationshipMapping>
 {
 	private WritablePropertyValueModel<JoinColumn> joinColumnHolder;
 	private WritablePropertyValueModel<Boolean> joinColumnPaneEnablerHolder;
@@ -77,7 +77,7 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public JoinColumnComposite(AbstractFormPane<? extends SingleRelationshipMapping> parentPane,
+	public JoinColumnComposite(FormPane<? extends SingleRelationshipMapping> parentPane,
 	                           Composite parent) {
 
 		super(parentPane, parent);
@@ -100,14 +100,14 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 	private void addJoinColumn() {
 
 		JoinColumnInRelationshipMappingDialog dialog =
-			new JoinColumnInRelationshipMappingDialog(shell(), subject(), null);
+			new JoinColumnInRelationshipMappingDialog(getShell(), getSubject(), null);
 
 		dialog.openDialog(buildAddJoinColumnPostExecution());
 	}
 
 	private void addJoinColumn(JoinColumnInRelationshipMappingStateObject stateObject) {
 
-		SingleRelationshipMapping subject = subject();
+		SingleRelationshipMapping subject = getSubject();
 		int index = subject.specifiedJoinColumnsSize();
 
 		JoinColumn joinColumn = subject.addSpecifiedJoinColumn(index);
@@ -118,7 +118,7 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 		return new PostExecution<JoinColumnInRelationshipMappingDialog>() {
 			public void execute(JoinColumnInRelationshipMappingDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					addJoinColumn(dialog.subject());
+					addJoinColumn(dialog.getSubject());
 				}
 			}
 		};
@@ -141,7 +141,7 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 		return new PostExecution<JoinColumnInRelationshipMappingDialog>() {
 			public void execute(JoinColumnInRelationshipMappingDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					updateJoinColumn(dialog.subject());
+					updateJoinColumn(dialog.getSubject());
 				}
 			}
 		};
@@ -191,7 +191,7 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 	}
 
 	private SimplePropertyValueModel<Boolean> buildJoinColumnPaneEnablerHolder() {
-		return new SimplePropertyValueModel<Boolean>(Boolean.FALSE);
+		return new SimplePropertyValueModel<Boolean>(null);
 	}
 
 	private Adapter buildJoinColumnsAdapter() {
@@ -264,10 +264,6 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 			}
 		};
 	}
-
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
@@ -279,7 +275,7 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 		JoinColumn joinColumn = (JoinColumn) listSelectionModel.selectedValue();
 
 		JoinColumnInRelationshipMappingDialog dialog =
-			new JoinColumnInRelationshipMappingDialog(shell(), subject(), joinColumn);
+			new JoinColumnInRelationshipMappingDialog(getShell(), getSubject(), joinColumn);
 
 		dialog.openDialog(buildEditJoinColumnPostExecution());
 	}
@@ -311,16 +307,17 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 	protected void initializeLayout(Composite container) {
 
 		// Join Columns group
-		Group groupPane = buildTitledPane(
+		Group groupPane = addTitledGroup(
 			container,
 			JptUiMappingsMessages.JoinColumnComposite_joinColumn
 		);
 
 		// Override Default Join Columns check box
-		buildCheckBox(
-			buildSubPane(groupPane, 8),
+		addCheckBox(
+			addSubPane(groupPane, 8),
 			JptUiMappingsMessages.JoinColumnComposite_overrideDefaultJoinColumns,
-			buildOverrideDefaultJoinColumnHolder()
+			buildOverrideDefaultJoinColumnHolder(),
+			null
 		);
 
 		// Join Columns list pane
@@ -332,11 +329,11 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 				buildJoinColumnsListModel(),
 				joinColumnHolder,
 				buildJoinColumnsListLabelProvider(),
-				JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
+				JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS,
+				false
 			);
 
 		installJoinColumnsListPaneEnabler(joinColumnsListPane);
-		removeFromEnablementControl(joinColumnsListPane.getControl());
 	}
 
 	private void installJoinColumnsListPaneEnabler(AddRemoveListPane<SingleRelationshipMapping> pane) {
@@ -348,7 +345,7 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 		int[] selectedIndices = listSelectionModel.selectedIndices();
 
 		for (int index = selectedIndices.length; --index >= 0; ) {
-			subject().removeSpecifiedJoinColumn(selectedIndices[index]);
+			getSubject().removeSpecifiedJoinColumn(selectedIndices[index]);
 		}
 	}
 
@@ -358,7 +355,7 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 
 	private void updateJoinColumnPaneEnablement(boolean enabled) {
 
-		SingleRelationshipMapping subject = subject();
+		SingleRelationshipMapping subject = getSubject();
 		enabled &= (subject != null) && subject.containsSpecifiedJoinColumns();
 		joinColumnPaneEnablerHolder.setValue(enabled);
 	}
@@ -372,7 +369,7 @@ public class JoinColumnComposite extends AbstractFormPane<SingleRelationshipMapp
 		setPopulating(true);
 
 		try {
-			SingleRelationshipMapping subject = subject();
+			SingleRelationshipMapping subject = getSubject();
 
 			// Add a join column by creating a specified one using the default
 			// one if it exists

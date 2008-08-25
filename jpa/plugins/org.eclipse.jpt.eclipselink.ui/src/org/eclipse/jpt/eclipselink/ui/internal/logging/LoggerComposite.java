@@ -18,7 +18,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logger;
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  LoggerComposite
  */
-public class LoggerComposite extends AbstractPane<Logging>
+public class LoggerComposite extends Pane<Logging>
 {
 	/**
 	 * Creates a new <code>LoggerComposite</code>.
@@ -47,7 +47,7 @@ public class LoggerComposite extends AbstractPane<Logging>
 	 * @param parent The parent container
 	 */
 	public LoggerComposite(
-								AbstractPane<? extends Logging> parentPane,
+								Pane<? extends Logging> parentPane,
 	                           Composite parent) {
 
 		super(parentPane, parent);
@@ -57,7 +57,7 @@ public class LoggerComposite extends AbstractPane<Logging>
 		return new PropertyAspectAdapter<Logging, String>(this.getSubjectHolder(), Logging.DEFAULT_LOGGER) {
 			@Override
 			protected String buildValue_() {
-				return LoggerComposite.this.defaultValue(subject);
+				return LoggerComposite.this.getDefaultValue(subject);
 			}
 		};
 	}
@@ -118,7 +118,7 @@ public class LoggerComposite extends AbstractPane<Logging>
 
 				String name = subject.getLogger();
 				if (name == null) {
-					name = LoggerComposite.this.defaultValue(subject);
+					name = LoggerComposite.this.getDefaultValue(subject);
 				}
 				return name;
 			}
@@ -126,7 +126,7 @@ public class LoggerComposite extends AbstractPane<Logging>
 			@Override
 			protected void setValue_(String value) {
 
-				if (defaultValue(subject).equals(value)) {
+				if (getDefaultValue(subject).equals(value)) {
 					value = null;
 				}
 				subject.setLogger(value);
@@ -163,7 +163,7 @@ public class LoggerComposite extends AbstractPane<Logging>
 		);
 	}
 
-	private String defaultValue(Logging subject) {
+	private String getDefaultValue(Logging subject) {
 		String defaultValue = subject.getDefaultLogger();
 
 		if (defaultValue != null) {
@@ -183,7 +183,7 @@ public class LoggerComposite extends AbstractPane<Logging>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		CCombo combo = buildLabeledEditableCCombo(
+		CCombo combo = addLabeledEditableCCombo(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlLoggingTab_loggerLabel,
 			this.buildLoggerListHolder(),

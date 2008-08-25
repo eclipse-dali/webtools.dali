@@ -13,7 +13,7 @@ import java.util.Collection;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class PersistenceUnitConnectionGeneralComposite extends AbstractPane<PersistenceUnit>
+public class PersistenceUnitConnectionGeneralComposite extends Pane<PersistenceUnit>
 {
 	/**
 	 * Creates a new <code>PersistenceUnitConnectionGeneralComposite</code>.
@@ -40,7 +40,7 @@ public class PersistenceUnitConnectionGeneralComposite extends AbstractPane<Pers
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public PersistenceUnitConnectionGeneralComposite(AbstractPane<PersistenceUnit> subjectHolder,
+	public PersistenceUnitConnectionGeneralComposite(Pane<PersistenceUnit> subjectHolder,
 	                                                 Composite container) {
 
 		super(subjectHolder, container);
@@ -58,13 +58,13 @@ public class PersistenceUnitConnectionGeneralComposite extends AbstractPane<Pers
 			}
 
 			@Override
-			protected PersistenceUnitTransactionType[] choices() {
+			protected PersistenceUnitTransactionType[] getChoices() {
 				return PersistenceUnitTransactionType.values();
 			}
 
 			@Override
-			protected PersistenceUnitTransactionType defaultValue() {
-				return subject().getDefaultTransactionType();
+			protected PersistenceUnitTransactionType getDefaultValue() {
+				return getSubject().getDefaultTransactionType();
 			}
 
 			@Override
@@ -78,12 +78,12 @@ public class PersistenceUnitConnectionGeneralComposite extends AbstractPane<Pers
 
 			@Override
 			protected PersistenceUnitTransactionType getValue() {
-				return subject().getSpecifiedTransactionType();
+				return getSubject().getSpecifiedTransactionType();
 			}
 
 			@Override
 			protected void setValue(PersistenceUnitTransactionType value) {
-				subject().setSpecifiedTransactionType(value);
+				getSubject().setSpecifiedTransactionType(value);
 			}
 		};
 	}
@@ -95,7 +95,7 @@ public class PersistenceUnitConnectionGeneralComposite extends AbstractPane<Pers
 	protected void initializeLayout(Composite container) {
 
 		// Transaction Type widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitConnectionGeneralComposite_transactionType,
 			buildTransactionTypeCombo(container).getControl()

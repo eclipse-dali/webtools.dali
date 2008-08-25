@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.context.Nullable;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 1.0
  * @since 2.0
  */
-public class OptionalComposite extends AbstractFormPane<Nullable>
+public class OptionalComposite extends FormPane<Nullable>
 {
 	/**
 	 * Creates a new <code>OptionalComposite</code>.
@@ -39,7 +39,7 @@ public class OptionalComposite extends AbstractFormPane<Nullable>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OptionalComposite(AbstractFormPane<? extends Nullable> parentPane,
+	public OptionalComposite(FormPane<? extends Nullable> parentPane,
 	                         Composite parent)
 	{
 		super(parentPane, parent);
@@ -78,9 +78,9 @@ public class OptionalComposite extends AbstractFormPane<Nullable>
 			@Override
 			protected String transform(Boolean value) {
 
-				if ((subject() != null) && (value == null)) {
+				if ((getSubject() != null) && (value == null)) {
 
-					Boolean defaultValue = subject().getDefaultOptional();
+					Boolean defaultValue = getSubject().getDefaultOptional();
 
 					if (defaultValue != null) {
 
@@ -105,7 +105,7 @@ public class OptionalComposite extends AbstractFormPane<Nullable>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		buildTriStateCheckBoxWithDefault(
+		addTriStateCheckBoxWithDefault(
 			container,
 			JptUiMappingsMessages.BasicGeneralSection_optionalLabel,
 			buildOptionalHolder(),

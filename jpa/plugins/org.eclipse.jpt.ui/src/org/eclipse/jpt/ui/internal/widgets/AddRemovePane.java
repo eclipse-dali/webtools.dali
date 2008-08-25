@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 1.0
  * @since 2.0
  */
-public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
+public abstract class AddRemovePane<T extends Model> extends Pane<T>
 {
 	private Adapter adapter;
 	private Button addButton;
@@ -62,7 +62,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	 * one item or no items are selected, then <code>null</code> will be passed
 	 * @param labelProvider The renderer used to format the list holder's items
 	 */
-	protected AddRemovePane(AbstractPane<? extends T> parentPane,
+	protected AddRemovePane(Pane<? extends T> parentPane,
 	                        Composite parent,
 	                        Adapter adapter,
 	                        ListValueModel<?> listHolder,
@@ -92,7 +92,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	 * @param labelProvider The renderer used to format the list holder's items
 	 * @param helpId The topic help ID to be registered with this pane
 	 */
-	protected AddRemovePane(AbstractPane<? extends T> parentPane,
+	protected AddRemovePane(Pane<? extends T> parentPane,
 	                        Composite parent,
 	                        Adapter adapter,
 	                        ListValueModel<?> listHolder,
@@ -100,7 +100,41 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	                        IBaseLabelProvider labelProvider,
 	                        String helpId) {
 
-		super(parentPane, parent);
+		this(parentPane,
+		     parent,
+		     adapter,
+		     listHolder,
+		     selectedItemHolder,
+		     labelProvider,
+		     helpId,
+		     true);
+	}
+	/**
+	 * Creates a new <code>AddRemovePane</code>.
+	 *
+	 * @param parentPane The parent container of this one
+	 * @param parent The parent container
+	 * @param adapter This <code>Adapter</code> is used to dictacte the behavior
+	 * of this <code>AddRemovePane</code> and by delegating to it some of the
+	 * behavior
+	 * @param listHolder The <code>ListValueModel</code> containing the items
+	 * @param selectedItemHolder The holder of the selected item, if more than
+	 * one item or no items are selected, then <code>null</code> will be passed
+	 * @param labelProvider The renderer used to format the list holder's items
+	 * @param helpId The topic help ID to be registered with this pane
+	 * @param parentManagePane <code>true</code> to have the parent pane manage
+	 * the enabled state of this pane
+	 */
+	protected AddRemovePane(Pane<? extends T> parentPane,
+	                        Composite parent,
+	                        Adapter adapter,
+	                        ListValueModel<?> listHolder,
+	                        WritablePropertyValueModel<?> selectedItemHolder,
+	                        IBaseLabelProvider labelProvider,
+	                        String helpId, 
+	                        boolean parentManagePane) {
+
+		super(parentPane, parent, true, parentManagePane);
 
 		initialize(
 			adapter,
@@ -132,7 +166,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	 * one item or no items are selected, then <code>null</code> will be passed
 	 * @param labelProvider The renderer used to format the list holder's items
 	 */
-	protected AddRemovePane(AbstractPane<?> parentPane,
+	protected AddRemovePane(Pane<?> parentPane,
 	                        PropertyValueModel<? extends T> subjectHolder,
 	                        Composite parent,
 	                        Adapter adapter,
@@ -165,7 +199,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	 * @param labelProvider The renderer used to format the list holder's items
 	 * @param helpId The topic help ID to be registered with this pane
 	 */
-	protected AddRemovePane(AbstractPane<?> parentPane,
+	protected AddRemovePane(Pane<?> parentPane,
 	                        PropertyValueModel<? extends T> subjectHolder,
 	                        Composite parent,
 	                        Adapter adapter,
@@ -235,8 +269,8 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	/**
 	 * @category Add
 	 */
-	protected Button buildAddButton(Composite parent) {
-		return buildButton(
+	protected Button addAddButton(Composite parent) {
+		return addUnmanagedButton(
 			parent,
 			adapter.addButtonText(),
 			buildAddItemAction()
@@ -337,8 +371,8 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	/**
 	 * @category Option
 	 */
-	protected Button buildOptionalButton(Composite container) {
-		return buildButton(
+	protected Button addOptionalButton(Composite container) {
+		return addUnmanagedButton(
 			container,
 			adapter.optionalButtonText(),
 			buildOptionalAction()
@@ -348,8 +382,8 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	/**
 	 * @category Add
 	 */
-	protected Button buildRemoveButton(Composite parent) {
-		return buildButton(
+	protected Button addRemoveButton(Composite parent) {
+		return addUnmanagedButton(
 			parent,
 			adapter.removeButtonText(),
 			buildRemoveItemsAction()
@@ -463,7 +497,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	 */
 	protected void initializeButtonPane(Composite container, String helpId) {
 
-		container = buildSubPane(container);
+		container = addSubPane(container);
 
 		GridData gridData = new GridData();
 		gridData.grabExcessVerticalSpace = true;
@@ -471,35 +505,32 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		container.setLayoutData(gridData);
 
 		// Add button
-		addButton = buildAddButton(container);
-		addAlignRight(addButton);
-		removeFromEnablementControl(addButton);
+		this.addButton = addAddButton(container);
+		addAlignRight(this.addButton);
 
 		// Custom button
 		addCustomButtonAfterAddButton(container, helpId);
 
 		// Optional button
-		if (adapter.hasOptionalButton()) {
-			optionalButton = buildOptionalButton(container);
-			removeFromEnablementControl(optionalButton);
-			addAlignRight(optionalButton);
+		if (this.adapter.hasOptionalButton()) {
+			this.optionalButton = addOptionalButton(container);
+			addAlignRight(this.optionalButton);
 		}
 
 		// Custom button
 		addCustomButtonAfterOptionalButton(container, helpId);
 
 		// Remove button
-		removeButton = buildRemoveButton(container);
-		removeFromEnablementControl(removeButton);
+		removeButton = addRemoveButton(container);
 		addAlignRight(removeButton);
 
 		// Update the help topic ID
 		if (helpId != null) {
-			helpSystem().setHelp(addButton, helpId);
-			helpSystem().setHelp(removeButton, helpId);
+			getHelpSystem().setHelp(addButton, helpId);
+			getHelpSystem().setHelp(removeButton, helpId);
 
 			if (optionalButton != null) {
-				helpSystem().setHelp(optionalButton, helpId);
+				getHelpSystem().setHelp(optionalButton, helpId);
 			}
 		}
 	}
@@ -534,7 +565,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 			helpId);
 
 		initializeButtonPane(container, helpId);
-		enableWidgets(subject() != null);
+		enableWidgets(getSubject() != null);
 	}
 
 	/**
@@ -542,7 +573,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-		this.container = buildSubPane(container, 2, 0, 0, 0, 0);
+		this.container = addSubPane(container, 2, 0, 0, 0, 0);
 	}
 
 	/**
@@ -608,7 +639,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	protected void updateAddButton(Button addButton) {
 		addButton.setEnabled(
 			enabled &&
-			subject() != null
+			getSubject() != null
 		);
 	}
 

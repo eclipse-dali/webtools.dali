@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.connection;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -22,9 +22,9 @@ import org.eclipse.swt.widgets.Composite;
  *  JdbcWriteConnectionPropertiesComposite
  */
 @SuppressWarnings("nls")
-public class JdbcWriteConnectionPropertiesComposite extends AbstractPane<Connection>
+public class JdbcWriteConnectionPropertiesComposite extends Pane<Connection>
 {
-	public JdbcWriteConnectionPropertiesComposite(AbstractPane<Connection> parentComposite, Composite parent) {
+	public JdbcWriteConnectionPropertiesComposite(Pane<Connection> parentComposite, Composite parent) {
 
 		super(parentComposite, parent, false);
 	}
@@ -32,7 +32,7 @@ public class JdbcWriteConnectionPropertiesComposite extends AbstractPane<Connect
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		container = this.buildSection(
+		container = this.addSection(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_writeConnectionsSectionTitle
 		);
@@ -46,7 +46,7 @@ public class JdbcWriteConnectionPropertiesComposite extends AbstractPane<Connect
 		// This will add space to have the same layout than read connection pool
 		Button space = this.getWidgetFactory().createCheckBox(container, "m");
 		Point size = space.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-		container = this.buildSubPane(container, size.y + 5);
+		container = this.addSubPane(container, size.y + 5);
 		space.dispose();
 
 		// Write Connections Minimum

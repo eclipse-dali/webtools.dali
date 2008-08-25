@@ -14,7 +14,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.ui.internal.util.LabeledLabel;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -31,9 +31,9 @@ import org.eclipse.swt.widgets.Spinner;
  *  CacheStatementsPropertiesComposite
  */
 @SuppressWarnings("nls")
-public class CacheStatementsPropertiesComposite extends AbstractPane<Connection>
+public class CacheStatementsPropertiesComposite extends Pane<Connection>
 {
-	public CacheStatementsPropertiesComposite(AbstractPane<Connection> parentComposite, Composite parent) {
+	public CacheStatementsPropertiesComposite(Pane<Connection> parentComposite, Composite parent) {
 
 		super(parentComposite, parent);
 	}
@@ -107,9 +107,9 @@ public class CacheStatementsPropertiesComposite extends AbstractPane<Connection>
 		};
 	}
 
-	private Label buildDefaultCacheStatementsSizeLabel(Composite container) {
+	private Label addDefaultCacheStatementsSizeLabel(Composite container) {
 
-		Label label = buildLabel(
+		Label label = addUnmanagedLabel(
 			container,
 			EclipseLinkUiMessages.DefaultWithoutValue
 		);
@@ -143,24 +143,25 @@ public class CacheStatementsPropertiesComposite extends AbstractPane<Connection>
 
 		WritablePropertyValueModel<Boolean> cacheStatementsHolder = buildCacheStatementsHolder();
 
-		TriStateCheckBox checkBox = this.buildTriStateCheckBox(
+		TriStateCheckBox checkBox = this.addTriStateCheckBox(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_cacheStatementsLabel,
 			cacheStatementsHolder,
 			null
 		);
 
-		Spinner spinner = this.buildSpinner(
+		Spinner spinner = this.addUnmanagedSpinner(
 			container,
 			this.buildCacheStatementsSizeHolder(),
 			-1,
 			-1,
-			Integer.MAX_VALUE
+			Integer.MAX_VALUE,
+			null
 		);
 
-		Label label = this.buildDefaultCacheStatementsSizeLabel(container);
+		Label label = this.addDefaultCacheStatementsSizeLabel(container);
 
-		this.buildLabeledComposite(
+		this.addLabeledComposite(
 			container,
 			checkBox.getCheckBox(),
 			(spinner.getParent() == container) ? spinner : spinner.getParent(),

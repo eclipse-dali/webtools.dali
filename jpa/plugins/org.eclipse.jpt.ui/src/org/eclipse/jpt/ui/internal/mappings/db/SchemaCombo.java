@@ -14,7 +14,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public abstract class SchemaCombo<T extends JpaNode> extends AbstractDatabaseObjectCombo<T>
+public abstract class SchemaCombo<T extends JpaNode> extends DatabaseObjectCombo<T>
 {
 	/**
 	 * Creates a new <code>SchemaCombo</code>.
@@ -33,7 +33,7 @@ public abstract class SchemaCombo<T extends JpaNode> extends AbstractDatabaseObj
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public SchemaCombo(AbstractPane<? extends T> parentPane,
+	public SchemaCombo(Pane<? extends T> parentPane,
 	                   Composite parent)
 	{
 		super(parentPane, parent);
@@ -46,7 +46,7 @@ public abstract class SchemaCombo<T extends JpaNode> extends AbstractDatabaseObj
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public SchemaCombo(AbstractPane<?> parentPane,
+	public SchemaCombo(Pane<?> parentPane,
 	                   PropertyValueModel<? extends T> subjectHolder,
 	                   Composite parent)
 	{
@@ -69,7 +69,7 @@ public abstract class SchemaCombo<T extends JpaNode> extends AbstractDatabaseObj
 
 	@Override
 	protected Iterator<String> values() {
-		Database db = this.database();
+		Database db = this.getDatabase();
 		return (db == null) ? EmptyIterator.<String>instance() : db.schemaNames();
 	}
 

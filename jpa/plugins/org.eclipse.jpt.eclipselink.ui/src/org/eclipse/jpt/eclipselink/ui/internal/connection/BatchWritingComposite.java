@@ -14,14 +14,14 @@ import java.util.Collection;
 import org.eclipse.jpt.eclipselink.core.internal.context.connection.BatchWriting;
 import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * BatchWritingComposite
  */
-public class BatchWritingComposite extends AbstractFormPane<Connection>
+public class BatchWritingComposite extends FormPane<Connection>
 {
 	/**
 	 * Creates a new <code>BatchWritingComposite</code>.
@@ -32,13 +32,13 @@ public class BatchWritingComposite extends AbstractFormPane<Connection>
 	 *            The parent container
 	 */
 	public BatchWritingComposite(
-					AbstractFormPane<? extends Connection> parentComposite, 
+					FormPane<? extends Connection> parentComposite, 
 					Composite parent) {
 
 		super( parentComposite, parent);
 	}
 
-	private EnumFormComboViewer<Connection, BatchWriting> buildBatchWritingCombo(Composite container) {
+	private EnumFormComboViewer<Connection, BatchWriting> addBatchWritingCombo(Composite container) {
 		return new EnumFormComboViewer<Connection, BatchWriting>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -47,13 +47,13 @@ public class BatchWritingComposite extends AbstractFormPane<Connection>
 			}
 
 			@Override
-			protected BatchWriting[] choices() {
+			protected BatchWriting[] getChoices() {
 				return BatchWriting.values();
 			}
 
 			@Override
-			protected BatchWriting defaultValue() {
-				return subject().getDefaultBatchWriting();
+			protected BatchWriting getDefaultValue() {
+				return getSubject().getDefaultBatchWriting();
 			}
 
 			@Override
@@ -63,12 +63,12 @@ public class BatchWritingComposite extends AbstractFormPane<Connection>
 
 			@Override
 			protected BatchWriting getValue() {
-				return subject().getBatchWriting();
+				return getSubject().getBatchWriting();
 			}
 
 			@Override
 			protected void setValue(BatchWriting value) {
-				subject().setBatchWriting(value);
+				getSubject().setBatchWriting(value);
 			}
 		};
 	}
@@ -76,10 +76,10 @@ public class BatchWritingComposite extends AbstractFormPane<Connection>
 	@Override
 	protected void initializeLayout( Composite container) {
 
-		this.buildLabeledComposite(
+		this.addLabeledComposite(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_batchWritingLabel,
-			this.buildBatchWritingCombo( container),
+			this.addBatchWritingCombo( container),
 			null		// TODO IJpaHelpContextIds.
 		);
 	}

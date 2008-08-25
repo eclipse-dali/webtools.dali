@@ -13,7 +13,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMes
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.ui.internal.util.LabeledLabel;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Spinner;
  * @version 2.1
  * @since 2.1
  */
-public class CacheSizeComposite extends AbstractFormPane<EclipseLinkCaching> {
+public class CacheSizeComposite extends FormPane<EclipseLinkCaching> {
 
 	/**
 	 * Creates a new <code>CacheSizeComposite</code>.
@@ -48,7 +48,7 @@ public class CacheSizeComposite extends AbstractFormPane<EclipseLinkCaching> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public CacheSizeComposite(AbstractFormPane<? extends EclipseLinkCaching> parentPane,
+	public CacheSizeComposite(FormPane<? extends EclipseLinkCaching> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent);
@@ -58,15 +58,15 @@ public class CacheSizeComposite extends AbstractFormPane<EclipseLinkCaching> {
 	protected void initializeLayout(Composite container) {
 
 		// Size widgets
-		Spinner sizeSpinner = buildLabeledSpinner(
+		Spinner sizeSpinner = addLabeledSpinner(
 			container,
 			EclipseLinkUiMappingsMessages.CacheSizeComposite_size,
 			buildSizeHolder(),
 			-1,
 			-1,
 			Integer.MAX_VALUE,
-			buildDefaultSizeLabel(container)//,
-			//TODO JpaHelpContextIds.MAPPING_COLUMN_LENGTH
+			addDefaultSizeLabel(container),
+			null//TODO JpaHelpContextIds.MAPPING_COLUMN_LENGTH
 		);
 
 		updateGridData(container, sizeSpinner);
@@ -110,9 +110,9 @@ public class CacheSizeComposite extends AbstractFormPane<EclipseLinkCaching> {
 		};
 	}
 
-	private Control buildDefaultSizeLabel(Composite container) {
+	private Control addDefaultSizeLabel(Composite container) {
 
-		Label label = buildLabel(
+		Label label = addLabel(
 			container,
 			JptUiMappingsMessages.DefaultWithoutValue
 		);
@@ -132,7 +132,7 @@ public class CacheSizeComposite extends AbstractFormPane<EclipseLinkCaching> {
 			@Override
 			protected String transform(Integer value) {
 
-				Integer defaultValue = (subject() != null) ? subject().getDefaultSize() :
+				Integer defaultValue = (getSubject() != null) ? getSubject().getDefaultSize() :
 								EclipseLinkCaching.DEFAULT_SIZE;
 
 				return NLS.bind(

@@ -22,7 +22,7 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
@@ -67,7 +67,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractFormPane<SecondaryTable>
+public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends FormPane<SecondaryTable>
 {
 	private WritablePropertyValueModel<PrimaryKeyJoinColumn> joinColumnHolder;
 
@@ -78,7 +78,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public PrimaryKeyJoinColumnsInSecondaryTableComposite(AbstractFormPane<?> parentPane,
+	public PrimaryKeyJoinColumnsInSecondaryTableComposite(FormPane<?> parentPane,
 	                                                      PropertyValueModel<? extends SecondaryTable> subjectHolder,
 	                                                      Composite parent) {
 
@@ -111,7 +111,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 	private void addPrimaryKeyJoinColumn() {
 
 		PrimaryKeyJoinColumnInSecondaryTableDialog dialog =
-			new PrimaryKeyJoinColumnInSecondaryTableDialog(shell(), subject(), null);
+			new PrimaryKeyJoinColumnInSecondaryTableDialog(getShell(), getSubject(), null);
 
 		dialog.openDialog(buildAddPrimaryKeyJoinColumnPostExecution());
 	}
@@ -120,7 +120,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 		return new PostExecution<PrimaryKeyJoinColumnInSecondaryTableDialog>() {
 			public void execute(PrimaryKeyJoinColumnInSecondaryTableDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					addJoinColumn(dialog.subject());
+					addJoinColumn(dialog.getSubject());
 				}
 			}
 		};
@@ -157,7 +157,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 		return new PostExecution<PrimaryKeyJoinColumnInSecondaryTableDialog>() {
 			public void execute(PrimaryKeyJoinColumnInSecondaryTableDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					editPrimaryKeyJoinColumn(dialog.subject());
+					editPrimaryKeyJoinColumn(dialog.getSubject());
 				}
 			}
 		};
@@ -286,8 +286,8 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 
 		PrimaryKeyJoinColumnInSecondaryTableDialog dialog =
 			new PrimaryKeyJoinColumnInSecondaryTableDialog(
-				shell(),
-				subject(),
+				getShell(),
+				getSubject(),
 				joinColumn
 			);
 
@@ -314,16 +314,17 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 	protected void initializeLayout(Composite container) {
 
 		// Primary Key Join Columns group pane
-		Group groupPane = buildTitledPane(
+		Group groupPane = addTitledGroup(
 			container,
 			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_primaryKeyJoinColumn
 		);
 
 		// Override Default check box
-		Button button = buildCheckBox(
-			buildSubPane(groupPane, 8),
+		Button button = addCheckBox(
+			addSubPane(groupPane, 8),
 			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_overrideDefaultPrimaryKeyJoinColumns,
-			buildOverrideDefaultJoinColumnHolder()
+			buildOverrideDefaultJoinColumnHolder(),
+			null
 		);
 
 		installOverrideDefaultButtonEnabler(button);
@@ -362,7 +363,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 		int[] selectedIndices = listSelectionModel.selectedIndices();
 
 		for (int index = selectedIndices.length; --index >= 0; ) {
-			subject().removeSpecifiedPrimaryKeyJoinColumn(selectedIndices[index]);
+			getSubject().removeSpecifiedPrimaryKeyJoinColumn(selectedIndices[index]);
 		}
 	}
 
@@ -375,7 +376,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 		setPopulating(true);
 
 		try {
-			SecondaryTable secondaryTable = subject();
+			SecondaryTable secondaryTable = getSubject();
 
 			// Add a join column by creating a specified one using the default
 			// one if it exists
@@ -414,10 +415,10 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 
 		@Override
 		protected Boolean buildValue() {
-			if (subject() == null) {
+			if (getSubject() == null) {
 				return Boolean.FALSE;
 			}
-			return !subject().isVirtual() && listHolder.size() > 0;
+			return !getSubject().isVirtual() && listHolder.size() > 0;
 		}
 
 		public void setValue(Boolean value) {

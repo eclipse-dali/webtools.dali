@@ -21,7 +21,7 @@ import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.mappings.details.OrmPersistentAttributeMapAsComposite;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -128,12 +128,12 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		ArrayList<AbstractPane<?>> panes = new ArrayList<AbstractPane<?>>(2);
+		ArrayList<Pane<?>> panes = new ArrayList<Pane<?>>(2);
 
 		// Map As composite
 		OrmPersistentAttributeMapAsComposite mapAsPane = new OrmPersistentAttributeMapAsComposite(
 			this,
-			buildSubPane(container, 0, 0, 5, 0)
+			addSubPane(container, 0, 0, 5, 0)
 		);
 
 		panes.add(mapAsPane);
@@ -158,7 +158,7 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 		installPaneEnabler(panes);
 	}
 
-	private void installPaneEnabler(ArrayList<AbstractPane<?>> panes) {
+	private void installPaneEnabler(ArrayList<Pane<?>> panes) {
 		new PaneEnabler(buildPaneEnablerHolder(), panes);
 	}
 
@@ -172,8 +172,8 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 		}
 		boolean enabled = false;
 
-		if (subject() != null && subject().getParent() != null) {
-			enabled = !subject().isVirtual();
+		if (getSubject() != null && getSubject().getParent() != null) {
+			enabled = !getSubject().isVirtual();
 		}
 
 		mappingComposite.enableWidgets(enabled);

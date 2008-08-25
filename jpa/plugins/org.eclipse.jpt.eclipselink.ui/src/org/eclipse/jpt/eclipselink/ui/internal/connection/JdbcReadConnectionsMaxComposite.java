@@ -13,7 +13,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.ui.internal.util.LabeledLabel;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Spinner;
  * JdbcReadConnectionsMaxComposite
  */
 @SuppressWarnings("nls")
-public class JdbcReadConnectionsMaxComposite extends AbstractPane<Connection>
+public class JdbcReadConnectionsMaxComposite extends Pane<Connection>
 {
 	/**
 	 * Creates a new <code>JdbcReadConnectionsMaxComposite</code>.
@@ -39,7 +39,7 @@ public class JdbcReadConnectionsMaxComposite extends AbstractPane<Connection>
 	 * @param parent
 	 *            The parent container
 	 */
-	public JdbcReadConnectionsMaxComposite(AbstractPane<Connection> parentComposite,
+	public JdbcReadConnectionsMaxComposite(Pane<Connection> parentComposite,
 	                                 Composite parent) {
 
 		super(parentComposite, parent);
@@ -88,9 +88,9 @@ public class JdbcReadConnectionsMaxComposite extends AbstractPane<Connection>
 		};
 	}
 
-	private Control buildDefaultReadConnectionsMaxLabel(Composite container) {
+	private Control addDefaultReadConnectionsMaxLabel(Composite container) {
 
-		Label label = buildLabel(
+		Label label = addLabel(
 			container,
 			EclipseLinkUiMessages.DefaultWithoutValue
 		);
@@ -122,14 +122,15 @@ public class JdbcReadConnectionsMaxComposite extends AbstractPane<Connection>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		Spinner spinner = this.buildLabeledSpinner(
+		Spinner spinner = this.addLabeledSpinner(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsMaxLabel,
 			this.buildReadConnectionsMaxHolder(),
 			-1,
 			-1,
 			Integer.MAX_VALUE,
-			this.buildDefaultReadConnectionsMaxLabel(container)
+			this.addDefaultReadConnectionsMaxLabel(container),
+			null
 		);
 
 		updateGridData(container, spinner);

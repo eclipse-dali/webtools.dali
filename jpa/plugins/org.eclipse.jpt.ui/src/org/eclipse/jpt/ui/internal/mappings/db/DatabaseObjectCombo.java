@@ -25,7 +25,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -50,7 +50,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends AbstractPane<T>
+public abstract class DatabaseObjectCombo<T extends JpaNode> extends Pane<T>
 {
 	/**
 	 * The main widget of this pane.
@@ -69,7 +69,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	protected AbstractDatabaseObjectCombo(AbstractPane<? extends T> parentPane,
+	protected DatabaseObjectCombo(Pane<? extends T> parentPane,
 	                                      Composite parent) {
 
 		super(parentPane, parent);
@@ -82,7 +82,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	protected AbstractDatabaseObjectCombo(AbstractPane<?> parentPane,
+	protected DatabaseObjectCombo(Pane<?> parentPane,
 	                                      PropertyValueModel<? extends T> subjectHolder,
 	                                      Composite parent) {
 
@@ -96,7 +96,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	protected AbstractDatabaseObjectCombo(PropertyValueModel<? extends T> subjectHolder,
+	protected DatabaseObjectCombo(PropertyValueModel<? extends T> subjectHolder,
 	                                      Composite parent,
 	                                      WidgetFactory widgetFactory)
 	{
@@ -119,7 +119,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 						log(Tracing.UI_DB, "catalogChanged: " + catalog.getName());
 
 						if (!getCombo().isDisposed()) {
-							AbstractDatabaseObjectCombo.this.catalogChanged(catalog);
+							DatabaseObjectCombo.this.catalogChanged(catalog);
 						}
 					}
 				});
@@ -132,7 +132,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 						log(Tracing.UI_DB, "closed");
 
 						if (!getCombo().isDisposed()) {
-							AbstractDatabaseObjectCombo.this.repopulate();
+							DatabaseObjectCombo.this.repopulate();
 						}
 					}
 				});
@@ -146,7 +146,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 						log(Tracing.UI_DB, "columnChanged: " + column.getName());
 
 						if (!getCombo().isDisposed()) {
-							AbstractDatabaseObjectCombo.this.columnChanged(column);
+							DatabaseObjectCombo.this.columnChanged(column);
 						}
 					}
 				});
@@ -166,7 +166,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 						log(Tracing.UI_DB, "foreignKeyChanged: " + foreignKey.getName());
 
 						if (!getCombo().isDisposed()) {
-							AbstractDatabaseObjectCombo.this.foreignKeyChanged(foreignKey);
+							DatabaseObjectCombo.this.foreignKeyChanged(foreignKey);
 						}
 					}
 				});
@@ -178,7 +178,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 						log(Tracing.UI_DB, "modified");
 
 						if (!getCombo().isDisposed()) {
-							AbstractDatabaseObjectCombo.this.repopulate();
+							DatabaseObjectCombo.this.repopulate();
 						}
 					}
 				});
@@ -196,7 +196,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 						log(Tracing.UI_DB, "opened");
 
 						if (!getCombo().isDisposed()) {
-							AbstractDatabaseObjectCombo.this.repopulate();
+							DatabaseObjectCombo.this.repopulate();
 						}
 					}
 				});
@@ -210,7 +210,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 						log(Tracing.UI_DB, "schemaChanged: " + schema.getName());
 
 						if (!getCombo().isDisposed()) {
-							AbstractDatabaseObjectCombo.this.schemaChanged(schema);
+							DatabaseObjectCombo.this.schemaChanged(schema);
 						}
 					}
 				});
@@ -224,7 +224,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 						log(Tracing.UI_DB, "sequenceChanged: " + sequence.getName());
 
 						if (!getCombo().isDisposed()) {
-							AbstractDatabaseObjectCombo.this.sequenceChanged(sequence);
+							DatabaseObjectCombo.this.sequenceChanged(sequence);
 						}
 					}
 				});
@@ -238,7 +238,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 						log(Tracing.UI_DB, "tableChanged: " + table.getName());
 
 						if (!getCombo().isDisposed()) {
-							AbstractDatabaseObjectCombo.this.tableChanged(table);
+							DatabaseObjectCombo.this.tableChanged(table);
 						}
 					}
 				});
@@ -308,7 +308,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 * @return Whether the JPA project's connection profile is active.
 	 */
 	protected final boolean connectionProfileIsActive() {
-		JpaProject jpaProject = this.jpaProject();
+		JpaProject jpaProject = this.getJpaProject();
 		return (jpaProject == null) ? false : jpaProject.getDataSource().connectionProfileIsActive();
 	}
 
@@ -318,8 +318,8 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 * @return The connection set in the project's properties or <code>null</code>
 	 * if it could not being retrieved
 	 */
-	protected final ConnectionProfile connectionProfile() {
-		JpaProject jpaProject = this.jpaProject();
+	protected final ConnectionProfile getConnectionProfile() {
+		JpaProject jpaProject = this.getJpaProject();
 		return (jpaProject == null) ? null : jpaProject.getConnectionProfile();
 	}
 
@@ -329,8 +329,8 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 * @return The online database or a <code>null</code> instance if no
 	 * connection profile was set or the
 	 */
-	protected final Database database() {
-		ConnectionProfile cp = this.connectionProfile();
+	protected final Database getDatabase() {
+		ConnectionProfile cp = this.getConnectionProfile();
 		return (cp == null) ? null : cp.getDatabase();
 	}
 
@@ -340,14 +340,11 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 *
 	 * @return The value that represents the default when no value was specified
 	 */
-	protected abstract String defaultValue();
+	protected abstract String getDefaultValue();
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void disengageListeners(T subject) {
-		ConnectionProfile cp = this.connectionProfile();
+		ConnectionProfile cp = this.getConnectionProfile();
 		if (cp != null) {
 			cp.removeConnectionListener(this.connectionListener);
 		}
@@ -355,9 +352,6 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 		super.disengageListeners(subject);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void doPopulate() {
 
@@ -365,9 +359,6 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 		populateCombo();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public void enableWidgets(boolean enabled) {
 
@@ -378,14 +369,11 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void engageListeners(T subject) {
 		super.engageListeners(subject);
 
-		ConnectionProfile cp = this.connectionProfile();
+		ConnectionProfile cp = this.getConnectionProfile();
 		if (cp != null) {
 			cp.addConnectionListener(this.connectionListener);
 		}
@@ -403,22 +391,16 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 		return this.combo;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initialize() {
 		super.initialize();
 		this.connectionListener = buildConnectionListener();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		this.combo = buildEditableCCombo(container);
+		this.combo = addEditableCCombo(container);
 		this.combo.addModifyListener(buildModifyListener());
 		SWTUtil.attachDefaultValueHandler(this.combo);
 	}
@@ -439,13 +421,10 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 *
 	 * @return The JPA project
 	 */
-	protected JpaProject jpaProject() {
-		return subject() == null ? null : subject().getJpaProject();
+	protected JpaProject getJpaProject() {
+		return getSubject() == null ? null : getSubject().getJpaProject();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void log(String flag, String message) {
 
@@ -489,7 +468,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 */
 	private void populateDefaultValue() {
 
-		String defaultValue = (subject() != null) ? defaultValue() : null;
+		String defaultValue = (getSubject() != null) ? getDefaultValue() : null;
 
 		if (defaultValue != null) {
 			combo.add(NLS.bind(
@@ -502,9 +481,6 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
@@ -552,10 +528,10 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 */
 	private void updateSelectedItem() {
 
-		T subject = subject();
+		T subject = getSubject();
 
-		String value         = (subject != null) ? value()        : null;
-		String defaultValue  = (subject != null) ? defaultValue() : null;
+		String value         = (subject != null) ? getValue()        : null;
+		String defaultValue  = (subject != null) ? getDefaultValue() : null;
 		String displayString = JptUiMappingsMessages.ColumnComposite_defaultEmpty;
 
 		if (defaultValue != null) {
@@ -601,7 +577,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 *
 	 * @return The current value
 	 */
-	protected abstract String value();
+	protected abstract String getValue();
 
 	/**
 	 * The selection has changed, update the model if required.
@@ -610,13 +586,13 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 */
 	protected void valueChanged(String value) {
 
-		JpaNode subject = subject();
+		JpaNode subject = getSubject();
 
 		if ((subject == null) && !isBuildSubjectAllowed()) {
 			return;
 		}
 
-		String oldValue = (subject != null) ? value() : null;
+		String oldValue = (subject != null) ? getValue() : null;
 
 		// Check for null value
 		if (StringTools.stringIsEmpty(value)) {

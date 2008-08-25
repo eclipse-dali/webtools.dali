@@ -63,6 +63,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
@@ -80,14 +81,14 @@ import org.eclipse.ui.part.PageBook;
  * are of interest and {@link #propertyChanged(String)} is used to notify the
  * pane when the property has changed.
  *
- * @see AbstractFormPane
- * @see AbstractDialogPane
+ * @see FormPane
+ * @see DialogPane
  *
  * @version 2.0
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class AbstractPane<T extends Model>
+public abstract class Pane<T extends Model>
 {
 	/**
 	 * The listener registered with the subject in order to be notified when a
@@ -100,11 +101,6 @@ public abstract class AbstractPane<T extends Model>
 	 * The container of this composite.
 	 */
 	private Composite container;
-
-	/**
-	 *
-	 */
-	private ArrayList<AbstractPane<?>> internalPanesForEnablementControl;
 
 	/**
 	 * The aligner responsible to align the left controls.
@@ -137,7 +133,7 @@ public abstract class AbstractPane<T extends Model>
 	 * when listeners need to be engaged or disengaged or when to populate its
 	 * widgets.
 	 */
-	private Collection<AbstractPane<?>> subPanes;
+	private Collection<Pane<?>> subPanes;
 
 	/**
 	 * The factory used to create various common widgets.
@@ -149,34 +145,41 @@ public abstract class AbstractPane<T extends Model>
 	 * which will have their enablement state updated when
 	 * {@link #enableWidgets(boolean)} is called.
 	 */
-	private ArrayList<Control> widgets;
+	private ArrayList<Control> managedWidgets;
+	
+	/**
+	 * The collection of <code>Pane</code>s that are displayed in this pane,
+	 * which will have their enablement state updated when
+	 * {@link #enableWidgets(boolean)} is called.
+	 */
+	private ArrayList<Pane<?>> managedSubPanes;
 
 	/**
-	 * Creates a new <code>AbstractSubjectPane</code>.
+	 * Creates a new <code>Pane</code>.
 	 *
 	 * @category Constructor
 	 */
 	@SuppressWarnings("unused")
-	private AbstractPane() {
+	private Pane() {
 		super();
 	}
 
 	/**
-	 * Creates a new <code>AbstractSubjectPane</code>.
+	 * Creates a new <code>Pane</code>.
 	 *
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 *
 	 * @category Constructor
 	 */
-	protected AbstractPane(AbstractPane<? extends T> parentPane,
+	protected Pane(Pane<? extends T> parentPane,
 	                       Composite parent) {
 
 		this(parentPane, parent, true);
 	}
 
 	/**
-	 * Creates a new <code>AbstractSubjectPane</code>.
+	 * Creates a new <code>Pane</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
@@ -187,7 +190,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Constructor
 	 */
-	protected AbstractPane(AbstractPane<? extends T> parentPane,
+	protected Pane(Pane<? extends T> parentPane,
 	                       Composite parent,
 	                       boolean automaticallyAlignWidgets) {
 
@@ -198,7 +201,31 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new <code>AbstractSubjectPane</code>.
+	 * Creates a new <code>Pane</code>.
+	 *
+	 * @param parentPane The parent container of this one
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various widgets
+	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
+	 * this pane aligned with the widgets of the given parent pane;
+	 * <code>false</code> to not align them
+	 *
+	 * @category Constructor
+	 */
+	protected Pane(Pane<? extends T> parentPane,
+	                       Composite parent,
+	                       boolean automaticallyAlignWidgets,
+	                       boolean parentManagePane) {
+
+		this(parentPane,
+		     parentPane.getSubjectHolder(),
+		     parent,
+		     automaticallyAlignWidgets,
+		     parentManagePane);
+	}
+
+	/**
+	 * Creates a new <code>Pane</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of this pane's subject
@@ -206,7 +233,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Constructor
 	 */
-	protected AbstractPane(AbstractPane<?> parentPane,
+	protected Pane(Pane<?> parentPane,
 	                       PropertyValueModel<? extends T> subjectHolder,
 	                       Composite parent) {
 
@@ -214,7 +241,7 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new <code>AbstractSubjectPane</code>.
+	 * Creates a new <code>Pane</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of this pane's subject
@@ -226,7 +253,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Constructor
 	 */
-	protected AbstractPane(AbstractPane<?> parentPane,
+	protected Pane(Pane<?> parentPane,
 	                       PropertyValueModel<? extends T> subjectHolder,
 	                       Composite parent,
 	                       boolean automaticallyAlignWidgets) {
@@ -235,11 +262,38 @@ public abstract class AbstractPane<T extends Model>
 		     parent,
 		     parentPane.getWidgetFactory());
 
-		initialize(parentPane, automaticallyAlignWidgets);
+		initialize(parentPane, automaticallyAlignWidgets, true);
+	}
+	/**
+	 * Creates a new <code>Pane</code>.
+	 *
+	 * @param parentPane The parent container of this one
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various widgets
+	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
+	 * this pane aligned with the widgets of the given parent pane;
+	 * <code>false</code> to not align them
+	 * @param parentManagePane <code>true</code> to have the parent pane manage
+	 * the enabled state of this pane
+	 *
+	 * @category Constructor
+	 */
+	protected Pane(Pane<?> parentPane,
+	                       PropertyValueModel<? extends T> subjectHolder,
+	                       Composite parent,
+	                       boolean automaticallyAlignWidgets, 
+	                       boolean parentManagePane) {
+
+		this(subjectHolder,
+		     parent,
+		     parentPane.getWidgetFactory());
+
+		initialize(parentPane, automaticallyAlignWidgets, parentManagePane);
 	}
 
 	/**
-	 * Creates a new <code>AbstractSubjectPane</code>.
+	 * Creates a new <code>Pane</code>.
 	 *
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
@@ -247,7 +301,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Constructor
 	 */
-	protected AbstractPane(PropertyValueModel<? extends T> subjectHolder,
+	protected Pane(PropertyValueModel<? extends T> subjectHolder,
 	                       Composite parent,
 	                       WidgetFactory widgetFactory) {
 
@@ -258,12 +312,103 @@ public abstract class AbstractPane<T extends Model>
 		try {
 			this.populating = true;
 
-			this.container = this.buildContainer(parent);
+			this.container = this.addContainer(parent);
 			this.initializeLayout(this.container);
 		}
 		finally {
 			this.populating = false;
 		}
+	}
+	
+	/**
+	 * Initializes this <code>Pane</code>.
+	 *
+	 * @category Initialization
+	 */
+	protected void initialize() {
+	}
+
+	/**
+	 * Registers this pane with the parent pane.
+	 *
+	 * @param parentPane The parent pane
+	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
+	 * this pane aligned with the widgets of the given parent pane;
+	 * <code>false</code> to not align them
+	 * @param parentManagePane <code>true</code> to have the parent pane manage
+	 * the enabled state of this pane
+	 *
+	 * @category Initialization
+	 */
+	private void initialize(Pane<?> parentPane,
+	                        boolean automaticallyAlignWidgets,
+	                        boolean parentManagePane) {
+
+		// Register this pane with the parent pane, it will call the methods
+		// automatically (engageListeners(), disengageListeners(), populate(),
+		// dispose(), etc)
+		parentPane.registerSubPane(this);
+
+		if (parentManagePane) {
+			parentPane.manageSubPane(this);
+		}
+		
+		// Align the left and right controls with the controls from the parent
+		// pane
+		if (automaticallyAlignWidgets) {
+			parentPane.leftControlAligner .add(this.leftControlAligner);
+			parentPane.rightControlAligner.add(this.rightControlAligner);
+		}
+	}
+
+	/**
+	 * Initializes this <code>Pane</code>.
+	 *
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param widgetFactory The factory used to create various widgets
+	 *
+	 * @category Initialization
+	 */
+	@SuppressWarnings("unchecked")
+	private void initialize(PropertyValueModel<? extends T> subjectHolder,
+	                        WidgetFactory widgetFactory)
+	{
+		Assert.isNotNull(subjectHolder, "The subject holder cannot be null");
+
+		this.subjectHolder         = (PropertyValueModel<T>) subjectHolder;
+		this.widgetFactory         = widgetFactory;
+		this.subPanes              = new ArrayList<Pane<?>>();
+		this.managedWidgets        = new ArrayList<Control>();
+		this.managedSubPanes       = new ArrayList<Pane<?>>();
+		this.leftControlAligner    = new ControlAligner();
+		this.rightControlAligner   = new ControlAligner();
+		this.subjectChangeListener = this.buildSubjectChangeListener();
+		this.aspectChangeListener  = this.buildAspectChangeListener();
+
+		this.initialize();
+	}
+
+	/**
+	 * Initializes the layout of this pane.
+	 *
+	 * @param container The parent container
+	 *
+	 * @category Layout
+	 */
+	protected abstract void initializeLayout(Composite container);
+
+	private void manageWidget(Control control) {
+		if (this.managedWidgets.contains(control)) {
+			throw new IllegalStateException();
+		}
+		this.managedWidgets.add(control);
+	}
+	
+	private void manageSubPane(Pane<?> subPane) {
+		if (this.managedSubPanes.contains(subPane)) {
+			throw new IllegalStateException();
+		}
+		this.managedSubPanes.add(subPane);
 	}
 
 	/**
@@ -276,7 +421,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final void addAlignLeft(AbstractPane<?> container) {
+	protected final void addAlignLeft(Pane<?> container) {
 		this.leftControlAligner.add(container.leftControlAligner);
 	}
 
@@ -303,7 +448,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final void addAlignRight(AbstractPane<?> container) {
+	protected final void addAlignRight(Pane<?> container) {
 		this.rightControlAligner.add(container.rightControlAligner);
 	}
 
@@ -329,7 +474,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final void addPaneForAlignment(AbstractPane<?> container) {
+	protected final void addPaneForAlignment(Pane<?> container) {
 		addAlignLeft(container);
 		addAlignRight(container);
 	}
@@ -344,19 +489,6 @@ public abstract class AbstractPane<T extends Model>
 	protected void addPropertyNames(Collection<String> propertyNames) {
 	}
 
-	/**
-	 * Indicates that the given <code>Control</code> has its enablement state
-	 * managed by this pane, i.e. through {@link #enableWidgets(boolean)}.
-	 *
-	 * @param control The <code>Control</code> to manage its enablement state
-	 * automatically
-	 *
-	 * @category Layout
-	 */
-	public final void addToEnablementControl(Control control) {
-		control.setData("enablement", null);
-	}
-
 	private PropertyChangeListener buildAspectChangeListener() {
 		return new SWTPropertyChangeListenerWrapper(buildAspectChangeListener_());
 	}
@@ -366,7 +498,7 @@ public abstract class AbstractPane<T extends Model>
 			public void propertyChanged(PropertyChangeEvent e) {
 				//subject() could have changed or is null because of the possibility of
 				//"jumping" on the UI thread here and a selection change occuring
-				if (e.getSource() == subject()) {
+				if (e.getSource() == getSubject()) {
 					updatePane(e.getPropertyName());
 				}
 			}
@@ -383,11 +515,30 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Button buildButton(Composite container,
+	protected final Button addButton(Composite container,
 	                                   String text,
 	                                   final Runnable buttonAction) {
 
-		return this.buildButton(container, text, null, buttonAction);
+		return this.addButton(container, text, null, buttonAction);
+	}
+	
+	/**
+	 * Creates a new unmanaged <code>Button</code> widget.  Unmanaged means 
+	 * that this Pane will not handle the enabling/disabling of this widget.  
+	 * The owning object will handle it with its own PaneEnabler or ControlEnabler.
+	 *
+	 * @param parent The parent container
+	 * @param buttonText The button's text
+	 * @param buttonAction The action to be invoked when the button is pressed
+	 * @return The newly created <code>Button</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Button addUnmanagedButton(Composite container,
+	                                   String text,
+	                                   final Runnable buttonAction) {
+
+		return this.addUnmanagedButton(container, text, null, buttonAction);
 	}
 
 	/**
@@ -401,7 +552,31 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Button buildButton(Composite container,
+	protected final Button addButton(Composite container,
+	                                   String text,
+	                                   String helpId,
+	                                   final Runnable buttonAction) {
+
+		Button button = addUnmanagedButton(container, text, helpId, buttonAction);
+		this.manageWidget(button);
+
+		return button;
+	}
+	
+	/**
+	 * Creates a new unmanaged <code>Button</code> widget.  Unmanaged means 
+	 * that this Pane will not handle the enabling/disabling of this widget.  
+	 * The owning object will handle it with its own PaneEnabler or ControlEnabler.
+	 *
+	 * @param parent The parent container
+	 * @param buttonText The button's text
+	 * @param helpId The topic help ID to be registered for the new check box
+	 * @param buttonAction The action to be invoked when the button is pressed
+	 * @return The newly created <code>Button</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Button addUnmanagedButton(Composite container,
 	                                   String text,
 	                                   String helpId,
 	                                   final Runnable buttonAction) {
@@ -415,7 +590,7 @@ public abstract class AbstractPane<T extends Model>
 		});
 
 		if (helpId != null) {
-			helpSystem().setHelp(button, helpId);
+			getHelpSystem().setHelp(button, helpId);
 		}
 
 		GridData gridData = new GridData();
@@ -434,10 +609,11 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final CCombo buildCCombo(Composite container) {
+	protected final CCombo addCCombo(Composite container) {
 
 		CCombo combo = this.widgetFactory.createCCombo(container);
 		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		this.manageWidget(combo);
 		return combo;
 	}
 
@@ -451,11 +627,11 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final <V> CCombo buildCCombo(Composite container,
+	protected final <V> CCombo addCCombo(Composite container,
 	                                       ListValueModel<V> listHolder,
 	                                       WritablePropertyValueModel<V> selectedItemHolder) {
 
-		return this.buildCCombo(
+		return this.addCCombo(
 			container,
 			listHolder,
 			selectedItemHolder,
@@ -475,12 +651,12 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final <V> CCombo buildCCombo(Composite container,
+	protected final <V> CCombo addCCombo(Composite container,
 	                                       ListValueModel<V> listHolder,
 	                                       WritablePropertyValueModel<V> selectedItemHolder,
 	                                       StringConverter<V> stringConverter) {
 
-		CCombo combo = this.buildCCombo(container);
+		CCombo combo = this.addCCombo(container);
 
 		CComboModelAdapter.adapt(
 			listHolder,
@@ -502,30 +678,13 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final ComboViewer buildCComboViewer(Composite container,
+	protected final ComboViewer addCComboViewer(Composite container,
 	                                              IBaseLabelProvider labelProvider) {
 
-		CCombo combo = this.buildCCombo(container);
+		CCombo combo = this.addCCombo(container);
 		ComboViewer viewer = new ComboViewer(combo);
 		viewer.setLabelProvider(labelProvider);
 		return viewer;
-	}
-
-	/**
-	 * Creates a new check box using the given information.
-	 *
-	 * @param parent The parent container
-	 * @param buttonText The button's text
-	 * @param booleanHolder The holder of the selection state
-	 * @return The newly created <code>Button</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Button buildCheckBox(Composite parent,
-	                                     String buttonText,
-	                                     WritablePropertyValueModel<Boolean> booleanHolder) {
-
-		return this.buildCheckBox(parent, buttonText, booleanHolder, null);
 	}
 
 	/**
@@ -539,12 +698,39 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Button buildCheckBox(Composite parent,
+	protected final Button addCheckBox(Composite parent,
 	                                     String buttonText,
 	                                     WritablePropertyValueModel<Boolean> booleanHolder,
 	                                     String helpId) {
 
-		return this.buildToggleButton(
+		return this.addToggleButton(
+			parent,
+			buttonText,
+			booleanHolder,
+			helpId,
+			SWT.CHECK
+		);
+	}
+	
+	/**
+	 * Creates a new unmanaged checkbox <code>Button</code> widget.  Unmanaged means 
+	 * that this Pane will not handle the enabling/disabling of this widget.  
+	 * The owning object will handle it with its own PaneEnabler or ControlEnabler.
+	 *
+	 * @param parent The parent container
+	 * @param buttonText The button's text
+	 * @param booleanHolder The holder of the selection state
+	 * @param helpId The topic help ID to be registered for the new check box
+	 * @return The newly created <code>Button</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Button addUnmanagedCheckBox(Composite parent,
+	                                     String buttonText,
+	                                     WritablePropertyValueModel<Boolean> booleanHolder,
+	                                     String helpId) {
+
+		return this.addUnmanagedToggleButton(
 			parent,
 			buttonText,
 			booleanHolder,
@@ -563,10 +749,10 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildCollapsableSection(Composite container,
+	protected final Composite addCollapsableSection(Composite container,
 	                                                  String sectionText) {
 
-		return this.buildCollapsableSection(
+		return this.addCollapsableSection(
 			container,
 			sectionText,
 			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
@@ -586,12 +772,12 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	private Composite buildCollapsableSection(Composite container,
+	private Composite addCollapsableSection(Composite container,
 	                                          String sectionText,
 	                                          int type,
 	                                          PropertyValueModel<Boolean> expandedStateHolder) {
 
-		Composite subPane = this.buildSection(
+		Composite subPane = this.addSection(
 			container,
 			sectionText,
 			ExpandableComposite.TWISTIE | type
@@ -623,11 +809,11 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildCollapsableSection(Composite container,
+	protected final Composite addCollapsableSection(Composite container,
 	                                                  String sectionText,
 	                                                  PropertyValueModel<Boolean> expandedStateHolder) {
 
-		return this.buildCollapsableSection(
+		return this.addCollapsableSection(
 			container,
 			sectionText,
 			ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE,
@@ -647,11 +833,11 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildCollapsableSubSection(Composite container,
+	protected final Composite addCollapsableSubSection(Composite container,
 	                                          String sectionText,
 	                                          PropertyValueModel<Boolean> expandedStateHolder) {
 
-		return this.buildCollapsableSection(
+		return this.addCollapsableSection(
 			container,
 			sectionText,
 			SWT.NULL,
@@ -667,33 +853,12 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Combo buildCombo(Composite container) {
+	protected final Combo addCombo(Composite container) {
 
 		Combo combo = this.widgetFactory.createCombo(container);
 		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		this.manageWidget(combo);
 		return combo;
-	}
-
-	/**
-	 * Creates a new non-editable <code>Combo</code>.
-	 *
-	 * @param container The parent container
-	 * @param listHolder The <code>ListValueHolder</code>
-	 * @param selectedItemHolder The holder of the selected item
-	 * @return The newly created <code>Combo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final <V> Combo buildCombo(Composite container,
-	                                     ListValueModel<V> listHolder,
-	                                     WritablePropertyValueModel<V> selectedItemHolder) {
-
-		return this.buildCombo(
-			container,
-			listHolder,
-			selectedItemHolder,
-			StringConverter.Default.<V>instance()
-		);
 	}
 
 	/**
@@ -708,12 +873,12 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final <V> Combo buildCombo(Composite container,
+	protected final <V> Combo addCombo(Composite container,
 	                                     ListValueModel<V> listHolder,
 	                                     WritablePropertyValueModel<V> selectedItemHolder,
 	                                     StringConverter<V> stringConverter) {
 
-		Combo combo = this.buildCombo(container);
+		Combo combo = this.addCombo(container);
 
 		ComboModelAdapter.adapt(
 			listHolder,
@@ -735,10 +900,10 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final ComboViewer buildComboViewer(Composite container,
+	protected final ComboViewer addComboViewer(Composite container,
 	                                             IBaseLabelProvider labelProvider) {
 
-		Combo combo = this.buildCombo(container);
+		Combo combo = this.addCombo(container);
 		ComboViewer viewer = new ComboViewer(combo);
 		viewer.setLabelProvider(labelProvider);
 		return viewer;
@@ -754,8 +919,8 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected Composite buildContainer(Composite parent) {
-		return this.buildSubPane(parent);
+	protected Composite addContainer(Composite parent) {
+		return this.addSubPane(parent);
 	}
 
 	/**
@@ -766,33 +931,12 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final CCombo buildEditableCCombo(Composite container) {
+	protected final CCombo addEditableCCombo(Composite container) {
 
 		CCombo combo = this.widgetFactory.createEditableCCombo(container);
 		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		this.manageWidget(combo);
 		return combo;
-	}
-
-	/**
-	 * Creates a new editable <code>CCombo</code>.
-	 *
-	 * @param container The parent container
-	 * @param listHolder The <code>ListValueHolder</code>
-	 * @param selectedItemHolder The holder of the selected item
-	 * @return The newly created <code>CCombo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final <V> CCombo buildEditableCCombo(Composite container,
-	                                               ListValueModel<V> listHolder,
-	                                               WritablePropertyValueModel<V> selectedItemHolder) {
-
-		return this.buildEditableCCombo(
-			container,
-			listHolder,
-			selectedItemHolder,
-			StringConverter.Default.<V>instance()
-		);
 	}
 
 	/**
@@ -807,12 +951,12 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final <V> CCombo buildEditableCCombo(Composite container,
+	protected final <V> CCombo addEditableCCombo(Composite container,
 	                                               ListValueModel<V> listHolder,
 	                                               WritablePropertyValueModel<V> selectedItemHolder,
 	                                               StringConverter<V> stringConverter) {
 
-		CCombo combo = this.buildEditableCCombo(container);
+		CCombo combo = this.addEditableCCombo(container);
 
 		CComboModelAdapter.adapt(
 			listHolder,
@@ -834,10 +978,10 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final ComboViewer buildEditableCComboViewer(Composite container,
+	protected final ComboViewer addEditableCComboViewer(Composite container,
 	                                                      IBaseLabelProvider labelProvider) {
 
-		CCombo combo = this.buildEditableCCombo(container);
+		CCombo combo = this.addEditableCCombo(container);
 		ComboViewer viewer = new ComboViewer(combo);
 		viewer.setLabelProvider(labelProvider);
 		return viewer;
@@ -851,33 +995,12 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Combo buildEditableCombo(Composite container) {
+	protected final Combo addEditableCombo(Composite container) {
 
 		Combo combo = this.widgetFactory.createEditableCombo(container);
 		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		this.manageWidget(combo);
 		return combo;
-	}
-
-	/**
-	 * Creates a new editable <code>Combo</code>.
-	 *
-	 * @param container The parent container
-	 * @param listHolder The <code>ListValueHolder</code>
-	 * @param selectedItemHolder The holder of the selected item
-	 * @return The newly created <code>Combo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final <V> Combo buildEditableCombo(Composite container,
-	                                             ListValueModel<V> listHolder,
-	                                             WritablePropertyValueModel<V> selectedItemHolder) {
-
-		return this.buildEditableCombo(
-			container,
-			listHolder,
-			selectedItemHolder,
-			StringConverter.Default.<V>instance()
-		);
 	}
 
 	/**
@@ -892,12 +1015,12 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final <V> Combo buildEditableCombo(Composite container,
+	protected final <V> Combo addEditableCombo(Composite container,
 	                                             ListValueModel<V> listHolder,
 	                                             WritablePropertyValueModel<V> selectedItemHolder,
 	                                             StringConverter<V> stringConverter) {
 
-		Combo combo = this.buildEditableCombo(container);
+		Combo combo = this.addEditableCombo(container);
 
 		ComboModelAdapter.adapt(
 			listHolder,
@@ -919,10 +1042,10 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final ComboViewer buildEditableComboViewer(Composite container,
+	protected final ComboViewer addEditableComboViewer(Composite container,
 	                                                     IBaseLabelProvider labelProvider) {
 
-		Combo combo = this.buildEditableCombo(container);
+		Combo combo = this.addEditableCombo(container);
 		ComboViewer viewer = new ComboViewer(combo);
 		viewer.setLabelProvider(labelProvider);
 		return viewer;
@@ -956,12 +1079,12 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Hyperlink buildHyperLink(Composite parent,
+	protected final Hyperlink addHyperlink(Composite parent,
 	                                         String text,
 	                                         final Runnable hyperLinkAction) {
 
 		Hyperlink link = this.widgetFactory.createHyperlink(parent, text);
-		this.widgets.add(link);
+		this.manageWidget(link);
 
 		link.addMouseListener(new MouseAdapter() {
 			@Override
@@ -979,47 +1102,35 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new lable using the given information.
+	 * Creates a new label using the given information.
 	 *
 	 * @param parent The parent container
 	 * @param labelText The label's text
 	 *
 	 * @category Layout
 	 */
-	protected final Label buildLabel(Composite container,
+	protected final Label addLabel(Composite container,
 	                                 String labelText) {
-
-		return this.widgetFactory.createLabel(container, labelText);
+		
+		Label label = addUnmanagedLabel(container, labelText);
+		manageWidget(label);
+		return label;
 	}
 
 	/**
-	 * Creates a new container that will have the given center control labeled
-	 * with the given label.
+	 * Creates a new unmanaged <code>Label</code> widget.  Unmanaged means 
+	 * that this Pane will not handle the enabling/disabling of this widget.  
+	 * The owning object will handle it with its own PaneEnabler or ControlEnabler.
 	 *
-	 * @param container The parent container
-	 * @param labelText The text of the label
-	 * @param listHolder The <code>ListValueHolder</code>
-	 * @param selectedItemHolder The holder of the selected item
-	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
-	 * @return The newly created <code>CCombo</code>
+	 * @param parent The parent container
+	 * @param labelText The label's text
 	 *
 	 * @category Layout
 	 */
-	protected final <V> CCombo buildLabeledCCombo(Composite container,
-	                                              String labelText,
-	                                              ListValueModel<V> listHolder,
-	                                              WritablePropertyValueModel<V> selectedItemHolder,
-	                                              String helpId) {
+	protected final Label addUnmanagedLabel(Composite container,
+	                                 String labelText) {
 
-		return this.buildLabeledCCombo(
-			container,
-			labelText,
-			listHolder,
-			selectedItemHolder,
-			StringConverter.Default.<V>instance(),
-			helpId
-		);
+		return this.widgetFactory.createLabel(container, labelText);
 	}
 
 	/**
@@ -1037,7 +1148,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final <V> CCombo buildLabeledCCombo(Composite container,
+	protected final <V> CCombo addLabeledCCombo(Composite container,
 	                                              String labelText,
 	                                              ListValueModel<V> listHolder,
 	                                              WritablePropertyValueModel<V> selectedItemHolder,
@@ -1045,14 +1156,14 @@ public abstract class AbstractPane<T extends Model>
 	                                              Control rightControl,
 	                                              String helpId) {
 
-		CCombo combo = this.buildCCombo(
+		CCombo combo = this.addCCombo(
 			container,
 			listHolder,
 			selectedItemHolder,
 			stringConverter
 		);
 
-		this.buildLabeledComposite(
+		this.addLabeledComposite(
 			container,
 			labelText,
 			(combo.getParent() != container) ? combo.getParent() : combo,
@@ -1078,14 +1189,14 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final <V> CCombo buildLabeledCCombo(Composite container,
+	protected final <V> CCombo addLabeledCCombo(Composite container,
 	                                              String labelText,
 	                                              ListValueModel<V> listHolder,
 	                                              WritablePropertyValueModel<V> selectedItemHolder,
 	                                              StringConverter<V> stringConverter,
 	                                              String helpId) {
 
-		return this.buildLabeledCCombo(
+		return this.addLabeledCCombo(
 			container,
 			labelText,
 			listHolder,
@@ -1102,68 +1213,6 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @param container The parent container
 	 * @param labelText The text of the label
-	 * @param comboListener The listener that will be notified when the selection
-	 * changes
-	 * @param rightControl The control shown to the right of the main widget
-	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
-	 * @return The newly created <code>CCombo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final CCombo buildLabeledCCombo(Composite container,
-	                                          String labelText,
-	                                          ModifyListener comboListener,
-	                                          Control rightControl,
-	                                          String helpId) {
-
-		CCombo combo = this.buildCCombo(container);
-		combo.addModifyListener(comboListener);
-
-		this.buildLabeledComposite(
-			container,
-			labelText,
-			(combo.getParent() != container) ? combo.getParent() : combo,
-			rightControl,
-			helpId
-		);
-
-		return combo;
-	}
-
-	/**
-	 * Creates a new container that will have the given center control labeled
-	 * with the given label.
-	 *
-	 * @param container The parent container
-	 * @param leftControl The widget shown to the left of the main widget
-	 * @param centerControl The main widget
-	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
-	 * @return The newly created <code>CCombo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final CCombo buildLabeledCCombo(Composite container,
-	                                          String labelText,
-	                                          ModifyListener comboListener,
-	                                          String helpId) {
-
-		return this.buildLabeledCCombo(
-			container,
-			labelText,
-			comboListener,
-			null,
-			helpId
-		);
-	}
-
-	/**
-	 * Creates a new container that will have a non-editable combo labeled with
-	 * the given text.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text of the label
 	 * @param listHolder The <code>ListValueHolder</code>
 	 * @param selectedItemHolder The holder of the selected item
 	 * @param rightControl The control shown to the right of the main widget
@@ -1173,70 +1222,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final <V> Combo buildLabeledCombo(Composite container,
-	                                            String labelText,
-	                                            ListValueModel<V> listHolder,
-	                                            WritablePropertyValueModel<V> selectedItemHolder,
-	                                            Control rightControl,
-	                                            String helpId) {
-
-		return this.buildLabeledCombo(
-			container,
-			labelText,
-			listHolder,
-			selectedItemHolder,
-			StringConverter.Default.<V>instance(),
-			rightControl,
-			helpId
-		);
-	}
-
-	/**
-	 * Creates a new container that will have the given center control labeled
-	 * with the given label.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text of the label
-	 * @param listHolder The <code>ListValueHolder</code>
-	 * @param selectedItemHolder The holder of the selected item
-	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
-	 * @return The container of the label and the given center control
-	 *
-	 * @category Layout
-	 */
-	protected final <V> Combo buildLabeledCombo(Composite container,
-	                                            String labelText,
-	                                            ListValueModel<V> listHolder,
-	                                            WritablePropertyValueModel<V> selectedItemHolder,
-	                                            String helpId) {
-
-		return this.buildLabeledCombo(
-			container,
-			labelText,
-			listHolder,
-			selectedItemHolder,
-			StringConverter.Default.<V>instance(),
-			helpId
-		);
-	}
-
-	/**
-	 * Creates a new container that will have a non-editable combo labeled with
-	 * the given text.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text of the label
-	 * @param listHolder The <code>ListValueHolder</code>
-	 * @param selectedItemHolder The holder of the selected item
-	 * @param rightControl The control shown to the right of the main widget
-	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
-	 * @return The container of the label and the given center control
-	 *
-	 * @category Layout
-	 */
-	protected final <V> Combo buildLabeledCombo(Composite container,
+	protected final <V> Combo addLabeledCombo(Composite container,
 	                                            String labelText,
 	                                            ListValueModel<V> listHolder,
 	                                            WritablePropertyValueModel<V> selectedItemHolder,
@@ -1244,14 +1230,14 @@ public abstract class AbstractPane<T extends Model>
 	                                            Control rightControl,
 	                                            String helpId) {
 
-		Combo combo = this.buildCombo(
+		Combo combo = this.addCombo(
 			container,
 			listHolder,
 			selectedItemHolder,
 			stringConverter
 		);
 
-		this.buildLabeledComposite(
+		this.addLabeledComposite(
 			container,
 			labelText,
 			(combo.getParent() != container) ? combo.getParent() : combo,
@@ -1276,14 +1262,14 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final <V> Combo buildLabeledCombo(Composite container,
+	protected final <V> Combo addLabeledCombo(Composite container,
 	                                            String labelText,
 	                                            ListValueModel<V> listHolder,
 	                                            WritablePropertyValueModel<V> selectedItemHolder,
 	                                            StringConverter<V> stringConverter,
 	                                            String helpId) {
 
-		return this.buildLabeledCombo(
+		return this.addLabeledCombo(
 			container,
 			labelText,
 			listHolder,
@@ -1295,68 +1281,6 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new container that will have a non-editable combo labeled with
-	 * the given text.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text of the label
-	 * @param comboListener The listener that will be notified when the selection
-	 * changes
-	 * @param rightControl The control shown to the right of the main widget
-	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
-	 * @return The container of the label and the given center control
-	 *
-	 * @category Layout
-	 */
-	protected final Combo buildLabeledCombo(Composite container,
-	                                        String labelText,
-	                                        ModifyListener comboListener,
-	                                        Control rightControl,
-	                                        String helpId) {
-
-		Combo combo = this.buildCombo(container);
-		combo.addModifyListener(comboListener);
-
-		this.buildLabeledComposite(
-			container,
-			labelText,
-			(combo.getParent() != container) ? combo.getParent() : combo,
-			rightControl,
-			helpId
-		);
-
-		return combo;
-	}
-
-	/**
-	 * Creates a new container that will have the given center control labeled
-	 * with the given label.
-	 *
-	 * @param container The parent container
-	 * @param leftControl The widget shown to the left of the main widget
-	 * @param centerControl The main widget
-	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
-	 * @return The container of the label and the given center control
-	 *
-	 * @category Layout
-	 */
-	protected final Combo buildLabeledCombo(Composite container,
-	                                        String labelText,
-	                                        ModifyListener comboListener,
-	                                        String helpId) {
-
-		return this.buildLabeledCombo(
-			container,
-			labelText,
-			comboListener,
-			null,
-			helpId
-		);
-	}
-
-	/**
 	 * Creates a new container that will have the given center control labeled
 	 * with the given label.
 	 *
@@ -1370,14 +1294,14 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildLabeledComposite(Composite container,
-	                                                Control leftControl,
+	protected final Composite addLabeledComposite(Composite container,
+													Control leftControl,
 	                                                Control centerControl,
 	                                                Control rightControl,
 	                                                String helpId) {
 
 		// Container for the label and main composite
-		container = this.buildSubPane(container, 3, 5, 0, 0, 0);
+		container = this.addSubPane(container, 3, 5, 0, 0, 0);
 
 		// Left control
 		GridData gridData = new GridData();
@@ -1388,23 +1312,21 @@ public abstract class AbstractPane<T extends Model>
 		// Re-parent the left control to the new sub pane
 		leftControl.setParent(container);
 		this.leftControlAligner.add(leftControl);
-		this.widgets.add(leftControl);
 
 		// Center control
 		centerControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		this.widgets.add(centerControl);
 
 		// Re-parent the center control to the new sub pane
 		centerControl.setParent(container);
 
 		// Register the help id for the center control
 		if (helpId != null) {
-			helpSystem().setHelp(centerControl, helpId);
+			getHelpSystem().setHelp(centerControl, helpId);
 		}
 
 		// Right control
 		if (rightControl == null) {
-			Composite spacer = this.buildPane(container);
+			Composite spacer = this.addPane(container);
 			spacer.setLayout(this.buildSpacerLayout());
 			rightControl = spacer;
 		}
@@ -1413,7 +1335,7 @@ public abstract class AbstractPane<T extends Model>
 
 			// Register the help id for the right control
 			if (helpId != null) {
-				helpSystem().setHelp(rightControl, helpId);
+				getHelpSystem().setHelp(rightControl, helpId);
 			}
 		}
 
@@ -1423,11 +1345,10 @@ public abstract class AbstractPane<T extends Model>
 
 		rightControl.setLayoutData(gridData);
 		this.rightControlAligner.add(rightControl);
-		this.widgets.add(rightControl);
 
 		return container;
 	}
-
+	
 	/**
 	 * Creates a new container that will have the given center control labeled
 	 * with the given label.
@@ -1441,12 +1362,12 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildLabeledComposite(Composite container,
-	                                                Control label,
+	protected final Composite addLabeledComposite(Composite container,
+													Control label,
 	                                                Control centerControl,
 	                                                String helpId) {
 
-		return this.buildLabeledComposite(
+		return this.addLabeledComposite(
 			container,
 			label,
 			centerControl,
@@ -1456,58 +1377,6 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new container that will have the given center control labeled
-	 * with the given label.
-	 *
-	 * @param container The parent container
-	 * @param label The label used to describe the center control
-	 * @param centerControl The main widget
-	 * @return The container of the label and the given center control
-	 *
-	 * @category Layout
-	 */
-	protected final Composite buildLabeledComposite(Composite container,
-	                                                Label label,
-	                                                Control centerControl) {
-
-		return this.buildLabeledComposite(
-			container,
-			label,
-			centerControl,
-			null
-		);
-	}
-
-	/**
-	 * Creates a new container that will have the given center composite labeled
-	 * with the given label text.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text to label the main composite
-	 * @param centerPane The main widget
-	 * @param rightControl The control shown to the right of the main widget
-	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
-	 * @return The container of the label and the given center control
-	 *
-	 * @category Layout
-	 */
-	protected final Composite buildLabeledComposite(Composite container,
-	                                                String labelText,
-	                                                AbstractPane<?> centerPane,
-	                                                Control rightCentrol,
-	                                                String helpId) {
-
-		return this.buildLabeledComposite(
-			container,
-			labelText,
-			centerPane.getControl(),
-			rightCentrol,
-			helpId
-		);
-	}
-
-	/**
 	 * Creates a new container that will have the given center composite labeled
 	 * with the given label text.
 	 *
@@ -1520,12 +1389,12 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildLabeledComposite(Composite container,
+	protected final Composite addLabeledComposite(Composite container,
 	                                                String labelText,
-	                                                AbstractPane<?> centerPane,
+	                                                Pane<?> centerPane,
 	                                                String helpId) {
 
-		return this.buildLabeledComposite(
+		return this.addLabeledComposite(
 			container,
 			labelText,
 			centerPane.getControl(),
@@ -1544,12 +1413,12 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildLabeledComposite(Composite container,
+	protected final Composite addLabeledComposite(Composite container,
 	                                                String labelText,
 	                                                Control centerControl) {
 
 
-		return this.buildLabeledComposite(
+		return this.addLabeledComposite(
 			container,
 			labelText,
 			centerControl,
@@ -1566,50 +1435,23 @@ public abstract class AbstractPane<T extends Model>
 	 * @param labelText The text to label the main composite
 	 * @param centerControl The main widget
 	 * @param rightControl The control shown to the right of the main widget
-	 * @return The container of the label and the given center control
-	 *
-	 * @category Layout
-	 */
-	protected final Composite buildLabeledComposite(Composite container,
-	                                                String labelText,
-	                                                Control centerControl,
-	                                                Control rightControl) {
-
-
-		return this.buildLabeledComposite(
-			container,
-			labelText,
-			centerControl,
-			rightControl,
-			null
-		);
-	}
-
-	/**
-	 * Creates a new container that will have the given center composite labeled
-	 * with the given label text.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text to label the main composite
-	 * @param centerControl The main widget
-	 * @param rightControl The control shown to the right of the main widget
 	 * @param helpId The topic help ID to be registered for the given center
 	 * compositer
 	 * @return The container of the label and the given center control
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildLabeledComposite(Composite container,
+	protected final Composite addLabeledComposite(Composite container,
 	                                                String labelText,
 	                                                Control centerControl,
-	                                                Control rightCentrol,
+	                                                Control rightControl,
 	                                                String helpId) {
 
-		return this.buildLabeledComposite(
+		return this.addLabeledComposite(
 			container,
-			this.buildLabel(container, labelText),
+			this.addLabel(container, labelText),
 			centerControl,
-			rightCentrol,
+			rightControl,
 			helpId
 		);
 	}
@@ -1627,50 +1469,17 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildLabeledComposite(Composite container,
+	protected final Composite addLabeledComposite(Composite container,
 	                                                String labelText,
 	                                                Control centerControl,
 	                                                String helpId) {
 
-		Label label = this.buildLabel(container, labelText);
+		Label label = this.addLabel(container, labelText);
 
-		return this.buildLabeledComposite(
+		return this.addLabeledComposite(
 			container,
 			label,
 			centerControl,
-			helpId
-		);
-	}
-
-	/**
-	 * Creates a new container that will have the given center control labeled
-	 * with the given label.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text of the label
-	 * @param listHolder The <code>ListValueHolder</code>
-	 * @param selectedItemHolder The holder of the selected item
-	 * @param rightControl The control shown to the right of the main widget
-	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
-	 * @return The newly created <code>CCombo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final <V> CCombo buildLabeledEditableCCombo(Composite container,
-	                                                      String labelText,
-	                                                      ListValueModel<V> listHolder,
-	                                                      WritablePropertyValueModel<V> selectedItemHolder,
-	                                                      Control rightControl,
-	                                                      String helpId) {
-
-		return this.buildLabeledEditableCCombo(
-			container,
-			labelText,
-			listHolder,
-			selectedItemHolder,
-			StringConverter.Default.<V>instance(),
-			rightControl,
 			helpId
 		);
 	}
@@ -1689,13 +1498,13 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final <V> CCombo buildLabeledEditableCCombo(Composite container,
+	protected final <V> CCombo addLabeledEditableCCombo(Composite container,
 	                                                      String labelText,
 	                                                      ListValueModel<V> listHolder,
 	                                                      WritablePropertyValueModel<V> selectedItemHolder,
 	                                                      String helpId) {
 
-		return this.buildLabeledEditableCCombo(
+		return this.addLabeledEditableCCombo(
 			container,
 			labelText,
 			listHolder,
@@ -1723,7 +1532,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final <V> CCombo buildLabeledEditableCCombo(Composite container,
+	protected final <V> CCombo addLabeledEditableCCombo(Composite container,
 	                                                      String labelText,
 	                                                      ListValueModel<V> listHolder,
 	                                                      WritablePropertyValueModel<V> selectedItemHolder,
@@ -1731,14 +1540,14 @@ public abstract class AbstractPane<T extends Model>
 	                                                      Control rightControl,
 	                                                      String helpId) {
 
-		CCombo combo = this.buildEditableCCombo(
+		CCombo combo = this.addEditableCCombo(
 			container,
 			listHolder,
 			selectedItemHolder,
 			stringConverter
 		);
 
-		this.buildLabeledComposite(
+		this.addLabeledComposite(
 			container,
 			labelText,
 			(combo.getParent() != container) ? combo.getParent() : combo,
@@ -1765,14 +1574,14 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final <V> CCombo buildLabeledEditableCCombo(Composite container,
+	protected final <V> CCombo addLabeledEditableCCombo(Composite container,
 	                                                      String labelText,
 	                                                      ListValueModel<V> listHolder,
 	                                                      WritablePropertyValueModel<V> selectedItemHolder,
 	                                                      StringConverter<V> stringConverter,
 	                                                      String helpId) {
 
-		return this.buildLabeledEditableCCombo(
+		return this.addLabeledEditableCCombo(
 			container,
 			labelText,
 			listHolder,
@@ -1797,16 +1606,16 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final CCombo buildLabeledEditableCCombo(Composite container,
+	protected final CCombo addLabeledEditableCCombo(Composite container,
 	                                                  String labelText,
 	                                                  ModifyListener comboListener,
 	                                                  Control rightControl,
 	                                                  String helpId) {
 
-		CCombo combo = this.buildEditableCCombo(container);
+		CCombo combo = this.addEditableCCombo(container);
 		combo.addModifyListener(comboListener);
 
-		this.buildLabeledComposite(
+		this.addLabeledComposite(
 			container,
 			labelText,
 			(combo.getParent() != container) ? combo.getParent() : combo,
@@ -1831,12 +1640,12 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final CCombo buildLabeledEditableCCombo(Composite container,
+	protected final CCombo addLabeledEditableCCombo(Composite container,
 	                                                  String labelText,
 	                                                  ModifyListener comboListener,
 	                                                  String helpId) {
 
-		return this.buildLabeledEditableCCombo(
+		return this.addLabeledEditableCCombo(
 			container,
 			labelText,
 			comboListener,
@@ -1861,14 +1670,14 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final CCombo buildLabeledEditableCComboViewer(Composite container,
+	protected final CCombo addLabeledEditableCComboViewer(Composite container,
 	                                                        String labelText,
 	                                                        ModifyListener comboListener,
 	                                                        ILabelProvider labelProvider,
 	                                                        Control rightControl,
 	                                                        String helpId) {
 
-		ComboViewer comboViewer = this.buildEditableCComboViewer(
+		ComboViewer comboViewer = this.addEditableCComboViewer(
 			container,
 			labelProvider
 		);
@@ -1876,7 +1685,7 @@ public abstract class AbstractPane<T extends Model>
 		CCombo combo = comboViewer.getCCombo();
 		combo.addModifyListener(comboListener);
 
-		this.buildLabeledComposite(
+		this.addLabeledComposite(
 			container,
 			labelText,
 			(combo.getParent() != container) ? combo.getParent() : combo,
@@ -1903,80 +1712,17 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final CCombo buildLabeledEditableCComboViewer(Composite container,
+	protected final CCombo addLabeledEditableCComboViewer(Composite container,
 	                                                        String labelText,
 	                                                        ModifyListener comboListener,
 	                                                        ILabelProvider labelProvider,
 	                                                        String helpId) {
 
-		return this.buildLabeledEditableCComboViewer(
+		return this.addLabeledEditableCComboViewer(
 			container,
 			labelText,
 			comboListener,
-			null,
-			helpId
-		);
-	}
-
-	/**
-	 * Creates a new container that will have the given center control labeled
-	 * with the given label.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text of the label
-	 * @param listHolder The <code>ListValueHolder</code>
-	 * @param selectedItemHolder The holder of the selected item
-	 * @param rightControl The control shown to the right of the main widget
-	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
-	 * @return The newly created <code>Combo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final <V> Combo buildLabeledEditableCombo(Composite container,
-	                                                    String labelText,
-	                                                    ListValueModel<V> listHolder,
-	                                                    WritablePropertyValueModel<V> selectedItemHolder,
-	                                                    Control rightControl,
-	                                                    String helpId) {
-
-		return this.buildLabeledEditableCombo(
-			container,
-			labelText,
-			listHolder,
-			selectedItemHolder,
-			StringConverter.Default.<V>instance(),
-			rightControl,
-			helpId
-		);
-	}
-
-	/**
-	 * Creates a new container that will have an editable combo labeled with the
-	 * given text.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text of the label
-	 * @param listHolder The <code>ListValueHolder</code>
-	 * @param selectedItemHolder The holder of the selected item
-	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
-	 * @return The newly created <code>Combo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final <V> Combo buildLabeledEditableCombo(Composite container,
-	                                                    String labelText,
-	                                                    ListValueModel<V> listHolder,
-	                                                    WritablePropertyValueModel<V> selectedItemHolder,
-	                                                    String helpId) {
-
-		return this.buildLabeledEditableCombo(
-			container,
-			labelText,
-			listHolder,
-			selectedItemHolder,
-			StringConverter.Default.<V>instance(),
+			labelProvider,
 			null,
 			helpId
 		);
@@ -1999,7 +1745,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final <V> Combo buildLabeledEditableCombo(Composite container,
+	protected final <V> Combo addLabeledEditableCombo(Composite container,
 	                                                    String labelText,
 	                                                    ListValueModel<V> listHolder,
 	                                                    WritablePropertyValueModel<V> selectedItemHolder,
@@ -2007,14 +1753,14 @@ public abstract class AbstractPane<T extends Model>
 	                                                    Control rightControl,
 	                                                    String helpId) {
 
-		Combo combo = this.buildEditableCombo(
+		Combo combo = this.addEditableCombo(
 			container,
 			listHolder,
 			selectedItemHolder,
 			stringConverter
 		);
 
-		this.buildLabeledComposite(
+		this.addLabeledComposite(
 			container,
 			labelText,
 			(combo.getParent() != container) ? combo.getParent() : combo,
@@ -2041,14 +1787,14 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final <V> Combo buildLabeledEditableCombo(Composite container,
+	protected final <V> Combo addLabeledEditableCombo(Composite container,
 	                                                    String labelText,
 	                                                    ListValueModel<V> listHolder,
 	                                                    WritablePropertyValueModel<V> selectedItemHolder,
 	                                                    StringConverter<V> stringConverter,
 	                                                    String helpId) {
 
-		return this.buildLabeledEditableCombo(
+		return this.addLabeledEditableCombo(
 			container,
 			labelText,
 			listHolder,
@@ -2060,149 +1806,6 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new container that will have the given center control labeled
-	 * with the given label.
-	 *
-	 * @param container The parent container
-	 * @param leftControl The widget shown to the left of the main widget
-	 * @param centerControl The main widget
-	 * @param rightControl The control shown to the right of the main widget
-	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
-	 * @return The container of the label and the given center control
-	 *
-	 * @category Layout
-	 */
-	protected final Combo buildLabeledEditableCombo(Composite container,
-	                                                String labelText,
-	                                                ModifyListener comboListener,
-	                                                Control rightControl,
-	                                                String helpId) {
-
-		Combo combo = this.buildEditableCombo(container);
-		combo.addModifyListener(comboListener);
-
-		this.buildLabeledComposite(
-			container,
-			labelText,
-			(combo.getParent() != container) ? combo.getParent() : combo,
-			rightControl,
-			helpId
-		);
-
-		return combo;
-	}
-
-	/**
-	 * Creates a new container that will have an editable combo labeled with the
-	 * given text.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text of the label
-	 * @param comboListener The listener that will be notified when the selection
-	 * changes
-	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
-	 * @return The container of the label and the given center control
-	 *
-	 * @category Layout
-	 */
-	protected final Combo buildLabeledEditableCombo(Composite container,
-	                                                String labelText,
-	                                                ModifyListener comboListener,
-	                                                String helpId) {
-
-		return this.buildLabeledEditableCombo(
-			container,
-			labelText,
-			comboListener,
-			null,
-			helpId
-		);
-	}
-
-	/**
-	 * Creates a new container that will have a text field as the center control
-	 * labeled with the given label.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text area's label
-	 * @param textHolder The holder of the text field's input
-	 * @return The newly created <code>Text</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Text buildLabeledMultiLineText(Composite container,
-	                                               String labelText,
-	                                               WritablePropertyValueModel<String> textHolder) {
-
-		return this.buildLabeledMultiLineText(
-			container,
-			labelText,
-			textHolder,
-			null
-		);
-	}
-
-	/**
-	 * Creates a new container that will have a text field as the center control
-	 * labeled with the given label.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text area's label
-	 * @param textHolder The holder of the text field's input
-	 * @param rightControl The widget to be placed to the right of the text area
-	 * @param helpId The topic help ID to be registered for the text field
-	 * @return The newly created <code>Text</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Text buildLabeledMultiLineText(Composite container,
-	                                               String labelText,
-	                                               WritablePropertyValueModel<String> textHolder,
-	                                               Control rightControl,
-	                                               String helpId) {
-
-		Text text = this.buildMultiLineText(container, textHolder);
-
-		this.buildLabeledComposite(
-			container,
-			labelText,
-			text,
-			rightControl,
-			helpId
-		);
-
-		return text;
-	}
-
-	/**
-	 * Creates a new container that will have a text field as the center control
-	 * labeled with the given label.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text area's label
-	 * @param textHolder The holder of the text field's input
-	 * @param lineCount The number of lines the text area should display
-	 * @return The newly created <code>Text</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Text buildLabeledMultiLineText(Composite container,
-	                                               String labelText,
-	                                               WritablePropertyValueModel<String> textHolder,
-	                                               int lineCount) {
-
-		return this.buildLabeledMultiLineText(
-			container,
-			labelText,
-			textHolder,
-			lineCount,
-			null
-		);
-	}
-
-	/**
 	 * Creates a new container that will have a text field as the center control
 	 * labeled with the given label.
 	 *
@@ -2215,15 +1818,15 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Text buildLabeledMultiLineText(Composite container,
+	protected final Text addLabeledMultiLineText(Composite container,
 	                                               String labelText,
 	                                               WritablePropertyValueModel<String> textHolder,
 	                                               int lineCount,
 	                                               String helpId) {
 
-		Text text = this.buildMultiLineText(container, textHolder, lineCount);
+		Text text = this.addMultiLineText(container, textHolder, lineCount);
 
-		container = this.buildLabeledComposite(
+		container = this.addLabeledComposite(
 			container,
 			labelText,
 			text,
@@ -2252,42 +1855,16 @@ public abstract class AbstractPane<T extends Model>
 	 * labeled with the given label.
 	 *
 	 * @param container The parent container
-	 * @param labelText The text area's label
-	 * @param textHolder The holder of the text field's input
-	 * @param helpId The topic help ID to be registered for the text field
-	 * @return The newly created <code>Text</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Text buildLabeledMultiLineText(Composite container,
-	                                               String labelText,
-	                                               WritablePropertyValueModel<String> textHolder,
-	                                               String helpId) {
-
-		return this.buildLabeledMultiLineText(
-			container,
-			labelText,
-			textHolder,
-			3,
-			helpId
-		);
-	}
-
-	/**
-	 * Creates a new container that will have a text field as the center control
-	 * labeled with the given label.
-	 *
-	 * @param container The parent container
 	 * @param textHolder The holder of the text field's input
 	 * @return The newly created <code>Text</code>
 	 *
 	 * @category Layout
 	 */
-	protected final Text buildLabeledPasswordText(Composite container,
+	protected final Text addLabeledPasswordText(Composite container,
 	                                              String labelText,
 	                                              WritablePropertyValueModel<String> textHolder) {
 
-		return this.buildLabeledPasswordText(
+		return this.addLabeledPasswordText(
 			container,
 			labelText,
 			textHolder,
@@ -2309,19 +1886,19 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Text buildLabeledPasswordText(Composite container,
+	protected final Text addLabeledPasswordText(Composite container,
 	                                              String labelText,
 	                                              WritablePropertyValueModel<String> textHolder,
-	                                              Control rightComponent,
+	                                              Control rightControl,
 	                                              String helpId) {
 
-		Text text = this.buildPasswordText(container, textHolder);
+		Text text = this.addPasswordText(container, textHolder);
 
-		this.buildLabeledComposite(
+		this.addLabeledComposite(
 			container,
 			labelText,
 			text,
-			rightComponent,
+			rightControl,
 			helpId
 		);
 
@@ -2339,134 +1916,17 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Text buildLabeledPasswordText(Composite container,
+	protected final Text addLabeledPasswordText(Composite container,
 	                                              String labelText,
 	                                              WritablePropertyValueModel<String> textHolder,
 	                                              String helpId) {
 
-		return this.buildLabeledPasswordText(
+		return this.addLabeledPasswordText(
 			container,
 			labelText,
 			textHolder,
 			null,
 			helpId
-		);
-	}
-
-	/**
-	 * Creates a new container that will have a text field as the center control
-	 * labeled with the given label.
-	 *
-	 * @param container The parent container
-	 * @param textHolder The holder of the text field's input
-	 * @param helpId The topic help ID to be registered for the text field
-	 * @return The newly created <code>Text</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Text buildLabeledPawordText(Composite container,
-	                                            String labelText,
-	                                            WritablePropertyValueModel<String> textHolder,
-	                                            String helpId) {
-
-		return this.buildLabeledPasswordText(
-			container,
-			labelText,
-			textHolder,
-			null,
-			helpId
-		);
-	}
-
-	/**
-	 * Creates a new spinner.
-	 *
-	 * @param parent The parent container
-	 * @param labelText The label's text
-	 * @param numberHolder The holder of the integer value
-	 * @param defaultValue The value shown when the holder has <code>null</code>
-	 * @return The newly created <code>Spinner</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Spinner buildLabeledSpinner(Composite parent,
-	                                            String labelText,
-	                                            WritablePropertyValueModel<Integer> numberHolder,
-	                                            int defaultValue) {
-
-		return this.buildLabeledSpinner(
-			container,
-			labelText,
-			numberHolder,
-			defaultValue,
-			0,
-			Integer.MAX_VALUE,
-			null,
-			null
-		);
-	}
-
-	/**
-	 * Creates a new spinner.
-	 *
-	 * @param parent The parent container
-	 * @param labelText The label's text
-	 * @param numberHolder The holder of the integer value
-	 * @param defaultValue The value shown when the holder has <code>null</code>
-	 * @param rightControl The widget to be placed to the right of spinner
-	 * @return The newly created <code>Spinner</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Spinner buildLabeledSpinner(Composite parent,
-	                                            String labelText,
-	                                            WritablePropertyValueModel<Integer> numberHolder,
-	                                            int defaultValue,
-	                                            Control rightControl) {
-
-		return this.buildLabeledSpinner(
-			container,
-			labelText,
-			numberHolder,
-			defaultValue,
-			0,
-			Integer.MAX_VALUE,
-			rightControl,
-			null
-		);
-	}
-
-	/**
-	 * Creates a new spinner.
-	 *
-	 * @param parent The parent container
-	 * @param labelText The label's text
-	 * @param numberHolder The holder of the integer value
-	 * @param defaultValue The value shown when the holder has <code>null</code>
-	 * @param minimumValue The minimum value that the spinner will allow
-	 * @param maximumValue The maximum value that the spinner will allow
-	 * @param rightControl The widget to be placed to the right of spinner
-	 * @return The newly created <code>Spinner</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Spinner buildLabeledSpinner(Composite parent,
-	                                            String labelText,
-	                                            WritablePropertyValueModel<Integer> numberHolder,
-	                                            int defaultValue,
-	                                            int minimumValue,
-	                                            int maximumValue,
-	                                            Control rightControl) {
-
-		return this.buildLabeledSpinner(
-			parent,
-			labelText,
-			numberHolder,
-			defaultValue,
-			minimumValue,
-			maximumValue,
-			rightControl,
-			null
 		);
 	}
 
@@ -2485,7 +1945,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Spinner buildLabeledSpinner(Composite parent,
+	protected final Spinner addLabeledSpinner(Composite parent,
 	                                            String labelText,
 	                                            WritablePropertyValueModel<Integer> numberHolder,
 	                                            int defaultValue,
@@ -2494,17 +1954,18 @@ public abstract class AbstractPane<T extends Model>
 	                                            Control rightControl,
 	                                            String helpId) {
 
-		Spinner spinner = this.buildSpinner(
+		Spinner spinner = this.addSpinner(
 			parent,
 			numberHolder,
 			defaultValue,
 			minimumValue,
-			maximumValue
+			maximumValue,
+			helpId
 		);
-
-		buildLabeledComposite(
+		Label label = addLabel(parent, labelText);
+		addLabeledComposite(
 			parent,
-			labelText,
+			label,
 			(spinner.getParent() != parent) ? spinner.getParent() : spinner,
 			rightControl,
 			helpId
@@ -2517,69 +1978,67 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new spinner.
+	 * Creates a new managed spinner. Managed means that this Pane will
+	 * handle enabling/disabling of this widget if a PaneEnabler is used.  
 	 *
 	 * @param parent The parent container
-	 * @param labelText The label's text
 	 * @param numberHolder The holder of the integer value
 	 * @param defaultValue The value shown when the holder has <code>null</code>
 	 * @param minimumValue The minimum value that the spinner will allow
 	 * @param maximumValue The maximum value that the spinner will allow
-	 * @param helpId The topic help ID to be registered for the spinner
+	 * @param helpId The topic help ID to be registered for the new button
 	 * @return The newly created <code>Spinner</code>
 	 *
 	 * @category Layout
 	 */
-	protected final Spinner buildLabeledSpinner(Composite parent,
-	                                            String labelText,
-	                                            WritablePropertyValueModel<Integer> numberHolder,
-	                                            int defaultValue,
-	                                            int minimumValue,
-	                                            int maximumValue,
-	                                            String helpId) {
+	protected final Spinner addSpinner(Composite parent,
+	                                     WritablePropertyValueModel<Integer> numberHolder,
+	                                     int defaultValue,
+	                                     int minimumValue,
+	                                     int maximumValue,
+	                                     String helpId) {
 
-		return this.buildLabeledSpinner(
-			parent,
-			labelText,
-			numberHolder,
-			defaultValue,
-			0,
-			Integer.MAX_VALUE,
-			null,
-			helpId
-		);
+		Spinner spinner = addUnmanagedSpinner(parent, numberHolder, defaultValue, minimumValue, maximumValue, helpId);
+		this.manageWidget(spinner);
+		return spinner;
 	}
 
 	/**
-	 * Creates a new spinner.
+	 * Creates a new unmanaged spinner.  Unmanaged means that this Pane will
+	 * not handle the enabling/disabling of this widget.  The owning object will handle
+	 * it with its own PaneEnabler or ControlEnabler.
 	 *
 	 * @param parent The parent container
-	 * @param labelText The label's text
 	 * @param numberHolder The holder of the integer value
 	 * @param defaultValue The value shown when the holder has <code>null</code>
-	 * @param helpId The topic help ID to be registered for the spinner
+	 * @param minimumValue The minimum value that the spinner will allow
+	 * @param maximumValue The maximum value that the spinner will allow
+	 * @param helpId The topic help ID to be registered for the new button
 	 * @return The newly created <code>Spinner</code>
 	 *
 	 * @category Layout
 	 */
-	protected final Spinner buildLabeledSpinner(Composite parent,
-	                                            String labelText,
-	                                            WritablePropertyValueModel<Integer> numberHolder,
-	                                            int defaultValue,
-	                                            String helpId) {
+	protected final Spinner addUnmanagedSpinner(Composite parent,
+	                                     WritablePropertyValueModel<Integer> numberHolder,
+	                                     int defaultValue,
+	                                     int minimumValue,
+	                                     int maximumValue,
+	                                     String helpId) {
 
-		return this.buildLabeledSpinner(
-			parent,
-			labelText,
-			numberHolder,
-			defaultValue,
-			0,
-			Integer.MAX_VALUE,
-			null,
-			null
-		);
+		Spinner spinner = this.widgetFactory.createSpinner(parent);
+		spinner.setMinimum(minimumValue);
+		spinner.setMaximum(maximumValue);
+		spinner.setLayoutData(new GridData(GridData.BEGINNING));
+
+		SpinnerModelAdapter.adapt(numberHolder, spinner, defaultValue);
+
+		if (helpId != null) {
+			getHelpSystem().setHelp(spinner, helpId);
+		}
+
+		return spinner;
 	}
-
+	
 	/**
 	 * Creates a new container that will have a text field as the center control
 	 * labeled with the given label.
@@ -2590,11 +2049,11 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Text buildLabeledText(Composite container,
+	protected final Text addLabeledText(Composite container,
 	                                      String labelText,
 	                                      WritablePropertyValueModel<String> textHolder) {
 
-		return this.buildLabeledText(container, labelText, textHolder, null);
+		return this.addLabeledText(container, labelText, textHolder, null);
 	}
 
 	/**
@@ -2611,18 +2070,50 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Text buildLabeledText(Composite container,
+	protected final Text addLabeledText(Composite container,
 	                                      String labelText,
 	                                      WritablePropertyValueModel<String> textHolder,
 	                                      Control rightComponent,
 	                                      String helpId) {
 
-		Text text = this.buildText(container);
-		TextFieldModelAdapter.adapt(textHolder, text);
+		Text text = this.addText(container, textHolder);
 
-		this.buildLabeledComposite(
+		this.addLabeledComposite(
 			container,
 			labelText,
+			text,
+			rightComponent,
+			helpId
+		);
+
+		return text;
+	}
+	/**
+	 * 
+	 * Creates a new container that will have a text field as the center control
+	 * labeled with the given label.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text field's label
+	 * @param rightComponent The component to be placed to the right of the text
+	 * field
+	 * @param textHolder The holder of the text field's input
+	 * @param helpId The topic help ID to be registered for the text field
+	 * @return The newly created <code>Text</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Text addLabeledText(Composite container,
+	                                      Label label,
+	                                      WritablePropertyValueModel<String> textHolder,
+	                                      Control rightComponent,
+	                                      String helpId) {
+
+		Text text = this.addText(container, textHolder);
+
+		this.addLabeledComposite(
+			container,
+			label,
 			text,
 			rightComponent,
 			helpId
@@ -2642,12 +2133,12 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Text buildLabeledText(Composite container,
+	protected final Text addLabeledText(Composite container,
 	                                      String labelText,
 	                                      WritablePropertyValueModel<String> textHolder,
 	                                      String helpId) {
 
-		return this.buildLabeledText(
+		return this.addLabeledText(
 			container,
 			labelText,
 			textHolder,
@@ -2657,17 +2148,28 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new list and notify the given selection holder when the
-	 * selection changes. If the selection count is different than one than the
-	 * holder will receive <code>null</code>.
+	 * Creates a new container that will have a text field as the center control
+	 * labeled with the given label.
 	 *
 	 * @param container The parent container
-	 * @return The newly created <code>List</code>
+	 * @param textHolder The holder of the text field's input
+	 * @param helpId The topic help ID to be registered for the text field
+	 * @return The newly created <code>Text</code>
 	 *
 	 * @category Layout
 	 */
-	protected final List buildList(Composite container) {
-		return this.buildList(container, (String) null);
+	protected final Text addLabeledText(Composite container,
+	                                      Label label,
+	                                      WritablePropertyValueModel<String> textHolder,
+	                                      String helpId) {
+
+		return this.addLabeledText(
+			container,
+			label,
+			textHolder,
+			null,
+			helpId
+		);
 	}
 
 	/**
@@ -2681,9 +2183,9 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final List buildList(Composite container, String helpId) {
+	protected final List addList(Composite container, String helpId) {
 
-		return this.buildList(
+		return this.addList(
 			container,
 			new SimplePropertyValueModel<String>(),
 			helpId
@@ -2697,20 +2199,27 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @param container The parent container
 	 * @param selectionHolder The holder of the unique selected item
+	 * @param helpId The topic help ID to be registered for the new radio button
 	 * @return The newly created <code>List</code>
 	 *
 	 * @category Layout
 	 */
-	protected final List buildList(Composite container,
-	                               WritablePropertyValueModel<String> selectionHolder) {
+	protected final List addList(Composite container,
+	                               WritablePropertyValueModel<String> selectionHolder,
+	                               String helpId) {
 
-		return this.buildList(container, selectionHolder, null);
+		List list = this.addList(container, selectionHolder, helpId);
+		this.manageWidget(list);
+
+		return list;
 	}
-
+	
 	/**
-	 * Creates a new list and notify the given selection holder when the
+	 * Creates a new unmanaged list and notify the given selection holder when the
 	 * selection changes. If the selection count is different than one than the
-	 * holder will receive <code>null</code>.
+	 * holder will receive <code>null</code>. 
+	 * Unmanaged means that this Pane will not handle the enabling/disabling of this widget.  
+	 * The owning object will handle it with its own PaneEnabler or ControlEnabler.
 	 *
 	 * @param container The parent container
 	 * @param selectionHolder The holder of the unique selected item
@@ -2719,7 +2228,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final List buildList(Composite container,
+	protected final List addUnmanagedList(Composite container,
 	                               WritablePropertyValueModel<String> selectionHolder,
 	                               String helpId) {
 
@@ -2730,10 +2239,9 @@ public abstract class AbstractPane<T extends Model>
 
 		list.addSelectionListener(buildSelectionListener(selectionHolder));
 		list.setLayoutData(new GridData(GridData.FILL_BOTH));
-		this.widgets.add(list);
 
 		if (helpId != null) {
-			helpSystem().setHelp(list, helpId);
+			getHelpSystem().setHelp(list, helpId);
 		}
 
 		return list;
@@ -2747,10 +2255,12 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final void buildMultiLineLabel(Composite container,
+	protected final FormText addMultiLineLabel(Composite container,
 	                                         String labelText) {
 
-		this.widgetFactory.createMultiLineLabel(container, labelText);
+		FormText label = this.widgetFactory.createMultiLineLabel(container, labelText);
+		manageWidget(label);
+		return label;
 	}
 
 	/**
@@ -2759,12 +2269,15 @@ public abstract class AbstractPane<T extends Model>
 	 * @param container The parent container
 	 * @return The newly created <code>Text</code> widget
 	 *
-	 * @category Layout
 	 */
-	protected final Text buildMultiLineText(Composite container) {
-		return this.buildMultiLineText(container, 3, null);
-	}
+	protected final Text addMultiLineText(Composite container) {
 
+		Text text = this.widgetFactory.createMultiLineText(container);		
+		this.manageWidget(text);
+
+		return text;
+	}
+	
 	/**
 	 * Creates a new <code>Text</code> widget that has multiple lines.
 	 *
@@ -2775,18 +2288,18 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Text buildMultiLineText(Composite container,
+	protected final Text addMultiLineText(Composite container,
 	                                        int lineCount,
 	                                        String helpId) {
 
-		Text text = this.widgetFactory.createMultiLineText(container);
-
+		Text text = this.addMultiLineText(container);
+		
 		GridData gridData   = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.heightHint = text.getLineHeight() * lineCount;
 		text.setLayoutData(gridData);
 
 		if (helpId != null) {
-			helpSystem().setHelp(text, helpId);
+			getHelpSystem().setHelp(text, helpId);
 		}
 
 		return text;
@@ -2796,46 +2309,17 @@ public abstract class AbstractPane<T extends Model>
 	 * Creates a new <code>Text</code> widget that has multiple lines.
 	 *
 	 * @param container The parent container
-	 * @param helpId The topic help ID to be registered for the new text
-	 * @return The newly created <code>Text</code> widget
-	 *
-	 * @category Layout
-	 */
-	protected final Text buildMultiLineText(Composite container, String helpId) {
-
-		return this.buildMultiLineText(container, 3, helpId);
-	}
-
-	/**
-	 * Creates a new <code>Text</code> widget that has multiple lines.
-	 *
-	 * @param container The parent container
-	 * @param textHolder The holder of the text field's input
-	 * @return The newly created <code>Text</code> widget
-	 *
-	 * @category Layout
-	 */
-	protected final Text buildMultiLineText(Composite container,
-	                                        WritablePropertyValueModel<String> textHolder) {
-
-		return this.buildMultiLineText(container, textHolder, null);
-	}
-
-	/**
-	 * Creates a new <code>Text</code> widget that has multiple lines.
-	 *
-	 * @param container The parent container
 	 * @param textHolder The holder of the text field's input
 	 * @param lineCount The number of lines the text area should display
 	 * @return The newly created <code>Text</code> widget
 	 *
 	 * @category Layout
 	 */
-	protected final Text buildMultiLineText(Composite container,
+	protected final Text addMultiLineText(Composite container,
 	                                        WritablePropertyValueModel<String> textHolder,
 	                                        int lineCount) {
 
-		return this.buildMultiLineText(container, textHolder, lineCount, null);
+		return this.addMultiLineText(container, textHolder, lineCount, null);
 	}
 
 	/**
@@ -2848,31 +2332,14 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Text buildMultiLineText(Composite container,
+	protected final Text addMultiLineText(Composite container,
 	                                        WritablePropertyValueModel<String> textHolder,
 	                                        int lineCount,
 	                                        String helpId) {
 
-		Text text = this.buildMultiLineText(container, lineCount, helpId);
+		Text text = this.addMultiLineText(container, lineCount, helpId);
 		TextFieldModelAdapter.adapt(textHolder, text);
 		return text;
-	}
-
-	/**
-	 * Creates a new <code>Text</code> widget that has multiple lines.
-	 *
-	 * @param container The parent container
-	 * @param textHolder The holder of the text field's input
-	 * @param helpId The topic help ID to be registered for the new text
-	 * @return The newly created <code>Text</code> widget
-	 *
-	 * @category Layout
-	 */
-	protected final Text buildMultiLineText(Composite container,
-	                                        WritablePropertyValueModel<String> textHolder,
-	                                        String helpId) {
-
-		return this.buildMultiLineText(container, textHolder, 3, helpId);
 	}
 
 	/**
@@ -2884,7 +2351,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final PageBook buildPageBook(Composite container) {
+	protected final PageBook addPageBook(Composite container) {
 
 		PageBook pageBook = new PageBook(container, SWT.NULL);
 		pageBook.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -2899,7 +2366,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildPane(Composite parent) {
+	protected final Composite addPane(Composite parent) {
 		return this.widgetFactory.createComposite(parent);
 	}
 
@@ -2912,9 +2379,9 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildPane(Composite container, Layout layout) {
+	protected final Composite addPane(Composite container, Layout layout) {
 
-		container = this.widgetFactory.createComposite(container);
+		container = this.addPane(container);
 		container.setLayout(layout);
 		container.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		return container;
@@ -2929,14 +2396,30 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Text buildPasswordText(Composite container,
+	protected final Text addPasswordText(Composite container,
 	                                       WritablePropertyValueModel<String> textHolder) {
+
+		Text text = this.addPasswordText(container);
+		TextFieldModelAdapter.adapt(textHolder, text);
+
+		return text;
+	}
+	
+	/**
+	 * Creates a new <code>Text</code> widget.
+	 *
+	 * @param container The parent container
+	 * @param textHolder The holder of the text field's input
+	 * @return The newly created <code>Text</code> widget
+	 *
+	 * @category Layout
+	 */
+	protected final Text addPasswordText(Composite container) {
 
 		Text text = this.widgetFactory.createPasswordText(container);
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		TextFieldModelAdapter.adapt(textHolder, text);
-
+		this.manageWidget(text);
 		return text;
 	}
 
@@ -2950,11 +2433,11 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Button buildPushButton(Composite parent,
+	protected final Button addPushButton(Composite parent,
 	                                       String buttonText,
 	                                       final Runnable buttonAction) {
 
-		return this.buildPushButton(parent, buttonText, null, buttonAction);
+		return this.addPushButton(parent, buttonText, null, buttonAction);
 	}
 
 	/**
@@ -2968,13 +2451,13 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Button buildPushButton(Composite parent,
+	protected final Button addPushButton(Composite parent,
 	                                       String buttonText,
 	                                       String helpId,
 	                                       final Runnable buttonAction) {
 
 		Button button = this.widgetFactory.createPushButton(parent, buttonText);
-
+		manageWidget(button);
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -2985,27 +2468,10 @@ public abstract class AbstractPane<T extends Model>
 		button.setLayoutData(new GridData());
 
 		if (helpId != null) {
-			helpSystem().setHelp(button, helpId);
+			getHelpSystem().setHelp(button, helpId);
 		}
 
 		return button;
-	}
-
-	/**
-	 * Creates a new radio button using the given information.
-	 *
-	 * @param parent The parent container
-	 * @param buttonText The button's text
-	 * @param booleanHolder The holder of the selection state
-	 * @return The newly created <code>Button</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Button buildRadioButton(Composite parent,
-	                                        String buttonText,
-	                                        WritablePropertyValueModel<Boolean> booleanHolder) {
-
-		return this.buildRadioButton(parent, buttonText, booleanHolder, null);
 	}
 
 	/**
@@ -3019,12 +2485,12 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Button buildRadioButton(Composite parent,
+	protected final Button addRadioButton(Composite parent,
 	                                        String buttonText,
 	                                        WritablePropertyValueModel<Boolean> booleanHolder,
 	                                        String helpId) {
 
-		return this.buildToggleButton(
+		return this.addToggleButton(
 			parent,
 			buttonText,
 			booleanHolder,
@@ -3043,10 +2509,10 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildSection(Composite container,
+	protected final Composite addSection(Composite container,
 	                                       String sectionText) {
 
-		return this.buildSection(
+		return this.addSection(
 			container,
 			sectionText,
 			ExpandableComposite.TITLE_BAR
@@ -3066,11 +2532,11 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	private Composite buildSection(Composite container,
+	private Composite addSection(Composite container,
 	                               String sectionText,
 	                               int type) {
 
-		return this.buildSection(container, sectionText, null, type);
+		return this.addSection(container, sectionText, null, type);
 	}
 
 	/**
@@ -3084,11 +2550,11 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildSection(Composite container,
+	protected final Composite addSection(Composite container,
 	                                       String sectionText,
 	                                       String description) {
 
-		return this.buildSection(
+		return this.addSection(
 			container,
 			sectionText,
 			description,
@@ -3111,7 +2577,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	private Composite buildSection(Composite container,
+	private Composite addSection(Composite container,
 	                               String sectionText,
 	                               String description,
 	                               int type) {
@@ -3121,12 +2587,12 @@ public abstract class AbstractPane<T extends Model>
 		section.setText(sectionText);
 		section.marginWidth  = 0;
 		section.marginHeight = 0;
-
+		
 		if (description != null) {
 			section.setDescription(description);
 		}
 
-		Composite subPane = this.buildSubPane(section);
+		Composite subPane = this.addSubPane(section);
 		section.setClient(subPane);
 
 		return subPane;
@@ -3174,91 +2640,6 @@ public abstract class AbstractPane<T extends Model>
 		};
 	}
 
-	/**
-	 * Creates a new spinner.
-	 *
-	 * @param parent The parent container
-	 * @param numberHolder The holder of the integer value
-	 * @param defaultValue The value shown when the holder has <code>null</code>
-	 * @return The newly created <code>Spinner</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Spinner buildSpinner(Composite parent,
-	                                     WritablePropertyValueModel<Integer> numberHolder,
-	                                     int defaultValue) {
-
-		return this.buildSpinner(
-			parent,
-			numberHolder,
-			defaultValue,
-			0,
-			Integer.MAX_VALUE
-		);
-	}
-
-	/**
-	 * Creates a new spinner.
-	 *
-	 * @param parent The parent container
-	 * @param numberHolder The holder of the integer value
-	 * @param defaultValue The value shown when the holder has <code>null</code>
-	 * @param minimumValue The minimum value that the spinner will allow
-	 * @param maximumValue The maximum value that the spinner will allow
-	 * @return The newly created <code>Spinner</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Spinner buildSpinner(Composite parent,
-	                                     WritablePropertyValueModel<Integer> numberHolder,
-	                                     int defaultValue,
-	                                     int minimumValue,
-	                                     int maximumValue) {
-
-		return this.buildSpinner(
-			parent,
-			numberHolder,
-			defaultValue,
-			minimumValue,
-			maximumValue,
-			null
-		);
-	}
-
-	/**
-	 * Creates a new spinner.
-	 *
-	 * @param parent The parent container
-	 * @param numberHolder The holder of the integer value
-	 * @param defaultValue The value shown when the holder has <code>null</code>
-	 * @param minimumValue The minimum value that the spinner will allow
-	 * @param maximumValue The maximum value that the spinner will allow
-	 * @param helpId The topic help ID to be registered for the new button
-	 * @return The newly created <code>Spinner</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Spinner buildSpinner(Composite parent,
-	                                     WritablePropertyValueModel<Integer> numberHolder,
-	                                     int defaultValue,
-	                                     int minimumValue,
-	                                     int maximumValue,
-	                                     String helpId) {
-
-		Spinner spinner = this.widgetFactory.createSpinner(parent);
-		spinner.setMinimum(minimumValue);
-		spinner.setMaximum(maximumValue);
-		spinner.setLayoutData(new GridData(GridData.BEGINNING));
-
-		SpinnerModelAdapter.adapt(numberHolder, spinner, defaultValue);
-
-		if (helpId != null) {
-			helpSystem().setHelp(spinner, helpId);
-		}
-
-		return spinner;
-	}
-
 	private PropertyChangeListener buildSubjectChangeListener() {
 		return new SWTPropertyChangeListenerWrapper(this.buildSubjectChangeListener_());
 	}
@@ -3267,7 +2648,7 @@ public abstract class AbstractPane<T extends Model>
 		return new PropertyChangeListener() {
 			@SuppressWarnings("unchecked")
 			public void propertyChanged(PropertyChangeEvent e) {
-				AbstractPane.this.subjectChanged((T) e.getOldValue(), (T) e.getNewValue());
+				Pane.this.subjectChanged((T) e.getOldValue(), (T) e.getNewValue());
 			}
 		};
 	}
@@ -3280,8 +2661,8 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildSubPane(Composite container) {
-		return this.buildSubPane(container, 0);
+	protected final Composite addSubPane(Composite container) {
+		return this.addSubPane(container, 0);
 	}
 
 	/**
@@ -3293,8 +2674,8 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildSubPane(Composite container, int topMargin) {
-		return this.buildSubPane(container, topMargin, 0);
+	protected final Composite addSubPane(Composite container, int topMargin) {
+		return this.addSubPane(container, topMargin, 0);
 	}
 
 	/**
@@ -3307,11 +2688,11 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildSubPane(Composite container,
+	protected final Composite addSubPane(Composite container,
 	                                       int topMargin,
 	                                       int leftMargin) {
 
-		return this.buildSubPane(container, topMargin, leftMargin, 0, 0);
+		return this.addSubPane(container, topMargin, leftMargin, 0, 0);
 	}
 
 	/**
@@ -3328,13 +2709,13 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildSubPane(Composite container,
+	protected final Composite addSubPane(Composite container,
 	                                       int topMargin,
 	                                       int leftMargin,
 	                                       int bottomMargin,
 	                                       int rightMargin) {
 
-		return this.buildSubPane(
+		return this.addSubPane(
 			container,
 			1,
 			topMargin,
@@ -3357,7 +2738,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildSubPane(Composite container,
+	protected final Composite addSubPane(Composite container,
 	                                       int columnCount,
 	                                       int topMargin,
 	                                       int leftMargin,
@@ -3372,7 +2753,7 @@ public abstract class AbstractPane<T extends Model>
 		layout.marginBottom = bottomMargin;
 		layout.marginRight  = rightMargin;
 
-		container = this.buildPane(container, layout);
+		container = this.addPane(container, layout);
 
 		return container;
 	}
@@ -3387,39 +2768,14 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildSubSection(Composite container,
+	protected final Composite addSubSection(Composite container,
 	                                          String sectionText) {
 
-		return this.buildCollapsableSubSection(
+		return this.addCollapsableSubSection(
 			container,
 			sectionText,
 			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
 		);
-	}
-
-	/**
-	 * Creates a new table.
-	 *
-	 * @param container The parent container
-	 * @return The newly created <code>Table</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Table buildTable(Composite container) {
-		return this.buildTable(container, null);
-	}
-
-	/**
-	 * Creates a new table.
-	 *
-	 * @param container The parent container
-	 * @param style The style to apply to the table
-	 * @return The newly created <code>Table</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Table buildTable(Composite container, int style) {
-		return this.buildTable(container, style, null);
 	}
 
 	/**
@@ -3433,7 +2789,29 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Table buildTable(Composite container,
+	protected final Table addTable(Composite container,
+	                                 int style,
+	                                 String helpId) {
+
+		Table table = addUnmanagedTable(container, style, helpId);
+		this.manageWidget(table);
+
+		return table;
+	}
+	/**
+	 * Creates a new unmanaged table.  Unmanaged means that this Pane will
+	 * not handle the enabling/disabling of this widget.  The owning object will handle
+	 * it with its own PaneEnabler or ControlEnabler.
+	 *
+	 * @param container The parent container
+	 * @param style The style to apply to the table
+	 * @param helpId The topic help ID to be registered for the new table or
+	 * <code>null</code> if no help ID is required
+	 * @return The newly created <code>Table</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Table addUnmanagedTable(Composite container,
 	                                 int style,
 	                                 String helpId) {
 
@@ -3444,10 +2822,9 @@ public abstract class AbstractPane<T extends Model>
 		GridData gridData   = new GridData(GridData.FILL_BOTH);
 		gridData.heightHint = table.getItemHeight() * 4;
 		table.setLayoutData(gridData);
-		this.widgets.add(table);
 
 		if (helpId != null) {
-			helpSystem().setHelp(table, helpId);
+			getHelpSystem().setHelp(table, helpId);
 		}
 
 		return table;
@@ -3463,9 +2840,30 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Table buildTable(Composite container, String helpId) {
+	protected final Table addTable(Composite container, String helpId) {
 
-		return this.buildTable(
+		return this.addTable(
+			container,
+			SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI,
+			helpId
+		);
+	}
+	
+	/**
+	 * Creates a new unmanaged table.  Unmanaged means that this Pane will
+	 * not handle the enabling/disabling of this widget.  The owning object will handle
+	 * it with its own PaneEnabler or ControlEnabler.
+	 *
+	 * @param container The parent container
+	 * @param helpId The topic help ID to be registered for the new table or
+	 * <code>null</code> if no help ID is required
+	 * @return The newly created <code>Table</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Table addUnmanagedTable(Composite container, String helpId) {
+
+		return this.addUnmanagedTable(
 			container,
 			SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI,
 			helpId
@@ -3473,35 +2871,31 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new <code>Text</code> widget.
+	 * Creates a new managed <code>Text</code> widget.
 	 *
 	 * @param container The parent container
 	 * @return The newly created <code>Text</code> widget
 	 *
 	 * @category Layout
 	 */
-	protected final Text buildText(Composite container) {
-		return this.widgetFactory.createText(container);
+	protected final Text addText(Composite container) {
+		Text text = this.addUnmanagedText(container);
+		this.manageWidget(text);
+		return text;
 	}
-
+	
 	/**
-	 * Creates a new <code>Text</code> widget.
+	 * Creates a new unmanaged <code>Text</code> widget.  Unmanaged means 
+	 * that this Pane will not handle the enabling/disabling of this widget.  
+	 * The owning object will handle it with its own PaneEnabler or ControlEnabler.
 	 *
 	 * @param container The parent container
-	 * @param helpId The topic help ID to be registered for the new text
 	 * @return The newly created <code>Text</code> widget
 	 *
 	 * @category Layout
 	 */
-	protected final Text buildText(Composite container, String helpId) {
-
+	protected final Text addUnmanagedText(Composite container) {
 		Text text = this.widgetFactory.createText(container);
-		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		if (helpId != null) {
-			helpSystem().setHelp(text, helpId);
-		}
-
 		return text;
 	}
 
@@ -3509,15 +2903,59 @@ public abstract class AbstractPane<T extends Model>
 	 * Creates a new <code>Text</code> widget.
 	 *
 	 * @param container The parent container
+	 * @param helpId The topic help ID to be registered for the new text
+	 * @return The newly created <code>Text</code> widget
+	 *
+	 * @category Layout
+	 */
+	protected final Text addText(Composite container, String helpId) {
+
+		Text text = this.addText(container);
+		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		if (helpId != null) {
+			getHelpSystem().setHelp(text, helpId);
+		}
+
+		return text;
+	}
+	
+	/**
+	 * Creates a new unmanaged <code>Text</code> widget.  Unmanaged means 
+	 * that this Pane will not handle the enabling/disabling of this widget.  
+	 * The owning object will handle it with its own PaneEnabler or ControlEnabler.
+	 *
+	 * @param container The parent container
+	 * @param helpId The topic help ID to be registered for the new text
+	 * @return The newly created <code>Text</code> widget
+	 *
+	 * @category Layout
+	 */
+	protected final Text addUnmanagedText(Composite container, String helpId) {
+
+		Text text = this.addUnmanagedText(container);
+		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		if (helpId != null) {
+			getHelpSystem().setHelp(text, helpId);
+		}
+		
+		return text;
+	}
+	
+	/**
+	 * Creates a new <code>Text</code> widget.
+	 *
+	 * @param container The parent container
 	 * @param textHolder The holder of the text field's input
 	 * @return The newly created <code>Text</code> widget
 	 *
 	 * @category Layout
 	 */
-	protected final Text buildText(Composite container,
+	protected final Text addText(Composite container,
 	                               WritablePropertyValueModel<String> textHolder) {
 
-		return this.buildText(container, textHolder, null);
+		return this.addText(container, textHolder, null);
 	}
 
 	/**
@@ -3530,18 +2968,34 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Text buildText(Composite container,
+	protected final Text addText(Composite container,
 	                               WritablePropertyValueModel<String> textHolder,
 	                               String helpId) {
 
-		Text text = this.widgetFactory.createText(container);
-		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
+		Text text = this.addText(container, helpId);
 		TextFieldModelAdapter.adapt(textHolder, text);
 
-		if (helpId != null) {
-			helpSystem().setHelp(text, helpId);
-		}
+		return text;
+	}
+	
+	/**
+	 * Creates a new unmanaged <code>Text</code> widget.  Unmanaged means 
+	 * that this Pane will not handle the enabling/disabling of this widget.  
+	 * The owning object will handle it with its own PaneEnabler or ControlEnabler.
+	 *
+	 * @param container The parent container
+	 * @param textHolder The holder of the text field's input
+	 * @param helpId The topic help ID to be registered for the new text
+	 * @return The newly created <code>Text</code> widget
+	 *
+	 * @category Layout
+	 */
+	protected final Text addUnmanagedText(Composite container,
+	                               WritablePropertyValueModel<String> textHolder,
+	                               String helpId) {
+
+		Text text = this.addUnmanagedText(container, helpId);
+		TextFieldModelAdapter.adapt(textHolder, text);
 
 		return text;
 	}
@@ -3555,8 +3009,8 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Group buildTitledPane(Composite container, String title) {
-		return this.buildTitledPane(container, title, null);
+	protected final Group addTitledGroup(Composite container, String title) {
+		return this.addTitledGroup(container, title, null);
 	}
 
 	/**
@@ -3569,11 +3023,13 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Group buildTitledPane(Composite container,
+	protected final Group addTitledGroup(Composite container,
 	                                      String title,
 	                                      String helpId) {
 
 		Group group = this.widgetFactory.createGroup(container, title);
+		//manageWidget(group); TODO unsure if I want to manage groups, 
+		//also should probably rename this addUnmanagedTitledPane
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		GridLayout layout = new GridLayout(1, false);
@@ -3586,15 +3042,17 @@ public abstract class AbstractPane<T extends Model>
 		group.setLayout(layout);
 
 		if (helpId != null) {
-			helpSystem().setHelp(group, helpId);
+			getHelpSystem().setHelp(group, helpId);
 		}
 
 		return group;
 	}
 
 	/**
-	 * Creates a new toggle button (radio button or check box) using the given
-	 * information.
+	 * Creates a new unmanaged new toggle button (radio button or check box).  
+	 * Unmanaged means  that this Pane will not handle the enabling/disabling 
+	 * of this widget. The owning object will handle it with its own PaneEnabler 
+	 * or ControlEnabler.
 	 *
 	 * @param parent The parent container
 	 * @param buttonText The button's text
@@ -3604,7 +3062,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	private Button buildToggleButton(Composite parent,
+	private Button addUnmanagedToggleButton(Composite parent,
 	                                 String buttonText,
 	                                 WritablePropertyValueModel<Boolean> booleanHolder,
 	                                 String helpId,
@@ -3627,32 +3085,34 @@ public abstract class AbstractPane<T extends Model>
 
 		button.setLayoutData(new GridData());
 		BooleanButtonModelAdapter.adapt(booleanHolder, button);
-		this.widgets.add(button);
 
 		if (helpId != null) {
-			helpSystem().setHelp(button, helpId);
+			getHelpSystem().setHelp(button, helpId);
 		}
 
 		return button;
 	}
-
+	
 	/**
-	 * Creates a new check box that can have 3 selection states (selected,
-	 * unselected and partially selected.
+	 * Creates a new toggle button (radio button or check box) using the given
+	 * information.
 	 *
 	 * @param parent The parent container
-	 * @param text The button's text
-	 * @param booleanHolder The holder of the boolean value where <code>null</code>
-	 * means partially selected
-	 * @return The newly created <code>TriStateCheckBox</code>
+	 * @param buttonText The button's text
+	 * @param booleanHolder The holder of the selection state
+	 * @param helpId The topic help ID to be registered for the new button
+	 * @return The newly created <code>Button</code>
 	 *
 	 * @category Layout
 	 */
-	protected final TriStateCheckBox buildTriStateCheckBox(Composite parent,
-	                                                       String text,
-	                                                       WritablePropertyValueModel<Boolean> booleanHolder) {
-
-		return this.buildTriStateCheckBox(parent, text, booleanHolder, null);
+	private Button addToggleButton(Composite parent,
+	                                 String buttonText,
+	                                 WritablePropertyValueModel<Boolean> booleanHolder,
+	                                 String helpId,
+	                                 int toggleButtonType) {
+		Button button = addUnmanagedToggleButton(parent, buttonText, booleanHolder, helpId, toggleButtonType);
+		this.manageWidget(button);
+		return button;
 	}
 
 	/**
@@ -3668,7 +3128,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final TriStateCheckBox buildTriStateCheckBox(Composite parent,
+	protected final TriStateCheckBox addTriStateCheckBox(Composite parent,
 	                                                       String text,
 	                                                       WritablePropertyValueModel<Boolean> booleanHolder,
 	                                                       String helpId) {
@@ -3679,15 +3139,15 @@ public abstract class AbstractPane<T extends Model>
 			this.getWidgetFactory()
 		);
 
+		this.manageWidget(checkBox.getCheckBox());
+
 		TriStateCheckBoxModelAdapter.adapt(
 			booleanHolder,
 			checkBox
 		);
 
-		this.widgets.add(checkBox.getCheckBox());
-
 		if (helpId != null) {
-			helpSystem().setHelp(checkBox.getCheckBox(), helpId);
+			getHelpSystem().setHelp(checkBox.getCheckBox(), helpId);
 		}
 
 		return checkBox;
@@ -3703,46 +3163,18 @@ public abstract class AbstractPane<T extends Model>
 	 * means partially selected
 	 * @param stringHolder The holder of the string to put in parenthesis after
 	 * the check box's text when it is partially selected
-	 * @return The newly created <code>TriStateCheckBox</code>
-	 *
-	 * @category Layout
-	 */
-	protected final TriStateCheckBox buildTriStateCheckBoxWithDefault(Composite parent,
-	                                                                  String text,
-	                                                                  WritablePropertyValueModel<Boolean> booleanHolder,
-	                                                                  PropertyValueModel<String> stringHolder) {
-
-		return this.buildTriStateCheckBoxWithDefault(
-			parent,
-			text,
-			booleanHolder,
-			stringHolder,
-			null
-		);
-	}
-
-	/**
-	 * Creates a new check box that can have 3 selection states (selected,
-	 * unselected and partially selected.
-	 *
-	 * @param parent The parent container
-	 * @param text The button's text
-	 * @param booleanHolder The holder of the boolean value where <code>null</code>
-	 * means partially selected
-	 * @param stringHolder The holder of the string to put in parenthesis after
-	 * the check box's text when it is partially selected
 	 * @param helpId The topic help ID to be registered for the new check box
 	 * @return The newly created <code>TriStateCheckBox</code>
 	 *
 	 * @category Layout
 	 */
-	protected final TriStateCheckBox buildTriStateCheckBoxWithDefault(Composite parent,
+	protected final TriStateCheckBox addTriStateCheckBoxWithDefault(Composite parent,
 	                                                                  String text,
 	                                                                  WritablePropertyValueModel<Boolean> booleanHolder,
 	                                                                  PropertyValueModel<String> stringHolder,
 	                                                                  String helpId) {
 
-		TriStateCheckBox checkBox = this.buildTriStateCheckBox(
+		TriStateCheckBox checkBox = this.addTriStateCheckBox(
 			parent,
 			text,
 			booleanHolder,
@@ -3755,45 +3187,6 @@ public abstract class AbstractPane<T extends Model>
 		);
 
 		return checkBox;
-	}
-
-	/**
-	 * Uninstalls any listeners from the subject in order to stop being notified
-	 * for changes made outside of this panes.
-	 *
-	 * @category Populate
-	 */
-	protected void disengageListeners() {
-
-		this.log(Tracing.UI_LAYOUT, "   ->disengageListeners()");
-
-		this.subjectHolder.removePropertyChangeListener(
-			PropertyValueModel.VALUE,
-			this.subjectChangeListener
-		);
-
-		this.disengageListeners(this.subject());
-
-		for (AbstractPane<?> subPane : this.subPanes) {
-			subPane.disengageListeners();
-		}
-	}
-
-	/**
-	 * Removes any property change listeners from the given subject.
-	 *
-	 * @param subject The old subject
-	 *
-	 * @category Populate
-	 */
-	protected void disengageListeners(T subject) {
-		if (subject != null) {
-//			this.log("   ->disengageListeners() from " + subject);
-
-			for (String propertyName : this.propertyNames()) {
-				subject.removePropertyChangeListener(propertyName, this.aspectChangeListener);
-			}
-		}
 	}
 
 	/**
@@ -3839,19 +3232,8 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Layout
 	 */
 	private void enableChildren(boolean enabled) {
-
-		// Only update the enablement state of the child widgets if this pane
-		// has its enablement managed by enableWidgets() (i.e. not done manually)
-		if (this.isEnablementManaged(container)) {
-
-			for (Control control : this.widgets) {
-
-				// Make sure to check if the child control doesn't have its
-				// enablement state manually managed
-				if (this.isEnablementManaged(control)) {
-					control.setEnabled(enabled);
-				}
-			}
+		for (Control control : this.managedWidgets) {
+			control.setEnabled(enabled);
 		}
 	}
 
@@ -3865,13 +3247,11 @@ public abstract class AbstractPane<T extends Model>
 	 */
 	public void enableWidgets(boolean enabled) {
 
-		if (!container.isDisposed()) {
+		if (!this.container.isDisposed()) {
 			this.enableChildren(enabled);
 
-			for (AbstractPane<?> subPane : this.subPanes) {
-				if (this.isPaneEnablementManaged(subPane)) {
-					subPane.enableWidgets(enabled);
-				}
+			for (Pane<?> subPane : this.managedSubPanes) {
+				subPane.enableWidgets(enabled);
 			}
 		}
 	}
@@ -3887,9 +3267,9 @@ public abstract class AbstractPane<T extends Model>
 		this.log(Tracing.UI_LAYOUT, "   ->engageListeners()");
 
 		this.engageSubjectHolder();
-		this.engageListeners(this.subject());
+		this.engageListeners(this.getSubject());
 
-		for (AbstractPane<?> subPane : this.subPanes) {
+		for (Pane<?> subPane : this.subPanes) {
 			subPane.engageListeners();
 		}
 	}
@@ -3906,14 +3286,57 @@ public abstract class AbstractPane<T extends Model>
 
 //			this.log("   ->engageListeners() on " + subject);
 
-			for (String propertyName : this.propertyNames()) {
+			for (String propertyName : this.getPropertyNames()) {
 				subject.addPropertyChangeListener(propertyName, this.aspectChangeListener);
+			}
+		}
+	}
+
+	/**
+	 * Uninstalls any listeners from the subject in order to stop being notified
+	 * for changes made outside of this panes.
+	 *
+	 * @category Populate
+	 */
+	protected void disengageListeners() {
+
+		this.log(Tracing.UI_LAYOUT, "   ->disengageListeners()");
+
+		this.disengageSubjectHolder();
+
+		this.disengageListeners(this.getSubject());
+
+		for (Pane<?> subPane : this.subPanes) {
+			subPane.disengageListeners();
+		}
+	}
+
+	/**
+	 * Removes any property change listeners from the given subject.
+	 *
+	 * @param subject The old subject
+	 *
+	 * @category Populate
+	 */
+	protected void disengageListeners(T subject) {
+		if (subject != null) {
+//			this.log("   ->disengageListeners() from " + subject);
+
+			for (String propertyName : this.getPropertyNames()) {
+				subject.removePropertyChangeListener(propertyName, this.aspectChangeListener);
 			}
 		}
 	}
 
 	private void engageSubjectHolder() {
 		this.subjectHolder.addPropertyChangeListener(
+			PropertyValueModel.VALUE,
+			this.subjectChangeListener
+		);
+	}
+	
+	private void disengageSubjectHolder() {
+		this.subjectHolder.removePropertyChangeListener(
 			PropertyValueModel.VALUE,
 			this.subjectChangeListener
 		);
@@ -3962,7 +3385,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final int groupBoxMargin() {
+	protected final int getGroupBoxMargin() {
 		Group group = this.widgetFactory.createGroup(SWTUtil.getShell(), "");
 		Rectangle clientArea = group.getClientArea();
 		group.dispose();
@@ -3976,118 +3399,10 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Helper
 	 */
-	protected final IWorkbenchHelpSystem helpSystem() {
+	protected final IWorkbenchHelpSystem getHelpSystem() {
 		return PlatformUI.getWorkbench().getHelpSystem();
 	}
 
-	/**
-	 * Initializes this <code>AbstractSubjectPane</code>.
-	 *
-	 * @category Initialization
-	 */
-	protected void initialize() {
-	}
-
-	/**
-	 * Registers this pane with the parent pane.
-	 *
-	 * @param parentPane The parent pane
-	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
-	 * this pane aligned with the widgets of the given parent pane;
-	 * <code>false</code> to not align them
-	 *
-	 * @category Initialization
-	 */
-	private void initialize(AbstractPane<?> parentPane,
-	                        boolean automaticallyAlignWidgets) {
-
-		// Register this pane with the parent pane, it will call the methods
-		// automatically (engageListeners(), disengageListeners(), populate(),
-		// dispose(), etc)
-		parentPane.registerSubPane(this);
-
-		// Align the left and right controls with the controls from the parent
-		// pane
-		if (automaticallyAlignWidgets) {
-			parentPane.leftControlAligner .add(this.leftControlAligner);
-			parentPane.rightControlAligner.add(this.rightControlAligner);
-		}
-	}
-
-	/**
-	 * Initializes this <code>AbstractSubjectPane</code>.
-	 *
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param widgetFactory The factory used to create various widgets
-	 *
-	 * @category Initialization
-	 */
-	@SuppressWarnings("unchecked")
-	private void initialize(PropertyValueModel<? extends T> subjectHolder,
-	                        WidgetFactory widgetFactory)
-	{
-		Assert.isNotNull(subjectHolder, "The subject holder cannot be null");
-
-		this.subjectHolder         = (PropertyValueModel<T>) subjectHolder;
-		this.widgetFactory         = widgetFactory;
-		this.subPanes              = new ArrayList<AbstractPane<?>>();
-		this.widgets               = new ArrayList<Control>();
-		this.leftControlAligner    = new ControlAligner();
-		this.rightControlAligner   = new ControlAligner();
-		this.subjectChangeListener = this.buildSubjectChangeListener();
-		this.aspectChangeListener  = this.buildAspectChangeListener();
-		this.internalPanesForEnablementControl = new ArrayList<AbstractPane<?>>();
-
-		this.initialize();
-	}
-
-	/**
-	 * Initializes the layout of this pane.
-	 *
-	 * @param container The parent container
-	 *
-	 * @category Layout
-	 */
-	protected abstract void initializeLayout(Composite container);
-
-	/**
-	 * Determines whether the enablement state is managed by this pane or is
-	 * manually managed.
-	 *
-	 * @param control The <code>Control</code> to verify how its enablement state
-	 * is managed
-	 * @return <code>true</code> if the enablement state can be changed when
-	 * {@link #enableWidgets(boolean)} is called; <code>false</code> if its
-	 * enablement state is manually changed
-	 */
-	public final boolean isEnablementManaged(Control control) {
-		return control.getData("enablement") != Boolean.FALSE;
-	}
-
-	/**
-	 * Determines whether the given pane has its enablement state managed by this
-	 * pane.
-	 *
-	 * @param subPane The sub-pane to verify how its enablement state is being
-	 * managed
-	 * @return <code>true</code> if the sub-pane's enablement state is managed by
-	 * this state; <code>false</code> if it's manually managed
-	 *
-	 * @category Layout
-	 */
-	private boolean isPaneEnablementManaged(AbstractPane<?> subPane) {
-
-		return // Test 1: This pane is being automatically managed and the
-		       // sub-pane was registered has an internal pane, which means its
-		       // enablement state is being managed automatically as well. A
-		       // sub-pane is managed automatically only when PaneEnabler changes
-		       // the enablement management checks
-		       this.isEnablementManaged(container) &&
-		       this.internalPanesForEnablementControl.contains(subPane) ||
-
-		       // Test 2: Check to see if the pane is automatically managed
-		       this.isEnablementManaged(subPane.getControl());
-	}
 
 	/**
 	 * Determines whether
@@ -4135,7 +3450,7 @@ public abstract class AbstractPane<T extends Model>
 		doDispose();
 
 		// Ask the sub-panes to perform the dispose themselves
-		for (AbstractPane<?> subPane : this.subPanes) {
+		for (Pane<?> subPane : this.subPanes) {
 			subPane.performDispose();
 		}
 	}
@@ -4172,23 +3487,10 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Populate
 	 */
-	protected Collection<String> propertyNames() {
+	protected Collection<String> getPropertyNames() {
 		ArrayList<String> propertyNames = new ArrayList<String>();
 		addPropertyNames(propertyNames);
 		return propertyNames;
-	}
-
-	/**
-	 * Registers another <code>AbstractSubjectPane</code> with this one so it can
-	 * be automatically notified about certain events such as engaging or
-	 * disengaging the listeners, etc.
-	 *
-	 * @param subPane The sub-pane to register
-	 *
-	 * @category Controller
-	 */
-	protected final void registerSubPane(AbstractPane<?> subPane) {
-		this.subPanes.add(subPane);
 	}
 
 	/**
@@ -4201,7 +3503,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final void removeAlignLeft(AbstractPane<?> pane) {
+	protected final void removeAlignLeft(Pane<?> pane) {
 		this.leftControlAligner.remove(pane.leftControlAligner);
 	}
 
@@ -4229,7 +3531,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final void removeAlignRight(AbstractPane<?> pane) {
+	protected final void removeAlignRight(Pane<?> pane) {
 		this.rightControlAligner.remove(pane.rightControlAligner);
 	}
 
@@ -4248,30 +3550,6 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Removes the given <code>AbstractPane</code>'s <code>Control</code> from
-	 * having its enablement state managed by this pane. However, if this pane
-	 * has its enablement state modified, the given pane will receive that
-	 * notification.
-	 *
-	 * @param pane The pane to have its enablement state not managed by this pane
-	 */
-	public void removeFromEnablementControl(AbstractPane<?> pane) {
-		this.removeFromEnablementControl(pane.getControl());
-		this.internalPanesForEnablementControl.add(pane);
-	}
-
-	/**
-	 * Removes the given <code>Control</code> from having its enablement state
-	 * being managed by this pane.
-	 *
-	 * @param control The <code>Control</code> that has its enablement state
-	 * manually controlled
-	 */
-	public void removeFromEnablementControl(Control control) {
-		control.setData("enablement", Boolean.FALSE);
-	}
-
-	/**
 	 * Removes the given pane's controls (those that were registered for
 	 * alignment) from this pane.
 	 *
@@ -4280,7 +3558,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final void removePaneForAlignment(AbstractPane<?> pane) {
+	protected final void removePaneForAlignment(Pane<?> pane) {
 		removeAlignLeft(pane);
 		removeAlignRight(pane);
 	}
@@ -4305,7 +3583,7 @@ public abstract class AbstractPane<T extends Model>
 		}
 
 		// Ask the sub-panes to repopulate themselves
-		for (AbstractPane<?> subPane : this.subPanes) {
+		for (Pane<?> subPane : this.subPanes) {
 			subPane.repopulate();
 		}
 	}
@@ -4352,7 +3630,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @return The nearest window displaying this pane
 	 */
-	protected final Shell shell() {
+	protected final Shell getShell() {
 		return this.container.getShell();
 	}
 
@@ -4364,7 +3642,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Populate
 	 */
-	protected T subject() {
+	protected T getSubject() {
 		return this.subjectHolder.getValue();
 	}
 
@@ -4395,8 +3673,22 @@ public abstract class AbstractPane<T extends Model>
 		}
 	}
 
+
 	/**
-	 * Unregisters the given <code>AbstractSubjectPane</code> from this one so it
+	 * Registers another <code>Pane</code> with this one so it can
+	 * be automatically notified about certain events such as engaging or
+	 * disengaging the listeners, etc.
+	 *
+	 * @param subPane The sub-pane to register
+	 *
+	 * @category Controller
+	 */
+	protected final void registerSubPane(Pane<?> subPane) {
+		this.subPanes.add(subPane);
+	}
+
+	/**
+	 * Unregisters the given <code>Pane</code> from this one so it
 	 * can no longer be automatically notified about certain events such as
 	 * engaging or disengaging the listeners, etc.
 	 *
@@ -4404,19 +3696,19 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Controller
 	 */
-	protected final void unregisterSubPane(AbstractPane<?> subPane) {
+	protected final void unregisterSubPane(Pane<?> subPane) {
 		this.subPanes.remove(subPane);
 	}
 
 	private void updatePane(String propertyName) {
-		if (!isPopulating() && !container.isDisposed()) {
-			populating = true;
+		if (!isPopulating() && !this.container.isDisposed()) {
+			this.populating = true;
 
 			try {
 				propertyChanged(propertyName);
 			}
 			finally {
-				populating = false;
+				this.populating = false;
 			}
 		}
 	}

@@ -13,7 +13,7 @@ import org.eclipse.jpt.eclipselink.core.context.CacheType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class CacheTypeComposite extends AbstractFormPane<EclipseLinkCaching> {
+public class CacheTypeComposite extends FormPane<EclipseLinkCaching> {
 
 	/**
 	 * Creates a new <code>CacheTypeComposite</code>.
@@ -40,13 +40,13 @@ public class CacheTypeComposite extends AbstractFormPane<EclipseLinkCaching> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public CacheTypeComposite(AbstractFormPane<? extends EclipseLinkCaching> parentPane,
+	public CacheTypeComposite(FormPane<? extends EclipseLinkCaching> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent);
 	}
 
-	private EnumFormComboViewer<EclipseLinkCaching, CacheType> buildCacheTypeCombo(Composite container) {
+	private EnumFormComboViewer<EclipseLinkCaching, CacheType> addCacheTypeCombo(Composite container) {
 
 		return new EnumFormComboViewer<EclipseLinkCaching, CacheType>(this, container) {
 
@@ -58,13 +58,13 @@ public class CacheTypeComposite extends AbstractFormPane<EclipseLinkCaching> {
 			}
 
 			@Override
-			protected CacheType[] choices() {
+			protected CacheType[] getChoices() {
 				return CacheType.values();
 			}
 
 			@Override
-			protected CacheType defaultValue() {
-				return subject().getDefaultType();
+			protected CacheType getDefaultValue() {
+				return getSubject().getDefaultType();
 			}
 
 			@Override
@@ -78,12 +78,12 @@ public class CacheTypeComposite extends AbstractFormPane<EclipseLinkCaching> {
 
 			@Override
 			protected CacheType getValue() {
-				return subject().getSpecifiedType();
+				return getSubject().getSpecifiedType();
 			}
 
 			@Override
 			protected void setValue(CacheType value) {
-				subject().setSpecifiedType(value);
+				getSubject().setSpecifiedType(value);
 			}
 			
 			@Override
@@ -96,10 +96,10 @@ public class CacheTypeComposite extends AbstractFormPane<EclipseLinkCaching> {
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			EclipseLinkUiMappingsMessages.CacheTypeComposite_label,
-			buildCacheTypeCombo(container),
+			addCacheTypeCombo(container),
 			EclipseLinkHelpContextIds.CACHING_CACHE_TYPE
 		);
 	}

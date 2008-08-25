@@ -61,7 +61,7 @@ public class InverseJoinColumnInJoinTableStateObject extends JoinColumnStateObje
 
 	@Override
 	public Table getReferencedNameTable() {
-		Entity targetEntity = relationshipMapping().getResolvedTargetEntity();
+		Entity targetEntity = getRelationshipMapping().getResolvedTargetEntity();
 
 		if (targetEntity == null) {
 			return null;
@@ -71,12 +71,12 @@ public class InverseJoinColumnInJoinTableStateObject extends JoinColumnStateObje
 	}
 
 	@Override
-	protected Schema getSchema() {
+	protected Schema getDbSchema() {
 		return null;
 	}
 
 	@Override
-	protected String initialTable() {
+	protected String getInitialTable() {
 		return getOwner().getName();
 	}
 
@@ -90,12 +90,12 @@ public class InverseJoinColumnInJoinTableStateObject extends JoinColumnStateObje
 	 *
 	 * @return The owner of the join column to create or to edit
 	 */
-	public RelationshipMapping relationshipMapping() {
+	public RelationshipMapping getRelationshipMapping() {
 		return getOwner().getParent();
 	}
 
 	@Override
 	public ListIterator<String> tables() {
-		return new SingleElementListIterator<String>(initialTable());
+		return new SingleElementListIterator<String>(getInitialTable());
 	}
 }

@@ -21,7 +21,7 @@ import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.ui.internal.util.LabeledLabel;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -81,7 +81,7 @@ import org.eclipse.swt.widgets.Spinner;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class AbstractInheritanceComposite<T extends Entity> extends AbstractPane<T> {
+public abstract class AbstractInheritanceComposite<T extends Entity> extends Pane<T> {
 
 	/**
 	 * A key used to represent the default value, this is required to convert
@@ -98,7 +98,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Abs
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public AbstractInheritanceComposite(AbstractPane<? extends T> parentPane,
+	public AbstractInheritanceComposite(Pane<? extends T> parentPane,
 	                            Composite parent) {
 
 		super(parentPane, parent, false);
@@ -167,9 +167,9 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Abs
 		};
 	}
 
-	private Control buildDefaultLengthLabel(Composite container) {
+	private Control addDefaultLengthLabel(Composite container) {
 
-		Label label = buildLabel(
+		Label label = addLabel(
 			container,
 			JptUiMappingsMessages.DefaultWithoutValue
 		);
@@ -189,7 +189,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Abs
 			@Override
 			protected String transform(Integer value) {
 
-				Integer defaultValue = (subject() != null) ? subject().getDiscriminatorColumn().getDefaultLength() :
+				Integer defaultValue = (getSubject() != null) ? getSubject().getDiscriminatorColumn().getDefaultLength() :
 				                                             DiscriminatorColumn.DEFAULT_LENGTH;
 
 				return NLS.bind(
@@ -200,7 +200,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Abs
 		};
 	}
 
-	private ColumnCombo<DiscriminatorColumn> buildDiscriminatorColumnCombo(
+	private ColumnCombo<DiscriminatorColumn> addDiscriminatorColumnCombo(
 		Composite container,
 		PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {
 
@@ -218,23 +218,23 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Abs
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultName();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultName();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedName(value);
+				getSubject().setSpecifiedName(value);
 			}
 
 			@Override
-			protected Table getDBTable_() {
-				return subject().getDbTable();
+			protected Table getDbTable_() {
+				return getSubject().getDbTable();
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedName();
+			protected String getValue() {
+				return getSubject().getSpecifiedName();
 			}
 		};
 	}
@@ -248,7 +248,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Abs
 		};
 	}
 
-	private EnumFormComboViewer<DiscriminatorColumn, DiscriminatorType> buildDiscriminatorTypeCombo(
+	private EnumFormComboViewer<DiscriminatorColumn, DiscriminatorType> addDiscriminatorTypeCombo(
 		Composite container,
 		PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {
 
@@ -265,13 +265,13 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Abs
 			}
 
 			@Override
-			protected DiscriminatorType[] choices() {
+			protected DiscriminatorType[] getChoices() {
 				return DiscriminatorType.values();
 			}
 
 			@Override
-			protected DiscriminatorType defaultValue() {
-				return subject().getDefaultDiscriminatorType();
+			protected DiscriminatorType getDefaultValue() {
+				return getSubject().getDefaultDiscriminatorType();
 			}
 
 			@Override
@@ -285,12 +285,12 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Abs
 
 			@Override
 			protected DiscriminatorType getValue() {
-				return subject().getSpecifiedDiscriminatorType();
+				return getSubject().getSpecifiedDiscriminatorType();
 			}
 
 			@Override
 			protected void setValue(DiscriminatorType value) {
-				subject().setSpecifiedDiscriminatorType(value);
+				getSubject().setSpecifiedDiscriminatorType(value);
 			}
 		};
 	}
@@ -299,12 +299,12 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Abs
 		return new StringConverter<String>() {
 			public String convertToString(String value) {
 
-				if (subject() == null) {
+				if (getSubject() == null) {
 					return null;
 				}
 
 				if (value == null) {
-					value = subject().getDefaultDiscriminatorValue();
+					value = getSubject().getDefaultDiscriminatorValue();
 
 					if (value != null) {
 						value = DEFAULT_KEY + value;
@@ -377,7 +377,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Abs
 		};
 	}
 
-	private EnumFormComboViewer<Entity, InheritanceType> buildStrategyCombo(Composite container) {
+	private EnumFormComboViewer<Entity, InheritanceType> addStrategyCombo(Composite container) {
 
 		return new EnumFormComboViewer<Entity, InheritanceType>(this, container) {
 
@@ -389,13 +389,13 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Abs
 			}
 
 			@Override
-			protected InheritanceType[] choices() {
+			protected InheritanceType[] getChoices() {
 				return InheritanceType.values();
 			}
 
 			@Override
-			protected InheritanceType defaultValue() {
-				return subject().getDefaultInheritanceStrategy();
+			protected InheritanceType getDefaultValue() {
+				return getSubject().getDefaultInheritanceStrategy();
 			}
 
 			@Override
@@ -409,12 +409,12 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Abs
 
 			@Override
 			protected InheritanceType getValue() {
-				return subject().getSpecifiedInheritanceStrategy();
+				return getSubject().getSpecifiedInheritanceStrategy();
 			}
 
 			@Override
 			protected void setValue(InheritanceType value) {
-				subject().setSpecifiedInheritanceStrategy(value);
+				getSubject().setSpecifiedInheritanceStrategy(value);
 			}
 		};
 	}
@@ -425,43 +425,43 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Abs
 			buildDiscriminatorColumnHolder();
 
 		// Name widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiMappingsMessages.DiscriminatorColumnComposite_name,
-			buildDiscriminatorColumnCombo(container, discriminatorColumnHolder),
+			addDiscriminatorColumnCombo(container, discriminatorColumnHolder),
 			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_COLUMN
 		);
 
 		// Discriminator Type widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiMappingsMessages.DiscriminatorColumnComposite_discriminatorType,
-			buildDiscriminatorTypeCombo(container, discriminatorColumnHolder),
+			addDiscriminatorTypeCombo(container, discriminatorColumnHolder),
 			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_TYPE
 		);
 
-		container = buildCollapsableSubSection(
-			buildSubPane(container, 10),
+		container = addCollapsableSubSection(
+			addSubPane(container, 10),
 			JptUiMappingsMessages.InheritanceComposite_detailsGroupBox,
 			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
 		);
 
 		// Length widgets
-		Spinner lengthSpinner = buildLabeledSpinner(
+		Spinner lengthSpinner = addLabeledSpinner(
 			container,
 			JptUiMappingsMessages.ColumnComposite_length,
 			buildLengthHolder(discriminatorColumnHolder),
 			-1,
 			-1,
 			Integer.MAX_VALUE,
-			buildDefaultLengthLabel(container),
+			addDefaultLengthLabel(container),
 			JpaHelpContextIds.MAPPING_COLUMN_LENGTH
 		);
 
 		updateGridData(container, lengthSpinner);
 
 		// Column Definition widgets
-		buildLabeledText(
+		addLabeledText(
 			container,
 			JptUiMappingsMessages.ColumnComposite_columnDefinition,
 			buildColumnDefinitionHolder(discriminatorColumnHolder)
@@ -474,22 +474,22 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Abs
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		int groupBoxMargin = groupBoxMargin();
+		int groupBoxMargin = getGroupBoxMargin();
 
-		Composite subPane = buildSubPane(
+		Composite subPane = addSubPane(
 			container, 0, groupBoxMargin, 0, groupBoxMargin
 		);
 
 		// Strategy widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			subPane,
 			JptUiMappingsMessages.InheritanceComposite_strategy,
-			buildStrategyCombo(subPane),
+			addStrategyCombo(subPane),
 			JpaHelpContextIds.ENTITY_INHERITANCE_STRATEGY
 		);
 
 		// Discrinator Value widgets
-		CCombo discriminatorValueCombo = buildLabeledEditableCCombo(
+		CCombo discriminatorValueCombo = addLabeledEditableCCombo(
 			subPane,
 			JptUiMappingsMessages.InheritanceComposite_discriminatorValue,
 			buildDiscriminatorValueListHolder(),
@@ -499,18 +499,18 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Abs
 		);
 
 		// Discriminator Column sub-pane
-		Composite discriminatorColumnContainer = buildTitledPane(
-			buildSubPane(container, 10),
+		Composite discriminatorColumnContainer = addTitledGroup(
+			addSubPane(container, 10),
 			JptUiMappingsMessages.InheritanceComposite_discriminatorColumnGroupBox
 		);
 
 		initializeDiscriminatorColumnPane(discriminatorColumnContainer);
 
 		// Primary Key Join Columns widgets
-		buildPrimaryKeyJoinColumnsComposite(buildSubPane(container, 5));
+		addPrimaryKeyJoinColumnsComposite(addSubPane(container, 5));
 	}
 
-	protected abstract void buildPrimaryKeyJoinColumnsComposite(Composite container);
+	protected abstract void addPrimaryKeyJoinColumnsComposite(Composite container);
 
 	/**
 	 * Changes the layout of the given container by changing which widget will

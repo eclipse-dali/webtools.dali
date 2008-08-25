@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -66,7 +66,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class BasicMappingComposite extends AbstractFormPane<BasicMapping>
+public class BasicMappingComposite extends FormPane<BasicMapping>
                                    implements JpaComposite
 {
 	/**
@@ -98,13 +98,13 @@ public class BasicMappingComposite extends AbstractFormPane<BasicMapping>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		int groupBoxMargin = groupBoxMargin();
+		int groupBoxMargin = getGroupBoxMargin();
 
 		// Column widgets
 		new ColumnComposite(this, buildColumnHolder(), container);
 
 		// Align the widgets under the ColumnComposite
-		container = buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+		container = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 
 		// Fetch Type widgets
 		new FetchTypeComposite(this, container);
@@ -116,7 +116,7 @@ public class BasicMappingComposite extends AbstractFormPane<BasicMapping>
 		new EnumTypeComposite(this, container);
 
 		// Optional widgets
-		new OptionalComposite(this, buildSubPane(container, 4));
+		new OptionalComposite(this, addSubPane(container, 4));
 
 		// Lob check box
 		new LobComposite(this, container);

@@ -92,7 +92,8 @@ public class JptUiPlugin extends AbstractUIPlugin
 	/**
 	 * Return the JPA platform UI corresponding to the given JPA platform
 	 */
+	//TODO rename this to getJpaPlatformUi
 	public JpaPlatformUi jpaPlatformUi(JpaPlatform jpaPlatform) {
-		return JpaPlatformUiRegistry.instance().jpaPlatform(jpaPlatform.getId());
+		return JpaPlatformUiRegistry.instance().getJpaPlatformUi(jpaPlatform.getId());
 	}
 }

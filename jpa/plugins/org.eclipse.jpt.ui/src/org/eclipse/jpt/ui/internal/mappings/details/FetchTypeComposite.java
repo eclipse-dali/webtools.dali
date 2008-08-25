@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Fetchable;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class FetchTypeComposite extends AbstractFormPane<Fetchable> {
+public class FetchTypeComposite extends FormPane<Fetchable> {
 
 	/**
 	 * Creates a new <code>FetchTypeComposite</code>.
@@ -44,13 +44,13 @@ public class FetchTypeComposite extends AbstractFormPane<Fetchable> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public FetchTypeComposite(AbstractFormPane<? extends Fetchable> parentPane,
+	public FetchTypeComposite(FormPane<? extends Fetchable> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent);
 	}
 
-	private EnumFormComboViewer<Fetchable, FetchType> buildFetchTypeCombo(Composite container) {
+	private EnumFormComboViewer<Fetchable, FetchType> addFetchTypeCombo(Composite container) {
 
 		return new EnumFormComboViewer<Fetchable, FetchType>(this, container) {
 
@@ -62,13 +62,13 @@ public class FetchTypeComposite extends AbstractFormPane<Fetchable> {
 			}
 
 			@Override
-			protected FetchType[] choices() {
+			protected FetchType[] getChoices() {
 				return FetchType.values();
 			}
 
 			@Override
-			protected FetchType defaultValue() {
-				return subject().getDefaultFetch();
+			protected FetchType getDefaultValue() {
+				return getSubject().getDefaultFetch();
 			}
 
 			@Override
@@ -82,12 +82,12 @@ public class FetchTypeComposite extends AbstractFormPane<Fetchable> {
 
 			@Override
 			protected FetchType getValue() {
-				return subject().getSpecifiedFetch();
+				return getSubject().getSpecifiedFetch();
 			}
 
 			@Override
 			protected void setValue(FetchType value) {
-				subject().setSpecifiedFetch(value);
+				getSubject().setSpecifiedFetch(value);
 			}
 		};
 	}
@@ -98,10 +98,10 @@ public class FetchTypeComposite extends AbstractFormPane<Fetchable> {
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiMappingsMessages.BasicGeneralSection_fetchLabel,
-			buildFetchTypeCombo(container),
+			addFetchTypeCombo(container),
 			JpaHelpContextIds.MAPPING_FETCH_TYPE
 		);
 	}

@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.connection;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * NativeSqlComposite
  */
-public class NativeSqlComposite extends AbstractPane<Connection>
+public class NativeSqlComposite extends Pane<Connection>
 {
 	/**
 	 * Creates a new <code>NativeSqlComposite</code>.
@@ -33,7 +33,7 @@ public class NativeSqlComposite extends AbstractPane<Connection>
 	 *            The parent container
 	 */
 	public NativeSqlComposite(
-					AbstractPane<? extends Connection> parentComposite,
+					Pane<? extends Connection> parentComposite,
 					Composite parent) {
 
 		super(parentComposite, parent);
@@ -69,8 +69,8 @@ public class NativeSqlComposite extends AbstractPane<Connection>
 		return new TransformationPropertyValueModel<Boolean, String>(buildNativeSqlHolder()) {
 			@Override
 			protected String transform(Boolean value) {
-				if ((subject() != null) && (value == null)) {
-					Boolean defaultValue = subject().getDefaultNativeSql();
+				if ((getSubject() != null) && (value == null)) {
+					Boolean defaultValue = getSubject().getDefaultNativeSql();
 					if (defaultValue != null) {
 						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
 						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlConnectionTab_nativeSqlLabelDefault, defaultStringValue);
@@ -84,7 +84,7 @@ public class NativeSqlComposite extends AbstractPane<Connection>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		this.buildTriStateCheckBoxWithDefault(
+		this.addTriStateCheckBoxWithDefault(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_nativeSqlLabel,
 			this.buildNativeSqlHolder(),

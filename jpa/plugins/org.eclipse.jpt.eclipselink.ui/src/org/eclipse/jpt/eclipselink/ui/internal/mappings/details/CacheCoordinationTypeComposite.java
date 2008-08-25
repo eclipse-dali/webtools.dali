@@ -13,7 +13,7 @@ import org.eclipse.jpt.eclipselink.core.context.CacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class CacheCoordinationTypeComposite extends AbstractFormPane<EclipseLinkCaching> {
+public class CacheCoordinationTypeComposite extends FormPane<EclipseLinkCaching> {
 
 	/**
 	 * Creates a new <code>CacheTypeComposite</code>.
@@ -40,13 +40,13 @@ public class CacheCoordinationTypeComposite extends AbstractFormPane<EclipseLink
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public CacheCoordinationTypeComposite(AbstractFormPane<? extends EclipseLinkCaching> parentPane,
+	public CacheCoordinationTypeComposite(FormPane<? extends EclipseLinkCaching> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent);
 	}
 
-	private EnumFormComboViewer<EclipseLinkCaching, CacheCoordinationType> buildCacheCoordinationTypeCombo(Composite container) {
+	private EnumFormComboViewer<EclipseLinkCaching, CacheCoordinationType> addCacheCoordinationTypeCombo(Composite container) {
 
 		return new EnumFormComboViewer<EclipseLinkCaching, CacheCoordinationType>(this, container) {
 
@@ -58,13 +58,13 @@ public class CacheCoordinationTypeComposite extends AbstractFormPane<EclipseLink
 			}
 
 			@Override
-			protected CacheCoordinationType[] choices() {
+			protected CacheCoordinationType[] getChoices() {
 				return CacheCoordinationType.values();
 			}
 
 			@Override
-			protected CacheCoordinationType defaultValue() {
-				return subject().getDefaultCoordinationType();
+			protected CacheCoordinationType getDefaultValue() {
+				return getSubject().getDefaultCoordinationType();
 			}
 
 			@Override
@@ -78,12 +78,12 @@ public class CacheCoordinationTypeComposite extends AbstractFormPane<EclipseLink
 
 			@Override
 			protected CacheCoordinationType getValue() {
-				return subject().getSpecifiedCoordinationType();
+				return getSubject().getSpecifiedCoordinationType();
 			}
 
 			@Override
 			protected void setValue(CacheCoordinationType value) {
-				subject().setSpecifiedCoordinationType(value);
+				getSubject().setSpecifiedCoordinationType(value);
 			}
 			
 			@Override
@@ -96,10 +96,10 @@ public class CacheCoordinationTypeComposite extends AbstractFormPane<EclipseLink
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			EclipseLinkUiMappingsMessages.CacheCoordinationTypeComposite_label,
-			buildCacheCoordinationTypeCombo(container),
+			addCacheCoordinationTypeCombo(container),
 			EclipseLinkHelpContextIds.CACHING_CACHE_COORDINATION_TYPE
 		);
 	}

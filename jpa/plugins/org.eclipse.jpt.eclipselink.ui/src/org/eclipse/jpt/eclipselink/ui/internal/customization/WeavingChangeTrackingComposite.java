@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.customization;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * WeavingChangeTrackingComposite
  */
-public class WeavingChangeTrackingComposite extends AbstractFormPane<Customization>
+public class WeavingChangeTrackingComposite extends FormPane<Customization>
 {
 	/**
 	 * Creates a new <code>WeavingChangeTrackingComposite</code>.
@@ -33,7 +33,7 @@ public class WeavingChangeTrackingComposite extends AbstractFormPane<Customizati
 	 *            The parent container
 	 */
 	public WeavingChangeTrackingComposite(
-					AbstractFormPane<? extends Customization> parentComposite,
+					FormPane<? extends Customization> parentComposite,
 					Composite parent) {
 
 		super(parentComposite, parent);
@@ -69,8 +69,8 @@ public class WeavingChangeTrackingComposite extends AbstractFormPane<Customizati
 		return new TransformationPropertyValueModel<Boolean, String>(buildWeavingChangeTrackingHolder()) {
 			@Override
 			protected String transform(Boolean value) {
-				if ((subject() != null) && (value == null)) {
-					Boolean defaultValue = subject().getDefaultWeavingChangeTracking();
+				if ((getSubject() != null) && (value == null)) {
+					Boolean defaultValue = getSubject().getDefaultWeavingChangeTracking();
 					if (defaultValue != null) {
 						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
 						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingChangeTrackingLabelDefault, defaultStringValue);
@@ -84,7 +84,7 @@ public class WeavingChangeTrackingComposite extends AbstractFormPane<Customizati
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		this.buildTriStateCheckBoxWithDefault(
+		this.addTriStateCheckBoxWithDefault(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingChangeTrackingLabel,
 			this.buildWeavingChangeTrackingHolder(),

@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -63,7 +63,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class OneToManyMappingComposite extends AbstractFormPane<OneToManyMapping>
+public class OneToManyMappingComposite extends FormPane<OneToManyMapping>
                                        implements JpaComposite
 {
 	/**
@@ -100,8 +100,8 @@ public class OneToManyMappingComposite extends AbstractFormPane<OneToManyMapping
 
 	private void initializeGeneralPane(Composite container) {
 
-		int groupBoxMargin = groupBoxMargin();
-		Composite subPane = buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+		int groupBoxMargin = getGroupBoxMargin();
+		Composite subPane = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 
 		// Target Entity widgets
 		new TargetEntityComposite(this, subPane);
@@ -113,7 +113,7 @@ public class OneToManyMappingComposite extends AbstractFormPane<OneToManyMapping
 		new MappedByComposite(this, subPane);
 
 		// Cascade widgets
-		new CascadeComposite(this, buildCascadeHolder(), buildSubPane(container, 4));
+		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 4));
 
 		// Ordering widgets
 		new OrderingComposite(this, container);
@@ -121,7 +121,7 @@ public class OneToManyMappingComposite extends AbstractFormPane<OneToManyMapping
 
 	private void initializeJoinTablePane(Composite container) {
 
-		container = buildCollapsableSection(
+		container = addCollapsableSection(
 			container,
 			JptUiMappingsMessages.MultiRelationshipMappingComposite_joinTable
 		);

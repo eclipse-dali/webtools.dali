@@ -15,7 +15,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
@@ -48,7 +48,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends AbstractFormPane<T>
+public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends FormPane<T>
 {
 	/**
 	 * Creates a new <code>SecondaryTablesComposite</code>.
@@ -56,7 +56,7 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public AbstractSecondaryTablesComposite(AbstractFormPane<? extends T> parentPane,
+	public AbstractSecondaryTablesComposite(FormPane<? extends T> parentPane,
 	                                Composite parent) {
 
 		super(parentPane, parent, false);
@@ -79,11 +79,11 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 	private void addSecondaryTableFromDialog(SecondaryTableDialog dialog,
 	                                         ObjectListSelectionModel listSelectionModel) {
 		if (dialog.open() == Window.OK) {
-			int index = this.subject().specifiedSecondaryTablesSize();
+			int index = this.getSubject().specifiedSecondaryTablesSize();
 			String name = dialog.getSelectedName();
 			String catalog = dialog.getSelectedCatalog();
 			String schema = dialog.getSelectedSchema();
-			SecondaryTable secondaryTable = this.subject().addSpecifiedSecondaryTable(index);
+			SecondaryTable secondaryTable = this.getSubject().addSpecifiedSecondaryTable(index);
 			secondaryTable.setSpecifiedName(name);
 			if (!dialog.isDefaultCatalogSelected()) {
 				secondaryTable.setSpecifiedCatalog(catalog);
@@ -115,7 +115,7 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 	}
 
 	protected SecondaryTableDialog buildSecondaryTableDialogForAdd() {
-		return new SecondaryTableDialog(getControl().getShell(), subject().getJpaProject(), subject().getTable().getDefaultSchema(), subject().getTable().getDefaultCatalog());
+		return new SecondaryTableDialog(getControl().getShell(), getSubject().getJpaProject(), getSubject().getTable().getDefaultSchema(), getSubject().getTable().getDefaultCatalog());
 	}
 	
 	protected AddRemoveListPane.Adapter buildSecondaryTablesAdapter() {
@@ -139,12 +139,12 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 			@Override
 			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
 				SecondaryTable secondaryTable = (SecondaryTable) listSelectionModel.selectedValue();
-				SecondaryTableDialog dialog = new SecondaryTableDialog(getControl().getShell(), secondaryTable, subject().getJpaProject());
+				SecondaryTableDialog dialog = new SecondaryTableDialog(getControl().getShell(), secondaryTable, getSubject().getJpaProject());
 				editSecondaryTableFromDialog(dialog, secondaryTable);
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				Entity entity = subject();
+				Entity entity = getSubject();
 				int[] selectedIndices = listSelectionModel.selectedIndices();
 
 				for (int index = selectedIndices.length; --index >= 0; ) {

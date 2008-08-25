@@ -24,7 +24,7 @@ import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.swt.ColumnAdapter;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveTablePane;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -63,7 +63,7 @@ import org.eclipse.swt.widgets.TableItem;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public class PersistenceUnitPropertiesComposite extends AbstractPane<PersistenceUnit>
+public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
                                                 implements JpaPageComposite
 {
 	private WritablePropertyValueModel<Property> propertyHolder;
@@ -105,10 +105,10 @@ public class PersistenceUnitPropertiesComposite extends AbstractPane<Persistence
 		return new AddRemoveTablePane.AbstractAdapter() {
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
 
-				Property property = subject().addProperty();
+				Property property = getSubject().addProperty();
 				propertyHolder.setValue(property);
 
-				int index = subject().propertiesSize() - 1;
+				int index = getSubject().propertiesSize() - 1;
 				TableItem tableItem = tablePane.getMainControl().getItem(index);
 				tablePane.getMainControl().showItem(tableItem);
 
@@ -120,7 +120,7 @@ public class PersistenceUnitPropertiesComposite extends AbstractPane<Persistence
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				for (Object item : listSelectionModel.selectedValues()) {
-					subject().removeProperty((Property) item);
+					getSubject().removeProperty((Property) item);
 				}
 			}
 		};
@@ -162,7 +162,7 @@ public class PersistenceUnitPropertiesComposite extends AbstractPane<Persistence
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		buildLabel(
+		addLabel(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitPropertiesComposite_properties_description
 		);
@@ -350,8 +350,8 @@ public class PersistenceUnitPropertiesComposite extends AbstractPane<Persistence
 		}
 
 		@Override
-		protected Composite buildContainer(Composite parent) {
-			Composite container = super.buildContainer(parent);
+		protected Composite addContainer(Composite parent) {
+			Composite container = super.addContainer(parent);
 			container.setLayoutData(new GridData(GridData.FILL_BOTH));
 			return container;
 		}

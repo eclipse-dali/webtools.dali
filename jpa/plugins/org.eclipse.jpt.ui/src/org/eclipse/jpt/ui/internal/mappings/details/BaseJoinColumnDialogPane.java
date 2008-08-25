@@ -14,7 +14,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.AbstractDialogPane;
+import org.eclipse.jpt.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -56,7 +56,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> extends AbstractDialogPane<T>
+public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> extends DialogPane<T>
 {
 	/**
 	 * A key used to represent the default value, this is required to convert
@@ -100,8 +100,8 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected Composite buildContainer(Composite parent) {
-		return buildSubPane(parent, 0, 7, 0, 5);
+	protected Composite addContainer(Composite parent) {
+		return addSubPane(parent, 0, 7, 0, 5);
 	}
 
 	private PropertyValueModel<String> buildDefaultNameHolder() {
@@ -180,7 +180,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 		return new StringConverter<String>() {
 			public String convertToString(String value) {
 
-				if (subject() == null) {
+				if (getSubject() == null) {
 					return null;
 				}
 
@@ -259,7 +259,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 	private StringConverter<String> buildNameStringConverter() {
 		return buildDisplayableStringConverter(new DefaultValueHandler() {
 			public String getDefaultValue() {
-				return subject().getDefaultName();
+				return getSubject().getDefaultName();
 			}
 		});
 	}
@@ -309,7 +309,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 	private StringConverter<String> buildReferencedColumnNameStringConverter() {
 		return buildDisplayableStringConverter(new DefaultValueHandler() {
 			public String getDefaultValue() {
-				return subject().getDefaultReferencedColumnName();
+				return getSubject().getDefaultReferencedColumnName();
 			}
 		});
 	}
@@ -355,7 +355,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 	private StringConverter<String> buildTableStringConverter() {
 		return buildDisplayableStringConverter(new DefaultValueHandler() {
 			public String getDefaultValue() {
-				return subject().getDefaultTable();
+				return getSubject().getDefaultTable();
 			}
 		});
 	}
@@ -367,7 +367,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 	protected void initializeLayout(Composite container) {
 
 		// Name widgets
-		Combo nameCombo = buildLabeledEditableCombo(
+		Combo nameCombo = addLabeledEditableCombo(
 			container,
 			JptUiMappingsMessages.JoinColumnDialog_name,
 			buildNamesListHolder(),
@@ -379,7 +379,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 		SWTUtil.attachDefaultValueHandler(nameCombo);
 
 		// Referenced Column Name widgets
-		Combo referencedColumnNameCombo = buildLabeledEditableCombo(
+		Combo referencedColumnNameCombo = addLabeledEditableCombo(
 			container,
 			JptUiMappingsMessages.JoinColumnDialog_referencedColumnName,
 			buildReferencedColumnNamesListHolder(),
@@ -393,7 +393,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 		// Table widgets
 		if (isTableEditable()) {
 
-			Combo tableCombo = buildLabeledEditableCombo(
+			Combo tableCombo = addLabeledEditableCombo(
 				container,
 				JptUiMappingsMessages.JoinColumnDialogPane_table,
 				buildTablesListHolder(),
@@ -405,7 +405,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 			SWTUtil.attachDefaultValueHandler(tableCombo);
 		}
 		else {
-			Combo tableCombo = buildLabeledCombo(
+			Combo tableCombo = addLabeledCombo(
 				container,
 				JptUiMappingsMessages.JoinColumnDialogPane_table,
 				buildTablesListHolder(),
@@ -418,7 +418,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 		}
 
 		// Column Definition widgets
-		buildLabeledText(
+		addLabeledText(
 			container,
 			JptUiMappingsMessages.JoinColumnDialogPane_columnDefinition,
 			buildColumnDefinitionHolder()

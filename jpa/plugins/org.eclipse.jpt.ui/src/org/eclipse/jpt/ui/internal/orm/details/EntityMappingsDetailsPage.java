@@ -87,7 +87,7 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 		super(parent, widgetFactory);
 	}
 
-	private EnumFormComboViewer<EntityMappings, AccessType> buildAccessTypeCombo(Composite container) {
+	private EnumFormComboViewer<EntityMappings, AccessType> addAccessTypeCombo(Composite container) {
 
 		return new EnumFormComboViewer<EntityMappings, AccessType>(this, container) {
 
@@ -99,13 +99,13 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 			}
 
 			@Override
-			protected AccessType[] choices() {
+			protected AccessType[] getChoices() {
 				return AccessType.values();
 			}
 
 			@Override
-			protected AccessType defaultValue() {
-				return subject().getDefaultAccess();
+			protected AccessType getDefaultValue() {
+				return getSubject().getDefaultAccess();
 			}
 
 			@Override
@@ -119,17 +119,17 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 
 			@Override
 			protected AccessType getValue() {
-				return subject().getAccess();
+				return getSubject().getAccess();
 			}
 
 			@Override
 			protected void setValue(AccessType value) {
-				subject().setSpecifiedAccess(value);
+				getSubject().setSpecifiedAccess(value);
 			}
 		};
 	}
 
-	private CatalogCombo<EntityMappings> buildCatalogCombo(Composite container) {
+	private CatalogCombo<EntityMappings> addCatalogCombo(Composite container) {
 
 		return new CatalogCombo<EntityMappings>(this, container) {
 
@@ -141,18 +141,18 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultCatalog();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultCatalog();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedCatalog(value);
+				getSubject().setSpecifiedCatalog(value);
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedCatalog();
+			protected String getValue() {
+				return getSubject().getSpecifiedCatalog();
 			}
 		};
 	}
@@ -166,7 +166,7 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 		};
 	}
 
-	private SchemaCombo<EntityMappings> buildSchemaCombo(Composite container) {
+	private SchemaCombo<EntityMappings> addSchemaCombo(Composite container) {
 
 		return new SchemaCombo<EntityMappings>(this, container) {
 
@@ -178,18 +178,18 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultSchema();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultSchema();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedSchema(value);
+				getSubject().setSpecifiedSchema(value);
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedSchema();
+			protected String getValue() {
+				return getSubject().getSpecifiedSchema();
 			}
 		};
 	}
@@ -204,26 +204,26 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 		new OrmPackageChooser(this, container);
 
 		// Schema widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiOrmMessages.EntityMappingsDetailsPage_schema,
-			buildSchemaCombo(container),
+			addSchemaCombo(container),
 			JpaHelpContextIds.ENTITY_ORM_SCHEMA
 		);
 
 		// Catalog widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiOrmMessages.EntityMappingsDetailsPage_catalog,
-			buildCatalogCombo(container),
+			addCatalogCombo(container),
 			JpaHelpContextIds.ENTITY_ORM_CATALOG
 		);
 
 		// Access Type widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiOrmMessages.EntityMappingsDetailsPage_access,
-			buildAccessTypeCombo(container),
+			addAccessTypeCombo(container),
 			JpaHelpContextIds.ENTITY_ORM_ACCESS
 		);
 
@@ -231,19 +231,19 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 		new PersistenceUnitMetadataComposite(
 			this,
 			buildPersistentUnitMetadaHolder(),
-			buildSubPane(container, 5)
+			addSubPane(container, 5)
 		);
 
 		// Generators pane
 		new OrmGeneratorsComposite(
 			this,
-			buildSubPane(container, 5)
+			addSubPane(container, 5)
 		);
 
 		// Queries pane
 		new OrmQueriesComposite(
 			this,
-			buildSubPane(container, 5)
+			addSubPane(container, 5)
 		);
 	}
 }

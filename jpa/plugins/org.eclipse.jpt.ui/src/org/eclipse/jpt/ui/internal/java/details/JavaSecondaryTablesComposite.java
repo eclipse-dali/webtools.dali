@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractSecondaryTablesComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.PrimaryKeyJoinColumnsInSecondaryTableComposite;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -59,7 +59,7 @@ public class JavaSecondaryTablesComposite extends AbstractSecondaryTablesComposi
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public JavaSecondaryTablesComposite(AbstractFormPane<? extends JavaEntity> parentPane,
+	public JavaSecondaryTablesComposite(FormPane<? extends JavaEntity> parentPane,
 	                                Composite parent) {
 
 		super(parentPane, parent);
@@ -104,7 +104,7 @@ public class JavaSecondaryTablesComposite extends AbstractSecondaryTablesComposi
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		int groupBoxMargin = groupBoxMargin();
+		int groupBoxMargin = getGroupBoxMargin();
 
 		WritablePropertyValueModel<SecondaryTable> secondaryTableHolder =
 			buildSecondaryTableHolder();
@@ -112,7 +112,7 @@ public class JavaSecondaryTablesComposite extends AbstractSecondaryTablesComposi
 		// Secondary Tables add/remove list pane
 		new AddRemoveListPane<Entity>(
 			this,
-			buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
+			addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
 			buildSecondaryTablesAdapter(),
 			buildSecondaryTablesListModel(),
 			secondaryTableHolder,

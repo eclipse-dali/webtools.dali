@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.options;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.options.Options;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * IncludeDescriptorQueriesComposite
  */
-public class IncludeDescriptorQueriesComposite extends AbstractFormPane<Options>
+public class IncludeDescriptorQueriesComposite extends FormPane<Options>
 {
 	/**
 	 * Creates a new <code>IncludeDescriptorQueriesComposite</code>.
@@ -33,7 +33,7 @@ public class IncludeDescriptorQueriesComposite extends AbstractFormPane<Options>
 	 *            The parent container
 	 */
 	public IncludeDescriptorQueriesComposite(
-					AbstractFormPane<? extends Options> parentComposite,
+					FormPane<? extends Options> parentComposite,
 					Composite parent) {
 
 		super(parentComposite, parent);
@@ -69,8 +69,8 @@ public class IncludeDescriptorQueriesComposite extends AbstractFormPane<Options>
 		return new TransformationPropertyValueModel<Boolean, String>(buildIncludeDescriptorQueriesHolder()) {
 			@Override
 			protected String transform(Boolean value) {
-				if ((subject() != null) && (value == null)) {
-					Boolean defaultValue = subject().getDefaultIncludeDescriptorQueries();
+				if ((getSubject() != null) && (value == null)) {
+					Boolean defaultValue = getSubject().getDefaultIncludeDescriptorQueries();
 					if (defaultValue != null) {
 						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
 						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlOptionsTab_includeDescriptorQueriesLabelDefault, defaultStringValue);
@@ -84,7 +84,7 @@ public class IncludeDescriptorQueriesComposite extends AbstractFormPane<Options>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		this.buildTriStateCheckBoxWithDefault(
+		this.addTriStateCheckBoxWithDefault(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlOptionsTab_includeDescriptorQueriesLabel,
 			this.buildIncludeDescriptorQueriesHolder(),

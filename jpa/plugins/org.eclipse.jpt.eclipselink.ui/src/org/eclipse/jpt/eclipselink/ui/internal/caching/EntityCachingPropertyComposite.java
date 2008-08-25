@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.caching;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class EntityCachingPropertyComposite extends AbstractPane<EntityCacheProperties> {
+public class EntityCachingPropertyComposite extends Pane<EntityCacheProperties> {
 
 	/**
 	 * Creates a new <code>EntityCachingPropertyComposite</code>.
@@ -27,7 +27,7 @@ public class EntityCachingPropertyComposite extends AbstractPane<EntityCacheProp
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public EntityCachingPropertyComposite(AbstractPane<Caching> parentComposite,
+	public EntityCachingPropertyComposite(Pane<Caching> parentComposite,
 	                                      PropertyValueModel<EntityCacheProperties> subjectHolder,
 	                                      Composite parent) {
 

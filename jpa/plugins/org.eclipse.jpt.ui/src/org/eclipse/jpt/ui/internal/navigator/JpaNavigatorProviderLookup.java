@@ -32,7 +32,7 @@ public class JpaNavigatorProviderLookup
 		if (providers.containsKey(platformId)) {
 			return providers.get(platformId);
 		}
-		JpaPlatformUi platform = JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
+		JpaPlatformUi platform = JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
 		if (platform == null) {
 			return null;
 		}

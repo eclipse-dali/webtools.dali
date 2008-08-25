@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Text;
  * @version 2.0
  * @since 2.0
  */
-public class NewNameDialog extends AbstractValidatingDialog<NewNameStateObject>
+public class NewNameDialog extends ValidatingDialog<NewNameStateObject>
 {
 	private String description;
 	private Image descriptionImage;
@@ -67,8 +67,8 @@ public class NewNameDialog extends AbstractValidatingDialog<NewNameStateObject>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected AbstractDialogPane<NewNameStateObject> buildLayout(Composite container) {
-		return new DialogPane(container);
+	protected DialogPane<NewNameStateObject> buildLayout(Composite container) {
+		return new NewNameDialogPane(container);
 	}
 
 	/*
@@ -86,7 +86,7 @@ public class NewNameDialog extends AbstractValidatingDialog<NewNameStateObject>
 	public void create() {
 		super.create();
 
-		DialogPane pane = (DialogPane) pane();
+		NewNameDialogPane pane = (NewNameDialogPane) getPane();
 		pane.selectAll();
 
 		getButton(OK).setEnabled(false);
@@ -96,7 +96,7 @@ public class NewNameDialog extends AbstractValidatingDialog<NewNameStateObject>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected String description() {
+	protected String getDescription() {
 		return description;
 	}
 
@@ -104,14 +104,14 @@ public class NewNameDialog extends AbstractValidatingDialog<NewNameStateObject>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected Image descriptionImage() {
+	protected Image getDescriptionImage() {
 		return descriptionImage;
 	}
 
 	/* (non-Javadoc)
 	 */
 	@Override
-	protected String descriptionTitle() {
+	protected String getDescriptionTitle() {
 		return descriptionTitle;
 	}
 
@@ -121,15 +121,15 @@ public class NewNameDialog extends AbstractValidatingDialog<NewNameStateObject>
 	 * @return The name the user entered
 	 */
 	public String getName() {
-		return subject().getName();
+		return getSubject().getName();
 	}
 
-	private class DialogPane extends AbstractDialogPane<NewNameStateObject> {
+	private class NewNameDialogPane extends DialogPane<NewNameStateObject> {
 
 		private Text text;
 
-		DialogPane(Composite parent) {
-			super(NewNameDialog.this.subjectHolder(), parent);
+		NewNameDialogPane(Composite parent) {
+			super(NewNameDialog.this.getSubjectHolder(), parent);
 		}
 
 		private WritablePropertyValueModel<String> buildNameHolder() {
@@ -152,7 +152,7 @@ public class NewNameDialog extends AbstractValidatingDialog<NewNameStateObject>
 		@Override
 		protected void initializeLayout(Composite container) {
 
-			text = buildLabeledText(
+			text = addLabeledText(
 				container,
 				labelText,
 				buildNameHolder()

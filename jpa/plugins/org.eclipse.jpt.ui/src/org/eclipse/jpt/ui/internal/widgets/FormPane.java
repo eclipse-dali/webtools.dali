@@ -24,24 +24,24 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  * @version 2.0
  * @since 2.0
  */
-public abstract class AbstractFormPane<T extends Model> extends AbstractPane<T>
+public abstract class FormPane<T extends Model> extends Pane<T>
 {
 	/**
-	 * Creates a new <code>AbstractFormPane</code>.
+	 * Creates a new <code>FormPane</code>.
 	 *
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 *
 	 * @category Constructor
 	 */
-	protected AbstractFormPane(AbstractFormPane<? extends T> parentPane,
+	protected FormPane(FormPane<? extends T> parentPane,
 	                           Composite parent) {
 
 		super(parentPane, parent);
 	}
 
 	/**
-	 * Creates a new <code>AbstractFormPane</code>.
+	 * Creates a new <code>FormPane</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
@@ -52,7 +52,7 @@ public abstract class AbstractFormPane<T extends Model> extends AbstractPane<T>
 	 *
 	 * @category Constructor
 	 */
-	protected AbstractFormPane(AbstractFormPane<? extends T> parentPane,
+	protected FormPane(FormPane<? extends T> parentPane,
 	                           Composite parent,
 	                           boolean automaticallyAlignWidgets) {
 
@@ -60,7 +60,7 @@ public abstract class AbstractFormPane<T extends Model> extends AbstractPane<T>
 	}
 
 	/**
-	 * Creates a new <code>AbstractFormPane</code>.
+	 * Creates a new <code>FormPane</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of this pane's subject
@@ -68,7 +68,7 @@ public abstract class AbstractFormPane<T extends Model> extends AbstractPane<T>
 	 *
 	 * @category Constructor
 	 */
-	protected AbstractFormPane(AbstractFormPane<?> parentPane,
+	protected FormPane(FormPane<?> parentPane,
 	                           PropertyValueModel<? extends T> subjectHolder,
 	                           Composite parent) {
 
@@ -76,7 +76,7 @@ public abstract class AbstractFormPane<T extends Model> extends AbstractPane<T>
 	}
 
 	/**
-	 * Creates a new <code>AbstractFormPane</code>.
+	 * Creates a new <code>FormPane</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of this pane's subject
@@ -88,16 +88,38 @@ public abstract class AbstractFormPane<T extends Model> extends AbstractPane<T>
 	 *
 	 * @category Constructor
 	 */
-	protected AbstractFormPane(AbstractFormPane<?> parentPane,
+	protected FormPane(FormPane<?> parentPane,
 	                           PropertyValueModel<? extends T> subjectHolder,
 	                           Composite parent,
 	                           boolean automaticallyAlignWidgets) {
 
 		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets);
 	}
+	
+	/**
+	 * Creates a new <code>FormPane</code>.
+	 *
+	 * @param parentPane The parent container of this one
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various widgets
+	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
+	 * this pane aligned with the widgets of the given parent controller;
+	 * <code>false</code> to not align them
+	 *
+	 * @category Constructor
+	 */
+	protected FormPane(FormPane<?> parentPane,
+	                           PropertyValueModel<? extends T> subjectHolder,
+	                           Composite parent,
+	                           boolean automaticallyAlignWidgets,
+	                           boolean parentManagePane) {
+
+		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets, parentManagePane);
+	}
 
 	/**
-	 * Creates a new <code>AbstractFormPane</code>.
+	 * Creates a new <code>FormPane</code>.
 	 *
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
@@ -105,7 +127,7 @@ public abstract class AbstractFormPane<T extends Model> extends AbstractPane<T>
 	 *
 	 * @category Constructor
 	 */
-	protected AbstractFormPane(PropertyValueModel<? extends T> subjectHolder,
+	protected FormPane(PropertyValueModel<? extends T> subjectHolder,
 	                           Composite parent,
 	                           WidgetFactory widgetFactory) {
 
@@ -113,7 +135,7 @@ public abstract class AbstractFormPane<T extends Model> extends AbstractPane<T>
 	}
 
 	/**
-	 * Creates a new <code>AbstractFormPane</code>.
+	 * Creates a new <code>FormPane</code>.
 	 *
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
@@ -121,7 +143,7 @@ public abstract class AbstractFormPane<T extends Model> extends AbstractPane<T>
 	 *
 	 * @category Constructor
 	 */
-	protected AbstractFormPane(PropertyValueModel<? extends T> subjectHolder,
+	protected FormPane(PropertyValueModel<? extends T> subjectHolder,
 	                           Composite parent,
 	                           FormToolkit widgetFactory) {
 

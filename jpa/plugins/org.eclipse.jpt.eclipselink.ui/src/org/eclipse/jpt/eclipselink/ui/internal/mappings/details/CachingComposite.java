@@ -16,8 +16,8 @@ import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -50,10 +50,10 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class CachingComposite extends AbstractFormPane<EclipseLinkCaching>
+public class CachingComposite extends FormPane<EclipseLinkCaching>
 {
 
-	public CachingComposite(AbstractFormPane<?> parentPane,
+	public CachingComposite(FormPane<?> parentPane,
         PropertyValueModel<EclipseLinkCaching> subjectHolder,
         Composite parent) {
 
@@ -64,36 +64,36 @@ public class CachingComposite extends AbstractFormPane<EclipseLinkCaching>
 	protected void initializeLayout(Composite container) {
 
 		//Shared Check box, uncheck this and the rest of the panel is disabled
-		buildTriStateCheckBoxWithDefault(
-			buildSubPane(container, 8),
+		addTriStateCheckBoxWithDefault(
+			addSubPane(container, 8),
 			EclipseLinkUiMappingsMessages.CachingComposite_sharedLabel,
 			buildSharedHolder(),
 			buildSharedStringHolder(),
 			EclipseLinkHelpContextIds.CACHING_SHARED
 		);
 
-		Composite subPane = buildSubPane(container, 0, 16);
+		Composite subPane = addSubPane(container, 0, 16);
 
-		Collection<AbstractPane<?>> panes = new ArrayList<AbstractPane<?>>();
+		Collection<Pane<?>> panes = new ArrayList<Pane<?>>();
 		
 		panes.add(new CacheTypeComposite(this, subPane));
 		panes.add(new CacheSizeComposite(this, subPane));
 		
 		// Advanced sub-pane
-		Composite advancedSection = buildCollapsableSubSection(
+		Composite advancedSection = addCollapsableSubSection(
 			subPane,
 			EclipseLinkUiMappingsMessages.CachingComposite_advanced,
 			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
 		);
 
-		initializeAdvancedPane(buildSubPane(advancedSection, 0, 16), panes);
+		initializeAdvancedPane(addSubPane(advancedSection, 0, 16), panes);
 			
 		new PaneEnabler(buildSharedCacheEnabler(), panes);
 			
-		new ExistenceCheckingComposite(this, buildSubPane(container, 8));
+		new ExistenceCheckingComposite(this, addSubPane(container, 8));
 	}
 	
-	private void initializeAdvancedPane(Composite container, Collection<AbstractPane<?>> panes) {
+	private void initializeAdvancedPane(Composite container, Collection<Pane<?>> panes) {
 		panes.add(new AlwaysRefreshComposite(this, container));
 		panes.add(new RefreshOnlyIfNewerComposite(this, container));
 		panes.add(new DisableHitsComposite(this, container));
@@ -141,9 +141,9 @@ public class CachingComposite extends AbstractFormPane<EclipseLinkCaching>
 			@Override
 			protected String transform(Boolean value) {
 
-				if ((subject() != null) && (value == null)) {
+				if ((getSubject() != null) && (value == null)) {
 
-					Boolean defaultValue = subject().getDefaultShared();
+					Boolean defaultValue = getSubject().getDefaultShared();
 
 					if (defaultValue != null) {
 

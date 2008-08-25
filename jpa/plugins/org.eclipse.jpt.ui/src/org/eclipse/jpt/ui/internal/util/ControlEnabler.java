@@ -145,11 +145,11 @@ public class ControlEnabler extends StateController
 		super(booleanHolder, wrap(controls), defaultValue);
 	}
 
-	private static Collection<IControlHolder> wrap(Iterator<? extends Control> controls) {
-		return CollectionTools.collection(new TransformationIterator<Control, IControlHolder>(controls) {
+	private static Collection<ControlHolder> wrap(Iterator<? extends Control> controls) {
+		return CollectionTools.collection(new TransformationIterator<Control, ControlHolder>(controls) {
 			@Override
-			protected IControlHolder transform(Control control) {
-				return new ControlHolder(control);
+			protected ControlHolder transform(Control control) {
+				return new ControlEnablerHolder(control);
 			}
 		});
 	}
@@ -157,11 +157,11 @@ public class ControlEnabler extends StateController
 	/**
 	 * This holder holds onto a <code>Control</code> and update its enabled state.
 	 */
-	private static class ControlHolder implements IControlHolder {
+	private static class ControlEnablerHolder implements ControlHolder {
 
 		private final Control control;
 
-		ControlHolder(Control control) {
+		ControlEnablerHolder(Control control) {
 			super();
 			this.control = control;
 		}

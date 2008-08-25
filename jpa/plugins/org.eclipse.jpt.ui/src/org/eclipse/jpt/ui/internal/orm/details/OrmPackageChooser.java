@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.PackageChooserPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class OrmPackageChooser extends AbstractFormPane<EntityMappings>
+public class OrmPackageChooser extends FormPane<EntityMappings>
 {
 	/**
 	 * Creates a new <code>XmlPackageChooser</code>.
@@ -48,7 +48,7 @@ public class OrmPackageChooser extends AbstractFormPane<EntityMappings>
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	public OrmPackageChooser(AbstractFormPane<? extends EntityMappings> parentPane,
+	public OrmPackageChooser(FormPane<? extends EntityMappings> parentPane,
 	                         Composite parent) {
 
 		super(parentPane, parent);
@@ -60,10 +60,10 @@ public class OrmPackageChooser extends AbstractFormPane<EntityMappings>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		initializePackageChooserPane(container);
+		addPackageChooserPane(container);
 	}
 
-	private void initializePackageChooserPane(Composite container) {
+	private void addPackageChooserPane(Composite container) {
 
 		new PackageChooserPane<EntityMappings>(this, container) {
 			@Override
@@ -82,13 +82,13 @@ public class OrmPackageChooser extends AbstractFormPane<EntityMappings>
 			}
 
 			@Override
-			protected String labelText() {
+			protected String getLabelText() {
 				return JptUiOrmMessages.EntityMappingsDetailsPage_package;
 			}
 
 			@Override
-			protected IPackageFragmentRoot packageFragmentRoot() {
-				IProject project = subject().getJpaProject().getProject();
+			protected IPackageFragmentRoot getPackageFragmentRoot() {
+				IProject project = getSubject().getJpaProject().getProject();
 				IJavaProject root = JavaCore.create(project);
 
 				try {
@@ -102,8 +102,8 @@ public class OrmPackageChooser extends AbstractFormPane<EntityMappings>
 			}
 
 			@Override
-			protected String packageName() {
-				return subject().getPackage();
+			protected String getPackageName() {
+				return getSubject().getPackage();
 			}
 
 			@Override
@@ -112,7 +112,7 @@ public class OrmPackageChooser extends AbstractFormPane<EntityMappings>
 
 				if (packageFragment != null) {
 					String packageName = packageFragment.getElementName();
-					subject().setPackage(packageName);
+					getSubject().setPackage(packageName);
 				}
 			}
 		};

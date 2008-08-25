@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.logging;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -23,10 +23,10 @@ import org.eclipse.ui.forms.widgets.Section;
  * EclipseLinkLoggingComposite
  */
 public class EclipseLinkLoggingComposite
-	extends AbstractFormPane<Logging>
+	extends FormPane<Logging>
 {
 	public EclipseLinkLoggingComposite(
-					AbstractFormPane<Logging> subjectHolder, 
+					FormPane<Logging> subjectHolder, 
 					Composite container) {
 		super(subjectHolder, container, false);
 	}

@@ -26,7 +26,7 @@ import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.model.Model;
@@ -63,7 +63,7 @@ import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
+public abstract class MapAsComposite<T extends Model> extends Pane<T> {
 
 	private boolean dragEvent;
 	private boolean enabled;
@@ -87,7 +87,7 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public MapAsComposite(AbstractPane<? extends T> parentPane,
+	public MapAsComposite(Pane<? extends T> parentPane,
 	                      Composite parent) {
 
 		super(parentPane, parent);
@@ -196,7 +196,7 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 	 */
 	protected String buildText(String name, String mappingType) {
 		return NLS.bind(
-			mappingChangeHandler.labelText(),
+			mappingChangeHandler.getLabelText(),
 			name,
 			mappingType
 		);
@@ -256,7 +256,7 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		handCursor = shell().getDisplay().getSystemCursor(SWT.CURSOR_HAND);
+		handCursor = getShell().getDisplay().getSystemCursor(SWT.CURSOR_HAND);
 
 		styledText = new StyledText(container, SWT.WRAP | SWT.READ_ONLY);
 		styledText.addMouseListener(buildMouseListener());
@@ -276,7 +276,7 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 		for (Iterator<? extends MappingUiProvider<?>> iter = mappingChangeHandler.providers(); iter.hasNext(); ) {
 			MappingUiProvider<?> provider = iter.next();
 
-			if (mappingKey() == provider.getMappingKey()) {
+			if (getMappingKey() == provider.getMappingKey()) {
 				return provider;
 			}
 		}
@@ -303,7 +303,7 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 	 * @return A non-<code>null</code> unique identifier representing the type
 	 * of the mapping being edited
 	 */
-	protected abstract String mappingKey();
+	protected abstract String getMappingKey();
 
 	/**
 	 * Aks the <code>MappingChangeHandler</code> to change the mapping type using
@@ -346,7 +346,7 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 	 */
 	protected void updateLinkRange() {
 
-		Color linkColor = JFaceColors.getHyperlinkText(shell().getDisplay());
+		Color linkColor = JFaceColors.getHyperlinkText(getShell().getDisplay());
 
 		// Make the name bold
 		StyleRange styleRange = new StyleRange(
@@ -375,13 +375,13 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 	 */
 	protected void updateText() {
 
-		String name = mappingChangeHandler.name();
+		String name = mappingChangeHandler.getName();
 
 		if (name == null) {
 			name = JptUiMappingsMessages.NoNameSet;
 		}
 
-		String mappingType = mappingChangeHandler.mappingType();
+		String mappingType = mappingChangeHandler.getMappingType();
 		String text = buildText(name, mappingType);
 
 		mappingTypeStart  = text.lastIndexOf(mappingType);
@@ -406,14 +406,14 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 		 * @return A localized text with two arguments where the first one should
 		 * be replaced by the name and the second be replaced by the mapping type
 		 */
-		String labelText();
+		String getLabelText();
 
 		/**
 		 * Returns the displayable text representing the mapping type.
 		 *
 		 * @return A human readable text describing the mapping type
 		 */
-		String mappingType();
+		String getMappingType();
 
 		/**
 		 * Morphes the current mapping into a new type by using the given provider.
@@ -427,7 +427,7 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 		 *
 		 * @return The displayable name of the mapping
 		 */
-		String name();
+		String getName();
 
 		/**
 		 * Returns the list of providers that are registered with the JPT plugin.
@@ -449,7 +449,7 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 		 * Creates a new <code>MappingSelectionDialog</code>.
 		 */
 		private MappingSelectionDialog() {
-			super(MapAsComposite.this.shell(), false);
+			super(MapAsComposite.this.getShell(), false);
 			setMessage(JptUiMessages.MapAsComposite_labelText);
 			setTitle(JptUiMessages.MapAsComposite_dialogTitle);
 			setListLabelProvider(buildLabelProvider());

@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.schema.generation;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.FolderChooserPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -21,9 +21,9 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  DdlGenerationLocationComposite
  */
-public class DdlGenerationLocationComposite extends AbstractPane<SchemaGeneration>
+public class DdlGenerationLocationComposite extends Pane<SchemaGeneration>
 {
-	public DdlGenerationLocationComposite(AbstractPane<? extends SchemaGeneration> parentPane,
+	public DdlGenerationLocationComposite(Pane<? extends SchemaGeneration> parentPane,
 	                                      Composite parent) {
 
 		super(parentPane, parent);
@@ -74,17 +74,17 @@ public class DdlGenerationLocationComposite extends AbstractPane<SchemaGeneratio
 			}
 
 			@Override
-			protected String dialogMessage() {
+			protected String getDialogMessage() {
 				return EclipseLinkUiMessages.DdlGenerationLocationComposite_dialogMessage;
 			}
 
 			@Override
-			protected String dialogTitle() {
+			protected String getDialogTitle() {
 				return EclipseLinkUiMessages.DdlGenerationLocationComposite_dialogTitle;
 			}
 
 			@Override
-			protected String labelText() {
+			protected String getLabelText() {
 				return EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_ddlGenerationLocationLabel;
 			}
 		};

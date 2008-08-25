@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.context.GeneratorHolder;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -50,7 +50,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class GeneratorsComposite extends AbstractPane<GeneratorHolder>
+public class GeneratorsComposite extends Pane<GeneratorHolder>
 {
 	private WritablePropertyValueModel<Boolean> sequenceGeneratorExpansionStateHolder;
 	private WritablePropertyValueModel<Boolean> tableGeneratorExpansionStateHolder;
@@ -61,7 +61,7 @@ public class GeneratorsComposite extends AbstractPane<GeneratorHolder>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public GeneratorsComposite(AbstractPane<? extends GeneratorHolder> parentPane,
+	public GeneratorsComposite(Pane<? extends GeneratorHolder> parentPane,
 	                           Composite parent) {
 
 		super(parentPane, parent, false);
@@ -114,8 +114,8 @@ public class GeneratorsComposite extends AbstractPane<GeneratorHolder>
 	protected void doPopulate() {
 		super.doPopulate();
 
-		sequenceGeneratorExpansionStateHolder.setValue(subject() != null && subject().getSequenceGenerator() != null);
-		tableGeneratorExpansionStateHolder   .setValue(subject() != null && subject().getTableGenerator() != null);
+		sequenceGeneratorExpansionStateHolder.setValue(getSubject() != null && getSubject().getSequenceGenerator() != null);
+		tableGeneratorExpansionStateHolder   .setValue(getSubject() != null && getSubject().getTableGenerator() != null);
 	}
 
  	/*
@@ -142,15 +142,15 @@ public class GeneratorsComposite extends AbstractPane<GeneratorHolder>
 	private void initializeSequenceGeneratorPane(Composite container) {
 
 		// Sequence Generator sub-section
-		container = buildCollapsableSubSection(
-			buildSubPane(container, 10),
+		container = addCollapsableSubSection(
+			addSubPane(container, 10),
 			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
 			sequenceGeneratorExpansionStateHolder
 		);
 
 		// Sequence Generator check box
-		Button sequenceGeneratorCheckBox = buildCheckBox(
-			buildSubPane(container, 5),
+		Button sequenceGeneratorCheckBox = addCheckBox(
+			addSubPane(container, 5),
 			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
 			buildSequenceGeneratorBooleanHolder(),
 			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR
@@ -159,21 +159,21 @@ public class GeneratorsComposite extends AbstractPane<GeneratorHolder>
 		// Sequence Generator pane
 		new SequenceGeneratorComposite(
 			this,
-			buildSubPane(container, 0, sequenceGeneratorCheckBox.getBorderWidth() + 16)
+			addSubPane(container, 0, sequenceGeneratorCheckBox.getBorderWidth() + 16)
 		);
 	}
 
  	private void initializeTableGeneratorPane(Composite container) {
 
 		// Table Generator sub-section
-		container = buildCollapsableSubSection(
+		container = addCollapsableSubSection(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_tableGenerator,
 			tableGeneratorExpansionStateHolder
 		);
 
-		Button tableGeneratorCheckBox = buildCheckBox(
-			buildSubPane(container, 5),
+		Button tableGeneratorCheckBox = addCheckBox(
+			addSubPane(container, 5),
 			JptUiMappingsMessages.IdMappingComposite_tableGenerator,
 			buildTableGeneratorBooleanHolder(),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR
@@ -181,7 +181,7 @@ public class GeneratorsComposite extends AbstractPane<GeneratorHolder>
 
 		new TableGeneratorComposite(
 			this,
-			buildSubPane(container, 0, tableGeneratorCheckBox.getBorderWidth() + 16)
+			addSubPane(container, 0, tableGeneratorCheckBox.getBorderWidth() + 16)
 		);
 	}
 }

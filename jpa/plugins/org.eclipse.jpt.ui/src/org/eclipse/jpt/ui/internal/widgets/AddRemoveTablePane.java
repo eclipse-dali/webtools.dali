@@ -73,7 +73,7 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 	 * one item or no items are selected, then <code>null</code> will be passed
 	 * @param labelProvider The renderer used to format the list holder's items
 	 */
-	public AddRemoveTablePane(AbstractPane<? extends T> parentPane,
+	public AddRemoveTablePane(Pane<? extends T> parentPane,
 	                          Composite parent,
 	                          Adapter adapter,
 	                          ListValueModel<?> listHolder,
@@ -101,7 +101,7 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 	 * @param labelProvider The renderer used to format the list holder's items
 	 * @param helpId The topic help ID to be registered with this pane
 	 */
-	public AddRemoveTablePane(AbstractPane<? extends T> parentPane,
+	public AddRemoveTablePane(Pane<? extends T> parentPane,
 	                          Composite parent,
 	                          Adapter adapter,
 	                          ListValueModel<?> listHolder,
@@ -130,7 +130,7 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 	 * one item or no items are selected, then <code>null</code> will be passed
 	 * @param labelProvider The renderer used to format the list holder's items
 	 */
-	public AddRemoveTablePane(AbstractPane<?> parentPane,
+	public AddRemoveTablePane(Pane<?> parentPane,
 	                          PropertyValueModel<? extends T> subjectHolder,
 	                          Composite parent,
 	                          Adapter adapter,
@@ -160,7 +160,7 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 	 * @param labelProvider The renderer used to format the list holder's items
 	 * @param helpId The topic help ID to be registered with this pane
 	 */
-	public AddRemoveTablePane(AbstractPane<?> parentPane,
+	public AddRemoveTablePane(Pane<?> parentPane,
 	                          PropertyValueModel<? extends T> subjectHolder,
 	                          Composite parent,
 	                          Adapter adapter,
@@ -249,10 +249,8 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 	                                       IBaseLabelProvider labelProvider,
 	                                       String helpId)
 	{
-		table = buildTable(container, helpId);
+		table = addUnmanagedTable(container, helpId);
 		table.setHeaderVisible(true);
-
-		removeFromEnablementControl(table);
 
 		TableModelAdapter<Object> tableModel = TableModelAdapter.adapt(
 			(ListValueModel<Object>) listHolder,

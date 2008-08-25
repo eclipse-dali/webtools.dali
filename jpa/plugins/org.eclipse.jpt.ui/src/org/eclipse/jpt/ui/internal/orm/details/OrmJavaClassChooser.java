@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -47,7 +47,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class OrmJavaClassChooser extends AbstractFormPane<OrmTypeMapping> {
+public class OrmJavaClassChooser extends FormPane<OrmTypeMapping> {
 
 	/**
 	 * Creates a new <code>XmlJavaClassChooser</code>.
@@ -56,7 +56,7 @@ public class OrmJavaClassChooser extends AbstractFormPane<OrmTypeMapping> {
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public OrmJavaClassChooser(AbstractFormPane<?> parentPane,
+	public OrmJavaClassChooser(FormPane<?> parentPane,
 	                           PropertyValueModel<? extends OrmTypeMapping> subjectHolder,
 	                           Composite parent) {
 
@@ -77,7 +77,7 @@ public class OrmJavaClassChooser extends AbstractFormPane<OrmTypeMapping> {
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private ClassChooserPane<OrmTypeMapping> initializeClassChooser(Composite container) {
+	private ClassChooserPane<OrmTypeMapping> addClassChooser(Composite container) {
 
 		return new ClassChooserPane<OrmTypeMapping>(this, container) {
 
@@ -97,18 +97,18 @@ public class OrmJavaClassChooser extends AbstractFormPane<OrmTypeMapping> {
 			}
 
 			@Override
-			protected String className() {
-				return subject().getClass_();
+			protected String getClassName() {
+				return getSubject().getClass_();
 			}
 
 			@Override
-			protected String labelText() {
+			protected String getLabelText() {
 				return JptUiOrmMessages.OrmJavaClassChooser_javaClass;
 			}
 
 			@Override
-			protected IPackageFragmentRoot packageFragmentRoot() {
-				IProject project = subject().getJpaProject().getProject();
+			protected IPackageFragmentRoot getPackageFragmentRoot() {
+				IProject project = getSubject().getJpaProject().getProject();
 				IJavaProject root = JavaCore.create(project);
 
 				try {
@@ -127,7 +127,7 @@ public class OrmJavaClassChooser extends AbstractFormPane<OrmTypeMapping> {
 
 				if (type != null) {
 					String className = type.getFullyQualifiedName('.');
-					subject().setClass(className);
+					getSubject().setClass(className);
 				}
 			}
 		};
@@ -138,6 +138,6 @@ public class OrmJavaClassChooser extends AbstractFormPane<OrmTypeMapping> {
 	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-		initializeClassChooser(container);
+		addClassChooser(container);
 	}
 }

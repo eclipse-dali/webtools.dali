@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.context.IdClass;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -41,7 +41,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class IdClassComposite extends AbstractPane<IdClass>
+public class IdClassComposite extends Pane<IdClass>
 {
 	/**
 	 * Creates a new <code>IdClassComposite</code>.
@@ -49,13 +49,13 @@ public class IdClassComposite extends AbstractPane<IdClass>
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public IdClassComposite(AbstractPane<? extends IdClass> parentPane,
+	public IdClassComposite(Pane<? extends IdClass> parentPane,
                            Composite parent) {
 
 		super(parentPane, parent);
 	}
 
-	private ClassChooserPane<IdClass> initializeClassChooser(Composite container) {
+	private ClassChooserPane<IdClass> addClassChooser(Composite container) {
 
 		return new ClassChooserPane<IdClass>(this, container) {
 
@@ -80,18 +80,18 @@ public class IdClassComposite extends AbstractPane<IdClass>
 			}
 
 			@Override
-			protected String className() {
-				return subject().getIdClass();
+			protected String getClassName() {
+				return getSubject().getIdClass();
 			}
 
 			@Override
-			protected String labelText() {
+			protected String getLabelText() {
 				return JptUiMappingsMessages.IdClassComposite_label;
 			}
 
 			@Override
-			protected IPackageFragmentRoot packageFragmentRoot() {
-				IProject project = subject().getJpaProject().getProject();
+			protected IPackageFragmentRoot getPackageFragmentRoot() {
+				IProject project = getSubject().getJpaProject().getProject();
 				IJavaProject root = JavaCore.create(project);
 
 				try {
@@ -110,7 +110,7 @@ public class IdClassComposite extends AbstractPane<IdClass>
 
 				if (type != null) {
 					String className = type.getFullyQualifiedName('.');
-					subject().setIdClass(className);
+					getSubject().setIdClass(className);
 				}
 			}
 		};
@@ -121,6 +121,6 @@ public class IdClassComposite extends AbstractPane<IdClass>
 	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-		initializeClassChooser(container);
+		addClassChooser(container);
 	}
 }

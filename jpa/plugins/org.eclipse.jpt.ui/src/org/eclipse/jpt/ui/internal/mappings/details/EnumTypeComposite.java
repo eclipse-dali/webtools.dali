@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.EnumType;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class EnumTypeComposite extends AbstractFormPane<BasicMapping>
+public class EnumTypeComposite extends FormPane<BasicMapping>
 {
 	/**
 	 * Creates a new <code>FetchTypeComposite</code>.
@@ -40,13 +40,13 @@ public class EnumTypeComposite extends AbstractFormPane<BasicMapping>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public EnumTypeComposite(AbstractFormPane<? extends BasicMapping> parentPane,
+	public EnumTypeComposite(FormPane<? extends BasicMapping> parentPane,
 	                         Composite parent) {
 
 		super(parentPane, parent);
 	}
 
-	private EnumFormComboViewer<BasicMapping, EnumType> buildEnumTypeCombo(Composite container) {
+	private EnumFormComboViewer<BasicMapping, EnumType> addEnumTypeCombo(Composite container) {
 
 		return new EnumFormComboViewer<BasicMapping, EnumType>(this, container) {
 
@@ -58,13 +58,13 @@ public class EnumTypeComposite extends AbstractFormPane<BasicMapping>
 			}
 
 			@Override
-			protected EnumType[] choices() {
+			protected EnumType[] getChoices() {
 				return EnumType.values();
 			}
 
 			@Override
-			protected EnumType defaultValue() {
-				return subject().getDefaultEnumerated();
+			protected EnumType getDefaultValue() {
+				return getSubject().getDefaultEnumerated();
 			}
 
 			@Override
@@ -78,12 +78,12 @@ public class EnumTypeComposite extends AbstractFormPane<BasicMapping>
 
 			@Override
 			protected EnumType getValue() {
-				return subject().getSpecifiedEnumerated();
+				return getSubject().getSpecifiedEnumerated();
 			}
 
 			@Override
 			protected void setValue(EnumType value) {
-				subject().setSpecifiedEnumerated(value);
+				getSubject().setSpecifiedEnumerated(value);
 			}
 		};
 	}
@@ -94,10 +94,10 @@ public class EnumTypeComposite extends AbstractFormPane<BasicMapping>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiMappingsMessages.BasicGeneralSection_enumeratedLabel,
-			buildEnumTypeCombo(container),
+			addEnumTypeCombo(container),
 			JpaHelpContextIds.MAPPING_ENUMERATED
 		);
 	}

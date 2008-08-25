@@ -11,15 +11,15 @@ package org.eclipse.jpt.eclipselink.ui.internal.caching;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  *  EclipseLinkCachingComposite
  */
-public class EclipseLinkCachingComposite extends AbstractFormPane<Caching>
+public class EclipseLinkCachingComposite extends FormPane<Caching>
 {
-	public EclipseLinkCachingComposite(AbstractFormPane<Caching> subjectHolder,
+	public EclipseLinkCachingComposite(FormPane<Caching> subjectHolder,
 	                                       Composite container) {
 
 		super(subjectHolder, container);
@@ -28,16 +28,16 @@ public class EclipseLinkCachingComposite extends AbstractFormPane<Caching>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		container = buildSection(
+		container = addSection(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionTitle,
 			EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionDescription
 		);
 
 		// Default pane
-		int groupBoxMargin = groupBoxMargin();
+		int groupBoxMargin = getGroupBoxMargin();
 
-		Composite defaultPane = buildSubPane(
+		Composite defaultPane = addSubPane(
 			container,
 			0, groupBoxMargin, 0, groupBoxMargin
 		);

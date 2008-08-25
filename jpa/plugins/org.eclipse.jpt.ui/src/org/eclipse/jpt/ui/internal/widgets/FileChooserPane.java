@@ -43,7 +43,7 @@ import org.eclipse.ui.views.navigator.ResourceComparator;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class FileChooserPane<T extends Model> extends AbstractChooserPane<T>
+public abstract class FileChooserPane<T extends Model> extends ChooserPane<T>
 {
 	private WritablePropertyValueModel<String> textHolder;
 
@@ -53,7 +53,7 @@ public abstract class FileChooserPane<T extends Model> extends AbstractChooserPa
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public FileChooserPane(AbstractPane<? extends T> parentPane,
+	public FileChooserPane(Pane<? extends T> parentPane,
 	                       Composite parent) {
 
 		super(parentPane, parent);
@@ -66,7 +66,7 @@ public abstract class FileChooserPane<T extends Model> extends AbstractChooserPa
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public FileChooserPane(AbstractPane<?> parentPane,
+	public FileChooserPane(Pane<?> parentPane,
 	                       PropertyValueModel<? extends T> subjectHolder,
 	                       Composite parent) {
 
@@ -107,8 +107,8 @@ public abstract class FileChooserPane<T extends Model> extends AbstractChooserPa
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected Control buildMainControl(Composite container) {
-		return buildText(container, textHolder);
+	protected Control addMainControl(Composite container) {
+		return addText(container, textHolder);
 	}
 
 	private PostExecution<ElementTreeSelectionDialog> buildSelectionDialogPostExecution() {
@@ -153,14 +153,14 @@ public abstract class FileChooserPane<T extends Model> extends AbstractChooserPa
 	 * @return A non-<code>null</code> string shown above the text field of the
 	 * selection dialog
 	 */
-	protected abstract String dialogMessage();
+	protected abstract String getDialogMessage();
 
 	/**
 	 * Returns the selection dialog's title.
 	 *
 	 * @return A non-<code>null</code> string
 	 */
-	protected abstract String dialogTitle();
+	protected abstract String getDialogTitle();
 
 	/**
 	 * Retrieves the root input that will be used by the selection dialog.
@@ -185,15 +185,15 @@ public abstract class FileChooserPane<T extends Model> extends AbstractChooserPa
 	protected void promptFile() {
 
 		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
-			shell(),
+			getShell(),
 			new WorkbenchLabelProvider(),
 			new WorkbenchContentProvider()
 		);
 
 		dialog.setHelpAvailable(false);
 		dialog.setValidator(buildValidator());
-		dialog.setTitle(dialogTitle());
-		dialog.setMessage(dialogMessage());
+		dialog.setTitle(getDialogTitle());
+		dialog.setMessage(getDialogMessage());
 		dialog.addFilter(buildFilter());
 		dialog.setInput(getDialogInput());
 		dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));

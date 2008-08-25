@@ -27,33 +27,21 @@ public class ImageImageDescriptor extends ImageDescriptor
 	 */
 	public ImageImageDescriptor(Image image) {
 		super();
-		fImage = image;
+		this.fImage = image;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see Object#equals(Object)
-	 */
+	@Override
 	public boolean equals(Object obj) {
-		return (obj != null) && getClass().equals(obj.getClass()) && fImage.equals(((ImageImageDescriptor) obj).fImage);
+		return (obj != null) && getClass().equals(obj.getClass()) && this.fImage.equals(((ImageImageDescriptor) obj).fImage);
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see ImageDescriptor#getImageData()
-	 */
+	@Override
 	public ImageData getImageData() {
-		return fImage.getImageData();
+		return this.fImage.getImageData();
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see Object#hashCode()
-	 */
+	@Override
 	public int hashCode() {
-		return fImage.hashCode();
+		return this.fImage.hashCode();
 	}
 }

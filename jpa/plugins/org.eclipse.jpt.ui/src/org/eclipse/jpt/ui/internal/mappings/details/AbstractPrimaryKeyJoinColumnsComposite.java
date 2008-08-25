@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.AbstractAdapter;
@@ -60,7 +60,7 @@ import org.eclipse.swt.widgets.Group;
  * @version 2.0
  * @since 2.0
  */
-public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> extends AbstractPane<T>
+public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> extends Pane<T>
 {
 	protected WritablePropertyValueModel<PrimaryKeyJoinColumn> joinColumnHolder;
 
@@ -70,7 +70,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	public AbstractPrimaryKeyJoinColumnsComposite(AbstractPane<? extends T> subjectHolder,
+	public AbstractPrimaryKeyJoinColumnsComposite(Pane<? extends T> subjectHolder,
 	                                      Composite parent) {
 
 		super(subjectHolder, parent);
@@ -78,7 +78,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 
 	private void addJoinColumn(PrimaryKeyJoinColumnStateObject stateObject) {
 
-		Entity subject = subject();
+		Entity subject = getSubject();
 		int index = subject.specifiedPrimaryKeyJoinColumnsSize();
 
 		PrimaryKeyJoinColumn joinColumn = subject.addSpecifiedPrimaryKeyJoinColumn(index);
@@ -88,8 +88,8 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 	private void addPrimaryKeyJoinColumn() {
 
 		PrimaryKeyJoinColumnDialog dialog = new PrimaryKeyJoinColumnDialog(
-			shell(),
-			subject(),
+			getShell(),
+			getSubject(),
 			null
 		);
 
@@ -100,7 +100,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 		return new PostExecution<PrimaryKeyJoinColumnDialog>() {
 			public void execute(PrimaryKeyJoinColumnDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					addJoinColumn(dialog.subject());
+					addJoinColumn(dialog.getSubject());
 				}
 			}
 		};
@@ -112,7 +112,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 		return new PostExecution<PrimaryKeyJoinColumnDialog>() {
 			public void execute(PrimaryKeyJoinColumnDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					editJoinColumn(dialog.subject());
+					editJoinColumn(dialog.getSubject());
 				}
 			}
 		};
@@ -186,7 +186,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 
 				int[] selectedIndices = listSelectionModel.selectedIndices();
-				Entity entity = subject();
+				Entity entity = getSubject();
 
 				for (int index = selectedIndices.length; --index >= 0; ) {
 					entity.removeSpecifiedPrimaryKeyJoinColumn(selectedIndices[index]);
@@ -248,8 +248,8 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 		PrimaryKeyJoinColumn joinColumn = (PrimaryKeyJoinColumn) listSelectionModel.selectedValue();
 
 		PrimaryKeyJoinColumnDialog dialog = new PrimaryKeyJoinColumnDialog(
-			shell(),
-			subject(),
+			getShell(),
+			getSubject(),
 			joinColumn
 		);
 
@@ -272,16 +272,17 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 	protected void initializeLayout(Composite container) {
 
 		// Primary Key Join Columns group pane
-		Group groupPane = buildTitledPane(
+		Group groupPane = addTitledGroup(
 			container,
 			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_primaryKeyJoinColumn
 		);
 
 		// Override Default Join Columns check box
-		buildCheckBox(
-			buildSubPane(groupPane, 8),
+		addCheckBox(
+			addSubPane(groupPane, 8),
 			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_overrideDefaultPrimaryKeyJoinColumns,
-			buildOverrideDefaultJoinColumnHolder()
+			buildOverrideDefaultJoinColumnHolder(),
+			null
 		);
 
 		// Primary Key Join Columns list pane
@@ -322,8 +323,8 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 			}
 			// Remove all the specified join columns
 			else {
-				for (int index = subject().specifiedPrimaryKeyJoinColumnsSize(); --index >= 0; ) {
-					subject().removeSpecifiedPrimaryKeyJoinColumn(index);
+				for (int index = getSubject().specifiedPrimaryKeyJoinColumnsSize(); --index >= 0; ) {
+					getSubject().removeSpecifiedPrimaryKeyJoinColumn(index);
 				}
 			}
 		}

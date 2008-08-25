@@ -14,7 +14,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class PersistenceUnitConnectionComposite extends AbstractFormPane<PersistenceUnit>
+public class PersistenceUnitConnectionComposite extends FormPane<PersistenceUnit>
                                                 implements JpaPageComposite
 {
 	/**
@@ -70,7 +70,7 @@ public class PersistenceUnitConnectionComposite extends AbstractFormPane<Persist
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected Composite buildContainer(Composite parent) {
+	protected Composite addContainer(Composite parent) {
 
 		GridLayout layout = new GridLayout(1, true);
 		layout.marginHeight    = 0;
@@ -81,7 +81,7 @@ public class PersistenceUnitConnectionComposite extends AbstractFormPane<Persist
 		layout.marginRight     = 0;
 		layout.verticalSpacing = 15;
 
-		Composite container = buildPane(parent, layout);
+		Composite container = addPane(parent, layout);
 		updateGridData(container);
 
 		return container;
@@ -96,7 +96,7 @@ public class PersistenceUnitConnectionComposite extends AbstractFormPane<Persist
 
 	private void initializeDatabasePane(Composite container) {
 
-		container = buildSection(
+		container = addSection(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitConnectionComposite_database
 		);
@@ -106,7 +106,7 @@ public class PersistenceUnitConnectionComposite extends AbstractFormPane<Persist
 
 	private void initializeGeneralPane(Composite container) {
 
-		container = buildSection(
+		container = addSection(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitConnectionComposite_general
 		);

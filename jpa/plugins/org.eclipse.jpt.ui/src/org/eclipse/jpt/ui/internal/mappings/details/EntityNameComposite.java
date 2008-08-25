@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class EntityNameComposite extends AbstractPane<Entity>
+public class EntityNameComposite extends Pane<Entity>
 {
 	/**
 	 * Creates a new <code>EntityNameComposite</code>.
@@ -46,7 +46,7 @@ public class EntityNameComposite extends AbstractPane<Entity>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public EntityNameComposite(AbstractPane<? extends Entity> parentPane,
+	public EntityNameComposite(Pane<? extends Entity> parentPane,
 	                           Composite parent) {
 
 		super(parentPane, parent);
@@ -55,7 +55,7 @@ public class EntityNameComposite extends AbstractPane<Entity>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		CCombo combo = buildLabeledEditableCCombo(
+		CCombo combo = addLabeledEditableCCombo(
 			container,
 			JptUiMappingsMessages.EntityNameComposite_name,
 			buildDefaultEntityNameListHolder(),

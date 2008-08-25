@@ -17,7 +17,7 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -58,7 +58,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public class PersistenceUnitMetadataComposite extends AbstractFormPane<PersistenceUnitMetadata>
+public class PersistenceUnitMetadataComposite extends FormPane<PersistenceUnitMetadata>
 {
 	/**
 	 * Creates a new <code>PersistenceUnitMetadataComposite</code>.
@@ -67,14 +67,14 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public PersistenceUnitMetadataComposite(AbstractFormPane<?> parentPane,
+	public PersistenceUnitMetadataComposite(FormPane<?> parentPane,
 	                                        PropertyValueModel<? extends PersistenceUnitMetadata> subjectHolder,
 	                                        Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
 	}
 
-	private EnumFormComboViewer<PersistenceUnitDefaults, AccessType> buildAccessTypeCombo(Composite container) {
+	private EnumFormComboViewer<PersistenceUnitDefaults, AccessType> addAccessTypeCombo(Composite container) {
 
 		return new EnumFormComboViewer<PersistenceUnitDefaults, AccessType>(this, buildPersistenceUnitDefaultsHolder(), container) {
 
@@ -85,12 +85,12 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 			}
 
 			@Override
-			protected AccessType[] choices() {
+			protected AccessType[] getChoices() {
 				return AccessType.values();
 			}
 
 			@Override
-			protected AccessType defaultValue() {
+			protected AccessType getDefaultValue() {
 				return null;
 			}
 
@@ -105,12 +105,12 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 
 			@Override
 			protected AccessType getValue() {
-				return subject().getAccess();
+				return getSubject().getAccess();
 			}
 
 			@Override
 			protected void setValue(AccessType value) {
-				subject().setAccess(value);
+				getSubject().setAccess(value);
 			}
 		};
 	}
@@ -129,7 +129,7 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 		};
 	}
 
-	private CatalogCombo<PersistenceUnitDefaults> buildCatalogCombo(Composite container) {
+	private CatalogCombo<PersistenceUnitDefaults> addCatalogCombo(Composite container) {
 
 		return new CatalogCombo<PersistenceUnitDefaults>(this, buildPersistenceUnitDefaultsHolder(), container) {
 
@@ -141,18 +141,18 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultCatalog();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultCatalog();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedCatalog(value);
+				getSubject().setSpecifiedCatalog(value);
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedCatalog();
+			protected String getValue() {
+				return getSubject().getSpecifiedCatalog();
 			}
 		};
 	}
@@ -166,7 +166,7 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 		};
 	}
 
-	private SchemaCombo<PersistenceUnitDefaults> buildSchemaCombo(Composite container) {
+	private SchemaCombo<PersistenceUnitDefaults> addSchemaCombo(Composite container) {
 
 		return new SchemaCombo<PersistenceUnitDefaults>(this, buildPersistenceUnitDefaultsHolder(), container) {
 
@@ -178,18 +178,18 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultSchema();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultSchema();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedSchema(value);
+				getSubject().setSpecifiedSchema(value);
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedSchema();
+			protected String getValue() {
+				return getSubject().getSpecifiedSchema();
 			}
 		};
 	}
@@ -215,13 +215,13 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 	protected void initializeLayout(Composite container) {
 
 		// Section
-		container = buildCollapsableSection(
+		container = addCollapsableSection(
 			container,
 			JptUiOrmMessages.PersistenceUnitMetadataComposite_persistenceUnitSection
 		);
 
 		// XML mapping metadata complete check box
-		buildCheckBox(
+		addCheckBox(
 			container,
 			JptUiOrmMessages.PersistenceUnitMetadataComposite_xmlMappingMetadataCompleteCheckBox,
 			buildXmlMappingMetadataCompleteHolder(),
@@ -229,7 +229,7 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 		);
 
 		// Cascade Persist widgets
-		buildCheckBox(
+		addCheckBox(
 			container,
 			JptUiOrmMessages.PersistenceUnitMetadataComposite_cascadePersistCheckBox,
 			buildCascadePersistHolder(),
@@ -237,26 +237,26 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 		);
 
 		// Schema widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiOrmMessages.PersistenceUnitMetadataComposite_schema,
-			buildSchemaCombo(container),
+			addSchemaCombo(container),
 			JpaHelpContextIds.ENTITY_ORM_SCHEMA
 		);
 
 		// Catalog widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiOrmMessages.PersistenceUnitMetadataComposite_catalog,
-			buildCatalogCombo(container),
+			addCatalogCombo(container),
 			JpaHelpContextIds.ENTITY_ORM_CATALOG
 		);
 
 		// Access Type widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiOrmMessages.PersistenceUnitMetadataComposite_access,
-			buildAccessTypeCombo(container),
+			addAccessTypeCombo(container),
 			JpaHelpContextIds.ENTITY_ORM_ACCESS
 		);
 	}

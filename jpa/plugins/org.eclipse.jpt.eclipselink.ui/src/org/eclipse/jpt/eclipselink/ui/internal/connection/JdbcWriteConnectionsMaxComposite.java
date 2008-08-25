@@ -13,7 +13,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.ui.internal.util.LabeledLabel;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Spinner;
  * JdbcWriteConnectionsMaxComposite
  */
 @SuppressWarnings("nls")
-public class JdbcWriteConnectionsMaxComposite extends AbstractPane<Connection>
+public class JdbcWriteConnectionsMaxComposite extends Pane<Connection>
 {
 	/**
 	 * Creates a new <code>JdbcWriteConnectionsMaxComposite</code>.
@@ -39,7 +39,7 @@ public class JdbcWriteConnectionsMaxComposite extends AbstractPane<Connection>
 	 * @param parent
 	 *            The parent container
 	 */
-	public JdbcWriteConnectionsMaxComposite(AbstractPane<Connection> parentComposite,
+	public JdbcWriteConnectionsMaxComposite(Pane<Connection> parentComposite,
 	                                 Composite parent) {
 
 		super(parentComposite, parent);
@@ -88,9 +88,9 @@ public class JdbcWriteConnectionsMaxComposite extends AbstractPane<Connection>
 		};
 	}
 
-	private Control buildDefaultWriteConnectionsMaxLabel(Composite container) {
+	private Control addDefaultWriteConnectionsMaxLabel(Composite container) {
 
-		Label label = buildLabel(
+		Label label = addLabel(
 			container,
 			EclipseLinkUiMessages.DefaultWithoutValue
 		);
@@ -122,14 +122,15 @@ public class JdbcWriteConnectionsMaxComposite extends AbstractPane<Connection>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		Spinner spinner = this.buildLabeledSpinner(
+		Spinner spinner = this.addLabeledSpinner(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_writeConnectionsMaxLabel,
 			this.buildWriteConnectionsMaxHolder(),
 			-1,
 			-1,
 			Integer.MAX_VALUE,
-			this.buildDefaultWriteConnectionsMaxLabel(container)
+			this.addDefaultWriteConnectionsMaxLabel(container),
+			null
 		);
 
 		updateGridData(container, spinner);

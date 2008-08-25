@@ -26,7 +26,7 @@ import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.IJoinColumnsEditor;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
@@ -79,7 +79,7 @@ import org.eclipse.ui.part.PageBook;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class OverridesComposite extends AbstractFormPane<Entity>
+public class OverridesComposite extends FormPane<Entity>
 {
 	private Composite columnPane;
 	private Composite joinColumnsPane;
@@ -93,7 +93,7 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	public OverridesComposite(AbstractFormPane<? extends Entity> parentPane,
+	public OverridesComposite(FormPane<? extends Entity> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent, false);
@@ -128,7 +128,7 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 	protected void initializeLayout(Composite container) {
 
 		// Overrides group pane
-		container = buildTitledPane(
+		container = addTitledGroup(
 			container,
 			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
 		);
@@ -137,7 +137,7 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		initializeOverridesList(container);
 
 		// Property pane
-		PageBook pageBook = buildPageBook(container);
+		PageBook pageBook = addPageBook(container);
 		initializeJoinColumnsPane(pageBook);
 		initializeColumnPane(pageBook);
 		installOverrideControlSwitcher(this.selectedOverrideHolder, pageBook);
@@ -147,7 +147,7 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 
 		return new AddRemoveListPane<Entity>(
 			this,
-			buildSubPane(container, 8),
+			addSubPane(container, 8),
 			buildOverridesAdapter(),
 			buildOverridesListModel(),
 			this.selectedOverrideHolder,
@@ -167,14 +167,15 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 	
 	private void initializeColumnPane(PageBook pageBook) {
 
-		int groupBoxMargin = groupBoxMargin();
-		this.columnPane = buildSubPane(pageBook, 5);
+		int groupBoxMargin = getGroupBoxMargin();
+		this.columnPane = addSubPane(pageBook, 5);
 
 		// Override Default check box
-		buildCheckBox(
-			buildSubPane(this.columnPane, 0, groupBoxMargin, 0, groupBoxMargin),
+		addCheckBox(
+			addSubPane(this.columnPane, 0, groupBoxMargin, 0, groupBoxMargin),
 			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
-			getOverrideVirtualAttributeOverrideHolder()
+			getOverrideVirtualAttributeOverrideHolder(),
+			null
 		);
 
 		// Column widgets (for IOverrideAttribute)
@@ -198,16 +199,17 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 
 	private void initializeJoinColumnsPane(PageBook pageBook) {
 
-		this.joinColumnsPane = buildSubPane(pageBook);
+		this.joinColumnsPane = addSubPane(pageBook);
 
 		// Override Default check box
-		buildCheckBox(
-			buildSubPane(this.joinColumnsPane, 5, groupBoxMargin()),
+		addCheckBox(
+			addSubPane(this.joinColumnsPane, 5, getGroupBoxMargin()),
 			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
-			getOverrideVirtualAssociationOverrideHolder()
+			getOverrideVirtualAssociationOverrideHolder(),
+			null
 		);
 
-		Group joinColumnsGroupPane = buildTitledPane(
+		Group joinColumnsGroupPane = addTitledGroup(
 			this.joinColumnsPane,
 			JptUiMappingsMessages.OverridesComposite_joinColumn
 		);
@@ -246,7 +248,7 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 	private void addJoinColumn(AssociationOverride subject) {
 
 		JoinColumnInAssociationOverrideDialog dialog =
-			new JoinColumnInAssociationOverrideDialog(shell(), subject, null);
+			new JoinColumnInAssociationOverrideDialog(getShell(), subject, null);
 
 		dialog.openDialog(buildAddJoinColumnPostExecution());
 	}
@@ -255,7 +257,7 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		return new PostExecution<JoinColumnInAssociationOverrideDialog>() {
 			public void execute(JoinColumnInAssociationOverrideDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					addJoinColumn(dialog.subject());
+					addJoinColumn(dialog.getSubject());
 				}
 			}
 		};
@@ -329,7 +331,7 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		return new PostExecution<JoinColumnInAssociationOverrideDialog>() {
 			public void execute(JoinColumnInAssociationOverrideDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					editJoinColumn(dialog.subject());
+					editJoinColumn(dialog.getSubject());
 				}
 			}
 		};
@@ -494,7 +496,7 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 
 		JoinColumnInAssociationOverrideDialog dialog =
 			new JoinColumnInAssociationOverrideDialog(
-				shell(),
+				getShell(),
 				(AssociationOverride) this.selectedOverrideHolder.getValue(),
 				joinColumn
 			);

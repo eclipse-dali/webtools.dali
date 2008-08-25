@@ -13,14 +13,14 @@ import java.util.Collection;
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.LoggingLevel;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * LoggingLevelComposite
  */
-public class LoggingLevelComposite extends AbstractFormPane<Logging>
+public class LoggingLevelComposite extends FormPane<Logging>
 {
 	/**
 	 * Creates a new <code>LoggingLevelComposite</code>.
@@ -31,13 +31,13 @@ public class LoggingLevelComposite extends AbstractFormPane<Logging>
 	 *            The parent container
 	 */
 	public LoggingLevelComposite(
-				AbstractFormPane<? extends Logging> parentComposite, 
+				FormPane<? extends Logging> parentComposite, 
 				Composite parent) {
 		
 		super(parentComposite, parent);
 	}
 
-	private EnumFormComboViewer<Logging, LoggingLevel> buildLoggingLevelCombo(Composite container) {
+	private EnumFormComboViewer<Logging, LoggingLevel> addLoggingLevelCombo(Composite container) {
 		return new EnumFormComboViewer<Logging, LoggingLevel>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -46,7 +46,7 @@ public class LoggingLevelComposite extends AbstractFormPane<Logging>
 			}
 
 			@Override
-			protected LoggingLevel[] choices() {
+			protected LoggingLevel[] getChoices() {
 				return LoggingLevel.values();
 			}
 			
@@ -56,8 +56,8 @@ public class LoggingLevelComposite extends AbstractFormPane<Logging>
 			}
 			
 			@Override
-			protected LoggingLevel defaultValue() {
-				return this.subject().getDefaultLevel();
+			protected LoggingLevel getDefaultValue() {
+				return this.getSubject().getDefaultLevel();
 			}
 
 			@Override
@@ -67,22 +67,22 @@ public class LoggingLevelComposite extends AbstractFormPane<Logging>
 
 			@Override
 			protected LoggingLevel getValue() {
-				return this.subject().getLevel();
+				return this.getSubject().getLevel();
 			}
 
 			@Override
 			protected void setValue(LoggingLevel value) {
-				this.subject().setLevel(value);
+				this.getSubject().setLevel(value);
 			}
 		};
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		this.buildLabeledComposite(
+		this.addLabeledComposite(
 				container,
 				EclipseLinkUiMessages.PersistenceXmlLoggingTab_loggingLevelLabel,
-				this.buildLoggingLevelCombo(container),
+				this.addLoggingLevelCombo(container),
 				null // TODO IJpaHelpContextIds.
 		);
 	}

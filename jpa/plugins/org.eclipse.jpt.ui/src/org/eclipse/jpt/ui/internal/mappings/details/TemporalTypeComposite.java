@@ -18,7 +18,7 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.ExtendedListValueModelWrapper;
@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class TemporalTypeComposite extends AbstractFormPane<ColumnMapping> {
+public class TemporalTypeComposite extends FormPane<ColumnMapping> {
 
 	/**
 	 * Creates a new <code>TemporalTypeComposite</code>.
@@ -54,7 +54,7 @@ public class TemporalTypeComposite extends AbstractFormPane<ColumnMapping> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TemporalTypeComposite(AbstractFormPane<? extends ColumnMapping> parentPane,
+	public TemporalTypeComposite(FormPane<? extends ColumnMapping> parentPane,
 	                             Composite parent) {
 
 		super(parentPane, parent);
@@ -122,7 +122,7 @@ public class TemporalTypeComposite extends AbstractFormPane<ColumnMapping> {
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		buildLabeledCCombo(
+		addLabeledCCombo(
 			container,
 			JptUiMappingsMessages.BasicGeneralSection_temporalLabel,
 			buildTemporalTypeListHolder(),

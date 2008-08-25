@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -65,7 +65,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class GenerationComposite extends AbstractFormPane<IdMapping>
+public class GenerationComposite extends FormPane<IdMapping>
 {
 	private WritablePropertyValueModel<Boolean> sequenceGeneratorExpansionStateHolder;
 	private WritablePropertyValueModel<Boolean> tableGeneratorExpansionStateHolder;
@@ -76,7 +76,7 @@ public class GenerationComposite extends AbstractFormPane<IdMapping>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public GenerationComposite(AbstractFormPane<? extends IdMapping> parentPane,
+	public GenerationComposite(FormPane<? extends IdMapping> parentPane,
 	                           Composite parent)
 	{
 		super(parentPane, parent, false);
@@ -166,8 +166,8 @@ public class GenerationComposite extends AbstractFormPane<IdMapping>
 	{
 		super.doPopulate();
 
-		sequenceGeneratorExpansionStateHolder.setValue(subject() != null && subject().getSequenceGenerator() != null);
-		tableGeneratorExpansionStateHolder   .setValue(subject() != null && subject().getTableGenerator() != null);
+		sequenceGeneratorExpansionStateHolder.setValue(getSubject() != null && getSubject().getSequenceGenerator() != null);
+		tableGeneratorExpansionStateHolder   .setValue(getSubject() != null && getSubject().getTableGenerator() != null);
 	}
 
 	/*
@@ -188,14 +188,14 @@ public class GenerationComposite extends AbstractFormPane<IdMapping>
 	protected void initializeLayout(Composite container) {
 
 		// Primary Key Generation section
-		container = buildCollapsableSection(
+		container = addCollapsableSection(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration,
 			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
 		);
 
 		// Primary Key Generation check box
-		Button primaryKeyGenerationCheckBox = buildCheckBox(
+		Button primaryKeyGenerationCheckBox = addCheckBox(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration,
 			buildPrimaryKeyGenerationHolder(),
@@ -216,23 +216,23 @@ public class GenerationComposite extends AbstractFormPane<IdMapping>
 		generatedValueComposite.getControl().setLayoutData(gridData);
 
 		// Table Generator pane
-		initializeTableGeneratorPane(buildSubPane(container, 10));
+		initializeTableGeneratorPane(addSubPane(container, 10));
 
 		// Sequence Generator pane
-		initializeSequenceGeneratorPane(buildSubPane(container, 10));
+		initializeSequenceGeneratorPane(addSubPane(container, 10));
 	}
 
 	private void initializeSequenceGeneratorPane(Composite container) {
 
 		// Sequence Generator sub-section
-		container = buildCollapsableSubSection(
+		container = addCollapsableSubSection(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
 			sequenceGeneratorExpansionStateHolder
 		);
 
 		// Sequence Generator check box
-		Button sequenceGeneratorCheckBox = buildCheckBox(
+		Button sequenceGeneratorCheckBox = addCheckBox(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
 			buildSequenceGeneratorBooleanHolder(),
@@ -242,20 +242,20 @@ public class GenerationComposite extends AbstractFormPane<IdMapping>
 		// Sequence Generator pane
 		new SequenceGeneratorComposite(
 			this,
-			buildSubPane(container, 0, sequenceGeneratorCheckBox.getBorderWidth() + 16)
+			addSubPane(container, 0, sequenceGeneratorCheckBox.getBorderWidth() + 16)
 		);
 	}
 
 	private void initializeTableGeneratorPane(Composite container) {
 
 		// Table Generator sub-section
-		container = buildCollapsableSubSection(
+		container = addCollapsableSubSection(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_tableGenerator,
 			tableGeneratorExpansionStateHolder
 		);
 
-		Button tableGeneratorCheckBox = buildCheckBox(
+		Button tableGeneratorCheckBox = addCheckBox(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_tableGenerator,
 			buildTableGeneratorBooleanHolder(),
@@ -264,7 +264,7 @@ public class GenerationComposite extends AbstractFormPane<IdMapping>
 
 		new TableGeneratorComposite(
 			this,
-			buildSubPane(container, 0, tableGeneratorCheckBox.getBorderWidth() + 16)
+			addSubPane(container, 0, tableGeneratorCheckBox.getBorderWidth() + 16)
 		);
 	}
 }

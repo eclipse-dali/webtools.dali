@@ -11,17 +11,17 @@ package org.eclipse.jpt.eclipselink.ui.internal.connection;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * EclipseLinkConnectionComposite
  */
 public class EclipseLinkConnectionComposite
-	extends AbstractFormPane<Connection>
+	extends FormPane<Connection>
 {
 	public EclipseLinkConnectionComposite(
-					AbstractFormPane<Connection> subjectHolder,
+					FormPane<Connection> subjectHolder,
 					Composite container) {
 		super(subjectHolder, container, false);
 	}
@@ -29,15 +29,15 @@ public class EclipseLinkConnectionComposite
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		int groupBoxMargin = groupBoxMargin() * 2;
+		int groupBoxMargin = getGroupBoxMargin() * 2;
 
-		container = buildSection(
+		container = addSection(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_sectionTitle,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_sectionDescription
 		);
 
-		Composite subPane = buildSubPane(
+		Composite subPane = addSubPane(
 			container,
 			0, groupBoxMargin, 10, groupBoxMargin
 		);

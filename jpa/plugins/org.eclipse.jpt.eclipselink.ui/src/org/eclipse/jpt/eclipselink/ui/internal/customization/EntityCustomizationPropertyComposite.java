@@ -10,14 +10,14 @@
 package org.eclipse.jpt.eclipselink.ui.internal.customization;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * EntityCustomizationPropertyComposite
  */
-public class EntityCustomizationPropertyComposite extends AbstractPane<EntityCustomizerProperties> {
+public class EntityCustomizationPropertyComposite extends Pane<EntityCustomizerProperties> {
 
 	/**
 	 * Creates a new <code>EntityCustomizationPropertyComposite</code>.
@@ -26,7 +26,7 @@ public class EntityCustomizationPropertyComposite extends AbstractPane<EntityCus
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public EntityCustomizationPropertyComposite(AbstractPane<Customization> parentComposite,
+	public EntityCustomizationPropertyComposite(Pane<Customization> parentComposite,
 	                                      PropertyValueModel<EntityCustomizerProperties> subjectHolder,
 	                                      Composite parent) {
 

@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Control;
  * @version 2.0
  * @since 2.0
  */
-public abstract class AbstractChooserPane<T extends Model> extends AbstractPane<T>
+public abstract class ChooserPane<T extends Model> extends Pane<T>
 {
 	/**
 	 * The control shown after the label (left control).
@@ -39,25 +39,25 @@ public abstract class AbstractChooserPane<T extends Model> extends AbstractPane<
 	private Control rightControl;
 
 	/**
-	 * Creates a new <code>AbstractChooserPane</code>.
+	 * Creates a new <code>ChooserPane</code>.
 	 *
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public AbstractChooserPane(AbstractPane<? extends T> parentPane,
+	public ChooserPane(Pane<? extends T> parentPane,
 	                           Composite parent) {
 
 		super(parentPane, parent);
 	}
 
 	/**
-	 * Creates a new <code>AbstractChooserPane</code>.
+	 * Creates a new <code>ChooserPane</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public AbstractChooserPane(AbstractPane<?> parentPane,
+	public ChooserPane(Pane<?> parentPane,
 	                           PropertyValueModel<? extends T> subjectHolder,
 	                           Composite parent) {
 
@@ -70,8 +70,8 @@ public abstract class AbstractChooserPane<T extends Model> extends AbstractPane<
 	 *
 	 * @return "Browse..."
 	 */
-	protected String browseButtonText() {
-		return JptUiMessages.AbstractChooserPane_browseButton;
+	protected String getBrowseButtonText() {
+		return JptUiMessages.ChooserPane_browseButton;
 	}
 
 	/**
@@ -90,8 +90,8 @@ public abstract class AbstractChooserPane<T extends Model> extends AbstractPane<
 	 * @param container The parent container
 	 * @return The newly created left control
 	 */
-	protected Control buildLeftControl(Composite container) {
-		return buildLabel(container, labelText());
+	protected Control addLeftControl(Composite container) {
+		return addLabel(container, getLabelText());
 	}
 
 	/**
@@ -100,7 +100,7 @@ public abstract class AbstractChooserPane<T extends Model> extends AbstractPane<
 	 * @param container The parent container
 	 * @return The newly created main control
 	 */
-	protected abstract Control buildMainControl(Composite container);
+	protected abstract Control addMainControl(Composite container);
 
 	/**
 	 * Creates the right control. By default a browse button is created and its
@@ -110,10 +110,10 @@ public abstract class AbstractChooserPane<T extends Model> extends AbstractPane<
 	 * @param container The parent container
 	 * @return The newly created right control
 	 */
-	protected Control buildRightControl(Composite container) {
-		return buildButton(
+	protected Control addRightControl(Composite container) {
+		return addButton(
 			container,
-			browseButtonText(),
+			getBrowseButtonText(),
 			buildBrowseAction()
 		);
 	}
@@ -140,7 +140,7 @@ public abstract class AbstractChooserPane<T extends Model> extends AbstractPane<
 	 *
 	 * @return <code>null</code> is returned otherwise the subclass can return an ID
 	 */
-	protected String helpId() {
+	protected String getHelpId() {
 		return null;
 	}
 
@@ -150,15 +150,15 @@ public abstract class AbstractChooserPane<T extends Model> extends AbstractPane<
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		mainControl  = buildMainControl(container);
-		rightControl = buildRightControl(container);
+		mainControl  = addMainControl(container);
+		rightControl = addRightControl(container);
 
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
-			buildLeftControl(container),
+			addLeftControl(container),
 			mainControl,
 			rightControl,
-			helpId()
+			getHelpId()
 		);
 	}
 
@@ -169,5 +169,5 @@ public abstract class AbstractChooserPane<T extends Model> extends AbstractPane<
 	 * @return The localized text of the left control (which is a label by
 	 * default)
 	 */
-	protected abstract String labelText();
+	protected abstract String getLabelText();
 }

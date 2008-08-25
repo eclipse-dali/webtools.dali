@@ -33,7 +33,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.ui.JptEclipseLinkUiPlugin;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -51,9 +51,9 @@ import org.eclipse.ui.progress.IProgressService;
 /**
  *  EntityListComposite
  */
-public class EntityListComposite extends AbstractPane<Caching>
+public class EntityListComposite extends Pane<Caching>
 {
-	public EntityListComposite(AbstractPane<Caching> parentComposite, Composite parent) {
+	public EntityListComposite(Pane<Caching> parentComposite, Composite parent) {
 
 		super(parentComposite, parent);
 	}
@@ -61,7 +61,7 @@ public class EntityListComposite extends AbstractPane<Caching>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		container = this.buildTitledPane(
+		container = this.addTitledGroup(
 			container,
 			EclipseLinkUiMessages.CachingEntityListComposite_groupTitle
 		);
@@ -95,7 +95,7 @@ public class EntityListComposite extends AbstractPane<Caching>
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				Caching caching = subject();
+				Caching caching = getSubject();
 				for (Object item : listSelectionModel.selectedValues()) {
 					EntityCacheProperties entityCaching = (EntityCacheProperties) item;
 					caching.removeEntity(entityCaching.getEntityName());
@@ -114,8 +114,8 @@ public class EntityListComposite extends AbstractPane<Caching>
 				entityName = type.getElementName();
 			}
 			
-			if( ! this.subject().entityExists(entityName)) {
-				String entity = this.subject().addEntity(entityName);
+			if( ! this.getSubject().entityExists(entityName)) {
+				String entity = this.getSubject().addEntity(entityName);
 	
 				listSelectionModel.setSelectedValue(entity);
 			}
@@ -124,7 +124,7 @@ public class EntityListComposite extends AbstractPane<Caching>
 	
 	private String getEntityName(String fullyQualifiedTypeName) {
 
-		PersistentType persistentType = subject().persistenceUnit().getPersistentType(fullyQualifiedTypeName);
+		PersistentType persistentType = getSubject().persistenceUnit().getPersistentType(fullyQualifiedTypeName);
 
 		if (persistentType != null && persistentType.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
 			TypeMapping mapping = persistentType.getMapping();
@@ -137,7 +137,7 @@ public class EntityListComposite extends AbstractPane<Caching>
 	
 	private IType chooseEntity() {
 
-		IPackageFragmentRoot root = packageFragmentRoot();
+		IPackageFragmentRoot root = getPackageFragmentRoot();
 		if (root == null) {
 			return null;
 		}
@@ -148,7 +148,7 @@ public class EntityListComposite extends AbstractPane<Caching>
 
 		try {
 			typeSelectionDialog = JavaUI.createTypeDialog(
-				shell(),
+				getShell(),
 				service,
 				scope,
 				IJavaElementSearchConstants.CONSIDER_CLASSES,
@@ -169,8 +169,8 @@ public class EntityListComposite extends AbstractPane<Caching>
 		return null;
 	}
 
-	private IPackageFragmentRoot packageFragmentRoot() {
-		IProject project = subject().getJpaProject().getProject();
+	private IPackageFragmentRoot getPackageFragmentRoot() {
+		IProject project = getSubject().getJpaProject().getProject();
 		IJavaProject root = JavaCore.create(project);
 
 		try {
@@ -200,7 +200,7 @@ public class EntityListComposite extends AbstractPane<Caching>
 		return new TransformationListValueModelAdapter<String, EntityCacheProperties>(buildEntitiesListHolder()) {
 			@Override
 			protected EntityCacheProperties transformItem(String item) {
-				return new EntityCacheProperties(subject(), item);
+				return new EntityCacheProperties(getSubject(), item);
 			}
 		};
 	}

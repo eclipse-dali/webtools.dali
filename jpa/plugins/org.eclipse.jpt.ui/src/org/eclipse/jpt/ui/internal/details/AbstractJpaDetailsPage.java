@@ -15,7 +15,7 @@ import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
@@ -29,7 +29,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
  * @since 1.0
  */
 public abstract class AbstractJpaDetailsPage<T extends JpaStructureNode>
-	extends AbstractFormPane<T>
+	extends FormPane<T>
 	implements JpaDetailsPage<T>
 {
 	/**
@@ -45,8 +45,8 @@ public abstract class AbstractJpaDetailsPage<T extends JpaStructureNode>
 	}
 
 	protected JpaPlatformUi jpaPlatformUi() {
-		String platformId = subject().getJpaProject().getJpaPlatform().getId();
-		return JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
+		String platformId = getSubject().getJpaProject().getJpaPlatform().getId();
+		return JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
 	}
 
 	protected JpaUiFactory jpaUiFactory() {

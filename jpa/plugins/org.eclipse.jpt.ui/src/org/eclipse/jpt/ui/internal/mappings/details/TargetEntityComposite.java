@@ -23,7 +23,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
@@ -58,7 +58,7 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class TargetEntityComposite extends AbstractFormPane<RelationshipMapping>
+public class TargetEntityComposite extends FormPane<RelationshipMapping>
 {
 	private CCombo combo;
 
@@ -68,7 +68,7 @@ public class TargetEntityComposite extends AbstractFormPane<RelationshipMapping>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TargetEntityComposite(AbstractFormPane<? extends RelationshipMapping> parentPane,
+	public TargetEntityComposite(FormPane<? extends RelationshipMapping> parentPane,
 	                             Composite parent) {
 
 		super(parentPane, parent);
@@ -131,8 +131,8 @@ public class TargetEntityComposite extends AbstractFormPane<RelationshipMapping>
 		};
 	}
 
-	private Button buildTargetEntitySelectionButton(Composite parent) {
-		return buildPushButton(
+	private Button addTargetEntitySelectionButton(Composite parent) {
+		return addPushButton(
 			parent,
 			JptUiMappingsMessages.TargetEntityChooser_browse,
 			buildOpenTypeAction()
@@ -180,34 +180,34 @@ public class TargetEntityComposite extends AbstractFormPane<RelationshipMapping>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		combo = buildEditableCCombo(container);
+		combo = addEditableCCombo(container);
 		combo.add(JptUiMappingsMessages.TargetEntityChooser_defaultEmpty);
 		combo.addModifyListener(buildTargetEntityModifyListener());
 
 		SWTUtil.attachDefaultValueHandler(combo);
 
-		Hyperlink labelLink = buildHyperLink(container,
+		Hyperlink labelLink = addHyperlink(container,
 			JptUiMappingsMessages.TargetEntityChooser_label,
 			buildOpenTargetEntityAction()
 		);
 
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			labelLink,
 			combo,
-			buildTargetEntitySelectionButton(container),
+			addTargetEntitySelectionButton(container),
 			JpaHelpContextIds.MAPPING_TARGET_ENTITY
 		);
 	}
 
 	private void openEditor() {
 
-		String targetEntity = subject().getTargetEntity();
+		String targetEntity = getSubject().getTargetEntity();
 
 		if (targetEntity != null) {
 
 			try {
-				IType type = subject().getJpaProject().getJavaProject().findType(targetEntity);
+				IType type = getSubject().getJpaProject().getJavaProject().findType(targetEntity);
 
 				if (type != null) {
 					IJavaElement javaElement = type.getParent();
@@ -236,7 +236,7 @@ public class TargetEntityComposite extends AbstractFormPane<RelationshipMapping>
 	 */
 	private void populateDefaultValue() {
 
-		RelationshipMapping entity = subject();
+		RelationshipMapping entity = getSubject();
 		String defaultValue = (entity != null) ? entity.getDefaultTargetEntity() : null;
 
 		if (defaultValue != null) {
@@ -273,7 +273,7 @@ public class TargetEntityComposite extends AbstractFormPane<RelationshipMapping>
 	 * selection to (0, 0) makes the entire text visible.
 	 */
 	private void updateSelectedItem() {
-		RelationshipMapping subject = subject();
+		RelationshipMapping subject = getSubject();
 		String value = (subject != null) ? subject.getSpecifiedTargetEntity() : null;
 
 		if (value != null) {
@@ -305,7 +305,7 @@ public class TargetEntityComposite extends AbstractFormPane<RelationshipMapping>
 
 	private void valueChanged(String value) {
 
-		RelationshipMapping subject = subject();
+		RelationshipMapping subject = getSubject();
 		String oldValue = (subject != null) ? subject.getSpecifiedTargetEntity() : null;
 
 		// Check for null value

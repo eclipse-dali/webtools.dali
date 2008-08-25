@@ -13,7 +13,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.Schem
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
  * PersistenceXmlSchemaGenerationTab
  */
 public class PersistenceXmlSchemaGenerationTab
-	extends AbstractFormPane<SchemaGeneration>
+	extends FormPane<SchemaGeneration>
 	implements JpaPageComposite
 {
 	// ********** constructors/initialization **********

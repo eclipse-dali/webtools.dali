@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.connection;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -19,9 +19,9 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  JdbcReadConnectionPropertiesComposite
  */
-public class JdbcReadConnectionPropertiesComposite extends AbstractPane<Connection>
+public class JdbcReadConnectionPropertiesComposite extends Pane<Connection>
 {
-	public JdbcReadConnectionPropertiesComposite(AbstractPane<Connection> parentComposite, Composite parent) {
+	public JdbcReadConnectionPropertiesComposite(Pane<Connection> parentComposite, Composite parent) {
 
 		super(parentComposite, parent, false);
 	}
@@ -29,7 +29,7 @@ public class JdbcReadConnectionPropertiesComposite extends AbstractPane<Connecti
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		container = this.buildSection(
+		container = this.addSection(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsSectionTitle
 		);

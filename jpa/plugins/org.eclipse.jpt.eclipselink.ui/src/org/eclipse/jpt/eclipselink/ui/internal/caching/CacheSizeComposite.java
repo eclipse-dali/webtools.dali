@@ -13,7 +13,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.ui.internal.util.LabeledLabel;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Spinner;
  * CacheSizeComposite
  */
 @SuppressWarnings("nls")
-public class CacheSizeComposite extends AbstractPane<EntityCacheProperties>
+public class CacheSizeComposite extends Pane<EntityCacheProperties>
 {
 	/**
 	 * Creates a new <code>CacheTypeComposite</code>.
@@ -39,7 +39,7 @@ public class CacheSizeComposite extends AbstractPane<EntityCacheProperties>
 	 * @param parent
 	 *            The parent container
 	 */
-	public CacheSizeComposite(AbstractPane<EntityCacheProperties> parentComposite,
+	public CacheSizeComposite(Pane<EntityCacheProperties> parentComposite,
 	                          Composite parent) {
 
 		super(parentComposite, parent);
@@ -88,9 +88,9 @@ public class CacheSizeComposite extends AbstractPane<EntityCacheProperties>
 		};
 	}
 
-	private Control buildDefaultCacheSizeLabel(Composite container) {
+	private Control addDefaultCacheSizeLabel(Composite container) {
 
-		Label label = buildLabel(
+		Label label = addLabel(
 			container,
 			EclipseLinkUiMessages.DefaultWithoutValue
 		);
@@ -122,14 +122,15 @@ public class CacheSizeComposite extends AbstractPane<EntityCacheProperties>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		Spinner spinner = this.buildLabeledSpinner(
+		Spinner spinner = this.addLabeledSpinner(
 			container,
 			EclipseLinkUiMessages.CacheSizeComposite_cacheSize,
 			this.buildCacheSizeHolder(),
 			-1,
 			-1,
 			Integer.MAX_VALUE,
-			this.buildDefaultCacheSizeLabel(container)
+			this.addDefaultCacheSizeLabel(container),
+			null
 		);
 
 		updateGridData(container, spinner);

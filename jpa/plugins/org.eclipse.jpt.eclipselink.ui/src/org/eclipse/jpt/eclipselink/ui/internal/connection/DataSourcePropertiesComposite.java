@@ -13,19 +13,20 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /**
  * @version 2.0
  * @since 2.0
  */
-public class DataSourcePropertiesComposite extends AbstractPane<Connection> {
+public class DataSourcePropertiesComposite extends Pane<Connection> {
 
 	/**
 	 * Creates a new <code>DataSourcePropertiesComposite</code>.
@@ -33,7 +34,7 @@ public class DataSourcePropertiesComposite extends AbstractPane<Connection> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public DataSourcePropertiesComposite(AbstractPane<Connection> parentComposite,
+	public DataSourcePropertiesComposite(Pane<Connection> parentComposite,
 	                                      Composite parent) {
 
 		super(parentComposite, parent);
@@ -103,34 +104,30 @@ public class DataSourcePropertiesComposite extends AbstractPane<Connection> {
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		int groupBoxMargin = groupBoxMargin();
+		int groupBoxMargin = getGroupBoxMargin();
 
-		container = buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+		container = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 
 		// JTA Data Source
-		Text text = this.buildLabeledText(
-			container,
-			EclipseLinkUiMessages.PersistenceXmlConnectionTab_jtaDataSourceLabel,
-			buildJtaDataSourceHolder()
-		);
+		Label jtaLabel = addUnmanagedLabel(container, EclipseLinkUiMessages.PersistenceXmlConnectionTab_jtaDataSourceLabel);
+		Text text = addUnmanagedText(container, buildJtaDataSourceHolder(), null);
+		this.addLabeledComposite(container, jtaLabel, text, null);
 
-		this.installJTADataSourceControlEnabler(text);
+		this.installJTADataSourceControlEnabler(text, jtaLabel);
 
 		// Non-JTA Data Source
-		text = this.buildLabeledText(
-			container,
-			EclipseLinkUiMessages.PersistenceXmlConnectionTab_nonJtaDataSourceLabel,
-			buildNonJtaDataSourceHolder()
-		);
+		Label nonJtaLabel = addUnmanagedLabel(container, EclipseLinkUiMessages.PersistenceXmlConnectionTab_nonJtaDataSourceLabel);
+		Text nonJtaText = addUnmanagedText(container, buildNonJtaDataSourceHolder(), null);
+		this.addLabeledComposite(container, nonJtaLabel, nonJtaText, null);
 
-		this.installNonJTADataSourceControlEnabler(text);
+		this.installNonJTADataSourceControlEnabler(nonJtaText, nonJtaLabel);
 	}
 
-	private void installJTADataSourceControlEnabler(Text text) {
-		new ControlEnabler(buildJTADataSourceHolder(), text);
+	private void installJTADataSourceControlEnabler(Text text, Label label) {
+		new ControlEnabler(buildJTADataSourceHolder(), text, label);
 	}
 
-	private void installNonJTADataSourceControlEnabler(Text text) {
-		new ControlEnabler(buildNonJTADataSourceHolder(), text);
+	private void installNonJTADataSourceControlEnabler(Text text, Label label) {
+		new ControlEnabler(buildNonJTADataSourceHolder(), text, label);
 	}
 }

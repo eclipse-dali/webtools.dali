@@ -21,7 +21,7 @@ import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
@@ -44,7 +44,7 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public PersistentAttributeMapAsComposite(AbstractPane<? extends T> parentPane,
+	public PersistentAttributeMapAsComposite(Pane<? extends T> parentPane,
                                             Composite parent) {
 
 		super(parentPane, parent);
@@ -74,19 +74,19 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 	@Override
 	protected MappingUiProvider<T> buildDefaultProvider() {
 
-		if (subject().getDefaultMappingKey() == null) {
+		if (getSubject().getDefaultMappingKey() == null) {
 			return null;
 		}
 
 		return new MappingUiProvider<T>() {
 
 			public Image getImage() {
-				String mappingKey = subject().getDefaultMappingKey();
+				String mappingKey = getSubject().getDefaultMappingKey();
 				return JpaMappingImageHelper.imageForAttributeMapping(mappingKey);
 			}
 
 			public String getLabel() {
-				String mappingKey = subject().getDefaultMappingKey();
+				String mappingKey = getSubject().getDefaultMappingKey();
 
 				return SWTUtil.buildDisplayString(
 					JptUiMessages.class,
@@ -108,27 +108,27 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 	protected MappingChangeHandler buildMappingChangeHandler() {
 		return new MappingChangeHandler() {
 
-			public String labelText() {
-				String mappingKey = subject().getMappingKey();
+			public String getLabelText() {
+				String mappingKey = getSubject().getMappingKey();
 
 				if (mappingKey != MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
 					return JptUiMessages.MapAsComposite_mappedAttributeText;
 				}
-				if (subject().isVirtual()) {
+				if (getSubject().isVirtual()) {
 					return JptUiMessages.MapAsComposite_virtualAttributeText;
 				}
 
 				return JptUiMessages.MapAsComposite_unmappedAttributeText;
 			}
 
-			public String mappingType() {
-				String mappingKey = subject().getMappingKey();
+			public String getMappingType() {
+				String mappingKey = getSubject().getMappingKey();
 
 				if (mappingKey == null) {
 					return JptUiMessages.MapAsComposite_changeMappingType;
 				}
 
-				if (subject().getSpecifiedMapping() == null) {
+				if (getSubject().getSpecifiedMapping() == null) {
 					return SWTUtil.buildDisplayString(
 						JptUiMessages.class,
 						MapAsComposite.class,
@@ -144,11 +144,11 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 			}
 
 			public void morphMapping(MappingUiProvider<?> provider) {
-				subject().setSpecifiedMappingKey(provider.getMappingKey());
+				getSubject().setSpecifiedMappingKey(provider.getMappingKey());
 			}
 
-			public String name() {
-				return subject().getName();
+			public String getName() {
+				return getSubject().getName();
 			}
 
 			public Iterator<? extends MappingUiProvider<?>> providers() {
@@ -171,17 +171,17 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 	 *
 	 * @return The UI platform of the JPT plug-in
 	 */
-	protected JpaPlatformUi jpaPlatformUi() {
-		String platformId = subject().getJpaProject().getJpaPlatform().getId();
-		return JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
+	protected JpaPlatformUi getJpaPlatformUi() {
+		String platformId = getSubject().getJpaProject().getJpaPlatform().getId();
+		return JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected String mappingKey() {
-		return subject().getMappingKey();
+	protected String getMappingKey() {
+		return getSubject().getMappingKey();
 	}
 
 	/*

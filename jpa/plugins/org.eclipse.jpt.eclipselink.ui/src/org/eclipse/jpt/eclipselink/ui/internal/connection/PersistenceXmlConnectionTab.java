@@ -13,7 +13,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
  * PersistenceXmlConnectionTab
  */
 public class PersistenceXmlConnectionTab
-	extends AbstractFormPane<Connection>
+	extends FormPane<Connection>
 	implements JpaPageComposite
 {
 	// ********** constructors/initialization **********
@@ -57,7 +57,7 @@ public class PersistenceXmlConnectionTab
 
 	// ********** Layout **********
 	@Override
-	protected Composite buildContainer(Composite parent) {
+	protected Composite addContainer(Composite parent) {
 		GridLayout layout = new GridLayout(1, true);
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
@@ -66,7 +66,7 @@ public class PersistenceXmlConnectionTab
 		layout.marginBottom = 0;
 		layout.marginRight = 0;
 		layout.verticalSpacing = 15;
-		Composite container = this.buildPane(parent, layout);
+		Composite container = this.addPane(parent, layout);
 		this.updateGridData(container);
 		return container;
 	}

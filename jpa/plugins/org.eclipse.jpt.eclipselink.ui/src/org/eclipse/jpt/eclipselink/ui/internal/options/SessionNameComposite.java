@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.options;
 import org.eclipse.jpt.eclipselink.core.internal.context.options.Options;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  SessionNameComposite
  */
-public class SessionNameComposite extends AbstractPane<Options>
+public class SessionNameComposite extends Pane<Options>
 {
 	/**
 	 * Creates a new <code>SessionNameComposite</code>.
@@ -34,7 +34,7 @@ public class SessionNameComposite extends AbstractPane<Options>
 	 * @param parent The parent container
 	 */
 	public SessionNameComposite(
-								AbstractPane<? extends Options> parentPane,
+								Pane<? extends Options> parentPane,
 	                           Composite parent) {
 
 		super(parentPane, parent);
@@ -44,7 +44,7 @@ public class SessionNameComposite extends AbstractPane<Options>
 		return new PropertyAspectAdapter<Options, String>(this.getSubjectHolder(), Options.DEFAULT_SESSION_NAME) {
 			@Override
 			protected String buildValue_() {
-				return SessionNameComposite.this.defaultValue(subject);
+				return SessionNameComposite.this.getDefaultValue(subject);
 			}
 		};
 	}
@@ -62,7 +62,7 @@ public class SessionNameComposite extends AbstractPane<Options>
 
 				String name = subject.getSessionName();
 				if (name == null) {
-					name = SessionNameComposite.this.defaultValue(subject);
+					name = SessionNameComposite.this.getDefaultValue(subject);
 				}
 				return name;
 			}
@@ -70,7 +70,7 @@ public class SessionNameComposite extends AbstractPane<Options>
 			@Override
 			protected void setValue_(String value) {
 
-				if (defaultValue(subject).equals(value)) {
+				if (getDefaultValue(subject).equals(value)) {
 					value = null;
 				}
 				subject.setSessionName(value);
@@ -78,7 +78,7 @@ public class SessionNameComposite extends AbstractPane<Options>
 		};
 	}
 
-	private String defaultValue(Options subject) {
+	private String getDefaultValue(Options subject) {
 		String defaultValue = subject.getDefaultSessionName();
 
 		if (defaultValue != null) {
@@ -98,7 +98,7 @@ public class SessionNameComposite extends AbstractPane<Options>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		CCombo combo = buildLabeledEditableCCombo(
+		CCombo combo = addLabeledEditableCCombo(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlOptionsTab_sessionName,
 			this.buildDefaultSessionNameListHolder(),

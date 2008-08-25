@@ -91,9 +91,9 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 			@Override
 			protected String transform(Boolean value) {
 
-				if ((subject() != null) && (value == null)) {
+				if ((getSubject() != null) && (value == null)) {
 
-					Boolean defaultValue = subject().getDefaultInsertable();
+					Boolean defaultValue = getSubject().getDefaultInsertable();
 
 					if (defaultValue != null) {
 
@@ -148,9 +148,9 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 			@Override
 			protected String transform(Boolean value) {
 
-				if ((subject() != null) && (value == null)) {
+				if ((getSubject() != null) && (value == null)) {
 
-					Boolean defaultValue = subject().getDefaultNullable();
+					Boolean defaultValue = getSubject().getDefaultNullable();
 
 					if (defaultValue != null) {
 
@@ -205,9 +205,9 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 			@Override
 			protected String transform(Boolean value) {
 
-				if ((subject() != null) && (value == null)) {
+				if ((getSubject() != null) && (value == null)) {
 
-					Boolean defaultValue = subject().getDefaultUnique();
+					Boolean defaultValue = getSubject().getDefaultUnique();
 
 					if (defaultValue != null) {
 
@@ -259,9 +259,9 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 			@Override
 			protected String transform(Boolean value) {
 
-				if ((subject() != null) && (value == null)) {
+				if ((getSubject() != null) && (value == null)) {
 
-					Boolean defaultValue = subject().getDefaultUpdatable();
+					Boolean defaultValue = getSubject().getDefaultUpdatable();
 
 					if (defaultValue != null) {
 
@@ -289,8 +289,8 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 		super.initializeLayout(container);
 
 		// Insertable tri-state check box
-		buildTriStateCheckBoxWithDefault(
-			buildSubPane(container, 4),
+		addTriStateCheckBoxWithDefault(
+			addSubPane(container, 4),
 			JptUiMappingsMessages.JoinColumnDialogPane_insertable,
 			buildInsertableHolder(),
 			buildInsertableStringHolder(),
@@ -298,7 +298,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 		);
 
 		// Updatable tri-state check box
-		buildTriStateCheckBoxWithDefault(
+		addTriStateCheckBoxWithDefault(
 			container,
 			JptUiMappingsMessages.JoinColumnDialogPane_updatable,
 			buildUpdatableHolder(),
@@ -307,7 +307,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 		);
 
 		// Unique tri-state check box
-		buildTriStateCheckBoxWithDefault(
+		addTriStateCheckBoxWithDefault(
 			container,
 			JptUiMappingsMessages.ColumnComposite_unique,
 			buildUniqueHolder(),
@@ -316,7 +316,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 		);
 
 		// Nullable tri-state check box
-		buildTriStateCheckBoxWithDefault(
+		addTriStateCheckBoxWithDefault(
 			container,
 			JptUiMappingsMessages.ColumnComposite_nullable,
 			buildNullableHolder(),

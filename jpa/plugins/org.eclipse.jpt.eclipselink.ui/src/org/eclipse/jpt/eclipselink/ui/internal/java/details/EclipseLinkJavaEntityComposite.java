@@ -61,8 +61,8 @@ public class EclipseLinkJavaEntityComposite extends AbstractEntityComposite<Java
 	
 	protected void initializeCachingPane(Composite container) {
 
-		container = buildCollapsableSection(
-			buildSubPane(container, 5),
+		container = addCollapsableSection(
+			addSubPane(container, 5),
 			EclipseLinkUiMappingsMessages.EclipseLinkJavaEntityComposite_caching
 		);
 
@@ -82,12 +82,12 @@ public class EclipseLinkJavaEntityComposite extends AbstractEntityComposite<Java
 	}
 
 	@Override
-	protected void buildSecondaryTablesComposite(Composite container) {
+	protected void addSecondaryTablesComposite(Composite container) {
 		new JavaSecondaryTablesComposite(this, container);
 	}
 	
 	@Override
-	protected void buildInheritanceComposite(Composite container) {
+	protected void addInheritanceComposite(Composite container) {
 		new JavaInheritanceComposite(this, container);
 	}
 	

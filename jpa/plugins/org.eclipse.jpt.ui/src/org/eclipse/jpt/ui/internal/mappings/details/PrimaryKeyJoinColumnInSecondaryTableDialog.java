@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractDialogPane;
+import org.eclipse.jpt.ui.internal.widgets.DialogPane;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -50,9 +50,9 @@ public class PrimaryKeyJoinColumnInSecondaryTableDialog extends BaseJoinColumnDi
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected AbstractDialogPane<PrimaryKeyJoinColumnInSecondaryTableStateObject> buildLayout(Composite container) {
+	protected DialogPane<PrimaryKeyJoinColumnInSecondaryTableStateObject> buildLayout(Composite container) {
 		return new BaseJoinColumnDialogPane<PrimaryKeyJoinColumnInSecondaryTableStateObject>(
-			subjectHolder(),
+			getSubjectHolder(),
 			container
 		);
 	}
@@ -72,7 +72,7 @@ public class PrimaryKeyJoinColumnInSecondaryTableDialog extends BaseJoinColumnDi
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected String descriptionTitle() {
+	protected String getDescriptionTitle() {
 
 		if (getJoinColumn() == null) {
 			return JptUiMappingsMessages.PrimaryKeyJoinColumnInSecondaryTableDialog_addDescriptionTitle;
@@ -101,7 +101,7 @@ public class PrimaryKeyJoinColumnInSecondaryTableDialog extends BaseJoinColumnDi
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected String title() {
+	protected String getTitle() {
 
 		if (getJoinColumn() == null) {
 			return JptUiMappingsMessages.PrimaryKeyJoinColumnInSecondaryTableDialog_addTitle;

@@ -18,7 +18,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.options.TargetServer;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  TargetServerComposite
  */
-public class TargetServerComposite extends AbstractPane<Options>
+public class TargetServerComposite extends Pane<Options>
 {
 	/**
 	 * Creates a new <code>TargetServerComposite</code>.
@@ -47,7 +47,7 @@ public class TargetServerComposite extends AbstractPane<Options>
 	 * @param parent The parent container
 	 */
 	public TargetServerComposite(
-								AbstractPane<? extends Options> parentPane,
+								Pane<? extends Options> parentPane,
 	                           Composite parent) {
 
 		super(parentPane, parent);
@@ -57,7 +57,7 @@ public class TargetServerComposite extends AbstractPane<Options>
 		return new PropertyAspectAdapter<Options, String>(this.getSubjectHolder(), Options.DEFAULT_TARGET_SERVER) {
 			@Override
 			protected String buildValue_() {
-				return TargetServerComposite.this.defaultValue(subject);
+				return TargetServerComposite.this.getDefaultValue(subject);
 			}
 		};
 	}
@@ -108,7 +108,7 @@ public class TargetServerComposite extends AbstractPane<Options>
 
 				String name = subject.getTargetServer();
 				if (name == null) {
-					name = TargetServerComposite.this.defaultValue(subject);
+					name = TargetServerComposite.this.getDefaultValue(subject);
 				}
 				return name;
 			}
@@ -116,7 +116,7 @@ public class TargetServerComposite extends AbstractPane<Options>
 			@Override
 			protected void setValue_(String value) {
 
-				if (defaultValue(subject).equals(value)) {
+				if (getDefaultValue(subject).equals(value)) {
 					value = null;
 				}
 				subject.setTargetServer(value);
@@ -153,7 +153,7 @@ public class TargetServerComposite extends AbstractPane<Options>
 		);
 	}
 
-	private String defaultValue(Options subject) {
+	private String getDefaultValue(Options subject) {
 		String defaultValue = subject.getDefaultTargetServer();
 
 		if (defaultValue != null) {
@@ -173,7 +173,7 @@ public class TargetServerComposite extends AbstractPane<Options>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		CCombo combo = buildLabeledEditableCCombo(
+		CCombo combo = addLabeledEditableCCombo(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlOptionsTab_targetServerLabel,
 			this.buildTargetServerListHolder(),

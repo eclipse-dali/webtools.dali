@@ -11,16 +11,17 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
 import java.util.Iterator;
+import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.ui.internal.util.LabeledLabel;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -83,7 +84,7 @@ import org.eclipse.swt.widgets.Spinner;
  * @version 2.0
  * @since 1.0
  */
-public class ColumnComposite extends AbstractFormPane<Column> {
+public class ColumnComposite extends FormPane<Column> {
 
 	/**
 	 * Creates a new <code>ColumnComposite</code>.
@@ -92,7 +93,7 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 	 * @param subjectHolder The holder of the subject <code>IColumn</code>
 	 * @param parent The parent container
 	 */
-	public ColumnComposite(AbstractFormPane<?> parentPane,
+	public ColumnComposite(FormPane<?> parentPane,
 	                       PropertyValueModel<? extends Column> subjectHolder,
 	                       Composite parent) {
 
@@ -109,26 +110,31 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 	 * this pane aligned with the widgets of the given parent controller;
 	 * <code>false</code> to not align them
 	 */
-	public ColumnComposite(AbstractFormPane<?> parentPane,
+	public ColumnComposite(FormPane<?> parentPane,
 	                       PropertyValueModel<? extends Column> subjectHolder,
 	                       Composite parent,
 	                       boolean automaticallyAlignWidgets) {
 
 		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets);
 	}
-
+	
 	/**
 	 * Creates a new <code>ColumnComposite</code>.
 	 *
+	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of the subject <code>IColumn</code>
 	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
+	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
+	 * this pane aligned with the widgets of the given parent controller;
+	 * <code>false</code> to not align them
 	 */
-	public ColumnComposite(PropertyValueModel<? extends Column> subjectHolder,
+	public ColumnComposite(FormPane<?> parentPane,
+	                       PropertyValueModel<? extends Column> subjectHolder,
 	                       Composite parent,
-	                       WidgetFactory widgetFactory) {
+	                       boolean automaticallyAlignWidgets,
+	                       boolean parentManagePane) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets, parentManagePane);
 	}
 
 	private ColumnCombo<Column> buildColumnCombo(Composite container) {
@@ -138,17 +144,17 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Column.DEFAULT_NAME_PROPERTY);
-				propertyNames.add(Column.SPECIFIED_NAME_PROPERTY);
-				propertyNames.add(Column.DEFAULT_TABLE_PROPERTY);
-				propertyNames.add(Column.SPECIFIED_TABLE_PROPERTY);
+				propertyNames.add(NamedColumn.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(NamedColumn.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(BaseColumn.DEFAULT_TABLE_PROPERTY);
+				propertyNames.add(BaseColumn.SPECIFIED_TABLE_PROPERTY);
 			}
 
 			@Override
 			protected void propertyChanged(String propertyName) {
 
-				if (propertyName == Column.DEFAULT_TABLE_PROPERTY ||
-				    propertyName == Column.SPECIFIED_TABLE_PROPERTY) {
+				if (propertyName == BaseColumn.DEFAULT_TABLE_PROPERTY ||
+				    propertyName == BaseColumn.SPECIFIED_TABLE_PROPERTY) {
 
 					doPopulate();
 				}
@@ -158,23 +164,23 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultName();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultName();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedName(value);
+				getSubject().setSpecifiedName(value);
 			}
 
 			@Override
-			protected Table getDBTable_() {
-				return subject().getDbTable();
+			protected Table getDbTable_() {
+				return getSubject().getDbTable();
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedName();
+			protected String getValue() {
+				return getSubject().getSpecifiedName();
 			}
 		};
 	}
@@ -217,9 +223,9 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 		};
 	}
 
-	private Control buildDefaultLengthLabel(Composite container) {
+	private Control addDefaultLengthLabel(Composite container) {
 
-		Label label = buildLabel(
+		Label label = addLabel(
 			container,
 			JptUiMappingsMessages.DefaultWithoutValue
 		);
@@ -239,7 +245,7 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 			@Override
 			protected String transform(Integer value) {
 
-				Integer defaultValue = (subject() != null) ? subject().getDefaultLength() :
+				Integer defaultValue = (getSubject() != null) ? getSubject().getDefaultLength() :
 				                                             Column.DEFAULT_LENGTH;
 
 				return NLS.bind(
@@ -271,9 +277,9 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 		};
 	}
 
-	private Control buildDefaultPrecisionLabel(Composite container) {
+	private Control addDefaultPrecisionLabel(Composite container) {
 
-		Label label = buildLabel(
+		Label label = addLabel(
 			container,
 			JptUiMappingsMessages.DefaultWithoutValue
 		);
@@ -293,7 +299,7 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 			@Override
 			protected String transform(Integer value) {
 
-				Integer defaultValue = (subject() != null) ? subject().getDefaultPrecision() :
+				Integer defaultValue = (getSubject() != null) ? getSubject().getDefaultPrecision() :
 				                                             Column.DEFAULT_PRECISION;
 
 				return NLS.bind(
@@ -325,9 +331,9 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 		};
 	}
 
-	private Control buildDefaultScaleLabel(Composite container) {
+	private Control addDefaultScaleLabel(Composite container) {
 
-		Label label = buildLabel(
+		Label label = addLabel(
 			container,
 			JptUiMappingsMessages.DefaultWithoutValue
 		);
@@ -347,7 +353,7 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 			@Override
 			protected String transform(Integer value) {
 
-				Integer defaultValue = (subject() != null) ? subject().getDefaultScale() :
+				Integer defaultValue = (getSubject() != null) ? getSubject().getDefaultScale() :
 				                                             Column.DEFAULT_SCALE;
 
 				return NLS.bind(
@@ -379,9 +385,9 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 			@Override
 			protected String transform(Boolean value) {
 
-				if ((subject() != null) && (value == null)) {
+				if ((getSubject() != null) && (value == null)) {
 
-					Boolean defaultValue = subject().getDefaultInsertable();
+					Boolean defaultValue = getSubject().getDefaultInsertable();
 
 					if (defaultValue != null) {
 
@@ -420,8 +426,8 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 	private WritablePropertyValueModel<Boolean> buildNullableHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
 			getSubjectHolder(),
-			Column.DEFAULT_NULLABLE_PROPERTY,
-			Column.SPECIFIED_NULLABLE_PROPERTY)
+			BaseColumn.DEFAULT_NULLABLE_PROPERTY,
+			BaseColumn.SPECIFIED_NULLABLE_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -452,9 +458,9 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 			@Override
 			protected String transform(Boolean value) {
 
-				if ((subject() != null) && (value == null)) {
+				if ((getSubject() != null) && (value == null)) {
 
-					Boolean defaultValue = subject().getDefaultNullable();
+					Boolean defaultValue = getSubject().getDefaultNullable();
 
 					if (defaultValue != null) {
 
@@ -507,45 +513,45 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 		};
 	}
 
-	private TableCombo<Column> buildTableCombo(Composite container) {
+	private TableCombo<Column> addTableCombo(Composite container) {
 
 		return new TableCombo<Column>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Column.DEFAULT_TABLE_PROPERTY);
-				propertyNames.add(Column.SPECIFIED_TABLE_PROPERTY);
+				propertyNames.add(BaseColumn.DEFAULT_TABLE_PROPERTY);
+				propertyNames.add(BaseColumn.SPECIFIED_TABLE_PROPERTY);
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultTable();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultTable();
 			}
 
 			@Override
-			protected String schemaName() {
+			protected String getSchemaName() {
 				return null;
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedTable(value);
+				getSubject().setSpecifiedTable(value);
 			}
 
 			@Override
-			protected Table table() {
-				return subject().getDbTable();
+			protected Table getDbTable() {
+				return getSubject().getDbTable();
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedTable();
+			protected String getValue() {
+				return getSubject().getSpecifiedTable();
 			}
 
 			@Override
 			protected Iterator<String> values() {
-				return subject().getOwner().getTypeMapping().associatedTableNamesIncludingInherited();
+				return getSubject().getOwner().getTypeMapping().associatedTableNamesIncludingInherited();
 			}
 		};
 	}
@@ -553,8 +559,8 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 	private WritablePropertyValueModel<Boolean> buildUniqueHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
 			getSubjectHolder(),
-			Column.DEFAULT_UNIQUE_PROPERTY,
-			Column.SPECIFIED_UNIQUE_PROPERTY)
+			BaseColumn.DEFAULT_UNIQUE_PROPERTY,
+			BaseColumn.SPECIFIED_UNIQUE_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -587,9 +593,9 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 			@Override
 			protected String transform(Boolean value) {
 
-				if ((subject() != null) && (value == null)) {
+				if ((getSubject() != null) && (value == null)) {
 
-					Boolean defaultValue = subject().getDefaultUnique();
+					Boolean defaultValue = getSubject().getDefaultUnique();
 
 					if (defaultValue != null) {
 
@@ -611,8 +617,8 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 	private WritablePropertyValueModel<Boolean> buildUpdatableHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
 			getSubjectHolder(),
-			Column.DEFAULT_UPDATABLE_PROPERTY,
-			Column.SPECIFIED_UPDATABLE_PROPERTY)
+			BaseColumn.DEFAULT_UPDATABLE_PROPERTY,
+			BaseColumn.SPECIFIED_UPDATABLE_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -645,9 +651,9 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 			@Override
 			protected String transform(Boolean value) {
 
-				if ((subject() != null) && (value == null)) {
+				if ((getSubject() != null) && (value == null)) {
 
-					Boolean defaultValue = subject().getDefaultUpdatable();
+					Boolean defaultValue = getSubject().getDefaultUpdatable();
 
 					if (defaultValue != null) {
 
@@ -669,8 +675,8 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 	private void initializeDetailsPane(Composite container) {
 
 		// Insertable tri-state check box
-		buildTriStateCheckBoxWithDefault(
-			buildSubPane(container, 4),
+		addTriStateCheckBoxWithDefault(
+			addSubPane(container, 4),
 			JptUiMappingsMessages.ColumnComposite_insertable,
 			buildInsertableHolder(),
 			buildInsertableStringHolder(),
@@ -678,7 +684,7 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 		);
 
 		// Updatable tri-state check box
-		buildTriStateCheckBoxWithDefault(
+		addTriStateCheckBoxWithDefault(
 			container,
 			JptUiMappingsMessages.ColumnComposite_updatable,
 			buildUpdatableHolder(),
@@ -687,7 +693,7 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 		);
 
 		// Unique tri-state check box
-		buildTriStateCheckBoxWithDefault(
+		addTriStateCheckBoxWithDefault(
 			container,
 			JptUiMappingsMessages.ColumnComposite_unique,
 			buildUniqueHolder(),
@@ -696,7 +702,7 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 		);
 
 		// Nullable tri-state check box
-		buildTriStateCheckBoxWithDefault(
+		addTriStateCheckBoxWithDefault(
 			container,
 			JptUiMappingsMessages.ColumnComposite_nullable,
 			buildNullableHolder(),
@@ -705,49 +711,49 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 		);
 
 		// Length widgets
-		Spinner lengthSpinner = buildLabeledSpinner(
+		Spinner lengthSpinner = addLabeledSpinner(
 			container,
 			JptUiMappingsMessages.ColumnComposite_length,
 			buildLengthHolder(),
 			-1,
 			-1,
 			Integer.MAX_VALUE,
-			buildDefaultLengthLabel(container),
+			addDefaultLengthLabel(container),
 			JpaHelpContextIds.MAPPING_COLUMN_LENGTH
 		);
 
 		updateGridData(container, lengthSpinner);
 
 		// Precision widgets
-		Spinner precisionSpinner = buildLabeledSpinner(
+		Spinner precisionSpinner = addLabeledSpinner(
 			container,
 			JptUiMappingsMessages.ColumnComposite_precision,
 			buildPrecisionHolder(),
 			-1,
 			-1,
 			Integer.MAX_VALUE,
-			buildDefaultPrecisionLabel(container),
+			addDefaultPrecisionLabel(container),
 			JpaHelpContextIds.MAPPING_COLUMN_PRECISION
 		);
 
 		updateGridData(container, precisionSpinner);
 
 		// Scale widgets
-		Spinner scaleSpinner = buildLabeledSpinner(
+		Spinner scaleSpinner = addLabeledSpinner(
 			container,
 			JptUiMappingsMessages.ColumnComposite_scale,
 			buildScaleHolder(),
 			-1,
 			-1,
 			Integer.MAX_VALUE,
-			buildDefaultScaleLabel(container),
+			addDefaultScaleLabel(container),
 			JpaHelpContextIds.MAPPING_COLUMN_SCALE
 		);
 
 		updateGridData(container, scaleSpinner);
 
 		// Column Definition widgets
-		buildLabeledText(
+		addLabeledText(
 			container,
 			JptUiMappingsMessages.ColumnComposite_columnDefinition,
 			buildColumnDefinitionHolder()
@@ -761,13 +767,13 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 	protected void initializeLayout(Composite container) {
 
 		// Column group pane
-		container = buildTitledPane(
+		container = addTitledGroup(
 			container,
 			JptUiMappingsMessages.ColumnComposite_columnSection
 		);
 
 		// Column widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiMappingsMessages.ColumnComposite_name,
 			buildColumnCombo(container),
@@ -775,21 +781,21 @@ public class ColumnComposite extends AbstractFormPane<Column> {
 		);
 
 		// Table widgets
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiMappingsMessages.ColumnComposite_table,
-			buildTableCombo(container),
+			addTableCombo(container),
 			JpaHelpContextIds.MAPPING_COLUMN_TABLE
 		);
 
 		// Details sub-pane
-		container = buildCollapsableSubSection(
+		container = addCollapsableSubSection(
 			container,
 			JptUiMappingsMessages.ColumnComposite_details,
 			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
 		);
 
-		initializeDetailsPane(buildSubPane(container, 0, 16));
+		initializeDetailsPane(addSubPane(container, 0, 16));
 	}
 
 	/**

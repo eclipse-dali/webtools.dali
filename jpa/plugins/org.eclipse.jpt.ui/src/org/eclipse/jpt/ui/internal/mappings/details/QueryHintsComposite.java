@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.context.QueryHint;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveTablePane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -56,7 +56,7 @@ import org.eclipse.swt.widgets.TableItem;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public class QueryHintsComposite extends AbstractPane<Query>
+public class QueryHintsComposite extends Pane<Query>
 {
 	private WritablePropertyValueModel<QueryHint> queryHintHolder;
 
@@ -66,7 +66,7 @@ public class QueryHintsComposite extends AbstractPane<Query>
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public QueryHintsComposite(AbstractPane<? extends Query> parentPane,
+	public QueryHintsComposite(Pane<? extends Query> parentPane,
 	                           Composite container) {
 
 		super(parentPane, container);
@@ -84,13 +84,13 @@ public class QueryHintsComposite extends AbstractPane<Query>
 	private Adapter buildQueryHintAdapter() {
 		return new AddRemoveTablePane.AbstractAdapter() {
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				QueryHint queryHint = subject().addHint(subject().hintsSize());
+				QueryHint queryHint = getSubject().addHint(getSubject().hintsSize());
 				queryHintHolder.setValue(queryHint);
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				for (Object item : listSelectionModel.selectedValues()) {
-					subject().removeHint((QueryHint) item);
+					getSubject().removeHint((QueryHint) item);
 				}
 			}
 		};

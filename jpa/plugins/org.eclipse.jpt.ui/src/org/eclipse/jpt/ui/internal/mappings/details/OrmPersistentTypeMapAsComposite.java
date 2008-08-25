@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -35,7 +35,7 @@ public class OrmPersistentTypeMapAsComposite extends PersistentTypeMapAsComposit
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public OrmPersistentTypeMapAsComposite(AbstractPane<? extends OrmPersistentType> parentPane,
+	public OrmPersistentTypeMapAsComposite(Pane<? extends OrmPersistentType> parentPane,
 	                                       Composite parent) {
 
 		super(parentPane, parent);
@@ -54,6 +54,6 @@ public class OrmPersistentTypeMapAsComposite extends PersistentTypeMapAsComposit
 	 */
 	@Override
 	protected Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders() {
-		return jpaPlatformUi().ormTypeMappingUiProviders();
+		return getJpaPlatformUi().ormTypeMappingUiProviders();
 	}
 }

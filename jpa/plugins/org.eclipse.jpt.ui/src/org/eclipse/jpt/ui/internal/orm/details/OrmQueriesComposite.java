@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.ui.internal.mappings.details.QueriesComposite;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class OrmQueriesComposite extends AbstractPane<EntityMappings> {
+public class OrmQueriesComposite extends Pane<EntityMappings> {
 
 	/**
 	 * Creates a new <code>OrmQueriesComposite</code>.
@@ -44,7 +44,7 @@ public class OrmQueriesComposite extends AbstractPane<EntityMappings> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OrmQueriesComposite(AbstractPane<? extends EntityMappings> parentPane,
+	public OrmQueriesComposite(Pane<? extends EntityMappings> parentPane,
 	                           Composite parent) {
 
 		super(parentPane, parent);
@@ -65,7 +65,7 @@ public class OrmQueriesComposite extends AbstractPane<EntityMappings> {
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		container = buildCollapsableSection(
+		container = addCollapsableSection(
 			container,
 			JptUiOrmMessages.OrmQueriesComposite_groupBox
 		);

@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -88,7 +88,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public abstract class AbstractEntityComposite<T extends Entity> extends AbstractFormPane<T>
+public abstract class AbstractEntityComposite<T extends Entity> extends FormPane<T>
                                                                 implements JpaComposite
 {
 	/**
@@ -105,9 +105,9 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	protected abstract void buildSecondaryTablesComposite(Composite container);
+	protected abstract void addSecondaryTablesComposite(Composite container);
 	
-	protected abstract void buildInheritanceComposite(Composite container);
+	protected abstract void addInheritanceComposite(Composite container);
 
 	private PropertyValueModel<Table> buildTableHolder() {
 		return new TransformationPropertyValueModel<Entity, Table>(getSubjectHolder()) {
@@ -131,12 +131,12 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 
 	protected void initializeGeneralPane(Composite container) {
 
-		int groupBoxMargin = groupBoxMargin();
+		int groupBoxMargin = getGroupBoxMargin();
 
 		// Entity Name widgets
 		new EntityNameComposite(
 			this,
-			buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin)
+			addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin)
 		);
 
 		// Table widgets
@@ -149,13 +149,13 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 		// Primary Key Class widgets
 		new IdClassComposite(
 			this,
-			buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin)
+			addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin)
 		);
 	}
 
 	protected void initializeQueriesPane(Composite container) {
 
-		container = buildCollapsableSection(
+		container = addCollapsableSection(
 			container,
 			JptUiMappingsMessages.EntityComposite_queries
 		);
@@ -165,7 +165,7 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 
 	protected void initializeAttributeOverridesPane(Composite container) {
 
-		container = buildCollapsableSection(
+		container = addCollapsableSection(
 			container,
 			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
 		);
@@ -175,17 +175,17 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 
 	protected void initializeInheritancePane(Composite container) {
 
-		container = buildCollapsableSection(
+		container = addCollapsableSection(
 			container,
 			JptUiMappingsMessages.EntityComposite_inheritance
 		);
 
-		buildInheritanceComposite(container);
+		addInheritanceComposite(container);
 	}
 
 	protected void initializeGeneratorsPane(Composite container) {
 
-		container = buildCollapsableSection(
+		container = addCollapsableSection(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration
 		);
@@ -195,11 +195,11 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 
 	protected void initializeSecondaryTablesPane(Composite container) {
 
-		container = buildCollapsableSection(
+		container = addCollapsableSection(
 			container,
 			JptUiMappingsMessages.SecondaryTablesComposite_secondaryTables
 		);
 
-		buildSecondaryTablesComposite(container);
+		addSecondaryTablesComposite(container);
 	}
 }

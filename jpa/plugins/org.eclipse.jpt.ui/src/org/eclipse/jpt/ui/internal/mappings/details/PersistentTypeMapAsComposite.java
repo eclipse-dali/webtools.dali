@@ -19,7 +19,7 @@ import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -40,7 +40,7 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public PersistentTypeMapAsComposite(AbstractPane<? extends T> parentPane,
+	public PersistentTypeMapAsComposite(Pane<? extends T> parentPane,
 	                                    Composite parent) {
 
 		super(parentPane, parent);
@@ -63,8 +63,8 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 	protected MappingChangeHandler buildMappingChangeHandler() {
 		return new MappingChangeHandler() {
 
-			public String labelText() {
-				String mappingKey = subject().getMappingKey();
+			public String getLabelText() {
+				String mappingKey = getSubject().getMappingKey();
 
 				if (mappingKey != null) {
 					return JptUiMessages.MapAsComposite_mappedTypeText;
@@ -73,8 +73,8 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 				return JptUiMessages.MapAsComposite_unmappedTypeText;
 			}
 
-			public String mappingType() {
-				String mappingKey = subject().getMappingKey();
+			public String getMappingType() {
+				String mappingKey = getSubject().getMappingKey();
 
 				if (mappingKey == null) {
 					return JptUiMessages.MapAsComposite_changeMappingType;
@@ -88,11 +88,11 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 			}
 
 			public void morphMapping(MappingUiProvider<?> provider) {
-				subject().setMappingKey(provider.getMappingKey());
+				getSubject().setMappingKey(provider.getMappingKey());
 			}
 
-			public String name() {
-				return subject().getName();
+			public String getName() {
+				return getSubject().getName();
 			}
 
 			public Iterator<? extends MappingUiProvider<?>> providers() {
@@ -107,17 +107,17 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 	 *
 	 * @return The UI platform of the JPT plug-in
 	 */
-	protected JpaPlatformUi jpaPlatformUi() {
-		String platformId = subject().getJpaProject().getJpaPlatform().getId();
-		return JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
+	protected JpaPlatformUi getJpaPlatformUi() {
+		String platformId = getSubject().getJpaProject().getJpaPlatform().getId();
+		return JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected String mappingKey() {
-		return subject().getMappingKey();
+	protected String getMappingKey() {
+		return getSubject().getMappingKey();
 	}
 
 	/*

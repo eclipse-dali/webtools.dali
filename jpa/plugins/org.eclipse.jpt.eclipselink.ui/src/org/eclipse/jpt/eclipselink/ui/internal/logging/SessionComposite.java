@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.logging;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * SessionComposite
  */
-public class SessionComposite extends AbstractFormPane<Logging>
+public class SessionComposite extends FormPane<Logging>
 {
 	/**
 	 * Creates a new <code>SessionComposite</code>.
@@ -33,7 +33,7 @@ public class SessionComposite extends AbstractFormPane<Logging>
 	 *            The parent container
 	 */
 	public SessionComposite(
-					AbstractFormPane<? extends Logging> parentComposite,
+					FormPane<? extends Logging> parentComposite,
 					Composite parent) {
 
 		super(parentComposite, parent);
@@ -69,8 +69,8 @@ public class SessionComposite extends AbstractFormPane<Logging>
 		return new TransformationPropertyValueModel<Boolean, String>(buildSessionHolder()) {
 			@Override
 			protected String transform(Boolean value) {
-				if ((subject() != null) && (value == null)) {
-					Boolean defaultValue = subject().getDefaultSession();
+				if ((getSubject() != null) && (value == null)) {
+					Boolean defaultValue = getSubject().getDefaultSession();
 					if (defaultValue != null) {
 						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
 						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlLoggingTab_sessionLabelDefault, defaultStringValue);
@@ -84,7 +84,7 @@ public class SessionComposite extends AbstractFormPane<Logging>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		this.buildTriStateCheckBoxWithDefault(
+		this.addTriStateCheckBoxWithDefault(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlLoggingTab_sessionLabel,
 			this.buildSessionHolder(),

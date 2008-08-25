@@ -19,7 +19,7 @@ import org.eclipse.osgi.util.NLS;
  */
 public class JptUiMessages {
 
-	public static String AbstractChooserPane_browseButton;
+	public static String ChooserPane_browseButton;
 	public static String AddPersistentAttributeDialog_attributeLabel;
 	public static String AddPersistentAttributeDialog_mappingLabel;
 	public static String AddPersistentAttributeDialog_noMappingKeyError;

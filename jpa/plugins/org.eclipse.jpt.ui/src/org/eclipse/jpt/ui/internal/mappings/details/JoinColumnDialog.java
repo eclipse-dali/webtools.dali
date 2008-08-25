@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.ui.internal.widgets.AbstractDialogPane;
+import org.eclipse.jpt.ui.internal.widgets.DialogPane;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -42,8 +42,8 @@ public abstract class JoinColumnDialog<T extends JoinColumnStateObject> extends 
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected AbstractDialogPane<?> buildLayout(Composite container) {
-		return new JoinColumnDialogPane<T>(subjectHolder(), container);
+	protected DialogPane<?> buildLayout(Composite container) {
+		return new JoinColumnDialogPane<T>(getSubjectHolder(), container);
 	}
 
 	/*

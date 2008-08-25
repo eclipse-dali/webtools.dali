@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.options;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.options.Options;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -23,10 +23,10 @@ import org.eclipse.ui.forms.widgets.Section;
  * EclipseLinkOptionsComposite
  */
 public class EclipseLinkOptionsComposite
-	extends AbstractFormPane<Options>
+	extends FormPane<Options>
 {
 	public EclipseLinkOptionsComposite(
-					AbstractFormPane<Options> subjectHolder, 
+					FormPane<Options> subjectHolder, 
 					Composite container) {
 		super(subjectHolder, container, false);
 	}

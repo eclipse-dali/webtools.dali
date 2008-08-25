@@ -129,9 +129,9 @@ public class OrmPersistentTypeDetailsPage extends PersistentTypeDetailsPage<OrmP
 			@Override
 			protected String transform(Boolean value) {
 
-				if ((subject() != null) && (value == null)) {
+				if ((getSubject() != null) && (value == null)) {
 
-					boolean defaultValue = subject().getMapping().isDefaultMetadataComplete();
+					boolean defaultValue = getSubject().getMapping().isDefaultMetadataComplete();
 					String defaultStringValue = defaultValue ? JptUiOrmMessages.Boolean_True :
 						                                           JptUiOrmMessages.Boolean_False;
 
@@ -155,7 +155,7 @@ public class OrmPersistentTypeDetailsPage extends PersistentTypeDetailsPage<OrmP
 		// Type Mapping widgets
 		new OrmPersistentTypeMapAsComposite(
 			this,
-			buildSubPane(container, 0, 0, 5, 0)
+			addSubPane(container, 0, 0, 5, 0)
 		);
 
 		// Java class widgets
@@ -165,11 +165,12 @@ public class OrmPersistentTypeDetailsPage extends PersistentTypeDetailsPage<OrmP
 		new AccessTypeComposite(this, buildMappingHolder(), container);
 
 		// Metadata complete widgets
-		buildTriStateCheckBoxWithDefault(
+		addTriStateCheckBoxWithDefault(
 			container,
 			JptUiOrmMessages.OrmPersistentTypeDetailsPage_metadataComplete,
 			buildMetadataCompleteHolder(),
-			buildMetadataCompleteStringHolder()
+			buildMetadataCompleteStringHolder(),
+			null
 		);
 
 		// Type mapping pane

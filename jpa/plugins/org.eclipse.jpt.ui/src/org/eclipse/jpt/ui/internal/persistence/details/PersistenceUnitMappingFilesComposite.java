@@ -37,7 +37,7 @@ import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
@@ -81,7 +81,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public class PersistenceUnitMappingFilesComposite extends AbstractPane<PersistenceUnit>
+public class PersistenceUnitMappingFilesComposite extends Pane<PersistenceUnit>
 {
 	/**
 	 * Creates a new <code>PersistenceUnitMappingFilesComposite</code>.
@@ -89,7 +89,7 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public PersistenceUnitMappingFilesComposite(AbstractPane<? extends PersistenceUnit> parentPane,
+	public PersistenceUnitMappingFilesComposite(Pane<? extends PersistenceUnit> parentPane,
 	                                            Composite parent) {
 
 		super(parentPane, parent);
@@ -104,10 +104,10 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 	 */
 	private void addJPAMappingDescriptor(ObjectListSelectionModel listSelectionModel) {
 
-		IProject project = subject().getJpaProject().getProject();
+		IProject project = getSubject().getJpaProject().getProject();
 
 		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
-			shell(),
+			getShell(),
 			new WorkbenchLabelProvider(),
 			new WorkbenchContentProvider()
 		);
@@ -116,7 +116,7 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 		dialog.setValidator(buildValidator());
 		dialog.setTitle(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_title);
 		dialog.setMessage(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_message);
-		dialog.addFilter(new XmlFileViewerFilter(subject().getJpaProject().getJavaProject()));
+		dialog.addFilter(new XmlFileViewerFilter(getSubject().getJpaProject().getJavaProject()));
 		dialog.setInput(project);
 		dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
 
@@ -134,7 +134,7 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				for (Object item : listSelectionModel.selectedValues()) {
-					subject().removeSpecifiedMappingFileRef((MappingFileRef) item);
+					getSubject().removeSpecifiedMappingFileRef((MappingFileRef) item);
 				}
 			}
 		};
@@ -144,7 +144,7 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected Composite buildContainer(Composite parent) {
+	protected Composite addContainer(Composite parent) {
 
 		GridLayout layout = new GridLayout(1, true);
 		layout.marginHeight = 0;
@@ -154,7 +154,7 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 		layout.marginBottom = 0;
 		layout.marginRight  = 0;
 
-		Composite container = buildPane(parent, layout);
+		Composite container = addPane(parent, layout);
 		updateGridData(container);
 
 		return container;
@@ -214,13 +214,13 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 					return;
 				}
 
-				int index = subject().specifiedMappingFileRefsSize();
+				int index = getSubject().specifiedMappingFileRefsSize();
 
 				for (Object result : dialog.getResult()) {
 					IFile file = (IFile) result;
 					IPath filePath = removeSourcePath(file);
 
-					MappingFileRef mappingFileRef = subject().addSpecifiedMappingFileRef(index++);
+					MappingFileRef mappingFileRef = getSubject().addSpecifiedMappingFileRef(index++);
 					mappingFileRef.setFileName(filePath.toPortableString());
 
 					listSelectionModel.addSelectedValue(mappingFileRef);
@@ -264,8 +264,8 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 			buildLabelProvider()
 		) {
 			@Override
-			protected Composite buildContainer(Composite parent) {
-				parent = super.buildContainer(parent);
+			protected Composite addContainer(Composite parent) {
+				parent = super.addContainer(parent);
 				updateGridData(parent);
 				return parent;
 			}
@@ -286,7 +286,7 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 	 * source path
 	 */
 	private IPath removeSourcePath(IFile file) {
-		IJavaProject javaProject = subject().getJpaProject().getJavaProject();
+		IJavaProject javaProject = getSubject().getJpaProject().getJavaProject();
 		IPath filePath = file.getProjectRelativePath();
 
 		try {

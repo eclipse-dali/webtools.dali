@@ -14,31 +14,31 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * The abstract pane to use when the pane is shown in an <code>AbstractDialog</code>.
+ * The abstract pane to use when the pane is shown in an <code>Dialog</code>.
  *
- * @see AbstractDialog
+ * @see Dialog
  *
  * @version 2.0
  * @since 2.0
  */
-public abstract class AbstractDialogPane<T extends Node> extends AbstractPane<T> {
+public abstract class DialogPane<T extends Node> extends Pane<T> {
 
 	/**
-	 * Creates a new <code>AbstractDialog</code>.
+	 * Creates a new <code>DialogPane</code>.
 	 *
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 *
 	 * @category Constructor
 	 */
-	protected AbstractDialogPane(AbstractDialogPane<? extends T> parentPane,
+	protected DialogPane(DialogPane<? extends T> parentPane,
 	                             Composite parent) {
 
 		super(parentPane, parent);
 	}
 
 	/**
-	 * Creates a new <code>AbstractDialogPane</code>.
+	 * Creates a new <code>DialogPane</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
@@ -49,7 +49,7 @@ public abstract class AbstractDialogPane<T extends Node> extends AbstractPane<T>
 	 *
 	 * @category Constructor
 	 */
-	protected AbstractDialogPane(AbstractDialogPane<? extends T> parentPane,
+	protected DialogPane(DialogPane<? extends T> parentPane,
 	                             Composite parent,
 	                             boolean automaticallyAlignWidgets) {
 
@@ -57,7 +57,7 @@ public abstract class AbstractDialogPane<T extends Node> extends AbstractPane<T>
 	}
 
 	/**
-	 * Creates a new <code>AbstractDialogPane</code>.
+	 * Creates a new <code>DialogPane</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of this pane's subject
@@ -65,7 +65,7 @@ public abstract class AbstractDialogPane<T extends Node> extends AbstractPane<T>
 	 *
 	 * @category Constructor
 	 */
-	protected AbstractDialogPane(AbstractDialogPane<?> parentPane,
+	protected DialogPane(DialogPane<?> parentPane,
 	                             PropertyValueModel<? extends T> subjectHolder,
 	                             Composite parent) {
 
@@ -73,7 +73,7 @@ public abstract class AbstractDialogPane<T extends Node> extends AbstractPane<T>
 	}
 
 	/**
-	 * Creates a new <code>AbstractDialogPane</code>.
+	 * Creates a new <code>DialogPane</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of this pane's subject
@@ -85,7 +85,7 @@ public abstract class AbstractDialogPane<T extends Node> extends AbstractPane<T>
 	 *
 	 * @category Constructor
 	 */
-	protected AbstractDialogPane(AbstractDialogPane<?> parentPane,
+	protected DialogPane(DialogPane<?> parentPane,
 	                             PropertyValueModel<? extends T> subjectHolder,
 	                             Composite parent,
 	                             boolean automaticallyAlignWidgets) {
@@ -94,14 +94,14 @@ public abstract class AbstractDialogPane<T extends Node> extends AbstractPane<T>
 	}
 
 	/**
-	 * Creates a new <code>AbstractDialogPane</code>.
+	 * Creates a new <code>DialogPane</code>.
 	 *
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 *
 	 * @category Constructor
 	 */
-	protected AbstractDialogPane(PropertyValueModel<? extends T> subjectHolder,
+	protected DialogPane(PropertyValueModel<? extends T> subjectHolder,
 	                             Composite parent) {
 
 		super(subjectHolder, parent, DefaultWidgetFactory.instance());

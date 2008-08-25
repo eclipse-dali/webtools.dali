@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.DirectoryDialog;
  * @version 2.0
  * @since 2.0
  */
-public abstract class FolderChooserPane<T extends Model> extends AbstractChooserPane<T>
+public abstract class FolderChooserPane<T extends Model> extends ChooserPane<T>
 {
 	private WritablePropertyValueModel<String> textHolder;
 
@@ -40,7 +40,7 @@ public abstract class FolderChooserPane<T extends Model> extends AbstractChooser
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public FolderChooserPane(AbstractPane<? extends T> parentPane,
+	public FolderChooserPane(Pane<? extends T> parentPane,
 	                         Composite parent) {
 
 		super(parentPane, parent);
@@ -53,7 +53,7 @@ public abstract class FolderChooserPane<T extends Model> extends AbstractChooser
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public FolderChooserPane(AbstractPane<?> parentPane,
+	public FolderChooserPane(Pane<?> parentPane,
 	                         PropertyValueModel<? extends T> subjectHolder,
 	                         Composite parent) {
 
@@ -76,8 +76,8 @@ public abstract class FolderChooserPane<T extends Model> extends AbstractChooser
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Control buildMainControl(Composite container) {
-		return buildText(container, textHolder);
+	protected Control addMainControl(Composite container) {
+		return addText(container, textHolder);
 	}
 
 	/**
@@ -93,14 +93,14 @@ public abstract class FolderChooserPane<T extends Model> extends AbstractChooser
 	 * @return A non-<code>null</code> string shown above the text field of the
 	 * selection dialog
 	 */
-	protected abstract String dialogMessage();
+	protected abstract String getDialogMessage();
 
 	/**
 	 * Returns the selection dialog's title.
 	 *
 	 * @return A non-<code>null</code> string
 	 */
-	protected abstract String dialogTitle();
+	protected abstract String getDialogTitle();
 
 	/**
 	 * Returns the path that the dialog will use to filter the directories it
@@ -132,9 +132,9 @@ public abstract class FolderChooserPane<T extends Model> extends AbstractChooser
 	 */
 	protected void promptFolder() {
 
-		DirectoryDialog dialog = new DirectoryDialog(shell());
-		dialog.setMessage(dialogMessage());
-		dialog.setText(dialogTitle());
+		DirectoryDialog dialog = new DirectoryDialog(getShell());
+		dialog.setMessage(getDialogMessage());
+		dialog.setText(getDialogTitle());
 		dialog.setFilterPath(filterPath());
 		String directory = dialog.open();
 

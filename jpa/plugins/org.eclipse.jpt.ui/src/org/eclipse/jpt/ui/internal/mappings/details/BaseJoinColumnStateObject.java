@@ -279,7 +279,7 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 
 		this.owner      = owner;
 		this.joinColumn = joinColumn;
-		this.table      = this.initialTable();
+		this.table      = this.getInitialTable();
 
 		if (joinColumn != null) {
 			this.name                 = joinColumn.getSpecifiedName();
@@ -291,7 +291,7 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 	/**
 	 * Returns
 	 */
-	protected abstract String initialTable();
+	protected abstract String getInitialTable();
 
 	/**
 	 * Returns the column names if the database table can be resolved.

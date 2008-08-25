@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.context.QueryHolder;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.NewNameDialog;
 import org.eclipse.jpt.ui.internal.widgets.NewNameDialogBuilder;
@@ -77,7 +77,7 @@ import org.eclipse.ui.part.PageBook;
  * @version 2.0
  * @since 2.0
  */
-public class QueriesComposite extends AbstractPane<QueryHolder>
+public class QueriesComposite extends Pane<QueryHolder>
 {
 	private AddRemoveListPane<QueryHolder> listPane;
 	private NamedNativeQueryPropertyComposite namedNativeQueryPane;
@@ -90,7 +90,7 @@ public class QueriesComposite extends AbstractPane<QueryHolder>
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	public QueriesComposite(AbstractPane<? extends QueryHolder> parentPane,
+	public QueriesComposite(Pane<? extends QueryHolder> parentPane,
 	                        Composite parent) {
 
 		super(parentPane, parent);
@@ -98,7 +98,7 @@ public class QueriesComposite extends AbstractPane<QueryHolder>
 
 	private void addNamedNativeQuery(ObjectListSelectionModel listSelectionModel) {
 
-		NewNameDialogBuilder builder = new NewNameDialogBuilder(shell());
+		NewNameDialogBuilder builder = new NewNameDialogBuilder(getShell());
 		builder.setDialogTitle(JptUiMappingsMessages.QueriesComposite_addNamedNativeQueryTitle);
 		builder.setDescription(JptUiMappingsMessages.QueriesComposite_addNamedNativeQueryDescription);
 		builder.setDescriptionTitle(JptUiMappingsMessages.QueriesComposite_addNamedNativeQueryDescriptionTitle);
@@ -111,7 +111,7 @@ public class QueriesComposite extends AbstractPane<QueryHolder>
 
 	private void addNamedQuery(ObjectListSelectionModel listSelectionModel) {
 
-		NewNameDialogBuilder builder = new NewNameDialogBuilder(shell());
+		NewNameDialogBuilder builder = new NewNameDialogBuilder(getShell());
 		builder.setDialogTitle(JptUiMappingsMessages.QueriesComposite_addNamedQueryTitle);
 		builder.setDescription(JptUiMappingsMessages.QueriesComposite_addNamedQueryDescription);
 		builder.setDescriptionTitle(JptUiMappingsMessages.QueriesComposite_addNamedQueryDescriptionTitle);
@@ -140,7 +140,7 @@ public class QueriesComposite extends AbstractPane<QueryHolder>
 		};
 	}
 
-	private AddRemoveListPane<QueryHolder> buildListPane(Composite container) {
+	private AddRemoveListPane<QueryHolder> addListPane(Composite container) {
 
 		return new AddRemoveListPane<QueryHolder>(
 			this,
@@ -156,7 +156,7 @@ public class QueriesComposite extends AbstractPane<QueryHolder>
 			protected void addCustomButtonAfterAddButton(Composite container,
 			                                             String helpId) {
 
-				Button button = buildButton(
+				Button button = addButton(
 					container,
 					JptUiMappingsMessages.QueriesComposite_addNamedNativeQuery,
 					helpId,
@@ -232,7 +232,7 @@ public class QueriesComposite extends AbstractPane<QueryHolder>
 		return new PostExecution<NewNameDialog>() {
 			public void execute(NewNameDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					NamedNativeQuery namedNativeQuery = subject().addNamedNativeQuery(subject().namedNativeQueriesSize());
+					NamedNativeQuery namedNativeQuery = getSubject().addNamedNativeQuery(getSubject().namedNativeQueriesSize());
 					namedNativeQuery.setName(dialog.getName());
 					queryHolder.setValue(namedNativeQuery);
 					listSelectionModel.setSelectedValue(namedNativeQuery);
@@ -245,7 +245,7 @@ public class QueriesComposite extends AbstractPane<QueryHolder>
 		return new PostExecution<NewNameDialog>() {
 			public void execute(NewNameDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					Query query = subject().addNamedQuery(subject().namedQueriesSize());
+					Query query = getSubject().addNamedQuery(getSubject().namedQueriesSize());
 					query.setName(dialog.getName());
 					queryHolder.setValue(query);
 					selectionModel.setSelectedValue(query);
@@ -301,10 +301,10 @@ public class QueriesComposite extends AbstractPane<QueryHolder>
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				for (Object item : listSelectionModel.selectedValues()) {
 					if (item instanceof NamedQuery) {
-						subject().removeNamedQuery((NamedQuery) item);
+						getSubject().removeNamedQuery((NamedQuery) item);
 					}
 					else {
-						subject().removeNamedNativeQuery((NamedNativeQuery) item);
+						getSubject().removeNamedNativeQuery((NamedNativeQuery) item);
 					}
 				}
 			}
@@ -329,10 +329,10 @@ public class QueriesComposite extends AbstractPane<QueryHolder>
 					int index = -1;
 
 					if (query instanceof NamedQuery) {
-						index = CollectionTools.indexOf(subject().namedQueries(), query);
+						index = CollectionTools.indexOf(getSubject().namedQueries(), query);
 					}
 					else {
-						index = CollectionTools.indexOf(subject().namedNativeQueries(), query);
+						index = CollectionTools.indexOf(getSubject().namedNativeQueries(), query);
 					}
 
 					name = NLS.bind(JptUiMappingsMessages.QueriesComposite_displayString, index);
@@ -351,7 +351,7 @@ public class QueriesComposite extends AbstractPane<QueryHolder>
 
 		Query query = queryHolder.getValue();
 
-		NewNameDialogBuilder builder = new NewNameDialogBuilder(shell());
+		NewNameDialogBuilder builder = new NewNameDialogBuilder(getShell());
 		builder.setLabelText(JptUiMappingsMessages.QueriesComposite_label);
 		builder.setName(query.getName());
 
@@ -397,7 +397,7 @@ public class QueriesComposite extends AbstractPane<QueryHolder>
 	protected void initializeLayout(Composite container) {
 
 		// List pane
-		listPane = buildListPane(container);
+		listPane = addListPane(container);
 
 		// Property pane
 		PageBook pageBook = new PageBook(container, SWT.NULL);
@@ -425,7 +425,7 @@ public class QueriesComposite extends AbstractPane<QueryHolder>
 	}
 
 	private Iterator<String> namedNativeQueryNames() {
-		return new TransformationIterator<Query, String>(subject().namedNativeQueries()) {
+		return new TransformationIterator<Query, String>(getSubject().namedNativeQueries()) {
 			@Override
 			protected String transform(Query next) {
 				return next.getName();
@@ -434,7 +434,7 @@ public class QueriesComposite extends AbstractPane<QueryHolder>
 	}
 
 	private Iterator<String> namedQueryNames() {
-		return new TransformationIterator<Query, String>(subject().namedQueries()) {
+		return new TransformationIterator<Query, String>(getSubject().namedQueries()) {
 			@Override
 			protected String transform(Query next) {
 				return next.getName();

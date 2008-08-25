@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.NewNameDialog;
 import org.eclipse.jpt.ui.internal.widgets.NewNameDialogBuilder;
@@ -78,7 +78,7 @@ import org.eclipse.ui.part.PageBook;
  * @version 2.0
  * @since 2.0
  */
-public class OrmGeneratorsComposite extends AbstractPane<EntityMappings>
+public class OrmGeneratorsComposite extends Pane<EntityMappings>
 {
 	private WritablePropertyValueModel<OrmGenerator> generatorHolder;
 	private OrmSequenceGeneratorComposite sequenceGeneratorPane;
@@ -91,7 +91,7 @@ public class OrmGeneratorsComposite extends AbstractPane<EntityMappings>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OrmGeneratorsComposite(AbstractPane<? extends EntityMappings> parentPane,
+	public OrmGeneratorsComposite(Pane<? extends EntityMappings> parentPane,
 	                              Composite parent) {
 
 		super(parentPane, parent);
@@ -99,7 +99,7 @@ public class OrmGeneratorsComposite extends AbstractPane<EntityMappings>
 
 	private void addSequenceGenerator(ObjectListSelectionModel listSelectionModel) {
 
-		NewNameDialogBuilder builder = new NewNameDialogBuilder(shell());
+		NewNameDialogBuilder builder = new NewNameDialogBuilder(getShell());
 		builder.setDialogTitle(JptUiOrmMessages.OrmGeneratorsComposite_addSequenceGeneratorTitle);
 		builder.setDescription(JptUiOrmMessages.OrmGeneratorsComposite_addSequenceGeneratorDescription);
 		builder.setDescriptionTitle(JptUiOrmMessages.OrmGeneratorsComposite_addSequenceGeneratorDescriptionTitle);
@@ -112,7 +112,7 @@ public class OrmGeneratorsComposite extends AbstractPane<EntityMappings>
 
 	private void addTableGenerator(ObjectListSelectionModel listSelectionModel) {
 
-		NewNameDialogBuilder builder = new NewNameDialogBuilder(shell());
+		NewNameDialogBuilder builder = new NewNameDialogBuilder(getShell());
 		builder.setDialogTitle(JptUiOrmMessages.OrmGeneratorsComposite_addTableGeneratorTitle);
 		builder.setDescription(JptUiOrmMessages.OrmGeneratorsComposite_addTableGeneratorDescription);
 		builder.setDescriptionTitle(JptUiOrmMessages.OrmGeneratorsComposite_addTableGeneratorDescriptionTitle);
@@ -172,10 +172,10 @@ public class OrmGeneratorsComposite extends AbstractPane<EntityMappings>
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				for (Object item : listSelectionModel.selectedValues()) {
 					if (item instanceof OrmSequenceGenerator) {
-						subject().removeSequenceGenerator((OrmSequenceGenerator) item);
+						getSubject().removeSequenceGenerator((OrmSequenceGenerator) item);
 					}
 					else {
-						subject().removeTableGenerator((OrmTableGenerator) item);
+						getSubject().removeTableGenerator((OrmTableGenerator) item);
 					}
 				}
 			}
@@ -197,10 +197,10 @@ public class OrmGeneratorsComposite extends AbstractPane<EntityMappings>
 					int index = -1;
 
 					if (generator instanceof OrmSequenceGenerator) {
-						index = CollectionTools.indexOf(subject().sequenceGenerators(), generator);
+						index = CollectionTools.indexOf(getSubject().sequenceGenerators(), generator);
 					}
 					else {
-						index = CollectionTools.indexOf(subject().tableGenerators(), generator);
+						index = CollectionTools.indexOf(getSubject().tableGenerators(), generator);
 					}
 
 					name = NLS.bind(JptUiOrmMessages.OrmGeneratorsComposite_displayString, index);
@@ -222,7 +222,7 @@ public class OrmGeneratorsComposite extends AbstractPane<EntityMappings>
 		return new PostExecution<NewNameDialog>() {
 			public void execute(NewNameDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					OrmSequenceGenerator generator = subject().addSequenceGenerator(subject().sequenceGeneratorsSize());
+					OrmSequenceGenerator generator = getSubject().addSequenceGenerator(getSubject().sequenceGeneratorsSize());
 					generator.setName(dialog.getName());
 					generatorHolder.setValue(generator);
 					listSelectionModel.setSelectedValue(generator);
@@ -243,7 +243,7 @@ public class OrmGeneratorsComposite extends AbstractPane<EntityMappings>
 		return new PostExecution<NewNameDialog>() {
 			public void execute(NewNameDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					OrmTableGenerator generator = subject().addTableGenerator(subject().tableGeneratorsSize());
+					OrmTableGenerator generator = getSubject().addTableGenerator(getSubject().tableGeneratorsSize());
 					generator.setName(dialog.getName());
 					generatorHolder.setValue(generator);
 					listSelectionModel.setSelectedValue(generator);
@@ -334,7 +334,7 @@ public class OrmGeneratorsComposite extends AbstractPane<EntityMappings>
 
 		OrmGenerator generator = generatorHolder.getValue();
 
-		NewNameDialogBuilder builder = new NewNameDialogBuilder(shell());
+		NewNameDialogBuilder builder = new NewNameDialogBuilder(getShell());
 		builder.setLabelText(JptUiOrmMessages.OrmGeneratorsComposite_label);
 		builder.setName(generator.getName());
 
@@ -370,13 +370,13 @@ public class OrmGeneratorsComposite extends AbstractPane<EntityMappings>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		container = buildCollapsableSection(
+		container = addCollapsableSection(
 			container,
 			JptUiOrmMessages.OrmGeneratorsComposite_groupBox
 		);
 
 		// List pane
-		listPane = buildListPane(container);
+		listPane = addListPane(container);
 		installPaneEnabler();
 
 		// Property pane
@@ -407,7 +407,7 @@ public class OrmGeneratorsComposite extends AbstractPane<EntityMappings>
 		installPaneSwitcher(pageBook);
 	}
 
-	private AddRemoveListPane<EntityMappings> buildListPane(Composite container) {
+	private AddRemoveListPane<EntityMappings> addListPane(Composite container) {
 
 		return new AddRemoveListPane<EntityMappings>(
 			this,
@@ -422,7 +422,7 @@ public class OrmGeneratorsComposite extends AbstractPane<EntityMappings>
 			protected void addCustomButtonAfterAddButton(Composite container,
 			                                             String helpId) {
 
-				Button button = buildButton(
+				Button button = addButton(
 					container,
 					JptUiOrmMessages.OrmGeneratorsComposite_addTableGenerator,
 					helpId,
@@ -446,7 +446,7 @@ public class OrmGeneratorsComposite extends AbstractPane<EntityMappings>
 	}
 
 	private Iterator<String> sequenceGeneratorNames() {
-		return new TransformationIterator<OrmSequenceGenerator, String>(subject().sequenceGenerators()) {
+		return new TransformationIterator<OrmSequenceGenerator, String>(getSubject().sequenceGenerators()) {
 			@Override
 			protected String transform(OrmSequenceGenerator next) {
 				return next.getName();
@@ -455,7 +455,7 @@ public class OrmGeneratorsComposite extends AbstractPane<EntityMappings>
 	}
 
 	private Iterator<String> tableGeneratorNames() {
-		return new TransformationIterator<OrmTableGenerator, String>(subject().tableGenerators()) {
+		return new TransformationIterator<OrmTableGenerator, String>(getSubject().tableGenerators()) {
 			@Override
 			protected String transform(OrmTableGenerator next) {
 				return next.getName();

@@ -120,7 +120,7 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 		// Map as composite
 		new JavaPersistentAttributeMapAsComposite(
 			this,
-			buildSubPane(container, 0, 0, 5, 0)
+			addSubPane(container, 0, 0, 5, 0)
 		);
 
 		// Mapping properties page

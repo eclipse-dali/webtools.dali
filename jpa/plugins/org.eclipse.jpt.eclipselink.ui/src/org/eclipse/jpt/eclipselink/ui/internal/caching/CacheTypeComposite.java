@@ -14,7 +14,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.caching.CacheType;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * CacheTypeComposite
  */
-public class CacheTypeComposite extends AbstractPane<EntityCacheProperties>
+public class CacheTypeComposite extends Pane<EntityCacheProperties>
 {
 	/**
 	 * Creates a new <code>CacheTypeComposite</code>.
@@ -36,7 +36,7 @@ public class CacheTypeComposite extends AbstractPane<EntityCacheProperties>
 	 * @param parent
 	 *            The parent container
 	 */
-	public CacheTypeComposite(AbstractPane<EntityCacheProperties> parentComposite,
+	public CacheTypeComposite(Pane<EntityCacheProperties> parentComposite,
 	                          Composite parent) {
 
 		super(parentComposite, parent);
@@ -45,7 +45,7 @@ public class CacheTypeComposite extends AbstractPane<EntityCacheProperties>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		this.buildLabeledComposite(
+		this.addLabeledComposite(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlCachingTab_cacheTypeLabel,
 			new CacheTypeCombo(container),
@@ -104,13 +104,13 @@ public class CacheTypeComposite extends AbstractPane<EntityCacheProperties>
 		}
 
 		@Override
-		protected CacheType[] choices() {
+		protected CacheType[] getChoices() {
 			return CacheType.values();
 		}
 
 		@Override
-		protected CacheType defaultValue() {
-			return this.subject().getDefaultCacheType();
+		protected CacheType getDefaultValue() {
+			return this.getSubject().getDefaultCacheType();
 		}
 
 		@Override
@@ -131,7 +131,7 @@ public class CacheTypeComposite extends AbstractPane<EntityCacheProperties>
 
 		@Override
 		protected CacheType getValue() {
-			return this.subject().getCacheType();
+			return this.getSubject().getCacheType();
 		}
 
 		@Override
@@ -149,7 +149,7 @@ public class CacheTypeComposite extends AbstractPane<EntityCacheProperties>
 
 		@Override
 		protected void setValue(CacheType value) {
-			this.subject().setCacheType(value);
+			this.getSubject().setCacheType(value);
 		}
 
 		@Override

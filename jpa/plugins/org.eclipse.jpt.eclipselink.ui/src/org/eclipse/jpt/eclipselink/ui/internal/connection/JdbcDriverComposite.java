@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.JptEclipseLinkUiPlugin;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  JdbcDriverComposite
  */
-public class JdbcDriverComposite extends AbstractPane<Connection>
+public class JdbcDriverComposite extends Pane<Connection>
 {
 	/**
 	 * Creates a new <code>EventListenerComposite</code>.
@@ -35,7 +35,7 @@ public class JdbcDriverComposite extends AbstractPane<Connection>
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public JdbcDriverComposite(AbstractPane<? extends Connection> parentPane,
+	public JdbcDriverComposite(Pane<? extends Connection> parentPane,
                            Composite parent) {
 
 		super(parentPane, parent);
@@ -66,18 +66,18 @@ public class JdbcDriverComposite extends AbstractPane<Connection>
 			}
 
 			@Override
-			protected String className() {
-				return this.subject().getDriver();
+			protected String getClassName() {
+				return this.getSubject().getDriver();
 			}
 
 			@Override
-			protected String labelText() {
+			protected String getLabelText() {
 				return EclipseLinkUiMessages.PersistenceXmlConnectionTab_driverLabel;
 			}
 
 			@Override
-			protected IPackageFragmentRoot packageFragmentRoot() {
-				IProject project = this.subject().getJpaProject().getProject();
+			protected IPackageFragmentRoot getPackageFragmentRoot() {
+				IProject project = this.getSubject().getJpaProject().getProject();
 				IJavaProject root = JavaCore.create(project);
 
 				try {
@@ -95,7 +95,7 @@ public class JdbcDriverComposite extends AbstractPane<Connection>
 
 				if (type != null) {
 					String className = type.getFullyQualifiedName('.');
-					this.subject().setDriver(className);
+					this.getSubject().setDriver(className);
 				}
 			}
 		};

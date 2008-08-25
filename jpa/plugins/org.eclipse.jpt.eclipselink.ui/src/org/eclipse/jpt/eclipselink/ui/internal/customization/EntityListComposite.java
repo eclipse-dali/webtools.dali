@@ -33,7 +33,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customiza
 import org.eclipse.jpt.eclipselink.ui.JptEclipseLinkUiPlugin;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -52,11 +52,11 @@ import org.eclipse.ui.progress.IProgressService;
 /**
  *  EntityListComposite
  */
-public class EntityListComposite extends AbstractPane<Customization>
+public class EntityListComposite extends Pane<Customization>
 {
 	private WritablePropertyValueModel<EntityCustomizerProperties> entityHolder;
 
-	public EntityListComposite(AbstractPane<Customization> parentComposite, Composite parent) {
+	public EntityListComposite(Pane<Customization> parentComposite, Composite parent) {
 
 		super(parentComposite, parent);
 	}
@@ -70,7 +70,7 @@ public class EntityListComposite extends AbstractPane<Customization>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		container = this.buildTitledPane(
+		container = this.addTitledGroup(
 			container,
 			EclipseLinkUiMessages.CustomizationEntityListComposite_groupTitle
 		);
@@ -102,7 +102,7 @@ public class EntityListComposite extends AbstractPane<Customization>
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				Customization customization = subject();
+				Customization customization = getSubject();
 				for (Object item : listSelectionModel.selectedValues()) {
 					EntityCustomizerProperties entityCustomization = (EntityCustomizerProperties) item;
 					customization.removeEntity(entityCustomization.getEntityName());
@@ -121,10 +121,10 @@ public class EntityListComposite extends AbstractPane<Customization>
 				entityName = type.getElementName();
 			}
 			
-			if( ! this.subject().entityExists(entityName)) {
-				String entity = this.subject().addEntity(entityName);
+			if( ! this.getSubject().entityExists(entityName)) {
+				String entity = this.getSubject().addEntity(entityName);
 
-				int index = CollectionTools.indexOf(this.subject().entities(), entityName);
+				int index = CollectionTools.indexOf(this.getSubject().entities(), entityName);
 				EntityCustomizerProperties item = (EntityCustomizerProperties) listSelectionModel.getListModel().getElementAt(index);
 				entityHolder.setValue(item);
 			}
@@ -133,7 +133,7 @@ public class EntityListComposite extends AbstractPane<Customization>
 	
 	private String getEntityName(String fullyQualifiedTypeName) {
 
-		PersistentType persistentType = subject().persistenceUnit().getPersistentType(fullyQualifiedTypeName);
+		PersistentType persistentType = getSubject().persistenceUnit().getPersistentType(fullyQualifiedTypeName);
 
 		if (persistentType != null && persistentType.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
 			TypeMapping mapping = persistentType.getMapping();
@@ -146,7 +146,7 @@ public class EntityListComposite extends AbstractPane<Customization>
 	
 	private IType chooseEntity() {
 
-		IPackageFragmentRoot root = packageFragmentRoot();
+		IPackageFragmentRoot root = getPackageFragmentRoot();
 		if (root == null) {
 			return null;
 		}
@@ -157,7 +157,7 @@ public class EntityListComposite extends AbstractPane<Customization>
 
 		try {
 			typeSelectionDialog = JavaUI.createTypeDialog(
-				shell(),
+				getShell(),
 				service,
 				scope,
 				IJavaElementSearchConstants.CONSIDER_CLASSES,
@@ -178,8 +178,8 @@ public class EntityListComposite extends AbstractPane<Customization>
 		return null;
 	}
 
-	private IPackageFragmentRoot packageFragmentRoot() {
-		IProject project = subject().getJpaProject().getProject();
+	private IPackageFragmentRoot getPackageFragmentRoot() {
+		IProject project = getSubject().getJpaProject().getProject();
 		IJavaProject root = JavaCore.create(project);
 
 		try {
@@ -209,7 +209,7 @@ public class EntityListComposite extends AbstractPane<Customization>
 		return new TransformationListValueModelAdapter<String, EntityCustomizerProperties>(buildEntitiesListHolder()) {
 			@Override
 			protected EntityCustomizerProperties transformItem(String item) {
-				return new EntityCustomizerProperties(subject(), item);
+				return new EntityCustomizerProperties(getSubject(), item);
 			}
 		};
 	}

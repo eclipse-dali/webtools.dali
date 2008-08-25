@@ -93,7 +93,7 @@ public class JpaPlatformUiRegistry
 		this.jpaPlatforms.put(platformId, configElement);
 	}
 	
-	public JpaPlatformUi jpaPlatform(String platformId) {
+	public JpaPlatformUi getJpaPlatformUi(String platformId) {
 		IConfigurationElement registeredConfigElement = this.jpaPlatforms.get(platformId);
 		
 		if (registeredConfigElement == null) {

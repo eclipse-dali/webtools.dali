@@ -125,12 +125,12 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	}
 
 	protected Label buildMappingLabel(Composite parent) {
-		return buildLabel(parent, JptUiMessages.PersistentAttributePage_mapAs);
+		return addLabel(parent, JptUiMessages.PersistentAttributePage_mapAs);
 	}
 
 	protected PageBook buildMappingPageBook(Composite parent) {
 		this.mappingPageBook = new PageBook(parent, SWT.NONE);
-		this.mappingPageBook.showPage(this.buildLabel(this.mappingPageBook, ""));
+		this.mappingPageBook.showPage(this.addLabel(this.mappingPageBook, ""));
 		return this.mappingPageBook;
 	}
 
@@ -208,8 +208,8 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 
 	private AttributeMappingUiProvider<? extends AttributeMapping> mappingUIProvider(String key) {
 
-		if (this.subject().getMapping() == null ||
-		    this.subject().getMapping().isDefault()) {
+		if (this.getSubject().getMapping() == null ||
+		    this.getSubject().getMapping().isDefault()) {
 
 			return defaultAttributeMappingUiProvider(key);
 		}
@@ -277,7 +277,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 
 				// Show an error message
 				// TODO: Replace the blank label with the error page
-				this.mappingPageBook.showPage(this.buildLabel(this.mappingPageBook, ""));
+				this.mappingPageBook.showPage(this.addLabel(this.mappingPageBook, ""));
 			}
 		}
 		else {
@@ -286,7 +286,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 				"PersistentAttributeDetailsPage.populateMappingPage() no page to show"
 			);
 
-			this.mappingPageBook.showPage(this.buildLabel(this.mappingPageBook, ""));
+			this.mappingPageBook.showPage(this.addLabel(this.mappingPageBook, ""));
 		}
 		this.repaintDetailsView(this.mappingPageBook);
 	}
@@ -314,7 +314,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	}
 
 	private void updateMappingPage() {
-		AttributeMapping mapping = (this.subject() != null) ? this.subject().getMapping() : null;
+		AttributeMapping mapping = (this.getSubject() != null) ? this.getSubject().getMapping() : null;
 		populateMappingPage(mapping == null ? null : mapping.getKey());
 	}
 

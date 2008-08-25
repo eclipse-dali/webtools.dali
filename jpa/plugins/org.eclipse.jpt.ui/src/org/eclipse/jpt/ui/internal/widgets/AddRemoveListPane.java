@@ -85,7 +85,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * one item or no items are selected, then <code>null</code> will be passed
 	 * @param labelProvider The renderer used to format the table holder's items
 	 */
-	public AddRemoveListPane(AbstractPane<? extends T> parentPane,
+	public AddRemoveListPane(Pane<? extends T> parentPane,
 	                         Composite parent,
 	                         Adapter adapter,
 	                         ListValueModel<?> listHolder,
@@ -112,7 +112,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * @param labelProvider The renderer used to format the table holder's items
 	 * @param helpId The topic help ID to be registered with this pane
 	 */
-	public AddRemoveListPane(AbstractPane<? extends T> parentPane,
+	public AddRemoveListPane(Pane<? extends T> parentPane,
 	                         Composite parent,
 	                         Adapter adapter,
 	                         ListValueModel<?> listHolder,
@@ -128,6 +128,39 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		      labelProvider,
 		      helpId);
 	}
+	
+	/**
+	 * Creates a new <code>AddRemoveListPane</code>.
+	 *
+	 * @param parentPane The parent container of this one
+	 * @param parent The parent container
+	 * @param adapter
+	 * @param listHolder The <code>ListValueModel</code> containing the items
+	 * @param selectedItemHolder The holder of the selected item, if more than
+	 * one item or no items are selected, then <code>null</code> will be passed
+	 * @param labelProvider The renderer used to format the table holder's items
+	 * @param helpId The topic help ID to be registered with this pane
+	 * @param parentManagePane <code>true</code> to have the parent pane manage
+	 * the enabled state of this pane
+	 */
+	public AddRemoveListPane(Pane<? extends T> parentPane,
+	                         Composite parent,
+	                         Adapter adapter,
+	                         ListValueModel<?> listHolder,
+	                         WritablePropertyValueModel<?> selectedItemHolder,
+	                         ILabelProvider labelProvider,
+	                         String helpId,
+	                         boolean parentManagePane) {
+
+		super(parentPane,
+		      parent,
+		      adapter,
+		      listHolder,
+		      selectedItemHolder,
+		      labelProvider,
+		      helpId,
+		      parentManagePane);
+	}
 
 	/**
 	 * Creates a new <code>AddRemoveListPane</code>.
@@ -141,7 +174,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * one item or no items are selected, then <code>null</code> will be passed
 	 * @param labelProvider The renderer used to format the table holder's items
 	 */
-	public AddRemoveListPane(AbstractPane<?> parentPane,
+	public AddRemoveListPane(Pane<?> parentPane,
 	                         PropertyValueModel<? extends T> subjectHolder,
 	                         Composite parent,
 	                         Adapter adapter,
@@ -171,7 +204,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * @param labelProvider The renderer used to format the table holder's items
 	 * @param helpId The topic help ID to be registered with this pane
 	 */
-	public AddRemoveListPane(AbstractPane<?> parentPane,
+	public AddRemoveListPane(Pane<?> parentPane,
 	                         PropertyValueModel<? extends T> subjectHolder,
 	                         Composite parent,
 	                         Adapter adapter,
@@ -304,9 +337,9 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		};
 	}
 
-	private Composite buildTableContainer(Composite container) {
+	private Composite addTableContainer(Composite container) {
 
-		container = buildPane(container, buildTableContainerLayout());
+		container = addPane(container, buildTableContainerLayout());
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 		return container;
 	}
@@ -437,13 +470,12 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	                                       IBaseLabelProvider labelProvider,
 	                                       String helpId) {
 
-		table = buildTable(
-			buildTableContainer(container),
+		table = addUnmanagedTable(
+			addTableContainer(container),
 			SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.MULTI,
 			helpId
 		);
 
-		removeFromEnablementControl(table);
 
 		TableModelAdapter model = TableModelAdapter.adapt(
 			(ListValueModel<Object>) listHolder,

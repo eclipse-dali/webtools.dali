@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.caching;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * DefaultShareCacheComposite
  */
-public class DefaultSharedCacheComposite extends AbstractFormPane<Caching>
+public class DefaultSharedCacheComposite extends FormPane<Caching>
 {
 	/**
 	 * Creates a new <code>DefaultShareCacheComposite</code>.
@@ -33,7 +33,7 @@ public class DefaultSharedCacheComposite extends AbstractFormPane<Caching>
 	 *            The parent container
 	 */
 	public DefaultSharedCacheComposite(
-					AbstractFormPane<? extends Caching> parentComposite,
+					FormPane<? extends Caching> parentComposite,
 					Composite parent) {
 
 		super(parentComposite, parent);
@@ -69,8 +69,8 @@ public class DefaultSharedCacheComposite extends AbstractFormPane<Caching>
 		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultSharedCacheHolder()) {
 			@Override
 			protected String transform(Boolean value) {
-				if ((subject() != null) && (value == null)) {
-					Boolean defaultValue = subject().getDefaultSharedCacheDefault();
+				if ((getSubject() != null) && (value == null)) {
+					Boolean defaultValue = getSubject().getDefaultSharedCacheDefault();
 					if (defaultValue != null) {
 						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
 						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCachingTab_defaultSharedCacheDefaultLabel, defaultStringValue);
@@ -84,7 +84,7 @@ public class DefaultSharedCacheComposite extends AbstractFormPane<Caching>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		this.buildTriStateCheckBoxWithDefault(
+		this.addTriStateCheckBoxWithDefault(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlCachingTab_sharedCacheDefaultLabel,
 			this.buildDefaultSharedCacheHolder(),

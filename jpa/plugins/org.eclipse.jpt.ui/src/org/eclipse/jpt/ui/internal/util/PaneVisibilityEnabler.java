@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.util;
 
 import java.util.Collection;
 import java.util.Iterator;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -34,7 +34,7 @@ public class PaneVisibilityEnabler extends StateController
 	 * boolean holder's value
 	 */
 	public PaneVisibilityEnabler(PropertyValueModel<Boolean> booleanHolder,
-	                             AbstractPane<?> pane) {
+	                             Pane<?> pane) {
 
 		this(booleanHolder, pane, false);
 	}
@@ -48,7 +48,7 @@ public class PaneVisibilityEnabler extends StateController
 	 * with the boolean holder's value
 	 */
 	public PaneVisibilityEnabler(PropertyValueModel<Boolean> booleanHolder,
-	                             AbstractPane<?>... panes) {
+	                             Pane<?>... panes) {
 
 		this(booleanHolder, CollectionTools.collection(panes), false);
 	}
@@ -63,7 +63,7 @@ public class PaneVisibilityEnabler extends StateController
 	 * <code>null</code>
 	 */
 	public PaneVisibilityEnabler(PropertyValueModel<Boolean> booleanHolder,
-	                             AbstractPane<?> pane,
+	                             Pane<?> pane,
 	                             boolean defaultValue) {
 
 		this(booleanHolder, CollectionTools.singletonIterator(pane), false);
@@ -79,7 +79,7 @@ public class PaneVisibilityEnabler extends StateController
 	 * <code>null</code>
 	 */
 	public PaneVisibilityEnabler(PropertyValueModel<Boolean> booleanHolder,
-	                             AbstractPane<?>[] panes,
+	                             Pane<?>[] panes,
 	                             boolean defaultValue) {
 
 		this(booleanHolder, CollectionTools.iterator(panes), defaultValue);
@@ -94,7 +94,7 @@ public class PaneVisibilityEnabler extends StateController
 	 * with the boolean holder's value
 	 */
 	public PaneVisibilityEnabler(PropertyValueModel<Boolean> booleanHolder,
-	                             Collection<? extends AbstractPane<?>> panes) {
+	                             Collection<? extends Pane<?>> panes) {
 
 		this(booleanHolder, panes, false);
 	}
@@ -109,7 +109,7 @@ public class PaneVisibilityEnabler extends StateController
 	 * <code>null</code>
 	 */
 	public PaneVisibilityEnabler(PropertyValueModel<Boolean> booleanHolder,
-	                             Collection<? extends AbstractPane<?>> panes,
+	                             Collection<? extends Pane<?>> panes,
 	                             boolean defaultValue) {
 
 		this(booleanHolder, panes.iterator(), defaultValue);
@@ -124,7 +124,7 @@ public class PaneVisibilityEnabler extends StateController
 	 * is kept in sync with the boolean holder's value
 	 */
 	public PaneVisibilityEnabler(PropertyValueModel<Boolean> booleanHolder,
-	                             Iterator<? extends AbstractPane<?>> panes) {
+	                             Iterator<? extends Pane<?>> panes) {
 
 		this(booleanHolder, panes, false);
 	}
@@ -139,29 +139,29 @@ public class PaneVisibilityEnabler extends StateController
 	 * <code>null</code>
 	 */
 	public PaneVisibilityEnabler(PropertyValueModel<Boolean> booleanHolder,
-	                             Iterator<? extends AbstractPane<?>> panes,
+	                             Iterator<? extends Pane<?>> panes,
 	                             boolean defaultValue) {
 
 		super(booleanHolder, wrap(panes), defaultValue);
 	}
 
-	private static Collection<IControlHolder> wrap(Iterator<? extends AbstractPane<?>> panes) {
-		return CollectionTools.collection(new TransformationIterator<AbstractPane<?>, IControlHolder>(panes) {
+	private static Collection<ControlHolder> wrap(Iterator<? extends Pane<?>> panes) {
+		return CollectionTools.collection(new TransformationIterator<Pane<?>, ControlHolder>(panes) {
 			@Override
-			protected IControlHolder transform(AbstractPane<?> pane) {
+			protected ControlHolder transform(Pane<?> pane) {
 				return new PaneHolder(pane);
 			}
 		});
 	}
 
 	/**
-	 * This holder holds onto an <code>AbstractPane</code> and update its visible
+	 * This holder holds onto an <code>Pane</code> and update its visible
 	 * state.
 	 */
-	private static class PaneHolder implements IControlHolder {
-		private final AbstractPane<?> pane;
+	private static class PaneHolder implements ControlHolder {
+		private final Pane<?> pane;
 
-		PaneHolder(AbstractPane<?> pane) {
+		PaneHolder(Pane<?> pane) {
 			super();
 			this.pane = pane;
 		}

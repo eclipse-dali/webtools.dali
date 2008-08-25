@@ -13,7 +13,7 @@ import java.util.Collection;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class AccessTypeComposite extends AbstractFormPane<OrmTypeMapping> {
+public class AccessTypeComposite extends FormPane<OrmTypeMapping> {
 
 	/**
 	 * Creates a new <code>AccessTypeComposite</code>.
@@ -42,14 +42,14 @@ public class AccessTypeComposite extends AbstractFormPane<OrmTypeMapping> {
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public AccessTypeComposite(AbstractFormPane<?> parentPane,
+	public AccessTypeComposite(FormPane<?> parentPane,
 	                           PropertyValueModel<? extends OrmTypeMapping> subjectHolder,
 	                           Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
 	}
 
-	private EnumFormComboViewer<OrmTypeMapping, AccessType> buildAccessTypeComboViewer(Composite container) {
+	private EnumFormComboViewer<OrmTypeMapping, AccessType> addAccessTypeComboViewer(Composite container) {
 
 		return new EnumFormComboViewer<OrmTypeMapping, AccessType>(this, container) {
 
@@ -61,13 +61,13 @@ public class AccessTypeComposite extends AbstractFormPane<OrmTypeMapping> {
 			}
 
 			@Override
-			protected AccessType[] choices() {
+			protected AccessType[] getChoices() {
 				return AccessType.values();
 			}
 
 			@Override
-			protected AccessType defaultValue() {
-				return subject().getDefaultAccess();
+			protected AccessType getDefaultValue() {
+				return getSubject().getDefaultAccess();
 			}
 
 			@Override
@@ -81,12 +81,12 @@ public class AccessTypeComposite extends AbstractFormPane<OrmTypeMapping> {
 
 			@Override
 			protected AccessType getValue() {
-				return subject().getSpecifiedAccess();
+				return getSubject().getSpecifiedAccess();
 			}
 
 			@Override
 			protected void setValue(AccessType value) {
-				subject().setSpecifiedAccess(value);
+				getSubject().setSpecifiedAccess(value);
 			}
 		};
 	}
@@ -98,9 +98,9 @@ public class AccessTypeComposite extends AbstractFormPane<OrmTypeMapping> {
 	protected void initializeLayout(Composite container) {
 
 		EnumFormComboViewer<OrmTypeMapping, AccessType> comboViewer =
-			buildAccessTypeComboViewer(container);
+			addAccessTypeComboViewer(container);
 
-		buildLabeledComposite(
+		addLabeledComposite(
 			container,
 			JptUiOrmMessages.AccessTypeComposite_access,
 			comboViewer.getControl()

@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<T>
+abstract class EnumComboViewer<T extends Model, V> extends Pane<T>
 {
 	/**
 	 * The main widget of this pane.
@@ -55,26 +55,26 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	public static final String NULL_VALUE = "null";
 
 	/**
-	 * Creates a new <code>AbstractEnumComboViewer</code>.
+	 * Creates a new <code>EnumComboViewer</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various widgets
 	 */
-	AbstractEnumComboViewer(AbstractPane<? extends T> parentPane,
+	EnumComboViewer(Pane<? extends T> parentPane,
 	                        Composite parent) {
 
 		super(parentPane, parent);
 	}
 
 	/**
-	 * Creates a new <code>AbstractEnumComboViewer</code>.
+	 * Creates a new <code>EnumComboViewer</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various widgets
 	 */
-	AbstractEnumComboViewer(AbstractPane<?> parentPane,
+	EnumComboViewer(Pane<?> parentPane,
 	                        PropertyValueModel<? extends T> subjectHolder,
 	                        Composite parent) {
 
@@ -82,13 +82,13 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	}
 
 	/**
-	 * Creates a new <code>AbstractEnumComboViewer</code>.
+	 * Creates a new <code>EnumComboViewer</code>.
 	 *
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various widgets
 	 */
-	AbstractEnumComboViewer(PropertyValueModel<? extends T> subjectHolder,
+	EnumComboViewer(PropertyValueModel<? extends T> subjectHolder,
 	                        Composite parent,
 	                        WidgetFactory widgetFactory) {
 
@@ -102,7 +102,7 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	 * @return The combo's choices including the default value
 	 */
 	private Object[] buildChoices() {
-		V[] choices = choices();
+		V[] choices = getChoices();
 		if (sortChoices()) {
 			Arrays.sort(choices, buildComparator());
 		}
@@ -128,7 +128,7 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	 * @param container The container of the combo
 	 * @return A new <code>ComboViewer</code> containing the right combo widget
 	 */
-	abstract ComboViewer buildComboViewer(Composite container);
+	abstract ComboViewer addComboViewer(Composite container);
 
 	private Comparator<Object> buildComparator() {
 		return new Comparator<Object>() {
@@ -189,7 +189,7 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	@SuppressWarnings("unchecked")
 	private String buildDisplayString(Object value) {
 		if (value == NULL_VALUE) {
-			V defaultValue = (subject() != null) ? defaultValue() : null;
+			V defaultValue = (getSubject() != null) ? getDefaultValue() : null;
 
 			if (defaultValue != null) {
 				String displayString = displayString(defaultValue);
@@ -213,7 +213,7 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	}
 
 	private ISelection buildSelection() {
-		Object value = (subject() != null) ? getValue() : null;
+		Object value = (getSubject() != null) ? getValue() : null;
 
 		if (value == null) {
 			value = NULL_VALUE;
@@ -238,7 +238,7 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	 *
 	 * @return The items to show in the combos
 	 */
-	protected abstract V[] choices();
+	protected abstract V[] getChoices();
 
 	/**
 	 * Returns the default value, this method is not called if the subject is
@@ -247,7 +247,7 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	 * @return The value that is declared as being the default when it is not
 	 * defined or <code>null</code> if there is no default value
 	 */
-	protected abstract V defaultValue();
+	protected abstract V getDefaultValue();
 
 	/**
 	 * Returns the displayable string for the given value.
@@ -288,7 +288,7 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	@Override
 	protected final void initializeLayout(Composite container) {
 
-		this.comboViewer = this.buildComboViewer(container);
+		this.comboViewer = this.addComboViewer(container);
 		this.comboViewer.addSelectionChangedListener(buildSelectionChangedListener());
 	}
 

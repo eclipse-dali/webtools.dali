@@ -23,7 +23,7 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -66,7 +66,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEmbeddedMapping>
+public class EmbeddedAttributeOverridesComposite extends FormPane<BaseEmbeddedMapping>
 {
 	private WritablePropertyValueModel<AttributeOverride> selectedAttributeOverrideHolder;
 
@@ -78,7 +78,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public EmbeddedAttributeOverridesComposite(AbstractFormPane<? extends BaseEmbeddedMapping> parentPane,
+	public EmbeddedAttributeOverridesComposite(FormPane<? extends BaseEmbeddedMapping> parentPane,
 	                                           Composite parent) {
 
 		super(parentPane, parent);
@@ -108,7 +108,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 
 		return new AddRemoveListPane<BaseEmbeddedMapping>(
 			this,
-			buildSubPane(container, 8),
+			addSubPane(container, 8),
 			buildAttributeOverridesAdapter(),
 			buildAttributeOverridesListModel(),
 			this.selectedAttributeOverrideHolder,
@@ -130,7 +130,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 	protected void initializeLayout(Composite container) {
 
 		// Attribute Overrides group box
-		container = buildTitledPane(
+		container = addTitledGroup(
 			container,
 			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
 		);
@@ -139,30 +139,31 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 		initializeAttributeOverridesList(container);
 
 		// Property pane
-		initializePropertyPane(buildSubPane(container, 5, 0));
+		initializePropertyPane(addSubPane(container, 5, 0));
 	}
 
 	private void initializePropertyPane(Composite container) {
 
 		// Override Default check box
-		Button overrideDefaultButton = buildCheckBox(
-			buildSubPane(container, 0, groupBoxMargin()),
+		Button overrideDefaultButton = addUnmanagedCheckBox(
+			addSubPane(container, 0, getGroupBoxMargin()),
 			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
-			getOverrideVirtualAttributeOverrideHolder()
+			getOverrideVirtualAttributeOverrideHolder(),
+			null
 		);
 
-		removeFromEnablementControl(overrideDefaultButton);
 		installOverrideDefaultButtonEnabler(overrideDefaultButton);
 
 		// Column widgets
 		ColumnComposite columnComposite = new ColumnComposite(
 			this,
 			buildColumnHolder(this.selectedAttributeOverrideHolder),
-			container
+			container,
+			true,
+			false
 		);
 
 		installColumnCompositeEnabler(columnComposite);
-		removeFromEnablementControl(columnComposite.getControl());
 	}
 
 	private void installColumnCompositeEnabler(ColumnComposite columnComposite) {

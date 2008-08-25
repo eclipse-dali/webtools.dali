@@ -13,7 +13,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class AlwaysRefreshComposite extends AbstractFormPane<EclipseLinkCaching>
+public class AlwaysRefreshComposite extends FormPane<EclipseLinkCaching>
 {
 	/**
 	 * Creates a new <code>OptionalComposite</code>.
@@ -39,7 +39,7 @@ public class AlwaysRefreshComposite extends AbstractFormPane<EclipseLinkCaching>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public AlwaysRefreshComposite(AbstractFormPane<? extends EclipseLinkCaching> parentPane,
+	public AlwaysRefreshComposite(FormPane<? extends EclipseLinkCaching> parentPane,
 	                         Composite parent)
 	{
 		super(parentPane, parent);
@@ -78,9 +78,9 @@ public class AlwaysRefreshComposite extends AbstractFormPane<EclipseLinkCaching>
 			@Override
 			protected String transform(Boolean value) {
 
-				if ((subject() != null) && (value == null)) {
+				if ((getSubject() != null) && (value == null)) {
 
-					Boolean defaultValue = subject().getDefaultAlwaysRefresh();
+					Boolean defaultValue = getSubject().getDefaultAlwaysRefresh();
 
 					if (defaultValue != null) {
 
@@ -105,7 +105,7 @@ public class AlwaysRefreshComposite extends AbstractFormPane<EclipseLinkCaching>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		buildTriStateCheckBoxWithDefault(
+		addTriStateCheckBoxWithDefault(
 			container,
 			EclipseLinkUiMappingsMessages.AlwaysRefreshComposite_alwaysRefreshLabel,
 			buildAlwaysRefreshHolder(),

@@ -20,7 +20,7 @@ import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.IJoinColumnsEditor;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -71,7 +71,7 @@ import org.eclipse.swt.widgets.Group;
  * @version 2.0
  * @since 1.0
  */
-public class JoinTableComposite extends AbstractFormPane<JoinTable>
+public class JoinTableComposite extends FormPane<JoinTable>
 {
 	private WritablePropertyValueModel<Boolean> inverseJoinColumnsPaneEnablerHolder;
 	private WritablePropertyValueModel<Boolean> joinColumnsPaneEnablerHolder;
@@ -85,7 +85,7 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public JoinTableComposite(AbstractFormPane<?> parentPane,
+	public JoinTableComposite(FormPane<?> parentPane,
 	                          PropertyValueModel<? extends JoinTable> subjectHolder,
 	                          Composite parent) {
 
@@ -109,14 +109,14 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 	private void addInverseJoinColumn(JoinTable joinTable) {
 
 		InverseJoinColumnInJoinTableDialog dialog =
-			new InverseJoinColumnInJoinTableDialog(shell(), joinTable, null);
+			new InverseJoinColumnInJoinTableDialog(getShell(), joinTable, null);
 
 		dialog.openDialog(buildAddInverseJoinColumnPostExecution());
 	}
 
 	private void addInverseJoinColumnFromDialog(InverseJoinColumnInJoinTableStateObject stateObject) {
 
-		JoinTable subject = subject();
+		JoinTable subject = getSubject();
 		int index = subject.specifiedInverseJoinColumnsSize();
 
 		JoinColumn joinColumn = subject.addSpecifiedInverseJoinColumn(index);
@@ -126,17 +126,17 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 	private void addJoinColumn(JoinTable joinTable) {
 
 		JoinColumnInJoinTableDialog dialog =
-			new JoinColumnInJoinTableDialog(shell(), joinTable, null);
+			new JoinColumnInJoinTableDialog(getShell(), joinTable, null);
 
 		dialog.openDialog(buildAddJoinColumnPostExecution());
 	}
 
 	private void addJoinColumnFromDialog(JoinColumnInJoinTableStateObject stateObject) {
 
-		JoinTable subject = subject();
+		JoinTable subject = getSubject();
 		int index = subject.specifiedJoinColumnsSize();
 
-		JoinColumn joinColumn = subject().addSpecifiedJoinColumn(index);
+		JoinColumn joinColumn = getSubject().addSpecifiedJoinColumn(index);
 		stateObject.updateJoinColumn(joinColumn);
 	}
 
@@ -144,7 +144,7 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 		return new PostExecution<InverseJoinColumnInJoinTableDialog>() {
 			public void execute(InverseJoinColumnInJoinTableDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					addInverseJoinColumnFromDialog(dialog.subject());
+					addInverseJoinColumnFromDialog(dialog.getSubject());
 				}
 			}
 		};
@@ -154,7 +154,7 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 		return new PostExecution<JoinColumnInJoinTableDialog>() {
 			public void execute(JoinColumnInJoinTableDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					addJoinColumnFromDialog(dialog.subject());
+					addJoinColumnFromDialog(dialog.getSubject());
 				}
 			}
 		};
@@ -164,7 +164,7 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 		return new PostExecution<InverseJoinColumnInJoinTableDialog>() {
 			public void execute(InverseJoinColumnInJoinTableDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					editInverseJoinColumn(dialog.subject());
+					editInverseJoinColumn(dialog.getSubject());
 				}
 			}
 		};
@@ -174,7 +174,7 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 		return new PostExecution<JoinColumnInJoinTableDialog>() {
 			public void execute(JoinColumnInJoinTableDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					editJoinColumn(dialog.subject());
+					editJoinColumn(dialog.getSubject());
 				}
 			}
 		};
@@ -189,7 +189,7 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 	}
 
 	private SimplePropertyValueModel<Boolean> buildJoinColumnsPaneEnablerHolder() {
-		return new SimplePropertyValueModel<Boolean>(Boolean.FALSE);
+		return new SimplePropertyValueModel<Boolean>(null);
 	}
 
 	private WritablePropertyValueModel<Boolean> buildOverrideDefaultHolder() {
@@ -214,11 +214,11 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 		};
 	}
 
-	private Composite buildPane(Composite container, int groupBoxMargin) {
-		return buildSubPane(container, 0, groupBoxMargin, 10, groupBoxMargin);
+	private Composite addPane(Composite container, int groupBoxMargin) {
+		return addSubPane(container, 0, groupBoxMargin, 10, groupBoxMargin);
 	}
 
-	private TableCombo<JoinTable> buildTableCombo(Composite container) {
+	private TableCombo<JoinTable> addTableCombo(Composite container) {
 
 		return new TableCombo<JoinTable>(this, container) {
 
@@ -245,28 +245,28 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 			}
 
 			@Override
-			protected String defaultValue() {
-				return subject().getDefaultName();
+			protected String getDefaultValue() {
+				return getSubject().getDefaultName();
 			}
 
 			@Override
-			protected String schemaName() {
-				return subject().getSchema();
+			protected String getSchemaName() {
+				return getSubject().getSchema();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedName(value);
+				getSubject().setSpecifiedName(value);
 			}
 
 			@Override
-			protected org.eclipse.jpt.db.Table table() {
-				return subject().getDbTable();
+			protected org.eclipse.jpt.db.Table getDbTable() {
+				return getSubject().getDbTable();
 			}
 
 			@Override
-			protected String value() {
-				return subject().getSpecifiedName();
+			protected String getValue() {
+				return getSubject().getSpecifiedName();
 			}
 		};
 	}
@@ -287,7 +287,7 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 	private void editInverseJoinColumn(JoinColumn joinColumn) {
 
 		InverseJoinColumnInJoinTableDialog dialog =
-			new InverseJoinColumnInJoinTableDialog(shell(), subject(), joinColumn);
+			new InverseJoinColumnInJoinTableDialog(getShell(), getSubject(), joinColumn);
 
 		dialog.openDialog(buildEditInverseJoinColumnPostExecution());
 	}
@@ -295,7 +295,7 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 	private void editJoinColumn(JoinColumn joinColumn) {
 
 		JoinColumnInJoinTableDialog dialog =
-			new JoinColumnInJoinTableDialog(shell(), subject(), joinColumn);
+			new JoinColumnInJoinTableDialog(getShell(), getSubject(), joinColumn);
 
 		dialog.openDialog(buildEditJoinColumnPostExecution());
 	}
@@ -304,58 +304,50 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public void enableWidgets(boolean enabled) {
 		super.enableWidgets(enabled);
 		updateJoinColumnPanesEnablement(enabled);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initialize() {
 		super.initialize();
 
-		joinColumnsPaneEnablerHolder        = buildJoinColumnsPaneEnablerHolder();
-		inverseJoinColumnsPaneEnablerHolder = buildJoinColumnsPaneEnablerHolder();
+		this.joinColumnsPaneEnablerHolder        = buildJoinColumnsPaneEnablerHolder();
+		this.inverseJoinColumnsPaneEnablerHolder = buildJoinColumnsPaneEnablerHolder();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		int groupBoxMargin = groupBoxMargin();
+		int groupBoxMargin = getGroupBoxMargin();
 
 		// Name widgets
-		TableCombo<JoinTable> tableCombo = buildTableCombo(container);
+		TableCombo<JoinTable> tableCombo = addTableCombo(container);
 
-		buildLabeledComposite(
-			buildPane(container, groupBoxMargin),
+		addLabeledComposite(
+			addPane(container, groupBoxMargin),
 			JptUiMappingsMessages.JoinTableComposite_name,
 			tableCombo.getControl(),
 			JpaHelpContextIds.MAPPING_JOIN_TABLE_NAME
 		);
 
 		// Join Columns group pane
-		Group joinColumnGroupPane = buildTitledPane(
+		Group joinColumnGroupPane = addTitledGroup(
 			container,
 			JptUiMappingsMessages.JoinTableComposite_joinColumn
 		);
 
 		// Override Default Join Columns check box
-		overrideDefaultJoinColumnsCheckBox = buildCheckBox(
-			buildSubPane(joinColumnGroupPane, 8),
+		this.overrideDefaultJoinColumnsCheckBox = addCheckBox(
+			addSubPane(joinColumnGroupPane, 8),
 			JptUiMappingsMessages.JoinTableComposite_overrideDefaultJoinColumns,
-			buildOverrideDefaultHolder()
+			buildOverrideDefaultHolder(),
+			null
 		);
 
-		overrideDefaultJoinColumnsCheckBox.addSelectionListener(
+		this.overrideDefaultJoinColumnsCheckBox.addSelectionListener(
 			buildOverrideDefaultSelectionListener()
 		);
 
@@ -366,22 +358,22 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 		);
 
 		installJoinColumnsPaneEnabler(joinColumnsComposite);
-		removeFromEnablementControl(joinColumnsComposite.getControl());
 
 		// Inverse Join Columns group pane
-		Group inverseJoinColumnGroupPane = buildTitledPane(
+		Group inverseJoinColumnGroupPane = addTitledGroup(
 			container,
 			JptUiMappingsMessages.JoinTableComposite_inverseJoinColumn
 		);
 
 		// Override Default Inverse Join Columns check box
-		overrideDefaultInverseJoinColumnsCheckBox = buildCheckBox(
-			buildSubPane(inverseJoinColumnGroupPane, 8),
+		this.overrideDefaultInverseJoinColumnsCheckBox = addCheckBox(
+			addSubPane(inverseJoinColumnGroupPane, 8),
 			JptUiMappingsMessages.JoinTableComposite_overrideDefaultInverseJoinColumns,
-			buildOverrideDefaultHolder()
+			buildOverrideDefaultHolder(),
+			null
 		);
 
-		overrideDefaultInverseJoinColumnsCheckBox.addSelectionListener(
+		this.overrideDefaultInverseJoinColumnsCheckBox.addSelectionListener(
 			buildOverrideDefaultInverseSelectionListener()
 		);
 
@@ -392,15 +384,14 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 		);
 
 		installInverseJoinColumnsPaneEnabler(inverseJoinColumnsComposite);
-		removeFromEnablementControl(inverseJoinColumnsComposite.getControl());
 	}
 
 	private void installInverseJoinColumnsPaneEnabler(JoinColumnsComposite<JoinTable> pane) {
-		new PaneEnabler(inverseJoinColumnsPaneEnablerHolder, pane);
+		new PaneEnabler(this.inverseJoinColumnsPaneEnablerHolder, pane);
 	}
 
 	private void installJoinColumnsPaneEnabler(JoinColumnsComposite<JoinTable> pane) {
-		new PaneEnabler(joinColumnsPaneEnablerHolder, pane);
+		new PaneEnabler(this.joinColumnsPaneEnablerHolder, pane);
 	}
 
 	private void updateInverseJoinColumns() {
@@ -409,8 +400,8 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 			return;
 		}
 
-		JoinTable joinTable = subject();
-		boolean selected = overrideDefaultInverseJoinColumnsCheckBox.getSelection();
+		JoinTable joinTable = getSubject();
+		boolean selected = this.overrideDefaultInverseJoinColumnsCheckBox.getSelection();
 		setPopulating(true);
 
 		try {
@@ -435,7 +426,7 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 				}
 			}
 
-			inverseJoinColumnsPaneEnablerHolder.setValue(selected);
+			this.inverseJoinColumnsPaneEnablerHolder.setValue(selected);
 		}
 		finally {
 			setPopulating(false);
@@ -444,15 +435,15 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 
 	private void updateJoinColumnPanesEnablement(boolean globalEnablement) {
 
-		JoinTable subject      = subject();
+		JoinTable subject      = getSubject();
 		boolean enabled        = globalEnablement && (subject != null) && subject.containsSpecifiedJoinColumns();
 		boolean inverseEnabled = globalEnablement && (subject != null) && subject.containsSpecifiedInverseJoinColumns();
 
-		overrideDefaultJoinColumnsCheckBox       .setSelection(enabled);
-		overrideDefaultInverseJoinColumnsCheckBox.setSelection(inverseEnabled);
+		this.overrideDefaultJoinColumnsCheckBox       .setSelection(enabled);
+		this.overrideDefaultInverseJoinColumnsCheckBox.setSelection(inverseEnabled);
 
-		joinColumnsPaneEnablerHolder       .setValue(enabled);
-		inverseJoinColumnsPaneEnablerHolder.setValue(inverseEnabled);
+		this.joinColumnsPaneEnablerHolder       .setValue(enabled);
+		this.inverseJoinColumnsPaneEnablerHolder.setValue(inverseEnabled);
 	}
 
 	private void updateJoinColumns() {
@@ -461,8 +452,8 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 			return;
 		}
 
-		JoinTable joinTable = subject();
-		boolean selected = overrideDefaultJoinColumnsCheckBox.getSelection();
+		JoinTable joinTable = getSubject();
+		boolean selected = this.overrideDefaultJoinColumnsCheckBox.getSelection();
 		setPopulating(true);
 
 		try {
@@ -487,7 +478,7 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 				}
 			}
 
-			joinColumnsPaneEnablerHolder.setValue(selected);
+			this.joinColumnsPaneEnablerHolder.setValue(selected);
 		}
 		finally {
 			setPopulating(false);

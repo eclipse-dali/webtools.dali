@@ -32,7 +32,7 @@ import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
@@ -79,7 +79,7 @@ import org.eclipse.ui.progress.IProgressService;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUnit>
+public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 {
 	/**
 	 * Creates a new <code>PersistenceUnitMappedClassesComposite</code>.
@@ -87,7 +87,7 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public PersistenceUnitClassesComposite(AbstractPane<? extends PersistenceUnit> parentPane,
+	public PersistenceUnitClassesComposite(Pane<? extends PersistenceUnit> parentPane,
 	                                             Composite parent) {
 
 		super(parentPane, parent);
@@ -98,7 +98,7 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 		IType type = chooseType();
 
 		if (type != null) {
-			ClassRef classRef = subject().addSpecifiedClassRef();
+			ClassRef classRef = getSubject().addSpecifiedClassRef();
 			classRef.setClassName(type.getFullyQualifiedName('.'));
 			listSelectionModel.setSelectedValue(classRef);
 		}
@@ -136,7 +136,7 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				for (Object item : listSelectionModel.selectedValues()) {
-					subject().removeSpecifiedClassRef((ClassRef) item);
+					getSubject().removeSpecifiedClassRef((ClassRef) item);
 				}
 			}
 		};
@@ -179,9 +179,9 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 			@Override
 			protected String transform(Boolean value) {
 
-				if ((subject() != null) && (value == null)) {
+				if ((getSubject() != null) && (value == null)) {
 
-					Boolean defaultValue = subject().getDefaultExcludeUnlistedClasses();
+					Boolean defaultValue = getSubject().getDefaultExcludeUnlistedClasses();
 
 					if (defaultValue != null) {
 
@@ -280,7 +280,7 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 
 		try {
 			typeSelectionDialog = JavaUI.createTypeDialog(
-				shell(),
+				getShell(),
 				service,
 				scope,
 				IJavaElementSearchConstants.CONSIDER_CLASSES,
@@ -308,7 +308,7 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 
 		if (className != null) {
 			try {
-				return subject().getJpaProject().getJavaProject().findType(className);
+				return getSubject().getJpaProject().getJavaProject().findType(className);
 			}
 			catch (JavaModelException e) {
 				JptUiPlugin.log(e);
@@ -325,7 +325,7 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 	protected void initializeLayout(Composite container) {
 
 		// Description
-		buildMultiLineLabel(
+		addMultiLineLabel(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitClassesComposite_description
 		);
@@ -350,11 +350,12 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 			}
 		};
 
-		buildTriStateCheckBoxWithDefault(
+		addTriStateCheckBoxWithDefault(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitClassesComposite_excludeUnlistedMappedClasses,
 			buildExcludeUnlistedMappedClassesHolder(),
-			buildExcludeUnlistedMappedClassesStringHolder()
+			buildExcludeUnlistedMappedClassesStringHolder(),
+			null
 		);
 	}
 
@@ -377,7 +378,7 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 	}
 
 	private IPackageFragmentRoot packageFragmentRoot() {
-		IProject project = subject().getJpaProject().getProject();
+		IProject project = getSubject().getJpaProject().getProject();
 		IJavaProject root = JavaCore.create(project);
 
 		try {

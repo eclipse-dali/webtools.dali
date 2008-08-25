@@ -49,7 +49,7 @@ import org.eclipse.ui.progress.IProgressService;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class ClassChooserPane<T extends Model> extends AbstractChooserPane<T>
+public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 {
 	/**
 	 * The code completion manager.
@@ -62,7 +62,7 @@ public abstract class ClassChooserPane<T extends Model> extends AbstractChooserP
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public ClassChooserPane(AbstractPane<? extends T> parentPane,
+	public ClassChooserPane(Pane<? extends T> parentPane,
 	                        Composite parent) {
 
 		super(parentPane, parent);
@@ -75,7 +75,7 @@ public abstract class ClassChooserPane<T extends Model> extends AbstractChooserP
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public ClassChooserPane(AbstractPane<?> parentPane,
+	public ClassChooserPane(Pane<?> parentPane,
 	                        PropertyValueModel<? extends T> subjectHolder,
 	                        Composite parent) {
 
@@ -98,9 +98,9 @@ public abstract class ClassChooserPane<T extends Model> extends AbstractChooserP
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Control buildMainControl(Composite container) {
+	protected Control addMainControl(Composite container) {
 
-		Text text = buildText(container, buildTextHolder());
+		Text text = addText(container, buildTextHolder());
 
 		ControlContentAssistHelper.createTextContentAssistant(
 			text,
@@ -125,7 +125,7 @@ public abstract class ClassChooserPane<T extends Model> extends AbstractChooserP
 	 */
 	protected IType chooseType() {
 
-		IPackageFragmentRoot root = packageFragmentRoot();
+		IPackageFragmentRoot root = getPackageFragmentRoot();
 
 		if (root == null) {
 			return null;
@@ -138,12 +138,12 @@ public abstract class ClassChooserPane<T extends Model> extends AbstractChooserP
 
 		try {
 			typeSelectionDialog = JavaUI.createTypeDialog(
-				shell(),
+				getShell(),
 				service,
 				scope,
 				IJavaElementSearchConstants.CONSIDER_CLASSES,
 				false,
-				className() != null ? ClassTools.shortNameForClassNamed(className()) : ""
+				getClassName() != null ? ClassTools.shortNameForClassNamed(getClassName()) : ""
 			);
 		}
 		catch (JavaModelException e) {
@@ -166,7 +166,7 @@ public abstract class ClassChooserPane<T extends Model> extends AbstractChooserP
 	 *
 	 * @return The class name or <code>null</code> if none is defined
 	 */
-	protected abstract String className();
+	protected abstract String getClassName();
 
 	/**
 	 * {@inheritDoc}
@@ -194,7 +194,7 @@ public abstract class ClassChooserPane<T extends Model> extends AbstractChooserP
 	 * @return Either the root of the package fragment or <code>null</code> if it
 	 * can't be retrieved
 	 */
-	protected abstract IPackageFragmentRoot packageFragmentRoot();
+	protected abstract IPackageFragmentRoot getPackageFragmentRoot();
 
 	/**
 	 * The browse button was clicked, its action invokes this action which should
@@ -204,8 +204,8 @@ public abstract class ClassChooserPane<T extends Model> extends AbstractChooserP
 
 	private void updatePackageFragment() {
 
-		if (subject() != null) {
-			IPackageFragmentRoot root = packageFragmentRoot();
+		if (getSubject() != null) {
+			IPackageFragmentRoot root = getPackageFragmentRoot();
 
 			if (root != null) {
 				javaTypeCompletionProcessor.setPackageFragment(root.getPackageFragment(""));

@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -23,9 +23,9 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  JdbcPropertiesComposite
  */
-public class JdbcPropertiesComposite extends AbstractPane<Connection>
+public class JdbcPropertiesComposite extends Pane<Connection>
 {
-	public JdbcPropertiesComposite(AbstractPane<Connection> parentComposite, Composite parent) {
+	public JdbcPropertiesComposite(Pane<Connection> parentComposite, Composite parent) {
 
 		super(parentComposite, parent);
 	}
@@ -51,14 +51,14 @@ public class JdbcPropertiesComposite extends AbstractPane<Connection>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		container = buildTitledPane(
-			buildSubPane(container, 10),
+		container = addTitledGroup(
+			addSubPane(container, 10),
 			EclipseLinkUiMessages.JdbcPropertiesComposite_EclipseLinkConnectionPool_GroupBox
 		);
 
 		new JdbcConnectionPropertiesComposite(this, container);
 
-		container = buildPane(container, new GridLayout(2, true));
+		container = addPane(container, new GridLayout(2, true));
 
 		new JdbcReadConnectionPropertiesComposite(this, container);
 		new JdbcWriteConnectionPropertiesComposite(this, container);

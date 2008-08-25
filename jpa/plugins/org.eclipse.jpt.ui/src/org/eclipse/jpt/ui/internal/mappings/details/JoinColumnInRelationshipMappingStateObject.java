@@ -60,7 +60,7 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 	 */
 	@Override
 	public Table getNameTable() {
-		Schema schema = getSchema();
+		Schema schema = getDbSchema();
 
 		if (schema == null) {
 			return null;
@@ -101,7 +101,7 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 	 * (non-Javadoc)
 	 */
 	@Override
-	public Schema getSchema() {
+	public Schema getDbSchema() {
 		return getOwner().getTypeMapping().getDbSchema();
 	}
 }

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.persistence.details;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class PersistenceUnitJarFilesComposite extends AbstractPane<PersistenceUnit>
+public class PersistenceUnitJarFilesComposite extends Pane<PersistenceUnit>
 {
 	/**
 	 * Creates a new <code>PersistenceUnitJPAMappingDescriptorsComposite</code>.
@@ -42,7 +42,7 @@ public class PersistenceUnitJarFilesComposite extends AbstractPane<PersistenceUn
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public PersistenceUnitJarFilesComposite(AbstractPane<? extends PersistenceUnit> parentPane,
+	public PersistenceUnitJarFilesComposite(Pane<? extends PersistenceUnit> parentPane,
 	                                            Composite parent) {
 
 		super(parentPane, parent, false);
