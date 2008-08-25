@@ -31,6 +31,12 @@ public interface BaseOverride extends JpaContextNode
 	 */
 	boolean isVirtual();
 
+	/**
+	 * If false, add the given override as a specified override and remove
+	 * it from the list of virtual overrides.  If true, then remove it
+	 * from the specified overrides and add it to the virtual overrides
+	 * as applicable.  Return the new override (whether virtual or specified)
+	 */
 	BaseOverride setVirtual(boolean virtual);
 	
 	interface Owner
@@ -49,7 +55,7 @@ public interface BaseOverride extends JpaContextNode
 		boolean isVirtual(BaseOverride override);
 		
 		/**
-		 * If false, add the give override as a specified override and remove
+		 * If false, add the given override as a specified override and remove
 		 * it from the list of virtual overrides.  If true, then remove it
 		 * from the specified overrides and add it to the virtual overrides
 		 * as applicable.  Return the new override (whether virtual or specified)
