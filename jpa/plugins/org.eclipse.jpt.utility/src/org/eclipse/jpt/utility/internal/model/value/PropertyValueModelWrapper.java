@@ -59,7 +59,7 @@ public abstract class PropertyValueModelWrapper<T>
 			}
 		    @Override
 			public String toString() {
-				return "value change listener";
+				return "value change listener"; //$NON-NLS-1$
 			}
 		};
 	}
