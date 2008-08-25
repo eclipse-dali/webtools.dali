@@ -280,7 +280,7 @@ public final class NameTools {
 			return convertToJavaIdentifier(string + c, c);
 		}
 		char[] array = string.toCharArray();
-		return (convertToJavaIdentifier_(array, c)) ? new String(array) : string;
+		return convertToJavaIdentifier_(array, c) ? new String(array) : string;
 	}
 
 	/**
