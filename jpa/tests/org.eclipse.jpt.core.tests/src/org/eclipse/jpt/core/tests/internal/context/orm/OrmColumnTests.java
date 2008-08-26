@@ -674,9 +674,9 @@ public class OrmColumnTests extends ContextModelTestCase
 		javaBasicMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);	
 		javaBasicMapping.getColumn().setSpecifiedNullable(Boolean.FALSE);	
 		javaBasicMapping.getColumn().setSpecifiedUnique(Boolean.TRUE);	
-		javaBasicMapping.getColumn().setSpecifiedLength(new Integer(45));
-		javaBasicMapping.getColumn().setSpecifiedPrecision(new Integer(46));
-		javaBasicMapping.getColumn().setSpecifiedScale(new Integer(47));
+		javaBasicMapping.getColumn().setSpecifiedLength(Integer.valueOf(45));
+		javaBasicMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(46));
+		javaBasicMapping.getColumn().setSpecifiedScale(Integer.valueOf(47));
 
 		assertEquals("FOO", ormColumn.getSpecifiedName());
 		assertEquals("FOO_TABLE", ormColumn.getSpecifiedTable());
@@ -760,9 +760,9 @@ public class OrmColumnTests extends ContextModelTestCase
 		javaBasicMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);	
 		javaBasicMapping.getColumn().setSpecifiedNullable(Boolean.FALSE);	
 		javaBasicMapping.getColumn().setSpecifiedUnique(Boolean.TRUE);	
-		javaBasicMapping.getColumn().setSpecifiedLength(new Integer(45));
-		javaBasicMapping.getColumn().setSpecifiedPrecision(new Integer(46));
-		javaBasicMapping.getColumn().setSpecifiedScale(new Integer(47));
+		javaBasicMapping.getColumn().setSpecifiedLength(Integer.valueOf(45));
+		javaBasicMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(46));
+		javaBasicMapping.getColumn().setSpecifiedScale(Integer.valueOf(47));
 
 	
 		assertEquals("name", ormColumn.getDefaultName());
