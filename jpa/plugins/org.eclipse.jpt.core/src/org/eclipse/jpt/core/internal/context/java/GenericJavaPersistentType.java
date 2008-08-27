@@ -167,12 +167,16 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		return this.attributes.size();
 	}
 	
-	private void addAttribute(JavaPersistentAttribute attribute) {
-		addItemToList(attribute, this.attributes, PersistentType.SPECIFIED_ATTRIBUTES_LIST);
+	private void addAttribute(int index, JavaPersistentAttribute attribute) {
+		addItemToList(index, attribute, this.attributes, PersistentType.SPECIFIED_ATTRIBUTES_LIST);
 	}
 
 	private void removeAttribute(JavaPersistentAttribute attribute) {
 		removeItemFromList(attribute, this.attributes, PersistentType.SPECIFIED_ATTRIBUTES_LIST);
+	}
+	
+	private void moveAttribute(int index, JavaPersistentAttribute attribute) {
+		moveItemInList(index, this.attributes.indexOf(attribute), this.attributes, PersistentType.SPECIFIED_ATTRIBUTES_LIST);
 	}
 	
 	public Iterator<String> attributeNames() {
@@ -417,24 +421,38 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 
 	protected void updatePersistentAttributes(JavaResourcePersistentType jrpt) {
-		ListIterator<JavaPersistentAttribute> contextAttributes = attributes();
 		Iterator<JavaResourcePersistentAttribute> resourceAttributes = jrpt.fields();
 		if (getAccess() == AccessType.PROPERTY) {
 			resourceAttributes = jrpt.properties();
-		}		
-		
-		while (contextAttributes.hasNext()) {
-			JavaPersistentAttribute persistentAttribute = contextAttributes.next();
-			if (resourceAttributes.hasNext()) {
-				persistentAttribute.update(resourceAttributes.next());
-			}
-			else {
-				removeAttribute(persistentAttribute);
-			}
 		}
+		Collection<JavaPersistentAttribute> contextAttributesToRemove = CollectionTools.collection(attributes());
+		Collection<JavaPersistentAttribute> contextAttributesToUpdate = new ArrayList<JavaPersistentAttribute>();
+		int resourceIndex = 0;
 		
 		while (resourceAttributes.hasNext()) {
-			addAttribute(createAttribute(resourceAttributes.next()));
+			JavaResourcePersistentAttribute resourceAttribute = resourceAttributes.next();
+			boolean contextAttributeFound = false;
+			for (JavaPersistentAttribute contextAttribute : contextAttributesToRemove) {
+				if (contextAttribute.getResourcePersistentAttribute() == resourceAttribute) {
+					moveAttribute(resourceIndex, contextAttribute);
+					contextAttributesToRemove.remove(contextAttribute);
+					contextAttributesToUpdate.add(contextAttribute);
+					contextAttributeFound = true;
+					break;
+				}
+			}
+			if (!contextAttributeFound) {
+				addAttribute(resourceIndex, createAttribute(resourceAttribute));
+			}
+			resourceIndex++;
+		}
+		for (JavaPersistentAttribute contextAttribute : contextAttributesToRemove) {
+			removeAttribute(contextAttribute);
+		}
+		//first handle adding/removing of the persistent attributes, then update the others last, 
+		//this causes less churn in the update process
+		for (JavaPersistentAttribute contextAttribute : contextAttributesToUpdate) {
+			contextAttribute.update(contextAttribute.getResourcePersistentAttribute());
 		}
 	}
 	

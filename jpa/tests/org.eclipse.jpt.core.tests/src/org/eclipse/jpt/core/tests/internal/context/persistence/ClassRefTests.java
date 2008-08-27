@@ -39,21 +39,19 @@ public class ClassRefTests extends ContextModelTestCase
 		// set xml class name to different name, test equality
 		xmlClassRef.setJavaClass("com.bar.Foo");
 		
+		classRef = persistenceUnit.specifiedClassRefs().next();
 		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
 		
 		// set class name to empty string, test equality
 		xmlClassRef.setJavaClass("");
 		
+		classRef = persistenceUnit.specifiedClassRefs().next();
 		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
 		
-		// set class name to null, test equality
-		xmlClassRef.setJavaClass(null);
-		
-		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
-		
-		// set name back to non-null, test equality
+		// set name back to non empty string, test equality
 		xmlClassRef.setJavaClass("com.foo.Bar");
 		
+		classRef = persistenceUnit.specifiedClassRefs().next();
 		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
 	}
 	

@@ -13,6 +13,7 @@ import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
@@ -254,8 +255,11 @@ public class JpaFileTests extends ContextModelTestCase
 		
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		JavaPersistentType javaPersistentType = javaPersistentType();
-		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
-		assertEquals(entityMappings().getPersistenceUnit().specifiedClassRefs().next(), javaJpaFile.rootStructureNodes().next().getParent());
+		Iterator<JpaStructureNode> rootStructureNodes = javaJpaFile.rootStructureNodes();
+		JpaStructureNode rootStructureNode = rootStructureNodes.next();
+		assertEquals(javaPersistentType, rootStructureNode);
+		assertEquals(entityMappings().getPersistenceUnit().specifiedClassRefs().next(), rootStructureNode.getParent());
+		assertFalse(rootStructureNodes.hasNext());
 		
 		removeXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		assertNotSame(javaPersistentType, javaJpaFile.rootStructureNodes().next());
