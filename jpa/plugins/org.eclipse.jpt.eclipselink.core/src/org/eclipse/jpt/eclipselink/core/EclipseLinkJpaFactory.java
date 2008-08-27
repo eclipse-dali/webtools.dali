@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 
 /**
  * Use EclipseLinkJpaFactory to create any EclispeLink specific
@@ -29,9 +30,14 @@ import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
  * @since 2.1
  */
 public interface EclipseLinkJpaFactory extends JpaFactory
-{
-
+{	
+	EclipseLinkJavaCaching buildEclipseLinkJavaCaching(JavaTypeMapping parent);
+	
+	
+	//********* covariant overrides ***********
+	
 	EclipseLinkJavaEntity buildJavaEntity(JavaPersistentType parent);
 	
-	EclipseLinkJavaCaching buildEclipseLinkJavaCaching(JavaTypeMapping parent);
+	EclipseLinkJavaMappedSuperclass buildJavaMappedSuperclass(JavaPersistentType parent);
+
 }
