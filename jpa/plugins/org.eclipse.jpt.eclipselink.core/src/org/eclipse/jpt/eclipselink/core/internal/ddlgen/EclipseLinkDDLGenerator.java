@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.ddlgen;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -64,7 +65,7 @@ public class EclipseLinkDDLGenerator
 	static public String LAUNCH_CONFIG_NAME = "EclipseLink";   //$NON-NLS-1$
 	static public String DDL_GEN_PACKAGE_NAME = "org.eclipse.jpt.eclipselink.core.ddlgen";   //$NON-NLS-1$
 	static public String ECLIPSELINK_DDL_GEN_CLASS = DDL_GEN_PACKAGE_NAME + ".Main";	  //$NON-NLS-1$
-	static public String ECLIPSELINK_DDL_GEN_JAR = DDL_GEN_PACKAGE_NAME + "_" + ECLIPSELINK_DDL_GEN_JAR_VERSION + ".jar";	//$NON-NLS-1$
+	static public String ECLIPSELINK_DDL_GEN_JAR = DDL_GEN_PACKAGE_NAME + "_";	//$NON-NLS-1$
 	static public String PROPERTIES_FILE_NAME = "login.properties";	  //$NON-NLS-1$
 	static public String ECLIPSE_HOME = "ECLIPSE_HOME";	  //$NON-NLS-1$
 	static public String PLUGINS_DIR = "plugins";	  //$NON-NLS-1$
@@ -203,9 +204,33 @@ public class EclipseLinkDDLGenerator
 	}
 	
 	private IPath buildBootstrapJarPath() {
-		IPath path = JavaCore.getClasspathVariable(ECLIPSE_HOME);
-		return path.append(PLUGINS_DIR).append(ECLIPSELINK_DDL_GEN_JAR);
+		
+		IPath path = JavaCore.getClasspathVariable(ECLIPSE_HOME).append(PLUGINS_DIR);
+		File eclipseHome = path.toFile();
+		
+		List<File> result = new ArrayList<File>();
+		this.findFile(ECLIPSELINK_DDL_GEN_JAR, eclipseHome, result);
+		
+		File ddlGenJarFile = result.get(0);
+		try {
+			String ddlGenJarPath = ddlGenJarFile.getCanonicalPath();
+			return new Path(ddlGenJarPath);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
+
+	private void findFile(String fileName, File directory, List<? super File> list) {
+		for (File file : directory.listFiles()) {
+			if (file.getName().startsWith(fileName)) {
+				list.add(file);
+			}
+			if (file.isDirectory()) {
+				findFile(fileName, file, list);
+			}
+		}
+	} 
 
 	private ILaunchesListener2 buildLaunchListener() {
 		return new ILaunchesListener2() {
