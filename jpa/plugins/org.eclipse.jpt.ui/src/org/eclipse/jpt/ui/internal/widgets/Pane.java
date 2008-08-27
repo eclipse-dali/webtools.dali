@@ -21,6 +21,7 @@ import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.swt.BooleanButtonModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.CComboModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.ComboModelAdapter;
+import org.eclipse.jpt.ui.internal.swt.DateTimeModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.SpinnerModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.TextFieldModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.TriStateCheckBoxModelAdapter;
@@ -53,6 +54,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
@@ -2040,6 +2042,63 @@ public abstract class Pane<T extends Model>
 	}
 	
 	/**
+	 * Creates a new managed DateTime of type SWT.TIME.  Managed means that this Pane will
+	 * handle enabling/disabling of this widget if a PaneEnabler is used.  
+	 *
+	 * @param parent The parent container
+	 * @param hoursHolder The holder of the hours integer value
+	 * @param minutesHolder The holder of the minutes integer value
+	 * @param secondsHolder The holder of the seconds integer value
+	 * @param helpId The topic help ID to be registered for the new dateTime
+	 * @return The newly created <code>DateTime</code>
+	 *
+	 * @category Layout
+	 */
+	protected final DateTime addDateTime(Composite parent,
+											WritablePropertyValueModel<Integer> hoursHolder,
+											WritablePropertyValueModel<Integer> minutesHolder,
+											WritablePropertyValueModel<Integer> secondsHolder,
+											String helpId) {
+		
+		DateTime dateTime = this.addUnmanagedDateTime(parent, hoursHolder, minutesHolder, secondsHolder, helpId);
+		this.manageWidget(dateTime);
+
+		return dateTime;
+	}
+
+
+	/**
+	 * Creates a new unmanaged DateTime of type SWT.TIME.  Unmanaged means that this Pane will
+	 * not handle the enabling/disabling of this widget.  The owning object will handle
+	 * it with its own PaneEnabler or ControlEnabler.
+	 *
+	 * @param parent The parent container
+	 * @param hoursHolder The holder of the hours integer value
+	 * @param minutesHolder The holder of the minutes integer value
+	 * @param secondsHolder The holder of the seconds integer value
+	 * @param helpId The topic help ID to be registered for the new dateTime
+	 * @return The newly created <code>DateTime</code>
+	 *
+	 * @category Layout
+	 */
+	protected final DateTime addUnmanagedDateTime(Composite parent,
+											WritablePropertyValueModel<Integer> hoursHolder,
+											WritablePropertyValueModel<Integer> minutesHolder,
+											WritablePropertyValueModel<Integer> secondsHolder,
+											String helpId) {
+		
+		DateTime dateTime = this.widgetFactory.createDateTime(parent, SWT.TIME);
+		
+		DateTimeModelAdapter.adapt(hoursHolder, minutesHolder, secondsHolder, dateTime);
+	
+		if (helpId != null) {
+			getHelpSystem().setHelp(dateTime, helpId);
+		}
+
+		return dateTime;
+	}
+
+	/**
 	 * Creates a new container that will have a text field as the center control
 	 * labeled with the given label.
 	 *
@@ -3027,12 +3086,30 @@ public abstract class Pane<T extends Model>
 	                                      String title,
 	                                      String helpId) {
 
+		return addTitledGroup(container, title, 1, helpId);
+	}
+	
+	/**
+	 * Creates a new container with a titled border.
+	 *
+	 * @param title The text of the titled border
+	 * @param container The parent container
+	 * @param helpId The topic help ID to be registered for the new group
+	 * @return The newly created <code>Composite</code> with a titled border
+	 *
+	 * @category Layout
+	 */
+	protected final Group addTitledGroup(Composite container,
+	                                      String title,
+	                                      int columnCount,
+	                                      String helpId) {
+
 		Group group = this.widgetFactory.createGroup(container, title);
 		//manageWidget(group); TODO unsure if I want to manage groups, 
 		//also should probably rename this addUnmanagedTitledPane
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		GridLayout layout = new GridLayout(1, false);
+		GridLayout layout = new GridLayout(columnCount, false);
 		layout.marginHeight = 0;
 		layout.marginWidth  = 0;
 		layout.marginTop    = 5;

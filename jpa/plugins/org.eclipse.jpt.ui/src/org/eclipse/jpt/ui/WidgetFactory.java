@@ -13,6 +13,7 @@ import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
@@ -81,6 +82,16 @@ public interface WidgetFactory {
 	 */
 	Composite createComposite(Composite parent);
 
+	/**
+	 * Creates a new DateTime.
+	 *
+	 * @param container The parent container
+	 * @param style The style is to tell the type of widget
+	 * (<code>SWT.DATE</code> or <code>SWT.TIME</code> or <code>SWT.CALENDAR</code>)
+	 * @return A new <code>DateTime</code>
+	 */
+	DateTime createDateTime(Composite parent, int style);
+	
 	/**
 	 * Creates a new editable custom <code>CCombo</code>.
 	 *

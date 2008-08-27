@@ -18,6 +18,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
@@ -160,8 +161,20 @@ public class FormWidgetFactory implements WidgetFactory {
 	 */
 	public Composite createComposite(Composite parent) {
 		Composite composite = widgetFactory.createComposite(parent);
-      widgetFactory.paintBordersFor(composite);
+		widgetFactory.paintBordersFor(composite);
 		return composite;
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	public DateTime createDateTime(Composite parent, int style) {
+		parent = createBorderContainer(parent);
+
+		DateTime dateTime = new DateTime(parent, style | SWT.FLAT);
+		dateTime.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
+		this.widgetFactory.adapt(dateTime, true, false);
+
+		return dateTime;
 	}
 
 	/**
