@@ -98,6 +98,14 @@ public class NullCacheAnnotation extends AbstractJavaResourceNode implements Cac
 		return null;
 	}
 	
+	public TimeOfDayAnnotation addExpiryTimeOfDay() {
+		return createCacheResource().addExpiryTimeOfDay();
+	}
+	
+	public void removeExpiryTimeOfDay() {
+		
+	}
+	
 	public Boolean getAlwaysRefresh() {
 		return null;
 	}

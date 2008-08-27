@@ -53,7 +53,13 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	public static String ExistenceCheckingComposite_assume_existence;
 	public static String ExistenceCheckingComposite_assume_non_existence;
 	
-	
+	public static String ExpiryComposite_expirySection;
+	public static String ExpiryComposite_noExpiry;
+	public static String ExpiryComposite_timeToLiveExpiry;
+	public static String ExpiryComposite_timeToLiveExpiryExpireAfter;
+	public static String ExpiryComposite_timeToLiveExpiryMilliseconds;
+	public static String ExpiryComposite_dailyExpiry;
+	public static String ExpiryComposite_timeOfDayExpiryExpireAt;
 	
 	static {
 		NLS.initializeMessages("eclipselink_ui_mappings", EclipseLinkUiMappingsMessages.class);

@@ -16,6 +16,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.CacheAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheType;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.TimeOfDayAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
@@ -31,11 +32,20 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 	private void createCacheCoordinationTypeEnum() throws Exception {
 		this.createEnumAndMembers("CacheCoordinationType", "SEND_OBJECT_CHANGES, INVALIDATE_CHANGED_OBJECTS, SEND_NEW_OBJECTS_WITH_CHANGES, NONE;");	
 	}
+	
+	private void createTimeOfDayAnnotation() throws Exception {
+
+		this.createAnnotationAndMembers("TimeOfDay", 
+			"int hour() default 0; " +
+			"int minute() default 0; " +
+			"int second() default 0; " +
+			"int millisecond() default 0;");
+	}
 
 	private void createCacheAnnotation() throws Exception {
 		createCacheTypeEnum();
 		createCacheCoordinationTypeEnum();
-
+		createTimeOfDayAnnotation();
 		this.createAnnotationAndMembers("Cache", 
 			"CacheType type() default SOFT_WEAK; " +
 			"int size() default 100; " +
@@ -62,7 +72,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		});
 	}
 	
-	private ICompilationUnit createTestExistenceCheckingWithCacheType() throws Exception {
+	private ICompilationUnit createTestCacheWithCacheType() throws Exception {
 		createCacheAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -76,7 +86,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		});
 	}
 	
-	private ICompilationUnit createTestExistenceCheckingWithSize() throws Exception {
+	private ICompilationUnit createTestCacheWithSize() throws Exception {
 		createCacheAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -90,7 +100,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		});
 	}
 	
-	private ICompilationUnit createTestExistenceCheckingWithExpiry() throws Exception {
+	private ICompilationUnit createTestCacheWithExpiry() throws Exception {
 		createCacheAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -104,6 +114,20 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		});
 	}
 	
+	private ICompilationUnit createTestCacheWithExpiryTimeOfDay() throws Exception {
+		createCacheAnnotation();
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(EclipseLinkJPA.CACHE, EclipseLinkJPA.TIME_OF_DAY);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Cache(expiryTimeOfDay = @TimeOfDay)");
+			}
+		});
+	}
+
 	private ICompilationUnit createTestCacheWithShared() throws Exception {
 		this.createCacheAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -183,7 +207,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 
 	public void testGetType() throws Exception {
-		ICompilationUnit cu = this.createTestExistenceCheckingWithCacheType();
+		ICompilationUnit cu = this.createTestCacheWithCacheType();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
 		CacheAnnotation cache = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
@@ -191,7 +215,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 
 	public void testSetType() throws Exception {
-		ICompilationUnit cu = this.createTestExistenceCheckingWithCacheType();
+		ICompilationUnit cu = this.createTestCacheWithCacheType();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
 		CacheAnnotation cache = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
@@ -210,22 +234,22 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 	
 	public void testGetSize() throws Exception {
-		ICompilationUnit cu = this.createTestExistenceCheckingWithSize();
+		ICompilationUnit cu = this.createTestCacheWithSize();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
 		CacheAnnotation cache = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
-		assertEquals(new Integer(50), cache.getSize());
+		assertEquals(Integer.valueOf(50), cache.getSize());
 	}
 
 	public void testSetSize() throws Exception {
-		ICompilationUnit cu = this.createTestExistenceCheckingWithSize();
+		ICompilationUnit cu = this.createTestCacheWithSize();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
 		CacheAnnotation cache = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
-		assertEquals(new Integer(50), cache.getSize());
+		assertEquals(Integer.valueOf(50), cache.getSize());
 		
-		cache.setSize(new Integer(80));
-		assertEquals(new Integer(80), cache.getSize());
+		cache.setSize(Integer.valueOf(80));
+		assertEquals(Integer.valueOf(80), cache.getSize());
 		
 		assertSourceContains("@Cache(size = 80)", cu);
 		
@@ -271,22 +295,22 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 	
 	public void testGetExpiry() throws Exception {
-		ICompilationUnit cu = this.createTestExistenceCheckingWithExpiry();
+		ICompilationUnit cu = this.createTestCacheWithExpiry();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
 		CacheAnnotation cache = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
-		assertEquals(new Integer(50), cache.getExpiry());
+		assertEquals(Integer.valueOf(50), cache.getExpiry());
 	}
 
 	public void testSetExpiry() throws Exception {
-		ICompilationUnit cu = this.createTestExistenceCheckingWithExpiry();
+		ICompilationUnit cu = this.createTestCacheWithExpiry();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
 		CacheAnnotation cache = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
-		assertEquals(new Integer(50), cache.getExpiry());
+		assertEquals(Integer.valueOf(50), cache.getExpiry());
 		
-		cache.setExpiry(new Integer(80));
-		assertEquals(new Integer(80), cache.getExpiry());
+		cache.setExpiry(Integer.valueOf(80));
+		assertEquals(Integer.valueOf(80), cache.getExpiry());
 		
 		assertSourceContains("@Cache(expiry = 80)", cu);
 		
@@ -296,7 +320,41 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		assertSourceDoesNotContain("(expiry = 80)", cu);
 		assertSourceDoesNotContain("@Cache", cu);
 	}
+	
+	public void testGetExpiryTimeOfDay() throws Exception {
+		ICompilationUnit cu = this.createTestCacheWithExpiryTimeOfDay();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
+		
+		CacheAnnotation cache = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
+		TimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
+		assertNotNull(timeOfDay);
+	}
 
+	public void testAddExpiryTimeOfDay() throws Exception {
+		ICompilationUnit cu = this.createTestCache();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
+		
+		CacheAnnotation cache = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
+		cache.addExpiryTimeOfDay();
+		
+		assertNotNull(cache.getExpiryTimeOfDay());
+		
+		assertSourceContains("@Cache(expiryTimeOfDay=@TimeOfDay)", cu);
+	}
+	
+	public void testRemoveExpiryTimeOfDay() throws Exception {
+		ICompilationUnit cu = this.createTestCacheWithExpiryTimeOfDay();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
+		
+		CacheAnnotation cache = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
+		
+		assertNotNull(cache.getExpiryTimeOfDay());
+
+		cache.removeExpiryTimeOfDay();
+		assertNull(cache.getExpiryTimeOfDay());
+		assertSourceDoesNotContain("@Cache(expiryTimeOfDay = @TimeOfDay)", cu);
+	}
+	
 	public void testGetAlwaysRefresh() throws Exception {
 		ICompilationUnit cu = this.createTestCacheWithAlwaysRefresh();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);

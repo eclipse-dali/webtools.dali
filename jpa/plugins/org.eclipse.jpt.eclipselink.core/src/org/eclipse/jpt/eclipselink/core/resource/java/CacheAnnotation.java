@@ -84,6 +84,8 @@ public interface CacheAnnotation extends JavaResourceNode
 	void setExpiry(Integer expiry);
 		String EXPIRY_PROPERTY = "expiryProperty";
 
+	TimeOfDayAnnotation addExpiryTimeOfDay();
+	void removeExpiryTimeOfDay();
 	TimeOfDayAnnotation getExpiryTimeOfDay();
 		String EXPIRY_TIME_OF_DAY_PROPERTY = "expiryTimeOfDayProperty";
 		

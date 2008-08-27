@@ -34,15 +34,21 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------
  * | x Shared                                                                  |
  * |    CacheTypeComposite                                                     |
- * |    AlwaysRefreshComposite                                                 |
- * |    RefreshOnlyIfNewerComposite                                            |
- * |    DisableHitsComposite                                                   |
+ * |    CacheSizeComposite                                                     |
+ * |    > Advanced   	                                                       |
+ * |    	ExpiryComposite                                                    |
+ * |    	AlwaysRefreshComposite                                             |
+ * |   		RefreshOnlyIfNewerComposite                                        |
+ * |    	DisableHitsComposite                                               |
+ * |    	CacheCoordinationComposite                                         |
+ * | ExistenceTypeComposite                                                    |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see Entity
  * @see EclipseLinkCaching
  * @see EclipseLinkJavaEntityComposite - The parent container
  * @see CacheTypeComposite
+ * @see CacheSizeComposite
  * @see AlwaysRefreshComposite
  * @see RefreshOnlyIfNewerComposite
  * @see DisableHitsComposite
@@ -94,6 +100,7 @@ public class CachingComposite extends FormPane<EclipseLinkCaching>
 	}
 	
 	private void initializeAdvancedPane(Composite container, Collection<Pane<?>> panes) {
+		panes.add(new ExpiryComposite(this, container));//don't add to panes, will handle its own enablement
 		panes.add(new AlwaysRefreshComposite(this, container));
 		panes.add(new RefreshOnlyIfNewerComposite(this, container));
 		panes.add(new DisableHitsComposite(this, container));
@@ -108,6 +115,7 @@ public class CachingComposite extends FormPane<EclipseLinkCaching>
 			}
 		};
 	}	
+	
 	private WritablePropertyValueModel<Boolean> buildSharedHolder() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_SHARED_PROPERTY) {
 			@Override

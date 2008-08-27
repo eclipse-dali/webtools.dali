@@ -10,11 +10,11 @@
 package org.eclipse.jpt.eclipselink.core.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
+import org.eclipse.jpt.eclipselink.core.resource.java.TimeOfDayAnnotation;
 
 /**
- * 
+ * Corresponds to the TimeOfDay annotation
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -25,26 +25,19 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJavaCaching extends EclipseLinkCaching, JavaJpaContextNode
+public interface EclipseLinkJavaExpiryTimeOfDay extends EclipseLinkExpiryTimeOfDay, JavaJpaContextNode
 {
-	
 	/**
-	 * Initialize the EclipseLinkJavaCaching context model object to match the CacheAnnotation 
+	 * Initialize the EclipseLinkJavaExpiryTimeOfDay context model object to match the TimeOfDayAnnotation 
 	 * resource model object. This should be called immediately after object creation.
 	 */
-	void initialize(JavaResourcePersistentType resourcePersistentType);
+	void initialize(TimeOfDayAnnotation timeOfDay);
 	
 	/**
-	 * Update the EclipseLinkJavaCaching context model object to match the CacheAnnotation 
+	 * Update the EclipseLinkJavaExpiryTimeOfDay context model object to match the TimeOfDayAnnotation 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
-	void update(JavaResourcePersistentType resourcePersistentType);	
-	
-	
-	//********* covariant overrides ************
-	
-	EclipseLinkJavaExpiryTimeOfDay getExpiryTimeOfDay();
-	
-	EclipseLinkJavaExpiryTimeOfDay addExpiryTimeOfDay();
+	void update(TimeOfDayAnnotation timeOfDay);
+
 
 }

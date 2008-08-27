@@ -15,9 +15,11 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.context.CacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.CacheType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.ExistenceType;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.ExistenceCheckingAnnotation;
@@ -48,7 +50,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 	private void createCacheAnnotation() throws Exception {
 		createCacheTypeEnum();
 		createCacheCoordinationTypeEnum();
-
+		createTimeOfDayAnnotation();
 		this.createAnnotationAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, "Cache", 
 			"CacheType type() default SOFT_WEAK; " +
 			"int size() default 100; " +
@@ -61,6 +63,14 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 			"CacheCoordinationType coordinationType() default SEND_OBJECT_CHANGES;");
 	}
 	
+	private void createTimeOfDayAnnotation() throws Exception {
+		this.createAnnotationAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, "TimeOfDay", 
+			"int hour() default 0; " +
+			"int minute() default 0; " +
+			"int second() default 0; " +
+			"int millisecond() default 0;");
+	}
+
 	private void createExistenceCheckingAnnotation() throws Exception {
 		createExistenceTypeEnum();
 
@@ -123,14 +133,14 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		EclipseLinkJavaCaching caching = entity.getCaching();
 		
 		caching.setSpecifiedType(CacheType.HARD_WEAK);
-		caching.setSpecifiedSize(new Integer(500));
+		caching.setSpecifiedSize(Integer.valueOf(500));
 		caching.setSpecifiedAlwaysRefresh(Boolean.FALSE);
 		caching.setSpecifiedRefreshOnlyIfNewer(Boolean.FALSE);
 		caching.setSpecifiedDisableHits(Boolean.FALSE);
 		caching.setSpecifiedCoordinationType(CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS);
 		caching.setExistenceChecking(true);
 		caching.setSpecifiedExistenceType(ExistenceType.CHECK_CACHE);
-		
+		caching.setExpiry(Integer.valueOf(8000));
 		
 		caching.setSpecifiedShared(Boolean.FALSE);
 		
@@ -140,10 +150,26 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		assertEquals(null, caching.getSpecifiedRefreshOnlyIfNewer());
 		assertEquals(null, caching.getSpecifiedDisableHits());
 		assertEquals(null, caching.getSpecifiedCoordinationType());
+		assertEquals(null, caching.getExpiry());
+		
 		
 		//existence checking is the only thing that isn't unset when shared is set to false
 		assertTrue(caching.hasExistenceChecking());
 		assertEquals(ExistenceType.CHECK_CACHE, caching.getSpecifiedExistenceType());
+		
+		caching.setSpecifiedShared(null);
+		EclipseLinkExpiryTimeOfDay timeOfDayExpiry = caching.addExpiryTimeOfDay();
+		timeOfDayExpiry.setHour(Integer.valueOf(5));
+		
+		caching.setSpecifiedShared(Boolean.FALSE);
+		assertNull(caching.getExpiryTimeOfDay());
+		
+		
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
+		
+		assertEquals(Boolean.FALSE, cacheAnnotation.getShared());
+		assertNull(cacheAnnotation.getExpiryTimeOfDay());
 	}
 	
 	public void testGetSpecifiedShared() throws Exception {
@@ -480,6 +506,144 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		caching.setSpecifiedExistenceType(null);
 		assertNull(caching.getSpecifiedExistenceType());
 		assertEquals(ExistenceType.CHECK_CACHE, caching.getExistenceType());
+	}
+
+	public void testGetExpiry() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		
+		assertNull(entity.getCaching().getExpiry());
+		
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.addAnnotation(EclipseLinkJPA.CACHE);
+		assertNull(entity.getCaching().getExpiry());
+		
+		cacheAnnotation.setExpiry(Integer.valueOf(57));
+		
+		assertEquals(Integer.valueOf(57), entity.getCaching().getExpiry());
+		
+		typeResource.removeAnnotation(EclipseLinkJPA.CACHE);
+		assertNull(entity.getCaching().getExpiry());	
+	}
+	
+	public void testSetExpiry() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaCaching caching = entity.getCaching();
+		
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		
+		caching.setExpiry(Integer.valueOf(58));
+		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
+		assertEquals(Integer.valueOf(58), cacheAnnotation.getExpiry());
+		
+		
+		caching.setExpiry(null);
+		cacheAnnotation = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
+		assertNull(cacheAnnotation);
+	}
+	
+	public void testSetExpiryUnsetsExpiryTimeOfDay() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaCaching caching = entity.getCaching();
+		
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		
+		caching.addExpiryTimeOfDay();
+		caching.getExpiryTimeOfDay().setHour(Integer.valueOf(5));
+		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
+		assertEquals(Integer.valueOf(5), cacheAnnotation.getExpiryTimeOfDay().getHour());
+		
+		caching.setExpiry(Integer.valueOf(900));
+		
+		assertNull(caching.getExpiryTimeOfDay());
+		assertNull(cacheAnnotation.getExpiryTimeOfDay());
+		assertEquals(Integer.valueOf(900), cacheAnnotation.getExpiry());	
+		assertEquals(Integer.valueOf(900), caching.getExpiry());	
+	}
+	
+	public void testGetTimeOfDayExpiry() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaCaching caching = entity.getCaching();
+		
+		assertNull(caching.getExpiryTimeOfDay());
+		
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.addAnnotation(EclipseLinkJPA.CACHE);
+
+		cacheAnnotation.addExpiryTimeOfDay();
+		
+		assertNotNull(caching.getExpiryTimeOfDay());
+	}
+	
+	public void testAddTimeOfDayExpiry() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaCaching caching = entity.getCaching();
+		
+		assertNull(caching.getExpiryTimeOfDay());
+		
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+
+		EclipseLinkJavaExpiryTimeOfDay timeOfDayExpiry = caching.addExpiryTimeOfDay();
+		
+		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
+		assertNotNull(cacheAnnotation.getExpiryTimeOfDay());
+		assertNotNull(caching.getExpiryTimeOfDay());
+		assertEquals(timeOfDayExpiry, caching.getExpiryTimeOfDay());
+	}
+	
+	public void testRemoveTimeOfDayExpiry() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaCaching caching = entity.getCaching();
+		
+		assertNull(caching.getExpiryTimeOfDay());
+		
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.addAnnotation(EclipseLinkJPA.CACHE);
+		cacheAnnotation.addExpiryTimeOfDay();
+
+		assertNotNull(caching.getExpiryTimeOfDay());
+		
+		caching.removeExpiryTimeOfDay();
+		assertNull(caching.getExpiryTimeOfDay());
+		assertNull(typeResource.getAnnotation(EclipseLinkJPA.CACHE));
+	}
+	
+	public void testAddTimeOfDayExpiryUnsetsExpiry() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaCaching caching = entity.getCaching();
+		
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		caching.setExpiry(Integer.valueOf(800));
+		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
+		assertEquals(Integer.valueOf(800), cacheAnnotation.getExpiry());	
+		
+		
+		caching.addExpiryTimeOfDay();
+
+		
+		assertNull(caching.getExpiry());
+		assertNull(cacheAnnotation.getExpiry());
+		assertNotNull(cacheAnnotation.getExpiryTimeOfDay());
 	}
 
 }

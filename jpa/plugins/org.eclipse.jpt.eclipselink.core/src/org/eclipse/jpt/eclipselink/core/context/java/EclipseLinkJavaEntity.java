@@ -9,7 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context.java;
 
+import java.util.ListIterator;
+import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaNamedNativeQuery;
+import org.eclipse.jpt.core.context.java.JavaNamedQuery;
+import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
 
 /**
@@ -27,5 +34,20 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
 public interface EclipseLinkJavaEntity extends EclipseLinkEntity, JavaEntity
 {
 	EclipseLinkJavaCaching getCaching();
+
+	
+	// included these to prevent warnings on the implementation
+	ListIterator<JavaSecondaryTable> secondaryTables();	
+	ListIterator<JavaSecondaryTable> specifiedSecondaryTables();
+	ListIterator<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns();
+	ListIterator<JavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns();
+	ListIterator<JavaAttributeOverride> attributeOverrides();
+	ListIterator<JavaAttributeOverride> specifiedAttributeOverrides();
+	ListIterator<JavaAttributeOverride> virtualAttributeOverrides();
+	ListIterator<JavaAssociationOverride> associationOverrides();
+	ListIterator<JavaAssociationOverride> specifiedAssociationOverrides();
+	ListIterator<JavaAssociationOverride> virtualAssociationOverrides();
+	ListIterator<JavaNamedQuery> namedQueries();
+	ListIterator<JavaNamedNativeQuery> namedNativeQueries();
 
 }

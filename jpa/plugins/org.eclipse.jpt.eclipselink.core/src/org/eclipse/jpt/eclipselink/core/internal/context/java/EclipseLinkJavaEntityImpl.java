@@ -9,12 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaEntity;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements EclipseLinkJavaEntity
 {
@@ -46,5 +49,13 @@ public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements Ecli
 	public void initialize(JavaResourcePersistentType resourcePersistentType) {
 		super.initialize(resourcePersistentType);
 		this.eclipseLinkCaching.initialize(resourcePersistentType);
+	}
+	
+	//********** Validation ********************************************
+
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		getCaching().addToMessages(messages, astRoot);
 	}
 }

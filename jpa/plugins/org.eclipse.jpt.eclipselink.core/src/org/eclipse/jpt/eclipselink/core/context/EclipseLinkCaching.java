@@ -27,6 +27,10 @@ public interface EclipseLinkCaching extends JpaContextNode
 {
 	//***************** shared ************************
 	
+	/**
+	 * This is the combination of defaultShared and specifiedShared.
+	 * If getSpecifiedShared() returns null, then return getDefaultShared()
+	 */
 	Boolean getShared();
 	
 	Boolean getDefaultShared();
@@ -47,6 +51,10 @@ public interface EclipseLinkCaching extends JpaContextNode
 	
 	//***************** cache type ************************
 		
+	/**
+	 * This is the combination of defaultType and specifiedType.
+	 * If getSpecifiedType() returns null, then return getDefaultType()
+	 */
 	CacheType getType();
 	
 	CacheType getDefaultType();		
@@ -59,19 +67,27 @@ public interface EclipseLinkCaching extends JpaContextNode
 	
 	
 	//***************** size ************************
-	
+			
+	/**
+	 * This is the combination of defaultSize and specifiedSize.
+	 * If getSpecifiedSize() returns null, then return getDefaultSize()
+	 */
 	Integer getSize();
 
 	Integer getDefaultSize();
-	Integer DEFAULT_SIZE = Integer.valueOf(100);
+		Integer DEFAULT_SIZE = Integer.valueOf(100);
 		String DEFAULT_SIZE_PROPERTY = "defaultSizeProperty";
 
 	Integer getSpecifiedSize();
 	void setSpecifiedSize(Integer newSpecifiedSize);
 		String SPECIFIED_SIZE_PROPERTY = "spcifiedSizeProperty";
 	
-	//***************** always refresh ************************
+	//***************** always refresh ************************		
 		
+	/**
+	 * This is the combination of defaultAlwaysRefresh and specifiedAlwaysRefresh.
+	 * If getSpecifiedAlwaysRefresh() returns null, then return getDefaultAlwaysRefresh()
+	 */
 	Boolean getAlwaysRefresh();
 	
 	Boolean getDefaultAlwaysRefresh();
@@ -85,6 +101,10 @@ public interface EclipseLinkCaching extends JpaContextNode
 
 	//***************** refresh only if newer ************************
 		
+	/**
+	 * This is the combination of defaultRefreshOnlyIfNewer and specifiedRefreshOnlyIfNewer.
+	 * If getSpecifiedRefreshOnlyIfNewer() returns null, then return getDefaultRefreshOnlyIfNewer()
+	 */
 	Boolean getRefreshOnlyIfNewer();
 	
 	Boolean getDefaultRefreshOnlyIfNewer();
@@ -98,6 +118,10 @@ public interface EclipseLinkCaching extends JpaContextNode
 		
 	//***************** disable hits ************************
 		
+	/**
+	 * This is the combination of defaultDisableHits and specifiedDisableHits.
+	 * If getSpecifiedDisableHits() returns null, then return getDefaultDisableHits()
+	 */
 	Boolean getDisableHits();
 	
 	Boolean getDefaultDisableHits();
@@ -111,6 +135,10 @@ public interface EclipseLinkCaching extends JpaContextNode
 		
 	//***************** coordination type ************************
 	
+	/**
+	 * This is the combination of defaultCoordinationType and specifiedCoordinationType.
+	 * If getSpecifiedCoordinationType() returns null, then return getDefaultCoordinationType()
+	 */
 	CacheCoordinationType getCoordinationType();
 	
 	CacheCoordinationType getDefaultCoordinationType();		
@@ -124,11 +152,20 @@ public interface EclipseLinkCaching extends JpaContextNode
 			
 	//***************** existence checking ************************
 	
-		
+	/**
+	 * Return true if the existence-checking model object exists.  
+	 * Have to have a separate flag for this since the default existence
+	 * type is different depending on whether hasExistenceChecking() returns
+	 * true or false.
+	 */
 	boolean hasExistenceChecking();
 	void setExistenceChecking(boolean existenceChecking);
 		String EXISTENCE_CHECKING_PROPERTY = "existenceCheckingProperty";
 	
+	/**
+	 * This is the combination of defaultExistenceType and specifiedExistenceType.
+	 * If getSpecifiedExistenceType() returns null, then return getDefaultExistenceType()
+	 */
 	ExistenceType getExistenceType();
 	
 	ExistenceType getDefaultExistenceType();		
@@ -140,4 +177,40 @@ public interface EclipseLinkCaching extends JpaContextNode
 	void setSpecifiedExistenceType(ExistenceType newSpecifiedExistenceType);
 		String SPECIFIED_EXISTENCE_TYPE_PROPERTY = "specifiedExistenceTypeProperty";
 
+		
+	//***************** expiry ************************
+
+	/**
+	 * corresponds to the Cache expiry element.  If this returns
+	 * a non-null value then getExpiryTimeOfDay will return null.
+	 * It is not valid to specify both
+	 */
+	Integer getExpiry();
+	
+	/**
+	 * Setting this to a non-null value will set timeOfDayExpiry to null
+	 * @param expiry
+	 */
+	void setExpiry(Integer expiry);
+		String EXPIRY_PROPERTY = "expiryProperty";
+	
+		
+	/**
+	 * corresponds to the Cache expiryTimeOfDay annotation or xml element.  
+	 * If this returns a non-null value then getExpiry will return null.
+	 * It is not valid to specify both.
+	 */
+	EclipseLinkExpiryTimeOfDay getExpiryTimeOfDay();
+	
+	/**
+	 * Add Cache expiryTimeOfDay annotation or xml element, this will set 
+	 * Expiry to null as it is not valid to set both expiry and timeOfDayExpiry
+	 */
+	EclipseLinkExpiryTimeOfDay addExpiryTimeOfDay();
+	
+	/**
+	 * Removes the Cache expiryTimeOfDay annotation/xml element
+	 */
+	void removeExpiryTimeOfDay();
+		String EXPIRY_TIME_OF_DAY_PROPERTY = "expiryTimeOfDayProperty";
 }

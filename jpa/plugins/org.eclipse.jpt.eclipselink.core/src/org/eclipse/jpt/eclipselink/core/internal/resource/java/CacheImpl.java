@@ -150,6 +150,25 @@ public class CacheImpl extends AbstractResourceAnnotation<Type> implements Cache
 		return this.expiryTimeOfDay;
 	}
 	
+	public TimeOfDayAnnotation addExpiryTimeOfDay() {
+		if (this.expiryTimeOfDay != null) {
+			throw new IllegalStateException("ExpiryTimeOfDay element already exists");
+		}
+		this.expiryTimeOfDay = createTimeOfDayAnnotation();
+		this.expiryTimeOfDayAdapter.newMarkerAnnotation();
+		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, null, this.expiryTimeOfDay);
+		return this.expiryTimeOfDay;
+	}
+	
+	public void removeExpiryTimeOfDay() {
+		if (this.expiryTimeOfDay == null) {
+			throw new IllegalStateException("No expiryTimeOfDay element exists");
+		}
+		this.expiryTimeOfDay = null;
+		this.expiryTimeOfDayAdapter.removeAnnotation();
+		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, this.expiryTimeOfDay, null);
+	}
+	
 	protected void setExpiryTimeOfDay(TimeOfDayAnnotation newExpiryTimeOfDay) {
 		TimeOfDayAnnotation oldExpiryTimeOfDay = this.expiryTimeOfDay;
 		this.expiryTimeOfDay = newExpiryTimeOfDay;

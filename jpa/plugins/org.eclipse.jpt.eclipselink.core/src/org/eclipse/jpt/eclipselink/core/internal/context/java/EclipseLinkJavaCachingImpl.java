@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
+import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
@@ -17,10 +18,16 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.CacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.CacheType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.ExistenceType;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaExpiryTimeOfDay;
+import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.ExistenceCheckingAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.TimeOfDayAnnotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode implements EclipseLinkJavaCaching
 {
@@ -37,6 +44,10 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 	protected ExistenceType defaultExistenceType;
 
 	protected CacheCoordinationType specifiedCoordinationType;
+	
+	protected Integer expiry;
+	protected EclipseLinkJavaExpiryTimeOfDay expiryTimeOfDay;
+	
 	
 	protected JavaResourcePersistentType resourcePersistentType;
 	
@@ -151,7 +162,10 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 			setSpecifiedRefreshOnlyIfNewer(null);
 			setSpecifiedDisableHits(null);
 			setSpecifiedCoordinationType(null);
-			//TODO expiry set to null as well, when it is supported
+			setExpiry(null);
+			if (getExpiryTimeOfDay() != null) {
+				removeExpiryTimeOfDay();
+			}
 		}
 	}
 
@@ -341,6 +355,62 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 		firePropertyChanged(SPECIFIED_EXISTENCE_TYPE_PROPERTY, oldSpecifiedExistenceType, newSpecifiedExistenceType);
 	}
 
+	public Integer getExpiry() {
+		return this.expiry;
+	}
+	
+	public void setExpiry(Integer newExpiry) {
+		Integer oldExpiry = this.expiry;
+		this.expiry = newExpiry;
+		getCacheAnnotation().setExpiry(newExpiry);
+		firePropertyChanged(EXPIRY_PROPERTY, oldExpiry, newExpiry);
+		if (newExpiry != null && getExpiryTimeOfDay() != null) {
+			removeExpiryTimeOfDay();
+		}
+	}
+	
+	protected void setExpiry_(Integer newExpiry) {
+		Integer oldExpiry = this.expiry;
+		this.expiry = newExpiry;
+		firePropertyChanged(EXPIRY_PROPERTY, oldExpiry, newExpiry);
+	}
+	
+	public EclipseLinkJavaExpiryTimeOfDay getExpiryTimeOfDay() {
+		return this.expiryTimeOfDay;
+	}
+	
+	public EclipseLinkJavaExpiryTimeOfDay addExpiryTimeOfDay() {
+		if (this.expiryTimeOfDay != null) {
+			throw new IllegalStateException("expiryTimeOfDay already exists, use getExpiryTimeOfDay()");
+		}
+		if (this.resourcePersistentType.getAnnotation(getCacheAnnotationName()) == null) {
+			this.resourcePersistentType.addAnnotation(getCacheAnnotationName());
+		}
+		EclipseLinkJavaExpiryTimeOfDay newExpiryTimeOfDay =  new EclipseLinkJavaExpiryTimeOfDayImpl(this);
+		this.expiryTimeOfDay = newExpiryTimeOfDay;
+		TimeOfDayAnnotation timeOfDayAnnotation = getCacheAnnotation().addExpiryTimeOfDay();
+		newExpiryTimeOfDay.initialize(timeOfDayAnnotation);
+		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, null, newExpiryTimeOfDay);
+		setExpiry(null);
+		return newExpiryTimeOfDay;
+	}
+	
+	public void removeExpiryTimeOfDay() {
+		if (this.expiryTimeOfDay == null) {
+			throw new IllegalStateException("timeOfDayExpiry does not exist");
+		}
+		EclipseLinkExpiryTimeOfDay oldExpiryTimeOfDay = this.expiryTimeOfDay;
+		this.expiryTimeOfDay = null;
+		getCacheAnnotation().removeExpiryTimeOfDay();
+		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, oldExpiryTimeOfDay, null);
+	}
+	
+	protected void setExpiryTimeOfDay(EclipseLinkJavaExpiryTimeOfDay newExpiryTimeOfDay) {
+		EclipseLinkJavaExpiryTimeOfDay oldExpiryTimeOfDay = this.expiryTimeOfDay;
+		this.expiryTimeOfDay = newExpiryTimeOfDay;
+		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, oldExpiryTimeOfDay, newExpiryTimeOfDay);
+	}
+	
 	public void initialize(JavaResourcePersistentType resourcePersistentType) {
 		this.resourcePersistentType = resourcePersistentType;
 		initialize(getCacheAnnotation());
@@ -355,6 +425,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 		this.specifiedRefreshOnlyIfNewer = this.specifiedRefreshOnlyIfNewer(cache);
 		this.specifiedDisableHits = this.specifiedDisableHits(cache);
 		this.specifiedCoordinationType = this.specifiedCoordinationType(cache);
+		this.initializeExpiry(cache);
 	}
 	
 	protected void initialize(ExistenceCheckingAnnotation existenceChecking) {
@@ -363,10 +434,23 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 		this.defaultExistenceType = this.caclulateDefaultExistenceType();
 	}
 
+	protected void initializeExpiry(CacheAnnotation cache) {
+		if (cache.getExpiryTimeOfDay() == null) {
+			this.expiry = cache.getExpiry();
+		}
+		else {
+			if (cache.getExpiry() == null) { //handle with validation if both expiry and expiryTimeOfDay are set
+				this.expiryTimeOfDay = new EclipseLinkJavaExpiryTimeOfDayImpl(this);
+				this.expiryTimeOfDay.initialize(cache.getExpiryTimeOfDay());
+			}
+		}
+	}
+	
 	public void update(JavaResourcePersistentType resourcePersistentType) {
 		this.resourcePersistentType = resourcePersistentType;
 		update(getCacheAnnotation());
 		update(getExistenceCheckingAnnotation());
+		updateExpiry(getCacheAnnotation());
 	}
 	
 	protected void update(CacheAnnotation cache) {
@@ -385,6 +469,25 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 		setDefaultExistenceType(caclulateDefaultExistenceType());
 	}
 	
+	protected void updateExpiry(CacheAnnotation cache) {
+		if (cache.getExpiryTimeOfDay() == null) {
+			setExpiryTimeOfDay(null);
+			setExpiry_(cache.getExpiry());
+		}
+		else {
+			if (getExpiryTimeOfDay() != null) {
+				getExpiryTimeOfDay().update(cache.getExpiryTimeOfDay());
+			}
+			else if (cache.getExpiry() == null){
+				setExpiryTimeOfDay(new EclipseLinkJavaExpiryTimeOfDayImpl(this));
+				getExpiryTimeOfDay().initialize(cache.getExpiryTimeOfDay());
+			}
+			else { //handle with validation if both expiry and expiryTimeOfDay are set
+				setExpiryTimeOfDay(null);
+			}
+		}
+	}
+
 	protected CacheType specifiedType(CacheAnnotation cache) {
 		return CacheType.fromJavaResourceModel(cache.getType());
 	}
@@ -413,6 +516,10 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 		return CacheCoordinationType.fromJavaResourceModel(cache.getCoordinationType());
 	}
 	
+	protected Integer expiry(CacheAnnotation cache) {
+		return cache.getExpiry();
+	}
+	
 	protected ExistenceType specifiedExistenceType(ExistenceCheckingAnnotation existenceChecking) {
 		if (existenceChecking == null) {
 			return null;
@@ -426,4 +533,23 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		addExpiryMessages(messages, astRoot);
+	}
+
+	protected void addExpiryMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		CacheAnnotation cache = getCacheAnnotation();
+		if (cache.getExpiry() != null && cache.getExpiryTimeOfDay() != null) {
+			messages.add(
+				DefaultEclipseLinkJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					EclipseLinkJpaValidationMessages.CACHE_EXPIRY_AND_EXPIRY_TIME_OF_DAY_BOTH_SPECIFIED,
+					new String[] {this.getParent().getPersistentType().getName()},
+					this, 
+					getValidationTextRange(astRoot))
+			);
+		}
+	}
 }

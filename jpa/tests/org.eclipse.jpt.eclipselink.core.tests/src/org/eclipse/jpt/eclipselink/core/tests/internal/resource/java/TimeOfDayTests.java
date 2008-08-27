@@ -137,7 +137,7 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 		
 		CacheAnnotation cache = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
 		TimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
-		assertEquals(new Integer(5), timeOfDay.getHour());
+		assertEquals(Integer.valueOf(5), timeOfDay.getHour());
 	}
 
 	public void testSetHour() throws Exception {
@@ -146,10 +146,10 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 		
 		CacheAnnotation cache = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
 		TimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
-		assertEquals(new Integer(5), timeOfDay.getHour());
+		assertEquals(Integer.valueOf(5), timeOfDay.getHour());
 		
-		timeOfDay.setHour(new Integer(80));
-		assertEquals(new Integer(80), timeOfDay.getHour());
+		timeOfDay.setHour(Integer.valueOf(80));
+		assertEquals(Integer.valueOf(80), timeOfDay.getHour());
 		
 		assertSourceContains("@TimeOfDay(hour=80)", cu);
 		
@@ -157,7 +157,7 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 		assertNull(timeOfDay.getHour());
 		
 		assertSourceDoesNotContain("(hour=80)", cu);
-		assertSourceDoesNotContain("@TimeOfDay", cu);
+		assertSourceContains("@TimeOfDay", cu);
 	}
 	
 	public void testGetMinute() throws Exception {
@@ -166,7 +166,7 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 		
 		CacheAnnotation cache = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
 		TimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
-		assertEquals(new Integer(5), timeOfDay.getMinute());
+		assertEquals(Integer.valueOf(5), timeOfDay.getMinute());
 	}
 
 	public void testSetMinute() throws Exception {
@@ -175,10 +175,10 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 		
 		CacheAnnotation cache = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
 		TimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
-		assertEquals(new Integer(5), timeOfDay.getMinute());
+		assertEquals(Integer.valueOf(5), timeOfDay.getMinute());
 		
-		timeOfDay.setMinute(new Integer(80));
-		assertEquals(new Integer(80), timeOfDay.getMinute());
+		timeOfDay.setMinute(Integer.valueOf(80));
+		assertEquals(Integer.valueOf(80), timeOfDay.getMinute());
 		
 		assertSourceContains("@TimeOfDay(minute=80)", cu);
 		
@@ -186,7 +186,7 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 		assertNull(timeOfDay.getMinute());
 		
 		assertSourceDoesNotContain("(minute=80)", cu);
-		assertSourceDoesNotContain("@TimeOfDay", cu);
+		assertSourceContains("@TimeOfDay", cu);
 	}
 
 	public void testGetSecond() throws Exception {
@@ -195,7 +195,7 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 		
 		CacheAnnotation cache = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
 		TimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
-		assertEquals(new Integer(5), timeOfDay.getSecond());
+		assertEquals(Integer.valueOf(5), timeOfDay.getSecond());
 	}
 
 	public void testSetSecond() throws Exception {
@@ -204,10 +204,10 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 		
 		CacheAnnotation cache = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
 		TimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
-		assertEquals(new Integer(5), timeOfDay.getSecond());
+		assertEquals(Integer.valueOf(5), timeOfDay.getSecond());
 		
-		timeOfDay.setSecond(new Integer(80));
-		assertEquals(new Integer(80), timeOfDay.getSecond());
+		timeOfDay.setSecond(Integer.valueOf(80));
+		assertEquals(Integer.valueOf(80), timeOfDay.getSecond());
 		
 		assertSourceContains("@TimeOfDay(second=80)", cu);
 		
@@ -215,7 +215,7 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 		assertNull(timeOfDay.getSecond());
 		
 		assertSourceDoesNotContain("(second=80)", cu);
-		assertSourceDoesNotContain("@TimeOfDay", cu);
+		assertSourceContains("@TimeOfDay", cu);
 	}
 	
 	public void testGetMillisecond() throws Exception {
@@ -224,7 +224,7 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 		
 		CacheAnnotation cache = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
 		TimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
-		assertEquals(new Integer(5), timeOfDay.getMillisecond());
+		assertEquals(Integer.valueOf(5), timeOfDay.getMillisecond());
 	}
 
 	public void testSetMillisecond() throws Exception {
@@ -233,10 +233,10 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 		
 		CacheAnnotation cache = (CacheAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CACHE);
 		TimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
-		assertEquals(new Integer(5), timeOfDay.getMillisecond());
+		assertEquals(Integer.valueOf(5), timeOfDay.getMillisecond());
 		
-		timeOfDay.setMillisecond(new Integer(80));
-		assertEquals(new Integer(80), timeOfDay.getMillisecond());
+		timeOfDay.setMillisecond(Integer.valueOf(80));
+		assertEquals(Integer.valueOf(80), timeOfDay.getMillisecond());
 		
 		assertSourceContains("@TimeOfDay(millisecond=80)", cu);
 		
@@ -244,7 +244,7 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 		assertNull(timeOfDay.getMillisecond());
 		
 		assertSourceDoesNotContain("(millisecond=80)", cu);
-		assertSourceDoesNotContain("@TimeOfDay", cu);
+		assertSourceContains("@TimeOfDay", cu);
 	}
 
 
