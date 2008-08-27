@@ -962,7 +962,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		for (ClassRef classRef : impliedRefsToRemove) {
 			removeImpliedClassRef(classRef);
 		}
-		//first handle adding/remove of the implied class refs, then update the others last, 
+		//first handle adding/removing of the implied class refs, then update the others last, 
 		//this causes less churn in the update process
 		for (ClassRef classRef : impliedRefsToUpdate) {
 			classRef.update(classRef.getClassName());

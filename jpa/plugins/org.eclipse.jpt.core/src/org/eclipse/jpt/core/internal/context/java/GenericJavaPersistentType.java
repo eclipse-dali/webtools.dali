@@ -449,7 +449,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		for (JavaPersistentAttribute contextAttribute : contextAttributesToRemove) {
 			removeAttribute(contextAttribute);
 		}
-		//first handle adding/remove of the persistent attributes, then update the others last, 
+		//first handle adding/removing of the persistent attributes, then update the others last, 
 		//this causes less churn in the update process
 		for (JavaPersistentAttribute contextAttribute : contextAttributesToUpdate) {
 			contextAttribute.update();
