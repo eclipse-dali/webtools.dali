@@ -367,7 +367,7 @@ public class EclipseLinkDDLGenerator
 			OutputMode.DATABASE);
 	}
 	
-	private void buildLoginProperties(Properties properties) {
+	private void buildConnectionProperties(Properties properties) {
 		ConnectionProfile cp = this.project.getConnectionProfile();
 
 		this.putProperty(properties,  
@@ -385,9 +385,18 @@ public class EclipseLinkDDLGenerator
 		this.putProperty(properties,
 			Connection.ECLIPSELINK_PASSWORD,
 			(cp == null) ? "" : cp.getUserPassword());
+	}
+	
+	private void buildConnectionPoolingProperties(Properties properties) {
+		this.putProperty(properties,
+			Connection.ECLIPSELINK_READ_CONNECTIONS_SHARED,
+			"true");
+	}
+	
+	private void buildLoggingProperties(Properties properties) {
 		this.putProperty(properties,
 			Logging.ECLIPSELINK_LEVEL,
-			LoggingLevel.FINEST);
+			LoggingLevel.FINE);
 		this.putProperty(properties,
 			Logging.ECLIPSELINK_TIMESTAMP,
 			"false");
@@ -400,6 +409,9 @@ public class EclipseLinkDDLGenerator
 		this.putProperty(properties,
 			Logging.ECLIPSELINK_EXCEPTIONS,
 			"true");
+	}
+	
+	private void buildCustomizationProperties(Properties properties) {
 		this.putProperty(properties,
 			Customization.ECLIPSELINK_THROW_EXCEPTIONS,
 			"true");
@@ -412,7 +424,13 @@ public class EclipseLinkDDLGenerator
 	private void saveLoginProperties(String projectLocation, String propertiesFile) {
 		Properties elProperties = new Properties();
 		
-		this.buildLoginProperties(elProperties);
+		this.buildConnectionProperties(elProperties);
+		
+		this.buildConnectionPoolingProperties(elProperties);
+		
+		this.buildLoggingProperties(elProperties);
+		
+		this.buildCustomizationProperties(elProperties);
 		
 		this.buildDDLModeProperties(elProperties);
 
