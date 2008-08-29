@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -73,10 +74,11 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 			return Collections.emptyList();
 		}
 		
-		Iterator<JpaStructureNode> rootStructureNodes = jpaFile.rootStructureNodes();
-		if (!rootStructureNodes.hasNext()) {
+		Collection<JpaStructureNode> rootStructureNodes = CollectionTools.collection(jpaFile.rootStructureNodes());
+		if (rootStructureNodes.isEmpty()) {
 			return Collections.emptyList();
 		}
+
 		CompletionContext cc = context.getCoreContext();
 
 		// the context's "token" is really a sort of "prefix" - it does NOT
@@ -87,19 +89,22 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 		int tokenStart = cc.getTokenStart();
 		// the token "end" is the offset of the token's last character (yuk)
 		int tokenEnd = cc.getTokenEnd();
+		if (tokenStart == -1) {  // not sure why this happens - see bug 242286
+			return Collections.emptyList();
+		}
 
-//		System.out.println("prefix: " + new String(prefix));
+//		System.out.println("prefix: " + ((prefix == null) ? "[null]" : new String(prefix)));
 //		System.out.println("token start: " + tokenStart);
 //		System.out.println("token end: " + tokenEnd);
 //		String source = cu.getSource();
-//		String token = source.substring(tokenStart, tokenEnd + 1);
+//		String token = source.substring(Math.max(0, tokenStart), Math.min(source.length(), tokenEnd + 1));
 //		System.out.println("token: =>" + token + "<=");
 //		String snippet = source.substring(Math.max(0, tokenStart - 20), Math.min(source.length(), tokenEnd + 21));
 //		System.out.println("surrounding snippet: =>" + snippet + "<=");
 
 		CompilationUnit astRoot = JDTTools.buildASTRoot(cu);
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
-		for (JpaStructureNode structureNode : CollectionTools.iterable(rootStructureNodes)) {
+		for (JpaStructureNode structureNode : rootStructureNodes) {
 			for (Iterator<String> stream = ((JavaPersistentType) structureNode).javaCompletionProposals(context.getInvocationOffset(), filter, astRoot); stream.hasNext(); ) {
 				String s = stream.next();
 				proposals.add(new CompletionProposal(s, tokenStart, tokenEnd - tokenStart + 1, s.length()));
