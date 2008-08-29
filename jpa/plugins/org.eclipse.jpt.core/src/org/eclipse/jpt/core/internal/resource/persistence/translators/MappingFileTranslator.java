@@ -21,7 +21,7 @@ public class MappingFileTranslator extends Translator
 	
 	
 	public MappingFileTranslator(String domNameAndPath, EStructuralFeature aFeature) {
-		super(domNameAndPath, aFeature);
+		super(domNameAndPath, aFeature, Translator.END_TAG_NO_INDENT);
 	}
 	
 	@Override

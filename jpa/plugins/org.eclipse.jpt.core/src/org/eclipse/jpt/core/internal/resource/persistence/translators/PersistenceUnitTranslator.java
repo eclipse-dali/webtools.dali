@@ -77,11 +77,11 @@ public class PersistenceUnitTranslator extends Translator
 	}
 	
 	private Translator createJarFileTranslator() {
-		return new Translator(JAR_FILE, PERSISTENCE_PKG.getXmlPersistenceUnit_JarFiles());
+		return new Translator(JAR_FILE, PERSISTENCE_PKG.getXmlPersistenceUnit_JarFiles(), Translator.END_TAG_NO_INDENT);
 	}
 	
 	private Translator createClassTranslator() {
-		return new JavaClassRefTranslator(CLASS, PERSISTENCE_PKG.getXmlPersistenceUnit_Classes());
+		return new JavaClassRefTranslator(CLASS, PERSISTENCE_PKG.getXmlPersistenceUnit_Classes(), Translator.END_TAG_NO_INDENT);
 	}
 	
 	private Translator createExcludeUnlistedClassesTranslator() {
