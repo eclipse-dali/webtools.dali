@@ -28,6 +28,7 @@ public class JptCoreMessages {
 	public static String VALIDATE_PERSISTENCE_UNIT_NOT_IN_PROJECT;
 	public static String VALIDATE_PLATFORM_NOT_SPECIFIED;
 	public static String VALIDATE_CONNECTION_NOT_SPECIFIED;
+	public static String VALIDATE_CONNECTION_INVALID;
 	public static String VALIDATE_CONNECTION_NOT_CONNECTED;
 	public static String VALIDATE_DEFAULT_SCHEMA_NOT_SPECIFIED;
 	public static String VALIDATE_RUNTIME_NOT_SPECIFIED;

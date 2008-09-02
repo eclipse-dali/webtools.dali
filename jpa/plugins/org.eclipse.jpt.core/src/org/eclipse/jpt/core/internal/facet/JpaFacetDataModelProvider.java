@@ -30,6 +30,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.componentcore.datamodel.FacetInstallDataModelProvider;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelPropertyDescriptor;
@@ -76,7 +77,6 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 
 	@Override
 	public Set<String> getPropertyNames() {
-		@SuppressWarnings("unchecked")
 		Set<String> propertyNames = super.getPropertyNames();
 		propertyNames.add(PLATFORM_ID);
 		propertyNames.add(CONNECTION);
@@ -242,9 +242,7 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (propertyName.equals(CONNECTION)) {
 			return CollectionTools.array(
 				new TransformationIterator<String, DataModelPropertyDescriptor>(
-						new CompositeIterator<String>(
-							null, 
-							this.getConnectionProfileFactory().connectionProfileNames())) {
+						new CompositeIterator<String>(null, connectionNames())) {
 					@Override
 					protected DataModelPropertyDescriptor transform(String next) {
 						return connectionPropertyDescriptor(next);
@@ -386,6 +384,20 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		return cp.getDriverJarList();
 	}
 
+	private Iterator<String> connectionNames() {
+		String setValue = getStringProperty(CONNECTION);
+		
+		List<String> connectionNames = CollectionTools.sort(CollectionTools.list(
+			this.getConnectionProfileFactory().connectionProfileNames()));
+		
+		if (! StringTools.stringIsEmpty(setValue) && ! connectionNames.contains(setValue)) {
+			return new CompositeIterator<String>(setValue, connectionNames.iterator());
+		}
+		else {
+			return connectionNames.iterator();
+		}
+	}
+	
 	private String getDefaultSchemaName() {
 		ConnectionProfile cp = this.getConnectionProfile();
 		if (cp == null) {
@@ -438,17 +450,18 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 	}
 
 	private IStatus validateConnectionName(String connectionName) {
-		return StringTools.stringIsEmpty(connectionName) ?
-				OK_STATUS
-			:
-				this.getConnectionStatus(connectionName);
-	}
-
-	private IStatus getConnectionStatus(String connectionName) {
-		return this.connectionIsActive(connectionName) ?
-				OK_STATUS
-			:
-				CONNECTION_NOT_CONNECTED_STATUS;
+		if (StringTools.stringIsEmpty(connectionName)) {
+			return OK_STATUS;
+		}
+		ConnectionProfile connectionProfile = getConnectionProfile();
+		if (connectionProfile == null) {
+			return buildErrorStatus(NLS.bind(JptCoreMessages.VALIDATE_CONNECTION_INVALID, connectionName));
+	
+		}
+		if (! connectionProfile.isActive()) {
+			return CONNECTION_NOT_CONNECTED_STATUS;
+		}
+		return OK_STATUS;
 	}
 	
 	private IStatus validateUserOverrideDefaultSchema() {

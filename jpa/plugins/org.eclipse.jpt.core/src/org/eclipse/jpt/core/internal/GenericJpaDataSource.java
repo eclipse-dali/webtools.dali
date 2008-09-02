@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.internal;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionAdapter;
 import org.eclipse.jpt.db.ConnectionListener;
@@ -211,15 +211,20 @@ public class GenericJpaDataSource
 
 		public void connectionProfileRenamed(String oldName, String newName) {
 			if (GenericJpaDataSource.this.connectionProfile == null) {
+				if (newName.equals(connectionProfileName)) {
+					GenericJpaDataSource.this.setConnectionProfileName(newName);
+				}
 				return;
 			}
 			// the connection profile will already have the new name,
 			// we just need to synch the name held by the data source
 			if (newName.equals(GenericJpaDataSource.this.connectionProfile.getName())) {
 				GenericJpaDataSource.this.setConnectionProfileName(newName);
+				// bug 232225 - also update project setting when connection profile
+				//   name has changed
+				JptCorePlugin.setConnectionProfileName(getJpaProject().getProject(), newName);
 			}
 		}
-
 	}
 
 
