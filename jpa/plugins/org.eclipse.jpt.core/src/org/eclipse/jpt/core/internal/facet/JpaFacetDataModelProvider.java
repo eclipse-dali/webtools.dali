@@ -71,7 +71,6 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 
 	@Override
 	public Set<String> getPropertyNames() {
-		@SuppressWarnings("unchecked")
 		Set<String> propertyNames = super.getPropertyNames();
 		propertyNames.add(PLATFORM_ID);
 		propertyNames.add(CONNECTION);
@@ -205,9 +204,7 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (propertyName.equals(CONNECTION)) {
 			return CollectionTools.array(
 				new TransformationIterator<String, DataModelPropertyDescriptor>(
-						new CompositeIterator<String>(
-							null, 
-							JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNames())) {
+						new CompositeIterator<String>(null, connectionNames())) {
 					@Override
 					protected DataModelPropertyDescriptor transform(String next) {
 						return connectionPropertyDescriptor(next);
@@ -304,6 +301,20 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		return getConnection().isActive();
 	}
 	
+	private Iterator<String> connectionNames() {
+		String setValue = getStringProperty(CONNECTION);
+		
+		List<String> connectionNames = CollectionTools.sort(CollectionTools.list(
+			JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNames()));
+		
+		if (! StringTools.stringIsEmpty(setValue) && ! connectionNames.contains(setValue)) {
+			return new CompositeIterator<String>(setValue, connectionNames.iterator());
+		}
+		else {
+			return connectionNames.iterator();
+		}
+	}
+	
 	private String getDefaultSchemaName() {
 		Schema defaultSchema = getConnection().getDefaultSchema();
 		return (defaultSchema == null) ? null : defaultSchema.getName();
@@ -342,10 +353,15 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (StringTools.stringIsEmpty(connectionName)) {
 			return OK_STATUS;
 		}
-		return JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNamed(connectionName).isActive() ?
-				OK_STATUS
-			:
-				CONNECTION_NOT_CONNECTED_STATUS;
+		ConnectionProfile connectionProfile = JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNamed(connectionName);
+		if (connectionProfile.isNull()) {
+			return buildErrorStatus(JptCoreMessages.bind(JptCoreMessages.VALIDATE_CONNECTION_INVALID, connectionName));
+	
+		}
+		if (! connectionProfile.isActive()) {
+			return CONNECTION_NOT_CONNECTED_STATUS;
+		}
+		return OK_STATUS;
 	}
 	
 	private IStatus validateUserOverrideDefaultSchema() {

@@ -16,6 +16,8 @@ public interface JpaValidationMessages
 	
 	public static final String PROJECT_NO_CONNECTION = "PROJECT_NO_CONNECTION";
 	
+	public static final String PROJECT_INVALID_CONNECTION = "PROJECT_INVALID_CONNECTION";
+	
 	public static final String PROJECT_INACTIVE_CONNECTION = "PROJECT_INACTIVE_CONNECTION";
 	
 	public static final String PROJECT_NO_PERSISTENCE_XML = "PROJECT_NO_PERSISTENCE_XML";

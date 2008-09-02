@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -47,6 +46,7 @@ import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -487,17 +487,31 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	
 	protected void addConnectionMessages(List<IMessage> messages) {
 		addNoConnectionMessage(messages);
+		addInvalidConnectionMessage(messages);
 		addInactiveConnectionMessage(messages);
 	}
 	
 	protected boolean okToProceedForConnectionValidation = true;
 	
 	protected void addNoConnectionMessage(List<IMessage> messages) {
-		if (! this.getDataSource().hasAConnection()) {
+		if (StringTools.stringIsEmpty(this.getDataSource().getConnectionProfileName())) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
 						JpaValidationMessages.PROJECT_NO_CONNECTION,
+						this)
+				);
+			okToProceedForConnectionValidation = false;
+		}
+	}
+	
+	protected void addInvalidConnectionMessage(List<IMessage> messages) {
+		if (okToProceedForConnectionValidation && ! this.getDataSource().hasAConnection()) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.NORMAL_SEVERITY,
+						JpaValidationMessages.PROJECT_INVALID_CONNECTION,
+						new String[] {this.getDataSource().getConnectionProfileName()},
 						this)
 				);
 			okToProceedForConnectionValidation = false;

@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal;
 
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.db.ConnectionAdapter;
 import org.eclipse.jpt.db.ConnectionListener;
 import org.eclipse.jpt.db.ConnectionProfile;
@@ -148,6 +149,9 @@ public class GenericJpaDataSource
 		public void connectionProfileChanged(ConnectionProfile profile) {
 			if (profile == GenericJpaDataSource.this.connectionProfile) {
 				GenericJpaDataSource.this.setConnectionProfileName(profile.getName());
+				// bug 232225 - also update project setting when connection profile
+				//   name has changed
+				JptCorePlugin.setConnectionProfileName(getJpaProject().getProject(), profile.getName());
 			}
 		}
 

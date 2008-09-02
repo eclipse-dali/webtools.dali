@@ -44,6 +44,8 @@ public class JptCoreMessages extends NLS
 	
 	public static String VALIDATE_CONNECTION_NOT_SPECIFIED;
 	
+	public static String VALIDATE_CONNECTION_INVALID;
+	
 	public static String VALIDATE_CONNECTION_NOT_CONNECTED;
 	
 	public static String VALIDATE_DEFAULT_SCHEMA_NOT_SPECIFIED;
