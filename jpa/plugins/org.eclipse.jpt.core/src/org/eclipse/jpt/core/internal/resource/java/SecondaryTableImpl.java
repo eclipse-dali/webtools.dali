@@ -105,6 +105,11 @@ public class SecondaryTableImpl extends AbstractResourceTable implements Nestabl
 	}
 	
 	@Override
+	protected String getUniqueConstraintsElementName() {
+		return JPA.SECONDARY_TABLE__UNIQUE_CONSTRAINTS;
+	}
+
+	@Override
 	protected NestableUniqueConstraint createUniqueConstraint(int index) {
 		return UniqueConstraintImpl.createSecondaryTableUniqueConstraint(this, this.getMember(), this.getDeclarationAnnotationAdapter(), index);
 	}
@@ -283,7 +288,7 @@ public class SecondaryTableImpl extends AbstractResourceTable implements Nestabl
 		}
 		
 		public String getElementName() {
-			return "pkJoinColumns";
+			return JPA.SECONDARY_TABLE__PK_JOIN_COLUMNS;
 		}
 	}
 

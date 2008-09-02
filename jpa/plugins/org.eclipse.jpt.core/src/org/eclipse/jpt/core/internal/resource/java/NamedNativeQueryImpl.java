@@ -92,13 +92,18 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 	//************* AbstractNamedQuery implementation *************
 
 	@Override
-	protected String nameElementName() {
+	protected String getNameElementName() {
 		return JPA.NAMED_NATIVE_QUERY__NAME;
 	}
 
 	@Override
-	protected String queryElementName() {
+	protected String getQueryElementName() {
 		return JPA.NAMED_NATIVE_QUERY__QUERY;
+	}
+	
+	@Override
+	protected String getHintsElementName() {
+		return JPA.NAMED_NATIVE_QUERY__HINTS;
 	}
 	
 	@Override

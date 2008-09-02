@@ -95,6 +95,10 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 	 */
 	protected abstract DeclarationAnnotationElementAdapter<String> catalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
 
+	/**
+	 * Return the uniqueConstraints element name
+	 */
+	protected abstract String getUniqueConstraintsElementName();
 	
 	public String getName() {
 		return this.name;
@@ -332,7 +336,7 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 		}
 		
 		public String getElementName() {
-			return "uniqueConstraints";
+			return AbstractResourceTable.this.getUniqueConstraintsElementName();
 		}
 
 	}

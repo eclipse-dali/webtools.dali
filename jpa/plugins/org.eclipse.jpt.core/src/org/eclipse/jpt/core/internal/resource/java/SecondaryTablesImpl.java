@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.NestableSecondaryTable;
@@ -50,7 +51,7 @@ public class SecondaryTablesImpl extends AbstractResourceAnnotation<Member> impl
 	}
 
 	public String getElementName() {
-		return "value";
+		return JPA.SECONDARY_TABLES__VALUE;
 	}
 	
 	public ListIterator<NestableSecondaryTable> nestedAnnotations() {

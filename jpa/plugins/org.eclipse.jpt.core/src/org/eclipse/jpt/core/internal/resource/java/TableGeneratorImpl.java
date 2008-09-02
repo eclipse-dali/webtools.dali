@@ -444,7 +444,7 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 		}
 		
 		public String getElementName() {
-			return "uniqueConstraints";
+			return JPA.TABLE_GENERATOR__UNIQUE_CONSTRAINTS;
 		}
 	}
 	

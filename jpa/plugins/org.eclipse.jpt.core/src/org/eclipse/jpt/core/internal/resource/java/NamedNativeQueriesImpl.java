@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.NamedNativeQueriesAnnotation;
@@ -52,7 +53,7 @@ public class NamedNativeQueriesImpl extends AbstractResourceAnnotation<Type> imp
 	}
 
 	public String getElementName() {
-		return "value";
+		return JPA.NAMED_NATIVE_QUERIES__VALUE;
 	}
 		
 	public ListIterator<NestableNamedNativeQuery> nestedAnnotations() {

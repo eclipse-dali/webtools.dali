@@ -76,16 +76,21 @@ public abstract class AbstractNamedQuery extends AbstractResourceAnnotation<Type
 	}
 
 	protected DeclarationAnnotationElementAdapter<String> nameAdapter(DeclarationAnnotationAdapter daa) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, nameElementName());
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, getNameElementName());
 	}
 
 	protected DeclarationAnnotationElementAdapter<String> queryAdapter(DeclarationAnnotationAdapter daa) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, queryElementName());
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, getQueryElementName());
 	}
 
-	protected abstract String nameElementName();
+	protected abstract String getNameElementName();
 
-	protected abstract String queryElementName();
+	protected abstract String getQueryElementName();
+
+	/**
+	 * Return the uniqueConstraints element name
+	 */
+	protected abstract String getHintsElementName();
 
 	public String getName() {
 		return this.name;

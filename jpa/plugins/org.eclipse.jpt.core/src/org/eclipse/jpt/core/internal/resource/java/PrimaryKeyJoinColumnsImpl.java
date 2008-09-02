@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.NestablePrimaryKeyJoinColumn;
@@ -51,7 +52,7 @@ public class PrimaryKeyJoinColumnsImpl extends AbstractResourceAnnotation<Member
 	}
 
 	public String getElementName() {
-		return "value";
+		return JPA.PRIMARY_KEY_JOIN_COLUMNS__VALUE;
 	}
 		
 	public ListIterator<NestablePrimaryKeyJoinColumn> nestedAnnotations() {

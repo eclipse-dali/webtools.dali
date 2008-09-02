@@ -246,7 +246,7 @@ public class AssociationOverrideImpl
 		}
 		
 		public String getElementName() {
-			return "joinColumns";
+			return JPA.ASSOCIATION_OVERRIDE__JOIN_COLUMNS;
 		}
 
 	}

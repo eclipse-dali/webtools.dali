@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdap
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AssociationOverridesAnnotation;
+import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.NestableAssociationOverride;
@@ -107,7 +108,7 @@ public class AssociationOverridesImpl extends AbstractResourceAnnotation<Member>
 	}
 
 	public String getElementName() {
-		return "value";
+		return JPA.ASSOCIATION_OVERRIDES__VALUE;
 	}
 
 	public void update(CompilationUnit astRoot) {

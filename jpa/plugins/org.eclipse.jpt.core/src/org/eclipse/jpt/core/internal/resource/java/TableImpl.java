@@ -60,6 +60,11 @@ public class TableImpl extends AbstractResourceTable
 	}
 	
 	@Override
+	protected String getUniqueConstraintsElementName() {
+		return JPA.TABLE__UNIQUE_CONSTRAINTS;
+	}
+
+	@Override
 	protected NestableUniqueConstraint createUniqueConstraint(int index) {
 		return UniqueConstraintImpl.createTableUniqueConstraint(this, this.getMember(), index);
 	}

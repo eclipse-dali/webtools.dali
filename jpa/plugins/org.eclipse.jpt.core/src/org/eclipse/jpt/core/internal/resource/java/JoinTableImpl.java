@@ -89,6 +89,11 @@ public class JoinTableImpl extends AbstractResourceTable implements JoinTableAnn
 	}
 	
 	@Override
+	protected String getUniqueConstraintsElementName() {
+		return JPA.JOIN_TABLE__UNIQUE_CONSTRAINTS;
+	}
+	
+	@Override
 	protected NestableUniqueConstraint createUniqueConstraint(int index) {
 		return UniqueConstraintImpl.createJoinTableUniqueConstraint(this, this.getMember(), index);
 	}
@@ -252,7 +257,7 @@ public class JoinTableImpl extends AbstractResourceTable implements JoinTableAnn
 			JoinTableImpl.this.removeJoinColumn(nestedAnnotation);	
 		}
 		public String getElementName() {
-			return "joinColumns";
+			return JPA.JOIN_TABLE__JOIN_COLUMNS;
 		}
 	}
 	
@@ -299,7 +304,7 @@ public class JoinTableImpl extends AbstractResourceTable implements JoinTableAnn
 		}
 		
 		public String getElementName() {
-			return "inverseJoinColumns";
+			return JPA.JOIN_TABLE__INVERSE_JOIN_COLUMNS;
 		}
 	}
 

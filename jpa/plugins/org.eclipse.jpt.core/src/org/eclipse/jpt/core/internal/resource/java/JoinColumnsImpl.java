@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
@@ -108,7 +109,7 @@ public class JoinColumnsImpl extends AbstractResourceAnnotation<Member> implemen
 	}
 
 	public String getElementName() {
-		return "value";
+		return JPA.JOIN_COLUMNS__VALUE;
 	}
 	
 	public void update(CompilationUnit astRoot) {
