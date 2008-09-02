@@ -201,13 +201,16 @@ public class JpaCompilationUnitImpl
 	 * the same name as the compilation unit (file);
 	 * NB: this type could be in error if there is an annotation or enum
 	 * with the same name preceding it in the compilation unit
+	 * 
+	 * Return null if resolveBinding() on the TypeDeclaration returns null
+	 * This can occur if the project JRE is removed (bug 225332)
 	 */
 	protected TypeDeclaration getPrimaryType(CompilationUnit astRoot) {
 		String primaryTypeName = this.getPrimaryTypeName();
 		for (AbstractTypeDeclaration atd : types(astRoot)) {
 			if ((atd.getNodeType() == ASTNode.TYPE_DECLARATION)
 					&& atd.getName().getFullyQualifiedName().equals(primaryTypeName)) {
-				return (TypeDeclaration) atd;
+				return atd.resolveBinding() != null ? (TypeDeclaration) atd : null;
 			}
 		}
 		return null;
