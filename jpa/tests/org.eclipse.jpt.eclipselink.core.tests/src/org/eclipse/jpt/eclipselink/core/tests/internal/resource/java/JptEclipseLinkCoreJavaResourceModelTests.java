@@ -24,7 +24,8 @@ public class JptEclipseLinkCoreJavaResourceModelTests {
 		suite.addTestSuite(CacheTests.class);
 		suite.addTestSuite(ExistenceCheckingTests.class);
 		suite.addTestSuite(TimeOfDayTests.class);
-			
+		suite.addTestSuite(TransformationAnnotationTests.class);
+		
 		return suite;
 	}
 

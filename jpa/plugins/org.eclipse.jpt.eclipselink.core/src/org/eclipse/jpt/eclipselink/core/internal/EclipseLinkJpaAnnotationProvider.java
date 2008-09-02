@@ -10,10 +10,12 @@
 package org.eclipse.jpt.eclipselink.core.internal;
 
 import java.util.Collection;
+import java.util.List;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.CacheImpl.CacheAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.ExistenceCheckingImpl.ExistenceCheckingAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.TransformationImpl.TransformationAnnotationDefinition;
 
 public class EclipseLinkJpaAnnotationProvider
 	extends GenericJpaAnnotationProvider
@@ -26,4 +28,10 @@ public class EclipseLinkJpaAnnotationProvider
 		definitions.add(ExistenceCheckingAnnotationDefinition.instance());
 	}
 
+	@Override
+	//bug 245996 addresses how the attribute mapping annotations should be ordered
+	protected void addAttributeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		super.addAttributeMappingAnnotationDefinitionsTo(definitions);
+		definitions.add(TransformationAnnotationDefinition.instance());
+	}
 }

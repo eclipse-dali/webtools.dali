@@ -76,5 +76,9 @@ public interface EclipseLinkJPA {
 		String TIME_OF_DAY__MINUTE = "minute";
 		String TIME_OF_DAY__SECOND = "second";
 		String TIME_OF_DAY__MILLISECOND = "millisecond";
+	
+	String TRANSFORMATION = PACKAGE_ + "Transformation";
+		String TRANSFORMATION__FETCH = "fetch";
+		String TRANSFORMATION__OPTIONAL = "optional";
 
 }
