@@ -29,7 +29,7 @@ public interface ContainerAnnotation<T extends NestableAnnotation> extends Annot
 
 	/**
 	 * Return the element name of the nestable annotation when
-	 * it is nested withing the container annotatio as a member value pai  
+	 * it is nested within the container annotation as a member value pair  
 	 */
 	String getElementName();
 
