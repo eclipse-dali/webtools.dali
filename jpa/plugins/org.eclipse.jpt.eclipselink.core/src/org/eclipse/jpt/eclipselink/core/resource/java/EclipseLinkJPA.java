@@ -70,6 +70,8 @@ public interface EclipseLinkJPA {
 	String EXISTENCE_TYPE__ASSUME_EXISTENCE = EXISTENCE_TYPE_ + "ASSUME_EXISTENCE";
 	String EXISTENCE_TYPE__ASSUME_NON_EXISTENCE = EXISTENCE_TYPE_ + "ASSUME_NON_EXISTENCE";
 
+	String MUTABLE = PACKAGE_ + "Mutable";
+		String MUTABLE__VALUE = "value";
 	
 	String TIME_OF_DAY = PACKAGE_ + "TimeOfDay";
 		String TIME_OF_DAY__HOUR = "hour";

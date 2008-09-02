@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.CacheImpl.CacheAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.ExistenceCheckingImpl.ExistenceCheckingAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.MutableImpl.MutableAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.TransformationImpl.TransformationAnnotationDefinition;
 
 public class EclipseLinkJpaAnnotationProvider
@@ -34,4 +35,11 @@ public class EclipseLinkJpaAnnotationProvider
 		super.addAttributeMappingAnnotationDefinitionsTo(definitions);
 		definitions.add(TransformationAnnotationDefinition.instance());
 	}
+	
+	@Override
+	protected void addAttributeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
+		super.addAttributeAnnotationDefinitionsTo(definitions);
+		definitions.add(MutableAnnotationDefinition.instance());
+	}
+	
 }
