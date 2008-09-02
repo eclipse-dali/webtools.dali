@@ -62,7 +62,7 @@ public class TransformationImpl extends AbstractResourceAnnotation<Attribute> im
 		return ANNOTATION_NAME;
 	}
 	
-	//*************** Basic implementation ****************
+	//*************** Transformation implementation ****************
 	public Boolean getOptional() {
 		return this.optional;
 	}

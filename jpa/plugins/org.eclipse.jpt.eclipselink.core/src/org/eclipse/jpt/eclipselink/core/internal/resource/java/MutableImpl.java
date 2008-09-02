@@ -53,7 +53,7 @@ public class MutableImpl extends AbstractResourceAnnotation<Attribute> implement
 		return ANNOTATION_NAME;
 	}
 	
-	//*************** Basic implementation ****************
+	//*************** Mutable implementation ****************
 	public Boolean getValue() {
 		return this.value;
 	}
