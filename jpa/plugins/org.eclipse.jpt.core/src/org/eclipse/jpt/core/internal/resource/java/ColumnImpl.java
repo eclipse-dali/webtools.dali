@@ -51,7 +51,7 @@ public class ColumnImpl extends BaseColumnImpl implements ColumnAnnotation, Nest
 	
 	private Integer scale;
 	
-	protected ColumnImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
+	public ColumnImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa);
 		this.lengthDeclarationAdapter = this.buildIntegerElementAdapter(JPA.COLUMN__LENGTH);
 		this.lengthAdapter = this.buildShortCircuitIntegerElementAdapter(this.lengthDeclarationAdapter);

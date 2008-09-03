@@ -24,8 +24,10 @@ public class JptEclipseLinkCoreJavaResourceModelTests {
 		suite.addTestSuite(CacheTests.class);
 		suite.addTestSuite(ExistenceCheckingTests.class);
 		suite.addTestSuite(MutableAnnotationTests.class);
+		suite.addTestSuite(ReadTransformerAnnotationTests.class);
 		suite.addTestSuite(TimeOfDayTests.class);
 		suite.addTestSuite(TransformationAnnotationTests.class);
+		suite.addTestSuite(WriteTransformerAnnotationTests.class);
 		
 		return suite;
 	}

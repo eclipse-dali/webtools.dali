@@ -16,7 +16,9 @@ import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.CacheImpl.CacheAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.ExistenceCheckingImpl.ExistenceCheckingAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.MutableImpl.MutableAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.ReadTransformerImpl.ReadTransformerAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.TransformationImpl.TransformationAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.WriteTransformerImpl.WriteTransformerAnnotationDefinition;
 
 public class EclipseLinkJpaAnnotationProvider
 	extends GenericJpaAnnotationProvider
@@ -40,6 +42,8 @@ public class EclipseLinkJpaAnnotationProvider
 	protected void addAttributeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
 		super.addAttributeAnnotationDefinitionsTo(definitions);
 		definitions.add(MutableAnnotationDefinition.instance());
+		definitions.add(ReadTransformerAnnotationDefinition.instance());		
+		definitions.add(WriteTransformerAnnotationDefinition.instance());		
 	}
 	
 }

@@ -73,6 +73,10 @@ public interface EclipseLinkJPA {
 	String MUTABLE = PACKAGE_ + "Mutable";
 		String MUTABLE__VALUE = "value";
 	
+	String READ_TRANSFORMER = PACKAGE_ + "ReadTransformer";
+		String READ_TRANSFORMER__TRANSFORMER_CLASS = "transformerClass";
+		String READ_TRANSFORMER__METHOD = "method";
+		
 	String TIME_OF_DAY = PACKAGE_ + "TimeOfDay";
 		String TIME_OF_DAY__HOUR = "hour";
 		String TIME_OF_DAY__MINUTE = "minute";
@@ -82,5 +86,13 @@ public interface EclipseLinkJPA {
 	String TRANSFORMATION = PACKAGE_ + "Transformation";
 		String TRANSFORMATION__FETCH = "fetch";
 		String TRANSFORMATION__OPTIONAL = "optional";
+
+	String WRITE_TRANSFORMER = PACKAGE_ + "WriteTransformer";
+		String WRITE_TRANSFORMER__TRANSFORMER_CLASS = "transformerClass";
+		String WRITE_TRANSFORMER__METHOD = "method";
+		String WRITE_TRANSFORMER__COLUMN = "column";
+		
+	String WRITE_TRANSFORMERS = PACKAGE_ + "WriteTransformers";
+		String WRITE_TRANSFORMERS__VALUE = "value";
 
 }
