@@ -18,6 +18,7 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.java.ConvertImpl.Conve
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.ConverterImpl.ConverterAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.ExistenceCheckingImpl.ExistenceCheckingAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.MutableImpl.MutableAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.ObjectTypeConverterImpl.ObjectTypeConverterAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.ReadTransformerImpl.ReadTransformerAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.StructConverterImpl.StructConverterAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.TransformationImpl.TransformationAnnotationDefinition;
@@ -48,6 +49,7 @@ public class EclipseLinkJpaAnnotationProvider
 		definitions.add(ConvertAnnotationDefinition.instance());
 		definitions.add(ConverterAnnotationDefinition.instance());
 		definitions.add(MutableAnnotationDefinition.instance());
+		definitions.add(ObjectTypeConverterAnnotationDefinition.instance());
 		definitions.add(ReadTransformerAnnotationDefinition.instance());		
 		definitions.add(StructConverterAnnotationDefinition.instance());		
 		definitions.add(TypeConverterAnnotationDefinition.instance());		
