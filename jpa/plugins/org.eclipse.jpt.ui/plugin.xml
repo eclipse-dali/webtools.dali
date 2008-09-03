@@ -478,19 +478,25 @@
 			name="%newJpaProjectWizardName"
 			icon="icons/full/etool16/new_jpaproject_wiz.gif"
 			category="org.eclipse.jpt"
-			class="org.eclipse.jpt.ui.internal.wizards.NewJpaProjectWizard"
 			project="true"
 			finalPerspective="org.eclipse.jpt.ui.jpaPerspective">
 			<description>%newJpaProjectWizardDesc</description>
+			<class class="org.eclipse.jpt.ui.internal.wizards.NewJpaProjectWizard"> 
+				<parameter name="javaeeproject" value="true"/> 
+				<parameter name="menuIndex" value="35" /> 
+			</class> 
 		</wizard>
 		
 		<wizard
             id="org.eclipse.jpt.ui.wizard.newEntity"
 			name="%newJpaEntityWizardName"
 			icon="icons/full/etool16/new_entity_wiz.gif"
-			category="org.eclipse.jpt"
-			class="org.eclipse.jpt.ui.internal.wizards.entity.EntityWizard">
+			category="org.eclipse.jpt">
 			<description>%newJpaEntityWizardDesc</description>
+			<class class="org.eclipse.jpt.ui.internal.wizards.entity.EntityWizard"> 
+				<parameter name="javaeeartifact" value="true"/> 
+				<parameter name="menuIndex" value="38" /> 
+			</class> 
 		</wizard>
 		
 		<wizard
