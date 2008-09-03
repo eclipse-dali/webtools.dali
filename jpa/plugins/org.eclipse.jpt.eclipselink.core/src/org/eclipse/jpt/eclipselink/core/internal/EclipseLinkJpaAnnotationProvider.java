@@ -14,10 +14,14 @@ import java.util.List;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.CacheImpl.CacheAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.ConvertImpl.ConvertAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.ConverterImpl.ConverterAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.ExistenceCheckingImpl.ExistenceCheckingAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.MutableImpl.MutableAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.ReadTransformerImpl.ReadTransformerAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.StructConverterImpl.StructConverterAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.TransformationImpl.TransformationAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.TypeConverterImpl.TypeConverterAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.WriteTransformerImpl.WriteTransformerAnnotationDefinition;
 
 public class EclipseLinkJpaAnnotationProvider
@@ -41,8 +45,12 @@ public class EclipseLinkJpaAnnotationProvider
 	@Override
 	protected void addAttributeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
 		super.addAttributeAnnotationDefinitionsTo(definitions);
+		definitions.add(ConvertAnnotationDefinition.instance());
+		definitions.add(ConverterAnnotationDefinition.instance());
 		definitions.add(MutableAnnotationDefinition.instance());
 		definitions.add(ReadTransformerAnnotationDefinition.instance());		
+		definitions.add(StructConverterAnnotationDefinition.instance());		
+		definitions.add(TypeConverterAnnotationDefinition.instance());		
 		definitions.add(WriteTransformerAnnotationDefinition.instance());		
 	}
 	

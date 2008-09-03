@@ -59,7 +59,17 @@ public interface EclipseLinkJPA {
 	String CACHE_COORDINATION_TYPE__SEND_NEW_OBJECTS_WITH_CHANGES = CACHE_COORDINATION_TYPE_ + "SEND_NEW_OBJECTS_WITH_CHANGES";
 	String CACHE_COORDINATION_TYPE__NONE = CACHE_COORDINATION_TYPE_ + "NONE";
 
+	String CONVERSION_VALUE = PACKAGE_ + "ConversionValue";
+		String CONVERSION_VALUE__DATA_VALUE = "dataValue";
+		String CONVERSION_VALUE__OBJECT_VALUE = "objectValue";
 
+	String CONVERT = PACKAGE_ + "Convert";
+		String CONVERT__VALUE = "value";
+		
+	String CONVERTER = PACKAGE_ + "Converter";
+		String CONVERTER__NAME = "name";
+		String CONVERTER__CONVERTER_CLASS = "converterClass";
+	
 	String EXISTENCE_CHECKING = PACKAGE_ + "ExistenceChecking";
 	String EXISTENCE_CHECKING__VALUE = "value";
 
@@ -73,10 +83,21 @@ public interface EclipseLinkJPA {
 	String MUTABLE = PACKAGE_ + "Mutable";
 		String MUTABLE__VALUE = "value";
 	
+	String OBJECT_TYPE_CONVERTER = PACKAGE_ + "ObjectTypeConverter";
+		String OBJECT_TYPE_CONVERTER__NAME = "name";
+		String OBJECT_TYPE_CONVERTER__DATE_TYPE = "dataType";
+		String OBJECT_TYPE_CONVERTER__OBJECT_TYPE = "objectType";
+		String OBJECT_TYPE_CONVERTER__CONVERSION_VALUES = "conversionValues";
+		String OBJECT_TYPE_CONVERTER__DEFAULT_OBJECT_VALUE = "defaultObjectValue";
+
 	String READ_TRANSFORMER = PACKAGE_ + "ReadTransformer";
 		String READ_TRANSFORMER__TRANSFORMER_CLASS = "transformerClass";
 		String READ_TRANSFORMER__METHOD = "method";
 		
+	String STRUCT_CONVERTER = PACKAGE_ + "StructConverter";
+		String STRUCT_CONVERTER__NAME = "name";
+		String STRUCT_CONVERTER__CONVERTER = "converter";
+
 	String TIME_OF_DAY = PACKAGE_ + "TimeOfDay";
 		String TIME_OF_DAY__HOUR = "hour";
 		String TIME_OF_DAY__MINUTE = "minute";
@@ -86,6 +107,11 @@ public interface EclipseLinkJPA {
 	String TRANSFORMATION = PACKAGE_ + "Transformation";
 		String TRANSFORMATION__FETCH = "fetch";
 		String TRANSFORMATION__OPTIONAL = "optional";
+
+	String TYPE_CONVERTER = PACKAGE_ + "TypeConverter";
+		String TYPE_CONVERTER__NAME = "name";
+		String TYPE_CONVERTER__DATE_TYPE = "dataType";
+		String TYPE_CONVERTER__OBJECT_TYPE = "objectType";
 
 	String WRITE_TRANSFORMER = PACKAGE_ + "WriteTransformer";
 		String WRITE_TRANSFORMER__TRANSFORMER_CLASS = "transformerClass";

@@ -22,11 +22,15 @@ public class JptEclipseLinkCoreJavaResourceModelTests {
 		TestSuite suite = new TestSuite(JptEclipseLinkCoreJavaResourceModelTests.class.getName());
 		
 		suite.addTestSuite(CacheTests.class);
+		suite.addTestSuite(ConvertAnnotationTests.class);
+		suite.addTestSuite(ConverterAnnotationTests.class);
 		suite.addTestSuite(ExistenceCheckingTests.class);
 		suite.addTestSuite(MutableAnnotationTests.class);
 		suite.addTestSuite(ReadTransformerAnnotationTests.class);
+		suite.addTestSuite(StructConverterAnnotationTests.class);
 		suite.addTestSuite(TimeOfDayTests.class);
 		suite.addTestSuite(TransformationAnnotationTests.class);
+		suite.addTestSuite(TypeConverterAnnotationTests.class);
 		suite.addTestSuite(WriteTransformerAnnotationTests.class);
 		
 		return suite;
