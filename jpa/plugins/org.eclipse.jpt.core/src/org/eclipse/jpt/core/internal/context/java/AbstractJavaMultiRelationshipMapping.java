@@ -83,15 +83,15 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		String oldOrderBy = this.orderBy;
 		this.orderBy = newOrderBy;
 		if (newOrderBy == null) {
-			if (getOrderByResource() != null) { 
-				removeOrderByResource();
+			if (getResourceOrderBy() != null) { 
+				removeResourceOrderBy();
 			}
 		}
 		else {
-			if (getOrderByResource() == null) {
-				addOrderByResource();
+			if (getResourceOrderBy() == null) {
+				addResourceOrderBy();
 			}
-			getOrderByResource().setValue(newOrderBy);
+			getResourceOrderBy().setValue(newOrderBy);
 		}
 		firePropertyChanged(MultiRelationshipMapping.ORDER_BY_PROPERTY, oldOrderBy, newOrderBy);
 	}
@@ -102,15 +102,15 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		firePropertyChanged(MultiRelationshipMapping.ORDER_BY_PROPERTY, oldOrderBy, newOrderBy);
 	}
 	
-	protected OrderByAnnotation getOrderByResource() {
+	protected OrderByAnnotation getResourceOrderBy() {
 		return (OrderByAnnotation) getResourcePersistentAttribute().getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 	}
 	
-	protected OrderByAnnotation addOrderByResource() {
+	protected OrderByAnnotation addResourceOrderBy() {
 		return (OrderByAnnotation) getResourcePersistentAttribute().addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 	}
 	
-	protected void removeOrderByResource() {
+	protected void removeResourceOrderBy() {
 		getResourcePersistentAttribute().removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 	}
 	
@@ -122,8 +122,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		boolean oldNoOrdering = this.isNoOrdering;
 		this.isNoOrdering = newNoOrdering;
 		if (newNoOrdering) {
-			if (getOrderByResource() != null) {
-				removeOrderByResource();
+			if (getResourceOrderBy() != null) {
+				removeResourceOrderBy();
 			}
 		}
 		else {
@@ -146,11 +146,11 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		boolean oldPkOrdering = this.isPkOrdering;
 		this.isPkOrdering = newPkOrdering;
 		if (newPkOrdering) {
-			if (getOrderByResource() == null) {
-				addOrderByResource();
+			if (getResourceOrderBy() == null) {
+				addResourceOrderBy();
 			}
 			else {
-				getOrderByResource().setValue(null);
+				getResourceOrderBy().setValue(null);
 			}
 		}
 		firePropertyChanged(PK_ORDERING_PROPERTY, oldPkOrdering, newPkOrdering);	
@@ -302,7 +302,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		if (mapKey != null) {
 			this.mapKey = mapKey.getName();
 		}
-		this.initializeOrderBy(this.getOrderByResource());
+		this.initializeOrderBy(this.getResourceOrderBy());
 		this.joinTable.initialize(resourcePersistentAttribute);
 	}
 	
@@ -331,7 +331,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super.update(resourcePersistentAttribute);
 		this.updateMapKey(resourcePersistentAttribute);
-		this.updateOrderBy(this.getOrderByResource());
+		this.updateOrderBy(this.getResourceOrderBy());
 		this.joinTable.update(resourcePersistentAttribute);
 	}	
 	

@@ -31,7 +31,7 @@ public class GenericJavaUniqueConstraint extends AbstractJavaJpaContextNode
 
 	protected final List<String> columnNames;
 
-	protected UniqueConstraintAnnotation uniqueConstraintAnnotation;
+	protected UniqueConstraintAnnotation resourceUniqueConstraint;
 	
 	protected Owner owner;
 	public GenericJavaUniqueConstraint(JavaJpaContextNode parent, Owner owner) {
@@ -54,7 +54,7 @@ public class GenericJavaUniqueConstraint extends AbstractJavaJpaContextNode
 
 	public void addColumnName(int index, String columnName) {
 		this.columnNames.add(index, columnName);
-		this.uniqueConstraintAnnotation.addColumnName(index, columnName);
+		this.resourceUniqueConstraint.addColumnName(index, columnName);
 		fireItemAdded(UniqueConstraint.COLUMN_NAMES_LIST, index, columnName);		
 	}	
 	
@@ -69,7 +69,7 @@ public class GenericJavaUniqueConstraint extends AbstractJavaJpaContextNode
 
 	public void removeColumnName(int index) {
 		String removedColumnName = this.columnNames.remove(index);
-		this.uniqueConstraintAnnotation.removeColumnName(index);
+		this.resourceUniqueConstraint.removeColumnName(index);
 		fireItemRemoved(UniqueConstraint.COLUMN_NAMES_LIST, index, removedColumnName);
 	}
 	
@@ -80,40 +80,40 @@ public class GenericJavaUniqueConstraint extends AbstractJavaJpaContextNode
 
 	public void moveColumnName(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.columnNames, targetIndex, sourceIndex);
-		this.uniqueConstraintAnnotation.moveColumnName(targetIndex, sourceIndex);
+		this.resourceUniqueConstraint.moveColumnName(targetIndex, sourceIndex);
 		fireItemMoved(UniqueConstraint.COLUMN_NAMES_LIST, targetIndex, sourceIndex);		
 	}
 
-	public void initialize(UniqueConstraintAnnotation uniqueConstraintAnnotation) {
-		this.uniqueConstraintAnnotation = uniqueConstraintAnnotation;
-		this.initializeColumnNames(uniqueConstraintAnnotation);
+	public void initialize(UniqueConstraintAnnotation resourceUniqueConstraint) {
+		this.resourceUniqueConstraint = resourceUniqueConstraint;
+		this.initializeColumnNames(resourceUniqueConstraint);
 	}
 	
-	protected void initializeColumnNames(UniqueConstraintAnnotation uniqueConstraintAnnotation) {
-		ListIterator<String> annotationColumnNames = uniqueConstraintAnnotation.columnNames();
+	protected void initializeColumnNames(UniqueConstraintAnnotation resourceUniqueConstraint) {
+		ListIterator<String> resourceColumnNames = resourceUniqueConstraint.columnNames();
 		
-		for (String annotationColumnName : CollectionTools.iterable(annotationColumnNames)) {
-			this.columnNames.add(annotationColumnName);
+		for (String resourceColumnName : CollectionTools.iterable(resourceColumnNames)) {
+			this.columnNames.add(resourceColumnName);
 		}
 	}
 
-	public void update(UniqueConstraintAnnotation uniqueConstraintAnnotation) {
-		this.uniqueConstraintAnnotation = uniqueConstraintAnnotation;
-		this.updateColumnNames(uniqueConstraintAnnotation);
+	public void update(UniqueConstraintAnnotation resourceUniqueConstraint) {
+		this.resourceUniqueConstraint = resourceUniqueConstraint;
+		this.updateColumnNames(resourceUniqueConstraint);
 	}
 
-	protected void updateColumnNames(UniqueConstraintAnnotation uniqueConstraintAnnotation) {
-		ListIterator<String> annotationColumnNames = uniqueConstraintAnnotation.columnNames();
+	protected void updateColumnNames(UniqueConstraintAnnotation resourceUniqueConstraint) {
+		ListIterator<String> resourceColumnNames = resourceUniqueConstraint.columnNames();
 		
 		int index = 0;
-		for (String annotationColumnName : CollectionTools.iterable(annotationColumnNames)) {
+		for (String resourceColumnName : CollectionTools.iterable(resourceColumnNames)) {
 			if (columnNamesSize() > index) {
-				if (this.columnNames.get(index) != annotationColumnName) {
-					addColumnName_(index, annotationColumnName);
+				if (this.columnNames.get(index) != resourceColumnName) {
+					addColumnName_(index, resourceColumnName);
 				}
 			}
 			else {
-				addColumnName_(index, annotationColumnName);			
+				addColumnName_(index, resourceColumnName);			
 			}
 			index++;
 		}
@@ -125,11 +125,11 @@ public class GenericJavaUniqueConstraint extends AbstractJavaJpaContextNode
 
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.uniqueConstraintAnnotation.getTextRange(astRoot);
+		return this.resourceUniqueConstraint.getTextRange(astRoot);
 	}	
 
 	private boolean columnNamesTouches(int pos, CompilationUnit astRoot) {
-		return this.uniqueConstraintAnnotation.columnNamesTouches(pos, astRoot);
+		return this.resourceUniqueConstraint.columnNamesTouches(pos, astRoot);
 	}
 
 	private Iterator<String> candidateColumnNames() {

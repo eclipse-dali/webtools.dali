@@ -48,15 +48,15 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	@Override
 	public void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super.initialize(resourcePersistentAttribute);
-		this.column.initialize(this.getColumnResource());
-		this.temporal = this.temporal(this.temporalResource());
+		this.column.initialize(this.getResourceColumn());
+		this.temporal = this.temporal(this.getResourceTemporal());
 	}
 	
-	protected TemporalAnnotation temporalResource() {
+	protected TemporalAnnotation getResourceTemporal() {
 		return (TemporalAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 	}
 	
-	public ColumnAnnotation getColumnResource() {
+	public ColumnAnnotation getResourceColumn() {
 		return (ColumnAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
@@ -76,7 +76,7 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 			JPA.TEMPORAL);
 	}
 
-	//************** INamedColumn.Owner implementation ***************
+	//************** NamedColumn.Owner implementation ***************
 
 	public String getDefaultColumnName() {
 		return getAttributeName();
@@ -86,7 +86,7 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 		return getTypeMapping().getTableName();
 	}
 
-	//************** IVersionMapping implementation ***************
+	//************** VersionMapping implementation ***************
 	
 	public JavaColumn getColumn() {
 		return this.column;
@@ -99,15 +99,15 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	public void setTemporal(TemporalType newTemporal) {
 		TemporalType oldTemporal = this.temporal;
 		this.temporal = newTemporal;
-		this.temporalResource().setValue(TemporalType.toJavaResourceModel(newTemporal));
+		this.getResourceTemporal().setValue(TemporalType.toJavaResourceModel(newTemporal));
 		firePropertyChanged(ColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 
 	@Override
 	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super.update(resourcePersistentAttribute);
-		this.column.update(this.getColumnResource());
-		this.setTemporal(this.temporal(this.temporalResource()));
+		this.column.update(this.getResourceColumn());
+		this.setTemporal(this.temporal(this.getResourceTemporal()));
 	}
 	
 	protected TemporalType temporal(TemporalAnnotation temporal) {

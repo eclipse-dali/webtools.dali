@@ -55,7 +55,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	public void setSpecifiedTargetEntity(String newSpecifiedTargetEntity) {
 		String oldSpecifiedTargetEntity = this.specifiedTargetEntity;
 		this.specifiedTargetEntity = newSpecifiedTargetEntity;
-		this.getMappingResource().setTargetEntity(newSpecifiedTargetEntity);
+		this.getResourceMapping().setTargetEntity(newSpecifiedTargetEntity);
 		firePropertyChanged(RelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY, oldSpecifiedTargetEntity, newSpecifiedTargetEntity);
 	}
 	
@@ -100,7 +100,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
 		FetchType oldFetch = this.specifiedFetch;
 		this.specifiedFetch = newSpecifiedFetch;
-		this.getMappingResource().setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
+		this.getResourceMapping().setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
 		firePropertyChanged(Fetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
 	

@@ -71,7 +71,7 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	public void setSpecifiedTable(String newSpecifiedTable) {
 		String oldSpecifiedTable = this.specifiedTable;
 		this.specifiedTable = newSpecifiedTable;
-		getColumnResource().setTable(newSpecifiedTable);
+		getResourceColumn().setTable(newSpecifiedTable);
 		firePropertyChanged(BaseColumn.SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
 	}
 	
@@ -112,7 +112,7 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	public void setSpecifiedUnique(Boolean newSpecifiedUnique) {
 		Boolean oldSpecifiedUnique = this.specifiedUnique;
 		this.specifiedUnique = newSpecifiedUnique;
-		this.getColumnResource().setUnique(newSpecifiedUnique);
+		this.getResourceColumn().setUnique(newSpecifiedUnique);
 		firePropertyChanged(BaseColumn.SPECIFIED_UNIQUE_PROPERTY, oldSpecifiedUnique, newSpecifiedUnique);
 	}
 	
@@ -143,7 +143,7 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	public void setSpecifiedNullable(Boolean newSpecifiedNullable) {
 		Boolean oldSpecifiedNullable = this.specifiedNullable;
 		this.specifiedNullable = newSpecifiedNullable;
-		this.getColumnResource().setNullable(newSpecifiedNullable);
+		this.getResourceColumn().setNullable(newSpecifiedNullable);
 		firePropertyChanged(BaseColumn.SPECIFIED_NULLABLE_PROPERTY, oldSpecifiedNullable, newSpecifiedNullable);
 	}
 	
@@ -174,7 +174,7 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	public void setSpecifiedInsertable(Boolean newSpecifiedInsertable) {
 		Boolean oldSpecifiedInsertable = this.specifiedInsertable;
 		this.specifiedInsertable = newSpecifiedInsertable;
-		this.getColumnResource().setInsertable(newSpecifiedInsertable);
+		this.getResourceColumn().setInsertable(newSpecifiedInsertable);
 		firePropertyChanged(BaseColumn.SPECIFIED_INSERTABLE_PROPERTY, oldSpecifiedInsertable, newSpecifiedInsertable);
 	}
 	
@@ -205,7 +205,7 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	public void setSpecifiedUpdatable(Boolean newSpecifiedUpdatable) {
 		Boolean oldSpecifiedUpdatable = this.specifiedUpdatable;
 		this.specifiedUpdatable = newSpecifiedUpdatable;
-		this.getColumnResource().setUpdatable(newSpecifiedUpdatable);
+		this.getResourceColumn().setUpdatable(newSpecifiedUpdatable);
 		firePropertyChanged(BaseColumn.SPECIFIED_UPDATABLE_PROPERTY, oldSpecifiedUpdatable, newSpecifiedUpdatable);
 	}
 
@@ -227,12 +227,12 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	}
 
 	public TextRange getTableTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getColumnResource().getTableTextRange(astRoot);
+		TextRange textRange = this.getResourceColumn().getTableTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);
 	}
 
 	public boolean tableTouches(int pos, CompilationUnit astRoot) {
-		return getColumnResource().tableTouches(pos, astRoot);
+		return getResourceColumn().tableTouches(pos, astRoot);
 	}
 
 	private Iterator<String> candidateTableNames() {

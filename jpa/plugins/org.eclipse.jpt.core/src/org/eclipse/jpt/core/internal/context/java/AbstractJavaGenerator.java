@@ -26,33 +26,33 @@ public abstract class AbstractJavaGenerator extends AbstractJavaJpaContextNode
 	
 	protected Integer specifiedAllocationSize;
 
-	protected GeneratorAnnotation generatorResource;
+	protected GeneratorAnnotation resourceGenerator;
 	
 	protected AbstractJavaGenerator(JavaJpaContextNode parent) {
 		super(parent);
 	}
 
-	public void initialize(GeneratorAnnotation generatorResource) {
-		this.generatorResource = generatorResource;
-		this.name = this.name(generatorResource);
-		this.specifiedInitialValue = this.specifiedInitialValue(generatorResource);
-		this.specifiedAllocationSize = this.specifiedAllocationSize(generatorResource);
+	public void initialize(GeneratorAnnotation resourceGenerator) {
+		this.resourceGenerator = resourceGenerator;
+		this.name = this.name(resourceGenerator);
+		this.specifiedInitialValue = this.specifiedInitialValue(resourceGenerator);
+		this.specifiedAllocationSize = this.specifiedAllocationSize(resourceGenerator);
 	}
 	
-	protected GeneratorAnnotation getGeneratorResource() {
-		return this.generatorResource;
+	protected GeneratorAnnotation getResourceGenerator() {
+		return this.resourceGenerator;
 	}
 	
-	protected String name(GeneratorAnnotation generatorResource) {
-		return generatorResource.getName();
+	protected String name(GeneratorAnnotation resourceGenerator) {
+		return resourceGenerator.getName();
 	}
 	
-	protected Integer specifiedInitialValue(GeneratorAnnotation generatorResource) {
-		return generatorResource.getInitialValue();
+	protected Integer specifiedInitialValue(GeneratorAnnotation resourceGenerator) {
+		return resourceGenerator.getInitialValue();
 	}
 	
-	protected Integer specifiedAllocationSize(GeneratorAnnotation generatorResource) {
-		return generatorResource.getAllocationSize();
+	protected Integer specifiedAllocationSize(GeneratorAnnotation resourceGenerator) {
+		return resourceGenerator.getAllocationSize();
 	}
 	
 	public String getName() {
@@ -62,7 +62,7 @@ public abstract class AbstractJavaGenerator extends AbstractJavaJpaContextNode
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		getGeneratorResource().setName(newName);
+		getResourceGenerator().setName(newName);
 		firePropertyChanged(Generator.NAME_PROPERTY, oldName, newName);
 	}
 
@@ -83,7 +83,7 @@ public abstract class AbstractJavaGenerator extends AbstractJavaJpaContextNode
 	public void setSpecifiedInitialValue(Integer newSpecifiedInitialValue) {
 		Integer oldSpecifiedInitialValue = this.specifiedInitialValue;
 		this.specifiedInitialValue = newSpecifiedInitialValue;
-		getGeneratorResource().setInitialValue(newSpecifiedInitialValue);
+		getResourceGenerator().setInitialValue(newSpecifiedInitialValue);
 		firePropertyChanged(Generator.SPECIFIED_INITIAL_VALUE_PROPERTY, oldSpecifiedInitialValue, newSpecifiedInitialValue);
 	}
 
@@ -104,7 +104,7 @@ public abstract class AbstractJavaGenerator extends AbstractJavaJpaContextNode
 	public void setSpecifiedAllocationSize(Integer newSpecifiedAllocationSize) {
 		Integer oldSpecifiedAllocationSize = this.specifiedAllocationSize;
 		this.specifiedAllocationSize = newSpecifiedAllocationSize;
-		getGeneratorResource().setAllocationSize(newSpecifiedAllocationSize);
+		getResourceGenerator().setAllocationSize(newSpecifiedAllocationSize);
 		firePropertyChanged(Generator.SPECIFIED_ALLOCATION_SIZE_PROPERTY, oldSpecifiedAllocationSize, newSpecifiedAllocationSize);
 	}
 
@@ -127,18 +127,18 @@ public abstract class AbstractJavaGenerator extends AbstractJavaJpaContextNode
 	}
 
 	public TextRange getSelectionTextRange(CompilationUnit astRoot) {
-		return this.generatorResource.getTextRange(astRoot);
+		return this.resourceGenerator.getTextRange(astRoot);
 	}
 	
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.generatorResource.getNameTextRange(astRoot);
+		return this.resourceGenerator.getNameTextRange(astRoot);
 	}
 
-	protected void update(GeneratorAnnotation generatorResource) {
-		this.generatorResource = generatorResource;
-		this.setName_(this.name(generatorResource));
-		this.setSpecifiedInitialValue_(this.specifiedInitialValue(generatorResource));
-		this.setSpecifiedAllocationSize_(this.specifiedAllocationSize(generatorResource));
+	protected void update(GeneratorAnnotation resourceGenerator) {
+		this.resourceGenerator = resourceGenerator;
+		this.setName_(this.name(resourceGenerator));
+		this.setSpecifiedInitialValue_(this.specifiedInitialValue(resourceGenerator));
+		this.setSpecifiedAllocationSize_(this.specifiedAllocationSize(resourceGenerator));
 	}
 	
 	public boolean overrides(Generator generator) {

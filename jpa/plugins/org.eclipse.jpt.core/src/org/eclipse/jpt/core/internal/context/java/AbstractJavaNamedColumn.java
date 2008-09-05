@@ -50,7 +50,7 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	}
 	
 
-	protected abstract T getColumnResource();
+	protected abstract T getResourceColumn();
 
 	
 	//************** INamedColumn implementation *****************
@@ -65,7 +65,7 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	public void setSpecifiedName(String newSpecifiedName) {
 		String oldSpecifiedName = this.specifiedName;
 		this.specifiedName = newSpecifiedName;
-		getColumnResource().setName(newSpecifiedName);
+		getResourceColumn().setName(newSpecifiedName);
 		firePropertyChanged(NamedColumn.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
 	}
 	
@@ -98,7 +98,7 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	public void setColumnDefinition(String newColumnDefinition) {
 		String oldColumnDefinition = this.columnDefinition;
 		this.columnDefinition = newColumnDefinition;
-		getColumnResource().setColumnDefinition(newColumnDefinition);
+		getResourceColumn().setColumnDefinition(newColumnDefinition);
 		firePropertyChanged(NamedColumn.COLUMN_DEFINITION_PROPERTY, oldColumnDefinition, newColumnDefinition);
 	}
 	
@@ -119,12 +119,12 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getColumnResource().getNameTextRange(astRoot);
+		TextRange textRange = this.getResourceColumn().getNameTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);
 	}
 
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return this.getColumnResource().nameTouches(pos, astRoot);
+		return this.getResourceColumn().nameTouches(pos, astRoot);
 	}
 	
 	public Column getDbColumn() {

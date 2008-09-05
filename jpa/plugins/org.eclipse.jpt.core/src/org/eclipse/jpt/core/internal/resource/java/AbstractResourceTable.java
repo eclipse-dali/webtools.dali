@@ -59,9 +59,9 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 	
 	protected AbstractResourceTable(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
-		this.nameDeclarationAdapter = this.nameAdapter(daa);
-		this.schemaDeclarationAdapter = this.schemaAdapter(daa);
-		this.catalogDeclarationAdapter = this.catalogAdapter(daa);
+		this.nameDeclarationAdapter = this.getNameAdapter(daa);
+		this.schemaDeclarationAdapter = this.getSchemaAdapter(daa);
+		this.catalogDeclarationAdapter = this.getCatalogAdapter(daa);
 		this.nameAdapter = buildAnnotationElementAdapter(this.nameDeclarationAdapter);
 		this.schemaAdapter = buildAnnotationElementAdapter(this.schemaDeclarationAdapter);
 		this.catalogAdapter = buildAnnotationElementAdapter(this.catalogDeclarationAdapter);
@@ -83,17 +83,17 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 	/**
 	 * Build and return a declaration element adapter for the table's 'name' element
 	 */
-	protected abstract DeclarationAnnotationElementAdapter<String> nameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
+	protected abstract DeclarationAnnotationElementAdapter<String> getNameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
 
 	/**
 	 * Build and return a declaration element adapter for the table's 'schema' element
 	 */
-	protected abstract DeclarationAnnotationElementAdapter<String> schemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
+	protected abstract DeclarationAnnotationElementAdapter<String> getSchemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
 
 	/**
 	 * Build and return a declaration element adapter for the table's 'catalog' element
 	 */
-	protected abstract DeclarationAnnotationElementAdapter<String> catalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
+	protected abstract DeclarationAnnotationElementAdapter<String> getCatalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
 
 	/**
 	 * Return the uniqueConstraints element name

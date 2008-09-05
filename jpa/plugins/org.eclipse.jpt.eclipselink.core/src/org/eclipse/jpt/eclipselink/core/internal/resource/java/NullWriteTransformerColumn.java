@@ -33,7 +33,7 @@ public class NullWriteTransformerColumn extends NullBaseColumn implements Column
 	}
 
 	@Override
-	protected ColumnAnnotation createColumnResource() {
+	protected ColumnAnnotation createResourceColumn() {
 		return getParent().addColumn();
 	}
 
@@ -43,7 +43,7 @@ public class NullWriteTransformerColumn extends NullBaseColumn implements Column
 	
 	public void setLength(Integer length) {
 		if (length != null) {
-			createColumnResource().setLength(length);
+			createResourceColumn().setLength(length);
 		}
 	}
 	
@@ -53,7 +53,7 @@ public class NullWriteTransformerColumn extends NullBaseColumn implements Column
 	
 	public void setScale(Integer scale) {
 		if (scale != null) {
-			createColumnResource().setScale(scale);
+			createResourceColumn().setScale(scale);
 		}
 	}
 	
@@ -63,7 +63,7 @@ public class NullWriteTransformerColumn extends NullBaseColumn implements Column
 	
 	public void setPrecision(Integer precision) {
 		if (precision != null) {
-			createColumnResource().setPrecision(precision);
+			createResourceColumn().setPrecision(precision);
 		}
 	}
 	

@@ -32,7 +32,7 @@ public class NullAttributeOverrideColumn extends NullBaseColumn implements Colum
 	}
 
 	@Override
-	protected ColumnAnnotation createColumnResource() {
+	protected ColumnAnnotation createResourceColumn() {
 		return getParent().addColumn();
 	}
 
@@ -42,7 +42,7 @@ public class NullAttributeOverrideColumn extends NullBaseColumn implements Colum
 	
 	public void setLength(Integer length) {
 		if (length != null) {
-			createColumnResource().setLength(length);
+			createResourceColumn().setLength(length);
 		}
 	}
 	
@@ -52,7 +52,7 @@ public class NullAttributeOverrideColumn extends NullBaseColumn implements Colum
 	
 	public void setScale(Integer scale) {
 		if (scale != null) {
-			createColumnResource().setScale(scale);
+			createResourceColumn().setScale(scale);
 		}
 	}
 	
@@ -62,7 +62,7 @@ public class NullAttributeOverrideColumn extends NullBaseColumn implements Colum
 	
 	public void setPrecision(Integer precision) {
 		if (precision != null) {
-			createColumnResource().setPrecision(precision);
+			createResourceColumn().setPrecision(precision);
 		}
 	}
 	

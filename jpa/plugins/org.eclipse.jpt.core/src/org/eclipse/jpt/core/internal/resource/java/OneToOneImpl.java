@@ -65,17 +65,17 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 	//**************** AbstractRelationshipMappingAnnotation implementation **************
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> targetEntityAdapter() {
+	protected DeclarationAnnotationElementAdapter<String> getTargetEntityAdapter() {
 		return TARGET_ENTITY_ADAPTER;
 	}
 	
 	@Override
-	protected DeclarationAnnotationElementAdapter<String[]> cascadeAdapter() {
+	protected DeclarationAnnotationElementAdapter<String[]> getCascadeAdapter() {
 		return CASCADE_ADAPTER;
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> fetchAdapter() {
+	protected DeclarationAnnotationElementAdapter<String> getFetchAdapter() {
 		return FETCH_ADAPTER;
 	}	
 

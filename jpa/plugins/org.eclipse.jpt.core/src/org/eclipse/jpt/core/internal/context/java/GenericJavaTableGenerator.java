@@ -63,8 +63,8 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 	}
 
 	@Override
-	protected TableGeneratorAnnotation getGeneratorResource() {
-		return (TableGeneratorAnnotation) super.getGeneratorResource();
+	protected TableGeneratorAnnotation getResourceGenerator() {
+		return (TableGeneratorAnnotation) super.getResourceGenerator();
 	}
 
 	public Integer getDefaultInitialValue() {
@@ -82,7 +82,7 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 	public void setSpecifiedTable(String newSpecifiedTable) {
 		String oldSpecifiedTable = this.specifiedTable;
 		this.specifiedTable = newSpecifiedTable;
-		getGeneratorResource().setTable(newSpecifiedTable);
+		getResourceGenerator().setTable(newSpecifiedTable);
 		firePropertyChanged(SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
 	}
 
@@ -107,7 +107,7 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 	public void setSpecifiedCatalog(String newSpecifiedCatalog) {
 		String oldSpecifiedCatalog = this.specifiedCatalog;
 		this.specifiedCatalog = newSpecifiedCatalog;
-		getGeneratorResource().setCatalog(newSpecifiedCatalog);
+		getResourceGenerator().setCatalog(newSpecifiedCatalog);
 		firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
 	}
 	
@@ -138,7 +138,7 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 	public void setSpecifiedSchema(String newSpecifiedSchema) {
 		String oldSpecifiedSchema = this.specifiedSchema;
 		this.specifiedSchema = newSpecifiedSchema;
-		getGeneratorResource().setSchema(newSpecifiedSchema);
+		getResourceGenerator().setSchema(newSpecifiedSchema);
 		firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
 	}
 
@@ -169,7 +169,7 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 	public void setSpecifiedPkColumnName(String newSpecifiedPkColumnName) {
 		String oldSpecifiedPkColumnName = this.specifiedPkColumnName;
 		this.specifiedPkColumnName = newSpecifiedPkColumnName;
-		getGeneratorResource().setPkColumnName(newSpecifiedPkColumnName);
+		getResourceGenerator().setPkColumnName(newSpecifiedPkColumnName);
 		firePropertyChanged(SPECIFIED_PK_COLUMN_NAME_PROPERTY, oldSpecifiedPkColumnName, newSpecifiedPkColumnName);
 	}
 
@@ -194,7 +194,7 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 	public void setSpecifiedValueColumnName(String newSpecifiedValueColumnName) {
 		String oldSpecifiedValueColumnName = this.specifiedValueColumnName;
 		this.specifiedValueColumnName = newSpecifiedValueColumnName;
-		getGeneratorResource().setValueColumnName(newSpecifiedValueColumnName);
+		getResourceGenerator().setValueColumnName(newSpecifiedValueColumnName);
 		firePropertyChanged(SPECIFIED_VALUE_COLUMN_NAME_PROPERTY, oldSpecifiedValueColumnName, newSpecifiedValueColumnName);
 	}
 
@@ -219,7 +219,7 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 	public void setSpecifiedPkColumnValue(String newSpecifiedPkColumnValue) {
 		String oldSpecifiedPkColumnValue = this.specifiedPkColumnValue;
 		this.specifiedPkColumnValue = newSpecifiedPkColumnValue;
-		getGeneratorResource().setPkColumnValue(newSpecifiedPkColumnValue);
+		getResourceGenerator().setPkColumnValue(newSpecifiedPkColumnValue);
 		firePropertyChanged(SPECIFIED_PK_COLUMN_VALUE_PROPERTY, oldSpecifiedPkColumnValue, newSpecifiedPkColumnValue);
 	}
 
@@ -247,7 +247,7 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 	public JavaUniqueConstraint addUniqueConstraint(int index) {
 		JavaUniqueConstraint uniqueConstraint = getJpaFactory().buildJavaUniqueConstraint(this, this);
 		this.uniqueConstraints.add(index, uniqueConstraint);
-		UniqueConstraintAnnotation uniqueConstraintAnnotation = this.getGeneratorResource().addUniqueConstraint(index);
+		UniqueConstraintAnnotation uniqueConstraintAnnotation = this.getResourceGenerator().addUniqueConstraint(index);
 		uniqueConstraint.initialize(uniqueConstraintAnnotation);
 		fireItemAdded(TableGenerator.UNIQUE_CONSTRAINTS_LIST, index, uniqueConstraint);
 		return uniqueConstraint;
@@ -259,13 +259,13 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 
 	public void removeUniqueConstraint(int index) {
 		JavaUniqueConstraint removedUniqueConstraint = this.uniqueConstraints.remove(index);
-		this.getGeneratorResource().removeUniqueConstraint(index);
+		this.getResourceGenerator().removeUniqueConstraint(index);
 		fireItemRemoved(TableGenerator.UNIQUE_CONSTRAINTS_LIST, index, removedUniqueConstraint);
 	}
 	
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.uniqueConstraints, targetIndex, sourceIndex);
-		this.getGeneratorResource().moveUniqueConstraint(targetIndex, sourceIndex);
+		this.getResourceGenerator().moveUniqueConstraint(targetIndex, sourceIndex);
 		fireItemMoved(TableGenerator.UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -291,41 +291,41 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 
 	// ********** java resource model -> java context model **********
 	
-	public void initialize(TableGeneratorAnnotation tableGenerator) {
-		super.initialize(tableGenerator);
-		this.specifiedTable = this.specifiedTable(tableGenerator);
-		this.specifiedCatalog = this.specifiedCatalog(tableGenerator);
+	public void initialize(TableGeneratorAnnotation resourceTableGenerator) {
+		super.initialize(resourceTableGenerator);
+		this.specifiedTable = this.specifiedTable(resourceTableGenerator);
+		this.specifiedCatalog = this.specifiedCatalog(resourceTableGenerator);
 		this.defaultCatalog = this.defaultCatalog();
-		this.specifiedSchema = this.specifiedSchema(tableGenerator);
+		this.specifiedSchema = this.specifiedSchema(resourceTableGenerator);
 		this.defaultSchema = this.defaultSchema();
-		this.specifiedPkColumnName = this.specifiedPkColumnName(tableGenerator);
-		this.specifiedValueColumnName = this.specifiedValueColumnName(tableGenerator);
-		this.specifiedPkColumnValue = this.specifiedPkColumnValue(tableGenerator);
-		this.initializeUniqueConstraints(tableGenerator);
+		this.specifiedPkColumnName = this.specifiedPkColumnName(resourceTableGenerator);
+		this.specifiedValueColumnName = this.specifiedValueColumnName(resourceTableGenerator);
+		this.specifiedPkColumnValue = this.specifiedPkColumnValue(resourceTableGenerator);
+		this.initializeUniqueConstraints(resourceTableGenerator);
 	}
 
-	protected void initializeUniqueConstraints(TableGeneratorAnnotation tableGenerator) {
-		for (UniqueConstraintAnnotation uniqueConstraintAnnotation : CollectionTools.iterable(tableGenerator.uniqueConstraints())) {
-			this.uniqueConstraints.add(buildUniqueConstraint(uniqueConstraintAnnotation));
+	protected void initializeUniqueConstraints(TableGeneratorAnnotation resourceTableGenerator) {
+		for (UniqueConstraintAnnotation resourceUniqueConstraint : CollectionTools.iterable(resourceTableGenerator.uniqueConstraints())) {
+			this.uniqueConstraints.add(buildUniqueConstraint(resourceUniqueConstraint));
 		}
 	}
 
-	public void update(TableGeneratorAnnotation tableGenerator) {
-		super.update(tableGenerator);
-		this.setSpecifiedTable_(this.specifiedTable(tableGenerator));
-		this.setSpecifiedCatalog_(this.specifiedCatalog(tableGenerator));
+	public void update(TableGeneratorAnnotation resourceTableGenerator) {
+		super.update(resourceTableGenerator);
+		this.setSpecifiedTable_(this.specifiedTable(resourceTableGenerator));
+		this.setSpecifiedCatalog_(this.specifiedCatalog(resourceTableGenerator));
 		this.setDefaultCatalog(this.defaultCatalog());
-		this.setSpecifiedSchema_(this.specifiedSchema(tableGenerator));
+		this.setSpecifiedSchema_(this.specifiedSchema(resourceTableGenerator));
 		this.setDefaultSchema(this.defaultSchema());
-		this.setSpecifiedPkColumnName_(this.specifiedPkColumnName(tableGenerator));
-		this.setSpecifiedValueColumnName_(this.specifiedValueColumnName(tableGenerator));
-		this.setSpecifiedPkColumnValue_(this.specifiedPkColumnValue(tableGenerator));
-		this.updateUniqueConstraints(tableGenerator);
+		this.setSpecifiedPkColumnName_(this.specifiedPkColumnName(resourceTableGenerator));
+		this.setSpecifiedValueColumnName_(this.specifiedValueColumnName(resourceTableGenerator));
+		this.setSpecifiedPkColumnValue_(this.specifiedPkColumnValue(resourceTableGenerator));
+		this.updateUniqueConstraints(resourceTableGenerator);
 	}
 	
-	protected void updateUniqueConstraints(TableGeneratorAnnotation tableGenerator) {
+	protected void updateUniqueConstraints(TableGeneratorAnnotation resourceTableGenerator) {
 		ListIterator<JavaUniqueConstraint> uniqueConstraints = uniqueConstraints();
-		ListIterator<UniqueConstraintAnnotation> resourceUniqueConstraints = tableGenerator.uniqueConstraints();
+		ListIterator<UniqueConstraintAnnotation> resourceUniqueConstraints = resourceTableGenerator.uniqueConstraints();
 		
 		while (uniqueConstraints.hasNext()) {
 			JavaUniqueConstraint uniqueConstraint = uniqueConstraints.next();
@@ -342,34 +342,34 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator
 		}
 	}
 
-	protected JavaUniqueConstraint buildUniqueConstraint(UniqueConstraintAnnotation uniqueConstraintAnnotation) {
+	protected JavaUniqueConstraint buildUniqueConstraint(UniqueConstraintAnnotation resourceUniqueConstraint) {
 		JavaUniqueConstraint uniqueConstraint = getJpaFactory().buildJavaUniqueConstraint(this, this);
-		uniqueConstraint.initialize(uniqueConstraintAnnotation);
+		uniqueConstraint.initialize(resourceUniqueConstraint);
 		return uniqueConstraint;
 	}
 	
-	protected String specifiedTable(TableGeneratorAnnotation tableGenerator) {
-		return tableGenerator.getTable();
+	protected String specifiedTable(TableGeneratorAnnotation resourceTableGenerator) {
+		return resourceTableGenerator.getTable();
 	}
 	
-	protected String specifiedCatalog(TableGeneratorAnnotation tableGenerator) {
-		return tableGenerator.getCatalog();
+	protected String specifiedCatalog(TableGeneratorAnnotation resourceTableGenerator) {
+		return resourceTableGenerator.getCatalog();
 	}
 	
-	protected String specifiedSchema(TableGeneratorAnnotation tableGenerator) {
-		return tableGenerator.getSchema();
+	protected String specifiedSchema(TableGeneratorAnnotation resourceTableGenerator) {
+		return resourceTableGenerator.getSchema();
 	}
 	
-	protected String specifiedPkColumnName(TableGeneratorAnnotation tableGenerator) {
-		return tableGenerator.getPkColumnName();
+	protected String specifiedPkColumnName(TableGeneratorAnnotation resourceTableGenerator) {
+		return resourceTableGenerator.getPkColumnName();
 	}
 	
-	protected String specifiedValueColumnName(TableGeneratorAnnotation tableGenerator) {
-		return tableGenerator.getValueColumnName();
+	protected String specifiedValueColumnName(TableGeneratorAnnotation resourceTableGenerator) {
+		return resourceTableGenerator.getValueColumnName();
 	}
 	
-	protected String specifiedPkColumnValue(TableGeneratorAnnotation tableGenerator) {
-		return tableGenerator.getPkColumnValue();
+	protected String specifiedPkColumnValue(TableGeneratorAnnotation resourceTableGenerator) {
+		return resourceTableGenerator.getPkColumnValue();
 	}
 
 	protected String defaultSchema() {

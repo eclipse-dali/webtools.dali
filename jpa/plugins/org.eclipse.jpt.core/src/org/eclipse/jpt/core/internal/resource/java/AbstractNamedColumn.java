@@ -41,9 +41,9 @@ public abstract class AbstractNamedColumn extends AbstractResourceAnnotation<Mem
 	
 	public AbstractNamedColumn(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
-		this.nameDeclarationAdapter = this.buildStringElementAdapter(this.nameElementName());
+		this.nameDeclarationAdapter = this.buildStringElementAdapter(this.getNameElementName());
 		this.nameAdapter = this.buildShortCircuitElementAdapter(this.nameDeclarationAdapter);
-		this.columnDefinitionDeclarationAdapter = this.buildStringElementAdapter(this.columnDefinitionElementName());		
+		this.columnDefinitionDeclarationAdapter = this.buildStringElementAdapter(this.getColumnDefinitionElementName());		
 		this.columnDefinitionAdapter = this.buildShortCircuitElementAdapter(this.columnDefinitionDeclarationAdapter);
 	}
 
@@ -74,9 +74,10 @@ public abstract class AbstractNamedColumn extends AbstractResourceAnnotation<Mem
 	protected AnnotationElementAdapter<String> buildShortCircuitStringElementAdapter(String elementName) {
 		return this.buildShortCircuitElementAdapter(this.buildStringElementAdapter(elementName));
 	}
-	protected abstract String nameElementName();
+	
+	protected abstract String getNameElementName();
 
-	protected abstract String columnDefinitionElementName();
+	protected abstract String getColumnDefinitionElementName();
 
 	public void initialize(CompilationUnit astRoot) {
 		this.name = this.name(astRoot);

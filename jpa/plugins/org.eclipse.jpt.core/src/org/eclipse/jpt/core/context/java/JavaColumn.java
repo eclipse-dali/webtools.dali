@@ -40,7 +40,7 @@ public interface JavaColumn extends Column, JavaBaseColumn
 	 */
 	interface Owner extends JavaBaseColumn.Owner
 	{
-		ColumnAnnotation getColumnResource();
+		ColumnAnnotation getResourceColumn();
 	}
 
 }

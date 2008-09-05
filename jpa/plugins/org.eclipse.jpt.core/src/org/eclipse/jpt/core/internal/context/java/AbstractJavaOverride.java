@@ -27,20 +27,20 @@ public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode im
 
 	protected final Owner owner;
 
-	protected OverrideAnnotation overrideResource;
+	protected OverrideAnnotation resourceOverride;
 	
 	public AbstractJavaOverride(JavaJpaContextNode parent, Owner owner) {
 		super(parent);
 		this.owner = owner;
 	}
 	
-	protected void initialize(OverrideAnnotation overrideResource) {
-		this.overrideResource = overrideResource;
-		this.name = this.name(overrideResource);
+	protected void initialize(OverrideAnnotation resourceOverride) {
+		this.resourceOverride = resourceOverride;
+		this.name = this.name(resourceOverride);
 	}
 
-	protected OverrideAnnotation getOverrideResource() {
-		return this.overrideResource;
+	protected OverrideAnnotation getResourceOverride() {
+		return this.resourceOverride;
 	}
 	
 	public String getName() {
@@ -50,7 +50,7 @@ public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode im
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		this.overrideResource.setName(newName);
+		this.resourceOverride.setName(newName);
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
@@ -61,7 +61,7 @@ public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode im
 	}
 
 	protected void update(OverrideAnnotation overrideResource) {
-		this.overrideResource = overrideResource;
+		this.resourceOverride = overrideResource;
 		this.setName_(this.name(overrideResource));
 	}
 
@@ -109,11 +109,11 @@ public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode im
 	}
 	
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return this.overrideResource.nameTouches(pos, astRoot);
+		return this.resourceOverride.nameTouches(pos, astRoot);
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.overrideResource.getTextRange(astRoot);
+		TextRange textRange = this.resourceOverride.getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 	

@@ -32,7 +32,7 @@ public class NullColumn extends NullBaseColumn implements ColumnAnnotation, Anno
 	}
 
 	@Override
-	protected ColumnAnnotation createColumnResource() {
+	protected ColumnAnnotation createResourceColumn() {
 		return (ColumnAnnotation) getParent().addAnnotation(getAnnotationName());
 	}
 
@@ -42,7 +42,7 @@ public class NullColumn extends NullBaseColumn implements ColumnAnnotation, Anno
 	
 	public void setLength(Integer length) {
 		if (length != null) {
-			createColumnResource().setLength(length);
+			createResourceColumn().setLength(length);
 		}
 	}
 	
@@ -52,7 +52,7 @@ public class NullColumn extends NullBaseColumn implements ColumnAnnotation, Anno
 	
 	public void setScale(Integer scale) {
 		if (scale != null) {
-			createColumnResource().setScale(scale);
+			createResourceColumn().setScale(scale);
 		}
 	}
 	
@@ -62,7 +62,7 @@ public class NullColumn extends NullBaseColumn implements ColumnAnnotation, Anno
 	
 	public void setPrecision(Integer precision) {
 		if (precision != null) {
-			createColumnResource().setPrecision(precision);
+			createResourceColumn().setPrecision(precision);
 		}
 	}
 	

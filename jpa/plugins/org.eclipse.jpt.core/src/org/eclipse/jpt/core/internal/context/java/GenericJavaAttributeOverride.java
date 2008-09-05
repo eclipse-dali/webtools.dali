@@ -45,8 +45,8 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	}
 	
 	@Override
-	protected AttributeOverrideAnnotation getOverrideResource() {
-		return (AttributeOverrideAnnotation) super.getOverrideResource();
+	protected AttributeOverrideAnnotation getResourceOverride() {
+		return (AttributeOverrideAnnotation) super.getResourceOverride();
 	}
 	
 	@Override
@@ -54,8 +54,8 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 		return (AttributeOverride.Owner) super.getOwner();
 	}
 	
-	public ColumnAnnotation getColumnResource() {
-		return this.getOverrideResource().getNonNullColumn();
+	public ColumnAnnotation getResourceColumn() {
+		return this.getResourceOverride().getNonNullColumn();
 	}
 
 	public String getDefaultColumnName() {
@@ -107,12 +107,12 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	//************* java resource model -> java context model **************	
 	public void initialize(AttributeOverrideAnnotation attributeOverrideResource) {
 		super.initialize(attributeOverrideResource);
-		this.column.initialize(this.getColumnResource());
+		this.column.initialize(this.getResourceColumn());
 	}
 
 	public void update(AttributeOverrideAnnotation attributeOverrideResource) {
 		super.update(attributeOverrideResource);
-		this.column.update(this.getColumnResource());		
+		this.column.update(this.getResourceColumn());		
 	}
 
 	@Override

@@ -61,15 +61,15 @@ public abstract class BaseColumnImpl extends AbstractNamedColumn implements Base
 	
 	public BaseColumnImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
-		this.tableDeclarationAdapter = this.buildStringElementAdapter(this.tableElementName());
+		this.tableDeclarationAdapter = this.buildStringElementAdapter(this.getTableElementName());
 		this.tableAdapter = this.buildShortCircuitElementAdapter(this.tableDeclarationAdapter);
-		this.uniqueDeclarationAdapter = this.buildBooleanElementAdapter(this.uniqueElementName());
+		this.uniqueDeclarationAdapter = this.buildBooleanElementAdapter(this.getUniqueElementName());
 		this.uniqueAdapter = this.buildShortCircuitBooleanElementAdapter(this.uniqueDeclarationAdapter);
-		this.nullableDeclarationAdapter = this.buildBooleanElementAdapter(this.nullableElementName());
+		this.nullableDeclarationAdapter = this.buildBooleanElementAdapter(this.getNullableElementName());
 		this.nullableAdapter = this.buildShortCircuitBooleanElementAdapter(this.nullableDeclarationAdapter);
-		this.insertableDeclarationAdapter = this.buildBooleanElementAdapter(this.insertableElementName());
+		this.insertableDeclarationAdapter = this.buildBooleanElementAdapter(this.getInsertableElementName());
 		this.insertableAdapter = this.buildShortCircuitBooleanElementAdapter(this.insertableDeclarationAdapter);
-		this.updatableDeclarationAdapter = this.buildBooleanElementAdapter(this.updatableElementName());
+		this.updatableDeclarationAdapter = this.buildBooleanElementAdapter(this.getUpdatableElementName());
 		this.updatableAdapter = this.buildShortCircuitBooleanElementAdapter(this.updatableDeclarationAdapter);
 	}
 	
@@ -83,15 +83,15 @@ public abstract class BaseColumnImpl extends AbstractNamedColumn implements Base
 		this.updatable = this.updatable(astRoot);
 	}
 	
-	protected abstract String tableElementName();
+	protected abstract String getTableElementName();
 
-	protected abstract String uniqueElementName();
+	protected abstract String getUniqueElementName();
 
-	protected abstract String nullableElementName();
+	protected abstract String getNullableElementName();
 
-	protected abstract String insertableElementName();
+	protected abstract String getInsertableElementName();
 
-	protected abstract String updatableElementName();
+	protected abstract String getUpdatableElementName();
 
 	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {

@@ -32,7 +32,7 @@ public class NullDiscriminatorColumn extends NullNamedColumn implements Discrimi
 	}
 
 	@Override
-	protected DiscriminatorColumnAnnotation createColumnResource() {
+	protected DiscriminatorColumnAnnotation createResourceColumn() {
 		return (DiscriminatorColumnAnnotation) getParent().addAnnotation(getAnnotationName());
 	}
 
@@ -42,7 +42,7 @@ public class NullDiscriminatorColumn extends NullNamedColumn implements Discrimi
 
 	public void setDiscriminatorType(DiscriminatorType discriminatorType) {
 		if (discriminatorType != null) {
-			createColumnResource().setDiscriminatorType(discriminatorType);
+			createResourceColumn().setDiscriminatorType(discriminatorType);
 		}
 	}
 
@@ -52,7 +52,7 @@ public class NullDiscriminatorColumn extends NullNamedColumn implements Discrimi
 
 	public void setLength(Integer length) {
 		if (length != null) {
-			createColumnResource().setLength(length);
+			createResourceColumn().setLength(length);
 		}
 	}
 }

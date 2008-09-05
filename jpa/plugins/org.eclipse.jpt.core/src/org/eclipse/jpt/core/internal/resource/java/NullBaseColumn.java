@@ -23,7 +23,7 @@ public abstract class NullBaseColumn extends NullNamedColumn implements BaseColu
 	}
 
 	@Override
-	protected abstract BaseColumnAnnotation createColumnResource();
+	protected abstract BaseColumnAnnotation createResourceColumn();
 
 	public String getTable() {
 		return null;
@@ -31,7 +31,7 @@ public abstract class NullBaseColumn extends NullNamedColumn implements BaseColu
 	
 	public void setTable(String table) {
 		if (table != null) {
-			createColumnResource().setTable(table);
+			createResourceColumn().setTable(table);
 		}
 	}
 	
@@ -41,7 +41,7 @@ public abstract class NullBaseColumn extends NullNamedColumn implements BaseColu
 	
 	public void setUnique(Boolean unique) {
 		if (unique != null) {
-			createColumnResource().setUnique(unique);
+			createResourceColumn().setUnique(unique);
 		}
 	}
 	
@@ -51,7 +51,7 @@ public abstract class NullBaseColumn extends NullNamedColumn implements BaseColu
 	
 	public void setUpdatable(Boolean updatable) {
 		if (updatable != null) {
-			createColumnResource().setUpdatable(updatable);
+			createResourceColumn().setUpdatable(updatable);
 		}
 	}
 	
@@ -61,7 +61,7 @@ public abstract class NullBaseColumn extends NullNamedColumn implements BaseColu
 	
 	public void setInsertable(Boolean insertable) {
 		if (insertable != null) {
-			createColumnResource().setInsertable(insertable);
+			createResourceColumn().setInsertable(insertable);
 		}
 	}
 	
@@ -71,7 +71,7 @@ public abstract class NullBaseColumn extends NullNamedColumn implements BaseColu
 	
 	public void setNullable(Boolean nullable) {
 		if (nullable != null) {
-			createColumnResource().setNullable(nullable);
+			createResourceColumn().setNullable(nullable);
 		}
 	}
 	

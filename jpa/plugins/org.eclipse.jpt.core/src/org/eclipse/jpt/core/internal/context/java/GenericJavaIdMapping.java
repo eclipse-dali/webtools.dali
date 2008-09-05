@@ -66,8 +66,8 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 	@Override
 	public void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super.initialize(resourcePersistentAttribute);
-		this.column.initialize(this.getColumnResource());
-		this.temporal = this.temporal(this.getTemporalResource());
+		this.column.initialize(this.getResourceColumn());
+		this.temporal = this.temporal(this.getResourceTemporal());
 		this.initializeTableGenerator(resourcePersistentAttribute);
 		this.initializeSequenceGenerator(resourcePersistentAttribute);
 		this.initializeGeneratedValue(resourcePersistentAttribute);
@@ -95,11 +95,11 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 		}
 	}
 	
-	protected TemporalAnnotation getTemporalResource() {
+	protected TemporalAnnotation getResourceTemporal() {
 		return (TemporalAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 	}
 	
-	public ColumnAnnotation getColumnResource() {
+	public ColumnAnnotation getResourceColumn() {
 		return (ColumnAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
@@ -143,7 +143,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 	public void setTemporal(TemporalType newTemporal) {
 		TemporalType oldTemporal = this.temporal;
 		this.temporal = newTemporal;
-		this.getTemporalResource().setValue(TemporalType.toJavaResourceModel(newTemporal));
+		this.getResourceTemporal().setValue(TemporalType.toJavaResourceModel(newTemporal));
 		firePropertyChanged(ColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 	
@@ -263,8 +263,8 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 	@Override
 	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super.update(resourcePersistentAttribute);
-		this.column.update(this.getColumnResource());
-		this.setTemporal_(this.temporal(this.getTemporalResource()));
+		this.column.update(this.getResourceColumn());
+		this.setTemporal_(this.temporal(this.getResourceTemporal()));
 		this.updateTableGenerator(resourcePersistentAttribute);
 		this.updateSequenceGenerator(resourcePersistentAttribute);
 		this.updateGeneratedValue(resourcePersistentAttribute);

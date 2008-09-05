@@ -59,12 +59,12 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 	}
 	
 	@Override
-	protected String nameElementName() {
+	protected String getNameElementName() {
 		return JPA.DISCRIMINATOR_COLUMN__NAME;
 	}
 	
 	@Override
-	protected String columnDefinitionElementName() {
+	protected String getColumnDefinitionElementName() {
 		return JPA.DISCRIMINATOR_COLUMN__COLUMN_DEFINITION;
 	}
 

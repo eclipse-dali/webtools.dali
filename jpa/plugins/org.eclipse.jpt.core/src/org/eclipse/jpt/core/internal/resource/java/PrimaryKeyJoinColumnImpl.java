@@ -64,12 +64,12 @@ public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements Nes
 	}
 	
 	@Override
-	protected String nameElementName() {
+	protected String getNameElementName() {
 		return JPA.PRIMARY_KEY_JOIN_COLUMN__NAME;
 	}
 	
 	@Override
-	protected String columnDefinitionElementName() {
+	protected String getColumnDefinitionElementName() {
 		return JPA.PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION;
 	}
 

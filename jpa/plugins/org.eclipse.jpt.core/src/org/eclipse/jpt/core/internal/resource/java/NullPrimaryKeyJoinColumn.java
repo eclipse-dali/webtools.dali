@@ -28,7 +28,7 @@ public class NullPrimaryKeyJoinColumn extends NullNamedColumn implements Primary
 	}
 
 	@Override
-	protected PrimaryKeyJoinColumnAnnotation createColumnResource() {
+	protected PrimaryKeyJoinColumnAnnotation createResourceColumn() {
 		throw new UnsupportedOperationException();
 	}
 

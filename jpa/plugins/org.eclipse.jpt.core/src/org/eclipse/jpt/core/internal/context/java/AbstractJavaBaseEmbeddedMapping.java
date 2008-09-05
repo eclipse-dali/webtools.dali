@@ -69,7 +69,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	//****************** AttributeOverride.Owner implemenation *******************
 	
 	public ColumnMapping getColumnMapping(String attributeName) {
-		return MappingTools.getColumnMapping(attributeName, embeddable());
+		return MappingTools.getColumnMapping(attributeName, getEmbeddable());
 	}
 
 	public boolean isVirtual(BaseOverride override) {
@@ -215,7 +215,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 		return getOverrideNamed(name, overrides) != null;
 	}
 
-	public Embeddable embeddable() {
+	public Embeddable getEmbeddable() {
 		return this.embeddable;
 	}
 
@@ -285,7 +285,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	}
 
 	protected VirtualAttributeOverride buildVirtualAttributeOverrideResource(JavaResourcePersistentAttribute resourcePersistentAttribute, String attributeName) {
-		ColumnMapping columnMapping = (ColumnMapping) this.embeddable().getPersistentType().getAttributeNamed(attributeName).getMapping();
+		ColumnMapping columnMapping = (ColumnMapping) this.getEmbeddable().getPersistentType().getAttributeNamed(attributeName).getMapping();
 		return new VirtualAttributeOverride(resourcePersistentAttribute, attributeName, columnMapping.getColumn());
 	}
 
@@ -323,10 +323,10 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	}
 
 	public Iterator<PersistentAttribute> allOverridableAttributes() {
-		if (this.embeddable() == null) {
+		if (this.getEmbeddable() == null) {
 			return EmptyIterator.instance();
 		}
-		return new FilteringIterator<PersistentAttribute, PersistentAttribute>(this.embeddable().getPersistentType().attributes()) {
+		return new FilteringIterator<PersistentAttribute, PersistentAttribute>(this.getEmbeddable().getPersistentType().attributes()) {
 			@Override
 			protected boolean accept(PersistentAttribute o) {
 				return o.isOverridableAttribute();

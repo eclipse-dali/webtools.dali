@@ -35,7 +35,7 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 
 	public void initialize(JavaResourcePersistentMember persistentResource) {
 		this.persistenceResource = persistentResource;
-		this.initialize(this.getColumnResource());
+		this.initialize(this.getResourceColumn());
 	}
 	
 	@Override
@@ -50,7 +50,7 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	}
 
 	@Override
-	protected DiscriminatorColumnAnnotation getColumnResource() {
+	protected DiscriminatorColumnAnnotation getResourceColumn() {
 		return (DiscriminatorColumnAnnotation) this.persistenceResource.getNonNullAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
 	}
 	
@@ -69,7 +69,7 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	public void setSpecifiedDiscriminatorType(DiscriminatorType newSpecifiedDiscriminatorType) {
 		DiscriminatorType oldDiscriminatorType = this.specifiedDiscriminatorType;
 		this.specifiedDiscriminatorType = newSpecifiedDiscriminatorType;
-		getColumnResource().setDiscriminatorType(DiscriminatorType.toJavaResourceModel(newSpecifiedDiscriminatorType));
+		getResourceColumn().setDiscriminatorType(DiscriminatorType.toJavaResourceModel(newSpecifiedDiscriminatorType));
 		firePropertyChanged(DiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY, oldDiscriminatorType, newSpecifiedDiscriminatorType);
 	}
 	
@@ -100,7 +100,7 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	public void setSpecifiedLength(Integer newSpecifiedLength) {
 		Integer oldSpecifiedLength = this.specifiedLength;
 		this.specifiedLength = newSpecifiedLength;
-		getColumnResource().setLength(newSpecifiedLength);
+		getResourceColumn().setLength(newSpecifiedLength);
 		firePropertyChanged(DiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
 	}
 
@@ -122,7 +122,7 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = getColumnResource().getTextRange(astRoot);
+		TextRange textRange = getResourceColumn().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);	
 	}
 
@@ -131,7 +131,7 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	
 	public void update(JavaResourcePersistentMember persistentResource) {
 		this.persistenceResource = persistentResource;
-		this.update(this.getColumnResource());
+		this.update(this.getResourceColumn());
 	}
 	
 	@Override

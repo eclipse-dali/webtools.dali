@@ -54,8 +54,8 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	}
 
 	@Override
-	protected AssociationOverrideAnnotation getOverrideResource() {
-		return (AssociationOverrideAnnotation) super.getOverrideResource();
+	protected AssociationOverrideAnnotation getResourceOverride() {
+		return (AssociationOverrideAnnotation) super.getResourceOverride();
 	}
 	
 	@Override
@@ -90,7 +90,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	public JavaJoinColumn addSpecifiedJoinColumn(int index) {
 		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
-		JoinColumnAnnotation joinColumnResource = getOverrideResource().addJoinColumn(index);
+		JoinColumnAnnotation joinColumnResource = getResourceOverride().addJoinColumn(index);
 		joinColumn.initialize(joinColumnResource);
 		this.fireItemAdded(AssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		return joinColumn;
@@ -106,7 +106,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	
 	public void removeSpecifiedJoinColumn(int index) {
 		JavaJoinColumn removedJoinColumn = this.specifiedJoinColumns.remove(index);
-		getOverrideResource().removeJoinColumn(index);
+		getResourceOverride().removeJoinColumn(index);
 		fireItemRemoved(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 	}
 
@@ -115,7 +115,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	}
 	
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
-		getOverrideResource().moveJoinColumn(targetIndex, sourceIndex);
+		getResourceOverride().moveJoinColumn(targetIndex, sourceIndex);
 		moveItemInList(targetIndex, sourceIndex, this.specifiedJoinColumns, AssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST);		
 	}
 

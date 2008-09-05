@@ -33,7 +33,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		super(parent);
 	}
 	
-	protected JavaResourceNode getMappingResource() {
+	protected JavaResourceNode getResourceMapping() {
 		return this.javaResourcePersistentType.getMappingAnnotation(getAnnotationName());
 	}
 
@@ -123,7 +123,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	//******************** validation *********************
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getMappingResource().getTextRange(astRoot);
+		TextRange textRange = this.getResourceMapping().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getPersistentType().getValidationTextRange(astRoot);
 	}
 }

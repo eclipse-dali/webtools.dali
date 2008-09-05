@@ -22,7 +22,7 @@ public class GenericJavaQueryHint extends AbstractJavaJpaContextNode implements 
 
 	protected String value;
 
-	protected QueryHintAnnotation queryHint;
+	protected QueryHintAnnotation resourceQueryHint;
 	
 	public GenericJavaQueryHint(JavaQuery parent) {
 		super(parent);
@@ -35,7 +35,7 @@ public class GenericJavaQueryHint extends AbstractJavaJpaContextNode implements 
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		this.queryHint.setName(newName);
+		this.resourceQueryHint.setName(newName);
 		firePropertyChanged(QueryHint.NAME_PROPERTY, oldName, newName);
 	}
 
@@ -46,26 +46,25 @@ public class GenericJavaQueryHint extends AbstractJavaJpaContextNode implements 
 	public void setValue(String newValue) {
 		String oldValue = this.value;
 		this.value = newValue;
-		this.queryHint.setValue(newValue);
+		this.resourceQueryHint.setValue(newValue);
 		firePropertyChanged(QueryHint.VALUE_PROPERTY, oldValue, newValue);
 	}
 
 
-	public void initialize(QueryHintAnnotation queryHint) {
-		this.queryHint = queryHint;
-		this.name = queryHint.getName();
-		this.value = queryHint.getValue();
+	public void initialize(QueryHintAnnotation resourceQueryHint) {
+		this.resourceQueryHint = resourceQueryHint;
+		this.name = resourceQueryHint.getName();
+		this.value = resourceQueryHint.getValue();
 	}
 	
-	public void update(QueryHintAnnotation queryHint) {
-		this.queryHint = queryHint;
-		this.setName(queryHint.getName());
-		this.setValue(queryHint.getValue());
+	public void update(QueryHintAnnotation resourceQueryHint) {
+		this.resourceQueryHint = resourceQueryHint;
+		this.setName(resourceQueryHint.getName());
+		this.setValue(resourceQueryHint.getValue());
 	}
 
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.resourceQueryHint.getTextRange(astRoot);
 	}
 }

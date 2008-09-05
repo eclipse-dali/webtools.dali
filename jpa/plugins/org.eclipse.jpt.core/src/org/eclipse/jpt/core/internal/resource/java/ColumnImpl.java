@@ -70,37 +70,37 @@ public class ColumnImpl extends BaseColumnImpl implements ColumnAnnotation, Nest
 	}
 	
 	@Override
-	protected String nameElementName() {
+	protected String getNameElementName() {
 		return JPA.COLUMN__NAME;
 	}
 	
 	@Override
-	protected String columnDefinitionElementName() {
+	protected String getColumnDefinitionElementName() {
 		return JPA.COLUMN__COLUMN_DEFINITION;
 	}
 	
 	@Override
-	protected String tableElementName() {
+	protected String getTableElementName() {
 		return JPA.COLUMN__TABLE;
 	}
 
 	@Override
-	protected String uniqueElementName() {
+	protected String getUniqueElementName() {
 		return JPA.COLUMN__UNIQUE;
 	}
 
 	@Override
-	protected String nullableElementName() {
+	protected String getNullableElementName() {
 		return JPA.COLUMN__NULLABLE;
 	}
 
 	@Override
-	protected String insertableElementName() {
+	protected String getInsertableElementName() {
 		return JPA.COLUMN__INSERTABLE;
 	}
 
 	@Override
-	protected String updatableElementName() {
+	protected String getUpdatableElementName() {
 		return JPA.COLUMN__UPDATABLE;
 	}
 

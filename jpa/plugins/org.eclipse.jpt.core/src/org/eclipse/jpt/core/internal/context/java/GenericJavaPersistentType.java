@@ -460,12 +460,12 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		return getJpaFactory().buildJavaPersistentAttribute(this, jrpa);
 	}
 	
-	public void updateParentPersistentType(JavaResourcePersistentType persistentTypeResource) {
-		setParentPersistentType(parentPersistentType(persistentTypeResource));
+	public void updateParentPersistentType(JavaResourcePersistentType jrpt) {
+		setParentPersistentType(parentPersistentType(jrpt));
 	}
 	
-	protected PersistentType parentPersistentType(JavaResourcePersistentType persistentTypeResource) {
-		return parentPersistentType(persistentTypeResource.getSuperClassQualifiedName());
+	protected PersistentType parentPersistentType(JavaResourcePersistentType jrpt) {
+		return parentPersistentType(jrpt.getSuperClassQualifiedName());
 	}
 	
 	protected PersistentType parentPersistentType(String fullyQualifiedTypeName) {

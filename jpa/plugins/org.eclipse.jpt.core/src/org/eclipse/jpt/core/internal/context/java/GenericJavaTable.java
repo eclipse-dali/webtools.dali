@@ -24,15 +24,15 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class GenericJavaTable extends AbstractJavaTable implements JavaTable
 {
-	protected JavaResourcePersistentMember persistentResource;
+	protected JavaResourcePersistentMember resourcePersistentMember;
 
 	public GenericJavaTable(JavaEntity parent) {
 		super(parent);
 	}
 	
-	public void initialize(JavaResourcePersistentMember persistentResource) {
-		this.persistentResource = persistentResource;
-		initialize(getTableResource());
+	public void initialize(JavaResourcePersistentMember jrpm) {
+		this.resourcePersistentMember = jrpm;
+		initialize(getResourceTable());
 	}
 
 	
@@ -41,9 +41,9 @@ public class GenericJavaTable extends AbstractJavaTable implements JavaTable
 	//You could call more than one setter before this object has received any notification
 	//from the java resource model
 	@Override
-	protected TableAnnotation getTableResource() {
+	protected TableAnnotation getResourceTable() {
 		//TODO get the NullTable from the resource model or build it here in the context model??
-		return (TableAnnotation) this.persistentResource.getNonNullAnnotation(getAnnotationName());
+		return (TableAnnotation) this.resourcePersistentMember.getNonNullAnnotation(getAnnotationName());
 	}
 
 	@Override
@@ -99,9 +99,9 @@ public class GenericJavaTable extends AbstractJavaTable implements JavaTable
 		return super.defaultCatalog();
 	}
 	
-	public void update(JavaResourcePersistentMember persistentResource) {
-		this.persistentResource = persistentResource;
-		this.update(getTableResource());
+	public void update(JavaResourcePersistentMember jrpm) {
+		this.resourcePersistentMember = jrpm;
+		this.update(getResourceTable());
 	}
 
 	//******************* validation **********************

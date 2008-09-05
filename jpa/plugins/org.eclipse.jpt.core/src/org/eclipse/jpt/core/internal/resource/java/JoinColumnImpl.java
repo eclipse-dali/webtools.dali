@@ -63,37 +63,37 @@ public class JoinColumnImpl extends BaseColumnImpl implements NestableJoinColumn
 	}
 	
 	@Override
-	protected String nameElementName() {
+	protected String getNameElementName() {
 		return JPA.JOIN_COLUMN__NAME;
 	}
 	
 	@Override
-	protected String columnDefinitionElementName() {
+	protected String getColumnDefinitionElementName() {
 		return JPA.JOIN_COLUMN__COLUMN_DEFINITION;
 	}
 	
 	@Override
-	protected String tableElementName() {
+	protected String getTableElementName() {
 		return JPA.JOIN_COLUMN__TABLE;
 	}
 
 	@Override
-	protected String uniqueElementName() {
+	protected String getUniqueElementName() {
 		return JPA.JOIN_COLUMN__UNIQUE;
 	}
 
 	@Override
-	protected String nullableElementName() {
+	protected String getNullableElementName() {
 		return JPA.JOIN_COLUMN__NULLABLE;
 	}
 
 	@Override
-	protected String insertableElementName() {
+	protected String getInsertableElementName() {
 		return JPA.JOIN_COLUMN__INSERTABLE;
 	}
 
 	@Override
-	protected String updatableElementName() {
+	protected String getUpdatableElementName() {
 		return JPA.JOIN_COLUMN__UPDATABLE;
 	}
 

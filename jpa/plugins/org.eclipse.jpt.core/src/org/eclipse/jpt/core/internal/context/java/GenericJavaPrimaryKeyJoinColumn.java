@@ -31,7 +31,7 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 
 	protected String defaultReferencedColumnName;
 
-	protected PrimaryKeyJoinColumnAnnotation primaryKeyJoinColumnResource;
+	protected PrimaryKeyJoinColumnAnnotation resourcePrimaryKeyJoinColumn;
 	
 	public GenericJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, JavaBaseJoinColumn.Owner owner) {
 		super(parent, owner);
@@ -39,7 +39,7 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 
 	@Override
 	public void initialize(PrimaryKeyJoinColumnAnnotation column) {
-		this.primaryKeyJoinColumnResource = column;
+		this.resourcePrimaryKeyJoinColumn = column;
 		super.initialize(column);
 		this.specifiedReferencedColumnName = this.specifiedReferencedColumnName(column);
 		this.defaultReferencedColumnName = this.defaultReferencedColumnName();
@@ -52,8 +52,8 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 	}
 	
 	@Override
-	protected PrimaryKeyJoinColumnAnnotation getColumnResource() {
-		return this.primaryKeyJoinColumnResource;
+	protected PrimaryKeyJoinColumnAnnotation getResourceColumn() {
+		return this.resourcePrimaryKeyJoinColumn;
 	}
 	
 	//************** IAbstractJoinColumn implementation ***************
@@ -69,7 +69,7 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 	public void setSpecifiedReferencedColumnName(String newSpecifiedReferencedColumnName) {
 		String oldSpecifiedReferencedColumnName = this.specifiedReferencedColumnName;
 		this.specifiedReferencedColumnName = newSpecifiedReferencedColumnName;
-		getColumnResource().setReferencedColumnName(newSpecifiedReferencedColumnName);
+		getResourceColumn().setReferencedColumnName(newSpecifiedReferencedColumnName);
 		firePropertyChanged(SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
 	}
 
@@ -108,7 +108,7 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 	}
 
 	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
-		return this.getColumnResource().referencedColumnNameTouches(pos, astRoot);
+		return this.getResourceColumn().referencedColumnNameTouches(pos, astRoot);
 	}
 
 	private Iterator<String> candidateReferencedColumnNames() {
@@ -141,24 +141,24 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 	}
 
 	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
-		return this.getColumnResource().getReferencedColumnNameTextRange(astRoot);
+		return this.getResourceColumn().getReferencedColumnNameTextRange(astRoot);
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = getColumnResource().getTextRange(astRoot);
+		TextRange textRange = getResourceColumn().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);	
 	}
 
 	@Override
-	public void update(PrimaryKeyJoinColumnAnnotation column) {
-		this.primaryKeyJoinColumnResource = column;
-		super.update(column);
-		this.setSpecifiedReferencedColumnName_(this.specifiedReferencedColumnName(column));
+	public void update(PrimaryKeyJoinColumnAnnotation resourceColumn) {
+		this.resourcePrimaryKeyJoinColumn = resourceColumn;
+		super.update(resourceColumn);
+		this.setSpecifiedReferencedColumnName_(this.specifiedReferencedColumnName(resourceColumn));
 		this.setDefaultReferencedColumnName(this.defaultReferencedColumnName());
 	}
 	
-	protected String specifiedReferencedColumnName(PrimaryKeyJoinColumnAnnotation column) {
-		return column.getReferencedColumnName();
+	protected String specifiedReferencedColumnName(PrimaryKeyJoinColumnAnnotation resourceColumn) {
+		return resourceColumn.getReferencedColumnName();
 	}
 	
 	//TODO not correct when we start supporting primaryKeyJoinColumns in 1-1 mappings

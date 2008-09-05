@@ -46,11 +46,11 @@ public abstract class GeneratorImpl extends AbstractResourceAnnotation<Member> i
 		
 	public GeneratorImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa);
-		this.nameDeclarationAdapter = this.nameAdapter();
+		this.nameDeclarationAdapter = this.getNameAdapter();
 		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
-		this.initialValueDeclarationAdapter = this.initialValueAdapter();
+		this.initialValueDeclarationAdapter = this.getInitialValueAdapter();
 		this.initialValueAdapter = this.buildIntegerAdapter(this.initialValueDeclarationAdapter);
-		this.allocationSizeDeclarationAdapter = this.allocationSizeAdapter();
+		this.allocationSizeDeclarationAdapter = this.getAllocationSizeAdapter();
 		this.allocationSizeAdapter = this.buildIntegerAdapter(this.allocationSizeDeclarationAdapter);
 	}
 	
@@ -69,13 +69,11 @@ public abstract class GeneratorImpl extends AbstractResourceAnnotation<Member> i
 		return new ShortCircuitAnnotationElementAdapter<Integer>(getMember(), daea);
 	}
 
-	protected abstract DeclarationAnnotationAdapter annotationAdapter();
+	protected abstract DeclarationAnnotationElementAdapter<String> getNameAdapter();
 
-	protected abstract DeclarationAnnotationElementAdapter<String> nameAdapter();
+	protected abstract DeclarationAnnotationElementAdapter<Integer> getInitialValueAdapter();
 
-	protected abstract DeclarationAnnotationElementAdapter<Integer> initialValueAdapter();
-
-	protected abstract DeclarationAnnotationElementAdapter<Integer> allocationSizeAdapter();
+	protected abstract DeclarationAnnotationElementAdapter<Integer> getAllocationSizeAdapter();
 
 	
 

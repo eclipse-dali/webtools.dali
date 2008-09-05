@@ -193,8 +193,8 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		this.specifiedName = this.specifiedName(this.entityResource);
 		this.defaultName = this.defaultName(resourcePersistentType);
 		this.defaultInheritanceStrategy = this.defaultInheritanceStrategy();
-		this.specifiedInheritanceStrategy = this.specifiedInheritanceStrategy(getInheritanceResource());
-		this.specifiedDiscriminatorValue = this.getDiscriminatorValueResource().getValue();
+		this.specifiedInheritanceStrategy = this.specifiedInheritanceStrategy(getResourceInheritance());
+		this.specifiedDiscriminatorValue = this.getResourceDiscriminatorValue().getValue();
 		this.defaultDiscriminatorValue = this.javaDefaultDiscriminatorValue();
 		this.discriminatorValueAllowed = this.discriminatorValueIsAllowed(resourcePersistentType);
 		this.discriminatorColumn.initialize(resourcePersistentType);
@@ -310,18 +310,18 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	//call one setter and the inheritanceResource could change. 
 	//You could call more than one setter before this object has received any notification
 	//from the java resource model
-	protected InheritanceAnnotation getInheritanceResource() {
+	protected InheritanceAnnotation getResourceInheritance() {
 		return (InheritanceAnnotation) this.javaResourcePersistentType.getNonNullAnnotation(InheritanceAnnotation.ANNOTATION_NAME);
 	}
 	
-	protected DiscriminatorValueAnnotation getDiscriminatorValueResource() {
+	protected DiscriminatorValueAnnotation getResourceDiscriminatorValue() {
 		return (DiscriminatorValueAnnotation) this.javaResourcePersistentType.getNonNullAnnotation(DiscriminatorValueAnnotation.ANNOTATION_NAME);
 	}
 
-	protected void initializeIdClass(JavaResourcePersistentType typeResource) {
-		IdClassAnnotation idClassResource = (IdClassAnnotation) typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
-		if (idClassResource != null) {
-			this.idClass = idClassResource.getValue();
+	protected void initializeIdClass(JavaResourcePersistentType jrpt) {
+		IdClassAnnotation resourceIdClass = (IdClassAnnotation) jrpt.getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		if (resourceIdClass != null) {
+			this.idClass = resourceIdClass.getValue();
 		}
 	}
 	
@@ -527,7 +527,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	public void setSpecifiedInheritanceStrategy(InheritanceType newInheritanceType) {
 		InheritanceType oldInheritanceType = this.specifiedInheritanceStrategy;
 		this.specifiedInheritanceStrategy = newInheritanceType;
-		getInheritanceResource().setStrategy(InheritanceType.toJavaResourceModel(newInheritanceType));
+		getResourceInheritance().setStrategy(InheritanceType.toJavaResourceModel(newInheritanceType));
 		firePropertyChanged(SPECIFIED_INHERITANCE_STRATEGY_PROPERTY, oldInheritanceType, newInheritanceType);
 	}
 	
@@ -564,7 +564,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	public void setSpecifiedDiscriminatorValue(String newSpecifiedDiscriminatorValue) {
 		String oldSpecifiedDiscriminatorValue = this.specifiedDiscriminatorValue;
 		this.specifiedDiscriminatorValue = newSpecifiedDiscriminatorValue;
-		getDiscriminatorValueResource().setValue(newSpecifiedDiscriminatorValue);
+		getResourceDiscriminatorValue().setValue(newSpecifiedDiscriminatorValue);
 		firePropertyChanged(SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY, oldSpecifiedDiscriminatorValue, newSpecifiedDiscriminatorValue);
 	}
 
@@ -1134,13 +1134,13 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		this.idClass = newIdClass;
 		if (newIdClass != oldIdClass) {
 			if (newIdClass != null) {
-				if (getIdClassResource() == null) {
-					addIdClassResource();
+				if (getResourceIdClass() == null) {
+					addResourceIdClass();
 				}
-				getIdClassResource().setValue(newIdClass);
+				getResourceIdClass().setValue(newIdClass);
 			}
 			else {
-				removeIdClassResource();
+				removeResourceIdClass();
 			}
 		}
 		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
@@ -1152,15 +1152,15 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 
-	protected IdClassAnnotation getIdClassResource() {
+	protected IdClassAnnotation getResourceIdClass() {
 		return (IdClassAnnotation) this.javaResourcePersistentType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	
-	protected void addIdClassResource() {
+	protected void addResourceIdClass() {
 		this.javaResourcePersistentType.addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	
-	protected void removeIdClassResource() {
+	protected void removeResourceIdClass() {
 		this.javaResourcePersistentType.removeAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 
@@ -1328,9 +1328,9 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		this.setSpecifiedName_(this.specifiedName(this.entityResource));
 		this.setDefaultName(this.defaultName(resourcePersistentType));
 		
-		this.updateInheritance(getInheritanceResource());
+		this.updateInheritance(getResourceInheritance());
 		this.updateDiscriminatorColumn(resourcePersistentType);
-		this.updateDiscriminatorValue(getDiscriminatorValueResource());
+		this.updateDiscriminatorValue(getResourceDiscriminatorValue());
 		this.setDiscriminatorValueAllowed(discriminatorValueIsAllowed(resourcePersistentType));
 		this.updateTable(resourcePersistentType);
 		this.updateSecondaryTables(resourcePersistentType);

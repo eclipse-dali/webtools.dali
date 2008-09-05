@@ -51,7 +51,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 
 	protected JavaJoinColumn defaultInverseJoinColumn;
 	
-	protected JavaResourcePersistentAttribute attributeResource;
+	protected JavaResourcePersistentAttribute resourceAttribute;
 	
 	public GenericJavaJoinTable(JavaRelationshipMapping parent) {
 		super(parent);
@@ -100,20 +100,20 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	}
 	
 	@Override
-	protected JoinTableAnnotation getTableResource() {
-		return (JoinTableAnnotation) this.attributeResource.getNonNullAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+	protected JoinTableAnnotation getResourceTable() {
+		return (JoinTableAnnotation) this.resourceAttribute.getNonNullAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 	
 	/**
 	 * Return the join table java resource, null if the annotation does not exist.
-	 * Use tableResource() if you want a non null implementation
+	 * Use getResourceTable() if you want a non null implementation
 	 */
-	protected JoinTableAnnotation getJoinTableResource() {
-		return (JoinTableAnnotation) this.attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+	protected JoinTableAnnotation getResourceJoinTable() {
+		return (JoinTableAnnotation) this.resourceAttribute.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 	
-	protected void addJoinTableResource() {
-		this.attributeResource.addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+	protected void addResourceJoinTable() {
+		this.resourceAttribute.addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 	
 	
@@ -169,15 +169,15 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			//cause change notifications to be sent to the UI in the wrong order
 			this.defaultJoinColumn = null;
 		}
-		if (getJoinTableResource() == null) {
+		if (getResourceJoinTable() == null) {
 			//Add the JoinTable before creating the specifiedJoinColumn.
 			//Otherwise we will remove it and create another during an update
 			//from the java resource model
-			addJoinTableResource();
+			addResourceJoinTable();
 		}
 		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
-		JoinColumnAnnotation joinColumnResource = this.getTableResource().addJoinColumn(index);
+		JoinColumnAnnotation joinColumnResource = this.getResourceTable().addJoinColumn(index);
 		joinColumn.initialize(joinColumnResource);
 		this.fireItemAdded(JoinTable.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		if (oldDefaultJoinColumn != null) {
@@ -200,9 +200,9 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			//create the defaultJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
-			this.defaultJoinColumn = buildJoinColumn(new NullJoinColumn(getTableResource()));
+			this.defaultJoinColumn = buildJoinColumn(new NullJoinColumn(getResourceTable()));
 		}
-		this.getTableResource().removeJoinColumn(index);
+		this.getResourceTable().removeJoinColumn(index);
 		fireItemRemoved(JoinTable.SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 		if (this.defaultJoinColumn != null) {
 			//fire change notification if a defaultJoinColumn was created above
@@ -216,7 +216,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedJoinColumns, targetIndex, sourceIndex);
-		this.getTableResource().moveJoinColumn(targetIndex, sourceIndex);
+		this.getResourceTable().moveJoinColumn(targetIndex, sourceIndex);
 		fireItemMoved(JoinTable.SPECIFIED_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 
@@ -270,15 +270,15 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			//cause change notifications to be sent to the UI in the wrong order
 			this.defaultInverseJoinColumn = null;
 		}
-		if (getJoinTableResource() == null) {
+		if (getResourceJoinTable() == null) {
 			//Add the JoinTable before creating the specifiedJoinColumn.
 			//Otherwise we will remove it and create another during an update
 			//from the java resource model
-			addJoinTableResource();
+			addResourceJoinTable();
 		}
 		JavaJoinColumn inverseJoinColumn = getJpaFactory().buildJavaJoinColumn(this, createInverseJoinColumnOwner());
 		this.specifiedInverseJoinColumns.add(index, inverseJoinColumn);
-		JoinColumnAnnotation joinColumnResource = this.getTableResource().addInverseJoinColumn(index);
+		JoinColumnAnnotation joinColumnResource = this.getResourceTable().addInverseJoinColumn(index);
 		inverseJoinColumn.initialize(joinColumnResource);
 		this.fireItemAdded(JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, index, inverseJoinColumn);
 		if (oldDefaultInverseJoinColumn != null) {
@@ -301,9 +301,9 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			//create the defaultJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
-			this.defaultInverseJoinColumn = buildInverseJoinColumn(new NullJoinColumn(getTableResource()));
+			this.defaultInverseJoinColumn = buildInverseJoinColumn(new NullJoinColumn(getResourceTable()));
 		}
-		this.getTableResource().removeInverseJoinColumn(index);
+		this.getResourceTable().removeInverseJoinColumn(index);
 		fireItemRemoved(JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 		if (this.defaultInverseJoinColumn != null) {
 			//fire change notification if a defaultJoinColumn was created above
@@ -317,7 +317,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	
 	public void moveSpecifiedInverseJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedInverseJoinColumns, targetIndex, sourceIndex);
-		this.getTableResource().moveInverseJoinColumn(targetIndex, sourceIndex);
+		this.getResourceTable().moveInverseJoinColumn(targetIndex, sourceIndex);
 		fireItemMoved(JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 
@@ -327,7 +327,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	}
 
 	public boolean isSpecified() {
-		return getJoinTableResource() != null;
+		return getResourceJoinTable() != null;
 	}
 
 	@Override
@@ -359,9 +359,9 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		return new InverseJoinColumnOwner();
 	}
 
-	public void initialize(JavaResourcePersistentAttribute attributeResource) {
-		this.attributeResource = attributeResource;
-		JoinTableAnnotation joinTable = getTableResource();
+	public void initialize(JavaResourcePersistentAttribute jrpa) {
+		this.resourceAttribute = jrpa;
+		JoinTableAnnotation joinTable = getResourceTable();
 		this.initialize(joinTable);
 		this.initializeSpecifiedJoinColumns(joinTable);
 		this.initializeDefaultJoinColumn(joinTable);
@@ -407,9 +407,9 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		this.defaultInverseJoinColumn = buildInverseJoinColumn(new NullJoinColumn(joinTable));		
 	}
 		
-	public void update(JavaResourcePersistentAttribute attributeResource) {
-		this.attributeResource = attributeResource;
-		JoinTableAnnotation joinTable = getTableResource();
+	public void update(JavaResourcePersistentAttribute jrpa) {
+		this.resourceAttribute = jrpa;
+		JoinTableAnnotation joinTable = getResourceTable();
 		this.update(joinTable);
 		this.updateSpecifiedJoinColumns(joinTable);
 		this.updateDefaultJoinColumn(joinTable);

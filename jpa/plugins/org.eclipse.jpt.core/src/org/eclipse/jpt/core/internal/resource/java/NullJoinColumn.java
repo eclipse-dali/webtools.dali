@@ -28,7 +28,7 @@ public class NullJoinColumn extends NullBaseColumn implements JoinColumnAnnotati
 	}
 
 	@Override
-	protected JoinColumnAnnotation createColumnResource() {
+	protected JoinColumnAnnotation createResourceColumn() {
 		throw new UnsupportedOperationException();
 	}
 

@@ -125,7 +125,7 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 	public void setMappedBy(String newMappedBy) {
 		String oldMappedBy = this.mappedBy;
 		this.mappedBy = newMappedBy;
-		this.getMappingResource().setMappedBy(newMappedBy);
+		this.getResourceMapping().setMappedBy(newMappedBy);
 		firePropertyChanged(NonOwningMapping.MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
 	}
 
@@ -142,15 +142,15 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 
 	@Override
 	protected void setOptionalOnResourceModel(Boolean newOptional) {
-		this.getMappingResource().setOptional(newOptional);
+		this.getResourceMapping().setOptional(newOptional);
 	}
 	
 	public TextRange getMappedByTextRange(CompilationUnit astRoot) {
-		return this.getMappingResource().getMappedByTextRange(astRoot);
+		return this.getResourceMapping().getMappedByTextRange(astRoot);
 	}
 
 	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {
-		return this.getMappingResource().mappedByTouches(pos, astRoot);
+		return this.getResourceMapping().mappedByTouches(pos, astRoot);
 	}
 
 	@Override
@@ -171,9 +171,9 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 	}
 		
 	@Override
-	protected void initialize(OneToOneAnnotation oneToOneResource) {
-		super.initialize(oneToOneResource);
-		this.mappedBy = oneToOneResource.getMappedBy();
+	protected void initialize(OneToOneAnnotation resourceOneToOne) {
+		super.initialize(resourceOneToOne);
+		this.mappedBy = resourceOneToOne.getMappedBy();
 	}
 
 	@Override
@@ -203,9 +203,9 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 	}
 	
 	@Override
-	protected void update(OneToOneAnnotation oneToOneResource) {
-		super.update(oneToOneResource);
-		this.setMappedBy_(oneToOneResource.getMappedBy());
+	protected void update(OneToOneAnnotation resourceOneToOne) {
+		super.update(resourceOneToOne);
+		this.setMappedBy_(resourceOneToOne.getMappedBy());
 	}
 
 	@Override

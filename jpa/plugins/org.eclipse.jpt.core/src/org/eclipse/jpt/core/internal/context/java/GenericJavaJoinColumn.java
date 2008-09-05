@@ -40,7 +40,7 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	}
 
 	@Override
-	protected JoinColumnAnnotation getColumnResource() {
+	protected JoinColumnAnnotation getResourceColumn() {
 		return this.joinColumn;
 	}
 	
@@ -100,7 +100,7 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	}
 
 	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
-		return getColumnResource().referencedColumnNameTouches(pos, astRoot);
+		return getResourceColumn().referencedColumnNameTouches(pos, astRoot);
 	}
 
 	private Iterator<String> candidateReferencedColumnNames() {
@@ -133,7 +133,7 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	}
 
 	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
-		TextRange textRange = getColumnResource().getReferencedColumnNameTextRange(astRoot);
+		TextRange textRange = getResourceColumn().getReferencedColumnNameTextRange(astRoot);
 		return (textRange != null) ? textRange : getOwner().getValidationTextRange(astRoot);
 	}
 

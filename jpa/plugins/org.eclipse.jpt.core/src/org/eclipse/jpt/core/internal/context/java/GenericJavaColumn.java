@@ -43,8 +43,8 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 	}
 
 	@Override
-	protected ColumnAnnotation getColumnResource() {
-		return this.getOwner().getColumnResource();
+	protected ColumnAnnotation getResourceColumn() {
+		return this.getOwner().getResourceColumn();
 	}
 	
 	public Integer getLength() {
@@ -62,7 +62,7 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 	public void setSpecifiedLength(Integer newSpecifiedLength) {
 		Integer oldSpecifiedLength = this.specifiedLength;
 		this.specifiedLength = newSpecifiedLength;
-		getColumnResource().setLength(newSpecifiedLength);
+		getResourceColumn().setLength(newSpecifiedLength);
 		firePropertyChanged(SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
 	}
 	
@@ -87,7 +87,7 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 	public void setSpecifiedPrecision(Integer newSpecifiedPrecision) {
 		Integer oldSpecifiedPrecision = this.specifiedPrecision;
 		this.specifiedPrecision = newSpecifiedPrecision;
-		getColumnResource().setPrecision(newSpecifiedPrecision);
+		getResourceColumn().setPrecision(newSpecifiedPrecision);
 		firePropertyChanged(SPECIFIED_PRECISION_PROPERTY, oldSpecifiedPrecision, newSpecifiedPrecision);
 	}
 	
@@ -112,7 +112,7 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 	public void setSpecifiedScale(Integer newSpecifiedScale) {
 		Integer oldSpecifiedScale = this.specifiedScale;
 		this.specifiedScale = newSpecifiedScale;
-		getColumnResource().setScale(newSpecifiedScale);
+		getResourceColumn().setScale(newSpecifiedScale);
 		firePropertyChanged(SPECIFIED_SCALE_PROPERTY, oldSpecifiedScale, newSpecifiedScale);
 	}
 	
@@ -128,7 +128,7 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = getColumnResource().getTextRange(astRoot);
+		TextRange textRange = getResourceColumn().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);	
 	}
 	

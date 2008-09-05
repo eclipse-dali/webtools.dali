@@ -25,13 +25,13 @@ public class GenericJavaSequenceGenerator extends AbstractJavaGenerator
 	}
 
 	@Override
-	protected SequenceGeneratorAnnotation getGeneratorResource() {
-		return (SequenceGeneratorAnnotation) super.getGeneratorResource();
+	protected SequenceGeneratorAnnotation getResourceGenerator() {
+		return (SequenceGeneratorAnnotation) super.getResourceGenerator();
 	}
 
-	public void initialize(SequenceGeneratorAnnotation sequenceGenerator) {
-		super.initialize(sequenceGenerator);
-		this.specifiedSequenceName = this.specifiedSequenceName(sequenceGenerator);
+	public void initialize(SequenceGeneratorAnnotation resourceSequenceGenerator) {
+		super.initialize(resourceSequenceGenerator);
+		this.specifiedSequenceName = this.specifiedSequenceName(resourceSequenceGenerator);
 	}
 	
 	public Integer getDefaultInitialValue() {
@@ -49,7 +49,7 @@ public class GenericJavaSequenceGenerator extends AbstractJavaGenerator
 	public void setSpecifiedSequenceName(String newSpecifiedSequenceName) {
 		String oldSpecifiedSequenceName = this.specifiedSequenceName;
 		this.specifiedSequenceName = newSpecifiedSequenceName;
-		getGeneratorResource().setSequenceName(newSpecifiedSequenceName);
+		getResourceGenerator().setSequenceName(newSpecifiedSequenceName);
 		firePropertyChanged(SPECIFIED_SEQUENCE_NAME_PROPERTY, oldSpecifiedSequenceName, newSpecifiedSequenceName);
 	}
 
@@ -63,13 +63,13 @@ public class GenericJavaSequenceGenerator extends AbstractJavaGenerator
 		return null;
 	}
 
-	public void update(SequenceGeneratorAnnotation sequenceGenerator) {
-		super.update(sequenceGenerator);
-		this.setSpecifiedSequenceName_(this.specifiedSequenceName(sequenceGenerator)); 
+	public void update(SequenceGeneratorAnnotation resourceSequenceGenerator) {
+		super.update(resourceSequenceGenerator);
+		this.setSpecifiedSequenceName_(this.specifiedSequenceName(resourceSequenceGenerator)); 
 	}
 	
-	protected String specifiedSequenceName(SequenceGeneratorAnnotation generatorResource) {
-		return generatorResource.getSequenceName();
+	protected String specifiedSequenceName(SequenceGeneratorAnnotation resourceSequenceGenerator) {
+		return resourceSequenceGenerator.getSequenceName();
 	}
 
 }

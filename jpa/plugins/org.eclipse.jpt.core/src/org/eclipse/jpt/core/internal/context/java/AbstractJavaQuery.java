@@ -34,15 +34,15 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 
 	protected final List<JavaQueryHint> hints;
 
-	protected QueryAnnotation queryAnnotation;
+	protected QueryAnnotation resourceQuery;
 	
 	protected AbstractJavaQuery(JavaJpaContextNode parent) {
 		super(parent);
 		this.hints = new ArrayList<JavaQueryHint>();
 	}
 
-	protected QueryAnnotation getQueryResource() {
-		return this.queryAnnotation;
+	protected QueryAnnotation getResourceQuery() {
+		return this.resourceQuery;
 	}
 	
 	public String getName() {
@@ -52,7 +52,7 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		this.queryAnnotation.setName(newName);
+		this.resourceQuery.setName(newName);
 		firePropertyChanged(Query.NAME_PROPERTY, oldName, newName);
 	}
 	
@@ -69,7 +69,7 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 	public void setQuery(String newQuery) {
 		String oldQuery = this.query;
 		this.query = newQuery;
-		this.queryAnnotation.setQuery(newQuery);
+		this.resourceQuery.setQuery(newQuery);
 		firePropertyChanged(Query.QUERY_PROPERTY, oldQuery, newQuery);
 	}
 	
@@ -90,7 +90,7 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 	public JavaQueryHint addHint(int index) {
 		JavaQueryHint hint = getJpaFactory().buildJavaQueryHint(this);
 		this.hints.add(index, hint);
-		this.getQueryResource().addHint(index);
+		this.getResourceQuery().addHint(index);
 		this.fireItemAdded(Query.HINTS_LIST, index, hint);
 		return hint;
 	}
@@ -105,7 +105,7 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 	
 	public void removeHint(int index) {
 		JavaQueryHint removedHint = this.hints.remove(index);
-		this.getQueryResource().removeHint(index);
+		this.getResourceQuery().removeHint(index);
 		fireItemRemoved(Query.HINTS_LIST, index, removedHint);
 	}
 	
@@ -115,38 +115,38 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 	
 	public void moveHint(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.hints, targetIndex, sourceIndex);
-		this.getQueryResource().moveHint(targetIndex, sourceIndex);
+		this.getResourceQuery().moveHint(targetIndex, sourceIndex);
 		fireItemMoved(Query.HINTS_LIST, targetIndex, sourceIndex);		
 	}
 	
-	protected void initialize(QueryAnnotation queryAnnotation) {
-		this.queryAnnotation = queryAnnotation;
-		this.name = queryAnnotation.getName();
-		this.query = queryAnnotation.getQuery();
-		this.initializeQueryHints(queryAnnotation);
+	protected void initialize(QueryAnnotation resourceQuery) {
+		this.resourceQuery = resourceQuery;
+		this.name = resourceQuery.getName();
+		this.query = resourceQuery.getQuery();
+		this.initializeQueryHints(resourceQuery);
 	}
 
-	protected void update(QueryAnnotation queryAnnotation) {
-		this.queryAnnotation = queryAnnotation;
-		this.setName_(queryAnnotation.getName());
-		this.setQuery_(queryAnnotation.getQuery());
-		this.updateQueryHints(queryAnnotation);
+	protected void update(QueryAnnotation resourceQuery) {
+		this.resourceQuery = resourceQuery;
+		this.setName_(resourceQuery.getName());
+		this.setQuery_(resourceQuery.getQuery());
+		this.updateQueryHints(resourceQuery);
 	}
 
-	protected void initializeQueryHints(QueryAnnotation queryResource) {
-		ListIterator<QueryHintAnnotation> annotations = queryResource.hints();
+	protected void initializeQueryHints(QueryAnnotation resourceQuery) {
+		ListIterator<QueryHintAnnotation> annotations = resourceQuery.hints();
 		
 		while(annotations.hasNext()) {
 			this.hints.add(createQueryHint(annotations.next()));
 		}
 	}
 	
-	protected void updateQueryHints(QueryAnnotation queryResource) {
-		ListIterator<JavaQueryHint> hints = hints();
-		ListIterator<QueryHintAnnotation> resourceHints = queryResource.hints();
+	protected void updateQueryHints(QueryAnnotation resourceQuery) {
+		ListIterator<JavaQueryHint> contextHints = hints();
+		ListIterator<QueryHintAnnotation> resourceHints = resourceQuery.hints();
 		
-		while (hints.hasNext()) {
-			JavaQueryHint hint = hints.next();
+		while (contextHints.hasNext()) {
+			JavaQueryHint hint = contextHints.next();
 			if (resourceHints.hasNext()) {
 				hint.update(resourceHints.next());
 			}
@@ -160,18 +160,18 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 		}
 	}
 
-	protected JavaQueryHint createQueryHint(QueryHintAnnotation hintResource) {
+	protected JavaQueryHint createQueryHint(QueryHintAnnotation resourceQueryHint) {
 		JavaQueryHint queryHint =  getJpaFactory().buildJavaQueryHint(this);
-		queryHint.initialize(hintResource);
+		queryHint.initialize(resourceQueryHint);
 		return queryHint;
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.queryAnnotation.getTextRange(astRoot);
+		return this.resourceQuery.getTextRange(astRoot);
 	}
 	
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.queryAnnotation.getNameTextRange(astRoot);
+		return this.resourceQuery.getNameTextRange(astRoot);
 	}
 	
 	public boolean overrides(Query query) {

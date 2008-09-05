@@ -47,9 +47,9 @@ public class QueryHintImpl extends AbstractResourceAnnotation<Type>
 	
 	public QueryHintImpl(JavaResourceNode parent, Type type, IndexedDeclarationAnnotationAdapter idaa) {
 		super(parent, type, idaa, new MemberIndexedAnnotationAdapter(type, idaa));
-		this.nameDeclarationAdapter = this.nameAdapter(idaa);
+		this.nameDeclarationAdapter = this.buildNameAdapter(idaa);
 		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
-		this.valueDeclarationAdapter = this.valueAdapter(idaa);
+		this.valueDeclarationAdapter = this.buildValueAdapter(idaa);
 		this.valueAdapter = this.buildAdapter(this.valueDeclarationAdapter);
 	}
 	
@@ -63,11 +63,11 @@ public class QueryHintImpl extends AbstractResourceAnnotation<Type>
 		return new ShortCircuitAnnotationElementAdapter<String>(getMember(), daea);
 	}
 
-	protected DeclarationAnnotationElementAdapter<String> nameAdapter(DeclarationAnnotationAdapter daa) {
+	protected DeclarationAnnotationElementAdapter<String> buildNameAdapter(DeclarationAnnotationAdapter daa) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JPA.QUERY_HINT__NAME);
 	}
 
-	protected DeclarationAnnotationElementAdapter<String> valueAdapter(DeclarationAnnotationAdapter daa) {
+	protected DeclarationAnnotationElementAdapter<String> buildValueAdapter(DeclarationAnnotationAdapter daa) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JPA.QUERY_HINT__VALUE);
 	}
 

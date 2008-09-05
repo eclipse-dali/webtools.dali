@@ -44,7 +44,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 
 	protected JavaPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
-	protected SecondaryTableAnnotation secondaryTableResource;
+	protected SecondaryTableAnnotation resourceSecondaryTable;
 	
 	public GenericJavaSecondaryTable(JavaEntity parent) {
 		super(parent);
@@ -64,8 +64,8 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 	}
 	
 	@Override
-	protected SecondaryTableAnnotation getTableResource() {
-		return this.secondaryTableResource;
+	protected SecondaryTableAnnotation getResourceTable() {
+		return this.resourceSecondaryTable;
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 		}
 		JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
-		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = this.secondaryTableResource.addPkJoinColumn(index);
+		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = this.resourceSecondaryTable.addPkJoinColumn(index);
 		primaryKeyJoinColumn.initialize(pkJoinColumnResource);
 		this.fireItemAdded(SecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
 		if (oldDefaultPkJoinColumn != null) {
@@ -151,9 +151,9 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 			//create the defaultJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
-			this.defaultPrimaryKeyJoinColumn = buildPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumn(this.secondaryTableResource));
+			this.defaultPrimaryKeyJoinColumn = buildPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumn(this.resourceSecondaryTable));
 		}
-		this.secondaryTableResource.removePkJoinColumn(index);
+		this.resourceSecondaryTable.removePkJoinColumn(index);
 		fireItemRemoved(SecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
 		if (this.defaultPrimaryKeyJoinColumn != null) {
 			//fire change notification if a defaultJoinColumn was created above
@@ -167,7 +167,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 	
 	public void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedPrimaryKeyJoinColumns, targetIndex, sourceIndex);
-		this.secondaryTableResource.movePkJoinColumn(targetIndex, sourceIndex);
+		this.resourceSecondaryTable.movePkJoinColumn(targetIndex, sourceIndex);
 		fireItemMoved(SecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -178,18 +178,18 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 	
 	//********************* updating ************************
 	
-	public void initialize(SecondaryTableAnnotation secondaryTable) {
-		super.initialize(secondaryTable);
-		this.secondaryTableResource = secondaryTable;
-		this.initializeSpecifiedPrimaryKeyJoinColumns(secondaryTable);
-		this.initializeDefaultPrimaryKeyJoinColumn(secondaryTable);
+	public void initialize(SecondaryTableAnnotation resourceSecondaryTable) {
+		super.initialize(resourceSecondaryTable);
+		this.resourceSecondaryTable = resourceSecondaryTable;
+		this.initializeSpecifiedPrimaryKeyJoinColumns(resourceSecondaryTable);
+		this.initializeDefaultPrimaryKeyJoinColumn(resourceSecondaryTable);
 	}
 	
-	protected void initializeSpecifiedPrimaryKeyJoinColumns(SecondaryTableAnnotation secondaryTable) {
-		ListIterator<PrimaryKeyJoinColumnAnnotation> annotations = secondaryTable.pkJoinColumns();
+	protected void initializeSpecifiedPrimaryKeyJoinColumns(SecondaryTableAnnotation resourceSecondaryTable) {
+		ListIterator<PrimaryKeyJoinColumnAnnotation> resourcePkJoinColumns = resourceSecondaryTable.pkJoinColumns();
 		
-		while(annotations.hasNext()) {
-			this.specifiedPrimaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn(annotations.next()));
+		while(resourcePkJoinColumns.hasNext()) {
+			this.specifiedPrimaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn(resourcePkJoinColumns.next()));
 		}
 	}
 	
@@ -205,16 +205,16 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 	}	
 
 	
-	public void update(SecondaryTableAnnotation secondaryTableResource) {
-		this.secondaryTableResource = secondaryTableResource;
-		super.update(secondaryTableResource);
-		this.updateSpecifiedPrimaryKeyJoinColumns(secondaryTableResource);
-		this.updateDefaultPrimaryKeyJoinColumn(secondaryTableResource);
+	public void update(SecondaryTableAnnotation resourceSecondaryTable) {
+		this.resourceSecondaryTable = resourceSecondaryTable;
+		super.update(resourceSecondaryTable);
+		this.updateSpecifiedPrimaryKeyJoinColumns(resourceSecondaryTable);
+		this.updateDefaultPrimaryKeyJoinColumn(resourceSecondaryTable);
 	}
 	
-	protected void updateSpecifiedPrimaryKeyJoinColumns(SecondaryTableAnnotation secondaryTableResource) {
+	protected void updateSpecifiedPrimaryKeyJoinColumns(SecondaryTableAnnotation resourceSecondaryTable) {
 		ListIterator<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns = specifiedPrimaryKeyJoinColumns();
-		ListIterator<PrimaryKeyJoinColumnAnnotation> resourcePrimaryKeyJoinColumns = secondaryTableResource.pkJoinColumns();
+		ListIterator<PrimaryKeyJoinColumnAnnotation> resourcePrimaryKeyJoinColumns = resourceSecondaryTable.pkJoinColumns();
 		
 		while (primaryKeyJoinColumns.hasNext()) {
 			JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = primaryKeyJoinColumns.next();
@@ -231,22 +231,22 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 		}
 	}
 	
-	protected void updateDefaultPrimaryKeyJoinColumn(SecondaryTableAnnotation secondaryTableResource) {
+	protected void updateDefaultPrimaryKeyJoinColumn(SecondaryTableAnnotation resourceSecondaryTable) {
 		if (!shouldBuildDefaultPrimaryKeyJoinColumn()) {
 			setDefaultPrimaryKeyJoinColumn(null);
 			return;
 		}
 		if (getDefaultPrimaryKeyJoinColumn() == null) {
-			this.setDefaultPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumn(secondaryTableResource)));
+			this.setDefaultPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumn(resourceSecondaryTable)));
 		}
 		else {
-			this.defaultPrimaryKeyJoinColumn.update(new NullPrimaryKeyJoinColumn(secondaryTableResource));
+			this.defaultPrimaryKeyJoinColumn.update(new NullPrimaryKeyJoinColumn(resourceSecondaryTable));
 		}
 	}	
 	
-	protected JavaPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(PrimaryKeyJoinColumnAnnotation primaryKeyJoinColumnResource) {
+	protected JavaPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(PrimaryKeyJoinColumnAnnotation resourcePkJoinColumn) {
 		JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
-		primaryKeyJoinColumn.initialize(primaryKeyJoinColumnResource);
+		primaryKeyJoinColumn.initialize(resourcePkJoinColumn);
 		return primaryKeyJoinColumn;
 	}
 	

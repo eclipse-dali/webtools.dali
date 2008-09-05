@@ -63,7 +63,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 	@Override
 	public void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super.initialize(resourcePersistentAttribute);
-		this.column.initialize(this.getColumnResource());
+		this.column.initialize(this.getResourceColumn());
 		this.specifiedEnumerated = this.specifiedEnumerated(this.getEnumeratedResource());
 		this.lob = this.lob(resourcePersistentAttribute);
 		this.temporal = this.temporal(this.getTemporalResource());
@@ -83,7 +83,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 		return (TemporalAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 	}
 
-	public ColumnAnnotation getColumnResource() {
+	public ColumnAnnotation getResourceColumn() {
 		return (ColumnAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 	
@@ -133,7 +133,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
 		FetchType oldFetch = this.specifiedFetch;
 		this.specifiedFetch = newSpecifiedFetch;
-		this.getMappingResource().setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
+		this.getResourceMapping().setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
 		firePropertyChanged(Fetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
 	
@@ -164,7 +164,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 	public void setSpecifiedOptional(Boolean newSpecifiedOptional) {
 		Boolean oldOptional = this.specifiedOptional;
 		this.specifiedOptional = newSpecifiedOptional;
-		this.getMappingResource().setOptional(newSpecifiedOptional);
+		this.getResourceMapping().setOptional(newSpecifiedOptional);
 		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
 	}
 
@@ -251,7 +251,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 	@Override
 	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super.update(resourcePersistentAttribute);
-		this.column.update(this.getColumnResource());
+		this.column.update(this.getResourceColumn());
 		this.setSpecifiedEnumerated_(this.specifiedEnumerated(this.getEnumeratedResource()));
 		this.setLob(this.lob(resourcePersistentAttribute));
 		this.setTemporal_(this.temporal(this.getTemporalResource()));

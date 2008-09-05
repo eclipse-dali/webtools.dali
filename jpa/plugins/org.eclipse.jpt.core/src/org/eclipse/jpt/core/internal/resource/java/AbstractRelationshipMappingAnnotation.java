@@ -67,11 +67,11 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractReso
 	
 	public AbstractRelationshipMappingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
 		super(parent, attribute, daa);
-		this.targetEntityDeclarationAdapter = targetEntityAdapter();
+		this.targetEntityDeclarationAdapter = getTargetEntityAdapter();
 		this.targetEntityAdapter = buildAnnotationElementAdapter(this.targetEntityDeclarationAdapter);
-		this.fetchDeclarationAdapter = fetchAdapter();
+		this.fetchDeclarationAdapter = getFetchAdapter();
 		this.fetchAdapter = buildAnnotationElementAdapter(this.fetchDeclarationAdapter);
-		this.cascadeDeclarationAdapter = cascadeAdapter();
+		this.cascadeDeclarationAdapter = getCascadeAdapter();
 		this.cascadeAdapter = new ShortCircuitArrayAnnotationElementAdapter<String>(attribute, this.cascadeDeclarationAdapter);
 	}
 	
@@ -86,17 +86,17 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractReso
 	/**
 	 * return the Java adapter's 'targetEntity' element adapter config
 	 */
-	protected abstract DeclarationAnnotationElementAdapter<String> targetEntityAdapter();
+	protected abstract DeclarationAnnotationElementAdapter<String> getTargetEntityAdapter();
 
 	/**
 	 * return the Java adapter's 'cascade' element adapter config
 	 */
-	protected abstract DeclarationAnnotationElementAdapter<String[]> cascadeAdapter();
+	protected abstract DeclarationAnnotationElementAdapter<String[]> getCascadeAdapter();
 
 	/**
 	 * return the Java adapter's 'fetch' element adapter config
 	 */
-	protected abstract DeclarationAnnotationElementAdapter<String> fetchAdapter();
+	protected abstract DeclarationAnnotationElementAdapter<String> getFetchAdapter();
 
 	public void initialize(CompilationUnit astRoot) {
 		this.targetEntity = this.targetEntity(astRoot);

@@ -38,7 +38,7 @@ public abstract class NullNamedColumn extends AbstractJavaResourceNode implement
 		throw new UnsupportedOperationException();
 	}
 	
-	protected abstract NamedColumnAnnotation createColumnResource();
+	protected abstract NamedColumnAnnotation createResourceColumn();
 
 	public String getName() {
 		return null;
@@ -46,7 +46,7 @@ public abstract class NullNamedColumn extends AbstractJavaResourceNode implement
 	
 	public void setName(String name) {
 		if (name != null) {
-			createColumnResource().setName(name);
+			createResourceColumn().setName(name);
 		}		
 	}
 
@@ -56,7 +56,7 @@ public abstract class NullNamedColumn extends AbstractJavaResourceNode implement
 	
 	public void setColumnDefinition(String columnDefinition) {
 		if (columnDefinition != null) {
-			createColumnResource().setColumnDefinition(columnDefinition);
+			createResourceColumn().setColumnDefinition(columnDefinition);
 		}		
 	}
 

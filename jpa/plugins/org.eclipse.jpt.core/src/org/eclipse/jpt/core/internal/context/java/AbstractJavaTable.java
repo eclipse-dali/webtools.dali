@@ -59,7 +59,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode imple
 	 * Return the java table resource, do not return null if the java annotation does not exist.
 	 * Use a null resource object instead of null.
 	 */
-	protected abstract TableAnnotation getTableResource();
+	protected abstract TableAnnotation getResourceTable();
 	
 	/**
 	 * Return the fully qualified annotation name of the java table resource
@@ -77,7 +77,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode imple
 	public void setSpecifiedName(String newSpecifiedName) {
 		String oldSpecifiedName = this.specifiedName;
 		this.specifiedName = newSpecifiedName;
-		getTableResource().setName(newSpecifiedName);
+		getResourceTable().setName(newSpecifiedName);
 		firePropertyChanged(Table.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
 	}
 	
@@ -108,7 +108,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode imple
 	public void setSpecifiedCatalog(String newSpecifiedCatalog) {
 		String oldSpecifiedCatalog = this.specifiedCatalog;
 		this.specifiedCatalog = newSpecifiedCatalog;
-		getTableResource().setCatalog(newSpecifiedCatalog);
+		getResourceTable().setCatalog(newSpecifiedCatalog);
 		firePropertyChanged(Table.SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
 	}
 
@@ -139,7 +139,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode imple
 	public void setSpecifiedSchema(String newSpecifiedSchema) {
 		String oldSpecifiedSchema = this.specifiedSchema;
 		this.specifiedSchema = newSpecifiedSchema;
-		getTableResource().setSchema(newSpecifiedSchema);
+		getResourceTable().setSchema(newSpecifiedSchema);
 		firePropertyChanged(Table.SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
 	}
 	
@@ -173,7 +173,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode imple
 	public JavaUniqueConstraint addUniqueConstraint(int index) {
 		JavaUniqueConstraint uniqueConstraint = getJpaFactory().buildJavaUniqueConstraint(this, this);
 		this.uniqueConstraints.add(index, uniqueConstraint);
-		UniqueConstraintAnnotation uniqueConstraintAnnotation = this.getTableResource().addUniqueConstraint(index);
+		UniqueConstraintAnnotation uniqueConstraintAnnotation = this.getResourceTable().addUniqueConstraint(index);
 		uniqueConstraint.initialize(uniqueConstraintAnnotation);
 		fireItemAdded(Table.UNIQUE_CONSTRAINTS_LIST, index, uniqueConstraint);
 		return uniqueConstraint;
@@ -185,13 +185,13 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode imple
 
 	public void removeUniqueConstraint(int index) {
 		JavaUniqueConstraint removedUniqueConstraint = this.uniqueConstraints.remove(index);
-		this.getTableResource().removeUniqueConstraint(index);
+		this.getResourceTable().removeUniqueConstraint(index);
 		fireItemRemoved(Table.UNIQUE_CONSTRAINTS_LIST, index, removedUniqueConstraint);
 	}
 	
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.uniqueConstraints, targetIndex, sourceIndex);
-		this.getTableResource().moveUniqueConstraint(targetIndex, sourceIndex);
+		this.getResourceTable().moveUniqueConstraint(targetIndex, sourceIndex);
 		fireItemMoved(Table.UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -207,29 +207,29 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode imple
 	// ********** Table implementation **********
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		TextRange textRange = getTableResource().getNameTextRange(astRoot);
+		TextRange textRange = getResourceTable().getNameTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return getTableResource().nameTouches(pos, astRoot);
+		return getResourceTable().nameTouches(pos, astRoot);
 	}
 
 	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
-		TextRange textRange = getTableResource().getSchemaTextRange(astRoot);
+		TextRange textRange = getResourceTable().getSchemaTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
 	public boolean schemaTouches(int pos, CompilationUnit astRoot) {
-		return getTableResource().schemaTouches(pos, astRoot);
+		return getResourceTable().schemaTouches(pos, astRoot);
 	}
 
 	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
-		return getTableResource().getCatalogTextRange(astRoot);
+		return getResourceTable().getCatalogTextRange(astRoot);
 	}
 
 	public boolean catalogTouches(int pos, CompilationUnit astRoot) {
-		return getTableResource().catalogTouches(pos, astRoot);
+		return getResourceTable().catalogTouches(pos, astRoot);
 	}
 
 	protected void setDefaultName(String newDefaultName) {
@@ -332,7 +332,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode imple
 	
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = getTableResource().getTextRange(astRoot);
+		TextRange textRange = getResourceTable().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 

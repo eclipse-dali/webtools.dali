@@ -28,8 +28,8 @@ public class GenericJavaNamedNativeQuery extends AbstractJavaQuery
 	}
 
 	@Override
-	protected NamedNativeQueryAnnotation getQueryResource() {
-		return (NamedNativeQueryAnnotation) super.getQueryResource();
+	protected NamedNativeQueryAnnotation getResourceQuery() {
+		return (NamedNativeQueryAnnotation) super.getResourceQuery();
 	}
 	
 	public String getResultClass() {
@@ -39,7 +39,7 @@ public class GenericJavaNamedNativeQuery extends AbstractJavaQuery
 	public void setResultClass(String newResultClass) {
 		String oldResultClass = this.resultClass;
 		this.resultClass = newResultClass;
-		getQueryResource().setResultClass(newResultClass);
+		getResourceQuery().setResultClass(newResultClass);
 		firePropertyChanged(NamedNativeQuery.RESULT_CLASS_PROPERTY, oldResultClass, newResultClass);
 	}
 	
@@ -56,7 +56,7 @@ public class GenericJavaNamedNativeQuery extends AbstractJavaQuery
 	public void setResultSetMapping(String newResultSetMapping) {
 		String oldResultSetMapping = this.resultSetMapping;
 		this.resultSetMapping = newResultSetMapping;
-		getQueryResource().setResultSetMapping(newResultSetMapping);
+		getResourceQuery().setResultSetMapping(newResultSetMapping);
 		firePropertyChanged(NamedNativeQuery.RESULT_SET_MAPPING_PROPERTY, oldResultSetMapping, newResultSetMapping);
 	}
 
@@ -66,16 +66,16 @@ public class GenericJavaNamedNativeQuery extends AbstractJavaQuery
 		firePropertyChanged(NamedNativeQuery.RESULT_SET_MAPPING_PROPERTY, oldResultSetMapping, newResultSetMapping);
 	}
 
-	public void initialize(NamedNativeQueryAnnotation queryResource) {
-		super.initialize(queryResource);
-		this.resultClass = queryResource.getResultClass();
-		this.resultSetMapping = queryResource.getResultSetMapping();
+	public void initialize(NamedNativeQueryAnnotation resourceQuery) {
+		super.initialize(resourceQuery);
+		this.resultClass = resourceQuery.getResultClass();
+		this.resultSetMapping = resourceQuery.getResultSetMapping();
 	}
 	
-	public void update(NamedNativeQueryAnnotation queryResource) {
-		super.update(queryResource);
-		this.setResultClass_(queryResource.getResultClass());
-		this.setResultSetMapping_(queryResource.getResultSetMapping());
+	public void update(NamedNativeQueryAnnotation resourceQuery) {
+		super.update(resourceQuery);
+		this.setResultClass_(resourceQuery.getResultClass());
+		this.setResultSetMapping_(resourceQuery.getResultSetMapping());
 	}
 
 }

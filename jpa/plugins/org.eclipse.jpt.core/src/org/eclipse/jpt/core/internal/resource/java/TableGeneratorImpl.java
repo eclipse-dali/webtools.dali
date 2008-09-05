@@ -115,22 +115,17 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 	//************ GeneratorImpl implementation **************
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<Integer> allocationSizeAdapter() {
+	protected DeclarationAnnotationElementAdapter<Integer> getAllocationSizeAdapter() {
 		return ALLOCATION_SIZE_ADAPTER;
 	}
 
 	@Override
-	protected DeclarationAnnotationAdapter annotationAdapter() {
-		return DECLARATION_ANNOTATION_ADAPTER;
-	}
-
-	@Override
-	protected DeclarationAnnotationElementAdapter<Integer> initialValueAdapter() {
+	protected DeclarationAnnotationElementAdapter<Integer> getInitialValueAdapter() {
 		return INITIAL_VALUE_ADAPTER;
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> nameAdapter() {
+	protected DeclarationAnnotationElementAdapter<String> getNameAdapter() {
 		return NAME_ADAPTER;
 	}
 
