@@ -91,12 +91,15 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			String className = property.getValue();
 			try {
 				IType sessionCustomizerClass = this.getJpaProject().getJavaProject().findType(className);
+				if(sessionCustomizerClass == null) {
+					throw new RuntimeException("could not find: \"" + className + "\" in project's classpath");
+				}
 				ClassRef classRef = 
 					this.getJpaProject().getJpaPlatform().getJpaFactory().buildClassRef(
 						this.persistenceUnit(), sessionCustomizerClass.getFullyQualifiedName());
 				this.sessionCustomizers.add(classRef);
 			}
-			catch (JavaModelException e) {
+			catch (Exception e) {
 				JptEclipseLinkCorePlugin.log(e);
 			}
 		}
