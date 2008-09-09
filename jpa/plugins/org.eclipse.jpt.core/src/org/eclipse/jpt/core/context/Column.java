@@ -24,32 +24,32 @@ public interface Column extends BaseColumn
 
 	Integer getDefaultLength();
 	Integer DEFAULT_LENGTH = Integer.valueOf(255);
-		String DEFAULT_LENGTH_PROPERTY = "defaultLengthProperty";
+		String DEFAULT_LENGTH_PROPERTY = "defaultLength"; //$NON-NLS-1$
 
 	Integer getSpecifiedLength();
 	void setSpecifiedLength(Integer newSpecifiedLength);
-		String SPECIFIED_LENGTH_PROPERTY = "spcifiedLengthProperty";
+		String SPECIFIED_LENGTH_PROPERTY = "spcifiedLength"; //$NON-NLS-1$
 		
 	Integer getPrecision();
 
 	Integer getDefaultPrecision();
 		Integer DEFAULT_PRECISION = Integer.valueOf(0);
-		String DEFAULT_PRECISION_PROPERTY = "defaultPrecisionProperty";
+		String DEFAULT_PRECISION_PROPERTY = "defaultPrecision"; //$NON-NLS-1$
 
 	Integer getSpecifiedPrecision();
 	void setSpecifiedPrecision(Integer newSpecifiedPrecision);
-		String SPECIFIED_PRECISION_PROPERTY = "spcifiedPrecisionProperty";
+		String SPECIFIED_PRECISION_PROPERTY = "spcifiedPrecision"; //$NON-NLS-1$
 
 	
 	Integer getScale();
 
 	Integer getDefaultScale();
 		Integer DEFAULT_SCALE = Integer.valueOf(0);
-		String DEFAULT_SCALE_PROPERTY = "defaultScaleProperty";
+		String DEFAULT_SCALE_PROPERTY = "defaultScale"; //$NON-NLS-1$
 
 	Integer getSpecifiedScale();
 	void setSpecifiedScale(Integer newSpecifiedScale);
-		String SPECIFIED_SCALE_PROPERTY = "spcifiedScaleProperty";
+		String SPECIFIED_SCALE_PROPERTY = "spcifiedScale"; //$NON-NLS-1$
 
 	/**
 	 * Return whether the column is found on the datasource

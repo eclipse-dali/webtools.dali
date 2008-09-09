@@ -20,27 +20,27 @@ package org.eclipse.jpt.core.context;
  */
 public interface DiscriminatorColumn extends NamedColumn
 {
-	String DEFAULT_NAME = "DTYPE";
+	String DEFAULT_NAME = "DTYPE"; //$NON-NLS-1$
 
 	DiscriminatorType getDiscriminatorType();
 
 	DiscriminatorType getDefaultDiscriminatorType();
-		String DEFAULT_DISCRIMINATOR_TYPE_PROPERTY = "defaultDiscriminatorTypeProperty";
+		String DEFAULT_DISCRIMINATOR_TYPE_PROPERTY = "defaultDiscriminatorType"; //$NON-NLS-1$
 		DiscriminatorType DEFAULT_DISCRIMINATOR_TYPE = DiscriminatorType.STRING;
 		
 	DiscriminatorType getSpecifiedDiscriminatorType();
 	void setSpecifiedDiscriminatorType(DiscriminatorType newSpecifiedDiscriminatorType);
-		String SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY = "specifiedDiscriminatorTypeProperty";
+		String SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY = "specifiedDiscriminatorType"; //$NON-NLS-1$
 
 
 	Integer getLength();
 
 	Integer getDefaultLength();
 		Integer DEFAULT_LENGTH = Integer.valueOf(31);
-		String DEFAULT_LENGTH_PROPERTY = "defaultLengthProperty";
+		String DEFAULT_LENGTH_PROPERTY = "defaultLength"; //$NON-NLS-1$
 
 	Integer getSpecifiedLength();
 	void setSpecifiedLength(Integer value);
-		String SPECIFIED_LENGTH_PROPERTY = "spcifiedLengthProperty";
+		String SPECIFIED_LENGTH_PROPERTY = "spcifiedLength"; //$NON-NLS-1$
 
 }

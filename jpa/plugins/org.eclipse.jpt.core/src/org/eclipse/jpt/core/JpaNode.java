@@ -14,7 +14,8 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jpt.utility.model.Model;
 
 /**
- * JPA-specific protocol.
+ * JPA-specific protocol. All JPA objects belong to a JPA project, are
+ * associated with a resource, and have a parent (excepting the JPA project).
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,7 +23,8 @@ import org.eclipse.jpt.utility.model.Model;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaNode extends Model, IAdaptable
+public interface JpaNode
+	extends Model, IAdaptable
 {
 
 	/**

@@ -23,10 +23,10 @@ public interface Fetchable extends AttributeMapping
 	FetchType getFetch();
 
 	FetchType getDefaultFetch();
-		String DEFAULT_FETCH_PROPERTY = "defaultFetchProperty";
+		String DEFAULT_FETCH_PROPERTY = "defaultFetch"; //$NON-NLS-1$
 		
 	FetchType getSpecifiedFetch();
 	void setSpecifiedFetch(FetchType newSpecifiedFetch);
-		String SPECIFIED_FETCH_PROPERTY = "specifiedFetchProperty";
+		String SPECIFIED_FETCH_PROPERTY = "specifiedFetch"; //$NON-NLS-1$
 	
 }

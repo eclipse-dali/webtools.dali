@@ -24,51 +24,51 @@ public interface BaseColumn extends NamedColumn
 	String getTable();
 
 	String getDefaultTable();
-		String DEFAULT_TABLE_PROPERTY = "defaultTableProperty";
+		String DEFAULT_TABLE_PROPERTY = "defaultTable"; //$NON-NLS-1$
 
 	String getSpecifiedTable();
 	void setSpecifiedTable(String value);
-		String SPECIFIED_TABLE_PROPERTY = "specifiedTableProperty";
+		String SPECIFIED_TABLE_PROPERTY = "specifiedTable"; //$NON-NLS-1$
 
 	
 	Boolean getUnique();
 	
 	Boolean getDefaultUnique();
-		String DEFAULT_UNIQUE_PROPERTY = "defaultUniqueProperty";
+		String DEFAULT_UNIQUE_PROPERTY = "defaultUnique"; //$NON-NLS-1$
 		Boolean DEFAULT_UNIQUE = Boolean.FALSE;
 	Boolean getSpecifiedUnique();
 	void setSpecifiedUnique(Boolean newSpecifiedUnique);
-		String SPECIFIED_UNIQUE_PROPERTY = "specifiedUniqueProperty";
+		String SPECIFIED_UNIQUE_PROPERTY = "specifiedUnique"; //$NON-NLS-1$
 	
 
 	Boolean getNullable();
 		
 	Boolean getDefaultNullable();
-		String DEFAULT_NULLABLE_PROPERTY = "defaultNullableProperty";
+		String DEFAULT_NULLABLE_PROPERTY = "defaultNullable"; //$NON-NLS-1$
 		Boolean DEFAULT_NULLABLE = Boolean.TRUE;
 	Boolean getSpecifiedNullable();
 	void setSpecifiedNullable(Boolean newSpecifiedNullable);
-		String SPECIFIED_NULLABLE_PROPERTY = "specifiedNullableProperty";
+		String SPECIFIED_NULLABLE_PROPERTY = "specifiedNullable"; //$NON-NLS-1$
 
 
 	Boolean getInsertable();
 	
 	Boolean getDefaultInsertable();
-		String DEFAULT_INSERTABLE_PROPERTY = "defaulInsertableProperty";
+		String DEFAULT_INSERTABLE_PROPERTY = "defaulInsertable"; //$NON-NLS-1$
 		Boolean DEFAULT_INSERTABLE = Boolean.TRUE;
 	Boolean getSpecifiedInsertable();
 	void setSpecifiedInsertable(Boolean newSpecifiedInsertable);
-		String SPECIFIED_INSERTABLE_PROPERTY = "specifiedInsertableProperty";
+		String SPECIFIED_INSERTABLE_PROPERTY = "specifiedInsertable"; //$NON-NLS-1$
 	
 	
 	Boolean getUpdatable();
 	
 	Boolean getDefaultUpdatable();
-		String DEFAULT_UPDATABLE_PROPERTY = "defaulUpdatableProperty";
+		String DEFAULT_UPDATABLE_PROPERTY = "defaulUpdatable"; //$NON-NLS-1$
 		Boolean DEFAULT_UPDATABLE = Boolean.TRUE;
 	Boolean getSpecifiedUpdatable();
 	void setSpecifiedUpdatable(Boolean newSpecifiedUpdatable);
-		String SPECIFIED_UPDATABLE_PROPERTY = "specifiedUpdatableProperty";
+		String SPECIFIED_UPDATABLE_PROPERTY = "specifiedUpdatable"; //$NON-NLS-1$
 
 	//TODO not sure we really need/want this to be public.  This
 	//is used by ColumnComposite to get a list of possible associated tables, but
