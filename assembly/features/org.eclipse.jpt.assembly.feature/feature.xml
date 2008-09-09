@@ -4,7 +4,6 @@
       label="%featureName"
       version="2.1.0.qualifier"
       provider-name="%providerName"
-      plugin="org.eclipse.jpt"
       image="eclipse_update_120.jpg">
 
    <description>
@@ -31,12 +30,5 @@
    <includes
          id="org.eclipse.jpt.eclipselink.feature"
          version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.jpt"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
 </feature>
