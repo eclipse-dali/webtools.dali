@@ -29,6 +29,7 @@ import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class AbstractModelTests
 	extends TestCase
 	implements StateChangeListener, PropertyChangeListener, CollectionChangeListener, ListChangeListener, TreeChangeListener
@@ -1128,7 +1129,33 @@ public class AbstractModelTests
 		assertTrue(Arrays.equals(path, this.treeChangeEvent.getPath()));
 	}
 
-// ********** listener implementations **********
+	public void testValuesAreEqual1() {
+		assertTrue(this.testModel.testValuesAreEqual(null, null));
+		assertFalse(this.testModel.testValuesAreDifferent(null, null));
+	}
+
+	public void testValuesAreEqual2() {
+		assertTrue(this.testModel.testValuesAreEqual("foo", "foo"));
+		assertFalse(this.testModel.testValuesAreDifferent("foo", "foo"));
+	}
+
+	public void testValuesAreEqual3() {
+		assertFalse(this.testModel.testValuesAreEqual("foo", null));
+		assertTrue(this.testModel.testValuesAreDifferent("foo", null));
+	}
+
+	public void testValuesAreEqual4() {
+		assertFalse(this.testModel.testValuesAreEqual(null, "foo"));
+		assertTrue(this.testModel.testValuesAreDifferent(null, "foo"));
+	}
+
+	public void testValuesAreEqual5() {
+		assertFalse(this.testModel.testValuesAreEqual("bar", "foo"));
+		assertTrue(this.testModel.testValuesAreDifferent("bar", "foo"));
+	}
+
+
+	// ********** listener implementations **********
 
 	public void stateChanged(StateChangeEvent e) {
 		this.stateChangedCalled = true;
@@ -1301,6 +1328,14 @@ public class AbstractModelTests
 			}
 		}
 	
+		public boolean testValuesAreDifferent(Object value1, Object value2) {
+			return this.valuesAreDifferent(value1, value2);
+		}
+		
+		public boolean testValuesAreEqual(Object value1, Object value2) {
+			return this.valuesAreEqual(value1, value2);
+		}
+		
 		@Override
 		public void toString(StringBuilder sb) {
 			sb.append(TEST_TO_STRING);
