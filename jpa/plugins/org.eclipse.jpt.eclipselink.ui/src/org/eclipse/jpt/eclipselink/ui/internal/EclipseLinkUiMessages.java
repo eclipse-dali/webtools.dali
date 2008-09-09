@@ -185,6 +185,7 @@ public class EclipseLinkUiMessages extends NLS
 	
 	public static String PersistenceXmlCustomizationTab_customizerLabel;
 	public static String PersistenceXmlCustomizationTab_sessionCustomizerLabel;
+	public static String PersistenceXmlCustomizationTab_noName;
 
 	// Logging
 	public static String PersistenceXmlLoggingTab_title;

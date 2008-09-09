@@ -362,26 +362,47 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	 * @param value -
 	 *            property value
 	 */
-	@SuppressWarnings("unchecked")
 	protected void putProperty(String key, Object value) {
+		putProperty(key, value, false);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected void putProperty(String key, Object value, boolean allowDuplicates) {
 		String elKey = this.eclipseLinkKeyFor(key);
 		if (value == null)
-			this.removeProperty(elKey);
+			this.removeEclipseLinkProperty(elKey);
 		else if (value.getClass().isEnum())
-			this.putEnumValue(elKey, (Enum) value);
+			this.putEnumValue(elKey, (Enum) value, allowDuplicates);
 		else
-			 this.putProperty_(elKey, value);
+			 this.putEclipseLinkProperty(elKey, value, allowDuplicates);
 	}
 
-	private void putProperty_(String key, Object value) {
-		this.persistenceUnit().putProperty(key, value.toString(), false);
+	private void putEclipseLinkProperty(String key, Object value, boolean allowDuplicates) {
+		this.persistenceUnit().putProperty(key, value.toString(), allowDuplicates);
 	}
 
 	/**
-	 * Removes a property with the given key.
+	 * Removes a property with the given EclipseLink key.
+	 * 
+	 * @param elKey -
+	 *            EclipseLink key
 	 */
-	protected void removeProperty(String elKey) {
+	private void removeEclipseLinkProperty(String elKey) {
 		this.persistenceUnit().removeProperty(elKey);
+	}
+	
+	/**
+	 * Removes a persistenceUnit property.
+	 * 
+	 * @param key -
+	 *            property name
+	 * @param value -
+	 *            property value
+	 */
+	protected void removeProperty(String key, String value) {
+		String elKey = this.eclipseLinkKeyFor(key);
+		
+		this.persistenceUnit().removeProperty(elKey, value);
 	}
 
 	protected Set<Property> getPropertiesSetWithPrefix(String keyPrefix) {

@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.customization;
 
 import java.util.ListIterator;
 
+import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.eclipselink.core.internal.context.PersistenceUnitProperties;
 
 /**
@@ -58,14 +59,6 @@ public interface Customization extends PersistenceUnitProperties
 		static final String ECLIPSELINK_WEAVING_FETCH_GROUPS = "eclipselink.weaving.fetchgroups";
 		static final Boolean DEFAULT_WEAVING_FETCH_GROUPS = Boolean.TRUE;
 	
-	String getDefaultSessionCustomizer();
-	String getSessionCustomizer();
-	void setSessionCustomizer(String newSessionCustomizer);
-		static final String SESSION_CUSTOMIZER_PROPERTY = "sessionCustomizerProperty";
-		// EclipseLink key string
-		static final String ECLIPSELINK_SESSION_CUSTOMIZER = "eclipselink.session.customizer";
-		static final String DEFAULT_SESSION_CUSTOMIZER = null;	// no default
-	
 	String getDefaultDescriptorCustomizer();
 	String getDescriptorCustomizer(String entityName);
 	void setDescriptorCustomizer(String newDescriptorCustomizer, String entityName);
@@ -74,12 +67,21 @@ public interface Customization extends PersistenceUnitProperties
 		static final String ECLIPSELINK_DESCRIPTOR_CUSTOMIZER = "eclipselink.descriptor.customizer.";
 		static final String DEFAULT_DESCRIPTOR_CUSTOMIZER = null;	// no default
 
+	ListIterator<ClassRef> sessionCustomizers();
+	int sessionCustomizersSize();
+	boolean sessionCustomizerExists(String sessionCustomizerClassName);
+	ClassRef addSessionCustomizer(String newSessionCustomizerClassName);
+	void removeSessionCustomizer(ClassRef classRef);
+		static final String SESSION_CUSTOMIZER_LIST_PROPERTY = "sessionCustomizerListProperty";
+		static final String SESSION_CUSTOMIZER_PROPERTY = "sessionCustomizerProperty";
+		// EclipseLink key string
+		static final String ECLIPSELINK_SESSION_CUSTOMIZER = "eclipselink.session.customizer";
 
 	ListIterator<String> entities();
 	int entitiesSize();
 	boolean entityExists(String entity);
 	String addEntity(String entity);
 	void removeEntity(String entity);
-		String ENTITIES_LIST_PROPERTY = "entitiesListProperty";
+		static final String ENTITIES_LIST_PROPERTY = "entitiesListProperty";
 
 }

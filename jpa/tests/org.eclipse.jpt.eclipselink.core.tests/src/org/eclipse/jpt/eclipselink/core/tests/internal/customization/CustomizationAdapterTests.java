@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.customization;
 
+import java.util.ListIterator;
+
+import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
@@ -34,6 +37,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 {
 	private Customization customization;
 	private ListChangeEvent entitiesEvent;
+	private ListChangeEvent sessionCustomizersEvent;
 
 	public static final String ENTITY_TEST = "Employee";
 	public static final String ENTITY_TEST_2 = "Address";
@@ -55,8 +59,8 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	public static final Boolean WEAVING_FETCH_GROUPS_TEST_VALUE_2 = ! WEAVING_FETCH_GROUPS_TEST_VALUE;
 
 	private static final String SESSION_CUSTOMIZER_KEY = Customization.ECLIPSELINK_SESSION_CUSTOMIZER;
-	private static final String SESSION_CUSTOMIZER_TEST_VALUE = "session.customizer.test";
-	private static final String SESSION_CUSTOMIZER_TEST_VALUE_2 = "session.customizer-2.test";
+	private static final String SESSION_CUSTOMIZER_TEST_VALUE = "java.lang.String";
+	private static final String SESSION_CUSTOMIZER_TEST_VALUE_2 = "java.lang.Boolean";
 
 	public static final String WEAVING_KEY = Customization.ECLIPSELINK_WEAVING;
 	public static final Weaving WEAVING_TEST_VALUE = Weaving.false_;
@@ -80,10 +84,14 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.customization.addPropertyChangeListener(Customization.WEAVING_LAZY_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.WEAVING_CHANGE_TRACKING_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.WEAVING_FETCH_GROUPS_PROPERTY, propertyChangeListener);
-		this.customization.addPropertyChangeListener(Customization.SESSION_CUSTOMIZER_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.WEAVING_PROPERTY, propertyChangeListener);
 		
 		this.customization.addPropertyChangeListener(Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY, propertyChangeListener);
+		
+		this.customization.addPropertyChangeListener(Customization.SESSION_CUSTOMIZER_PROPERTY, propertyChangeListener);
+
+		ListChangeListener sessionCustomizersChangeListener = this.buildSessionCustomizersChangeListener();
+		this.customization.addListChangeListener(Customization.SESSION_CUSTOMIZER_LIST_PROPERTY, sessionCustomizersChangeListener);
 		
 		ListChangeListener entitiesChangeListener = this.buildEntitiesChangeListener();
 		this.customization.addListChangeListener(Customization.ENTITIES_LIST_PROPERTY, entitiesChangeListener);
@@ -141,15 +149,48 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 			}
 		};
 	}
+	
+	private ListChangeListener buildSessionCustomizersChangeListener() {
+		return new ListChangeListener() {
+			public void itemsAdded(ListChangeEvent e) {
+				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
+			}
+
+			public void itemsRemoved(ListChangeEvent e) {
+				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
+			}
+
+			public void itemsReplaced(ListChangeEvent e) {
+				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
+			}
+
+			public void itemsMoved(ListChangeEvent e) {
+				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
+			}
+
+			public void listCleared(ListChangeEvent e) {
+				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
+			}
+
+			public void listChanged(ListChangeEvent e) {
+				CustomizationAdapterTests.this.sessionCustomizerChanged(e);
+			}
+		};
+	}
 
 	@Override
 	protected void clearEvent() {
 		super.clearEvent();
 		this.entitiesEvent = null;
+		this.sessionCustomizersEvent = null;
 	}
 
 	void entityChanged(ListChangeEvent e) {
 		this.entitiesEvent = e;
+	}
+
+	void sessionCustomizerChanged(ListChangeEvent e) {
+		this.sessionCustomizersEvent = e;
 	}
 
 	// ********** entities list **********
@@ -170,6 +211,27 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		assertNotNull("No Event Fired.", this.entitiesEvent);
 		// verify event for the expected property
 		assertEquals("Wrong Event.", this.entitiesEvent.getAspectName(), Customization.ENTITIES_LIST_PROPERTY);
+	}
+
+	// ********** sessionCustomizers list **********
+	public void testSessionCustomizersList() throws Exception {
+		// add
+		this.clearEvent();
+		ClassRef classRef = this.customization.addSessionCustomizer(SESSION_CUSTOMIZER_TEST_VALUE_2);
+		
+		// verify event received
+		assertNotNull("No Event Fired.", this.sessionCustomizersEvent);
+		// verify event for the expected property
+		assertEquals("Wrong Event.", this.sessionCustomizersEvent.getAspectName(), Customization.SESSION_CUSTOMIZER_LIST_PROPERTY);
+		
+		// remove
+		this.clearEvent();
+		
+		this.customization.removeSessionCustomizer(classRef);
+		// verify event received
+		assertNotNull("No Event Fired.", this.sessionCustomizersEvent);
+		// verify event for the expected property
+		assertEquals("Wrong Event.", this.sessionCustomizersEvent.getAspectName(), Customization.SESSION_CUSTOMIZER_LIST_PROPERTY);
 	}
 
 	// ********** Listeners tests **********
@@ -277,14 +339,16 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.verifyModelInitialized(
 			SESSION_CUSTOMIZER_KEY,
 			SESSION_CUSTOMIZER_TEST_VALUE);
-		this.verifySetProperty(
+		this.verifySetSessionCustomizationProperty(
+			Customization.SESSION_CUSTOMIZER_PROPERTY,
 			SESSION_CUSTOMIZER_KEY,
 			SESSION_CUSTOMIZER_TEST_VALUE,
 			SESSION_CUSTOMIZER_TEST_VALUE_2);
 	}
 
 	public void testAddRemoveSessionCustomizer() throws Exception {
-		this.verifyAddRemoveProperty(
+		this.verifyAddRemoveSessionCustomizationProperty(
+			Customization.SESSION_CUSTOMIZER_PROPERTY,
 			SESSION_CUSTOMIZER_KEY,
 			SESSION_CUSTOMIZER_TEST_VALUE,
 			SESSION_CUSTOMIZER_TEST_VALUE_2);
@@ -339,6 +403,51 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 
 	// ****** convenience methods *******
 
+	// ********** verify SessionCustomizer property **********
+	protected void verifySetSessionCustomizationProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
+		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
+		// Basic
+		this.verifyInitialState(propertyName, key, propertyListAdapter);
+		
+		// Replace
+		this.persistenceUnitPut(key, testValue2, true); 
+		this.propertiesTotal++;
+		assertEquals(this.propertiesTotal, propertyListAdapter.size());
+		this.verifyPutSessionCustomizerProperty(propertyName, testValue1);
+	}
+	
+	protected void verifyAddRemoveSessionCustomizationProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
+		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
+		// Remove
+		this.clearEvent();
+		--this.propertiesTotal;
+		--this.modelPropertiesSize;
+		this.persistenceUnit().removeProperty(key, (String) testValue1);
+		assertFalse(this.customization.sessionCustomizerExists(key));
+		assertEquals(this.modelPropertiesSize, this.modelPropertiesSizeOriginal - 1);
+		assertEquals(this.propertiesTotal, propertyListAdapter.size());
+		
+		// Add original Property
+		++this.propertiesTotal;
+		++this.modelPropertiesSize;
+		this.persistenceUnitPut(key, testValue1, true); 
+		this.verifyPutSessionCustomizerProperty(propertyName, testValue1);
+		assertEquals(this.propertiesTotal, propertyListAdapter.size());
+	}
+
+	protected void verifyPutSessionCustomizerProperty(String propertyName, Object expectedValue) throws Exception {
+		// verify event received
+		assertNotNull("No Event Fired.", this.sessionCustomizersEvent);
+		this.verifySessionCustomizerEvent(propertyName, expectedValue);
+	}
+
+	protected void verifySessionCustomizerEvent(String propertyName, Object expectedValue) throws Exception {
+		// verify event value
+		EclipseLinkCustomization customization = (EclipseLinkCustomization) this.sessionCustomizersEvent.getSource();
+		assertTrue(customization.sessionCustomizerExists((String) expectedValue));
+		 return;
+	}
+	
 	// ********** verify entity property **********
 	protected void verifySetCustomizationProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
 		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
@@ -417,7 +526,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		else if (propertyName.equals(Customization.WEAVING_FETCH_GROUPS_PROPERTY))
 			this.customization.setWeavingFetchGroups((Boolean) newValue);
 		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY))
-			this.customization.setSessionCustomizer((String) newValue);
+			this.customization.addSessionCustomizer((String) newValue);
 		else if (propertyName.equals(Customization.WEAVING_PROPERTY))
 			this.customization.setWeaving((Weaving) newValue);
 		else
@@ -437,8 +546,12 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 			modelValue = this.customization.getWeavingChangeTracking();
 		else if (propertyName.equals(Customization.WEAVING_FETCH_GROUPS_PROPERTY))
 			modelValue = this.customization.getWeavingFetchGroups();
-		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY))
-			modelValue = this.customization.getSessionCustomizer();
+		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY)) {
+			ListIterator<ClassRef> iterator = this.customization.sessionCustomizers();
+			if(iterator.hasNext()) {
+				modelValue = iterator.next().getClassName();
+			}
+		}
 		else if (propertyName.equals(Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY))
 			modelValue = this.customization.getDescriptorCustomizer(ENTITY_TEST);
 		else

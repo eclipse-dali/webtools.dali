@@ -105,18 +105,23 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	 *            property value
 	 */
 	protected void persistenceUnitPut(String key, Object value) {
+		
+		this.persistenceUnitPut( key, value, false);
+	}
+	
+	protected void persistenceUnitPut(String key, Object value, boolean allowDuplicates) {
 		if (key == null) {
 			throw new IllegalArgumentException("EclipseLink Key cannot be null");
 		}
 		if (value == null)
 			this.putNullProperty(key);
 		else
-			this.putProperty_(key, value);
+			this.putProperty_(key, value, allowDuplicates);
 	}
 
-	private void putProperty_(String elKey, Object value) {
+	private void putProperty_(String elKey, Object value, boolean allowDuplicates) {
 		this.clearEvent();
-		this.persistenceUnit().putProperty(elKey, this.getEclipseLinkStringValueOf(value), false);
+		this.persistenceUnit().putProperty(elKey, this.getEclipseLinkStringValueOf(value), allowDuplicates);
 	}
 
 	protected void putNullProperty(String elKey) {
@@ -146,7 +151,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	
 			@Override
 			public String toString() {
-				return "Connection listener";
+				return "PersistenceUnit listener";
 			}
 		};
 	}

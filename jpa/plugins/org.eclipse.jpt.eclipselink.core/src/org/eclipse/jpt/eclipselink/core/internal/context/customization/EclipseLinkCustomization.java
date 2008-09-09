@@ -9,15 +9,21 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.customization;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
+import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnitProperties;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
@@ -33,7 +39,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	private Boolean weavingLazy;
 	private Boolean weavingChangeTracking;
 	private Boolean weavingFetchGroups;
-	private String sessionCustomizer;
+	private ArrayList<ClassRef> sessionCustomizers;
 
 	// key = Entity name ; value = Customizer properties
 	private Map<String, CustomizerProperties> entitiesCustomizerProperties;
@@ -65,13 +71,35 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			this.getBooleanValue(ECLIPSELINK_WEAVING_CHANGE_TRACKING);
 		this.weavingFetchGroups = 
 			this.getBooleanValue(ECLIPSELINK_WEAVING_FETCH_GROUPS);
-		this.sessionCustomizer = 
-			this.getStringValue(ECLIPSELINK_SESSION_CUSTOMIZER);
+		this.initializeSessionCustomizersFromPersistenceUnit();
 
 		Set<Property> properties = 
 			this.getPropertiesSetWithPrefix(ECLIPSELINK_DESCRIPTOR_CUSTOMIZER);
-		
 		this.initializeEntitiesCustomizerClass(properties);
+	}
+
+	private void initializeSessionCustomizersFromPersistenceUnit() {
+		Set<Property> properties = 
+			this.getPropertiesSetWithPrefix(ECLIPSELINK_SESSION_CUSTOMIZER);
+		
+		this.sessionCustomizers = new ArrayList<ClassRef>(properties.size());
+		this.initializeSessionCustomizersWith(properties);
+	}
+
+	private void initializeSessionCustomizersWith(Set<Property> properties) {
+		for (Property property : properties) {
+			String className = property.getValue();
+			try {
+				IType sessionCustomizerClass = this.getJpaProject().getJavaProject().findType(className);
+				ClassRef classRef = 
+					this.getJpaProject().getJpaPlatform().getJpaFactory().buildClassRef(
+						this.persistenceUnit(), sessionCustomizerClass.getFullyQualifiedName());
+				this.sessionCustomizers.add(classRef);
+			}
+			catch (JavaModelException e) {
+				JptEclipseLinkCorePlugin.log(e);
+			}
+		}
 	}
 
 	private void initializeEntitiesCustomizerClass(Set<Property> properties) {
@@ -162,7 +190,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			this.weavingFetchGroupsChanged(event);
 		}
 		else if (aspectName.equals(SESSION_CUSTOMIZER_PROPERTY)) {
-			this.sessionCustomizerChanged(event);
+			this.sessionCustomizersChanged(event);
 		}
 		else if (aspectName.equals(DESCRIPTOR_CUSTOMIZER_PROPERTY)) {
 			this.descriptorCustomizerChanged(event);
@@ -274,27 +302,63 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		return DEFAULT_WEAVING_FETCH_GROUPS;
 	}
 
-	// ********** SessionCustomizer **********
-	public String getSessionCustomizer() {
-		return this.sessionCustomizer;
+	// ********** SessionCustomizers **********
+	public ListIterator<ClassRef> sessionCustomizers(){
+		return new CloneListIterator<ClassRef>(this.sessionCustomizers);
+	}
+	
+	public int sessionCustomizersSize(){
+		return this.sessionCustomizers.size();
 	}
 
-	public void setSessionCustomizer(String newSessionCustomizer) {
-		String old = this.sessionCustomizer;
-		this.sessionCustomizer = newSessionCustomizer;
-		this.putProperty(SESSION_CUSTOMIZER_PROPERTY, newSessionCustomizer);
-		this.firePropertyChanged(SESSION_CUSTOMIZER_PROPERTY, old, newSessionCustomizer);
+	public boolean sessionCustomizerExists(String sessionCustomizerClassName) {
+
+		for (ClassRef sessionCustomizer : this.sessionCustomizers) {
+			if(sessionCustomizer.getClassName().equals(sessionCustomizerClassName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
-	private void sessionCustomizerChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
-		String old = this.sessionCustomizer;
-		this.sessionCustomizer = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+	public ClassRef addSessionCustomizer(String newSessionCustomizerClassName){
+
+		if( ! this.sessionCustomizerExists(newSessionCustomizerClassName)) {
+			ClassRef classRef = 
+				this.getJpaProject().getJpaPlatform().getJpaFactory().buildClassRef(
+					this.persistenceUnit(), newSessionCustomizerClassName);
+			this.sessionCustomizers.add(classRef);
+			this.putProperty(SESSION_CUSTOMIZER_PROPERTY, classRef.getClassName(), true);
+			this.fireListChanged(SESSION_CUSTOMIZER_LIST_PROPERTY);
+			return classRef;
+		}
+		return null;
+	}
+	
+	public void removeSessionCustomizer(ClassRef classRef){
+
+		if(this.removeSessionCustomizer(classRef.getClassName()) != null) {
+			this.removeProperty(SESSION_CUSTOMIZER_PROPERTY, classRef.getClassName());
+			this.fireListChanged(SESSION_CUSTOMIZER_LIST_PROPERTY);
+		}
+	}
+	
+	private ClassRef removeSessionCustomizer(String sessionCustomizerClassName){
+
+		for ( ListIterator<ClassRef> i = this.sessionCustomizers(); i.hasNext();) {
+			ClassRef classRef = i.next();
+			if(classRef.getClassName().equals(sessionCustomizerClassName)) {
+				this.sessionCustomizers.remove(classRef);
+				return classRef;
+			}
+		}
+		return null;
 	}
 
-	public String getDefaultSessionCustomizer() {
-		return DEFAULT_SESSION_CUSTOMIZER;
+	private void sessionCustomizersChanged(PropertyChangeEvent event) {
+
+		this.initializeSessionCustomizersFromPersistenceUnit();
+		this.fireListChanged(SESSION_CUSTOMIZER_LIST_PROPERTY);
 	}
 
 	// ********** Weaving **********
