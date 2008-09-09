@@ -38,7 +38,7 @@ public class CallbackChangeSupport extends ChangeSupport {
 	}
 
 
-	// ********** child chang support **********
+	// ********** child change support **********
 
 	/**
 	 * The aspect-specific change support class does not need to
