@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,6 +20,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class CachingTransformationPropertyValueModelTests extends TestCase {
 	private WritablePropertyValueModel<Person> objectHolder;
 	PropertyChangeEvent event;
@@ -58,7 +59,6 @@ public class CachingTransformationPropertyValueModelTests extends TestCase {
 	public void testValue() {
 		PropertyChangeListener listener = this.buildTransformationListener();
 		this.transformationObjectHolder.addPropertyChangeListener(listener);
-
 		
 		Person person = this.objectHolder.getValue();
 		assertEquals("Karen", person.getName());
@@ -174,10 +174,10 @@ public class CachingTransformationPropertyValueModelTests extends TestCase {
 	private class Person extends AbstractModel {
 
 		private String name;
-			public static final String NAME_PROPERTY = "nameProperty";
+			public static final String NAME_PROPERTY = "name";
 		
 		private String parentName;
-			public static final String PARENT_NAME_PROPERTY = "parentNameProperty";
+			public static final String PARENT_NAME_PROPERTY = "parentName";
 		
 		private Person child;
 		
@@ -214,5 +214,7 @@ public class CachingTransformationPropertyValueModelTests extends TestCase {
 		public Person getChild() {
 			return this.child;
 		}
+
 	}
+
 }
