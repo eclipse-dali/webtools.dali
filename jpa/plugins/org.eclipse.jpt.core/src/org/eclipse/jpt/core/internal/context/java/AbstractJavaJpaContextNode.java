@@ -18,7 +18,9 @@ import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public abstract class AbstractJavaJpaContextNode extends AbstractJpaContextNode implements JavaJpaContextNode
+public abstract class AbstractJavaJpaContextNode
+	extends AbstractJpaContextNode
+	implements JavaJpaContextNode
 {
 	// ********** constructor **********
 
@@ -43,6 +45,7 @@ public abstract class AbstractJavaJpaContextNode extends AbstractJpaContextNode 
 	 * only return candidates for the current object. The cascading is
 	 * handled by #javaCompletionProposals(int, Filter, CompilationUnit).
 	 */
+	@SuppressWarnings("unused")
 	public Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		return null;
 	}
@@ -54,7 +57,7 @@ public abstract class AbstractJavaJpaContextNode extends AbstractJpaContextNode 
 	 * should be preceded by a "super" call to this method
 	 */
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		
+		// do nothing by default
 	}
 
 }

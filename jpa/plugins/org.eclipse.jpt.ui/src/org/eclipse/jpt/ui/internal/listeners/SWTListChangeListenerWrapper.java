@@ -63,7 +63,7 @@ public class SWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items added";
+				return "items added"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -75,7 +75,7 @@ public class SWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items removed";
+				return "items removed"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -87,7 +87,7 @@ public class SWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items moved";
+				return "items moved"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -99,7 +99,7 @@ public class SWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items replaced";
+				return "items replaced"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -111,7 +111,7 @@ public class SWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "list cleared";
+				return "list cleared"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -123,7 +123,7 @@ public class SWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "list changed";
+				return "list changed"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -164,7 +164,7 @@ public class SWTListChangeListenerWrapper
 
 	@Override
 	public String toString() {
-		return "SWT(" + this.listener.toString() + ")";
+		return "SWT(" + this.listener.toString() + ')'; //$NON-NLS-1$
 	}
 
 }

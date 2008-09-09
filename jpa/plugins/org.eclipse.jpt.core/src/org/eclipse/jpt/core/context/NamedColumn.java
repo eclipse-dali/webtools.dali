@@ -21,22 +21,23 @@ import org.eclipse.jpt.db.Table;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface NamedColumn extends JpaContextNode
+public interface NamedColumn
+	extends JpaContextNode
 {
 	String getName();
 
 	String getDefaultName();
-		String DEFAULT_NAME_PROPERTY = "defaultNameProperty";
+		String DEFAULT_NAME_PROPERTY = "defaultName"; //$NON-NLS-1$
 
 	String getSpecifiedName();
 	void setSpecifiedName(String value);
-		String SPECIFIED_NAME_PROPERTY = "specifiedNameProperty";
+		String SPECIFIED_NAME_PROPERTY = "specifiedName"; //$NON-NLS-1$
 
 
 	String getColumnDefinition();
 
 	void setColumnDefinition(String value);
-		String COLUMN_DEFINITION_PROPERTY = "columnDefinitionProperty";
+		String COLUMN_DEFINITION_PROPERTY = "columnDefinition"; //$NON-NLS-1$
 
 
 	/**
@@ -60,8 +61,7 @@ public interface NamedColumn extends JpaContextNode
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)
 	 */
-	interface Owner
-	{
+	interface Owner {
 		/**
 		 * Return the type mapping that contains the column.
 		 */
@@ -77,4 +77,5 @@ public interface NamedColumn extends JpaContextNode
 		 */
 		String getDefaultColumnName();
 	}
+
 }

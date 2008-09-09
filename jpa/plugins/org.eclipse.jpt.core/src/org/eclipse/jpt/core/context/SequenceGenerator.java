@@ -18,15 +18,19 @@ package org.eclipse.jpt.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface SequenceGenerator extends Generator
+public interface SequenceGenerator
+	extends Generator
 {
 	Integer DEFAULT_INITIAL_VALUE = Integer.valueOf(1);
 
-	String getSequenceName();
-	
-	String getDefaultSequenceName();
-		String DEFAULT_SEQUENCE_NAME_PROPERTY = "defaultSequenceNameProperty";
+
+	// ********** sequence name **********
+
 	String getSpecifiedSequenceName();
 	void setSpecifiedSequenceName(String value);
-		String SPECIFIED_SEQUENCE_NAME_PROPERTY = "specifiedSequenceNameProperty";
+		String SPECIFIED_SEQUENCE_NAME_PROPERTY = "specifiedSequenceName"; //$NON-NLS-1$
+	String getSequenceName();
+	String getDefaultSequenceName();
+		String DEFAULT_SEQUENCE_NAME_PROPERTY = "defaultSequenceName"; //$NON-NLS-1$
+
 }

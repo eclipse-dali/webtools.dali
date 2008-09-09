@@ -18,7 +18,8 @@ package org.eclipse.jpt.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface GeneratorHolder extends JpaContextNode
+public interface GeneratorHolder
+	extends JpaContextNode
 {
 	//******************** table generator *****************
 	TableGenerator getTableGenerator();
@@ -27,7 +28,7 @@ public interface GeneratorHolder extends JpaContextNode
 
 	void removeTableGenerator();
 
-	String TABLE_GENERATOR_PROPERTY = "tableGeneratorProperty";
+	String TABLE_GENERATOR_PROPERTY = "tableGenerator"; //$NON-NLS-1$
 
 	
 	//******************** sequence generator *****************
@@ -37,5 +38,6 @@ public interface GeneratorHolder extends JpaContextNode
 
 	void removeSequenceGenerator();
 
-	String SEQUENCE_GENERATOR_PROPERTY = "sequenceGeneratorProperty";
+	String SEQUENCE_GENERATOR_PROPERTY = "sequenceGenerator"; //$NON-NLS-1$
+
 }

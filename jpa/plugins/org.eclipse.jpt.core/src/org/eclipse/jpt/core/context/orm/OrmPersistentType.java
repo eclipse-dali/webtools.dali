@@ -61,7 +61,7 @@ public interface OrmPersistentType extends PersistentType, OrmJpaContextNode
 
 	
 	//******************* vritual attributes *******************
-	String VIRTUAL_ATTRIBUTES_LIST = "virtualAttributesList";
+	String VIRTUAL_ATTRIBUTES_LIST = "virtualAttributes"; //$NON-NLS-1$
 
 	/**
 	 * Return a read only iterator of the virtual orm persistent attributes.  These

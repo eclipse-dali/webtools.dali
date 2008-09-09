@@ -56,7 +56,7 @@ public interface UniqueConstraint extends JpaContextNode
 	 * Move the column name from the source index to the target index.
 	 */
 	void moveColumnName(int targetIndex, int sourceIndex);
-		String COLUMN_NAMES_LIST = "columnNamesList";
+		String COLUMN_NAMES_LIST = "columnNames"; //$NON-NLS-1$
 		
 	/**
 	 * All containers must implement this interface.

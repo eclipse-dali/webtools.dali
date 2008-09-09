@@ -31,7 +31,7 @@ public class MappingTools
 	 * [owning table name]_[target table name]
 	 */
 	public static String buildJoinTableDefaultName(RelationshipMapping relationshipMapping) {
-		if (!relationshipMapping.isRelationshipOwner()) {
+		if ( ! relationshipMapping.isRelationshipOwner()) {
 			return null;
 		}
 		String owningTableName = relationshipMapping.getTypeMapping().getTableName();

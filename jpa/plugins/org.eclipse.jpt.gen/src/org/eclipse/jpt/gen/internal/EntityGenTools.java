@@ -58,11 +58,7 @@ public class EntityGenTools {
 			// leave mixed case identifiers alone?
 			result = StringTools.convertUnderscoresToCamelCase(result, capitalizeFirstLetter);
 		} else {
-			if (capitalizeFirstLetter) {
-				result = StringTools.capitalize(result);
-			} else {
-				result = StringTools.uncapitalize(result);
-			}
+			result = capitalizeFirstLetter ? StringTools.capitalize(result) : StringTools.uncapitalize(result);
 		}
 		result = NameTools.convertToJavaIdentifier(result);
 		// assume that converting to a unique name will not result in a Java reserved word

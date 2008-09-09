@@ -55,7 +55,7 @@ public class SWTTreeChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "node added";
+				return "node added"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -67,7 +67,7 @@ public class SWTTreeChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "node removed";
+				return "node removed"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -79,7 +79,7 @@ public class SWTTreeChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "tree cleared";
+				return "tree cleared"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -91,7 +91,7 @@ public class SWTTreeChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "tree changed";
+				return "tree changed"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -124,7 +124,7 @@ public class SWTTreeChangeListenerWrapper
 
 	@Override
 	public String toString() {
-		return "SWT(" + this.listener.toString() + ")";
+		return "SWT(" + this.listener.toString() + ')'; //$NON-NLS-1$
 	}
 
 }

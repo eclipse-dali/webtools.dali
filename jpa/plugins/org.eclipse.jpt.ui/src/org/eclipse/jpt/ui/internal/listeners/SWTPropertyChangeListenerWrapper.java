@@ -60,7 +60,7 @@ public class SWTPropertyChangeListenerWrapper
 
 	@Override
 	public String toString() {
-		return "SWT(" + this.listener.toString() + ")";
+		return "SWT(" + this.listener.toString() + ')'; //$NON-NLS-1$
 	}
 
 }

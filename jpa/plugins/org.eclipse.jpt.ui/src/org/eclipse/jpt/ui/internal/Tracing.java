@@ -1,11 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2008 Oracle. All rights reserved. This
- *  program and the accompanying materials are made available under the terms of
- *  the Eclipse Public License v1.0 which accompanies this distribution, and is
- *  available at http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  *
- *  Contributors: Oracle. - initial API and implementation
- *******************************************************************************/
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.ui.internal;
 
 import org.eclipse.core.runtime.Platform;
@@ -83,14 +84,8 @@ public final class Tracing
 	 */
 	public static boolean booleanDebugOption(String flag, boolean defaultValue)
 	{
-		String result = Platform.getDebugOption(JptUiPlugin.PLUGIN_ID + flag);
-
-		if (result == null)
-		{
-			return defaultValue;
-		}
-
-		return Boolean.valueOf(result.trim());
+		String string = Platform.getDebugOption(JptUiPlugin.PLUGIN_ID + flag);
+		return (string == null) ? defaultValue : Boolean.parseBoolean(string.trim());
 	}
 
 	/**
@@ -119,14 +114,8 @@ public final class Tracing
 	 */
 	public static int intDebugOption(String flag, int defaultValue)
 	{
-		String result = Platform.getDebugOption(JptUiPlugin.PLUGIN_ID + flag);
-
-		if (result == null)
-		{
-			return defaultValue;
-		}
-
-		return Integer.valueOf(result);
+		String string = Platform.getDebugOption(JptUiPlugin.PLUGIN_ID + flag);
+		return (string == null) ?  defaultValue : Integer.parseInt(string);
 	}
 
 	/**
@@ -166,13 +155,7 @@ public final class Tracing
 	 */
 	public static String stringDebugOption(String flag, String defaultValue)
 	{
-		String result = Platform.getDebugOption(JptUiPlugin.PLUGIN_ID + flag);
-
-		if (result == null)
-		{
-			result = defaultValue;
-		}
-
-		return result;
+		String string = Platform.getDebugOption(JptUiPlugin.PLUGIN_ID + flag);
+		return (string != null) ? string : defaultValue;
 	}
 }

@@ -39,6 +39,6 @@ public interface OrmJoinColumn extends JoinColumn, OrmBaseJoinColumn, OrmBaseCol
 	 */
 	interface Owner extends JoinColumn.Owner, OrmBaseJoinColumn.Owner, OrmBaseColumn.Owner
 	{
-
+		// nothing yet
 	}
 }

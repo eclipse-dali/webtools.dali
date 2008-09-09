@@ -38,7 +38,7 @@ public interface UniqueConstraintAnnotation extends JavaResourceNode
 	void removeColumnName(int index);
 	
 	void moveColumnName(int targetIndex, int sourceIndex);
-		String COLUMN_NAMES_LIST = "columnNamesList";
+		String COLUMN_NAMES_LIST = "columnNames"; //$NON-NLS-1$
 		
 	/**
 	 * Return whether the specified postition touches the columnNames element.

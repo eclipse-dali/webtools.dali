@@ -55,7 +55,7 @@ public class SWTCollectionChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items added";
+				return "items added"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -67,7 +67,7 @@ public class SWTCollectionChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items removed";
+				return "items removed"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -79,7 +79,7 @@ public class SWTCollectionChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "collection cleared";
+				return "collection cleared"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -91,7 +91,7 @@ public class SWTCollectionChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "collection changed";
+				return "collection changed"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -124,7 +124,7 @@ public class SWTCollectionChangeListenerWrapper
 
 	@Override
 	public String toString() {
-		return "SWT(" + this.listener.toString() + ")";
+		return "SWT(" + this.listener.toString() + ')'; //$NON-NLS-1$
 	}
 
 }
