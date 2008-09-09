@@ -21,6 +21,7 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
+@SuppressWarnings("nls")
 public class TransformationPropertyValueModelTests extends TestCase {
 	private WritablePropertyValueModel<String> objectHolder;
 	PropertyChangeEvent event;

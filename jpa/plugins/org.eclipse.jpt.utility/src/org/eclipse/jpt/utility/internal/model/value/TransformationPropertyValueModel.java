@@ -93,14 +93,14 @@ public class TransformationPropertyValueModel<T1, T2>
 	/**
 	 * Transform the specified, non-null, value and return the result.
 	 */
-	protected T2 transform_(T1 value) {
+	protected T2 transform_(@SuppressWarnings("unused") T1 value) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * Transform the specified old value and return the result.
-	 * In this case just call {@link #transform(Object)}, override to change.
-	 * This is called by #valueChanged(PropertyChangeEvent).
+	 * By default, call {@link #transform(Object)}.
+	 * This is called by {@link #valueChanged(PropertyChangeEvent)}.
 	 */
 	protected T2 transformOld(T1 value) {
 		return this.transform(value);
@@ -108,8 +108,8 @@ public class TransformationPropertyValueModel<T1, T2>
 	
 	/**
 	 * Transform the specified new value and return the result.
-	 * In this case just call {@link #transform(Object)}, override to change.
-	 * This is called by #valueChanged(PropertyChangeEvent).
+	 * By default, call {@link #transform(Object)}.
+	 * This is called by {@link #valueChanged(PropertyChangeEvent)}.
 	 */
 	protected T2 transformNew(T1 value) {
 		return this.transform(value);

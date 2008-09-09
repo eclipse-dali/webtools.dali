@@ -125,7 +125,7 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 			}
 			@Override
 			public String toString() {
-				return "property change listener: " + Arrays.asList(PropertyAspectAdapter.this.propertyNames);
+				return "property change listener: " + Arrays.asList(PropertyAspectAdapter.this.propertyNames); //$NON-NLS-1$
 			}
 		};
 	}
@@ -158,7 +158,7 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	 * At this point we can be sure that the subject is not null.
 	 * @see #setValue(Object)
 	 */
-	protected void setValue_(T value) {
+	protected void setValue_(@SuppressWarnings("unused") T value) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -221,7 +221,7 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	public void toString(StringBuilder sb) {
 		for (int i = 0; i < this.propertyNames.length; i++) {
 			if (i != 0) {
-				sb.append(", ");
+				sb.append(", "); //$NON-NLS-1$
 			}
 			sb.append(this.propertyNames[i]);
 		}

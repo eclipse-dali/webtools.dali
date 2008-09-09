@@ -202,10 +202,10 @@ public class ChangeSupport
 		synchronized (this) {
 			GenericListenerList gll = this.genericListenerList(listenerClass);
 			if (gll == null) {
-				throw new IllegalArgumentException("listener not registered");
+				throw new IllegalArgumentException("listener not registered"); //$NON-NLS-1$
 			}
 			if ( ! gll.removeListener(listener)) {  // leave the GLL, even if it is empty?
-				throw new IllegalArgumentException("listener not registered");
+				throw new IllegalArgumentException("listener not registered"); //$NON-NLS-1$
 			}
 		}
 	}
@@ -218,7 +218,7 @@ public class ChangeSupport
 		synchronized (this) {
 			ChangeSupport child = this.child(aspectName);
 			if (child == null) {
-				throw new IllegalArgumentException("listener not registered");
+				throw new IllegalArgumentException("listener not registered"); //$NON-NLS-1$
 			}
 			child.removeListener(listenerClass, listener);  // leave the child, even if it is empty?
 		}
@@ -283,7 +283,7 @@ public class ChangeSupport
 	 * dirty flag or validating the source's state.
 	 * The aspect ID will be null if a "state change" occurred.
 	 */
-	protected void sourceChanged(String aspectName) {
+	protected void sourceChanged(@SuppressWarnings("unused") String aspectName) {
 		// the default is to do nothing
 	}
 

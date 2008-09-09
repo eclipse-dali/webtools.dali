@@ -985,7 +985,7 @@ public abstract class AbstractModel implements Model, Serializable {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		StringTools.buildSimpleToStringOn(this, sb);
-		sb.append(" (");
+		sb.append(" ("); //$NON-NLS-1$
 		this.toString(sb);
 		sb.append(')');
 		return sb.toString();
@@ -995,7 +995,7 @@ public abstract class AbstractModel implements Model, Serializable {
 	 * make this public so one model can call a nested model's
 	 * #toString(StringBuilder)
 	 */
-	public void toString(StringBuilder sb) {
+	public void toString(@SuppressWarnings("unused") StringBuilder sb) {
 		// subclasses should override this to do something a bit more helpful
 	}
 

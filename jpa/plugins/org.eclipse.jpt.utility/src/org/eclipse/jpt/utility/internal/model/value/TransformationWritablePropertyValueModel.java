@@ -82,7 +82,7 @@ public class TransformationWritablePropertyValueModel<T1, T2>
 	/**
 	 * "Reverse-transform" the specified, non-null, value and return the result.
 	 */
-	protected T1 reverseTransform_(T2 value) {
+	protected T1 reverseTransform_(@SuppressWarnings("unused") T2 value) {
 		throw new UnsupportedOperationException();
 	}
 
