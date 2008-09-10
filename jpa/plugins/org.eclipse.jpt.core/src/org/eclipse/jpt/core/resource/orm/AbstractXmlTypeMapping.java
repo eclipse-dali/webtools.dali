@@ -15,11 +15,9 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
-import org.eclipse.jpt.core.internal.utility.emf.DOMUtilities;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.common.JpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
  * <!-- begin-user-doc -->
@@ -508,19 +506,11 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 	
 
 	public TextRange getClassTextRange() {
-		IDOMNode classNode = (IDOMNode) DOMUtilities.childAttributeNode(node, OrmXmlMapper.CLASS);
-		if (classNode != null) {
-			return buildTextRange(classNode);
-		}
-		return getValidationTextRange();
+		return getAttributeTextRange(OrmXmlMapper.CLASS);
 	}
 
 	public TextRange getAttributesTextRange() {
-		IDOMNode attributesNode = (IDOMNode) DOMUtilities.getNodeChild(node, OrmXmlMapper.ATTRIBUTES);
-		if (attributesNode != null) {
-			return buildTextRange(attributesNode);
-		}
-		return getValidationTextRange();
+		return getAttributeTextRange(OrmXmlMapper.ATTRIBUTES);
 	}
 
 } // TypeMapping

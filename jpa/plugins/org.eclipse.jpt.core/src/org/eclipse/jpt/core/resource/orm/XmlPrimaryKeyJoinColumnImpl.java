@@ -13,9 +13,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
-import org.eclipse.jpt.core.internal.utility.emf.DOMUtilities;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
  * <!-- begin-user-doc -->
@@ -233,7 +231,6 @@ public class XmlPrimaryKeyJoinColumnImpl extends AbstractXmlNamedColumn implemen
 	}
 
 	public TextRange getReferencedColumnNameTextRange() {
-		IDOMNode referencedColumnNameNode = (IDOMNode) DOMUtilities.childAttributeNode(this.node, OrmXmlMapper.REFERENCED_COLUMN_NAME);
-		return (referencedColumnNameNode == null) ? getValidationTextRange() : buildTextRange(referencedColumnNameNode);
+		return getAttributeTextRange(OrmXmlMapper.REFERENCED_COLUMN_NAME);
 	}
 } // XmlPrimaryKeyJoinColumnImpl

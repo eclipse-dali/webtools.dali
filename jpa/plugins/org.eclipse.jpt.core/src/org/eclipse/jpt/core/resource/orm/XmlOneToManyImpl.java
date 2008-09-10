@@ -19,9 +19,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
-import org.eclipse.jpt.core.internal.utility.emf.DOMUtilities;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
  * <!-- begin-user-doc -->
@@ -789,7 +787,6 @@ public class XmlOneToManyImpl extends AbstractXmlAttributeMapping implements Xml
 	}
 	
 	public TextRange getMappedByTextRange() {
-		IDOMNode mappedByNode = (IDOMNode) DOMUtilities.childAttributeNode(getNode(), OrmXmlMapper.MAPPED_BY);
-		return (mappedByNode == null) ? getValidationTextRange() : buildTextRange(mappedByNode);
+		return getAttributeTextRange(OrmXmlMapper.MAPPED_BY);
 	}
 } // OneToMany

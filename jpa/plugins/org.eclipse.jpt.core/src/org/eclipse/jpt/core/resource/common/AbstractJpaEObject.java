@@ -20,6 +20,7 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.eclipse.jpt.core.internal.utility.emf.DOMUtilities;
 import org.eclipse.jpt.core.utility.AbstractTextRange;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.ClassTools;
@@ -196,6 +197,11 @@ public abstract class AbstractJpaEObject extends EObjectImpl implements JpaEObje
 				AbstractJpaEObject.this.node = null;
 			}
 		}
+	}
+	
+	protected TextRange getAttributeTextRange(String attributeName) {
+		IDOMNode node = (IDOMNode) DOMUtilities.childAttributeNode(this.node, attributeName);
+		return (node == null) ? getValidationTextRange() : buildTextRange(node);
 	}
 	
 	public TextRange getValidationTextRange() {

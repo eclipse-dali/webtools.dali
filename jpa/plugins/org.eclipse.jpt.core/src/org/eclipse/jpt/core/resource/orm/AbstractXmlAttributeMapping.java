@@ -13,10 +13,8 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
-import org.eclipse.jpt.core.internal.utility.emf.DOMUtilities;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
  * <!-- begin-user-doc -->
@@ -196,8 +194,7 @@ public abstract class AbstractXmlAttributeMapping extends AbstractJpaEObject imp
 	}
 	
 	public TextRange getNameTextRange() {
-		IDOMNode nameNode = (IDOMNode) DOMUtilities.childAttributeNode(this.node, OrmXmlMapper.NAME);
-		return (nameNode != null) ? this.buildTextRange(nameNode) : this.getValidationTextRange();
+		return getAttributeTextRange(OrmXmlMapper.NAME);
 	}
 
 } // AbstractXmlAttributeMapping

@@ -25,10 +25,8 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
-import org.eclipse.jpt.core.internal.utility.emf.DOMUtilities;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
  * <!-- begin-user-doc -->
@@ -404,18 +402,15 @@ public abstract class AbstractXmlBaseTable extends AbstractJpaEObject implements
 
 
 	public TextRange getNameTextRange() {
-		IDOMNode nameNode = (IDOMNode) DOMUtilities.childAttributeNode(this.node, OrmXmlMapper.NAME);
-		return (nameNode == null) ? getValidationTextRange() : buildTextRange(nameNode);
+		return getAttributeTextRange(OrmXmlMapper.NAME);
 	}
 	
 	public TextRange getCatalogTextRange() {
-		IDOMNode catalogNode = (IDOMNode) DOMUtilities.childAttributeNode(this.node, OrmXmlMapper.CATALOG);
-		return (catalogNode == null) ? getValidationTextRange() : buildTextRange(catalogNode);
+		return getAttributeTextRange(OrmXmlMapper.CATALOG);
 	}
 	
 	public TextRange getSchemaTextRange() {
-		IDOMNode schemaNode = (IDOMNode) DOMUtilities.childAttributeNode(this.node, OrmXmlMapper.SCHEMA);
-		return (schemaNode == null) ? getValidationTextRange() : buildTextRange(schemaNode);
+		return getAttributeTextRange(OrmXmlMapper.SCHEMA);
 	}
 
 } // AbstractXmlBaseTable

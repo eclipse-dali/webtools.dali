@@ -13,10 +13,8 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
-import org.eclipse.jpt.core.internal.utility.emf.DOMUtilities;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
  * <!-- begin-user-doc -->
@@ -263,7 +261,6 @@ public class XmlGeneratedValueImpl extends AbstractJpaEObject implements XmlGene
 	}
 
 	public TextRange getGeneratorTextRange() {
-		IDOMNode generatorNode = (IDOMNode) DOMUtilities.childAttributeNode(this.node, OrmXmlMapper.GENERATOR);
-		return (generatorNode == null) ? getValidationTextRange() : buildTextRange(generatorNode);
+		return getAttributeTextRange(OrmXmlMapper.GENERATOR);
 	}
 } // GeneratedValue
