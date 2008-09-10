@@ -54,13 +54,19 @@ public class GenericJpaDataSource
 
 	public GenericJpaDataSource(JpaProject jpaProject, String connectionProfileName) {
 		super(jpaProject);
+		//moving the building of the connection profile before the connectionProfileListener
+		//is added.  Need to make sure the loading of db profiles is completed before
+		//listening, otherwise we get notifications before our model is finished being built.
+		//this means our updater is called before it is set which results in an IllegalStateException.
+		//Hopefully this change is temporary and DTP will fix bug 246270 where I suggest they
+		//not fire events when building profiles.
+		this.connectionProfileName = connectionProfileName;
+		this.connectionProfile = this.buildConnectionProfile(connectionProfileName);
 
 		this.connectionProfileListener = this.buildConnectionProfileListener();
 		this.getConnectionProfileFactory().addConnectionProfileListener(this.connectionProfileListener);
 
 		this.connectionListener = this.buildConnectionListener();
-		this.connectionProfileName = connectionProfileName;
-		this.connectionProfile = this.buildConnectionProfile(connectionProfileName);
 		if (this.connectionProfile != null) {
 			this.connectionProfile.addConnectionListener(this.connectionListener);
 		}
