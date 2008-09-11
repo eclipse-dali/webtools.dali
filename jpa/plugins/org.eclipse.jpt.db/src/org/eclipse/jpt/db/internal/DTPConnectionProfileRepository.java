@@ -58,11 +58,16 @@ public final class DTPConnectionProfileRepository
 	 */
 	public synchronized void start() {
 		this.dtpProfileManager = ProfileManager.getInstance();
-		this.profileListener = new LocalProfileListener();
-		this.dtpProfileManager.addProfileListener(this.profileListener);
 		for (IConnectionProfile dtpProfile : this.dtpProfileManager.getProfiles()) {
 			this.connectionProfiles.add(new DTPConnectionProfileWrapper(dtpProfile));
 		}
+		//add the profile listener after initializing the profiles.  otherwise we end up
+		//with duplicate connection profiles.  The DTP loadProfiles() action both
+		//loads the profiles and fires event notification for each added profile.
+		//This is a temporary measure for bug 246948 and we can hopefully get DTP
+		//to fix the underlying issue.
+		this.profileListener = new LocalProfileListener();
+		this.dtpProfileManager.addProfileListener(this.profileListener);
 	}
 
 	/**
