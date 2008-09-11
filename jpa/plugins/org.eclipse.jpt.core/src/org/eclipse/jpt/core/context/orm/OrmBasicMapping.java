@@ -30,4 +30,9 @@ public interface OrmBasicMapping extends BasicMapping, OrmAttributeMapping, OrmC
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update(XmlBasic basic);
+	
+	//********* covariant overrides **********
+	OrmConverter getDefaultConverter();
+	OrmConverter getSpecifiedConverter();
+
 }

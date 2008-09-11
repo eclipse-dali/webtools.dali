@@ -195,9 +195,7 @@ abstract class EnumComboViewer<T extends Model, V> extends Pane<T>
 				String displayString = displayString(defaultValue);
 				return NLS.bind(JptUiMessages.EnumComboViewer_defaultWithDefault, displayString);
 			}
-			else {
-				return JptUiMessages.EnumComboViewer_default;
-			}
+			return null; //I would rather display nothing than Default()
 		}
 
 		return displayString((V) value);

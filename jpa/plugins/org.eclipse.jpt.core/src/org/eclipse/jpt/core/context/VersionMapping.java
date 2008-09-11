@@ -19,7 +19,7 @@ package org.eclipse.jpt.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface VersionMapping
-	extends AttributeMapping, ColumnMapping
+	extends AttributeMapping, ColumnMapping, ConvertibleMapping
 {
-	// nothing yet
+
 }

@@ -14,6 +14,8 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <!-- begin-user-doc -->
@@ -44,14 +46,24 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 	protected XmlColumn column;
 
 	/**
-	 * The cached value of the '{@link #getGeneratedValue() <em>Generated Value</em>}' containment reference.
+	 * The default value of the '{@link #isLob() <em>Lob</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getGeneratedValue()
+	 * @see #isLob()
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlGeneratedValue generatedValue;
+	protected static final boolean LOB_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isLob() <em>Lob</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isLob()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean lob = LOB_EDEFAULT;
 
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
@@ -68,6 +80,36 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 	 * @ordered
 	 */
 	protected TemporalType temporal = TEMPORAL_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getEnumerated() <em>Enumerated</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEnumerated()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final EnumType ENUMERATED_EDEFAULT = EnumType.ORDINAL;
+
+	/**
+	 * The cached value of the '{@link #getEnumerated() <em>Enumerated</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEnumerated()
+	 * @generated
+	 * @ordered
+	 */
+	protected EnumType enumerated = ENUMERATED_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getGeneratedValue() <em>Generated Value</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getGeneratedValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlGeneratedValue generatedValue;
 
 	/**
 	 * The cached value of the '{@link #getTableGenerator() <em>Table Generator</em>}' containment reference.
@@ -171,6 +213,41 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Lob</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Lob</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Lob</em>' attribute.
+	 * @see #setLob(boolean)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlConvertibleMapping_Lob()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
+	 * @generated
+	 */
+	public boolean isLob()
+	{
+		return lob;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlIdImpl#isLob <em>Lob</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Lob</em>' attribute.
+	 * @see #isLob()
+	 * @generated
+	 */
+	public void setLob(boolean newLob)
+	{
+		boolean oldLob = lob;
+		lob = newLob;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID_IMPL__LOB, oldLob, lob));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Generated Value</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -242,7 +319,7 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 	 * @return the value of the '<em>Temporal</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.TemporalType
 	 * @see #setTemporal(TemporalType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlId_Temporal()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlConvertibleMapping_Temporal()
 	 * @model
 	 * @generated
 	 */
@@ -266,6 +343,44 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 		temporal = newTemporal == null ? TEMPORAL_EDEFAULT : newTemporal;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID_IMPL__TEMPORAL, oldTemporal, temporal));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Enumerated</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.core.resource.orm.EnumType}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Enumerated</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Enumerated</em>' attribute.
+	 * @see org.eclipse.jpt.core.resource.orm.EnumType
+	 * @see #setEnumerated(EnumType)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlConvertibleMapping_Enumerated()
+	 * @model
+	 * @generated
+	 */
+	public EnumType getEnumerated()
+	{
+		return enumerated;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlIdImpl#getEnumerated <em>Enumerated</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Enumerated</em>' attribute.
+	 * @see org.eclipse.jpt.core.resource.orm.EnumType
+	 * @see #getEnumerated()
+	 * @generated
+	 */
+	public void setEnumerated(EnumType newEnumerated)
+	{
+		EnumType oldEnumerated = enumerated;
+		enumerated = newEnumerated == null ? ENUMERATED_EDEFAULT : newEnumerated;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID_IMPL__ENUMERATED, oldEnumerated, enumerated));
 	}
 
 	/**
@@ -422,10 +537,14 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 		{
 			case OrmPackage.XML_ID_IMPL__COLUMN:
 				return getColumn();
-			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
-				return getGeneratedValue();
+			case OrmPackage.XML_ID_IMPL__LOB:
+				return isLob() ? Boolean.TRUE : Boolean.FALSE;
 			case OrmPackage.XML_ID_IMPL__TEMPORAL:
 				return getTemporal();
+			case OrmPackage.XML_ID_IMPL__ENUMERATED:
+				return getEnumerated();
+			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
+				return getGeneratedValue();
 			case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR:
 				return getTableGenerator();
 			case OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR:
@@ -447,11 +566,17 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 			case OrmPackage.XML_ID_IMPL__COLUMN:
 				setColumn((XmlColumn)newValue);
 				return;
-			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
-				setGeneratedValue((XmlGeneratedValue)newValue);
+			case OrmPackage.XML_ID_IMPL__LOB:
+				setLob(((Boolean)newValue).booleanValue());
 				return;
 			case OrmPackage.XML_ID_IMPL__TEMPORAL:
 				setTemporal((TemporalType)newValue);
+				return;
+			case OrmPackage.XML_ID_IMPL__ENUMERATED:
+				setEnumerated((EnumType)newValue);
+				return;
+			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
+				setGeneratedValue((XmlGeneratedValue)newValue);
 				return;
 			case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR:
 				setTableGenerator((XmlTableGenerator)newValue);
@@ -476,11 +601,17 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 			case OrmPackage.XML_ID_IMPL__COLUMN:
 				setColumn((XmlColumn)null);
 				return;
-			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
-				setGeneratedValue((XmlGeneratedValue)null);
+			case OrmPackage.XML_ID_IMPL__LOB:
+				setLob(LOB_EDEFAULT);
 				return;
 			case OrmPackage.XML_ID_IMPL__TEMPORAL:
 				setTemporal(TEMPORAL_EDEFAULT);
+				return;
+			case OrmPackage.XML_ID_IMPL__ENUMERATED:
+				setEnumerated(ENUMERATED_EDEFAULT);
+				return;
+			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
+				setGeneratedValue((XmlGeneratedValue)null);
 				return;
 			case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR:
 				setTableGenerator((XmlTableGenerator)null);
@@ -504,10 +635,14 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 		{
 			case OrmPackage.XML_ID_IMPL__COLUMN:
 				return column != null;
-			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
-				return generatedValue != null;
+			case OrmPackage.XML_ID_IMPL__LOB:
+				return lob != LOB_EDEFAULT;
 			case OrmPackage.XML_ID_IMPL__TEMPORAL:
 				return temporal != TEMPORAL_EDEFAULT;
+			case OrmPackage.XML_ID_IMPL__ENUMERATED:
+				return enumerated != ENUMERATED_EDEFAULT;
+			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
+				return generatedValue != null;
 			case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR:
 				return tableGenerator != null;
 			case OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR:
@@ -532,12 +667,21 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlConvertibleMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ID_IMPL__LOB: return OrmPackage.XML_CONVERTIBLE_MAPPING__LOB;
+				case OrmPackage.XML_ID_IMPL__TEMPORAL: return OrmPackage.XML_CONVERTIBLE_MAPPING__TEMPORAL;
+				case OrmPackage.XML_ID_IMPL__ENUMERATED: return OrmPackage.XML_CONVERTIBLE_MAPPING__ENUMERATED;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlId.class)
 		{
 			switch (derivedFeatureID)
 			{
 				case OrmPackage.XML_ID_IMPL__GENERATED_VALUE: return OrmPackage.XML_ID__GENERATED_VALUE;
-				case OrmPackage.XML_ID_IMPL__TEMPORAL: return OrmPackage.XML_ID__TEMPORAL;
 				case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR: return OrmPackage.XML_ID__TABLE_GENERATOR;
 				case OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR: return OrmPackage.XML_ID__SEQUENCE_GENERATOR;
 				default: return -1;
@@ -562,12 +706,21 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlConvertibleMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_CONVERTIBLE_MAPPING__LOB: return OrmPackage.XML_ID_IMPL__LOB;
+				case OrmPackage.XML_CONVERTIBLE_MAPPING__TEMPORAL: return OrmPackage.XML_ID_IMPL__TEMPORAL;
+				case OrmPackage.XML_CONVERTIBLE_MAPPING__ENUMERATED: return OrmPackage.XML_ID_IMPL__ENUMERATED;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlId.class)
 		{
 			switch (baseFeatureID)
 			{
 				case OrmPackage.XML_ID__GENERATED_VALUE: return OrmPackage.XML_ID_IMPL__GENERATED_VALUE;
-				case OrmPackage.XML_ID__TEMPORAL: return OrmPackage.XML_ID_IMPL__TEMPORAL;
 				case OrmPackage.XML_ID__TABLE_GENERATOR: return OrmPackage.XML_ID_IMPL__TABLE_GENERATOR;
 				case OrmPackage.XML_ID__SEQUENCE_GENERATOR: return OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR;
 				default: return -1;
@@ -587,10 +740,26 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (temporal: ");
+		result.append(" (lob: ");
+		result.append(lob);
+		result.append(", temporal: ");
 		result.append(temporal);
+		result.append(", enumerated: ");
+		result.append(enumerated);
 		result.append(')');
 		return result.toString();
 	}
 
+	public TextRange getEnumeratedTextRange() {
+		return getAttributeTextRange(OrmXmlMapper.ENUMERATED);
+	}
+
+	public TextRange getLobTextRange() {
+		throw new UnsupportedOperationException("lob not supported by id mappings");
+	}
+	
+	public TextRange getTemporalTextRange() {
+		throw new UnsupportedOperationException("temporal not supported by id mappings");
+	}
+	
 } // Id

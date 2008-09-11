@@ -25,7 +25,6 @@ package org.eclipse.jpt.core.resource.orm;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlId#getGeneratedValue <em>Generated Value</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlId#getTemporal <em>Temporal</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlId#getTableGenerator <em>Table Generator</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlId#getSequenceGenerator <em>Sequence Generator</em>}</li>
  * </ul>
@@ -35,7 +34,7 @@ package org.eclipse.jpt.core.resource.orm;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlId extends XmlAttributeMapping, ColumnMapping
+public interface XmlId extends XmlAttributeMapping, ColumnMapping, XmlConvertibleMapping
 {
 	/**
 	 * Returns the value of the '<em><b>Generated Value</b></em>' containment reference.
@@ -62,35 +61,6 @@ public interface XmlId extends XmlAttributeMapping, ColumnMapping
 	 * @generated
 	 */
 	void setGeneratedValue(XmlGeneratedValue value);
-
-	/**
-	 * Returns the value of the '<em><b>Temporal</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.core.resource.orm.TemporalType}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Temporal</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Temporal</em>' attribute.
-	 * @see org.eclipse.jpt.core.resource.orm.TemporalType
-	 * @see #setTemporal(TemporalType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlId_Temporal()
-	 * @model
-	 * @generated
-	 */
-	TemporalType getTemporal();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlId#getTemporal <em>Temporal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Temporal</em>' attribute.
-	 * @see org.eclipse.jpt.core.resource.orm.TemporalType
-	 * @see #getTemporal()
-	 * @generated
-	 */
-	void setTemporal(TemporalType value);
 
 	/**
 	 * Returns the value of the '<em><b>Table Generator</b></em>' containment reference.

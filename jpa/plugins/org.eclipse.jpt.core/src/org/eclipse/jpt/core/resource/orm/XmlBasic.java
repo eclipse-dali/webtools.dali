@@ -26,9 +26,6 @@ package org.eclipse.jpt.core.resource.orm;
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlBasic#getFetch <em>Fetch</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlBasic#getOptional <em>Optional</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlBasic#isLob <em>Lob</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlBasic#getTemporal <em>Temporal</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlBasic#getEnumerated <em>Enumerated</em>}</li>
  * </ul>
  * </p>
  *
@@ -36,7 +33,7 @@ package org.eclipse.jpt.core.resource.orm;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlBasic extends XmlAttributeMapping, ColumnMapping
+public interface XmlBasic extends XmlAttributeMapping, ColumnMapping, XmlConvertibleMapping
 {
 	/**
 	 * Returns the value of the '<em><b>Fetch</b></em>' attribute.
@@ -93,89 +90,5 @@ public interface XmlBasic extends XmlAttributeMapping, ColumnMapping
 	 * @generated
 	 */
 	void setOptional(Boolean value);
-
-	/**
-	 * Returns the value of the '<em><b>Lob</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Lob</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Lob</em>' attribute.
-	 * @see #setLob(boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlBasic_Lob()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
-	 * @generated
-	 */
-	boolean isLob();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlBasic#isLob <em>Lob</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Lob</em>' attribute.
-	 * @see #isLob()
-	 * @generated
-	 */
-	void setLob(boolean value);
-
-	/**
-	 * Returns the value of the '<em><b>Temporal</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.core.resource.orm.TemporalType}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Temporal</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Temporal</em>' attribute.
-	 * @see org.eclipse.jpt.core.resource.orm.TemporalType
-	 * @see #setTemporal(TemporalType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlBasic_Temporal()
-	 * @model
-	 * @generated
-	 */
-	TemporalType getTemporal();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlBasic#getTemporal <em>Temporal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Temporal</em>' attribute.
-	 * @see org.eclipse.jpt.core.resource.orm.TemporalType
-	 * @see #getTemporal()
-	 * @generated
-	 */
-	void setTemporal(TemporalType value);
-
-	/**
-	 * Returns the value of the '<em><b>Enumerated</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.core.resource.orm.EnumType}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Enumerated</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Enumerated</em>' attribute.
-	 * @see org.eclipse.jpt.core.resource.orm.EnumType
-	 * @see #setEnumerated(EnumType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlBasic_Enumerated()
-	 * @model
-	 * @generated
-	 */
-	EnumType getEnumerated();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlBasic#getEnumerated <em>Enumerated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Enumerated</em>' attribute.
-	 * @see org.eclipse.jpt.core.resource.orm.EnumType
-	 * @see #getEnumerated()
-	 * @generated
-	 */
-	void setEnumerated(EnumType value);
 
 } // Basic

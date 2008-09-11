@@ -60,7 +60,7 @@ public class IdTranslator extends Translator
 	}
 	
 	private Translator createTemporalTranslator() {
-		return new Translator(TEMPORAL, ORM_PKG.getXmlId_Temporal());
+		return new Translator(TEMPORAL, ORM_PKG.getXmlConvertibleMapping_Temporal());
 	}
 	
 	private Translator createTableGeneratorTranslator() {

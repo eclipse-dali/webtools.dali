@@ -113,8 +113,8 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 
 
 	@Override
-	public void initializeFromXmlRelationshipMapping(OrmRelationshipMapping oldMapping) {
-		super.initializeFromXmlRelationshipMapping(oldMapping);
+	public void initializeFromOrmRelationshipMapping(OrmRelationshipMapping oldMapping) {
+		super.initializeFromOrmRelationshipMapping(oldMapping);
 		setSpecifiedTargetEntity(oldMapping.getSpecifiedTargetEntity());
 		setSpecifiedFetch(oldMapping.getSpecifiedFetch());
 		getCascade().initializeFrom(oldMapping.getCascade());

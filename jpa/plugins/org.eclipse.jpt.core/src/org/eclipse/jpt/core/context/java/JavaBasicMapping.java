@@ -23,5 +23,8 @@ import org.eclipse.jpt.core.context.BasicMapping;
 public interface JavaBasicMapping
 	extends JavaAttributeMapping, BasicMapping, JavaColumnMapping
 {
-	// nothing yet
+	//********* covariant overrides **********
+	JavaConverter getDefaultConverter();
+	JavaConverter getSpecifiedConverter();
+	
 }

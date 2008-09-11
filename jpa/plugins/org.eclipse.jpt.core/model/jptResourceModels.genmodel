@@ -162,7 +162,6 @@
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlId">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlId/generatedValue"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlId/temporal"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlId/tableGenerator"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlId/sequenceGenerator"/>
     </genClasses>
@@ -174,17 +173,17 @@
     <genClasses ecoreClass="orm.ecore#//XmlEmbeddedIdImpl"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlEmbedded"/>
     <genClasses ecoreClass="orm.ecore#//XmlEmbeddedImpl"/>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlConvertibleMapping">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlConvertibleMapping/lob"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlConvertibleMapping/temporal"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlConvertibleMapping/enumerated"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlBasic">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBasic/fetch"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBasic/optional"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBasic/lob"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBasic/temporal"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBasic/enumerated"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlBasicImpl"/>
-    <genClasses image="false" ecoreClass="orm.ecore#//XmlVersion">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlVersion/temporal"/>
-    </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlVersion"/>
     <genClasses ecoreClass="orm.ecore#//XmlVersionImpl"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlManyToOne"/>
     <genClasses ecoreClass="orm.ecore#//XmlManyToOneImpl"/>

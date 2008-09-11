@@ -78,7 +78,7 @@ public class EnumeratedImpl extends AbstractResourceAnnotation<Attribute> implem
 	
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
-		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ENUMERATED__VALUE);
+		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ENUMERATED__VALUE, false);
 	}
 	
 	public static class EnumeratedAnnotationDefinition implements AnnotationDefinition

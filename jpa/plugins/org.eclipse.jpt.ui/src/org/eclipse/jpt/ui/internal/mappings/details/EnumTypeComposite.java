@@ -9,12 +9,15 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.EnumType;
-import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.core.context.EnumeratedConverter;
+import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -32,29 +35,29 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class EnumTypeComposite extends FormPane<BasicMapping>
+public class EnumTypeComposite extends FormPane<EnumeratedConverter>
 {
 	/**
-	 * Creates a new <code>FetchTypeComposite</code>.
+	 * Creates a new <code>EnumTypeComposite</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public EnumTypeComposite(FormPane<? extends BasicMapping> parentPane,
-	                         Composite parent) {
+	public EnumTypeComposite(PropertyValueModel<? extends EnumeratedConverter> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
 
-		super(parentPane, parent);
+		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private EnumFormComboViewer<BasicMapping, EnumType> addEnumTypeCombo(Composite container) {
+	private EnumFormComboViewer<EnumeratedConverter, EnumType> addEnumTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<BasicMapping, EnumType>(this, container) {
+		return new EnumFormComboViewer<EnumeratedConverter, EnumType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(BasicMapping.DEFAULT_ENUMERATED_PROPERTY);
-				propertyNames.add(BasicMapping.SPECIFIED_ENUMERATED_PROPERTY);
+				propertyNames.add(EnumeratedConverter.SPECIFIED_ENUM_TYPE_PROPERTY);
 			}
 
 			@Override
@@ -64,7 +67,7 @@ public class EnumTypeComposite extends FormPane<BasicMapping>
 
 			@Override
 			protected EnumType getDefaultValue() {
-				return getSubject().getDefaultEnumerated();
+				return getSubject().getDefaultEnumType();
 			}
 
 			@Override
@@ -78,27 +81,34 @@ public class EnumTypeComposite extends FormPane<BasicMapping>
 
 			@Override
 			protected EnumType getValue() {
-				return getSubject().getSpecifiedEnumerated();
+				return getSubject().getSpecifiedEnumType();
 			}
 
 			@Override
 			protected void setValue(EnumType value) {
-				getSubject().setSpecifiedEnumerated(value);
+				getSubject().setSpecifiedEnumType(value);
 			}
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		addLabeledComposite(
-			container,
-			JptUiMappingsMessages.BasicGeneralSection_enumeratedLabel,
-			addEnumTypeCombo(container),
-			JpaHelpContextIds.MAPPING_ENUMERATED
-		);
+		//JpaHelpContextIds.MAPPING_ENUMERATED
+		addEnumTypeCombo(container);
+		
+		new PaneEnabler(buildBooleanHolder(), this);
+	}
+	
+	
+	protected PropertyValueModel<Boolean> buildBooleanHolder() {
+		return new TransformationPropertyValueModel<EnumeratedConverter, Boolean>(getSubjectHolder()) {
+			@Override
+			protected Boolean transform(EnumeratedConverter value) {
+				if (getSubject() != null && getSubject().getParent().getPersistentAttribute().isVirtual()) {
+					return Boolean.FALSE;
+				}
+				return Boolean.valueOf(value != null);
+			}
+		};
 	}
 }

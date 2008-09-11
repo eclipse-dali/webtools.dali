@@ -12,12 +12,12 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.ColumnMapping;
+import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.Generator;
-import org.eclipse.jpt.core.context.TemporalType;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
+import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
@@ -48,7 +48,8 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 
 	protected OrmGeneratedValue generatedValue;
 	
-	protected TemporalType temporal;
+	protected OrmConverter defaultConverter;
+	protected OrmConverter specifiedConverter;
 	
 	protected OrmTableGenerator tableGenerator;
 	protected OrmSequenceGenerator sequenceGenerator;
@@ -73,9 +74,8 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	}
 
 	@Override
-	public void initializeFromXmlColumnMapping(OrmColumnMapping oldMapping) {
-		super.initializeFromXmlColumnMapping(oldMapping);
-		setTemporal(oldMapping.getTemporal());
+	public void initializeFromOrmColumnMapping(OrmColumnMapping oldMapping) {
+		super.initializeFromOrmColumnMapping(oldMapping);
 		getColumn().initializeFrom(oldMapping.getColumn());
 	}
 
@@ -83,22 +83,47 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	public OrmColumn getColumn() {
 		return this.column;
 	}
-
-	public TemporalType getTemporal() {
-		return this.temporal;
-	}
-
-	public void setTemporal(TemporalType newTemporal) {
-		TemporalType oldTemporal = this.temporal;
-		this.temporal = newTemporal;
-		this.getAttributeMapping().setTemporal(TemporalType.toOrmResourceModel(newTemporal));
-		firePropertyChanged(ColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+	
+	public OrmConverter getConverter() {
+		return getSpecifiedConverter() == null ? getDefaultConverter() : getSpecifiedConverter();
 	}
 	
-	protected void setTemporal_(TemporalType newTemporal) {
-		TemporalType oldTemporal = this.temporal;
-		this.temporal = newTemporal;
-		firePropertyChanged(ColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+	public OrmConverter getDefaultConverter() {
+		return this.defaultConverter;
+	}
+	
+	public OrmConverter getSpecifiedConverter() {
+		return this.specifiedConverter;
+	}
+	
+	protected String getSpecifedConverterType() {
+		if (this.specifiedConverter == null) {
+			return Converter.NO_CONVERTER;
+		}
+		return this.specifiedConverter.getType();
+	}
+	
+	public void setSpecifiedConverter(String converterType) {
+		if (getSpecifedConverterType() == converterType) {
+			return;
+		}
+		OrmConverter oldConverter = this.specifiedConverter;
+		OrmConverter newConverter = buildSpecifiedConverter(converterType);
+		this.specifiedConverter = null;
+		if (oldConverter != null) {
+			oldConverter.removeFromResourceModel();
+		}
+		this.specifiedConverter = newConverter;
+		if (newConverter != null) {
+			newConverter.addToResourceModel();
+		}
+		firePropertyChanged(SPECIFIED_CONVERTER_PROPERTY, oldConverter, newConverter);
+	}
+	
+	protected void setSpecifiedConverter(OrmConverter newConverter) {
+		OrmConverter oldConverter = this.specifiedConverter;
+		this.specifiedConverter = newConverter;
+		firePropertyChanged(SPECIFIED_CONVERTER_PROPERTY, oldConverter, newConverter);
 	}
 
 	public OrmGeneratedValue addGeneratedValue() {
@@ -245,16 +270,13 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	@Override
 	public void initialize(XmlId id) {
 		super.initialize(id);
-		this.temporal = this.specifiedTemporal(id);
 		this.column.initialize(id.getColumn());
 		this.initializeSequenceGenerator(id);
 		this.initializeTableGenerator(id);
 		this.initializeGeneratedValue(id);
 		this.updatePersistenceUnitGenerators();
-	}
-	
-	protected TemporalType specifiedTemporal(XmlId id) {
-		return TemporalType.fromOrmResourceModel(id.getTemporal());
+		this.defaultConverter = new GenericOrmNullConverter(this);
+		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType(id));
 	}
 	
 	protected void initializeSequenceGenerator(XmlId id) {
@@ -289,12 +311,17 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	@Override
 	public void update(XmlId id) {
 		super.update(id);
-		this.setTemporal_(this.specifiedTemporal(id));
 		this.column.update(id.getColumn());
 		this.updateSequenceGenerator(id);
 		this.updateTableGenerator(id);
 		this.updateGeneratedValue(id);
 		this.updatePersistenceUnitGenerators();
+		if (specifiedConverterType(id) == getSpecifedConverterType()) {
+			getSpecifiedConverter().update(id);
+		}
+		else {
+			setSpecifiedConverter(buildSpecifiedConverter(specifiedConverterType(id)));
+		}
 	}
 	
 	protected void updateSequenceGenerator(XmlId id) {
@@ -354,8 +381,23 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 			getPersistenceUnit().addGenerator(getSequenceGenerator());
 		}
 	}
+	
+	protected OrmConverter buildSpecifiedConverter(String converterType) {
+		if (converterType == Converter.TEMPORAL_CONVERTER) {
+			return new GenericOrmTemporalConverter(this, this.attributeMapping);
+		}
+		return null;
+	}
+	
+	protected String specifiedConverterType(XmlId xmlId) {
+		if (xmlId.getTemporal() != null) {
+			return Converter.TEMPORAL_CONVERTER;
+		}
+		
+		return null;
+	}
 
-	//***************** IXmlColumn.Owner implementation ****************
+	//***************** XmlColumn.Owner implementation ****************
 	
 	public XmlColumn getResourceColumn() {
 		return this.getAttributeMapping().getColumn();

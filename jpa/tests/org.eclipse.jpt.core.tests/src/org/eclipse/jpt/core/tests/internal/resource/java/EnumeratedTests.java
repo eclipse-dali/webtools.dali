@@ -85,7 +85,8 @@ public class EnumeratedTests extends JavaResourceModelTestCase {
 		
 		enumerated.setValue(null);
 		
-		assertSourceDoesNotContain("@Enumerated", cu);
+		assertSourceDoesNotContain("@Enumerated(", cu);
+		assertSourceContains("@Enumerated", cu);
 	}
 
 }

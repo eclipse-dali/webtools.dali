@@ -30,4 +30,9 @@ public interface OrmVersionMapping extends VersionMapping, OrmColumnMapping, Orm
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update(XmlVersion version);
+	
+	//********* covariant overrides **********
+	OrmConverter getDefaultConverter();
+	OrmConverter getSpecifiedConverter();
+
 }

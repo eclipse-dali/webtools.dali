@@ -37,8 +37,8 @@ public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapp
 	}
 
 	@Override
-	public void initializeFromXmlNonOwningMapping(NonOwningMapping oldMapping) {
-		super.initializeFromXmlNonOwningMapping(oldMapping);
+	public void initializeFromOrmNonOwningMapping(NonOwningMapping oldMapping) {
+		super.initializeFromOrmNonOwningMapping(oldMapping);
 		setMappedBy(oldMapping.getMappedBy());
 	}
 

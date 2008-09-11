@@ -23,5 +23,8 @@ import org.eclipse.jpt.core.context.VersionMapping;
 public interface JavaVersionMapping
 	extends JavaAttributeMapping, VersionMapping, JavaColumnMapping
 {
-	// nothing yet
+	//********* covariant overrides **********
+	JavaConverter getDefaultConverter();
+	JavaConverter getSpecifiedConverter();
+
 }

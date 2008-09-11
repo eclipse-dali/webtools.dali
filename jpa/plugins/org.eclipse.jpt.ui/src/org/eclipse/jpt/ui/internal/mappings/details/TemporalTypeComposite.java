@@ -12,20 +12,22 @@ import java.text.Collator;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import org.eclipse.jpt.core.context.ColumnMapping;
+import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.core.context.TemporalType;
-import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
-import org.eclipse.jpt.utility.internal.model.value.ExtendedListValueModelWrapper;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -46,7 +48,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class TemporalTypeComposite extends FormPane<ColumnMapping> {
+public class TemporalTypeComposite extends FormPane<TemporalConverter> {
 
 	/**
 	 * Creates a new <code>TemporalTypeComposite</code>.
@@ -54,16 +56,50 @@ public class TemporalTypeComposite extends FormPane<ColumnMapping> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TemporalTypeComposite(FormPane<? extends ColumnMapping> parentPane,
-	                             Composite parent) {
+	public TemporalTypeComposite(PropertyValueModel<? extends TemporalConverter> subjectHolder,
+	                             Composite parent,
+	                             WidgetFactory widgetFactory) {
 
-		super(parentPane, parent);
+		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private ListValueModel<TemporalType> buildSortedTemporalTypeListHolder() {
+	@Override
+	protected void initializeLayout(Composite container) {
+
+		CCombo combo = addCCombo(
+			container,
+			buildTemporalTypeListHolder(),
+			buildTemporalTypeHolder(),
+			buildTemporalTypeConverter()
+		);
+		
+		new ControlEnabler(buildBooleanHolder(), combo);
+	}
+
+	private WritablePropertyValueModel<TemporalType> buildTemporalTypeHolder() {
+		return new PropertyAspectAdapter<TemporalConverter, TemporalType>(getSubjectHolder(), TemporalConverter.TEMPORAL_TYPE_PROPERTY) {
+			@Override
+			protected TemporalType buildValue_() {
+				return subject.getTemporalType();
+			}
+
+			@Override
+			protected void setValue_(TemporalType value) {
+				subject.setTemporalType(value);
+			}
+		};
+	}
+
+	private ListValueModel<TemporalType> buildTemporalTypeListHolder() {
+		return new SimpleListValueModel<TemporalType>(
+			buildSortedTemporalTypeList()
+		);
+	}
+	
+	private List<TemporalType> buildSortedTemporalTypeList() {
 		List<TemporalType> types = CollectionTools.list(TemporalType.values());
 		Collections.sort(types, buildTemporalTypeComparator());
-		return new SimpleListValueModel<TemporalType>(types);
+		return types;
 	}
 
 	private Comparator<TemporalType> buildTemporalTypeComparator() {
@@ -80,32 +116,11 @@ public class TemporalTypeComposite extends FormPane<ColumnMapping> {
 		return new StringConverter<TemporalType>() {
 			public String convertToString(TemporalType value) {
 				if (value == null) {
-					return JptUiMessages.EnumComboViewer_default;
+					return null;
 				}
 				return displayString(value);
 			}
 		};
-	}
-
-	private WritablePropertyValueModel<TemporalType> buildTemporalTypeHolder() {
-		return new PropertyAspectAdapter<ColumnMapping, TemporalType>(getSubjectHolder(), ColumnMapping.TEMPORAL_PROPERTY) {
-			@Override
-			protected TemporalType buildValue_() {
-				return subject.getTemporal();
-			}
-
-			@Override
-			protected void setValue_(TemporalType value) {
-				subject.setTemporal(value);
-			}
-		};
-	}
-
-	private ListValueModel<TemporalType> buildTemporalTypeListHolder() {
-		return new ExtendedListValueModelWrapper<TemporalType>(
-			(TemporalType) null,
-			buildSortedTemporalTypeListHolder()
-		);
 	}
 
 	private String displayString(TemporalType temporalType) {
@@ -115,20 +130,17 @@ public class TemporalTypeComposite extends FormPane<ColumnMapping> {
 			temporalType.name()
 		);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		addLabeledCCombo(
-			container,
-			JptUiMappingsMessages.BasicGeneralSection_temporalLabel,
-			buildTemporalTypeListHolder(),
-			buildTemporalTypeHolder(),
-			buildTemporalTypeConverter(),
-			JpaHelpContextIds.MAPPING_TEMPORAL
-		);
+	
+	protected PropertyValueModel<Boolean> buildBooleanHolder() {
+		return new TransformationPropertyValueModel<TemporalConverter, Boolean>(getSubjectHolder()) {
+			@Override
+			protected Boolean transform(TemporalConverter value) {
+				if (getSubject() != null && getSubject().getParent().getPersistentAttribute().isVirtual()) {
+					return Boolean.FALSE;
+				}
+				return Boolean.valueOf(value != null);
+			}
+		};
 	}
+
 }

@@ -11,11 +11,20 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.Converter;
+import org.eclipse.jpt.core.context.EnumeratedConverter;
+import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -83,6 +92,67 @@ public class BasicMappingComposite extends FormPane<BasicMapping>
 		super(subjectHolder, parent, widgetFactory);
 	}
 
+	@Override
+	protected void initializeLayout(Composite container) {
+		initializeGeneralPane(container);
+		initializeConversionPane(container);
+	}
+	
+	private void initializeGeneralPane(Composite container) {
+		int groupBoxMargin = getGroupBoxMargin();
+
+		new ColumnComposite(this, buildColumnHolder(), container);
+
+		// Align the widgets under the ColumnComposite
+		container = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+
+		new FetchTypeComposite(this, container);
+		new OptionalComposite(this, addSubPane(container, 4));
+
+	}
+	private void initializeConversionPane(Composite container) {
+
+		container = addCollapsableSection(
+			container,
+			JptUiMappingsMessages.BasicMappingComposite_conversion
+		);
+		((GridLayout) container.getLayout()).numColumns = 2;
+
+		// No converter
+		Button noConverterButton = addRadioButton(
+			container, 
+			JptUiMappingsMessages.BasicMappingComposite_noConverter, 
+			buildNoConverterHolder(), 
+			null);
+		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
+		
+		// Lob
+		Button lobButton = addRadioButton(
+			container, 
+			JptUiMappingsMessages.BasicMappingComposite_lobConverter, 
+			buildLobConverterHolder(), 
+			null);
+		((GridData) lobButton.getLayoutData()).horizontalSpan = 2;
+		
+		PropertyValueModel<Converter> specifiedConverterHolder = buildSpecifiedConverterHolder();
+		// Temporal
+		addRadioButton(
+			container, 
+			JptUiMappingsMessages.BasicMappingComposite_temporalConverter, 
+			buildTemporalBooleanHolder(), 
+			null);
+		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
+		
+		
+		// Enumerated
+		addRadioButton(
+			container, 
+			JptUiMappingsMessages.BasicMappingComposite_enumeratedConverter, 
+			buildEnumeratedBooleanHolder(), 
+			null);
+		registerSubPane(new EnumTypeComposite(buildEnumeratedConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
+	}
+
 	private PropertyValueModel<Column> buildColumnHolder() {
 		return new TransformationPropertyValueModel<BasicMapping, Column>(getSubjectHolder()) {
 			@Override
@@ -92,33 +162,106 @@ public class BasicMappingComposite extends FormPane<BasicMapping>
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
+	private WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
+		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), BasicMapping.SPECIFIED_CONVERTER_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return Boolean.valueOf(this.subject.getSpecifiedConverter() == null);
+			}
 
-		int groupBoxMargin = getGroupBoxMargin();
+			@Override
+			protected void setValue_(Boolean value) {
+				if (value.booleanValue()) {
+					this.subject.setSpecifiedConverter(Converter.NO_CONVERTER);
+				}
+			}
+		};
+	}
+	
+	private WritablePropertyValueModel<Boolean> buildLobConverterHolder() {
+		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), BasicMapping.SPECIFIED_CONVERTER_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				Converter converter = this.subject.getSpecifiedConverter();
+				if (converter == null) {
+					return Boolean.FALSE;
+				}
+				return Boolean.valueOf(converter.getType() == Converter.LOB_CONVERTER);
+			}
 
-		// Column widgets
-		new ColumnComposite(this, buildColumnHolder(), container);
+			@Override
+			protected void setValue_(Boolean value) {
+				if (value.booleanValue()) {
+					this.subject.setSpecifiedConverter(Converter.LOB_CONVERTER);
+				}
+			}
+		};
+	}
+	
+	private PropertyValueModel<Converter> buildSpecifiedConverterHolder() {
+		return new PropertyAspectAdapter<BasicMapping, Converter>(getSubjectHolder(), BasicMapping.SPECIFIED_CONVERTER_PROPERTY) {
+			@Override
+			protected Converter buildValue_() {
+				return this.subject.getSpecifiedConverter();
+			}
+		};
+	}
+	
+	private PropertyValueModel<TemporalConverter> buildTemporalConverterHolder(PropertyValueModel<Converter> converterHolder) {
+		return new TransformationPropertyValueModel<Converter, TemporalConverter>(converterHolder) {
+			@Override
+			protected TemporalConverter transform_(Converter converter) {
+				return (converter != null && converter.getType() == Converter.TEMPORAL_CONVERTER) ? (TemporalConverter) converter : null;
+			}
+		};
+	}
+	
+	private PropertyValueModel<EnumeratedConverter> buildEnumeratedConverterHolder(PropertyValueModel<Converter> converterHolder) {
+		return new TransformationPropertyValueModel<Converter, EnumeratedConverter>(converterHolder) {
+			@Override
+			protected EnumeratedConverter transform_(Converter converter) {
+				return (converter != null && converter.getType() == Converter.ENUMERATED_CONVERTER) ? (EnumeratedConverter) converter : null;
+			}
+		};
+	}
 
-		// Align the widgets under the ColumnComposite
-		container = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+	private WritablePropertyValueModel<Boolean> buildTemporalBooleanHolder() {
+		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), BasicMapping.SPECIFIED_CONVERTER_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				Converter converter = this.subject.getSpecifiedConverter();
+				if (converter == null) {
+					return Boolean.FALSE;
+				}
+				return Boolean.valueOf(converter.getType() == Converter.TEMPORAL_CONVERTER);
+			}
 
-		// Fetch Type widgets
-		new FetchTypeComposite(this, container);
+			@Override
+			protected void setValue_(Boolean value) {
+				if (value.booleanValue()) {
+					this.subject.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
+				}
+			}
+		};
+	}
+	
+	private WritablePropertyValueModel<Boolean> buildEnumeratedBooleanHolder() {
+		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), BasicMapping.SPECIFIED_CONVERTER_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				Converter converter = this.subject.getSpecifiedConverter();
+				if (converter == null) {
+					return Boolean.FALSE;
+				}
+				return Boolean.valueOf(converter.getType() == Converter.ENUMERATED_CONVERTER);
+			}
 
-		// Temporal Type widgets
-		new TemporalTypeComposite(this, container);
-
-		// Enumerated widgets
-		new EnumTypeComposite(this, container);
-
-		// Optional widgets
-		new OptionalComposite(this, addSubPane(container, 4));
-
-		// Lob check box
-		new LobComposite(this, container);
+			@Override
+			protected void setValue_(Boolean value) {
+				if (value.booleanValue()) {
+					this.subject.setSpecifiedConverter(Converter.ENUMERATED_CONVERTER);
+				}
+			}
+		};
 	}
 }

@@ -67,14 +67,14 @@ public class BasicTranslator extends Translator
 	}
 	
 	private Translator createLobTranslator() {
-		return new EmptyTagBooleanTranslator(LOB, ORM_PKG.getXmlBasic_Lob());
+		return new EmptyTagBooleanTranslator(LOB, ORM_PKG.getXmlConvertibleMapping_Lob());
 	}
 	
 	private Translator createTemporalTranslator() {
-		return new Translator(TEMPORAL, ORM_PKG.getXmlBasic_Temporal());
+		return new Translator(TEMPORAL, ORM_PKG.getXmlConvertibleMapping_Temporal());
 	}
 	
 	private Translator createEnumeratedTranslator() {
-		return new Translator(ENUMERATED, ORM_PKG.getXmlBasic_Enumerated());
+		return new Translator(ENUMERATED, ORM_PKG.getXmlConvertibleMapping_Enumerated());
 	}
 }

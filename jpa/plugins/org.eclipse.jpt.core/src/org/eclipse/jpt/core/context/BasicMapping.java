@@ -18,23 +18,9 @@ package org.eclipse.jpt.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface BasicMapping extends AttributeMapping, ColumnMapping, Fetchable, Nullable
+public interface BasicMapping extends AttributeMapping, ColumnMapping, Fetchable, Nullable, ConvertibleMapping
 {
 	FetchType DEFAULT_FETCH_TYPE = FetchType.EAGER;
 
-	boolean isLob();
-
-	void setLob(boolean value);
-		String LOB_PROPERTY = "lobProperty";
 	
-	EnumType getEnumerated();
-	
-	EnumType getDefaultEnumerated();
-		String DEFAULT_ENUMERATED_PROPERTY = "defaultEnumeratedProperty";
-		EnumType DEFAULT_ENUMERATED = EnumType.ORDINAL;
-
-	EnumType getSpecifiedEnumerated();
-	void setSpecifiedEnumerated(EnumType newSpecifiedEnumerated);
-		String SPECIFIED_ENUMERATED_PROPERTY = "specifiedEnumeratedProperty";
-
 }

@@ -54,6 +54,6 @@ public class VersionTranslator extends Translator
 	}
 	
 	private Translator createTemporalTranslator() {
-		return new Translator(TEMPORAL, ORM_PKG.getXmlVersion_Temporal());
+		return new Translator(TEMPORAL, ORM_PKG.getXmlConvertibleMapping_Temporal());
 	}
 }

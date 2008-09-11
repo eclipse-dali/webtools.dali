@@ -53,8 +53,8 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 	}
 
 	@Override
-	public void initializeFromXmlMulitRelationshipMapping(OrmMultiRelationshipMapping oldMapping) {
-		super.initializeFromXmlMulitRelationshipMapping(oldMapping);
+	public void initializeFromOrmMulitRelationshipMapping(OrmMultiRelationshipMapping oldMapping) {
+		super.initializeFromOrmMulitRelationshipMapping(oldMapping);
 		getJoinTable().initializeFrom(oldMapping.getJoinTable());
 	}
 	

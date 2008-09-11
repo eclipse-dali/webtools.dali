@@ -22,6 +22,10 @@ import org.eclipse.jpt.core.context.IdMapping;
  */
 public interface JavaIdMapping extends JavaAttributeMapping, IdMapping, JavaColumnMapping, JavaGeneratorHolder
 {
+	//********* covariant overrides **********
+	JavaConverter getDefaultConverter();
+	JavaConverter getSpecifiedConverter();
+
 	JavaGeneratedValue getGeneratedValue();
 	JavaGeneratedValue addGeneratedValue();
 } 

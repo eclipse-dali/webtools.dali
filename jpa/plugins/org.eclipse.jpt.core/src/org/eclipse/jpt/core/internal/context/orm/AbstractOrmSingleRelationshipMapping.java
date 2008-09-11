@@ -54,8 +54,8 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	}
 	
 	@Override
-	public void initializeFromXmlSingleRelationshipMapping(OrmSingleRelationshipMapping oldMapping) {
-		super.initializeFromXmlSingleRelationshipMapping(oldMapping);
+	public void initializeFromOrmSingleRelationshipMapping(OrmSingleRelationshipMapping oldMapping) {
+		super.initializeFromOrmSingleRelationshipMapping(oldMapping);
 		int index = 0;
 		for (JoinColumn joinColumn : CollectionTools.iterable(oldMapping.specifiedJoinColumns())) {
 			OrmJoinColumn newJoinColumn = addSpecifiedJoinColumn(index++);

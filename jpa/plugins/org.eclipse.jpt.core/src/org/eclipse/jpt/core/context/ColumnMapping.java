@@ -21,9 +21,5 @@ package org.eclipse.jpt.core.context;
 public interface ColumnMapping extends JpaContextNode, Column.Owner
 {
 	Column getColumn();
-	
-	TemporalType getTemporal();
-	void setTemporal(TemporalType value);
-		String TEMPORAL_PROPERTY = "temporalProperty";
 
 } 

@@ -14,14 +14,13 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BasicMapping;
-import org.eclipse.jpt.core.context.ColumnMapping;
-import org.eclipse.jpt.core.context.EnumType;
+import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Fetchable;
 import org.eclipse.jpt.core.context.Nullable;
-import org.eclipse.jpt.core.context.TemporalType;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaColumn;
+import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -43,14 +42,13 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 
 	protected Boolean specifiedOptional;
 	
-	protected EnumType specifiedEnumerated;
-	
 	protected final JavaColumn column;
+
+	protected JavaConverter defaultConverter;
 	
-	protected boolean lob;
-
-	protected TemporalType temporal;
-
+	protected JavaConverter specifiedConverter;
+	
+	
 	public GenericJavaBasicMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.column = createJavaColumn();
@@ -61,12 +59,11 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 	}
 
 	@Override
-	public void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.initialize(resourcePersistentAttribute);
+	public void initialize(JavaResourcePersistentAttribute jrpa) {
+		super.initialize(jrpa);
 		this.column.initialize(this.getResourceColumn());
-		this.specifiedEnumerated = this.specifiedEnumerated(this.getEnumeratedResource());
-		this.lob = this.lob(resourcePersistentAttribute);
-		this.temporal = this.temporal(this.getTemporalResource());
+		this.defaultConverter = new GenericJavaNullConverter(this);
+		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType(jrpa));
 	}
 	
 	@Override
@@ -74,24 +71,17 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 		this.specifiedFetch = this.specifiedFetchType(basicResource);
 		this.specifiedOptional = this.specifiedOptional(basicResource);
 	}
-	
-	protected EnumeratedAnnotation getEnumeratedResource() {
-		return (EnumeratedAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(EnumeratedAnnotation.ANNOTATION_NAME);
-	}
-	
-	protected TemporalAnnotation getTemporalResource() {
-		return (TemporalAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(TemporalAnnotation.ANNOTATION_NAME);
-	}
 
 	public ColumnAnnotation getResourceColumn() {
 		return (ColumnAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 	
-	//************** IJavaAttributeMapping implementation ***************
+	//************** AttributeMapping implementation ***************
 	public String getKey() {
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
 
+	//************** JavaAttributeMapping implementation ***************
 	public String getAnnotationName() {
 		return BasicAnnotation.ANNOTATION_NAME;
 	}
@@ -112,7 +102,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 		return getTypeMapping().getTableName();
 	}
 	
-	//************** IBasicMapping implementation ***************
+	//************** BasicMapping implementation ***************
 
 	public JavaColumn getColumn() {
 		return this.column;
@@ -174,87 +164,59 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
 	}
 
-	public boolean isLob() {
-		return this.lob;
+	public JavaConverter getConverter() {
+		return getSpecifiedConverter() == null ? getDefaultConverter() : getSpecifiedConverter();
 	}
-
-	public void setLob(boolean newLob) {
-		boolean oldLob = this.lob;
-		this.lob = newLob;
-		if (newLob) {
-			if (lobResource(getResourcePersistentAttribute()) == null) {
-				getResourcePersistentAttribute().addAnnotation(LobAnnotation.ANNOTATION_NAME);
-			}
+	
+	public JavaConverter getDefaultConverter() {
+		return this.defaultConverter;
+	}
+	
+	public JavaConverter getSpecifiedConverter() {
+		return this.specifiedConverter;
+	}
+	
+	protected String getSpecifedConverterType() {
+		if (this.specifiedConverter == null) {
+			return Converter.NO_CONVERTER;
 		}
-		else {
-			if (lobResource(getResourcePersistentAttribute()) != null) {
-				getResourcePersistentAttribute().removeAnnotation(LobAnnotation.ANNOTATION_NAME);
-			}
+		return this.specifiedConverter.getType();
+	}
+	
+	public void setSpecifiedConverter(String converterType) {
+		if (getSpecifedConverterType() == converterType) {
+			return;
 		}
-		firePropertyChanged(BasicMapping.LOB_PROPERTY, oldLob, newLob);
-	}
-
-	public TemporalType getTemporal() {
-		return this.temporal;
-	}
-
-	public void setTemporal(TemporalType newTemporal) {
-		TemporalType oldTemporal = this.temporal;
-		this.temporal = newTemporal;
-		this.getTemporalResource().setValue(TemporalType.toJavaResourceModel(newTemporal));
-		firePropertyChanged(ColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
-	}
-	
-	/**
-	 * internal setter used only for updating from the resource model.
-	 * There were problems with InvalidThreadAccess exceptions in the UI
-	 * when you set a value from the UI and the annotation doesn't exist yet.
-	 * Adding the annotation causes an update to occur and then the exception.
-	 */
-	protected void setTemporal_(TemporalType newTemporal) {
-		TemporalType oldTemporal = this.temporal;
-		this.temporal = newTemporal;
-		firePropertyChanged(ColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+		JavaConverter oldConverter = this.specifiedConverter;
+		JavaConverter newConverter = buildSpecifiedConverter(converterType);
+		this.specifiedConverter = null;
+		if (oldConverter != null) {
+			oldConverter.removeFromResourceModel();
+		}
+		this.specifiedConverter = newConverter;
+		if (newConverter != null) {
+			newConverter.addToResourceModel();
+		}
+		firePropertyChanged(SPECIFIED_CONVERTER_PROPERTY, oldConverter, newConverter);
 	}
 	
-	public EnumType getEnumerated() {
-		return (this.getSpecifiedEnumerated() == null) ? this.getDefaultEnumerated() : this.getSpecifiedEnumerated();
-	}
-	
-	public EnumType getDefaultEnumerated() {
-		return BasicMapping.DEFAULT_ENUMERATED;
-	}
-	
-	public EnumType getSpecifiedEnumerated() {
-		return this.specifiedEnumerated;
-	}
-	
-	public void setSpecifiedEnumerated(EnumType newSpecifiedEnumerated) {
-		EnumType oldEnumerated = this.specifiedEnumerated;
-		this.specifiedEnumerated = newSpecifiedEnumerated;
-		this.getEnumeratedResource().setValue(EnumType.toJavaResourceModel(newSpecifiedEnumerated));
-		firePropertyChanged(BasicMapping.SPECIFIED_ENUMERATED_PROPERTY, oldEnumerated, newSpecifiedEnumerated);
-	}
-	
-	/**
-	 * internal setter used only for updating from the resource model.
-	 * There were problems with InvalidThreadAccess exceptions in the UI
-	 * when you set a value from the UI and the annotation doesn't exist yet.
-	 * Adding the annotation causes an update to occur and then the exception.
-	 */
-	protected void setSpecifiedEnumerated_(EnumType newSpecifiedEnumerated) {
-		EnumType oldEnumerated = this.specifiedEnumerated;
-		this.specifiedEnumerated = newSpecifiedEnumerated;
-		firePropertyChanged(BasicMapping.SPECIFIED_ENUMERATED_PROPERTY, oldEnumerated, newSpecifiedEnumerated);
+	protected void setSpecifiedConverter(JavaConverter newConverter) {
+		JavaConverter oldConverter = this.specifiedConverter;
+		this.specifiedConverter = newConverter;
+		firePropertyChanged(SPECIFIED_CONVERTER_PROPERTY, oldConverter, newConverter);
 	}
 
 	@Override
-	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.update(resourcePersistentAttribute);
+	public void update(JavaResourcePersistentAttribute jrpa) {
+		super.update(jrpa);
 		this.column.update(this.getResourceColumn());
-		this.setSpecifiedEnumerated_(this.specifiedEnumerated(this.getEnumeratedResource()));
-		this.setLob(this.lob(resourcePersistentAttribute));
-		this.setTemporal_(this.temporal(this.getTemporalResource()));
+		if (specifiedConverterType(jrpa) == getSpecifedConverterType()) {
+			getSpecifiedConverter().update(jrpa);
+		}
+		else {
+			JavaConverter javaConverter = buildSpecifiedConverter(specifiedConverterType(jrpa));
+			setSpecifiedConverter(javaConverter);
+		}
 	}
 	
 	@Override
@@ -271,22 +233,32 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 		return basic.getOptional();
 	}
 	
-	protected EnumType specifiedEnumerated(EnumeratedAnnotation enumerated) {
-		return EnumType.fromJavaResourceModel(enumerated.getValue());
+	protected JavaConverter buildSpecifiedConverter(String converterType) {
+		if (converterType == Converter.ENUMERATED_CONVERTER) {
+			return new GenericJavaEnumeratedConverter(this, this.resourcePersistentAttribute);
+		}
+		else if (converterType == Converter.TEMPORAL_CONVERTER) {
+			return new GenericJavaTemporalConverter(this, this.resourcePersistentAttribute);
+		}
+		else if (converterType == Converter.LOB_CONVERTER) {
+			return new GenericJavaLobConverter(this, this.resourcePersistentAttribute);
+		}
+		return null;
 	}
 	
-	protected boolean lob(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		return lobResource(resourcePersistentAttribute) != null;
+	protected String specifiedConverterType(JavaResourcePersistentAttribute jrpa) {
+		if (jrpa.getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME) != null) {
+			return Converter.ENUMERATED_CONVERTER;
+		}
+		else if (jrpa.getAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
+			return Converter.TEMPORAL_CONVERTER;
+		}
+		else if (jrpa.getAnnotation(LobAnnotation.ANNOTATION_NAME) != null) {
+			return Converter.LOB_CONVERTER;
+		}
+		
+		return null;
 	}
-	
-	protected LobAnnotation lobResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		return (LobAnnotation) resourcePersistentAttribute.getAnnotation(LobAnnotation.ANNOTATION_NAME);
-	}
-	
-	protected TemporalType temporal(TemporalAnnotation temporal) {
-		return TemporalType.fromJavaResourceModel(temporal.getValue());
-	}
-
 
 	@Override
 	public boolean isOverridableAttributeMapping() {

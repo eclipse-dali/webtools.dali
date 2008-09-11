@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,10 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.context.orm;
-
-import org.eclipse.jpt.core.context.IdMapping;
-import org.eclipse.jpt.core.resource.orm.XmlId;
+package org.eclipse.jpt.core.context;
 
 /**
  * 
@@ -20,23 +17,35 @@ import org.eclipse.jpt.core.resource.orm.XmlId;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 2.1
+ * @since 2.1
  */
-public interface OrmIdMapping extends IdMapping, OrmColumnMapping, OrmAttributeMapping, OrmGeneratorHolder
+public interface Converter extends JpaContextNode
 {
-	
-	void initialize(XmlId id);
-
 	/**
-	 * Update the OrmIdMapping context model object to match the XmlId 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 * Return a string that represents the type of converter.
+	 * Possibilities are below, NO_CONVERTER, LOB_CONVERTER, ENUMERATED_CONVERTER, TEMPORAL_CONVERTER
 	 */
-	void update(XmlId id);
+	String getType();
 	
-	//********* covariant overrides **********
-	OrmConverter getDefaultConverter();
-	OrmConverter getSpecifiedConverter();
+	String NO_CONVERTER = "noConverter";
+	String LOB_CONVERTER = "lobConverter";
+	String ENUMERATED_CONVERTER = "enumeratedConverter";
+	String TEMPORAL_CONVERTER = "temporalConverter";
 	
-	OrmGeneratedValue getGeneratedValue();
-	OrmGeneratedValue addGeneratedValue();	
+	/**
+	 * Remove the Converter from the resource model
+	 */
+	void removeFromResourceModel();
+	
+	/**
+	 * Add the appropriate Converter to the resource model
+	 */
+	void addToResourceModel();
+	
+	
+	//****** covariant overrides ******
+	AttributeMapping getParent();
 
 }

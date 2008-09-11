@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.context.Converter;
+import org.eclipse.jpt.core.context.EnumeratedConverter;
+import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
@@ -80,7 +83,7 @@ public class VirtualXmlBasic extends AbstractJpaEObject implements XmlBasic
 		if (this.metadataComplete) {
 			return false;
 		}
-		return this.javaBasicMapping.isLob();
+		return this.javaBasicMapping.getConverter().getType() == Converter.LOB_CONVERTER;
 	}
 
 	public void setLob(boolean newLob) {
@@ -91,7 +94,11 @@ public class VirtualXmlBasic extends AbstractJpaEObject implements XmlBasic
 		if (this.metadataComplete) {
 			return null;
 		}
-		return org.eclipse.jpt.core.context.TemporalType.toOrmResourceModel(this.javaBasicMapping.getTemporal());
+		if (this.javaBasicMapping.getConverter().getType() == Converter.TEMPORAL_CONVERTER) {
+			org.eclipse.jpt.core.context.TemporalType javaTemporalType = ((TemporalConverter) this.javaBasicMapping.getConverter()).getTemporalType();
+			return  org.eclipse.jpt.core.context.TemporalType.toOrmResourceModel(javaTemporalType);
+		}
+		return null;
 	}
 
 	public void setTemporal(TemporalType newTemporal){
@@ -99,10 +106,20 @@ public class VirtualXmlBasic extends AbstractJpaEObject implements XmlBasic
 	}
 
 	public EnumType getEnumerated() {
-		if (this.metadataComplete) {
-			return org.eclipse.jpt.core.context.EnumType.toOrmResourceModel(this.javaBasicMapping.getDefaultEnumerated());
+		if (this.javaBasicMapping.getConverter().getType() != Converter.ENUMERATED_CONVERTER) {
+			return null;
 		}
-		return org.eclipse.jpt.core.context.EnumType.toOrmResourceModel(this.javaBasicMapping.getEnumerated());
+		org.eclipse.jpt.core.context.EnumType javaEnumeratedType;
+		if (this.metadataComplete) {
+			if (this.javaBasicMapping.getDefaultConverter().getType() != Converter.ENUMERATED_CONVERTER) {
+				return null;
+			}
+			javaEnumeratedType = ((EnumeratedConverter) this.javaBasicMapping.getDefaultConverter()).getSpecifiedEnumType();
+		}
+		else {
+			javaEnumeratedType = ((EnumeratedConverter) this.javaBasicMapping.getConverter()).getEnumType();
+		}
+		return org.eclipse.jpt.core.context.EnumType.toOrmResourceModel(javaEnumeratedType);
 	}
 
 	public void setEnumerated(EnumType newEnumerated) {
@@ -116,6 +133,18 @@ public class VirtualXmlBasic extends AbstractJpaEObject implements XmlBasic
 	}
 	
 	public TextRange getNameTextRange() {
+		return null;
+	}
+	
+	public TextRange getEnumeratedTextRange() {
+		return null;
+	}
+	
+	public TextRange getLobTextRange() {
+		return null;
+	}
+	
+	public TextRange getTemporalTextRange() {
 		return null;
 	}
 }

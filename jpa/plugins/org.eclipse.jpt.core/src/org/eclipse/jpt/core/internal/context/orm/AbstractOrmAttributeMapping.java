@@ -100,20 +100,20 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		setName(oldMapping.getName());
 	}
 
-	public void initializeFromXmlColumnMapping(OrmColumnMapping oldMapping) {
+	public void initializeFromOrmColumnMapping(OrmColumnMapping oldMapping) {
 		initializeFromOrmAttributeMapping((OrmAttributeMapping) oldMapping);
 	}
 
-	public void initializeFromXmlNonOwningMapping(NonOwningMapping oldMapping) {
+	public void initializeFromOrmNonOwningMapping(NonOwningMapping oldMapping) {
 		initializeFromOrmAttributeMapping((OrmAttributeMapping) oldMapping);
 	}
 
 	public void initializeFromOrmBasicMapping(OrmBasicMapping oldMapping) {
-		initializeFromXmlColumnMapping(oldMapping);
+		initializeFromOrmColumnMapping(oldMapping);
 	}
 
 	public void initializeFromOrmIdMapping(OrmIdMapping oldMapping) {
-		initializeFromXmlColumnMapping(oldMapping);
+		initializeFromOrmColumnMapping(oldMapping);
 	}
 
 	public void initializeFromOrmTransientMapping(OrmTransientMapping oldMapping) {
@@ -133,38 +133,38 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 
 	public void initializeFromOrmVersionMapping(OrmVersionMapping oldMapping) {
-		initializeFromXmlColumnMapping(oldMapping);
+		initializeFromOrmColumnMapping(oldMapping);
 	}
 
-	public void initializeFromXmlRelationshipMapping(OrmRelationshipMapping oldMapping) {
+	public void initializeFromOrmRelationshipMapping(OrmRelationshipMapping oldMapping) {
 		initializeFromOrmAttributeMapping(oldMapping);
 	}
 
-	public void initializeFromXmlMulitRelationshipMapping(OrmMultiRelationshipMapping oldMapping) {
-		initializeFromXmlRelationshipMapping(oldMapping);
+	public void initializeFromOrmMulitRelationshipMapping(OrmMultiRelationshipMapping oldMapping) {
+		initializeFromOrmRelationshipMapping(oldMapping);
 	}
 
-	public void initializeFromXmlSingleRelationshipMapping(OrmSingleRelationshipMapping oldMapping) {
-		initializeFromXmlRelationshipMapping(oldMapping);
+	public void initializeFromOrmSingleRelationshipMapping(OrmSingleRelationshipMapping oldMapping) {
+		initializeFromOrmRelationshipMapping(oldMapping);
 	}
 
 	public void initializeFromOrmOneToManyMapping(OrmOneToManyMapping oldMapping) {
-		initializeFromXmlNonOwningMapping(oldMapping);
-		initializeFromXmlMulitRelationshipMapping(oldMapping);
+		initializeFromOrmNonOwningMapping(oldMapping);
+		initializeFromOrmMulitRelationshipMapping(oldMapping);
 	}
 
 	public void initializeFromOrmManyToOneMapping(OrmManyToOneMapping oldMapping) {
-		initializeFromXmlSingleRelationshipMapping(oldMapping);
+		initializeFromOrmSingleRelationshipMapping(oldMapping);
 	}
 
 	public void initializeFromOrmOneToOneMapping(OrmOneToOneMapping oldMapping) {
-		initializeFromXmlNonOwningMapping(oldMapping);
-		initializeFromXmlSingleRelationshipMapping(oldMapping);
+		initializeFromOrmNonOwningMapping(oldMapping);
+		initializeFromOrmSingleRelationshipMapping(oldMapping);
 	}
 
 	public void initializeFromOrmManyToManyMapping(OrmManyToManyMapping oldMapping) {
-		initializeFromXmlNonOwningMapping(oldMapping);
-		initializeFromXmlMulitRelationshipMapping(oldMapping);
+		initializeFromOrmNonOwningMapping(oldMapping);
+		initializeFromOrmMulitRelationshipMapping(oldMapping);
 	}
 
 	public String getPrimaryKeyColumnName() {

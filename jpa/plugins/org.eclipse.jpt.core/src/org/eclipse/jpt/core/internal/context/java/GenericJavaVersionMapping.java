@@ -13,9 +13,9 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.ColumnMapping;
-import org.eclipse.jpt.core.context.TemporalType;
+import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.java.JavaColumn;
+import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -33,8 +33,10 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<VersionAnnotation> implements JavaVersionMapping
 {
 	protected final JavaColumn column;
+
+	protected JavaConverter defaultConverter;
 	
-	protected TemporalType temporal;
+	protected JavaConverter specifiedConverter;
 
 	public GenericJavaVersionMapping(JavaPersistentAttribute parent) {
 		super(parent);
@@ -46,16 +48,13 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	}
 	
 	@Override
-	public void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.initialize(resourcePersistentAttribute);
+	public void initialize(JavaResourcePersistentAttribute jrpa) {
+		super.initialize(jrpa);
 		this.column.initialize(this.getResourceColumn());
-		this.temporal = this.temporal(this.getResourceTemporal());
+		this.defaultConverter = new GenericJavaNullConverter(this);
+		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType(jrpa));
 	}
-	
-	protected TemporalAnnotation getResourceTemporal() {
-		return (TemporalAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(TemporalAnnotation.ANNOTATION_NAME);
-	}
-	
+		
 	public ColumnAnnotation getResourceColumn() {
 		return (ColumnAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
@@ -91,27 +90,75 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	public JavaColumn getColumn() {
 		return this.column;
 	}
-
-	public TemporalType getTemporal() {
-		return this.temporal;
-	}
-
-	public void setTemporal(TemporalType newTemporal) {
-		TemporalType oldTemporal = this.temporal;
-		this.temporal = newTemporal;
-		this.getResourceTemporal().setValue(TemporalType.toJavaResourceModel(newTemporal));
-		firePropertyChanged(ColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
-	}
-
-	@Override
-	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.update(resourcePersistentAttribute);
-		this.column.update(this.getResourceColumn());
-		this.setTemporal(this.temporal(this.getResourceTemporal()));
+	
+	public JavaConverter getConverter() {
+		return getSpecifiedConverter() == null ? getDefaultConverter() : getSpecifiedConverter();
 	}
 	
-	protected TemporalType temporal(TemporalAnnotation temporal) {
-		return TemporalType.fromJavaResourceModel(temporal.getValue());
+	public JavaConverter getDefaultConverter() {
+		return this.defaultConverter;
+	}
+	
+	public JavaConverter getSpecifiedConverter() {
+		return this.specifiedConverter;
+	}
+	
+	protected String getSpecifedConverterType() {
+		if (this.specifiedConverter == null) {
+			return Converter.NO_CONVERTER;
+		}
+		return this.specifiedConverter.getType();
+	}
+	
+	public void setSpecifiedConverter(String converterType) {
+		if (getSpecifedConverterType() == converterType) {
+			return;
+		}
+		JavaConverter oldConverter = this.specifiedConverter;
+		JavaConverter newConverter = buildSpecifiedConverter(converterType);
+		this.specifiedConverter = null;
+		if (oldConverter != null) {
+			oldConverter.removeFromResourceModel();
+		}
+		this.specifiedConverter = newConverter;
+		if (newConverter != null) {
+			newConverter.addToResourceModel();
+		}
+		firePropertyChanged(SPECIFIED_CONVERTER_PROPERTY, oldConverter, newConverter);
+	}
+	
+	protected void setSpecifiedConverter(JavaConverter newConverter) {
+		JavaConverter oldConverter = this.specifiedConverter;
+		this.specifiedConverter = newConverter;
+		firePropertyChanged(SPECIFIED_CONVERTER_PROPERTY, oldConverter, newConverter);
+	}
+
+	
+	@Override
+	public void update(JavaResourcePersistentAttribute jrpa) {
+		super.update(jrpa);
+		this.column.update(this.getResourceColumn());
+		if (specifiedConverterType(jrpa) == getSpecifedConverterType()) {
+			getSpecifiedConverter().update(jrpa);
+		}
+		else {
+			JavaConverter javaConverter = buildSpecifiedConverter(specifiedConverterType(jrpa));
+			setSpecifiedConverter(javaConverter);
+		}
+	}
+	
+	protected JavaConverter buildSpecifiedConverter(String converterType) {
+		if (converterType == Converter.TEMPORAL_CONVERTER) {
+			return new GenericJavaTemporalConverter(this, this.resourcePersistentAttribute);
+		}
+		return null;
+	}
+	
+	protected String specifiedConverterType(JavaResourcePersistentAttribute jrpa) {
+		if (jrpa.getAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
+			return Converter.TEMPORAL_CONVERTER;
+		}
+		return null;
 	}
 
 	@Override

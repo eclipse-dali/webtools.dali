@@ -12,16 +12,15 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BasicMapping;
-import org.eclipse.jpt.core.context.ColumnMapping;
-import org.eclipse.jpt.core.context.EnumType;
+import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Fetchable;
 import org.eclipse.jpt.core.context.Nullable;
-import org.eclipse.jpt.core.context.TemporalType;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
+import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -42,11 +41,9 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 
 	protected Boolean specifiedOptional;
 	
-	protected EnumType specifiedEnumerated;
-		
-	protected TemporalType temporal;
+	protected OrmConverter defaultConverter;
 	
-	protected boolean lob;
+	protected OrmConverter specifiedConverter;
 	
 	public GenericOrmBasicMapping(OrmPersistentAttribute parent) {
 		super(parent);
@@ -102,65 +99,48 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 		this.specifiedOptional = newSpecifiedOptional;
 		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
 	}
-
-	public boolean isLob() {
-		return this.lob;
-	}
-
-	public void setLob(boolean newLob) {
-		boolean oldLob = this.lob;
-		this.lob = newLob;
-		this.getAttributeMapping().setLob(newLob);
-		firePropertyChanged(BasicMapping.LOB_PROPERTY, oldLob, newLob);
+	
+	public OrmConverter getConverter() {
+		return getSpecifiedConverter() == null ? getDefaultConverter() : getSpecifiedConverter();
 	}
 	
-	protected void setLob_(boolean newLob) {
-		boolean oldLob = this.lob;
-		this.lob = newLob;
-		firePropertyChanged(BasicMapping.LOB_PROPERTY, oldLob, newLob);
-	}
-
-	public TemporalType getTemporal() {
-		return this.temporal;
-	}
-
-	public void setTemporal(TemporalType newTemporal) {
-		TemporalType oldTemporal = this.temporal;
-		this.temporal = newTemporal;
-		this.getAttributeMapping().setTemporal(TemporalType.toOrmResourceModel(newTemporal));
-		firePropertyChanged(ColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
-	}
-
-	protected void setTemporal_(TemporalType newTemporal) {
-		TemporalType oldTemporal = this.temporal;
-		this.temporal = newTemporal;
-		firePropertyChanged(ColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+	public OrmConverter getDefaultConverter() {
+		return this.defaultConverter;
 	}
 	
-	public EnumType getEnumerated() {
-		return (this.getSpecifiedEnumerated() == null) ? this.getDefaultEnumerated() : this.getSpecifiedEnumerated();
+	public OrmConverter getSpecifiedConverter() {
+		return this.specifiedConverter;
 	}
 	
-	public EnumType getDefaultEnumerated() {
-		return BasicMapping.DEFAULT_ENUMERATED;
+	protected String getSpecifedConverterType() {
+		if (this.specifiedConverter == null) {
+			return Converter.NO_CONVERTER;
+		}
+		return this.specifiedConverter.getType();
 	}
 	
-	public EnumType getSpecifiedEnumerated() {
-		return this.specifiedEnumerated;
+	public void setSpecifiedConverter(String converterType) {
+		if (getSpecifedConverterType() == converterType) {
+			return;
+		}
+		OrmConverter oldConverter = this.specifiedConverter;
+		OrmConverter newConverter = buildSpecifiedConverter(converterType);
+		this.specifiedConverter = null;
+		if (oldConverter != null) {
+			oldConverter.removeFromResourceModel();
+		}
+		this.specifiedConverter = newConverter;
+		if (newConverter != null) {
+			newConverter.addToResourceModel();
+		}
+		firePropertyChanged(SPECIFIED_CONVERTER_PROPERTY, oldConverter, newConverter);
 	}
 	
-	public void setSpecifiedEnumerated(EnumType newSpecifiedEnumerated) {
-		EnumType oldEnumerated = this.specifiedEnumerated;
-		this.specifiedEnumerated = newSpecifiedEnumerated;
-		this.getAttributeMapping().setEnumerated(EnumType.toOrmResourceModel(newSpecifiedEnumerated));
-		firePropertyChanged(BasicMapping.SPECIFIED_ENUMERATED_PROPERTY, oldEnumerated, newSpecifiedEnumerated);
-	}
-	
-	protected void setSpecifiedEnumerated_(EnumType newSpecifiedEnumerated) {
-		EnumType oldEnumerated = this.specifiedEnumerated;
-		this.specifiedEnumerated = newSpecifiedEnumerated;
-		firePropertyChanged(BasicMapping.SPECIFIED_ENUMERATED_PROPERTY, oldEnumerated, newSpecifiedEnumerated);
-	}
+	protected void setSpecifiedConverter(OrmConverter newConverter) {
+		OrmConverter oldConverter = this.specifiedConverter;
+		this.specifiedConverter = newConverter;
+		firePropertyChanged(SPECIFIED_CONVERTER_PROPERTY, oldConverter, newConverter);
+	}	
 
 	public String getKey() {
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
@@ -172,9 +152,8 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 
 
 	@Override
-	public void initializeFromXmlColumnMapping(OrmColumnMapping oldMapping) {
-		super.initializeFromXmlColumnMapping(oldMapping);
-		setTemporal(oldMapping.getTemporal());
+	public void initializeFromOrmColumnMapping(OrmColumnMapping oldMapping) {
+		super.initializeFromOrmColumnMapping(oldMapping);
 		getColumn().initializeFrom(oldMapping.getColumn());
 	}
 
@@ -208,10 +187,9 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 		super.initialize(basic);
 		this.specifiedFetch = this.specifiedFetch(basic);
 		this.specifiedOptional = this.specifiedOptional(basic);
-		this.specifiedEnumerated = this.specifiedEnumerated(basic);
-		this.temporal = this.specifiedTemporal(basic);
-		this.lob = specifiedLob(basic);
 		this.column.initialize(basic.getColumn());
+		this.defaultConverter = new GenericOrmNullConverter(this);
+		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType(basic));
 	}
 	
 	@Override
@@ -219,10 +197,13 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 		super.update(basic);
 		this.setSpecifiedFetch_(this.specifiedFetch(basic));
 		this.setSpecifiedOptional_(this.specifiedOptional(basic));
-		this.setSpecifiedEnumerated_(this.specifiedEnumerated(basic));
-		this.setTemporal_(this.specifiedTemporal(basic));
-		this.setLob_(this.specifiedLob(basic));
 		this.column.update(basic.getColumn());
+		if (specifiedConverterType(basic) == getSpecifedConverterType()) {
+			getSpecifiedConverter().update(basic);
+		}
+		else {
+			setSpecifiedConverter(buildSpecifiedConverter(specifiedConverterType(basic)));
+		}
 	}
 	
 	protected Boolean specifiedOptional(XmlBasic basic) {
@@ -233,16 +214,31 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 		return FetchType.fromOrmResourceModel(basic.getFetch());
 	}
 	
-	protected EnumType specifiedEnumerated(XmlBasic basic) {
-		return EnumType.fromOrmResourceModel(basic.getEnumerated());
+	protected OrmConverter buildSpecifiedConverter(String converterType) {
+		if (converterType == Converter.ENUMERATED_CONVERTER) {
+			return new GenericOrmEnumeratedConverter(this, this.attributeMapping);
+		}
+		else if (converterType == Converter.TEMPORAL_CONVERTER) {
+			return new GenericOrmTemporalConverter(this, this.attributeMapping);
+		}
+		else if (converterType == Converter.LOB_CONVERTER) {
+			return new GenericOrmLobConverter(this, this.attributeMapping);
+		}
+		return null;
 	}
 	
-	protected TemporalType specifiedTemporal(XmlBasic basic) {
-		return TemporalType.fromOrmResourceModel(basic.getTemporal());
-	}
-
-	protected boolean specifiedLob(XmlBasic basic) {
-		return basic.isLob();
+	protected String specifiedConverterType(XmlBasic xmlBasic) {
+		if (xmlBasic.getEnumerated() != null) {
+			return Converter.ENUMERATED_CONVERTER;
+		}
+		else if (xmlBasic.getTemporal() != null) {
+			return Converter.TEMPORAL_CONVERTER;
+		}
+		else if (xmlBasic.isLob()) {
+			return Converter.LOB_CONVERTER;
+		}
+		
+		return null;
 	}
 	
 	public XmlBasic addToResourceModel(AbstractXmlTypeMapping typeMapping) {
@@ -259,7 +255,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 		}
 	}
 	
-	//***************** IXmlColumn.Owner implementation ****************
+	//***************** XmlColumn.Owner implementation ****************
 	
 	public XmlColumn getResourceColumn() {
 		return this.getAttributeMapping().getColumn();
