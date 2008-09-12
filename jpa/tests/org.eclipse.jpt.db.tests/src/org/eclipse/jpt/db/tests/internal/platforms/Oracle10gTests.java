@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.tests.internal.platforms;
 
+import java.sql.SQLException;
+
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ForeignKey;
@@ -71,6 +73,11 @@ public class Oracle10gTests extends DTPPlatformTests {
 	}
 
 	@Override
+	protected boolean supportsCatalogs() {
+		return true;
+	}
+
+	@Override
 	public void testOffline() {
 		// working offline is pretty ugly
 	}
@@ -86,9 +93,9 @@ public class Oracle10gTests extends DTPPlatformTests {
 		this.connectionProfile.addConnectionListener(listener);
 
 		// Oracle should have a schema with the same name as the user
-		Schema schema = this.getDatabase().getSchemaNamed(this.getUserID());
+		Schema schema = this.getDatabase().getSchemaForIdentifier(this.getUserID());
 		assertNotNull(schema);
-		assertSame(this.getDatabase().getDefaultSchema(), schema);
+		assertSame(this.getDatabase().getDefaultCatalog().getDefaultSchema(), schema);
 
 		this.connectionProfile.removeConnectionListener(listener);
 		this.connectionProfile.disconnect();
@@ -113,14 +120,14 @@ public class Oracle10gTests extends DTPPlatformTests {
 		Schema schema = this.getDatabase().getDefaultSchema();
 
 		// foo
-		Table fooTable = schema.getTableNamed("foo");
+		Table fooTable = schema.getTableForIdentifier("foo");
 		assertEquals(3, fooTable.columnsSize());
 		assertEquals(1, fooTable.primaryKeyColumnsSize());
 		assertEquals(1, fooTable.foreignKeysSize());
 
 		Column pkColumn = fooTable.getPrimaryKeyColumn();
 		assertEquals("ID", pkColumn.getName());
-		Column idColumn = fooTable.getColumnNamed("id");
+		Column idColumn = fooTable.getColumnForIdentifier("id");
 		assertSame(pkColumn, idColumn);
 		assertEquals("NUMBER", idColumn.getDataTypeName());
 		assertSame(fooTable, idColumn.getTable());
@@ -128,12 +135,12 @@ public class Oracle10gTests extends DTPPlatformTests {
 		assertFalse(idColumn.isForeignKeyColumn());
 		assertEquals("java.math.BigDecimal", idColumn.getJavaTypeDeclaration());
 
-		Column nameColumn = fooTable.getColumnNamed("name");
+		Column nameColumn = fooTable.getColumnForIdentifier("name");
 		assertEquals("VARCHAR2", nameColumn.getDataTypeName());
 		assertEquals("java.lang.String", nameColumn.getJavaTypeDeclaration());
 		assertFalse(nameColumn.isPrimaryKeyColumn());
 
-		Column barColumn = fooTable.getColumnNamed("bar_id");
+		Column barColumn = fooTable.getColumnForIdentifier("bar_id");
 		assertEquals("NUMBER", barColumn.getDataTypeName());
 		assertTrue(barColumn.isForeignKeyColumn());
 		assertFalse(barColumn.isPrimaryKeyColumn());
@@ -149,25 +156,25 @@ public class Oracle10gTests extends DTPPlatformTests {
 		assertSame(schema, fooTable.getSchema());
 
 		// BAR
-		Table barTable = schema.getTableNamed("bar");
+		Table barTable = schema.getTableForIdentifier("bar");
 		assertEquals(2, barTable.columnsSize());
 		assertEquals(1, barTable.primaryKeyColumnsSize());
 		assertEquals(0, barTable.foreignKeysSize());
 		assertEquals("ID", barTable.getPrimaryKeyColumn().getName());
 		assertFalse(barTable.isPossibleJoinTable());
-		assertEquals("BLOB", barTable.getColumnNamed("chunk").getDataTypeName());
-		assertEquals("byte[]", barTable.getColumnNamed("chunk").getJavaTypeDeclaration());
-		assertTrue(barTable.getColumnNamed("chunk").dataTypeIsLOB());
+		assertEquals("BLOB", barTable.getColumnForIdentifier("chunk").getDataTypeName());
+		assertEquals("byte[]", barTable.getColumnForIdentifier("chunk").getJavaTypeDeclaration());
+		assertTrue(barTable.getColumnForIdentifier("chunk").dataTypeIsLOB());
 		assertSame(barTable, barFK.getReferencedTable());
 
 		// FOO_BAZ
-		Table foo_bazTable = schema.getTableNamed("foo_baz");
+		Table foo_bazTable = schema.getTableForIdentifier("foo_baz");
 		assertEquals(2, foo_bazTable.columnsSize());
 		assertEquals(0, foo_bazTable.primaryKeyColumnsSize());
 		assertEquals(2, foo_bazTable.foreignKeysSize());
 		assertTrue(foo_bazTable.isPossibleJoinTable());
 		assertTrue(foo_bazTable.joinTableNameIsDefault());
-		assertTrue(foo_bazTable.getColumnNamed("foo_id").isForeignKeyColumn());
+		assertTrue(foo_bazTable.getColumnForIdentifier("foo_id").isForeignKeyColumn());
 
 		this.dropTable("foo_baz");
 		this.dropTable("baz");
@@ -233,19 +240,19 @@ public class Oracle10gTests extends DTPPlatformTests {
 
 		Schema schema = this.getDatabase().getDefaultSchema();
 
-		Table test1Table = schema.getTableNamed("test1");
+		Table test1Table = schema.getTableForIdentifier("test1");
 		assertNotNull(test1Table);
-		test1Table = schema.getTableNamed("TEST1");
+		test1Table = schema.getTableForIdentifier("TEST1");
 		assertNotNull(test1Table);
 
-		Table test2Table = schema.getTableNamed("test2");
+		Table test2Table = schema.getTableForIdentifier("test2");
 		assertNotNull(test2Table);
-		test2Table = schema.getTableNamed("TEST2");
+		test2Table = schema.getTableForIdentifier("TEST2");
 		assertNotNull(test2Table);
 
-		Table test3Table = schema.getTableNamed("\"test3\"");
+		Table test3Table = schema.getTableForIdentifier("\"test3\"");
 		assertNotNull(test3Table);
-		test3Table = schema.getTableNamed("test3");
+		test3Table = schema.getTableForIdentifier("test3");
 		assertNull(test3Table);
 
 		this.dropTable("test1");
@@ -267,9 +274,9 @@ public class Oracle10gTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE test (id NUMBER(10), name VARCHAR2(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		Table table = this.getDatabase().getDefaultSchema().getTableNamed("test");
-		assertNotNull(table.getColumnNamed("id"));
-		assertNotNull(table.getColumnNamed("name"));
+		Table table = this.getDatabase().getDefaultSchema().getTableForIdentifier("test");
+		assertNotNull(table.getColumnForIdentifier("id"));
+		assertNotNull(table.getColumnForIdentifier("name"));
 
 		this.dropTable("test");
 
@@ -277,9 +284,9 @@ public class Oracle10gTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE test (ID NUMBER(10), NAME VARCHAR2(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		table = this.getDatabase().getDefaultSchema().getTableNamed("test");
-		assertNotNull(table.getColumnNamed("ID"));
-		assertNotNull(table.getColumnNamed("NAME"));
+		table = this.getDatabase().getDefaultSchema().getTableForIdentifier("test");
+		assertNotNull(table.getColumnForIdentifier("ID"));
+		assertNotNull(table.getColumnForIdentifier("NAME"));
 
 		this.dropTable("test");
 
@@ -287,9 +294,9 @@ public class Oracle10gTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE test (Id NUMBER(10), Name VARCHAR2(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		table = this.getDatabase().getDefaultSchema().getTableNamed("test");
-		assertNotNull(table.getColumnNamed("Id"));
-		assertNotNull(table.getColumnNamed("Name"));
+		table = this.getDatabase().getDefaultSchema().getTableForIdentifier("test");
+		assertNotNull(table.getColumnForIdentifier("Id"));
+		assertNotNull(table.getColumnForIdentifier("Name"));
 
 		this.dropTable("test");
 
@@ -297,9 +304,9 @@ public class Oracle10gTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE test (\"Id\" NUMBER(10), \"Name\" VARCHAR2(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		table = this.getDatabase().getDefaultSchema().getTableNamed("test");
-		assertNotNull(table.getColumnNamed("\"Id\""));
-		assertNotNull(table.getColumnNamed("\"Name\""));
+		table = this.getDatabase().getDefaultSchema().getTableForIdentifier("test");
+		assertNotNull(table.getColumnForIdentifier("\"Id\""));
+		assertNotNull(table.getColumnForIdentifier("\"Name\""));
 
 		this.dropTable("test");
 
@@ -309,6 +316,35 @@ public class Oracle10gTests extends DTPPlatformTests {
 
 	private void dropTable(String tableName) throws Exception {
 		this.executeUpdateIgnoreErrors("DROP TABLE " + tableName + " CASCADE CONSTRAINTS");
+	}
+
+// need Oracle enablement plug-in
+//	public void testSequence() throws Exception {
+//		this.connectionProfile.connect();
+//		TestConnectionListener listener = new TestConnectionListener();
+//		this.connectionProfile.addConnectionListener(listener);
+//
+//		this.dropSequence("FOO_SEQ");
+//
+//		this.executeUpdate("CREATE SEQUENCE FOO_SEQ");
+//		((ICatalogObject) this.getDTPDatabase()).refresh();
+//
+//		Sequence sequence = this.getDatabase().getDefaultSchema().getSequenceForIdentifier("FOO");
+//		assertNotNull(sequence);
+//		assertEquals("FOO_SEQ", sequence.getName());
+//
+//		this.dropSequence("FOO_SEQ");
+//
+//		this.connectionProfile.removeConnectionListener(listener);
+//		this.connectionProfile.disconnect();
+//	}
+//
+//	private void dropSequence(String sequenceName) throws Exception {
+//		this.executeUpdateIgnoreErrors("DROP SEQUENCE " + sequenceName);
+//	}
+//
+	protected void dumpUserObjects() throws SQLException {
+		this.dump("select * from user_objects");
 	}
 
 }

@@ -84,29 +84,29 @@ public class GenericJavaUniqueConstraint extends AbstractJavaJpaContextNode
 		fireItemMoved(UniqueConstraint.COLUMN_NAMES_LIST, targetIndex, sourceIndex);		
 	}
 
-	public void initialize(UniqueConstraintAnnotation resourceUniqueConstraint) {
-		this.resourceUniqueConstraint = resourceUniqueConstraint;
-		this.initializeColumnNames(resourceUniqueConstraint);
+	public void initialize(UniqueConstraintAnnotation uca) {
+		this.resourceUniqueConstraint = uca;
+		this.initializeColumnNames(uca);
 	}
 	
-	protected void initializeColumnNames(UniqueConstraintAnnotation resourceUniqueConstraint) {
-		ListIterator<String> resourceColumnNames = resourceUniqueConstraint.columnNames();
+	protected void initializeColumnNames(UniqueConstraintAnnotation uca) {
+		ListIterator<String> annotationColumnNames = uca.columnNames();
 		
-		for (String resourceColumnName : CollectionTools.iterable(resourceColumnNames)) {
+		for (String resourceColumnName : CollectionTools.iterable(annotationColumnNames)) {
 			this.columnNames.add(resourceColumnName);
 		}
 	}
 
-	public void update(UniqueConstraintAnnotation resourceUniqueConstraint) {
-		this.resourceUniqueConstraint = resourceUniqueConstraint;
-		this.updateColumnNames(resourceUniqueConstraint);
+	public void update(UniqueConstraintAnnotation uca) {
+		this.resourceUniqueConstraint = uca;
+		this.updateColumnNames(uca);
 	}
 
-	protected void updateColumnNames(UniqueConstraintAnnotation resourceUniqueConstraint) {
-		ListIterator<String> resourceColumnNames = resourceUniqueConstraint.columnNames();
+	protected void updateColumnNames(UniqueConstraintAnnotation uca) {
+		ListIterator<String> annotationColumnNames = uca.columnNames();
 		
 		int index = 0;
-		for (String resourceColumnName : CollectionTools.iterable(resourceColumnNames)) {
+		for (String resourceColumnName : CollectionTools.iterable(annotationColumnNames)) {
 			if (columnNamesSize() > index) {
 				if (this.columnNames.get(index) != resourceColumnName) {
 					addColumnName_(index, resourceColumnName);
@@ -126,23 +126,15 @@ public class GenericJavaUniqueConstraint extends AbstractJavaJpaContextNode
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.resourceUniqueConstraint.getTextRange(astRoot);
-	}	
-
-	private boolean columnNamesTouches(int pos, CompilationUnit astRoot) {
-		return this.resourceUniqueConstraint.columnNamesTouches(pos, astRoot);
 	}
 
-	private Iterator<String> candidateColumnNames() {
-		return this.getOwner().candidateUniqueConstraintColumnNames();
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.columnNames);
 	}
 
-	private Iterator<String> candidateColumnNames(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateColumnNames(), filter);
-	}
 
-	private Iterator<String> quotedCandidateColumnNames(Filter<String> filter) {
-		return StringTools.quote(this.candidateColumnNames(filter));
-	}
+	// ********** code-assist **********
 
 	@Override
 	public Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -151,8 +143,25 @@ public class GenericJavaUniqueConstraint extends AbstractJavaJpaContextNode
 			return result;
 		}
 		if (this.columnNamesTouches(pos, astRoot)) {
-			return this.quotedCandidateColumnNames(filter);
+			return this.javaCandidateColumnNames(filter);
 		}
 		return null;
 	}
+
+	private boolean columnNamesTouches(int pos, CompilationUnit astRoot) {
+		return this.resourceUniqueConstraint.columnNamesTouches(pos, astRoot);
+	}
+
+	private Iterator<String> javaCandidateColumnNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.candidateColumnNames(filter));
+	}
+
+	private Iterator<String> candidateColumnNames(Filter<String> filter) {
+		return new FilteringIterator<String, String>(this.candidateColumnNames(), filter);
+	}
+
+	private Iterator<String> candidateColumnNames() {
+		return this.getOwner().candidateUniqueConstraintColumnNames();
+	}
+
 }

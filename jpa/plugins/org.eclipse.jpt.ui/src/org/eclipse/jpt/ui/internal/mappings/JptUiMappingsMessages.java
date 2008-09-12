@@ -62,6 +62,8 @@ public class JptUiMappingsMessages {
 	public static String ColumnComposite_uniqueWithDefault;
 	public static String ColumnComposite_updatable;
 	public static String ColumnComposite_updatableWithDefault;
+	public static String DatabaseObjectCombo_defaultEmpty;
+	public static String DatabaseObjectCombo_defaultWithOneParm;
 	public static String DefaultBasicMappingUiProvider_Default;
 	public static String DefaultEmbeddedMappingUiProvider_Default;
 	public static String DefaultWithoutValue;

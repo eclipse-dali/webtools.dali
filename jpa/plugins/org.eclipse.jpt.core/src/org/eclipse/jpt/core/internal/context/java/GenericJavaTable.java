@@ -10,9 +10,8 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -21,8 +20,12 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-
-public class GenericJavaTable extends AbstractJavaTable implements JavaTable
+/**
+ * 
+ */
+public class GenericJavaTable
+	extends AbstractJavaTable
+	implements JavaTable
 {
 	protected JavaResourcePersistentMember resourcePersistentMember;
 
@@ -30,12 +33,11 @@ public class GenericJavaTable extends AbstractJavaTable implements JavaTable
 		super(parent);
 	}
 	
-	public void initialize(JavaResourcePersistentMember jrpm) {
-		this.resourcePersistentMember = jrpm;
+	public void initialize(JavaResourcePersistentMember pr) {
+		this.resourcePersistentMember = pr;
 		initialize(getResourceTable());
 	}
 
-	
 	//query for the table resource every time on setters.
 	//call one setter and the tableResource could change. 
 	//You could call more than one setter before this object has received any notification
@@ -60,79 +62,87 @@ public class GenericJavaTable extends AbstractJavaTable implements JavaTable
 		return getParent();
 	}
 	
-	protected Entity getRootEntity() {
-		return getJavaEntity().getRootEntity();
-	}
-	
 	@Override
+	protected String buildDefaultName() {
+		return this.getJavaEntity().getDefaultTableName();
+	}
+
 	/**
-	 * Table name default to the owning java entity name.
-	 * If this entity is part of a single table inheritance hierarchy, table
-	 * name defaults to the root entity's table name.
+	 * Just to remember:
+	 *   Entity.getDefaultSchema()
+	 *     check inheritance - get default schema from root
+	 *   EntityMappings.getSchema()
+	 *     check for specified schema
+	 *   PersistenceUnit.getDefaultSchema()
+	 *     PersistenceUnitDefaults.getSchema()
+	 *   JpaProject.getDefaultSchema()
+	 *     check for user override project setting
+	 *   Catalog.getDefaultSchema()
+	 *     or
+	 *   Database.getDefaultSchema()
 	 */
-	protected String defaultName() {
-		if (getJavaEntity().getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
-			if (getRootEntity() != getJavaEntity()) {
-				return getRootEntity().getTable().getName();
-			}
-		}
-		return getJavaEntity().getName();
+	@Override
+	protected String buildDefaultSchema() {
+		return this.getJavaEntity().getDefaultSchema();
 	}
 	
 	@Override
-	protected String defaultSchema() {
-		if (getJavaEntity().getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
-			if (getRootEntity() != getJavaEntity()) {
-				return getRootEntity().getTable().getSchema();
-			}
-		}
-		return super.defaultSchema();
+	protected String buildDefaultCatalog() {
+		return this.getJavaEntity().getDefaultCatalog();
 	}
-	
-	@Override
-	protected String defaultCatalog() {
-		if (getJavaEntity().getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
-			if (getRootEntity() != getJavaEntity()) {
-				return getRootEntity().getTable().getCatalog();
-			}
-		}
-		return super.defaultCatalog();
-	}
-	
+
 	public void update(JavaResourcePersistentMember jrpm) {
 		this.resourcePersistentMember = jrpm;
 		this.update(getResourceTable());
 	}
+
 
 	//******************* validation **********************
 	
 	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
-		boolean doContinue = this.connectionProfileIsActive();
-		String schema = getSchema();
+		if (this.connectionProfileIsActive()) {
+			this.checkDatabase(messages, astRoot);
+		}
+	}
+
+	protected void checkDatabase(List<IMessage> messages, CompilationUnit astRoot) {
+		if ( ! this.hasResolvedCatalog()) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.TABLE_UNRESOLVED_CATALOG,
+						new String[] {this.getCatalog(), this.getName()}, 
+						this, 
+						this.getCatalogTextRange(astRoot))
+				);
+			return;
+		}
 		
-		if (doContinue && ! hasResolvedSchema()) {
+		if ( ! this.hasResolvedSchema()) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
-						new String[] {schema, getName()}, 
+						new String[] {this.getSchema(), this.getName()}, 
 						this, 
-						getSchemaTextRange(astRoot))
+						this.getSchemaTextRange(astRoot))
 				);
-			doContinue = false;
+			return;
 		}
 		
-		if (doContinue && ! isResolved()) {
+		if ( ! this.isResolved()) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.TABLE_UNRESOLVED_NAME,
-						new String[] {getName()}, 
+						new String[] {this.getName()}, 
 						this, 
-						getNameTextRange(astRoot))
+						this.getNameTextRange(astRoot))
 				);
+			return;
 		}
 	}
+
 }

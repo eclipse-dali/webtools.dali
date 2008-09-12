@@ -90,6 +90,10 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 		addItemToList(index, queryHint, this.hints, Query.HINTS_LIST);
 	}
 	
+	protected void addHint(OrmQueryHint queryHint) {
+		this.addHint(this.hints.size(), queryHint);
+	}
+	
 	public void removeHint(QueryHint queryHint) {
 		removeHint(this.hints.indexOf(queryHint));
 	}
@@ -149,7 +153,7 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 		}
 		
 		while (resourceHints.hasNext()) {
-			addHint(hintsSize(), buildQueryHint(resourceHints.next()));
+			addHint(buildQueryHint(resourceHints.next()));
 		}
 	}
 	

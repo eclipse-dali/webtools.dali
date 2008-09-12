@@ -37,15 +37,31 @@ public interface SchemaContainer
 	int schemataSize();
 
 	/**
-	 * Return the names of the container's schemata.
-	 */
-	Iterator<String> schemaNames();
-
-	/**
-	 * Return the schema with specified name. The name should be an SQL
-	 * identifier (i.e. quoted when case-sensitive, unquoted when
-	 * case-insensitive).
+	 * Return the schema with specified name. The name must be an exact match
+	 * of the schema's name.
+	 * @see #schemaNames()
+	 * @see #getSchemaForIdentifier(String)
 	 */
 	Schema getSchemaNamed(String name);
+
+	/**
+	 * Return the container's schema identifiers, sorted by name.
+	 */
+	Iterator<String> sortedSchemaIdentifiers();
+
+	/**
+	 * Return the schema for the specified identifier. The identifier should
+	 * be an SQL identifier (i.e. quoted when case-sensitive or containing
+	 * special characters, unquoted otherwise).
+	 * @see #schemaIdentifiers()
+	 * @see #getSchemaNamed(String)
+	 */
+	Schema getSchemaForIdentifier(String identifier);
+
+	/**
+	 * Return the container's default schema, as defined by the database vendor.
+	 * In most cases the default schema's name will match the user name.
+	 */
+	Schema getDefaultSchema();
 
 }

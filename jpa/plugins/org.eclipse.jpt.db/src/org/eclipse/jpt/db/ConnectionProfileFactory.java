@@ -48,7 +48,8 @@ public interface ConnectionProfileFactory {
 	 * Clients should use this method when a JPA platform is unavailable
 	 * (e.g. during project creation). The returned connection profile will
 	 * not be able to search for database objects by any names other than
-	 * those supplied by the factory.
+	 * those supplied by the factory (i.e. lookups cannot be performed with
+	 * "identifiers").
 	 */
 	ConnectionProfile buildConnectionProfile(String name);
 

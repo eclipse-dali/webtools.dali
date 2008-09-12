@@ -634,21 +634,21 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityWithName();
 	
-		assertEquals(ENTITY_NAME, javaEntity().getTableName());
+		assertEquals(ENTITY_NAME, javaEntity().getPrimaryTableName());
 	}
 	
 	public void testGetTableName2() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		assertEquals(TYPE_NAME, javaEntity().getTableName());
+		assertEquals(TYPE_NAME, javaEntity().getPrimaryTableName());
 	}
 	
 	public void testGetTableName3() throws Exception {
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		assertEquals(TABLE_NAME, javaEntity().getTableName());
+		assertEquals(TABLE_NAME, javaEntity().getPrimaryTableName());
 	}	
 	
 	public void testSetTableNameWithNullTable() throws Exception {
@@ -662,7 +662,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		table.setSpecifiedName(TABLE_NAME);
 		assertSourceContains("@Table(name=\"" + TABLE_NAME + "\")", cu);
 		
-		assertEquals(TABLE_NAME, javaEntity().getTableName());
+		assertEquals(TABLE_NAME, javaEntity().getPrimaryTableName());
 		assertEquals(TABLE_NAME, table.getName());
 
 		table.setSpecifiedCatalog(TABLE_NAME);
@@ -1064,7 +1064,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(4, CollectionTools.size(childEntity.associatedTablesIncludingInherited()));
 	}
 	
-	public void testAssociatedTableNamesIncludingInherited() throws Exception {
+	public void testAssociatedTableIdentifiersIncludingInherited() throws Exception {
 		createTestEntityWithSecondaryTables();
 		createTestSubType();
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
@@ -1568,7 +1568,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertNull(javaEntity().getDefaultPrimaryKeyJoinColumn());
 	}
 	
-	public void testTableNameIsInvalid() throws Exception {
+	public void testTableIdentifierIsInvalid() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 

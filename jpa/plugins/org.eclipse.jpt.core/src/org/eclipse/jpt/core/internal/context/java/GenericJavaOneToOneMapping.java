@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.NonOwningMapping;
-import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
@@ -39,18 +39,102 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMapping<OneToOneAnnotation>
+/**
+ * 
+ */
+public class GenericJavaOneToOneMapping
+	extends AbstractJavaSingleRelationshipMapping<OneToOneAnnotation>
 	implements JavaOneToOneMapping
 {
 	protected String mappedBy;
 	
 	protected final List<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns;
 	
+
 	public GenericJavaOneToOneMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.primaryKeyJoinColumns = new ArrayList<JavaPrimaryKeyJoinColumn>();
 	}
+
+
+	// ********** mapped by **********
+
+	public String getMappedBy() {
+		return this.mappedBy;
+	}
+
+	public void setMappedBy(String mappedBy) {
+		String old = this.mappedBy;
+		this.mappedBy = mappedBy;
+		this.getResourceMapping().setMappedBy(mappedBy);
+		this.firePropertyChanged(NonOwningMapping.MAPPED_BY_PROPERTY, old, mappedBy);
+	}
+
+	protected void setMappedBy_(String mappedBy) {
+		String old = this.mappedBy;
+		this.mappedBy = mappedBy;
+		this.firePropertyChanged(NonOwningMapping.MAPPED_BY_PROPERTY, old, mappedBy);
+	}
+
+	public boolean mappedByIsValid(AttributeMapping mappedByMapping) {
+		return mappedByMapping.getKey() == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
+	}
+
+
+	// ********** primary key join columns **********
+
+	public ListIterator<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
+		return new CloneListIterator<JavaPrimaryKeyJoinColumn>(this.primaryKeyJoinColumns);
+	}
 	
+	public int primaryKeyJoinColumnsSize() {
+		return this.primaryKeyJoinColumns.size();
+	}
+	
+	public JavaPrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index) {
+		JavaPrimaryKeyJoinColumn pkJoinColumn = this.getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, this.createJoinColumnOwner());
+		this.primaryKeyJoinColumns.add(index, pkJoinColumn);
+		PrimaryKeyJoinColumnAnnotation pkJoinColumnAnnotation = (PrimaryKeyJoinColumnAnnotation) this.getResourcePersistentAttribute().addAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+		pkJoinColumn.initialize(pkJoinColumnAnnotation);
+		this.fireItemAdded(PRIMAY_KEY_JOIN_COLUMNS_LIST, index, pkJoinColumn);
+		return pkJoinColumn;
+	}
+
+	protected void addPrimaryKeyJoinColumn(int index, JavaPrimaryKeyJoinColumn joinColumn) {
+		this.addItemToList(index, joinColumn, this.primaryKeyJoinColumns, PRIMAY_KEY_JOIN_COLUMNS_LIST);
+	}
+
+	protected void addPrimaryKeyJoinColumn(JavaPrimaryKeyJoinColumn joinColumn) {
+		this.addPrimaryKeyJoinColumn(this.primaryKeyJoinColumns.size(), joinColumn);
+	}
+
+	public void removePrimaryKeyJoinColumn(PrimaryKeyJoinColumn pkJoinColumn) {
+		this.removePrimaryKeyJoinColumn(this.primaryKeyJoinColumns.indexOf(pkJoinColumn));
+	}
+	
+	public void removePrimaryKeyJoinColumn(int index) {
+		JavaPrimaryKeyJoinColumn pkJoinColumn = this.primaryKeyJoinColumns.remove(index);
+		this.getResourcePersistentAttribute().removeAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+		this.fireItemRemoved(PRIMAY_KEY_JOIN_COLUMNS_LIST, index, pkJoinColumn);
+	}
+
+	protected void removePrimaryKeyJoinColumn_(JavaPrimaryKeyJoinColumn joinColumn) {
+		this.removeItemFromList(joinColumn, this.primaryKeyJoinColumns, PRIMAY_KEY_JOIN_COLUMNS_LIST);
+	}
+	
+	public void movePrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.primaryKeyJoinColumns, targetIndex, sourceIndex);
+		this.getResourcePersistentAttribute().move(targetIndex, sourceIndex, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+		this.fireItemMoved(PRIMAY_KEY_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
+	}
+	
+	public boolean containsPrimaryKeyJoinColumns() {
+		return ! this.primaryKeyJoinColumns.isEmpty();
+	}
+	
+
+	// ********** JavaAttributeMapping implementation **********
+
 	public Iterator<String> correspondingAnnotationNames() {
 		return new ArrayIterator<String>(
 			JPA.PRIMARY_KEY_JOIN_COLUMN,
@@ -64,95 +148,28 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 		return OneToOneAnnotation.ANNOTATION_NAME;
 	}
 	
+
+	// ********** AttributeMapping implementation **********
+
 	public String getKey() {
 		return MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
 
+
+	// ********** RelationshipMapping implementation **********
+
 	public boolean isRelationshipOwner() {
-		return getMappedBy() == null;
+		return this.getMappedBy() == null;
 	}
 	
-	
-	public ListIterator<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
-		return new CloneListIterator<JavaPrimaryKeyJoinColumn>(this.primaryKeyJoinColumns);
-	}
-	
-	public int primaryKeyJoinColumnsSize() {
-		return this.primaryKeyJoinColumns.size();
-	}
-	
-	public JavaPrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index) {
-		JavaPrimaryKeyJoinColumn pkJoinColumn = getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, createJoinColumnOwner());
-		this.primaryKeyJoinColumns.add(index, pkJoinColumn);
-		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = (PrimaryKeyJoinColumnAnnotation) getResourcePersistentAttribute().addAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
-		pkJoinColumn.initialize(pkJoinColumnResource);
-		this.fireItemAdded(OneToOneMapping.PRIMAY_KEY_JOIN_COLUMNS_LIST, index, pkJoinColumn);
-		return pkJoinColumn;
-	}
 
-	protected void addPrimaryKeyJoinColumn(int index, JavaPrimaryKeyJoinColumn joinColumn) {
-		addItemToList(index, joinColumn, this.primaryKeyJoinColumns, OneToOneMapping.PRIMAY_KEY_JOIN_COLUMNS_LIST);
-	}
-
-	public void removePrimaryKeyJoinColumn(PrimaryKeyJoinColumn pkJoinColumn) {
-		this.removePrimaryKeyJoinColumn(this.primaryKeyJoinColumns.indexOf(pkJoinColumn));
-	}
-	
-	public void removePrimaryKeyJoinColumn(int index) {
-		JavaPrimaryKeyJoinColumn removedPkJoinColumn = this.primaryKeyJoinColumns.remove(index);
-		getResourcePersistentAttribute().removeAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
-		fireItemRemoved(OneToOneMapping.PRIMAY_KEY_JOIN_COLUMNS_LIST, index, removedPkJoinColumn);
-	}
-
-	protected void removePrimaryKeyJoinColumn_(JavaPrimaryKeyJoinColumn joinColumn) {
-		removeItemFromList(joinColumn, this.primaryKeyJoinColumns, OneToOneMapping.PRIMAY_KEY_JOIN_COLUMNS_LIST);
-	}
-	
-	public void movePrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.primaryKeyJoinColumns, targetIndex, sourceIndex);
-		getResourcePersistentAttribute().move(targetIndex, sourceIndex, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
-		fireItemMoved(OneToOneMapping.PRIMAY_KEY_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
-	}
-	
-	public boolean containsPrimaryKeyJoinColumns() {
-		return !this.primaryKeyJoinColumns.isEmpty();
-	}
-	
-	public String getMappedBy() {
-		return this.mappedBy;
-	}
-
-	public void setMappedBy(String newMappedBy) {
-		String oldMappedBy = this.mappedBy;
-		this.mappedBy = newMappedBy;
-		this.getResourceMapping().setMappedBy(newMappedBy);
-		firePropertyChanged(NonOwningMapping.MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
-	}
-
-	protected void setMappedBy_(String newMappedBy) {
-		String oldMappedBy = this.mappedBy;
-		this.mappedBy = newMappedBy;
-		firePropertyChanged(NonOwningMapping.MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
-	}
-
-	public boolean mappedByIsValid(AttributeMapping mappedByMapping) {
-		String mappedByKey = mappedByMapping.getKey();
-		return (mappedByKey == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-	}
+	// ********** AbstractJavaSingleRelationshipMapping implementation **********
 
 	@Override
 	protected void setOptionalOnResourceModel(Boolean newOptional) {
 		this.getResourceMapping().setOptional(newOptional);
 	}
 	
-	public TextRange getMappedByTextRange(CompilationUnit astRoot) {
-		return this.getResourceMapping().getMappedByTextRange(astRoot);
-	}
-
-	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {
-		return this.getResourceMapping().mappedByTouches(pos, astRoot);
-	}
-
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
@@ -160,9 +177,13 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 			return result;
 		}
 		if (this.mappedByTouches(pos, astRoot)) {
-			return this.quotedCandidateMappedByAttributeNames(filter);
+			return this.javaCandidateMappedByAttributeNames(filter);
 		}
 		return null;
+	}
+
+	protected boolean mappedByTouches(int pos, CompilationUnit astRoot) {
+		return this.getResourceMapping().mappedByTouches(pos, astRoot);
 	}
 
 	@Override
@@ -177,19 +198,21 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 	}
 
 	@Override
-	protected Boolean specifiedOptional(OneToOneAnnotation oneToOneResource) {
+	protected Boolean buildSpecifiedOptional(OneToOneAnnotation oneToOneResource) {
 		return oneToOneResource.getOptional();
 	}
-	
-	
+
+
+	// ********** resource => context **********
+
 	@Override
-	public void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.initialize(resourcePersistentAttribute);
-		this.initializePrimaryKeyJoinColumns(resourcePersistentAttribute);
+	public void initialize(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
+		super.initialize(javaResourcePersistentAttribute);
+		this.initializePrimaryKeyJoinColumns(javaResourcePersistentAttribute);
 	}
 	
-	protected void initializePrimaryKeyJoinColumns(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		ListIterator<JavaResourceNode> annotations = resourcePersistentAttribute.annotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+	protected void initializePrimaryKeyJoinColumns(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
+		ListIterator<JavaResourceNode> annotations = javaResourcePersistentAttribute.annotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
 			this.primaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn((PrimaryKeyJoinColumnAnnotation) annotations.next()));
@@ -209,17 +232,17 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 	}
 
 	@Override
-	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.update(resourcePersistentAttribute);
-		this.updatePrimaryKeyJoinColumns(resourcePersistentAttribute);
+	public void update(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
+		super.update(javaResourcePersistentAttribute);
+		this.updatePrimaryKeyJoinColumns(javaResourcePersistentAttribute);
 	}
 	
-	protected void updatePrimaryKeyJoinColumns(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		ListIterator<JavaPrimaryKeyJoinColumn> pkJoinColumns = primaryKeyJoinColumns();
-		ListIterator<JavaResourceNode> resourcePkJoinColumns = resourcePersistentAttribute.annotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+	protected void updatePrimaryKeyJoinColumns(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
+		ListIterator<JavaPrimaryKeyJoinColumn> contextPkJoinColumns = primaryKeyJoinColumns();
+		ListIterator<JavaResourceNode> resourcePkJoinColumns = javaResourcePersistentAttribute.annotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		
-		while (pkJoinColumns.hasNext()) {
-			JavaPrimaryKeyJoinColumn pkJoinColumn = pkJoinColumns.next();
+		while (contextPkJoinColumns.hasNext()) {
+			JavaPrimaryKeyJoinColumn pkJoinColumn = contextPkJoinColumns.next();
 			if (resourcePkJoinColumns.hasNext()) {
 				pkJoinColumn.update((PrimaryKeyJoinColumnAnnotation) resourcePkJoinColumns.next());
 			}
@@ -229,80 +252,80 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 		}
 		
 		while (resourcePkJoinColumns.hasNext()) {
-			addPrimaryKeyJoinColumn(specifiedJoinColumnsSize(), buildPrimaryKeyJoinColumn((PrimaryKeyJoinColumnAnnotation) resourcePkJoinColumns.next()));
+			addPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn((PrimaryKeyJoinColumnAnnotation) resourcePkJoinColumns.next()));
 		}
 	}
-	
 
 
-	//***************** Validation ***********************************
-	
+	// ********** Validation **********
+
 	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 		
-		if (this.getMappedBy() != null) {
-			addMappedByMessages(messages ,astRoot);
+		if (this.mappedBy != null) {
+			this.checkMappedBy(messages ,astRoot);
 		}
 	}
-	
+
 	@Override
-	protected boolean addJoinColumnMessages() {
-		if (containsPrimaryKeyJoinColumns() && !containsSpecifiedJoinColumns()) {
-			return false;
+	protected void checkJoinColumns(List<IMessage> messages, CompilationUnit astRoot) {
+		if (this.primaryKeyJoinColumns.isEmpty() || this.containsSpecifiedJoinColumns()) {
+			super.checkJoinColumns(messages, astRoot);
 		}
-		return super.addJoinColumnMessages();
 	}
-	
-	protected void addMappedByMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		String mappedBy = this.getMappedBy();
+
+	protected void checkMappedBy(List<IMessage> messages, CompilationUnit astRoot) {
 		Entity targetEntity = this.getResolvedTargetEntity();
-		
 		if (targetEntity == null) {
 			// already have validation messages for that
 			return;
 		}
 		
-		PersistentAttribute attribute = targetEntity.getPersistentType().resolveAttribute(mappedBy);
+		PersistentAttribute attribute = targetEntity.getPersistentType().resolveAttribute(this.mappedBy);
 		
 		if (attribute == null) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
-						new String[] {mappedBy}, 
-						this, this.getMappedByTextRange(astRoot))
+						new String[] {this.mappedBy},
+						this,
+						this.getMappedByTextRange(astRoot)
+					)
 				);
 			return;
 		}
 		
-		if (! this.mappedByIsValid(attribute.getMapping())) {
+		if ( ! this.mappedByIsValid(attribute.getMapping())) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
-						new String[] {mappedBy}, 
-						this, this.getMappedByTextRange(astRoot))
+						new String[] {this.mappedBy}, 
+						this,
+						this.getMappedByTextRange(astRoot)
+					)
 				);
 			return;
 		}
 		
-		NonOwningMapping mappedByMapping;
-		try {
-			mappedByMapping = (NonOwningMapping) attribute.getMapping();
-		} catch (ClassCastException cce) {
-			// there is no error then
-			return;
-		}
-		
-		if (mappedByMapping.getMappedBy() != null) {
+		AttributeMapping mappedByMapping = attribute.getMapping();
+		if ((mappedByMapping instanceof NonOwningMapping)
+				&& ((NonOwningMapping) mappedByMapping).getMappedBy() != null) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
-						this, this.getMappedByTextRange(astRoot))
+						this,
+						this.getMappedByTextRange(astRoot)
+					)
 				);
 		}
+	}
+
+	protected TextRange getMappedByTextRange(CompilationUnit astRoot) {
+		return this.getResourceMapping().getMappedByTextRange(astRoot);
 	}
 
 }

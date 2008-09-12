@@ -56,7 +56,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		return true;
 	}
 
-	public String getTableName() {
+	public String getPrimaryTableName() {
 		return null;
 	}
 

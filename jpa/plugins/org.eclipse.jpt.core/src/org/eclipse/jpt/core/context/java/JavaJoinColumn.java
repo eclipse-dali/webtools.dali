@@ -25,8 +25,6 @@ public interface JavaJoinColumn extends JoinColumn, JavaBaseJoinColumn, JavaBase
 {
 	void initialize(JoinColumnAnnotation resourceJoinColumn);
 	
-	boolean connectionProfileIsActive();
-	
 	/**
 	 * Update the JavaJoinColumn context model object to match the JoinColumnAnnotation 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}

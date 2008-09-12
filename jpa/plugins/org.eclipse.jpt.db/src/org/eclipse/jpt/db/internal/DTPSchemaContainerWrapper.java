@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
@@ -49,12 +50,6 @@ abstract class DTPSchemaContainerWrapper
 	 * return the schema container's DTP schemata
 	 */
 	abstract List<org.eclipse.datatools.modelbase.sql.schema.Schema> getDTPSchemata();
-
-	/**
-	 * return the schema container's catalog,
-	 * null if the database does not support catalogs
-	 */
-	abstract DTPCatalogWrapper getCatalog();
 
 	/**
 	 * return the schema for the specified DTP schema
@@ -122,24 +117,33 @@ abstract class DTPSchemaContainerWrapper
 		for (int i = result.length; i-- > 0;) {
 			result[i] = new DTPSchemaWrapper(this, dtpSchemata.get(i));
 		}
-		return result;
+		return CollectionTools.sort(result);
 	}
 
 	public int schemataSize() {
 		return this.getSchemata().length;
 	}
 
-	public Iterator<String> schemaNames() {
+	public DTPSchemaWrapper getSchemaNamed(String name) {
+		return this.selectDatabaseObjectNamed(this.getSchemata(), name);
+	}
+
+	public Iterator<String> sortedSchemaIdentifiers() {
+		// the schemata are already sorted
 		return new TransformationIterator<DTPSchemaWrapper, String>(this.schemaWrappers()) {
 			@Override
-			protected String transform(DTPSchemaWrapper schema) {
-				 return schema.getName();
+			protected String transform(DTPSchemaWrapper next) {
+				 return next.getIdentifier();
 			}
 		};
 	}
 
-	public DTPSchemaWrapper getSchemaNamed(String name) {
-		return this.getDatabaseObjectNamed(this.getSchemata(), name);
+	public DTPSchemaWrapper getSchemaForIdentifier(String identifier) {
+		return this.selectDatabaseObjectForIdentifier(this.getSchemata(), identifier);
+	}
+
+	public DTPSchemaWrapper getDefaultSchema() {
+		return this.getDatabase().getDefaultSchema(this);
 	}
 
 

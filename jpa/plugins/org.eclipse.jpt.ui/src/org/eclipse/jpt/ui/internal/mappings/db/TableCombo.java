@@ -10,10 +10,9 @@
 package org.eclipse.jpt.ui.internal.mappings.db;
 
 import java.util.Iterator;
+
 import org.eclipse.jpt.core.JpaNode;
-import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -21,97 +20,44 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * This database object combo handles showing the database's tables.
- *
- * @version 2.0
- * @since 2.0
+ * This combo-box displays a schema's tables.
  */
-public abstract class TableCombo<T extends JpaNode> extends DatabaseObjectCombo<T>
+public abstract class TableCombo<T extends JpaNode>
+	extends DatabaseObjectCombo<T>
 {
-	/**
-	 * Creates a new <code>TableCombo</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 */
-	public TableCombo(Pane<? extends T> parentPane,
-	                  Composite parent) {
-
+	public TableCombo(Pane<? extends T> parentPane, Composite parent) {
 		super(parentPane, parent);
 	}
 
-	/**
-	 * Creates a new <code>TableCombo</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 */
-	public TableCombo(Pane<?> parentPane,
-	                  PropertyValueModel<? extends T> subjectHolder,
-	                  Composite parent) {
-
+	public TableCombo(
+						Pane<?> parentPane,
+						PropertyValueModel<? extends T> subjectHolder,
+						Composite parent
+	) {
 		super(parentPane, subjectHolder, parent);
 	}
 
-	/**
-	 * Creates a new <code>TableCombo</code>.
-	 *
-	 * @param subjectHolder The holder of the subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public TableCombo(PropertyValueModel<? extends T> subjectHolder,
-	                  Composite parent,
-	                  WidgetFactory widgetFactory)
-	{
+	public TableCombo(
+						PropertyValueModel<? extends T> subjectHolder,
+						Composite parent,
+						WidgetFactory widgetFactory
+	) {
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	/**
-	 * Retrieves the name of the schema from where the table is located.
-	 *
-	 * @return The table's schema name
-	 */
-	protected abstract String getSchemaName();
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void tableChanged(Table table) {
-		super.tableChanged(table);
-
-		if (table == getDbTable()) {
-			this.doPopulate();
-		}
-	}
-
-	/**
-	 * Returns the selected database table.
-	 *
-	 * @return The selected table
-	 */
-	protected abstract Table getDbTable();
-
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Iterator<String> values() {
-
-		Database db = this.getDatabase();
-		if (db == null) {
-			return EmptyIterator.instance();
-		}
-
-		String schemaName = this.getSchemaName();
-		if (schemaName == null) {
-			return EmptyIterator.instance();
-		}
-
-		Schema schema = db.getSchemaNamed(schemaName);
-		return (schema == null) ? EmptyIterator.<String>instance() : schema.tableNames();
+		Schema dbSchema = this.getDbSchema();
+		return (dbSchema == null) ? EmptyIterator.<String>instance() : dbSchema.sortedTableIdentifiers();
 	}
+
+	protected Schema getDbSchema() {
+		return (this.getSubject() == null) ? null : this.getDbSchema_();
+	}
+
+	/**
+	 * Assume the subject is not null.
+	 */
+	protected abstract Schema getDbSchema_();
 
 }

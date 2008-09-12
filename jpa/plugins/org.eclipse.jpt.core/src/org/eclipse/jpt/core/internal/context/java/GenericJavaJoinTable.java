@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
@@ -26,7 +27,6 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
-import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinColumn;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -41,7 +41,12 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinTable
+/**
+ * 
+ */
+public class GenericJavaJoinTable
+	extends AbstractJavaTable
+	implements JavaJoinTable
 {
 	protected final List<JavaJoinColumn> specifiedJoinColumns;
 
@@ -71,32 +76,27 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		return JoinTableAnnotation.ANNOTATION_NAME;
 	}
 	
-	/**
-	 * Default join table name from the JPA spec:
-	 * 	The concatenated names of the two associated primary
-	 * 	entity tables, separated by a underscore.
-	 * 
-	 * [owning table name]_[target table name]
-	 */
 	@Override
-	protected String defaultName() {
-		return MappingTools.buildJoinTableDefaultName(getRelationshipMapping());
+	protected String buildDefaultName() {
+		return this.getRelationshipMapping().getJoinTableDefaultName();
 	}
 
+	/**
+	 * if the join table is on the "mappedBy" side, it's bogus;
+	 * so don't give it a default catalog
+	 */
 	@Override
-	protected String defaultCatalog() {
-		if (!getRelationshipMapping().isRelationshipOwner()) {
-			return null;
-		}
-		return super.defaultCatalog();
+	protected String buildDefaultCatalog() {
+		return this.getRelationshipMapping().isRelationshipOwner() ? this.getContextDefaultCatalog() : null;
 	}
-	
+
+	/**
+	 * if the join table is on the "mappedBy" side, it's bogus;
+	 * so don't give it a default schema
+	 */
 	@Override
-	protected String defaultSchema() {
-		if (!getRelationshipMapping().isRelationshipOwner()) {
-			return null;
-		}
-		return super.defaultSchema();
+	protected String buildDefaultSchema() {
+		return this.getRelationshipMapping().isRelationshipOwner() ? this.getContextDefaultSchema() : null;
 	}
 	
 	@Override
@@ -188,6 +188,10 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 
 	protected void addSpecifiedJoinColumn(int index, JavaJoinColumn joinColumn) {
 		addItemToList(index, joinColumn, this.specifiedJoinColumns, JoinTable.SPECIFIED_JOIN_COLUMNS_LIST);
+	}
+		
+	protected void addSpecifiedJoinColumn(JavaJoinColumn joinColumn) {
+		this.addSpecifiedJoinColumn(this.specifiedJoinColumns.size(), joinColumn);
 	}
 		
 	public void removeSpecifiedJoinColumn(JoinColumn joinColumn) {
@@ -289,6 +293,10 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	
 	protected void addSpecifiedInverseJoinColumn(int index, JavaJoinColumn inverseJoinColumn) {
 		addItemToList(index, inverseJoinColumn, this.specifiedInverseJoinColumns, JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST);
+	}
+	
+	protected void addSpecifiedInverseJoinColumn(JavaJoinColumn inverseJoinColumn) {
+		this.addSpecifiedInverseJoinColumn(this.specifiedInverseJoinColumns.size(), inverseJoinColumn);
 	}
 	
 	public void removeSpecifiedInverseJoinColumn(JoinColumn inverseJoinColumn) {
@@ -432,7 +440,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		}
 		
 		while (resourceJoinColumns.hasNext()) {
-			addSpecifiedJoinColumn(specifiedJoinColumnsSize(), buildJoinColumn(resourceJoinColumns.next()));
+			addSpecifiedJoinColumn(buildJoinColumn(resourceJoinColumns.next()));
 		}
 	}
 	
@@ -464,7 +472,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		}
 		
 		while (resourceJoinColumns.hasNext()) {
-			addSpecifiedInverseJoinColumn(specifiedInverseJoinColumnsSize(), buildInverseJoinColumn(resourceJoinColumns.next()));
+			addSpecifiedInverseJoinColumn(buildInverseJoinColumn(resourceJoinColumns.next()));
 		}
 	}
 	
@@ -499,82 +507,58 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
-		boolean doContinue = connectionProfileIsActive();
-		String schema = getSchema();
+		if (this.connectionProfileIsActive()) {
+			this.checkDatabase(messages, astRoot);
+		}
+	}
+
+	protected void checkDatabase(List<IMessage> messages, CompilationUnit astRoot) {
+		if ( ! this.hasResolvedCatalog()) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG,
+						new String[] {this.getCatalog(), this.getName()}, 
+						this, 
+						this.getCatalogTextRange(astRoot))
+				);
+			return;
+		}
 		
-		if (doContinue && ! hasResolvedSchema()) {
+		if ( ! this.hasResolvedSchema()) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
-						new String[] {schema, getName()}, 
+						new String[] {this.getSchema(), this.getName()}, 
 						this, 
-						getSchemaTextRange(astRoot))
+						this.getSchemaTextRange(astRoot))
 				);
-			doContinue = false;
+			return;
 		}
 		
-		if (doContinue && !isResolved()) {
+		if ( ! this.isResolved()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
-						new String[] {getName()}, 
+						new String[] {this.getName()}, 
 						this, 
-						getNameTextRange(astRoot))
+						this.getNameTextRange(astRoot))
 				);
-			doContinue = false;
+			return;
 		}
 		
-		for (Iterator<JavaJoinColumn> stream = joinColumns(); stream.hasNext(); ) {
-			JavaJoinColumn joinColumn = stream.next();
-			
-			if (doContinue && ! joinColumn.isResolved()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
-						new String[] {joinColumn.getName()}, 
-						joinColumn, joinColumn.getNameTextRange(astRoot))
-				);
-			}
-			
-			if (doContinue && ! joinColumn.isReferencedColumnResolved()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-						joinColumn, joinColumn.getReferencedColumnNameTextRange(astRoot))
-				);
-			}
-		}
-		
-		for (Iterator<JavaJoinColumn> stream = inverseJoinColumns(); stream.hasNext(); ) {
-			JavaJoinColumn joinColumn = stream.next();
-			
-			if (doContinue && ! joinColumn.isResolved()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
-						new String[] {joinColumn.getName()}, 
-						joinColumn, joinColumn.getNameTextRange(astRoot))
-				);
-			}
-			
-			if (doContinue && ! joinColumn.isReferencedColumnResolved()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-						joinColumn, joinColumn.getReferencedColumnNameTextRange(astRoot))
-				);
-			}
-		}
+		this.checkJoinColumns(this.joinColumns(), messages, astRoot);
+		this.checkJoinColumns(this.inverseJoinColumns(), messages, astRoot);
 	}		
-	
+
+	protected void checkJoinColumns(Iterator<JavaJoinColumn> joinColumns, List<IMessage> messages, CompilationUnit astRoot) {
+		while (joinColumns.hasNext()) {
+			joinColumns.next().addToMessages(messages, astRoot);
+		}
+	}
+
 	/**
 	 * just a little common behavior
 	 */
@@ -656,7 +640,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			return (targetEntity == null) ? null : targetEntity.getDbTable(tableName);
 		}
 
-		public org.eclipse.jpt.db.Table getDbReferencedColumnTable() {
+		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
 			Entity targetEntity = getTargetEntity();
 			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
 		}
@@ -715,7 +699,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			return (dbTable != null) ? dbTable : this.getTypeMapping().getDbTable(tableName);
 		}
 
-		public org.eclipse.jpt.db.Table getDbReferencedColumnTable() {
+		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
 			return getTypeMapping().getPrimaryDbTable();
 		}
 		

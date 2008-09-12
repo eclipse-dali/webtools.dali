@@ -11,6 +11,8 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
+
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.MultiRelationshipMapping;
 import org.eclipse.jpt.core.context.NonOwningMapping;
@@ -353,21 +355,16 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 			return;
 		}
 		
-		NonOwningMapping mappedByMapping;
-		try {
-			mappedByMapping = (NonOwningMapping) attribute.getMapping();
-		} catch (ClassCastException cce) {
-			// there is no error then
-			return;
-		}
-		
-		if (mappedByMapping.getMappedBy() != null) {
+		AttributeMapping mappedByMapping = attribute.getMapping();
+		if ((mappedByMapping instanceof NonOwningMapping)
+				&& ((NonOwningMapping) mappedByMapping).getMappedBy() != null) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
 						this,
-						getMappedByTextRange())
+						getMappedByTextRange()
+					)
 				);
 		}
 	}

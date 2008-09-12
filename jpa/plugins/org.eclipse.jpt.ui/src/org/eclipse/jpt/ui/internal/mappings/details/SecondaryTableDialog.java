@@ -9,14 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.Iterator;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.SecondaryTable;
-import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -30,57 +31,82 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+/**
+ * Clients can use this dialog to prompt the user for SecondaryTable settings.
+ * Use the following once the dialog is closed:
+ *     @see #getSelectedTableIdentifier()
+ *     @see #getSelectedCatalogIdentifier()
+ *     @see #getSelectedSchemaIdentifier()
+ */
 public class SecondaryTableDialog extends Dialog {
 
-	//if creating a new SecondaryTable, this will be null,
-	//specify 'defaultSchema' and 'defaultCatalog' instead in the appropriate constructor
-	private SecondaryTable secondaryTable;
-	private JpaProject jpaProject;
-	private String defaultSchema;
-	private String defaultCatalog;
+	private final JpaProject jpaProject;
+
+	/**
+	 * when creating a new SecondaryTable, 'secondaryTable' will be null
+	 */
+	private final SecondaryTable secondaryTable;
+	private final String defaultCatalogIdentifier;
+	private final String defaultSchemaIdentifier;
 	
-	protected Combo nameCombo;
+	protected Combo tableCombo;
 	protected Combo catalogCombo;
 	protected Combo schemaCombo;
 
-	private String selectedName;
-	private String selectedSchema;
-	private String selectedCatalog;
+	// these values are set upon close
+	private String selectedTableIdentifier;
+	private String selectedSchemaIdentifier;
+	private String selectedCatalogIdentifier;
 
-	private boolean defaultSchemaSelected;
-	private boolean defaultCatalogSelected;
 
-	public SecondaryTableDialog(Shell parent, JpaProject jpaProject, String defaultSchema, String defaultCatalog) {
-		super(parent);
-		this.jpaProject = jpaProject;
-		this.defaultSchema = defaultSchema;
-		this.defaultCatalog = defaultCatalog;
+	// ********** constructors **********
+
+	/**
+	 * Use this constructor to create a new secondary table
+	 */
+	public SecondaryTableDialog(Shell parent, JpaProject jpaProject, String defaultCatalogIdentifier, String defaultSchemaIdentifier) {
+		this(parent, jpaProject, null, defaultCatalogIdentifier, defaultSchemaIdentifier);
 	}
 
-	public SecondaryTableDialog(Shell parent, SecondaryTable secondaryTable, JpaProject jpaProject) {
+	/**
+	 * Use this constructor to edit an existing secondary table
+	 */
+	public SecondaryTableDialog(Shell parent, JpaProject jpaProject, SecondaryTable secondaryTable) {
+		this(parent, jpaProject, secondaryTable, secondaryTable.getDefaultCatalog(), secondaryTable.getDefaultSchema());
+	}
+
+	/**
+	 * internal constructor
+	 */
+	protected SecondaryTableDialog(Shell parent, JpaProject jpaProject, SecondaryTable secondaryTable, String defaultCatalogIdentifier, String defaultSchemaIdentifier) {
 		super(parent);
+		this.jpaProject = jpaProject;
 		this.secondaryTable = secondaryTable;
-		this.jpaProject = jpaProject;
+		this.defaultCatalogIdentifier = defaultCatalogIdentifier;
+		this.defaultSchemaIdentifier = defaultSchemaIdentifier;
 	}
+
+
+	// ********** open **********
 
 	@Override
 	protected Point getInitialSize() {
 		Point size = super.getInitialSize();
-		size.x = convertWidthInCharsToPixels(50);
+		size.x = this.convertWidthInCharsToPixels(50);  // ???
 		return size;
 	}
 
 	@Override
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		shell.setText(getTitle());
+		shell.setText(this.getTitle());
 	}
 
 	protected String getTitle() {
-		if (this.secondaryTable != null) {
-			return JptUiMappingsMessages.SecondaryTableDialog_editSecondaryTable;
-		}
-		return JptUiMappingsMessages.SecondaryTableDialog_addSecondaryTable;
+		return (this.secondaryTable == null) ?
+						JptUiMappingsMessages.SecondaryTableDialog_addSecondaryTable
+					:
+						JptUiMappingsMessages.SecondaryTableDialog_editSecondaryTable;
 	}
 
 	@Override
@@ -89,18 +115,19 @@ public class SecondaryTableDialog extends Dialog {
 		GridLayout gridLayout = (GridLayout) composite.getLayout();
 		gridLayout.numColumns = 2;
 
-		Label nameLabel = new Label(composite, SWT.LEFT);
-		nameLabel.setText(JptUiMappingsMessages.SecondaryTableDialog_name);
+		// table
+		Label tableLabel = new Label(composite, SWT.LEFT);
+		tableLabel.setText(JptUiMappingsMessages.SecondaryTableDialog_name);
 		GridData gridData = new GridData();
-		nameLabel.setLayoutData(gridData);
+		tableLabel.setLayoutData(gridData);
 
-		this.nameCombo = new Combo(composite, SWT.LEFT);
+		this.tableCombo = new Combo(composite, SWT.LEFT);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.FILL;
-		this.nameCombo.setLayoutData(gridData);
-		populateNameCombo();
+		this.tableCombo.setLayoutData(gridData);
 
+		// catalog
 		Label catalogLabel = new Label(composite, SWT.LEFT);
 		catalogLabel.setText(JptUiMappingsMessages.SecondaryTableDialog_catalog);
 		gridData = new GridData();
@@ -111,8 +138,8 @@ public class SecondaryTableDialog extends Dialog {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.FILL;
 		this.catalogCombo.setLayoutData(gridData);
-		populateCatalogCombo();
 
+		// schema
 		Label schemaLabel = new Label(composite, SWT.LEFT);
 		schemaLabel.setText(JptUiMappingsMessages.SecondaryTableDialog_schema);
 		gridData = new GridData();
@@ -123,199 +150,269 @@ public class SecondaryTableDialog extends Dialog {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.FILL;
 		this.schemaCombo.setLayoutData(gridData);
-		populateSchemaCombo();
 
-		
-		this.schemaCombo.addSelectionListener(new SelectionListener() {
-			
-			public void widgetSelected(SelectionEvent e) {
-				repopulateNameCombo();
-			}
-		
-			public void widgetDefaultSelected(SelectionEvent e) {
-				repopulateNameCombo();
-			}
-		});
+		this.initializeCatalogCombo();
+		this.initializeSchemaCombo();
+		this.initializeTableCombo();
+
+		this.catalogCombo.addSelectionListener(this.buildCatalogSelectionListener());
+		this.schemaCombo.addSelectionListener(this.buildSchemaSelectionListener());
 
 		return composite;
 	}
 
-	protected Database getDatabase() {
-		ConnectionProfile cp = this.getConnectionProfile();
-		return (cp == null) ? null : cp.getDatabase();
-	}
+	protected void initializeCatalogCombo() {
+		this.populateCatalogCombo();
 
-	private ConnectionProfile getConnectionProfile() {
-		return this.jpaProject.getConnectionProfile();
-	}
-
-	protected Schema getSchemaNamed(String name) {
-		Database db = this.getDatabase();
-		return (db == null) ? null : db.getSchemaNamed(name);
-	}
-
-	protected Schema getDefaultTableSchema() {
-		return this.getSchemaNamed(this.getDefaultTableSchemaName());
-	}
-
-	protected String getDefaultTableSchemaName() {
-		return (this.secondaryTable != null) ? this.secondaryTable.getDefaultSchema() : this.defaultSchema;
-	}
-
-	protected Schema getTableSchema() {
-		return this.getSchemaNamed(this.getTableSchemaName());
-	}
-
-	protected String getTableSchemaName() {
-		return (this.secondaryTable != null) ? this.secondaryTable.getSchema() : this.defaultSchema;
-	}
-
-	protected void populateNameCombo() {
-		Schema schema = this.getTableSchema();
-		if (schema != null) {
-			for (String name : CollectionTools.sortedSet(schema.tableNames())) {
-				this.nameCombo.add(name);
+		if (this.isAddDialog()) {
+			this.catalogCombo.select(0);  // out-of-bounds index is ignored
+		} else {
+			String specifiedCatalog = this.secondaryTable.getSpecifiedCatalog();
+			if (specifiedCatalog == null) {
+				this.catalogCombo.select(0);  // out-of-bounds index is ignored
+			} else {
+				this.catalogCombo.setText(specifiedCatalog);
 			}
 		}
-
-		if (this.secondaryTable != null) {
-			if (this.secondaryTable.getSpecifiedName() != null) {
-				this.nameCombo.setText(this.secondaryTable.getSpecifiedName());
-			}
-		}
-	}
-
-	protected void repopulateNameCombo() {
-		String nameText = this.nameCombo.getText();
-		this.nameCombo.removeAll();
-		
-		Schema schema = null;
-		if (this.schemaCombo.getSelectionIndex() == 0) {
-			schema = this.getDefaultTableSchema();
-		}
-		else if (this.schemaCombo.getText() != null) {
-			schema = this.getSchemaNamed(this.schemaCombo.getText());
-		}
-		else {
-			schema = this.getTableSchema();
-		}
-		
-		if (schema != null) {
-			for (String name : CollectionTools.sortedSet(schema.tableNames())) {
-				this.nameCombo.add(name);
-			}
-		}
-		
-		this.nameCombo.setText(nameText);
-	}
-	
-	protected void populateSchemaCombo() {
-		String defaultSchemaName = this.getDefaultTableSchemaName();
-		if (defaultSchemaName != null) {
-			this.schemaCombo.add(NLS.bind(JptUiMappingsMessages.SecondaryTableDialog_defaultSchema, defaultSchemaName));
-		}
-		Database database = this.getDatabase();
-
-		if (database != null) {
-			for (String name : CollectionTools.sortedSet(database.schemaNames())) {
-				this.schemaCombo.add(name);
-			}
-		}
-
-		if (this.secondaryTable != null) {
-			if (this.secondaryTable.getSpecifiedSchema() != null) {
-				this.schemaCombo.setText(this.secondaryTable.getSpecifiedSchema());
-			}
-			else {
-				this.schemaCombo.select(0);
-			}
-		}
-		else {
-			this.schemaCombo.select(0);
-		}
-	}
-
-	protected String getDefaultTableCatalogName() {
-		return (this.secondaryTable != null) ? this.secondaryTable.getDefaultCatalog() : this.defaultCatalog;
 	}
 
 	protected void populateCatalogCombo() {
-		String defaultCatalogName = this.getDefaultTableCatalogName();
-		if (defaultCatalogName != null) {
-			this.catalogCombo.add(NLS.bind(JptUiMappingsMessages.SecondaryTableDialog_defaultCatalog, defaultCatalogName));
+		Database database = this.getDatabase();
+		if ((database != null) && ! database.supportsCatalogs()) {
+			this.catalogCombo.setEnabled(false);
+			return;
 		}
 
-		Database database = this.getDatabase();
+		// add the default catalog first
+		if (this.defaultCatalogIdentifier != null) {
+			this.catalogCombo.add(NLS.bind(JptUiMappingsMessages.SecondaryTableDialog_defaultCatalog, this.defaultCatalogIdentifier));
+		}
 
 		if (database != null) {
-			for (String name : CollectionTools.sortedSet(database.catalogNames())) {
-				this.catalogCombo.add(name);
+			for (Iterator<String> stream = database.sortedCatalogIdentifiers(); stream.hasNext(); ) {
+				this.catalogCombo.add(stream.next());
 			}
 		}
+	}
 
-		if (this.secondaryTable != null) {
-			if (this.secondaryTable.getSpecifiedCatalog() != null) {
-				this.catalogCombo.setText(this.secondaryTable.getSpecifiedCatalog());
-			}
-			else {
-				this.catalogCombo.select(0);
+	protected void initializeSchemaCombo() {
+		this.populateSchemaCombo();
+
+		if (this.isAddDialog()) {
+			this.schemaCombo.select(0);  // out-of-bounds index is ignored
+		} else {
+			String specifiedSchema = this.secondaryTable.getSpecifiedSchema();
+			if (specifiedSchema == null) {
+				this.schemaCombo.select(0);  // out-of-bounds index is ignored
+			} else {
+				this.schemaCombo.setText(specifiedSchema);
 			}
 		}
-		else {
-			this.catalogCombo.select(0);			
+	}
+
+	// assume the catalog combo has been populated by now
+	protected void populateSchemaCombo() {
+		// add the default schema first
+		if (this.defaultSchemaIdentifier != null) {
+			this.schemaCombo.add(NLS.bind(JptUiMappingsMessages.SecondaryTableDialog_defaultSchema, this.defaultSchemaIdentifier));
+		}
+
+		SchemaContainer schemaContainer = this.getCurrentSchemaContainer();
+		if (schemaContainer != null) {
+			for (Iterator<String> stream = schemaContainer.sortedSchemaIdentifiers(); stream.hasNext(); ) {
+				this.schemaCombo.add(stream.next());
+			}
 		}
 	}
 
-	protected Combo getNameCombo() {
-		return this.nameCombo;
+	protected void initializeTableCombo() {
+		this.populateTableCombo();
+
+		if (this.isEditDialog()) {
+			String specifiedName = this.secondaryTable.getSpecifiedName();
+			if (specifiedName != null) {
+				this.tableCombo.setText(specifiedName);
+			}
+		}
 	}
 
-	protected Combo getSchemaCombo() {
-		return this.schemaCombo;
+	// assume the schema combo has been populated by now
+	protected void populateTableCombo() {
+		// we don't need to add a "default" to the table combo
+		Schema schema = this.getCurrentSchema();
+		if (schema != null) {
+			for (Iterator<String> stream = schema.sortedTableIdentifiers(); stream.hasNext(); ) {
+				this.tableCombo.add(stream.next());
+			}
+		}
 	}
 
-	protected Combo getCatalogCombo() {
-		return this.catalogCombo;
+
+	// ********** listeners **********
+
+	protected SelectionListener buildCatalogSelectionListener() {
+		return new SelectionListener() {
+			public void widgetSelected(SelectionEvent event) {
+				SecondaryTableDialog.this.selectedCatalogChanged();
+			}
+			public void widgetDefaultSelected(SelectionEvent e) {
+				SecondaryTableDialog.this.selectedCatalogChanged();
+			}
+			@Override
+			public String toString() {
+				return "catalog selection listener"; //$NON-NLS-1$
+			}
+		};
 	}
 
-	protected SecondaryTable getSecondaryTable() {
-		return this.secondaryTable;
+	protected void selectedCatalogChanged() {
+		this.refreshSchemaCombo();
+		this.refreshTableCombo();
+	}
+
+	protected void refreshSchemaCombo() {
+		String schemaIdentifier = this.schemaCombo.getText();
+		this.schemaCombo.removeAll();
+		this.populateSchemaCombo();
+		this.schemaCombo.setText(schemaIdentifier);
+	}
+
+	protected SelectionListener buildSchemaSelectionListener() {
+		return new SelectionListener() {
+			public void widgetSelected(SelectionEvent event) {
+				SecondaryTableDialog.this.selectedSchemaChanged();
+			}
+			public void widgetDefaultSelected(SelectionEvent e) {
+				SecondaryTableDialog.this.selectedSchemaChanged();
+			}
+			@Override
+			public String toString() {
+				return "schema selection listener"; //$NON-NLS-1$
+			}
+		};
+	}
+
+	protected void selectedSchemaChanged() {
+		this.refreshTableCombo();
+	}
+
+	protected void refreshTableCombo() {
+		String tableIdentifier = this.tableCombo.getText();
+		this.tableCombo.removeAll();
+		this.populateTableCombo();
+		this.tableCombo.setText(tableIdentifier);
 	}
 
 
-	public String getSelectedName() {
-		return this.selectedName;
+	// ********** convenience methods **********
+
+	protected boolean isAddDialog() {
+		return this.secondaryTable == null;
 	}
 
-	public String getSelectedCatalog() {
-		return this.selectedCatalog;
+	protected boolean isEditDialog() {
+		return ! this.isAddDialog();
 	}
 
-	public String getSelectedSchema() {
-		return this.selectedSchema;
+	protected Database getDatabase() {
+		return this.jpaProject.getDataSource().getDatabase();
 	}
 
-	public boolean isDefaultSchemaSelected() {
-		return this.defaultSchemaSelected;
+	protected SchemaContainer getCurrentSchemaContainer() {
+		Database database = this.getDatabase();
+		if (database == null) {
+			return null;
+		}
+		if ( ! database.supportsCatalogs()) {
+			return database;
+		}
+		String catalogIdentifier = this.getCurrentCatalogIdentifier();
+		return (catalogIdentifier == null) ? null : database.getCatalogForIdentifier(catalogIdentifier);
 	}
 
-	public boolean isDefaultCatalogSelected() {
-		return this.defaultCatalogSelected;
+	protected String getCurrentCatalogIdentifier() {
+		if ((this.defaultCatalogIdentifier != null) && (this.catalogCombo.getSelectionIndex() == 0)) {
+			return this.defaultCatalogIdentifier;
+		}
+		return convertText(this.catalogCombo);
 	}
 
+	protected Schema getCurrentSchema() {
+		String schemaIdentifier = this.getCurrentSchemaIdentifier();
+		if (schemaIdentifier == null) {
+			return null;
+		}
+		SchemaContainer schemaContainer = this.getCurrentSchemaContainer();
+		return (schemaContainer == null) ? null : schemaContainer.getSchemaForIdentifier(schemaIdentifier);
+	}
+
+	protected String getCurrentSchemaIdentifier() {
+		if ((this.defaultSchemaIdentifier != null) && (this.schemaCombo.getSelectionIndex() == 0)) {
+			return this.defaultSchemaIdentifier;
+		}
+		return convertText(this.schemaCombo);
+	}
+
+
+	// ********** close **********
+
+	/**
+	 * set all the various values queried by clients once the dialog is closed
+	 */
 	@Override
 	public boolean close() {
-		this.selectedName = this.nameCombo.getText();
-		this.selectedSchema = this.schemaCombo.getText();
-		if (this.selectedSchema.equals("")) { //$NON-NLS-1$
-			this.selectedSchema = null;
-		}
-		this.selectedCatalog = this.catalogCombo.getText();
-		if (this.selectedCatalog.equals("")) { //$NON-NLS-1$
-			this.selectedCatalog = null;
-		}
-		this.defaultSchemaSelected = this.schemaCombo.getSelectionIndex() == 0;
-		this.defaultCatalogSelected = this.catalogCombo.getSelectionIndex() == 0;
+		this.selectedTableIdentifier = this.tableCombo.getText();
+		this.selectedCatalogIdentifier = convertText(this.catalogCombo, this.defaultCatalogIdentifier);
+		this.selectedSchemaIdentifier = convertText(this.schemaCombo, this.defaultSchemaIdentifier);
 		return super.close();
 	}
+
+	/**
+	 * return null if:
+	 *   - the default value is selected
+	 *   - the combo's text is empty
+	 */
+	protected static String convertText(Combo combo, String defaultText) {
+		// if the default text is present, then it will be the combo's first selection
+		if ((defaultText != null) && (combo.getSelectionIndex() == 0)) {
+			return null;
+		}
+		return convertText(combo);
+	}
+
+	/**
+	 * return null if the combo's text is empty
+	 */
+	protected static String convertText(Combo combo) {
+		String text = combo.getText();
+		return (text.length() == 0) ? null : text;
+	}
+
+
+	// ********** public API **********
+
+	/**
+	 * Return the selected table identifier. Return an empty string if nothing
+	 * is selected (since there is no default).
+	 */
+	public String getSelectedTableIdentifier() {
+		return this.selectedTableIdentifier;
+	}
+
+	/**
+	 * Return the selected catalog identifier. Return null if either nothing or
+	 * the default catalog is selected.
+	 */
+	public String getSelectedCatalogIdentifier() {
+		return this.selectedCatalogIdentifier;
+	}
+
+	/**
+	 * Return the selected schema identifier. Return null if either nothing or
+	 * the default schema is selected.
+	 */
+	public String getSelectedSchemaIdentifier() {
+		return this.selectedSchemaIdentifier;
+	}
+
 }

@@ -14,6 +14,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -246,28 +247,24 @@ public class JoinTableComposite extends FormPane<JoinTable>
 
 			@Override
 			protected String getDefaultValue() {
-				return getSubject().getDefaultName();
-			}
-
-			@Override
-			protected String getSchemaName() {
-				return getSubject().getSchema();
+				return this.getSubject().getDefaultName();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				getSubject().setSpecifiedName(value);
-			}
-
-			@Override
-			protected org.eclipse.jpt.db.Table getDbTable() {
-				return getSubject().getDbTable();
+				this.getSubject().setSpecifiedName(value);
 			}
 
 			@Override
 			protected String getValue() {
-				return getSubject().getSpecifiedName();
+				return this.getSubject().getSpecifiedName();
 			}
+
+			@Override
+			protected Schema getDbSchema_() {
+				return this.getSubject().getDbSchema();
+			}
+
 		};
 	}
 

@@ -108,7 +108,7 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 
 	@Override
 	protected String tableName() {
-		return this.getOwner().getTypeMapping().getTableName();
+		return this.getOwner().getTypeMapping().getPrimaryTableName();
 	}
 
 	

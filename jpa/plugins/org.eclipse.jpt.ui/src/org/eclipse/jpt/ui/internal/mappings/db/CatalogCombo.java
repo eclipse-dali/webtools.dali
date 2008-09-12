@@ -20,57 +20,35 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * This database object combo handles showing the database's catalogs.
- *
- * @version 2.0
- * @since 2.0
+ * This combo-box displays the database's catalogs.
  */
-public abstract class CatalogCombo<T extends JpaNode> extends DatabaseObjectCombo<T>
+public abstract class CatalogCombo<T extends JpaNode>
+	extends DatabaseObjectCombo<T>
 {
-	/**
-	 * Creates a new <code>CatalogCombo</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 */
-	public CatalogCombo(Pane<? extends T> parentPane,
-	                    Composite parent) {
-
+	public CatalogCombo(Pane<? extends T> parentPane, Composite parent) {
 		super(parentPane, parent);
 	}
 
-	/**
-	 * Creates a new <code>CatalogCombo</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 */
-	public CatalogCombo(Pane<?> parentPane,
-	                    PropertyValueModel<? extends T> subjectHolder,
-	                    Composite parent) {
-
+	public CatalogCombo(
+						Pane<?> parentPane,
+						PropertyValueModel<? extends T> subjectHolder,
+						Composite parent
+	) {
 		super(parentPane, subjectHolder, parent);
 	}
 
-	/**
-	 * Creates a new <code>CatalogCombo</code>.
-	 *
-	 * @param subjectHolder The holder of the subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public CatalogCombo(PropertyValueModel<? extends T> subjectHolder,
-	                    Composite parent,
-	                    WidgetFactory widgetFactory) {
-
+	public CatalogCombo(
+						PropertyValueModel<? extends T> subjectHolder,
+						Composite parent,
+						WidgetFactory widgetFactory
+	) {
 		super(subjectHolder, parent, widgetFactory);
 	}
 
 	@Override
 	protected Iterator<String> values() {
 		Database db = this.getDatabase();
-		return (db == null) ? EmptyIterator.<String>instance() : db.catalogNames();
+		return (db == null) ? EmptyIterator.<String>instance() : db.sortedCatalogIdentifiers();
 	}
 
 }

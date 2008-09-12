@@ -1241,305 +1241,376 @@ public final class StringTools {
 	}
 
 
-	// ********** wrapping/quoting **********
+	// ********** delimiting/quoting **********
 
 	/**
-	 * Wrap the specified string with double quotes.
+	 * Delimit the specified string with double quotes.
+	 * Escape any occurrences of a double quote in the string with another
+	 * double quote.
 	 */
 	public static String quote(String string) {
-		return wrap(string, QUOTE);
+		return delimit(string, QUOTE);
 	}
 
 	/**
-	 * Wrap the specified string with double quotes.
+	 * Delimit the specified string with double quotes.
+	 * Escape any occurrences of a double quote in the string with another
+	 * double quote.
 	 */
 	public static void quoteOn(String string, Writer writer) {
-		wrapOn(string, QUOTE, writer);
+		delimitOn(string, QUOTE, writer);
 	}
 
 	/**
-	 * Wrap the specified string with double quotes.
+	 * Delimit the specified string with double quotes.
+	 * Escape any occurrences of a double quote in the string with another
+	 * double quote.
 	 */
 	public static void quoteOn(String string, StringBuffer sb) {
-		wrapOn(string, QUOTE, sb);
+		delimitOn(string, QUOTE, sb);
 	}
 
 	/**
-	 * Wrap the specified string with double quotes.
+	 * Delimit the specified string with double quotes.
+	 * Escape any occurrences of a double quote in the string with another
+	 * double quote.
 	 */
 	public static void quoteOn(String string, StringBuilder sb) {
-		wrapOn(string, QUOTE, sb);
+		delimitOn(string, QUOTE, sb);
 	}
 
 	/**
-	 * Wrap each of the specified strings with double quotes.
+	 * Delimit each of the specified strings with double quotes.
+	 * Escape any occurrences of a double quote in a string with another
+	 * double quote.
 	 */
 	public static Iterator<String> quote(Iterator<String> strings) {
+		return delimit(strings, QUOTE);
+	}
+
+	/**
+	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
+	 * the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of the delimiter in the string with another delimiter.
+	 */
+	public static String delimit(String string, char delimiter) {
+		return new String(delimit(string.toCharArray(), delimiter));
+	}
+
+	/**
+	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
+	 * the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of the delimiter in the string with another delimiter.
+	 */
+	public static void delimitOn(String string, char delimiter, Writer writer) {
+		delimitOn(string.toCharArray(), delimiter, writer);
+	}
+
+	/**
+	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
+	 * the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of the delimiter in the string with another delimiter.
+	 */
+	public static void delimitOn(String string, char delimiter, StringBuffer sb) {
+		delimitOn(string.toCharArray(), delimiter, sb);
+	}
+
+	/**
+	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
+	 * the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of the delimiter in the string with another delimiter.
+	 */
+	public static void delimitOn(String string, char delimiter, StringBuilder sb) {
+		delimitOn(string.toCharArray(), delimiter, sb);
+	}
+
+	/**
+	 * Delimit each of the specified strings with the specified delimiter; i.e. put a
+	 * copy of the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of the delimiter in a string with another delimiter.
+	 */
+	public static Iterator<String> delimit(Iterator<String> strings, final char delimiter) {
 		return new TransformationIterator<String, String>(strings) {
 			@Override
 			protected String transform(String string) {
-				return StringTools.quote(string);
+				return StringTools.delimit(string, delimiter);
 			}
 		};
 	}
 
 	/**
-	 * Wrap the specified string with the specified wrap; i.e. put a copy of
-	 * the wrap at the front and back of the resulting string.
+	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
+	 * the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of a single-character delimiter in the string with
+	 * another delimiter.
 	 */
-	public static String wrap(String string, char wrap) {
-		return new String(wrap(string.toCharArray(), wrap));
+	public static String delimit(String string, String delimiter) {
+		if (delimiter.length() == 1) {
+			return delimit(string, delimiter.charAt(0));
+		}
+		return new String(delimit(string.toCharArray(), delimiter.toCharArray()));
 	}
 
 	/**
-	 * Wrap the specified string with the specified wrap; i.e. put a copy of
-	 * the wrap at the front and back of the resulting string.
+	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
+	 * the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of a single-character delimiter in the string with
+	 * another delimiter.
 	 */
-	public static void wrapOn(String string, char wrap, Writer writer) {
-		writeCharOn(wrap, writer);
-		writeStringOn(string, writer);
-		writeCharOn(wrap, writer);
+	public static void delimitOn(String string, String delimiter, Writer writer) {
+		if (delimiter.length() == 1) {
+			delimitOn(string, delimiter.charAt(0), writer);
+		} else {
+			delimitOn(string.toCharArray(), delimiter.toCharArray(), writer);
+		}
 	}
 
 	/**
-	 * Wrap the specified string with the specified wrap; i.e. put a copy of
-	 * the wrap at the front and back of the resulting string.
+	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
+	 * the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of a single-character delimiter in the string with
+	 * another delimiter.
 	 */
-	public static void wrapOn(String string, char wrap, StringBuffer sb) {
-		sb.append(wrap);
-		sb.append(string);
-		sb.append(wrap);
+	public static void delimitOn(String string, String delimiter, StringBuffer sb) {
+		if (delimiter.length() == 1) {
+			delimitOn(string, delimiter.charAt(0), sb);
+		} else {
+			delimitOn(string.toCharArray(), delimiter.toCharArray(), sb);
+		}
 	}
 
 	/**
-	 * Wrap the specified string with the specified wrap; i.e. put a copy of
-	 * the wrap at the front and back of the resulting string.
+	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
+	 * the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of a single-character delimiter in the string with
+	 * another delimiter.
 	 */
-	public static void wrapOn(String string, char wrap, StringBuilder sb) {
-		sb.append(wrap);
-		sb.append(string);
-		sb.append(wrap);
+	public static void delimitOn(String string, String delimiter, StringBuilder sb) {
+		if (delimiter.length() == 1) {
+			delimitOn(string, delimiter.charAt(0), sb);
+		} else {
+			delimitOn(string.toCharArray(), delimiter.toCharArray(), sb);
+		}
 	}
 
 	/**
-	 * Wrap each of the specified strings with the specified wrap; i.e. put a
-	 * copy of the wrap at the front and back of the resulting string.
+	 * Delimit each of the specified strings with the specified delimiter; i.e. put a
+	 * copy of the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of a single-character delimiter in a string with
+	 * another delimiter.
 	 */
-	public static Iterator<String> wrap(Iterator<String> strings, final char wrap) {
+	public static Iterator<String> delimit(Iterator<String> strings, final String delimiter) {
+		if (delimiter.length() == 1) {
+			return delimit(strings, delimiter.charAt(0));
+		}
 		return new TransformationIterator<String, String>(strings) {
 			@Override
 			protected String transform(String string) {
-				return StringTools.wrap(string, wrap);
+				return StringTools.delimit(string, delimiter);
 			}
 		};
 	}
 
 	/**
-	 * Wrap the specified string with the specified wrap; i.e. put a copy of
-	 * the wrap at the front and back of the resulting string.
-	 */
-	public static String wrap(String string, String wrap) {
-		return new String(wrap(string.toCharArray(), wrap.toCharArray()));
-	}
-
-	/**
-	 * Wrap the specified string with the specified wrap; i.e. put a copy of
-	 * the wrap at the front and back of the resulting string.
-	 */
-	public static void wrapOn(String string, String wrap, Writer writer) {
-		writeStringOn(wrap, writer);
-		writeStringOn(string, writer);
-		writeStringOn(wrap, writer);
-	}
-
-	/**
-	 * Wrap the specified string with the specified wrap; i.e. put a copy of
-	 * the wrap at the front and back of the resulting string.
-	 */
-	public static void wrapOn(String string, String wrap, StringBuffer sb) {
-		sb.append(wrap);
-		sb.append(string);
-		sb.append(wrap);
-	}
-
-	/**
-	 * Wrap the specified string with the specified wrap; i.e. put a copy of
-	 * the wrap at the front and back of the resulting string.
-	 */
-	public static void wrapOn(String string, String wrap, StringBuilder sb) {
-		sb.append(wrap);
-		sb.append(string);
-		sb.append(wrap);
-	}
-
-	/**
-	 * Wrap each of the specified strings with the specified wrap; i.e. put a
-	 * copy of the wrap at the front and back of the resulting string.
-	 */
-	public static Iterator<String> wrap(Iterator<String> strings, final String wrap) {
-		return new TransformationIterator<String, String>(strings) {
-			@Override
-			protected String transform(String string) {
-				return StringTools.wrap(string, wrap);
-			}
-		};
-	}
-
-	/**
-	 * Wrap the specified string with double quotes.
+	 * Delimit the specified string with double quotes.
+	 * Escape any occurrences of a double quote in the string with another
+	 * double quote.
 	 */
 	public static char[] quote(char[] string) {
-		return wrap(string, QUOTE);
+		return delimit(string, QUOTE);
 	}
 
 	/**
-	 * Wrap the specified string with double quotes.
+	 * Delimit the specified string with double quotes.
+	 * Escape any occurrences of a double quote in the string with another
+	 * double quote.
 	 */
 	public static void quoteOn(char[] string, Writer writer) {
-		wrapOn(string, QUOTE, writer);
+		delimitOn(string, QUOTE, writer);
 	}
 
 	/**
-	 * Wrap the specified string with double quotes.
+	 * Delimit the specified string with double quotes.
+	 * Escape any occurrences of a double quote in the string with another
+	 * double quote.
 	 */
 	public static void quoteOn(char[] string, StringBuffer sb) {
-		wrapOn(string, QUOTE, sb);
+		delimitOn(string, QUOTE, sb);
 	}
 
 	/**
-	 * Wrap the specified string with double quotes.
+	 * Delimit the specified string with double quotes.
+	 * Escape any occurrences of a double quote in the string with another
+	 * double quote.
 	 */
 	public static void quoteOn(char[] string, StringBuilder sb) {
-		wrapOn(string, QUOTE, sb);
+		delimitOn(string, QUOTE, sb);
 	}
 
 	/**
-	 * Wrap each of the specified strings with double quotes.
+	 * Delimit each of the specified strings with double quotes.
+	 * Escape any occurrences of a double quote in a string with another
+	 * double quote.
 	 */
+	// cannot name method simply 'quote' because of type-erasure...
 	public static Iterator<char[]> quoteCharArrays(Iterator<char[]> strings) {
+		return delimitCharArrays(strings, QUOTE);
+	}
+
+	/**
+	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
+	 * the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of the delimiter in the string with another delimiter.
+	 */
+	public static char[] delimit(char[] string, char delimiter) {
+		StringBuilder sb = new StringBuilder(string.length + 2);
+		delimitOn(string, delimiter, sb);
+		return convertToCharArray(sb);
+	}
+
+	/**
+	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
+	 * the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of the delimiter in the string with another delimiter.
+	 */
+	public static void delimitOn(char[] string, char delimiter, Writer writer) {
+		writeCharOn(delimiter, writer);
+		writeStringOn(string, delimiter, writer);
+		writeCharOn(delimiter, writer);
+	}
+
+	/**
+	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
+	 * the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of the delimiter in the string with another delimiter.
+	 */
+	public static void delimitOn(char[] string, char delimiter, StringBuffer sb) {
+		sb.append(delimiter);
+		for (char c : string) {
+			if (c == delimiter) {
+				sb.append(c);
+			}
+			sb.append(c);
+		}
+		sb.append(delimiter);
+	}
+
+	/**
+	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
+	 * the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of the delimiter in the string with another delimiter.
+	 */
+	public static void delimitOn(char[] string, char delimiter, StringBuilder sb) {
+		sb.append(delimiter);
+		for (char c : string) {
+			if (c == delimiter) {
+				sb.append(c);
+			}
+			sb.append(c);
+		}
+		sb.append(delimiter);
+	}
+
+	/**
+	 * Delimit each of the specified strings with the specified delimiter; i.e. put a
+	 * copy of the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of the delimiter in a string with another delimiter.
+	 */
+	// cannot name method simply 'delimit' because of type-erasure...
+	public static Iterator<char[]> delimitCharArrays(Iterator<char[]> strings, final char delimiter) {
 		return new TransformationIterator<char[], char[]>(strings) {
 			@Override
 			protected char[] transform(char[] string) {
-				return StringTools.quote(string);
+				return StringTools.delimit(string, delimiter);
 			}
 		};
 	}
 
 	/**
-	 * Wrap the specified string with the specified wrap; i.e. put a copy of
-	 * the wrap at the front and back of the resulting string.
+	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
+	 * the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of a single-character delimiter in the string with
+	 * another delimiter.
 	 */
-	public static char[] wrap(char[] string, char wrap) {
-		int len = string.length;
-		char[] result = new char[len+2];
-		result[0] = wrap;
-		System.arraycopy(string, 0, result, 1, len);
-		result[len+1] = wrap;
-		return result;
-	}
-
-	/**
-	 * Wrap the specified string with the specified wrap; i.e. put a copy of
-	 * the wrap at the front and back of the resulting string.
-	 */
-	public static void wrapOn(char[] string, char wrap, Writer writer) {
-		writeCharOn(wrap, writer);
-		writeStringOn(string, writer);
-		writeCharOn(wrap, writer);
-	}
-
-	/**
-	 * Wrap the specified string with the specified wrap; i.e. put a copy of
-	 * the wrap at the front and back of the resulting string.
-	 */
-	public static void wrapOn(char[] string, char wrap, StringBuffer sb) {
-		sb.append(wrap);
-		sb.append(string);
-		sb.append(wrap);
-	}
-
-	/**
-	 * Wrap the specified string with the specified wrap; i.e. put a copy of
-	 * the wrap at the front and back of the resulting string.
-	 */
-	public static void wrapOn(char[] string, char wrap, StringBuilder sb) {
-		sb.append(wrap);
-		sb.append(string);
-		sb.append(wrap);
-	}
-
-	/**
-	 * Wrap each of the specified strings with the specified wrap; i.e. put a
-	 * copy of the wrap at the front and back of the resulting string.
-	 */
-	public static Iterator<char[]> wrapCharArrays(Iterator<char[]> strings, final char wrap) {
-		return new TransformationIterator<char[], char[]>(strings) {
-			@Override
-			protected char[] transform(char[] string) {
-				return StringTools.wrap(string, wrap);
-			}
-		};
-	}
-
-	/**
-	 * Wrap the specified string with the specified wrap; i.e. put a copy of
-	 * the wrap at the front and back of the resulting string.
-	 */
-	public static char[] wrap(char[] string, char[] wrap) {
+	public static char[] delimit(char[] string, char[] delimiter) {
+		int delimiterLength = delimiter.length;
+		if (delimiterLength == 1) {
+			return delimit(string, delimiter[0]);
+		}
 		int stringLength = string.length;
-		int wrapLength = wrap.length;
-		char[] result = new char[stringLength+(2*wrapLength)];
-		System.arraycopy(wrap, 0, result, 0, wrapLength);
-		System.arraycopy(string, 0, result, wrapLength, stringLength);
-		System.arraycopy(wrap, 0, result, stringLength+wrapLength, wrapLength);
+		char[] result = new char[stringLength+(2*delimiterLength)];
+		System.arraycopy(delimiter, 0, result, 0, delimiterLength);
+		System.arraycopy(string, 0, result, delimiterLength, stringLength);
+		System.arraycopy(delimiter, 0, result, stringLength+delimiterLength, delimiterLength);
 		return result;
 	}
 
 	/**
-	 * Wrap the specified string with the specified wrap; i.e. put a copy of
-	 * the wrap at the front and back of the resulting string.
+	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
+	 * the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of a single-character delimiter in the string with
+	 * another delimiter.
 	 */
-	public static void wrapOn(char[] string, char[] wrap, Writer writer) {
-		writeStringOn(wrap, writer);
-		writeStringOn(string, writer);
-		writeStringOn(wrap, writer);
+	public static void delimitOn(char[] string, char[] delimiter, Writer writer) {
+		if (delimiter.length == 1) {
+			delimitOn(string, delimiter[0], writer);
+		} else {
+			writeStringOn(delimiter, writer);
+			writeStringOn(string, writer);
+			writeStringOn(delimiter, writer);
+		}
 	}
 
 	/**
-	 * Wrap the specified string with the specified wrap; i.e. put a copy of
-	 * the wrap at the front and back of the resulting string.
+	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
+	 * the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of a single-character delimiter in the string with
+	 * another delimiter.
 	 */
-	public static void wrapOn(char[] string, char[] wrap, StringBuffer sb) {
-		sb.append(wrap);
-		sb.append(string);
-		sb.append(wrap);
+	public static void delimitOn(char[] string, char[] delimiter, StringBuffer sb) {
+		if (delimiter.length == 1) {
+			delimitOn(string, delimiter[0], sb);
+		} else {
+			sb.append(delimiter);
+			sb.append(string);
+			sb.append(delimiter);
+		}
 	}
 
 	/**
-	 * Wrap the specified string with the specified wrap; i.e. put a copy of
-	 * the wrap at the front and back of the resulting string.
+	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
+	 * the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of a single-character delimiter in the string with
+	 * another delimiter.
 	 */
-	public static void wrapOn(char[] string, char[] wrap, StringBuilder sb) {
-		sb.append(wrap);
-		sb.append(string);
-		sb.append(wrap);
+	public static void delimitOn(char[] string, char[] delimiter, StringBuilder sb) {
+		if (delimiter.length == 1) {
+			delimitOn(string, delimiter[0], sb);
+		} else {
+			sb.append(delimiter);
+			sb.append(string);
+			sb.append(delimiter);
+		}
 	}
 
 	/**
-	 * Wrap each of the specified strings with the specified wrap; i.e. put a
-	 * copy of the wrap at the front and back of the resulting string.
+	 * Delimit each of the specified strings with the specified delimiter; i.e. put a
+	 * copy of the delimiter at the front and back of the resulting string.
+	 * Escape any occurrences of a single-character delimiter in a string with
+	 * another delimiter.
 	 */
-	public static Iterator<char[]> wrapCharArrays(Iterator<char[]> strings, final char[] wrap) {
+	// cannot name method simply 'delimit' because of type-erasure...
+	public static Iterator<char[]> delimitCharArrays(Iterator<char[]> strings, final char[] delimiter) {
 		return new TransformationIterator<char[], char[]>(strings) {
 			@Override
 			protected char[] transform(char[] string) {
-				return StringTools.wrap(string, wrap);
+				return StringTools.delimit(string, delimiter);
 			}
 		};
 	}
 
 
-	// ********** delimiting **********
+	// ********** delimiting queries **********
 
 	/**
 	 * Return whether the specified string is quoted: "\"foo\"".
@@ -1656,23 +1727,32 @@ public final class StringTools {
 	}
 
 
-	// ********** unwrapping **********
+	// ********** undelimiting **********
 
 	/**
-	 * Remove the first and last characters from the specified string.
-	 * If the string is too short to be unwrapped, throw an
-	 * IllegalArgumentException.
+	 * Remove the delimiters from the specified string, removing any escape
+	 * characters. Throw an IllegalArgumentException if the string is too short
+	 * to undelimit (i.e. length < 2).
 	 */
-	public static String unwrap(String string) {
-		return unwrap(string, 1);
+	public static String undelimit(String string) {
+		int len = string.length() - 2;
+		if (len < 0) {
+			throw new IllegalArgumentException("invalid string: \"" + string + '"'); //$NON-NLS-1$
+		}
+		if (len == 0) {
+			return EMPTY_STRING;
+		}
+		return new String(undelimit_(string.toCharArray(), len));
 	}
 
 	/**
 	 * Remove the first and last count characters from the specified string.
-	 * If the string is too short to be unwrapped, throw an
+	 * If the string is too short to be undelimited, throw an
 	 * IllegalArgumentException.
+	 * Use this method to undelimit strings that do not escape embedded
+	 * delimiters.
 	 */
-	public static String unwrap(String string, int count) {
+	public static String undelimit(String string, int count) {
 		int len = string.length() - (2 * count);
 		if (len < 0) {
 			throw new IllegalArgumentException("invalid string: \"" + string + '"'); //$NON-NLS-1$
@@ -1680,24 +1760,39 @@ public final class StringTools {
 		if (len == 0) {
 			return EMPTY_STRING;
 		}
-		return new String(unwrap(string.toCharArray(), len, count));
+		return new String(undelimit(string.toCharArray(), len, count));
 	}
 
 	/**
-	 * Remove the first and last characters from the specified string.
-	 * If the string is too short to be unwrapped, throw an
-	 * IllegalArgumentException.
+	 * Remove the delimiters from the specified string, removing any escape
+	 * characters. Throw an IllegalArgumentException if the string is too short
+	 * to undelimit (i.e. length < 2).
 	 */
-	public static char[] unwrap(char[] string) {
-		return unwrap(string, 1);
+	public static char[] undelimit(char[] string) {
+		int len = string.length - 2;
+		if (len < 0) {
+			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
+		}
+		if (len == 0) {
+			return EMPTY_CHAR_ARRAY;
+		}
+		return undelimit_(string, len);
+	}
+
+	private static char[] undelimit_(char[] string, int length) {
+		StringBuilder sb = new StringBuilder(length);
+		undelimitOn_(string, sb);
+		return convertToCharArray(sb);
 	}
 
 	/**
 	 * Remove the first and last count characters from the specified string.
-	 * If the string is too short to be unwrapped, throw an
+	 * If the string is too short to be undelimited, throw an
 	 * IllegalArgumentException.
+	 * Use this method to undelimit strings that do not escape embedded
+	 * delimiters.
 	 */
-	public static char[] unwrap(char[] string, int count) {
+	public static char[] undelimit(char[] string, int count) {
 		int len = string.length - (2 * count);
 		if (len < 0) {
 			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
@@ -1705,26 +1800,32 @@ public final class StringTools {
 		if (len == 0) {
 			return EMPTY_CHAR_ARRAY;
 		}
-		return unwrap(string, len, count);
+		return undelimit(string, len, count);
 	}
 
-	private static char[] unwrap(char[] string, int len, int count) {
+	private static char[] undelimit(char[] string, int len, int count) {
 		char[] result = new char[len];
 		System.arraycopy(string, count, result, 0, len);
 		return result;
 	}
 
 	/**
-	 * Unwrap the specified string.
+	 * Remove the delimiters from the specified string, removing any escape
+	 * characters. Throw an IllegalArgumentException if the string is too short
+	 * to undelimit (i.e. length < 2).
 	 */
-	public static void unwrapOn(String string, Writer writer) {
-		unwrapOn(string, 1, writer);
+	public static void undelimitOn(String string, Writer writer) {
+		undelimitOn(string.toCharArray(), writer);
 	}
 
 	/**
-	 * Unwrap the specified string of count characters.
+	 * Remove the first and last count characters from the specified string.
+	 * If the string is too short to be undelimited, throw an
+	 * IllegalArgumentException.
+	 * Use this method to undelimit strings that do not escape embedded
+	 * delimiters.
 	 */
-	public static void unwrapOn(String string, int count, Writer writer) {
+	public static void undelimitOn(String string, int count, Writer writer) {
 		int len = string.length() - (2 * count);
 		if (len < 0) {
 			throw new IllegalArgumentException("invalid string: \"" + string + '"'); //$NON-NLS-1$
@@ -1736,16 +1837,22 @@ public final class StringTools {
 	}
 
 	/**
-	 * Unwrap the specified string.
+	 * Remove the delimiters from the specified string, removing any escape
+	 * characters. Throw an IllegalArgumentException if the string is too short
+	 * to undelimit (i.e. length < 2).
 	 */
-	public static void unwrapOn(String string, StringBuffer sb) {
-		unwrapOn(string, 1, sb);
+	public static void undelimitOn(String string, StringBuffer sb) {
+		undelimitOn(string.toCharArray(), sb);
 	}
 
 	/**
-	 * Unwrap the specified string of count characters.
+	 * Remove the first and last count characters from the specified string.
+	 * If the string is too short to be undelimited, throw an
+	 * IllegalArgumentException.
+	 * Use this method to undelimit strings that do not escape embedded
+	 * delimiters.
 	 */
-	public static void unwrapOn(String string, int count, StringBuffer sb) {
+	public static void undelimitOn(String string, int count, StringBuffer sb) {
 		int len = string.length() - (2 * count);
 		if (len < 0) {
 			throw new IllegalArgumentException("invalid string: \"" + string + '"'); //$NON-NLS-1$
@@ -1757,16 +1864,22 @@ public final class StringTools {
 	}
 
 	/**
-	 * Unwrap the specified string.
+	 * Remove the delimiters from the specified string, removing any escape
+	 * characters. Throw an IllegalArgumentException if the string is too short
+	 * to undelimit (i.e. length < 2).
 	 */
-	public static void unwrapOn(String string, StringBuilder sb) {
-		unwrapOn(string, 1, sb);
+	public static void undelimitOn(String string, StringBuilder sb) {
+		undelimitOn(string.toCharArray(), sb);
 	}
 
 	/**
-	 * Unwrap the specified string of count characters.
+	 * Remove the first and last count characters from the specified string.
+	 * If the string is too short to be undelimited, throw an
+	 * IllegalArgumentException.
+	 * Use this method to undelimit strings that do not escape embedded
+	 * delimiters.
 	 */
-	public static void unwrapOn(String string, int count, StringBuilder sb) {
+	public static void undelimitOn(String string, int count, StringBuilder sb) {
 		int len = string.length() - (2 * count);
 		if (len < 0) {
 			throw new IllegalArgumentException("invalid string: \"" + string + '"'); //$NON-NLS-1$
@@ -1778,16 +1891,54 @@ public final class StringTools {
 	}
 
 	/**
-	 * Unwrap the specified string.
+	 * Remove the delimiters from the specified string, removing any escape
+	 * characters. Throw an IllegalArgumentException if the string is too short
+	 * to undelimit (i.e. length < 2).
 	 */
-	public static void unwrapOn(char[] string, Writer writer) {
-		unwrapOn(string, 1, writer);
+	public static void undelimitOn(char[] string, Writer writer) {
+		int len = string.length - 2;
+		if (len < 0) {
+			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
+		}
+		if (len == 0) {
+			return;
+		}
+		undelimitOn_(string, writer);
 	}
 
 	/**
-	 * Unwrap the specified string of count characters.
+	 * pre-condition: string is at least 3 characters long
 	 */
-	public static void unwrapOn(char[] string, int count, Writer writer) {
+	private static void undelimitOn_(char[] string, Writer writer) {
+		char delimiter = string[0];  // the first char is the delimiter
+		char c = string[0];
+		char next = string[1];
+		int i = 1;
+		int last = string.length - 1;
+		do {
+			c = next;
+			writeCharOn(c, writer);
+			i++;
+			next = string[i];
+			if (c == delimiter) {
+				if ((next != delimiter) || (i == last)) {
+					// an embedded delimiter must be followed by another delimiter
+					return;
+				}
+				i++;
+				next = string[i];
+			}
+		} while (i != last);
+	}
+
+	/**
+	 * Remove the first and last count characters from the specified string.
+	 * If the string is too short to be undelimited, throw an
+	 * IllegalArgumentException.
+	 * Use this method to undelimit strings that do not escape embedded
+	 * delimiters.
+	 */
+	public static void undelimitOn(char[] string, int count, Writer writer) {
 		int len = string.length - (2 * count);
 		if (len < 0) {
 			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
@@ -1799,16 +1950,54 @@ public final class StringTools {
 	}
 
 	/**
-	 * Unwrap the specified string.
+	 * Remove the delimiters from the specified string, removing any escape
+	 * characters. Throw an IllegalArgumentException if the string is too short
+	 * to undelimit (i.e. length < 2).
 	 */
-	public static void unwrapOn(char[] string, StringBuffer sb) {
-		unwrapOn(string, 1, sb);
+	public static void undelimitOn(char[] string, StringBuffer sb) {
+		int len = string.length - 2;
+		if (len < 0) {
+			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
+		}
+		if (len == 0) {
+			return;
+		}
+		undelimitOn_(string, sb);
 	}
 
 	/**
-	 * Unwrap the specified string of count characters.
+	 * pre-condition: string is at least 3 characters long
 	 */
-	public static void unwrapOn(char[] string, int count, StringBuffer sb) {
+	private static void undelimitOn_(char[] string, StringBuffer sb) {
+		char delimiter = string[0];  // the first char is the delimiter
+		char c = string[0];
+		char next = string[1];
+		int i = 1;
+		int last = string.length - 1;
+		do {
+			c = next;
+			sb.append(c);
+			i++;
+			next = string[i];
+			if (c == delimiter) {
+				if ((next != delimiter) || (i == last)) {
+					// an embedded delimiter must be followed by another delimiter
+					return;
+				}
+				i++;
+				next = string[i];
+			}
+		} while (i != last);
+	}
+
+	/**
+	 * Remove the first and last count characters from the specified string.
+	 * If the string is too short to be undelimited, throw an
+	 * IllegalArgumentException.
+	 * Use this method to undelimit strings that do not escape embedded
+	 * delimiters.
+	 */
+	public static void undelimitOn(char[] string, int count, StringBuffer sb) {
 		int len = string.length - (2 * count);
 		if (len < 0) {
 			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
@@ -1820,16 +2009,54 @@ public final class StringTools {
 	}
 
 	/**
-	 * Unwrap the specified string.
+	 * Remove the delimiters from the specified string, removing any escape
+	 * characters. Throw an IllegalArgumentException if the string is too short
+	 * to undelimit (i.e. length < 2).
 	 */
-	public static void unwrapOn(char[] string, StringBuilder sb) {
-		unwrapOn(string, 1, sb);
+	public static void undelimitOn(char[] string, StringBuilder sb) {
+		int len = string.length - 2;
+		if (len < 0) {
+			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
+		}
+		if (len == 0) {
+			return;
+		}
+		undelimitOn_(string, sb);
 	}
 
 	/**
-	 * Unwrap the specified string of count characters.
+	 * pre-condition: string is at least 3 characters long
 	 */
-	public static void unwrapOn(char[] string, int count, StringBuilder sb) {
+	private static void undelimitOn_(char[] string, StringBuilder sb) {
+		char delimiter = string[0];  // the first char is the delimiter
+		char c = string[0];
+		char next = string[1];
+		int i = 1;
+		int last = string.length - 1;
+		do {
+			c = next;
+			sb.append(c);
+			i++;
+			next = string[i];
+			if (c == delimiter) {
+				if ((next != delimiter) || (i == last)) {
+					// an embedded delimiter must be followed by another delimiter
+					return;
+				}
+				i++;
+				next = string[i];
+			}
+		} while (i != last);
+	}
+
+	/**
+	 * Remove the first and last count characters from the specified string.
+	 * If the string is too short to be undelimited, throw an
+	 * IllegalArgumentException.
+	 * Use this method to undelimit strings that do not escape embedded
+	 * delimiters.
+	 */
+	public static void undelimitOn(char[] string, int count, StringBuilder sb) {
 		int len = string.length - (2 * count);
 		if (len < 0) {
 			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
@@ -2509,6 +2736,33 @@ public final class StringTools {
 			return string;
 		}
 		return new String(capitalize_(string.toCharArray()));
+	}
+
+	/**
+	 * Modify each of the specified strings, capitalizing the first letter of
+	 * each.
+	 */
+	public static Iterator<String> capitalize(Iterator<String> strings) {
+		return new TransformationIterator<String, String>(strings) {
+			@Override
+			protected String transform(String string) {
+				return StringTools.capitalize(string);
+			}
+		};
+	}
+
+	/**
+	 * Modify each of the specified strings, capitalizing the first letter of
+	 * each.
+	 */
+	// cannot name method simply 'capitalize' because of type-erasure...
+	public static Iterator<char[]> capitalizeCharArrays(Iterator<char[]> strings) {
+		return new TransformationIterator<char[], char[]>(strings) {
+			@Override
+			protected char[] transform(char[] string) {
+				return StringTools.capitalize(string);
+			}
+		};
 	}
 
 	/*
@@ -3459,17 +3713,9 @@ public final class StringTools {
 			}
 			if (first) {
 				first = false;
-				if (capitalizeFirstLetter) {
-					sb.append(Character.toUpperCase(c));
-				} else {
-					sb.append(Character.toLowerCase(c));
-				}
+				sb.append(capitalizeFirstLetter ? Character.toUpperCase(c) : Character.toLowerCase(c));
 			} else {
-				if (prev == '_') {
-					sb.append(Character.toUpperCase(c));
-				} else {
-					sb.append(Character.toLowerCase(c));
-				}
+				sb.append((prev == '_') ? Character.toUpperCase(c) : Character.toLowerCase(c));
 			}
 		}
 	}
@@ -3510,17 +3756,9 @@ public final class StringTools {
 			}
 			if (first) {
 				first = false;
-				if (capitalizeFirstLetter) {
-					sb.append(Character.toUpperCase(c));
-				} else {
-					sb.append(Character.toLowerCase(c));
-				}
+				sb.append(capitalizeFirstLetter ? Character.toUpperCase(c) : Character.toLowerCase(c));
 			} else {
-				if (prev == '_') {
-					sb.append(Character.toUpperCase(c));
-				} else {
-					sb.append(Character.toLowerCase(c));
-				}
+				sb.append((prev == '_') ? Character.toUpperCase(c) : Character.toLowerCase(c));
 			}
 		}
 	}
@@ -3561,17 +3799,9 @@ public final class StringTools {
 			}
 			if (first) {
 				first = false;
-				if (capitalizeFirstLetter) {
-					writeCharOn(Character.toUpperCase(c), writer);
-				} else {
-					writeCharOn(Character.toLowerCase(c), writer);
-				}
+				writeCharOn(capitalizeFirstLetter ? Character.toUpperCase(c) : Character.toLowerCase(c), writer);
 			} else {
-				if (prev == '_') {
-					writeCharOn(Character.toUpperCase(c), writer);
-				} else {
-					writeCharOn(Character.toLowerCase(c), writer);
-				}
+				writeCharOn((prev == '_') ? Character.toUpperCase(c) : Character.toLowerCase(c), writer);
 			}
 		}
 	}
@@ -3603,6 +3833,25 @@ public final class StringTools {
 		char[] result = new char[len];
 		sb.getChars(0, len, result, 0);
 		return result;
+	}
+
+	public static Iterator<String> convertToJavaStringLiterals(Iterator<String> strings) {
+		return new TransformationIterator<String, String>(strings) {
+			@Override
+			protected String transform(String string) {
+				return StringTools.convertToJavaStringLiteral(string);
+			}
+		};
+	}
+
+	// cannot name method simply 'convertToJavaStringLiterals' because of type-erasure...
+	public static Iterator<char[]> convertToJavaCharArrayLiterals(Iterator<char[]> strings) {
+		return new TransformationIterator<char[], char[]>(strings) {
+			@Override
+			protected char[] transform(char[] string) {
+				return StringTools.convertToJavaStringLiteral(string);
+			}
+		};
 	}
 
 	public static void convertToJavaStringLiteralOn(String string, StringBuffer sb) {
@@ -3796,6 +4045,19 @@ public final class StringTools {
 	private static void writeStringOn(char[] string, Writer writer) {
 		try {
 			writer.write(string);
+		} catch (IOException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
+	private static void writeStringOn(char[] string, char escape, Writer writer) {
+		try {
+			for (char c : string) {
+				if (c == escape) {
+					writer.write(c);
+				}
+				writer.write(c);
+			}
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}

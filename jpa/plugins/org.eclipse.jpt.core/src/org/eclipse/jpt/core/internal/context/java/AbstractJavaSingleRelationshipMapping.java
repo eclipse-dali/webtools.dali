@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
@@ -20,7 +21,6 @@ import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.Nullable;
 import org.eclipse.jpt.core.context.RelationshipMapping;
-import org.eclipse.jpt.core.context.SingleRelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -42,27 +42,28 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-
+/**
+ * 
+ */
 public abstract class AbstractJavaSingleRelationshipMapping<T extends RelationshipMappingAnnotation>
-	extends AbstractJavaRelationshipMapping<T> implements JavaSingleRelationshipMapping
+	extends AbstractJavaRelationshipMapping<T>
+	implements JavaSingleRelationshipMapping
 {
 	
 	protected final List<JavaJoinColumn> specifiedJoinColumns;
-
 	protected JavaJoinColumn defaultJoinColumn;
 
 	protected Boolean specifiedOptional;
+
 
 	protected AbstractJavaSingleRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.specifiedJoinColumns = new ArrayList<JavaJoinColumn>();
 	}
-	
-	public FetchType getDefaultFetch() {
-		return SingleRelationshipMapping.DEFAULT_FETCH_TYPE;
-	}
-	
-	//***************** ISingleRelationshipMapping implementation *****************
+
+
+	// ********** join columns **********
+
 	public ListIterator<JavaJoinColumn> joinColumns() {
 		return this.containsSpecifiedJoinColumns() ? this.specifiedJoinColumns() : this.defaultJoinColumns();
 	}
@@ -71,14 +72,84 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		return this.containsSpecifiedJoinColumns() ? this.specifiedJoinColumnsSize() : this.defaultJoinColumnsSize();
 	}
 	
+	public ListIterator<JavaJoinColumn> specifiedJoinColumns() {
+		return new CloneListIterator<JavaJoinColumn>(this.specifiedJoinColumns);
+	}
+
+	public int specifiedJoinColumnsSize() {
+		return this.specifiedJoinColumns.size();
+	}
+
+	public boolean containsSpecifiedJoinColumns() {
+		return ! this.specifiedJoinColumns.isEmpty();
+	}
+
+	public JavaJoinColumn addSpecifiedJoinColumn(int index) {
+		JavaJoinColumn oldDefaultJoinColumn = this.defaultJoinColumn;
+		if (oldDefaultJoinColumn != null) {
+			//null the default join column now if one already exists.
+			//if one does not exist, there is already a specified join column.
+			//Remove it now so that it doesn't get removed during an update and
+			//cause change notifications to be sent to the UI in the wrong order
+			this.defaultJoinColumn = null;
+		}
+		JavaJoinColumn joinColumn = this.getJpaFactory().buildJavaJoinColumn(this, this.createJoinColumnOwner());
+		this.specifiedJoinColumns.add(index, joinColumn);
+		JoinColumnAnnotation joinColumnAnnotation = (JoinColumnAnnotation) this.getResourcePersistentAttribute().addAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
+		joinColumn.initialize(joinColumnAnnotation);
+		this.fireItemAdded(SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
+		if (oldDefaultJoinColumn != null) {
+			this.firePropertyChanged(DEFAULT_JOIN_COLUMN, oldDefaultJoinColumn, null);
+		}
+		return joinColumn;
+	}
+
+	protected void addSpecifiedJoinColumn(int index, JavaJoinColumn joinColumn) {
+		this.addItemToList(index, joinColumn, this.specifiedJoinColumns, SPECIFIED_JOIN_COLUMNS_LIST);
+	}
+
+	protected void addSpecifiedJoinColumn(JavaJoinColumn joinColumn) {
+		this.addSpecifiedJoinColumn(this.specifiedJoinColumns.size(), joinColumn);
+	}
+
+	public void removeSpecifiedJoinColumn(JoinColumn joinColumn) {
+		this.removeSpecifiedJoinColumn(this.specifiedJoinColumns.indexOf(joinColumn));
+	}
+	
+	public void removeSpecifiedJoinColumn(int index) {
+		JavaJoinColumn removedJoinColumn = this.specifiedJoinColumns.remove(index);
+		if (this.specifiedJoinColumns.isEmpty()) {
+			//create the defaultJoinColumn now or this will happen during project update 
+			//after removing the join column from the resource model. That causes problems 
+			//in the UI because the change notifications end up in the wrong order.
+			this.defaultJoinColumn = this.buildJoinColumn(new NullJoinColumn(this.getResourcePersistentAttribute()));
+		}
+		this.getResourcePersistentAttribute().removeAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
+		this.fireItemRemoved(SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
+		if (this.defaultJoinColumn != null) {
+			//fire change notification if a defaultJoinColumn was created above
+			this.firePropertyChanged(DEFAULT_JOIN_COLUMN, null, this.defaultJoinColumn);		
+		}
+	}
+
+	protected void removeSpecifiedJoinColumn_(JavaJoinColumn joinColumn) {
+		this.removeItemFromList(joinColumn, this.specifiedJoinColumns, SPECIFIED_JOIN_COLUMNS_LIST);
+	}
+	
+	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.specifiedJoinColumns, targetIndex, sourceIndex);
+		this.getResourcePersistentAttribute().move(targetIndex, sourceIndex, JoinColumnsAnnotation.ANNOTATION_NAME);
+		this.fireItemMoved(SPECIFIED_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
+	}
+
 	public JavaJoinColumn getDefaultJoinColumn() {
 		return this.defaultJoinColumn;
 	}
 	
-	protected void setDefaultJoinColumn(JavaJoinColumn newJoinColumn) {
-		JavaJoinColumn oldJoinColumn = this.defaultJoinColumn;
-		this.defaultJoinColumn = newJoinColumn;
-		firePropertyChanged(SingleRelationshipMapping.DEFAULT_JOIN_COLUMN, oldJoinColumn, newJoinColumn);
+	protected void setDefaultJoinColumn(JavaJoinColumn column) {
+		JavaJoinColumn old = this.defaultJoinColumn;
+		this.defaultJoinColumn = column;
+		this.firePropertyChanged(DEFAULT_JOIN_COLUMN, old, column);
 	}
 
 	protected ListIterator<JavaJoinColumn> defaultJoinColumns() {
@@ -91,153 +162,90 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	protected int defaultJoinColumnsSize() {
 		return (this.defaultJoinColumn == null) ? 0 : 1;
 	}
-	
-	public ListIterator<JavaJoinColumn> specifiedJoinColumns() {
-		return new CloneListIterator<JavaJoinColumn>(this.specifiedJoinColumns);
-	}
 
-	public int specifiedJoinColumnsSize() {
-		return this.specifiedJoinColumns.size();
-	}
 
-	public boolean containsSpecifiedJoinColumns() {
-		return !this.specifiedJoinColumns.isEmpty();
-	}
-
-	public JavaJoinColumn addSpecifiedJoinColumn(int index) {
-		JavaJoinColumn oldDefaultJoinColumn = this.getDefaultJoinColumn();
-		if (oldDefaultJoinColumn != null) {
-			//null the default join column now if one already exists.
-			//if one does not exist, there is already a specified join column.
-			//Remove it now so that it doesn't get removed during an update and
-			//cause change notifications to be sent to the UI in the wrong order
-			this.defaultJoinColumn = null;
-		}
-		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
-		this.specifiedJoinColumns.add(index, joinColumn);
-		JoinColumnAnnotation joinColumnResource = (JoinColumnAnnotation) getResourcePersistentAttribute().addAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
-		joinColumn.initialize(joinColumnResource);
-		this.fireItemAdded(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
-		if (oldDefaultJoinColumn != null) {
-			this.firePropertyChanged(SingleRelationshipMapping.DEFAULT_JOIN_COLUMN, oldDefaultJoinColumn, null);
-		}
-		return joinColumn;
-	}
-
-	protected void addSpecifiedJoinColumn(int index, JavaJoinColumn joinColumn) {
-		addItemToList(index, joinColumn, this.specifiedJoinColumns, SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST);
-	}
-
-	public void removeSpecifiedJoinColumn(JoinColumn joinColumn) {
-		this.removeSpecifiedJoinColumn(this.specifiedJoinColumns.indexOf(joinColumn));
-	}
-	
-	public void removeSpecifiedJoinColumn(int index) {
-		JavaJoinColumn removedJoinColumn = this.specifiedJoinColumns.remove(index);
-		if (!containsSpecifiedJoinColumns()) {
-			//create the defaultJoinColumn now or this will happen during project update 
-			//after removing the join column from the resource model. That causes problems 
-			//in the UI because the change notifications end up in the wrong order.
-			this.defaultJoinColumn = buildJoinColumn(new NullJoinColumn(getResourcePersistentAttribute()));
-		}
-		getResourcePersistentAttribute().removeAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
-		fireItemRemoved(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
-		if (this.defaultJoinColumn != null) {
-			//fire change notification if a defaultJoinColumn was created above
-			this.firePropertyChanged(SingleRelationshipMapping.DEFAULT_JOIN_COLUMN, null, this.defaultJoinColumn);		
-		}
-	}
-
-	protected void removeSpecifiedJoinColumn_(JavaJoinColumn joinColumn) {
-		removeItemFromList(joinColumn, this.specifiedJoinColumns, SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST);
-	}
-	
-	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.specifiedJoinColumns, targetIndex, sourceIndex);
-		getResourcePersistentAttribute().move(targetIndex, sourceIndex, JoinColumnsAnnotation.ANNOTATION_NAME);
-		fireItemMoved(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
-	}
+	// ********** optional **********
 
 	public Boolean getOptional() {
-		return getSpecifiedOptional() == null ? getDefaultOptional() : getSpecifiedOptional();
+		return (this.specifiedOptional != null) ? this.specifiedOptional : this.getDefaultOptional();
+	}
+
+	public Boolean getSpecifiedOptional() {
+		return this.specifiedOptional;
+	}
+
+	public void setSpecifiedOptional(Boolean optional) {
+		Boolean old = this.specifiedOptional;
+		this.specifiedOptional = optional;
+		this.setOptionalOnResourceModel(optional);
+		this.firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, old, optional);
+	}
+	
+	protected void setSpecifiedOptional_(Boolean optional) {
+		Boolean old = this.specifiedOptional;
+		this.specifiedOptional = optional;
+		this.firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, old, optional);
 	}
 	
 	public Boolean getDefaultOptional() {
 		return Nullable.DEFAULT_OPTIONAL;
 	}
 	
-	public Boolean getSpecifiedOptional() {
-		return this.specifiedOptional;
-	}
-	
-	public void setSpecifiedOptional(Boolean newSpecifiedOptional) {
-		Boolean oldSpecifiedOptional = this.specifiedOptional;
-		this.specifiedOptional = newSpecifiedOptional;
-		setOptionalOnResourceModel(newSpecifiedOptional);
-		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldSpecifiedOptional, newSpecifiedOptional);
-	}
-	
-	protected void setSpecifiedOptional_(Boolean newSpecifiedOptional) {
-		Boolean oldSpecifiedOptional = this.specifiedOptional;
-		this.specifiedOptional = newSpecifiedOptional;
-		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldSpecifiedOptional, newSpecifiedOptional);
-	}
-
 	protected abstract void setOptionalOnResourceModel(Boolean newOptional);
 
 
+	// ********** resource => context **********
+
 	@Override
-	public void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.initialize(resourcePersistentAttribute);
-		this.initializeSpecifiedJoinColumns(resourcePersistentAttribute);
-		this.initializeDefaultJoinColumn(resourcePersistentAttribute);
+	public void initialize(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
+		super.initialize(javaResourcePersistentAttribute);
+		this.initializeSpecifiedJoinColumns(javaResourcePersistentAttribute);
+		this.initializeDefaultJoinColumn(javaResourcePersistentAttribute);
 	}
 	
 	@Override
 	protected void initialize(T relationshipMapping) {
 		super.initialize(relationshipMapping);
-		this.specifiedOptional = this.specifiedOptional(relationshipMapping);
+		this.specifiedOptional = this.buildSpecifiedOptional(relationshipMapping);
 	}
 	
-	protected void initializeSpecifiedJoinColumns(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		ListIterator<JavaResourceNode> annotations = resourcePersistentAttribute.annotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
+	protected void initializeSpecifiedJoinColumns(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
+		ListIterator<JavaResourceNode> annotations = javaResourcePersistentAttribute.annotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
 			this.specifiedJoinColumns.add(buildJoinColumn((JoinColumnAnnotation) annotations.next()));
 		}
 	}
 	
-	protected boolean shouldBuildDefaultJoinColumn() {
-		return !containsSpecifiedJoinColumns() && isRelationshipOwner();
-	}
-	
-	protected void initializeDefaultJoinColumn(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		if (!shouldBuildDefaultJoinColumn()) {
-			return;
+	protected void initializeDefaultJoinColumn(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
+		if (this.shouldBuildDefaultJoinColumn()) {
+			this.defaultJoinColumn = this.buildJoinColumn(new NullJoinColumn(javaResourcePersistentAttribute));
 		}
-		this.defaultJoinColumn = buildJoinColumn(new NullJoinColumn(resourcePersistentAttribute));
 	}	
 	
+	protected boolean shouldBuildDefaultJoinColumn() {
+		return ! this.containsSpecifiedJoinColumns() && this.isRelationshipOwner();
+	}
 	
 	@Override
-	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.update(resourcePersistentAttribute);
-		this.updateSpecifiedJoinColumns(resourcePersistentAttribute);
-		this.updateDefaultJoinColumn(resourcePersistentAttribute);
+	public void update(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
+		super.update(javaResourcePersistentAttribute);
+		this.updateSpecifiedJoinColumns(javaResourcePersistentAttribute);
+		this.updateDefaultJoinColumn(javaResourcePersistentAttribute);
 	}
 	
 	@Override
 	protected void update(T relationshipMapping) {
 		super.update(relationshipMapping);
-		this.setSpecifiedOptional_(this.specifiedOptional(relationshipMapping));
+		this.setSpecifiedOptional_(this.buildSpecifiedOptional(relationshipMapping));
 	}
 	
-	protected abstract Boolean specifiedOptional(T relationshipMapping);
+	protected abstract Boolean buildSpecifiedOptional(T relationshipMapping);
 	
 	
-	protected void updateSpecifiedJoinColumns(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+	protected void updateSpecifiedJoinColumns(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
 		ListIterator<JavaJoinColumn> joinColumns = specifiedJoinColumns();
-		ListIterator<JavaResourceNode> resourceJoinColumns = resourcePersistentAttribute.annotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
+		ListIterator<JavaResourceNode> resourceJoinColumns = javaResourcePersistentAttribute.annotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
 		
 		while (joinColumns.hasNext()) {
 			JavaJoinColumn joinColumn = joinColumns.next();
@@ -250,20 +258,20 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		}
 		
 		while (resourceJoinColumns.hasNext()) {
-			addSpecifiedJoinColumn(specifiedJoinColumnsSize(), buildJoinColumn((JoinColumnAnnotation) resourceJoinColumns.next()));
+			addSpecifiedJoinColumn(buildJoinColumn((JoinColumnAnnotation) resourceJoinColumns.next()));
 		}
 	}
 	
-	protected void updateDefaultJoinColumn(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		if (!shouldBuildDefaultJoinColumn()) {
-			setDefaultJoinColumn(null);
-			return;
-		}
-		if (getDefaultJoinColumn() == null) {
-			this.setDefaultJoinColumn(buildJoinColumn(new NullJoinColumn(resourcePersistentAttribute)));
-		}
-		else {
-			this.defaultJoinColumn.update(new NullJoinColumn(resourcePersistentAttribute));
+	protected void updateDefaultJoinColumn(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
+		if (this.shouldBuildDefaultJoinColumn()) {
+			JoinColumnAnnotation jcAnnotation = new NullJoinColumn(javaResourcePersistentAttribute);
+			if (this.defaultJoinColumn == null) {
+				this.setDefaultJoinColumn(this.buildJoinColumn(jcAnnotation));
+			} else {
+				this.defaultJoinColumn.update(jcAnnotation);
+			}
+		} else {
+			this.setDefaultJoinColumn(null);
 		}
 	}	
 
@@ -281,12 +289,22 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	 * eliminate any "container" types
 	 */
 	@Override
-	protected String defaultTargetEntity(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		if (resourcePersistentAttribute.typeIsContainer()) {
+	protected String buildDefaultTargetEntity(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
+		if (javaResourcePersistentAttribute.typeIsContainer()) {
 			return null;
 		}
-		return resourcePersistentAttribute.getQualifiedReferenceEntityTypeName();
+		return javaResourcePersistentAttribute.getQualifiedReferenceEntityTypeName();
 	}
+
+
+	// ********** Fetchable implementation **********
+
+	public FetchType getDefaultFetch() {
+		return DEFAULT_FETCH_TYPE;
+	}
+
+
+	// ********** Java completion proposals **********
 
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -303,14 +321,15 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		return null;
 	}
 	
-	//************* Validation  **********************************
-	
+
+	// ********** validation **********
+
 	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 		
-		if (addJoinColumnMessages()) {
-			addJoinColumnMessages(messages, astRoot);
+		if (this.connectionProfileIsActive()) {
+			this.checkJoinColumns(messages, astRoot);
 		}
 	}
 	
@@ -318,53 +337,51 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	//of a bidirectional relationship.  This is a low risk fix for RC3, but a better
 	//solution would be to not have the default joinColumns on the non-owning side.
 	//This would fix another bug that we show default joinColumns in this situation.
-	protected boolean addJoinColumnMessages() {
-		return (entityOwned() && isRelationshipOwner());
-	}
-		
-	protected void addJoinColumnMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		
-		for (Iterator<JavaJoinColumn> stream = this.joinColumns(); stream.hasNext();) {
-			JavaJoinColumn joinColumn = stream.next();
-			String table = joinColumn.getTable();
-			boolean doContinue = joinColumn.connectionProfileIsActive();
-			
-			if (doContinue && this.getTypeMapping().tableNameIsInvalid(table)) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
-						new String[] {table, joinColumn.getName()}, 
-						joinColumn, joinColumn.getTableTextRange(astRoot))
-				);
-				doContinue = false;
-			}
-			
-			if (doContinue && ! joinColumn.isResolved()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
-						new String[] {joinColumn.getName()}, 
-						joinColumn, joinColumn.getNameTextRange(astRoot))
-				);
-			}
-			
-			if (doContinue && ! joinColumn.isReferencedColumnResolved()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-						joinColumn, joinColumn.getReferencedColumnNameTextRange(astRoot))
-				);
+	protected void checkJoinColumns(List<IMessage> messages, CompilationUnit astRoot) {
+		if (this.entityOwned() && this.isRelationshipOwner()) {
+			for (Iterator<JavaJoinColumn> stream = this.joinColumns(); stream.hasNext(); ) {
+				this.checkJoinColumn(stream.next(), messages, astRoot);
 			}
 		}
 	}
-	
 
-	public class JoinColumnOwner implements JavaJoinColumn.Owner
-	{
+	protected void checkJoinColumn(JavaJoinColumn joinColumn, List<IMessage> messages, CompilationUnit astRoot) {
+		if (this.getTypeMapping().tableNameIsInvalid(joinColumn.getTable())) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
+					new String[] {joinColumn.getTable(), joinColumn.getName()}, 
+					joinColumn, joinColumn.getTableTextRange(astRoot))
+			);
+			return;
+		}
+
+		if ( ! joinColumn.isResolved()) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
+					new String[] {joinColumn.getName()}, 
+					joinColumn, joinColumn.getNameTextRange(astRoot))
+			);
+		}
+
+		if ( ! joinColumn.isReferencedColumnResolved()) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
+					new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
+					joinColumn, joinColumn.getReferencedColumnNameTextRange(astRoot))
+			);
+		}
+	}
+
+
+	// ********** JavaJoinColumn.Owner implementation **********
+
+	public class JoinColumnOwner implements JavaJoinColumn.Owner {
 
 		public JoinColumnOwner() {
 			super();
@@ -374,7 +391,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		 * by default, the join column is in the type mapping's primary table
 		 */
 		public String getDefaultTableName() {
-			return AbstractJavaSingleRelationshipMapping.this.getTypeMapping().getTableName();
+			return AbstractJavaSingleRelationshipMapping.this.getTypeMapping().getPrimaryTableName();
 		}
 
 		public Entity getTargetEntity() {
@@ -408,7 +425,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 			return getTypeMapping().getDbTable(tableName);
 		}
 
-		public Table getDbReferencedColumnTable() {
+		public Table getReferencedColumnDbTable() {
 			Entity targetEntity = getTargetEntity();
 			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
 		}
@@ -429,5 +446,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		public int joinColumnsSize() {
 			return AbstractJavaSingleRelationshipMapping.this.joinColumnsSize();
 		}
+
 	}
+
 }

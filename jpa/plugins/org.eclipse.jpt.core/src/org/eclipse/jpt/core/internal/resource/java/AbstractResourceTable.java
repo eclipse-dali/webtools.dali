@@ -53,7 +53,7 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 	
 	private String schema;
 	
-	private final List<NestableUniqueConstraint> uniqueConstraints;
+	final List<NestableUniqueConstraint> uniqueConstraints;
 	
 	private final UniqueConstraintsContainerAnnotation uniqueConstraintsContainerAnnotation;
 	
@@ -164,7 +164,7 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 		return uniqueConstraint;
 	}
 	
-	private void addUniqueConstraint(int index, NestableUniqueConstraint uniqueConstraint) {
+	protected void addUniqueConstraint(int index, NestableUniqueConstraint uniqueConstraint) {
 		addItemToList(index, uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 	}
 	
@@ -175,7 +175,7 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 		ContainerAnnotationTools.synchAnnotationsAfterRemove(index, this.uniqueConstraintsContainerAnnotation);
 	}
 
-	private void removeUniqueConstraint(NestableUniqueConstraint uniqueConstraint) {
+	protected void removeUniqueConstraint(NestableUniqueConstraint uniqueConstraint) {
 		removeItemFromList(uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 	}
 	

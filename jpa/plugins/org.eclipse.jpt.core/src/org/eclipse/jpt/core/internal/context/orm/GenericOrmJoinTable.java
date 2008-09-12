@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
@@ -25,7 +26,6 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
-import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -39,20 +39,23 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-
-public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTable
+/**
+ * 
+ */
+public class GenericOrmJoinTable
+	extends AbstractOrmTable
+	implements OrmJoinTable
 {
 
 	protected final List<OrmJoinColumn> specifiedJoinColumns;
-
 	protected OrmJoinColumn defaultJoinColumn;
 
 	protected final List<OrmJoinColumn> specifiedInverseJoinColumns;
-
 	protected OrmJoinColumn defaultInverseJoinColumn;
 	
 	protected XmlRelationshipMapping relationshipMappingResource;
 	
+
 	public GenericOrmJoinTable(OrmRelationshipMapping parent) {
 		super(parent);
 		this.specifiedJoinColumns = new ArrayList<OrmJoinColumn>();
@@ -85,24 +88,38 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 	//******************* AbstractOrmTable implementation *****************
 	
 	@Override
-	protected String defaultCatalog() {
-		if (!getRelationshipMapping().isRelationshipOwner()) {
-			return null;
-		}
-		return getEntityMappings().getCatalog();
+	protected String buildDefaultName() {
+		return this.getRelationshipMapping().getJoinTableDefaultName();
+	}
+	
+	/**
+	 * if the join table is on the "mappedBy" side, it's bogus;
+	 * so don't give it a default schema
+	 */
+	@Override
+	protected String buildDefaultSchema() {
+		return this.getRelationshipMapping().isRelationshipOwner() ? this.getContextDefaultSchema() : null;
+	}
+
+	/**
+	 * if the join table is on the "mappedBy" side, it's bogus;
+	 * so don't give it a default catalog
+	 */
+	@Override
+	protected String buildDefaultCatalog() {
+		return this.getRelationshipMapping().isRelationshipOwner() ? this.getContextDefaultCatalog() : null;
 	}
 	
 	@Override
-	protected String defaultName() {
-		return MappingTools.buildJoinTableDefaultName(getRelationshipMapping());
+	protected XmlJoinTable getResourceTable() {
+		return this.relationshipMappingResource.getJoinTable();
 	}
-	
+
 	@Override
-	protected String defaultSchema() {
-		if (!getRelationshipMapping().isRelationshipOwner()) {
-			return null;
-		}
-		return getEntityMappings().getSchema();
+	protected XmlJoinTable addResourceTable() {
+		XmlJoinTable resourceTable = OrmFactory.eINSTANCE.createXmlJoinTableImpl();
+		this.relationshipMappingResource.setJoinTable(resourceTable);
+		return resourceTable;
 	}
 
 	@Override
@@ -110,17 +127,6 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		this.relationshipMappingResource.setJoinTable(null);
 	}
 	
-	@Override
-	protected void addResourceTable() {
-		this.relationshipMappingResource.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTableImpl());
-		
-	}
-
-	@Override
-	protected XmlJoinTable getResourceTable() {
-		return this.relationshipMappingResource.getJoinTable();
-	}
-
 	
 	//******************* JoinTable implementation *****************
 
@@ -180,6 +186,10 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 
 	protected void addSpecifiedJoinColumn(int index, OrmJoinColumn joinColumn) {
 		addItemToList(index, joinColumn, this.specifiedJoinColumns, JoinTable.SPECIFIED_JOIN_COLUMNS_LIST);
+	}
+
+	protected void addSpecifiedJoinColumn(OrmJoinColumn joinColumn) {
+		this.addSpecifiedJoinColumn(this.specifiedJoinColumns.size(), joinColumn);
 	}
 
 	public void removeSpecifiedJoinColumn(JoinColumn joinColumn) {
@@ -270,6 +280,10 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 	
 	protected void addSpecifiedInverseJoinColumn(int index, OrmJoinColumn joinColumn) {
 		addItemToList(index, joinColumn, this.specifiedInverseJoinColumns, JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST);
+	}
+
+	protected void addSpecifiedInverseJoinColumn(OrmJoinColumn joinColumn) {
+		this.addSpecifiedInverseJoinColumn(this.specifiedInverseJoinColumns.size(), joinColumn);
 	}
 
 	public void removeSpecifiedInverseJoinColumn(JoinColumn joinColumn) {
@@ -367,14 +381,14 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 	}
 		
 	protected void updateSpecifiedJoinColumns(XmlJoinTable joinTable) {
-		ListIterator<OrmJoinColumn> joinColumns = specifiedJoinColumns();
+		ListIterator<OrmJoinColumn> contextJoinColumns = specifiedJoinColumns();
 		ListIterator<XmlJoinColumn> resourceJoinColumns = EmptyListIterator.instance();
 		if (joinTable != null) {
 			resourceJoinColumns = new CloneListIterator<XmlJoinColumn>(joinTable.getJoinColumns());//prevent ConcurrentModificiationException
 		}
 		
-		while (joinColumns.hasNext()) {
-			OrmJoinColumn joinColumn = joinColumns.next();
+		while (contextJoinColumns.hasNext()) {
+			OrmJoinColumn joinColumn = contextJoinColumns.next();
 			if (resourceJoinColumns.hasNext()) {
 				joinColumn.update(resourceJoinColumns.next());
 			}
@@ -384,7 +398,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		}
 		
 		while (resourceJoinColumns.hasNext()) {
-			addSpecifiedJoinColumn(specifiedJoinColumnsSize(), buildJoinColumn(resourceJoinColumns.next()));
+			addSpecifiedJoinColumn(buildJoinColumn(resourceJoinColumns.next()));
 		}
 	}
 	
@@ -406,24 +420,24 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 	}	
 
 	protected void updateSpecifiedInverseJoinColumns(XmlJoinTable joinTable) {
-		ListIterator<OrmJoinColumn> inverseJoinColumns = specifiedInverseJoinColumns();
-		ListIterator<XmlJoinColumn> resourceInverseJoinColumns = EmptyListIterator.instance();
+		ListIterator<OrmJoinColumn> contextJoinColumns = specifiedInverseJoinColumns();
+		ListIterator<XmlJoinColumn> resourceJoinColumns = EmptyListIterator.instance();
 		if (joinTable != null) {
-			resourceInverseJoinColumns = new CloneListIterator<XmlJoinColumn>(joinTable.getInverseJoinColumns());//prevent ConcurrentModificiationException
+			resourceJoinColumns = new CloneListIterator<XmlJoinColumn>(joinTable.getInverseJoinColumns());//prevent ConcurrentModificiationException
 		}
 		
-		while (inverseJoinColumns.hasNext()) {
-			OrmJoinColumn joinColumn = inverseJoinColumns.next();
-			if (resourceInverseJoinColumns.hasNext()) {
-				joinColumn.update(resourceInverseJoinColumns.next());
+		while (contextJoinColumns.hasNext()) {
+			OrmJoinColumn joinColumn = contextJoinColumns.next();
+			if (resourceJoinColumns.hasNext()) {
+				joinColumn.update(resourceJoinColumns.next());
 			}
 			else {
 				removeSpecifiedInverseJoinColumn_(joinColumn);
 			}
 		}
 		
-		while (resourceInverseJoinColumns.hasNext()) {
-			addSpecifiedInverseJoinColumn(specifiedInverseJoinColumnsSize(), buildInverseJoinColumn(resourceInverseJoinColumns.next()));
+		while (resourceJoinColumns.hasNext()) {
+			addSpecifiedInverseJoinColumn(buildInverseJoinColumn(resourceJoinColumns.next()));
 		}
 	}
 	
@@ -451,68 +465,78 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 	protected OrmJoinColumn buildInverseJoinColumn(XmlJoinColumn resourceJoinColumn) {
 		return getJpaFactory().buildOrmJoinColumn(this, new InverseJoinColumnOwner(), resourceJoinColumn);
 	}
-	
-	
+
+
 	// ************************** validation ***********************
-	
-	/** used internally as a mechanism to short circuit continued message adding */
-	private boolean doContinue;
 
 	@Override
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
-		this.addTableMessages(messages);
-		
-		if (this.doContinue) {
-			for (OrmJoinColumn joinColumn : CollectionTools.iterable(joinColumns())) {
-				joinColumn.addToMessages(messages);
-			}
-			
-			for (OrmJoinColumn joinColumn : CollectionTools.iterable(inverseJoinColumns())) {
-				joinColumn.addToMessages(messages);
-			}
+		if (this.connectionProfileIsActive()) {
+			this.checkDatabase(messages);
 		}
 	}
-	
-	protected void addTableMessages(List<IMessage> messages) {
-		this.doContinue = connectionProfileIsActive();
-		String schema = getSchema();
-		OrmRelationshipMapping mapping = getRelationshipMapping();
-	
-		if (this.doContinue && ! hasResolvedSchema()) {
+
+	protected void checkDatabase(List<IMessage> messages) {
+		OrmRelationshipMapping mapping = this.getRelationshipMapping();
+
+		if ( ! this.hasResolvedCatalog()) {
+			if (mapping.getPersistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_CATALOG,
+						new String[] {mapping.getName(), this.getCatalog(), this.getName()}, 
+						this,
+						this.getCatalogTextRange())
+				);
+				
+			} else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG,
+						new String[] {this.getCatalog(), this.getName()}, 
+						this,
+						this.getCatalogTextRange())
+				);
+			}
+			return;
+		}
+		
+		if ( ! this.hasResolvedSchema()) {
 			if (mapping.getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA,
-						new String[] {mapping.getName(), schema, getName()}, 
-						this, 
-						getSchemaTextRange())
+						new String[] {mapping.getName(), this.getSchema(), this.getName()}, 
+						this,
+						this.getSchemaTextRange())
 				);
 				
-			}
-			else {
+			} else {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
-						new String[] {schema, getName()}, 
-						this, 
-						getSchemaTextRange())
+						new String[] {this.getSchema(), this.getName()}, 
+						this,
+						this.getSchemaTextRange())
 				);
 			}
-			this.doContinue = false;
+			return;
 		}
 		
-		if (this.doContinue && ! isResolved()) {
+		if ( ! this.isResolved()) {
 			if (mapping.getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME,
-						new String[] {mapping.getName(), getName()}, 
-						this, 
-						getNameTextRange())
+						new String[] {mapping.getName(), this.getName()}, 
+						this,
+						this.getNameTextRange())
 				);
 			}
 			else {
@@ -520,13 +544,24 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
-						new String[] {getName()}, 
-						this, 
-						getNameTextRange())
+						new String[] {this.getName()},
+						this,
+						this.getNameTextRange())
 				);
 			}
+			return;
+		}
+
+		this.checkJoinColumns(this.joinColumns(), messages);
+		this.checkJoinColumns(this.inverseJoinColumns(), messages);
+	}
+
+	protected void checkJoinColumns(Iterator<OrmJoinColumn> joinColumns, List<IMessage> messages) {
+		while (joinColumns.hasNext()) {
+			joinColumns.next().addToMessages(messages);
 		}
 	}
+
 	/**
 	 * just a little common behavior
 	 */
@@ -608,7 +643,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 			return (targetEntity == null) ? null : targetEntity.getDbTable(tableName);
 		}
 
-		public org.eclipse.jpt.db.Table getDbReferencedColumnTable() {
+		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
 			Entity targetEntity = getTargetEntity();
 			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
 		}
@@ -668,7 +703,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 			return (dbTable != null) ? dbTable : getTypeMapping().getDbTable(tableName);
 		}
 
-		public org.eclipse.jpt.db.Table getDbReferencedColumnTable() {
+		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
 			return getTypeMapping().getPrimaryDbTable();
 		}
 		

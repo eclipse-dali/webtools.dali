@@ -13,10 +13,10 @@ import java.text.Collator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Sequence;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
@@ -60,8 +60,8 @@ final class DTPSchemaWrapper
 		return this.dtpSchema.getName();
 	}
 
-	public Catalog getCatalog() {
-		return this.getContainer().getCatalog();
+	public DTPSchemaContainerWrapper getContainer() {
+		return (DTPSchemaContainerWrapper) this.getParent();
 	}
 
 	// ***** tables
@@ -87,7 +87,7 @@ final class DTPSchemaWrapper
 		for (int i = result.length; i-- > 0;) {
 			result[i] = new DTPTableWrapper(this, dtpTables.get(i));
 		}
-		return result;
+		return CollectionTools.sort(result);
 	}
 
 	// minimize scope of suppressed warnings
@@ -98,15 +98,6 @@ final class DTPSchemaWrapper
 
 	public int tablesSize() {
 		return this.getTables().length;
-	}
-
-	public Iterator<String> tableNames() {
-		return new TransformationIterator<DTPTableWrapper, String>(this.tableWrappers()) {
-			@Override
-			protected String transform(DTPTableWrapper table) {
-				 return table.getName();
-			}
-		};
 	}
 
 	/**
@@ -133,7 +124,21 @@ final class DTPSchemaWrapper
 	}
 
 	public DTPTableWrapper getTableNamed(String name) {
-		return this.getDatabaseObjectNamed(this.getTables(), name);
+		return this.selectDatabaseObjectNamed(this.getTables(), name);
+	}
+
+	public Iterator<String> sortedTableIdentifiers() {
+		// the tables are already sorted
+		return new TransformationIterator<DTPTableWrapper, String>(this.tableWrappers()) {
+			@Override
+			protected String transform(DTPTableWrapper table) {
+				 return table.getIdentifier();
+			}
+		};
+	}
+
+	public DTPTableWrapper getTableForIdentifier(String identifier) {
+		return this.selectDatabaseObjectForIdentifier(this.getTables(), identifier);
 	}
 
 	// ***** sequences
@@ -159,7 +164,7 @@ final class DTPSchemaWrapper
 		for (int i = result.length; i-- > 0;) {
 			result[i] = new DTPSequenceWrapper(this, dtpSequences.get(i));
 		}
-		return result;
+		return CollectionTools.sort(result);
 	}
 
 	// minimize scope of suppressed warnings
@@ -172,17 +177,22 @@ final class DTPSchemaWrapper
 		return this.getSequences().length;
 	}
 
-	public Iterator<String> sequenceNames() {
+	public DTPSequenceWrapper getSequenceNamed(String name) {
+		return this.selectDatabaseObjectNamed(this.getSequences(), name);
+	}
+
+	public Iterator<String> sortedSequenceIdentifiers() {
+		// the sequences are already sorted
 		return new TransformationIterator<DTPSequenceWrapper, String>(this.sequenceWrappers()) {
 			@Override
 			protected String transform(DTPSequenceWrapper sequence) {
-				 return sequence.getName();
+				 return sequence.getIdentifier();
 			}
 		};
 	}
 
-	public DTPSequenceWrapper getSequenceNamed(String name) {
-		return this.getDatabaseObjectNamed(this.getSequences(), name);
+	public DTPSequenceWrapper getSequenceForIdentifier(String identifier) {
+		return this.selectDatabaseObjectForIdentifier(this.getSequences(), identifier);
 	}
 
 
@@ -214,10 +224,6 @@ final class DTPSchemaWrapper
 	 */
 	DTPColumnWrapper getColumn_(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
 		return this.getTable_(dtpColumn.getTable()).getColumn_(dtpColumn);
-	}
-
-	private DTPSchemaContainerWrapper getContainer() {
-		return (DTPSchemaContainerWrapper) this.getParent();
 	}
 
 

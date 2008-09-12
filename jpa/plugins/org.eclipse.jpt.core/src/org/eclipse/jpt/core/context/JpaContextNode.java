@@ -13,9 +13,13 @@ import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.db.Catalog;
+import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
 
 /**
- * 
+ * Common protocol for JPA objects that have a context, as opposed to
+ * resource objects.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -23,15 +27,25 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaContextNode extends JpaNode
+public interface JpaContextNode
+	extends JpaNode
 {
+	/**
+	 * Return the persistence unit if the context node is within a
+	 * persistence.xml context. Otherwise return null.
+	 */
 	PersistenceUnit getPersistenceUnit();
 	
 	/**
-	 * Return the EntityMappings if this contextNode is within an orm.xml context
-	 * Return null otherwise.
+	 * Return the entity mappings if the context node is within an orm.xml
+	 * context. Otherwise return null.
 	 */
 	EntityMappings getEntityMappings();
 
 	OrmPersistentType getOrmPersistentType();
+
+	SchemaContainer getContextDefaultDbSchemaContainer();
+	Catalog getContextDefaultDbCatalog();
+	Schema getContextDefaultDbSchema();
+
 }

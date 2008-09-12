@@ -21,7 +21,9 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
-public abstract class GeneratorImpl extends AbstractResourceAnnotation<Member> implements GeneratorAnnotation
+public abstract class GeneratorImpl
+	extends AbstractResourceAnnotation<Member>
+	implements GeneratorAnnotation
 {
 	// hold this so we can get the 'name' text range
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;

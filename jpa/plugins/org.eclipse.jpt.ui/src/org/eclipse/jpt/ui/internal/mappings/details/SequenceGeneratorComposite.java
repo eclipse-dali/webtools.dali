@@ -62,12 +62,13 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 		super(parentPane, parent);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected SequenceGenerator buildGenerator(GeneratorHolder subject) {
 		return subject.addSequenceGenerator();
+	}
+
+	protected SequenceGenerator buildGenerator() {
+		return this.buildGenerator(this.getSubject());
 	}
 
 	private PropertyValueModel<SequenceGenerator> buildSequenceGeneratorHolder() {
@@ -91,62 +92,51 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 			}
 
 			@Override
-			protected void buildSubject() {
-				SequenceGeneratorComposite.this.buildGenerator(
-					SequenceGeneratorComposite.this.getSubject()
-				);
-			}
-
-			@Override
 			protected String getDefaultValue() {
-				return getSubject().getDefaultSequenceName();
+				return this.getSubject().getDefaultSequenceName();
 			}
 
 			@Override
-			protected boolean isBuildSubjectAllowed() {
+			protected void setValue(String value) {
+				SequenceGenerator sg = this.getSubject();
+				if (sg == null) {
+					sg = SequenceGeneratorComposite.this.buildGenerator();
+				}
+				sg.setSpecifiedSequenceName(value);
+			}
+
+			@Override
+			protected String getValue() {
+				SequenceGenerator generator = SequenceGeneratorComposite.this.getGenerator();
+				return (generator == null) ? null : generator.getSpecifiedSequenceName();
+			}
+
+			@Override
+			protected boolean nullSubjectIsAllowed() {
 				return true;
 			}
 
+			/**
+			 * subject may be null, so delegate to the composite
+			 */
 			@Override
 			protected JpaProject getJpaProject() {
 				return SequenceGeneratorComposite.this.getJpaProject();
 			}
 
 			@Override
-			protected Schema getSchema() {
-				// TODO
-				return null;
+			protected Schema getDbSchema_() {
+				return this.getSubject().getDbSchema();
 			}
 
-			@Override
-			protected void setValue(String value) {
-				getSubject().setSpecifiedSequenceName(value);
-			}
-
-			@Override
-			protected String getValue() {
-				SequenceGenerator generator = getGenerator();
-
-				if (generator != null) {
-					return generator.getSpecifiedSequenceName();
-				}
-
-				return null;
-			}
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected SequenceGenerator getGenerator(GeneratorHolder subject) {
 		return subject.getSequenceGenerator();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -173,9 +163,6 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 		initializeInitialValueWidgets(container);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected String getPropertyName() {
 		return GeneratorHolder.SEQUENCE_GENERATOR_PROPERTY;

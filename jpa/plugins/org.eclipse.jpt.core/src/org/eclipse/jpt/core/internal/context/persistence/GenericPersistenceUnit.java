@@ -43,8 +43,6 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlProperties;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.db.Catalog;
-import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
@@ -94,9 +92,9 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	protected final List<Query> queries;
 	
 	
-	protected String defaultSchema;
-	protected String defaultCatalog;
 	protected AccessType defaultAccess;
+	protected String defaultCatalog;
+	protected String defaultSchema;
 	protected boolean defaultCascadePersist;
 	
 	public GenericPersistenceUnit(Persistence parent, XmlPersistenceUnit persistenceUnit) {
@@ -243,10 +241,8 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		if (impliedMappingFileRef == null) {
 			return specifiedMappingFileRefs();
 		}
-		else {
-			return new ReadOnlyCompositeListIterator<MappingFileRef>(
-				specifiedMappingFileRefs(), impliedMappingFileRef);
-		}
+		return new ReadOnlyCompositeListIterator<MappingFileRef>(
+			specifiedMappingFileRefs(), impliedMappingFileRef);
 	}
 	
 	public int mappingFileRefsSize() {
@@ -275,7 +271,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		MappingFileRef mappingFileRef = buildMappingFileRef(xmlMappingFileRef);
 		specifiedMappingFileRefs.add(index, mappingFileRef);
 		this.xmlPersistenceUnit.getMappingFiles().add(index, xmlMappingFileRef);
-		fireItemAdded(SPECIFIED_MAPPING_FILE_REF_LIST, index, mappingFileRef);
+		fireItemAdded(SPECIFIED_MAPPING_FILE_REFS_LIST, index, mappingFileRef);
 		return mappingFileRef;
 	}
 	
@@ -287,7 +283,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		MappingFileRef mappingFileRefRemoved = specifiedMappingFileRefs.remove(index);
 		mappingFileRefRemoved.dispose();
 		this.xmlPersistenceUnit.getMappingFiles().remove(index);
-		fireItemRemoved(SPECIFIED_MAPPING_FILE_REF_LIST, index, mappingFileRefRemoved);
+		fireItemRemoved(SPECIFIED_MAPPING_FILE_REFS_LIST, index, mappingFileRefRemoved);
 	}
 	
 	protected void addSpecifiedMappingFileRef_(MappingFileRef mappingFileRef) {
@@ -295,7 +291,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected void addSpecifiedMappingFileRef_(int index, MappingFileRef mappingFileRef) {
-		addItemToList(index, mappingFileRef, specifiedMappingFileRefs, SPECIFIED_MAPPING_FILE_REF_LIST);
+		addItemToList(index, mappingFileRef, specifiedMappingFileRefs, SPECIFIED_MAPPING_FILE_REFS_LIST);
 	}
 	
 	protected void removeSpecifiedMappingFileRef_(MappingFileRef mappingFileRef) {
@@ -304,7 +300,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	protected void removeSpecifiedMappingFileRef_(int index) {
 		specifiedMappingFileRefs.get(index).dispose();
-		removeItemFromList(index, specifiedMappingFileRefs, SPECIFIED_MAPPING_FILE_REF_LIST);
+		removeItemFromList(index, specifiedMappingFileRefs, SPECIFIED_MAPPING_FILE_REFS_LIST);
 	}
 	
 	
@@ -316,7 +312,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	protected MappingFileRef setImpliedMappingFileRef() {
 		if (impliedMappingFileRef != null) {
-			throw new IllegalStateException("The implied mapping file ref is already set.");
+			throw new IllegalStateException("The implied mapping file ref is already set."); //$NON-NLS-1$
 		}
 		MappingFileRef mappingFileRef = buildMappingFileRef(null);
 		impliedMappingFileRef = mappingFileRef;
@@ -326,7 +322,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	protected void unsetImpliedMappingFileRef() {
 		if (impliedMappingFileRef == null) {
-			throw new IllegalStateException("The implied mapping file ref is already unset.");
+			throw new IllegalStateException("The implied mapping file ref is already unset."); //$NON-NLS-1$
 		}
 		MappingFileRef mappingFileRef = impliedMappingFileRef;
 		impliedMappingFileRef.dispose();
@@ -366,7 +362,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		ClassRef classRef = buildClassRef(xmlClassRef);
 		this.specifiedClassRefs.add(index, classRef);
 		this.xmlPersistenceUnit.getClasses().add(index, xmlClassRef);
-		fireItemAdded(SPECIFIED_CLASS_REF_LIST, index, classRef);
+		fireItemAdded(SPECIFIED_CLASS_REFS_LIST, index, classRef);
 		return classRef;
 	}
 
@@ -378,7 +374,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		ClassRef classRefRemoved = this.specifiedClassRefs.remove(index);
 		classRefRemoved.dispose();
 		this.xmlPersistenceUnit.getClasses().remove(index);
-		fireItemRemoved(SPECIFIED_CLASS_REF_LIST, index, classRefRemoved);
+		fireItemRemoved(SPECIFIED_CLASS_REFS_LIST, index, classRefRemoved);
 	}
 	
 	protected void addSpecifiedClassRef_(ClassRef classRef) {
@@ -386,7 +382,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected void addSpecifiedClassRef_(int index, ClassRef classRef) {
-		addItemToList(index, classRef, this.specifiedClassRefs, SPECIFIED_CLASS_REF_LIST);
+		addItemToList(index, classRef, this.specifiedClassRefs, SPECIFIED_CLASS_REFS_LIST);
 	}
 	
 	protected void removeSpecifiedClassRef_(ClassRef classRef) {
@@ -395,7 +391,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected void removeSpecifiedClassRef_(int index) {
-		removeItemFromList(index, this.specifiedClassRefs, SPECIFIED_CLASS_REF_LIST);
+		removeItemFromList(index, this.specifiedClassRefs, SPECIFIED_CLASS_REFS_LIST);
 	}
 	
 	
@@ -410,12 +406,12 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected ClassRef addImpliedClassRef(String className) {
-		return addImpliedClassRef(impliedClassRefs.size(), className);
+		return this.addImpliedClassRef(this.impliedClassRefs.size(), className);
 	}
 	
 	protected ClassRef addImpliedClassRef(int index, String className) {
 		ClassRef classRef = buildClassRef(className);
-		addItemToList(index, classRef, impliedClassRefs, IMPLIED_CLASS_REF_LIST);
+		addItemToList(index, classRef, this.impliedClassRefs, IMPLIED_CLASS_REFS_LIST);
 		return classRef;
 	}
 	
@@ -425,7 +421,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected void removeImpliedClassRef(int index) {
-		removeItemFromList(index, impliedClassRefs, IMPLIED_CLASS_REF_LIST);
+		removeItemFromList(index, impliedClassRefs, IMPLIED_CLASS_REFS_LIST);
 	}
 	
 	
@@ -445,7 +441,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		
 		this.xmlPersistenceUnit.setExcludeUnlistedClasses(this.specifiedExcludeUnlistedClasses);
 		
-		firePropertyChanged(SPECIFIED_EXCLUDE_UNLISTED_CLASSED_PROPERTY, oldExcludeUnlistedClasses, newExcludeUnlistedClasses);
+		firePropertyChanged(SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY, oldExcludeUnlistedClasses, newExcludeUnlistedClasses);
 	}
 
 	public boolean getDefaultExcludeUnlistedClasses() {
@@ -467,7 +463,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 
 	public Property getProperty(String key) {
 		if (key == null) {
-			throw new IllegalStateException("Cannot getProperty: key is null.");
+			throw new IllegalStateException("Cannot getProperty: key is null."); //$NON-NLS-1$
 		}
 		for(Property property : this.properties) {
 			if(key.equals(property.getName())) {
@@ -479,21 +475,21 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 
 	public ListIterator<Property> propertiesWithPrefix(String keyPrefix) {
 		if (keyPrefix == null) {
-			throw new IllegalStateException("Cannot find propertiesWithPrefix: keyPrefix is null.");
+			throw new IllegalStateException("Cannot find propertiesWithPrefix: keyPrefix is null."); //$NON-NLS-1$
 		}
-		List<Property> properties = new ArrayList<Property>();
+		List<Property> result = new ArrayList<Property>();
 		
 		for(Property property : this.properties) {
 			if(property.getName() != null && property.getName().startsWith(keyPrefix)) {
-				properties.add( property);
+				result.add( property);
 			}
 		}
-		return properties.listIterator();
+		return result.listIterator();
 	}
 	
 	public Property getProperty(String key, String value) {
 		if (key == null || value == null) {
-			throw new IllegalStateException("Cannot getProperty: key or value is null.");
+			throw new IllegalStateException("Cannot getProperty: key or value is null."); //$NON-NLS-1$
 		}
 		for(Property property : this.properties) {
 			if(key.equals(property.getName())) {
@@ -509,13 +505,13 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		return this.properties.get(index);
 	}
 
-	protected XmlProperty getXmlProperty(String name, String value) {
+	protected XmlProperty getXmlProperty(String propertyName, String value) {
 		if (this.xmlPersistenceUnit.getProperties() == null) {
 			XmlProperties xmlProperties = PersistenceFactory.eINSTANCE.createXmlProperties();
 			this.xmlPersistenceUnit.setProperties(xmlProperties);
 		}
 		for(XmlProperty xmlProperty : this.xmlPersistenceUnit.getProperties().getProperties()) {
-			if(name.equals(xmlProperty.getName()) && value.equals(xmlProperty.getValue())) {
+			if(propertyName.equals(xmlProperty.getName()) && value.equals(xmlProperty.getValue())) {
 				return xmlProperty;
 			}
 		}
@@ -553,7 +549,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 
 		XmlProperty xmlProperty = this.getXmlProperty(key, oldValue);
 		if(xmlProperty == null) {
-			throw new NoSuchElementException("Missing Property name: " + key + ", value: " + oldValue);
+			throw new NoSuchElementException("Missing Property name: " + key + ", value: " + oldValue); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		xmlProperty.setValue(value);
 	}	
@@ -633,54 +629,54 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	//Take the first PersistenceUnitDefaults found in an orm.xml file and use
 	//this for the defaults of the PersistenceUnit.
-	protected PersistenceUnitDefaults persistenceUnitDefaults() {
-		for (MappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
-			PersistenceUnitDefaults persistenceUnitDefaults = mappingFileRef.getPersistenceUnitDefaults();
-			if (persistenceUnitDefaults != null) {
-				return persistenceUnitDefaults;
+	protected PersistenceUnitDefaults getPersistenceUnitDefaults() {
+		for (Iterator<MappingFileRef> stream= this.mappingFileRefs(); stream.hasNext(); ) {
+			PersistenceUnitDefaults defaults = stream.next().getPersistenceUnitDefaults();
+			if (defaults != null) {
+				return defaults;
 			}
 		}
 		return null;
 	}
 
-	public String getDefaultSchema() {
-		return this.defaultSchema;
+	public AccessType getDefaultAccess() {
+		return this.defaultAccess;
 	}
 	
-	protected void setDefaultSchema(String newDefaultSchema) {
-		String oldDefaultSchema = this.defaultSchema;
-		this.defaultSchema = newDefaultSchema;
-		firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, oldDefaultSchema, newDefaultSchema);
-	}
+	protected void setDefaultAccess(AccessType access) {
+		AccessType old = this.defaultAccess;
+		this.defaultAccess = access;
+		this.firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, access);
+	}	
 	
 	public String getDefaultCatalog() {
 		return this.defaultCatalog;
 	}
 	
-	protected void setDefaultCatalog(String newDefaultCatalog) {
-		String oldDefaultCatalog = this.defaultCatalog;
-		this.defaultCatalog = newDefaultCatalog;
-		firePropertyChanged(DEFAULT_CATALOG_PROPERTY, oldDefaultCatalog, newDefaultCatalog);
+	protected void setDefaultCatalog(String catalog) {
+		String old = this.defaultCatalog;
+		this.defaultCatalog = catalog;
+		this.firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, catalog);
 	}
 	
-	public AccessType getDefaultAccess() {
-		return this.defaultAccess;
+	public String getDefaultSchema() {
+		return this.defaultSchema;
 	}
 	
-	protected void setDefaultAccess(AccessType newDefaultAccess) {
-		AccessType oldDefaultAccess = this.defaultAccess;
-		this.defaultAccess = newDefaultAccess;
-		firePropertyChanged(DEFAULT_ACCESS_PROPERTY, oldDefaultAccess, newDefaultAccess);
-	}	
+	protected void setDefaultSchema(String schema) {
+		String old = this.defaultSchema;
+		this.defaultSchema = schema;
+		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, schema);
+	}
 	
 	public boolean getDefaultCascadePersist() {
 		return this.defaultCascadePersist;
 	}
 	
-	protected void setDefaultCascadePersist(boolean newDefaultCascadePersist) {
-		boolean oldDefaultCascadePersist = this.defaultCascadePersist;
-		this.defaultCascadePersist = newDefaultCascadePersist;
-		firePropertyChanged(DEFAULT_CASCADE_PERSIST_PROPERTY, oldDefaultCascadePersist, newDefaultCascadePersist);
+	protected void setDefaultCascadePersist(boolean cascadePersist) {
+		boolean old = this.defaultCascadePersist;
+		this.defaultCascadePersist = cascadePersist;
+		this.firePropertyChanged(DEFAULT_CASCADE_PERSIST_PROPERTY, old, cascadePersist);
 	}
 	
 	
@@ -705,32 +701,32 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 
 	// **************** updating ***********************************************
 	
-	protected void initialize(XmlPersistenceUnit xmlPersistenceUnit) {
-		this.xmlPersistenceUnit = xmlPersistenceUnit;
-		this.name = xmlPersistenceUnit.getName();
+	protected void initialize(XmlPersistenceUnit xpu) {
+		this.xmlPersistenceUnit = xpu;
+		this.name = xpu.getName();
 		
 		//initialize specified classRefs before mappingFileRefs because of 
 		//JpaFile rootStructureNode, we want the mapping file to "win",
 		//as it would in a Jpa runtime implementation
-		initializeSpecifiedClassRefs(xmlPersistenceUnit);
-		initializeMappingFileRefs(xmlPersistenceUnit);
+		initializeSpecifiedClassRefs(xpu);
+		initializeMappingFileRefs(xpu);
 		//initialize implied classRefs last since they depend on both
 		//specified classRefs and mappingFileRefs
-		initializeImpliedClassRefs(xmlPersistenceUnit);
-		initializeProperties(xmlPersistenceUnit);
+		initializeImpliedClassRefs(xpu);
+		initializeProperties(xpu);
 		initializePersistenceUnitDefaults();
-		this.specifiedExcludeUnlistedClasses = xmlPersistenceUnit.getExcludeUnlistedClasses();
-		this.specifiedTransactionType = specifiedTransactionType(xmlPersistenceUnit);
+		this.specifiedExcludeUnlistedClasses = xpu.getExcludeUnlistedClasses();
+		this.specifiedTransactionType = specifiedTransactionType(xpu);
 		this.defaultTransactionType = defaultTransacationType();
-		this.description = xmlPersistenceUnit.getDescription();
-		this.provider = xmlPersistenceUnit.getProvider();
-		this.jtaDataSource = xmlPersistenceUnit.getJtaDataSource();
-		this.nonJtaDataSource = xmlPersistenceUnit.getNonJtaDataSource();
-		this.specifiedExcludeUnlistedClasses = xmlPersistenceUnit.getExcludeUnlistedClasses();
+		this.description = xpu.getDescription();
+		this.provider = xpu.getProvider();
+		this.jtaDataSource = xpu.getJtaDataSource();
+		this.nonJtaDataSource = xpu.getNonJtaDataSource();
+		this.specifiedExcludeUnlistedClasses = xpu.getExcludeUnlistedClasses();
 	}
 	
-	protected void initializeMappingFileRefs(XmlPersistenceUnit xmlPersistenceUnit) {
-		for (XmlMappingFileRef xmlMappingFileRef : xmlPersistenceUnit.getMappingFiles()) {
+	protected void initializeMappingFileRefs(XmlPersistenceUnit xpu) {
+		for (XmlMappingFileRef xmlMappingFileRef : xpu.getMappingFiles()) {
 			specifiedMappingFileRefs.add(buildMappingFileRef(xmlMappingFileRef));
 		}
 		if (! impliedMappingFileIsSpecified() && impliedMappingFileExists()) {
@@ -738,13 +734,13 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		}
 	}
 	
-	protected void initializeSpecifiedClassRefs(XmlPersistenceUnit xmlPersistenceUnit) {
-		for (XmlJavaClassRef xmlJavaClassRef : xmlPersistenceUnit.getClasses()) {
+	protected void initializeSpecifiedClassRefs(XmlPersistenceUnit xpu) {
+		for (XmlJavaClassRef xmlJavaClassRef : xpu.getClasses()) {
 			specifiedClassRefs.add(buildClassRef(xmlJavaClassRef));
 		}
 	}
 	
-	protected void initializeImpliedClassRefs(XmlPersistenceUnit xmlPersistenceUnit) {
+	protected void initializeImpliedClassRefs(XmlPersistenceUnit xpu) {
 		if (getJpaProject().discoversAnnotatedClasses() && ! isExcludeUnlistedClasses()) {
 			for (String typeName : CollectionTools.iterable(this.getJpaProject().annotatedClassNames())) {
 				if ( ! classIsSpecified(typeName)) {
@@ -754,8 +750,8 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		}
 	}
 	
-	protected void initializeProperties(XmlPersistenceUnit xmlPersistenceUnit) {
-		XmlProperties xmlProperties = xmlPersistenceUnit.getProperties();
+	protected void initializeProperties(XmlPersistenceUnit xpu) {
+		XmlProperties xmlProperties = xpu.getProperties();
 		if (xmlProperties == null) {
 			return;
 		}
@@ -765,19 +761,11 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected void initializePersistenceUnitDefaults() {
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
-		if (persistenceUnitDefaults != null) {
-			this.defaultSchema = this.schema(persistenceUnitDefaults);
-			this.defaultCatalog = this.catalog(persistenceUnitDefaults);
-			this.defaultAccess = this.access(persistenceUnitDefaults);
-			this.defaultCascadePersist = this.cascadePersist(persistenceUnitDefaults);
-		}
-		else {
-			this.defaultSchema = null;
-			this.defaultCatalog = null;
-			this.defaultAccess = null;
-			this.defaultCascadePersist = false;		
-		}
+		PersistenceUnitDefaults defaults = this.getPersistenceUnitDefaults();
+		this.defaultAccess = this.buildDefaultAccess(defaults);
+		this.defaultCatalog = this.buildDefaultCatalog(defaults);
+		this.defaultSchema = this.buildDefaultSchema(defaults);
+		this.defaultCascadePersist = this.buildDefaultCascadePersist(defaults);
 	}
 
 	public void update(XmlPersistenceUnit persistenceUnit) {
@@ -1032,47 +1020,29 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 		
 	protected void updatePersistenceUnitDefaults() {
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
-		this.setDefaultSchema(this.schema(persistenceUnitDefaults));
-		this.setDefaultCatalog(this.catalog(persistenceUnitDefaults));
-		this.setDefaultAccess(this.access(persistenceUnitDefaults));
-		this.setDefaultCascadePersist(this.cascadePersist(persistenceUnitDefaults));
+		PersistenceUnitDefaults defaults = getPersistenceUnitDefaults();
+		this.setDefaultAccess(this.buildDefaultAccess(defaults));
+		this.setDefaultCatalog(this.buildDefaultCatalog(defaults));
+		this.setDefaultSchema(this.buildDefaultSchema(defaults));
+		this.setDefaultCascadePersist(this.buildDefaultCascadePersist(defaults));
 	}
 
-	protected String schema(PersistenceUnitDefaults persistenceUnitDefaults) {
-		if (persistenceUnitDefaults != null) {
-			if (persistenceUnitDefaults.getSchema() != null) {
-				return persistenceUnitDefaults.getSchema();
-			}
-		}
-		Schema projectDefaultSchema = projectDefaultSchema();
-		return projectDefaultSchema == null ? null : projectDefaultSchema.getName();
+	protected AccessType buildDefaultAccess(PersistenceUnitDefaults defaults) {
+		return (defaults == null) ? null : defaults.getAccess();
 	}
 	
-	protected Schema projectDefaultSchema() {
-		return getJpaProject().getDefaultSchema();
+	protected String buildDefaultCatalog(PersistenceUnitDefaults defaults) {
+		String catalog = (defaults == null) ? null : defaults.getCatalog();
+		return (catalog != null) ? catalog : this.getJpaProject().getDefaultCatalog();
 	}
 
-	protected String catalog(PersistenceUnitDefaults persistenceUnitDefaults) {
-		if (persistenceUnitDefaults != null) {
-			if (persistenceUnitDefaults.getCatalog() != null) {
-				return persistenceUnitDefaults.getCatalog();
-			}
-		}
-		return projectDefaultCatalogName();
-	}
-
-	protected String projectDefaultCatalogName() {
-		Catalog catalog = this.getJpaProject().getDataSource().getDefaultCatalog();
-		return (catalog == null) ? null : catalog.getName();
+	protected String buildDefaultSchema(PersistenceUnitDefaults defaults) {
+		String schema = (defaults == null) ? null : defaults.getSchema();
+		return (schema != null) ? schema : this.getJpaProject().getDefaultSchema();
 	}
 	
-	protected AccessType access(PersistenceUnitDefaults persistenceUnitDefaults) {
-		return persistenceUnitDefaults == null ? null : persistenceUnitDefaults.getAccess();
-	}
-	
-	protected boolean cascadePersist(PersistenceUnitDefaults persistenceUnitDefaults) {
-		return persistenceUnitDefaults == null ? false : persistenceUnitDefaults.isCascadePersist();
+	protected boolean buildDefaultCascadePersist(PersistenceUnitDefaults defaults) {
+		return (defaults == null) ? false : defaults.isCascadePersist();
 	}
 	
 	// This is called after the persistence unit has been updated to ensure
@@ -1181,14 +1151,14 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	private Collection<PersistenceUnitDefaults> persistenceUnitDefaultsForValidation() {
-		ArrayList<PersistenceUnitDefaults> puDefaults = new ArrayList<PersistenceUnitDefaults>();
-		for (MappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
-			PersistenceUnitDefaults persistenceUnitDefaults = mappingFileRef.getPersistenceUnitDefaults();
-			if (persistenceUnitDefaults != null) {
-				puDefaults.add(persistenceUnitDefaults);
+		ArrayList<PersistenceUnitDefaults> result = new ArrayList<PersistenceUnitDefaults>();
+		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
+			PersistenceUnitDefaults defaults = stream.next().getPersistenceUnitDefaults();
+			if (defaults != null) {
+				result.add(defaults);
 			}
 		}
-		return puDefaults;
+		return result;
 	}
 	
 	//*************************************

@@ -82,7 +82,7 @@ public interface BaseColumn extends NamedColumn
 	interface Owner extends NamedColumn.Owner
 	{
 		/**
-		 * Return the name of the persistent attribute that contains the column.
+		 * Return the table to which the column belongs by default.
 		 */
 		String getDefaultTableName();
 	}

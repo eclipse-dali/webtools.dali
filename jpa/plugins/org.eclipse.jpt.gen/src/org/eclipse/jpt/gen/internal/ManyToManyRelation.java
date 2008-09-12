@@ -66,20 +66,12 @@ class ManyToManyRelation {
 		return this.nonOwningGenTable;
 	}
 
-	String getOwnedJavaAttributeName() {
-		return this.nonOwningGenTable.getName() + this.getCollectionAttributeNameSuffix();
+	String getOwnedAttributeName() {
+		return this.nonOwningGenTable.getCollectionAttributeName();
 	}
 
-	String getNonOwnedJavaAttributeName() {
-		return this.owningGenTable.getName() + this.getCollectionAttributeNameSuffix();
-	}
-
-	private String getCollectionAttributeNameSuffix() {
-		return this.getEntityConfig().getCollectionAttributeNameSuffix();
-	}
-
-	private EntityGenerator.Config getEntityConfig() {
-		return this.joinGenTable.getEntityConfig();
+	String getNonOwnedAttributeName() {
+		return this.owningGenTable.getCollectionAttributeName();
 	}
 
 	/**

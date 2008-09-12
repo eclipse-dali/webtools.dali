@@ -10,14 +10,15 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
-import org.eclipse.jpt.core.context.Fetchable;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.utility.Filter;
@@ -25,134 +26,149 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
-public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMappingAnnotation> extends AbstractJavaAttributeMapping<T>
+/**
+ * 
+ */
+public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMappingAnnotation>
+	extends AbstractJavaAttributeMapping<T>
 	implements JavaRelationshipMapping
 {
 
 	protected String specifiedTargetEntity;
-
 	protected String defaultTargetEntity;
-
 	protected Entity resolvedTargetEntity;
 
 	protected final JavaCascade cascade;
 	
 	protected FetchType specifiedFetch;
 	
+
 	protected AbstractJavaRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.cascade = new JavaCascade(this);
 	}
-	
+
+
+	// ********** target entity **********
+
 	public String getTargetEntity() {
-		return (this.getSpecifiedTargetEntity() == null) ? getDefaultTargetEntity() : this.getSpecifiedTargetEntity();
+		return (this.specifiedTargetEntity != null) ? this.specifiedTargetEntity : this.defaultTargetEntity;
 	}
 
 	public String getSpecifiedTargetEntity() {
 		return this.specifiedTargetEntity;
 	}
 
-	public void setSpecifiedTargetEntity(String newSpecifiedTargetEntity) {
-		String oldSpecifiedTargetEntity = this.specifiedTargetEntity;
-		this.specifiedTargetEntity = newSpecifiedTargetEntity;
-		this.getResourceMapping().setTargetEntity(newSpecifiedTargetEntity);
-		firePropertyChanged(RelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY, oldSpecifiedTargetEntity, newSpecifiedTargetEntity);
+	public void setSpecifiedTargetEntity(String targetEntity) {
+		String old = this.specifiedTargetEntity;
+		this.specifiedTargetEntity = targetEntity;
+		this.getResourceMapping().setTargetEntity(targetEntity);
+		this.firePropertyChanged(SPECIFIED_TARGET_ENTITY_PROPERTY, old, targetEntity);
 	}
 	
-	protected void setSpecifiedTargetEntity_(String newSpecifiedTargetEntity) {
-		String oldSpecifiedTargetEntity = this.specifiedTargetEntity;
-		this.specifiedTargetEntity = newSpecifiedTargetEntity;
-		firePropertyChanged(RelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY, oldSpecifiedTargetEntity, newSpecifiedTargetEntity);
+	protected void setSpecifiedTargetEntity_(String targetEntity) {
+		String old = this.specifiedTargetEntity;
+		this.specifiedTargetEntity = targetEntity;
+		this.firePropertyChanged(SPECIFIED_TARGET_ENTITY_PROPERTY, old, targetEntity);
 	}
-
+	
 	public String getDefaultTargetEntity() {
 		return this.defaultTargetEntity;
 	}
 
-	protected void setDefaultTargetEntity(String newDefaultTargetEntity) {
-		String oldDefaultTargetEntity = this.defaultTargetEntity;
-		this.defaultTargetEntity = newDefaultTargetEntity;
-		firePropertyChanged(RelationshipMapping.DEFAULT_TARGET_ENTITY_PROPERTY, oldDefaultTargetEntity, newDefaultTargetEntity);
+	protected void setDefaultTargetEntity(String targetEntity) {
+		String old = this.defaultTargetEntity;
+		this.defaultTargetEntity = targetEntity;
+		this.firePropertyChanged(DEFAULT_TARGET_ENTITY_PROPERTY, old, targetEntity);
 	}
 
 	public Entity getResolvedTargetEntity() {
 		return this.resolvedTargetEntity;
 	}
 
-	protected void setResolvedTargetEntity(Entity newResolvedTargetEntity) {
-		Entity oldResolvedTargetEntity = this.resolvedTargetEntity;
-		this.resolvedTargetEntity = newResolvedTargetEntity;
-		firePropertyChanged(RelationshipMapping.RESOLVED_TARGET_ENTITY_PROPERTY, oldResolvedTargetEntity, newResolvedTargetEntity);
+	protected void setResolvedTargetEntity(Entity entity) {
+		Entity old = this.resolvedTargetEntity;
+		this.resolvedTargetEntity = entity;
+		this.firePropertyChanged(RESOLVED_TARGET_ENTITY_PROPERTY, old, entity);
 	}
+
+
+	// ********** cascade **********
 
 	public JavaCascade getCascade() {
 		return this.cascade;
 	}
 
+
+	// ********** fetch **********
+
 	public FetchType getFetch() {
-		return (this.getSpecifiedFetch() == null) ? this.getDefaultFetch() : this.getSpecifiedFetch();
+		return (this.specifiedFetch != null) ? this.specifiedFetch : this.getDefaultFetch();
 	}
 	
 	public FetchType getSpecifiedFetch() {
 		return this.specifiedFetch;
 	}
 	
-	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
-		FetchType oldFetch = this.specifiedFetch;
-		this.specifiedFetch = newSpecifiedFetch;
-		this.getResourceMapping().setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
-		firePropertyChanged(Fetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
+	public void setSpecifiedFetch(FetchType fetch) {
+		FetchType old = this.specifiedFetch;
+		this.specifiedFetch = fetch;
+		this.getResourceMapping().setFetch(FetchType.toJavaResourceModel(fetch));
+		this.firePropertyChanged(SPECIFIED_FETCH_PROPERTY, old, fetch);
 	}
 	
-	protected void setSpecifiedFetch_(FetchType newSpecifiedFetch) {
-		FetchType oldFetch = this.specifiedFetch;
-		this.specifiedFetch = newSpecifiedFetch;
-		firePropertyChanged(Fetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
+	protected void setSpecifiedFetch_(FetchType fetch) {
+		FetchType old = this.specifiedFetch;
+		this.specifiedFetch = fetch;
+		this.firePropertyChanged(SPECIFIED_FETCH_PROPERTY, old, fetch);
+	}
+	
+
+	// ********** resource => context **********
+
+	@Override
+	public void initialize(JavaResourcePersistentAttribute jrpa) {
+		this.defaultTargetEntity = this.buildDefaultTargetEntity(jrpa);
+		super.initialize(jrpa);
+	}
+	
+	@Override
+	public void update(JavaResourcePersistentAttribute jrpa) {
+		this.setDefaultTargetEntity(this.buildDefaultTargetEntity(jrpa));
+		super.update(jrpa);
+	}
+	
+	@Override
+	protected void initialize(T relationshipMappingAnnotation) {
+		this.specifiedFetch = this.buildFetch(relationshipMappingAnnotation);
+		this.cascade.initialize(relationshipMappingAnnotation);
+		this.specifiedTargetEntity = this.buildSpecifiedTargetEntity(relationshipMappingAnnotation);
+		this.resolvedTargetEntity = this.buildResolvedTargetEntity(relationshipMappingAnnotation);
 	}
 
 	@Override
-	public void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		this.defaultTargetEntity = this.defaultTargetEntity(resourcePersistentAttribute);
-		super.initialize(resourcePersistentAttribute);
+	protected void update(T relationshipMappingAnnotation) {
+		super.update(relationshipMappingAnnotation);
+		this.setSpecifiedFetch_(this.buildFetch(relationshipMappingAnnotation));
+		this.cascade.update(relationshipMappingAnnotation);
+		this.setSpecifiedTargetEntity_(this.buildSpecifiedTargetEntity(relationshipMappingAnnotation));
+		this.setResolvedTargetEntity(this.buildResolvedTargetEntity(relationshipMappingAnnotation));
 	}
 	
-	@Override
-	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		this.setDefaultTargetEntity(this.defaultTargetEntity(resourcePersistentAttribute));
-		super.update(resourcePersistentAttribute);
+	protected FetchType buildFetch(T relationshipMappingAnnotation) {
+		return FetchType.fromJavaResourceModel(relationshipMappingAnnotation.getFetch());
 	}
 	
-	@Override
-	protected void initialize(T relationshipMapping) {
-		this.specifiedFetch = this.fetch(relationshipMapping);
-		this.cascade.initialize(relationshipMapping);
-		this.specifiedTargetEntity = this.specifiedTargetEntity(relationshipMapping);
-		this.resolvedTargetEntity = this.resolveTargetEntity(relationshipMapping);
-	}
-
-	@Override
-	protected void update(T relationshipMapping) {
-		super.update(relationshipMapping);
-		this.setSpecifiedFetch_(this.fetch(relationshipMapping));
-		this.cascade.update(relationshipMapping);
-		this.setSpecifiedTargetEntity_(this.specifiedTargetEntity(relationshipMapping));
-		this.setResolvedTargetEntity(this.resolveTargetEntity(relationshipMapping));
+	protected String buildSpecifiedTargetEntity(T relationshipMappingAnnotation) {
+		return relationshipMappingAnnotation.getTargetEntity();
 	}
 	
-	protected FetchType fetch(T relationshipMapping) {
-		return FetchType.fromJavaResourceModel(relationshipMapping.getFetch());
-	}
+	protected abstract String buildDefaultTargetEntity(JavaResourcePersistentAttribute jrpa);
 	
-	protected String specifiedTargetEntity(T relationshipMapping) {
-		return relationshipMapping.getTargetEntity();
-	}
-	
-	protected abstract String defaultTargetEntity(JavaResourcePersistentAttribute resourcePersistentAttribute);
-	
-	protected Entity resolveTargetEntity(T relationshipMapping) {
+	protected Entity buildResolvedTargetEntity(T relationshipMappingAnnotation) {
 		String qualifiedTargetEntity = getDefaultTargetEntity();
 		if (getSpecifiedTargetEntity() != null) {
-			qualifiedTargetEntity = relationshipMapping.getFullyQualifiedTargetEntity();
+			qualifiedTargetEntity = relationshipMappingAnnotation.getFullyQualifiedTargetEntity();
 		}
 		if (qualifiedTargetEntity == null) {
 			return null;
@@ -164,14 +180,22 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 		return null;
 	}
 
+
+	// ********** RelationshipMapping implementation **********
+
 	public Entity getEntity() {
-		if (getTypeMapping() instanceof Entity) {
-			return (Entity) getTypeMapping();
-		}
-		return null;
+		TypeMapping typeMapping = this.getTypeMapping();
+		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
 	}
 
-	public Iterator<String> allTargetEntityAttributeNames() {
+	public String getJoinTableDefaultName() {
+		return MappingTools.buildJoinTableDefaultName(this);
+	}
+
+
+	// ********** convenience methods **********
+
+	protected Iterator<String> allTargetEntityAttributeNames() {
 		Entity targetEntity = this.getResolvedTargetEntity();
 		return (targetEntity == null) ? EmptyIterator.<String> instance() : targetEntity.getPersistentType().allAttributeNames();
 	}
@@ -184,8 +208,8 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 		return new FilteringIterator<String, String>(this.candidateMappedByAttributeNames(), filter);
 	}
 
-	protected Iterator<String> quotedCandidateMappedByAttributeNames(Filter<String> filter) {
-		return StringTools.quote(this.candidateMappedByAttributeNames(filter));
+	protected Iterator<String> javaCandidateMappedByAttributeNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.candidateMappedByAttributeNames(filter));
 	}
 
 }

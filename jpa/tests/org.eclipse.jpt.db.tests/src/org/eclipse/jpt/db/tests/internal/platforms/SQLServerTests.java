@@ -70,4 +70,9 @@ public class SQLServerTests extends DTPPlatformTests {
 		return "org.eclipse.datatools.connectivity.db.generic.connectionProfile";
 	}
 
+	@Override
+	protected boolean supportsCatalogs() {
+		return true;
+	}
+
 }

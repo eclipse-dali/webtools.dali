@@ -21,7 +21,8 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface GeneratorAnnotation extends JavaResourceNode
+public interface GeneratorAnnotation
+	extends JavaResourceNode
 {
 	/**
 	 * Corresponds to the name element of the TableGenerator or SequenceGenerator annotation.
@@ -36,7 +37,7 @@ public interface GeneratorAnnotation extends JavaResourceNode
 	 * the *Generator annotation will be removed as well.
 	 */
 	void setName(String name);
-		String NAME_PROPERTY = "nameProperty";
+		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the initialValue element of the TableGenerator or SequenceGenerator annotation.
@@ -51,7 +52,7 @@ public interface GeneratorAnnotation extends JavaResourceNode
 	 * the *Generator annotation will be removed as well.
 	 */
 	void setInitialValue(Integer initialValue);
-		String INITIAL_VALUE_PROPERTY = "initialValueProperty";
+		String INITIAL_VALUE_PROPERTY = "initialValue"; //$NON-NLS-1$
 		
 	/**
 	 * Corresponds to the allocationSize element of the TableGenerator or SequenceGenerator annotation.
@@ -66,7 +67,7 @@ public interface GeneratorAnnotation extends JavaResourceNode
 	 * the *Generator annotation will be removed as well.
 	 */
 	void setAllocationSize(Integer allocationSize);
-		String ALLOCATION_SIZE_PROPERTY = "allocationSizeProperty";
+		String ALLOCATION_SIZE_PROPERTY = "allocationSize"; //$NON-NLS-1$
 	
 	/**
 	 * Return the {@link TextRange} for the name element.  If the name element 

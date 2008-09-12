@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.ListIterator;
+
+import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 
@@ -22,116 +24,113 @@ import org.eclipse.jpt.db.Table;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface TableGenerator extends Generator
+public interface TableGenerator
+	extends Generator
 {
 	Integer DEFAULT_INITIAL_VALUE = Integer.valueOf(0);
 
+
+	// ********** table **********
+
+	/**
+	 * Return the specified table if present, otherwise return the default
+	 * table.
+	 */
 	String getTable();
-	
-	String getDefaultTable();
-		String DEFAULT_TABLE_PROPERTY = "defaultTableProperty";
 	String getSpecifiedTable();
 	void setSpecifiedTable(String value);
-		String SPECIFIED_TABLE_PROPERTY = "specifiedTableProperty";
+		String SPECIFIED_TABLE_PROPERTY = "specifiedTable"; //$NON-NLS-1$
+	String getDefaultTable();
+		String DEFAULT_TABLE_PROPERTY = "defaultTable"; //$NON-NLS-1$
 
 
+	// ********** schema **********
 
-	String getCatalog();
-
-	String getDefaultCatalog();
-		String DEFAULT_CATALOG_PROPERTY = "defaultCatalogProperty";
-
-	String getSpecifiedCatalog();
-	void setSpecifiedCatalog(String value);
-		String SPECIFIED_CATALOG_PROPERTY = "specifiedCatalogProperty";
-
-
-
+	/**
+	 * Return the specified schema if present, otherwise return the default
+	 * schema.
+	 */
 	String getSchema();
-
-	String getDefaultSchema();
-		String DEFAULT_SCHEMA_PROPERTY = "defaultSchemaProperty";
-
 	String getSpecifiedSchema();
 	void setSpecifiedSchema(String value);
-		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchemaProperty";
+		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchema"; //$NON-NLS-1$
+	String getDefaultSchema();
+		String DEFAULT_SCHEMA_PROPERTY = "defaultSchema"; //$NON-NLS-1$
 
 
+	// ********** catalog **********
 
+	/**
+	 * Return the specified catalog if present, otherwise return the default
+	 * catalog.
+	 */
+	String getCatalog();
+	String getSpecifiedCatalog();
+	void setSpecifiedCatalog(String value);
+		String SPECIFIED_CATALOG_PROPERTY = "specifiedCatalog"; //$NON-NLS-1$
+	String getDefaultCatalog();
+		String DEFAULT_CATALOG_PROPERTY = "defaultCatalog"; //$NON-NLS-1$
+
+
+	// ********** primary key column name **********
+
+	/**
+	 * Return the specified primary key colum name if present, otherwise return
+	 * the default primary key colum name.
+	 */
 	String getPkColumnName();
-
-	String getDefaultPkColumnName();
-		String DEFAULT_PK_COLUMN_NAME_PROPERTY = "defaultPkColumnNameProperty";
-
 	String getSpecifiedPkColumnName();
 	void setSpecifiedPkColumnName(String value);
-		String SPECIFIED_PK_COLUMN_NAME_PROPERTY = "specifiedPkColumnNameProperty";
+		String SPECIFIED_PK_COLUMN_NAME_PROPERTY = "specifiedPkColumnName"; //$NON-NLS-1$
+	String getDefaultPkColumnName();
+		String DEFAULT_PK_COLUMN_NAME_PROPERTY = "defaultPkColumnName"; //$NON-NLS-1$
 
 
+	// ********** value column name **********
+
+	/**
+	 * Return the specified value colum name if present, otherwise return
+	 * the default value colum name.
+	 */
 	String getValueColumnName();
-
-	String getDefaultValueColumnName();
-		String DEFAULT_VALUE_COLUMN_NAME_PROPERTY = "defaultValueColumnNameProperty";
-	
 	String getSpecifiedValueColumnName();
 	void setSpecifiedValueColumnName(String value);
-		String SPECIFIED_VALUE_COLUMN_NAME_PROPERTY = "specifiedValueColumnNameProperty";
+		String SPECIFIED_VALUE_COLUMN_NAME_PROPERTY = "specifiedValueColumnName"; //$NON-NLS-1$
+	String getDefaultValueColumnName();
+		String DEFAULT_VALUE_COLUMN_NAME_PROPERTY = "defaultValueColumnName"; //$NON-NLS-1$
 
 
+	// ********** primary key column value **********
+
+	/**
+	 * Return the specified primary key colum value if present, otherwise return
+	 * the default primary key colum value.
+	 */
 	String getPkColumnValue();
-
-	String getDefaultPkColumnValue();
-		String DEFAULT_PK_COLUMN_VALUE_PROPERTY = "defaultPkColummValueProperty";
-
 	String getSpecifiedPkColumnValue();
 	void setSpecifiedPkColumnValue(String value);
-		String SPECIFIED_PK_COLUMN_VALUE_PROPERTY = "specifiedPkColummValueProperty";
+		String SPECIFIED_PK_COLUMN_VALUE_PROPERTY = "specifiedPkColummValue"; //$NON-NLS-1$
+	String getDefaultPkColumnValue();
+		String DEFAULT_PK_COLUMN_VALUE_PROPERTY = "defaultPkColummValue"; //$NON-NLS-1$
 
 
-	// **************** unique constraints **************************************
+	// ********** unique constraints **********
 
-	/**
-	 * Return a list iterator of the unique constraints.
-	 * This will not be null.
-	 */
 	<T extends UniqueConstraint> ListIterator<T> uniqueConstraints();
-	
-	/**
-	 * Return the number of unique constraints.
-	 */
 	int uniqueConstraintsSize();
-		
-	/**
-	 * Add a unique constraint to the table and return the object 
-	 * representing it.
-	 */
 	UniqueConstraint addUniqueConstraint(int index);
-	
-	/**
-	 * Remove unique constraint at the given index from the Table
-	 */
 	void removeUniqueConstraint(int index);
-	
-	/**
-	 * Remove the unique constraint from the Table
-	 */
 	void removeUniqueConstraint(UniqueConstraint uniqueConstraint);
-	
-	/**
-	 * Move the unique constraint from the source index to the target index.
-	 */
 	void moveUniqueConstraint(int targetIndex, int sourceIndex);
-		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraintsList";
+		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraints"; //$NON-NLS-1$
 
-	/**
-	 * Return a db Schema object with the specified/default schema name.
-	 * This can return null if no Schema exists on the database with that name.
-	 */
-	Schema getDbSchema();
+
+	// ********** database stuff **********
 
 	/**
 	 * Return a db Table object with the specified/default table name.
 	 * This can return null if no Table exists on the database with that name.
 	 */
 	Table getDbTable();
+
 }

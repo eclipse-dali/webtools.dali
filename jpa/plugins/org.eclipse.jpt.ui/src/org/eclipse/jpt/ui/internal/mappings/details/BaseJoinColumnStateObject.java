@@ -9,9 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -109,35 +108,25 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 		initialize(owner, joinColumn);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected final void checkParent(Node parentNode) {
 		// This is the root of the Join Column state object
 	}
 
-	private ListIterator<String> columnNames(Table table) {
-
+	private static ListIterator<String> columnNames(Table table) {
 		if (table == null) {
 			return EmptyListIterator.instance();
 		}
-
-		List<String> names = CollectionTools.list(table.columnNames());
-		Collections.sort(names);
-		return names.listIterator();
+		return CollectionTools.list(table.sortedColumnIdentifiers()).listIterator();
 	}
 	
-	private int columnsSize(Table table) {
+	private static int columnsSize(Table table) {
 		if (table == null) {
 			return 0;
 		}
 		return table.columnsSize();
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 */
 	public final String displayString() {
 		return "";
 	}
@@ -251,17 +240,11 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 		return table;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public final Validator getValidator() {
 		return this.validator;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initialize() {
 		super.initialize();
@@ -275,16 +258,16 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
-	protected void initialize(Object owner, BaseJoinColumn joinColumn) {
+	protected void initialize(Object o, BaseJoinColumn jc) {
 
-		this.owner      = owner;
-		this.joinColumn = joinColumn;
+		this.owner      = o;
+		this.joinColumn = jc;
 		this.table      = this.getInitialTable();
 
-		if (joinColumn != null) {
-			this.name                 = joinColumn.getSpecifiedName();
-			this.columnDefinition     = joinColumn.getColumnDefinition();
-			this.referencedColumnName = joinColumn.getSpecifiedReferencedColumnName();
+		if (jc != null) {
+			this.name                 = jc.getSpecifiedName();
+			this.columnDefinition     = jc.getColumnDefinition();
+			this.referencedColumnName = jc.getSpecifiedReferencedColumnName();
 		}
 	}
 
@@ -364,9 +347,6 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 		tableChanged();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public final void setValidator(Validator validator) {
 		this.validator = validator;
@@ -397,21 +377,21 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 	 *
 	 * @param joinColumn The join column to update
 	 */
-	public void updateJoinColumn(BaseJoinColumn joinColumn) {
+	public void updateJoinColumn(BaseJoinColumn jc) {
 
 		// Name
-		if (valuesAreDifferent(name, joinColumn.getSpecifiedName())) {
-			joinColumn.setSpecifiedName(name);
+		if (valuesAreDifferent(name, jc.getSpecifiedName())) {
+			jc.setSpecifiedName(name);
 		}
 
 		// Referenced Column Name
-		if (valuesAreDifferent(referencedColumnName, joinColumn.getSpecifiedReferencedColumnName())) {
-			joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+		if (valuesAreDifferent(referencedColumnName, jc.getSpecifiedReferencedColumnName())) {
+			jc.setSpecifiedReferencedColumnName(referencedColumnName);
 		}
 
 		// Column Definition
-		if (valuesAreDifferent(columnDefinition, joinColumn.getColumnDefinition())) {
-			joinColumn.setColumnDefinition(columnDefinition);
+		if (valuesAreDifferent(columnDefinition, jc.getColumnDefinition())) {
+			jc.setColumnDefinition(columnDefinition);
 		}
 	}
 }

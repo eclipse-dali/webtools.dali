@@ -10,6 +10,8 @@
 package org.eclipse.jpt.ui.internal.orm.details;
 
 import java.util.Collection;
+
+import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.db.Schema;
@@ -60,14 +62,14 @@ public class OrmSequenceGeneratorComposite extends Pane<OrmSequenceGenerator>
 	}
 
 	private WritablePropertyValueModel<String> buildGeneratorNameHolder() {
-		return new PropertyAspectAdapter<OrmSequenceGenerator, String>(getSubjectHolder(), OrmSequenceGenerator.NAME_PROPERTY) {
+		return new PropertyAspectAdapter<OrmSequenceGenerator, String>(getSubjectHolder(), Generator.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return subject.getName();
 			}
 
 			@Override
-			public void setValue_(String value) {
+			protected void setValue_(String value) {
 				subject.setName(value);
 			}
 		};
@@ -90,12 +92,6 @@ public class OrmSequenceGeneratorComposite extends Pane<OrmSequenceGenerator>
 			}
 
 			@Override
-			protected Schema getSchema() {
-				// TODO
-				return null;
-			}
-
-			@Override
 			protected void setValue(String value) {
 				getSubject().setSpecifiedSequenceName(value);
 			}
@@ -104,6 +100,12 @@ public class OrmSequenceGeneratorComposite extends Pane<OrmSequenceGenerator>
 			protected String getValue() {
 				return getSubject().getSpecifiedSequenceName();
 			}
+
+			@Override
+			protected Schema getDbSchema_() {
+				return this.getSubject().getDbSchema();
+			}
+
 		};
 	}
 

@@ -10,9 +10,12 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
+
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.GeneratorHolder;
 import org.eclipse.jpt.core.context.TableGenerator;
+import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -95,22 +98,18 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			}
 
 			@Override
-			protected void buildSubject() {
-				TableGeneratorComposite.this.buildGenerator(
-					TableGeneratorComposite.this.getSubject()
-				);
-			}
-
-			@Override
 			protected String getDefaultValue() {
 				return getSubject().getDefaultCatalog();
 			}
 
 			@Override
-			protected boolean isBuildSubjectAllowed() {
+			protected boolean nullSubjectIsAllowed() {
 				return true;
 			}
 
+			/**
+			 * subject may be null, so delegate to the composite
+			 */
 			@Override
 			protected JpaProject getJpaProject() {
 				return TableGeneratorComposite.this.getJpaProject();
@@ -118,7 +117,11 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected void setValue(String value) {
-				getSubject().setSpecifiedCatalog(value);
+				TableGenerator tg = this.getSubject();
+				if (tg == null) {
+					tg = TableGeneratorComposite.this.buildGenerator();
+				}
+				tg.setSpecifiedCatalog(value);
 			}
 
 			@Override
@@ -128,12 +131,13 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected TableGenerator buildGenerator(GeneratorHolder subject) {
 		return subject.addTableGenerator();
+	}
+
+	protected TableGenerator buildGenerator() {
+		return this.buildGenerator(this.getSubject());
 	}
 
 	private ColumnCombo<TableGenerator> addPkColumnNameCombo(Composite parent) {
@@ -148,22 +152,18 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			}
 
 			@Override
-			protected void buildSubject() {
-				TableGeneratorComposite.this.buildGenerator(
-					TableGeneratorComposite.this.getSubject()
-				);
-			}
-
-			@Override
 			protected String getDefaultValue() {
 				return getSubject().getDefaultPkColumnName();
 			}
 
 			@Override
-			protected boolean isBuildSubjectAllowed() {
+			protected boolean nullSubjectIsAllowed() {
 				return true;
 			}
 
+			/**
+			 * subject may be null, so delegate to the composite
+			 */
 			@Override
 			protected JpaProject getJpaProject() {
 				return TableGeneratorComposite.this.getJpaProject();
@@ -171,7 +171,11 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected void setValue(String value) {
-				getSubject().setSpecifiedPkColumnName(value);
+				TableGenerator tg = this.getSubject();
+				if (tg == null) {
+					tg = TableGeneratorComposite.this.buildGenerator();
+				}
+				tg.setSpecifiedPkColumnName(value);
 			}
 
 			@Override
@@ -198,22 +202,18 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			}
 
 			@Override
-			protected void buildSubject() {
-				TableGeneratorComposite.this.buildGenerator(
-					TableGeneratorComposite.this.getSubject()
-				);
-			}
-
-			@Override
 			protected String getDefaultValue() {
 				return getSubject().getDefaultPkColumnValue();
 			}
 
 			@Override
-			protected boolean isBuildSubjectAllowed() {
+			protected boolean nullSubjectIsAllowed() {
 				return true;
 			}
 
+			/**
+			 * subject may be null, so delegate to the composite
+			 */
 			@Override
 			protected JpaProject getJpaProject() {
 				return TableGeneratorComposite.this.getJpaProject();
@@ -221,7 +221,11 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected void setValue(String value) {
-				getSubject().setSpecifiedPkColumnValue(value);
+				TableGenerator tg = this.getSubject();
+				if (tg == null) {
+					tg = TableGeneratorComposite.this.buildGenerator();
+				}
+				tg.setSpecifiedPkColumnValue(value);
 			}
 
 			@Override
@@ -248,22 +252,18 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			}
 
 			@Override
-			protected void buildSubject() {
-				TableGeneratorComposite.this.buildGenerator(
-					TableGeneratorComposite.this.getSubject()
-				);
-			}
-
-			@Override
 			protected String getDefaultValue() {
 				return getSubject().getDefaultSchema();
 			}
 
 			@Override
-			protected boolean isBuildSubjectAllowed() {
+			protected boolean nullSubjectIsAllowed() {
 				return true;
 			}
 
+			/**
+			 * subject may be null, so delegate to the composite
+			 */
 			@Override
 			protected JpaProject getJpaProject() {
 				return TableGeneratorComposite.this.getJpaProject();
@@ -271,13 +271,23 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected void setValue(String value) {
-				getSubject().setSpecifiedSchema(value);
+				TableGenerator tg = this.getSubject();
+				if (tg == null) {
+					tg = TableGeneratorComposite.this.buildGenerator();
+				}
+				tg.setSpecifiedSchema(value);
 			}
 
 			@Override
 			protected String getValue() {
 				return getSubject().getSpecifiedSchema();
 			}
+
+			@Override
+			protected SchemaContainer getDbSchemaContainer_() {
+				return this.getSubject().getDbSchemaContainer();
+			}
+
 		};
 	}
 
@@ -317,52 +327,52 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			}
 
 			@Override
-			protected void buildSubject() {
-				TableGeneratorComposite.this.buildGenerator(
-					TableGeneratorComposite.this.getSubject()
-				);
-			}
-
-			@Override
 			protected String getDefaultValue() {
-				return getSubject().getDefaultTable();
+				return this.getSubject().getDefaultTable();
 			}
 
 			@Override
-			protected boolean isBuildSubjectAllowed() {
+			protected boolean nullSubjectIsAllowed() {
 				return true;
 			}
 
+			/**
+			 * subject may be null, so delegate to the composite
+			 */
 			@Override
 			protected JpaProject getJpaProject() {
 				return TableGeneratorComposite.this.getJpaProject();
 			}
 
 			@Override
-			protected String getSchemaName() {
-				if (getSubject() != null) {
-					return getSubject().getSchema();
-				}
-				if (TableGeneratorComposite.this.getSubject().getEntityMappings() != null) {
-					return TableGeneratorComposite.this.getSubject().getEntityMappings().getSchema();
-				}
-				return TableGeneratorComposite.this.getSubject().getPersistenceUnit().getDefaultSchema();
-			}
-
-			@Override
 			protected void setValue(String value) {
-				getSubject().setSpecifiedTable(value);
-			}
-
-			@Override
-			protected Table getDbTable() {
-				return getSubject().getDbTable();
+				TableGenerator tg = this.getSubject();
+				if (tg == null) {
+					tg = TableGeneratorComposite.this.buildGenerator();
+				}
+				tg.setSpecifiedTable(value);
 			}
 
 			@Override
 			protected String getValue() {
-				return getSubject().getSpecifiedTable();
+				return this.getSubject().getSpecifiedTable();
 			}
+
+			@Override
+			protected Schema getDbSchema() {
+				TableGenerator tg = this.getSubject();
+				if (tg != null) {
+					tg.getDbSchema();
+				}
+				return TableGeneratorComposite.this.getSubject().getContextDefaultDbSchema();
+			}
+
+			@Override
+			protected Schema getDbSchema_() {
+				// we overrode #getDbSchema() instead
+				throw new UnsupportedOperationException();
+			}
+
 		};
 	}
 
@@ -378,22 +388,18 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			}
 
 			@Override
-			protected void buildSubject() {
-				TableGeneratorComposite.this.buildGenerator(
-					TableGeneratorComposite.this.getSubject()
-				);
-			}
-
-			@Override
 			protected String getDefaultValue() {
 				return getSubject().getDefaultValueColumnName();
 			}
 
 			@Override
-			protected boolean isBuildSubjectAllowed() {
+			protected boolean nullSubjectIsAllowed() {
 				return true;
 			}
 
+			/**
+			 * subject may be null, so delegate to the composite
+			 */
 			@Override
 			protected JpaProject getJpaProject() {
 				return TableGeneratorComposite.this.getJpaProject();
@@ -401,7 +407,11 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected void setValue(String value) {
-				getSubject().setSpecifiedValueColumnName(value);
+				TableGenerator tg = this.getSubject();
+				if (tg == null) {
+					tg = TableGeneratorComposite.this.buildGenerator();
+				}
+				tg.setSpecifiedValueColumnName(value);
 			}
 
 			@Override

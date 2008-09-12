@@ -10,10 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.InheritanceType;
-import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.core.context.java.JavaTable;
+
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -23,9 +20,13 @@ import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlTable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericOrmTable extends AbstractOrmTable implements OrmTable
+/**
+ * 
+ */
+public class GenericOrmTable
+	extends AbstractOrmTable
+	implements OrmTable
 {
-
 	protected XmlEntity resourceEntity;
 	
 	public GenericOrmTable(OrmEntity parent) {
@@ -40,87 +41,46 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 	protected XmlTable getResourceTable() {
 		return this.resourceEntity.getTable();
 	}
+
+	public boolean hasSpecifiedResourceTable() {
+		return this.getResourceTable() != null;
+	}
+
+	@Override
+	protected XmlTable addResourceTable() {
+		XmlTable resourceTable = OrmFactory.eINSTANCE.createXmlTable();
+		this.resourceEntity.setTable(resourceTable);
+		return resourceTable;
+	}
 	
 	@Override
 	protected void removeResourceTable() {
 		this.resourceEntity.setTable(null);
 	}
 	
-	@Override
-	protected void addResourceTable() {
-		this.resourceEntity.setTable(OrmFactory.eINSTANCE.createXmlTable());
-		
-	}
-	
-	protected JavaTable getJavaTable() {
-		JavaEntity javaEntity = getOrmEntity().getJavaEntity();
-		if (javaEntity != null) {
-			return javaEntity.getTable();
-		}
-		return null;
-	}
-	
-	public void initialize(XmlEntity resourceEntity) {
-		this.resourceEntity = resourceEntity;
+	public void initialize(XmlEntity xmlEntity) {
+		this.resourceEntity = xmlEntity;
 		this.initialize(this.getResourceTable());
 	}
 	
-	public void update(XmlEntity resourceEntity) {
-		this.resourceEntity = resourceEntity;
+	public void update(XmlEntity xmlEntity) {
+		this.resourceEntity = xmlEntity;
 		this.update(this.getResourceTable());
 	}
 
 	@Override
-	protected String defaultName() {
-		JavaTable javaTable = getJavaTable();
-		if (javaTable != null) {
-			if (!getOrmEntity().isMetadataComplete() && getResourceTable() == null && javaTable.getSpecifiedName() != null) {
-				return javaTable.getSpecifiedName();
-			}
-		}
-		Entity rootEntity = getOrmEntity().getRootEntity();
-		if (rootEntity != getOrmEntity()) {
-			if (rootEntity.getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
-				return rootEntity.getTable().getName();
-			}
-		}
-		return getOrmEntity().getName();
+	protected String buildDefaultName() {
+		return this.getOrmEntity().getDefaultTableName();
 	}
 	
 	@Override
-	protected String defaultSchema() {
-		JavaTable javaTable = getJavaTable();
-		if (javaTable != null ) {
-			if (getOrmEntity().isMetadataComplete() || (getResourceTable() != null)) {
-				return javaTable.getDefaultSchema();
-			}
-			return javaTable.getSchema();
-		}
-		Entity rootEntity = getOrmEntity().getRootEntity();
-		if (rootEntity != getOrmEntity()) {
-			if (rootEntity.getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
-				return rootEntity.getTable().getSchema();
-			}
-		}
-		return getEntityMappings().getSchema();
+	protected String buildDefaultSchema() {
+		return this.getOrmEntity().getDefaultSchema();
 	}
 	
 	@Override
-	protected String defaultCatalog() {
-		JavaTable javaTable = getJavaTable();
-		if (javaTable != null) {
-			if (getOrmEntity().isMetadataComplete() || (getResourceTable() != null)) {
-				return javaTable.getDefaultCatalog();
-			}
-			return javaTable.getCatalog();
-		}
-		Entity rootEntity = getOrmEntity().getRootEntity();
-		if (rootEntity != getOrmEntity()) {
-			if (rootEntity.getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
-				return rootEntity.getTable().getCatalog();
-			}
-		}
-		return getEntityMappings().getCatalog();
+	protected String buildDefaultCatalog() {
+		return this.getOrmEntity().getDefaultCatalog();
 	}
 	
 	//*********** Validation *******************************
@@ -128,22 +88,37 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 	@Override
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
-		boolean doContinue = connectionProfileIsActive();
-		String schema = this.getSchema();
+		if (this.connectionProfileIsActive()) {
+			this.checkDatabase(messages);
+		}
+	}
+
+	protected void checkDatabase(List<IMessage> messages) {
+		if ( ! this.hasResolvedCatalog()) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.TABLE_UNRESOLVED_CATALOG,
+						new String[] {this.getCatalog(), this.getName()}, 
+						this,
+						this.getCatalogTextRange())
+				);
+			return;
+		}
 		
-		if (doContinue && ! this.hasResolvedSchema()) {
+		if ( ! this.hasResolvedSchema()) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
-						new String[] {schema, this.getName()}, 
+						new String[] {this.getSchema(), this.getName()}, 
 						this,
 						this.getSchemaTextRange())
 				);
-			doContinue = false;
+			return;
 		}
 		
-		if (doContinue && ! this.isResolved()) {
+		if ( ! this.isResolved()) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -152,6 +127,8 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 						this, 
 						this.getNameTextRange())
 				);
+			return;
 		}
 	}
+
 }

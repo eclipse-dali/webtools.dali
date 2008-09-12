@@ -164,6 +164,10 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, BaseEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 
+	protected void addSpecifiedAttributeOverride(JavaAttributeOverride attributeOverride) {
+		addSpecifiedAttributeOverride(this.specifiedAttributeOverrides.size(), attributeOverride);
+	}
+
 	protected void removeSpecifiedAttributeOverride_(JavaAttributeOverride attributeOverride) {
 		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, BaseEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
@@ -270,7 +274,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 		}
 		
 		while (resourceAttributeOverrides.hasNext()) {
-			addSpecifiedAttributeOverride(specifiedAttributeOverridesSize(), buildAttributeOverride((AttributeOverrideAnnotation) resourceAttributeOverrides.next()));
+			addSpecifiedAttributeOverride(buildAttributeOverride((AttributeOverrideAnnotation) resourceAttributeOverrides.next()));
 		}	
 	}
 	

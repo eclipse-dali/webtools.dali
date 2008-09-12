@@ -32,6 +32,11 @@ public interface OrmTable extends Table, OrmJpaContextNode
 	 */
 	void update(XmlEntity resourceEntity);
 
+	/**
+	 * Return whether the table is specified in the resource.
+	 */
+	boolean hasSpecifiedResourceTable();
+
 	
 	//****************** covariant overrides *******************
 
@@ -39,4 +44,5 @@ public interface OrmTable extends Table, OrmJpaContextNode
 	ListIterator<OrmUniqueConstraint> uniqueConstraints();
 	
 	OrmUniqueConstraint addUniqueConstraint(int index);
+
 }

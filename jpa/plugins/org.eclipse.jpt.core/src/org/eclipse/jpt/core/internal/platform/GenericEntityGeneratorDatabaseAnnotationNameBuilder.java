@@ -33,11 +33,11 @@ public final class GenericEntityGeneratorDatabaseAnnotationNameBuilder
 	}
 
 	public String buildTableAnnotationName(String entityName, Table table) {
-		return table.getAnnotationIdentifier(entityName);
+		return table.getIdentifier(entityName);
 	}
 
 	public String buildColumnAnnotationName(String attributeName, Column column) {
-		return column.getAnnotationIdentifier(attributeName);
+		return column.getIdentifier(attributeName);
 	}
 
 	public String buildJoinColumnAnnotationName(String attributeName, ForeignKey foreignKey) {
@@ -45,11 +45,11 @@ public final class GenericEntityGeneratorDatabaseAnnotationNameBuilder
 	}
 
 	public String buildJoinColumnAnnotationName(Column column) {
-		return column.getAnnotationIdentifier();
+		return column.getIdentifier();
 	}
 
 	public String buildJoinTableAnnotationName(Table table) {
-		return table.getAnnotationIdentifier();
+		return table.getIdentifier();
 	}
 
 }

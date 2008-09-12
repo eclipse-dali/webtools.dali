@@ -142,7 +142,7 @@ public abstract class AbstractNamedQuery extends AbstractResourceAnnotation<Type
 		return queryHint;
 	}
 	
-	private void addHint(int index, NestableQueryHint queryHint) {
+	protected void addHint(int index, NestableQueryHint queryHint) {
 		addItemToList(index, queryHint, this.hints, HINTS_LIST);
 	}
 	

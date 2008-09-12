@@ -40,6 +40,7 @@ import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
@@ -183,7 +184,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}	
 
 	@Override
-	public String getTableName() {
+	public String getPrimaryTableName() {
 		return getTable().getName();
 	}
 	
@@ -197,7 +198,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	@Override
 	public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 		// the JPA platform searches database objects for us
-		return this.getDataSource().getDatabaseObjectNamed(
+		return this.getDataSource().selectDatabaseObjectForIdentifier(
 						CollectionTools.array(this.associatedDbTablesIncludingInherited(), EMPTY_DB_TABLE_ARRAY),
 						tableName
 					);
@@ -311,9 +312,17 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		fireItemAdded(Entity.SPECIFIED_SECONDARY_TABLES_LIST, index, secondaryTable);
 		return secondaryTable;
 	}
+
+	public OrmSecondaryTable addSpecifiedSecondaryTable() {
+		return this.addSpecifiedSecondaryTable(this.specifiedSecondaryTables.size());
+	}
 	
 	protected void addSpecifiedSecondaryTable(int index, OrmSecondaryTable secondaryTable) {
 		addItemToList(index, secondaryTable, this.specifiedSecondaryTables, Entity.SPECIFIED_SECONDARY_TABLES_LIST);
+	}
+	
+	protected void addSpecifiedSecondaryTable(OrmSecondaryTable secondaryTable) {
+		this.addSpecifiedSecondaryTable(this.specifiedSecondaryTables.size(), secondaryTable);
 	}
 	
 	public void removeSpecifiedSecondaryTable(SecondaryTable secondaryTable) {
@@ -470,7 +479,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
-		return !CollectionTools.contains(this.associatedTableNamesIncludingInherited(), tableName);
+		return ! CollectionTools.contains(this.associatedTableNamesIncludingInherited(), tableName);
 	}
 
 	public InheritanceType getInheritanceStrategy() {
@@ -697,6 +706,10 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		addItemToList(index, primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
+	protected void addSpecifiedPrimaryKeyJoinColumn(OrmPrimaryKeyJoinColumn primaryKeyJoinColumn) {
+		this.addSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumns.size(), primaryKeyJoinColumn);
+	}
+	
 	public void removeSpecifiedPrimaryKeyJoinColumn(PrimaryKeyJoinColumn primaryKeyJoinColumn) {
 		this.removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumns.indexOf(primaryKeyJoinColumn));
 	}
@@ -821,6 +834,10 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
+	protected void addSpecifiedAttributeOverride(OrmAttributeOverride attributeOverride) {
+		this.addSpecifiedAttributeOverride(this.specifiedAttributeOverrides.size(), attributeOverride);
+	}
+	
 	protected void removeSpecifiedAttributeOverride_(OrmAttributeOverride attributeOverride) {
 		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
@@ -858,6 +875,10 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 	protected void addSpecifiedAssociationOverride(int index, OrmAssociationOverride associationOverride) {
 		addItemToList(index, associationOverride, this.specifiedAssociationOverrides, Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
+	}
+	
+	protected void addSpecifiedAssociationOverride(OrmAssociationOverride associationOverride) {
+		this.addSpecifiedAssociationOverride(this.specifiedAssociationOverrides.size(), associationOverride);
 	}
 	
 	protected void removeSpecifiedAssociationOverride_(OrmAssociationOverride associationOverride) {
@@ -941,6 +962,10 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		addItemToList(index, namedQuery, this.namedQueries, QueryHolder.NAMED_QUERIES_LIST);
 	}
 		
+	protected void addNamedQuery(OrmNamedQuery namedQuery) {
+		this.addNamedQuery(this.namedQueries.size(), namedQuery);
+	}
+		
 	public void removeNamedQuery(NamedQuery namedQuery) {
 		removeNamedQuery(this.namedQueries.indexOf(namedQuery));
 	}
@@ -980,6 +1005,10 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	protected void addNamedNativeQuery(int index, OrmNamedNativeQuery namedNativeQuery) {
 		addItemToList(index, namedNativeQuery, this.namedNativeQueries, QueryHolder.NAMED_NATIVE_QUERIES_LIST);
+	}
+	
+	protected void addNamedNativeQuery(OrmNamedNativeQuery namedNativeQuery) {
+		this.addNamedNativeQuery(this.namedNativeQueries.size(), namedNativeQuery);
 	}
 	
 	public void removeNamedNativeQuery(NamedNativeQuery namedNativeQuery) {
@@ -1048,9 +1077,9 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 
 	public Entity getParentEntity() {
-		for (Iterator<PersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
-			TypeMapping tm = i.next().getMapping();
-			if (tm != this && tm instanceof Entity) {
+		for (Iterator<PersistentType> stream = getPersistentType().ancestors(); stream.hasNext();) {
+			TypeMapping tm = stream.next().getMapping();
+			if (tm instanceof Entity) {
 				return (Entity) tm;
 			}
 		}
@@ -1059,13 +1088,83 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 	public Entity getRootEntity() {
 		Entity rootEntity = null;
-		for (Iterator<PersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
-			PersistentType persistentType = i.next();
+		for (Iterator<PersistentType> stream = getPersistentType().inheritanceHierarchy(); stream.hasNext();) {
+			PersistentType persistentType = stream.next();
 			if (persistentType.getMapping() instanceof Entity) {
 				rootEntity = (Entity) persistentType.getMapping();
 			}
 		}
 		return rootEntity;
+	}
+
+	public String getDefaultTableName() {
+		JavaEntity javaEntity = this.getJavaEntity();
+		if (javaEntity != null) {
+			JavaTable javaTable = javaEntity.getTable();
+			if ( ! this.isMetadataComplete()
+					&& ! this.table.hasSpecifiedResourceTable()
+					&& javaTable.getSpecifiedName() != null) {
+				return javaTable.getSpecifiedName();
+			}
+		}
+
+		return this.isSingleTableDescendant() ?
+						this.getRootEntity().getTable().getName()
+					:
+						this.getName();
+	}
+
+	public String getDefaultSchema() {
+		JavaEntity javaEntity = this.getJavaEntity();
+		if (javaEntity != null) {
+			if (this.isMetadataComplete() || this.table.hasSpecifiedResourceTable()) {
+				return javaEntity.getTable().getDefaultSchema();
+			}
+			return javaEntity.getTable().getSchema();
+		}
+
+		return this.isSingleTableDescendant() ?
+						this.getRootEntity().getTable().getSchema()
+					:
+						this.getContextDefaultSchema();
+	}
+
+	public String getDefaultCatalog() {
+		JavaEntity javaEntity = this.getJavaEntity();
+		if (javaEntity != null) {
+			if (this.isMetadataComplete() || this.table.hasSpecifiedResourceTable()) {
+				return javaEntity.getTable().getDefaultCatalog();
+			}
+			return javaEntity.getTable().getCatalog();
+		}
+
+		return this.isSingleTableDescendant() ?
+						this.getRootEntity().getTable().getCatalog()
+					:
+						this.getContextDefaultCatalog();
+	}
+
+	/**
+	 * Return whether the entity is a descendant of the root entity
+	 * of a "single table" inheritance hierarchy.
+	 */
+	protected boolean isSingleTableDescendant() {
+		return this.isDescendant() && (this.getInheritanceStrategy() == InheritanceType.SINGLE_TABLE);
+	}
+	
+	/**
+	 * Return whether the entity is a descendant in (as opposed to the root of)
+	 * an inheritance hierarchy.
+	 */
+	protected boolean isDescendant() {
+		return ! this.isRoot();
+	}
+
+	/**
+	 * Return whether the entity is the top of an inheritance hierarchy.
+	 */
+	protected boolean isRoot() {
+		return this == this.getRootEntity();
 	}
 
 //	public String primaryKeyColumnName() {
@@ -1208,7 +1307,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	public void initialize(XmlEntity entity) {
 		super.initialize(entity);
 		this.specifiedName = entity.getName();
-		this.defaultName = this.defaultName();
+		this.defaultName = this.buildDefaultName();
 		this.initializeInheritance(this.inheritanceResource());
 		this.discriminatorColumn.initialize(entity);
 		this.specifiedDiscriminatorValue = entity.getDiscriminatorValue();
@@ -1371,7 +1470,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	public void update(XmlEntity entity) {
 		super.update(entity);
 		this.setSpecifiedName(entity.getName());
-		this.setDefaultName(this.defaultName());
+		this.setDefaultName(this.buildDefaultName());
 		this.updateInheritance(this.inheritanceResource());
 		this.discriminatorColumn.update(entity);
 		this.setSpecifiedDiscriminatorValue(entity.getDiscriminatorValue());
@@ -1393,7 +1492,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
 
-	protected String defaultName() {
+	protected String buildDefaultName() {
 		if (!isMetadataComplete()) {
 			JavaEntity javaEntity = getJavaEntity();
 			if (javaEntity != null) {
@@ -1437,7 +1536,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 		
 		while (resourceSecondaryTables.hasNext()) {
-			addSpecifiedSecondaryTable(specifiedSecondaryTablesSize(), buildSecondaryTable(resourceSecondaryTables.next()));
+			addSpecifiedSecondaryTable(buildSecondaryTable(resourceSecondaryTables.next()));
 		}
 	}
 	
@@ -1514,15 +1613,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	protected InheritanceType defaultInheritanceStrategy() {
-		if (inheritanceResource() == null && !isMetadataComplete()) {
-			if (getJavaEntity() != null) {
-				return getJavaEntity().getInheritanceStrategy();
-			}
+		if ((this.inheritanceResource() == null)
+				&& ! this.isMetadataComplete()
+				&& (this.getJavaEntity() != null)) {
+			return this.getJavaEntity().getInheritanceStrategy();
 		}
-		if (getRootEntity() == this) {
-			return InheritanceType.SINGLE_TABLE;
-		}
-		return getRootEntity().getInheritanceStrategy();
+		return this.isRoot() ? InheritanceType.SINGLE_TABLE : this.getRootEntity().getInheritanceStrategy();
 	}
 	
 	protected void updateSpecifiedPrimaryKeyJoinColumns(XmlEntity entity) {
@@ -1540,7 +1636,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 		
 		while (resourcePkJoinColumns.hasNext()) {
-			addSpecifiedPrimaryKeyJoinColumn(specifiedPrimaryKeyJoinColumnsSize(), buildPrimaryKeyJoinColumn(resourcePkJoinColumns.next()));
+			addSpecifiedPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn(resourcePkJoinColumns.next()));
 		}
 	}
 	
@@ -1603,7 +1699,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 		
 		while (resourceAttributeOverrides.hasNext()) {
-			addSpecifiedAttributeOverride(specifiedAttributeOverridesSize(), buildAttributeOverride(resourceAttributeOverrides.next()));
+			addSpecifiedAttributeOverride(buildAttributeOverride(resourceAttributeOverrides.next()));
 		}
 	}
 	
@@ -1661,7 +1757,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 		
 		while (resourceAssociationOverrides.hasNext()) {
-			addSpecifiedAssociationOverride(specifiedAssociationOverridesSize(), buildAssociationOverride(resourceAssociationOverrides.next()));
+			addSpecifiedAssociationOverride(buildAssociationOverride(resourceAssociationOverrides.next()));
 		}
 	}
 	
@@ -1688,7 +1784,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 		
 		while (resourceNamedQueries.hasNext()) {
-			addNamedQuery(namedQueriesSize(), buildNamedQuery(resourceNamedQueries.next()));
+			addNamedQuery(buildNamedQuery(resourceNamedQueries.next()));
 		}
 	}
 
@@ -1711,7 +1807,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 		
 		while (resourceNamedNativeQueries.hasNext()) {
-			addNamedNativeQuery(namedNativeQueriesSize(), buildNamedNativeQuery(resourceNamedNativeQueries.next()));
+			addNamedNativeQuery(buildNamedNativeQuery(resourceNamedNativeQueries.next()));
 		}
 	}
 
@@ -1905,7 +2001,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 			return GenericOrmEntity.this.getDbTable(tableName);
 		}
 
-		public org.eclipse.jpt.db.Table getDbReferencedColumnTable() {
+		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
 			Entity parentEntity = GenericOrmEntity.this.getParentEntity();
 			return (parentEntity == null) ? null : parentEntity.getPrimaryDbTable();
 		}

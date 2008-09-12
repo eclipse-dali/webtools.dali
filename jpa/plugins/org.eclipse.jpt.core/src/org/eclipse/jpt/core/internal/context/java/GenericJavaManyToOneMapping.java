@@ -20,7 +20,11 @@ import org.eclipse.jpt.core.resource.java.ManyToOneAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericJavaManyToOneMapping extends AbstractJavaSingleRelationshipMapping<ManyToOneAnnotation>
+/**
+ * 
+ */
+public class GenericJavaManyToOneMapping
+	extends AbstractJavaSingleRelationshipMapping<ManyToOneAnnotation>
 	implements JavaManyToOneMapping
 {
 
@@ -30,9 +34,10 @@ public class GenericJavaManyToOneMapping extends AbstractJavaSingleRelationshipM
 
 	public Iterator<String> correspondingAnnotationNames() {
 		return new ArrayIterator<String>(
-			JPA.JOIN_COLUMN,
-			JPA.JOIN_COLUMNS,
-			JPA.JOIN_TABLE);
+						JPA.JOIN_COLUMN,
+						JPA.JOIN_COLUMNS,
+						JPA.JOIN_TABLE
+					);
 	}
 
 	public String getAnnotationName() {
@@ -54,7 +59,7 @@ public class GenericJavaManyToOneMapping extends AbstractJavaSingleRelationshipM
 	}
 	
 	@Override
-	protected Boolean specifiedOptional(ManyToOneAnnotation relationshipMapping) {
+	protected Boolean buildSpecifiedOptional(ManyToOneAnnotation relationshipMapping) {
 		return relationshipMapping.getOptional();
 	}
 	
@@ -67,4 +72,5 @@ public class GenericJavaManyToOneMapping extends AbstractJavaSingleRelationshipM
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 	}
+
 }

@@ -145,8 +145,8 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 	private WritablePropertyValueModel<Boolean> buildExcludeUnlistedMappedClassesHolder() {
 		return new PropertyAspectAdapter<PersistenceUnit, Boolean>(
 			getSubjectHolder(),
-			PersistenceUnit.DEFAULT_EXCLUDE_UNLISTED_CLASSED_PROPERTY,
-			PersistenceUnit.SPECIFIED_EXCLUDE_UNLISTED_CLASSED_PROPERTY)
+			PersistenceUnit.DEFAULT_EXCLUDE_UNLISTED_CLASSES_PROPERTY,
+			PersistenceUnit.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -242,7 +242,7 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 	}
 
 	private ListValueModel<ClassRef> buildListHolder() {
-		return new ListAspectAdapter<PersistenceUnit, ClassRef>(getSubjectHolder(), PersistenceUnit.SPECIFIED_CLASS_REF_LIST) {
+		return new ListAspectAdapter<PersistenceUnit, ClassRef>(getSubjectHolder(), PersistenceUnit.SPECIFIED_CLASS_REFS_LIST) {
 			@Override
 			protected ListIterator<ClassRef> listIterator_() {
 				return subject.specifiedClassRefs();

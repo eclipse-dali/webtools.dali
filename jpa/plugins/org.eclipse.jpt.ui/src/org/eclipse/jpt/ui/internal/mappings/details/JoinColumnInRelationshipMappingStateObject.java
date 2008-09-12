@@ -40,9 +40,6 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 		super(relationshipMapping, joinColumn);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public String getDefaultTable() {
 
@@ -52,40 +49,29 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 			return joinColumn.getDefaultTable();
 		}
 
-		return getOwner().getTypeMapping().getTableName();
+		return getOwner().getTypeMapping().getPrimaryTableName();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public Table getNameTable() {
-		Schema schema = getDbSchema();
-
+		Schema schema = this.getDbSchema();
 		if (schema == null) {
 			return null;
 		}
 
-		String table = getTable();
-
-		if (table == null) {
-			table = getDefaultTable();
+		String tableIdentifier = this.getTable();
+		if (tableIdentifier == null) {
+			tableIdentifier = this.getDefaultTable();
 		}
 
-		return schema.getTableNamed(table);
+		return schema.getTableForIdentifier(tableIdentifier);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public RelationshipMapping getOwner() {
 		return (RelationshipMapping) super.getOwner();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public Table getReferencedNameTable() {
 		Entity targetEntity = getOwner().getResolvedTargetEntity();
@@ -97,11 +83,9 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public Schema getDbSchema() {
 		return getOwner().getTypeMapping().getDbSchema();
 	}
+
 }

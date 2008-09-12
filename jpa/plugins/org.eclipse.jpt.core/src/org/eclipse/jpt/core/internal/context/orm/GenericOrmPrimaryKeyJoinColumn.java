@@ -90,22 +90,22 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 		return (OrmBaseJoinColumn.Owner) this.owner;
 	}
 
-	public Column getDbReferencedColumn() {
-		Table table = this.dbReferencedColumnTable();
-		return (table == null) ? null : table.getColumnNamed(this.getReferencedColumnName());
+	public Column getReferencedDbColumn() {
+		Table table = this.getReferencedColumnDbTable();
+		return (table == null) ? null : table.getColumnForIdentifier(this.getReferencedColumnName());
 	}
 
-	public Table dbReferencedColumnTable() {
-		return getOwner().getDbReferencedColumnTable();
+	protected Table getReferencedColumnDbTable() {
+		return getOwner().getReferencedColumnDbTable();
 	}
 
 	@Override
 	protected String tableName() {
-		return this.getOwner().getTypeMapping().getTableName();
+		return this.getOwner().getTypeMapping().getPrimaryTableName();
 	}
 
 	public boolean isReferencedColumnResolved() {
-		return getDbReferencedColumn() != null;
+		return getReferencedDbColumn() != null;
 	}
 
 	public TextRange getReferencedColumnNameTextRange() {
@@ -145,6 +145,6 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	
 	//TODO not correct when we start supporting primaryKeyJoinColumns in 1-1 mappings
 	protected String defaultReferencedColumnName() {
-		return defaultName();
+		return buildDefaultName();
 	}
 }

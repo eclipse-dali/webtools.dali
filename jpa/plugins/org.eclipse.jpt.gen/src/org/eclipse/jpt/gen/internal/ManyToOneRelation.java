@@ -69,8 +69,8 @@ class ManyToOneRelation {
 		return this.referencedGenTable.getEntityName();
 	}
 
-	EntityGenerator.Config getEntityConfig() {
-		return this.baseGenTable.getEntityConfig();
+	String getBaseGenTableCollectionAttributeName() {
+		return this.baseGenTable.getCollectionAttributeName();
 	}
 
 	@Override

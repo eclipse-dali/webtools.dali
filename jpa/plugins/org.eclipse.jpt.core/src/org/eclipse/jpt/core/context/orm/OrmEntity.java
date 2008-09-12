@@ -86,6 +86,7 @@ public interface OrmEntity extends OrmTypeMapping, Entity, OrmGeneratorHolder
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmSecondaryTable> specifiedSecondaryTables();
 	OrmSecondaryTable addSpecifiedSecondaryTable(int index);
+	OrmSecondaryTable addSpecifiedSecondaryTable();
 
 	
 	@SuppressWarnings("unchecked")

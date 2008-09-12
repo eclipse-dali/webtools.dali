@@ -25,9 +25,10 @@ package org.eclipse.jpt.db;
 public interface DatabaseFinder {
 
 	/**
-	 * Return the database object with the specified name from the specified list.
+	 * Select and return from the specified list of database objects the
+	 * database object identified by the specified identifier.
 	 */
-	<T extends DatabaseObject> T getDatabaseObjectNamed(T[] databaseObjects, String name, DefaultCallback defaultCallback);
+	<T extends DatabaseObject> T selectDatabaseObjectForIdentifier(T[] databaseObjects, String identifier, DefaultCallback defaultCallback);
 
 	/**
 	 * The platform-provided finder is passed a "default" callback that can be
@@ -36,9 +37,10 @@ public interface DatabaseFinder {
 	interface DefaultCallback {
 
 		/**
-		 * Return the database object with the specified name from the specified list.
+		 * Select and return from the specified list of database objects the
+		 * database object identified by the specified identifier.
 		 */
-		<T extends DatabaseObject> T getDatabaseObjectNamed(T[] databaseObjects, String name);
+		<T extends DatabaseObject> T selectDatabaseObjectForIdentifier(T[] databaseObjects, String identifier);
 
 	}
 
@@ -55,9 +57,9 @@ public interface DatabaseFinder {
 			super();
 		}
 		// search for an exact match on the name
-		public <T extends DatabaseObject> T getDatabaseObjectNamed(T[] databaseObjects, String name, DefaultCallback defaultCallback) {
+		public <T extends DatabaseObject> T selectDatabaseObjectForIdentifier(T[] databaseObjects, String identifier, DefaultCallback defaultCallback) {
 			for (T databaseObject : databaseObjects) {
-				if (databaseObject.getName().equals(name)) {
+				if (databaseObject.getName().equals(identifier)) {
 					return databaseObject;
 				}
 			}
@@ -82,8 +84,8 @@ public interface DatabaseFinder {
 			super();
 		}
 		// simply use the callback
-		public <T extends DatabaseObject> T getDatabaseObjectNamed(T[] databaseObjects, String name, DefaultCallback defaultCallback) {
-			return defaultCallback.getDatabaseObjectNamed(databaseObjects, name);
+		public <T extends DatabaseObject> T selectDatabaseObjectForIdentifier(T[] databaseObjects, String identifier, DefaultCallback defaultCallback) {
+			return defaultCallback.selectDatabaseObjectForIdentifier(databaseObjects, identifier);
 		}
 		@Override
 		public String toString() {

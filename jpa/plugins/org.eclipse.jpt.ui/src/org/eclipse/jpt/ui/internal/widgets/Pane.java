@@ -3499,20 +3499,21 @@ public abstract class Pane<T extends Model>
 	 * @param message The logging message
 	 */
 	protected void log(String flag, String message) {
-
-		if (Tracing.UI_LAYOUT.equals(flag) &&
-		    Tracing.booleanDebugOption(Tracing.UI_LAYOUT)) {
-
-			Class<?> thisClass = getClass();
-			String className = ClassTools.shortNameFor(thisClass);
-
-			if (thisClass.isAnonymousClass()) {
-				className = className.substring(0, className.indexOf('$'));
-				className += "->" + ClassTools.shortNameFor(thisClass.getSuperclass());
-			}
-
-			Tracing.log(className + ": " + message);
+		if (flag.equals(Tracing.UI_LAYOUT) && Tracing.booleanDebugOption(Tracing.UI_LAYOUT)) {
+			this.log(message);
 		}
+	}
+
+	protected void log(String message) {
+		Class<?> thisClass = this.getClass();
+		String className = ClassTools.shortNameFor(thisClass);
+
+		if (thisClass.isAnonymousClass()) {
+			className = className.substring(0, className.indexOf('$'));
+			className += "->" + ClassTools.shortNameFor(thisClass.getSuperclass());
+		}
+
+		Tracing.log(className + ": " + message);
 	}
 
 	/**
@@ -3719,7 +3720,7 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Populate
 	 */
-	protected T getSubject() {
+	public T getSubject() {
 		return this.subjectHolder.getValue();
 	}
 

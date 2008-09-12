@@ -127,7 +127,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 	}
 	
 	public String getDefaultTableName() {
-		return getTypeMapping().getTableName();
+		return getTypeMapping().getPrimaryTableName();
 	}
 
 	//************** IdMapping implementation ***************
@@ -438,44 +438,43 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 		
-		addColumnMessages(messages, astRoot);
+		if (this.entityOwned() && this.connectionProfileIsActive()) {
+			this.addColumnMessages(messages, astRoot);
+		}
 		addGeneratedValueMessages(messages, astRoot);
 		addGeneratorMessages(messages, astRoot);
 	}
 		
 	protected void addColumnMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		JavaColumn column = this.getColumn();
-		String table = column.getTable();
-		boolean doContinue = entityOwned() && column.connectionProfileIsActive();
-		
-		if (doContinue && this.getTypeMapping().tableNameIsInvalid(table)) {
+		if (this.getTypeMapping().tableNameIsInvalid(this.column.getTable())) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
-						new String[] {table, column.getName()}, 
-						column, column.getTableTextRange(astRoot))
+						new String[] {this.column.getTable(), this.column.getName()}, 
+						this.column,
+						this.column.getTableTextRange(astRoot))
 				);
-			doContinue = false;
+			return;
 		}
 		
-		if (doContinue && ! column.isResolved()) {
+		if ( ! this.column.isResolved()) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-						new String[] {column.getName()}, 
-						column, column.getNameTextRange(astRoot))
+						new String[] {this.column.getName()}, 
+						this.column,
+						this.column.getNameTextRange(astRoot))
 				);
 		}
 	}
 	
 	protected void addGeneratedValueMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		JavaGeneratedValue generatedValue = this.getGeneratedValue();
-		if (generatedValue == null) {
+		if (this.generatedValue == null) {
 			return;
 		}
-		String generatorName = generatedValue.getGenerator();
+		String generatorName = this.generatedValue.getGenerator();
 		if (generatorName == null) {
 			return;
 		}
@@ -492,7 +491,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 				JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME,
 				new String[] {generatorName},
 				this,
-				generatedValue.getGeneratorTextRange(astRoot))
+				this.generatedValue.getGeneratorTextRange(astRoot))
 			);
 	}
 	

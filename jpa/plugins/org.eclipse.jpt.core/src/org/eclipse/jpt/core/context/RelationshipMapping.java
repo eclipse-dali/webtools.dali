@@ -20,6 +20,22 @@ package org.eclipse.jpt.core.context;
  */
 public interface RelationshipMapping extends AttributeMapping, Fetchable
 {
+	/**
+	 * Return the entity that owns the relationship mapping.
+	 */
+	Entity getEntity();
+
+	/**
+	 * Return whether this mapping is the owning side of the relationship.
+	 * Either this is a unidirectional mapping or it is the owning side of a
+	 * bidirectional relationship. If bidirectional, the owning side is the
+	 * side that does not specify 'mappedBy'. The owning side is the side where
+	 * the join table would be specified
+	 */
+	boolean isRelationshipOwner();
+
+	String getJoinTableDefaultName();
+
 
 	// **************** target entity **************************************
 	
@@ -27,31 +43,17 @@ public interface RelationshipMapping extends AttributeMapping, Fetchable
 
 	String getSpecifiedTargetEntity();
 	void setSpecifiedTargetEntity(String value);
-		String SPECIFIED_TARGET_ENTITY_PROPERTY = "specifiedTargetEntityProperty";
+		String SPECIFIED_TARGET_ENTITY_PROPERTY = "specifiedTargetEntity"; //$NON-NLS-1$
 
 	String getDefaultTargetEntity();
-		String DEFAULT_TARGET_ENTITY_PROPERTY = "defaultTargetEntityProperty";
+		String DEFAULT_TARGET_ENTITY_PROPERTY = "defaultTargetEntity"; //$NON-NLS-1$
 
 	Entity getResolvedTargetEntity();
-		String RESOLVED_TARGET_ENTITY_PROPERTY = "resolvedTargetEntityProperty";
+		String RESOLVED_TARGET_ENTITY_PROPERTY = "resolvedTargetEntity"; //$NON-NLS-1$
 	
 	
 	// **************** cascade **************************************
 
 	Cascade getCascade();
 
-
-	/**
-	 * Return the Entity that owns this relationship mapping
-	 * @return
-	 */
-	Entity getEntity();
-
-	/**
-	 * Return whether this mapping is the owning side of the relationship.
-	 * Either this is a unidirectional mapping or it is the owning side of a bidirectional
-	 * relationship.  If bidirectional, the owning side is the side that doesn't specify
-	 * mappedBy.  This is the side where a join table would be specified
-	 */
-	boolean isRelationshipOwner();
 }

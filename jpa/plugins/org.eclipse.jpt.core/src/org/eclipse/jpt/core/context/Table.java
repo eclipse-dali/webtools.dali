@@ -10,7 +10,10 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.ListIterator;
+
+import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
 
 /**
  * 
@@ -21,90 +24,85 @@ import org.eclipse.jpt.db.Schema;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface Table extends JpaContextNode
+public interface Table
+	extends JpaContextNode
 {
-	String getName();
-	
-	String getDefaultName();
-		String DEFAULT_NAME_PROPERTY = "defaultNameProperty";
 
+	// ********** name **********
+
+	/**
+	 * Return the specified name if present, otherwise return the default
+	 * name.
+	 */
+	String getName();
 	String getSpecifiedName();
 	void setSpecifiedName(String value);
-		String SPECIFIED_NAME_PROPERTY = "specifiedNameProperty";
-
-	String getCatalog();
-
-	String getDefaultCatalog();
-		String DEFAULT_CATALOG_PROPERTY = "defaultCatalogProperty";
-
-	String getSpecifiedCatalog();
-	void setSpecifiedCatalog(String value);
-		String SPECIFIED_CATALOG_PROPERTY = "specifiedCatalogProperty";
+		String SPECIFIED_NAME_PROPERTY = "specifiedName"; //$NON-NLS-1$
+	String getDefaultName();
+		String DEFAULT_NAME_PROPERTY = "defaultName"; //$NON-NLS-1$
 
 
+	// ********** schema **********
+
+	/**
+	 * Return the specified schema if present, otherwise return the default
+	 * schema.
+	 */
 	String getSchema();
-
-	String getDefaultSchema();
-		String DEFAULT_SCHEMA_PROPERTY = "defaultSchemaProperty";
-
 	String getSpecifiedSchema();
 	void setSpecifiedSchema(String value);
-		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchemaProperty";
+		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchema"; //$NON-NLS-1$
+	String getDefaultSchema();
+		String DEFAULT_SCHEMA_PROPERTY = "defaultSchema"; //$NON-NLS-1$
 
 
-	// **************** unique constraints **************************************
+	// ********** catalog **********
 
 	/**
-	 * Return a list iterator of the unique constraints.
-	 * This will not be null.
+	 * Return the specified catalog if present, otherwise return the default
+	 * catalog.
 	 */
+	String getCatalog();
+	String getSpecifiedCatalog();
+	void setSpecifiedCatalog(String value);
+		String SPECIFIED_CATALOG_PROPERTY = "specifiedCatalog"; //$NON-NLS-1$
+	String getDefaultCatalog();
+		String DEFAULT_CATALOG_PROPERTY = "defaultCatalog"; //$NON-NLS-1$
+
+
+	// ********** unique constraints **********
+
 	<T extends UniqueConstraint> ListIterator<T> uniqueConstraints();
-	
-	/**
-	 * Return the number of unique constraints.
-	 */
 	int uniqueConstraintsSize();
-		
-	/**
-	 * Add a unique constraint to the table and return the object 
-	 * representing it.
-	 */
 	UniqueConstraint addUniqueConstraint(int index);
-	
-	/**
-	 * Remove unique constraint at the given index from the Table
-	 */
 	void removeUniqueConstraint(int index);
-	
-	/**
-	 * Remove the unique constraint from the Table
-	 */
 	void removeUniqueConstraint(UniqueConstraint uniqueConstraint);
-	
-	/**
-	 * Move the unique constraint from the source index to the target index.
-	 */
 	void moveUniqueConstraint(int targetIndex, int sourceIndex);
-		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraintsList";
+		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraints"; //$NON-NLS-1$
 
 
+	// ********** database stuff **********
 
 	org.eclipse.jpt.db.Table getDbTable();
-
 	Schema getDbSchema();
-	
-	/**
-	 * Return true if this table is connected to a datasource
-	 */
-	boolean connectionProfileIsActive();
+	Catalog getDbCatalog();
+	SchemaContainer getDbSchemaContainer();
 
-	/** 
-	 * Return true if this table's schema can be resolved to a schema on the active connection
+	/**
+	 * Return whether the table can be resolved to a table on the database.
+	 */
+	boolean isResolved();
+
+	/**
+	 * Return whether the table's schema can be resolved to a schema on the
+	 * database.
 	 */
 	boolean hasResolvedSchema();
 
-	/** 
-	 * Return true if this can be resolved to a table on the active connection
+	/**
+	 * Return whether the table has a catalog and it can be resolved to a
+	 * catalog on the database.
 	 */
-	boolean isResolved();
+	boolean hasResolvedCatalog();
+
 }

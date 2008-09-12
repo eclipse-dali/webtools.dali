@@ -15,7 +15,12 @@ import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public abstract class AbstractOrmJpaContextNode extends AbstractJpaContextNode implements OrmJpaContextNode
+/**
+ * 
+ */
+public abstract class AbstractOrmJpaContextNode
+	extends AbstractJpaContextNode
+	implements OrmJpaContextNode
 {
 	// ********** constructor **********
 
@@ -30,7 +35,7 @@ public abstract class AbstractOrmJpaContextNode extends AbstractJpaContextNode i
 	 * should be preceded by a "super" call to this method
 	 */
 	public void addToMessages(List<IMessage> messages) {
-		
+		// do nothing by default
 	}
 
 }

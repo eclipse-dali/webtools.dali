@@ -85,6 +85,11 @@ public class MySQLTests extends DTPPlatformTests {
 		return "MySQL 4.1 JDBC Profile [Test]";
 	}
 
+	@Override
+	protected boolean supportsCatalogs() {
+		return false;
+	}
+
 	public void testDatabase() throws Exception {
 		this.connectionProfile.connect();
 		TestConnectionListener listener = new TestConnectionListener();
@@ -257,15 +262,15 @@ public class MySQLTests extends DTPPlatformTests {
 
 		Schema schema = this.getDatabase().getDefaultSchema();
 
-		Table test1Table = schema.getTableNamed("test1");
+		Table test1Table = schema.getTableForIdentifier("test1");
 		assertNotNull(test1Table);
 
 		// this probably only works on Windows
-		Table test2Table = schema.getTableNamed("test2");
+		Table test2Table = schema.getTableForIdentifier("test2");
 		assertNotNull(test2Table);
 
 		// this probably only works on Windows
-		Table test3Table = schema.getTableNamed("`test3`");
+		Table test3Table = schema.getTableForIdentifier("`test3`");
 		assertNotNull(test3Table);
 
 		this.dropTable(this.getDatabaseName(), "test1");
@@ -320,8 +325,8 @@ public class MySQLTests extends DTPPlatformTests {
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
 		table = this.getDatabase().getDefaultSchema().getTableNamed("test");
-		assertNotNull(table.getColumnNamed("`Id`"));
-		assertNotNull(table.getColumnNamed("`Name`"));
+		assertNotNull(table.getColumnForIdentifier("`Id`"));
+		assertNotNull(table.getColumnForIdentifier("`Name`"));
 
 		this.dropTable(this.getDatabaseName(), "test");
 

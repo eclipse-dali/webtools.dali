@@ -107,7 +107,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		assertFalse(overridableAssociationNames.hasNext());
 	}
 	
-	public void testTableNameIsInvalid() throws Exception {
+	public void testTableIdentifierIsInvalid() throws Exception {
 		createTestEmbeddable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
@@ -153,7 +153,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		assertFalse(embeddable.associatedTablesIncludingInherited().hasNext());
 	}
 	
-	public void testAssociatedTableNamesIncludingInherited() throws Exception {
+	public void testAssociatedTableIdentifiersIncludingInherited() throws Exception {
 		createTestEmbeddable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 

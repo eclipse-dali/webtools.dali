@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.wizard.WizardPage;
@@ -23,14 +22,15 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.db.ConnectionAdapter;
 import org.eclipse.jpt.db.ConnectionListener;
 import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -61,8 +61,6 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 	private final Set<Listener> listeners = Collections.synchronizedSet(new HashSet<Listener>());
 
 	private DatabaseGroup databaseGroup;
-
-	static final SortedSet<String> EMPTY_SCHEMA_NAMES = new TreeSet<String>();
 
 
 	public DatabaseConnectionWizardPage(JpaProject jpaProject) {
@@ -241,7 +239,7 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 		 * called at start-up and when the selected connection profile changes
 		 */
 		private ConnectionProfile getJpaProjectConnectionProfile() {
-			return DatabaseConnectionWizardPage.this.jpaProject.getDataSource().getConnectionProfile();
+			return DatabaseConnectionWizardPage.this.jpaProject.getConnectionProfile();
 		}
 
 		/**
@@ -250,7 +248,7 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 		 */
 		private Schema getDefaultSchema() {
 			return (this.selectedConnectionProfile == this.getJpaProjectConnectionProfile()) ?
-							DatabaseConnectionWizardPage.this.jpaProject.getDefaultSchema()
+							DatabaseConnectionWizardPage.this.jpaProject.getDefaultDbSchema()
 						:
 							null;
 		}
@@ -290,24 +288,18 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 		 */
 		private void updateSchemaComboBox() {
 			this.schemaComboBox.removeAll();
-			for (String schemaName : this.buildSortedSchemaNames()) {
-				this.schemaComboBox.add(schemaName);
+			for (Iterator<String> stream = this.getSchemaIdentifiers(); stream.hasNext(); ) {
+				this.schemaComboBox.add(stream.next());
 			}
 			// the current schema *should* be in the current connection profile
 			if (this.selectedSchema != null) {
-				this.schemaComboBox.select(this.schemaComboBox.indexOf(this.selectedSchema.getName()));
+				this.schemaComboBox.select(this.schemaComboBox.indexOf(this.selectedSchema.getIdentifier()));
 			}
 		}
 
-		private SortedSet<String> buildSortedSchemaNames() {
-			if (this.selectedConnectionProfile == null) {
-				return EMPTY_SCHEMA_NAMES;
-			}
-			Database db = this.selectedConnectionProfile.getDatabase();
-			if (db == null) {  // the database is null when the connection profile is inactive
-				return EMPTY_SCHEMA_NAMES;
-			}
-			return CollectionTools.sortedSet(db.schemaNames());
+		private Iterator<String> getSchemaIdentifiers() {
+			SchemaContainer sc = DatabaseConnectionWizardPage.this.jpaProject.getDefaultDbSchemaContainer();
+			return (sc == null) ? EmptyIterator.<String>instance() : sc.sortedSchemaIdentifiers();
 		}
 
 		/**
@@ -316,9 +308,9 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 		 * profile.
 		 */
 		private ConnectionProfile checkJpaProjectConnectionProfile(String cpName) {
-			ConnectionProfile jpaProjectCP = this.getJpaProjectConnectionProfile();
-			if ((jpaProjectCP != null) && jpaProjectCP.getName().equals(cpName)) {
-				return jpaProjectCP;
+			ConnectionProfile cp = this.getJpaProjectConnectionProfile();
+			if ((cp != null) && cp.getName().equals(cpName)) {
+				return cp;
 			}
 			return this.buildConnectionProfile(cpName);
 		}
@@ -356,7 +348,7 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 
 		void selectedSchemaChanged() {
 			Schema old = this.selectedSchema;
-			this.selectedSchema = this.selectedConnectionProfile.getDatabase().getSchemaNamed(this.schemaComboBox.getText());
+			this.selectedSchema = this.selectedConnectionProfile.getDatabase().getSchemaForIdentifier(this.schemaComboBox.getText());
 			if (this.selectedSchema != old) {
 				DatabaseConnectionWizardPage.this.fireSchemaChanged(this.selectedSchema);
 			}

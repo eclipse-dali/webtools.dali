@@ -13,6 +13,7 @@ import java.util.Collection;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
+import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
@@ -75,7 +76,7 @@ public class OrmTableGeneratorComposite extends Pane<OrmTableGenerator>
 			}
 
 			@Override
-			public void setValue_(String value) {
+			protected void setValue_(String value) {
 				subject.setName(value);
 			}
 		};
@@ -179,24 +180,20 @@ public class OrmTableGeneratorComposite extends Pane<OrmTableGenerator>
 			}
 
 			@Override
-			protected String getSchemaName() {
-				return getSubject().getSchema();
-			}
-
-			@Override
 			protected void setValue(String value) {
 				getSubject().setSpecifiedTable(value);
-			}
-
-			@Override
-			protected Table getDbTable() {
-				return getSubject().getDbTable();
 			}
 
 			@Override
 			protected String getValue() {
 				return getSubject().getSpecifiedTable();
 			}
+
+			@Override
+			protected Schema getDbSchema_() {
+				return this.getSubject().getDbSchema();
+			}
+
 		};
 	}
 

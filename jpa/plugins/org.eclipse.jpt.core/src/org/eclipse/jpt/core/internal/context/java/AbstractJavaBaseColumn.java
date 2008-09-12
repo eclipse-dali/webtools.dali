@@ -235,16 +235,16 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 		return getResourceColumn().tableTouches(pos, astRoot);
 	}
 
-	private Iterator<String> candidateTableNames() {
+	private Iterator<String> candidateTableIdentifiers() {
 		return this.tableIsAllowed() ? this.getOwner().getTypeMapping().associatedTableNamesIncludingInherited() : EmptyIterator.<String> instance();
 	}
 
-	private Iterator<String> candidateTableNames(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateTableNames(), filter);
+	private Iterator<String> candidateTableIdentifiers(Filter<String> filter) {
+		return new FilteringIterator<String, String>(this.candidateTableIdentifiers(), filter);
 	}
 
-	private Iterator<String> quotedCandidateTableNames(Filter<String> filter) {
-		return StringTools.quote(this.candidateTableNames(filter));
+	private Iterator<String> javaCandidateTableIdentifiers(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.candidateTableIdentifiers(filter));
 	}
 
 	/**
@@ -260,7 +260,7 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 			return result;
 		}
 		if (this.tableTouches(pos, astRoot)) {
-			return this.quotedCandidateTableNames(filter);
+			return this.javaCandidateTableIdentifiers(filter);
 		}
 		return null;
 	}

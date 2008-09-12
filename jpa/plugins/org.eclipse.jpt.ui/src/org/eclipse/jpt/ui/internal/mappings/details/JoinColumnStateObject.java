@@ -9,9 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.JoinColumn;
@@ -171,25 +170,15 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 		firePropertyChanged(UPDATABLE_PROPERTY, oldUpdatable, updatable);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public ListIterator<String> tables() {
 		Schema schema = getDbSchema();
-
 		if (schema == null) {
 			return EmptyListIterator.instance();
 		}
-
-		List<String> names = CollectionTools.list(schema.tableNames());
-		Collections.sort(names);
-		return names.listIterator();
+		return CollectionTools.list(schema.sortedTableIdentifiers()).listIterator();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public void updateJoinColumn(BaseJoinColumn abstractJoinColumn) {
 

@@ -77,6 +77,11 @@ public class PostgreSQLTests extends DTPPlatformTests {
 	}
 
 	@Override
+	protected boolean supportsCatalogs() {
+		return true;
+	}
+
+	@Override
 	public void testOffline() {
 		// DTP does not support PostgreSQL off-line - see 226704/241558
 	}
@@ -97,19 +102,19 @@ public class PostgreSQLTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE SCHEMA TEST1");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		Schema schema1 = this.getDatabase().getSchemaNamed("TEST1");
+		Schema schema1 = this.getDatabase().getSchemaForIdentifier("TEST1");
 		assertNotNull(schema1);
 
 		this.executeUpdate("CREATE SCHEMA TEST2");
-		Schema schema2 = this.getDatabase().getSchemaNamed("TEST2");
+		Schema schema2 = this.getDatabase().getSchemaForIdentifier("TEST2");
 		assertNull(schema2);  // should be null until refresh
 
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 		assertSame(this.getDatabase(), listener.changedDatabase);
 
-		schema2 = this.getDatabase().getSchemaNamed("TEST2");
+		schema2 = this.getDatabase().getSchemaForIdentifier("TEST2");
 		assertNotNull(schema2);
-		assertNotSame(schema1, this.getDatabase().getSchemaNamed("TEST1"));  // we should have a new schema after the refresh
+		assertNotSame(schema1, this.getDatabase().getSchemaForIdentifier("TEST1"));  // we should have a new schema after the refresh
 
 		this.dropSchema("TEST2");
 		this.dropSchema("TEST1");
@@ -128,12 +133,18 @@ public class PostgreSQLTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE SCHEMA LOOKUP_TEST");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		assertNotNull(this.getDatabase().getSchemaNamed("LOOKUP_TEST"));
+		assertNull(this.getDatabase().getSchemaNamed("LOOKUP_TEST"));
+		assertNotNull(this.getDatabase().getSchemaForIdentifier("LOOKUP_TEST"));
+
 		assertNotNull(this.getDatabase().getSchemaNamed("lookup_test"));
-		assertNotNull(this.getDatabase().getSchemaNamed("lookup_TEST"));
-		assertNotNull(this.getDatabase().getSchemaNamed("\"lookup_test\""));
-		assertNull(this.getDatabase().getSchemaNamed("\"lookup_TEST\""));
-		assertNull(this.getDatabase().getSchemaNamed("\"LOOKUP_TEST\""));
+		assertNotNull(this.getDatabase().getSchemaForIdentifier("lookup_test"));
+
+		assertNull(this.getDatabase().getSchemaNamed("lookup_TEST"));
+		assertNotNull(this.getDatabase().getSchemaForIdentifier("lookup_TEST"));
+
+		assertNotNull(this.getDatabase().getSchemaForIdentifier("\"lookup_test\""));
+		assertNull(this.getDatabase().getSchemaForIdentifier("\"lookup_TEST\""));
+		assertNull(this.getDatabase().getSchemaForIdentifier("\"LOOKUP_TEST\""));
 
 		this.dropSchema("LOOKUP_TEST");
 
@@ -141,10 +152,16 @@ public class PostgreSQLTests extends DTPPlatformTests {
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
 		assertNull(this.getDatabase().getSchemaNamed("LOOKUP_TEST"));
+		assertNull(this.getDatabase().getSchemaForIdentifier("LOOKUP_TEST"));
+
 		assertNull(this.getDatabase().getSchemaNamed("lookup_test"));
-		assertNull(this.getDatabase().getSchemaNamed("lookup_TEST"));
-		assertNull(this.getDatabase().getSchemaNamed("\"LOOKUP_TEST\""));
-		assertNotNull(this.getDatabase().getSchemaNamed("\"lookup_TEST\""));
+		assertNull(this.getDatabase().getSchemaForIdentifier("lookup_test"));
+
+		assertNotNull(this.getDatabase().getSchemaNamed("lookup_TEST"));
+		assertNull(this.getDatabase().getSchemaForIdentifier("lookup_TEST"));
+
+		assertNull(this.getDatabase().getSchemaForIdentifier("\"LOOKUP_TEST\""));
+		assertNotNull(this.getDatabase().getSchemaForIdentifier("\"lookup_TEST\""));
 
 		this.dropSchema("\"lookup_TEST\"");
 
@@ -152,7 +169,7 @@ public class PostgreSQLTests extends DTPPlatformTests {
 		this.connectionProfile.disconnect();
 	}
 
-	public void testSchemaAnnotationIdentifier() throws Exception {
+	public void testSchemaIdentifier() throws Exception {
 		this.connectionProfile.connect();
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
@@ -160,21 +177,21 @@ public class PostgreSQLTests extends DTPPlatformTests {
 		this.dropSchema("LOOKUP_TEST");
 		this.dropSchema("\"lookup_TEST\"");
 
-		this.executeUpdate("CREATE SCHEMA lookup_test");  // this gets folded to uppercase
+		this.executeUpdate("CREATE SCHEMA lookup_test");  // this gets folded to lowercase
 		this.executeUpdate("CREATE SCHEMA \"lookup_TEST\"");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		Schema schema = this.getDatabase().getSchemaNamed("LOOKUP_TEST");
-		assertEquals("lookup_test", schema.getAnnotationIdentifier());
-		assertEquals("lookup_test", schema.getAnnotationIdentifier("LookupTest"));
-		assertNull(schema.getAnnotationIdentifier("Lookup_Test"));
+		Schema schema = this.getDatabase().getSchemaForIdentifier("LOOKUP_TEST");
+		assertEquals("lookup_test", schema.getIdentifier());
+		assertEquals("lookup_test", schema.getIdentifier("LookupTest"));
+		assertNull(schema.getIdentifier("Lookup_Test"));
 
 		schema = this.getDatabase().getSchemaNamed("lookup_test");
-		assertEquals("lookup_test", schema.getAnnotationIdentifier());
+		assertEquals("lookup_test", schema.getIdentifier());
 
-		schema = this.getDatabase().getSchemaNamed("\"lookup_TEST\"");
-		assertEquals("\"lookup_TEST\"", schema.getAnnotationIdentifier());
-		assertEquals("\"lookup_TEST\"", schema.getAnnotationIdentifier("lookup_TEST"));
+		schema = this.getDatabase().getSchemaForIdentifier("\"lookup_TEST\"");
+		assertEquals("\"lookup_TEST\"", schema.getIdentifier());
+		assertEquals("\"lookup_TEST\"", schema.getIdentifier("lookup_TEST"));
 
 		this.dropSchema("\"lookup_TEST\"");
 		this.dropSchema("LOOKUP_TEST");
@@ -203,17 +220,17 @@ public class PostgreSQLTests extends DTPPlatformTests {
 		this.executeUpdate(this.buildFooBazDDL());
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		Schema schema = this.getDatabase().getSchemaNamed("TABLE_TEST");
+		Schema schema = this.getDatabase().getSchemaForIdentifier("TABLE_TEST");
 
 		// FOO
-		Table fooTable = schema.getTableNamed("FOO");
+		Table fooTable = schema.getTableForIdentifier("FOO");
 		assertEquals(3, fooTable.columnsSize());
 		assertEquals(1, fooTable.primaryKeyColumnsSize());
 		assertEquals(1, fooTable.foreignKeysSize());
 
 		Column pkColumn = fooTable.getPrimaryKeyColumn();
 		assertEquals("id", pkColumn.getName());
-		Column idColumn = fooTable.getColumnNamed("ID");
+		Column idColumn = fooTable.getColumnForIdentifier("ID");
 		assertSame(pkColumn, idColumn);
 		assertEquals("INT4", idColumn.getDataTypeName());
 		assertSame(fooTable, idColumn.getTable());
@@ -221,12 +238,12 @@ public class PostgreSQLTests extends DTPPlatformTests {
 		assertFalse(idColumn.isForeignKeyColumn());
 		assertEquals("java.lang.Integer", idColumn.getJavaTypeDeclaration());
 
-		Column nameColumn = fooTable.getColumnNamed("NAME");
+		Column nameColumn = fooTable.getColumnForIdentifier("NAME");
 		assertEquals("VARCHAR", nameColumn.getDataTypeName());
 		assertEquals("java.lang.String", nameColumn.getJavaTypeDeclaration());
 		assertFalse(nameColumn.isPrimaryKeyColumn());
 
-		Column barColumn = fooTable.getColumnNamed("BAR_ID");
+		Column barColumn = fooTable.getColumnForIdentifier("BAR_ID");
 		assertEquals("INT4", barColumn.getDataTypeName());
 		assertTrue(barColumn.isForeignKeyColumn());
 		assertFalse(barColumn.isPrimaryKeyColumn());
@@ -242,25 +259,25 @@ public class PostgreSQLTests extends DTPPlatformTests {
 		assertSame(schema, fooTable.getSchema());
 
 		// BAR
-		Table barTable = schema.getTableNamed("BAR");
+		Table barTable = schema.getTableForIdentifier("BAR");
 		assertEquals(2, barTable.columnsSize());
 		assertEquals(1, barTable.primaryKeyColumnsSize());
 		assertEquals(0, barTable.foreignKeysSize());
 		assertEquals("id", barTable.getPrimaryKeyColumn().getName());
 		assertFalse(barTable.isPossibleJoinTable());
-		assertEquals("BYTEA", barTable.getColumnNamed("CHUNK").getDataTypeName());
-		assertEquals("byte[]", barTable.getColumnNamed("CHUNK").getJavaTypeDeclaration());
-		// assertTrue(barTable.getColumnNamed("CHUNK").dataTypeIsLOB());
+		assertEquals("BYTEA", barTable.getColumnForIdentifier("CHUNK").getDataTypeName());
+		assertEquals("byte[]", barTable.getColumnForIdentifier("CHUNK").getJavaTypeDeclaration());
+		// assertTrue(barTable.getColumnForIdentifier("CHUNK").dataTypeIsLOB());
 		assertSame(barTable, barFK.getReferencedTable());
 
 		// FOO_BAZ
-		Table foo_bazTable = schema.getTableNamed("FOO_BAZ");
+		Table foo_bazTable = schema.getTableForIdentifier("FOO_BAZ");
 		assertEquals(2, foo_bazTable.columnsSize());
 		assertEquals(0, foo_bazTable.primaryKeyColumnsSize());
 		assertEquals(2, foo_bazTable.foreignKeysSize());
 		assertTrue(foo_bazTable.isPossibleJoinTable());
 		assertTrue(foo_bazTable.joinTableNameIsDefault());
-		assertTrue(foo_bazTable.getColumnNamed("FOO_ID").isForeignKeyColumn());
+		assertTrue(foo_bazTable.getColumnForIdentifier("FOO_ID").isForeignKeyColumn());
 
 		this.dropTable("TABLE_TEST", "FOO_BAZ");
 		this.dropTable("TABLE_TEST", "BAZ");
@@ -326,9 +343,9 @@ public class PostgreSQLTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE test (id int, name varchar(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		Table table = this.getDatabase().getSchemaNamed("TABLE_TEST").getTableNamed("test");
-		assertNotNull(table.getColumnNamed("id"));
-		assertNotNull(table.getColumnNamed("name"));
+		Table table = this.getDatabase().getSchemaForIdentifier("TABLE_TEST").getTableForIdentifier("test");
+		assertNotNull(table.getColumnForIdentifier("id"));
+		assertNotNull(table.getColumnForIdentifier("name"));
 
 		this.dropTable("TABLE_TEST", "test");
 
@@ -336,9 +353,9 @@ public class PostgreSQLTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE test (ID int, NAME varchar(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		table = this.getDatabase().getSchemaNamed("TABLE_TEST").getTableNamed("test");
-		assertNotNull(table.getColumnNamed("ID"));
-		assertNotNull(table.getColumnNamed("NAME"));
+		table = this.getDatabase().getSchemaForIdentifier("TABLE_TEST").getTableForIdentifier("test");
+		assertNotNull(table.getColumnForIdentifier("ID"));
+		assertNotNull(table.getColumnForIdentifier("NAME"));
 
 		this.dropTable("TABLE_TEST", "test");
 
@@ -346,9 +363,9 @@ public class PostgreSQLTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE test (Id int, Name varchar(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		table = this.getDatabase().getSchemaNamed("TABLE_TEST").getTableNamed("test");
-		assertNotNull(table.getColumnNamed("Id"));
-		assertNotNull(table.getColumnNamed("Name"));
+		table = this.getDatabase().getSchemaForIdentifier("TABLE_TEST").getTableForIdentifier("test");
+		assertNotNull(table.getColumnForIdentifier("Id"));
+		assertNotNull(table.getColumnForIdentifier("Name"));
 
 		this.dropTable("TABLE_TEST", "test");
 
@@ -356,9 +373,9 @@ public class PostgreSQLTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE test (\"Id\" int, \"Name\" varchar(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		table = this.getDatabase().getSchemaNamed("TABLE_TEST").getTableNamed("test");
-		assertNotNull(table.getColumnNamed("\"Id\""));
-		assertNotNull(table.getColumnNamed("\"Name\""));
+		table = this.getDatabase().getSchemaForIdentifier("TABLE_TEST").getTableForIdentifier("test");
+		assertNotNull(table.getColumnForIdentifier("\"Id\""));
+		assertNotNull(table.getColumnForIdentifier("\"Name\""));
 
 		this.dropTable("TABLE_TEST", "test");
 		this.dropSchema("TABLE_TEST");
@@ -368,16 +385,16 @@ public class PostgreSQLTests extends DTPPlatformTests {
 	}
 
 	private void dropTable(String schemaName, String tableName) throws Exception {
-		Schema schema= this.getSchemaNamed(schemaName);
+		Schema schema= this.getSchemaForIdentifier(schemaName);
 		if (schema != null) {
-			if (schema.getTableNamed(tableName) != null) {
+			if (schema.getTableForIdentifier(tableName) != null) {
 				this.executeUpdate("DROP TABLE " + schemaName + '.' + tableName);
 			}
 		}
 	}
 
 	private void dropSchema(String name) throws Exception {
-		if (this.getSchemaNamed(name) != null) {
+		if (this.getSchemaForIdentifier(name) != null) {
 			this.executeUpdate("DROP SCHEMA " + name + " CASCADE");
 		}
 	}

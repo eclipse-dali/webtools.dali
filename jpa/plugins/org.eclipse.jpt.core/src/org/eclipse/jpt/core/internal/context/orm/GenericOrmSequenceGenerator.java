@@ -13,67 +13,91 @@ import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 
-
-public class GenericOrmSequenceGenerator extends AbstractOrmGenerator<XmlSequenceGenerator>
+/**
+ * 
+ */
+public class GenericOrmSequenceGenerator
+	extends AbstractOrmGenerator<XmlSequenceGenerator>
 	implements OrmSequenceGenerator
 {
 
 	protected String specifiedSequenceName;
-
 	protected String defaultSequenceName;
+
 
 	public GenericOrmSequenceGenerator(OrmJpaContextNode parent, XmlSequenceGenerator resourceSequenceGenerator) {
 		super(parent);
 		this.initialize(resourceSequenceGenerator);
 	}
 
+
+	// ********** sequence name **********
+
 	public String getSequenceName() {
-		return (this.getSpecifiedSequenceName() == null) ? getDefaultSequenceName() : this.getSpecifiedSequenceName();
+		return (this.specifiedSequenceName != null) ? this.specifiedSequenceName : this.defaultSequenceName;
 	}
 
 	public String getSpecifiedSequenceName() {
 		return this.specifiedSequenceName;
 	}
 
-	public void setSpecifiedSequenceName(String newSpecifiedSequenceName) {
-		String oldSpecifiedSequenceName = this.specifiedSequenceName;
-		this.specifiedSequenceName = newSpecifiedSequenceName;
-		getResourceGenerator().setSequenceName(newSpecifiedSequenceName);
-		firePropertyChanged(SPECIFIED_SEQUENCE_NAME_PROPERTY, oldSpecifiedSequenceName, newSpecifiedSequenceName);
+	public void setSpecifiedSequenceName(String specifiedSequenceName) {
+		String old = this.specifiedSequenceName;
+		this.specifiedSequenceName = specifiedSequenceName;
+		this.getResourceGenerator().setSequenceName(specifiedSequenceName);
+		this.firePropertyChanged(SPECIFIED_SEQUENCE_NAME_PROPERTY, old, specifiedSequenceName);
 	}
 	
-	protected void setSpecifiedSequenceName_(String newSpecifiedSequenceName) {
-		String oldSpecifiedSequenceName = this.specifiedSequenceName;
-		this.specifiedSequenceName = newSpecifiedSequenceName;
-		firePropertyChanged(SPECIFIED_SEQUENCE_NAME_PROPERTY, oldSpecifiedSequenceName, newSpecifiedSequenceName);
+	protected void setSpecifiedSequenceName_(String specifiedSequenceName) {
+		String old = this.specifiedSequenceName;
+		this.specifiedSequenceName = specifiedSequenceName;
+		this.firePropertyChanged(SPECIFIED_SEQUENCE_NAME_PROPERTY, old, specifiedSequenceName);
 	}
 
 	public String getDefaultSequenceName() {
 		return this.defaultSequenceName;
 	}
 	
-	protected void setDefaultSequenceName(String newDefaultSequenceName) {
-		String oldSpecifiedSequenceName = this.defaultSequenceName;
-		this.defaultSequenceName = newDefaultSequenceName;
-		firePropertyChanged(DEFAULT_SEQUENCE_NAME_PROPERTY, oldSpecifiedSequenceName, newDefaultSequenceName);
+	protected void setDefaultSequenceName(String defaultSequenceName) {
+		String old = this.defaultSequenceName;
+		this.defaultSequenceName = defaultSequenceName;
+		this.firePropertyChanged(DEFAULT_SEQUENCE_NAME_PROPERTY, old, defaultSequenceName);
 	}
+
+
+	// ********** resource => context **********
 
 	@Override
 	protected void initialize(XmlSequenceGenerator sequenceGenerator) {
 		super.initialize(sequenceGenerator);
-		this.specifiedSequenceName = this.specifiedSequenceName(sequenceGenerator);
+		this.specifiedSequenceName = sequenceGenerator.getSequenceName();
 		//TODO default sequence name
 	}
 	
 	@Override
 	public void update(XmlSequenceGenerator sequenceGenerator) {
 		super.update(sequenceGenerator);
-		this.setSpecifiedSequenceName_(this.specifiedSequenceName(sequenceGenerator));
+		this.setSpecifiedSequenceName_(sequenceGenerator.getSequenceName());
 		//TODO default sequence name
 	}
 	
-	protected String specifiedSequenceName(XmlSequenceGenerator generatorResource) {
-		return generatorResource.getSequenceName();
+
+	// ********** database stuff **********
+
+	/**
+	 * The JPA spec does not allow a sequence to have a schema.
+	 */
+	@Override
+	protected String getSchema() {
+		return this.getContextDefaultSchema();
+	}
+
+	/**
+	 * The JPA spec does not allow a sequence to have a catalog.
+	 */
+	@Override
+	protected String getCatalog() {
+		return this.getContextDefaultCatalog();
 	}
 
 }

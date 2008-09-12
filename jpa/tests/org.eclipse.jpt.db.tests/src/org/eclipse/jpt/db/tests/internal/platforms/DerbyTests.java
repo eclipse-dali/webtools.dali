@@ -86,6 +86,11 @@ public class DerbyTests extends DTPPlatformTests {
 		return "org.eclipse.datatools.connectivity.db.derby.embedded.connectionProfile";
 	}
 
+	@Override
+	protected boolean supportsCatalogs() {
+		return true;
+	}
+
 	public void testSchema() throws Exception {
 		this.connectionProfile.connect();
 		TestConnectionListener listener = new TestConnectionListener();
@@ -130,17 +135,27 @@ public class DerbyTests extends DTPPlatformTests {
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
 
+		this.dumpDatabaseContainers();
 		this.dropSchema("LOOKUP_TEST");
 		this.dropSchema("\"lookup_TEST\"");
+		((ICatalogObject) this.getDTPDatabase()).refresh();
+		this.dumpDatabaseContainers();
 
 		this.executeUpdate("CREATE SCHEMA LOOKUP_TEST");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
+		this.dumpDatabaseContainers();
 
 		assertNotNull(this.getDatabase().getSchemaNamed("LOOKUP_TEST"));
-		assertNotNull(this.getDatabase().getSchemaNamed("lookup_test"));
-		assertNotNull(this.getDatabase().getSchemaNamed("lookup_TEST"));
-		assertNotNull(this.getDatabase().getSchemaNamed("\"LOOKUP_TEST\""));
-		assertNull(this.getDatabase().getSchemaNamed("\"lookup_TEST\""));
+		assertNotNull(this.getDatabase().getSchemaForIdentifier("LOOKUP_TEST"));
+
+		assertNull(this.getDatabase().getSchemaNamed("lookup_test"));
+		assertNotNull(this.getDatabase().getSchemaForIdentifier("lookup_test"));
+
+		assertNull(this.getDatabase().getSchemaNamed("lookup_TEST"));
+		assertNotNull(this.getDatabase().getSchemaForIdentifier("lookup_TEST"));
+
+		assertNotNull(this.getDatabase().getSchemaForIdentifier("\"LOOKUP_TEST\""));
+		assertNull(this.getDatabase().getSchemaForIdentifier("\"lookup_TEST\""));
 
 		this.dropSchema("LOOKUP_TEST");
 
@@ -148,10 +163,16 @@ public class DerbyTests extends DTPPlatformTests {
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
 		assertNull(this.getDatabase().getSchemaNamed("LOOKUP_TEST"));
+		assertNull(this.getDatabase().getSchemaForIdentifier("LOOKUP_TEST"));
+
 		assertNull(this.getDatabase().getSchemaNamed("lookup_test"));
-		assertNull(this.getDatabase().getSchemaNamed("lookup_TEST"));
-		assertNull(this.getDatabase().getSchemaNamed("\"LOOKUP_TEST\""));
-		assertNotNull(this.getDatabase().getSchemaNamed("\"lookup_TEST\""));
+		assertNull(this.getDatabase().getSchemaForIdentifier("lookup_test"));
+
+		assertNotNull(this.getDatabase().getSchemaNamed("lookup_TEST"));
+		assertNull(this.getDatabase().getSchemaForIdentifier("lookup_TEST"));
+
+		assertNull(this.getDatabase().getSchemaForIdentifier("\"LOOKUP_TEST\""));
+		assertNotNull(this.getDatabase().getSchemaForIdentifier("\"lookup_TEST\""));
 
 		this.dropSchema("\"lookup_TEST\"");
 
@@ -159,7 +180,7 @@ public class DerbyTests extends DTPPlatformTests {
 		this.connectionProfile.disconnect();
 	}
 
-	public void testSchemaAnnotationIdentifier() throws Exception {
+	public void testSchemaIdentifier() throws Exception {
 		this.connectionProfile.connect();
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
@@ -171,17 +192,17 @@ public class DerbyTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE SCHEMA \"lookup_TEST\"");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		Schema schema = this.getDatabase().getSchemaNamed("LOOKUP_TEST");
-		assertEquals("LOOKUP_TEST", schema.getAnnotationIdentifier());
-		assertEquals("LOOKUP_TEST", schema.getAnnotationIdentifier("LookupTest"));
-		assertNull(schema.getAnnotationIdentifier("Lookup_Test"));
+		Schema schema = this.getDatabase().getSchemaForIdentifier("LOOKUP_TEST");
+		assertEquals("LOOKUP_TEST", schema.getIdentifier());
+		assertEquals("LOOKUP_TEST", schema.getIdentifier("LookupTest"));
+		assertNull(schema.getIdentifier("Lookup_Test"));
 
-		schema = this.getDatabase().getSchemaNamed("lookup_test");
-		assertEquals("LOOKUP_TEST", schema.getAnnotationIdentifier());
+		schema = this.getDatabase().getSchemaForIdentifier("lookup_test");
+		assertEquals("LOOKUP_TEST", schema.getIdentifier());
 
-		schema = this.getDatabase().getSchemaNamed("\"lookup_TEST\"");
-		assertEquals("\"lookup_TEST\"", schema.getAnnotationIdentifier());
-		assertEquals("\"lookup_TEST\"", schema.getAnnotationIdentifier("lookup_TEST"));
+		schema = this.getDatabase().getSchemaForIdentifier("\"lookup_TEST\"");
+		assertEquals("\"lookup_TEST\"", schema.getIdentifier());
+		assertEquals("\"lookup_TEST\"", schema.getIdentifier("lookup_TEST"));
 
 		this.dropSchema("\"lookup_TEST\"");
 		this.dropSchema("LOOKUP_TEST");
@@ -323,61 +344,61 @@ public class DerbyTests extends DTPPlatformTests {
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
 
-		this.dropTable("TABLE_TEST", "test");
-		this.dropSchema("TABLE_TEST");
+		this.dropTable("COLUMN_TEST", "test");
+		this.dropSchema("COLUMN_TEST");
 
-		this.executeUpdate("CREATE SCHEMA TABLE_TEST");
-		this.executeUpdate("SET SCHEMA = TABLE_TEST");
+		this.executeUpdate("CREATE SCHEMA COLUMN_TEST");
+		this.executeUpdate("SET SCHEMA = COLUMN_TEST");
 
 		// lowercase
 		this.executeUpdate("CREATE TABLE test (id INTEGER, name VARCHAR(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		Table table = this.getDatabase().getSchemaNamed("TABLE_TEST").getTableNamed("test");
-		assertNotNull(table.getColumnNamed("id"));
-		assertNotNull(table.getColumnNamed("name"));
+		Table table = this.getDatabase().getSchemaNamed("COLUMN_TEST").getTableForIdentifier("test");
+		assertNotNull(table.getColumnForIdentifier("id"));
+		assertNotNull(table.getColumnForIdentifier("name"));
 
-		this.dropTable("TABLE_TEST", "test");
+		this.dropTable("COLUMN_TEST", "test");
 
 		// uppercase
 		this.executeUpdate("CREATE TABLE test (ID INTEGER, NAME VARCHAR(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		table = this.getDatabase().getSchemaNamed("TABLE_TEST").getTableNamed("test");
-		assertNotNull(table.getColumnNamed("ID"));
-		assertNotNull(table.getColumnNamed("NAME"));
+		table = this.getDatabase().getSchemaNamed("COLUMN_TEST").getTableForIdentifier("test");
+		assertNotNull(table.getColumnForIdentifier("ID"));
+		assertNotNull(table.getColumnForIdentifier("NAME"));
 
-		this.dropTable("TABLE_TEST", "test");
+		this.dropTable("COLUMN_TEST", "test");
 
 		// mixed case
 		this.executeUpdate("CREATE TABLE test (Id INTEGER, Name VARCHAR(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		table = this.getDatabase().getSchemaNamed("TABLE_TEST").getTableNamed("test");
-		assertNotNull(table.getColumnNamed("Id"));
-		assertNotNull(table.getColumnNamed("Name"));
+		table = this.getDatabase().getSchemaNamed("COLUMN_TEST").getTableForIdentifier("test");
+		assertNotNull(table.getColumnForIdentifier("Id"));
+		assertNotNull(table.getColumnForIdentifier("Name"));
 
-		this.dropTable("TABLE_TEST", "test");
+		this.dropTable("COLUMN_TEST", "test");
 
 		// delimited
 		this.executeUpdate("CREATE TABLE test (\"Id\" INTEGER, \"Name\" VARCHAR(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		table = this.getDatabase().getSchemaNamed("TABLE_TEST").getTableNamed("test");
-		assertNotNull(table.getColumnNamed("\"Id\""));
-		assertNotNull(table.getColumnNamed("\"Name\""));
+		table = this.getDatabase().getSchemaNamed("COLUMN_TEST").getTableForIdentifier("test");
+		assertNotNull(table.getColumnForIdentifier("\"Id\""));
+		assertNotNull(table.getColumnForIdentifier("\"Name\""));
 
-		this.dropTable("TABLE_TEST", "test");
-		this.dropSchema("TABLE_TEST");
+		this.dropTable("COLUMN_TEST", "test");
+		this.dropSchema("COLUMN_TEST");
 
 		this.connectionProfile.removeConnectionListener(listener);
 		this.connectionProfile.disconnect();
 	}
 
 	private void dropTable(String schemaName, String tableName) throws Exception {
-		Schema schema= this.getSchemaNamed(schemaName);
+		Schema schema= this.getSchemaForIdentifier(schemaName);
 		if (schema != null) {
-			if (schema.getTableNamed(tableName) != null) {
+			if (schema.getTableForIdentifier(tableName) != null) {
 				this.executeUpdate("DROP TABLE " + schemaName + '.' + tableName);
 			}
 		}
@@ -387,7 +408,7 @@ public class DerbyTests extends DTPPlatformTests {
 	 * NB: A Derby schema must be empty before it can be dropped.
 	 */
 	private void dropSchema(String name) throws Exception {
-		if (this.getSchemaNamed(name) != null) {
+		if (this.getSchemaForIdentifier(name) != null) {
 			this.executeUpdate("DROP SCHEMA " + name + " RESTRICT");
 		}
 	}

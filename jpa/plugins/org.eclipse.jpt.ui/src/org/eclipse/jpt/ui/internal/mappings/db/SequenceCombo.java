@@ -19,59 +19,44 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * This database object combo handles showing the database's sequences for a
- * given <code>Schema</code>.
- *
- * @version 2.0
- * @since 2.0
+ * This combo-box displays a schema's sequences.
  */
-public abstract class SequenceCombo<T extends JpaNode> extends DatabaseObjectCombo<T>
+public abstract class SequenceCombo<T extends JpaNode>
+	extends DatabaseObjectCombo<T>
 {
-	/**
-	 * Creates a new <code>SequenceCombo</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 */
-	public SequenceCombo(Pane<? extends T> parentPane, Composite parent)
-	{
+	public SequenceCombo(Pane<? extends T> parentPane, Composite parent) {
 		super(parentPane, parent);
 	}
 
-	/**
-	 * Creates a new <code>SequenceCombo</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 */
-	public SequenceCombo(Pane<?> parentPane,
-	                     PropertyValueModel<? extends T> subjectHolder,
-	                     Composite parent) {
-
+	public SequenceCombo(
+						Pane<?> parentPane,
+						PropertyValueModel<? extends T> subjectHolder,
+						Composite parent
+	) {
 		super(parentPane, subjectHolder, parent);
 	}
 
-	/**
-	 * Creates a new <code>SequenceCombo</code>.
-	 *
-	 * @param subjectHolder The holder of the subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public SequenceCombo(PropertyValueModel<? extends T> subjectHolder,
-	                     Composite parent,
-	                     WidgetFactory widgetFactory)
-	{
+	public SequenceCombo(
+						PropertyValueModel<? extends T> subjectHolder,
+						Composite parent,
+						WidgetFactory widgetFactory
+	) {
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	protected abstract Schema getSchema();
-
 	@Override
 	protected Iterator<String> values() {
-		Schema schema = getSchema();
-		return (schema == null) ? EmptyIterator.<String>instance() : schema.sequenceNames();
+		Schema dbSchema = this.getDbSchema();
+		return (dbSchema == null) ? EmptyIterator.<String>instance() : dbSchema.sortedSequenceIdentifiers();
 	}
+
+	protected Schema getDbSchema() {
+		return (this.getSubject() == null) ? null : this.getDbSchema_();
+	}
+
+	/**
+	 * Assume the subject is not null.
+	 */
+	protected abstract Schema getDbSchema_();
 
 }

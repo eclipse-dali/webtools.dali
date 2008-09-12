@@ -10,10 +10,14 @@
 package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.QueryHolder;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.db.Catalog;
+import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
 
 /**
  * 
@@ -31,45 +35,50 @@ public interface EntityMappings extends OrmJpaContextNode, JpaStructureNode, Que
 		
 	String getDescription();
 	void setDescription(String newDescription);
-		String DESCRIPTION_PROPERTY = "descriptionProperty";
+		String DESCRIPTION_PROPERTY = "description"; //$NON-NLS-1$
 
 	String getPackage();
 	void setPackage(String newPackage);
-		String PACKAGE_PROPERTY = "packageProperty";
+		String PACKAGE_PROPERTY = "package"; //$NON-NLS-1$
 
 	/**
-	 * Return the specifiedSchema if not null, otherwise return the defaultSchema.
-	 */
-	String getSchema();
-	String getDefaultSchema();
-		String DEFAULT_SCHEMA_PROPERTY = "defaultSchemaProperty";
-	String getSpecifiedSchema();
-	void setSpecifiedSchema(String newSpecifiedSchema);
-		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchemaProperty";
-
-	/**
-	 * Return the specifiedCatalog if not null, otherwise return the defaultCatalog.
-	 */
-	String getCatalog();
-	String getDefaultCatalog();
-		String DEFAULT_CATALOG_PROPERTY = "defaultCatalogProperty";
-	String getSpecifiedCatalog();
-	void setSpecifiedCatalog(String newSpecifiedCatalog);
-		String SPECIFIED_CATALOG_PROPERTY = "specifiedCatalogProperty";
-
-	/**
-	 * Return the specifiedAccess if not null, otherwise return the defaultAccess.
+	 * Return the specified access if present, otherwise return the default
+	 * access.
 	 */
 	AccessType getAccess();
-	AccessType getDefaultAccess();
-		String DEFAULT_ACCESS_PROPERTY = "defaultAccessProperty";
 	AccessType getSpecifiedAccess();
-	void setSpecifiedAccess(AccessType newSpecifiedAccess);
-		String SPECIFIED_ACCESS_PROPERTY = "specifiedAccessProperty";
+	void setSpecifiedAccess(AccessType access);
+		String SPECIFIED_ACCESS_PROPERTY = "specifiedAccess"; //$NON-NLS-1$
+	AccessType getDefaultAccess();
+		String DEFAULT_ACCESS_PROPERTY = "defaultAccess"; //$NON-NLS-1$
 
-		
+	SchemaContainer getDbSchemaContainer();
+
+	/**
+	 * Return the specified catalog if present, otherwise return the default
+	 * catalog.
+	 */
+	String getCatalog();
+	String getSpecifiedCatalog();
+	void setSpecifiedCatalog(String catalog);
+		String SPECIFIED_CATALOG_PROPERTY = "specifiedCatalog"; //$NON-NLS-1$
+	String getDefaultCatalog();
+		String DEFAULT_CATALOG_PROPERTY = "defaultCatalog"; //$NON-NLS-1$
+	Catalog getDbCatalog();
+
+	/**
+	 * Return the specified schema if present, otherwise return the default
+	 * schema.
+	 */
+	String getSchema();
+	String getSpecifiedSchema();
+	void setSpecifiedSchema(String schema);
+		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchema"; //$NON-NLS-1$
+	String getDefaultSchema();
+		String DEFAULT_SCHEMA_PROPERTY = "defaultSchema"; //$NON-NLS-1$
+	Schema getDbSchema();
+
 	PersistenceUnitMetadata getPersistenceUnitMetadata();
-	
 	
 	ListIterator<OrmPersistentType> ormPersistentTypes();
 	int ormPersistentTypesSize();
@@ -78,16 +87,15 @@ public interface EntityMappings extends OrmJpaContextNode, JpaStructureNode, Que
 	void removeOrmPersistentType(OrmPersistentType ormPersistentType);
 	//void moveOrmPersistentType(int targetIndex, int sourceIndex);
 	boolean containsPersistentType(String className);
-		String PERSISTENT_TYPES_LIST = "persistentTypes";
+		String PERSISTENT_TYPES_LIST = "persistentTypes"; //$NON-NLS-1$
 	
-
 	ListIterator<OrmSequenceGenerator> sequenceGenerators();
 	int sequenceGeneratorsSize();
 	OrmSequenceGenerator addSequenceGenerator(int index);
 	void removeSequenceGenerator(int index);
 	void removeSequenceGenerator(OrmSequenceGenerator sequenceGenerator);
 	void moveSequenceGenerator(int targetIndex, int sourceIndex);
-		String SEQUENCE_GENERATORS_LIST = "sequenceGeneratorsList";
+		String SEQUENCE_GENERATORS_LIST = "sequenceGenerators"; //$NON-NLS-1$
 
 	ListIterator<OrmTableGenerator> tableGenerators();
 	int tableGeneratorsSize();
@@ -95,7 +103,7 @@ public interface EntityMappings extends OrmJpaContextNode, JpaStructureNode, Que
 	void removeTableGenerator(int index);
 	void removeTableGenerator(OrmTableGenerator tableGenerator);
 	void moveTableGenerator(int targetIndex, int sourceIndex);
-		String TABLE_GENERATORS_LIST = "tableGeneratorsList";
+		String TABLE_GENERATORS_LIST = "tableGenerators"; //$NON-NLS-1$
 
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmNamedQuery> namedQueries();
@@ -110,8 +118,6 @@ public interface EntityMappings extends OrmJpaContextNode, JpaStructureNode, Que
 	OrmNamedNativeQuery addNamedNativeQuery(int index);
 	void removeNamedNativeQuery(int index);
 	void moveNamedNativeQuery(int targetIndex, int sourceIndex);
-
-		
 	
 	PersistenceUnitDefaults getPersistenceUnitDefaults();
 	
@@ -134,4 +140,5 @@ public interface EntityMappings extends OrmJpaContextNode, JpaStructureNode, Que
 	// *************************************************************************
 	
 	boolean containsOffset(int textOffset);
+
 }

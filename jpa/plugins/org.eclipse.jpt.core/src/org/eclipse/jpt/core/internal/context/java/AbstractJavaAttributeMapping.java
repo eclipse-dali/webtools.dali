@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -23,8 +24,11 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-
-public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> extends AbstractJavaJpaContextNode
+/**
+ * 
+ */
+public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
+	extends AbstractJavaJpaContextNode
 	implements JavaAttributeMapping
 {
 	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
@@ -36,7 +40,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 	
 	@SuppressWarnings("unchecked")
 	protected T getResourceMapping() {
-		if (isDefault()) {
+		if (this.isDefault()) {
 			return (T) this.resourcePersistentAttribute.getNullMappingAnnotation(getAnnotationName());
 		}
 		return (T) this.resourcePersistentAttribute.getMappingAnnotation(getAnnotationName());
@@ -70,23 +74,14 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 		return this.getPersistentAttribute().getTypeMapping();
 	}
 
-	public String getAttributeName() {
+	protected String getAttributeName() {
 		return this.getPersistentAttribute().getName();
 	}
 	
 	public Table getDbTable(String tableName) {
-		return getTypeMapping().getDbTable(tableName);
+		return this.getTypeMapping().getDbTable(tableName);
 	}
-	
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = null;
-		T mappingResource = getResourceMapping();
-		if (mappingResource != null) {
-			textRange = mappingResource.getTextRange(astRoot);
-		}
-		return (textRange != null) ? textRange : this.getPersistentAttribute().getValidationTextRange(astRoot);
-	}
-	
+
 	public String getPrimaryKeyColumnName() {
 		return null;
 	}
@@ -103,22 +98,22 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 		return false;
 	}
 
-	public void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		this.resourcePersistentAttribute = resourcePersistentAttribute;
+	public void initialize(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
+		this.resourcePersistentAttribute = javaResourcePersistentAttribute;
 		initialize(getResourceMapping());
 	}
 
-	protected void initialize(T resourceMapping) {
-		
+	protected void initialize(@SuppressWarnings("unused") T resourceMapping) {
+		// do nothing by default
 	}
 
-	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		this.resourcePersistentAttribute = resourcePersistentAttribute;
+	public void update(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
+		this.resourcePersistentAttribute = javaResourcePersistentAttribute;
 		this.update(getResourceMapping());
 	}
 	
-	protected void update(T resourceMapping) {
-		
+	protected void update(@SuppressWarnings("unused") T resourceMapping) {
+		// do nothing by default
 	}
 
 	
@@ -128,24 +123,26 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 		
-		addModifierMessages(messages, astRoot);
-		addInvalidMappingMessage(messages, astRoot);
+		this.checkModifiers(messages, astRoot);
+		this.checkMappingType(messages, astRoot);
 	}
 	
-	protected void addModifierMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		GenericJavaPersistentAttribute attribute = this.getPersistentAttribute();
+	protected void checkModifiers(List<IMessage> messages, CompilationUnit astRoot) {
+		JavaPersistentAttribute attribute = this.getPersistentAttribute();
 		if (attribute.getMappingKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
 			return;
 		}
 		
-		if ( this.resourcePersistentAttribute.isForField()) {
+		if (this.resourcePersistentAttribute.isForField()) {
 			if (this.resourcePersistentAttribute.isFinal()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD,
 						new String[] {attribute.getName()},
-						attribute, attribute.getValidationTextRange(astRoot))
+						attribute,
+						attribute.getValidationTextRange(astRoot)
+					)
 				);
 			}
 			
@@ -155,22 +152,36 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD,
 						new String[] {attribute.getName()},
-						attribute, attribute.getValidationTextRange(astRoot))
+						attribute,
+						attribute.getValidationTextRange(astRoot)
+					)
 				);
 			}
 		}
 	}
 	
-	protected void addInvalidMappingMessage(List<IMessage> messages, CompilationUnit astRoot) {
-		if (! getTypeMapping().attributeMappingKeyAllowed(this.getKey())) {
+	protected void checkMappingType(List<IMessage> messages, CompilationUnit astRoot) {
+		if ( ! this.getTypeMapping().attributeMappingKeyAllowed(this.getKey())) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
 					new String[] {this.getPersistentAttribute().getName()},
-					this, this.getValidationTextRange(astRoot))
+					this,
+					this.getValidationTextRange(astRoot)
+				)
 			);
 		}
+	}
+	
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		TextRange textRange = this.getResourceMappingTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getPersistentAttribute().getValidationTextRange(astRoot);
+	}
+	
+	protected TextRange getResourceMappingTextRange(CompilationUnit astRoot) {
+		T resourceMapping = this.getResourceMapping();
+		return (resourceMapping == null) ? null : resourceMapping.getTextRange(astRoot);
 	}
 	
 }

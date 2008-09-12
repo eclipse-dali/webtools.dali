@@ -18,15 +18,17 @@ package org.eclipse.jpt.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JoinColumn extends BaseColumn, BaseJoinColumn
+public interface JoinColumn
+	extends BaseColumn, BaseJoinColumn
 {
-	JoinColumn.Owner getOwner();
+	Owner getOwner();
 
 	/**
 	 * interface allowing join columns to be used in multiple places
 	 * (e.g. 1:1 mappings and join tables)
 	 */
-	interface Owner extends BaseJoinColumn.Owner, BaseColumn.Owner
+	interface Owner
+		extends BaseJoinColumn.Owner, BaseColumn.Owner
 	{
 		/**
 		 * return whether the specified table cannot be explicitly specified

@@ -1397,7 +1397,7 @@ public class EntityGenerator {
 		private boolean propertyAccessType = false;  // as opposed to "field"
 
 		private String collectionTypeName = Set.class.getName();
-		private String collectionAttributeNameSuffix = "_collection";  // e.g. "private Set<Foo> foo_collection"  //$NON-NLS-1$
+		private String collectionAttributeNameSuffix = "Collection";  // e.g. "private Set<Foo> fooCollection"  //$NON-NLS-1$
 
 		private int fieldVisibility = Modifier.PRIVATE;
 		private int methodVisibility = Modifier.PUBLIC;

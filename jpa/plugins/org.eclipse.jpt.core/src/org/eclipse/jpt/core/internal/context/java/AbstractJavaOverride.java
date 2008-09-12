@@ -92,8 +92,8 @@ public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode im
 		return new FilteringIterator<String, String>(this.candidateNames(), filter);
 	}
 
-	private Iterator<String> quotedCandidateNames(Filter<String> filter) {
-		return StringTools.quote(this.candidateNames(filter));
+	private Iterator<String> javaCandidateNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.candidateNames(filter));
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode im
 			return result;
 		}
 		if (this.nameTouches(pos, astRoot)) {
-			return this.quotedCandidateNames(filter);
+			return this.javaCandidateNames(filter);
 		}
 		return null;
 	}

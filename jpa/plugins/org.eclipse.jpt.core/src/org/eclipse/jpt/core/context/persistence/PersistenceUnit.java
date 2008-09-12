@@ -38,7 +38,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	/**
 	 * String constant associated with changes to the persistence unit's name
 	 */
-	final static String NAME_PROPERTY = "name";
+	final static String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	
 	/**
 	 * Return the name of the persistence unit.
@@ -59,7 +59,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	 * String constant associated with changes to the persistence unit's 
 	 * specified transaction type
 	 */
-	String SPECIFIED_TRANSACTION_TYPE_PROPERTY = "transactionType";
+	String SPECIFIED_TRANSACTION_TYPE_PROPERTY = "specifiedTransactionType"; //$NON-NLS-1$
 	
 	/** 
 	 * Return the transaction type of the persistence unit, one of the values of 
@@ -77,7 +77,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	 * String constant associated with changes to the persistence unit's 
 	 * default transaction type (not typically changed)
 	 */
-	final static String DEFAULT_TRANSACTION_TYPE_PROPERTY = "defaultTransactionType";
+	final static String DEFAULT_TRANSACTION_TYPE_PROPERTY = "defaultTransactionType"; //$NON-NLS-1$
 	
 	/** 
 	 * Return the default transaction type 
@@ -91,7 +91,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	/**
 	 * String constant associated with changes to the persistence unit's description
 	 */
-	final static String DESCRIPTION_PROPERTY = "description";
+	final static String DESCRIPTION_PROPERTY = "description"; //$NON-NLS-1$
 	
 	/**
 	 * Return the description of the persistence unit.
@@ -109,7 +109,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	/**
 	 * String constant associated with changes to the persistence unit's provider
 	 */
-	final static String PROVIDER_PROPERTY = "provider";
+	final static String PROVIDER_PROPERTY = "provider"; //$NON-NLS-1$
 	
 	/**
 	 * Return the provider of the persistence unit.
@@ -127,7 +127,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	/**
 	 * String constant associated with changes to the persistence unit's JTA data source
 	 */
-	final static String JTA_DATA_SOURCE_PROPERTY = "jtaDataSource";
+	final static String JTA_DATA_SOURCE_PROPERTY = "jtaDataSource"; //$NON-NLS-1$
 	
 	/**
 	 * Return the JTA data source of the persistence unit.
@@ -145,7 +145,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	/**
 	 * String constant associated with changes to the persistence unit's non-JTA data source
 	 */
-	final static String NON_JTA_DATA_SOURCE_PROPERTY = "nonJtaDataSource";
+	final static String NON_JTA_DATA_SOURCE_PROPERTY = "nonJtaDataSource"; //$NON-NLS-1$
 	
 	/**
 	 * Return the non-JTA data source of the persistence unit.
@@ -177,7 +177,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	/**
 	 * String constant associated with changes to the specified mapping file refs list
 	 */
-	final static String SPECIFIED_MAPPING_FILE_REF_LIST = "specifiedMappingFileRefs";
+	final static String SPECIFIED_MAPPING_FILE_REFS_LIST = "specifiedMappingFileRefs"; //$NON-NLS-1$
 	
 	/**
 	 * Return an iterator on the list of specified mapping file refs.
@@ -186,7 +186,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	ListIterator<MappingFileRef> specifiedMappingFileRefs();
 	
 	/**
-	 * Return of specified mapping file refs.
+	 * Return size of specified mapping file refs.
 	 */
 	int specifiedMappingFileRefsSize();
 
@@ -218,7 +218,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	/**
 	 * String constant associated with changes to the implied mapping file ref
 	 */
-	final static String IMPLIED_MAPPING_FILE_REF_PROPERTY = "impliedMappingFileRef";
+	final static String IMPLIED_MAPPING_FILE_REF_PROPERTY = "impliedMappingFileRef"; //$NON-NLS-1$
 	
 	/**
 	 * Return the current implied mapping file ref.
@@ -245,7 +245,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	/**
 	 * String constant associated with changes to the specified class refs list
 	 */
-	final static String SPECIFIED_CLASS_REF_LIST = "specifiedClassRefs";
+	final static String SPECIFIED_CLASS_REFS_LIST = "specifiedClassRefs"; //$NON-NLS-1$
 	
 	/**
 	 * Return an iterator on the list of specified class refs.
@@ -286,7 +286,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	/**
 	 * String constant associated with changes to the implied class refs list
 	 */
-	final static String IMPLIED_CLASS_REF_LIST = "impliedClassRefs";
+	final static String IMPLIED_CLASS_REFS_LIST = "impliedClassRefs"; //$NON-NLS-1$
 	
 	/**
 	 * Return an iterator on the list of implied class refs.
@@ -311,7 +311,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	 * String constant associated with changes to the persistence unit's 
 	 * "exclude unlisted classes" setting
 	 */
-	final static String SPECIFIED_EXCLUDE_UNLISTED_CLASSED_PROPERTY = "specifiedExcludeUnlistedClasses";
+	final static String SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY = "specifiedExcludeUnlistedClasses"; //$NON-NLS-1$
 	
 	/** 
 	 * Return the "exclude unlisted classes" setting of the persistence unit.
@@ -327,7 +327,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	 * String constant associated with changes to the persistence unit's 
 	 * default "exclude unlisted classes" setting (not typically changed)
 	 */
-	final static String DEFAULT_EXCLUDE_UNLISTED_CLASSED_PROPERTY = "defaultExcludeUnlistedClasses";
+	final static String DEFAULT_EXCLUDE_UNLISTED_CLASSES_PROPERTY = "defaultExcludeUnlistedClasses"; //$NON-NLS-1$
 	
 	/** 
 	 * Return the default "exclude unlisted classes" setting
@@ -340,7 +340,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	/**
 	 * String constant associated with changes to the properties list
 	 */
-	final static String PROPERTIES_LIST = "properties";
+	final static String PROPERTIES_LIST = "properties"; //$NON-NLS-1$
 	
 	/**
 	 * Return an iterator on the list of properties.
@@ -388,17 +388,17 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	
 	// **************** PersistenceUnitDefaults ********************************
 	
-	String getDefaultSchema();
-		String DEFAULT_SCHEMA_PROPERTY = "defaultSchema";
-		
-	String getDefaultCatalog();
-		String DEFAULT_CATALOG_PROPERTY = "defaultCatalog";
-	
 	AccessType getDefaultAccess();
-		String DEFAULT_ACCESS_PROPERTY = "defaultAccess";
+		String DEFAULT_ACCESS_PROPERTY = "defaultAccess"; //$NON-NLS-1$
 	
+	String getDefaultCatalog();
+		String DEFAULT_CATALOG_PROPERTY = "defaultCatalog"; //$NON-NLS-1$
+	
+	String getDefaultSchema();
+		String DEFAULT_SCHEMA_PROPERTY = "defaultSchema"; //$NON-NLS-1$
+		
 	boolean getDefaultCascadePersist();
-		String DEFAULT_CASCADE_PERSIST_PROPERTY = "defaultCascadePersist";
+		String DEFAULT_CASCADE_PERSIST_PROPERTY = "defaultCascadePersist"; //$NON-NLS-1$
 	
 	
 	// **************** global generator and query support *********************
@@ -408,7 +408,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	 * Note that there are no granular changes to this list.  There is only
 	 * notification that the entire list has changed.
 	 */
-	String GENERATORS_LIST = "generators";
+	String GENERATORS_LIST = "generators"; //$NON-NLS-1$
 	
 	/**
 	 * Add the generator (defined elsewhere) to the list of generators defined
@@ -430,7 +430,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	 * Note that there are no granular changes to this list.  There is only
 	 * notification that the entire list has changed.
 	 */
-	String QUERIES_LIST = "queries";
+	String QUERIES_LIST = "queries"; //$NON-NLS-1$
 	
 	/**
 	 * Add the query (defined elsewhere) to the list of queries defined 

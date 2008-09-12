@@ -172,10 +172,10 @@ public class JpaProjectPropertiesPage
 		if (this.model.getBooleanProperty(JpaFacetDataModelProperties.USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
 			userOverrideDefaultSchema = this.model.getStringProperty(JpaFacetDataModelProperties.USER_OVERRIDE_DEFAULT_SCHEMA);
 		}
-		String projectUserOverrideDefaultSchema = jpaProject.getUserOverrideDefaultSchemaName();
+		String projectUserOverrideDefaultSchema = jpaProject.getUserOverrideDefaultSchema();
 		if (! StringTools.stringsAreEqualIgnoreCase(userOverrideDefaultSchema, projectUserOverrideDefaultSchema)) {
 			change = true;
-			jpaProject.setUserOverrideDefaultSchemaName(userOverrideDefaultSchema);
+			jpaProject.setUserOverrideDefaultSchema(userOverrideDefaultSchema);
 			JptCorePlugin.setUserOverrideDefaultSchemaName(project, userOverrideDefaultSchema);
 		}
 
@@ -348,10 +348,9 @@ public class JpaProjectPropertiesPage
 		}
 
 		void performDefaults() {
-			String connectionName = getJpaProject().getDataSource().getConnectionProfileName();
-			model.setProperty(CONNECTION, connectionName);
+			model.setProperty(CONNECTION, getJpaProject().getDataSource().getConnectionProfileName());
 			
-			String defaultSchema = getJpaProject().getUserOverrideDefaultSchemaName();
+			String defaultSchema = getJpaProject().getUserOverrideDefaultSchema();
 			model.setProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA, Boolean.valueOf(defaultSchema != null));
 			model.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, defaultSchema);
 		}

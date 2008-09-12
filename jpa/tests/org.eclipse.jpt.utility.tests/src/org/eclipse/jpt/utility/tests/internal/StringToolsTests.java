@@ -298,51 +298,51 @@ public class StringToolsTests extends TestCase {
 		assertEquals(expected, sb.toString());
 	}
 
-	// ********** wrapping **********
+	// ********** delimiting **********
 
-	public void testWrap() {
-		this.verifyWrap("Employee", "123", "123Employee123");
-		this.verifyWrap("123", "123", "123123123");
-		this.verifyWrap("", "123", "123123");
+	public void testDelimit() {
+		this.verifyDelimit("Employee", "123", "123Employee123");
+		this.verifyDelimit("123", "123", "123123123");
+		this.verifyDelimit("", "123", "123123");
 	}
 
-	private void verifyWrap(String string, String wrap, String expectedString) {
-		assertEquals(expectedString, StringTools.wrap(string, wrap));
+	private void verifyDelimit(String string, String delimiter, String expectedString) {
+		assertEquals(expectedString, StringTools.delimit(string, delimiter));
 	}
 
-	public void testWrapOnWriter() {
-		this.verifyWrapOnWriter("Employee", "123", "123Employee123");
-		this.verifyWrapOnWriter("123", "123", "123123123");
-		this.verifyWrapOnWriter("", "123", "123123");
+	public void testDelimitOnWriter() {
+		this.verifyDelimitOnWriter("Employee", "123", "123Employee123");
+		this.verifyDelimitOnWriter("123", "123", "123123123");
+		this.verifyDelimitOnWriter("", "123", "123123");
 	}
 
-	private void verifyWrapOnWriter(String string, String wrap, String expectedString) {
+	private void verifyDelimitOnWriter(String string, String delimiter, String expectedString) {
 		Writer writer = new StringWriter();
-		StringTools.wrapOn(string, wrap, writer);
+		StringTools.delimitOn(string, delimiter, writer);
 		assertEquals(expectedString, writer.toString());
 	}
 
-	public void testWrapOnStringBuffer() {
-		this.verifyWrapOnStringBuffer("Employee", "123", "123Employee123");
-		this.verifyWrapOnStringBuffer("123", "123", "123123123");
-		this.verifyWrapOnStringBuffer("", "123", "123123");
+	public void testDelimitOnStringBuffer() {
+		this.verifyDelimitOnStringBuffer("Employee", "123", "123Employee123");
+		this.verifyDelimitOnStringBuffer("123", "123", "123123123");
+		this.verifyDelimitOnStringBuffer("", "123", "123123");
 	}
 
-	private void verifyWrapOnStringBuffer(String string, String wrap, String expectedString) {
+	private void verifyDelimitOnStringBuffer(String string, String delimiter, String expectedString) {
 		StringBuffer sb = new StringBuffer();
-		StringTools.wrapOn(string, wrap, sb);
+		StringTools.delimitOn(string, delimiter, sb);
 		assertEquals(expectedString, sb.toString());
 	}
 
-	public void testWrapOnStringBuilder() {
-		this.verifyWrapOnStringBuilder("Employee", "123", "123Employee123");
-		this.verifyWrapOnStringBuilder("123", "123", "123123123");
-		this.verifyWrapOnStringBuilder("", "123", "123123");
+	public void testDelimitOnStringBuilder() {
+		this.verifyDelimitOnStringBuilder("Employee", "123", "123Employee123");
+		this.verifyDelimitOnStringBuilder("123", "123", "123123123");
+		this.verifyDelimitOnStringBuilder("", "123", "123123");
 	}
 
-	private void verifyWrapOnStringBuilder(String string, String wrap, String expectedString) {
+	private void verifyDelimitOnStringBuilder(String string, String delimiter, String expectedString) {
 		StringBuilder sb = new StringBuilder();
-		StringTools.wrapOn(string, wrap, sb);
+		StringTools.delimitOn(string, delimiter, sb);
 		assertEquals(expectedString, sb.toString());
 	}
 
@@ -350,6 +350,7 @@ public class StringToolsTests extends TestCase {
 		this.verifyQuote("Employee", "\"Employee\"");
 		this.verifyQuote("123", "\"123\"");
 		this.verifyQuote("", "\"\"");
+		this.verifyQuote("Emp\"loyee", "\"Emp\"\"loyee\"");
 	}
 
 	private void verifyQuote(String string, String expectedString) {
@@ -360,6 +361,7 @@ public class StringToolsTests extends TestCase {
 		this.verifyQuoteOnWriter("Employee", "\"Employee\"");
 		this.verifyQuoteOnWriter("123", "\"123\"");
 		this.verifyQuoteOnWriter("", "\"\"");
+		this.verifyQuoteOnWriter("Emp\"loyee", "\"Emp\"\"loyee\"");
 	}
 
 	private void verifyQuoteOnWriter(String string, String expectedString) {
@@ -372,6 +374,7 @@ public class StringToolsTests extends TestCase {
 		this.verifyQuoteOnStringBuffer("Employee", "\"Employee\"");
 		this.verifyQuoteOnStringBuffer("123", "\"123\"");
 		this.verifyQuoteOnStringBuffer("", "\"\"");
+		this.verifyQuoteOnStringBuffer("Emp\"loyee", "\"Emp\"\"loyee\"");
 	}
 
 	private void verifyQuoteOnStringBuffer(String string, String expectedString) {
@@ -384,6 +387,7 @@ public class StringToolsTests extends TestCase {
 		this.verifyQuoteOnStringBuilder("Employee", "\"Employee\"");
 		this.verifyQuoteOnStringBuilder("123", "\"123\"");
 		this.verifyQuoteOnStringBuilder("", "\"\"");
+		this.verifyQuoteOnStringBuilder("Emp\"loyee", "\"Emp\"\"loyee\"");
 	}
 
 	private void verifyQuoteOnStringBuilder(String string, String expectedString) {
@@ -1384,39 +1388,46 @@ public class StringToolsTests extends TestCase {
 		assertFalse(StringTools.stringIsDelimited(s.toCharArray(), start, end));
 	}
 
-	// ********** unwrapping **********
+	// ********** undelimiting **********
 
-	public void testUnwrap() {
-		this.verifyUnwrap("\"foo\"", "foo");
-		this.verifyUnwrap("\"\"", "");
-		this.verifyUnwrap("'foo'", "foo");
+	public void testUndelimit() {
+		this.verifyUndelimit("\"foo\"", "foo");
+		this.verifyUndelimit("\"\"", "");
+		this.verifyUndelimit("'foo'", "foo");
+		this.verifyUndelimit("\"fo\"\"o\"", "fo\"o");
+		this.verifyUndelimit("\"foo\"\"\"", "foo\"");
+		this.verifyUndelimit("\"\"\"foo\"", "\"foo");
+		this.verifyUndelimit("[foo]", "foo");
+		this.verifyUndelimit("\"\"\"", "\"");
+		this.verifyUndelimit("\"foo\"bar\"", "foo\"");
+		this.verifyUndelimit("\"foo\"\"", "foo\"");
 	}
 
-	private void verifyUnwrap(String s, String expected) {
-		assertEquals(expected, StringTools.unwrap(s));
-		assertEquals(expected, StringTools.unwrap(s.toCharArray()));
+	private void verifyUndelimit(String s, String expected) {
+		assertEquals(expected, StringTools.undelimit(s));
+		assertEquals(expected, StringTools.undelimit(s.toCharArray()));
 	}
 
-	public void testUnwrapInt() {
-		this.verifyUnwrapInt("\"foo\"", 2, "o");
-		this.verifyUnwrapInt("\"\"foo\"\"", 2, "foo");
-		this.verifyUnwrapInt("'foo'", 2, "o");
+	public void testUndelimitInt() {
+		this.verifyUndelimitInt("\"foo\"", 2, "o");
+		this.verifyUndelimitInt("\"\"foo\"\"", 2, "foo");
+		this.verifyUndelimitInt("'foo'", 2, "o");
 	}
 
-	private void verifyUnwrapInt(String s, int count, String expected) {
-		assertEquals(expected, StringTools.unwrap(s, count));
-		assertEquals(expected, StringTools.unwrap(s.toCharArray(), count));
+	private void verifyUndelimitInt(String s, int count, String expected) {
+		assertEquals(expected, StringTools.undelimit(s, count));
+		assertEquals(expected, StringTools.undelimit(s.toCharArray(), count));
 	}
 
-	public void testUnwrapIntException() {
-		this.denyUnwrapInt("\"\"", 2);
-		this.denyUnwrapInt("'o'", 2);
+	public void testUndelimitIntException() {
+		this.denyUndelimitInt("\"\"", 2);
+		this.denyUndelimitInt("'o'", 2);
 	}
 
-	private void denyUnwrapInt(String s, int count) {
+	private void denyUndelimitInt(String s, int count) {
 		boolean exCaught = false;
 		try {
-			String bogus = StringTools.unwrap(s, count);
+			String bogus = StringTools.undelimit(s, count);
 			fail("invalid string: " + bogus);
 		} catch (IllegalArgumentException ex) {
 			exCaught = true;
@@ -1425,7 +1436,7 @@ public class StringToolsTests extends TestCase {
 
 		exCaught = false;
 		try {
-			char[] bogus = StringTools.unwrap(s.toCharArray(), count);
+			char[] bogus = StringTools.undelimit(s.toCharArray(), count);
 			fail("invalid string: " + new String(bogus));
 		} catch (IllegalArgumentException ex) {
 			exCaught = true;
@@ -1433,99 +1444,120 @@ public class StringToolsTests extends TestCase {
 		assertTrue(exCaught);
 	}
 
-	public void testUnwrapOnWriter() {
-		this.verifyUnwrapOnWriter("\"foo\"", "foo");
-		this.verifyUnwrapOnWriter("\"\"", "");
-		this.verifyUnwrapOnWriter("'foo'", "foo");
+	public void testUndelimitOnWriter() {
+		this.verifyUndelimitOnWriter("\"foo\"", "foo");
+		this.verifyUndelimitOnWriter("\"\"", "");
+		this.verifyUndelimitOnWriter("'foo'", "foo");
+		this.verifyUndelimitOnWriter("\"fo\"\"o\"", "fo\"o");
+		this.verifyUndelimitOnWriter("\"foo\"\"\"", "foo\"");
+		this.verifyUndelimitOnWriter("\"\"\"foo\"", "\"foo");
+		this.verifyUndelimitOnWriter("[foo]", "foo");
+		this.verifyUndelimitOnWriter("\"\"\"", "\"");
+		this.verifyUndelimitOnWriter("\"foo\"bar\"", "foo\"");
+		this.verifyUndelimitOnWriter("\"foo\"\"", "foo\"");
 	}
 
-	private void verifyUnwrapOnWriter(String s, String expected) {
+	private void verifyUndelimitOnWriter(String s, String expected) {
 		Writer writer = new StringWriter();
-		StringTools.unwrapOn(s, writer);
+		StringTools.undelimitOn(s, writer);
 		assertEquals(expected, writer.toString());
 
 		writer = new StringWriter();
-		StringTools.unwrapOn(s.toCharArray(), writer);
+		StringTools.undelimitOn(s.toCharArray(), writer);
 		assertEquals(expected, writer.toString());
 	}
 
-	public void testUnwrapOnStringBuffer() {
-		this.verifyUnwrapOnStringBuffer("\"foo\"", "foo");
-		this.verifyUnwrapOnStringBuffer("\"\"", "");
-		this.verifyUnwrapOnStringBuffer("'foo'", "foo");
+	public void testUndelimitOnStringBuffer() {
+		this.verifyUndelimitOnStringBuffer("\"foo\"", "foo");
+		this.verifyUndelimitOnStringBuffer("\"\"", "");
+		this.verifyUndelimitOnStringBuffer("'foo'", "foo");
+		this.verifyUndelimitOnStringBuffer("\"fo\"\"o\"", "fo\"o");
+		this.verifyUndelimitOnStringBuffer("\"foo\"\"\"", "foo\"");
+		this.verifyUndelimitOnStringBuffer("\"\"\"foo\"", "\"foo");
+		this.verifyUndelimitOnStringBuffer("[foo]", "foo");
+		this.verifyUndelimitOnStringBuffer("\"\"\"", "\"");
+		this.verifyUndelimitOnStringBuffer("\"foo\"bar\"", "foo\"");
+		this.verifyUndelimitOnStringBuffer("\"foo\"\"", "foo\"");
 	}
 
-	private void verifyUnwrapOnStringBuffer(String s, String expected) {
+	private void verifyUndelimitOnStringBuffer(String s, String expected) {
 		StringBuffer sb = new StringBuffer();
-		StringTools.unwrapOn(s, sb);
+		StringTools.undelimitOn(s, sb);
 		assertEquals(expected, sb.toString());
 
 		sb = new StringBuffer();
-		StringTools.unwrapOn(s.toCharArray(), sb);
+		StringTools.undelimitOn(s.toCharArray(), sb);
 		assertEquals(expected, sb.toString());
 	}
 
-	public void testUnwrapOnStringBuilder() {
-		this.verifyUnwrapOnStringBuilder("\"foo\"", "foo");
-		this.verifyUnwrapOnStringBuilder("\"\"", "");
-		this.verifyUnwrapOnStringBuilder("'foo'", "foo");
+	public void testUndelimitOnStringBuilder() {
+		this.verifyUndelimitOnStringBuilder("\"foo\"", "foo");
+		this.verifyUndelimitOnStringBuilder("\"\"", "");
+		this.verifyUndelimitOnStringBuilder("'foo'", "foo");
+		this.verifyUndelimitOnStringBuilder("\"fo\"\"o\"", "fo\"o");
+		this.verifyUndelimitOnStringBuilder("\"foo\"\"\"", "foo\"");
+		this.verifyUndelimitOnStringBuilder("\"\"\"foo\"", "\"foo");
+		this.verifyUndelimitOnStringBuilder("[foo]", "foo");
+		this.verifyUndelimitOnStringBuilder("\"\"\"", "\"");
+		this.verifyUndelimitOnStringBuilder("\"foo\"bar\"", "foo\"");
+		this.verifyUndelimitOnStringBuilder("\"foo\"\"", "foo\"");
 	}
 
-	private void verifyUnwrapOnStringBuilder(String s, String expected) {
+	private void verifyUndelimitOnStringBuilder(String s, String expected) {
 		StringBuilder sb = new StringBuilder();
-		StringTools.unwrapOn(s, sb);
+		StringTools.undelimitOn(s, sb);
 		assertEquals(expected, sb.toString());
 
 		sb = new StringBuilder();
-		StringTools.unwrapOn(s.toCharArray(), sb);
+		StringTools.undelimitOn(s.toCharArray(), sb);
 		assertEquals(expected, sb.toString());
 	}
 
-	public void testUnwrapOnWriterCount() {
-		this.verifyUnwrapOnWriterCount("\"foo\"", 2, "o");
-		this.verifyUnwrapOnWriterCount("\"\"\"\"", 2, "");
-		this.verifyUnwrapOnWriterCount("XXfooXX", 2, "foo");
+	public void testUndelimitOnWriterCount() {
+		this.verifyUndelimitOnWriterCount("\"foo\"", 2, "o");
+		this.verifyUndelimitOnWriterCount("\"\"\"\"", 2, "");
+		this.verifyUndelimitOnWriterCount("XXfooXX", 2, "foo");
 	}
 
-	private void verifyUnwrapOnWriterCount(String s, int count, String expected) {
+	private void verifyUndelimitOnWriterCount(String s, int count, String expected) {
 		Writer writer = new StringWriter();
-		StringTools.unwrapOn(s, count, writer);
+		StringTools.undelimitOn(s, count, writer);
 		assertEquals(expected, writer.toString());
 
 		writer = new StringWriter();
-		StringTools.unwrapOn(s.toCharArray(), count, writer);
+		StringTools.undelimitOn(s.toCharArray(), count, writer);
 		assertEquals(expected, writer.toString());
 	}
 
-	public void testUnwrapOnStringBufferCount() {
-		this.verifyUnwrapOnStringBufferCount("\"foo\"", 2, "o");
-		this.verifyUnwrapOnStringBufferCount("\"\"\"\"", 2, "");
-		this.verifyUnwrapOnStringBufferCount("XXfooXX", 2, "foo");
+	public void testUndelimitOnStringBufferCount() {
+		this.verifyUndelimitOnStringBufferCount("\"foo\"", 2, "o");
+		this.verifyUndelimitOnStringBufferCount("\"\"\"\"", 2, "");
+		this.verifyUndelimitOnStringBufferCount("XXfooXX", 2, "foo");
 	}
 
-	private void verifyUnwrapOnStringBufferCount(String s, int count, String expected) {
+	private void verifyUndelimitOnStringBufferCount(String s, int count, String expected) {
 		StringBuffer sb = new StringBuffer();
-		StringTools.unwrapOn(s, count, sb);
+		StringTools.undelimitOn(s, count, sb);
 		assertEquals(expected, sb.toString());
 
 		sb = new StringBuffer();
-		StringTools.unwrapOn(s.toCharArray(), count, sb);
+		StringTools.undelimitOn(s.toCharArray(), count, sb);
 		assertEquals(expected, sb.toString());
 	}
 
-	public void testUnwrapOnStringBuilderCount() {
-		this.verifyUnwrapOnStringBuilderCount("\"foo\"", 2, "o");
-		this.verifyUnwrapOnStringBuilderCount("\"\"\"\"", 2, "");
-		this.verifyUnwrapOnStringBuilderCount("XXfooXX", 2, "foo");
+	public void testUndelimitOnStringBuilderCount() {
+		this.verifyUndelimitOnStringBuilderCount("\"foo\"", 2, "o");
+		this.verifyUndelimitOnStringBuilderCount("\"\"\"\"", 2, "");
+		this.verifyUndelimitOnStringBuilderCount("XXfooXX", 2, "foo");
 	}
 
-	private void verifyUnwrapOnStringBuilderCount(String s, int count, String expected) {
+	private void verifyUndelimitOnStringBuilderCount(String s, int count, String expected) {
 		StringBuilder sb = new StringBuilder();
-		StringTools.unwrapOn(s, count, sb);
+		StringTools.undelimitOn(s, count, sb);
 		assertEquals(expected, sb.toString());
 
 		sb = new StringBuilder();
-		StringTools.unwrapOn(s.toCharArray(), count, sb);
+		StringTools.undelimitOn(s.toCharArray(), count, sb);
 		assertEquals(expected, sb.toString());
 	}
 

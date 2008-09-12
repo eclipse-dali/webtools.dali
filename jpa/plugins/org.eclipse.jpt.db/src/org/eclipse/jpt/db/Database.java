@@ -29,21 +29,14 @@ public interface Database
 	// ********** properties **********
 
 	/**
-	 * Return the database's vendor.
+	 * Return the name of the database's vendor.
 	 */
-	String getVendor();
+	String getVendorName();
 
 	/**
 	 * Return the database's version.
 	 */
 	String getVersion();
-
-	/**
-	 * Return the database's default schema.
-	 * In most cases the default schema's name will match the user name.
-	 * It may be null.
-	 */
-	Schema getDefaultSchema();
 
 
 	// ********** catalogs **********
@@ -55,40 +48,59 @@ public interface Database
 
 	/**
 	 * Return the database's catalogs.
+	 * @see #supportsCatalogs()
 	 */
 	Iterator<Catalog> catalogs();
 
 	/**
 	 * Return the number of catalogs the database contains.
+	 * @see #supportsCatalogs()
 	 */
 	int catalogsSize();
 
 	/**
-	 * Return the names of the database's catalogs.
+	 * Return the catalog with specified name. The name must be an exact match
+	 * of the catalog's name.
+	 * @see #supportsCatalogs()
+	 * @see #getCatalogForIdentifier(String)
 	 */
-	Iterator<String> catalogNames();
+	Catalog getCatalogNamed(String name);
+
+	/**
+	 * Return the database's catalog identifiers, sorted by name.
+	 */
+	Iterator<String> sortedCatalogIdentifiers();
+
+	/**
+	 * Return the catalog for the specified identifier. The identifier should
+	 * be an SQL identifier (i.e. quoted when case-sensitive or containing
+	 * special characters, unquoted otherwise).
+	 * @see #supportsCatalogs()
+	 * @see #getCatalogNamed(String)
+	 */
+	Catalog getCatalogForIdentifier(String identifier);
 
 	/**
 	 * Return the database's "default" catalog.
 	 * Return null if the database does not support catalogs.
+	 * @see #supportsCatalogs()
 	 */
 	Catalog getDefaultCatalog();
 
-	/**
-	 * Return the catalog with specified name. The name should be an SQL
-	 * identifier (i.e. quoted when case-sensitive, unquoted when
-	 * case-insensitive).
-	 */
-	Catalog getCatalogNamed(String name);
 
-
-	// ********** search utility **********
+	// ********** utility methods **********
 
 	/**
-	 * Return the database object from the specified list with specified name.
-	 * The name should be an SQL identifier (i.e. quoted when case-sensitive,
-	 * unquoted when case-insensitive).
+	 * Select and return from the specified list of database objects the
+	 * database object identified by the specified identifier.
+	 * The identifier should be an SQL identifier (i.e. delimited when
+	 * non-"normal").
 	 */
-	<T extends DatabaseObject> T getDatabaseObjectNamed(T[] databaseObjects, String name);
+	<T extends DatabaseObject> T selectDatabaseObjectForIdentifier(T[] databaseObjects, String identifier);
+
+	/**
+	 * Convert the specified name to a database-appropriate SQL identifier.
+	 */
+	String convertNameToIdentifier(String name);
 
 }

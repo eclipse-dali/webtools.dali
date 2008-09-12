@@ -164,6 +164,16 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 		};
 	}
 
+	public Iterator<PersistentType> ancestors() {
+		// using a chain iterator to traverse up the inheritance tree
+		return new ChainIterator<PersistentType>(this.getParentPersistentType()) {
+			@Override
+			protected PersistentType nextLink(PersistentType pt) {
+				return pt.getParentPersistentType();
+			}
+		};
+	}
+
 	public PersistentType getParentPersistentType() {
 		return this.parentPersistentType;
 	}

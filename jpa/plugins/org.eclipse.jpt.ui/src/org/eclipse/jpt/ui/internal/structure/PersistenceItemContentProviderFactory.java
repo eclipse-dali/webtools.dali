@@ -111,7 +111,7 @@ public class PersistenceItemContentProviderFactory
 		protected ListValueModel<JpaStructureNode> buildChildrenModel() {
 			ListValueModel<MappingFileRef> specifiedMappingFileLvm = 
 				new ListAspectAdapter<PersistenceUnit, MappingFileRef>(
-						PersistenceUnit.SPECIFIED_MAPPING_FILE_REF_LIST,
+						PersistenceUnit.SPECIFIED_MAPPING_FILE_REFS_LIST,
 						model()) {
 					@Override
 					protected ListIterator<MappingFileRef> listIterator_() {
@@ -136,7 +136,7 @@ public class PersistenceItemContentProviderFactory
 				);
 			ListValueModel<ClassRef> specifiedClassLvm = 
 				new ListAspectAdapter<PersistenceUnit, ClassRef>(
-						PersistenceUnit.SPECIFIED_CLASS_REF_LIST,
+						PersistenceUnit.SPECIFIED_CLASS_REFS_LIST,
 						model()) {
 					@Override
 					protected ListIterator<ClassRef> listIterator_() {
@@ -149,7 +149,7 @@ public class PersistenceItemContentProviderFactory
 				};
 			ListValueModel<ClassRef> impliedClassLvm = 
 				new ListAspectAdapter<PersistenceUnit, ClassRef>(
-						PersistenceUnit.IMPLIED_CLASS_REF_LIST,
+						PersistenceUnit.IMPLIED_CLASS_REFS_LIST,
 						model()) {
 					@Override
 					protected ListIterator<ClassRef> listIterator_() {

@@ -43,7 +43,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		return (JavaPersistentType) getParent();
 	}
 
-	public String getTableName() {
+	public String getPrimaryTableName() {
 		return null;
 	}
 
@@ -112,12 +112,12 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	}
 	
 	//******************** updatating *********************
-	public void initialize(JavaResourcePersistentType javaResourcePersistentType) {
-		this.javaResourcePersistentType = javaResourcePersistentType;
+	public void initialize(JavaResourcePersistentType jrpt) {
+		this.javaResourcePersistentType = jrpt;
 	}
 
-	public void update(JavaResourcePersistentType javaResourcePersistentType) {
-		this.javaResourcePersistentType = javaResourcePersistentType;
+	public void update(JavaResourcePersistentType jrpt) {
+		this.javaResourcePersistentType = jrpt;
 	}
 	
 	//******************** validation *********************

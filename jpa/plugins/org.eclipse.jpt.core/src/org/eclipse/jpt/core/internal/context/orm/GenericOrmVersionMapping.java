@@ -124,7 +124,7 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	}
 
 	public String getDefaultTableName() {
-		return getTypeMapping().getTableName();
+		return getTypeMapping().getPrimaryTableName();
 	}
 
 	public Table getDbTable(String tableName) {
@@ -186,25 +186,21 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
 		
-		if (entityOwned()) {
-			addColumnMessages(messages);
+		if (this.connectionProfileIsActive() && this.entityOwned()) {
+			this.addColumnMessages(messages);
 		}
 	}
 	
 	protected void addColumnMessages(List<IMessage> messages) {
-		OrmColumn column = getColumn();
-		String table = column.getTable();
-		boolean doContinue = entityOwned() &&  this.connectionProfileIsActive();
-		
-		if (doContinue && getTypeMapping().tableNameIsInvalid(table)) {
+		if (this.getTypeMapping().tableNameIsInvalid(this.column.getTable())) {
 			if (getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_TABLE,
-						new String[] {getPersistentAttribute().getName(), table, column.getName()},
-						column,
-						column.getTableTextRange())
+						new String[] {getPersistentAttribute().getName(), this.column.getTable(), this.column.getName()},
+						this.column,
+						this.column.getTableTextRange())
 				);
 			}
 			else {
@@ -212,23 +208,23 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
-						new String[] {table, column.getName()}, 
-						column,
-						column.getTableTextRange())
+						new String[] {this.column.getTable(), this.column.getName()}, 
+						this.column,
+						this.column.getTableTextRange())
 				);
 			}
-			doContinue = false;
+			return;
 		}
 		
-		if (doContinue && ! column.isResolved()) {
+		if ( ! this.column.isResolved()) {
 			if (getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
-						new String[] {getPersistentAttribute().getName(), column.getName()}, 
-						column,
-						column.getNameTextRange())
+						new String[] {getPersistentAttribute().getName(), this.column.getName()}, 
+						this.column,
+						this.column.getNameTextRange())
 				);
 			}
 			else {
@@ -236,9 +232,9 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-						new String[] {column.getName()}, 
-						column,
-						column.getNameTextRange())
+						new String[] {this.column.getName()}, 
+						this.column,
+						this.column.getNameTextRange())
 				);
 			}
 		}

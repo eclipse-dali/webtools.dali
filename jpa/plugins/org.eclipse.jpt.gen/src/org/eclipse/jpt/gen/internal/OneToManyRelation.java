@@ -27,11 +27,8 @@ class OneToManyRelation {
 		return this.manyToOneRelation;
 	}
 
-	/**
-	 * e.g. "FOO_collection"
-	 */
-	String getJavaAttributeName() {
-		return this.manyToOneRelation.getBaseGenTable().getName() + this.getCollectionAttributeNameSuffix();
+	String getAttributeName() {
+		return this.manyToOneRelation.getBaseGenTableCollectionAttributeName();
 	}
 
 	String getMappedBy() {
@@ -40,14 +37,6 @@ class OneToManyRelation {
 
 	String getReferencedEntityName() {
 		return this.manyToOneRelation.getBaseEntityName();
-	}
-
-	private String getCollectionAttributeNameSuffix() {
-		return this.getEntityConfig().getCollectionAttributeNameSuffix();
-	}
-
-	private EntityGenerator.Config getEntityConfig() {
-		return this.manyToOneRelation.getEntityConfig();
 	}
 
 	@Override

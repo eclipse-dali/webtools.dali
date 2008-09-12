@@ -76,24 +76,17 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private void addSecondaryTableFromDialog(SecondaryTableDialog dialog,
-	                                         ObjectListSelectionModel listSelectionModel) {
-		if (dialog.open() == Window.OK) {
-			int index = this.getSubject().specifiedSecondaryTablesSize();
-			String name = dialog.getSelectedName();
-			String catalog = dialog.getSelectedCatalog();
-			String schema = dialog.getSelectedSchema();
-			SecondaryTable secondaryTable = this.getSubject().addSpecifiedSecondaryTable(index);
-			secondaryTable.setSpecifiedName(name);
-			if (!dialog.isDefaultCatalogSelected()) {
-				secondaryTable.setSpecifiedCatalog(catalog);
-			}
-			if (!dialog.isDefaultSchemaSelected()) {
-				secondaryTable.setSpecifiedSchema(schema);
-			}
-
-			listSelectionModel.setSelectedValue(secondaryTable);
+	protected void addSecondaryTableFromDialog(SecondaryTableDialog dialog, ObjectListSelectionModel listSelectionModel) {
+		if (dialog.open() != Window.OK) {
+			return;
 		}
+
+		SecondaryTable secondaryTable = this.getSubject().addSpecifiedSecondaryTable();
+		secondaryTable.setSpecifiedName(dialog.getSelectedTableIdentifier());
+		secondaryTable.setSpecifiedCatalog(dialog.getSelectedCatalogIdentifier());
+		secondaryTable.setSpecifiedSchema(dialog.getSelectedSchemaIdentifier());
+
+		listSelectionModel.setSelectedValue(secondaryTable);
 	}
 
 	protected WritablePropertyValueModel<SecondaryTable> buildSecondaryTableHolder() {
@@ -115,7 +108,7 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 	}
 
 	protected SecondaryTableDialog buildSecondaryTableDialogForAdd() {
-		return new SecondaryTableDialog(getControl().getShell(), getSubject().getJpaProject(), getSubject().getTable().getDefaultSchema(), getSubject().getTable().getDefaultCatalog());
+		return new SecondaryTableDialog(getControl().getShell(), getSubject().getJpaProject(), getSubject().getTable().getDefaultCatalog(), getSubject().getTable().getDefaultSchema());
 	}
 	
 	protected AddRemoveListPane.Adapter buildSecondaryTablesAdapter() {
@@ -139,7 +132,7 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 			@Override
 			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
 				SecondaryTable secondaryTable = (SecondaryTable) listSelectionModel.selectedValue();
-				SecondaryTableDialog dialog = new SecondaryTableDialog(getControl().getShell(), secondaryTable, getSubject().getJpaProject());
+				SecondaryTableDialog dialog = new SecondaryTableDialog(getControl().getShell(), getSubject().getJpaProject(), secondaryTable);
 				editSecondaryTableFromDialog(dialog, secondaryTable);
 			}
 
@@ -172,38 +165,14 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 		};
 	}
 
-	private void editSecondaryTableDialogOkd(SecondaryTableDialog dialog, SecondaryTable secondaryTable) {
-		String name = dialog.getSelectedName();
-		String catalog = dialog.getSelectedCatalog();
-		String schema = dialog.getSelectedSchema();
-
-		if (secondaryTable.getSpecifiedName() == null || !secondaryTable.getSpecifiedName().equals(name)){
-			secondaryTable.setSpecifiedName(name);
+	protected void editSecondaryTableFromDialog(SecondaryTableDialog dialog, SecondaryTable secondaryTable) {
+		if (dialog.open() != Window.OK) {
+			return;
 		}
 
-		if (dialog.isDefaultCatalogSelected()) {
-			if (secondaryTable.getSpecifiedCatalog() != null) {
-				secondaryTable.setSpecifiedCatalog(null);
-			}
-		}
-		else if (secondaryTable.getSpecifiedCatalog() == null || !secondaryTable.getSpecifiedCatalog().equals(catalog)){
-			secondaryTable.setSpecifiedCatalog(catalog);
-		}
-
-		if (dialog.isDefaultSchemaSelected()) {
-			if (secondaryTable.getSpecifiedSchema() != null) {
-				secondaryTable.setSpecifiedSchema(null);
-			}
-		}
-		else if (secondaryTable.getSpecifiedSchema() == null || !secondaryTable.getSpecifiedSchema().equals(schema)){
-			secondaryTable.setSpecifiedSchema(schema);
-		}
-	}
-
-	private void editSecondaryTableFromDialog(SecondaryTableDialog dialog, SecondaryTable secondaryTable) {
-		if (dialog.open() == Window.OK) {
-			editSecondaryTableDialogOkd(dialog, secondaryTable);
-		}
+		secondaryTable.setSpecifiedName(dialog.getSelectedTableIdentifier());
+		secondaryTable.setSpecifiedCatalog(dialog.getSelectedCatalogIdentifier());
+		secondaryTable.setSpecifiedSchema(dialog.getSelectedSchemaIdentifier());
 	}
 
 }

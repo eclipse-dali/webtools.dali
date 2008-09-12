@@ -96,7 +96,7 @@ final class DTPTableWrapper
 		for (int i = result.length; i-- > 0;) {
 			result[i] = new DTPColumnWrapper(this, dtpColumns.get(i));
 		}
-		return result;
+		return CollectionTools.sort(result);
 	}
 
 	// minimize scope of suppressed warnings
@@ -109,13 +109,8 @@ final class DTPTableWrapper
 		return this.getColumns().length;
 	}
 
-	public Iterator<String> columnNames() {
-		return new TransformationIterator<DTPColumnWrapper, String>(this.columnWrappers()) {
-			@Override
-			protected String transform(DTPColumnWrapper next) {
-				 return next.getName();
-			}
-		};
+	public DTPColumnWrapper getColumnNamed(String name) {
+		return this.selectDatabaseObjectNamed(this.getColumns(), name);
 	}
 
 	/**
@@ -141,8 +136,18 @@ final class DTPTableWrapper
 		throw new IllegalArgumentException("invalid DTP column: " + dtpColumn);  //$NON-NLS-1$
 	}
 
-	public DTPColumnWrapper getColumnNamed(String name) {
-		return this.getDatabaseObjectNamed(this.getColumns(), name);
+	public Iterator<String> sortedColumnIdentifiers() {
+		// the columns are already sorted
+		return new TransformationIterator<DTPColumnWrapper, String>(this.columnWrappers()) {
+			@Override
+			protected String transform(DTPColumnWrapper next) {
+				 return next.getIdentifier();
+			}
+		};
+	}
+
+	public DTPColumnWrapper getColumnForIdentifier(String identifier) {
+		return this.selectDatabaseObjectForIdentifier(this.getColumns(), identifier);
 	}
 
 	// ***** primaryKeyColumns

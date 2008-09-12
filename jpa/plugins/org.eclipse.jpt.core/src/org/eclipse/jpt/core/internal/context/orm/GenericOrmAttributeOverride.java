@@ -105,7 +105,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 		if (tableName != null) {
 			return tableName;
 		}
-		return getOwner().getTypeMapping().getTableName();
+		return getOwner().getTypeMapping().getPrimaryTableName();
 	}
 	
 	protected ColumnMapping getColumnMapping() {
@@ -139,16 +139,16 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 	
 	//***************** updating ****************
 	
-	protected void initialize(XmlAttributeOverride resourceAttributeOverride) {
-		this.resourceAttributeOverride = resourceAttributeOverride;
-		this.name = resourceAttributeOverride.getName();
-		this.column.initialize(resourceAttributeOverride.getColumn());
+	protected void initialize(XmlAttributeOverride xmlAttributeOverride) {
+		this.resourceAttributeOverride = xmlAttributeOverride;
+		this.name = xmlAttributeOverride.getName();
+		this.column.initialize(xmlAttributeOverride.getColumn());
 	}
 	
-	public void update(XmlAttributeOverride resourceAttributeOverride) {
-		this.resourceAttributeOverride = resourceAttributeOverride;
-		this.setName_(resourceAttributeOverride.getName());
-		this.column.update(resourceAttributeOverride.getColumn());
+	public void update(XmlAttributeOverride xmlAttributeOverride) {
+		this.resourceAttributeOverride = xmlAttributeOverride;
+		this.setName_(xmlAttributeOverride.getName());
+		this.column.update(xmlAttributeOverride.getColumn());
 	}
 	
 	//****************** validation ********************
@@ -156,24 +156,21 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 	@Override
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
-	
-		addColumnMessages(messages);
+		if (this.connectionProfileIsActive()) {
+			this.addColumnMessages(messages);
+		}
 	}
 	
 	protected void addColumnMessages(List<IMessage> messages) {
-		OrmColumn column = getColumn();
-		String table = column.getTable();
-		boolean doContinue = connectionProfileIsActive();
-		
-		if (doContinue && getTypeMapping().tableNameIsInvalid(table)) {
+		if (this.getTypeMapping().tableNameIsInvalid(this.column.getTable())) {
 			if (isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_TABLE,
-						new String[] {getName(), table, column.getName()},
-						column, 
-						column.getTableTextRange())
+						new String[] {getName(), this.column.getTable(), this.column.getName()},
+						this.column, 
+						this.column.getTableTextRange())
 				);
 			}
 			else {
@@ -181,23 +178,23 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
-							new String[] {table, column.getName()}, 
-							column,
-							column.getTableTextRange())
+							new String[] {this.column.getTable(), this.column.getName()}, 
+							this.column,
+							this.column.getTableTextRange())
 					);
 			}
-			doContinue = false;
+			return;
 		}
 		
-		if (doContinue && !column.isResolved()) {
+		if ( ! this.column.isResolved()) {
 			if (isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,
-						new String[] {getName(), column.getName()}, 
-						column,
-						column.getNameTextRange())
+						new String[] {getName(), this.column.getName()}, 
+						this.column,
+						this.column.getNameTextRange())
 				);
 			}
 			else {
@@ -205,9 +202,9 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 					DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-							new String[] {column.getName()}, 
-							column,
-							column.getNameTextRange())
+							new String[] {this.column.getName()}, 
+							this.column,
+							this.column.getNameTextRange())
 					);
 			}
 		}

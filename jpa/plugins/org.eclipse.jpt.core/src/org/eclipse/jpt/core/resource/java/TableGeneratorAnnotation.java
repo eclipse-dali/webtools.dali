@@ -22,9 +22,10 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface TableGeneratorAnnotation extends GeneratorAnnotation
+public interface TableGeneratorAnnotation
+	extends GeneratorAnnotation
 {
-	
+
 	String ANNOTATION_NAME = JPA.TABLE_GENERATOR;
 
 	/**
@@ -40,7 +41,7 @@ public interface TableGeneratorAnnotation extends GeneratorAnnotation
 	 * the TableGenerator annotation will be removed as well.
 	 */
 	void setTable(String table);
-		String TABLE_PROPERTY = "tableProperty";
+		String TABLE_PROPERTY = "table"; //$NON-NLS-1$
 		
 	/**
 	 * Corresponds to the catalog element of the TableGenerator annotation.
@@ -55,7 +56,7 @@ public interface TableGeneratorAnnotation extends GeneratorAnnotation
 	 * the TableGenerator annotation will be removed as well.
 	 */
 	void setCatalog(String catalog);
-		String CATALOG_PROPERTY = "catalogProperty";
+		String CATALOG_PROPERTY = "catalog"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the schema element of the TableGenerator annotation.
@@ -70,7 +71,7 @@ public interface TableGeneratorAnnotation extends GeneratorAnnotation
 	 * the TableGenerator annotation will be removed as well.
 	 */
 	void setSchema(String schema);
-		String SCHEMA_PROPERTY = "schemaProperty";
+		String SCHEMA_PROPERTY = "schema"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the pkColumnName element of the TableGenerator annotation.
@@ -85,7 +86,7 @@ public interface TableGeneratorAnnotation extends GeneratorAnnotation
 	 * the TableGenerator annotation will be removed as well.
 	 */
 	void setPkColumnName(String pkColumnName);
-		String PK_COLUMN_NAME_PROPERTY = "pkColumnNameProperty";
+		String PK_COLUMN_NAME_PROPERTY = "pkColumnName"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the valueColumnName element of the TableGenerator annotation.
@@ -100,7 +101,7 @@ public interface TableGeneratorAnnotation extends GeneratorAnnotation
 	 * the TableGenerator annotation will be removed as well.
 	 */
 	void setValueColumnName(String valueColumnName);
-		String VALUE_COLUMN_NAME_PROPERTY = "valueColumnNameProperty";
+		String VALUE_COLUMN_NAME_PROPERTY = "valueColumnName"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the pkColumnValue element of the TableGenerator annotation.
@@ -115,7 +116,7 @@ public interface TableGeneratorAnnotation extends GeneratorAnnotation
 	 * the TableGenerator annotation will be removed as well.
 	 */
 	void setPkColumnValue(String pkColumnValue);
-		String PK_COLUMN_VALUE_PROPERTY = "pkColumnValueProperty";
+		String PK_COLUMN_VALUE_PROPERTY = "pkColumnValue"; //$NON-NLS-1$
 	
 	ListIterator<UniqueConstraintAnnotation> uniqueConstraints();
 	
@@ -130,7 +131,7 @@ public interface TableGeneratorAnnotation extends GeneratorAnnotation
 	void removeUniqueConstraint(int index);
 	
 	void moveUniqueConstraint(int targetIndex, int sourceIndex);
-		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraintsList";
+		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraints"; //$NON-NLS-1$
 
 	/**
 	 * Return the {@link TextRange} for the table element.  If the table element 
@@ -139,10 +140,22 @@ public interface TableGeneratorAnnotation extends GeneratorAnnotation
 	TextRange getTableTextRange(CompilationUnit astRoot);
 
 	/**
+	 * Return whether the specified position touches the table element.
+	 * Return false if the table element does not exist.
+	 */
+	boolean tableTouches(int pos, CompilationUnit astRoot);
+
+	/**
 	 * Return the {@link TextRange} for the catalog element.  If the catalog element 
 	 * does not exist return the {@link TextRange} for the TableGenerator annotation.
 	 */
 	TextRange getCatalogTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return whether the specified position touches the catalog element.
+	 * Return false if the catalog element does not exist.
+	 */
+	boolean catalogTouches(int pos, CompilationUnit astRoot);
 
 	/**
 	 * Return the {@link TextRange} for the schema element.  If the schema element 
@@ -151,10 +164,22 @@ public interface TableGeneratorAnnotation extends GeneratorAnnotation
 	TextRange getSchemaTextRange(CompilationUnit astRoot);
 
 	/**
+	 * Return whether the specified position touches the schema element.
+	 * Return false if the schema element does not exist.
+	 */
+	boolean schemaTouches(int pos, CompilationUnit astRoot);
+
+	/**
 	 * Return the {@link TextRange} for the pkColumnName element.  If the pkColumnName element 
 	 * does not exist return the {@link TextRange} for the TableGenerator annotation.
 	 */
 	TextRange getPkColumnNameTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return whether the specified position touches the pkColumnName element.
+	 * Return false if the pkColumnName element does not exist.
+	 */
+	boolean pkColumnNameTouches(int pos, CompilationUnit astRoot);
 
 	/**
 	 * Return the {@link TextRange} for the valueColumnName element.  If the valueColumnName element 
@@ -163,9 +188,21 @@ public interface TableGeneratorAnnotation extends GeneratorAnnotation
 	TextRange getValueColumnNameTextRange(CompilationUnit astRoot);
 
 	/**
+	 * Return whether the specified position touches the valueColumnName element.
+	 * Return false if the valueColumnName element does not exist.
+	 */
+	boolean valueColumnNameTouches(int pos, CompilationUnit astRoot);
+
+	/**
 	 * Return the {@link TextRange} for the pkColumnValue element.  If the pkColumnValue element 
 	 * does not exist return the {@link TextRange} for the TableGenerator annotation.
 	 */
 	TextRange getPkColumnValueTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return whether the specified position touches the pkColumnValue element.
+	 * Return false if the pkColumnValue element does not exist.
+	 */
+	boolean pkColumnValueTouches(int pos, CompilationUnit astRoot);
 
 }

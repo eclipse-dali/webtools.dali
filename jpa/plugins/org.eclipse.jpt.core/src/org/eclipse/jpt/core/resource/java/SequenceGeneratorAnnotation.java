@@ -21,7 +21,8 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface SequenceGeneratorAnnotation extends GeneratorAnnotation
+public interface SequenceGeneratorAnnotation
+	extends GeneratorAnnotation
 {
 	String ANNOTATION_NAME = JPA.SEQUENCE_GENERATOR;
 
@@ -38,7 +39,7 @@ public interface SequenceGeneratorAnnotation extends GeneratorAnnotation
 	 * the SequenceGenerator annotation will be removed as well.
 	 */
 	void setSequenceName(String sequenceName);
-		String SEQUENCE_NAME_PROPERTY = "sequenceNameProperty";
+		String SEQUENCE_NAME_PROPERTY = "sequenceName"; //$NON-NLS-1$
 		
 	/**
 	 * Return the {@link TextRange} for the sequenceName element.  If the sequenceName element 
@@ -46,5 +47,10 @@ public interface SequenceGeneratorAnnotation extends GeneratorAnnotation
 	 */
 	TextRange getSequenceNameTextRange(CompilationUnit astRoot);
 
+	/**
+	 * Return whether the specified position touches the sequenceName element.
+	 * Return false if the sequenceName element does not exist.
+	 */
+	boolean sequenceNameTouches(int pos, CompilationUnit astRoot);
 
 }

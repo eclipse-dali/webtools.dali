@@ -126,7 +126,7 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 
 	public Column getDbColumn() {
 		Table table = this.getDbTable();
-		return (table == null) ? null : table.getColumnNamed(getName());
+		return (table == null) ? null : table.getColumnForIdentifier(getName());
 	}
 
 	public Table getDbTable() {
@@ -161,29 +161,29 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 	// ******************* initialization from orm xml resource model ********************
 	
 	protected void initialize(T column) {
-		this.specifiedName = this.specifiedName(column);
-		this.defaultName = this.defaultName();
-		this.columnDefinition = this.specifiedColumnDefinition(column);
+		this.specifiedName = this.buildSpecifiedName(column);
+		this.defaultName = this.buildDefaultName();
+		this.columnDefinition = this.buildSpecifiedColumnDefinition(column);
 	}
 	
 	protected void update(T column) {
-		setSpecifiedName_(this.specifiedName(column));
-		setDefaultName(this.defaultName());
-		setColumnDefinition_(this.specifiedColumnDefinition(column));	
+		setSpecifiedName_(this.buildSpecifiedName(column));
+		setDefaultName(this.buildDefaultName());
+		setColumnDefinition_(this.buildSpecifiedColumnDefinition(column));	
 	}
 
-	protected String specifiedName(T column) {
+	protected String buildSpecifiedName(T column) {
 		return column == null ? null : column.getName();
 	}
 	
-	protected String specifiedColumnDefinition(T column) {
+	protected String buildSpecifiedColumnDefinition(T column) {
 		return column == null ? null : column.getColumnDefinition();
 	}
 	
 	/**
 	 * Return the default column name.
 	 */
-	protected String defaultName() {
+	protected String buildDefaultName() {
 		return this.getOwner().getDefaultColumnName();
 	}
 

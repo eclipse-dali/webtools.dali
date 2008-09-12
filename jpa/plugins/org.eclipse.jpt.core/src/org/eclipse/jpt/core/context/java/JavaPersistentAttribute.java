@@ -44,6 +44,8 @@ public interface JavaPersistentAttribute extends PersistentAttribute, JavaJpaCon
 	
 	JavaResourcePersistentAttribute getResourcePersistentAttribute();
 	
+	boolean mappingIsDefault(JavaAttributeMapping mapping);
+
 	/**
 	 * Return whether the attribute contains the given offset into the text file.
 	 */

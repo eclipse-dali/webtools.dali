@@ -98,7 +98,7 @@ public class AssociationOverrideImpl
 		return joinColumn;
 	}
 	
-	private void addJoinColumn(int index, NestableJoinColumn joinColumn) {
+	protected void addJoinColumn(int index, NestableJoinColumn joinColumn) {
 		addItemToList(index, joinColumn, this.joinColumns, AssociationOverrideAnnotation.JOIN_COLUMNS_LIST);
 	}
 	

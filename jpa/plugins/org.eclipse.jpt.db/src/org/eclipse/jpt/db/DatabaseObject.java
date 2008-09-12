@@ -28,18 +28,27 @@ public interface DatabaseObject {
 	String getName();
 
 	/**
-	 * Given the name of a Java member and the database object to which it is
-	 * mapped, build and return a string to be used as the value for the member's
-	 * database object annotation's 'name' element. Return null if the member
-	 * maps to the database object by default.
+	 * Return the database object's "identifier", which is the object's name
+	 * modified so it can be used in an SQL statement (e.g. if the name contains
+	 * special characters or is mixed case, it will be delimited, typically by
+	 * double-quotes).
+	 * Return null if the database object's identifier matches the specified
+	 * "default name".
 	 */
-	String getAnnotationIdentifier(String javaIdentifier);
+	String getIdentifier(String defaultName);
 
 	/**
-	 * Return a string to be used as the value for the member's
-	 * database object annotation's 'name' element.
+	 * Return the database object's "identifier", which is the object's name
+	 * modified so it can be used in an SQL statement (e.g. if the name contains
+	 * special characters or is mixed case, it will be delimited, typically by
+	 * double-quotes).
 	 */
-	String getAnnotationIdentifier();
+	String getIdentifier();
+
+	/**
+	 * Return the database object's database.
+	 */
+	Database getDatabase();
 
 	/**
 	 * Return the database object's connection profile.

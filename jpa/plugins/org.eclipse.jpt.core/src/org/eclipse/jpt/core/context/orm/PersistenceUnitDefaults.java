@@ -11,6 +11,9 @@ package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.db.Catalog;
+import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
 
 /**
  * 
@@ -21,38 +24,41 @@ import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface PersistenceUnitDefaults extends OrmJpaContextNode
+public interface PersistenceUnitDefaults
+	extends OrmJpaContextNode
 {
-
-	/**
-	 * Return the specifiedSchema if not null, otherwise return the defaultSchema.
-	 */
-	String getSchema();
-	String getDefaultSchema();
-		String DEFAULT_SCHEMA_PROPERTY = "defaultSchemaProperty";
-	String getSpecifiedSchema();
-	void setSpecifiedSchema(String newSpecifiedSchema);
-		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchemaProperty";
-
-	/**
-	 * Return the specifiedCatalog if not null, otherwise return the defaultCatalog.
-	 */
-	String getCatalog();
-	String getDefaultCatalog();
-		String DEFAULT_CATALOG_PROPERTY = "defaultCatalogProperty";
-	String getSpecifiedCatalog();
-	void setSpecifiedCatalog(String newSpecifiedCatalog);
-		String SPECIFIED_CATALOG_PROPERTY = "specifiedCatalogProperty";
 
 	AccessType getAccess();
 	void setAccess(AccessType value);
-		String ACCESS_PROPERTY = "accessProperty";
+		String ACCESS_PROPERTY = "access"; //$NON-NLS-1$
+
+	SchemaContainer getDbSchemaContainer();
+
+	/**
+	 * Return the specified catalog if present, otherwise return the default catalog.
+	 */
+	String getCatalog();
+	String getSpecifiedCatalog();
+	void setSpecifiedCatalog(String newSpecifiedCatalog);
+		String SPECIFIED_CATALOG_PROPERTY = "specifiedCatalog"; //$NON-NLS-1$
+	String getDefaultCatalog();
+		String DEFAULT_CATALOG_PROPERTY = "defaultCatalog"; //$NON-NLS-1$
+	Catalog getDbCatalog();
+
+	/**
+	 * Return the specified schema if present, otherwise return the default schema.
+	 */
+	String getSchema();
+	String getSpecifiedSchema();
+	void setSpecifiedSchema(String newSpecifiedSchema);
+		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchema"; //$NON-NLS-1$
+	String getDefaultSchema();
+		String DEFAULT_SCHEMA_PROPERTY = "defaultSchema"; //$NON-NLS-1$
+	Schema getDbSchema();
 
 	boolean isCascadePersist();
-
 	void setCascadePersist(boolean value);
-	String CASCADE_PERSIST_PROPERTY = "cascadePersistProperty";
-	
+		String CASCADE_PERSIST_PROPERTY = "cascadePersist"; //$NON-NLS-1$
 	
 	/**
 	 * Update the PersistenceUnitDefaults context model object to match the XmlEntityMappings 

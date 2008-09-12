@@ -118,7 +118,7 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 
 	@Override
 	protected String getTableName() {
-		return getJavaEntity().getTableName();
+		return getJavaEntity().getPrimaryTableName();
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {

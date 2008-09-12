@@ -31,8 +31,6 @@ public interface JavaColumn extends Column, JavaBaseColumn
 	 */
 	void update(ColumnAnnotation resourceColumn);
 	
-	boolean connectionProfileIsActive();
-	
 	Owner getOwner();
 	/**
 	 * interface allowing columns to be used in multiple places

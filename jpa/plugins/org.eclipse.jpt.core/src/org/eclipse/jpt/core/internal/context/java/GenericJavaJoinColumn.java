@@ -10,12 +10,16 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Column;
@@ -24,6 +28,7 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnnotation> implements JavaJoinColumn
@@ -85,13 +90,13 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 		return getOwner().isVirtual(this);
 	}
 
-	public Table getDbReferencedColumnTable() {
-		return getOwner().getDbReferencedColumnTable();
+	protected Table getReferencedColumnDbTable() {
+		return getOwner().getReferencedColumnDbTable();
 	}
 
-	public Column getDbReferencedColumn() {
-		Table table = this.getDbReferencedColumnTable();
-		return (table == null) ? null : table.getColumnNamed(this.getReferencedColumnName());
+	public Column getReferencedDbColumn() {
+		Table table = this.getReferencedColumnDbTable();
+		return (table == null) ? null : table.getColumnForIdentifier(this.getReferencedColumnName());
 	}
 
 	@Override
@@ -103,19 +108,6 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 		return getResourceColumn().referencedColumnNameTouches(pos, astRoot);
 	}
 
-	private Iterator<String> candidateReferencedColumnNames() {
-		Table table = this.getOwner().getDbReferencedColumnTable();
-		return (table != null) ? table.columnNames() : EmptyIterator.<String> instance();
-	}
-
-	private Iterator<String> candidateReferencedColumnNames(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateReferencedColumnNames(), filter);
-	}
-
-	private Iterator<String> quotedCandidateReferencedColumnNames(Filter<String> filter) {
-		return StringTools.quote(this.candidateReferencedColumnNames(filter));
-	}
-
 	@Override
 	public Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		Iterator<String> result = super.connectedJavaCompletionProposals(pos, filter, astRoot);
@@ -123,13 +115,26 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 			return result;
 		}
 		if (this.referencedColumnNameTouches(pos, astRoot)) {
-			return this.quotedCandidateReferencedColumnNames(filter);
+			return this.javaCandidateReferencedColumnNames(filter);
 		}
 		return null;
 	}
 
+	private Iterator<String> javaCandidateReferencedColumnNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.candidateReferencedColumnNames(filter));
+	}
+
+	private Iterator<String> candidateReferencedColumnNames(Filter<String> filter) {
+		return new FilteringIterator<String, String>(this.candidateReferencedColumnNames(), filter);
+	}
+
+	private Iterator<String> candidateReferencedColumnNames() {
+		Table table = this.getOwner().getReferencedColumnDbTable();
+		return (table != null) ? table.sortedColumnIdentifiers() : EmptyIterator.<String> instance();
+	}
+
 	public boolean isReferencedColumnResolved() {
-		return getDbReferencedColumn() != null;
+		return getReferencedDbColumn() != null;
 	}
 
 	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
@@ -143,23 +148,23 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	}
 	
 	@Override
-	public void initialize(JoinColumnAnnotation joinColumn) {
-		this.joinColumn = joinColumn;
-		super.initialize(joinColumn);
-		this.specifiedReferencedColumnName = joinColumn.getReferencedColumnName();
+	public void initialize(JoinColumnAnnotation jca) {
+		this.joinColumn = jca;
+		super.initialize(jca);
+		this.specifiedReferencedColumnName = jca.getReferencedColumnName();
 		this.defaultReferencedColumnName = this.defaultReferencedColumnName();
 	}
 	
 	@Override
-	public void update(JoinColumnAnnotation joinColumn) {
-		this.joinColumn = joinColumn;
-		super.update(joinColumn);
-		this.setSpecifiedReferencedColumnName_(joinColumn.getReferencedColumnName());
+	public void update(JoinColumnAnnotation jca) {
+		this.joinColumn = jca;
+		super.update(jca);
+		this.setSpecifiedReferencedColumnName_(jca.getReferencedColumnName());
 		this.setDefaultReferencedColumnName(this.defaultReferencedColumnName());
 	}
 	
 	@Override
-	protected String defaultName() {
+	protected String buildDefaultName() {
 		RelationshipMapping relationshipMapping = getOwner().getRelationshipMapping();
 		if (relationshipMapping == null) {
 			return null;
@@ -192,4 +197,31 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 		}
 		return super.defaultTable();
 	}
+
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		if ( ! this.isResolved()) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
+					new String[] {this.getName()}, 
+					this,
+					this.getNameTextRange(astRoot))
+			);
+		}
+
+		if ( ! this.isReferencedColumnResolved()) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
+					new String[] {this.getReferencedColumnName(), this.getName()}, 
+					this,
+					this.getReferencedColumnNameTextRange(astRoot))
+			);
+		}
+	}
+
 }

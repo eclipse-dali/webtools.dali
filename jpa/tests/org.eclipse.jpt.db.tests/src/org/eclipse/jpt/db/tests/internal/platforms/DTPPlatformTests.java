@@ -372,14 +372,14 @@ public abstract class DTPPlatformTests extends TestCase {
 
 	private void verifyDatabaseVendor() {
 		Database database = this.connectionProfile.getDatabase();
-		String actual = database.getVendor();
+		String actual = database.getVendorName();
 		String expected = this.getDatabaseVendor();
 		assertEquals(expected, actual);
 	}
 
 	private void verifyDatabaseContent() {
 		Database database = this.connectionProfile.getDatabase();
-		assertTrue(database.schemataSize() > 0);
+		assertTrue(database.schemataSize() >= 0);
 
 		Schema schema = database.getDefaultSchema();
 		if (schema != null) {
@@ -482,7 +482,7 @@ public abstract class DTPPlatformTests extends TestCase {
 
 		// take the first catalog
 		org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog = this.getFirstDTPCatalog();
-		Catalog catalog = this.connectionProfile.getDatabase().getCatalogNamed(dtpCatalog.getName());
+		Catalog catalog = this.getCatalogNamed(dtpCatalog.getName());
 		((ICatalogObject) dtpCatalog).refresh();
 		assertSame(catalog, listener.changedCatalog);
 
@@ -500,17 +500,31 @@ public abstract class DTPPlatformTests extends TestCase {
 		if (this.connectionProfile.getDatabase().supportsCatalogs()) {
 			org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog = this.getFirstDTPCatalog();
 			dtpSchema = (org.eclipse.datatools.modelbase.sql.schema.Schema) dtpCatalog.getSchemas().get(0);
-			schema = this.connectionProfile.getDatabase().getCatalogNamed(dtpCatalog.getName()).getSchemaNamed(dtpSchema.getName());
+			schema = this.getCatalogNamed(dtpCatalog.getName()).getSchemaNamed(dtpSchema.getName());
 		} else {
 			dtpSchema = (org.eclipse.datatools.modelbase.sql.schema.Schema) this.getDTPDatabase().getSchemas().get(0);
 			schema = this.connectionProfile.getDatabase().getSchemaNamed(dtpSchema.getName());
 		}
+		assertTrue(schema.tablesSize() >= 0);  // force tables to be loaded
 		((ICatalogObject) dtpSchema).refresh();
 		assertSame(schema, listener.changedSchema);
 
 		this.connectionProfile.removeConnectionListener(listener);
 		this.connectionProfile.disconnect();
 	}
+
+	public void testSupportsCatalogs() {
+		this.connectionProfile.connect();
+		TestConnectionListener listener = new TestConnectionListener();
+		this.connectionProfile.addConnectionListener(listener);
+
+		assertEquals(this.supportsCatalogs(), this.connectionProfile.getDatabase().supportsCatalogs());
+
+		this.connectionProfile.removeConnectionListener(listener);
+		this.connectionProfile.disconnect();
+	}
+
+	protected abstract boolean supportsCatalogs();
 
 
 	// ********** convenience methods **********
@@ -531,8 +545,8 @@ public abstract class DTPPlatformTests extends TestCase {
 		return this.connectionProfile.getDatabase().getCatalogNamed(catalogName);
 	}
 
-	protected Schema getSchemaNamed(String schemaName) {
-		return this.connectionProfile.getDatabase().getSchemaNamed(schemaName);
+	protected Schema getSchemaForIdentifier(String schemaName) {
+		return this.connectionProfile.getDatabase().getSchemaForIdentifier(schemaName);
 	}
 
 	protected String getRequiredPlatformProperty(String propertyKey) {
@@ -618,14 +632,30 @@ public abstract class DTPPlatformTests extends TestCase {
 		try {
 			this.executeUpdate(sql);
 		} catch (Exception ex) {
-			// ignore
+//			System.err.println("SQL: " + sql);
+//			ex.printStackTrace();
 		}
 	}
 
 	protected void executeUpdate(String sql) throws SQLException {
 		Statement jdbcStatement = this.createJDBCStatement();
-		jdbcStatement.executeUpdate(sql);
-		jdbcStatement.close();
+		try {
+			jdbcStatement.executeUpdate(sql);
+		} finally {
+			jdbcStatement.close();
+		}
+	}
+
+	protected void dump(String sql) throws SQLException {
+		for (Object[] row : this.execute(sql)) {
+			for (int i = 0; i < row.length; i++) {
+				if (i > 0) {
+					System.out.print(' ');
+				}
+				System.out.print(StringTools.padOrTruncate(String.valueOf(row[i]), 20));
+			}
+			System.out.println();
+		}
 	}
 
 	protected List<Object[]> execute(String sql) throws SQLException {
@@ -651,7 +681,7 @@ public abstract class DTPPlatformTests extends TestCase {
 		public Object[] buildNext(ResultSet rs) throws SQLException {
 			Object[] row = new Object[this.columnCount];
 			for (int i = 0; i < row.length; i++) {
-				row[i] = rs.getObject(i + 1);
+				row[i] = rs.getObject(i + 1);  // NB: ResultSet index/subscript is 1-based
 			}
 			return row;
 		}
@@ -672,52 +702,78 @@ public abstract class DTPPlatformTests extends TestCase {
 	 * dump all the database metadata to the console
 	 */
 	protected void dumpDatabase() {
+		this.dumpDatabase(true);
+	}
+
+	/**
+	 * dump the database catalogs and schemata to the console
+	 */
+	protected void dumpDatabaseContainers() {
+		this.dumpDatabase(false);
+	}
+
+	protected void dumpDatabase(boolean deep) {
 		IndentingPrintWriter pw = new IndentingPrintWriter(new OutputStreamWriter(System.out));
 		// synchronize the console so everything is contiguous
 		synchronized (System.out) {
-			this.dumpDatabaseOn(pw);
+			this.dumpDatabaseOn(pw, deep);
 		}
 		pw.flush();
 	}
 
-	protected void dumpDatabaseOn(IndentingPrintWriter pw) {
+	protected void dumpDatabaseOn(IndentingPrintWriter pw, boolean deep) {
 		Database database = this.connectionProfile.getDatabase();
 		pw.print("database: ");
 		pw.println(database.getName());
 		if (database.supportsCatalogs()) {
 			for (Iterator<Catalog> stream = database.catalogs(); stream.hasNext(); ) {
-				this.dumpCatalogOn(stream.next(), pw);
+				this.dumpCatalogOn(stream.next(), pw, deep);
 			}
 		} else {
-			this.dumpSchemaOnContainerOn(database, pw);
+			this.dumpSchemaContainerOn(database, pw, deep);
 		}
 	}
 
-	protected void dumpCatalogOn(Catalog catalog, IndentingPrintWriter pw) {
+	protected void dumpCatalogOn(Catalog catalog, IndentingPrintWriter pw, boolean deep) {
 		pw.print("catalog: ");
 		pw.println(catalog.getName());
 		pw.indent();
-		this.dumpSchemaOnContainerOn(catalog, pw);
+		this.dumpSchemaContainerOn(catalog, pw, deep);
 		pw.undent();
 	}
 
-	protected void dumpSchemaOnContainerOn(SchemaContainer schemaContainer, IndentingPrintWriter pw) {
+	protected void dumpSchemaContainerOn(SchemaContainer schemaContainer, IndentingPrintWriter pw, boolean deep) {
 		for (Iterator<Schema> stream = schemaContainer.schemata(); stream.hasNext(); ) {
-			this.dumpSchemaOn(stream.next(), pw);
+			this.dumpSchemaOn(stream.next(), pw, deep);
 		}
 	}
 
-	protected void dumpSchemaOn(Schema schema, IndentingPrintWriter pw) {
+	protected void dumpSchema(Schema schema) {
+		this.dumpSchema(schema, true);
+	}
+
+	protected void dumpSchema(Schema schema, boolean deep) {
+		IndentingPrintWriter pw = new IndentingPrintWriter(new OutputStreamWriter(System.out));
+		// synchronize the console so everything is contiguous
+		synchronized (System.out) {
+			this.dumpSchemaOn(schema, pw, deep);
+		}
+		pw.flush();
+	}
+
+	protected void dumpSchemaOn(Schema schema, IndentingPrintWriter pw, boolean deep) {
 		pw.print("schema: ");
 		pw.println(schema.getName());
-		pw.indent();
-		for (Iterator<Table> stream = schema.tables(); stream.hasNext(); ) {
-			this.dumpTableOn(stream.next(), pw);
+		if (deep) {
+			pw.indent();
+			for (Iterator<Table> stream = schema.tables(); stream.hasNext(); ) {
+				this.dumpTableOn(stream.next(), pw);
+			}
+			for (Iterator<Sequence> stream = schema.sequences(); stream.hasNext(); ) {
+				this.dumpSequenceOn(stream.next(), pw);
+			}
+			pw.undent();
 		}
-		for (Iterator<Sequence> stream = schema.sequences(); stream.hasNext(); ) {
-			this.dumpSequenceOn(stream.next(), pw);
-		}
-		pw.undent();
 	}
 
 	protected void dumpTableOn(Table table, IndentingPrintWriter pw) {

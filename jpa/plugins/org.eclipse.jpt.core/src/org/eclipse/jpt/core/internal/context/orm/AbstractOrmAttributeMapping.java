@@ -40,8 +40,11 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-
-public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping> extends AbstractOrmJpaContextNode
+/**
+ * 
+ */
+public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
+	extends AbstractOrmJpaContextNode
 	implements OrmAttributeMapping
 {
 	protected String name;
@@ -50,6 +53,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 
 	protected JavaPersistentAttribute javaPersistentAttribute;
 	
+
 	protected AbstractOrmAttributeMapping(OrmPersistentAttribute parent) {
 		super(parent);
 	}	
@@ -58,30 +62,29 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return this.javaPersistentAttribute;
 	}
 	
-	protected void setJavaPersistentAttribute(JavaPersistentAttribute newJavaPersistentAttribute) {
-		JavaPersistentAttribute oldJavaPersistentAttribute = this.javaPersistentAttribute;
-		this.javaPersistentAttribute = newJavaPersistentAttribute;
-		firePropertyChanged(OrmAttributeMapping.JAVA_PERSISTENT_ATTRIBUTE_PROPERTY, oldJavaPersistentAttribute, newJavaPersistentAttribute);
-		
+	protected void setJavaPersistentAttribute(JavaPersistentAttribute javaPersistentAttribute) {
+		JavaPersistentAttribute old = this.javaPersistentAttribute;
+		this.javaPersistentAttribute = javaPersistentAttribute;
+		this.firePropertyChanged(JAVA_PERSISTENT_ATTRIBUTE_PROPERTY, old, javaPersistentAttribute);
 	}
 
 	public String getName() {
 		return this.name;
 	}
 
-	public void setName(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		this.attributeMapping.setName(newName);
-		firePropertyChanged(OrmAttributeMapping.NAME_PROPERTY, oldName, newName);
-		getPersistentAttribute().nameChanged(oldName, newName);
+	public void setName(String name) {
+		String old = this.name;
+		this.name = name;
+		this.attributeMapping.setName(name);
+		this.firePropertyChanged(NAME_PROPERTY, old, name);
+		this.getPersistentAttribute().nameChanged(old, name);
 	}
 
-	protected void setName_(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		firePropertyChanged(OrmAttributeMapping.NAME_PROPERTY, oldName, newName);
-		getPersistentAttribute().nameChanged(oldName, newName);
+	protected void setName_(String name) {
+		String old = this.name;
+		this.name = name;
+		this.firePropertyChanged(NAME_PROPERTY, old, name);
+		this.getPersistentAttribute().nameChanged(old, name);
 	}
 	
 	public OrmPersistentAttribute getPersistentAttribute() {
@@ -192,15 +195,15 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return this.attributeMapping;
 	}
 
-	public void initialize(T attributeMapping) {
-		this.attributeMapping = attributeMapping;
-		this.name = attributeMapping.getName();
+	public void initialize(T xmlAttributeMapping) {
+		this.attributeMapping = xmlAttributeMapping;
+		this.name = xmlAttributeMapping.getName();
 		this.javaPersistentAttribute = findJavaPersistentAttribute();
 	}
 	
-	public void update(T attributeMapping) {
-		this.attributeMapping = attributeMapping;
-		this.setName_(attributeMapping.getName());
+	public void update(T xmlAttributeMapping) {
+		this.attributeMapping = xmlAttributeMapping;
+		this.setName_(xmlAttributeMapping.getName());
 		this.setJavaPersistentAttribute(findJavaPersistentAttribute());
 	}
 	
@@ -232,78 +235,78 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	public TextRange getNameTextRange() {
 		return this.attributeMapping.getNameTextRange();
 	}
-	
+
+
+	// ********** validation **********
+
 	@Override
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
-		addAttributeMessages(messages);
-		addInvalidMappingMessage(messages);
+		this.checkAttribute(messages);
+		this.checkModifiers(messages);
+		this.checkMapping(messages);
 	}
 	
-	protected void addAttributeMessages(List<IMessage> messages) {
-		addUnspecifiedAttributeMessage(messages);
-		addUnresolvedAttributeMessage(messages);
-		addModifierMessages(messages);
-	}
-	
-	protected void addUnspecifiedAttributeMessage(List<IMessage> messages) {
-		if (StringTools.stringIsEmpty(getName())) {
+	protected void checkAttribute(List<IMessage> messages) {
+		if (StringTools.stringIsEmpty(this.getName())) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME,
 					this, 
-					getValidationTextRange())
+					this.getValidationTextRange()
+				)
 			);
+			return;
 		}
-	}
-	
-	protected void addUnresolvedAttributeMessage(List<IMessage> messages) {
-		if (! StringTools.stringIsEmpty(getName())
-				&& findJavaPersistentAttribute() == null) {
+
+		if (this.findJavaPersistentAttribute() == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,
-					new String[] {getName(), getPersistentAttribute().getPersistentType().getMapping().getClass_()},
+					new String[] {this.getName(), this.getPersistentAttribute().getPersistentType().getMapping().getClass_()},
 					this, 
-					getNameTextRange())
+					this.getNameTextRange()
+				)
 			);
 		}
 	}
 	
-	protected void addModifierMessages(List<IMessage> messages) {
-		if (getKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
+	protected void checkModifiers(List<IMessage> messages) {
+		if (this.getKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
 			return;
 		}
-		
-		if (getJavaPersistentAttribute() == null) {
+		JavaPersistentAttribute jpa = this.getJavaPersistentAttribute();
+		if (jpa == null) {
 			return;
 		}
-		JavaResourcePersistentAttribute resourcePersistentAttribute = getJavaPersistentAttribute().getResourcePersistentAttribute();
+		JavaResourcePersistentAttribute jrpa = jpa.getResourcePersistentAttribute();
 
-		if (resourcePersistentAttribute.isForField()) {
+		if (jrpa.isForField()) {
 			//TODO validation : need to have a validation message for final methods as well.
 			//From the JPA spec : No methods or persistent instance variables of the entity class may be final.
-			if (resourcePersistentAttribute.isFinal()) {
+			if (jrpa.isFinal()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD,
-						new String[] {getName()},
-						getPersistentAttribute(),
-						getPersistentAttribute().getValidationTextRange())
+						new String[] {this.getName()},
+						this.getPersistentAttribute(),
+						this.getPersistentAttribute().getValidationTextRange()
+					)
 				);
 			}
 			
-			if (resourcePersistentAttribute.isPublic()) {
+			if (jrpa.isPublic()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD,
-						new String[] {getName()},
-						getPersistentAttribute(), 
-						getPersistentAttribute().getValidationTextRange())
+						new String[] {this.getName()},
+						this.getPersistentAttribute(), 
+						this.getPersistentAttribute().getValidationTextRange()
+					)
 				);
 				
 			}
@@ -311,15 +314,16 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 
 	//TODO validation message - i think more info is needed in this message.  include type mapping type?
-	protected void addInvalidMappingMessage(List<IMessage> messages) {
-		if (! getTypeMapping().attributeMappingKeyAllowed(getKey())) {
+	protected void checkMapping(List<IMessage> messages) {
+		if ( ! this.getTypeMapping().attributeMappingKeyAllowed(this.getKey())) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
-					new String[] {getName()},
+					new String[] {this.getName()},
 					this, 
-					getValidationTextRange())
+					this.getValidationTextRange()
+				)
 			);
 		}
 	}

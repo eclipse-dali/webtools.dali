@@ -32,7 +32,12 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorAnnotation
+/**
+ * 
+ */
+public class TableGeneratorImpl
+	extends GeneratorImpl
+	implements TableGeneratorAnnotation
 {
 	private final AnnotationElementAdapter<String> tableAdapter;
 
@@ -78,7 +83,7 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 	
 	private String pkColumnValue;
 	
-	private final List<NestableUniqueConstraint> uniqueConstraints;
+	final List<NestableUniqueConstraint> uniqueConstraints;
 	
 	private final UniqueConstraintsContainerAnnotation uniqueConstraintsContainerAnnotation;
 	
@@ -235,7 +240,7 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 		return uniqueConstraint;
 	}
 	
-	private void addUniqueConstraint(int index, NestableUniqueConstraint uniqueConstraint) {
+	protected void addUniqueConstraint(int index, NestableUniqueConstraint uniqueConstraint) {
 		addItemToList(index, uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 	}
 	
@@ -272,30 +277,57 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 		return UniqueConstraintImpl.createTableGeneratorUniqueConstraint(this, this.getMember(), index);
 	}
 
+
+	// ********** text ranges **********
+
 	public TextRange getTableTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(TABLE_ADAPTER, astRoot);
+	}
+
+	public boolean tableTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(TABLE_ADAPTER, pos, astRoot);
 	}
 	
 	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(CATALOG_ADAPTER, astRoot);
 	}
 	
+	public boolean catalogTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(CATALOG_ADAPTER, pos, astRoot);
+	}
+	
 	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(SCHEMA_ADAPTER, astRoot);
+	}
+	
+	public boolean schemaTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(SCHEMA_ADAPTER, pos, astRoot);
 	}
 	
 	public TextRange getPkColumnNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(PK_COLUMN_NAME_ADAPTER, astRoot);
 	}
 	
+	public boolean pkColumnNameTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(PK_COLUMN_NAME_ADAPTER, pos, astRoot);
+	}
+	
 	public TextRange getPkColumnValueTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(PK_COLUMN_VALUE_ADAPTER, astRoot);
+	}
+	
+	public boolean pkColumnValueTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(PK_COLUMN_VALUE_ADAPTER, pos, astRoot);
 	}
 	
 	public TextRange getValueColumnNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(VALUE_COLUMN_NAME_ADAPTER, astRoot);
 	}
 
+	public boolean valueColumnNameTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(VALUE_COLUMN_NAME_ADAPTER, pos, astRoot);
+	}
+	
 	// ********** java annotations -> persistence model **********
 	@Override
 	public void update(CompilationUnit astRoot) {
@@ -336,7 +368,9 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this.uniqueConstraintsContainerAnnotation);
 	}
 
+
 	// ********** static methods **********
+
 	private static DeclarationAnnotationElementAdapter<String> buildAdapter(String elementName) {
 		return buildAdapter(DECLARATION_ANNOTATION_ADAPTER, elementName);
 	}
@@ -345,8 +379,11 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 		return buildIntegerAdapter(DECLARATION_ANNOTATION_ADAPTER, elementName);
 	}
 
-	
-	private class UniqueConstraintsContainerAnnotation extends AbstractJavaResourceNode 
+
+	// ********** unique constraints container annotation **********
+
+	private class UniqueConstraintsContainerAnnotation
+		extends AbstractJavaResourceNode 
 		implements ContainerAnnotation<NestableUniqueConstraint> 
 	{
 		public UniqueConstraintsContainerAnnotation() {
@@ -443,7 +480,11 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 		}
 	}
 	
-	public static class TableGeneratorAnnotationDefinition implements AnnotationDefinition
+
+	// ********** annotation definition **********
+
+	public static class TableGeneratorAnnotationDefinition
+		implements AnnotationDefinition
 	{
 		// singleton
 		private static final TableGeneratorAnnotationDefinition INSTANCE = new TableGeneratorAnnotationDefinition();

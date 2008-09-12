@@ -90,13 +90,13 @@ final class DTPConnectionProfileWrapper
 		return this.dtpConnectionProfile.getName();
 	}
 
-	public String getAnnotationIdentifier(String javaIdentifier) {
-		// connection profiles should not be in Java annotations
+	public String getIdentifier(String javaIdentifier) {
+		// connection profiles do not have "identifiers"
 		throw new UnsupportedOperationException();
 	}
 
-	public String getAnnotationIdentifier() {
-		// connection profiles should not be in Java annotations
+	public String getIdentifier() {
+		// connection profiles do not have "identifiers"
 		throw new UnsupportedOperationException();
 	}
 
@@ -307,22 +307,22 @@ final class DTPConnectionProfileWrapper
 	}
 
 	/**
-	 * This is called by whenever we need to find a component by name
-	 * (e.g. Table.getColumnNamed(String)). We channel all the calls to here
+	 * This is called whenever we need to find a component by identifier
+	 * (e.g. Table.getColumnForIdentifier(String)). We channel all the calls to here
 	 * and then we delegate to the JPA platform-supplied "database finder".
 	 */
-	<T extends DatabaseObject> T getDatabaseObjectNamed(T[] databaseObjects, String name) {
-		return this.finder.getDatabaseObjectNamed(databaseObjects, name, this.databaseFinderCallback);
+	<T extends DatabaseObject> T selectDatabaseObjectForIdentifier(T[] databaseObjects, String identifier) {
+		return this.finder.selectDatabaseObjectForIdentifier(databaseObjects, identifier, this.databaseFinderCallback);
 	}
 
 	/**
 	 * The default "database finder" calls back to here so we can delegate to
-	 * the database, which contains all the state necessary to properly match
-	 * identifiers.
+	 * the database, which contains all the information necessary to properly
+	 * match identifiers.
 	 */
-	<T extends DatabaseObject> T getDatabaseObjectNamed_(T[] databaseObjects, String name) {
+	<T extends DatabaseObject> T selectDatabaseObjectForIdentifier_(T[] databaseObjects, String identifier) {
 		// the database should not be null here - call its internal method
-		return this.database.getDatabaseObjectNamed_(databaseObjects, name);
+		return this.database.selectDatabaseObjectForIdentifier_(databaseObjects, identifier);
 	}
 
 	void databaseChanged(DTPDatabaseWrapper db) {
@@ -540,9 +540,9 @@ final class DTPConnectionProfileWrapper
 	// ********** default DatabaseFinder **********
 
 	class DatabaseFinderCallback implements DatabaseFinder.DefaultCallback {
-		public <T extends DatabaseObject> T getDatabaseObjectNamed(T[] databaseObjects, String name) {
+		public <T extends DatabaseObject> T selectDatabaseObjectForIdentifier(T[] databaseObjects, String identifier) {
 			// call back to the internal method
-			return DTPConnectionProfileWrapper.this.getDatabaseObjectNamed_(databaseObjects, name);
+			return DTPConnectionProfileWrapper.this.selectDatabaseObjectForIdentifier_(databaseObjects, identifier);
 		}
 	}
 

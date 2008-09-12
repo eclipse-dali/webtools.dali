@@ -45,16 +45,24 @@ public interface Table
 	int columnsSize();
 
 	/**
-	 * Return the names of the table's columns.
-	 */
-	Iterator<String> columnNames();
-
-	/**
-	 * Return the column with specified name. The name should be an SQL
-	 * identifier (i.e. quoted when case-sensitive, unquoted when
-	 * case-insensitive).
+	 * Return the column with specified name. The name must be an exact match
+	 * of the column's name.
+	 * @see #getColumnForIdentifier(String)
 	 */
 	Column getColumnNamed(String name);
+
+	/**
+	 * Return the table's column identifers, sorted by name.
+	 */
+	Iterator<String> sortedColumnIdentifiers();
+
+	/**
+	 * Return the column for the specified identifier. The identifier should
+	 * be an SQL identifier (i.e. quoted when case-sensitive or containing
+	 * special characters, unquoted otherwise).
+	 * @see #getColumnNamed(String)
+	 */
+	Column getColumnForIdentifier(String identifier);
 
 
 	// ********** primary key columns **********

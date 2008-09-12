@@ -45,7 +45,7 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 			return getJoinColumn().getDefaultTable();
 		}
 
-		return getTypeMapping().getTableName();
+		return getTypeMapping().getPrimaryTableName();
 	}
 
 	/*

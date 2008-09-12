@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.MultiRelationshipMapping;
@@ -244,7 +245,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 //	}
 
 	@Override
-	protected String defaultTargetEntity(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+	protected String buildDefaultTargetEntity(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		if (!resourcePersistentAttribute.typeIsContainer()) {
 			return null;
 		}
@@ -272,8 +273,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		return new FilteringIterator<String, String>(this.candidateMapKeyNames(), filter);
 	}
 
-	protected Iterator<String> quotedCandidateMapKeyNames(Filter<String> filter) {
-		return StringTools.quote(this.candidateMapKeyNames(filter));
+	protected Iterator<String> javaCandidateMapKeyNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.candidateMapKeyNames(filter));
 	}
 
 	@Override
@@ -287,10 +288,10 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 			return result;
 		}
 		if (this.mappedByTouches(pos, astRoot)) {
-			return this.quotedCandidateMappedByAttributeNames(filter);
+			return this.javaCandidateMappedByAttributeNames(filter);
 		}
 		if (this.mapKeyNameTouches(pos, astRoot)) {
-			return this.quotedCandidateMapKeyNames(filter);
+			return this.javaCandidateMapKeyNames(filter);
 		}
 		return null;
 	}
@@ -391,8 +392,6 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 	
 	protected void addMappedByMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		String mappedBy = this.getMappedBy();
-		
 		if (this.isJoinTableSpecified()) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -411,14 +410,14 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 			return;
 		}
 		
-		PersistentAttribute attribute = targetEntity.getPersistentType().resolveAttribute(mappedBy);
+		PersistentAttribute attribute = targetEntity.getPersistentType().resolveAttribute(this.mappedBy);
 		
 		if (attribute == null) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
-						new String[] {mappedBy}, 
+						new String[] {this.mappedBy}, 
 						this, 
 						this.getMappedByTextRange(astRoot))
 				);
@@ -430,22 +429,16 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
-						new String[] {mappedBy}, 
+						new String[] {this.mappedBy}, 
 						this, 
 						this.getMappedByTextRange(astRoot))
 				);
 			return;
 		}
 		
-		NonOwningMapping mappedByMapping;
-		try {
-			mappedByMapping = (NonOwningMapping) attribute.getMapping();
-		} catch (ClassCastException cce) {
-			// there is no error then
-			return;
-		}
-		
-		if (mappedByMapping.getMappedBy() != null) {
+		AttributeMapping mappedByMapping = attribute.getMapping();
+		if ((mappedByMapping instanceof NonOwningMapping)
+				&& ((NonOwningMapping) mappedByMapping).getMappedBy() != null) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,

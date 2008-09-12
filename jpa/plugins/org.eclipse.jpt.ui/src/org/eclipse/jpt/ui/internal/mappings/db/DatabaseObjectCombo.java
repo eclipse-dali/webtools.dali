@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.mappings.db;
 
 import java.util.Iterator;
+
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.db.Catalog;
@@ -23,324 +24,140 @@ import org.eclipse.jpt.db.Sequence;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.Tracing;
+import org.eclipse.jpt.ui.internal.listeners.SWTConnectionListenerWrapper;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.ClassTools;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * This abstract implementation keeps a combo in sync with the database objects
+ * This abstract pane keeps a combo in sync with the database objects
  * when a connection is active.
  *
  * @see CatalogCombo
  * @see ColumnCombo
  * @see SchemaCombo
+ * @see SequenceCombo
  * @see TableCombo
- *
- * @version 2.0
- * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class DatabaseObjectCombo<T extends JpaNode> extends Pane<T>
+public abstract class DatabaseObjectCombo<T extends JpaNode>
+	extends Pane<T>
 {
-	/**
-	 * The main widget of this pane.
-	 */
-	private CCombo combo;
 
 	/**
-	 * The listener added to the <code>ConnectionProfile</code> responsible to
-	 * keep the combo in sync with the database metadata.
+	 * The main (only) widget of this pane.
+	 */
+	private CCombo comboBox;
+
+	/**
+	 * The listener added to the <code>ConnectionProfile</code>.
+	 * It keeps the combo in sync with the database metadata.
 	 */
 	private ConnectionListener connectionListener;
 
-	/**
-	 * Creates a new <code>AbstractDatabaseObjectCombo</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 */
-	protected DatabaseObjectCombo(Pane<? extends T> parentPane,
-	                                      Composite parent) {
 
+	// ********** constructors **********
+
+	protected DatabaseObjectCombo(
+						Pane<? extends T> parentPane,
+						Composite parent
+	) {
 		super(parentPane, parent);
 	}
 
-	/**
-	 * Creates a new <code>AbstractDatabaseObjectCombo</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 */
-	protected DatabaseObjectCombo(Pane<?> parentPane,
-	                                      PropertyValueModel<? extends T> subjectHolder,
-	                                      Composite parent) {
-
+	protected DatabaseObjectCombo(
+						Pane<?> parentPane,
+						PropertyValueModel<? extends T> subjectHolder,
+						Composite parent
+	) {
 		super(parentPane, subjectHolder, parent);
 	}
 
-	/**
-	 * Creates a new <code>AbstractDatabaseObjectCombo</code>.
-	 *
-	 * @param subjectHolder The holder of the subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	protected DatabaseObjectCombo(PropertyValueModel<? extends T> subjectHolder,
-	                                      Composite parent,
-	                                      WidgetFactory widgetFactory)
-	{
+	protected DatabaseObjectCombo(
+						PropertyValueModel<? extends T> subjectHolder,
+						Composite parent,
+						WidgetFactory widgetFactory
+	) {
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private ConnectionListener buildConnectionListener() {
 
-		return new ConnectionListener() {
+	// ********** initialization **********
 
-			public void aboutToClose(ConnectionProfile profile) {
-				log(Tracing.UI_DB, "aboutToClose");
-			}
-
-			public void catalogChanged(ConnectionProfile profile,
-			                          final Catalog catalog) {
-
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						log(Tracing.UI_DB, "catalogChanged: " + catalog.getName());
-
-						if (!getCombo().isDisposed()) {
-							DatabaseObjectCombo.this.catalogChanged(catalog);
-						}
-					}
-				});
-			}
-
-			public void closed(ConnectionProfile profile) {
-
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						log(Tracing.UI_DB, "closed");
-
-						if (!getCombo().isDisposed()) {
-							DatabaseObjectCombo.this.repopulate();
-						}
-					}
-				});
-			}
-
-			public void columnChanged(ConnectionProfile profile,
-			                         final Column column) {
-
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						log(Tracing.UI_DB, "columnChanged: " + column.getName());
-
-						if (!getCombo().isDisposed()) {
-							DatabaseObjectCombo.this.columnChanged(column);
-						}
-					}
-				});
-			}
-
-			public void databaseChanged(ConnectionProfile profile,
-			                            Database database) {
-
-				log(Tracing.UI_DB, "databaseChanged");
-			}
-
-			public void foreignKeyChanged(ConnectionProfile profile,
-			                         final ForeignKey foreignKey) {
-
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						log(Tracing.UI_DB, "foreignKeyChanged: " + foreignKey.getName());
-
-						if (!getCombo().isDisposed()) {
-							DatabaseObjectCombo.this.foreignKeyChanged(foreignKey);
-						}
-					}
-				});
-			}
-
-			public void modified(ConnectionProfile profile) {
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						log(Tracing.UI_DB, "modified");
-
-						if (!getCombo().isDisposed()) {
-							DatabaseObjectCombo.this.repopulate();
-						}
-					}
-				});
-			}
-
-			public boolean okToClose(ConnectionProfile profile) {
-				log(Tracing.UI_DB, "okToClose");
-				return true;
-			}
-
-			public void opened(ConnectionProfile profile) {
-
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						log(Tracing.UI_DB, "opened");
-
-						if (!getCombo().isDisposed()) {
-							DatabaseObjectCombo.this.repopulate();
-						}
-					}
-				});
-			}
-
-			public void schemaChanged(ConnectionProfile profile,
-			                          final Schema schema) {
-
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						log(Tracing.UI_DB, "schemaChanged: " + schema.getName());
-
-						if (!getCombo().isDisposed()) {
-							DatabaseObjectCombo.this.schemaChanged(schema);
-						}
-					}
-				});
-			}
-
-			public void sequenceChanged(ConnectionProfile profile,
-			                          final Sequence sequence) {
-
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						log(Tracing.UI_DB, "sequenceChanged: " + sequence.getName());
-
-						if (!getCombo().isDisposed()) {
-							DatabaseObjectCombo.this.sequenceChanged(sequence);
-						}
-					}
-				});
-			}
-
-			public void tableChanged(ConnectionProfile profile,
-			                         final Table table) {
-
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						log(Tracing.UI_DB, "tableChanged: " + table.getName());
-
-						if (!getCombo().isDisposed()) {
-							DatabaseObjectCombo.this.tableChanged(table);
-						}
-					}
-				});
-			}
-		};
+	@Override
+	protected void initialize() {
+		super.initialize();
+		this.connectionListener = this.buildConnectionListener();
 	}
 
-	private ModifyListener buildModifyListener() {
+	protected ConnectionListener buildConnectionListener() {
+		return new SWTConnectionListenerWrapper(this.buildConnectionListener_());
+	}
+
+	protected ConnectionListener buildConnectionListener_() {
+		return new LocalConnectionListener();
+	}
+
+	@Override
+	protected void initializeLayout(Composite container) {
+		this.comboBox = this.addEditableCCombo(container);
+		this.comboBox.addModifyListener(this.buildModifyListener());
+		SWTUtil.attachDefaultValueHandler(this.comboBox);
+	}
+
+	protected ModifyListener buildModifyListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (!isPopulating()) {
-					CCombo combo = (CCombo) e.widget;
-					if (combo.getData("populating") != Boolean.TRUE) {//check !TRUE because null is a possibility as well
-						valueChanged(combo.getText());
-					}
-				}
+				DatabaseObjectCombo.this.comboBoxModified();
 			}
 		};
 	}
 
+
+	// ********** abstract methods **********
+
 	/**
-	 * If the value changes but the subject is null, then is invoked in order to
-	 * create the subject.
+	 * Return the possible values to be added to the combo during
+	 * population.
 	 */
-	protected void buildSubject() {
-	}
+	protected abstract Iterator<String> values();
 
 	/**
-	 * The
-	 *
-	 * @param catalog
-	 */
-	protected void catalogChanged(Catalog catalog) {
-	}
-
-	/**
-	 * Makes sure the combo shows nothing instead of the default value because
-	 * the focus is still on the combo. The user can start typing something and
-	 * we don't want to start the typing after the default value.
-	 */
-	private void clearDefaultValue() {
-
-		if (this.combo.isFocusControl()) {
-
-			setPopulating(true);
-
-			try {
-				combo.setText("");
-			}
-			finally {
-				setPopulating(false);
-			}
-		}
-	}
-
-	/**
-	 * The
-	 *
-	 * @param column
-	 */
-	protected void columnChanged(Column column) {
-	}
-
-	/**
-	 * Returns whether the JPA project's connection profile is active.
-	 *
-	 * @return Whether the JPA project's connection profile is active.
-	 */
-	protected final boolean connectionProfileIsActive() {
-		JpaProject jpaProject = this.getJpaProject();
-		return (jpaProject == null) ? false : jpaProject.getDataSource().connectionProfileIsActive();
-	}
-
-	/**
-	 * Returns the JPA project's connection profile.
-	 *
-	 * @return The connection set in the project's properties or <code>null</code>
-	 * if it could not being retrieved
-	 */
-	protected final ConnectionProfile getConnectionProfile() {
-		JpaProject jpaProject = this.getJpaProject();
-		return (jpaProject == null) ? null : jpaProject.getConnectionProfile();
-	}
-
-	/**
-	 * Returns the database associated with the active connection profile.
-	 *
-	 * @return The online database or a <code>null</code> instance if no
-	 * connection profile was set or the
-	 */
-	protected final Database getDatabase() {
-		ConnectionProfile cp = this.getConnectionProfile();
-		return (cp == null) ? null : cp.getDatabase();
-	}
-
-	/**
-	 * Returns the default value, or <code>null</code> if no default is
-	 * specified.
-	 *
-	 * @return The value that represents the default when no value was specified
+	 * Return the default value, or <code>null</code> if no default is
+	 * specified. This method is only called when the subject is non-null.
 	 */
 	protected abstract String getDefaultValue();
+
+	/**
+	 * Return the current value from the subject.
+	 * This method is only called when the subject is non-null.
+	 */
+	protected abstract String getValue();
+
+	/**
+	 * Set the specified value as the new value on the subject.
+	 */
+	protected abstract void setValue(String value);
+
+
+	// ********** overrides **********
+
+	@Override
+	protected void engageListeners(T subject) {
+		super.engageListeners(subject);
+
+		ConnectionProfile cp = this.getConnectionProfile();
+		if (cp != null) {
+			cp.addConnectionListener(this.connectionListener);
+		}
+	}
 
 	@Override
 	protected void disengageListeners(T subject) {
@@ -353,303 +170,401 @@ public abstract class DatabaseObjectCombo<T extends JpaNode> extends Pane<T>
 	}
 
 	@Override
-	protected void doPopulate() {
-
-		super.doPopulate();
-		populateCombo();
-	}
-
-	@Override
 	public void enableWidgets(boolean enabled) {
-
 		super.enableWidgets(enabled);
 
-		if (!this.combo.isDisposed()) {
-			this.combo.setEnabled(enabled);
-		}
-	}
-
-	@Override
-	protected void engageListeners(T subject) {
-		super.engageListeners(subject);
-
-		ConnectionProfile cp = this.getConnectionProfile();
-		if (cp != null) {
-			cp.addConnectionListener(this.connectionListener);
-		}
-	}
-
-	/**
-	 * The
-	 *
-	 * @param foreignKey
-	 */
-	protected void foreignKeyChanged(ForeignKey foreignKey) {
-	}
-
-	public final CCombo getCombo() {
-		return this.combo;
-	}
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.connectionListener = buildConnectionListener();
-	}
-
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		this.combo = addEditableCCombo(container);
-		this.combo.addModifyListener(buildModifyListener());
-		SWTUtil.attachDefaultValueHandler(this.combo);
-	}
-
-	/**
-	 * Determines if the subject should be created when the value changes.
-	 *
-	 * @return <code>false</code> is the default behavior
-	 */
-	protected boolean isBuildSubjectAllowed() {
-		return false;
-	}
-
-	/**
-	 * Retrives the <code>IJpaProject</code> that is required to register a
-	 * <code>ConnectionListener</code> in order to keep the combo in sync with
-	 * the associated online database.
-	 *
-	 * @return The JPA project
-	 */
-	protected JpaProject getJpaProject() {
-		return getSubject() == null ? null : getSubject().getJpaProject();
-	}
-
-	@Override
-	protected void log(String flag, String message) {
-
-		super.log(flag, message);
-
-		if (Tracing.UI_DB.equals(flag) &&
-		    Tracing.booleanDebugOption(Tracing.UI_DB))
-		{
-			Class<?> thisClass = getClass();
-			String className = ClassTools.shortNameFor(thisClass);
-
-			if (thisClass.isAnonymousClass()) {
-				className = className.substring(0, className.indexOf('$'));
-				className += "->" + ClassTools.shortNameFor(thisClass.getSuperclass());
-			}
-
-			Tracing.log(className + ": " + message);
-		}
-	}
-
-	/**
-	 * Populates the combo's list by adding first the default value is available
-	 * and then the possible choices.
-	 */
-	private void populateCombo() {
-
-		combo.removeAll();
-		populateDefaultValue();
-
-		if (this.connectionProfileIsActive()) {
-			for (Iterator<String> iter = CollectionTools.sort(values()); iter.hasNext(); ) {
-				combo.add(iter.next());
-			}
-		}
-
-		updateSelectedItem();
-	}
-
-	/**
-	 * Adds the default value to the combo if one exists.
-	 */
-	private void populateDefaultValue() {
-
-		String defaultValue = (getSubject() != null) ? getDefaultValue() : null;
-
-		if (defaultValue != null) {
-			combo.add(NLS.bind(
-				JptUiMappingsMessages.ColumnComposite_defaultWithOneParam,
-				defaultValue
-			));
-		}
-		else {
-			combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
+		if ( ! this.comboBox.isDisposed()) {
+			this.comboBox.setEnabled(enabled);
 		}
 	}
 
 	@Override
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
-		updateSelectedItem();
+		this.updateSelectedItem();
+	}
+
+	@Override
+	protected void doPopulate() {
+		super.doPopulate();
+		this.populateComboBox();
+	}
+
+
+	// ********** populating **********
+
+	/**
+	 * Populate the combo-box list by clearing it, then adding first the default
+	 * value, if available, and then the possible choices.
+	 */
+	protected void populateComboBox() {
+		this.comboBox.removeAll();
+
+		this.comboBox.add(this.buildDefaultValueEntry());
+
+		if (this.connectionProfileIsActive()) {
+			for (Iterator<String> stream = this.values(); stream.hasNext(); ) {
+				this.comboBox.add(stream.next());
+			}
+		}
+
+		this.updateSelectedItem_();
+	}
+
+	protected String buildDefaultValueEntry() {
+		String defaultValue = (this.getSubject() == null) ? null : this.getDefaultValue();
+		return (defaultValue == null) ? this.buildNullDefaultValueEntry() : this.buildNonNullDefaultValueEntry(defaultValue);
+	}
+
+	protected String buildNullDefaultValueEntry() {
+		return JptUiMappingsMessages.DatabaseObjectCombo_defaultEmpty;
+	}
+
+	protected String buildNonNullDefaultValueEntry(String defaultValue) {
+		return NLS.bind(
+						JptUiMappingsMessages.DatabaseObjectCombo_defaultWithOneParm,
+						defaultValue
+					);
+	}
+
+	protected void updateSelectedItem() {
+		// make sure the default value is up to date (??? ~bjv)
+		String defaultValueEntry = this.buildDefaultValueEntry();
+		if ( ! this.comboBox.getItem(0).equals(defaultValueEntry)) {
+			this.comboBox.remove(0);
+			this.comboBox.add(defaultValueEntry, 0);
+		}
+
+		this.updateSelectedItem_();
 	}
 
 	/**
-	 * The
-	 *
-	 * @param schema
-	 */
-	protected void schemaChanged(Schema schema) {
-	}
-
-	/**
-	 * The
-	 *
-	 * @param sequence
-	 */
-	protected void sequenceChanged(Sequence sequence) {
-	}
-
-	/**
-	 * Sets the given value as the new value.
-	 *
-	 * @param value The new value to send to the model object
-	 */
-	protected abstract void setValue(String value);
-
-	/**
-	 * The
-	 *
-	 * @param table
-	 */
-	protected void tableChanged(Table table) {
-	}
-
-	/**
-	 * Updates the selected item by selected the current value, if not
+	 * Updates the selected item by selecting the current value, if not
 	 * <code>null</code>, or select the default value if one is available,
 	 * otherwise remove the selection.
-	 * <p>
-	 * <b>Note:</b> It seems the text can be shown as truncated, changing the
-	 * selection to (0, 0) makes the entire text visible.
 	 */
-	private void updateSelectedItem() {
-
-		T subject = getSubject();
-
-		String value         = (subject != null) ? getValue()        : null;
-		String defaultValue  = (subject != null) ? getDefaultValue() : null;
-		String displayString = JptUiMappingsMessages.ColumnComposite_defaultEmpty;
-
-		if (defaultValue != null) {
-			displayString = NLS.bind(
-				JptUiMappingsMessages.ColumnComposite_defaultWithOneParam,
-				defaultValue
-			);
-		}
-
-		// Make sure the default value is up to date
-		if (!combo.getItem(0).equals(displayString)) {
-			combo.remove(0);
-			combo.add(displayString, 0);
-		}
-
-		// Select the new value
-		if (value != null) {
-			if (!value.equals(combo.getText())) {
-				//this prevents the cursor from being set back to the beginning of the line (bug 234418).
-				//The reason we are hitting this updateSelectedItem() code at all
-				//is because the context model is  updating from the resource model
-				//in a way that causes change notifications to be fired (the annotation is added 
-				//to the resource model, change notification occurs on the update thread, 
-				//and then the name is set, these 2 threads can get in the wrong order).
-				//The valueChanged() method sets the populating flag to true, but in this case
-				//it is already set back to false when we receive notification back from the model
-				//because it has moved to the update thread and then jumps back on the UI thread.
-				combo.setText(value);
+	protected void updateSelectedItem_() {
+		String value = (this.getSubject() == null) ? null : this.getValue();
+		if (value == null) {
+			// select the default value
+			this.comboBox.select(0);
+		} else {
+			// select the new value
+			if ( ! value.equals(this.comboBox.getText())) {
+				// This prevents the cursor from being set back to the beginning of the line (bug 234418).
+				// The reason we are hitting this method at all is because the
+				// context model is updating from the resource model in a way
+				// that causes change notifications to be fired (the annotation
+				// is added to the resource model, change notification occurs
+				// on the update thread, and then the name is set, these 2
+				// threads can get in the wrong order).
+				// The #valueChanged() method sets the populating flag to true,
+				// but in this case it is already set back to false when we
+				// receive notification back from the model because it has
+				// moved to the update thread and then jumps back on the UI thread.
+				this.comboBox.setText(value);
 			}
 		}
-		// Select the default value
-		else {
-			combo.select(0);
-			
-			//i think we can remove this, I don't believe the problem explained
-			//in the comments of this method is happening anymore. Not removing it now because we are working on 2.0RC3
-			combo.setSelection(new Point(0, 0));
+	}
+
+
+	// ********** combo-box listener callback **********
+
+	protected void comboBoxModified() {
+		if ( ! this.isPopulating()) {
+			if (this.comboBox.getData("populating") != Boolean.TRUE) {//check !TRUE because null is a possibility as well
+				this.valueChanged(this.comboBox.getText());
+			}
 		}
 	}
 
 	/**
-	 * Requests the current value from the model object.
-	 *
-	 * @return The current value
+	 * The combo-box selection has changed, update the model if necessary.
+	 * If the value has changed and the subject is null, we can build a subject
+	 * before setting the value.
 	 */
-	protected abstract String getValue();
-
-	/**
-	 * The selection has changed, update the model if required.
-	 *
-	 * @param value The new value
-	 */
-	protected void valueChanged(String value) {
-
-		JpaNode subject = getSubject();
-
-		if ((subject == null) && !isBuildSubjectAllowed()) {
-			return;
-		}
-
-		String oldValue = (subject != null) ? getValue() : null;
-
-		// Check for null value
-		if (StringTools.stringIsEmpty(value)) {
-			value = null;
-
-			if (StringTools.stringIsEmpty(oldValue)) {
-				return;
-			}
-		}
-
-		// Convert the default value to null
-		if (value != null &&
-		    getCombo().getItemCount() > 0 &&
-		    value.equals(getCombo().getItem(0)))
-		{
-			value = null;
-		}
-
-		// Nothing to change
-		if ((oldValue == value) && value == null) {
-			clearDefaultValue();
-			return;
-		}
-
-		// Build the subject before setting the value
+	protected void valueChanged(String newValue) {
+		JpaNode subject = this.getSubject();
+		String oldValue;
 		if (subject == null) {
-			buildSubject();
+			if (this.nullSubjectIsNotAllowed()) {
+				return;  // no subject to set the value on
+			}
+			oldValue = null;
+		} else {
+			oldValue = this.getValue();
 		}
 
-		// Set the new value
-		if ((value != null) && (oldValue == null) ||
-		   ((oldValue != null) && !oldValue.equals(value))) {
+		// convert empty string or default to null
+		if (StringTools.stringIsEmpty(newValue) || this.valueIsDefault(newValue)) {
+			newValue = null;
+		}
 
-			setPopulating(true);
-			combo.setData("populating", Boolean.TRUE);
+		// set the new value if it is different from the old value
+		if (this.valuesAreDifferent(oldValue, newValue)) {
+			this.setPopulating(true);
+			this.comboBox.setData("populating", Boolean.TRUE);
 
 			try {
-				setValue(value);
+				this.setValue(newValue);
+			} finally {
+				this.comboBox.setData("populating", Boolean.FALSE);
+				this.setPopulating(false);
 			}
-			finally {
-				setPopulating(false);
-				combo.setData("populating", Boolean.FALSE);
-			}
+		}
 
-			if (value == null) {
-				clearDefaultValue();
-			}
+		if (newValue == null) {
+			this.clearDefaultValue();
 		}
 	}
 
 	/**
-	 * Retrieves the possible values, which will be added to the combo during
-	 * population.
-	 *
-	 * @return A non-<code>null</code> <code>Iterator</code> of the possible
-	 * choices to be added to the combo
+	 * Return whether we can set the value when the subject is null
+	 * (i.e. #setValue(String) will construct the subject if necessary).
 	 */
-	protected abstract Iterator<String> values();
+	protected boolean nullSubjectIsAllowed() {
+		return false;
+	}
 
+	protected final boolean nullSubjectIsNotAllowed() {
+		return ! this.nullSubjectIsAllowed();
+	}
+
+	/**
+	 * pre-condition: value is not null
+	 */
+	protected boolean valueIsDefault(String value) {
+		return (this.comboBox.getItemCount() > 0)
+				&& value.equals(this.comboBox.getItem(0));
+	}
+
+	protected boolean valuesAreEqual(String value1, String value2) {
+		if ((value1 == null) && (value2 == null)) {
+			return true;	// both are null
+		}
+		if ((value1 == null) || (value2 == null)) {
+			return false;	// one is null but the other is not
+		}
+		return value1.equals(value2);
+	}
+
+	protected boolean valuesAreDifferent(String value1, String value2) {
+		return ! this.valuesAreEqual(value1, value2);
+	}
+
+	/**
+	 * Makes sure the combo shows nothing instead of the default value because
+	 * the focus is still on the combo. The user can start typing something and
+	 * we don't want to start the typing after the default value.
+	 */
+	protected void clearDefaultValue() {
+		if (this.comboBox.isFocusControl()) {
+			this.setPopulating(true);
+			try {
+				this.comboBox.setText("");
+			} finally {
+				this.setPopulating(false);
+			}
+		}
+	}
+
+
+	// ********** convenience methods **********
+
+	/**
+	 * Return the subject's JPA project.
+	 * Allow subclasses to override this method, so we can still get the JPA
+	 * project even when the subject is null.
+	 */
+	protected JpaProject getJpaProject() {
+		T subject = this.getSubject();
+		return (subject == null) ? null : subject.getJpaProject();
+	}
+
+	/**
+	 * Return the subject's connection profile.
+	 */
+	protected final ConnectionProfile getConnectionProfile() {
+		JpaProject jpaProject = this.getJpaProject();
+		return (jpaProject == null) ? null : jpaProject.getConnectionProfile();
+	}
+
+	/**
+	 * Return whether the subject's connection profile is active.
+	 */
+	protected final boolean connectionProfileIsActive() {
+		ConnectionProfile cp = this.getConnectionProfile();
+		return (cp == null) ? false : cp.isActive();
+	}
+
+	/**
+	 * Returns the subject's database.
+	 */
+	protected final Database getDatabase() {
+		ConnectionProfile cp = this.getConnectionProfile();
+		return (cp == null) ? null : cp.getDatabase();
+	}
+
+
+	// ********** connection listener callbacks **********
+
+	protected void repopulateComboBox() {
+		if ( ! this.comboBox.isDisposed()) {
+			this.repopulate();
+		}
+	}
+
+	protected final void databaseChanged(Database database) {
+		if ( ! this.comboBox.isDisposed()) {
+			this.databaseChanged_(database);
+		}
+	}
+
+	protected void databaseChanged_(@SuppressWarnings("unused") Database database) {
+		// do nothing by default
+	}
+
+	protected final void catalogChanged(Catalog catalog) {
+		if ( ! this.comboBox.isDisposed()) {
+			this.catalogChanged_(catalog);
+		}
+	}
+
+	protected void catalogChanged_(@SuppressWarnings("unused") Catalog catalog) {
+		// do nothing by default
+	}
+
+	protected final void schemaChanged(Schema schema) {
+		if ( ! this.comboBox.isDisposed()) {
+			this.schemaChanged_(schema);
+		}
+	}
+
+	protected void schemaChanged_(@SuppressWarnings("unused") Schema schema) {
+		// do nothing by default
+	}
+
+	protected final void sequenceChanged(Sequence sequence) {
+		if ( ! this.comboBox.isDisposed()) {
+			this.sequenceChanged_(sequence);
+		}
+	}
+
+	protected void sequenceChanged_(@SuppressWarnings("unused") Sequence sequence) {
+		// do nothing by default
+	}
+
+	protected final void tableChanged(Table table) {
+		if ( ! this.comboBox.isDisposed()) {
+			this.tableChanged_(table);
+		}
+	}
+
+	protected void tableChanged_(@SuppressWarnings("unused") Table table) {
+		// do nothing by default
+	}
+
+	protected final void columnChanged(Column column) {
+		if ( ! this.comboBox.isDisposed()) {
+			this.columnChanged_(column);
+		}
+	}
+
+	protected void columnChanged_(@SuppressWarnings("unused") Column column) {
+		// do nothing by default
+	}
+
+	protected final void foreignKeyChanged(ForeignKey foreignKey) {
+		if ( ! this.comboBox.isDisposed()) {
+			this.foreignKeyChanged_(foreignKey);
+		}
+	}
+
+	protected void foreignKeyChanged_(@SuppressWarnings("unused") ForeignKey foreignKey) {
+		// do nothing by default
+	}
+
+	@Override
+	protected void log(String flag, String message) {
+		if (flag.equals(Tracing.UI_DB) && Tracing.booleanDebugOption(Tracing.UI_DB)) {
+			this.log(message);
+		} else {
+			super.log(flag, message);
+		}
+	}
+
+
+	// ********** connection listener **********
+
+	protected class LocalConnectionListener implements ConnectionListener {
+
+		protected LocalConnectionListener() {
+			super();
+		}
+
+		public void opened(ConnectionProfile profile) {
+			this.log("opened: " + profile.getName());
+			DatabaseObjectCombo.this.repopulateComboBox();
+		}
+
+		public void modified(ConnectionProfile profile) {
+			this.log("modified: " + profile.getName());
+			DatabaseObjectCombo.this.repopulateComboBox();
+		}
+
+		public boolean okToClose(ConnectionProfile profile) {
+			this.log("OK to close: " + profile.getName());
+			return true;
+		}
+
+		public void aboutToClose(ConnectionProfile profile) {
+			this.log("about to close: " + profile.getName());
+		}
+
+		public void closed(ConnectionProfile profile) {
+			this.log("closed: " + profile.getName());
+			DatabaseObjectCombo.this.repopulateComboBox();
+		}
+
+		public void databaseChanged(ConnectionProfile profile, Database database) {
+			this.log("database changed: " + database.getName());
+			DatabaseObjectCombo.this.databaseChanged(database);
+		}
+
+		public void catalogChanged(ConnectionProfile profile, Catalog catalog) {
+			this.log("catalog changed: " + catalog.getName());
+			DatabaseObjectCombo.this.catalogChanged(catalog);
+		}
+
+		public void schemaChanged(ConnectionProfile profile, Schema schema) {
+			this.log("schema changed: " + schema.getName());
+			DatabaseObjectCombo.this.schemaChanged(schema);
+		}
+
+		public void sequenceChanged(ConnectionProfile profile, Sequence sequence) {
+			this.log("sequence changed: " + sequence.getName());
+			DatabaseObjectCombo.this.sequenceChanged(sequence);
+		}
+
+		public void tableChanged(ConnectionProfile profile, Table table) {
+			this.log("table changed: " + table.getName());
+			DatabaseObjectCombo.this.tableChanged(table);
+		}
+
+		public void columnChanged(ConnectionProfile profile, Column column) {
+			this.log("column changed: " + column.getName());
+			DatabaseObjectCombo.this.columnChanged(column);
+		}
+
+		public void foreignKeyChanged(ConnectionProfile profile, ForeignKey foreignKey) {
+			this.log("foreign key changed: " + foreignKey.getName());
+			DatabaseObjectCombo.this.foreignKeyChanged(foreignKey);
+		}
+
+		protected void log(String message) {
+			DatabaseObjectCombo.this.log(Tracing.UI_DB, message);
+		}
+
+	}
+		
 }

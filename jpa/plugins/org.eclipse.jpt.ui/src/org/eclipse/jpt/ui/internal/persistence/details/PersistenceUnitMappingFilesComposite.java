@@ -189,7 +189,7 @@ public class PersistenceUnitMappingFilesComposite extends Pane<PersistenceUnit>
 	}
 
 	private ListValueModel<MappingFileRef> buildListHolder() {
-		return new ListAspectAdapter<PersistenceUnit, MappingFileRef>(getSubjectHolder(), PersistenceUnit.SPECIFIED_MAPPING_FILE_REF_LIST) {
+		return new ListAspectAdapter<PersistenceUnit, MappingFileRef>(getSubjectHolder(), PersistenceUnit.SPECIFIED_MAPPING_FILE_REFS_LIST) {
 			@Override
 			protected ListIterator<MappingFileRef> listIterator_() {
 				return subject.specifiedMappingFileRefs();

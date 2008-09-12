@@ -74,7 +74,7 @@ public class EclipseLinkDDLGenerator
 	private ILaunch launch;
 	
 	private String puName;
-	private JpaProject project;
+	private JpaProject jpaProject;
 	private String projectLocation;
 	private boolean isDebug = false;
 	
@@ -87,10 +87,10 @@ public class EclipseLinkDDLGenerator
 		new EclipseLinkDDLGenerator(puName, project, projectLocation, monitor).generate();
 	}
 
-	private EclipseLinkDDLGenerator(String puName, JpaProject project, String projectLocation, IProgressMonitor monitor) {
+	private EclipseLinkDDLGenerator(String puName, JpaProject jpaProject, String projectLocation, IProgressMonitor monitor) {
 		super();
 		this.puName = puName;
-		this.project = project;
+		this.jpaProject = jpaProject;
 		this.projectLocation = projectLocation;
 		this.initialize();
 	}
@@ -98,7 +98,7 @@ public class EclipseLinkDDLGenerator
 	// ********** Queries **********
 	
 	protected JpaPlatform getPlatform() {
-		return this.project.getJpaPlatform();
+		return this.jpaProject.getJpaPlatform();
 	}
 	
 	protected ILaunch getLaunch() {
@@ -111,7 +111,7 @@ public class EclipseLinkDDLGenerator
 	
 	private IVMInstall getProjectJRE() throws CoreException {
 		
-		return JavaRuntime.getVMInstall(this.project.getJavaProject());
+		return JavaRuntime.getVMInstall(this.jpaProject.getJavaProject());
 	}
 
 	// ********** behavior **********
@@ -150,13 +150,13 @@ public class EclipseLinkDDLGenerator
 
 		this.specifyJRE(this.jre.getName(), this.jre.getVMInstallType().getId());
 		
-		this.specifyProject(this.project.getProject().getName()); 
+		this.specifyProject(this.jpaProject.getProject().getName()); 
 		this.specifyMainType(ECLIPSELINK_DDL_GEN_CLASS);	
 		
 		this.specifyProgramArguments(this.puName, propertiesFile); 
 		this.specifyWorkingDir(projectLocation); 
 
-		this.specifyClasspathProperties(this.project, this.buildJdbcJarPath(), this.buildBootstrapJarPath());
+		this.specifyClasspathProperties(this.jpaProject, this.buildJdbcJarPath(), this.buildBootstrapJarPath());
 	}
 	
 	private void addLaunchListener() {
@@ -165,7 +165,10 @@ public class EclipseLinkDDLGenerator
 	}
 	
 	protected void preGenerate() {
-		this.project.getConnectionProfile().disconnect();
+		ConnectionProfile cp = this.jpaProject.getConnectionProfile();
+		if (cp != null) {
+			cp.disconnect();
+		}
 	}
 	
 	protected void postGenerate() {
@@ -177,14 +180,17 @@ public class EclipseLinkDDLGenerator
 		catch ( CoreException e) {
 			throw new RuntimeException(e);
 		}
-		this.project.getConnectionProfile().connect();
+		ConnectionProfile cp = this.jpaProject.getConnectionProfile();
+		if (cp != null) {
+			cp.connect();
+		}
 		
 		this.validateProject();
 	}
 
 	protected void validateProject() {
 		 JpaValidator validator = new JpaValidator();
-		 IProject project = this.project.getProject();
+		 IProject project = this.jpaProject.getProject();
 		 JpaHelper helper = new JpaHelper();
 		 helper.setProject(project);
 
@@ -195,11 +201,11 @@ public class EclipseLinkDDLGenerator
 	}
 	
 	private IPath buildJdbcJarPath() {
-		return new Path(this.getProjectConnectionDriverJarList());
+		return new Path(this.getJpaProjectConnectionDriverJarList());
 	}
 	
-	private String getProjectConnectionDriverJarList() {
-		ConnectionProfile cp = this.project.getConnectionProfile();
+	private String getJpaProjectConnectionDriverJarList() {
+		ConnectionProfile cp = this.jpaProject.getConnectionProfile();
 		return (cp == null) ? "" : cp.getDriverJarList(); //$NON-NLS-1$
 	}
 	
@@ -368,7 +374,7 @@ public class EclipseLinkDDLGenerator
 	}
 	
 	private void buildConnectionProperties(Properties properties) {
-		ConnectionProfile cp = this.project.getConnectionProfile();
+		ConnectionProfile cp = this.jpaProject.getConnectionProfile();
 
 		this.putProperty(properties,  
 			Connection.ECLIPSELINK_BIND_PARAMETERS,

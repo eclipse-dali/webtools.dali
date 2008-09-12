@@ -68,7 +68,7 @@ public interface NamedColumn
 		TypeMapping getTypeMapping();
 
 		/**
-		 * Return the wrapper for the datasource table for the given table name
+		 * Return the database table for the specified table name
 		 */
 		Table getDbTable(String tableName);
 		

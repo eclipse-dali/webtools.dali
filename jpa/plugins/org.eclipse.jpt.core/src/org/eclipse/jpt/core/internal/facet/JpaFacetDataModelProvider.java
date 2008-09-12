@@ -75,9 +75,10 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 	}
 
 
+
 	@Override
 	public Set<String> getPropertyNames() {
-		Set<String> propertyNames = super.getPropertyNames();
+		@SuppressWarnings("unchecked") Set<String> propertyNames = super.getPropertyNames();
 		propertyNames.add(PLATFORM_ID);
 		propertyNames.add(CONNECTION);
 		propertyNames.add(CONNECTION_ACTIVE);
@@ -393,9 +394,7 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (! StringTools.stringIsEmpty(setValue) && ! connectionNames.contains(setValue)) {
 			return new CompositeIterator<String>(setValue, connectionNames.iterator());
 		}
-		else {
-			return connectionNames.iterator();
-		}
+		return connectionNames.iterator();
 	}
 	
 	private String getDefaultSchemaName() {
@@ -408,7 +407,7 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 			return null;
 		}
 		Schema schema = db.getDefaultSchema();
-		return (schema == null) ? null : schema.getName();
+		return (schema == null) ? null : schema.getIdentifier();
 	}
 
 	private List<String> buildSortedSchemaNames() {
@@ -420,7 +419,8 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (db == null) {
 			return Collections.emptyList();
 		}
-		return CollectionTools.sort(CollectionTools.list(db.schemaNames()));
+		// TODO catalogs...
+		return CollectionTools.list(db.sortedSchemaIdentifiers());  // use identifiers? names seem OK since combo-box is read-only?
 	}
 
 	private Iterator<String> schemaNames() {

@@ -21,19 +21,20 @@ import org.eclipse.jpt.db.Table;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface BaseJoinColumn extends NamedColumn
+public interface BaseJoinColumn
+	extends NamedColumn
 {
 	String getReferencedColumnName();
-	String getDefaultReferencedColumnName();
 	String getSpecifiedReferencedColumnName();
 	void setSpecifiedReferencedColumnName(String value);
-		String SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY = "specifiedReferencedColumnName";
-		String DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY = "defaultReferencedColumnName";
+		String SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY = "specifiedReferencedColumnName"; //$NON-NLS-1$
+	String getDefaultReferencedColumnName();
+		String DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY = "defaultReferencedColumnName"; //$NON-NLS-1$
 	
 	/**
 	 * Return the wrapper for the datasource referenced column
 	 */
-	Column getDbReferencedColumn();
+	Column getReferencedDbColumn();
 
 	/**
 	 * Return whether the reference column is found on the datasource
@@ -47,7 +48,7 @@ public interface BaseJoinColumn extends NamedColumn
 		/**
 		 * Return the wrapper for the datasource table for the referenced column
 		 */
-		Table getDbReferencedColumnTable();
+		Table getReferencedColumnDbTable();
 		
 		boolean isVirtual(BaseJoinColumn joinColumn);
 	}

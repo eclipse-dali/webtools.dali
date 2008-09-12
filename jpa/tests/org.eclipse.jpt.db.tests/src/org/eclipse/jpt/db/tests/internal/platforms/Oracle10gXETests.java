@@ -65,4 +65,9 @@ public class Oracle10gXETests extends DTPPlatformTests {
 		return "Oracle10g XE Release 2 (10.2) JDBC Profile [Test]";
 	}
 
+	@Override
+	protected boolean supportsCatalogs() {
+		return true;
+	}
+
 }

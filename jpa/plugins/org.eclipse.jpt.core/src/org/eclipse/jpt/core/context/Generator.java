@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import org.eclipse.jpt.db.Catalog;
+import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
 
 /**
  * 
@@ -19,50 +22,39 @@ package org.eclipse.jpt.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface Generator extends JpaContextNode
+public interface Generator
+	extends JpaContextNode
 {
-	// **************** name ***************************************************
-	
-	String NAME_PROPERTY = "nameProperty";
-	
+
+	// ********** name **********
+
 	String getName();
-	
 	void setName(String value);
-	
-	
-	// **************** initial value ******************************************
-	
+		String NAME_PROPERTY = "name"; //$NON-NLS-1$
+
+
+	// ********** initial value **********
+
 	Integer getInitialValue();
-	
-	String DEFAULT_INITIAL_VALUE_PROPERTY = "defaultInitialValueProperty";
-	
-	Integer getDefaultInitialValue();
-	
-	String SPECIFIED_INITIAL_VALUE_PROPERTY = "specifiedInitialValueProperty";
-	
 	Integer getSpecifiedInitialValue();
-	
 	void setSpecifiedInitialValue(Integer value);
-	
-	
-	// **************** allocation size ****************************************
+		String SPECIFIED_INITIAL_VALUE_PROPERTY = "specifiedInitialValue"; //$NON-NLS-1$
+	Integer getDefaultInitialValue();
+		String DEFAULT_INITIAL_VALUE_PROPERTY = "defaultInitialValue"; //$NON-NLS-1$
+
+
+	// ********** allocation size **********
 	
 	Integer getAllocationSize();
-	
-	String DEFAULT_ALLOCATION_SIZE_PROPERTY = "defaultAllocationSizeProperty";
-	
-	Integer DEFAULT_ALLOCATION_SIZE = Integer.valueOf(50);
-	
-	Integer getDefaultAllocationSize();
-		
-	String SPECIFIED_ALLOCATION_SIZE_PROPERTY = "specifiedAllocationSizeProperty";
-	
 	Integer getSpecifiedAllocationSize();
-	
 	void setSpecifiedAllocationSize(Integer value);
-	
-	
-	// **************** validation *********************************************
+		String SPECIFIED_ALLOCATION_SIZE_PROPERTY = "specifiedAllocationSize"; //$NON-NLS-1$
+	Integer getDefaultAllocationSize();
+	Integer DEFAULT_ALLOCATION_SIZE = Integer.valueOf(50);
+		String DEFAULT_ALLOCATION_SIZE_PROPERTY = "defaultAllocationSize"; //$NON-NLS-1$
+
+
+	// ********** validation **********
 	
 	/**
 	 * Return true if this generator overrides the definition of the specified
@@ -70,8 +62,27 @@ public interface Generator extends JpaContextNode
 	 * (for example, a generator defined in orm.xml overrides one defined in java)
 	 */
 	boolean overrides(Generator generator);
-	
-	
+
 	boolean isVirtual();
+
+
+	// ********** database stuff **********
+
+	/**
+	 * Return a db Schema object with the specified/default schema name.
+	 * This can return null if no Schema exists on the database with that name.
+	 */
+	Schema getDbSchema();
+
+	/**
+	 * Return a db Catalog object with the specified/default catalog name.
+	 * This can return null if no Catalog exists on the database with that name.
+	 */
+	Catalog getDbCatalog();
+
+	/**
+	 * Return a db container object that hold the relevant schemata.
+	 */
+	SchemaContainer getDbSchemaContainer();
 
 }

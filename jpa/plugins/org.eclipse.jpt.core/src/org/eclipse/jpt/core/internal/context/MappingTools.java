@@ -20,6 +20,8 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.db.Column;
+import org.eclipse.jpt.db.Table;
 
 public class MappingTools
 {
@@ -29,36 +31,46 @@ public class MappingTools
 	 * 	entity tables, separated by a underscore.
 	 * 
 	 * [owning table name]_[target table name]
+	 * 
+	 * NB: The *names* are concatenated, *not* the *identifiers*.
+	 * E.g. the join table for "Foo" and "baR" (where the "delimited" identifier
+	 * is required) is
+	 *     "Foo_baR"
+	 * not
+	 *     "Foo"_"baR"
+	 * As a result, we cannot honestly calculate the default name without a
+	 * database connection.
 	 */
 	public static String buildJoinTableDefaultName(RelationshipMapping relationshipMapping) {
 		if ( ! relationshipMapping.isRelationshipOwner()) {
 			return null;
 		}
-		String owningTableName = relationshipMapping.getTypeMapping().getTableName();
-		if (owningTableName == null) {
+		Table owningTable = relationshipMapping.getTypeMapping().getPrimaryDbTable();
+		if (owningTable == null) {
 			return null;
 		}
 		Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
 		if (targetEntity == null) {
 			return null;
 		}
-		String targetTableName = targetEntity.getTableName();
-		if (targetTableName == null) {
+		Table targetTable = targetEntity.getPrimaryDbTable();
+		if (targetTable == null) {
 			return null;
 		}
-		return owningTableName + '_' + targetTableName;
+		String name = owningTable.getName() + '_' + targetTable.getName();
+		return owningTable.getDatabase().convertNameToIdentifier(name);
 	}
 
 	/**
-	 * return the join column's default name;
-	 * which is typically &lt;attribute name&gt;_&lt;referenced column name&gt;
-	 * but, if we don't have an attribute name (e.g. in a unidirectional
+	 * Return the join column's default name;
+	 * which is typically
+	 *     [attribute name]_[referenced column name]
+	 * But, if we don't have an attribute name (e.g. in a unidirectional
 	 * OneToMany or ManyToMany) is
-	 * &lt;target entity name&gt;_&lt;referenced column name&gt;
+	 *     [target entity name]_[referenced column name]
+	 * 
+	 * See the comments in #buildJoinTableDefaultName(RelationshipMapping)
 	 */
-	// <attribute name>_<referenced column name>
-	//     or
-	// <target entity name>_<referenced column name>
 	public static String buildJoinColumnDefaultName(JoinColumn joinColumn) {
 		if (joinColumn.getOwner().joinColumnsSize() != 1) {
 			return null;
@@ -73,12 +85,13 @@ public class MappingTools
 		// TODO not sure which of these is correct...
 		// (the spec implies that the referenced column is always the
 		// primary key column of the target entity)
-		// String targetColumn = this.targetPrimaryKeyColumnName();
-		String targetColumn = joinColumn.getReferencedColumnName();
+		// Column targetColumn = joinColumn.getTargetPrimaryKeyDbColumn();
+		Column targetColumn = joinColumn.getReferencedDbColumn();
 		if (targetColumn == null) {
 			return null;
 		}
-		return prefix + '_' + targetColumn;
+		String name = prefix + '_' + targetColumn.getName();
+		return targetColumn.getDatabase().convertNameToIdentifier(name);
 	}
 
 	/**

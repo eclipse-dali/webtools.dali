@@ -9,11 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
-import java.util.Iterator;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionAdapter;
 import org.eclipse.jpt.db.ConnectionListener;
 import org.eclipse.jpt.db.ConnectionProfile;
@@ -21,7 +19,6 @@ import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.ConnectionProfileListener;
 import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.DatabaseObject;
-import org.eclipse.jpt.db.Schema;
 
 /**
  * GenericJpaDataSource
@@ -49,6 +46,7 @@ public class GenericJpaDataSource
 	protected final ConnectionListener connectionListener;
 
 	private static final long serialVersionUID = 1L;
+
 
 	// ********** constructor/initialization **********
 
@@ -94,9 +92,11 @@ public class GenericJpaDataSource
 	public void setConnectionProfileName(String connectionProfileName) {
 		String old = this.connectionProfileName;
 		this.connectionProfileName = connectionProfileName;
-		this.firePropertyChanged(CONNECTION_PROFILE_NAME_PROPERTY, old, connectionProfileName);
-		 // synch the connection profile when the name changes
-		this.setConnectionProfile(this.buildConnectionProfile(connectionProfileName));
+		if (this.attributeValueHasChanged(old, connectionProfileName)) {
+			this.firePropertyChanged(CONNECTION_PROFILE_NAME_PROPERTY, old, connectionProfileName);
+			 // synch the connection profile when the name changes
+			this.setConnectionProfile(this.buildConnectionProfile(connectionProfileName));
+		}
 	}
 
 	public ConnectionProfile getConnectionProfile() {
@@ -109,44 +109,15 @@ public class GenericJpaDataSource
 		return (cp != null) && cp.isActive();
 	}
 
+	@Override
 	public Database getDatabase() {
 		ConnectionProfile cp = this.connectionProfile;
 		return (cp == null) ? null : cp.getDatabase();
 	}
 
-	public Iterator<String> catalogNames() {
+	public <T extends DatabaseObject> T selectDatabaseObjectForIdentifier(T[] databaseObjects, String identifier) {
 		Database db = this.getDatabase();
-		return (db == null) ? null : db.catalogNames();
-	}
-
-	public Catalog getCatalogNamed(String name) {
-		Database db = this.getDatabase();
-		return (db == null) ? null : db.getCatalogNamed(name);
-	}
-
-	public Catalog getDefaultCatalog() {
-		Database db = this.getDatabase();
-		return (db == null) ? null : db.getDefaultCatalog();
-	}
-
-	public Iterator<String> schemaNames() {
-		Database db = this.getDatabase();
-		return (db == null) ? null : db.schemaNames();
-	}
-
-	public Schema getSchemaNamed(String name) {
-		Database db = this.getDatabase();
-		return (db == null) ? null : db.getSchemaNamed(name);
-	}
-
-	public Schema getDefaultSchema() {
-		Database db = this.getDatabase();
-		return (db == null) ? null : db.getDefaultSchema();
-	}
-
-	public <T extends DatabaseObject> T getDatabaseObjectNamed(T[] databaseObjects, String name) {
-		Database db = this.getDatabase();
-		return (db == null) ? null : db.getDatabaseObjectNamed(databaseObjects, name);
+		return (db == null) ? null : db.selectDatabaseObjectForIdentifier(databaseObjects, identifier);
 	}
 
 	public void dispose() {

@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -50,13 +51,19 @@ import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.db.Catalog;
+import org.eclipse.jpt.db.Database;
+import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public class GenericEntityMappings extends AbstractOrmJpaContextNode implements EntityMappings
+public class GenericEntityMappings
+	extends AbstractOrmJpaContextNode
+	implements EntityMappings
 {
 	protected XmlEntityMappings xmlEntityMappings;
 	
@@ -66,18 +73,15 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 
 	protected String package_;
 
-	protected String defaultSchema;
-
-	protected String specifiedSchema;
-
+	protected AccessType specifiedAccess;
+	protected AccessType defaultAccess;
+		
+	protected String specifiedCatalog;
 	protected String defaultCatalog;
 
-	protected String specifiedCatalog;
+	protected String specifiedSchema;
+	protected String defaultSchema;
 
-	protected AccessType defaultAccess;
-
-	protected AccessType specifiedAccess;
-		
 	protected final PersistenceUnitMetadata persistenceUnitMetadata;
 
 	protected final List<OrmPersistentType> persistentTypes;
@@ -155,80 +159,118 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		firePropertyChanged(DESCRIPTION_PROPERTY, oldDescription, newDescription);
 	}
 
-	public String getDefaultSchema() {
-		return this.defaultSchema;
-	}
 
-	protected void setDefaultSchema(String newDefaultSchema) {
-		String oldDefaultSchema = this.defaultSchema;
-		this.defaultSchema = newDefaultSchema;
-		firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, oldDefaultSchema, newDefaultSchema);
-	}
+	// ********** access **********
 
-	public String getSpecifiedSchema() {
-		return this.specifiedSchema;
-	}
-
-	public void setSpecifiedSchema(String newSpecifiedSchema) {
-		String oldSpecifiedSchema = this.specifiedSchema;
-		this.specifiedSchema = newSpecifiedSchema;
-		this.xmlEntityMappings.setSchema(newSpecifiedSchema);
-		firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
-	}
-
-	public String getSchema() {
-		return (this.getSpecifiedSchema() == null) ? this.getDefaultSchema() : this.getSpecifiedSchema();
-	}
-
-	public String getDefaultCatalog() {
-		return this.defaultCatalog;
-	}
-
-	protected void setDefaultCatalog(String newDefaultCatalog) {
-		String oldDefaultCatalog = this.defaultCatalog;
-		this.defaultCatalog = newDefaultCatalog;
-		firePropertyChanged(DEFAULT_CATALOG_PROPERTY, oldDefaultCatalog, newDefaultCatalog);
-	}
-
-	public String getSpecifiedCatalog() {
-		return this.specifiedCatalog;
-	}
-
-	public void setSpecifiedCatalog(String newSpecifiedCatalog) {
-		String oldSpecifiedCatalog = this.specifiedCatalog;
-		this.specifiedCatalog = newSpecifiedCatalog;
-		this.xmlEntityMappings.setCatalog(newSpecifiedCatalog);
-		firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
-	}
-
-	public String getCatalog() {
-		return (this.getSpecifiedCatalog() == null) ? this.getDefaultCatalog() : this.getSpecifiedCatalog();
-	}
-	
 	public AccessType getAccess() {
-		return (this.getSpecifiedAccess() == null) ? this.getDefaultAccess() : this.getSpecifiedAccess();
-	}
-
-	public AccessType getDefaultAccess() {
-		return this.defaultAccess;
-	}
-
-	protected void setDefaultAccess(AccessType newDefaultAccess) {
-		AccessType oldDefaultAccess = this.defaultAccess;
-		this.defaultAccess = newDefaultAccess;
-		firePropertyChanged(DEFAULT_ACCESS_PROPERTY, oldDefaultAccess, newDefaultAccess);
+		return (this.specifiedAccess != null) ? this.specifiedAccess : this.defaultAccess;
 	}
 
 	public AccessType getSpecifiedAccess() {
 		return this.specifiedAccess;
 	}
 
-	public void setSpecifiedAccess(AccessType newSpecifiedAccess) {
-		AccessType oldSpecifiedAccess = this.specifiedAccess;
-		this.specifiedAccess = newSpecifiedAccess;
-		this.xmlEntityMappings.setAccess(AccessType.toXmlResourceModel(newSpecifiedAccess));
-		firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, oldSpecifiedAccess, newSpecifiedAccess);
+	public void setSpecifiedAccess(AccessType access) {
+		AccessType old = this.specifiedAccess;
+		this.specifiedAccess = access;
+		this.xmlEntityMappings.setAccess(AccessType.toXmlResourceModel(access));
+		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, access);
 	}
+
+	public AccessType getDefaultAccess() {
+		return this.defaultAccess;
+	}
+
+	protected void setDefaultAccess(AccessType access) {
+		AccessType old = this.defaultAccess;
+		this.defaultAccess = access;
+		this.firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, access);
+	}
+
+
+	// ********** schema **********
+
+	public String getSchema() {
+		return (this.specifiedSchema != null) ? this.specifiedSchema : this.defaultSchema;
+	}
+
+	public String getSpecifiedSchema() {
+		return this.specifiedSchema;
+	}
+
+	public void setSpecifiedSchema(String schema) {
+		String old = this.specifiedSchema;
+		this.specifiedSchema = schema;
+		this.xmlEntityMappings.setSchema(schema);
+		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
+	}
+
+	public String getDefaultSchema() {
+		return this.defaultSchema;
+	}
+
+	protected void setDefaultSchema(String schema) {
+		String old = this.defaultSchema;
+		this.defaultSchema = schema;
+		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, schema);
+	}
+
+	public Schema getDbSchema() {
+		SchemaContainer dbSchemaContainer = this.getDbSchemaContainer();
+		return (dbSchemaContainer == null) ? null : dbSchemaContainer.getSchemaForIdentifier(this.getSchema());
+	}
+
+
+	// ********** catalog **********
+
+	public String getCatalog() {
+		return (this.specifiedCatalog != null) ? this.specifiedCatalog : this.defaultCatalog;
+	}
+	
+	public String getSpecifiedCatalog() {
+		return this.specifiedCatalog;
+	}
+
+	public void setSpecifiedCatalog(String catalog) {
+		String old = this.specifiedCatalog;
+		this.specifiedCatalog = catalog;
+		this.xmlEntityMappings.setCatalog(catalog);
+		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
+	}
+
+	public String getDefaultCatalog() {
+		return this.defaultCatalog;
+	}
+
+	protected void setDefaultCatalog(String catalog) {
+		String old = this.defaultCatalog;
+		this.defaultCatalog = catalog;
+		this.firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, catalog);
+	}
+
+	public Catalog getDbCatalog() {
+		String catalog = this.getCatalog();
+		if (catalog == null) {
+			return null;  // not even a default catalog (i.e. database probably does not support catalogs)
+		}
+		return this.getDbCatalog(catalog);
+	}
+
+
+	// ********** schema container **********
+
+	/**
+	 * If we don't have a catalog (i.e. we don't even have a *default* catalog),
+	 * then the database probably does not support catalogs; and we need to
+	 * get the schema directly from the database.
+	 */
+	public SchemaContainer getDbSchemaContainer() {
+		String catalog = this.getCatalog();
+		return (catalog != null) ? this.getDbCatalog(catalog) : this.getDatabase();
+	}
+
+
+	// ********** persistent types **********
 
 	public ListIterator<OrmPersistentType> ormPersistentTypes() {
 		return new CloneListIterator<OrmPersistentType>(this.persistentTypes);
@@ -242,7 +284,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		OrmPersistentType persistentType = getJpaFactory().buildOrmPersistentType(this, mappingKey);
 		int index = insertionIndex(persistentType);
 		this.persistentTypes.add(index, persistentType);
-		if (className.startsWith(getPackage() + ".")) {
+		if (className.startsWith(getPackage() + '.')) {
 			// adds short name if package name is specified
 			className = className.substring(getPackage().length() + 1);
 		}
@@ -327,6 +369,10 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		addItemToList(index, sequenceGenerator, this.sequenceGenerators, EntityMappings.SEQUENCE_GENERATORS_LIST);
 	}
 
+	protected void addSequenceGenerator(OrmSequenceGenerator sequenceGenerator) {
+		this.addSequenceGenerator(this.sequenceGenerators.size(), sequenceGenerator);
+	}
+
 	public void removeSequenceGenerator(OrmSequenceGenerator sequenceGenerator) {
 		removeSequenceGenerator(this.sequenceGenerators.indexOf(sequenceGenerator));
 	}
@@ -366,6 +412,10 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	
 	protected void addTableGenerator(int index, OrmTableGenerator tableGenerator) {
 		addItemToList(index, tableGenerator, this.tableGenerators, EntityMappings.TABLE_GENERATORS_LIST);
+	}
+
+	protected void addTableGenerator(OrmTableGenerator tableGenerator) {
+		this.addTableGenerator(this.tableGenerators.size(), tableGenerator);
 	}
 
 	public void removeTableGenerator(OrmTableGenerator tableGenerator) {
@@ -409,6 +459,10 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		addItemToList(index, namedQuery, this.namedQueries, QueryHolder.NAMED_QUERIES_LIST);
 	}
 	
+	protected void addNamedQuery(OrmNamedQuery namedQuery) {
+		this.addNamedQuery(this.namedQueries.size(), namedQuery);
+	}
+	
 	public void removeNamedQuery(NamedQuery namedQuery) {
 		this.removeNamedQuery(this.namedQueries.indexOf(namedQuery));
 	}
@@ -447,6 +501,10 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	
 	protected void addNamedNativeQuery(int index, OrmNamedNativeQuery namedNativeQuery) {
 		addItemToList(index, namedNativeQuery, this.namedNativeQueries, QueryHolder.NAMED_NATIVE_QUERIES_LIST);
+	}
+	
+	protected void addNamedNativeQuery(OrmNamedNativeQuery namedNativeQuery) {
+		this.addNamedNativeQuery(this.namedNativeQueries.size(), namedNativeQuery);
 	}
 	
 	public void removeNamedNativeQuery(NamedNativeQuery namedNativeQuery) {
@@ -489,12 +547,16 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		this.version = entityMappings.getVersion();
 		this.description = entityMappings.getDescription();
 		this.package_ = entityMappings.getPackage();
-		this.specifiedSchema = entityMappings.getSchema();
+
+		this.defaultAccess = this.getPersistenceUnit().getDefaultAccess();
+		this.specifiedAccess = this.buildSpecifiedAccess(entityMappings);
+
+		this.defaultCatalog = this.getPersistenceUnit().getDefaultCatalog();
 		this.specifiedCatalog = entityMappings.getCatalog();
-		this.specifiedAccess = this.specifiedAccess(entityMappings);
-		this.defaultAccess = getPersistenceUnit().getDefaultAccess();
-		this.defaultCatalog = getPersistenceUnit().getDefaultCatalog();
-		this.defaultSchema = getPersistenceUnit().getDefaultSchema();
+
+		this.defaultSchema = this.getPersistenceUnit().getDefaultSchema();
+		this.specifiedSchema = entityMappings.getSchema();
+
 		this.initializePersistentTypes(entityMappings);
 		this.initializeTableGenerators(entityMappings);
 		this.initializeSequenceGenerators(entityMappings);
@@ -562,13 +624,17 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		getJpaFile(entityMappings.getResource().getResourceModel()).addRootStructureNode(this.getMappingFileName(), this);
 		this.setDescription(entityMappings.getDescription());
 		this.setPackage(entityMappings.getPackage());
-		this.setSpecifiedSchema(entityMappings.getSchema());
+
+		this.setDefaultAccess(this.getPersistenceUnit().getDefaultAccess());
+		this.setSpecifiedAccess(this.buildSpecifiedAccess(entityMappings));
+
+		this.setDefaultCatalog(this.getPersistenceUnit().getDefaultCatalog());
 		this.setSpecifiedCatalog(entityMappings.getCatalog());
-		this.setSpecifiedAccess(this.specifiedAccess(entityMappings));
+
+		this.setDefaultSchema(this.getPersistenceUnit().getDefaultSchema());
+		this.setSpecifiedSchema(entityMappings.getSchema());
+
 		this.persistenceUnitMetadata.update(entityMappings);
-		this.setDefaultAccess(getPersistenceUnit().getDefaultAccess());
-		this.setDefaultCatalog(getPersistenceUnit().getDefaultCatalog());
-		this.setDefaultSchema(getPersistenceUnit().getDefaultSchema());
 		this.updatePersistentTypes(entityMappings);
 		this.updateTableGenerators(entityMappings);
 		this.updateSequenceGenerators(entityMappings);
@@ -581,7 +647,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		return getParent().getParent().getFileName();
 	}
 	
-	protected AccessType specifiedAccess(XmlEntityMappings entityMappings) {
+	protected AccessType buildSpecifiedAccess(XmlEntityMappings entityMappings) {
 		return AccessType.fromXmlResourceModel(entityMappings.getAccess());
 	}
 	
@@ -652,7 +718,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		}
 		
 		while (resourceTableGenerators.hasNext()) {
-			addTableGenerator(tableGeneratorsSize(), buildTableGenerator(resourceTableGenerators.next()));
+			addTableGenerator(buildTableGenerator(resourceTableGenerators.next()));
 		}
 	}
 
@@ -674,7 +740,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		}
 		
 		while (resourceSequenceGenerators.hasNext()) {
-			addSequenceGenerator(sequenceGeneratorsSize(), buildSequenceGenerator(resourceSequenceGenerators.next()));
+			addSequenceGenerator(buildSequenceGenerator(resourceSequenceGenerators.next()));
 		}
 	}
 
@@ -697,7 +763,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		}
 		
 		while (resourceNamedQueries.hasNext()) {
-			addNamedQuery(namedQueriesSize(), buildNamedQuery(resourceNamedQueries.next()));
+			addNamedQuery(buildNamedQuery(resourceNamedQueries.next()));
 		}
 	}
 
@@ -706,21 +772,21 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 
 	protected void updateNamedNativeQueries(XmlEntityMappings entityMappings) {
-		ListIterator<OrmNamedNativeQuery> namedNativeQueries = namedNativeQueries();
-		ListIterator<XmlNamedNativeQuery> resourceNamedNativeQueries = new CloneListIterator<XmlNamedNativeQuery>(entityMappings.getNamedNativeQueries());//prevent ConcurrentModificiationException
+		ListIterator<OrmNamedNativeQuery> contextQueries = namedNativeQueries();
+		ListIterator<XmlNamedNativeQuery> resourceQueries = new CloneListIterator<XmlNamedNativeQuery>(entityMappings.getNamedNativeQueries());//prevent ConcurrentModificiationException
 		
-		while (namedNativeQueries.hasNext()) {
-			OrmNamedNativeQuery namedQuery = namedNativeQueries.next();
-			if (resourceNamedNativeQueries.hasNext()) {
-				namedQuery.update(resourceNamedNativeQueries.next());
+		while (contextQueries.hasNext()) {
+			OrmNamedNativeQuery namedQuery = contextQueries.next();
+			if (resourceQueries.hasNext()) {
+				namedQuery.update(resourceQueries.next());
 			}
 			else {
 				removeNamedNativeQuery_(namedQuery);
 			}
 		}
 		
-		while (resourceNamedNativeQueries.hasNext()) {
-			addNamedNativeQuery(namedNativeQueriesSize(), buildNamedNativeQuery(resourceNamedNativeQueries.next()));
+		while (resourceQueries.hasNext()) {
+			addNamedNativeQuery(buildNamedNativeQuery(resourceQueries.next()));
 		}
 	}
 

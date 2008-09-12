@@ -58,7 +58,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 		firePropertyChanged(SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
 	}
 	
-	public void setSpecifiedReferencedColumnName_(String newSpecifiedReferencedColumnName) {
+	protected void setSpecifiedReferencedColumnName_(String newSpecifiedReferencedColumnName) {
 		String oldSpecifiedReferencedColumnName = this.specifiedReferencedColumnName;
 		this.specifiedReferencedColumnName = newSpecifiedReferencedColumnName;
 		firePropertyChanged(SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
@@ -83,17 +83,17 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 		return (OrmJoinColumn.Owner) this.owner;
 	}
 
-	public Table dbReferencedColumnTable() {
-		return getOwner().getDbReferencedColumnTable();
+	protected Table getReferencedColumnDbTable() {
+		return getOwner().getReferencedColumnDbTable();
 	}
 
-	public Column getDbReferencedColumn() {
-		Table table = dbReferencedColumnTable();
-		return (table == null) ? null : table.getColumnNamed(getReferencedColumnName());
+	public Column getReferencedDbColumn() {
+		Table table = getReferencedColumnDbTable();
+		return (table == null) ? null : table.getColumnForIdentifier(getReferencedColumnName());
 	}
 
 	public boolean isReferencedColumnResolved() {
-		return getDbReferencedColumn() != null;
+		return getReferencedDbColumn() != null;
 	}
 
 	public TextRange getReferencedColumnNameTextRange() {
@@ -126,27 +126,27 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 	
 	
 	@Override
-	protected void initialize(XmlJoinColumn resourceJoinColumn) {
-		this.resourceJoinColumn = resourceJoinColumn;
-		super.initialize(resourceJoinColumn);
-		this.specifiedReferencedColumnName = specifiedReferencedColumnName(resourceJoinColumn);
+	protected void initialize(XmlJoinColumn xjc) {
+		this.resourceJoinColumn = xjc;
+		super.initialize(xjc);
+		this.specifiedReferencedColumnName = specifiedReferencedColumnName(xjc);
 		this.defaultReferencedColumnName = defaultReferencedColumnName();
 	}
 	
 	@Override
-	public void update(XmlJoinColumn resourceJoinColumn) {
-		this.resourceJoinColumn = resourceJoinColumn;
-		super.update(resourceJoinColumn);
-		this.setSpecifiedReferencedColumnName_(specifiedReferencedColumnName(resourceJoinColumn));
+	public void update(XmlJoinColumn xjc) {
+		this.resourceJoinColumn = xjc;
+		super.update(xjc);
+		this.setSpecifiedReferencedColumnName_(specifiedReferencedColumnName(xjc));
 		this.setDefaultReferencedColumnName(defaultReferencedColumnName());
 	}
 
-	protected String specifiedReferencedColumnName(XmlJoinColumn resourceJoinColumn) {
-		return resourceJoinColumn == null ? null : resourceJoinColumn.getReferencedColumnName();
+	protected String specifiedReferencedColumnName(XmlJoinColumn xjc) {
+		return xjc == null ? null : xjc.getReferencedColumnName();
 	}
 
 	@Override
-	protected String defaultName() {
+	protected String buildDefaultName() {
 		RelationshipMapping relationshipMapping = getOwner().getRelationshipMapping();
 		if (relationshipMapping == null) {
 			return null;
@@ -182,58 +182,30 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 	
 	
 	//******************* validation ***********************
-	
-	/** used internally as a mechanism to short circuit continued message adding */
-	private boolean doContinue;
-	
+
 	@Override
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
-		this.doContinue = this.connectionProfileIsActive();
 	
-		OrmRelationshipMapping mapping = (OrmRelationshipMapping) getOwner().getRelationshipMapping();
-		//TODO why is this commented out?  i copied it like this from the maintenance stream
-//		if (doContinue && typeMapping.tableNameIsInvalid(table)) {
-//			if (mapping.isVirtual()) {
-//				messages.add(
-//					JpaValidationMessages.buildMessage(
-//						IMessage.HIGH_SEVERITY,
-//						IJpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_TABLE,
-//						new String[] {mapping.getPersistentAttribute().getName(), table, column.getName()},
-//						column, column.getTableTextRange())
-//				);
-//			}
-//			else {
-//				messages.add(
-//					JpaValidationMessages.buildMessage(
-//						IMessage.HIGH_SEVERITY,
-//						IJpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
-//						new String[] {table, column.getName()}, 
-//						column, column.getTableTextRange())
-//				);
-//			}
-//			doContinue = false;
-//		}
-//		
-		if (this.doContinue && ! isResolved()) {
+		if ( ! this.isResolved()) {
+			OrmRelationshipMapping mapping = (OrmRelationshipMapping) this.getOwner().getRelationshipMapping();
 			if (mapping.getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
-						new String[] {mapping.getName(), getName()}, 
-						this, 
-						getNameTextRange())
+						new String[] {mapping.getName(), this.getName()}, 
+						this,
+						this.getNameTextRange())
 				);
-			}
-			else {
+			} else {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-						new String[] {getName()}, 
-						this, 
-						getNameTextRange())
+						new String[] {this.getName()}, 
+						this,
+						this.getNameTextRange())
 				);
 			}
 		}

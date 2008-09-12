@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
@@ -34,8 +35,11 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-
-public class GenericOrmSecondaryTable extends AbstractOrmTable
+/**
+ * 
+ */
+public class GenericOrmSecondaryTable
+	extends AbstractOrmTable
 	implements OrmSecondaryTable
 {
 	protected XmlSecondaryTable secondaryTable;
@@ -137,6 +141,10 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 		addItemToList(index, primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, SecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
+	protected void addSpecifiedPrimaryKeyJoinColumn(OrmPrimaryKeyJoinColumn primaryKeyJoinColumn) {
+		this.addSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumns.size(), primaryKeyJoinColumn);
+	}
+	
 	public void removeSpecifiedPrimaryKeyJoinColumn(PrimaryKeyJoinColumn pkJoinColumn) {
 		this.removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumns.indexOf(pkJoinColumn));
 	}
@@ -173,9 +181,15 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 	}
 	
 	@Override
-	protected void addResourceTable() {
+	protected XmlSecondaryTable getResourceTable() {
+		return this.secondaryTable;
+	}
+
+	@Override
+	protected XmlSecondaryTable addResourceTable() {
 		//secondaryTables are part of a collection, the secondary-table element will be removed/added
 		//when the XmlSecondaryTable is removed/added to the XmlEntity collection
+		throw new IllegalStateException("resource table is missing"); //$NON-NLS-1$
 	}
 	
 	@Override
@@ -184,20 +198,15 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 		//when the XmlSecondaryTable is removed/added to the XmlEntity collection
 	}
 
-	@Override
-	protected XmlSecondaryTable getResourceTable() {
-		return this.secondaryTable;
-	}
-
-	protected void initialize(XmlSecondaryTable secondaryTable) {
-		this.secondaryTable = secondaryTable;
-		super.initialize(secondaryTable);
-		this.initializeSpecifiedPrimaryKeyJoinColumns(secondaryTable);
+	protected void initialize(XmlSecondaryTable xst) {
+		this.secondaryTable = xst;
+		super.initialize(xst);
+		this.initializeSpecifiedPrimaryKeyJoinColumns(xst);
 		this.initializeDefaultPrimaryKeyJoinColumn();
 	}
 	
-	protected void initializeSpecifiedPrimaryKeyJoinColumns(XmlSecondaryTable secondaryTable) {
-		for (XmlPrimaryKeyJoinColumn resourcePkJoinColumn : secondaryTable.getPrimaryKeyJoinColumns()) {
+	protected void initializeSpecifiedPrimaryKeyJoinColumns(XmlSecondaryTable xst) {
+		for (XmlPrimaryKeyJoinColumn resourcePkJoinColumn : xst.getPrimaryKeyJoinColumns()) {
 			this.specifiedPrimaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn(resourcePkJoinColumn));
 		}
 	}
@@ -213,29 +222,29 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 		this.defaultPrimaryKeyJoinColumn = buildPrimaryKeyJoinColumn(null);
 	}	
 
-	public void update(XmlSecondaryTable secondaryTable) {
-		this.secondaryTable = secondaryTable;
-		super.update(secondaryTable);
-		this.updateSpecifiedPrimaryKeyJoinColumns(secondaryTable);
+	public void update(XmlSecondaryTable xst) {
+		this.secondaryTable = xst;
+		super.update(xst);
+		this.updateSpecifiedPrimaryKeyJoinColumns(xst);
 		this.updateDefaultPrimaryKeyJoinColumn();
 	}
 		
-	protected void updateSpecifiedPrimaryKeyJoinColumns(XmlSecondaryTable secondaryTable) {
-		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = specifiedPrimaryKeyJoinColumns();
-		ListIterator<XmlPrimaryKeyJoinColumn> resourcePrimaryKeyJoinColumns = new CloneListIterator<XmlPrimaryKeyJoinColumn>(secondaryTable.getPrimaryKeyJoinColumns());//prevent ConcurrentModificiationException
+	protected void updateSpecifiedPrimaryKeyJoinColumns(XmlSecondaryTable xst) {
+		ListIterator<OrmPrimaryKeyJoinColumn> contextPKJoinColumns = specifiedPrimaryKeyJoinColumns();
+		ListIterator<XmlPrimaryKeyJoinColumn> resourcePKJoinColumns = new CloneListIterator<XmlPrimaryKeyJoinColumn>(xst.getPrimaryKeyJoinColumns());//prevent ConcurrentModificiationException
 		
-		while (primaryKeyJoinColumns.hasNext()) {
-			OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = primaryKeyJoinColumns.next();
-			if (resourcePrimaryKeyJoinColumns.hasNext()) {
-				primaryKeyJoinColumn.update(resourcePrimaryKeyJoinColumns.next());
+		while (contextPKJoinColumns.hasNext()) {
+			OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = contextPKJoinColumns.next();
+			if (resourcePKJoinColumns.hasNext()) {
+				primaryKeyJoinColumn.update(resourcePKJoinColumns.next());
 			}
 			else {
 				removeSpecifiedPrimaryKeyJoinColumn_(primaryKeyJoinColumn);
 			}
 		}
 		
-		while (resourcePrimaryKeyJoinColumns.hasNext()) {
-			addSpecifiedPrimaryKeyJoinColumn(specifiedPrimaryKeyJoinColumnsSize(), buildPrimaryKeyJoinColumn(resourcePrimaryKeyJoinColumns.next()));
+		while (resourcePKJoinColumns.hasNext()) {
+			addSpecifiedPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn(resourcePKJoinColumns.next()));
 		}
 	}
 	
@@ -256,58 +265,70 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 		return getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner(), resourcePkJoinColumn);
 	}
 
+	/**
+	 * a secondary table doesn't have a default name
+	 */
 	@Override
-	//no default name for secondaryTables
-	protected String defaultName() {
+	protected String buildDefaultName() {
 		return null;
 	}
 
 	@Override
-	protected String defaultCatalog() {
-		return getEntityMappings().getCatalog();
+	protected String buildDefaultSchema() {
+		return this.getContextDefaultSchema();
+	}
+	
+	@Override
+	protected String buildDefaultCatalog() {
+		return this.getContextDefaultCatalog();
 	}
 
 	@Override
-	protected String defaultSchema() {
-		return getEntityMappings().getSchema();
-	}
-	
-	
-	@Override
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
-		addTableMessages(messages);
-		
-		for (OrmPrimaryKeyJoinColumn pkJoinColumn : CollectionTools.iterable(this.primaryKeyJoinColumns())) {
-			pkJoinColumn.addToMessages(messages);
+		if (this.connectionProfileIsActive()) {
+			this.checkDatabase(messages);
+		}
+		for (Iterator<OrmPrimaryKeyJoinColumn> stream = this.primaryKeyJoinColumns(); stream.hasNext(); ) {
+			stream.next().addToMessages(messages);
 		}
 	}
-	
-	protected void addTableMessages(List<IMessage> messages) {
-		boolean doContinue = connectionProfileIsActive();
-		String schema = getSchema();
+
+	protected void checkDatabase(List<IMessage> messages) {
+		if ( ! this.hasResolvedCatalog()) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_CATALOG,
+						new String[] {this.getCatalog(), this.getName()}, 
+						this,
+						this.getCatalogTextRange())
+				);
+			return;
+		}
 		
-		if (doContinue && ! hasResolvedSchema()) {
+		if ( ! this.hasResolvedSchema()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_SCHEMA,
-						new String[] {schema, getName()}, 
+						new String[] {this.getSchema(), this.getName()}, 
 						this,
-						getSchemaTextRange())
+						this.getSchemaTextRange())
 				);
-			doContinue = false;
+			return;
 		}
 		
-		if (doContinue && ! isResolved()) {
+		if ( ! this.isResolved()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_NAME,
-						new String[] {getName()}, 
+						new String[] {this.getName()}, 
 						this, 
-						getNameTextRange())
+						this.getNameTextRange())
 				);
+			return;
 		}
 	}
 	
@@ -322,7 +343,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 			return GenericOrmSecondaryTable.this.getDbTable();
 		}
 
-		public Table getDbReferencedColumnTable() {
+		public Table getReferencedColumnDbTable() {
 			return getTypeMapping().getPrimaryDbTable();
 		}
 

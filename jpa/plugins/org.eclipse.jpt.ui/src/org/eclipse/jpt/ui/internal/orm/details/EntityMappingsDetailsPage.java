@@ -10,9 +10,11 @@
 package org.eclipse.jpt.ui.internal.orm.details;
 
 import java.util.Collection;
+
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.AbstractJpaDetailsPage;
@@ -191,6 +193,12 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 			protected String getValue() {
 				return getSubject().getSpecifiedSchema();
 			}
+
+			@Override
+			protected SchemaContainer getDbSchemaContainer_() {
+				return this.getSubject().getDbSchemaContainer();
+			}
+
 		};
 	}
 

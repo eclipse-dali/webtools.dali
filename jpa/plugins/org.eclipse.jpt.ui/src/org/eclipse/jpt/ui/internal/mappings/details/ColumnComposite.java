@@ -18,10 +18,12 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
+import org.eclipse.jpt.ui.internal.mappings.db.DatabaseObjectCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.ui.internal.util.LabeledLabel;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -152,13 +154,10 @@ public class ColumnComposite extends FormPane<Column> {
 
 			@Override
 			protected void propertyChanged(String propertyName) {
-
 				if (propertyName == BaseColumn.DEFAULT_TABLE_PROPERTY ||
 				    propertyName == BaseColumn.SPECIFIED_TABLE_PROPERTY) {
-
-					doPopulate();
-				}
-				else {
+					this.doPopulate();
+				} else {
 					super.propertyChanged(propertyName);
 				}
 			}
@@ -513,9 +512,9 @@ public class ColumnComposite extends FormPane<Column> {
 		};
 	}
 
-	private TableCombo<Column> addTableCombo(Composite container) {
+	private Pane<Column> addTableCombo(Composite container) {
 
-		return new TableCombo<Column>(this, container) {
+		return new DatabaseObjectCombo<Column>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -526,32 +525,22 @@ public class ColumnComposite extends FormPane<Column> {
 
 			@Override
 			protected String getDefaultValue() {
-				return getSubject().getDefaultTable();
-			}
-
-			@Override
-			protected String getSchemaName() {
-				return null;
+				return this.getSubject().getDefaultTable();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				getSubject().setSpecifiedTable(value);
-			}
-
-			@Override
-			protected Table getDbTable() {
-				return getSubject().getDbTable();
+				this.getSubject().setSpecifiedTable(value);
 			}
 
 			@Override
 			protected String getValue() {
-				return getSubject().getSpecifiedTable();
+				return this.getSubject().getSpecifiedTable();
 			}
 
 			@Override
 			protected Iterator<String> values() {
-				return getSubject().getOwner().getTypeMapping().associatedTableNamesIncludingInherited();
+				return this.getSubject().getOwner().getTypeMapping().associatedTableNamesIncludingInherited();
 			}
 		};
 	}

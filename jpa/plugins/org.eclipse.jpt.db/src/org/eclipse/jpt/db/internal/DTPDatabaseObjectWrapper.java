@@ -88,13 +88,25 @@ abstract class DTPDatabaseObjectWrapper
 	}
 
 	/**
-	 * This is called by whenever we need to find a component by name
-	 * (e.g. Table.getColumnNamed(String)). We channel all the calls to the
-	 * connection profile, which then delegates to the JPA platform-
-	 * supplied "database finder".
+	 * This is called by whenever we need to find a component by identifier
+	 * (e.g. Table.getColumnForIdentifier(String)). We channel all the calls to the
+	 * connection profile, which then delegates to the JPA platform-supplied
+	 * "database finder".
 	 */
-	<T extends DatabaseObject> T getDatabaseObjectNamed(T[] databaseObjects, String name) {
-		return this.getConnectionProfile().getDatabaseObjectNamed(databaseObjects, name);
+	<T extends DatabaseObject> T selectDatabaseObjectForIdentifier(T[] databaseObjects, String identifier) {
+		return this.getConnectionProfile().selectDatabaseObjectForIdentifier(databaseObjects, identifier);
+	}
+
+	/**
+	 * Convenience method.
+	 */
+	<T extends DatabaseObject> T selectDatabaseObjectNamed(T[] databaseObjects, String name) {
+		for (T dbObject : databaseObjects) {
+			if (dbObject.getName().equals(name)) {
+				return dbObject;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -117,27 +129,8 @@ abstract class DTPDatabaseObjectWrapper
 	 *     Table(bar) vs. "Foo" => "bar"
 	 *     Table(Bar) vs. "Foo" => "Bar"
 	 */
-	public String getAnnotationIdentifier(String javaIdentifier) {
-		return this.getAnnotationIdentifier(javaIdentifier, this.getName());
-	}
-
-	String getAnnotationIdentifier(String javaIdentifier, String dbIdentifier) {
-		if (this.getDatabase().vendorFoldsToUppercase()) {
-			if (StringTools.stringIsUppercase(dbIdentifier)) {
-				return dbIdentifier.equalsIgnoreCase(javaIdentifier) ? null : dbIdentifier;
-			}
-			return this.getDatabase().delimitIdentifier(dbIdentifier);
-		}
-		if (this.getDatabase().vendorFoldsToLowercase()) {
-			if (StringTools.stringIsLowercase(dbIdentifier)) {
-				return dbIdentifier.equalsIgnoreCase(javaIdentifier) ? null : dbIdentifier;
-			}
-			return this.getDatabase().delimitIdentifier(dbIdentifier);
-		}
-		if (this.getDatabase().vendorDoesNotFold()) {
-			return dbIdentifier.equals(javaIdentifier) ? null : dbIdentifier;
-		}
-		throw new IllegalStateException("unknown vendor folding: " + this.getDatabase().getVendor()); //$NON-NLS-1$
+	public String getIdentifier(String defaultName) {
+		return this.getDatabase().convertNameToIdentifier(this.getName(), defaultName);
 	}
 
 	/**
@@ -146,29 +139,25 @@ abstract class DTPDatabaseObjectWrapper
 	 *     Table(FOO) => "FOO"
 	 *     Table(Foo) => "\"Foo\""
 	 *     Table(foo) => "\"foo\""
+	 *     Table(foo++) => "\"foo++\""
+	 *     Table(f"o) => "\"f\"\"o++\"" (i.e. "f""o")
 	 *     
 	 * PostgreSQL etc.
-	 *     Table(foo) => "foo"
-	 *     Table(Foo) => "\"Foo\""
 	 *     Table(FOO) => "\"FOO\""
+	 *     Table(Foo) => "\"Foo\""
+	 *     Table(foo) => "foo"
+	 *     Table(foo++) => "\"foo++\""
+	 *     Table(f"o) => "\"f\"\"o++\"" (i.e. "f""o")
 	 *     
 	 * SQL Server etc.
+	 *     Table(FOO) => "FOO"
 	 *     Table(Foo) => "Foo"
 	 *     Table(foo) => "foo"
-	 *     Table(FOO) => "FOO"
+	 *     Table(foo++) => "\"foo++\""
+	 *     Table(f"o) => "\"f\"\"o++\"" (i.e. "f""o")
 	 */
-	public String getAnnotationIdentifier() {
-		String name = this.getName();
-		if (this.getDatabase().vendorFoldsToUppercase()) {
-			return StringTools.stringIsUppercase(name) ? name : this.getDatabase().delimitIdentifier(name);
-		}
-		if (this.getDatabase().vendorFoldsToLowercase()) {
-			return StringTools.stringIsLowercase(name) ? name : this.getDatabase().delimitIdentifier(name);
-		}
-		if (this.getDatabase().vendorDoesNotFold()) {
-			return name;
-		}
-		throw new IllegalStateException("unknown vendor folding: " + this.getDatabase().getVendor()); //$NON-NLS-1$
+	public String getIdentifier() {
+		return this.getDatabase().convertNameToIdentifier(this.getName());
 	}
 
 	@Override

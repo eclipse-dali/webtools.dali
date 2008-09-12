@@ -65,4 +65,9 @@ public class Oracle9iTests extends DTPPlatformTests {
 		return "Oracle9i JDBC Profile [Test]";
 	}
 
+	@Override
+	protected boolean supportsCatalogs() {
+		return true;
+	}
+
 }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.TableGenerator;
+
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
@@ -28,7 +28,12 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
-public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGenerator> implements OrmTableGenerator, UniqueConstraint.Owner
+/**
+ * 
+ */
+public class GenericOrmTableGenerator
+	extends AbstractOrmGenerator<XmlTableGenerator>
+	implements OrmTableGenerator, UniqueConstraint.Owner
 {
 	protected String specifiedTable;
 	protected String defaultTable;
@@ -50,200 +55,222 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 
 	protected final List<OrmUniqueConstraint> uniqueConstraints;
 
-	
+
+	// ********** constructor **********
+
 	public GenericOrmTableGenerator(OrmJpaContextNode parent, XmlTableGenerator resourceTableGenerator) {
 		super(parent);
 		this.uniqueConstraints = new ArrayList<OrmUniqueConstraint>();
 		this.initialize(resourceTableGenerator);
 	}
 
+
+	// ********** table **********
+
 	public String getTable() {
-		return (this.getSpecifiedTable() == null) ? getDefaultTable() : this.getSpecifiedTable();
+		return (this.specifiedTable != null) ? this.specifiedTable : this.defaultTable;
 	}
 
 	public String getSpecifiedTable() {
 		return this.specifiedTable;
 	}
 
-	public void setSpecifiedTable(String newSpecifiedTable) {
-		String oldSpecifiedTable = this.specifiedTable;
-		this.specifiedTable = newSpecifiedTable;
-		getResourceGenerator().setTable(newSpecifiedTable);
-		firePropertyChanged(SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
+	public void setSpecifiedTable(String table) {
+		String old = this.specifiedTable;
+		this.specifiedTable = table;
+		this.getResourceGenerator().setTable(table);
+		this.firePropertyChanged(SPECIFIED_TABLE_PROPERTY, old, table);
 	}
 	
-	protected void setSpecifiedTable_(String newSpecifiedTable) {
-		String oldSpecifiedTable = this.specifiedTable;
-		this.specifiedTable = newSpecifiedTable;
-		firePropertyChanged(SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
+	protected void setSpecifiedTable_(String table) {
+		String old = this.specifiedTable;
+		this.specifiedTable = table;
+		this.firePropertyChanged(SPECIFIED_TABLE_PROPERTY, old, table);
 	}
 
 	public String getDefaultTable() {
 		return this.defaultTable;
 	}
 	
-	protected void setDefaultTable(String newDefaultTable) {
-		String oldDefaultTable = this.defaultTable;
-		this.defaultTable = newDefaultTable;
-		firePropertyChanged(DEFAULT_TABLE_PROPERTY, oldDefaultTable, newDefaultTable);
+	protected void setDefaultTable(String table) {
+		String old = this.defaultTable;
+		this.defaultTable = table;
+		this.firePropertyChanged(DEFAULT_TABLE_PROPERTY, old, table);
 	}
 
-	public String getCatalog() {
-		return (this.getSpecifiedCatalog() == null) ? getDefaultCatalog() : this.getSpecifiedCatalog();
-	}
 
-	public String getSpecifiedCatalog() {
-		return this.specifiedCatalog;
-	}
+	// ********** schema **********
 
-	public void setSpecifiedCatalog(String newSpecifiedCatalog) {
-		String oldSpecifiedCatalog = this.specifiedCatalog;
-		this.specifiedCatalog = newSpecifiedCatalog;
-		getResourceGenerator().setCatalog(newSpecifiedCatalog);
-		firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
-	}
-	
-	protected void setSpecifiedCatalog_(String newSpecifiedCatalog) {
-		String oldSpecifiedCatalog = this.specifiedCatalog;
-		this.specifiedCatalog = newSpecifiedCatalog;
-		firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
-	}
-
-	public String getDefaultCatalog() {
-		return this.defaultCatalog;
-	}
-	
-	protected void setDefaultCatalog(String newDefaultCatalog) {
-		String oldDefaultCatalog = this.defaultCatalog;
-		this.defaultCatalog = newDefaultCatalog;
-		firePropertyChanged(TableGenerator.DEFAULT_CATALOG_PROPERTY, oldDefaultCatalog, newDefaultCatalog);
-	}
-
+	@Override
 	public String getSchema() {
-		return (this.getSpecifiedSchema() == null) ? getDefaultSchema() : this.getSpecifiedSchema();
+		return (this.specifiedSchema != null) ? this.specifiedSchema : this.defaultSchema;
 	}
 
 	public String getSpecifiedSchema() {
 		return this.specifiedSchema;
 	}
 
-	public void setSpecifiedSchema(String newSpecifiedSchema) {
-		String oldSpecifiedSchema = this.specifiedSchema;
-		this.specifiedSchema = newSpecifiedSchema;
-		getResourceGenerator().setSchema(newSpecifiedSchema);
-		firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
+	public void setSpecifiedSchema(String schema) {
+		String old = this.specifiedSchema;
+		this.specifiedSchema = schema;
+		this.getResourceGenerator().setSchema(schema);
+		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
 	}
 
-	protected void setSpecifiedSchema_(String newSpecifiedSchema) {
-		String oldSpecifiedSchema = this.specifiedSchema;
-		this.specifiedSchema = newSpecifiedSchema;
-		firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
+	protected void setSpecifiedSchema_(String schema) {
+		String old = this.specifiedSchema;
+		this.specifiedSchema = schema;
+		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
 	}
 
 	public String getDefaultSchema() {
 		return this.defaultSchema;
 	}
 	
-	protected void setDefaultSchema(String newDefaultSchema) {
-		String oldDefaultSchema = this.defaultSchema;
-		this.defaultSchema = newDefaultSchema;
-		firePropertyChanged(TableGenerator.DEFAULT_SCHEMA_PROPERTY, oldDefaultSchema, newDefaultSchema);
+	protected void setDefaultSchema(String schema) {
+		String old = this.defaultSchema;
+		this.defaultSchema = schema;
+		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, schema);
 	}
 
+
+	// ********** catalog **********
+
+	@Override
+	public String getCatalog() {
+		return (this.specifiedCatalog != null) ? this.specifiedCatalog : this.defaultCatalog;
+	}
+
+	public String getSpecifiedCatalog() {
+		return this.specifiedCatalog;
+	}
+
+	public void setSpecifiedCatalog(String catalog) {
+		String old = this.specifiedCatalog;
+		this.specifiedCatalog = catalog;
+		this.getResourceGenerator().setCatalog(catalog);
+		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
+	}
+	
+	protected void setSpecifiedCatalog_(String catalog) {
+		String old = this.specifiedCatalog;
+		this.specifiedCatalog = catalog;
+		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
+	}
+
+	public String getDefaultCatalog() {
+		return this.defaultCatalog;
+	}
+	
+	protected void setDefaultCatalog(String catalog) {
+		String old = this.defaultCatalog;
+		this.defaultCatalog = catalog;
+		firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, catalog);
+	}
+
+
+	// ********** primary key column name **********
+
 	public String getPkColumnName() {
-		return (this.getSpecifiedPkColumnName() == null) ? getDefaultPkColumnName() : this.getSpecifiedPkColumnName();
+		return (this.specifiedPkColumnName != null) ? this.specifiedPkColumnName : this.defaultPkColumnName;
 	}
 
 	public String getSpecifiedPkColumnName() {
 		return this.specifiedPkColumnName;
 	}
 	
-	public void setSpecifiedPkColumnName(String newSpecifiedPkColumnName) {
-		String oldSpecifiedPkColumnName = this.specifiedPkColumnName;
-		this.specifiedPkColumnName = newSpecifiedPkColumnName;
-		getResourceGenerator().setPkColumnName(newSpecifiedPkColumnName);
-		firePropertyChanged(SPECIFIED_PK_COLUMN_NAME_PROPERTY, oldSpecifiedPkColumnName, newSpecifiedPkColumnName);
+	public void setSpecifiedPkColumnName(String name) {
+		String old = this.specifiedPkColumnName;
+		this.specifiedPkColumnName = name;
+		this.getResourceGenerator().setPkColumnName(name);
+		this.firePropertyChanged(SPECIFIED_PK_COLUMN_NAME_PROPERTY, old, name);
 	}
-	
-	protected void setSpecifiedPkColumnName_(String newSpecifiedPkColumnName) {
-		String oldSpecifiedPkColumnName = this.specifiedPkColumnName;
-		this.specifiedPkColumnName = newSpecifiedPkColumnName;
-		firePropertyChanged(SPECIFIED_PK_COLUMN_NAME_PROPERTY, oldSpecifiedPkColumnName, newSpecifiedPkColumnName);
+
+	protected void setSpecifiedPkColumnName_(String name) {
+		String old = this.specifiedPkColumnName;
+		this.specifiedPkColumnName = name;
+		this.firePropertyChanged(SPECIFIED_PK_COLUMN_NAME_PROPERTY, old, name);
 	}
 
 	public String getDefaultPkColumnName() {
 		return this.defaultPkColumnName;
 	}
 	
-	protected void setDefaultPkColumnName(String newDefaultPkColumnName) {
-		String oldDefaultPkColumnName = this.defaultPkColumnName;
-		this.defaultPkColumnName = newDefaultPkColumnName;
-		firePropertyChanged(DEFAULT_PK_COLUMN_NAME_PROPERTY, oldDefaultPkColumnName, newDefaultPkColumnName);
+	protected void setDefaultPkColumnName(String name) {
+		String old = this.defaultPkColumnName;
+		this.defaultPkColumnName = name;
+		this.firePropertyChanged(DEFAULT_PK_COLUMN_NAME_PROPERTY, old, name);
 	}
 
+
+	// ********** value column name **********
+
 	public String getValueColumnName() {
-		return (this.getSpecifiedValueColumnName() == null) ? getDefaultValueColumnName() : this.getSpecifiedValueColumnName();
+		return (this.specifiedValueColumnName != null) ? this.specifiedValueColumnName : this.defaultValueColumnName;
 	}
 
 	public String getSpecifiedValueColumnName() {
 		return this.specifiedValueColumnName;
 	}
 
-	public void setSpecifiedValueColumnName(String newSpecifiedValueColumnName) {
-		String oldSpecifiedValueColumnName = this.specifiedValueColumnName;
-		this.specifiedValueColumnName = newSpecifiedValueColumnName;
-		getResourceGenerator().setValueColumnName(newSpecifiedValueColumnName);
-		firePropertyChanged(SPECIFIED_VALUE_COLUMN_NAME_PROPERTY, oldSpecifiedValueColumnName, newSpecifiedValueColumnName);
+	public void setSpecifiedValueColumnName(String name) {
+		String old = this.specifiedValueColumnName;
+		this.specifiedValueColumnName = name;
+		this.getResourceGenerator().setValueColumnName(name);
+		this.firePropertyChanged(SPECIFIED_VALUE_COLUMN_NAME_PROPERTY, old, name);
 	}
 
-	protected void setSpecifiedValueColumnName_(String newSpecifiedValueColumnName) {
-		String oldSpecifiedValueColumnName = this.specifiedValueColumnName;
-		this.specifiedValueColumnName = newSpecifiedValueColumnName;
-		firePropertyChanged(SPECIFIED_VALUE_COLUMN_NAME_PROPERTY, oldSpecifiedValueColumnName, newSpecifiedValueColumnName);
+	protected void setSpecifiedValueColumnName_(String name) {
+		String old = this.specifiedValueColumnName;
+		this.specifiedValueColumnName = name;
+		this.firePropertyChanged(SPECIFIED_VALUE_COLUMN_NAME_PROPERTY, old, name);
 	}
 
 	public String getDefaultValueColumnName() {
 		return this.defaultValueColumnName;
 	}
 	
-	protected void setDefaultValueColumnName(String newDefaultValueColumnName) {
-		String oldDefaultValueColumnName = this.defaultValueColumnName;
-		this.defaultValueColumnName = newDefaultValueColumnName;
-		firePropertyChanged(DEFAULT_VALUE_COLUMN_NAME_PROPERTY, oldDefaultValueColumnName, newDefaultValueColumnName);
+	protected void setDefaultValueColumnName(String name) {
+		String old = this.defaultValueColumnName;
+		this.defaultValueColumnName = name;
+		this.firePropertyChanged(DEFAULT_VALUE_COLUMN_NAME_PROPERTY, old, name);
 	}
 
+
+	// ********** primary key column value **********
+
 	public String getPkColumnValue() {
-		return (this.getSpecifiedPkColumnValue() == null) ? getDefaultPkColumnValue() : this.getSpecifiedPkColumnValue();
+		return (this.specifiedPkColumnValue != null) ? this.specifiedPkColumnValue : this.defaultPkColumnValue;
 	}
 
 	public String getSpecifiedPkColumnValue() {
 		return this.specifiedPkColumnValue;
 	}
 
-	public void setSpecifiedPkColumnValue(String newSpecifiedPkColumnValue) {
-		String oldSpecifiedPkColumnValue = this.specifiedPkColumnValue;
-		this.specifiedPkColumnValue = newSpecifiedPkColumnValue;
-		getResourceGenerator().setPkColumnValue(newSpecifiedPkColumnValue);
-		firePropertyChanged(SPECIFIED_PK_COLUMN_VALUE_PROPERTY, oldSpecifiedPkColumnValue, newSpecifiedPkColumnValue);
+	public void setSpecifiedPkColumnValue(String value) {
+		String old = this.specifiedPkColumnValue;
+		this.specifiedPkColumnValue = value;
+		this.getResourceGenerator().setPkColumnValue(value);
+		this.firePropertyChanged(SPECIFIED_PK_COLUMN_VALUE_PROPERTY, old, value);
 	}
 
-	protected void setSpecifiedPkColumnValue_(String newSpecifiedPkColumnValue) {
-		String oldSpecifiedPkColumnValue = this.specifiedPkColumnValue;
-		this.specifiedPkColumnValue = newSpecifiedPkColumnValue;
-		firePropertyChanged(SPECIFIED_PK_COLUMN_VALUE_PROPERTY, oldSpecifiedPkColumnValue, newSpecifiedPkColumnValue);
+	protected void setSpecifiedPkColumnValue_(String value) {
+		String old = this.specifiedPkColumnValue;
+		this.specifiedPkColumnValue = value;
+		this.firePropertyChanged(SPECIFIED_PK_COLUMN_VALUE_PROPERTY, old, value);
 	}
 
 	public String getDefaultPkColumnValue() {
 		return this.defaultPkColumnValue;
 	}
 	
-	public void setDefaultPkColumnValue(String newDefaultPkColumnValue) {
-		String oldDefaultPkColumnValue = this.defaultPkColumnValue;
-		this.defaultPkColumnValue = newDefaultPkColumnValue;
-		firePropertyChanged(DEFAULT_PK_COLUMN_VALUE_PROPERTY, oldDefaultPkColumnValue, newDefaultPkColumnValue);
+	public void setDefaultPkColumnValue(String value) {
+		String old = this.defaultPkColumnValue;
+		this.defaultPkColumnValue = value;
+		this.firePropertyChanged(DEFAULT_PK_COLUMN_VALUE_PROPERTY, old, value);
 	}
-	
-	
+
+
 	// ********** unique constraints **********
 	
 	public ListIterator<OrmUniqueConstraint> uniqueConstraints() {
@@ -255,157 +282,131 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 	}
 	
 	public OrmUniqueConstraint addUniqueConstraint(int index) {
-		XmlUniqueConstraint resourceUniqueConstraint = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
-		OrmUniqueConstraint contextUniqueConstraint =  buildUniqueConstraint(resourceUniqueConstraint);
-		this.uniqueConstraints.add(index, contextUniqueConstraint);
-		getResourceGenerator().getUniqueConstraints().add(index, resourceUniqueConstraint);
-		fireItemAdded(TableGenerator.UNIQUE_CONSTRAINTS_LIST, index, contextUniqueConstraint);
-		return contextUniqueConstraint;
+		XmlUniqueConstraint resourceUC = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		OrmUniqueConstraint contextUC = this.buildUniqueConstraint(resourceUC);
+		this.uniqueConstraints.add(index, contextUC);
+		this.getResourceGenerator().getUniqueConstraints().add(index, resourceUC);
+		this.fireItemAdded(UNIQUE_CONSTRAINTS_LIST, index, contextUC);
+		return contextUC;
 	}
 	
 	protected void addUniqueConstraint(int index, OrmUniqueConstraint uniqueConstraint) {
-		addItemToList(index, uniqueConstraint, this.uniqueConstraints, TableGenerator.UNIQUE_CONSTRAINTS_LIST);
+		this.addItemToList(index, uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 	}
 	
+	protected void addUniqueConstraint(OrmUniqueConstraint uniqueConstraint) {
+		this.addUniqueConstraint(this.uniqueConstraints.size(), uniqueConstraint);
+	}
 	
 	public void removeUniqueConstraint(UniqueConstraint uniqueConstraint) {
 		this.removeUniqueConstraint(this.uniqueConstraints.indexOf(uniqueConstraint));
 	}
 	
 	public void removeUniqueConstraint(int index) {
-		OrmUniqueConstraint removedUniqueConstraint = this.uniqueConstraints.remove(index);
-		getResourceGenerator().getUniqueConstraints().remove(index);
-		fireItemRemoved(TableGenerator.UNIQUE_CONSTRAINTS_LIST, index, removedUniqueConstraint);
+		OrmUniqueConstraint uniqueConstraint = this.uniqueConstraints.remove(index);
+		this.getResourceGenerator().getUniqueConstraints().remove(index);
+		this.fireItemRemoved(UNIQUE_CONSTRAINTS_LIST, index, uniqueConstraint);
 	}
 	
 	protected void removeUniqueConstraint_(OrmUniqueConstraint uniqueConstraint) {
-		removeItemFromList(uniqueConstraint, this.uniqueConstraints, TableGenerator.UNIQUE_CONSTRAINTS_LIST);
+		this.removeItemFromList(uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 	}
 	
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.uniqueConstraints, targetIndex, sourceIndex);
 		this.getResourceGenerator().getUniqueConstraints().move(targetIndex, sourceIndex);
-		fireItemMoved(TableGenerator.UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);		
+		this.fireItemMoved(UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);		
 	}
-	
+
+
 	//******************* UniqueConstraint.Owner implementation ******************
 
 	public Iterator<String> candidateUniqueConstraintColumnNames() {
-		org.eclipse.jpt.db.Table dbTable = getDbTable();
-		if (dbTable != null) {
-			return dbTable.columnNames();
-		}
-		return EmptyIterator.instance();
+		org.eclipse.jpt.db.Table dbTable = this.getDbTable();
+		return (dbTable != null) ? dbTable.sortedColumnIdentifiers() : EmptyIterator.<String>instance();
 	}
 
-	public Table getDbTable() {
-		Schema schema = this.getDbSchema();
-		return (schema == null) ? null : schema.getTableNamed(this.getTable());
-	}
 
-	public Schema getDbSchema() {
-		return this.getDataSource().getSchemaNamed(this.getSchema());
-	}
-	
-	// ********** orm resource model -> context model **********
+	// ********** resource => context **********
 
 	@Override
-	protected void initialize(XmlTableGenerator tableGenerator) {
-		super.initialize(tableGenerator);
-		this.specifiedTable = this.specifiedTable(tableGenerator);
-		this.specifiedCatalog = this.specifiedCatalog(tableGenerator);
-		this.defaultCatalog = this.defaultCatalog();
-		this.specifiedSchema = this.specifiedSchema(tableGenerator);
-		this.defaultSchema = this.defaultSchema();
-		this.specifiedPkColumnName = this.specifiedPkColumnName(tableGenerator);
-		this.specifiedValueColumnName = this.specifiedValueColumnName(tableGenerator);
-		this.specifiedPkColumnValue = this.specifiedPkColumnValue(tableGenerator);
-		this.initializeUniqueContraints(tableGenerator);
+	protected void initialize(XmlTableGenerator xmlTableGenerator) {
+		super.initialize(xmlTableGenerator);
+		this.specifiedTable = xmlTableGenerator.getTable();
+		this.defaultSchema = this.buildDefaultSchema();
+		this.specifiedSchema = xmlTableGenerator.getSchema();
+		this.defaultCatalog = this.buildDefaultCatalog();
+		this.specifiedCatalog = xmlTableGenerator.getCatalog();
+		this.specifiedPkColumnName = xmlTableGenerator.getPkColumnName();
+		this.specifiedValueColumnName = xmlTableGenerator.getValueColumnName();
+		this.specifiedPkColumnValue = xmlTableGenerator.getPkColumnValue();
+		this.initializeUniqueContraints(xmlTableGenerator);
 	}
 	
-	protected void initializeUniqueContraints(XmlTableGenerator tableGenerator) {
-		if (tableGenerator == null) {
+	protected void initializeUniqueContraints(XmlTableGenerator xmlTableGenerator) {
+		if (xmlTableGenerator == null) {
 			return;
 		}
-		for (XmlUniqueConstraint uniqueConstraint : tableGenerator.getUniqueConstraints()) {
-			this.uniqueConstraints.add(buildUniqueConstraint(uniqueConstraint));
+		for (XmlUniqueConstraint uniqueConstraint : xmlTableGenerator.getUniqueConstraints()) {
+			this.uniqueConstraints.add(this.buildUniqueConstraint(uniqueConstraint));
 		}
 	}
 	
 	@Override
-	public void update(XmlTableGenerator tableGenerator) {
-		super.update(tableGenerator);
-		this.setSpecifiedTable_(this.specifiedTable(tableGenerator));
-		this.setSpecifiedCatalog_(this.specifiedCatalog(tableGenerator));
-		this.setDefaultCatalog(this.defaultCatalog());
-		this.setSpecifiedSchema_(this.specifiedSchema(tableGenerator));
-		this.setDefaultSchema(this.defaultSchema());
-		this.setSpecifiedPkColumnName_(this.specifiedPkColumnName(tableGenerator));
-		this.setSpecifiedValueColumnName_(this.specifiedValueColumnName(tableGenerator));
-		this.setSpecifiedPkColumnValue_(this.specifiedPkColumnValue(tableGenerator));
-		//TODO defaults
-		this.updateUniqueConstraints(tableGenerator);
+	public void update(XmlTableGenerator xmlTableGenerator) {
+		super.update(xmlTableGenerator);
+		this.setSpecifiedTable_(xmlTableGenerator.getTable());
+		this.setDefaultSchema(this.buildDefaultSchema());
+		this.setSpecifiedSchema_(xmlTableGenerator.getSchema());
+		this.setDefaultCatalog(this.buildDefaultCatalog());
+		this.setSpecifiedCatalog_(xmlTableGenerator.getCatalog());
+		this.setSpecifiedPkColumnName_(xmlTableGenerator.getPkColumnName());
+		this.setSpecifiedValueColumnName_(xmlTableGenerator.getValueColumnName());
+		this.setSpecifiedPkColumnValue_(xmlTableGenerator.getPkColumnValue());
+		// TODO defaults
+		this.updateUniqueConstraints(xmlTableGenerator);
 	}
 	
-	protected String specifiedTable(XmlTableGenerator tableGenerator) {
-		return tableGenerator.getTable();
+	protected String buildDefaultSchema() {
+		return this.getContextDefaultSchema();
 	}
 	
-	protected String specifiedCatalog(XmlTableGenerator tableGenerator) {
-		return tableGenerator.getCatalog();
-	}
-	
-	protected String specifiedSchema(XmlTableGenerator tableGenerator) {
-		return tableGenerator.getSchema();
-	}
-	
-	protected String specifiedPkColumnName(XmlTableGenerator tableGenerator) {
-		return tableGenerator.getPkColumnName();
-	}
-	
-	protected String specifiedValueColumnName(XmlTableGenerator tableGenerator) {
-		return tableGenerator.getValueColumnName();
-	}
-	
-	protected String specifiedPkColumnValue(XmlTableGenerator tableGenerator) {
-		return tableGenerator.getPkColumnValue();
-	}
-	
-	protected String defaultSchema() {
-		return getEntityMappings().getSchema();
-	}
-	
-	protected String defaultCatalog() {
-		return getEntityMappings().getCatalog();
+	protected String buildDefaultCatalog() {
+		return this.getContextDefaultCatalog();
 	}
 
 	protected void updateUniqueConstraints(XmlTableGenerator tableGenerator) {
-		ListIterator<OrmUniqueConstraint> contextUniqueConstraints = uniqueConstraints();
-		ListIterator<XmlUniqueConstraint> resourceUniqueConstraints;
-		if (tableGenerator == null) {
-			resourceUniqueConstraints = EmptyListIterator.instance();
-		}
-		else {
-			resourceUniqueConstraints = new CloneListIterator<XmlUniqueConstraint>(tableGenerator.getUniqueConstraints());//prevent ConcurrentModificiationException
+		ListIterator<OrmUniqueConstraint> contextConstraints = uniqueConstraints();
+		ListIterator<XmlUniqueConstraint> resourceConstraints = EmptyListIterator.instance();
+		if (tableGenerator != null) {
+			resourceConstraints = new CloneListIterator<XmlUniqueConstraint>(tableGenerator.getUniqueConstraints());//prevent ConcurrentModificiationException
 		}
 		
-		while (contextUniqueConstraints.hasNext()) {
-			OrmUniqueConstraint contextUniqueConstraint = contextUniqueConstraints.next();
-			if (resourceUniqueConstraints.hasNext()) {
-				contextUniqueConstraint.update(resourceUniqueConstraints.next());
+		while (contextConstraints.hasNext()) {
+			OrmUniqueConstraint contextConstraint = contextConstraints.next();
+			if (resourceConstraints.hasNext()) {
+				contextConstraint.update(resourceConstraints.next());
 			}
 			else {
-				removeUniqueConstraint_(contextUniqueConstraint);
+				this.removeUniqueConstraint_(contextConstraint);
 			}
 		}
 		
-		while (resourceUniqueConstraints.hasNext()) {
-			addUniqueConstraint(uniqueConstraintsSize(), buildUniqueConstraint(resourceUniqueConstraints.next()));
+		while (resourceConstraints.hasNext()) {
+			this.addUniqueConstraint(this.buildUniqueConstraint(resourceConstraints.next()));
 		}
 	}
 
 	protected OrmUniqueConstraint buildUniqueConstraint(XmlUniqueConstraint resourceUniqueConstraint) {
-		return getJpaFactory().buildOrmUniqueConstraint(this, this, resourceUniqueConstraint);
+		return this.getJpaFactory().buildOrmUniqueConstraint(this, this, resourceUniqueConstraint);
+	}
+
+
+	// ********** database stuff **********
+
+	public Table getDbTable() {
+		Schema dbSchema = this.getDbSchema();
+		return (dbSchema == null) ? null : dbSchema.getTableForIdentifier(this.getTable());
 	}
 
 }

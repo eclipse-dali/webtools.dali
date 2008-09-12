@@ -99,7 +99,7 @@ public interface ConnectionProfile
 	/**
 	 * Return the name of the Driver instance
 	 */
-	public String getDriverName();
+	String getDriverName();
 
 	// ********** connection **********
 

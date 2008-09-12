@@ -33,7 +33,7 @@ public class GenerateDDLWizard extends Wizard {
 	@Override
 	public void addPages() {
 		super.addPages();
-		if (this.getProjectConnectionProfile() == null) {
+		if (this.getJpaProjectConnectionProfile() == null) {
 			this.dbSettingsPage = new DatabaseConnectionWizardPage(this.jpaProject);
 			this.addPage(this.dbSettingsPage);
 		}
@@ -41,7 +41,7 @@ public class GenerateDDLWizard extends Wizard {
 	
 	@Override
 	public boolean performFinish() {
-        if (this.getProjectConnectionProfile() != null) {
+        if (this.getJpaProjectConnectionProfile() != null) {
         	return true;
         }
 		ConnectionProfile cp = this.dbSettingsPage.getSelectedConnectionProfile();
@@ -57,7 +57,7 @@ public class GenerateDDLWizard extends Wizard {
         return this.dbSettingsPage.isPageComplete();
     }
     
-	private ConnectionProfile getProjectConnectionProfile() {
+	private ConnectionProfile getJpaProjectConnectionProfile() {
 		return this.jpaProject.getConnectionProfile();
 	}
 

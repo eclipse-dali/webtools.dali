@@ -10,15 +10,16 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.Nullable;
 import org.eclipse.jpt.core.context.RelationshipMapping;
-import org.eclipse.jpt.core.context.SingleRelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
@@ -37,64 +38,34 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-
+/**
+ * 
+ */
 public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRelationshipMapping>
-	extends AbstractOrmRelationshipMapping<T> implements OrmSingleRelationshipMapping
+	extends AbstractOrmRelationshipMapping<T>
+	implements OrmSingleRelationshipMapping
 {
 	
 	protected final List<OrmJoinColumn> specifiedJoinColumns;
-
 	protected OrmJoinColumn defaultJoinColumn;
 
 	protected Boolean specifiedOptional;
+
 
 	protected AbstractOrmSingleRelationshipMapping(OrmPersistentAttribute parent) {
 		super(parent);
 		this.specifiedJoinColumns = new ArrayList<OrmJoinColumn>();
 	}
 	
-	@Override
-	public void initializeFromOrmSingleRelationshipMapping(OrmSingleRelationshipMapping oldMapping) {
-		super.initializeFromOrmSingleRelationshipMapping(oldMapping);
-		int index = 0;
-		for (JoinColumn joinColumn : CollectionTools.iterable(oldMapping.specifiedJoinColumns())) {
-			OrmJoinColumn newJoinColumn = addSpecifiedJoinColumn(index++);
-			newJoinColumn.initializeFrom(joinColumn);
-		}
-	}
-	
-	public FetchType getDefaultFetch() {
-		return SingleRelationshipMapping.DEFAULT_FETCH_TYPE;
-	}
 
-	//***************** ISingleRelationshipMapping implementation *****************
+	// ********** join columns **********
+
 	public ListIterator<OrmJoinColumn> joinColumns() {
-		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumns() : this.specifiedJoinColumns();
+		return this.containsSpecifiedJoinColumns() ? this.specifiedJoinColumns() : this.defaultJoinColumns();
 	}
 
 	public int joinColumnsSize() {
-		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumnsSize() : this.specifiedJoinColumnsSize();
-	}
-	
-	public OrmJoinColumn getDefaultJoinColumn() {
-		return this.defaultJoinColumn;
-	}
-	
-	protected void setDefaultJoinColumn(OrmJoinColumn newJoinColumn) {
-		OrmJoinColumn oldJoinColumn = this.defaultJoinColumn;
-		this.defaultJoinColumn = newJoinColumn;
-		firePropertyChanged(SingleRelationshipMapping.DEFAULT_JOIN_COLUMN, oldJoinColumn, newJoinColumn);
-	}
-
-	protected ListIterator<OrmJoinColumn> defaultJoinColumns() {
-		if (this.defaultJoinColumn != null) {
-			return new SingleElementListIterator<OrmJoinColumn>(this.defaultJoinColumn);
-		}
-		return EmptyListIterator.instance();
-	}
-	
-	protected int defaultJoinColumnsSize() {
-		return (this.defaultJoinColumn == null) ? 0 : 1;
+		return this.containsSpecifiedJoinColumns() ? this.specifiedJoinColumnsSize() : this.defaultJoinColumnsSize();
 	}
 	
 	public ListIterator<OrmJoinColumn> specifiedJoinColumns() {
@@ -110,7 +81,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	}
 
 	public OrmJoinColumn addSpecifiedJoinColumn(int index) {
-		OrmJoinColumn oldDefaultJoinColumn = this.getDefaultJoinColumn();
+		OrmJoinColumn oldDefaultJoinColumn = this.defaultJoinColumn;
 		if (oldDefaultJoinColumn != null) {
 			//null the default join column now if one already exists.
 			//if one does not exist, there is already a specified join column.
@@ -119,18 +90,22 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 			this.defaultJoinColumn = null;
 		}
 		XmlJoinColumn resourceJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumnImpl();
-		OrmJoinColumn contextJoinColumn = buildJoinColumn(resourceJoinColumn);
+		OrmJoinColumn contextJoinColumn = this.buildJoinColumn(resourceJoinColumn);
 		this.specifiedJoinColumns.add(index, contextJoinColumn);
 		this.getAttributeMapping().getJoinColumns().add(index, resourceJoinColumn);
-		this.fireItemAdded(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, contextJoinColumn);
+		this.fireItemAdded(SPECIFIED_JOIN_COLUMNS_LIST, index, contextJoinColumn);
 		if (oldDefaultJoinColumn != null) {
-			this.firePropertyChanged(SingleRelationshipMapping.DEFAULT_JOIN_COLUMN, oldDefaultJoinColumn, null);
+			this.firePropertyChanged(DEFAULT_JOIN_COLUMN, oldDefaultJoinColumn, null);
 		}
 		return contextJoinColumn;
 	}
 
 	protected void addSpecifiedJoinColumn(int index, OrmJoinColumn joinColumn) {
-		addItemToList(index, joinColumn, this.specifiedJoinColumns, SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST);
+		this.addItemToList(index, joinColumn, this.specifiedJoinColumns, SPECIFIED_JOIN_COLUMNS_LIST);
+	}
+
+	protected void addSpecifiedJoinColumn(OrmJoinColumn joinColumn) {
+		this.addSpecifiedJoinColumn(this.specifiedJoinColumns.size(), joinColumn);
 	}
 
 	public void removeSpecifiedJoinColumn(JoinColumn joinColumn) {
@@ -139,55 +114,82 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	
 	public void removeSpecifiedJoinColumn(int index) {
 		OrmJoinColumn removedJoinColumn = this.specifiedJoinColumns.remove(index);
-		if (!containsSpecifiedJoinColumns()) {
+		if (this.specifiedJoinColumns.isEmpty()) {
 			//create the defaultJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
-			this.defaultJoinColumn = buildJoinColumn(null);
+			this.defaultJoinColumn = this.buildJoinColumn(null);
 		}
 		this.getAttributeMapping().getJoinColumns().remove(index);
-		fireItemRemoved(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
+		this.fireItemRemoved(SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 		if (this.defaultJoinColumn != null) {
 			//fire change notification if a defaultJoinColumn was created above
-			this.firePropertyChanged(SingleRelationshipMapping.DEFAULT_JOIN_COLUMN, null, this.defaultJoinColumn);		
+			this.firePropertyChanged(DEFAULT_JOIN_COLUMN, null, this.defaultJoinColumn);		
 		}
 	}
 
 	protected void removeSpecifiedJoinColumn_(OrmJoinColumn joinColumn) {
-		removeItemFromList(joinColumn, this.specifiedJoinColumns, SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST);
+		removeItemFromList(joinColumn, this.specifiedJoinColumns, SPECIFIED_JOIN_COLUMNS_LIST);
 	}
 	
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedJoinColumns, targetIndex, sourceIndex);
 		this.getAttributeMapping().getJoinColumns().move(targetIndex, sourceIndex);
-		fireItemMoved(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
+		fireItemMoved(SPECIFIED_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 
+	public OrmJoinColumn getDefaultJoinColumn() {
+		return this.defaultJoinColumn;
+	}
+	
+	protected void setDefaultJoinColumn(OrmJoinColumn joinColumn) {
+		OrmJoinColumn old = this.defaultJoinColumn;
+		this.defaultJoinColumn = joinColumn;
+		this.firePropertyChanged(DEFAULT_JOIN_COLUMN, old, joinColumn);
+	}
+
+	protected ListIterator<OrmJoinColumn> defaultJoinColumns() {
+		if (this.defaultJoinColumn != null) {
+			return new SingleElementListIterator<OrmJoinColumn>(this.defaultJoinColumn);
+		}
+		return EmptyListIterator.instance();
+	}
+	
+	protected int defaultJoinColumnsSize() {
+		return (this.defaultJoinColumn == null) ? 0 : 1;
+	}
+	
+
+	// ********** optional **********
+
 	public Boolean getOptional() {
-		return getSpecifiedOptional() == null ? getDefaultOptional() : getSpecifiedOptional();
+		return (this.specifiedOptional != null) ? this.specifiedOptional : this.getDefaultOptional();
+	}
+	
+	public Boolean getSpecifiedOptional() {
+		return this.specifiedOptional;
+	}
+	
+	public void setSpecifiedOptional(Boolean optional) {
+		Boolean old = this.specifiedOptional;
+		this.specifiedOptional = optional;
+		this.getAttributeMapping().setOptional(optional);
+		this.firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, old, optional);
+	}
+	
+	protected void setSpecifiedOptional_(Boolean optional) {
+		Boolean old = this.specifiedOptional;
+		this.specifiedOptional = optional;
+		this.firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, old, optional);
 	}
 	
 	public Boolean getDefaultOptional() {
 		return Nullable.DEFAULT_OPTIONAL;
 	}
 
-	public Boolean getSpecifiedOptional() {
-		return this.specifiedOptional;
-	}
-	
-	public void setSpecifiedOptional(Boolean newSpecifiedOptional) {
-		Boolean oldSpecifiedOptional = this.specifiedOptional;
-		this.specifiedOptional = newSpecifiedOptional;
-		getAttributeMapping().setOptional(newSpecifiedOptional);
-		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldSpecifiedOptional, newSpecifiedOptional);
-	}
-	
-	protected void setSpecifiedOptional_(Boolean newSpecifiedOptional) {
-		Boolean oldSpecifiedOptional = this.specifiedOptional;
-		this.specifiedOptional = newSpecifiedOptional;
-		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldSpecifiedOptional, newSpecifiedOptional);
-	}
-	
+
+	// ********** resource => context **********
+
 	@Override
 	public void initialize(T singleRelationshipMapping) {
 		super.initialize(singleRelationshipMapping);
@@ -198,27 +200,25 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	}
 	
 	protected void initializeSpecifiedJoinColumns(T singleRelationshipMapping) {
-		if (singleRelationshipMapping == null) {
-			return;
+		if (singleRelationshipMapping != null) {
+			for (XmlJoinColumn resourceJoinColumn : singleRelationshipMapping.getJoinColumns()) {
+				this.specifiedJoinColumns.add(buildJoinColumn(resourceJoinColumn));
+			}
 		}
-		for (XmlJoinColumn resourceJoinColumn : singleRelationshipMapping.getJoinColumns()) {
-			this.specifiedJoinColumns.add(buildJoinColumn(resourceJoinColumn));
-		}
-	}
-	
-	protected boolean shouldBuildDefaultJoinColumn() {
-		return !containsSpecifiedJoinColumns() && isRelationshipOwner();
 	}
 	
 	protected void initializeDefaultJoinColumn() {
-		if (!shouldBuildDefaultJoinColumn()) {
-			return;
+		if (this.shouldBuildDefaultJoinColumn()) {
+			this.defaultJoinColumn = this.buildJoinColumn(null);
 		}
-		this.defaultJoinColumn = buildJoinColumn(null);
 	}	
 	
+	protected boolean shouldBuildDefaultJoinColumn() {
+		return ! this.containsSpecifiedJoinColumns() && this.isRelationshipOwner();
+	}
+	
 	protected OrmJoinColumn buildJoinColumn(XmlJoinColumn resourceJoinColumn) {
-		return getJpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner(), resourceJoinColumn);
+		return this.getJpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner(), resourceJoinColumn);
 	}	
 
 	@Override
@@ -247,22 +247,24 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 		}
 		
 		while (resourceJoinColumns.hasNext()) {
-			addSpecifiedJoinColumn(specifiedJoinColumnsSize(), buildJoinColumn(resourceJoinColumns.next()));
+			addSpecifiedJoinColumn(buildJoinColumn(resourceJoinColumns.next()));
 		}
 	}
 	
 	protected void updateDefaultJoinColumn() {
-		if (!shouldBuildDefaultJoinColumn()) {
-			setDefaultJoinColumn(null);
-			return;
-		}
-		if (getDefaultJoinColumn() == null) {
-			this.setDefaultJoinColumn(buildJoinColumn(null));
-		}
-		else {
-			this.defaultJoinColumn.update(null);
+		if (this.shouldBuildDefaultJoinColumn()) {
+			if (this.defaultJoinColumn == null) {
+				this.setDefaultJoinColumn(this.buildJoinColumn(null));
+			} else {
+				this.defaultJoinColumn.update(null);
+			}
+		} else {
+			this.setDefaultJoinColumn(null);
 		}
 	}	
+
+
+	// ********** AbstractOrmRelationshipMapping implementation **********
 
 	/**
 	 * eliminate any "container" types
@@ -275,13 +277,35 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 		return persistentAttributeResource.getQualifiedReferenceEntityTypeName();
 	}
 
-	//********************* validation ******************
+
+	// ********** AbstractOrmAttributeMapping implementation **********
+
+	@Override
+	public void initializeFromOrmSingleRelationshipMapping(OrmSingleRelationshipMapping oldMapping) {
+		super.initializeFromOrmSingleRelationshipMapping(oldMapping);
+		int index = 0;
+		for (JoinColumn joinColumn : CollectionTools.iterable(oldMapping.specifiedJoinColumns())) {
+			OrmJoinColumn newJoinColumn = addSpecifiedJoinColumn(index++);
+			newJoinColumn.initializeFrom(joinColumn);
+		}
+	}
+
+
+	// ********** Fetchable implementation **********
+
+	public FetchType getDefaultFetch() {
+		return DEFAULT_FETCH_TYPE;
+	}
+
+
+	// ********** validation **********
+
 	@Override
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
 		
-		if (addJoinColumnMessages()) {
-			addJoinColumnMessages(messages);
+		if (this.connectionProfileIsActive()) {
+			this.checkJoinColumns(messages);
 		}
 	}
 	
@@ -289,91 +313,96 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	//of a bidirectional relationship.  This is a low risk fix for RC3, but a better
 	//solution would be to not have the default joinColumns on the non-owning side.
 	//This would fix another bug that we show default joinColumns in this situation.
-	protected boolean addJoinColumnMessages() {
-		return (entityOwned() && isRelationshipOwner());
-	}
-
-	protected void addJoinColumnMessages(List<IMessage> messages) {
-		boolean doContinue = this.connectionProfileIsActive();
-		
-		for (OrmJoinColumn joinColumn : CollectionTools.iterable(joinColumns())) {
-			String table = joinColumn.getTable();
-			
-			if (doContinue && getTypeMapping().tableNameIsInvalid(table)) {
-				if (getPersistentAttribute().isVirtual()) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_TABLE,
-							new String[] {getName(), table, joinColumn.getName()},
-							joinColumn, 
-							joinColumn.getTableTextRange())
-					);
-				}
-				else {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
-							new String[] {table, joinColumn.getName()}, 
-							joinColumn, 
-							joinColumn.getTableTextRange())
-					);
-				}
-				doContinue = false;
-			}
-			
-			if (doContinue && ! joinColumn.isResolved()) {
-				if (getPersistentAttribute().isVirtual()) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME,
-							new String[] {getName(), joinColumn.getName()}, 
-							joinColumn, 
-							joinColumn.getNameTextRange())
-					);
-				}
-				else {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
-							new String[] {joinColumn.getName()}, 
-							joinColumn, 
-							joinColumn.getNameTextRange())
-					);
-				}
-			}
-			
-			if (doContinue && ! joinColumn.isReferencedColumnResolved()) {
-				if (getPersistentAttribute().isVirtual()) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-							new String[] {getName(), joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-							joinColumn, 
-							joinColumn.getReferencedColumnNameTextRange())
-					);
-				}
-				else {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-							new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-							joinColumn, 
-							joinColumn.getReferencedColumnNameTextRange())
-					);
-				}
+	protected void checkJoinColumns(List<IMessage> messages) {
+		if (this.entityOwned() && this.isRelationshipOwner()) {
+			for (Iterator<OrmJoinColumn> stream = this.joinColumns(); stream.hasNext(); ) {
+				this.checkJoinColumn(stream.next(), messages);
 			}
 		}
 	}
-	
-	
-	public class JoinColumnOwner implements OrmJoinColumn.Owner
-	{
+
+	protected void checkJoinColumn(OrmJoinColumn joinColumn, List<IMessage> messages) {
+		if (this.getTypeMapping().tableNameIsInvalid(joinColumn.getTable())) {
+			if (this.getPersistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_TABLE,
+						new String[] {this.getName(), joinColumn.getTable(), joinColumn.getName()},
+						joinColumn,
+						joinColumn.getTableTextRange()
+					)
+				);
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
+						new String[] {joinColumn.getTable(), joinColumn.getName()}, 
+						joinColumn, 
+						joinColumn.getTableTextRange()
+					)
+				);
+			}
+			return;
+		}
+		
+		if ( ! joinColumn.isResolved()) {
+			if (this.getPersistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME,
+						new String[] {this.getName(), joinColumn.getName()}, 
+						joinColumn, 
+						joinColumn.getNameTextRange()
+					)
+				);
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
+						new String[] {joinColumn.getName()}, 
+						joinColumn, 
+						joinColumn.getNameTextRange()
+					)
+				);
+			}
+		}
+		
+		if ( ! joinColumn.isReferencedColumnResolved()) {
+			if (getPersistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
+						new String[] {this.getName(), joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
+						joinColumn, 
+						joinColumn.getReferencedColumnNameTextRange()
+					)
+				);
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
+						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
+						joinColumn, 
+						joinColumn.getReferencedColumnNameTextRange()
+					)
+				);
+			}
+		}
+	}
+
+
+	// ********** OrmJoinColumn.Owner implementation **********
+
+	public class JoinColumnOwner implements OrmJoinColumn.Owner {
 
 		public JoinColumnOwner() {
 			super();
@@ -383,7 +412,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 		 * by default, the join column is in the type mapping's primary table
 		 */
 		public String getDefaultTableName() {
-			return AbstractOrmSingleRelationshipMapping.this.getTypeMapping().getTableName();
+			return AbstractOrmSingleRelationshipMapping.this.getTypeMapping().getPrimaryTableName();
 		}
 
 		public Entity getTargetEntity() {
@@ -417,7 +446,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 			return getTypeMapping().getDbTable(tableName);
 		}
 
-		public Table getDbReferencedColumnTable() {
+		public Table getReferencedColumnDbTable() {
 			Entity targetEntity = getTargetEntity();
 			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
 		}
@@ -438,5 +467,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 		public TextRange getValidationTextRange() {
 			return AbstractOrmSingleRelationshipMapping.this.getValidationTextRange();
 		}
+
 	}
+
 }

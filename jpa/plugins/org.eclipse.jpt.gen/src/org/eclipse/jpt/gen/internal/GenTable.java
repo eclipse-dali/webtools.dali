@@ -62,6 +62,21 @@ class GenTable {
 	}
 
 	/**
+	 * examples:
+	 *   GenTable(FOO) => "FOO_COLLECTION"
+	 *   GenTable(foo) => "fooCollection"
+	 *   GenTable(Foo) => "FooCollection"
+	 */
+	String getCollectionAttributeName() {
+		String name = this.getName();
+		String suffix = this.getEntityConfig().getCollectionAttributeNameSuffix();
+		if (StringTools.stringIsUppercase(name)) {  // hmmm  ~bjv
+			suffix = '_' + suffix.toUpperCase();
+		}
+		return name + suffix;
+	}
+
+	/**
 	 * determine whether the table is a "join" table within the table's scope;
 	 * this can be removed, later, if we find another table references the,
 	 * seemingly, join table
@@ -303,19 +318,19 @@ class GenTable {
 
 	private void buildOneToManyAttributeNames() {
 		for (OneToManyRelation relation : this.oneToManyRelations) {
-			this.configureAttributeName(relation, relation.getJavaAttributeName());
+			this.configureAttributeName(relation, relation.getAttributeName());
 		}
 	}
 
 	private void buildOwnedManyToManyAttributeNames() {
 		for (ManyToManyRelation relation : this.ownedManyToManyRelations) {
-			relation.setMappedBy(this.configureAttributeName(relation, relation.getOwnedJavaAttributeName()));
+			relation.setMappedBy(this.configureAttributeName(relation, relation.getOwnedAttributeName()));
 		}
 	}
 
 	private void buildNonOwnedManyToManyAttributeNames() {
 		for (ManyToManyRelation relation : this.nonOwnedManyToManyRelations) {
-			this.configureAttributeName(relation, relation.getNonOwnedJavaAttributeName());
+			this.configureAttributeName(relation, relation.getNonOwnedAttributeName());
 		}
 	}
 

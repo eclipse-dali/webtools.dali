@@ -23,7 +23,9 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
-public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGeneratorAnnotation
+public class SequenceGeneratorImpl
+	extends GeneratorImpl
+	implements SequenceGeneratorAnnotation
 {
 	private final AnnotationElementAdapter<String> sequenceNameAdapter;
 
@@ -90,6 +92,10 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 		return this.getElementTextRange(SEQUENCE_NAME_ADAPTER, astRoot);
 	}
 
+	public boolean sequenceNameTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(SEQUENCE_NAME_ADAPTER, pos, astRoot);
+	}
+
 	// ********** java annotations -> persistence model **********
 	@Override
 	public void update(CompilationUnit astRoot) {
@@ -101,7 +107,9 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 		return this.sequenceNameAdapter.getValue(astRoot);
 	}
 
+
 	// ********** static methods **********
+
 	private static DeclarationAnnotationElementAdapter<String> buildAdapter(String elementName) {
 		return buildAdapter(DECLARATION_ANNOTATION_ADAPTER, elementName);
 	}
@@ -110,7 +118,11 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 		return buildIntegerAdapter(DECLARATION_ANNOTATION_ADAPTER, elementName);
 	}
 	
-	public static class SequenceGeneratorAnnotationDefinition implements AnnotationDefinition
+
+	// ********** annotation definition **********
+
+	public static class SequenceGeneratorAnnotationDefinition
+		implements AnnotationDefinition
 	{
 		// singleton
 		private static final SequenceGeneratorAnnotationDefinition INSTANCE = new SequenceGeneratorAnnotationDefinition();

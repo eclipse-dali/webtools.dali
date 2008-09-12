@@ -182,7 +182,7 @@ public class JoinTableImpl extends AbstractResourceTable implements JoinTableAnn
 		return inverseJoinColumn;
 	}
 	
-	private void addInverseJoinColumn(int index, NestableJoinColumn joinColumn) {
+	protected void addInverseJoinColumn(int index, NestableJoinColumn joinColumn) {
 		addItemToList(index, joinColumn, this.inverseJoinColumns, INVERSE_JOIN_COLUMNS_LIST);
 	}
 	

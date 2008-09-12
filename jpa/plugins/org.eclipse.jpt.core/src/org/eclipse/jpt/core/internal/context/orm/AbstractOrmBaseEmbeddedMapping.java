@@ -108,6 +108,10 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, BaseEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 		
+	protected void addSpecifiedAttributeOverride(OrmAttributeOverride attributeOverride) {
+		this.addSpecifiedAttributeOverride(this.specifiedAttributeOverrides.size(), attributeOverride);
+	}
+		
 	protected void removeSpecifiedAttributeOverride_(OrmAttributeOverride attributeOverride) {
 		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, BaseEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
@@ -311,7 +315,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 		}
 		
 		while (resourceAttributeOverrides.hasNext()) {
-			addSpecifiedAttributeOverride(specifiedAttributeOverridesSize(), buildAttributeOverride(resourceAttributeOverrides.next()));
+			addSpecifiedAttributeOverride(buildAttributeOverride(resourceAttributeOverrides.next()));
 		}
 	}
 

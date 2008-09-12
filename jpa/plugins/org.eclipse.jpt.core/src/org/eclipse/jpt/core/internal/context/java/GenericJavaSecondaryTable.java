@@ -37,7 +37,11 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericJavaSecondaryTable extends AbstractJavaTable
+/**
+ * 
+ */
+public class GenericJavaSecondaryTable
+	extends AbstractJavaTable
 	implements JavaSecondaryTable
 {
 	protected final List<JavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns;
@@ -56,6 +60,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 		return (JavaEntity) super.getParent();
 	}
 
+
 	//***************** AbstractJavaTable implementation ********************
 	
 	@Override
@@ -68,13 +73,24 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 		return this.resourceSecondaryTable;
 	}
 
+	// a secondary table doesn't have a default name
 	@Override
-	protected String defaultName() {
+	protected String buildDefaultName() {
 		return null;
 	}
+
+	@Override
+	protected String buildDefaultSchema() {
+		return this.getContextDefaultSchema();
+	}
 	
+	@Override
+	protected String buildDefaultCatalog() {
+		return this.getContextDefaultCatalog();
+	}
+	
+
 	//***************** ISecondaryTable implementation ********************
-	
 
 	public ListIterator<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
 		return this.containsSpecifiedPrimaryKeyJoinColumns() ? this.specifiedPrimaryKeyJoinColumns() : this.defaultPrimaryKeyJoinColumns();
@@ -141,6 +157,10 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 		addItemToList(index, primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, SecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
+	protected void addSpecifiedPrimaryKeyJoinColumn(JavaPrimaryKeyJoinColumn primaryKeyJoinColumn) {
+		this.addSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumns.size(), primaryKeyJoinColumn);
+	}
+	
 	public void removeSpecifiedPrimaryKeyJoinColumn(PrimaryKeyJoinColumn joinColumn) {
 		this.removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumns.indexOf(joinColumn));
 	}
@@ -178,18 +198,18 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 	
 	//********************* updating ************************
 	
-	public void initialize(SecondaryTableAnnotation resourceSecondaryTable) {
-		super.initialize(resourceSecondaryTable);
-		this.resourceSecondaryTable = resourceSecondaryTable;
-		this.initializeSpecifiedPrimaryKeyJoinColumns(resourceSecondaryTable);
-		this.initializeDefaultPrimaryKeyJoinColumn(resourceSecondaryTable);
+	public void initialize(SecondaryTableAnnotation secondaryTable) {
+		super.initialize(secondaryTable);
+		this.resourceSecondaryTable = secondaryTable;
+		this.initializeSpecifiedPrimaryKeyJoinColumns(secondaryTable);
+		this.initializeDefaultPrimaryKeyJoinColumn(secondaryTable);
 	}
 	
-	protected void initializeSpecifiedPrimaryKeyJoinColumns(SecondaryTableAnnotation resourceSecondaryTable) {
-		ListIterator<PrimaryKeyJoinColumnAnnotation> resourcePkJoinColumns = resourceSecondaryTable.pkJoinColumns();
+	protected void initializeSpecifiedPrimaryKeyJoinColumns(SecondaryTableAnnotation secondaryTable) {
+		ListIterator<PrimaryKeyJoinColumnAnnotation> annotations = secondaryTable.pkJoinColumns();
 		
-		while(resourcePkJoinColumns.hasNext()) {
-			this.specifiedPrimaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn(resourcePkJoinColumns.next()));
+		while(annotations.hasNext()) {
+			this.specifiedPrimaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn(annotations.next()));
 		}
 	}
 	
@@ -205,16 +225,16 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 	}	
 
 	
-	public void update(SecondaryTableAnnotation resourceSecondaryTable) {
-		this.resourceSecondaryTable = resourceSecondaryTable;
-		super.update(resourceSecondaryTable);
-		this.updateSpecifiedPrimaryKeyJoinColumns(resourceSecondaryTable);
-		this.updateDefaultPrimaryKeyJoinColumn(resourceSecondaryTable);
+	public void update(SecondaryTableAnnotation sta) {
+		this.resourceSecondaryTable = sta;
+		super.update(sta);
+		this.updateSpecifiedPrimaryKeyJoinColumns(sta);
+		this.updateDefaultPrimaryKeyJoinColumn(sta);
 	}
 	
-	protected void updateSpecifiedPrimaryKeyJoinColumns(SecondaryTableAnnotation resourceSecondaryTable) {
+	protected void updateSpecifiedPrimaryKeyJoinColumns(SecondaryTableAnnotation sta) {
 		ListIterator<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns = specifiedPrimaryKeyJoinColumns();
-		ListIterator<PrimaryKeyJoinColumnAnnotation> resourcePrimaryKeyJoinColumns = resourceSecondaryTable.pkJoinColumns();
+		ListIterator<PrimaryKeyJoinColumnAnnotation> resourcePrimaryKeyJoinColumns = sta.pkJoinColumns();
 		
 		while (primaryKeyJoinColumns.hasNext()) {
 			JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = primaryKeyJoinColumns.next();
@@ -227,26 +247,26 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 		}
 		
 		while (resourcePrimaryKeyJoinColumns.hasNext()) {
-			addSpecifiedPrimaryKeyJoinColumn(specifiedPrimaryKeyJoinColumnsSize(), buildPrimaryKeyJoinColumn(resourcePrimaryKeyJoinColumns.next()));
+			addSpecifiedPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn(resourcePrimaryKeyJoinColumns.next()));
 		}
 	}
 	
-	protected void updateDefaultPrimaryKeyJoinColumn(SecondaryTableAnnotation resourceSecondaryTable) {
+	protected void updateDefaultPrimaryKeyJoinColumn(SecondaryTableAnnotation sta) {
 		if (!shouldBuildDefaultPrimaryKeyJoinColumn()) {
 			setDefaultPrimaryKeyJoinColumn(null);
 			return;
 		}
 		if (getDefaultPrimaryKeyJoinColumn() == null) {
-			this.setDefaultPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumn(resourceSecondaryTable)));
+			this.setDefaultPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumn(sta)));
 		}
 		else {
-			this.defaultPrimaryKeyJoinColumn.update(new NullPrimaryKeyJoinColumn(resourceSecondaryTable));
+			this.defaultPrimaryKeyJoinColumn.update(new NullPrimaryKeyJoinColumn(sta));
 		}
 	}	
 	
-	protected JavaPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(PrimaryKeyJoinColumnAnnotation resourcePkJoinColumn) {
+	protected JavaPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(PrimaryKeyJoinColumnAnnotation resourcePrimaryKeyJoinColumn) {
 		JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
-		primaryKeyJoinColumn.initialize(resourcePkJoinColumn);
+		primaryKeyJoinColumn.initialize(resourcePrimaryKeyJoinColumn);
 		return primaryKeyJoinColumn;
 	}
 	
@@ -257,30 +277,49 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
-		boolean doContinue = this.connectionProfileIsActive();
-		String schema = getSchema();
+		if (this.connectionProfileIsActive()) {
+			this.checkDatabase(messages, astRoot);
+		}
+		for (Iterator<JavaPrimaryKeyJoinColumn> stream = this.primaryKeyJoinColumns(); stream.hasNext(); ) {
+			stream.next().addToMessages(messages, astRoot);
+		}
+	}
+
+	protected void checkDatabase(List<IMessage> messages, CompilationUnit astRoot) {
+		if ( ! this.hasResolvedCatalog()) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_CATALOG,
+						new String[] {this.getCatalog(), this.getName()}, 
+						this, 
+						this.getCatalogTextRange(astRoot))
+				);
+			return;
+		}
 		
-		if (doContinue && ! hasResolvedSchema()) {
+		if ( ! this.hasResolvedSchema()) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_SCHEMA,
-						new String[] {schema, getName()}, 
+						new String[] {this.getSchema(), this.getName()}, 
 						this, 
-						getSchemaTextRange(astRoot))
+						this.getSchemaTextRange(astRoot))
 				);
-			doContinue = false;
+			return;
 		}
 		
-		if (doContinue && ! isResolved()) {
+		if ( ! this.isResolved()) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_NAME,
-						new String[] {getName()}, 
+						new String[] {this.getName()}, 
 						this, 
-						getNameTextRange(astRoot))
+						this.getNameTextRange(astRoot))
 				);
+			return;
 		}
 	}
 
@@ -320,7 +359,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 			return GenericJavaSecondaryTable.this.getDbTable();
 		}
 
-		public Table getDbReferencedColumnTable() {
+		public Table getReferencedColumnDbTable() {
 			return getTypeMapping().getPrimaryDbTable();
 		}
 

@@ -45,7 +45,7 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	
 	protected void initialize(T column) {
 		this.specifiedName = column.getName();
-		this.defaultName = this.defaultName();
+		this.defaultName = this.buildDefaultName();
 		this.columnDefinition = column.getColumnDefinition();	
 	}
 	
@@ -129,7 +129,7 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 	
 	public Column getDbColumn() {
 		Table table = this.getDbTable();
-		return (table == null) ? null : table.getColumnNamed(this.getName());
+		return (table == null) ? null : table.getColumnForIdentifier(this.getName());
 	}
 
 	public Table getDbTable() {
@@ -152,22 +152,22 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 			return result;
 		}
 		if (this.nameTouches(pos, astRoot)) {
-			return this.quotedCandidateNames(filter);
+			return this.javaCandidateNames(filter);
 		}
 		return null;
 	}
 
-	private Iterator<String> candidateNames() {
-		Table dbTable = this.getDbTable();
-		return (dbTable != null) ? dbTable.columnNames() : EmptyIterator.<String> instance();
+	private Iterator<String> javaCandidateNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.candidateNames(filter));
 	}
 
 	private Iterator<String> candidateNames(Filter<String> filter) {
 		return new FilteringIterator<String, String>(this.candidateNames(), filter);
 	}
 
-	private Iterator<String> quotedCandidateNames(Filter<String> filter) {
-		return StringTools.quote(this.candidateNames(filter));
+	private Iterator<String> candidateNames() {
+		Table dbTable = this.getDbTable();
+		return (dbTable != null) ? dbTable.sortedColumnIdentifiers() : EmptyIterator.<String> instance();
 	}
 
 	@Override
@@ -180,14 +180,14 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> e
 
 	protected void update(T column) {
 		this.setSpecifiedName_(column.getName());
-		this.setDefaultName(this.defaultName());
+		this.setDefaultName(this.buildDefaultName());
 		this.setColumnDefinition_(column.getColumnDefinition());
 	}
 	
 	/**
 	 * Return the default column name.
 	 */
-	protected String defaultName() {
+	protected String buildDefaultName() {
 		return this.getOwner().getDefaultColumnName();
 	}
 

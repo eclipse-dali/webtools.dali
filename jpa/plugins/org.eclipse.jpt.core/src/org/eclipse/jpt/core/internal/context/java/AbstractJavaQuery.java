@@ -99,6 +99,10 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 		addItemToList(index, hint, this.hints, Query.HINTS_LIST);
 	}
 	
+	protected void addHint(JavaQueryHint hint) {
+		addHint(this.hints.size(), hint);
+	}
+	
 	public void removeHint(QueryHint queryHint) {
 		removeHint(this.hints.indexOf(queryHint));
 	}
@@ -156,7 +160,7 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 		}
 		
 		while (resourceHints.hasNext()) {
-			addHint(hintsSize(), createQueryHint(resourceHints.next()));
+			addHint(createQueryHint(resourceHints.next()));
 		}
 	}
 

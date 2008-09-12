@@ -22,12 +22,16 @@ import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.ResourceModel;
+import org.eclipse.jpt.db.Catalog;
+import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.CallbackChangeSupport;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 
 /**
- * 
+ * some common Dali behavior:
+ *   - containment hierarchy
+ *   - update triggers
  */
 public abstract class AbstractJpaNode
 	extends AbstractModel
@@ -36,7 +40,7 @@ public abstract class AbstractJpaNode
 	private final JpaNode parent;
 
 
-	// ********** constructor **********
+	// ********** constructor/initialization **********
 
 	protected AbstractJpaNode(JpaNode parent) {
 		super();
@@ -78,7 +82,7 @@ public abstract class AbstractJpaNode
 	}
 
 
-	// ********** IJpaNode implementation **********
+	// ********** JpaNode implementation **********
 
 	public JpaNode getParent() {
 		return this.parent;
@@ -90,10 +94,6 @@ public abstract class AbstractJpaNode
 
 	public JpaProject getJpaProject() {
 		return this.parent.getJpaProject();
-	}
-
-	public String displayString() {
-		return this.toString();
 	}
 
 
@@ -115,14 +115,24 @@ public abstract class AbstractJpaNode
 		return this.getJpaProject().getDataSource();
 	}
 
-	public boolean connectionProfileIsActive() {
+	protected Database getDatabase() {
+		return this.getDataSource().getDatabase();
+	}
+
+	protected boolean connectionProfileIsActive() {
 		return this.getDataSource().connectionProfileIsActive();
 	}
 
+	/**
+	 * pre-condition: specified catalog name is not null
+	 */
+	protected Catalog getDbCatalog(String catalog) {
+		Database database = this.getDatabase();
+		return (database == null) ? null : database.getCatalogForIdentifier(catalog);
+	}
 
-	// ********** update model **********
 
-	private static final HashMap<Class<? extends AbstractJpaNode>, HashSet<String>> nonUpdateAspectNameSets = new HashMap<Class<? extends AbstractJpaNode>, HashSet<String>>();
+	// ********** CallbackChangeSupport.Source implementation **********
 
 	public void aspectChanged(String aspectName) {
 		if (this.aspectTriggersUpdate(aspectName)) {
@@ -150,6 +160,8 @@ public abstract class AbstractJpaNode
 			return nonUpdateAspectNames;
 		}
 	}
+
+	private static final HashMap<Class<? extends AbstractJpaNode>, HashSet<String>> nonUpdateAspectNameSets = new HashMap<Class<? extends AbstractJpaNode>, HashSet<String>>();
 
 	protected void addNonUpdateAspectNamesTo(@SuppressWarnings("unused") Set<String> nonUpdateAspectNames) {
 	// when you override this method, don't forget to include:

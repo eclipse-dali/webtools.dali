@@ -11,6 +11,7 @@ package org.eclipse.jpt.core;
 
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
@@ -21,8 +22,10 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -59,58 +62,104 @@ public interface JpaProject extends JpaNode {
 	 */
 	JpaPlatform getJpaPlatform();
 
-	/**
-	 * Return the project's connection
-	 */
-	ConnectionProfile getConnectionProfile();
-
-	/**
-	 * Return the primary schema associated with this project, which unless overridden, 
-	 * is the default schema from the connection
-	 * @see JpaProject#getUserOverrideDefaultSchema()
-	 * @return The default schema.  May be null if the connection is not connected.
-	 */
-	Schema getDefaultSchema();
 	
-	/**
-	 * Return the user specified schema to be used as a default for this project.
-	 * @see JpaProject#getUserOverrideDefaultSchemaName()
-	 * @return  The user specified default schema. May be null if the connection
-	 *   is not connected or if the user has not overridden the schema (implies 
-	 *   the default schema associated with the connection profile should be used).
-	 */
-	Schema getUserOverrideDefaultSchema();
+	// **************** database **********************
 	
 	/**
 	 * Return the data source the JPA project is mapped to.
 	 */
 	JpaDataSource getDataSource();
 	
+	/**
+	 * Return the project's connection.
+	 * The connection profile is null if the connection profile name is invalid.
+	 */
+	ConnectionProfile getConnectionProfile();
+
+	/**
+	 * Return the project's default database schema container
+	 * (either the project's default catalog or the project's database).
+	 */
+	SchemaContainer getDefaultDbSchemaContainer();
 	
-	// **************** user override default schema name **********************
+	/**
+	 * Return the project's default catalog:
+	 *   - the user override catalog
+	 *   - the database's default catalog
+	 */
+	String getDefaultCatalog();
+	
+	/**
+	 * Return the project's default database catalog.
+	 * @see #getDefaultCatalog()
+	 */
+	Catalog getDefaultDbCatalog();
+	
+	/**
+	 * Return the project's default schema:
+	 *   - the user override schema
+	 *   - the default catalog's default schema
+	 *   - the database's default schema
+	 */
+	String getDefaultSchema();
+	
+	/**
+	 * Return the project's default database schema.
+	 * @see #getDefaultSchema()
+	 */
+	Schema getDefaultDbSchema();
+	
+	
+	// **************** user override default catalog **********************
 	
 	/** 
-	 * ID string used when userOverrideDefaultSchemaName property is changed.
+	 * ID string used when userOverrideDefaultCatalog property is changed.
 	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
 	 */
-	String USER_OVERRIDE_DEFAULT_SCHEMA_NAME_PROPERTY = "userOverrideDefaultSchemaName"; //$NON-NLS-1$
+	String USER_OVERRIDE_DEFAULT_CATALOG_PROPERTY = "userOverrideDefaultCatalog"; //$NON-NLS-1$
+	
+	/**
+	 * Return the name of the catalog to be used as a default for the project
+	 * instead of the one that is associated by default with the connection profile.
+	 * @return The catalog name. May be null (implies that the connection profile
+	 *   default catalog should be used).
+	 */
+	String getUserOverrideDefaultCatalog();
+	
+	/**
+	 * Set the name of the catalog to be used as a default for the project
+	 * instead of the one that is associated by default with the connection profile.
+	 * @parameter catalog The default catalog name to use instead of
+	 *   the default catalog of the connection profile. May be null (implies that
+	 *   the connection profile default catalog should be used).
+	 */
+	void setUserOverrideDefaultCatalog(String catalog);
+
+
+	// **************** user override default schema **********************
+	
+	/** 
+	 * ID string used when userOverrideDefaultSchema property is changed.
+	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
+	 */
+	String USER_OVERRIDE_DEFAULT_SCHEMA_PROPERTY = "userOverrideDefaultSchema"; //$NON-NLS-1$
 	
 	/**
 	 * Return the name of the schema to be used as a default for the project
-	 * instead of the one that is defaultly associated with the connection profile.
+	 * instead of the one that is associated by default with the connection profile.
 	 * @return The schema name. May be null (implies that the connection profile
 	 *   default schema should be used).
 	 */
-	String getUserOverrideDefaultSchemaName();
+	String getUserOverrideDefaultSchema();
 	
 	/**
 	 * Set the name of the schema to be used as a default for the project
-	 * instead of the one that is defaultly associated with the connection profile.
-	 * @parameter defaultSchemaName - The default schema name to use instead of
+	 * instead of the one that is associated by default with the connection profile.
+	 * @parameter schema The default schema name to use instead of
 	 *   the default schema of the connection profile. May be null (implies that
 	 *   the connection profile default schema should be used).
 	 */
-	void setUserOverrideDefaultSchemaName(String defaultSchemaName);
+	void setUserOverrideDefaultSchema(String schema);
 	
 	
 	// **************** discover annotated classes *****************************
@@ -354,13 +403,20 @@ public interface JpaProject extends JpaNode {
 		 * connection profile.)
 		 */
 		String getConnectionProfileName();
-		
+
+		/**
+		 * Return the catalog to use instead of the connection profile's
+		 * default catalog.
+		 * May be null.
+		 */
+		String getUserOverrideDefaultCatalog();
+
 		/**
 		 * Return the name of the schema to use instead of the default schema
 		 * of the connection profile.
 		 * May be null.
 		 */
-		String getUserOverrideDefaultSchemaName();
+		String getUserOverrideDefaultSchema();
 
 		/**
 		 * Return whether the new JPA project is to "discover" annotated

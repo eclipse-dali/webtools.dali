@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
@@ -191,7 +192,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		this.entityResource = (EntityAnnotation) resourcePersistentType.getMappingAnnotation(EntityAnnotation.ANNOTATION_NAME);
 		
 		this.specifiedName = this.specifiedName(this.entityResource);
-		this.defaultName = this.defaultName(resourcePersistentType);
+		this.defaultName = this.buildDefaultName(resourcePersistentType);
 		this.defaultInheritanceStrategy = this.defaultInheritanceStrategy();
 		this.specifiedInheritanceStrategy = this.specifiedInheritanceStrategy(getResourceInheritance());
 		this.specifiedDiscriminatorValue = this.getResourceDiscriminatorValue().getValue();
@@ -336,8 +337,8 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	@Override
-	public String getTableName() {
-		return getTable().getName();
+	public String getPrimaryTableName() {
+		return this.getTable().getName();
 	}
 
 	@Override
@@ -350,7 +351,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	@Override
 	public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 		// the JPA platform searches database objects for us
-		return this.getDataSource().getDatabaseObjectNamed(
+		return this.getDataSource().selectDatabaseObjectForIdentifier(
 						CollectionTools.array(this.associatedDbTablesIncludingInherited(), EMPTY_DB_TABLE_ARRAY),
 						tableName
 					);
@@ -473,9 +474,17 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		fireItemAdded(Entity.SPECIFIED_SECONDARY_TABLES_LIST, index, secondaryTable);
 		return secondaryTable;
 	}
+
+	public JavaSecondaryTable addSpecifiedSecondaryTable() {
+		return this.addSpecifiedSecondaryTable(this.specifiedSecondaryTables.size());
+	}
 	
 	protected void addSpecifiedSecondaryTable(int index, JavaSecondaryTable secondaryTable) {
 		addItemToList(index, secondaryTable, this.specifiedSecondaryTables, Entity.SPECIFIED_SECONDARY_TABLES_LIST);
+	}
+	
+	protected void addSpecifiedSecondaryTable(JavaSecondaryTable secondaryTable) {
+		this.addSpecifiedSecondaryTable(this.specifiedSecondaryTables.size(), secondaryTable);
 	}
 	
 	public void removeSpecifiedSecondaryTable(SecondaryTable secondaryTable) {
@@ -728,6 +737,10 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		addItemToList(index, primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 		
+	protected void addSpecifiedPrimaryKeyJoinColumn(JavaPrimaryKeyJoinColumn primaryKeyJoinColumn) {
+		this.addSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumns.size(), primaryKeyJoinColumn);
+	}
+		
 	public void removeSpecifiedPrimaryKeyJoinColumn(PrimaryKeyJoinColumn primaryKeyJoinColumn) {
 		removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumns.indexOf(primaryKeyJoinColumn));
 	}
@@ -855,6 +868,10 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
+	protected void addSpecifiedAttributeOverride(JavaAttributeOverride attributeOverride) {
+		this.addSpecifiedAttributeOverride(this.specifiedAttributeOverrides.size(), attributeOverride);
+	}
+	
 	protected void removeSpecifiedAttributeOverride_(JavaAttributeOverride attributeOverride) {
 		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
@@ -965,6 +982,10 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		addItemToList(index, associationOverride, this.specifiedAssociationOverrides, Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
 	}
 	
+	protected void addSpecifiedAssociationOverride(JavaAssociationOverride associationOverride) {
+		this.addSpecifiedAssociationOverride(this.specifiedAssociationOverrides.size(), associationOverride);
+	}
+	
 	protected void removeSpecifiedAssociationOverride_(JavaAssociationOverride associationOverride) {
 		removeItemFromList(associationOverride, this.specifiedAssociationOverrides, Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
 	}
@@ -1059,6 +1080,10 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		addItemToList(index, namedQuery, this.namedQueries, QueryHolder.NAMED_QUERIES_LIST);
 	}
 	
+	protected void addNamedQuery(JavaNamedQuery namedQuery) {
+		this.addNamedQuery(this.namedQueries.size(), namedQuery);
+	}
+	
 	public void removeNamedQuery(NamedQuery namedQuery) {
 		removeNamedQuery(this.namedQueries.indexOf(namedQuery));
 	}
@@ -1098,6 +1123,10 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	protected void addNamedNativeQuery(int index, JavaNamedNativeQuery namedNativeQuery) {
 		addItemToList(index, namedNativeQuery, this.namedNativeQueries, QueryHolder.NAMED_NATIVE_QUERIES_LIST);
+	}
+	
+	protected void addNamedNativeQuery(JavaNamedNativeQuery namedNativeQuery) {
+		this.addNamedNativeQuery(this.namedNativeQueries.size(), namedNativeQuery);
 	}
 	
 	public void removeNamedNativeQuery(NamedNativeQuery namedNativeQuery) {
@@ -1165,9 +1194,9 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	public Entity getParentEntity() {
-		for (Iterator<PersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
-			TypeMapping typeMapping = i.next().getMapping();
-			if (typeMapping != this && typeMapping instanceof Entity) {
+		for (Iterator<PersistentType> stream = getPersistentType().ancestors(); stream.hasNext();) {
+			TypeMapping typeMapping = stream.next().getMapping();
+			if (typeMapping instanceof Entity) {
 				return (Entity) typeMapping;
 			}
 		}
@@ -1176,13 +1205,63 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 
 	public Entity getRootEntity() {
 		Entity rootEntity = this;
-		for (Iterator<PersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
-			PersistentType persistentType = i.next();
+		for (Iterator<PersistentType> stream = getPersistentType().inheritanceHierarchy(); stream.hasNext();) {
+			PersistentType persistentType = stream.next();
 			if (persistentType.getMapping() instanceof Entity) {
 				rootEntity = (Entity) persistentType.getMapping();
 			}
 		}
 		return rootEntity;
+	}
+
+	/**
+	 * Table name defaults to the entity name.
+	 * If the entity is part of a single table inheritance hierarchy, table
+	 * name defaults to the root entity's table name.
+	 */
+	public String getDefaultTableName() {
+		return this.isSingleTableDescendant() ?
+						this.getRootEntity().getTable().getName()
+					:
+						this.getName();
+	}
+
+	public String getDefaultSchema() {
+		return this.isSingleTableDescendant() ?
+						this.getRootEntity().getTable().getSchema()
+					:
+						this.getContextDefaultSchema();
+	}
+
+	public String getDefaultCatalog() {
+		return this.isSingleTableDescendant() ?
+						this.getRootEntity().getTable().getCatalog()
+					:
+						this.getContextDefaultCatalog();
+	}
+
+	/**
+	 * Return whether the entity is a descendant of the root entity
+	 * of a "single table" inheritance hierarchy.
+	 */
+	protected boolean isSingleTableDescendant() {
+		return (this.getInheritanceStrategy() == InheritanceType.SINGLE_TABLE)
+					&& this.isDescendant();
+	}
+	
+	/**
+	 * Return whether the entity is a descendant in (as opposed to the root of)
+	 * an inheritance hierarchy.
+	 */
+	protected boolean isDescendant() {
+		return ! this.isRoot();
+	}
+
+	/**
+	 * Return whether the entity is the top of an inheritance hierarchy.
+	 */
+	protected boolean isRoot() {
+		return this == this.getRootEntity();
 	}
 
 	public String getPrimaryKeyColumnName() {
@@ -1217,7 +1296,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 
 	@Override
 	public boolean tableNameIsInvalid(String tableName) {
-		return !CollectionTools.contains(this.associatedTableNamesIncludingInherited(), tableName);
+		return ! CollectionTools.contains(this.associatedTableNamesIncludingInherited(), tableName);
 	}
 
 	@Override
@@ -1326,7 +1405,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		this.entityResource = (EntityAnnotation) resourcePersistentType.getMappingAnnotation(EntityAnnotation.ANNOTATION_NAME);
 		
 		this.setSpecifiedName_(this.specifiedName(this.entityResource));
-		this.setDefaultName(this.defaultName(resourcePersistentType));
+		this.setDefaultName(this.buildDefaultName(resourcePersistentType));
 		
 		this.updateInheritance(getResourceInheritance());
 		this.updateDiscriminatorColumn(resourcePersistentType);
@@ -1352,7 +1431,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		return entityAnnotation.getName();
 	}
 	
-	protected String defaultName(JavaResourcePersistentType persistentTypeResource) {
+	protected String buildDefaultName(JavaResourcePersistentType persistentTypeResource) {
 		return persistentTypeResource.getName();
 	}
 
@@ -1370,10 +1449,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected InheritanceType defaultInheritanceStrategy() {
-		if (getRootEntity() == this) {
-			return InheritanceType.SINGLE_TABLE;
-		}
-		return getRootEntity().getInheritanceStrategy();
+		return this.isRoot() ? InheritanceType.SINGLE_TABLE : this.getRootEntity().getInheritanceStrategy();
 	}
 	
 	protected void updateDiscriminatorColumn(JavaResourcePersistentType persistentTypeResource) {
@@ -1428,7 +1504,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		}
 		
 		while (resourceSecondaryTables.hasNext()) {
-			addSpecifiedSecondaryTable(specifiedSecondaryTablesSize(), buildSecondaryTable((SecondaryTableAnnotation) resourceSecondaryTables.next()));
+			addSpecifiedSecondaryTable(buildSecondaryTable((SecondaryTableAnnotation) resourceSecondaryTables.next()));
 		}
 	}
 
@@ -1508,7 +1584,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		}
 		
 		while (resourcePrimaryKeyJoinColumns.hasNext()) {
-			addSpecifiedPrimaryKeyJoinColumn(specifiedPrimaryKeyJoinColumnsSize(), buildPrimaryKeyJoinColumn((PrimaryKeyJoinColumnAnnotation) resourcePrimaryKeyJoinColumns.next()));
+			addSpecifiedPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn((PrimaryKeyJoinColumnAnnotation) resourcePrimaryKeyJoinColumns.next()));
 		}
 	}
 	
@@ -1546,7 +1622,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		}
 		
 		while (resourceAttributeOverrides.hasNext()) {
-			addSpecifiedAttributeOverride(specifiedAttributeOverridesSize(), buildAttributeOverride((AttributeOverrideAnnotation) resourceAttributeOverrides.next()));
+			addSpecifiedAttributeOverride(buildAttributeOverride((AttributeOverrideAnnotation) resourceAttributeOverrides.next()));
 		}	
 	}
 	
@@ -1602,7 +1678,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		}
 		
 		while (resourceAssociationOverrides.hasNext()) {
-			addSpecifiedAssociationOverride(specifiedAssociationOverridesSize(), buildAssociationOverride((AssociationOverrideAnnotation) resourceAssociationOverrides.next()));
+			addSpecifiedAssociationOverride(buildAssociationOverride((AssociationOverrideAnnotation) resourceAssociationOverrides.next()));
 		}	
 	}
 	
@@ -1651,7 +1727,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		}
 		
 		while (resourceNamedQueries.hasNext()) {
-			addNamedQuery(namedQueriesSize(), buildNamedQuery((NamedQueryAnnotation) resourceNamedQueries.next()));
+			addNamedQuery(buildNamedQuery((NamedQueryAnnotation) resourceNamedQueries.next()));
 		}
 	}
 	
@@ -1670,7 +1746,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		}
 		
 		while (resourceNamedNativeQueries.hasNext()) {
-			addNamedNativeQuery(namedNativeQueriesSize(), buildNamedNativeQuery((NamedNativeQueryAnnotation) resourceNamedNativeQueries.next()));
+			addNamedNativeQuery(buildNamedNativeQuery((NamedNativeQueryAnnotation) resourceNamedNativeQueries.next()));
 		}	
 	}
 	
@@ -1888,7 +1964,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			return GenericJavaEntity.this.getDbTable(tableName);
 		}
 
-		public org.eclipse.jpt.db.Table getDbReferencedColumnTable() {
+		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
 			Entity parentEntity = GenericJavaEntity.this.getParentEntity();
 			return (parentEntity == null) ? null : parentEntity.getPrimaryDbTable();
 		}

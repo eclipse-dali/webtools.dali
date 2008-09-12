@@ -114,6 +114,10 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 		addItemToList(index, joinColumn, this.specifiedJoinColumns, AssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST);
 	}
 	
+	protected void addSpecifiedJoinColumn(OrmJoinColumn joinColumn) {
+		this.addSpecifiedJoinColumn(this.specifiedJoinColumns.size(), joinColumn);
+	}
+	
 	public void removeSpecifiedJoinColumn(int index) {
 		OrmJoinColumn removedJoinColumn = this.specifiedJoinColumns.remove(index);
 		this.resourceAssociationOverride.getJoinColumns().remove(index);
@@ -170,7 +174,7 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 		}
 		
 		while (resourceJoinColumns.hasNext()) {
-			addSpecifiedJoinColumn(specifiedJoinColumnsSize(), buildJoinColumn(resourceJoinColumns.next()));
+			addSpecifiedJoinColumn(buildJoinColumn(resourceJoinColumns.next()));
 		}
 	}
 	
@@ -194,7 +198,7 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 		 * by default, the join column is in the type mapping's primary table
 		 */
 		public String getDefaultTableName() {
-			return GenericOrmAssociationOverride.this.owner.getTypeMapping().getTableName();
+			return GenericOrmAssociationOverride.this.owner.getTypeMapping().getPrimaryTableName();
 		}
 		
 		public String getDefaultColumnName() {
@@ -233,7 +237,7 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 			return getTypeMapping().getDbTable(tableName);
 		}
 
-		public Table getDbReferencedColumnTable() {
+		public Table getReferencedColumnDbTable() {
 			Entity targetEntity = getTargetEntity();
 			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
 		}

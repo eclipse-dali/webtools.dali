@@ -33,6 +33,7 @@ public interface JavaEntity extends JavaTypeMapping, Entity, JavaGeneratorHolder
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaSecondaryTable> specifiedSecondaryTables();
 	JavaSecondaryTable addSpecifiedSecondaryTable(int index);
+	JavaSecondaryTable addSpecifiedSecondaryTable();
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns();

@@ -27,10 +27,9 @@ public interface Schema
 	extends DatabaseObject, Comparable<Schema>
 {
 	/**
-	 * Return the schema's catalog. Return null if the schema's database does
-	 * not support catalogs.
+	 * Return the schema's container; either a catalog or a database.
 	 */
-	Catalog getCatalog();
+	SchemaContainer getContainer();
 
 
 	// ********** tables **********
@@ -46,16 +45,24 @@ public interface Schema
 	int tablesSize();
 
 	/**
-	 * Return the names of the schema's tables.
+	 * Return the table with specified name. The name must be an exact match
+	 * of the table's name.
+	 * @see #getTableForIdentifier(String)
 	 */
-	Iterator<String> tableNames();
+	 Table getTableNamed(String name);
 
 	/**
-	 * Return the table with specified name. The name should be an SQL
-	 * identifier (i.e. quoted when case-sensitive, unquoted when
-	 * case-insensitive).
+	 * Return the schema's table identifiers, sorted by name.
 	 */
-	Table getTableNamed(String name);
+	Iterator<String> sortedTableIdentifiers();
+
+	/**
+	 * Return the table for the specified identifier. The identifier should
+	 * be an SQL identifier (i.e. quoted when case-sensitive or containing
+	 * special characters, unquoted otherwise).
+	 * @see #getTableNamed(String)
+	 */
+	Table getTableForIdentifier(String identifier);
 
 
 	// ********** sequences **********
@@ -71,15 +78,23 @@ public interface Schema
 	int sequencesSize();
 
 	/**
-	 * Return the names of the schema's sequences.
-	 */
-	Iterator<String> sequenceNames();
-
-	/**
-	 * Return the sequence with specified name. The name should be an SQL
-	 * identifier (i.e. quoted when case-sensitive, unquoted when
-	 * case-insensitive).
+	 * Return the sequence with specified name. The name must be an exact match
+	 * of the sequence's name.
+	 * @see #getSequenceForIdentifier(String)
 	 */
 	Sequence getSequenceNamed(String name);
+
+	/**
+	 * Return the schema's sequence identifers, sorted by name.
+	 */
+	Iterator<String> sortedSequenceIdentifiers();
+
+	/**
+	 * Return the sequence for the specified identifier. The identifier should
+	 * be an SQL identifier (i.e. quoted when case-sensitive or containing
+	 * special characters, unquoted otherwise).
+	 * @see #getSequenceNamed(String)
+	 */
+	Sequence getSequenceForIdentifier(String identifier);
 
 }

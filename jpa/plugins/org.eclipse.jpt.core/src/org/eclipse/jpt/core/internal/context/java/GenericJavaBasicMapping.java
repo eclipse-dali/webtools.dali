@@ -99,7 +99,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 	}
 
 	public String getDefaultTableName() {
-		return getTypeMapping().getTableName();
+		return getTypeMapping().getPrimaryTableName();
 	}
 	
 	//************** BasicMapping implementation ***************
@@ -283,33 +283,32 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages ,astRoot);
-		
-		addColumnMessages(messages, astRoot);
+		if (this.entityOwned() && this.connectionProfileIsActive()) {
+			this.addColumnMessages(messages, astRoot);
+		}
 	}
 	
 	protected void addColumnMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		JavaColumn column = this.getColumn();
-		String table = column.getTable();
-		boolean doContinue = entityOwned() && column.connectionProfileIsActive();
-		
-		if (doContinue && this.getTypeMapping().tableNameIsInvalid(table)) {
+		if (this.getTypeMapping().tableNameIsInvalid(this.column.getTable())) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
-						new String[] {table, column.getName()}, 
-						column, column.getTableTextRange(astRoot))
+						new String[] {this.column.getTable(), this.column.getName()}, 
+						this.column,
+						this.column.getTableTextRange(astRoot))
 				);
-			doContinue = false;
+			return;
 		}
 		
-		if (doContinue && ! column.isResolved()) {
+		if ( ! this.column.isResolved()) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-						new String[] {column.getName()}, 
-						column, column.getNameTextRange(astRoot))
+						new String[] {this.column.getName()}, 
+						this.column,
+						this.column.getNameTextRange(astRoot))
 				);
 		}
 	}

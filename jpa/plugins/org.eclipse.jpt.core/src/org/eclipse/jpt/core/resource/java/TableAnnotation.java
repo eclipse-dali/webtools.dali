@@ -22,21 +22,22 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface TableAnnotation extends JavaResourceNode
+public interface TableAnnotation
+	extends JavaResourceNode
 {
 	String ANNOTATION_NAME = JPA.TABLE;
 
 	String getName();
 	void setName(String name);
-		String NAME_PROPERTY = "nameProperty";
+		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 		
 	String getCatalog();
 	void setCatalog(String catalog);
-		String CATALOG_PROPERTY = "catalogProperty";
+		String CATALOG_PROPERTY = "catalog"; //$NON-NLS-1$
 
 	String getSchema();
 	void setSchema(String schema);
-		String SCHEMA_PROPERTY = "schemaProperty";
+		String SCHEMA_PROPERTY = "schema"; //$NON-NLS-1$
 	
 	ListIterator<UniqueConstraintAnnotation> uniqueConstraints();
 	
@@ -51,7 +52,7 @@ public interface TableAnnotation extends JavaResourceNode
 	void removeUniqueConstraint(int index);
 	
 	void moveUniqueConstraint(int targetIndex, int sourceIndex);
-		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraintsList";
+		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraints"; //$NON-NLS-1$
 
 	/**
 	 * Return the {@link TextRange} for the name element.  If the name element 
@@ -70,19 +71,19 @@ public interface TableAnnotation extends JavaResourceNode
 	 * does not exist return the {@link TextRange} for the *Table annotation.
 	 */
 	TextRange getSchemaTextRange(CompilationUnit astRoot);
-	
+
 	/**
 	 * Return whether the specified postition touches the name element.
 	 * Return false if the name element does not exist.
 	 */
 	boolean nameTouches(int pos, CompilationUnit astRoot);
-	
+
 	/**
 	 * Return whether the specified postition touches the schema element.
 	 * Return false if the name element does not exist.
 	 */
 	boolean schemaTouches(int pos, CompilationUnit astRoot);
-	
+
 	/**
 	 * Return whether the specified postition touches the catalog element.
 	 * Return false if the name element does not exist.

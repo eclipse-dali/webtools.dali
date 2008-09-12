@@ -10,15 +10,17 @@
 package org.eclipse.jpt.ui.internal.orm.details;
 
 import java.util.Collection;
+
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -191,6 +193,12 @@ public class PersistenceUnitMetadataComposite extends FormPane<PersistenceUnitMe
 			protected String getValue() {
 				return getSubject().getSpecifiedSchema();
 			}
+
+			@Override
+			protected SchemaContainer getDbSchemaContainer_() {
+				return this.getSubject().getDbSchemaContainer();
+			}
+
 		};
 	}
 

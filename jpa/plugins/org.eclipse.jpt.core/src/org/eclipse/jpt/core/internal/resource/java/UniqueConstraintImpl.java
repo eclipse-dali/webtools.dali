@@ -84,7 +84,7 @@ public class UniqueConstraintImpl extends AbstractResourceAnnotation<Member> imp
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		UniqueConstraintAnnotation oldUniqueConstraint = (UniqueConstraintAnnotation) oldAnnotation;
 		for (String columnName : CollectionTools.iterable(oldUniqueConstraint.columnNames())) {
-			addColumnName(columnNamesSize(), columnName);
+			addColumnName(columnName);
 		}
 	}
 	
@@ -103,6 +103,10 @@ public class UniqueConstraintImpl extends AbstractResourceAnnotation<Member> imp
 	public void addColumnName(int index, String columnName) {
 		addColumnName_(index, columnName);
 		this.columnNamesAdapter.setValue(this.columnNames.toArray(new String[this.columnNames.size()]));
+	}
+	
+	protected void addColumnName_(String columnName) {
+		this.addColumnName_(this.columnNames.size(), columnName);
 	}
 	
 	protected void addColumnName_(int index, String columnName) {
@@ -139,7 +143,7 @@ public class UniqueConstraintImpl extends AbstractResourceAnnotation<Member> imp
 		for (int i = 0; i < javaColumnNames.length; i++) {
 			String columnName = javaColumnNames[i];
 			if (!this.columnNames.contains(columnName)) {
-				addColumnName_(columnNamesSize(), columnName);
+				addColumnName_(columnName);
 			}
 		}
 	}

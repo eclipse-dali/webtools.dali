@@ -15,9 +15,16 @@ import org.eclipse.jpt.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlGenerator;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.db.Catalog;
+import org.eclipse.jpt.db.Database;
+import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
 
-
-public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends AbstractOrmJpaContextNode 
+/**
+ * 
+ */
+public abstract class AbstractOrmGenerator<T extends XmlGenerator>
+	extends AbstractOrmJpaContextNode 
 	implements OrmGenerator
 {
 
@@ -31,138 +38,105 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 
 	protected T resourceGenerator;
 
+
 	protected AbstractOrmGenerator(OrmJpaContextNode parent) {
 		super(parent);
-	}
-
-	public boolean isVirtual() {
-		return getResourceGenerator().isVirtual();
-	}
-	
-	@Override
-	public OrmJpaContextNode getParent() {
-		return (OrmJpaContextNode) super.getParent();
-	}
-	
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		getResourceGenerator().setName(newName);
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
-	}
-	
-	protected void setName_(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
-	}
-
-	public Integer getInitialValue() {
-		return (this.getSpecifiedInitialValue() == null) ? this.getDefaultInitialValue() : this.getSpecifiedInitialValue();
-	}
-
-	public Integer getSpecifiedInitialValue() {
-		return this.specifiedInitialValue;
-	}
-
-	public void setSpecifiedInitialValue(Integer newSpecifiedInitialValue) {
-		Integer oldSpecifiedInitialValue = this.specifiedInitialValue;
-		this.specifiedInitialValue = newSpecifiedInitialValue;
-		getResourceGenerator().setInitialValue(newSpecifiedInitialValue);
-		firePropertyChanged(SPECIFIED_INITIAL_VALUE_PROPERTY, oldSpecifiedInitialValue, newSpecifiedInitialValue);
-	}
-	
-	protected void setSpecifiedInitialValue_(Integer newSpecifiedInitialValue) {
-		Integer oldSpecifiedInitialValue = this.specifiedInitialValue;
-		this.specifiedInitialValue = newSpecifiedInitialValue;
-		firePropertyChanged(SPECIFIED_INITIAL_VALUE_PROPERTY, oldSpecifiedInitialValue, newSpecifiedInitialValue);
-	}
-	
-	public Integer getDefaultInitialValue() {
-		return this.defaultInitialValue;
-	}
-	
-	protected void setDefaultInitialValue(Integer newDefaultInitialValue) {
-		Integer oldSpecifiedInitialValue = this.defaultInitialValue;
-		this.defaultInitialValue = newDefaultInitialValue;
-		firePropertyChanged(DEFAULT_INITIAL_VALUE_PROPERTY, oldSpecifiedInitialValue, newDefaultInitialValue);
-	}
-	
-	public Integer getAllocationSize() {
-		return (this.getSpecifiedAllocationSize() == null) ? this.getDefaultAllocationSize() : this.getSpecifiedAllocationSize();
-	}
-
-	public Integer getSpecifiedAllocationSize() {
-		return this.specifiedAllocationSize;
-	}
-
-	public void setSpecifiedAllocationSize(Integer newSpecifiedAllocationSize) {
-		Integer oldSpecifiedAllocationSize = this.specifiedAllocationSize;
-		this.specifiedAllocationSize = newSpecifiedAllocationSize;
-		getResourceGenerator().setAllocationSize(newSpecifiedAllocationSize);
-		firePropertyChanged(SPECIFIED_ALLOCATION_SIZE_PROPERTY, oldSpecifiedAllocationSize, newSpecifiedAllocationSize);
-	}
-	
-	protected void setSpecifiedAllocationSize_(Integer newSpecifiedAllocationSize) {
-		Integer oldSpecifiedAllocationSize = this.specifiedAllocationSize;
-		this.specifiedAllocationSize = newSpecifiedAllocationSize;
-		firePropertyChanged(SPECIFIED_ALLOCATION_SIZE_PROPERTY, oldSpecifiedAllocationSize, newSpecifiedAllocationSize);
-	}
-
-	public Integer getDefaultAllocationSize() {
-		return this.defaultAllocationSize;
-	}
-	
-	protected void setDefaultAllocationSize(Integer newDefaultAllocationSize) {
-		Integer oldSpecifiedAllocationSize = this.defaultAllocationSize;
-		this.defaultAllocationSize = newDefaultAllocationSize;
-		firePropertyChanged(DEFAULT_ALLOCATION_SIZE_PROPERTY, oldSpecifiedAllocationSize, newDefaultAllocationSize);
-	}
-
-	
-	protected void initialize(T resourceGenerator) {
-		this.resourceGenerator = resourceGenerator;
-		this.name = this.name(resourceGenerator);
-		this.specifiedInitialValue = this.specifiedInitialValue(resourceGenerator);
-		this.specifiedAllocationSize = this.specifiedAllocationSize(resourceGenerator);
-		//TODO defaults
-	}
-	
-	protected void update(T resourceGenerator) {
-		this.resourceGenerator = resourceGenerator;
-		this.setName_(this.name(resourceGenerator));
-		this.setSpecifiedInitialValue_(this.specifiedInitialValue(resourceGenerator));
-		this.setSpecifiedAllocationSize_(this.specifiedAllocationSize(resourceGenerator));
-		//TODO defaults
-	}
-	
-	public boolean overrides(Generator generator) {
-		if (getName() == null) {
-			return false;
-		}
-		// this isn't ideal, but it will have to do until we have further adopter input
-		return this.getName().equals(generator.getName()) && generator instanceof JavaGenerator;
 	}
 
 	protected T getResourceGenerator() {
 		return this.resourceGenerator;
 	}
 	
-	protected String name(XmlGenerator generatorResource) {
-		return generatorResource.getName();
+
+	// ********** name **********
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		String old = this.name;
+		this.name = name;
+		this.getResourceGenerator().setName(name);
+		this.firePropertyChanged(NAME_PROPERTY, old, name);
 	}
 	
-	protected Integer specifiedInitialValue(XmlGenerator generatorResource) {
-		return generatorResource.getInitialValue();
+	protected void setName_(String name) {
+		String old = this.name;
+		this.name = name;
+		this.firePropertyChanged(NAME_PROPERTY, old, name);
+	}
+
+
+	// ********** initial value **********
+
+	public Integer getInitialValue() {
+		return (this.specifiedInitialValue != null) ? this.specifiedInitialValue : this.defaultInitialValue;
+	}
+
+	public Integer getSpecifiedInitialValue() {
+		return this.specifiedInitialValue;
+	}
+
+	public void setSpecifiedInitialValue(Integer specifiedInitialValue) {
+		Integer old = this.specifiedInitialValue;
+		this.specifiedInitialValue = specifiedInitialValue;
+		this.getResourceGenerator().setInitialValue(specifiedInitialValue);
+		this.firePropertyChanged(SPECIFIED_INITIAL_VALUE_PROPERTY, old, specifiedInitialValue);
 	}
 	
-	protected Integer specifiedAllocationSize(XmlGenerator generatorResource) {
-		return generatorResource.getAllocationSize();
+	protected void setSpecifiedInitialValue_(Integer specifiedInitialValue) {
+		Integer old = this.specifiedInitialValue;
+		this.specifiedInitialValue = specifiedInitialValue;
+		this.firePropertyChanged(SPECIFIED_INITIAL_VALUE_PROPERTY, old, specifiedInitialValue);
 	}
+	
+	public Integer getDefaultInitialValue() {
+		return this.defaultInitialValue;
+	}
+	
+	protected void setDefaultInitialValue(Integer defaultInitialValue) {
+		Integer old = this.defaultInitialValue;
+		this.defaultInitialValue = defaultInitialValue;
+		this.firePropertyChanged(DEFAULT_INITIAL_VALUE_PROPERTY, old, defaultInitialValue);
+	}
+	
+
+	// ********** allocation size **********
+
+	public Integer getAllocationSize() {
+		return (this.specifiedAllocationSize != null) ? this.specifiedAllocationSize : this.defaultAllocationSize;
+	}
+
+	public Integer getSpecifiedAllocationSize() {
+		return this.specifiedAllocationSize;
+	}
+
+	public void setSpecifiedAllocationSize(Integer specifiedAllocationSize) {
+		Integer old = this.specifiedAllocationSize;
+		this.specifiedAllocationSize = specifiedAllocationSize;
+		this.getResourceGenerator().setAllocationSize(specifiedAllocationSize);
+		this.firePropertyChanged(SPECIFIED_ALLOCATION_SIZE_PROPERTY, old, specifiedAllocationSize);
+	}
+	
+	protected void setSpecifiedAllocationSize_(Integer specifiedAllocationSize) {
+		Integer old = this.specifiedAllocationSize;
+		this.specifiedAllocationSize = specifiedAllocationSize;
+		this.firePropertyChanged(SPECIFIED_ALLOCATION_SIZE_PROPERTY, old, specifiedAllocationSize);
+	}
+
+	public Integer getDefaultAllocationSize() {
+		return this.defaultAllocationSize;
+	}
+	
+	protected void setDefaultAllocationSize(Integer defaultAllocationSize) {
+		Integer old = this.defaultAllocationSize;
+		this.defaultAllocationSize = defaultAllocationSize;
+		this.firePropertyChanged(DEFAULT_ALLOCATION_SIZE_PROPERTY, old, defaultAllocationSize);
+	}
+
+
+	// ********** text ranges **********
 
 	public TextRange getValidationTextRange() {
 		TextRange validationTextRange = this.getResourceGenerator().getValidationTextRange();
@@ -173,4 +147,80 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 		TextRange nameTextRange = this.getResourceGenerator().getNameTextRange();
 		return nameTextRange != null ? nameTextRange : getValidationTextRange();
 	}
+
+
+	// ********** resource => context **********
+
+	protected void initialize(T xmlResourceGenerator) {
+		this.resourceGenerator = xmlResourceGenerator;
+		this.name = xmlResourceGenerator.getName();
+		this.specifiedInitialValue = xmlResourceGenerator.getInitialValue();
+		this.specifiedAllocationSize = xmlResourceGenerator.getAllocationSize();
+		//TODO defaults
+	}
+	
+	protected void update(T xmlResourceGenerator) {
+		this.resourceGenerator = xmlResourceGenerator;
+		this.setName_(xmlResourceGenerator.getName());
+		this.setSpecifiedInitialValue_(xmlResourceGenerator.getInitialValue());
+		this.setSpecifiedAllocationSize_(xmlResourceGenerator.getAllocationSize());
+		//TODO defaults
+	}
+	
+
+	// ********** database stuff **********
+
+	public Schema getDbSchema() {
+		SchemaContainer dbSchemaContainer = this.getDbSchemaContainer();
+		return (dbSchemaContainer == null) ? null : dbSchemaContainer.getSchemaForIdentifier(this.getSchema());
+	}
+
+	/**
+	 * If we don't have a catalog (i.e. we don't even have a *default* catalog),
+	 * then the database probably does not support catalogs; and we need to
+	 * get the schema directly from the database.
+	 */
+	public SchemaContainer getDbSchemaContainer() {
+		String catalog = this.getCatalog();
+		return (catalog != null) ? this.getDbCatalog(catalog) : this.getDatabase();
+	}
+
+	protected abstract String getSchema();
+
+	public Catalog getDbCatalog() {
+		String catalog = this.getCatalog();
+		if (catalog == null) {
+			return null;  // not even a default catalog (i.e. database probably does not support catalogs)
+		}
+		return this.getDbCatalog(catalog);
+	}
+
+	protected abstract String getCatalog();
+
+
+	// ********** misc **********
+
+	public boolean isVirtual() {
+		return getResourceGenerator().isVirtual();
+	}
+	
+	@Override
+	public OrmJpaContextNode getParent() {
+		return (OrmJpaContextNode) super.getParent();
+	}
+	
+	public boolean overrides(Generator generator) {
+		if (getName() == null) {
+			return false;
+		}
+		// this isn't ideal, but it will have to do until we have further adopter input
+		return this.getName().equals(generator.getName()) && generator instanceof JavaGenerator;
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(this.name);
+	}
+
 }

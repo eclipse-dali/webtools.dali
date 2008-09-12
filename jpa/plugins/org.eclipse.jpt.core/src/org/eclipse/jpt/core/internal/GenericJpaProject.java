@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -41,8 +42,11 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
+import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionProfile;
+import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -78,9 +82,14 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	protected final JpaDataSource dataSource;
 	
 	/**
-	 * A schema name used to override the connection's default schema
+	 * A catalog name used to override the connection's default catalog.
 	 */
-	protected String userOverrideDefaultSchemaName;
+	protected String userOverrideDefaultCatalog;
+
+	/**
+	 * A schema name used to override the connection's default schema.
+	 */
+	protected String userOverrideDefaultSchema;
 
 	/**
 	 * Flag indicating whether the project should "discover" annotated
@@ -139,7 +148,8 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		this.project = config.getProject();
 		this.jpaPlatform = config.getJpaPlatform();
 		this.dataSource = this.getJpaFactory().buildJpaDataSource(this, config.getConnectionProfileName());
-		this.userOverrideDefaultSchemaName = config.getUserOverrideDefaultSchemaName();
+		this.userOverrideDefaultCatalog = config.getUserOverrideDefaultCatalog();
+		this.userOverrideDefaultSchema = config.getUserOverrideDefaultSchema();
 		this.discoversAnnotatedClasses = config.discoverAnnotatedClasses();
 		this.jpaFiles = this.buildEmptyJpaFiles();
 
@@ -242,6 +252,9 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		return this.jpaPlatform;
 	}
 
+
+	// ********** database **********
+
 	@Override
 	public JpaDataSource getDataSource() {
 		return this.dataSource;
@@ -251,27 +264,96 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		return this.dataSource.getConnectionProfile();
 	}
 
-	public Schema getDefaultSchema() {
-		Schema schema = this.getUserOverrideDefaultSchema();
-		return (schema != null) ? schema : this.getDataSource().getDefaultSchema();
+	public Catalog getDefaultDbCatalog() {
+		String catalog = this.getDefaultCatalog();
+		return (catalog == null) ? null : this.getDbCatalog(catalog);
+	}
+
+	public String getDefaultCatalog() {
+		String catalog = this.getUserOverrideDefaultCatalog();
+		return (catalog != null) ? catalog : this.getDatabaseDefaultCatalog();
+	}
+
+	protected String getDatabaseDefaultCatalog() {
+		Catalog dbCatalog = this.getDatabaseDefaultDbCatalog();
+		return (dbCatalog == null ) ? null : dbCatalog.getIdentifier();
+	}
+
+	protected Catalog getDatabaseDefaultDbCatalog() {
+		Database db = this.getDatabase();
+		return (db == null ) ? null : db.getDefaultCatalog();
+	}
+
+	/**
+	 * If we don't have a catalog (i.e. we don't even have a *default* catalog),
+	 * then the database probably does not support catalogs; and we need to
+	 * get the schema directly from the database.
+	 */
+	public SchemaContainer getDefaultDbSchemaContainer() {
+		String catalog = this.getDefaultCatalog();
+		return (catalog != null) ? this.getDbCatalog(catalog) : this.getDatabase();
+	}
+
+	public Schema getDefaultDbSchema() {
+		SchemaContainer sc = this.getDefaultDbSchemaContainer();
+		return (sc == null) ? null : sc.getSchemaForIdentifier(this.getDefaultSchema());
+	}
+
+	public String getDefaultSchema() {
+		String schema = this.getUserOverrideDefaultSchema();
+		if (schema != null) {
+			return schema;
+		}
+		String catalog = this.getDefaultCatalog();
+		if (catalog != null) {
+			Catalog dbCatalog = this.getDbCatalog(catalog);
+			if (dbCatalog != null) {
+				Schema dbSchema = dbCatalog.getDefaultSchema();
+				if (dbSchema != null) {
+					return dbSchema.getIdentifier();
+				}
+			}
+		}
+		// if there is no default catalog,
+		// the database probably does not support catalogs;
+		// return the database's default schema
+		return this.getDatabaseDefaultSchema();
+	}
+
+	protected String getDatabaseDefaultSchema() {
+		Schema schema = this.getDatabaseDefaultDbSchema();
+		return (schema == null ) ? null : schema.getIdentifier();
+	}
+
+	protected Schema getDatabaseDefaultDbSchema() {
+		Database db = this.getDatabase();
+		return (db == null ) ? null : db.getDefaultSchema();
+	}
+
+
+	// **************** user override default catalog **********************
+	
+	public String getUserOverrideDefaultCatalog() {
+		return this.userOverrideDefaultCatalog;
 	}
 	
-	public Schema getUserOverrideDefaultSchema() {
-		return (this.userOverrideDefaultSchemaName == null) ? null : this.getDataSource().getSchemaNamed(this.userOverrideDefaultSchemaName);
+	public void setUserOverrideDefaultCatalog(String catalog) {
+		String old = this.userOverrideDefaultCatalog;
+		this.userOverrideDefaultCatalog = catalog;
+		this.firePropertyChanged(USER_OVERRIDE_DEFAULT_CATALOG_PROPERTY, old, catalog);
 	}
 	
 	
-	// **************** user override default schema name **********************
+	// **************** user override default schema **********************
 	
-	public String getUserOverrideDefaultSchemaName() {
-		return this.userOverrideDefaultSchemaName;
+	public String getUserOverrideDefaultSchema() {
+		return this.userOverrideDefaultSchema;
 	}
 	
-	public void setUserOverrideDefaultSchemaName(String newDefaultSchemaName) {
-		String oldDefaultSchemaName = this.userOverrideDefaultSchemaName;
-		this.userOverrideDefaultSchemaName = newDefaultSchemaName;
-		this.firePropertyChanged(USER_OVERRIDE_DEFAULT_SCHEMA_NAME_PROPERTY, 
-				oldDefaultSchemaName, newDefaultSchemaName);
+	public void setUserOverrideDefaultSchema(String schema) {
+		String old = this.userOverrideDefaultSchema;
+		this.userOverrideDefaultSchema = schema;
+		this.firePropertyChanged(USER_OVERRIDE_DEFAULT_SCHEMA_PROPERTY, old, schema);
 	}
 	
 	
@@ -458,13 +540,6 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		return messages.iterator();
 	}
 	
-	/* If this is true, it may be assumed that all the requirements are valid 
-	 * for further validation.  For example, if this is true at the point we
-	 * are validating persistence units, it may be assumed that there is a 
-	 * single persistence.xml and that it has valid content down to the 
-	 * persistence unit level.  */
-	private boolean okToContinueValidation = true;
-	
 	public void addToMessages(List<IMessage> messages) {
 		//start with the project - then down
 		//project validation
@@ -475,65 +550,51 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	}
 
 	protected void addProjectLevelMessages(List<IMessage> messages) {
-		addConnectionMessages(messages);
-		addMultiplePersistenceXmlMessage(messages);
+		this.checkConnection(messages);
+		this.checkForMultiplePersistenceXml(messages);
 	}
-	
-	protected void addConnectionMessages(List<IMessage> messages) {
-		addNoConnectionMessage(messages);
-		addInvalidConnectionMessage(messages);
-		addInactiveConnectionMessage(messages);
-	}
-	
-	protected boolean okToProceedForConnectionValidation = true;
-	
-	protected void addNoConnectionMessage(List<IMessage> messages) {
-		if (StringTools.stringIsEmpty(this.getDataSource().getConnectionProfileName())) {
+
+	protected void checkConnection(List<IMessage> messages) {
+		String cpName = this.dataSource.getConnectionProfileName();
+		ConnectionProfile cp = this.dataSource.getConnectionProfile();
+		if (StringTools.stringIsEmpty(cpName)) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
 						JpaValidationMessages.PROJECT_NO_CONNECTION,
-						this)
+						this
+					)
 				);
-			okToProceedForConnectionValidation = false;
-		}
-	}
-	
-	protected void addInvalidConnectionMessage(List<IMessage> messages) {
-		if (okToProceedForConnectionValidation && this.getDataSource().getConnectionProfile() == null) {
+		} else if (cp == null) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
 						JpaValidationMessages.PROJECT_INVALID_CONNECTION,
-						new String[] {this.getDataSource().getConnectionProfileName()},
-						this)
+						new String[] {cpName},
+						this
+					)
 				);
-			okToProceedForConnectionValidation = false;
-		}
-	}
-	
-	protected void addInactiveConnectionMessage(List<IMessage> messages) {
-		if (okToProceedForConnectionValidation && ! this.getDataSource().connectionProfileIsActive()) {
+		} else if (cp.isInactive()) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
 						JpaValidationMessages.PROJECT_INACTIVE_CONNECTION,
-						new String[] {this.getDataSource().getConnectionProfileName()},
-						this)
+						new String[] {cpName},
+						this
+					)
 				);
 		}
-		okToProceedForConnectionValidation = true;
 	}
 	
-	protected void addMultiplePersistenceXmlMessage(@SuppressWarnings("unused") List<IMessage> messages) {
+	protected void checkForMultiplePersistenceXml(@SuppressWarnings("unused") List<IMessage> messages) {
 //		if (validPersistenceXmlFiles.size() > 1) {
 //			messages.add(
 //					JpaValidationMessages.buildMessage(
 //						IMessage.HIGH_SEVERITY,
 //						IJpaValidationMessages.PROJECT_MULTIPLE_PERSISTENCE_XML,
-//						jpaProject)
+//						jpaProject
+//					)
 //				);
-//			okToContinueValidation = false;
 //		}
 	}
 	

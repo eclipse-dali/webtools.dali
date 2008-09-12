@@ -51,11 +51,6 @@ final class DTPCatalogWrapper
 	}
 
 	@Override
-	DTPCatalogWrapper getCatalog() {
-		return this;
-	}
-
-	@Override
 	DTPSchemaWrapper getSchema(org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema) {
 		return this.wraps(dtpSchema.getCatalog()) ?
 						this.getSchema_(dtpSchema)

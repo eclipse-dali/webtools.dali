@@ -27,15 +27,15 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public interface PersistentType extends JpaContextNode, JpaStructureNode
 {
 	String getName();
-		String NAME_PROPERTY = "nameProperty";
+		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	
 	AccessType getAccess();
-		String ACCESS_PROPERTY = "accessProperty";
+		String ACCESS_PROPERTY = "access"; //$NON-NLS-1$
 		
 	TypeMapping getMapping();
 	String getMappingKey();
 	void setMappingKey(String key);
-		String MAPPING_PROPERTY = "mappingProperty";
+		String MAPPING_PROPERTY = "mapping"; //$NON-NLS-1$
 
 	boolean isMapped();
 	
@@ -60,7 +60,7 @@ public interface PersistentType extends JpaContextNode, JpaStructureNode
 	 * The parentPersistentType could be found in java or xml.
 	 */
 	PersistentType getParentPersistentType();
-		String PARENT_PERSISTENT_TYPE_PROPERTY = "parentPersistentTypeProperty";
+		String PARENT_PERSISTENT_TYPE_PROPERTY = "parentPersistentType"; //$NON-NLS-1$
 
 	/**
 	 * Return a read-only iterator of the contained {@link PersistentAttribute}
@@ -72,7 +72,7 @@ public interface PersistentType extends JpaContextNode, JpaStructureNode
 	 * @return
 	 */
 	int attributesSize();
-		String SPECIFIED_ATTRIBUTES_LIST = "specifiedAttributesList";
+		String SPECIFIED_ATTRIBUTES_LIST = "specifiedAttributes"; //$NON-NLS-1$
 	
 	Iterator<String> attributeNames();
 
@@ -96,7 +96,15 @@ public interface PersistentType extends JpaContextNode, JpaStructureNode
 	 */
 	PersistentAttribute resolveAttribute(String attributeName);
 
+	/**
+	 * Includes the present persistent type.
+	 */
 	Iterator<PersistentType> inheritanceHierarchy();
+	
+	/**
+	 * Excludes the present persistent type.
+	 */
+	Iterator<PersistentType> ancestors();
 	
 	
 	// **************** validation **************************************

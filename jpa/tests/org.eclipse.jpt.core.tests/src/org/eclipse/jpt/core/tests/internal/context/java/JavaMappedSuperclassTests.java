@@ -123,7 +123,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		assertFalse(overridableAssociationNames.hasNext());
 	}
 	
-	public void testTableNameIsInvalid() throws Exception {
+	public void testTableIdentifierIsInvalid() throws Exception {
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
@@ -151,7 +151,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		assertFalse(mappedSuperclass.associatedTablesIncludingInherited().hasNext());
 	}
 	
-	public void testAssociatedTableNamesIncludingInherited() throws Exception {
+	public void testAssociatedTableIdentifiersIncludingInherited() throws Exception {
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 

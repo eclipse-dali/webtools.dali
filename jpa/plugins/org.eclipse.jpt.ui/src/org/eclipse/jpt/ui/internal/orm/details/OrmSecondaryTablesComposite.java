@@ -180,7 +180,7 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 	@Override
 	protected SecondaryTableDialog buildSecondaryTableDialogForAdd() {
 		//defaultSchema and defaultCatalog should not be taken from the Table in this case.  The table default schema could be what is the specified schema on the java table.
-		return new SecondaryTableDialog(getControl().getShell(), getSubject().getJpaProject(), getSubject().getEntityMappings().getDefaultSchema(), getSubject().getEntityMappings().getDefaultCatalog());
+		return new SecondaryTableDialog(getControl().getShell(), getSubject().getJpaProject(), getSubject().getEntityMappings().getDefaultCatalog(), getSubject().getEntityMappings().getDefaultSchema());
 	}
 
 	private class DefineInXmlHolder extends ListPropertyValueModelAdapter<Boolean>

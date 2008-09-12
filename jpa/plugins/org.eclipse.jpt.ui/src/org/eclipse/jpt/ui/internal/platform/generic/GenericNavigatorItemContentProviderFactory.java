@@ -105,7 +105,7 @@ public class GenericNavigatorItemContentProviderFactory
 						new TransformationListValueModelAdapter<MappingFileRef, OrmXml>(
 							new ItemPropertyListValueModelAdapter<MappingFileRef>(
 								new ListAspectAdapter<PersistenceUnit, MappingFileRef>(
-										PersistenceUnit.SPECIFIED_MAPPING_FILE_REF_LIST,
+										PersistenceUnit.SPECIFIED_MAPPING_FILE_REFS_LIST,
 										model()) {
 									@Override
 									protected ListIterator<MappingFileRef> listIterator_() {
@@ -185,7 +185,7 @@ public class GenericNavigatorItemContentProviderFactory
 		
 		private ListValueModel<ClassRef> buildSpecifiedClassRefLvm() {
 			return new ListAspectAdapter<PersistenceUnit, ClassRef>(
-				PersistenceUnit.SPECIFIED_CLASS_REF_LIST, model()) {
+				PersistenceUnit.SPECIFIED_CLASS_REFS_LIST, model()) {
 					@Override
 					protected ListIterator<ClassRef> listIterator_() {
 						return subject.specifiedClassRefs();
@@ -199,7 +199,7 @@ public class GenericNavigatorItemContentProviderFactory
 		
 		private ListValueModel<ClassRef> buildImpliedClassRefLvm() {
 			return new ListAspectAdapter<PersistenceUnit, ClassRef>(
-				PersistenceUnit.IMPLIED_CLASS_REF_LIST, model()) {
+				PersistenceUnit.IMPLIED_CLASS_REFS_LIST, model()) {
 					@Override
 					protected ListIterator<ClassRef> listIterator_() {
 						return subject.impliedClassRefs();

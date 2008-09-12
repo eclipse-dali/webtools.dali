@@ -273,9 +273,9 @@ final class DTPForeignKeyWrapper
 	 *     ForeignKey(Foo_ID => ID) vs. "foo" => "Foo_ID"
 	 */
 	public String getJoinColumnAnnotationIdentifier(String attributeName) {
-		String defaultBaseColumnName = attributeName + '_' + this.getReferencedTable().getPrimaryKeyColumn().getName();
 		String baseColumnName = this.getColumnPair().getBaseColumn().getName();
-		return this.getAnnotationIdentifier(defaultBaseColumnName, baseColumnName);
+		String defaultBaseColumnName = attributeName + '_' + this.getReferencedTable().getPrimaryKeyColumn().getName();
+		return this.getDatabase().convertNameToIdentifier(baseColumnName, defaultBaseColumnName);
 	}
 
 

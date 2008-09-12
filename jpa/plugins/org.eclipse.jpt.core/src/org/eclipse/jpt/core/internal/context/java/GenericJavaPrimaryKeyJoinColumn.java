@@ -95,33 +95,20 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 
 	@Override
 	protected String getTableName() {
-		return this.getOwner().getTypeMapping().getTableName();
+		return this.getOwner().getTypeMapping().getPrimaryTableName();
 	}
 
-	public Column getDbReferencedColumn() {
-		Table table = this.getDbReferencedColumnTable();
-		return (table == null) ? null : table.getColumnNamed(this.getReferencedColumnName());
+	public Column getReferencedDbColumn() {
+		Table table = this.getReferencedColumnDbTable();
+		return (table == null) ? null : table.getColumnForIdentifier(this.getReferencedColumnName());
 	}
 
-	public Table getDbReferencedColumnTable() {
-		return getOwner().getDbReferencedColumnTable();
+	protected Table getReferencedColumnDbTable() {
+		return getOwner().getReferencedColumnDbTable();
 	}
 
 	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
 		return this.getResourceColumn().referencedColumnNameTouches(pos, astRoot);
-	}
-
-	private Iterator<String> candidateReferencedColumnNames() {
-		Table table = this.getOwner().getDbReferencedColumnTable();
-		return (table != null) ? table.columnNames() : EmptyIterator.<String> instance();
-	}
-
-	private Iterator<String> candidateReferencedColumnNames(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateReferencedColumnNames(), filter);
-	}
-
-	private Iterator<String> quotedCandidateReferencedColumnNames(Filter<String> filter) {
-		return StringTools.quote(this.candidateReferencedColumnNames(filter));
 	}
 
 	@Override
@@ -131,13 +118,26 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 			return result;
 		}
 		if (this.referencedColumnNameTouches(pos, astRoot)) {
-			return this.quotedCandidateReferencedColumnNames(filter);
+			return this.javaCandidateReferencedColumnNames(filter);
 		}
 		return null;
 	}
 
+	private Iterator<String> javaCandidateReferencedColumnNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.candidateReferencedColumnNames(filter));
+	}
+
+	private Iterator<String> candidateReferencedColumnNames(Filter<String> filter) {
+		return new FilteringIterator<String, String>(this.candidateReferencedColumnNames(), filter);
+	}
+
+	private Iterator<String> candidateReferencedColumnNames() {
+		Table table = this.getOwner().getReferencedColumnDbTable();
+		return (table != null) ? table.sortedColumnIdentifiers() : EmptyIterator.<String> instance();
+	}
+
 	public boolean isReferencedColumnResolved() {
-		return getDbReferencedColumn() != null;
+		return getReferencedDbColumn() != null;
 	}
 
 	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
@@ -163,7 +163,7 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 	
 	//TODO not correct when we start supporting primaryKeyJoinColumns in 1-1 mappings
 	protected String defaultReferencedColumnName() {
-		return defaultName();
+		return buildDefaultName();
 	}
 
 	@Override

@@ -75,7 +75,7 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 		if (tableName != null) {
 			return tableName;
 		}
-		return getOwner().getTypeMapping().getTableName();
+		return getOwner().getTypeMapping().getPrimaryTableName();
 	}
 	
 	protected ColumnMapping getColumnMapping() {
@@ -133,23 +133,21 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
-	
-		addColumnMessages(messages, astRoot);
+		if (this.connectionProfileIsActive()) {
+			this.addColumnMessages(messages, astRoot);
+		}
 	}
 	
 	protected void addColumnMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		String table = getColumn().getTable();
-		boolean doContinue = connectionProfileIsActive();
-		
-		if (doContinue && getTypeMapping().tableNameIsInvalid(table)) {
+		if (this.getTypeMapping().tableNameIsInvalid(this.column.getTable())) {
 			if (isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_TABLE,
-						new String[] {getName(), table, getColumn().getName()},
-						getColumn(), 
-						getColumn().getTableTextRange(astRoot))
+						new String[] {this.getName(), this.column.getTable(), this.column.getName()},
+						this.column,
+						this.column.getTableTextRange(astRoot))
 				);
 			}
 			else {
@@ -157,23 +155,23 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
-							new String[] {table, getColumn().getName()}, 
-							getColumn(), 
-							getColumn().getTableTextRange(astRoot))
+							new String[] {this.column.getTable(), this.column.getName()}, 
+							this.column,
+							this.column.getTableTextRange(astRoot))
 					);
 			}
-			doContinue = false;
+			return;
 		}
 		
-		if (doContinue && ! getColumn().isResolved()) {
+		if ( ! this.column.isResolved()) {
 			if (isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,
-						new String[] {getName(), getColumn().getName()}, 
-						getColumn(), 
-						getColumn().getNameTextRange(astRoot))
+						new String[] {this.getName(), this.column.getName()},
+						this.column,
+						this.column.getNameTextRange(astRoot))
 				);
 			}
 			else {
@@ -181,9 +179,9 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-							new String[] {getColumn().getName()}, 
-							getColumn(), 
-							getColumn().getNameTextRange(astRoot))
+							new String[] {this.column.getName()}, 
+							this.column,
+							this.column.getNameTextRange(astRoot))
 					);
 			}
 		}

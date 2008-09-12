@@ -87,7 +87,7 @@ public class PrimaryKeyJoinColumnStateObject extends BaseJoinColumnStateObject
 	 */
 	@Override
 	protected String getInitialTable() {
-		return getOwner().getTableName();
+		return getOwner().getPrimaryTableName();
 	}
 
 	/*

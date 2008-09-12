@@ -9,16 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
-import java.util.Iterator;
-
-import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.DatabaseObject;
-import org.eclipse.jpt.db.Schema;
 
 /**
- * 
+ * Interface to the connection profile.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -44,11 +40,10 @@ public interface JpaDataSource extends JpaNode {
 	 * ID string used when connectionProfileName property is changed
 	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
 	 */
-	public static final String CONNECTION_PROFILE_NAME_PROPERTY = "connectionProfileName"; //$NON-NLS-1$
+	String CONNECTION_PROFILE_NAME_PROPERTY = "connectionProfileName"; //$NON-NLS-1$
 
 	/**
-	 * If we do not have a connection, the data source's connection profile is
-	 * null.
+	 * The connection profile is null if the connection profile name is invalid.
 	 */
 	ConnectionProfile getConnectionProfile();
 
@@ -56,26 +51,27 @@ public interface JpaDataSource extends JpaNode {
 	 * ID string used when connectionProfile property is changed
 	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
 	 */
-	public static final String CONNECTION_PROFILE_PROPERTY = "connectionProfile"; //$NON-NLS-1$
+	String CONNECTION_PROFILE_PROPERTY = "connectionProfile"; //$NON-NLS-1$
 
+	/**
+	 * Return whether the profile is either connected to a live database
+	 * session or working off-line (i.e. it has access to meta-data).
+	 */
 	boolean connectionProfileIsActive();
 
+	/**
+	 * If the connection profile is active, return its database.
+	 */
 	Database getDatabase();
 
-	Iterator<String> catalogNames();
+	/**
+	 * Select and return the database object with the specified identifier.
+	 */
+	<T extends DatabaseObject> T selectDatabaseObjectForIdentifier(T[] databaseObjects, String identifier);
 
-	Catalog getCatalogNamed(String name);
-
-	Catalog getDefaultCatalog();
-
-	Iterator<String> schemaNames();
-
-	Schema getSchemaNamed(String name);
-
-	Schema getDefaultSchema();
-
-	<T extends DatabaseObject> T getDatabaseObjectNamed(T[] databaseObjects, String name);
-
+	/**
+	 * Dispose the data source.
+	 */
 	void dispose();
 
 }
