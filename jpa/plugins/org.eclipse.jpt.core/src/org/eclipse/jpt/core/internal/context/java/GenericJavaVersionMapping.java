@@ -34,13 +34,14 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 {
 	protected final JavaColumn column;
 
-	protected JavaConverter defaultConverter;
+	protected final JavaConverter defaultConverter;
 	
 	protected JavaConverter specifiedConverter;
 
 	public GenericJavaVersionMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.column = createJavaColumn();
+		this.defaultConverter = new GenericJavaNullConverter(this);
 	}
 
 	protected JavaColumn createJavaColumn() {
@@ -51,7 +52,6 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	public void initialize(JavaResourcePersistentAttribute jrpa) {
 		super.initialize(jrpa);
 		this.column.initialize(this.getResourceColumn());
-		this.defaultConverter = new GenericJavaNullConverter(this);
 		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType(jrpa));
 	}
 		

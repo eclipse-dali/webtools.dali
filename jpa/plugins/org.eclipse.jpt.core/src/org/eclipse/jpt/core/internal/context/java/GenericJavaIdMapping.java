@@ -52,7 +52,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 
 	protected JavaSequenceGenerator sequenceGenerator;
 
-	protected JavaConverter defaultConverter;
+	protected final JavaConverter defaultConverter;
 	
 	protected JavaConverter specifiedConverter;
 	
@@ -60,6 +60,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 	public GenericJavaIdMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.column = createJavaColumn();
+		this.defaultConverter = new GenericJavaNullConverter(this);
 	}
 
 	protected JavaColumn createJavaColumn() {
@@ -74,7 +75,6 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 		this.initializeSequenceGenerator(jrpa);
 		this.initializeGeneratedValue(jrpa);
 		this.updatePersistenceUnitGenerators();
-		this.defaultConverter = new GenericJavaNullConverter(this);
 		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType(jrpa));
 	}
 	
