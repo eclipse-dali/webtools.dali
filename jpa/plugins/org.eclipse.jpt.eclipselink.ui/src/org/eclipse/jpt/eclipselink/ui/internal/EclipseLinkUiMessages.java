@@ -206,6 +206,7 @@ public class EclipseLinkUiMessages extends NLS
 	public static String LoggingLevelComposite_finest;
 
 	public static String PersistenceXmlLoggingTab_loggerLabel;
+	public static String PersistenceXmlLoggingTabb_browse;
 
 	public static String LoggerComposite_default_logger;
 	public static String LoggerComposite_java_logger;

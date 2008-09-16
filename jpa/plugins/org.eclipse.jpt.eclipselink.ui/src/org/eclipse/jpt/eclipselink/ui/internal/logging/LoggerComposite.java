@@ -14,11 +14,26 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.search.IJavaSearchScope;
+import org.eclipse.jdt.core.search.SearchEngine;
+import org.eclipse.jdt.ui.IJavaElementSearchConstants;
+import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logger;
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
+import org.eclipse.jpt.eclipselink.ui.JptEclipseLinkUiPlugin;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -33,7 +48,12 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.SelectionDialog;
+import org.eclipse.ui.progress.IProgressService;
 
 /**
  *  LoggerComposite
@@ -136,8 +156,8 @@ public class LoggerComposite extends Pane<Logging>
 
 	private ListValueModel<String> buildLoggerListHolder() {
 		ArrayList<ListValueModel<String>> holders = new ArrayList<ListValueModel<String>>(2);
-		holders.add(buildDefaultLoggerListHolder());
-		holders.add(buildLoggersListHolder());
+		holders.add(this.buildDefaultLoggerListHolder());
+		holders.add(this.buildLoggersListHolder());
 		return new CompositeListValueModel<ListValueModel<String>, String>(holders);
 	}
 
@@ -152,14 +172,14 @@ public class LoggerComposite extends Pane<Logging>
 
 	private CollectionValueModel<String> buildLoggersCollectionHolder() {
 		return new SimpleCollectionValueModel<String>(
-			CollectionTools.collection(buildLoggers())
+			CollectionTools.collection(this.buildLoggers())
 		);
 	}
 
 	private ListValueModel<String> buildLoggersListHolder() {
 		return new SortedListValueModelAdapter<String>(
-			buildLoggersCollectionHolder(),
-			buildLoggerComparator()
+			this.buildLoggersCollectionHolder(),
+			this.buildLoggerComparator()
 		);
 	}
 
@@ -176,22 +196,117 @@ public class LoggerComposite extends Pane<Logging>
 			return EclipseLinkUiMessages.PersistenceXmlLoggingTab_defaultEmpty;
 		}
 	}
+	
+    @Override
+    protected void initializeLayout(Composite container) {
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
+    	CCombo combo = this.addLoggerCCombo(container);
 
-		CCombo combo = addLabeledEditableCCombo(
+		this.addLabeledComposite(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlLoggingTab_loggerLabel,
+			this.addLeftControl(container),
+			combo.getParent(),
+			this.addBrowseButton(container),
+			null
+		);
+    }
+
+    protected CCombo addLoggerCCombo(Composite container) {
+
+		return this.addEditableCCombo(
+			container,
 			this.buildLoggerListHolder(),
 			this.buildLoggerHolder(),
-			this.buildLoggerConverter(),
-			null		// EclipseLinkHelpContextIds.LOGGER_NAME
+			this.buildLoggerConverter()
 		);
+    }
 
-		SWTUtil.attachDefaultValueHandler(combo);
+	protected Control addLeftControl(Composite container) {
+		return this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_loggerLabel);
+	}
+	
+	protected Button addBrowseButton(Composite parent) {
+		return this.addPushButton(
+			parent,
+			EclipseLinkUiMessages.PersistenceXmlLoggingTabb_browse,
+			this.buildBrowseAction()
+		);
+	}
+	
+	private Runnable buildBrowseAction() {
+		return new Runnable() {
+			public void run() {
+				promptType();
+			}
+		};
+	}
+	
+	protected void promptType() {
+		IType type = this.chooseType();
+
+		if (type != null) {
+			String className = type.getFullyQualifiedName('.');
+			this.getSubject().setLogger(className);
+		}
+	}
+
+	/**
+	 * Prompts the user the Open Type dialog.
+	 *
+	 * @return Either the selected type or <code>null</code> if the user
+	 * cancelled the dialog
+	 */
+	protected IType chooseType() {
+
+		IPackageFragmentRoot root = this.getPackageFragmentRoot();
+
+		if (root == null) {
+			return null;
+		}
+
+		IJavaElement[] elements = new IJavaElement[] { root.getJavaProject() };
+		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements);
+		IProgressService service = PlatformUI.getWorkbench().getProgressService();
+		SelectionDialog typeSelectionDialog;
+
+		try {
+			typeSelectionDialog = JavaUI.createTypeDialog(
+				getShell(),
+				service,
+				scope,
+				IJavaElementSearchConstants.CONSIDER_CLASSES,
+				false,
+				this.getClassName() != null ? ClassTools.shortNameForClassNamed(this.getClassName()) : ""
+			);
+		}
+		catch (JavaModelException e) {
+			JptUiPlugin.log(e);
+			return null;
+		}
+
+		typeSelectionDialog.setTitle(JptUiMessages.ClassChooserPane_dialogTitle);
+		typeSelectionDialog.setMessage(JptUiMessages.ClassChooserPane_dialogMessage);
+
+		if (typeSelectionDialog.open() == Window.OK) {
+			return (IType) typeSelectionDialog.getResult()[0];
+		}
+		return null;
+	}
+
+	protected String getClassName() {
+		return this.getSubject().getLogger();
+	}
+
+	protected IPackageFragmentRoot getPackageFragmentRoot() {
+		IProject project = this.getSubject().getJpaProject().getProject();
+		IJavaProject root = JavaCore.create(project);
+
+		try {
+			return root.getAllPackageFragmentRoots()[0];
+		}
+		catch (JavaModelException e) {
+			JptEclipseLinkUiPlugin.log(e);
+		}
+		return null;
 	}
 }
