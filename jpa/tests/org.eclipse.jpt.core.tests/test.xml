@@ -6,6 +6,8 @@
 	<echo message="eclipse place ${eclipse-home}" />
 	<!-- sets the properties plugin-name -->
 	<property name="plugin-name" value="org.eclipse.jpt.core.tests"/>
+    <echo level="debug" message="testRoot: ${testRoot}" />
+    <fail message="testRoot must be set" unless="testRoot" />
 
 	<!-- This target holds all initialization code that needs to be done for -->
 	<!-- all tests that are to be run. Initialization for individual tests -->
@@ -19,11 +21,16 @@
 
 	<!-- This target defines the tests that need to be run. -->
 	<target name="suite">
+    	<property file="${testRoot}/testServer.properties"/>
+	    <property name="jpt-folder" value="${eclipse-home}/jpt_folder"/>
+	    <delete dir="${jpt-folder}" quiet="true"/>
+
 		<ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
+		    <property name="data-dir" value="${jpt-folder}"/>
 			<property name="plugin-name" value="${plugin-name}"/>
 			<property name="classname" value="org.eclipse.jpt.core.tests.internal.JptCoreTests" />
 			<property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}"/>
-			<property name="extraVMargs" value=""/>
+			<property name="extraVMargs" value="-Dorg.eclipse.jpt.jpa.jar=${testDir}/${jptPersistenceLibDir}"/>
 		</ant>
 	</target>
 

@@ -9,10 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal;
 
+import java.io.File;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
+
 import org.eclipse.jpt.core.tests.internal.context.JptCoreContextModelTests;
 import org.eclipse.jpt.core.tests.internal.model.JptCoreModelTests;
+import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.core.tests.internal.resource.JptCoreResourceModelTests;
 import org.eclipse.jpt.core.tests.internal.utility.jdt.JptCoreUtilityJdtTests;
 
@@ -23,21 +27,46 @@ import org.eclipse.jpt.core.tests.internal.utility.jdt.JptCoreUtilityJdtTests;
  * until jpa.jar is checked into CVS.
  */
 public class JptCoreTests {
+	private static final String JPA_JAR_PROPERTY = TestJpaProject.JAR_NAME_SYSTEM_PROPERTY;
 
 	public static Test suite() {
-		return suite(false);
+		return suite(true);
 	}
 	
+	// TODO delete parameter all
 	public static Test suite(boolean all) {
 		String quantity = all ? "All" : "Most";
 		TestSuite suite = new TestSuite(quantity + " JPT Core Tests");
-		suite.addTest(JptCoreUtilityJdtTests.suite(all));
-		suite.addTest(JptCoreModelTests.suite(all));
-		suite.addTest(JptCoreResourceModelTests.suite(all));
-		if (all) {
-			suite.addTest(JptCoreContextModelTests.suite(all));
+
+		if(jpaJarPropertyExists() && jpaJarFileExists()) {
+			suite.addTest(JptCoreUtilityJdtTests.suite(all));
+			suite.addTest(JptCoreModelTests.suite(all));
+			suite.addTest(JptCoreResourceModelTests.suite(all));
+			if (all) {
+				suite.addTest(JptCoreContextModelTests.suite(all));
+			}
+		}
+		else {
+			String message = ( ! jpaJarPropertyExists()) ?
+				"missing Java system property: \"" + JPA_JAR_PROPERTY + "\"" :
+				"missing JPA jar file: \"" + getJpaJarProperty() + "\"";
+			suite.addTest(TestSuite.warning(message));
 		}
 		return suite;
+	}
+	
+	public static boolean jpaJarPropertyExists() {
+		String jpaJarName = getJpaJarProperty();
+		return jpaJarName != null;
+	}
+	
+	public static boolean jpaJarFileExists() {
+		File file = new File(getJpaJarProperty());
+		return file.exists();
+	}
+	
+	public static String getJpaJarProperty() {
+		return System.getProperty(JPA_JAR_PROPERTY);
 	}
 	
 	private JptCoreTests() {
