@@ -30,7 +30,7 @@ public class JptCoreTests {
 	private static final String JPA_JAR_PROPERTY = TestJpaProject.JAR_NAME_SYSTEM_PROPERTY;
 
 	public static Test suite() {
-		return suite(true);
+		return suite(false);
 	}
 	
 	// TODO delete parameter all
@@ -42,9 +42,9 @@ public class JptCoreTests {
 			suite.addTest(JptCoreUtilityJdtTests.suite(all));
 			suite.addTest(JptCoreModelTests.suite(all));
 			suite.addTest(JptCoreResourceModelTests.suite(all));
-			if (all) {
+			//if (all) {
 				suite.addTest(JptCoreContextModelTests.suite(all));
-			}
+			//}
 		}
 		else {
 			String message = ( ! jpaJarPropertyExists()) ?
