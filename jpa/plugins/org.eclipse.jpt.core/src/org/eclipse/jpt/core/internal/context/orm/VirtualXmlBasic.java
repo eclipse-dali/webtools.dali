@@ -96,7 +96,7 @@ public class VirtualXmlBasic extends AbstractJpaEObject implements XmlBasic
 		}
 		if (this.javaBasicMapping.getConverter().getType() == Converter.TEMPORAL_CONVERTER) {
 			org.eclipse.jpt.core.context.TemporalType javaTemporalType = ((TemporalConverter) this.javaBasicMapping.getConverter()).getTemporalType();
-			return  org.eclipse.jpt.core.context.TemporalType.toOrmResourceModel(javaTemporalType);
+			return org.eclipse.jpt.core.context.TemporalType.toOrmResourceModel(javaTemporalType);
 		}
 		return null;
 	}
