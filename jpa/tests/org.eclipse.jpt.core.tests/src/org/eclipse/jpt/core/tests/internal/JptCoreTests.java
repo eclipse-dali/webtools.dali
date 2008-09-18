@@ -42,9 +42,9 @@ public class JptCoreTests {
 			suite.addTest(JptCoreUtilityJdtTests.suite(all));
 			suite.addTest(JptCoreModelTests.suite(all));
 			suite.addTest(JptCoreResourceModelTests.suite(all));
-			//if (all) {
+			if (all) {
 				suite.addTest(JptCoreContextModelTests.suite(all));
-			//}
+			}
 		}
 		else {
 			String message = ( ! jpaJarPropertyExists()) ?
