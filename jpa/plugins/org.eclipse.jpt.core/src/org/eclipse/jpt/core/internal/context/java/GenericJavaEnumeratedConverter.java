@@ -14,13 +14,13 @@ import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.EnumType;
 import org.eclipse.jpt.core.context.EnumeratedConverter;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.core.context.java.JavaConverter;
+import org.eclipse.jpt.core.context.java.JavaEnumeratedConverter;
 import org.eclipse.jpt.core.resource.java.EnumeratedAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 
 public class GenericJavaEnumeratedConverter extends AbstractJavaJpaContextNode
-	implements JavaConverter, EnumeratedConverter
+	implements JavaEnumeratedConverter
 {
 	private EnumType specifiedEnumType;
 	

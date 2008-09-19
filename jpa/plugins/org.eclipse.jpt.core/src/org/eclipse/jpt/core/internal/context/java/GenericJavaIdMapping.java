@@ -389,7 +389,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<IdAnnotat
 	
 	protected JavaConverter buildSpecifiedConverter(String converterType) {
 		if (converterType == Converter.TEMPORAL_CONVERTER) {
-			return new GenericJavaTemporalConverter(this, this.resourcePersistentAttribute);
+			return getJpaFactory().buildJavaTemporalConverter(this, this.resourcePersistentAttribute);
 		}
 		return null;
 	}

@@ -13,6 +13,7 @@ import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaIdMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
 
@@ -22,6 +23,11 @@ public class EclipseLinkJavaIdMappingImpl extends GenericJavaIdMapping
 	public EclipseLinkJavaIdMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
 	}
+	
+	@Override
+	protected EclipseLinkJpaFactory getJpaFactory() {
+		return (EclipseLinkJpaFactory) super.getJpaFactory();
+	}
 
 	@Override
 	protected JavaConverter buildSpecifiedConverter(String converterType) {
@@ -30,7 +36,7 @@ public class EclipseLinkJavaIdMappingImpl extends GenericJavaIdMapping
 			return javaConverter;
 		}
 		if (converterType == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
-			return new EclipseLinkJavaConvertImpl(this, this.resourcePersistentAttribute);
+			return getJpaFactory().buildEclipseLinkJavaConvert(this, this.resourcePersistentAttribute);
 		}
 		return null;
 	}

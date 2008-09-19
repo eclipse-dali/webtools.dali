@@ -34,11 +34,13 @@ import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaEnumeratedConverter;
 import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.context.java.JavaLobConverter;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
@@ -57,6 +59,7 @@ import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.context.java.JavaTableGenerator;
+import org.eclipse.jpt.core.context.java.JavaTemporalConverter;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
@@ -121,10 +124,12 @@ import org.eclipse.jpt.core.internal.context.java.GenericJavaEmbeddable;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaEmbeddedIdMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaEntity;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaEnumeratedConverter;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaGeneratedValue;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaIdMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaJoinColumn;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaJoinTable;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaLobConverter;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaManyToManyMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaManyToOneMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaMappedSuperclass;
@@ -141,6 +146,7 @@ import org.eclipse.jpt.core.internal.context.java.GenericJavaSecondaryTable;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaSequenceGenerator;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaTable;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaTableGenerator;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaTemporalConverter;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaTransientMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaUniqueConstraint;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaVersionMapping;
@@ -448,6 +454,18 @@ public class GenericJpaFactory implements JpaFactory
 	
 	public JavaUniqueConstraint buildJavaUniqueConstraint(JavaJpaContextNode parent, UniqueConstraint.Owner owner) {
 		return new GenericJavaUniqueConstraint(parent, owner);
+	}
+	
+	public JavaEnumeratedConverter buildJavaEnumeratedConverter(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa) {
+		return new GenericJavaEnumeratedConverter(parent, jrpa);
+	}
+	
+	public JavaTemporalConverter buildJavaTemporalConverter(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa) {
+		return new GenericJavaTemporalConverter(parent, jrpa);
+	}
+	
+	public JavaLobConverter buildJavaLobConverter(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa) {
+		return new GenericJavaLobConverter(parent, jrpa);
 	}
 	
 	public OrmPersistentType buildOrmPersistentType(EntityMappings parent, String mappingKey) {

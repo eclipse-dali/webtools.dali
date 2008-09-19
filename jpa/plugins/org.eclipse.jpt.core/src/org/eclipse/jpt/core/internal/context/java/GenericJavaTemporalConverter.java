@@ -11,16 +11,15 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Converter;
-import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.core.context.TemporalType;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.core.context.java.JavaConverter;
+import org.eclipse.jpt.core.context.java.JavaTemporalConverter;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
 public class GenericJavaTemporalConverter extends AbstractJavaJpaContextNode
-	implements JavaConverter, TemporalConverter
+	implements JavaTemporalConverter
 {
 	private TemporalType temporalType;
 	

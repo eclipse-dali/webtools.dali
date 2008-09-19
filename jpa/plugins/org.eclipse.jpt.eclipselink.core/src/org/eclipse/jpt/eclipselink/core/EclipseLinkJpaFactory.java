@@ -10,9 +10,12 @@
 package org.eclipse.jpt.eclipselink.core;
 
 import org.eclipse.jpt.core.JpaFactory;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConvert;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 
@@ -33,6 +36,7 @@ public interface EclipseLinkJpaFactory extends JpaFactory
 {	
 	EclipseLinkJavaCaching buildEclipseLinkJavaCaching(JavaTypeMapping parent);
 	
+	EclipseLinkJavaConvert buildEclipseLinkJavaConvert(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa);
 	
 	//********* covariant overrides ***********
 	
@@ -40,4 +44,5 @@ public interface EclipseLinkJpaFactory extends JpaFactory
 	
 	EclipseLinkJavaMappedSuperclass buildJavaMappedSuperclass(JavaPersistentType parent);
 
+	
 }

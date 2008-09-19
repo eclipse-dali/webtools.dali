@@ -235,13 +235,13 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 	
 	protected JavaConverter buildSpecifiedConverter(String converterType) {
 		if (converterType == Converter.ENUMERATED_CONVERTER) {
-			return new GenericJavaEnumeratedConverter(this, this.resourcePersistentAttribute);
+			return getJpaFactory().buildJavaEnumeratedConverter(this, this.resourcePersistentAttribute);
 		}
 		else if (converterType == Converter.TEMPORAL_CONVERTER) {
-			return new GenericJavaTemporalConverter(this, this.resourcePersistentAttribute);
+			return getJpaFactory().buildJavaTemporalConverter(this, this.resourcePersistentAttribute);
 		}
 		else if (converterType == Converter.LOB_CONVERTER) {
-			return new GenericJavaLobConverter(this, this.resourcePersistentAttribute);
+			return getJpaFactory().buildJavaLobConverter(this, this.resourcePersistentAttribute);
 		}
 		return null;
 	}

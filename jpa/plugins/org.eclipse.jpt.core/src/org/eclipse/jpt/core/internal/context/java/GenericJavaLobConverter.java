@@ -11,16 +11,15 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Converter;
-import org.eclipse.jpt.core.context.LobConverter;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.core.context.java.JavaConverter;
+import org.eclipse.jpt.core.context.java.JavaLobConverter;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.LobAnnotation;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
 public class GenericJavaLobConverter extends AbstractJavaJpaContextNode
-	implements LobConverter, JavaConverter
+	implements JavaLobConverter
 {
 	private JavaResourcePersistentAttribute resourcePersistentAttribute;
 	
