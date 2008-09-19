@@ -11,7 +11,10 @@ package org.eclipse.jpt.eclipselink.ui.internal;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
+import org.eclipse.jpt.core.context.BasicMapping;
+import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.MappedSuperclass;
+import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
@@ -27,7 +30,10 @@ import org.eclipse.jpt.eclipselink.ui.internal.connection.PersistenceXmlConnecti
 import org.eclipse.jpt.eclipselink.ui.internal.customization.PersistenceXmlCustomizationTab;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.EclipseLinkJavaEntityComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.logging.PersistenceXmlLoggingTab;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkBasicMappingComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkIdMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkMappedSuperclassComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkVersionMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.options.PersistenceXmlOptionsTab;
 import org.eclipse.jpt.eclipselink.ui.internal.schema.generation.PersistenceXmlSchemaGenerationTab;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -47,6 +53,33 @@ public class EclipseLinkJpaUiFactoryImpl extends BaseJpaUiFactory implements Ecl
 {
 	public EclipseLinkJpaUiFactoryImpl() {
 		super();
+	}
+	
+	@Override
+	public JpaComposite createBasicMappingComposite(
+		PropertyValueModel<BasicMapping> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
+
+		return new EclipseLinkBasicMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+
+	@Override
+	public JpaComposite createIdMappingComposite(
+		PropertyValueModel<IdMapping> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
+
+		return new EclipseLinkIdMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createVersionMappingComposite(
+		PropertyValueModel<VersionMapping> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
+
+		return new EclipseLinkVersionMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override

@@ -48,6 +48,12 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	public static String DisableHitsComposite_disableHitsDefault;
 	public static String DisableHitsComposite_disableHitsLabel;
 	
+	public static String ConvertComposite_convertNameLabel;
+	
+	public static String EclipseLinkBasicMappingComposite_eclipseLinkConverter;
+	public static String EclipseLinkIdMappingComposite_eclipseLinkConverter;
+	public static String EclipseLinkVersionMappingComposite_eclipseLinkConverter;
+	
 	public static String ExistenceCheckingComposite_label;
 	public static String ExistenceCheckingComposite_check_cache;
 	public static String ExistenceCheckingComposite_check_database;
