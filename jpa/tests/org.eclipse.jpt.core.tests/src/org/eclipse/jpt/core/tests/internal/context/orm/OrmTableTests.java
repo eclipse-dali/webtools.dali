@@ -45,18 +45,7 @@ public class OrmTableTests extends ContextModelTestCase
 		persistenceResource().save(null);
 	}
 	
-	private void createEntityAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createIdAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Id", "");		
-	}
-	
-	private ICompilationUnit createTestEntity() throws Exception {
-		createEntityAnnotation();
-		createIdAnnotation();
-	
+	private ICompilationUnit createTestEntity() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

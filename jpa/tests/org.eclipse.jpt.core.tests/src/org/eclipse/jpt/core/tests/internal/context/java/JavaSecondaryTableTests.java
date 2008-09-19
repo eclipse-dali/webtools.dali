@@ -31,32 +31,8 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 public class JavaSecondaryTableTests extends ContextModelTestCase
 {
 	private static final String TABLE_NAME = "MY_TABLE";
-	
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createIdAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Id", "");		
-	}
-		
-	private void createSecondaryTableAnnotation() throws Exception{
-		this.createAnnotationAndMembers("SecondaryTable", 
-			"String name() default \"\"; " +
-			"String catalog() default \"\"; " +
-			"String schema() default \"\";");		
-	}
-	
-	private void createSecondaryTablesAnnotation() throws Exception {
-		createSecondaryTableAnnotation();
-		this.createAnnotationAndMembers("SecondaryTables", "SecondaryTable[] value();");		
-	}
-	
+
 	private ICompilationUnit createTestEntityWithSecondaryTable() throws Exception {
-		createEntityAnnotation();
-		createIdAnnotation();
-		createSecondaryTableAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -75,9 +51,6 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 	}
 	
 	private ICompilationUnit createTestEntityWithSecondaryTables() throws Exception {
-		createEntityAnnotation();
-		createSecondaryTablesAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

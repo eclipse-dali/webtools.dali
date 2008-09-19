@@ -26,33 +26,8 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 	public JavaJoinColumnTests(String name) {
 		super(name);
 	}
-	
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createOneToOneAnnotation() throws Exception{
-		this.createAnnotationAndMembers("OneToOne", "");		
-	}
-	
-	private void createJoinColumnAnnotation() throws Exception{
-		this.createAnnotationAndMembers("JoinColumn", 
-			"String name() default \"\"; " +
-			"String referencedColumnName() default \"\"; " +
-			"boolean unique() default false; " +
-			"boolean nullable() default true; " +
-			"boolean insertable() default true; " +
-			"boolean updatable() default true; " +
-			"String columnDefinition() default \"\"; " +
-			"String table() default \"\";");		
-	}
-		
 
 	private ICompilationUnit createTestEntityWithOneToOne() throws Exception {
-		createEntityAnnotation();
-		createOneToOneAnnotation();
-		createJoinColumnAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -70,10 +45,6 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 	}
 	
 	private ICompilationUnit createTestEntityWithValidOneToOne() throws Exception {
-		createEntityAnnotation();
-		createOneToOneAnnotation();
-		createJoinColumnAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

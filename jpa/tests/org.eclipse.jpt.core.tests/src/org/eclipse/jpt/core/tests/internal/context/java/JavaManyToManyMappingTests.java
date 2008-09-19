@@ -51,14 +51,6 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 public class JavaManyToManyMappingTests extends ContextModelTestCase
 {
 
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createManyToManyAnnotation() throws Exception{
-		this.createAnnotationAndMembers("ManyToMany", "");		
-	}
-
 	private void createTestTargetEntityAddress() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
@@ -92,9 +84,6 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 	}
 
 	private ICompilationUnit createTestEntityWithManyToManyMapping() throws Exception {
-		createEntityAnnotation();
-		createManyToManyAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -113,9 +102,6 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 	}
 	
 	private ICompilationUnit createTestEntityWithValidManyToManyMapping() throws Exception {
-		createEntityAnnotation();
-		createManyToManyAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -137,9 +123,6 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		});
 	}
 	private ICompilationUnit createTestEntityWithCollectionManyToManyMapping() throws Exception {
-		createEntityAnnotation();
-		createManyToManyAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -161,9 +144,6 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		});
 	}
 	private ICompilationUnit createTestEntityWithNonCollectionManyToManyMapping() throws Exception {
-		createEntityAnnotation();
-		createManyToManyAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

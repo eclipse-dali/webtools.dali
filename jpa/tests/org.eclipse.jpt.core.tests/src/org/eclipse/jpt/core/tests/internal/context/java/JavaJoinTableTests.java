@@ -31,33 +31,8 @@ public class JavaJoinTableTests extends ContextModelTestCase
 	public JavaJoinTableTests(String name) {
 		super(name);
 	}
-	
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createManyToManyAnnotation() throws Exception{
-		this.createAnnotationAndMembers("ManyToMany", "");		
-	}
-	
-	private void createJoinTableAnnotation() throws Exception{
-		//TODO
-		this.createAnnotationAndMembers("JoinTable", 
-			"String name() default \"\"; " +
-			"String catalog() default \"\"; " +
-			"String schema() default \"\";");		
-	}
-	
-	private void createUniqueConstraintAnnotation() throws Exception{
-		this.createAnnotationAndMembers("UniqueConstraint", 
-			"String[] columnNames(); ");		
-	}
 
-	private ICompilationUnit createTestEntityWithManyToMany() throws Exception {
-		createEntityAnnotation();
-		createManyToManyAnnotation();
-		createJoinTableAnnotation();
-		
+	private ICompilationUnit createTestEntityWithManyToMany() throws Exception {		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -75,10 +50,6 @@ public class JavaJoinTableTests extends ContextModelTestCase
 	}
 	
 	private ICompilationUnit createTestEntityWithValidManyToMany() throws Exception {
-		createEntityAnnotation();
-		createManyToManyAnnotation();
-		createJoinTableAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -777,7 +748,6 @@ public class JavaJoinTableTests extends ContextModelTestCase
 	}
 
 	public void testUniqueConstraints() throws Exception {
-		createUniqueConstraintAnnotation();
 		createTestEntityWithManyToMany();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
@@ -800,7 +770,6 @@ public class JavaJoinTableTests extends ContextModelTestCase
 	}
 	
 	public void testUniqueConstraintsSize() throws Exception {
-		createUniqueConstraintAnnotation();
 		createTestEntityWithManyToMany();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
@@ -818,7 +787,6 @@ public class JavaJoinTableTests extends ContextModelTestCase
 	}
 
 	public void testAddUniqueConstraint() throws Exception {
-		createUniqueConstraintAnnotation();
 		createTestEntityWithManyToMany();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
@@ -839,7 +807,6 @@ public class JavaJoinTableTests extends ContextModelTestCase
 	}
 	
 	public void testAddUniqueConstraint2() throws Exception {
-		createUniqueConstraintAnnotation();
 		createTestEntityWithManyToMany();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
@@ -860,7 +827,6 @@ public class JavaJoinTableTests extends ContextModelTestCase
 	}
 	
 	public void testRemoveUniqueConstraint() throws Exception {
-		createUniqueConstraintAnnotation();
 		createTestEntityWithManyToMany();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
@@ -906,7 +872,6 @@ public class JavaJoinTableTests extends ContextModelTestCase
 	}
 	
 	public void testMoveUniqueConstraint() throws Exception {
-		createUniqueConstraintAnnotation();
 		createTestEntityWithManyToMany();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
@@ -947,7 +912,6 @@ public class JavaJoinTableTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateUniqueConstraints() throws Exception {
-		createUniqueConstraintAnnotation();
 		createTestEntityWithManyToMany();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 

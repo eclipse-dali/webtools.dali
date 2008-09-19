@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.QueryHint;
@@ -27,29 +26,8 @@ public class JavaNamedNativeQueryTests extends ContextModelTestCase
 {
 	private static final String QUERY_NAME = "QUERY_NAME";
 	private static final String QUERY_QUERY = "MY_QUERY";
-
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createNamedNativeQueryAnnotation() throws Exception {
-		createQueryHintAnnotation();
-		this.createAnnotationAndMembers("NamedNativeQuery", 
-			"String name();" +
-			"String query();" +
-			"QueryHint[] hints() default {};");		
-	}
-	
-	private void createQueryHintAnnotation() throws Exception {
-		this.createAnnotationAndMembers("QueryHint", 
-			"String name();" +
-			"String value();");		
-	}
 		
 	private ICompilationUnit createTestEntityWithNamedNativeQuery() throws Exception {
-		createEntityAnnotation();
-		createNamedNativeQueryAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

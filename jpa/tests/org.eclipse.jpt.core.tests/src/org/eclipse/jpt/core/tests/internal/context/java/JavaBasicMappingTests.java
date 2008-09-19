@@ -54,29 +54,8 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JavaBasicMappingTests extends ContextModelTestCase
 {
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createBasicAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Basic", "FetchType fetch() default EAGER; boolean optional() default true;");		
-	}
-	
-	private void createLobAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Lob", "");		
-	}
-	
-	private void createEnumeratedAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Enumerated", "EnumType value() default ORDINAL;");		
-	}
-	
-	private void createTemporalAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Temporal", "TemporalType value();");		
-	}
 
 	private ICompilationUnit createTestEntity() throws Exception {
-		createEntityAnnotation();
-
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -89,10 +68,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		});
 	}
 
-	private ICompilationUnit createTestEntityWithBasicMapping() throws Exception {
-		createEntityAnnotation();
-		createBasicAnnotation();
-	
+	private ICompilationUnit createTestEntityWithBasicMapping() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -109,10 +85,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 			}
 		});
 	}
-	private ICompilationUnit createTestEntityWithBasicMappingFetchOptionalSpecified() throws Exception {
-		createEntityAnnotation();
-		createBasicAnnotation();
-	
+	private ICompilationUnit createTestEntityWithBasicMappingFetchOptionalSpecified() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -130,10 +103,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		});
 	}
 
-	private ICompilationUnit createTestEntityWithLob() throws Exception {
-		createEntityAnnotation();
-		createLobAnnotation();
-	
+	private ICompilationUnit createTestEntityWithLob() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -151,10 +121,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		});
 	}
 
-	private ICompilationUnit createTestEntityWithEnumerated() throws Exception {
-		createEntityAnnotation();
-		createEnumeratedAnnotation();
-	
+	private ICompilationUnit createTestEntityWithEnumerated() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -172,10 +139,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		});
 	}
 	
-	private ICompilationUnit createTestEntityWithTemporal() throws Exception {
-		createEntityAnnotation();
-		createTemporalAnnotation();
-	
+	private ICompilationUnit createTestEntityWithTemporal() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

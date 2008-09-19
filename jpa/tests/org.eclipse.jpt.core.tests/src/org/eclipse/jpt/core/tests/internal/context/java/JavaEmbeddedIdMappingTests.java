@@ -56,22 +56,7 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 	public static final String EMBEDDABLE_TYPE_NAME = "MyEmbeddable";
 	public static final String FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME = PACKAGE_NAME + "." + EMBEDDABLE_TYPE_NAME;
 
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createEmbeddableAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Embeddable", "");		
-	}
-
-	private void createEmbeddedIdAnnotation() throws Exception{
-		this.createAnnotationAndMembers("EmbeddedId", "");		
-	}
-
-	private ICompilationUnit createTestEntityWithEmbeddedIdMapping() throws Exception {
-		createEntityAnnotation();
-		createEmbeddedIdAnnotation();
-	
+	private ICompilationUnit createTestEntityWithEmbeddedIdMapping() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -93,7 +78,6 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 	}
 
 	private void createEmbeddableType() throws Exception {
-		createEmbeddableAnnotation();
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
 				sb.append(CR);

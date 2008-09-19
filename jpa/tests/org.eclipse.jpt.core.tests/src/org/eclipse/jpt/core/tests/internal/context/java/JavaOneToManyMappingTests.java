@@ -51,14 +51,6 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 public class JavaOneToManyMappingTests extends ContextModelTestCase
 {
 
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createOneToManyAnnotation() throws Exception{
-		this.createAnnotationAndMembers("OneToMany", "");		
-	}
-
 	private void createTestTargetEntityAddress() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
@@ -92,9 +84,6 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 	}
 
 	private ICompilationUnit createTestEntityWithOneToManyMapping() throws Exception {
-		createEntityAnnotation();
-		createOneToManyAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -113,9 +102,6 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 	}
 	
 	private ICompilationUnit createTestEntityWithValidOneToManyMapping() throws Exception {
-		createEntityAnnotation();
-		createOneToManyAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -138,9 +124,6 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 	}
 
 	private ICompilationUnit createTestEntityWithCollectionOneToManyMapping() throws Exception {
-		createEntityAnnotation();
-		createOneToManyAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -162,9 +145,6 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		});
 	}
 	private ICompilationUnit createTestEntityWithNonCollectionOneToManyMapping() throws Exception {
-		createEntityAnnotation();
-		createOneToManyAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

@@ -42,15 +42,8 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 		persistenceResource().save(null);
 	}
-
-	
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
 		
 	private ICompilationUnit createTestEntity() throws Exception {
-		createEntityAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -63,10 +56,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		});
 	}
 
-	private ICompilationUnit createTestEntityAnnotatedField() throws Exception {
-		createEntityAnnotation();
-		this.createAnnotationAndMembers("Id", "");
-	
+	private ICompilationUnit createTestEntityAnnotatedField() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -84,10 +74,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		});
 	}
 
-	private ICompilationUnit createTestEntityAnnotatedMethod() throws Exception {
-		createEntityAnnotation();
-		this.createAnnotationAndMembers("Id", "");
-	
+	private ICompilationUnit createTestEntityAnnotatedMethod() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -105,9 +92,6 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		});
 	}
 	private ICompilationUnit createTestEntityAnnotatedFieldAndMethod() throws Exception {
-		createEntityAnnotation();
-		this.createAnnotationAndMembers("Id", "");
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

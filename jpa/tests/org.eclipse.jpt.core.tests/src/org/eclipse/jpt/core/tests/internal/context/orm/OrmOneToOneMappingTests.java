@@ -55,35 +55,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		persistenceResource().save(null);
 	}
 	
-	private void createEntityAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createOneToOneAnnotation() throws Exception{
-		this.createAnnotationAndMembers("OneToOne", 
-			"Class targetEntity() default void.class;" +
-			"CascadeType[] cascade() default {};" +
-			"FetchType fetch() default EAGER;" +
-			"boolean optional() default true;" +		
-			"String mappedBy() default \"\";");		
-	}
-	
-	private void createJoinColumnAnnotation() throws Exception{
-		this.createAnnotationAndMembers("JoinColumn", 
-			"String name() default \"\";" +
-			"String referencedColumnName() default \"\";" +
-			"boolean unique() default false;" +
-			"boolean nullable() default true;" +
-			"boolean insertable() default true;" +
-			"boolean updatable() default true;" +
-			"String columnDefinition() default \"\";" +
-			"String table() default \"\";");		
-	}
-	
 	private ICompilationUnit createTestEntityOneToOneMapping() throws Exception {
-		createEntityAnnotation();
-		createOneToOneAnnotation();
-		createJoinColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

@@ -55,47 +55,7 @@ public class OrmBasicMappingTests extends ContextModelTestCase
 		persistenceResource().save(null);
 	}
 	
-	private void createEntityAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createBasicAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Basic", "FetchType fetch() default EAGER; boolean optional() default true;");		
-	}
-	
-	private void createColumnAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Column", 
-			"String name() default \"\";" +
-			"boolean unique() default false;" +
-			"boolean nullable() default true;" +
-			"boolean insertable() default true;" +
-			"boolean updatable() default true;" +
-			"String columnDefinition() default \"\";" +
-			"String table() default \"\";" +
-			"int length() default 255;" +
-			"int precision() default 0;" +
-			"int scale() default 0;");		
-	}
-	
-	private void createLobAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Lob", "");		
-	}
-	
-	private void createEnumeratedAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Enumerated", "EnumType value() default ORDINAL;");		
-	}
-	
-	private void createTemporalAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Temporal", "TemporalType value();");		
-	}
-	
 	private ICompilationUnit createTestEntityBasicMapping() throws Exception {
-		createEntityAnnotation();
-		createBasicAnnotation();
-		createColumnAnnotation();
-		createLobAnnotation();
-		createTemporalAnnotation();
-		createEnumeratedAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

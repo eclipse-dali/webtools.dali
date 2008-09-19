@@ -24,21 +24,8 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 	private static final String DISCRIMINATOR_COLUMN_NAME = "MY_DISCRIMINATOR_COLUMN";
 	private static final String COLUMN_DEFINITION = "MY_COLUMN_DEFINITION";
 	
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	private void createDiscriminatorColumnAnnotation() throws Exception{
-		this.createAnnotationAndMembers("DiscriminatorColumn", 
-			"String name() default \"DTYPE\";" +
-			"DiscriminatorType discriminatorType() default STRING;" +
-			"String columnDefinition() default \"\";" +
-			"int length() default 31;");		
-	}
-		
 
 	private ICompilationUnit createTestEntity() throws Exception {
-		createEntityAnnotation();
-
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -52,9 +39,6 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 	}
 
 	private ICompilationUnit createTestEntityWithDiscriminatorColumn() throws Exception {
-		createEntityAnnotation();
-		createDiscriminatorColumnAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

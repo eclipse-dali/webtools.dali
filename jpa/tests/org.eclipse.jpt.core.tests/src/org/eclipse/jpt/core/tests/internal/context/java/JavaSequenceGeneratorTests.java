@@ -25,22 +25,8 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 {
 	private static final String SEQUENCE_GENERATOR_NAME = "MY_SEQUENCE_GENERATOR";
 	
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createSequenceGeneratorAnnotation() throws Exception{
-		this.createAnnotationAndMembers("SequenceGenerator", 
-			"String name();" +
-			"String sequenceName() default \"\"; " +
-			"int initialValue() default 0; " +
-			"int allocationSize() default 50;");		
-	}
 
 	private ICompilationUnit createTestEntityWithSequenceGenerator() throws Exception {
-		createEntityAnnotation();
-		createSequenceGeneratorAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

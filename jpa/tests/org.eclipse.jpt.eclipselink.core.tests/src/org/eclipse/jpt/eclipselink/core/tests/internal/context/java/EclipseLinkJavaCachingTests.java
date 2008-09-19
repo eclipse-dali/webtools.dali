@@ -31,10 +31,6 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		super(name);
 	}
 	
-	private void createEntityAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
 	private void createCacheTypeEnum() throws Exception {
 		this.createEnumAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, "CacheType", "SOFT_WEAK, HARD_WEAK, WEAK, SOFT, FULL, CACHE, NONE;");	
 	}
@@ -88,7 +84,6 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 	
 
 	private ICompilationUnit createTestEntity() throws Exception {
-		createEntityAnnotation();
 		createCacheAnnotation();
 		createExistenceCheckingAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {

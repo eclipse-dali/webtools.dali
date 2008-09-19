@@ -73,14 +73,7 @@ public class JpaPlatformTests extends ContextModelTestCase
 		return config;
 	}
 
-
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-
 	private ICompilationUnit createTestEntity() throws Exception {
-		createEntityAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

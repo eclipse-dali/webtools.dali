@@ -25,14 +25,8 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JavaEmbeddableTests extends ContextModelTestCase
 {
-
-	private void createEmbeddableAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Embeddable", "");		
-	}
 	
 	private ICompilationUnit createTestEmbeddable() throws Exception {
-		createEmbeddableAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

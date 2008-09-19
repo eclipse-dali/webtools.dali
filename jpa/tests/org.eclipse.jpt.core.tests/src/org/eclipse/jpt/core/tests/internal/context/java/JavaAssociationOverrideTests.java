@@ -27,36 +27,8 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 {
 	private static final String ASSOCIATION_OVERRIDE_NAME = "MY_ASSOCIATION_OVERRIDE_NAME";
 
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createMappedSuperclassAnnotation() throws Exception{
-		this.createAnnotationAndMembers("MappedSuperclass", "");		
-	}
-	
-	private void createJoinColumnAnnotation() throws Exception {
-		this.createAnnotationAndMembers("JoinColumn", 
-			"String name() default \"\";" +
-			"String referencedColumnName() default \"\";" +
-			"boolean unique() default false;" +
-			"boolean nullable() default true;" +
-			"boolean insertable() default true;" +
-			"boolean updatable() default true;" +
-			"String columnDefinition() default \"\";" +
-			"String table() default \"\";");		
-	}
-	
-	private void createAssociationOverrideAnnotation() throws Exception {
-		createJoinColumnAnnotation();
-		this.createAnnotationAndMembers("AssociationOverride", 
-			"String name();" +
-			"JoinColumn[] joinColumns();");		
-	}
 		
-	private ICompilationUnit createTestMappedSuperclass() throws Exception {
-		createMappedSuperclassAnnotation();
-		
+	private ICompilationUnit createTestMappedSuperclass() throws Exception {		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -79,9 +51,6 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 	}
 
 	private ICompilationUnit createTestEntityWithAssociationOverride() throws Exception {
-		createEntityAnnotation();
-		createAssociationOverrideAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

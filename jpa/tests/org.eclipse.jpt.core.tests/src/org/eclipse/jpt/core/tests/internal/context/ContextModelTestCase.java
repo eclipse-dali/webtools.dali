@@ -174,16 +174,8 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		WorkbenchResourceHelper.deleteResource(resource);
 	}
 	
-	protected ICompilationUnit createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		return createAnnotationAndMembers("javax.persistence", annotationName, annotationBody);
-	}
-	
 	protected ICompilationUnit createAnnotationAndMembers(String packageName, String annotationName, String annotationBody) throws Exception {
 		return this.javaProject.createCompilationUnit(packageName, annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
-	}
-	
-	protected ICompilationUnit createEnumAndMembers(String enumName, String enumBody) throws Exception {
-		return createEnumAndMembers("javax.persistence", enumName, enumBody);
 	}
 	
 	protected ICompilationUnit createEnumAndMembers(String packageName, String enumName, String enumBody) throws Exception {

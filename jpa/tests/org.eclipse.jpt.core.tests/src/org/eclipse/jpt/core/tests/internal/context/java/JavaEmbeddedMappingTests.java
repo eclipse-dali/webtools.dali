@@ -55,21 +55,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 	public static final String EMBEDDABLE_TYPE_NAME = "MyEmbeddable";
 	public static final String FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME = PACKAGE_NAME + "." + EMBEDDABLE_TYPE_NAME;
 
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createEmbeddableAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Embeddable", "");		
-	}
-
-	private void createEmbeddedAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Embedded", "");		
-	}
-
 	private ICompilationUnit createTestEntityWithEmbeddedMapping() throws Exception {
-		createEntityAnnotation();
-		createEmbeddedAnnotation();
 	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -91,7 +77,6 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 	}
 
 	private void createEmbeddableType() throws Exception {
-		createEmbeddableAnnotation();
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
 				sb.append(CR);

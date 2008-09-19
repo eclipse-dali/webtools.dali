@@ -28,31 +28,8 @@ public class JavaColumnTests extends ContextModelTestCase
 	private static final String TABLE_NAME = "MY_TABLE";
 	private static final String COLUMN_DEFINITION = "MY_COLUMN_DEFINITION";
 	
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createBasicAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Basic", "String name() default \"\";");		
-	}
-	
-	private void createColumnAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Column", 
-			"String name() default \"\";" +
-			"boolean unique() default false;" +
-			"boolean nullable() default true;" +
-			"boolean insertable() default true;" +
-			"boolean updatable() default true;" +
-			"String columnDefinition() default \"\";" +
-			"String table() default \"\";" +
-			"int length() default 255;" +
-			"int precision() default 0;" +
-			"int scale() default 0;");		
-	}
 
 	private ICompilationUnit createTestEntity() throws Exception {
-		createEntityAnnotation();
-
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -65,10 +42,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		});
 	}
 
-	private ICompilationUnit createTestEntityWithDefaultBasicColumn() throws Exception {
-		createEntityAnnotation();
-		createColumnAnnotation();
-	
+	private ICompilationUnit createTestEntityWithDefaultBasicColumn() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -86,11 +60,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		});
 	}
 
-	private ICompilationUnit createTestEntityWithBasicColumnTableSet() throws Exception {
-		createEntityAnnotation();
-		createColumnAnnotation();
-		createBasicAnnotation();
-	
+	private ICompilationUnit createTestEntityWithBasicColumnTableSet() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -108,11 +78,8 @@ public class JavaColumnTests extends ContextModelTestCase
 			}
 		});
 	}
-	private ICompilationUnit createTestEntityWithBasicColumnColumnDefinitionSet() throws Exception {
-		createEntityAnnotation();
-		createColumnAnnotation();
-		createBasicAnnotation();
 	
+	private ICompilationUnit createTestEntityWithBasicColumnColumnDefinitionSet() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

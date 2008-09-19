@@ -62,21 +62,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		persistenceResource().save(null);
 	}
 	
-	private void createEntityAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createIdAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Id", "");		
-	}
-	
-	private void createMappedSuperclassAnnotation() throws Exception{
-		this.createAnnotationAndMembers("MappedSuperclass", "");		
-	}
-	
 	private ICompilationUnit createTestEntityDefaultFieldAccess() throws Exception {
-		createEntityAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -90,9 +76,6 @@ public class OrmEntityTests extends ContextModelTestCase
 	}
 	
 	private ICompilationUnit createTestEntityFieldAccess() throws Exception {
-		createEntityAnnotation();
-		createIdAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -110,9 +93,6 @@ public class OrmEntityTests extends ContextModelTestCase
 	}
 	
 	private ICompilationUnit createTestEntityPropertyAccess() throws Exception {
-		createEntityAnnotation();
-		createIdAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -161,8 +141,6 @@ public class OrmEntityTests extends ContextModelTestCase
 
 
 	private ICompilationUnit createTestMappedSuperclass() throws Exception {
-		createMappedSuperclassAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

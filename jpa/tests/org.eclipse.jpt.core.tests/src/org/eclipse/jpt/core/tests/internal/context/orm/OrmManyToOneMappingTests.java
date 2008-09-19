@@ -43,34 +43,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		persistenceResource().save(null);
 	}
 	
-	private void createEntityAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createManyToOneAnnotation() throws Exception{
-		this.createAnnotationAndMembers("ManyToOne", 
-			"Class targetEntity() default void.class;" +
-			"CascadeType[] cascade() default {};" +
-			"FetchType fetch() default EAGER;" +
-			"boolean optional() default true;");		
-	}
-	
-	private void createJoinColumnAnnotation() throws Exception{
-		this.createAnnotationAndMembers("JoinColumn", 
-			"String name() default \"\";" +
-			"String referencedColumnName() default \"\";" +
-			"boolean unique() default false;" +
-			"boolean nullable() default true;" +
-			"boolean insertable() default true;" +
-			"boolean updatable() default true;" +
-			"String columnDefinition() default \"\";" +
-			"String table() default \"\";");		
-	}
-	
 	private ICompilationUnit createTestEntityManyToOneMapping() throws Exception {
-		createEntityAnnotation();
-		createManyToOneAnnotation();
-		createJoinColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

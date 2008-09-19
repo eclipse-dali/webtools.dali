@@ -25,21 +25,8 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 public class JavaGeneratedValueTests extends ContextModelTestCase
 {
 	private static final String GENERATOR = "MY_GENERATOR";
-	
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createGeneratedValueAnnotation() throws Exception{
-		this.createAnnotationAndMembers("GeneratedValue", 
-			"GenerationType strategy() default;" +
-			"String generator() default \"\"; ");		
-	}
 
-	private ICompilationUnit createTestEntityWithGeneratedValue() throws Exception {
-		createEntityAnnotation();
-		createGeneratedValueAnnotation();
-	
+	private ICompilationUnit createTestEntityWithGeneratedValue() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

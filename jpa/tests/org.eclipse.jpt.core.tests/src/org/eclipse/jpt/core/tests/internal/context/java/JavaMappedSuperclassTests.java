@@ -26,14 +26,8 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JavaMappedSuperclassTests extends ContextModelTestCase
 {
-
-	private void createMappedSuperclassAnnotation() throws Exception {
-		this.createAnnotationAndMembers("MappedSuperclass", "");		
-	}
 	
 	private ICompilationUnit createTestMappedSuperclass() throws Exception {
-		createMappedSuperclassAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

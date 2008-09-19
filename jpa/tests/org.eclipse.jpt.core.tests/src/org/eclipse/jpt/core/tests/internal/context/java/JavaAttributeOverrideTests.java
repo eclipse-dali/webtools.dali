@@ -30,39 +30,8 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 {
 	private static final String ATTRIBUTE_OVERRIDE_NAME = "MY_ATTRIBUTE_OVERRIDE_NAME";
 	private static final String ATTRIBUTE_OVERRIDE_COLUMN_NAME = "MY_ATTRIBUTE_OVERRIDE_COLUMN_NAME";
-
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createMappedSuperclassAnnotation() throws Exception{
-		this.createAnnotationAndMembers("MappedSuperclass", "");		
-	}
-	
-	private void createColumnAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Column", 
-			"String name() default \"\";" +
-			"boolean unique() default false;" +
-			"boolean nullable() default true;" +
-			"boolean insertable() default true;" +
-			"boolean updatable() default true;" +
-			"String columnDefinition() default \"\";" +
-			"String table() default \"\";" +
-			"int length() default 255;" +
-			"int precision() default 0;" +
-			"int scale() default 0;");		
-	}
-	
-	private void createAttributeOverrideAnnotation() throws Exception {
-		createColumnAnnotation();
-		this.createAnnotationAndMembers("AttributeOverride", 
-			"String name();" +
-			"Column column();");		
-	}
 		
 	private ICompilationUnit createTestMappedSuperclass() throws Exception {
-		createMappedSuperclassAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -76,9 +45,6 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 	}
 
 	private ICompilationUnit createTestEntityWithAttributeOverride() throws Exception {
-		createEntityAnnotation();
-		createAttributeOverrideAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -93,8 +59,6 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 	}
 	
 	private ICompilationUnit createTestEntity() throws Exception {
-		createEntityAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

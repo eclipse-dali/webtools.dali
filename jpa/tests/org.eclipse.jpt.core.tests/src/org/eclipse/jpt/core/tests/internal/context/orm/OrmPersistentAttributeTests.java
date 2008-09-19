@@ -54,27 +54,7 @@ public class OrmPersistentAttributeTests extends ContextModelTestCase
 		});
 	}
 	
-	private void createEntityAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createColumnAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Column", "String name() default \"\";");		
-	}
-
-	private void createIdAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Id", "");		
-	}
-	
-	private void createOneToOneAnnotation() throws Exception {
-		this.createAnnotationAndMembers("OneToOne", "");		
-	}
-	
 	private ICompilationUnit createTestEntityIdMapping() throws Exception {
-		createEntityAnnotation();
-		createIdAnnotation();
-		createColumnAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -93,9 +73,6 @@ public class OrmPersistentAttributeTests extends ContextModelTestCase
 	}
 	
 	private ICompilationUnit createTestEntityOneToOneMapping() throws Exception {
-		createEntityAnnotation();
-		createOneToOneAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

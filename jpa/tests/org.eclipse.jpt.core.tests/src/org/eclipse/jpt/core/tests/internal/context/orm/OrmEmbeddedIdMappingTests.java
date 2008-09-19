@@ -60,38 +60,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		persistenceResource().save(null);
 	}
 	
-	private void createEntityAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createEmbeddedIdAnnotation() throws Exception{
-		this.createAnnotationAndMembers("EmbeddedId", "");		
-	}
-	
-	private void createColumnAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Column", 
-			"String name() default \"\";" +
-			"boolean unique() default false;" +
-			"boolean nullable() default true;" +
-			"boolean insertable() default true;" +
-			"boolean updatable() default true;" +
-			"String columnDefinition() default \"\";" +
-			"String table() default \"\";" +
-			"int length() default 255;" +
-			"int precision() default 0;" +
-			"int scale() default 0;");		
-	}
-	
-	private void createAttributeOverrideAnnotation() throws Exception {
-		createColumnAnnotation();
-		this.createAnnotationAndMembers("AttributeOverride", 
-			"String name();" +
-			"Column column();");		
-	}
 	private ICompilationUnit createTestEntityEmbeddedIdMapping() throws Exception {
-		createEntityAnnotation();
-		createEmbeddedIdAnnotation();
-		createAttributeOverrideAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

@@ -51,33 +51,8 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 		persistenceResource().save(null);
 	}
-	
-	private void createEntityAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createIdAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Id", "");		
-	}
-	
-	private void createManyToManyAnnotation() throws Exception{
-		this.createAnnotationAndMembers("ManyToMany", "");		
-	}
 
-	private void createJoinTableAnnotation() throws Exception{
-		//TODO
-		this.createAnnotationAndMembers("JoinTable", 
-			"String name() default \"\"; " +
-			"String catalog() default \"\"; " +
-			"String schema() default \"\";");		
-	}
-
-	private ICompilationUnit createTestEntityWithValidManyToMany() throws Exception {
-		createEntityAnnotation();
-		createManyToManyAnnotation();
-		createJoinTableAnnotation();
-		createIdAnnotation();
-		
+	private ICompilationUnit createTestEntityWithValidManyToMany() throws Exception {		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

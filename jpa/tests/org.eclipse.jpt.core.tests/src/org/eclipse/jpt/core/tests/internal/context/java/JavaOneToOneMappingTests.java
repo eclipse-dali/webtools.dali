@@ -58,14 +58,6 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 public class JavaOneToOneMappingTests extends ContextModelTestCase
 {
 
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createOneToOneAnnotation() throws Exception{
-		this.createAnnotationAndMembers("OneToOne", "");		
-	}
-
 	private void createTestTargetEntityAddress() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
@@ -100,9 +92,6 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 
 	
 	private ICompilationUnit createTestEntityWithOneToOneMapping() throws Exception {
-		createEntityAnnotation();
-		createOneToOneAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -121,9 +110,6 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 	}
 	
 	private ICompilationUnit createTestEntityWithValidOneToOneMapping() throws Exception {
-		createEntityAnnotation();
-		createOneToOneAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -146,9 +132,6 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 	}
 	
 	private ICompilationUnit createTestEntityWithCollectionOneToOneMapping() throws Exception {
-		createEntityAnnotation();
-		createOneToOneAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -171,9 +154,6 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 	}
 	
 	private ICompilationUnit createTestEntityWithGenericizedCollectionOneToOneMapping() throws Exception {
-		createEntityAnnotation();
-		createOneToOneAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

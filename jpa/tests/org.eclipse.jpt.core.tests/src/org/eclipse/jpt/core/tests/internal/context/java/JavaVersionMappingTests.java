@@ -46,22 +46,7 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JavaVersionMappingTests extends ContextModelTestCase
 {
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createVersionAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Version", "");		
-	}
-	
-	private void createTemporalAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Temporal", "TemporalType value();");		
-	}
-
-	private ICompilationUnit createTestEntityWithVersionMapping() throws Exception {
-		createEntityAnnotation();
-		createVersionAnnotation();
-	
+	private ICompilationUnit createTestEntityWithVersionMapping() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -79,10 +64,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		});
 	}
 
-	private ICompilationUnit createTestEntityWithTemporal() throws Exception {
-		createEntityAnnotation();
-		createTemporalAnnotation();
-	
+	private ICompilationUnit createTestEntityWithTemporal() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

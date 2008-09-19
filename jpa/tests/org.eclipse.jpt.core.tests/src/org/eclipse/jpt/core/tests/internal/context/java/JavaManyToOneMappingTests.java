@@ -53,14 +53,6 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 public class JavaManyToOneMappingTests extends ContextModelTestCase
 {
 
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createManyToOneAnnotation() throws Exception{
-		this.createAnnotationAndMembers("ManyToOne", "");		
-	}
-
 	private void createTestTargetEntityAddress() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
@@ -94,9 +86,6 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 	}
 
 	private ICompilationUnit createTestEntityWithManyToOneMapping() throws Exception {
-		createEntityAnnotation();
-		createManyToOneAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -115,9 +104,6 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 	}
 	
 	private ICompilationUnit createTestEntityWithValidManyToOneMapping() throws Exception {
-		createEntityAnnotation();
-		createManyToOneAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -140,9 +126,6 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 	}
 	
 	private ICompilationUnit createTestEntityWithCollectionManyToOneMapping() throws Exception {
-		createEntityAnnotation();
-		createManyToOneAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -165,9 +148,6 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 	}
 	
 	private ICompilationUnit createTestEntityWithGenericizedCollectionManyToOneMapping() throws Exception {
-		createEntityAnnotation();
-		createManyToOneAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

@@ -50,26 +50,8 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JavaIdMappingTests extends ContextModelTestCase
 {
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createIdAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Id", "");		
-	}
-	
-	private void createGeneratedValueAnnotation() throws Exception{
-		this.createAnnotationAndMembers("GeneratedValue", "");		
-	}
-	
-	private void createTemporalAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Temporal", "TemporalType value();");		
-	}
 
 	private ICompilationUnit createTestEntityWithIdMapping() throws Exception {
-		createEntityAnnotation();
-		createIdAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -88,9 +70,6 @@ public class JavaIdMappingTests extends ContextModelTestCase
 	}
 
 	private ICompilationUnit createTestEntityWithTemporal() throws Exception {
-		createEntityAnnotation();
-		createTemporalAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -109,11 +88,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		});
 	}
 	
-	private ICompilationUnit createTestEntityWithIdMappingGeneratedValue() throws Exception {
-		createEntityAnnotation();
-		createIdAnnotation();
-		createGeneratedValueAnnotation();
-	
+	private ICompilationUnit createTestEntityWithIdMappingGeneratedValue() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

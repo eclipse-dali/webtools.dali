@@ -58,70 +58,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 		persistenceResource().save(null);
 	}
-	
-	private void createEntityAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createIdAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Id", "");		
-	}
-	
-	private void createColumnAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Column", 
-			"String name() default \"\";" +
-			"boolean unique() default false;" +
-			"boolean nullable() default true;" +
-			"boolean insertable() default true;" +
-			"boolean updatable() default true;" +
-			"String columnDefinition() default \"\";" +
-			"String table() default \"\";" +
-			"int length() default 255;" +
-			"int precision() default 0;" +
-			"int scale() default 0;");		
-	}
-	
-	private void createTemporalAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Temporal", "TemporalType value();");		
-	}
-	
-	private void createGeneratedValueAnnotation() throws Exception{
-		this.createAnnotationAndMembers("GeneratedValue", 
-			"GenerationType strategy() default AUTO;" +
-			"String generator() default \"\"; ");		
-	}
-
-	
-	private void createSequenceGeneratorAnnotation() throws Exception{
-		this.createAnnotationAndMembers("SequenceGenerator", 
-			"String name();" +
-			"String sequenceName() default \"\"; " +
-			"int initialValue() default 0; " +
-			"int allocationSize() default 50;");		
-	}
-
-	private void createTableGeneratorAnnotation() throws Exception{
-		this.createAnnotationAndMembers("TableGenerator", 
-			"String name(); " +
-			"String table() default \"\"; " +
-			"String catalog() default \"\"; " +
-			"String schema() default \"\";" +
-			"String pkColumnName() default \"\"; " +
-			"String valueColumnName() default \"\"; " +
-			"String pkColumnValue() default \"\"; " +
-			"int initialValue() default 0; " +
-			"int allocationSize() default 50; " +
-			"UniqueConstraint[] uniqueConstraints() default {};");		
-	}
 
 	private ICompilationUnit createTestEntityIdMapping() throws Exception {
-		createEntityAnnotation();
-		createIdAnnotation();
-		createColumnAnnotation();
-		createTemporalAnnotation();
-		createGeneratedValueAnnotation();
-		createSequenceGeneratorAnnotation();
-		createTableGeneratorAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

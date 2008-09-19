@@ -27,15 +27,8 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JavaPersistentAttributeTests extends ContextModelTestCase
 {
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-		
 
 	private ICompilationUnit createTestEntityAnnotatedField() throws Exception {
-		createEntityAnnotation();
-		this.createAnnotationAndMembers("Id", "");
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -54,9 +47,6 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 	}
 
 	private ICompilationUnit createTestEntityAnnotatedMethod() throws Exception {
-		createEntityAnnotation();
-		this.createAnnotationAndMembers("Id", "");
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

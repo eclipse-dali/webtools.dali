@@ -84,66 +84,8 @@ public class JavaEntityTests extends ContextModelTestCase
 	public JavaEntityTests(String name) {
 		super(name);
 	}
-	
-	private void createEntityAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createIdAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Id", "");		
-	}
-	
-	private void createMappedSuperclassAnnotation() throws Exception{
-		this.createAnnotationAndMembers("MappedSuperclass", "");		
-	}
-	
-	private void createTableAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Table", "String name() default \"\";");		
-	}
-	
-	private void createInheritanceAnnotation() throws Exception {
-		createInheritanceTypeEnum();
-		this.createAnnotationAndMembers("Inheritance", "InheritanceType strategy() default SINGLE_TABLE;");		
-	}
-	
-	private void createInheritanceTypeEnum() throws Exception {
-		this.createEnumAndMembers("InheritanceType", "SINGLE_TABLE, JOINED, TABLE_PER_CLASS");
-	}
-	
-	private void createDiscriminatorValueAnnotation() throws Exception {
-		this.createAnnotationAndMembers("DiscriminatorValue", "String value();");		
-	}
-	
-	private void createSecondaryTableAnnotation() throws Exception {
-		this.createAnnotationAndMembers("SecondaryTable", 
-			"String name(); " +
-			"String catalog() default \"\"; " +
-			"String schema() default \"\"; ");					
-//			PrimaryKeyJoinColumn[] pkJoinColumns() default {};
-//			UniqueConstraint[] uniqueConstraints() default {};
-	}
-	
-	private void createSecondaryTablesAnnotation() throws Exception {
-		createSecondaryTableAnnotation();
-		this.createAnnotationAndMembers("SecondaryTables", "SecondaryTable[] value();");		
-	}
-	
-	private void createPrimaryKeyJoinColumnAnnotation() throws Exception {
-		this.createAnnotationAndMembers("PrimaryKeyJoinColumn", 
-			"String name(); " +
-			"String referencedColumnName() default \"\"; " +
-			"String columnDefinition() default \"\"; ");
-	}
-	
-	private void createPrimaryKeyJoinColumnsAnnotation() throws Exception {
-		createPrimaryKeyJoinColumnAnnotation();
-		this.createAnnotationAndMembers("PrimaryKeyJoinColumns", "PrimaryKeyJoinColumn[] value();");		
-	}
 
-	
 	private ICompilationUnit createTestEntity() throws Exception {
-		createEntityAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -157,8 +99,6 @@ public class JavaEntityTests extends ContextModelTestCase
 	}
 	
 	private void createTestAbstractEntity() throws Exception {
-		createEntityAnnotation();
-	
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
 				sb.append(CR);
@@ -175,10 +115,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, FILE_NAME, sourceWriter);
 	}
 
-	private ICompilationUnit createTestEntityAnnotationOnProperty() throws Exception {
-		createEntityAnnotation();
-		createIdAnnotation();
-	
+	private ICompilationUnit createTestEntityAnnotationOnProperty() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -197,8 +134,6 @@ public class JavaEntityTests extends ContextModelTestCase
 	}
 
 	private ICompilationUnit createTestMappedSuperclass() throws Exception {
-		createMappedSuperclassAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -227,8 +162,6 @@ public class JavaEntityTests extends ContextModelTestCase
 	}
 
 	private ICompilationUnit createTestEntityWithName() throws Exception {
-		createEntityAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -242,9 +175,6 @@ public class JavaEntityTests extends ContextModelTestCase
 	}
 	
 	private ICompilationUnit createTestEntityWithTable() throws Exception {
-		createEntityAnnotation();
-		createTableAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -276,10 +206,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 
-	private ICompilationUnit createTestEntityWithInheritance() throws Exception {
-		createEntityAnnotation();
-		createInheritanceAnnotation();
-	
+	private ICompilationUnit createTestEntityWithInheritance() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -293,10 +220,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		});
 	}
 	
-	private ICompilationUnit createTestEntityWithDiscriminatorValue() throws Exception {
-		createEntityAnnotation();
-		createDiscriminatorValueAnnotation();
-	
+	private ICompilationUnit createTestEntityWithDiscriminatorValue() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -311,9 +235,6 @@ public class JavaEntityTests extends ContextModelTestCase
 	}
 	
 	private ICompilationUnit createTestEntityWithSecondaryTable() throws Exception {
-		createEntityAnnotation();
-		createSecondaryTableAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -328,9 +249,6 @@ public class JavaEntityTests extends ContextModelTestCase
 	}
 
 	private ICompilationUnit createTestEntityWithSecondaryTables() throws Exception {
-		createEntityAnnotation();
-		createSecondaryTablesAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

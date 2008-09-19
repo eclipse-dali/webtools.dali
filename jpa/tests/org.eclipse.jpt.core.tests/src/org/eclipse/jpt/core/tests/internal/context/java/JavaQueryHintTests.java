@@ -23,29 +23,8 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 public class JavaQueryHintTests extends ContextModelTestCase
 {
 	private static final String QUERY_NAME = "QUERY_NAME";
-
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createNamedQueryAnnotation() throws Exception {
-		createQueryHintAnnotation();
-		this.createAnnotationAndMembers("NamedQuery", 
-			"String name();" +
-			"String query();" +
-			"QueryHint[] hints() default {};");		
-	}
-	
-	private void createQueryHintAnnotation() throws Exception {
-		this.createAnnotationAndMembers("QueryHint", 
-			"String name();" +
-			"String value();");		
-	}
 		
 	private ICompilationUnit createTestEntityWithNamedQuery() throws Exception {
-		createEntityAnnotation();
-		createNamedQueryAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

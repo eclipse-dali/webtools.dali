@@ -46,19 +46,8 @@ public class OrmTransientMappingTests extends ContextModelTestCase
 		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 		persistenceResource().save(null);
 	}
-	
-	private void createEntityAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createTransientAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Transient", "");		
-	}
-
 
 	private ICompilationUnit createTestEntityTransientMapping() throws Exception {
-		createEntityAnnotation();
-		createTransientAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

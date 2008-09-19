@@ -41,18 +41,8 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JavaTransientMappingTests extends ContextModelTestCase
 {
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createTransientAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Transient", "");		
-	}
 
 	private ICompilationUnit createTestEntityWithTransientMapping() throws Exception {
-		createEntityAnnotation();
-		createTransientAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

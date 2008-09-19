@@ -33,25 +33,8 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 public class JavaTableTests extends ContextModelTestCase
 {
 	private static final String TABLE_NAME = "MY_TABLE";
-	
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	private void createTableAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Table", 
-			"String name() default \"\"; " +
-			"String catalog() default \"\"; " +
-			"String schema() default \"\";");		
-	}
-		
-	private void createUniqueConstraintAnnotation() throws Exception{
-		this.createAnnotationAndMembers("UniqueConstraint", 
-			"String[] columnNames(); ");		
-	}
 
 	private ICompilationUnit createTestEntity() throws Exception {
-		createEntityAnnotation();
-
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -65,9 +48,6 @@ public class JavaTableTests extends ContextModelTestCase
 	}
 
 	private ICompilationUnit createTestEntityWithTable() throws Exception {
-		createEntityAnnotation();
-		createTableAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -362,7 +342,6 @@ public class JavaTableTests extends ContextModelTestCase
 	}
 
 	public void testUniqueConstraints() throws Exception {
-		createUniqueConstraintAnnotation();
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
@@ -382,7 +361,6 @@ public class JavaTableTests extends ContextModelTestCase
 	}
 	
 	public void testUniqueConstraintsSize() throws Exception {
-		createUniqueConstraintAnnotation();
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
@@ -397,7 +375,6 @@ public class JavaTableTests extends ContextModelTestCase
 	}
 
 	public void testAddUniqueConstraint() throws Exception {
-		createUniqueConstraintAnnotation();
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
@@ -417,7 +394,6 @@ public class JavaTableTests extends ContextModelTestCase
 	}
 	
 	public void testAddUniqueConstraint2() throws Exception {
-		createUniqueConstraintAnnotation();
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
@@ -437,7 +413,6 @@ public class JavaTableTests extends ContextModelTestCase
 	}
 	
 	public void testRemoveUniqueConstraint() throws Exception {
-		createUniqueConstraintAnnotation();
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
@@ -482,7 +457,6 @@ public class JavaTableTests extends ContextModelTestCase
 	}
 	
 	public void testMoveUniqueConstraint() throws Exception {
-		createUniqueConstraintAnnotation();
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		

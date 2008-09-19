@@ -25,26 +25,8 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 	private static final String PRIMARY_KEY_JOIN_COLUMN_NAME = "MY_PRIMARY_KEY_JOIN_COLUMN";
 	private static final String COLUMN_DEFINITION = "MY_COLUMN_DEFINITION";
 
-	private void createEntityAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createIdAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Id", "");		
-	}
-	
-	private void createPrimaryKeyJoinColumnAnnotation() throws Exception{
-		this.createAnnotationAndMembers("PrimaryKeyJoinColumn", 
-			"String name() default \"\";" +
-			"String referencedColumnName() default \"\";" +
-			"String columnDefinition() default \"\";");		
-	}
-		
 
 	private ICompilationUnit createTestEntity() throws Exception {
-		createEntityAnnotation();
-		createIdAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -62,11 +44,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		});
 	}
 
-	private ICompilationUnit createTestEntityWithPrimaryKeyJoinColumn() throws Exception {
-		createEntityAnnotation();
-		createIdAnnotation();
-		createPrimaryKeyJoinColumnAnnotation();
-	
+	private ICompilationUnit createTestEntityWithPrimaryKeyJoinColumn() throws Exception {	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
