@@ -138,7 +138,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		Button lobButton = addRadioButton(
 			container, 
 			JptUiMappingsMessages.BasicMappingComposite_lobConverter, 
-			buildLobConverterHolder(), 
+			buildConverterBooleanHolder(Converter.LOB_CONVERTER), 
 			null);
 		((GridData) lobButton.getLayoutData()).horizontalSpan = 2;
 		
@@ -147,7 +147,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		addRadioButton(
 			container, 
 			JptUiMappingsMessages.BasicMappingComposite_temporalConverter, 
-			buildTemporalBooleanHolder(), 
+			buildConverterBooleanHolder(Converter.TEMPORAL_CONVERTER), 
 			null);
 		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
 		
@@ -156,7 +156,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		addRadioButton(
 			container, 
 			JptUiMappingsMessages.BasicMappingComposite_enumeratedConverter, 
-			buildEnumeratedBooleanHolder(), 
+			buildConverterBooleanHolder(Converter.ENUMERATED_CONVERTER), 
 			null);
 		registerSubPane(new EnumTypeComposite(buildEnumeratedConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
 
@@ -164,7 +164,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		Button elConverterButton = addRadioButton(
 			container, 
 			EclipseLinkUiMappingsMessages.EclipseLinkBasicMappingComposite_eclipseLinkConverter, 
-			buildEclipseLinkConverterBooleanHolder(), 
+			buildConverterBooleanHolder(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER), 
 			null);
 		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
 
@@ -180,42 +180,6 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 			@Override
 			protected Column transform_(BasicMapping value) {
 				return value.getColumn();
-			}
-		};
-	}
-
-	private WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
-		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.getSpecifiedConverter() == null);
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value.booleanValue()) {
-					this.subject.setSpecifiedConverter(Converter.NO_CONVERTER);
-				}
-			}
-		};
-	}
-	
-	private WritablePropertyValueModel<Boolean> buildLobConverterHolder() {
-		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				Converter converter = this.subject.getSpecifiedConverter();
-				if (converter == null) {
-					return Boolean.FALSE;
-				}
-				return Boolean.valueOf(converter.getType() == Converter.LOB_CONVERTER);
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value.booleanValue()) {
-					this.subject.setSpecifiedConverter(Converter.LOB_CONVERTER);
-				}
 			}
 		};
 	}
@@ -256,27 +220,23 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		};
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildTemporalBooleanHolder() {
+	private WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
 		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				Converter converter = this.subject.getSpecifiedConverter();
-				if (converter == null) {
-					return Boolean.FALSE;
-				}
-				return Boolean.valueOf(converter.getType() == Converter.TEMPORAL_CONVERTER);
+				return Boolean.valueOf(this.subject.getSpecifiedConverter() == null);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
+					this.subject.setSpecifiedConverter(Converter.NO_CONVERTER);
 				}
 			}
 		};
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildEnumeratedBooleanHolder() {
+	private WritablePropertyValueModel<Boolean> buildConverterBooleanHolder(final String converterType) {
 		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -284,33 +244,13 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 				if (converter == null) {
 					return Boolean.FALSE;
 				}
-				return Boolean.valueOf(converter.getType() == Converter.ENUMERATED_CONVERTER);
+				return Boolean.valueOf(converter.getType() == converterType);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setSpecifiedConverter(Converter.ENUMERATED_CONVERTER);
-				}
-			}
-		};
-	}
-	
-	private WritablePropertyValueModel<Boolean> buildEclipseLinkConverterBooleanHolder() {
-		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				Converter converter = this.subject.getSpecifiedConverter();
-				if (converter == null) {
-					return Boolean.FALSE;
-				}
-				return Boolean.valueOf(converter.getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value.booleanValue()) {
-					this.subject.setSpecifiedConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
+					this.subject.setSpecifiedConverter(converterType);
 				}
 			}
 		};
