@@ -65,4 +65,22 @@ public interface EclipseLinkConvert extends JpaContextNode, Converter
 	
 	String DEFAULT_CONVERTER_NAME = NO_CONVERTER;
 
+	/**
+	 * This will return null if there is no converter specified on the mapping
+	 * @return
+	 */
+	EclipseLinkNamedConverter getConverter();
+		String CONVERTER_PROPERTY = "converterProperty";
+	
+	/**
+	 * Possible values for converter type are:
+	 * {@value EclipseLinkNamedConverter#TYPE_CONVERTER}
+	 * {@value EclipseLinkNamedConverter#STRUCT_CONVERTER}
+	 * {@value EclipseLinkNamedConverter#CONVERTER}
+	 * {@value EclipseLinkNamedConverter#NO_CONVERTER}
+	 * {@value EclipseLinkNamedConverter#OBJECT_TYPE_CONVERTER}
+	 * @param converterType
+	 */
+	void setConverter(String converterType);
+
 }

@@ -14,14 +14,24 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkNamedConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConvert;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaNamedConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.ConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.StructConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.TypeConverterAnnotation;
 
 public class EclipseLinkJavaConvertImpl extends AbstractJavaJpaContextNode implements EclipseLinkJavaConvert
 {
 	private String specifiedConverterName;
 	
-	private JavaResourcePersistentAttribute resourcePersistenceAttribute;
+	private JavaResourcePersistentAttribute resourcePersistentAttribute;
+	
+	private EclipseLinkJavaNamedConverter converter;
 	
 	public EclipseLinkJavaConvertImpl(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa) {
 		super(parent);
@@ -32,9 +42,14 @@ public class EclipseLinkJavaConvertImpl extends AbstractJavaJpaContextNode imple
 	public JavaAttributeMapping getParent() {
 		return (JavaAttributeMapping) super.getParent();
 	}
+	
+	@Override
+	protected EclipseLinkJpaFactory getJpaFactory() {
+		return (EclipseLinkJpaFactory) super.getJpaFactory();
+	}
 
 	public String getType() {
-		return EclipseLinkJavaConvert.ECLIPSE_LINK_CONVERTER;
+		return EclipseLinkConvert.ECLIPSE_LINK_CONVERTER;
 	}
 
 	protected String getAnnotationName() {
@@ -42,11 +57,14 @@ public class EclipseLinkJavaConvertImpl extends AbstractJavaJpaContextNode imple
 	}
 		
 	public void addToResourceModel() {
-		this.resourcePersistenceAttribute.addAnnotation(getAnnotationName());
+		this.resourcePersistentAttribute.addAnnotation(getAnnotationName());
 	}
 	
 	public void removeFromResourceModel() {
-		this.resourcePersistenceAttribute.removeAnnotation(getAnnotationName());
+		this.resourcePersistentAttribute.removeAnnotation(getAnnotationName());
+		if (getConverter() != null) {
+			getConverter().removeFromResourceModel();
+		}
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
@@ -54,7 +72,7 @@ public class EclipseLinkJavaConvertImpl extends AbstractJavaJpaContextNode imple
 	}
 
 	protected ConvertAnnotation getResourceConvert() {
-		return (ConvertAnnotation) this.resourcePersistenceAttribute.getAnnotation(getAnnotationName());
+		return (ConvertAnnotation) this.resourcePersistentAttribute.getAnnotation(getAnnotationName());
 	}
 	
 	public String getConverterName() {
@@ -82,18 +100,98 @@ public class EclipseLinkJavaConvertImpl extends AbstractJavaJpaContextNode imple
 		firePropertyChanged(SPECIFIED_CONVERTER_NAME_PROPERTY, oldSpecifiedConverterName, newSpecifiedConverterName);
 	}
 
+	public EclipseLinkJavaNamedConverter getConverter() {
+		return this.converter;
+	}
+	
+	protected String getConverterType() {
+		if (this.converter == null) {
+			return EclipseLinkNamedConverter.NO_CONVERTER;
+		}
+		return this.converter.getType();
+	}
+
+	public void setConverter(String converterType) {
+		if (getConverterType() == converterType) {
+			return;
+		}
+		EclipseLinkJavaNamedConverter oldConverter = this.converter;
+		EclipseLinkJavaNamedConverter newConverter = buildConverter(converterType);
+		this.converter = null;
+		if (oldConverter != null) {
+			oldConverter.removeFromResourceModel();
+		}
+		this.converter = newConverter;
+		if (newConverter != null) {
+			newConverter.addToResourceModel();
+		}
+		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
+	}
+	
+	protected void setConverter(EclipseLinkJavaNamedConverter newConverter) {
+		EclipseLinkJavaNamedConverter oldConverter = this.converter;
+		this.converter = newConverter;
+		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
+	}
+	
 	protected void initialize(JavaResourcePersistentAttribute jrpa) {
-		this.resourcePersistenceAttribute = jrpa;
+		this.resourcePersistentAttribute = jrpa;
 		this.specifiedConverterName = this.specifiedConverterName(getResourceConvert());
+		this.converter = this.buildConverter(this.converterType(jrpa));
 	}
 	
 	public void update(JavaResourcePersistentAttribute jrpa) {
-		this.resourcePersistenceAttribute = jrpa;
+		this.resourcePersistentAttribute = jrpa;
 		this.setSpecifiedConverterName_(this.specifiedConverterName(getResourceConvert()));
+		if (converterType(jrpa) == getConverterType()) {
+			getConverter().update(jrpa);
+		}
+		else {
+			EclipseLinkJavaNamedConverter javaConverter = buildConverter(converterType(jrpa));
+			setConverter(javaConverter);
+		}
 	}
 	
 	protected String specifiedConverterName(ConvertAnnotation resourceConvert) {
 		return resourceConvert == null ? null : resourceConvert.getValue();
 	}
+
+	
+	protected EclipseLinkJavaNamedConverter buildConverter(String converterType) {
+		if (converterType == EclipseLinkNamedConverter.NO_CONVERTER) {
+			return null;
+		}
+		if (converterType == EclipseLinkNamedConverter.CONVERTER) {
+			return getJpaFactory().buildEclipseLinkJavaConverter(this, this.resourcePersistentAttribute);
+		}
+		else if (converterType == EclipseLinkNamedConverter.TYPE_CONVERTER) {
+			return getJpaFactory().buildEclipseLinkJavaTypeConverter(this, this.resourcePersistentAttribute);
+		}
+		else if (converterType == EclipseLinkNamedConverter.OBJECT_TYPE_CONVERTER) {
+			return getJpaFactory().buildEclipseLinkJavaObjectTypeConverter(this, this.resourcePersistentAttribute);
+		}
+		else if (converterType == EclipseLinkNamedConverter.STRUCT_CONVERTER) {
+			return getJpaFactory().buildEclipseLinkJavaStructConverter(this, this.resourcePersistentAttribute);
+		}
+		return null;
+	}
+	
+	protected String converterType(JavaResourcePersistentAttribute jrpa) {
+		if (jrpa.getAnnotation(ConverterAnnotation.ANNOTATION_NAME) != null) {
+			return EclipseLinkNamedConverter.CONVERTER;
+		}
+		else if (jrpa.getAnnotation(TypeConverterAnnotation.ANNOTATION_NAME) != null) {
+			return EclipseLinkNamedConverter.TYPE_CONVERTER;
+		}
+		else if (jrpa.getAnnotation(ObjectTypeConverterAnnotation.ANNOTATION_NAME) != null) {
+			return EclipseLinkNamedConverter.OBJECT_TYPE_CONVERTER;
+		}
+		else if (jrpa.getAnnotation(StructConverterAnnotation.ANNOTATION_NAME) != null) {
+			return EclipseLinkNamedConverter.STRUCT_CONVERTER;
+		}
+		
+		return null;
+	}
+
 
 }

@@ -9,12 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaConverter;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
 
 /**
- * Corresponds to a Convert resource model object
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,8 +21,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJavaConvert extends EclipseLinkConvert, JavaConverter
+public interface EclipseLinkJavaTypeConverter extends EclipseLinkTypeConverter, EclipseLinkJavaNamedConverter
 {
-	EclipseLinkJavaNamedConverter getConverter();
 
 }

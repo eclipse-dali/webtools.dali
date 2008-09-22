@@ -11,13 +11,19 @@ package org.eclipse.jpt.eclipselink.core;
 
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConvert;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaStructConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaTypeConverter;
 
 /**
  * Use EclipseLinkJpaFactory to create any EclispeLink specific
@@ -38,6 +44,14 @@ public interface EclipseLinkJpaFactory extends JpaFactory
 	
 	EclipseLinkJavaConvert buildEclipseLinkJavaConvert(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa);
 	
+	EclipseLinkJavaConverter buildEclipseLinkJavaConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm);
+	
+	EclipseLinkJavaTypeConverter buildEclipseLinkJavaTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm);
+	
+	EclipseLinkJavaObjectTypeConverter buildEclipseLinkJavaObjectTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm);
+	
+	EclipseLinkJavaStructConverter buildEclipseLinkJavaStructConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm);
+
 	//********* covariant overrides ***********
 	
 	EclipseLinkJavaEntity buildJavaEntity(JavaPersistentType parent);

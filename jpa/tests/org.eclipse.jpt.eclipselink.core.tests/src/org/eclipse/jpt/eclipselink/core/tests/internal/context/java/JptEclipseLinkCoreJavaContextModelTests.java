@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
+ *  Copyright (c) 2008 Oracle. 
  *  All rights reserved.  This program and the accompanying materials 
  *  are made available under the terms of the Eclipse Public License v1.0 
  *  which accompanies this distribution, and is available at 
@@ -24,6 +24,13 @@ public class JptEclipseLinkCoreJavaContextModelTests extends TestCase
 		TestSuite suite = new TestSuite(JptEclipseLinkCoreJavaContextModelTests.class.getName());
 		suite.addTestSuite(EclipseLinkJavaBasicMappingTests.class);
 		suite.addTestSuite(EclipseLinkJavaCachingTests.class);
+		suite.addTestSuite(EclipseLinkJavaConvertTests.class);
+		suite.addTestSuite(EclipseLinkJavaConverterTests.class);
+		suite.addTestSuite(EclipseLinkJavaIdMappingTests.class);
+		suite.addTestSuite(EclipseLinkJavaObjectTypeConverterTests.class);
+		suite.addTestSuite(EclipseLinkJavaStructConverterTests.class);
+		suite.addTestSuite(EclipseLinkJavaTypeConverterTests.class);
+		suite.addTestSuite(EclipseLinkJavaVersionMappingTests.class);
 		return suite;
 	}
 

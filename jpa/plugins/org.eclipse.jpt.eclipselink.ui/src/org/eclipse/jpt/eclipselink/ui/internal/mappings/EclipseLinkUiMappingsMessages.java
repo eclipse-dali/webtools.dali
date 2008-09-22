@@ -49,6 +49,15 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	public static String DisableHitsComposite_disableHitsLabel;
 	
 	public static String ConvertComposite_convertNameLabel;
+	public static String ConvertComposite_defineConverterSection;
+	public static String ConvertComposite_noConverter;
+	public static String ConvertComposite_converter;
+	public static String ConvertComposite_typeConverter;
+	public static String ConvertComposite_objectTypeConverter;
+	public static String ConvertComposite_structConverter;
+	
+	public static String ConverterComposite_nameTextLabel;
+	public static String ConverterComposite_classLabel;
 	
 	public static String EclipseLinkBasicMappingComposite_eclipseLinkConverter;
 	public static String EclipseLinkIdMappingComposite_eclipseLinkConverter;
@@ -67,6 +76,12 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	public static String ExpiryComposite_timeToLiveExpiryMilliseconds;
 	public static String ExpiryComposite_dailyExpiry;
 	public static String ExpiryComposite_timeOfDayExpiryExpireAt;
+	
+	public static String ObjectTypeConverterComposite_dataTypeLabel;
+	public static String ObjectTypeConverterComposite_objectTypeLabel;
+	
+	public static String TypeConverterComposite_dataTypeLabel;
+	public static String TypeConverterComposite_objectTypeLabel;
 	
 	static {
 		NLS.initializeMessages("eclipselink_ui_mappings", EclipseLinkUiMappingsMessages.class);

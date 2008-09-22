@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
+import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
@@ -23,19 +24,28 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConvert;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaStructConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaTypeConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaCachingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConvertImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConverterImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEntityImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaIdMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaMappedSuperclassImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaObjectTypeConverterImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaStructConverterImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaTypeConverterImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingImpl;
 import org.eclipse.jpt.eclipselink.core.resource.elorm.EclipseLinkOrmResourceModel;
 
@@ -81,6 +91,22 @@ public class EclipseLinkJpaFactoryImpl extends GenericJpaFactory implements Ecli
 	
 	public EclipseLinkJavaConvert buildEclipseLinkJavaConvert(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa) {
 		return new EclipseLinkJavaConvertImpl(parent, jrpa);
+	}
+	
+	public EclipseLinkJavaConverter buildEclipseLinkJavaConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
+		return new EclipseLinkJavaConverterImpl(parent, jrpm);
+	}
+	
+	public EclipseLinkJavaObjectTypeConverter buildEclipseLinkJavaObjectTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
+		return new EclipseLinkJavaObjectTypeConverterImpl(parent, jrpm);
+	}
+	
+	public EclipseLinkJavaStructConverter buildEclipseLinkJavaStructConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
+		return new EclipseLinkJavaStructConverterImpl(parent, jrpm);
+	}
+	
+	public EclipseLinkJavaTypeConverter buildEclipseLinkJavaTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
+		return new EclipseLinkJavaTypeConverterImpl(parent, jrpm);
 	}
 	
 	@Override

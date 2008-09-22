@@ -7,13 +7,10 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.context.java;
-
-import org.eclipse.jpt.core.context.java.JavaConverter;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
+package org.eclipse.jpt.eclipselink.core.context;
 
 /**
- * Corresponds to a Convert resource model object
+ * Corresponds to a Converter resource model object
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,8 +21,11 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJavaConvert extends EclipseLinkConvert, JavaConverter
+public interface EclipseLinkConverter extends EclipseLinkNamedConverter
 {
-	EclipseLinkJavaNamedConverter getConverter();
+		
+	String getConverterClass();	
+	void setConverterClass(String converterClass);
+		String CONVERTER_CLASS_PROPERTY = "converterClassProperty";
 
 }
