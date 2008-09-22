@@ -85,7 +85,7 @@ public abstract class ChooserPane<T extends Model> extends Pane<T>
 
 	/**
 	 * Creates the left control. By default a label is created and its text is
-	 * retrieved by {@link #labelText()}.
+	 * retrieved by {@link #getLabelText()}.
 	 *
 	 * @param container The parent container
 	 * @return The newly created left control
@@ -105,7 +105,7 @@ public abstract class ChooserPane<T extends Model> extends Pane<T>
 	/**
 	 * Creates the right control. By default a browse button is created and its
 	 * action is performed by {@link #buildBrowseAction()} and its text is
-	 * retrieved by {@link #browseButtonText()}.
+	 * retrieved by {@link #getBrowseButtonText()}.
 	 *
 	 * @param container The parent container
 	 * @return The newly created right control
