@@ -9,14 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.orm.details;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
@@ -105,20 +100,10 @@ public class OrmJavaClassChooser extends FormPane<OrmTypeMapping> {
 			protected String getLabelText() {
 				return JptUiOrmMessages.OrmJavaClassChooser_javaClass;
 			}
-
+			
 			@Override
-			protected IPackageFragmentRoot getPackageFragmentRoot() {
-				IProject project = getSubject().getJpaProject().getProject();
-				IJavaProject root = JavaCore.create(project);
-
-				try {
-					return root.getAllPackageFragmentRoots()[0];
-				}
-				catch (JavaModelException e) {
-					JptUiPlugin.log(e);
-				}
-
-				return null;
+			protected JpaProject getJpaProject() {
+				return getSubject().getJpaProject();
 			}
 
 			@Override

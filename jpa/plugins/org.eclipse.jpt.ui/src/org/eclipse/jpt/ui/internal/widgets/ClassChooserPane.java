@@ -9,9 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
@@ -20,6 +23,7 @@ import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaTypeCompletionP
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.ClassTools;
@@ -29,8 +33,10 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.progress.IProgressService;
 
 /**
@@ -40,7 +46,7 @@ import org.eclipse.ui.progress.IProgressService;
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
- * |       !---------------------------------------------------- ------------- |
+ * |        ---------------------------------------------------- ------------- |
  * | Label: | I                                                | | Browse... | |
  * |        ---------------------------------------------------- ------------- |
  * -----------------------------------------------------------------------------</pre>
@@ -81,7 +87,56 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 
 		super(parentPane, subjectHolder, parent);
 	}
+	
+	@Override
+	protected Control addLeftControl(Composite container) {
+		Hyperlink labelLink = addHyperlink(container,
+			getLabelText(),
+			buildHyperLinkAction()
+		);
+		return labelLink;
+	}
+	
+	private Runnable buildHyperLinkAction() {
+		return new Runnable() {
+			public void run() {
+				ClassChooserPane.this.hyperLinkSelected();
+			}
+		};
+	}
 
+	protected void hyperLinkSelected() {
+		if (getClassName() == null) {
+			createType();
+		}
+		else {
+			openEditor(getClassName());
+		}
+	}
+	
+	protected void createType() {
+		
+	}
+	
+	protected void openEditor(String className) {
+		try {
+			IType type = getJpaProject().getJavaProject().findType(className);
+
+			if (type != null) {
+				IJavaElement javaElement = type.getParent();
+				JavaUI.openInEditor(javaElement, true, true);
+			}
+		}
+		catch (JavaModelException e) {
+			JptUiPlugin.log(e);
+		}
+		catch (PartInitException e) {
+			JptUiPlugin.log(e);
+		}
+	}
+
+	protected abstract JpaProject getJpaProject();
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -194,7 +249,18 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	 * @return Either the root of the package fragment or <code>null</code> if it
 	 * can't be retrieved
 	 */
-	protected abstract IPackageFragmentRoot getPackageFragmentRoot();
+	protected IPackageFragmentRoot getPackageFragmentRoot() {
+		IProject project = getJpaProject().getProject();
+		IJavaProject root = JavaCore.create(project);
+
+		try {
+			return root.getAllPackageFragmentRoots()[0];
+		}
+		catch (JavaModelException e) {
+			JptUiPlugin.log(e);
+		}
+		return null;
+	}
 
 	/**
 	 * The browse button was clicked, its action invokes this action which should

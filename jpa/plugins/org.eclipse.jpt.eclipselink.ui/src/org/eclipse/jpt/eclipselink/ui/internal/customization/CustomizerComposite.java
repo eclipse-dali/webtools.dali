@@ -9,14 +9,9 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.customization;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
-import org.eclipse.jpt.eclipselink.ui.JptEclipseLinkUiPlugin;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
@@ -74,19 +69,10 @@ public class CustomizerComposite extends Pane<EntityCustomizerProperties>
 			protected String getLabelText() {
 				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_customizerLabel;
 			}
-
+			
 			@Override
-			protected IPackageFragmentRoot getPackageFragmentRoot() {
-				IProject project = getSubject().getJpaProject().getProject();
-				IJavaProject root = JavaCore.create(project);
-
-				try {
-					return root.getAllPackageFragmentRoots()[0];
-				}
-				catch (JavaModelException e) {
-					JptEclipseLinkUiPlugin.log(e);
-				}
-				return null;
+			protected JpaProject getJpaProject() {
+				return getSubject().getJpaProject();
 			}
 
 			@Override
