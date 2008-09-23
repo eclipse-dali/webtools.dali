@@ -348,6 +348,9 @@ public class GeneratedValueComposite extends FormPane<IdMapping>
 	}
 
 	private void populateGeneratorChoices() {
+		if (this.generatorNameCombo.isDisposed()) {
+			return;
+		}
 		if (getSubject() == null) {
 			this.generatorNameCombo.setItems(new String[0]);
 		}
@@ -357,6 +360,9 @@ public class GeneratedValueComposite extends FormPane<IdMapping>
 	}
 
 	private void populateGeneratorName() {
+		if (this.generatorNameCombo.isDisposed()) {
+			return;
+		}
 		if (getSubject() == null) {
 			this.generatorNameCombo.setText("");
 		}
