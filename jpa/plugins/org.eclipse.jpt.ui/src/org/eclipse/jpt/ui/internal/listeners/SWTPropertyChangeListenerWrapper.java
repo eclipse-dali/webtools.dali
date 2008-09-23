@@ -16,8 +16,6 @@ import org.eclipse.swt.widgets.Display;
 /**
  * Wrap another property change listener and forward events to it on the SWT
  * UI thread.
- * Forward *every* event asynchronously via the UI thread so the listener
- * receives in the same order they were generated.
  */
 public class SWTPropertyChangeListenerWrapper
 	implements PropertyChangeListener
@@ -33,7 +31,11 @@ public class SWTPropertyChangeListenerWrapper
 	}
 
 	public void propertyChanged(PropertyChangeEvent event) {
-		this.executeOnUIThread(this.buildRunnable(event));
+		if (this.isExecutingUIThread()) {
+			this.propertyChanged_(event);
+		} else {
+			this.executeOnUIThread(this.buildRunnable(event));
+		}
 	}
 
 	private Runnable buildRunnable(final PropertyChangeEvent event) {
@@ -42,6 +44,10 @@ public class SWTPropertyChangeListenerWrapper
 				SWTPropertyChangeListenerWrapper.this.propertyChanged_(event);
 			}
 		};
+	}
+
+	private boolean isExecutingUIThread() {
+		return Display.getCurrent() != null;
 	}
 
 	/**

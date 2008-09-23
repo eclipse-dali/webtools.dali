@@ -17,8 +17,6 @@ import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 /**
  * Wrap another tree change listener and forward events to it on the AWT
  * event queue.
- * Forward *every* event asynchronously via the UI thread so the listener
- * receives in the same order they were generated.
  */
 public class AWTTreeChangeListenerWrapper
 	implements TreeChangeListener
@@ -34,19 +32,35 @@ public class AWTTreeChangeListenerWrapper
 	}
 
 	public void nodeAdded(TreeChangeEvent event) {
-		this.executeOnEventQueue(this.buildNodeAddedRunnable(event));
+		if (EventQueue.isDispatchThread()) {
+			this.nodeAdded_(event);
+		} else {
+			this.executeOnEventQueue(this.buildNodeAddedRunnable(event));
+		}
 	}
 
 	public void nodeRemoved(TreeChangeEvent event) {
-		this.executeOnEventQueue(this.buildNodeRemovedRunnable(event));
+		if (EventQueue.isDispatchThread()) {
+			this.nodeRemoved_(event);
+		} else {
+			this.executeOnEventQueue(this.buildNodeRemovedRunnable(event));
+		}
 	}
 
 	public void treeCleared(TreeChangeEvent event) {
-		this.executeOnEventQueue(this.buildTreeClearedRunnable(event));
+		if (EventQueue.isDispatchThread()) {
+			this.treeCleared_(event);
+		} else {
+			this.executeOnEventQueue(this.buildTreeClearedRunnable(event));
+		}
 	}
 
 	public void treeChanged(TreeChangeEvent event) {
-		this.executeOnEventQueue(this.buildTreeChangedRunnable(event));
+		if (EventQueue.isDispatchThread()) {
+			this.treeChanged_(event);
+		} else {
+			this.executeOnEventQueue(this.buildTreeChangedRunnable(event));
+		}
 	}
 
 	private Runnable buildNodeAddedRunnable(final TreeChangeEvent event) {
