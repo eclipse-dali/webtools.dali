@@ -9,7 +9,6 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.ddlgen;
 
-import java.text.MessageFormat;
 import java.util.Iterator;
 
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -156,9 +155,7 @@ public class EclipseLinkDDLGeneratorUi
 		}
 		
 		private void displayError(String message) {
-			
-			String msg = MessageFormat.format(message, new String [] {message});
-			MessageDialog.openError(getShell(), "Error", msg);
+			MessageDialog.openError(getShell(), "Error", message);
 		}
 
 		private Shell getShell() {
