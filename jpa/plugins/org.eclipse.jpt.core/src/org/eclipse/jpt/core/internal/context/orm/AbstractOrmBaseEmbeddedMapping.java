@@ -35,7 +35,6 @@ import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> extends AbstractOrmAttributeMapping<T> implements OrmBaseEmbeddedMapping

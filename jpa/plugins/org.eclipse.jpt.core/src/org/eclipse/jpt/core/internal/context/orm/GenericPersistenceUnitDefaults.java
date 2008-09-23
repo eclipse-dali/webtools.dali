@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults;
 import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Catalog;
-import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 

@@ -10,9 +10,6 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.ListIterator;
-
-import org.eclipse.jpt.db.Catalog;
-import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 
 /**
