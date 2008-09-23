@@ -9,11 +9,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.platform;
 
-import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
@@ -31,8 +29,6 @@ import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * EclipseLinkPlatformUI
@@ -72,12 +68,6 @@ public class EclipseLinkJpaPlatformUI extends BaseJpaPlatformUi
 		String projectLocation = project.getProject().getLocation().toString();
 		
 		EclipseLinkDDLGeneratorUi.generate(project, projectLocation, selection);
-	}
-
-	protected void displayNotSupportedMessage(String title, String message) {
-		String formattedMessage = MessageFormat.format(message, message);
-		Shell currentShell = Display.getCurrent().getActiveShell();
-		MessageDialog.openInformation(currentShell, title, formattedMessage);
 	}
 
 	@Override

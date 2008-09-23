@@ -16,7 +16,6 @@ import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * PersistenceUnitPropertyListListener Notifies the given parent when a change
@@ -109,10 +108,5 @@ public class PersistenceUnitPropertyListListener implements ListChangeListener
 	@SuppressWarnings("unchecked")
 	private Iterator<Property> items(ListChangeEvent event) {
 		return (Iterator<Property>) event.items();
-	}
-
-	@SuppressWarnings("unchecked")
-	private ListValueModel<Property> getSource(ListChangeEvent event) {
-		return (ListValueModel<Property>) event.getSource();
 	}
 }
