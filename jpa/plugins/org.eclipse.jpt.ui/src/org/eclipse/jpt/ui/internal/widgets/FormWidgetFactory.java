@@ -74,14 +74,14 @@ public class FormWidgetFactory implements WidgetFactory {
 	 * the border
 	 */
 	protected Composite createBorderContainer(Composite container) {
+		return createBorderContainer(container, 2, 1);
+	}
+	
+	protected Composite createBorderContainer(Composite container, int marginHeight, int marginWidth) {
 
 		GridLayout layout = new GridLayout(1, false);
-		layout.marginHeight = 0;
-		layout.marginWidth  = 0;
-		layout.marginTop    = 2;
-		layout.marginLeft   = 1;
-		layout.marginBottom = 2;
-		layout.marginRight  = 1;
+		layout.marginHeight = marginHeight;
+		layout.marginWidth  = marginWidth;
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment       = GridData.FILL;
@@ -93,7 +93,7 @@ public class FormWidgetFactory implements WidgetFactory {
 
 		return container;
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -129,7 +129,7 @@ public class FormWidgetFactory implements WidgetFactory {
 	 * @return The newly created <code>CCombo</code>
 	 */
 	protected CCombo createCCombo(Composite parent, int style) {
-		parent = createBorderContainer(parent);
+		parent = createBorderContainer(parent, 1, 1);
 
 		CCombo combo = new CCombo(parent, style);
 		widgetFactory.adapt(combo, true, false);

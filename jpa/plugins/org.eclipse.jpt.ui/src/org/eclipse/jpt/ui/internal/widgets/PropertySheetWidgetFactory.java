@@ -9,11 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
@@ -42,15 +39,6 @@ public class PropertySheetWidgetFactory extends FormWidgetFactory {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected CCombo createCCombo(Composite parent, int style) {
-		parent = createBorderContainer(parent);
-		return getWidgetFactory().createCCombo(parent, style);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public Composite createComposite(Composite parent) {
 		return getWidgetFactory().createComposite(parent);
 	}
@@ -61,15 +49,6 @@ public class PropertySheetWidgetFactory extends FormWidgetFactory {
 	@Override
 	public Group createGroup(Composite parent, String title) {
 		return getWidgetFactory().createGroup(parent, title);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected Text createText(Composite parent, int style) {
-		parent = createBorderContainer(parent);
-		return getWidgetFactory().createText(parent, null, SWT.FLAT | style);
 	}
 
 	/**
