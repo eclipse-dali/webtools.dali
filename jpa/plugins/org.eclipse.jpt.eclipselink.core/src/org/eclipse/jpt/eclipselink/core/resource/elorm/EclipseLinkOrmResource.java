@@ -11,7 +11,6 @@
 package org.eclipse.jpt.eclipselink.core.resource.elorm;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.internal.resource.elorm.translators.EntityMappingsTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
@@ -36,16 +35,6 @@ public class EclipseLinkOrmResource extends JpaXmlResource
 	
 	public Translator getRootTranslator() {
 		return EntityMappingsTranslator.INSTANCE;
-	}
-	
-	@Override
-	public void javaElementChanged(ElementChangedEvent event) {
-		// TODO
-	}
-	
-	@Override
-	public void updateFromResource() {
-		// TODO
 	}
 	
 	public XmlEntityMappings getEntityMappings() {

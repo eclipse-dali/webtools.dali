@@ -47,8 +47,9 @@ public class JptEclipseLinkCorePlugin extends Plugin
 	
 	
 	/**
-	 * Return the default mapping file (specified as "META-INF/eclipselink-orm.xml")
-	 * deployment URI for the specified project.
+	 * Return the default mapping file deployment URI for the specified project.
+	 * ("WEB-INF/classes/META-INF/eclipselink-orm.xml" for web projects and
+	 *  "META-INF/eclipselink-orm.xml" in other cases)
 	 */
 	public static String getDefaultEclipseLinkOrmXmlDeploymentURI(IProject project) {
 		return JptCorePlugin.getDeploymentURI(project, DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH);

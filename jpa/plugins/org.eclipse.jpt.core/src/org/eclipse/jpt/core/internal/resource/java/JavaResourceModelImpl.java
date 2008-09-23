@@ -138,10 +138,6 @@ public class JavaResourceModelImpl
 		return false;
 	}
 
-	public void updateFromResource() {
-		this.jpaCompilationUnit.updateFromJava();
-	}
-
 	public void resolveTypes() {
 		this.jpaCompilationUnit.resolveTypes();
 	}

@@ -24,11 +24,11 @@ import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProvider;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
@@ -50,14 +50,13 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 			throw new IllegalArgumentException("The JPA project must not be null");
 		}
 		this.jpaProject = jpaProject;
-		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForRead(jpaProject.getProject());
-		PersistenceResource pr = pae.getResource();
 		
-		if (pr.exists()) {
-			this.persistenceXml = this.buildPersistenceXml(pr);
+		PersistenceResourceModelProvider modelProvider =
+			PersistenceResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
+		PersistenceResource resource = modelProvider.getResource();
+		if (resource.exists()) {
+			this.persistenceXml = this.buildPersistenceXml(resource);
 		}
-		
-		pae.dispose();
 	}
 	
 	@Override
@@ -121,10 +120,15 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 		if (this.persistenceXml != null) {
 			throw new IllegalStateException();
 		}
-		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForWrite(this.getJpaProject().getProject());
-		PersistenceResource pr = pae.createDefaultResource();
-		pae.dispose();
-		PersistenceXml px = this.buildPersistenceXml(pr);
+		PersistenceResourceModelProvider modelProvider =
+			PersistenceResourceModelProvider.getDefaultModelProvider(getJpaProject().getProject());
+		PersistenceResource resource = modelProvider.getResource();
+		modelProvider.modify(new Runnable() {
+				public void run() {
+					// any modification will save file
+				}
+			});
+		PersistenceXml px = this.buildPersistenceXml(resource);
 		this.setPersistenceXml(px);
 		return px;
 	}
@@ -134,17 +138,17 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 			throw new IllegalStateException();
 		}
 		this.persistenceXml.dispose();
-		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForWrite(getJpaProject().getProject());
-		PersistenceResource pr = pae.getResource();
-		pae.dispose();
+		PersistenceResourceModelProvider modelProvider =
+			PersistenceResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
+		PersistenceResource resource = modelProvider.getResource();
 		try {
-			WorkbenchResourceHelper.deleteResource(pr);
+			WorkbenchResourceHelper.deleteResource(resource);
 		}
 		catch (CoreException ce) {
 			JptCorePlugin.log(ce);
 		}
 		
-		if (! pr.exists()) {
+		if (! resource.exists()) {
 			setPersistenceXml(null);
 		}
 	}
@@ -153,22 +157,21 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 	// **************** updating ***********************************************
 	
 	public void update(IProgressMonitor monitor) {
-		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForRead(getJpaProject().getProject());
-		PersistenceResource pr = pae.getResource();
+		PersistenceResourceModelProvider modelProvider =
+			PersistenceResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
+		PersistenceResource resource = modelProvider.getResource();
 		
-		if (pr.exists()) {
+		if (resource.exists()) {
 			if (this.persistenceXml != null) {
-				this.persistenceXml.update(pr);
+				this.persistenceXml.update(resource);
 			}
 			else {
-				setPersistenceXml(this.buildPersistenceXml(pr));
+				setPersistenceXml(this.buildPersistenceXml(resource));
 			}
 		}
 		else {
 			setPersistenceXml(null);
 		}
-		
-		pae.dispose();
 	}
 
 	protected PersistenceXml buildPersistenceXml(PersistenceResource persistenceResource) {

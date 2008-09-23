@@ -55,11 +55,6 @@ public interface ResourceModel extends Model
 	
 	void javaElementChanged(ElementChangedEvent event);
 	
-	/**
-	 * Update the resource model from the underlying resource.
-	 */
-	void updateFromResource();
-
 	
 	void addResourceModelChangeListener(ResourceModelListener listener);
 	

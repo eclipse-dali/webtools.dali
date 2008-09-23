@@ -11,10 +11,10 @@
  ***********************************************************************/
 package org.eclipse.jpt.ui.internal.wizards.entity.data.operation;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -32,6 +32,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.codegen.jet.JETEmitter;
 import org.eclipse.emf.codegen.jet.JETException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -42,11 +43,12 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jem.util.logger.proxy.Logger;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProvider;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.Inheritance;
 import org.eclipse.jpt.core.resource.orm.InheritanceType;
-import org.eclipse.jpt.core.resource.orm.OrmArtifactEdit;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
@@ -56,7 +58,6 @@ import org.eclipse.jpt.core.resource.orm.XmlIdClass;
 import org.eclipse.jpt.core.resource.orm.XmlIdImpl;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.core.resource.orm.XmlTable;
-import org.eclipse.jpt.core.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
@@ -70,6 +71,7 @@ import org.eclipse.jst.common.internal.annotations.controller.AnnotationsControl
 import org.eclipse.jst.common.internal.annotations.controller.AnnotationsControllerManager;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
 import org.eclipse.jst.j2ee.internal.project.WTPJETEmitter;
+import org.eclipse.wst.common.componentcore.internal.operation.ArtifactEditProviderOperation;
 import org.eclipse.wst.common.componentcore.internal.operation.IArtifactEditOperationDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -373,75 +375,73 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 		Job job = new Job(EntityWizardMsg.ADD_ENTITY_TO_XML) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForWrite(project);
-				try {					
-					String xmlUri = JptCorePlugin.getDefaultOrmXmlDeploymentURI(project);
-					OrmResource resource = oae.getResource(xmlUri);
-					if (!model.isMappingXMLDefault()) {
-						resource = oae.getResource(model.getMappingXmlFile());
-					}
-					
-					XmlEntityMappings entityMappings = resource.getEntityMappings();
-					if (entityMappings == null) {
-						entityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
-						entityMappings.setVersion(VERSION_STRING);
-					}
-
-					XmlEntity xmlEntity = OrmFactory.eINSTANCE.createXmlEntity();
-					xmlEntity.setClassName(model.getQualifiedJavaClassName());
-					if (model.isInheritanceSet()) {
-						Inheritance inheritance = OrmFactory.eINSTANCE.createInheritance();
-						String inheritanceStrategy = model.getInheritanceStrategyName();
-						if (inheritanceStrategy.equals(EMPTY_STRING)) {
-							inheritanceStrategy = SINGLE_TABLE;
-						}
-						InheritanceType inheritanceType = OrmFactory.eINSTANCE.createInheritanceTypeFromString(null, inheritanceStrategy);// TODO
-						inheritance.setStrategy(inheritanceType);
-						xmlEntity.setInheritance(inheritance);
-					}
-
-					if (model.isEntityNameSet()) {
-						xmlEntity.setName(model.getEntityName());
-					}
-					if (model.isTableNameSet()) {
-						XmlTable xmlTable = OrmFactory.eINSTANCE.createXmlTable();
-						xmlTable.setName(model.getTableName());
-						xmlEntity.setTable(xmlTable);
-					}
-					if (model.isCompositePK()) {
-						XmlIdClass idClass = OrmFactory.eINSTANCE.createXmlIdClass();
-						idClass.setClassName(model.getIdClassName());
-						xmlEntity.setIdClass(idClass);
-					}
-					List<String> pkFields = model.getPKFields();
-					if (pkFields.size() > 0) {
-						Attributes entityAttributes = OrmFactory.eINSTANCE.createAttributes();
-						List<XmlIdImpl> ids = new ArrayList<XmlIdImpl>();
-						for (String fieldName : pkFields) {
-							XmlIdImpl idImpl = OrmFactory.eINSTANCE.createXmlIdImpl();
-							idImpl.setName(fieldName);
-							ids.add(idImpl);
-						}
-						entityAttributes.eSet(OrmPackage.ATTRIBUTES__IDS, ids);
-						xmlEntity.setAttributes(entityAttributes);
-					}
-
-					String accessTypeString = FIELD;
-					if (!model.isFieldAccess()) {
-						accessTypeString = PROPERTY;
-					}
-					AccessType accessType = OrmFactory.eINSTANCE.createAccessTypeFromString(null, accessTypeString);// TODO
-					xmlEntity.setAccess(accessType);
-					EList<XmlEntity> entities = entityMappings.getEntities();
-					entities.add(xmlEntity);
-					resource.getContents().add(entityMappings);
-					oae.save(null);
-				} catch (Exception e) {
-					JptUiPlugin.log(e);
-					oae.dispose();
-				} finally {
-					oae.dispose();
+				final OrmResourceModelProvider modelProvider;
+				if (model.isMappingXMLDefault()) {
+					modelProvider = OrmResourceModelProvider.getDefaultModelProvider(project);
 				}
+				else {
+					modelProvider = OrmResourceModelProvider.getModelProvider(project, model.getMappingXMLName());
+				}
+				modelProvider.modify(new Runnable() {
+					public void run() {
+						OrmResource resource = modelProvider.getResource();
+						
+						XmlEntityMappings entityMappings = resource.getEntityMappings();
+						if (entityMappings == null) {
+							entityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
+							entityMappings.setVersion(VERSION_STRING);
+						}
+	
+						XmlEntity xmlEntity = OrmFactory.eINSTANCE.createXmlEntity();
+						xmlEntity.setClassName(model.getQualifiedJavaClassName());
+						if (model.isInheritanceSet()) {
+							Inheritance inheritance = OrmFactory.eINSTANCE.createInheritance();
+							String inheritanceStrategy = model.getInheritanceStrategyName();
+							if (inheritanceStrategy.equals(EMPTY_STRING)) {
+								inheritanceStrategy = SINGLE_TABLE;
+							}
+							InheritanceType inheritanceType = OrmFactory.eINSTANCE.createInheritanceTypeFromString(null, inheritanceStrategy);// TODO
+							inheritance.setStrategy(inheritanceType);
+							xmlEntity.setInheritance(inheritance);
+						}
+	
+						if (model.isEntityNameSet()) {
+							xmlEntity.setName(model.getEntityName());
+						}
+						if (model.isTableNameSet()) {
+							XmlTable xmlTable = OrmFactory.eINSTANCE.createXmlTable();
+							xmlTable.setName(model.getTableName());
+							xmlEntity.setTable(xmlTable);
+						}
+						if (model.isCompositePK()) {
+							XmlIdClass idClass = OrmFactory.eINSTANCE.createXmlIdClass();
+							idClass.setClassName(model.getIdClassName());
+							xmlEntity.setIdClass(idClass);
+						}
+						List<String> pkFields = model.getPKFields();
+						if (pkFields.size() > 0) {
+							Attributes entityAttributes = OrmFactory.eINSTANCE.createAttributes();
+							List<XmlIdImpl> ids = new ArrayList<XmlIdImpl>();
+							for (String fieldName : pkFields) {
+								XmlIdImpl idImpl = OrmFactory.eINSTANCE.createXmlIdImpl();
+								idImpl.setName(fieldName);
+								ids.add(idImpl);
+							}
+							entityAttributes.eSet(OrmPackage.ATTRIBUTES__IDS, ids);
+							xmlEntity.setAttributes(entityAttributes);
+						}
+	
+						String accessTypeString = FIELD;
+						if (!model.isFieldAccess()) {
+							accessTypeString = PROPERTY;
+						}
+						AccessType accessType = OrmFactory.eINSTANCE.createAccessTypeFromString(null, accessTypeString);// TODO
+						xmlEntity.setAccess(accessType);
+						EList<XmlEntity> entities = entityMappings.getEntities();
+						entities.add(xmlEntity);
+						resource.getContents().add(entityMappings);
+					}
+				});
 				return Status.OK_STATUS;
 			}
 		};
@@ -459,57 +459,55 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 		Job job = new Job(EntityWizardMsg.ADD_MAPPED_SUPERCLASS_TO_XML) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForWrite(project);
-				try {
-					//OrmResource resource = oae.getResource(JptCorePlugin.ormXmlDeploymentURI(project));
-					String xmlUri = JptCorePlugin.getDefaultOrmXmlDeploymentURI(project);
-					if (!model.isMappingXMLDefault()) {
-						xmlUri = model.getMappingXMLName();
-					}
-					OrmResource resource = oae.getResource(xmlUri);
-					XmlEntityMappings entityMappings = resource.getEntityMappings();
-					if (entityMappings == null) {
-						entityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
-						entityMappings.setVersion(VERSION_STRING);
-					}
-
-					XmlMappedSuperclass xmlMappedSuperclass = OrmFactory.eINSTANCE.createXmlMappedSuperclass();
-					xmlMappedSuperclass.setClassName(model.getQualifiedJavaClassName());
-					
-					if (model.isCompositePK()) {
-						XmlIdClass idClass = OrmFactory.eINSTANCE.createXmlIdClass();
-						idClass.setClassName(model.getIdClassName());
-						xmlMappedSuperclass.setIdClass(idClass);
-					}
-					
-					List<String> pkFields = model.getPKFields();
-					if (pkFields.size() > 0) {
-						Attributes entityAttributes = OrmFactory.eINSTANCE.createAttributes();
-						List<XmlIdImpl> ids = new ArrayList<XmlIdImpl>();
-						for (String fieldName : pkFields) {
-							XmlIdImpl idImpl = OrmFactory.eINSTANCE.createXmlIdImpl();
-							idImpl.setName(fieldName);
-							ids.add(idImpl);
-						}
-						entityAttributes.eSet(OrmPackage.ATTRIBUTES__IDS, ids);
-						xmlMappedSuperclass.setAttributes(entityAttributes);
-					}
-
-					String accessTypeString = FIELD;
-					if (!model.isFieldAccess()) {
-						accessTypeString = PROPERTY;
-					}
-					AccessType accessType = OrmFactory.eINSTANCE.createAccessTypeFromString(null, accessTypeString);
-					xmlMappedSuperclass.setAccess(accessType);
-					entityMappings.getMappedSuperclasses().add(xmlMappedSuperclass);
-					
-					resource.getContents().add(entityMappings);
-					oae.save(null);
-				} catch (Exception e) {
-					JptUiPlugin.log(e);
-				} finally {
-					oae.dispose();
+				final OrmResourceModelProvider modelProvider;
+				if (model.isMappingXMLDefault()) {
+					modelProvider = OrmResourceModelProvider.getDefaultModelProvider(project);
 				}
+				else {
+					modelProvider = OrmResourceModelProvider.getModelProvider(project, model.getMappingXMLName());
+				}
+				modelProvider.modify(new Runnable() {
+					public void run() {
+						OrmResource resource = modelProvider.getResource();
+						XmlEntityMappings entityMappings = resource.getEntityMappings();
+						if (entityMappings == null) {
+							entityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
+							entityMappings.setVersion(VERSION_STRING);
+						}
+	
+						XmlMappedSuperclass xmlMappedSuperclass = OrmFactory.eINSTANCE.createXmlMappedSuperclass();
+						xmlMappedSuperclass.setClassName(model.getQualifiedJavaClassName());
+						
+						if (model.isCompositePK()) {
+							XmlIdClass idClass = OrmFactory.eINSTANCE.createXmlIdClass();
+							idClass.setClassName(model.getIdClassName());
+							xmlMappedSuperclass.setIdClass(idClass);
+						}
+						
+						List<String> pkFields = model.getPKFields();
+						if (pkFields.size() > 0) {
+							Attributes entityAttributes = OrmFactory.eINSTANCE.createAttributes();
+							List<XmlIdImpl> ids = new ArrayList<XmlIdImpl>();
+							for (String fieldName : pkFields) {
+								XmlIdImpl idImpl = OrmFactory.eINSTANCE.createXmlIdImpl();
+								idImpl.setName(fieldName);
+								ids.add(idImpl);
+							}
+							entityAttributes.eSet(OrmPackage.ATTRIBUTES__IDS, ids);
+							xmlMappedSuperclass.setAttributes(entityAttributes);
+						}
+	
+						String accessTypeString = FIELD;
+						if (!model.isFieldAccess()) {
+							accessTypeString = PROPERTY;
+						}
+						AccessType accessType = OrmFactory.eINSTANCE.createAccessTypeFromString(null, accessTypeString);
+						xmlMappedSuperclass.setAccess(accessType);
+						entityMappings.getMappedSuperclasses().add(xmlMappedSuperclass);
+						
+						resource.getContents().add(entityMappings);
+					}
+				});
 				return Status.OK_STATUS;
 			}
 		};
@@ -527,40 +525,39 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 		Job job = new Job(EntityWizardMsg.APPLY_CHANGES_TO_PERSISTENCE_XML) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				String fileName = getLastSegment(model.getMappingXMLName());
-				PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForWrite(project);
-				try {
-					PersistenceResource persistenceResource = pae.getResource(JptCorePlugin.getPersistenceXmlDeploymentURI(project));
-					XmlPersistence xmlPersistence = persistenceResource.getPersistence();
-					EList<XmlPersistenceUnit> persistenceUnits = xmlPersistence.getPersistenceUnits();
-					XmlPersistenceUnit persistenceUnit = persistenceUnits.get(0);// Multiply persistence unit support
-					if (!model.isMappingXMLDefault()) {
-						boolean newXmlMappingFile = true;
-						EList<XmlMappingFileRef> xmlMappingFiles = persistenceUnit.getMappingFiles();
-						for (XmlMappingFileRef fileRef : xmlMappingFiles) {
-							if (fileName.equals(fileRef.getFileName())) {
-								newXmlMappingFile = false;
-								break;
+				final PersistenceResourceModelProvider pmp = 
+					PersistenceResourceModelProvider.getDefaultModelProvider(project);
+				pmp.modify(new Runnable() {
+						public void run() {
+							String fileName = getLastSegment(model.getMappingXMLName());
+							PersistenceResource persistenceResource = pmp.getResource();
+							XmlPersistence xmlPersistence = persistenceResource.getPersistence();
+							EList<XmlPersistenceUnit> persistenceUnits = xmlPersistence.getPersistenceUnits();
+							XmlPersistenceUnit persistenceUnit = persistenceUnits.get(0);// Multiply persistence unit support
+							if (!model.isMappingXMLDefault()) {
+								boolean newXmlMappingFile = true;
+								EList<XmlMappingFileRef> xmlMappingFiles = persistenceUnit.getMappingFiles();
+								for (XmlMappingFileRef fileRef : xmlMappingFiles) {
+									if (fileName.equals(fileRef.getFileName())) {
+										newXmlMappingFile = false;
+										break;
+									}
+								}						
+								if (newXmlMappingFile) {
+									XmlMappingFileRef xmlMappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
+									xmlMappingFileRef.setFileName(fileName);
+									persistenceUnit.getMappingFiles().add(xmlMappingFileRef);
+								}
 							}
-						}						
-						if (newXmlMappingFile) {
-							XmlMappingFileRef xmlMappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
-							xmlMappingFileRef.setFileName(fileName);
-							persistenceUnit.getMappingFiles().add(xmlMappingFileRef);
+							if (!model.isNonEntitySuperclass() && !JptCorePlugin.discoverAnnotatedClasses(project)) {
+								XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
+								classRef.setJavaClass(model.getQualifiedJavaClassName());
+								persistenceUnit.getClasses().add(classRef);
+							}
+							persistenceResource.getContents().add(xmlPersistence);
 						}
-					}
-					if (!model.isNonEntitySuperclass() && !JptCorePlugin.discoverAnnotatedClasses(project)) {
-						XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
-						classRef.setJavaClass(model.getQualifiedJavaClassName());
-						persistenceUnit.getClasses().add(classRef);
-					}
-					persistenceResource.getContents().add(xmlPersistence);
-					pae.save(null);
-				} catch (Exception e) {
-					JptUiPlugin.log(e);
-				} finally {
-					pae.dispose();
-				}
+					});
+				
 				return Status.OK_STATUS;
 			}
 		};

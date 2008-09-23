@@ -9,9 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.synch;
 
-import java.io.IOException;
 import java.util.Iterator;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
@@ -25,7 +23,7 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
-import org.eclipse.jpt.core.resource.persistence.PersistenceArtifactEdit;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProvider;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
@@ -49,64 +47,60 @@ public class SynchronizeClassesJob extends WorkspaceJob
 	}
 	
 	@Override
-	public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+	public IStatus runInWorkspace(final IProgressMonitor monitor) throws CoreException {
 		monitor.beginTask(JptCoreMessages.SYNCHRONIZING_CLASSES_TASK, 200);
 		
 		if (monitor.isCanceled()) {
 			return Status.CANCEL_STATUS;
 		}
 		
-		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.persistenceXmlFile.getProject());
-
-		PersistenceArtifactEdit persistenceArtifactEdit = PersistenceArtifactEdit.getArtifactEditForWrite(this.persistenceXmlFile.getProject());
-		PersistenceResource persistenceResource = persistenceArtifactEdit.getResource(this.persistenceXmlFile);
+		final JpaProject jpaProject = JptCorePlugin.getJpaProject(this.persistenceXmlFile.getProject());
+		
+		PersistenceResourceModelProvider modelProvider =
+			PersistenceResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
+		final PersistenceResource resource = modelProvider.getResource();
 		
 		monitor.worked(25);
-
-		XmlPersistence persistence = persistenceResource.getPersistence();
 		
-		if (persistence == null) {
-			persistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
-			persistenceResource.getContents().add(persistence);
-		}
+		modelProvider.modify(new Runnable() {
+				public void run() {
+					XmlPersistence persistence = resource.getPersistence();
+					
+					if (persistence == null) {
+						persistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
+						resource.getContents().add(persistence);
+					}
+					
+					XmlPersistenceUnit persistenceUnit;
+					
+					if (persistence.getPersistenceUnits().size() > 0) {
+						persistenceUnit = persistence.getPersistenceUnits().get(0);
+					}
+					else {
+						persistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
+						persistenceUnit.setName(jpaProject.getName());
+						persistence.getPersistenceUnits().add(persistenceUnit);
+					}
+					
+					persistenceUnit.getClasses().clear();
+					
+					monitor.worked(25);
+			
+					for (Iterator<String> stream = jpaProject.annotatedClassNames(); stream.hasNext(); ) {
+						String fullyQualifiedTypeName = stream.next();
+						if ( ! mappingFileContains(jpaProject, fullyQualifiedTypeName)) {
+							XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
+							classRef.setJavaClass(fullyQualifiedTypeName);
+							persistenceUnit.getClasses().add(classRef);
+						}
+					}
+					
+					monitor.worked(100);
+				}
+			});
 		
-		XmlPersistenceUnit persistenceUnitResource;
+		monitor.done();
 		
-		if (persistence.getPersistenceUnits().size() > 0) {
-			persistenceUnitResource = persistence.getPersistenceUnits().get(0);
-		}
-		else {
-			persistenceUnitResource = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
-			persistenceUnitResource.setName(this.persistenceXmlFile.getProject().getName());
-			persistence.getPersistenceUnits().add(persistenceUnitResource);
-		}
-		
-		persistenceUnitResource.getClasses().clear();
-		
-		monitor.worked(25);
-
-		for (Iterator<String> stream = jpaProject.annotatedClassNames(); stream.hasNext(); ) {
-			String fullyQualifiedTypeName = stream.next();
-			if ( ! mappingFileContains(jpaProject, fullyQualifiedTypeName)) {
-				XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
-				classRef.setJavaClass(fullyQualifiedTypeName);
-				persistenceUnitResource.getClasses().add(classRef);
-			}
-		}
-		
-		monitor.worked(100);
-		
-		try {
-			persistenceResource.save(null);
-		}
-		catch (IOException ioe) {
-			return new Status(IStatus.ERROR, JptCorePlugin.PLUGIN_ID, JptCoreMessages.ERROR_WRITING_FILE, ioe);
-		}
-		finally {
-			persistenceArtifactEdit.dispose();			
-			monitor.done();
-		}
-
 		return Status.OK_STATUS;
 	}
 	

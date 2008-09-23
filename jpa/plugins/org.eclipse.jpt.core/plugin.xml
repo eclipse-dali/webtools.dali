@@ -12,6 +12,12 @@
 	/>
 	
 	
+	<extension-point 
+		id="resourceModelProviders" 
+		name="%JPA_RESOURCE_MODEL_PROVIDERS" 
+		schema="schema/resourceModelProvider.exsd"/>
+	
+	
 	<!-- ***** Eclipse core extensions ***** -->
 	
 	<extension 
@@ -68,8 +74,7 @@
 		<content-type
 			id="org.eclipse.jpt.core.content.orm"
 			name="%ORM_XML_CONTENT"
-			base-type="org.eclipse.core.runtime.xml"
-			file-names="orm.xml">
+			base-type="org.eclipse.core.runtime.xml">
 			<describer
 				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
 				<parameter 
@@ -117,6 +122,20 @@
 	</extension>
 	
 	
+	<extension
+		point="org.eclipse.jpt.core.resourceModelProviders">
+		
+		<modelProvider
+			fileContentType="org.eclipse.jpt.core.content.persistence"
+			factoryClass="org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProviderFactory"/>
+		
+		<modelProvider
+			fileContentType="org.eclipse.jpt.core.content.orm"
+			factoryClass="org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProviderFactory"/>
+		
+	</extension>
+		
+	
 	<!-- ***** WTP extensions ***** -->
 
 	<extension
@@ -124,8 +143,7 @@
 		
 		<resourceFactory
 			class="org.eclipse.jpt.core.resource.persistence.PersistenceResourceFactory"
-			isDefault="true"
-			shortSegment="persistence.xml">
+			isDefault="true">
 			<contentTypeBinding
 				contentTypeId="org.eclipse.jpt.core.content.persistence">
 			</contentTypeBinding>
@@ -133,8 +151,7 @@
 		
 		<resourceFactory
 			class="org.eclipse.jpt.core.resource.orm.OrmResourceFactory"
-			isDefault="true"
-			shortSegment="orm.xml">
+			isDefault="true">
 			<contentTypeBinding
 				contentTypeId="org.eclipse.jpt.core.content.orm">
 			</contentTypeBinding>
@@ -254,5 +271,21 @@
 		
 	</extension>
 	
+	
+	<extension point="org.eclipse.wst.xml.core.catalogContributions">
+		
+		<catalogContribution id="default">
+			
+			<public
+				publicId="http://java.sun.com/xml/ns/persistence/orm"
+				uri="platform:/plugin/org.eclipse.jst.standard.schemas/dtdsAndSchemas/orm_1_0.xsd"/>
+			
+			<public
+				publicId="http://java.sun.com/xml/ns/persistence"
+				uri="platform:/plugin/org.eclipse.jst.standard.schemas/dtdsAndSchemas/persistence_1_0.xsd"/>
+		
+		</catalogContribution>
+		
+	</extension>
 	
 </plugin>

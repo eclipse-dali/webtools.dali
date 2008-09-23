@@ -75,6 +75,7 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 		if (persistence == null) {
 			throw new IllegalStateException();
 		}
+		getJpaFile(this.persistenceResource.getResourceModel()).removeRootStructureNode(this.persistenceResource);
 		this.persistence.dispose();
 		Persistence oldPersistence = persistence;
 		persistence = null;
@@ -103,6 +104,7 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 		this.persistenceResource = persistenceResource;
 		if (persistenceResource.getPersistence() != null) {
 			if (this.persistence != null) {
+				getJpaFile(this.persistenceResource.getResourceModel()).addRootStructureNode(this.persistenceResource, this.persistence);
 				this.persistence.update(persistenceResource.getPersistence());
 			}
 			else {
@@ -111,6 +113,7 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 		}
 		else {
 			if (getPersistence() != null) {
+				getJpaFile(this.persistenceResource.getResourceModel()).removeRootStructureNode(this.persistenceResource);
 				getPersistence().dispose();
 			}
 			setPersistence_(null);

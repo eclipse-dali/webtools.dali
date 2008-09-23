@@ -124,6 +124,7 @@ public class JpaModelTests extends TestCase {
 		assertNull(jpaProject);
 
 		this.testProject.getProject().open(null);
+		assertTrue(this.testProject.getProject().isOpen());
 		jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull(jpaProject);
 //		assertEquals(4, jpaProject.jpaFilesSize());

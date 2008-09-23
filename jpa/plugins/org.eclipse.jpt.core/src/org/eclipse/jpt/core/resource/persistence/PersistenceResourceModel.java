@@ -10,8 +10,9 @@
 package org.eclipse.jpt.core.resource.persistence;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jpt.core.ResourceModel;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProvider;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.common.JpaXmlResourceModel;
 
 /**
@@ -30,15 +31,18 @@ public class PersistenceResourceModel extends JpaXmlResourceModel
 	}
 	
 	
+	@Override
+	protected JpaXmlResource buildResource(IFile file) {
+		PersistenceResourceModelProvider modelProvider =
+			PersistenceResourceModelProvider.getModelProvider(file.getProject(), file.getProjectRelativePath().toString());
+		return modelProvider.getResource();
+	}
+	
+	
 	/**
 	 * @see ResourceModel#getResourceType()
 	 */
 	public String getResourceType() {
 		return ResourceModel.PERSISTENCE_RESOURCE_TYPE;
-	}
-	
-	@Override
-	protected PersistenceArtifactEdit buildArtifactEdit(IProject project) {
-		return PersistenceArtifactEdit.getArtifactEditForRead(project);
 	}
 }

@@ -8,9 +8,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.resource.elorm.translators;
 
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkConstants;
 import org.eclipse.jpt.eclipselink.core.resource.elorm.EclipseLinkOrmPackage;
 
 public interface EclipseLinkOrmXmlMapper
+	extends EclipseLinkConstants
 {
 	EclipseLinkOrmPackage ECLIPSELINK_ORM_PKG = EclipseLinkOrmPackage.eINSTANCE;
 	
@@ -18,9 +20,6 @@ public interface EclipseLinkOrmXmlMapper
 	String XML_NS_XSI = "xmlns:xsi";  //$NON-NLS-1$
 	String XSI_SCHEMA_LOCATION = "xsi:schemaLocation";  //$NON-NLS-1$
 	String XSI_NS_URL = "http://www.w3.org/2001/XMLSchema-instance";  //$NON-NLS-1$
-	String ECLIPSELINK_ORM_NS_URL = "http://www.eclipse.org/eclipselink/xsds/persistence/orm";  //$NON-NLS-1$
-	String ECLIPSELINK_ORM_SCHEMA_LOC_1_0 = "http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_1_0.xsd";  //$NON-NLS-1$
-	
 	
 	String ACCESS = "access";  //$NON-NLS-1$
 	String ALLOCATION_SIZE = "allocation-size";  //$NON-NLS-1$

@@ -22,7 +22,9 @@ import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jem.util.plugin.JEMUtilPlugin;
 import org.eclipse.jpt.core.ResourceModelListener;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
+import org.eclipse.wst.common.internal.emf.resource.TranslatorResource;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceImpl;
+import org.xml.sax.EntityResolver;
 
 /**
  * 
@@ -35,6 +37,8 @@ import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceImpl;
  */
 public abstract class JpaXmlResource extends TranslatorResourceImpl
 {
+	private EntityResolver entityResolver;
+	
 	protected JpaXmlResourceModel resourceModel;
 	
 	protected final Collection<ResourceModelListener> resourceModelListeners;
@@ -129,9 +133,9 @@ public abstract class JpaXmlResource extends TranslatorResourceImpl
 		return getFile().exists();
 	}
 	
-	public abstract void javaElementChanged(ElementChangedEvent event);
-	
-	public abstract void updateFromResource();
+	public void javaElementChanged(ElementChangedEvent event) {
+		// nothing to do yet
+	}
 	
 	public JpaXmlResourceModel getResourceModel() {
 		return this.resourceModel;

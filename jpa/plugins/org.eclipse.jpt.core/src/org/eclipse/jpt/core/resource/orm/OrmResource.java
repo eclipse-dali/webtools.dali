@@ -10,15 +10,12 @@
 package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jpt.core.internal.resource.orm.translators.EntityMappingsTranslator;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -37,16 +34,6 @@ public class OrmResource extends JpaXmlResource
 	
 	public Translator getRootTranslator() {
 		return EntityMappingsTranslator.INSTANCE;
-	}
-	
-	@Override
-	public void javaElementChanged(ElementChangedEvent event) {
-		// TODO
-	}
-	
-	@Override
-	public void updateFromResource() {
-		// TODO
 	}
 	
 	public XmlEntityMappings getEntityMappings() {

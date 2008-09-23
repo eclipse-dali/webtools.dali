@@ -11,12 +11,10 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.resource.orm;
 
 import junit.framework.TestCase;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
-import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.jpt.eclipselink.core.resource.elorm.EclipseLinkOrmArtifactEdit;
-import org.eclipse.jpt.eclipselink.core.resource.elorm.EclipseLinkOrmFactory;
+import org.eclipse.jpt.eclipselink.core.internal.resource.elorm.EclipseLinkOrmResourceModelProvider;
 import org.eclipse.jpt.eclipselink.core.resource.elorm.EclipseLinkOrmResource;
-import org.eclipse.jpt.eclipselink.core.resource.elorm.XmlEntityMappings;
 
 public class EclipseLinkOrmResourceModelTests extends TestCase
 {
@@ -33,21 +31,12 @@ public class EclipseLinkOrmResourceModelTests extends TestCase
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.jpaProject = TestJpaProject.buildJpaProject(BASE_PROJECT_NAME, false); // false = no auto-build
-		
-		EclipseLinkOrmArtifactEdit ae = 
-			EclipseLinkOrmArtifactEdit.getArtifactEditForWrite(this.jpaProject.getProject());
-		EclipseLinkOrmResource resource = 
-			ae.getResource(JptEclipseLinkCorePlugin.getDefaultEclipseLinkOrmXmlDeploymentURI(this.jpaProject.getProject()));
-
-		// 202811 - do not add content if it is already present
-		if (resource.getEntityMappings() == null) {
-			XmlEntityMappings entityMappings = EclipseLinkOrmFactory.eINSTANCE.createXmlEntityMappings();
-			entityMappings.setVersion("1.0");
-			resource.getContents().add(entityMappings);
-			ae.save(null);
-		}
-		
-		ae.dispose();
+	}
+	
+	protected void createFile() throws CoreException {
+		EclipseLinkOrmResourceModelProvider modelProvider = 
+			EclipseLinkOrmResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
+		modelProvider.createResource();
 	}
 	
 	@Override
@@ -58,20 +47,37 @@ public class EclipseLinkOrmResourceModelTests extends TestCase
 	}
 	
 	public void testModelLoad() {
-		EclipseLinkOrmArtifactEdit artifactEdit = 
-			EclipseLinkOrmArtifactEdit.getArtifactEditForRead(this.jpaProject.getProject());
-		assertNotNull(artifactEdit);
-		EclipseLinkOrmResource resource = artifactEdit.getResource("META-INF/eclipselink-orm.xml");
+		EclipseLinkOrmResourceModelProvider modelProvider = 
+			EclipseLinkOrmResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
+		assertNotNull(modelProvider);
+		EclipseLinkOrmResource resource = (EclipseLinkOrmResource) modelProvider.getResource();
 		assertNotNull(resource);
-		artifactEdit.dispose();
 	}
 	
 	public void testModelLoad2() {
-		EclipseLinkOrmArtifactEdit artifactEdit = 
-			EclipseLinkOrmArtifactEdit.getArtifactEditForRead(this.jpaProject.getProject());
-		assertNotNull(artifactEdit);
-		EclipseLinkOrmResource resource = artifactEdit.getResource("META-INF/eclipselink-orm.xml");
+		EclipseLinkOrmResourceModelProvider modelProvider = 
+			EclipseLinkOrmResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
+		assertNotNull(modelProvider);
+		EclipseLinkOrmResource resource = (EclipseLinkOrmResource) modelProvider.getResource();
 		assertNotNull(resource);
-		artifactEdit.dispose();
+	}
+	
+	public void testModelLoadForDifferentlyNamedOrmXml() {
+		EclipseLinkOrmResourceModelProvider modelProvider = 
+			EclipseLinkOrmResourceModelProvider.getModelProvider(
+				jpaProject.getProject(),"META-INF/eclipselink-orm2.xml");
+		assertNotNull(modelProvider);
+		EclipseLinkOrmResource resource = (EclipseLinkOrmResource) modelProvider.getResource();
+		assertNotNull(resource);
+	}
+	
+	public void testCreateFile() throws CoreException {
+		createFile();
+		EclipseLinkOrmResourceModelProvider modelProvider = 
+			EclipseLinkOrmResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
+		assertNotNull(modelProvider);
+		EclipseLinkOrmResource resource = (EclipseLinkOrmResource) modelProvider.getResource();
+		assertNotNull(resource);
+		assertTrue(resource.exists());
 	}
 }

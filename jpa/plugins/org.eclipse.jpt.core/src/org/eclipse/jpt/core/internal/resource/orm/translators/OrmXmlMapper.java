@@ -8,19 +8,13 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.orm.translators;
 
+import org.eclipse.jpt.core.internal.JpaConstants;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 
 public interface OrmXmlMapper
+	extends JpaConstants
 {
 	OrmPackage ORM_PKG = OrmPackage.eINSTANCE;
-	
-	String XML_NS = "xmlns";  //$NON-NLS-1$
-	String XML_NS_XSI = "xmlns:xsi";  //$NON-NLS-1$
-	String XSI_SCHEMA_LOCATION = "xsi:schemaLocation";  //$NON-NLS-1$
-	String XSI_NS_URL = "http://www.w3.org/2001/XMLSchema-instance";  //$NON-NLS-1$
-	String PERSISTENCE_NS_URL = "http://java.sun.com/xml/ns/persistence/orm";  //$NON-NLS-1$
-	String ORM_SCHEMA_LOC_1_0 = "http://java.sun.com/xml/ns/persistence/orm_1_0.xsd";  //$NON-NLS-1$
-	
 	
 	String ACCESS = "access";  //$NON-NLS-1$
 	String ALLOCATION_SIZE = "allocation-size";  //$NON-NLS-1$

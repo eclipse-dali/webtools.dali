@@ -10,13 +10,13 @@
 package org.eclipse.jpt.eclipselink.core.resource.elorm;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
+import org.eclipse.jpt.core.ResourceModel;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.common.JpaXmlResourceModel;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkResourceModel;
+import org.eclipse.jpt.eclipselink.core.internal.resource.elorm.EclipseLinkOrmResourceModelProvider;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -30,16 +30,18 @@ public class EclipseLinkOrmResourceModel extends JpaXmlResourceModel
 	}
 	
 	
+	@Override
+	protected JpaXmlResource buildResource(IFile file) {
+		EclipseLinkOrmResourceModelProvider modelProvider =
+			EclipseLinkOrmResourceModelProvider.getModelProvider(file.getProject(), file.getProjectRelativePath().toString());
+		return modelProvider.getResource();
+	}
+	
 	/**
 	 * @see ResourceModel#getResourceType()
 	 */
 	public String getResourceType() {
 		return EclipseLinkResourceModel.ECLIPSELINK_ORM_RESOURCE_TYPE;
-	}
-	
-	@Override
-	protected EclipseLinkOrmArtifactEdit buildArtifactEdit(IProject project) {
-		return EclipseLinkOrmArtifactEdit.getArtifactEditForRead(project);
 	}
 	
 	@Override

@@ -9,19 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.common;
 
-import java.io.IOException;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.ElementChangedEvent;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.ResourceModelListener;
 import org.eclipse.jpt.core.internal.AbstractResourceModel;
-import org.eclipse.wst.common.internal.emfworkbench.integration.EditModelEvent;
-import org.eclipse.wst.common.internal.emfworkbench.integration.EditModelListener;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -30,25 +23,17 @@ import org.eclipse.wst.common.internal.emfworkbench.integration.EditModelListene
  */
 public abstract class JpaXmlResourceModel extends AbstractResourceModel
 {
-	protected JpaArtifactEdit artifactEdit;
-	
 	protected JpaXmlResource resource;
 	
 	
 	protected JpaXmlResourceModel(IFile file) {
 		super(file);
-		this.artifactEdit = buildArtifactEdit(file.getProject());
-		this.resource = this.artifactEdit.getResource(file);
+		this.resource = buildResource(file);
 		this.resource.setResourceModel(this);
-		this.artifactEdit.addListener(buildReloadListener(this.resource));
 	}
 	
 	
-	protected abstract JpaArtifactEdit buildArtifactEdit(IProject project);
-	
-	private EditModelListener buildReloadListener(JpaXmlResource resource) {
-		return new ReloadListener(resource);
-	}
+	protected abstract JpaXmlResource buildResource(IFile file);
 	
 	public JpaXmlResource getResource() {
 		return this.resource;
@@ -56,10 +41,6 @@ public abstract class JpaXmlResourceModel extends AbstractResourceModel
 	
 	public void javaElementChanged(ElementChangedEvent event) {
 		this.resource.javaElementChanged(event);
-	}
-
-	public void updateFromResource() {
-		this.resource.updateFromResource();
 	}
 	
 	public void addResourceModelChangeListener(ResourceModelListener listener) {
@@ -70,49 +51,8 @@ public abstract class JpaXmlResourceModel extends AbstractResourceModel
 		this.resource.removeResourceModelChangeListener(listener);
 	}
 	
-	@Override
-	public void dispose() {
-		super.dispose();
-		this.artifactEdit.dispose();
-	}
 	
 	public void resolveTypes() {
 		//nothing to do here, JavaResourceModel needs this
-	}
-	
-	private class ReloadListener implements EditModelListener
-	{
-		final JpaXmlResource resource;
-		
-		
-		ReloadListener(JpaXmlResource resource) {
-			super();
-			this.resource = resource;
-		}
-		
-		
-		public void editModelChanged(EditModelEvent anEvent) {
-			switch (anEvent.getEventCode()) {
-				case EditModelEvent.UNLOADED_RESOURCE :
-					if (anEvent.getChangedResources().contains(resource)
-							&& ! resource.isLoaded()) {
-						try {
-							resource.load(resource.getResourceSet().getLoadOptions());
-						}
-						catch (IOException ioe) {
-							JptCorePlugin.log(ioe);
-						}
-					}
-					break;
-				case EditModelEvent.REMOVED_RESOURCE :
-					if (anEvent.getChangedResources().contains(resource)) {
-						anEvent.getEditModel().removeListener(this);
-					}
-					break;
-//				case EditModelEvent.SAVE :
-//				case EditModelEvent.PRE_DISPOSE :				
-			}
-			
-		}
 	}
 }

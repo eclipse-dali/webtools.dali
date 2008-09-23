@@ -32,12 +32,9 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.JpaProject.Config;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
-import org.eclipse.jpt.core.resource.orm.OrmArtifactEdit;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProvider;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
-import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.core.resource.persistence.PersistenceArtifactEdit;
-import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -251,30 +248,25 @@ public class GenericJpaModel
 	}
 
 	private void createPersistenceXml(IProject project) {
-		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForWrite(project);
-		
-		// 202811 - do not add content if it is already present
-		PersistenceResource resource = pae.getResource();
-		if (! resource.getFile().exists()) {
-			pae.createDefaultResource();
+		PersistenceResourceModelProvider modelProvider =
+			PersistenceResourceModelProvider.getDefaultModelProvider(project);
+		try {
+			modelProvider.createResource();
 		}
-		
-		pae.dispose();
+		catch (Exception e) {
+			JptCorePlugin.log(e);
+		}
 	}
 
 	private void createOrmXml(IProject project) {
-		OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForWrite(project);
-		OrmResource resource = oae.getResource(JptCorePlugin.getDefaultOrmXmlDeploymentURI(project));
-
-		// 202811 - do not add content if it is already present
-		if (resource.getEntityMappings() == null) {
-			XmlEntityMappings entityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
-			entityMappings.setVersion("1.0");
-			this.getResourceContents(resource).add(entityMappings);
-			oae.save(null);
+		OrmResourceModelProvider modelProvider =
+			OrmResourceModelProvider.getDefaultModelProvider(project);
+		try {
+			modelProvider.createResource();
 		}
-		
-		oae.dispose();
+		catch (Exception e) {
+			JptCorePlugin.log(e);
+		}
 	}
 
 	/**

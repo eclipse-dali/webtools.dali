@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
-
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
@@ -32,9 +31,9 @@ import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.core.context.persistence.Property;
+import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.orm.OrmArtifactEdit;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
@@ -883,11 +882,10 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected boolean impliedMappingFileExists() {
-		OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForRead(getJpaProject().getProject());
-		OrmResource or = oae.getResource(JptCorePlugin.getDefaultOrmXmlDeploymentURI(getJpaProject().getProject()));
-		boolean exists =  or != null && or.exists();
-		oae.dispose();
-		return exists;
+		OrmResourceModelProvider modelProvider = 
+			OrmResourceModelProvider.getDefaultModelProvider(getJpaProject().getProject());
+		OrmResource resource = modelProvider.getResource();
+		return resource != null && resource.exists();
 	}
 	
 	protected MappingFileRef buildMappingFileRef(XmlMappingFileRef xmlMappingFileRef) {

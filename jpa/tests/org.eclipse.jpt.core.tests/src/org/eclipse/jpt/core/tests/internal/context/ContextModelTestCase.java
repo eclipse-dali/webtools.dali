@@ -18,16 +18,15 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.resource.orm.OrmArtifactEdit;
+import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProvider;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
-import org.eclipse.jpt.core.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
@@ -42,9 +41,10 @@ import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 public abstract class ContextModelTestCase extends AnnotationTestCase
 {
 	protected static final String BASE_PROJECT_NAME = "ContextModelTestProject";
-		
-	protected PersistenceArtifactEdit persistenceArtifactEdit;
-	protected OrmArtifactEdit ormArtifactEdit;
+	
+	protected PersistenceResourceModelProvider persistenceResourceModelProvider;
+	
+	protected OrmResourceModelProvider ormResourceModelProvider;
 	
 	
 	protected ContextModelTestCase(String name) {
@@ -54,17 +54,17 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.persistenceArtifactEdit = PersistenceArtifactEdit.getArtifactEditForWrite(getJavaProject().getProject());
-		this.ormArtifactEdit = OrmArtifactEdit.getArtifactEditForWrite(getJavaProject().getProject());
+		this.persistenceResourceModelProvider = 
+			PersistenceResourceModelProvider.getDefaultModelProvider(getJavaProject().getProject());
+		this.ormResourceModelProvider = 
+			OrmResourceModelProvider.getDefaultModelProvider(getJavaProject().getProject());
 		waitForWorkspaceJobs();
 	}
 	
 	@Override
 	protected void tearDown() throws Exception {
-		this.persistenceArtifactEdit.dispose();
-		this.persistenceArtifactEdit = null;
-		this.ormArtifactEdit.dispose();
-		this.ormArtifactEdit = null;
+		this.persistenceResourceModelProvider = null;
+		this.ormResourceModelProvider = null;
 		super.tearDown();
 	}
 	
@@ -104,11 +104,11 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	protected PersistenceResource persistenceResource() {
-		return this.persistenceArtifactEdit.getResource();
+		return this.persistenceResourceModelProvider.getResource();
 	}
 	
 	protected OrmResource ormResource() {
-		return this.ormArtifactEdit.getResource(JptCorePlugin.getDefaultOrmXmlDeploymentURI(jpaProject().getProject()));
+		return this.ormResourceModelProvider.getResource();
 	}
 	
 	protected XmlPersistence xmlPersistence() {

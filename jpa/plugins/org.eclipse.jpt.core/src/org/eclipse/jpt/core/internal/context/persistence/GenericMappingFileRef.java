@@ -20,9 +20,9 @@ import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.orm.OrmArtifactEdit;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -101,13 +101,13 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 	
 	protected void initializeOrmXml() {
 		if (fileName != null) {
-			OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForRead(getJpaProject().getProject());
-			OrmResource ormResource = oae.getResource(fileName);
+			OrmResourceModelProvider modelProvider =
+				OrmResourceModelProvider.getModelProvider(getJpaProject().getProject(), fileName);
+			OrmResource ormResource = modelProvider.getResource();
 			
 			if (ormResource != null && ormResource.exists()) {
 				ormXml = buildOrmXml(ormResource);
 			}
-			oae.dispose();
 		}
 	}
 
@@ -129,8 +129,9 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 	protected void updateOrmXml() {
 		if (fileName != null) {
 			IProject project = getJpaProject().getProject();
-			OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForRead(project);
-			OrmResource ormResource = oae.getResource(JptCorePlugin.getOrmXmlDeploymentURI(project, fileName));
+			OrmResourceModelProvider modelProvider =
+				OrmResourceModelProvider.getModelProvider(project, fileName);
+			OrmResource ormResource = modelProvider.getResource();
 			if (ormResource != null && ormResource.exists()) {
 				if (ormXml != null) {
 					ormXml.update(ormResource);
@@ -145,7 +146,6 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 				}
 				setOrmXml(null);
 			}
-			oae.dispose();
 		}
 		else {
 			if (getOrmXml() != null) {

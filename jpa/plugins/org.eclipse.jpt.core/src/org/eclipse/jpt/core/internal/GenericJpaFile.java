@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jpt.core.JpaFile;
@@ -131,9 +130,4 @@ public class GenericJpaFile extends AbstractJpaNode implements JpaFile
 		sb.append(getResourceType());
 		sb.append(")");
 	}
-
-	public void updateFromResource() {
-		this.resourceModel.updateFromResource();
-	}
-
 }

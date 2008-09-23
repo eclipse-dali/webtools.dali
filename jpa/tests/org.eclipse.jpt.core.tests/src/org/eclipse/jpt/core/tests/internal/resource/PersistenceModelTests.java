@@ -11,7 +11,7 @@
 package org.eclipse.jpt.core.tests.internal.resource;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.core.resource.persistence.PersistenceArtifactEdit;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProvider;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 
@@ -32,6 +32,16 @@ public class PersistenceModelTests extends TestCase
 		this.jpaProject = TestJpaProject.buildJpaProject(BASE_PROJECT_NAME, false); // false = no auto-build
 	}
 	
+	protected void createFile() {
+		PersistenceResourceModelProvider modelProvider = 
+			PersistenceResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
+		modelProvider.modify(new Runnable() {
+			public void run() {
+				
+			}
+		});
+	}
+	
 	@Override
 	protected void tearDown() throws Exception {
 		this.jpaProject.getProject().delete(true, true, null);
@@ -40,18 +50,28 @@ public class PersistenceModelTests extends TestCase
 	}
 	
 	public void testModelLoad() {
-		PersistenceArtifactEdit artifactEdit = PersistenceArtifactEdit.getArtifactEditForRead(jpaProject.getProject());
-		assertNotNull(artifactEdit);
-		PersistenceResource resource = artifactEdit.getResource("META-INF/persistence.xml");
+		PersistenceResourceModelProvider modelProvider = 
+			PersistenceResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
+		assertNotNull(modelProvider);
+		PersistenceResource resource = modelProvider.getResource();
 		assertNotNull(resource);
-		artifactEdit.dispose();
 	}
 	
 	public void testModelLoad2() {
-		PersistenceArtifactEdit artifactEdit = PersistenceArtifactEdit.getArtifactEditForRead(jpaProject.getProject());
-		assertNotNull(artifactEdit);
-		PersistenceResource resource = artifactEdit.getResource("META-INF/persistence.xml");
+		PersistenceResourceModelProvider modelProvider = 
+			PersistenceResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
+		assertNotNull(modelProvider);
+		PersistenceResource resource = modelProvider.getResource();
 		assertNotNull(resource);
-		artifactEdit.dispose();
+	}
+	
+	public void testCreateFile() {
+		createFile();
+		PersistenceResourceModelProvider modelProvider = 
+			PersistenceResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
+		assertNotNull(modelProvider);
+		PersistenceResource resource = (PersistenceResource) modelProvider.getResource();
+		assertNotNull(resource);
+		assertTrue(resource.exists());
 	}
 }

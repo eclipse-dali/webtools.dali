@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
@@ -120,7 +121,6 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 	
 	public void update(XmlPersistence persistence) {
 		this.xmlPersistence = persistence;
-		getJpaFile(this.xmlPersistence.getResource().getResourceModel()).addRootStructureNode(this, this);
 		XmlPersistenceUnit xmlPersistenceUnit = null;
 		if (persistence.getPersistenceUnits().size() > 0) {
 			xmlPersistenceUnit = persistence.getPersistenceUnits().get(0);
@@ -220,7 +220,6 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 	}
 	
 	public void dispose() {
-		getJpaFile(this.xmlPersistence.getResource().getResourceModel()).removeRootStructureNode(this);
 		for (PersistenceUnit persistenceUnit : CollectionTools.iterable(persistenceUnits())) {
 			persistenceUnit.dispose();
 		}

@@ -10,13 +10,12 @@
 package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jpt.core.ResourceModel;
+import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.common.JpaXmlResourceModel;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -29,17 +28,18 @@ public class OrmResourceModel extends JpaXmlResourceModel
 		super(file);
 	}
 	
+	@Override
+	protected JpaXmlResource buildResource(IFile file) {
+		OrmResourceModelProvider modelProvider =
+			OrmResourceModelProvider.getModelProvider(file.getProject(), file.getProjectRelativePath().toString());
+		return modelProvider.getResource();
+	}
 	
 	/**
 	 * @see ResourceModel#getResourceType()
 	 */
 	public String getResourceType() {
 		return ResourceModel.ORM_RESOURCE_TYPE;
-	}
-	
-	@Override
-	protected OrmArtifactEdit buildArtifactEdit(IProject project) {
-		return OrmArtifactEdit.getArtifactEditForRead(project);
 	}
 	
 	@Override

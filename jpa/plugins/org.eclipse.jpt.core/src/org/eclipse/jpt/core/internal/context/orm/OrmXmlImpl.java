@@ -88,6 +88,7 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 		if (this.entityMappings == null) {
 			throw new IllegalStateException();
 		}
+		getJpaFile(this.ormResource.getResourceModel()).removeRootStructureNode(this.ormResource);
 		this.entityMappings.dispose();
 		EntityMappings oldEntityMappings = this.entityMappings;
 		
@@ -116,6 +117,7 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 		this.ormResource = ormResource;
 		if (ormResource.getEntityMappings() != null) {
 			if (this.entityMappings != null) {
+				getJpaFile(this.ormResource.getResourceModel()).addRootStructureNode(this.ormResource, this.entityMappings);
 				this.entityMappings.update(ormResource.getEntityMappings());
 			}
 			else {
@@ -124,6 +126,7 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 		}
 		else {
 			if (getEntityMappings() != null) {
+				getJpaFile(this.ormResource.getResourceModel()).removeRootStructureNode(this.ormResource);
 				getEntityMappings().dispose();
 			}
 			setEntityMappings(null);

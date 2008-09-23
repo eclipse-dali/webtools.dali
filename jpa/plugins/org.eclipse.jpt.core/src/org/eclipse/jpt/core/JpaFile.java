@@ -48,11 +48,6 @@ public interface JpaFile extends JpaNode
 	void javaElementChanged(ElementChangedEvent event);
 
 	/**
-	 * Update the JPA resource model from the underlying resource.
-	 */
-	void updateFromResource();
-
-	/**
 	 * The JPA file has been removed from the JPA project. Clean up any
 	 * hooks to external resources etc.
 	 */
