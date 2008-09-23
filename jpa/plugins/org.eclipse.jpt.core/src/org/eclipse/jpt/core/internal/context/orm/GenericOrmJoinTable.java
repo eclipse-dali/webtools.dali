@@ -540,11 +540,12 @@ public class GenericOrmJoinTable
 				);
 			}
 			else {
+				String attributeName = mapping.getPersistentAttribute().getName();
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
-						new String[] {this.getName()},
+						JpaValidationMessages.JOIN_TABLE_CANNOT_BE_DETERMINED,
+						new String[] {attributeName},
 						this,
 						this.getNameTextRange())
 				);
