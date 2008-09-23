@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
+import java.util.ArrayList;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkNamedConverter;
@@ -16,16 +17,21 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringConverter;
+import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
@@ -46,6 +52,17 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class ConvertComposite extends FormPane<EclipseLinkConvert>
 {
+
+	/**
+	 * A key used to represent the default value, this is required to convert
+	 * the selected item from a combo to <code>null</code>. This key is most
+	 * likely never typed the user and it will help to convert the value to
+	 * <code>null</code> when it's time to set the new selected value into the
+	 * model.
+	 */
+	protected static String DEFAULT_KEY = "?!#!?#?#?default?#?!#?!#?";
+	
+	
 	/**
 	 * Creates a new <code>EnumTypeComposite</code>.
 	 *
@@ -66,6 +83,7 @@ public class ConvertComposite extends FormPane<EclipseLinkConvert>
 			EclipseLinkUiMappingsMessages.ConvertComposite_convertNameLabel,
 			buildConvertNameListHolder(),
 			buildConvertNameHolder(),
+			buildNameConverter(),
 			null
 		);
 		
@@ -137,16 +155,87 @@ public class ConvertComposite extends FormPane<EclipseLinkConvert>
 
 			@Override
 			protected void setValue_(String value) {
-				if (value.length() == 0) {
+				// Convert the default value or an empty string to null
+				if ((value != null) &&
+				   ((value.length() == 0) || value.startsWith(DEFAULT_KEY))) {
+
 					value = null;
 				}
 				this.subject.setSpecifiedConverterName(value);
 			}
 		};
 	}
+	private ListValueModel<String> buildConvertNameListHolder() {
+		java.util.List<ListValueModel<String>> list = new ArrayList<ListValueModel<String>>();
+		list.add(buildDefaultNameListHolder());
+		list.add(buildReservedConverterNameListHolder());
+		return new CompositeListValueModel<ListValueModel<String>, String>(list);
+	}
+	
+	protected ListValueModel<String> buildDefaultNameListHolder() {
+		return new PropertyListValueModelAdapter<String>(
+			buildDefaultNameHolder()
+		);
+	}
+
+	private WritablePropertyValueModel<String> buildDefaultNameHolder() {
+		return new PropertyAspectAdapter<EclipseLinkConvert, String>(getSubjectHolder(), EclipseLinkConvert.DEFAULT_CONVERTER_NAME_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+				String name = subject.getDefaultConverterName();
+
+				if (name == null) {
+					name = DEFAULT_KEY;
+				}
+				else {
+					name = DEFAULT_KEY + name;
+				}
+
+				return name;
+			}
+		};
+	}
+
+	private StringConverter<String> buildNameConverter() {
+		return new StringConverter<String>() {
+			public String convertToString(String value) {
+
+				if (getSubject() == null) {
+					return value;
+				}
+
+				if (value == null) {
+					value = getSubject().getDefaultConverterName();
+
+					if (value != null) {
+						value = DEFAULT_KEY + value;
+					}
+					else {
+						value = DEFAULT_KEY;
+					}
+				}
+
+				if (value.startsWith(DEFAULT_KEY)) {
+					String defaultName = value.substring(DEFAULT_KEY.length());
+
+					if (defaultName.length() > 0) {
+						value = NLS.bind(
+							JptUiMappingsMessages.DefaultWithValue,
+							defaultName
+						);
+					}
+					else {
+						value = JptUiMappingsMessages.DefaultWithoutValue;
+					}
+				}
+
+				return value;
+			}
+		};
+	}
 
 	//TODO converter name repository, have another ListValueModel for these
-	protected ListValueModel<String> buildConvertNameListHolder() {
+	protected ListValueModel<String> buildReservedConverterNameListHolder() {
 		return new StaticListValueModel<String>(CollectionTools.list(EclipseLinkConvert.RESERVED_CONVERTER_NAMES));
 	}
 	

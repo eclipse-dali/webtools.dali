@@ -323,9 +323,7 @@ public abstract class AbstractComboModelAdapter<E> {
 
 		// When the combo is populated, it's possible the selection was already
 		// set but no items was found, resync the selected item
-		if (count == 0) {
-			synchronizeComboSelection();
-		}
+		synchronizeComboSelection();
 	}
 
 	/**
