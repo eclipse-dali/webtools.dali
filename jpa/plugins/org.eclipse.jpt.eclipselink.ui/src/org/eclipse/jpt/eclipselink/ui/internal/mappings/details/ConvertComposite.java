@@ -19,6 +19,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMes
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
+import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
@@ -32,6 +33,7 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
@@ -78,7 +80,7 @@ public class ConvertComposite extends FormPane<EclipseLinkConvert>
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		addLabeledEditableCCombo(
+		CCombo combo = addLabeledEditableCCombo(
 			container,
 			EclipseLinkUiMappingsMessages.ConvertComposite_convertNameLabel,
 			buildConvertNameListHolder(),
@@ -86,6 +88,7 @@ public class ConvertComposite extends FormPane<EclipseLinkConvert>
 			buildNameConverter(),
 			null
 		);
+		SWTUtil.attachDefaultValueHandler(combo);
 		
 		Composite subSection = addCollapsableSubSection(
 			container, 
