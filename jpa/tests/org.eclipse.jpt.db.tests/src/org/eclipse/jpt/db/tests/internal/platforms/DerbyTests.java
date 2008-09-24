@@ -131,15 +131,12 @@ public class DerbyTests extends DTPPlatformTests {
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
 
-		this.dumpDatabaseContainers();
 		this.dropSchema("LOOKUP_TEST");
 		this.dropSchema("\"lookup_TEST\"");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
-		this.dumpDatabaseContainers();
 
 		this.executeUpdate("CREATE SCHEMA LOOKUP_TEST");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
-		this.dumpDatabaseContainers();
 
 		assertNotNull(this.getDatabase().getSchemaNamed("LOOKUP_TEST"));
 		assertNotNull(this.getDatabase().getSchemaForIdentifier("LOOKUP_TEST"));
@@ -272,6 +269,11 @@ public class DerbyTests extends DTPPlatformTests {
 		assertEquals(0, barTable.foreignKeysSize());
 		assertEquals("ID", barTable.getPrimaryKeyColumn().getName());
 		assertFalse(barTable.isPossibleJoinTable());
+		Column id2Column = fooTable.getColumnNamed("ID2");
+		assertEquals("INTEGER", id2Column.getDataTypeName());
+		assertTrue(id2Column.isPartOfUniqueConstraint());
+		assertTrue(id2Column.isNullable());
+		assertTrue(id2Column.isNumeric());
 		assertEquals("BLOB", barTable.getColumnNamed("CHUNK").getDataTypeName());
 		assertEquals("byte[]", barTable.getColumnNamed("CHUNK").getJavaTypeDeclaration());
 		assertTrue(barTable.getColumnNamed("CHUNK").isLOB());
@@ -302,6 +304,7 @@ public class DerbyTests extends DTPPlatformTests {
 		StringBuilder sb = new StringBuilder(200);
 		sb.append("CREATE TABLE BAR (").append(CR);
 		sb.append("    ID INT PRIMARY KEY,").append(CR);
+		sb.append("    ID2 INT UNIQUE,").append(CR);
 		sb.append("    CHUNK BLOB(100K)").append(CR);
 		sb.append(")").append(CR);
 		return sb.toString();
