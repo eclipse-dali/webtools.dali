@@ -1314,7 +1314,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		ArrayList<PersistenceUnitDefaults> result = new ArrayList<PersistenceUnitDefaults>();
 		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
 			PersistenceUnitDefaults defaults = stream.next().getPersistenceUnitDefaults();
-			if (defaults != null) {
+			if (defaults.resourceExists()) {
 				result.add(defaults);
 			}
 		}

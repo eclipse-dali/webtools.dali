@@ -65,5 +65,12 @@ public interface PersistenceUnitDefaults
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update(XmlEntityMappings entityMappings);
+	
+	/**
+	 * Return whether the underlying resource exists for the PersistenceUnitDefaults object
+	 * If there is a node in the orm.xml file for persistence-unit-default, this returns true, otherwise false.
+	 * @return
+	 */
+	boolean resourceExists();
 
 }

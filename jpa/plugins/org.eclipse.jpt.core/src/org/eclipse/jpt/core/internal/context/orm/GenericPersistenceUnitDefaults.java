@@ -61,6 +61,9 @@ public class GenericPersistenceUnitDefaults
 		this.defaultSchema = this.getJpaProject().getDefaultSchema();
 	}
 	
+	public boolean resourceExists() {
+		return getResourceDefaults() != null;
+	}
 
 	// ********** access **********
 
