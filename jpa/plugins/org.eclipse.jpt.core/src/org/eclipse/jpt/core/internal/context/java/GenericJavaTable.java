@@ -100,48 +100,50 @@ public class GenericJavaTable
 	//******************* validation **********************
 	
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
 		if (this.connectionProfileIsActive()) {
-			this.checkDatabase(messages, astRoot);
+			this.validateAgainstDatabase(messages, astRoot);
 		}
 	}
 
-	protected void checkDatabase(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateAgainstDatabase(List<IMessage> messages, CompilationUnit astRoot) {
 		if ( ! this.hasResolvedCatalog()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.TABLE_UNRESOLVED_CATALOG,
-						new String[] {this.getCatalog(), this.getName()}, 
-						this, 
-						this.getCatalogTextRange(astRoot))
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.TABLE_UNRESOLVED_CATALOG,
+					new String[] {this.getCatalog(), this.getName()}, 
+					this, 
+					this.getCatalogTextRange(astRoot)
+				)
+			);
 			return;
 		}
 		
 		if ( ! this.hasResolvedSchema()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
-						new String[] {this.getSchema(), this.getName()}, 
-						this, 
-						this.getSchemaTextRange(astRoot))
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
+					new String[] {this.getSchema(), this.getName()}, 
+					this, 
+					this.getSchemaTextRange(astRoot)
+				)
+			);
 			return;
 		}
 		
 		if ( ! this.isResolved()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.TABLE_UNRESOLVED_NAME,
-						new String[] {this.getName()}, 
-						this, 
-						this.getNameTextRange(astRoot))
-				);
-			return;
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.TABLE_UNRESOLVED_NAME,
+					new String[] {this.getName()}, 
+					this, 
+					this.getNameTextRange(astRoot)
+				)
+			);
 		}
 	}
 

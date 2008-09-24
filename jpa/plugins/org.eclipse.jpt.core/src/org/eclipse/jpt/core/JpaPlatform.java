@@ -135,14 +135,6 @@ public interface JpaPlatform
 	String getDefaultJavaAttributeMappingKey(JavaPersistentAttribute persistentAttribute);
 
 
-	// ************** Validation ***********************************************************
-	
-	/**
-	 * Adds validation messages to the growing list of messages for a given project
-	 */
-	void addToMessages(JpaProject project, List<IMessage> messages);
-	
-
 	// ************* Database ************************************************************
 	
 	/**

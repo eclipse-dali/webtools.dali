@@ -116,7 +116,7 @@ public class EclipseLinkDDLGeneratorUi
 	}
 
 	protected Persistence getPersistence() {
-		return this.project.getRootContext().getPersistenceXml().getPersistence();
+		return this.project.getRootContextNode().getPersistenceXml().getPersistence();
 	}
 
 	// ********** runnable **********

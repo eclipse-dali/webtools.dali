@@ -197,38 +197,38 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	// ********** validation **********
 
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
 		if (this.connectionProfileIsActive()) {
-			this.checkDatabase(messages, astRoot);
+			this.validateJoinColumns(messages, astRoot);
 		}
 	}
 	
-	protected void checkDatabase(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateJoinColumns(List<IMessage> messages, CompilationUnit astRoot) {
 		for (Iterator<JavaJoinColumn> stream = this.joinColumns(); stream.hasNext(); ) {
-			this.checkDatabase(stream.next(), messages, astRoot);
+			this.validateJoinColumn(stream.next(), messages, astRoot);
 		}
 	}
 
-	protected void checkDatabase(JavaJoinColumn joinColumn, List<IMessage> messages, CompilationUnit astRoot) {
-		if (this.getOwner().getTypeMapping().tableNameIsInvalid(joinColumn.getTable())) {
+	protected void validateJoinColumn(JavaJoinColumn joinColumn, List<IMessage> messages, CompilationUnit astRoot) {
+		String tableName = joinColumn.getTable();
+		if (this.getOwner().getTypeMapping().tableNameIsInvalid(tableName)) {
 			if (this.isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_TABLE,
-						new String[] {this.getName(), joinColumn.getTable(), joinColumn.getName()},
+						new String[] {this.getName(), tableName, joinColumn.getName()},
 						joinColumn, 
 						joinColumn.getTableTextRange(astRoot)
 					)
 				);
-			}
-			else {
+			} else {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
-						new String[] {joinColumn.getTable(), joinColumn.getName()}, 
+						new String[] {tableName, joinColumn.getName()}, 
 						joinColumn,
 						joinColumn.getTableTextRange(astRoot)
 					)
@@ -248,8 +248,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 						joinColumn.getNameTextRange(astRoot)
 					)
 				);
-			}
-			else {
+			} else {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -273,8 +272,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 						joinColumn.getReferencedColumnNameTextRange(astRoot)
 					)
 				);
-			}
-			else {
+			} else {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,

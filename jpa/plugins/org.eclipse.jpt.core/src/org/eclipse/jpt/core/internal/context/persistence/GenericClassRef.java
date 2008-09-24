@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
+
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
@@ -155,63 +156,59 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType jrpt) {
 		return getJpaFactory().buildJavaPersistentType(this, jrpt);
 	}
-	
-	
-	// *************************************************************************
 
-	// ************************* validation *********************************
+
+	// ********** validation **********
 
 	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
-		addUnspecifiedClassMessage(messages);
-		addUnresolvedClassMessage(messages);
-		addJavaPersistentTypeMessages(messages);
-	}
-	
-	protected void addUnspecifiedClassMessage(List<IMessage> messages) {
-		if (StringTools.stringIsEmpty(getClassName())) {
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
+		if (StringTools.stringIsEmpty(this.className)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_CLASS,
-					this, getValidationTextRange())
+					this,
+					this.getValidationTextRange()
+				)
 			);
+			return;
 		}
-	}
-	
-	protected void addUnresolvedClassMessage(List<IMessage> messages) {
-		if (! StringTools.stringIsEmpty(getClassName()) && getJavaPersistentType() == null) {
+		if (this.javaPersistentType == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,
-					new String[] {getClassName()}, 
+					new String[] {this.className}, 
 					this, 
-					this.getValidationTextRange())
+					this.getValidationTextRange()
+				)
 			);
+			return;
 		}
-	}
-	
-	protected void addJavaPersistentTypeMessages(List<IMessage> messages) {
-		if (getJavaPersistentType() != null) { //class might not resolve to a java type
-			MappingFileRef mappingFileRef = getMappingFileContaining(getClassName());
-			if (mappingFileRef != null) {
-				messages.add(DefaultJpaValidationMessages.buildMessage(
+		MappingFileRef mappingFileRef = this.getMappingFileContaining(this.className);
+		if (mappingFileRef != null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
 					IMessage.LOW_SEVERITY,
 					JpaValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS,
-					new String[] { this.getClassName(), mappingFileRef.getFileName()},
+					new String[] {this.className, mappingFileRef.getFileName()},
 					this,
-					this.getValidationTextRange()));
-			}
-			else {
-				try {
-					//bug 190062 - only add java validation messages if this class is not listed in a mapping file
-					getJavaPersistentType().addToMessages(messages);
-				} catch (Throwable t) {
-					JptCorePlugin.log(t);
-				}
-			}
+					this.getValidationTextRange()
+				)
+			);
+			return;
+		}
+		// 190062 only add Java validation messages if this class is not listed
+		// in a mapping file
+		this.validateJavaPersistentType(messages);
+	}
+
+	protected void validateJavaPersistentType(List<IMessage> messages) {
+		try {
+			this.javaPersistentType.validate(messages);
+		} catch (Throwable t) {
+			JptCorePlugin.log(t);
 		}
 	}
 	

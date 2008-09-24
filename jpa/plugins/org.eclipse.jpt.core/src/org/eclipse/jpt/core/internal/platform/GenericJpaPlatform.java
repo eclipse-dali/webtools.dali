@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
@@ -55,7 +56,6 @@ import org.eclipse.jpt.db.DatabaseFinder;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class GenericJpaPlatform
 	implements JpaPlatform
@@ -328,13 +328,6 @@ public class GenericJpaPlatform
 	 */
 	protected JavaAttributeMappingProvider getNullAttributeMappingProvider() {
 		return JavaNullAttributeMappingProvider.instance();
-	}
-
-
-	// **************** Validation *********************************************
-
-	public void addToMessages(JpaProject project, List<IMessage> messages) {
-		project.addToMessages(messages);
 	}
 
 

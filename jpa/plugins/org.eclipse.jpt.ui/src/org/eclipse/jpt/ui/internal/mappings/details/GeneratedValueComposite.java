@@ -10,21 +10,19 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
+
 import org.eclipse.jpt.core.context.GeneratedValue;
 import org.eclipse.jpt.core.context.GenerationType;
-import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
@@ -408,22 +406,7 @@ public class GeneratedValueComposite extends FormPane<IdMapping>
 	}
 
 	private String[] sortedUniqueGeneratorNames() {
-		return CollectionTools.array(
-			CollectionTools.sortedSet(
-				new TransformationIterator<Generator, String>(
-						new FilteringIterator<Generator, Generator>(getSubject().getPersistenceUnit().allGenerators()) 
-						{
-							@Override
-							protected boolean accept(Generator o) {
-								return o.getName() != null;
-							}
-						})
-					{
-					@Override
-					protected String transform(Generator next) {
-						return next.getName();
-					}
-				}),
-			new String[0]);
+		return CollectionTools.sort(this.getSubject().getPersistenceUnit().uniqueGeneratorNames());
 	}
+
 }

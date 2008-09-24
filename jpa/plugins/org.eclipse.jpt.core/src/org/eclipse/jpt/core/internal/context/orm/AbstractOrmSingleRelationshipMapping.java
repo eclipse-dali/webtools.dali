@@ -301,11 +301,10 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	// ********** validation **********
 
 	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
-		
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
 		if (this.connectionProfileIsActive()) {
-			this.checkJoinColumns(messages);
+			this.validateJoinColumns(messages);
 		}
 	}
 	
@@ -313,33 +312,33 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	//of a bidirectional relationship.  This is a low risk fix for RC3, but a better
 	//solution would be to not have the default joinColumns on the non-owning side.
 	//This would fix another bug that we show default joinColumns in this situation.
-	protected void checkJoinColumns(List<IMessage> messages) {
-		if (this.entityOwned() && this.isRelationshipOwner()) {
+	protected void validateJoinColumns(List<IMessage> messages) {
+		if (this.ownerIsEntity() && this.isRelationshipOwner()) {
 			for (Iterator<OrmJoinColumn> stream = this.joinColumns(); stream.hasNext(); ) {
-				this.checkJoinColumn(stream.next(), messages);
+				this.validateJoinColumn(stream.next(), messages);
 			}
 		}
 	}
 
-	protected void checkJoinColumn(OrmJoinColumn joinColumn, List<IMessage> messages) {
-		if (this.getTypeMapping().tableNameIsInvalid(joinColumn.getTable())) {
+	protected void validateJoinColumn(OrmJoinColumn joinColumn, List<IMessage> messages) {
+		String tableName = joinColumn.getTable();
+		if (this.getTypeMapping().tableNameIsInvalid(tableName)) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_TABLE,
-						new String[] {this.getName(), joinColumn.getTable(), joinColumn.getName()},
+						new String[] {this.getName(), tableName, joinColumn.getName()},
 						joinColumn,
 						joinColumn.getTableTextRange()
 					)
 				);
-			}
-			else {
+			} else {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
-						new String[] {joinColumn.getTable(), joinColumn.getName()}, 
+						new String[] {tableName, joinColumn.getName()}, 
 						joinColumn, 
 						joinColumn.getTableTextRange()
 					)
@@ -359,8 +358,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 						joinColumn.getNameTextRange()
 					)
 				);
-			}
-			else {
+			} else {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -374,7 +372,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 		}
 		
 		if ( ! joinColumn.isReferencedColumnResolved()) {
-			if (getPersistentAttribute().isVirtual()) {
+			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -384,8 +382,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 						joinColumn.getReferencedColumnNameTextRange()
 					)
 				);
-			}
-			else {
+			} else {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -400,7 +397,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	}
 
 
-	// ********** OrmJoinColumn.Owner implementation **********
+	// ********** join column owner adapter **********
 
 	public class JoinColumnOwner implements OrmJoinColumn.Owner {
 

@@ -241,57 +241,55 @@ public class GenericOrmOneToOneMapping
 	// ********** Validation **********
 
 	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
-		
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
 		if (this.mappedBy != null) {
-			this.checkMappedBy(messages);
+			this.validateMappedBy(messages);
 		}
 	}
 	
 	@Override
-	protected void checkJoinColumns(List<IMessage> messages) {
+	protected void validateJoinColumns(List<IMessage> messages) {
 		if (this.primaryKeyJoinColumns.isEmpty() || this.containsSpecifiedJoinColumns()) {
-			super.checkJoinColumns(messages);
+			super.validateJoinColumns(messages);
 		}
 	}
 
-	protected void checkMappedBy(List<IMessage> messages) {
+	protected void validateMappedBy(List<IMessage> messages) {
 		Entity targetEntity = this.getResolvedTargetEntity();
 		if (targetEntity == null) {
-			// already have validation messages for that
-			return;
+			return;  // validated elsewhere
 		}
 		
 		PersistentAttribute attribute = targetEntity.getPersistentType().resolveAttribute(this.mappedBy);
 		
 		if (attribute == null) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
-						new String[] {this.mappedBy}, 
-						this,
-						this.getMappedByTextRange()
-					)
-				);
-			return;
-		}
-		
-		if ( ! this.mappedByIsValid(attribute.getMapping())) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
-						new String[] {this.mappedBy}, 
-						this,
-						this.getMappedByTextRange()
-					)
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
+					new String[] {this.mappedBy}, 
+					this,
+					this.getMappedByTextRange()
+				)
+			);
 			return;
 		}
 		
 		AttributeMapping mappedByMapping = attribute.getMapping();
+		if ( ! this.mappedByIsValid(mappedByMapping)) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
+					new String[] {this.mappedBy}, 
+					this,
+					this.getMappedByTextRange()
+				)
+			);
+			return;
+		}
+		
 		if ((mappedByMapping instanceof NonOwningMapping)
 				&& ((NonOwningMapping) mappedByMapping).getMappedBy() != null) {
 			messages.add(

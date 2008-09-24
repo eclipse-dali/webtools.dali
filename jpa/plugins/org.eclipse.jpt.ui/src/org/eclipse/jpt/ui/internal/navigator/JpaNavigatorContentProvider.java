@@ -132,7 +132,7 @@ public class JpaNavigatorContentProvider
 					JpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(jpaProject.getJpaPlatform());
 					
 					if (platformUi != null) {
-						return new Object[] {jpaProject.getRootContext()};
+						return new Object[] {jpaProject.getRootContextNode()};
 					}
 				}	
 			}

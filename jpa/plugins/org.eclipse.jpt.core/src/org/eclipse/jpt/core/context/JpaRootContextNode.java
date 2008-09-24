@@ -28,7 +28,7 @@ public interface JpaRootContextNode extends JpaContextNode
 	/**
 	 * String constant associated with changes to the persistenceXml property
 	 */
-	public final static String PERSISTENCE_XML_PROPERTY = "persistenceXml";
+	public final static String PERSISTENCE_XML_PROPERTY = "persistenceXml"; //$NON-NLS-1$
 	
 	/** 
 	 * Return the content represented by the persistence.xml file associated with 
@@ -62,8 +62,8 @@ public interface JpaRootContextNode extends JpaContextNode
 	// **************** validation *********************************************
 	
 	/**
-	 * All subclass implementations {@link #addToMessages(List<IMessage>)} 
-	 * should be preceded by a "super" call to this method
+	 * Add validation messages to the specified list.
 	 */
-	public void addToMessages(List<IMessage> messages);
+	public void validate(List<IMessage> messages);
+
 }

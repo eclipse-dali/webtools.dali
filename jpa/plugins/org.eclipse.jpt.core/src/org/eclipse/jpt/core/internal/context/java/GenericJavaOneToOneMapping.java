@@ -260,67 +260,66 @@ public class GenericJavaOneToOneMapping
 	// ********** Validation **********
 
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
 		
 		if (this.mappedBy != null) {
-			this.checkMappedBy(messages ,astRoot);
+			this.validateMappedBy(messages ,astRoot);
 		}
 	}
 
 	@Override
-	protected void checkJoinColumns(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateJoinColumns(List<IMessage> messages, CompilationUnit astRoot) {
 		if (this.primaryKeyJoinColumns.isEmpty() || this.containsSpecifiedJoinColumns()) {
-			super.checkJoinColumns(messages, astRoot);
+			super.validateJoinColumns(messages, astRoot);
 		}
 	}
 
-	protected void checkMappedBy(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateMappedBy(List<IMessage> messages, CompilationUnit astRoot) {
 		Entity targetEntity = this.getResolvedTargetEntity();
 		if (targetEntity == null) {
-			// already have validation messages for that
-			return;
+			return;  // null target entity is validated elsewhere
 		}
 		
 		PersistentAttribute attribute = targetEntity.getPersistentType().resolveAttribute(this.mappedBy);
 		
 		if (attribute == null) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
-						new String[] {this.mappedBy},
-						this,
-						this.getMappedByTextRange(astRoot)
-					)
-				);
-			return;
-		}
-		
-		if ( ! this.mappedByIsValid(attribute.getMapping())) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
-						new String[] {this.mappedBy}, 
-						this,
-						this.getMappedByTextRange(astRoot)
-					)
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
+					new String[] {this.mappedBy},
+					this,
+					this.getMappedByTextRange(astRoot)
+				)
+			);
 			return;
 		}
 		
 		AttributeMapping mappedByMapping = attribute.getMapping();
+		if ( ! this.mappedByIsValid(mappedByMapping)) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
+					new String[] {this.mappedBy}, 
+					this,
+					this.getMappedByTextRange(astRoot)
+				)
+			);
+			return;
+		}
+		
 		if ((mappedByMapping instanceof NonOwningMapping)
 				&& ((NonOwningMapping) mappedByMapping).getMappedBy() != null) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
-						this,
-						this.getMappedByTextRange(astRoot)
-					)
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
+					this,
+					this.getMappedByTextRange(astRoot)
+				)
+			);
 		}
 	}
 

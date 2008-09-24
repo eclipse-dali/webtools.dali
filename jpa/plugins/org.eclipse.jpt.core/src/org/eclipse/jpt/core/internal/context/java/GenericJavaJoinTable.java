@@ -501,39 +501,41 @@ public class GenericJavaJoinTable
 		return joinColumn;
 	}
 
-	
-	//********************* validation ********************
+
+	// ********** validation **********
 	
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
 		if (this.connectionProfileIsActive()) {
-			this.checkDatabase(messages, astRoot);
+			this.validateAgainstDatabase(messages, astRoot);
 		}
 	}
 
-	protected void checkDatabase(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateAgainstDatabase(List<IMessage> messages, CompilationUnit astRoot) {
 		if ( ! this.hasResolvedCatalog()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG,
-						new String[] {this.getCatalog(), this.getName()}, 
-						this, 
-						this.getCatalogTextRange(astRoot))
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG,
+					new String[] {this.getCatalog(), this.getName()}, 
+					this, 
+					this.getCatalogTextRange(astRoot)
+				)
+			);
 			return;
 		}
 		
 		if ( ! this.hasResolvedSchema()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
-						new String[] {this.getSchema(), this.getName()}, 
-						this, 
-						this.getSchemaTextRange(astRoot))
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
+					new String[] {this.getSchema(), this.getName()}, 
+					this, 
+					this.getSchemaTextRange(astRoot)
+				)
+			);
 			return;
 		}
 		
@@ -541,25 +543,29 @@ public class GenericJavaJoinTable
 			String attributeName = this.getRelationshipMapping().getPersistentAttribute().getName();
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_TABLE_CANNOT_BE_DETERMINED,
-						new String[] {attributeName}, 
-						this, 
-						this.getNameTextRange(astRoot))
-				);
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.JOIN_TABLE_CANNOT_BE_DETERMINED,
+					new String[] {attributeName},
+					this,
+					this.getNameTextRange(astRoot)
+				)
+			);
 			return;
 		}
 		
-		this.checkJoinColumns(this.joinColumns(), messages, astRoot);
-		this.checkJoinColumns(this.inverseJoinColumns(), messages, astRoot);
+		this.validateJoinColumns(this.joinColumns(), messages, astRoot);
+		this.validateJoinColumns(this.inverseJoinColumns(), messages, astRoot);
 	}		
 
-	protected void checkJoinColumns(Iterator<JavaJoinColumn> joinColumns, List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateJoinColumns(Iterator<JavaJoinColumn> joinColumns, List<IMessage> messages, CompilationUnit astRoot) {
 		while (joinColumns.hasNext()) {
-			joinColumns.next().addToMessages(messages, astRoot);
+			joinColumns.next().validate(messages, astRoot);
 		}
 	}
 
+
+	// ********** join column owner adapters **********
+	
 	/**
 	 * just a little common behavior
 	 */

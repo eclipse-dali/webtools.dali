@@ -41,7 +41,7 @@ public interface JavaJpaContextNode extends JpaContextNode
 	/**
 	 * Adds to the list of current validation messages
 	 */
-	void addToMessages(List<IMessage> messages, CompilationUnit astRoot);
+	void validate(List<IMessage> messages, CompilationUnit astRoot);
 
 	TextRange getValidationTextRange(CompilationUnit astRoot);
 

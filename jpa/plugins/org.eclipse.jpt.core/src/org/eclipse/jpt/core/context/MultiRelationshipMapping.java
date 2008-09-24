@@ -26,30 +26,30 @@ public interface MultiRelationshipMapping extends NonOwningMapping
 
 	String getOrderBy();
 	void setOrderBy(String value);
-		String ORDER_BY_PROPERTY = "orderByProperty";
+		String ORDER_BY_PROPERTY = "orderBy"; //$NON-NLS-1$
 
 
 	boolean isNoOrdering();
 	void setNoOrdering(boolean newNoOrdering);
-		String NO_ORDERING_PROPERTY = "noOrderingProperty";
+		String NO_ORDERING_PROPERTY = "noOrdering"; //$NON-NLS-1$
 
 	boolean isPkOrdering();
 	void setPkOrdering(boolean newPkOrdering);
-	String PK_ORDERING_PROPERTY = "pkOrderingProperty";
+	String PK_ORDERING_PROPERTY = "pkOrdering"; //$NON-NLS-1$
 
 	boolean isCustomOrdering();
 	void setCustomOrdering(boolean newCustomOrdering);
-	String CUSTOM_ORDERING_PROPERTY = "customOrderingProperty";
+	String CUSTOM_ORDERING_PROPERTY = "customOrdering"; //$NON-NLS-1$
 
 	
 	JoinTable getJoinTable();
 	
-	boolean isJoinTableSpecified();
+	boolean joinTableIsSpecified();
 
 
 	String getMapKey();
 	void setMapKey(String value);
-		String MAP_KEY_PROPERTY = "mapKeyProperty";
+		String MAP_KEY_PROPERTY = "mapKey"; //$NON-NLS-1$
 
 	Iterator<String> candidateMapKeyNames();
 }

@@ -69,8 +69,8 @@ public class GenericJavaManyToOneMapping
 	}
 
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
 	}
 
 }

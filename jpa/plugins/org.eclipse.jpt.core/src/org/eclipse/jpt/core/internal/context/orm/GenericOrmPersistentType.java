@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
@@ -71,8 +72,12 @@ import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-
-public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implements OrmPersistentType
+/**
+ * 
+ */
+public class GenericOrmPersistentType
+	extends AbstractOrmJpaContextNode
+	implements OrmPersistentType
 {
 	protected final List<OrmPersistentAttribute> specifiedPersistentAttributes;
 
@@ -104,7 +109,7 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 		if (className.equals(fullyQualifiedTypeName)) {
 			return true;
 		}
-		if ((getEntityMappings().getPackage() + "." +  className).equals(fullyQualifiedTypeName)) {
+		if ((getEntityMappings().getPackage() + '.' +  className).equals(fullyQualifiedTypeName)) {
 			return true;
 		}
 		return false;
@@ -212,7 +217,7 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 
 	public void makePersistentAttributeVirtual(OrmPersistentAttribute ormPersistentAttribute) {
 		if (ormPersistentAttribute.isVirtual()) {
-			throw new IllegalStateException("Attribute is already virtual");
+			throw new IllegalStateException("Attribute is already virtual"); //$NON-NLS-1$
 		}
 		JavaPersistentAttribute javaPersistentAttribute = ormPersistentAttribute.getMapping().getJavaPersistentAttribute();
 		OrmPersistentAttribute virtualPersistentAttribute = null;
@@ -232,10 +237,10 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 
 	public void makePersistentAttributeSpecified(OrmPersistentAttribute ormPersistentAttribute, String mappingKey) {
 		if (!ormPersistentAttribute.isVirtual()) {
-			throw new IllegalStateException("Attribute is already specified");
+			throw new IllegalStateException("Attribute is already specified"); //$NON-NLS-1$
 		}
 		if (mappingKey == MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
-			throw new IllegalStateException("Use makePersistentAttributeSpecified(OrmPersistentAttribute, String) instead and specify a mapping type");
+			throw new IllegalStateException("Use makePersistentAttributeSpecified(OrmPersistentAttribute, String) instead and specify a mapping type"); //$NON-NLS-1$
 		}
 			
 		OrmPersistentAttribute newPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, mappingKey);
@@ -876,21 +881,31 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 	//******************** validation **********************
 	
 	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
-
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
+		this.validateMapping(messages);
+		this.validateAttributes(messages);
+	}
+	
+	protected void validateMapping(List<IMessage> messages) {
 		try {
-			getMapping().addToMessages(messages);
+			this.ormTypeMapping.validate(messages);
 		} catch(Throwable t) {
 			JptCorePlugin.log(t);
 		}
-		
-		for (OrmPersistentAttribute persistentAttribute : CollectionTools.iterable(this.attributes())) {
-			try {
-				persistentAttribute.addToMessages(messages);
-			} catch(Throwable t) {
-				JptCorePlugin.log(t);
-			}
+	}
+	
+	protected void validateAttributes(List<IMessage> messages) {
+		for (Iterator<OrmPersistentAttribute> stream = this.attributes(); stream.hasNext(); ) {
+			this.validateAttribute(stream.next(), messages);
+		}
+	}
+	
+	protected void validateAttribute(OrmPersistentAttribute attribute, List<IMessage> messages) {
+		try {
+			attribute.validate(messages);
+		} catch(Throwable t) {
+			JptCorePlugin.log(t);
 		}
 	}
 	
@@ -903,4 +918,10 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 			getJavaPersistentType().dispose();
 		}
 	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getName());
+	}
+
 }

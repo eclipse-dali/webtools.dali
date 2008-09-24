@@ -356,11 +356,11 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	//******** Validation ******************
 	
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
 		
 		for (Iterator<JavaAttributeOverride> stream = attributeOverrides(); stream.hasNext();) {
-			stream.next().addToMessages(messages, astRoot);
+			stream.next().validate(messages, astRoot);
 		}
 	}
 }

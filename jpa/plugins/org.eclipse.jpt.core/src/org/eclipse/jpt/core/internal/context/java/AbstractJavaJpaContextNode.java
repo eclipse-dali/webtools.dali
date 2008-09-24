@@ -56,7 +56,7 @@ public abstract class AbstractJavaJpaContextNode
 	 * All subclass implementations {@link #addToMessages(List, CompilationUnit))} 
 	 * should be preceded by a "super" call to this method
 	 */
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
 		// do nothing by default
 	}
 

@@ -507,36 +507,50 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		return getPersistenceUnit().getPersistentType(fullyQualifiedTypeName);
 	}
 
-	//*************** Validation ******************************************
-	public void addToMessages(List<IMessage> messages) {
-		//get astRoot here to pass down
-		addToMessages(messages, this.buildASTRoot());	
+
+	// ********** validation **********
+
+	public void validate(List<IMessage> messages) {
+		// build the AST root here to pass down
+		this.validate(messages, this.buildASTRoot());	
 	}
 	
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
+		this.validateMapping(messages, astRoot);
+		this.validateAttributes(messages, astRoot);
+	}
+	
+	protected void validateMapping(List<IMessage> messages, CompilationUnit astRoot) {
 		try {
-			this.mapping.addToMessages(messages, astRoot);
+			this.mapping.validate(messages, astRoot);
 		} catch(Throwable t) {
 			JptCorePlugin.log(t);
 		}
-		addAttributeMessages(messages, astRoot);
 	}
 	
-	protected void addAttributeMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		for (JavaPersistentAttribute persistentAttribute : this.attributes) {
-			try {
-				persistentAttribute.addToMessages(messages, astRoot);
-			} catch(Throwable t) {
-				JptCorePlugin.log(t);
-			}
+	protected void validateAttributes(List<IMessage> messages, CompilationUnit astRoot) {
+		for (Iterator<JavaPersistentAttribute> stream = this.attributes(); stream.hasNext(); ) {
+			this.validateAttribute(stream.next(), messages, astRoot);
 		}
 	}
 	
+	protected void validateAttribute(JavaPersistentAttribute attribute, List<IMessage> messages, CompilationUnit astRoot) {
+		try {
+			attribute.validate(messages, astRoot);
+		} catch(Throwable t) {
+			JptCorePlugin.log(t);
+		}
+	}
+	
+
+	// ********** misc **********
+
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
-		sb.append(getName());
+		sb.append(this.name);
 	}
 
 	public void dispose() {

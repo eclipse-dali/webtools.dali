@@ -129,43 +129,29 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 	protected void initialize(XmlJoinColumn xjc) {
 		this.resourceJoinColumn = xjc;
 		super.initialize(xjc);
-		this.specifiedReferencedColumnName = specifiedReferencedColumnName(xjc);
-		this.defaultReferencedColumnName = defaultReferencedColumnName();
+		this.specifiedReferencedColumnName = buildSpecifiedReferencedColumnName(xjc);
+		this.defaultReferencedColumnName = buildDefaultReferencedColumnName();
 	}
 	
 	@Override
 	public void update(XmlJoinColumn xjc) {
 		this.resourceJoinColumn = xjc;
 		super.update(xjc);
-		this.setSpecifiedReferencedColumnName_(specifiedReferencedColumnName(xjc));
-		this.setDefaultReferencedColumnName(defaultReferencedColumnName());
+		this.setSpecifiedReferencedColumnName_(buildSpecifiedReferencedColumnName(xjc));
+		this.setDefaultReferencedColumnName(buildDefaultReferencedColumnName());
 	}
 
-	protected String specifiedReferencedColumnName(XmlJoinColumn xjc) {
-		return xjc == null ? null : xjc.getReferencedColumnName();
+	protected String buildSpecifiedReferencedColumnName(XmlJoinColumn xjc) {
+		return (xjc == null) ? null : xjc.getReferencedColumnName();
 	}
 
 	@Override
 	protected String buildDefaultName() {
-		RelationshipMapping relationshipMapping = getOwner().getRelationshipMapping();
-		if (relationshipMapping == null) {
-			return null;
-		}
-		if (!getOwner().getRelationshipMapping().isRelationshipOwner()) {
-			return null;
-		}
 		return MappingTools.buildJoinColumnDefaultName(this);
 	}
 	
-	protected String defaultReferencedColumnName() {
-		RelationshipMapping relationshipMapping = getOwner().getRelationshipMapping();
-		if (relationshipMapping == null) {
-			return null;
-		}
-		if (!relationshipMapping.isRelationshipOwner()) {
-			return null;
-		}
-		return MappingTools.buildJoinColumnDefaultReferencedColumnName(this);
+	protected String buildDefaultReferencedColumnName() {
+		return MappingTools.buildJoinColumnDefaultReferencedColumnName(this.getOwner());
 	}
 	
 	@Override
@@ -184,30 +170,34 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 	//******************* validation ***********************
 
 	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
-	
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
 		if ( ! this.isResolved()) {
-			OrmRelationshipMapping mapping = (OrmRelationshipMapping) this.getOwner().getRelationshipMapping();
-			if (mapping.getPersistentAttribute().isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
-						new String[] {mapping.getName(), this.getName()}, 
-						this,
-						this.getNameTextRange())
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-						new String[] {this.getName()}, 
-						this,
-						this.getNameTextRange())
-				);
-			}
+			messages.add(this.buildUnresolvedMessage());
 		}
 	}
+
+	protected IMessage buildUnresolvedMessage() {
+		OrmRelationshipMapping mapping = (OrmRelationshipMapping) this.getOwner().getRelationshipMapping();
+		return mapping.getPersistentAttribute().isVirtual() ? this.buildVirtualUnresolvedMessage(mapping) : this.buildNonVirtualUnresolvedMessage();
+	}
+
+	protected IMessage buildVirtualUnresolvedMessage(OrmRelationshipMapping mapping) {
+		return this.buildMessage(
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
+						new String[] {mapping.getName(), this.getName()}
+					);
+	}
+
+	protected IMessage buildNonVirtualUnresolvedMessage() {
+		return this.buildMessage(
+						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
+						new String[] {this.getName()}
+					);
+	}
+
+	protected IMessage buildMessage(String msgID, String[] parms) {
+		return DefaultJpaValidationMessages.buildMessage(IMessage.HIGH_SEVERITY, msgID, parms, this, this.getNameTextRange());
+	}
+
 }

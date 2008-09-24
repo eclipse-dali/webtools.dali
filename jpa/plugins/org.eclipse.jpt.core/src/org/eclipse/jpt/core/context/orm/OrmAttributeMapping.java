@@ -30,11 +30,11 @@ public interface OrmAttributeMapping extends AttributeMapping, OrmJpaContextNode
 
 	String getName();
 	void setName(String newName);
-	String NAME_PROPERTY = "nameProperty";
+	String NAME_PROPERTY = "name"; //$NON-NLS-1$
 
 
 	JavaPersistentAttribute getJavaPersistentAttribute();
-	String JAVA_PERSISTENT_ATTRIBUTE_PROPERTY = "javaPersistentAttributeProperty";
+	String JAVA_PERSISTENT_ATTRIBUTE_PROPERTY = "javaPersistentAttribute"; //$NON-NLS-1$
 	
 	/**
 	 * Attributes are a sequence in the orm schema. We must keep

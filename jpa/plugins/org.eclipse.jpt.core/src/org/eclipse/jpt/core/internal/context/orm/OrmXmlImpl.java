@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
@@ -24,7 +23,11 @@ import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class OrmXmlImpl extends AbstractOrmJpaContextNode
+/**
+ * 
+ */
+public class OrmXmlImpl
+	extends AbstractOrmJpaContextNode
 	implements OrmXml
 {
 	protected OrmResource ormResource;
@@ -48,10 +51,7 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 	}
 	
 	public OrmPersistentType getPersistentType(String fullyQualifiedTypeName) {
-		if (getEntityMappings() != null) {
-			return getEntityMappings().getPersistentType(fullyQualifiedTypeName);
-		}
-		return null;
+		return (this.entityMappings == null) ? null : this.entityMappings.getPersistentType(fullyQualifiedTypeName);
 	}
 	
 	@Override
@@ -99,37 +99,36 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 	}
 	
 	public PersistenceUnitDefaults getPersistenceUnitDefaults() {
-		if (getEntityMappings() != null) {
-			return getEntityMappings().getPersistenceUnitDefaults();
-		}
-		return null;
+		return (this.entityMappings == null) ? null : this.entityMappings.getPersistenceUnitDefaults();
 	}
+
+
 	// **************** updating ***********************************************
 	
-	protected void initialize(OrmResource ormResource) {
-		this.ormResource = ormResource;
-		if (ormResource.getEntityMappings() != null) {
-			this.entityMappings = buildEntityMappings(ormResource.getEntityMappings());
+	protected void initialize(OrmResource resource) {
+		this.ormResource = resource;
+		XmlEntityMappings xmlEntityMappings = resource.getEntityMappings();
+		if (xmlEntityMappings != null) {
+			this.entityMappings = buildEntityMappings(xmlEntityMappings);
 		}
 	}
 
-	public void update(OrmResource ormResource) {
-		this.ormResource = ormResource;
-		if (ormResource.getEntityMappings() != null) {
+	public void update(OrmResource resource) {
+		this.ormResource = resource;
+		XmlEntityMappings xmlEntityMappings = resource.getEntityMappings();
+		if (xmlEntityMappings != null) {
 			if (this.entityMappings != null) {
-				getJpaFile(this.ormResource.getResourceModel()).addRootStructureNode(this.ormResource, this.entityMappings);
-				this.entityMappings.update(ormResource.getEntityMappings());
+				this.getJpaFile(this.ormResource.getResourceModel()).addRootStructureNode(this.ormResource, this.entityMappings);
+				this.entityMappings.update(xmlEntityMappings);
+			} else {
+				this.setEntityMappings(this.buildEntityMappings(xmlEntityMappings));
 			}
-			else {
-				setEntityMappings(buildEntityMappings(ormResource.getEntityMappings()));
+		} else {
+			if (this.entityMappings != null) {
+				this.getJpaFile(this.ormResource.getResourceModel()).removeRootStructureNode(this.ormResource);
+				this.entityMappings.dispose();
 			}
-		}
-		else {
-			if (getEntityMappings() != null) {
-				getJpaFile(this.ormResource.getResourceModel()).removeRootStructureNode(this.ormResource);
-				getEntityMappings().dispose();
-			}
-			setEntityMappings(null);
+			this.setEntityMappings(null);
 		}
 	}
 	
@@ -158,16 +157,17 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 	
 	
 	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
-		if (getEntityMappings() != null) {
-			getEntityMappings().addToMessages(messages);
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
+		if (this.entityMappings != null) {
+			this.entityMappings.validate(messages);
 		}
 	}
 	
 	public void dispose() {
-		if (getEntityMappings() != null) {
-			getEntityMappings().dispose();
+		if (this.entityMappings != null) {
+			this.entityMappings.dispose();
 		}
 	}
+
 }

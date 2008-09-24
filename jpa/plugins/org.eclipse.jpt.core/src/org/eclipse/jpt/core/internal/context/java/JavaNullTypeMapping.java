@@ -42,19 +42,26 @@ public class JavaNullTypeMapping extends AbstractJavaTypeMapping
 	public Iterator<String> correspondingAnnotationNames() {
 		return EmptyIterator.instance();
 	}
-	
+
+	/**
+	 * We added this message here because the most likely solution is to add
+	 * an annotation to the .java file.
+	 * This message used to be found on the <class> tag in persistence.xml.
+	 * The other possible way to fix the error is to remove it from persistence.xml.
+	 * This can be accomplished with the Synchronize Classes action.
+	 * We could also add a quick fix for this error.
+	 */
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		//Adding this message here because the likely solution is to add an annotation to the java file.
-		//This message used to be found on the <class> tag in the persistence.xml.  The other possible
-		//way to fix the error is to remove it from the persistnce.xml.  This can be accomplished
-		//with the Synchronize Classes action.  We could also add a quick fix for this error.
-		messages.add(DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.PERSISTENCE_UNIT_INVALID_CLASS,
-			new String[] { this.getPersistentType().getName() },
-			this,
-			this.getValidationTextRange(astRoot)));
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		messages.add(
+			DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.PERSISTENCE_UNIT_INVALID_CLASS,
+				new String[] {this.getPersistentType().getName()},
+				this,
+				this.getValidationTextRange(astRoot)
+			)
+		);
 	}
 	
 	@Override

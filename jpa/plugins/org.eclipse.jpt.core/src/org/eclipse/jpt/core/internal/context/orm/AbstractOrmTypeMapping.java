@@ -246,7 +246,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		JavaResourcePersistentType persistentTypeResource = getJpaProject().getJavaResourcePersistentType(getClass_());
 		if (persistentTypeResource == null) {
 			// try to resolve by prepending the global package name
-			persistentTypeResource = getJpaProject().getJavaResourcePersistentType(getEntityMappings().getPackage() + "." + getClass_());
+			persistentTypeResource = getJpaProject().getJavaResourcePersistentType(getEntityMappings().getPackage() + '.' + getClass_());
 		}
 		return persistentTypeResource;
 	}
@@ -270,28 +270,28 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		return getJpaFactory().buildJavaPersistentType(this, resourcePersistentType);
 	}
 
-	public void initialize(T typeMapping) {
-		this.typeMapping = typeMapping;
-		this.class_ = typeMapping.getClassName();
+	public void initialize(T mapping) {
+		this.typeMapping = mapping;
+		this.class_ = mapping.getClassName();
 		this.initializeJavaPersistentType();
-		this.specifiedMetadataComplete = this.metadataComplete(typeMapping);
+		this.specifiedMetadataComplete = this.metadataComplete(mapping);
 		this.defaultMetadataComplete = this.defaultMetadataComplete();
-		this.specifiedAccess = AccessType.fromXmlResourceModel(typeMapping.getAccess());
+		this.specifiedAccess = AccessType.fromXmlResourceModel(mapping.getAccess());
 		this.defaultAccess = this.defaultAccess();
 	}
 	
-	public void update(T typeMapping) {
-		this.typeMapping = typeMapping;
-		this.setClass(typeMapping.getClassName());
+	public void update(T mapping) {
+		this.typeMapping = mapping;
+		this.setClass(mapping.getClassName());
 		this.updateJavaPersistentType();
-		this.setSpecifiedMetadataComplete(this.metadataComplete(typeMapping));
+		this.setSpecifiedMetadataComplete(this.metadataComplete(mapping));
 		this.setDefaultMetadataComplete(this.defaultMetadataComplete());
-		this.setSpecifiedAccess(AccessType.fromXmlResourceModel(typeMapping.getAccess()));
+		this.setSpecifiedAccess(AccessType.fromXmlResourceModel(mapping.getAccess()));
 		this.setDefaultAccess(this.defaultAccess());
 	}
 	
-	protected Boolean metadataComplete(AbstractXmlTypeMapping typeMapping) {
-		return typeMapping.getMetadataComplete();
+	protected Boolean metadataComplete(AbstractXmlTypeMapping mapping) {
+		return mapping.getMetadataComplete();
 	}
 
 
@@ -326,37 +326,33 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 	
 	//************************* validation ************************
 	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
-		addClassMessages(messages);
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
+		this.validateClass(messages);
 	}
-	protected void addClassMessages(List<IMessage> messages) {
-		addUnspecifiedClassMessage(messages);
-		addUnresolvedClassMessage(messages);
-	}
-	
-	protected void addUnspecifiedClassMessage(List<IMessage> messages) {
-		if (StringTools.stringIsEmpty(getClass_())) {
+
+	protected void validateClass(List<IMessage> messages) {
+		if (StringTools.stringIsEmpty(this.class_)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CLASS,
 					this, 
-					this.getClassTextRange())
+					this.getClassTextRange()
+				)
 			);
+			return;
 		}
-	}
-	
-	protected void addUnresolvedClassMessage(List<IMessage> messages) {
-		if (! StringTools.stringIsEmpty(getClass_())
-				&& getJavaPersistentType() == null) {
+
+		if (this.javaPersistentType == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_TYPE_UNRESOLVED_CLASS,
-					new String[] {getClass_()},
+					new String[] {this.class_},
 					this, 
-					this.getClassTextRange())
+					this.getClassTextRange()
+				)
 			);
 		}
 	}
@@ -364,4 +360,10 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 	public TextRange getValidationTextRange() {
 		return this.typeMapping.getValidationTextRange();
 	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getPersistentType().getName());
+	}
+
 }

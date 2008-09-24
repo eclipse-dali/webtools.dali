@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.MultiRelationshipMapping;
 import org.eclipse.jpt.core.context.NonOwningMapping;
@@ -129,7 +130,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 		boolean oldPkOrdering = this.isPkOrdering;
 		this.isPkOrdering = newPkOrdering;
 		if (newPkOrdering) {
-			getAttributeMapping().setOrderBy("");
+			getAttributeMapping().setOrderBy(""); //$NON-NLS-1$
 		}
 		firePropertyChanged(PK_ORDERING_PROPERTY, oldPkOrdering, newPkOrdering);	
 	}
@@ -148,7 +149,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 		boolean oldCustomOrdering = this.isCustomOrdering;
 		this.isCustomOrdering = newCustomOrdering;
 		if (newCustomOrdering) {
-			setOrderBy("");
+			setOrderBy(""); //$NON-NLS-1$
 		}
 		firePropertyChanged(CUSTOM_ORDERING_PROPERTY, oldCustomOrdering, newCustomOrdering);
 	}
@@ -163,7 +164,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 		return this.joinTable;
 	}
 
-	public boolean isJoinTableSpecified() {
+	public boolean joinTableIsSpecified() {
 		return getJoinTable().isSpecified();
 	}
 
@@ -302,70 +303,71 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 	//****************** validation ******************8
 	
 	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
-		
-		if (entityOwned() && (this.isJoinTableSpecified() || isRelationshipOwner())) {
-			getJoinTable().addToMessages(messages);
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
+		if (this.ownerIsEntity() && (this.joinTableIsSpecified() || this.isRelationshipOwner())) {
+			this.joinTable.validate(messages);
 		}
-		if (getMappedBy() != null) {
-			addMappedByMessages(messages);
+		if (this.mappedBy != null) {
+			this.validateMappedBy(messages);
 		}
 	}
 	
-	protected void addMappedByMessages(List<IMessage> messages) {	
-		if (isJoinTableSpecified()) {
+	protected void validateMappedBy(List<IMessage> messages) {	
+		if (this.joinTableIsSpecified()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE,
-						getJoinTable(),
-						getJoinTable().getValidationTextRange())
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE,
+					this.joinTable,
+					this.joinTable.getValidationTextRange()
+				)
+			);
+		}
+		Entity targetEntity = this.getResolvedTargetEntity();
+		if (targetEntity == null) {
+			return;  // validated elsewhere
 		}
 		
-		if (getResolvedTargetEntity() == null) {
-			// already have validation messages for that
-			return;
-		}
-		
-		PersistentAttribute attribute = getResolvedTargetEntity().getPersistentType().resolveAttribute(getMappedBy());
+		PersistentAttribute attribute = targetEntity.getPersistentType().resolveAttribute(this.mappedBy);
 		
 		if (attribute == null) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
-						new String[] {getMappedBy()}, 
-						this,
-						getMappedByTextRange())
-				);
-			return;
-		}
-		
-		if (! mappedByIsValid(attribute.getMapping())) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
-						new String[] {getMappedBy()}, 
-						this,
-						getMappedByTextRange())
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
+					new String[] {this.mappedBy}, 
+					this,
+					this.getMappedByTextRange()
+				)
+			);
 			return;
 		}
 		
 		AttributeMapping mappedByMapping = attribute.getMapping();
+		if ( ! this.mappedByIsValid(mappedByMapping)) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
+					new String[] {this.mappedBy}, 
+					this,
+					this.getMappedByTextRange()
+				)
+			);
+			return;
+		}
+		
 		if ((mappedByMapping instanceof NonOwningMapping)
 				&& ((NonOwningMapping) mappedByMapping).getMappedBy() != null) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
-						this,
-						getMappedByTextRange()
-					)
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
+					this,
+					this.getMappedByTextRange()
+				)
+			);
 		}
 	}
 }

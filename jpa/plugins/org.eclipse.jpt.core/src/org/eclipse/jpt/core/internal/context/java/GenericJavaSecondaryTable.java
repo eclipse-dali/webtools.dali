@@ -274,57 +274,63 @@ public class GenericJavaSecondaryTable
 		return new PrimaryKeyJoinColumnOwner();
 	}
 	
+
+	// ********** validation **********
+
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
 		if (this.connectionProfileIsActive()) {
-			this.checkDatabase(messages, astRoot);
+			this.validateAgainstDatabase(messages, astRoot);
 		}
 		for (Iterator<JavaPrimaryKeyJoinColumn> stream = this.primaryKeyJoinColumns(); stream.hasNext(); ) {
-			stream.next().addToMessages(messages, astRoot);
+			stream.next().validate(messages, astRoot);
 		}
 	}
 
-	protected void checkDatabase(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateAgainstDatabase(List<IMessage> messages, CompilationUnit astRoot) {
 		if ( ! this.hasResolvedCatalog()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_CATALOG,
-						new String[] {this.getCatalog(), this.getName()}, 
-						this, 
-						this.getCatalogTextRange(astRoot))
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_CATALOG,
+					new String[] {this.getCatalog(), this.getName()}, 
+					this, 
+					this.getCatalogTextRange(astRoot)
+				)
+			);
 			return;
 		}
 		
 		if ( ! this.hasResolvedSchema()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_SCHEMA,
-						new String[] {this.getSchema(), this.getName()}, 
-						this, 
-						this.getSchemaTextRange(astRoot))
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_SCHEMA,
+					new String[] {this.getSchema(), this.getName()}, 
+					this, 
+					this.getSchemaTextRange(astRoot)
+				)
+			);
 			return;
 		}
 		
 		if ( ! this.isResolved()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_NAME,
-						new String[] {this.getName()}, 
-						this, 
-						this.getNameTextRange(astRoot))
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_NAME,
+					new String[] {this.getName()}, 
+					this, 
+					this.getNameTextRange(astRoot)
+				)
+			);
 			return;
 		}
 	}
 
 
-	//********************* code completion ************************
+	// ********** code completion **********
 
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {

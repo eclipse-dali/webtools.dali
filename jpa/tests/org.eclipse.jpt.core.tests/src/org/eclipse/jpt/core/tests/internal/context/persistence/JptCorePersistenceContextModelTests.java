@@ -22,7 +22,7 @@ public class JptCorePersistenceContextModelTests extends TestCase
 	
 	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptCorePersistenceContextModelTests.class.getName());
-		suite.addTestSuite(RootContextTests.class);
+		suite.addTestSuite(RootContextNodeTests.class);
 		suite.addTestSuite(PersistenceXmlTests.class);
 		suite.addTestSuite(PersistenceTests.class);
 		suite.addTestSuite(PersistenceUnitTests.class);

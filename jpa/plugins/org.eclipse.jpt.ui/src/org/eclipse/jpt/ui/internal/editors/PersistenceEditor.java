@@ -219,7 +219,7 @@ public class PersistenceEditor extends FormEditor
 		return new TransformationPropertyValueModel<JpaProject, JpaRootContextNode>(buildJpaProjectHolder()) {
 			@Override
 			protected JpaRootContextNode transform_(JpaProject value) {
-				return value.getRootContext();
+				return value.getRootContextNode();
 			}
 		};
 	}

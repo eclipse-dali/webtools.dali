@@ -325,34 +325,36 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	// ********** validation **********
 
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
 		
 		if (this.connectionProfileIsActive()) {
-			this.checkJoinColumns(messages, astRoot);
+			this.validateJoinColumns(messages, astRoot);
 		}
 	}
 	
-	//bug 192287 - do not want joinColumn validation errors on the non-owning side
-	//of a bidirectional relationship.  This is a low risk fix for RC3, but a better
-	//solution would be to not have the default joinColumns on the non-owning side.
-	//This would fix another bug that we show default joinColumns in this situation.
-	protected void checkJoinColumns(List<IMessage> messages, CompilationUnit astRoot) {
-		if (this.entityOwned() && this.isRelationshipOwner()) {
+	// 192287 - We don't want join column validation errors on the non-owning side
+	// of a bidirectional relationship. This is a low risk fix for RC3, but a better
+	// solution would be to not have the default join columns on the non-owning side.
+	// This would fix another bug that we show default join columns in this situation.
+	protected void validateJoinColumns(List<IMessage> messages, CompilationUnit astRoot) {
+		if (this.ownerIsEntity() && this.isRelationshipOwner()) {
 			for (Iterator<JavaJoinColumn> stream = this.joinColumns(); stream.hasNext(); ) {
-				this.checkJoinColumn(stream.next(), messages, astRoot);
+				this.validateJoinColumn(stream.next(), messages, astRoot);
 			}
 		}
 	}
 
-	protected void checkJoinColumn(JavaJoinColumn joinColumn, List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateJoinColumn(JavaJoinColumn joinColumn, List<IMessage> messages, CompilationUnit astRoot) {
 		if (this.getTypeMapping().tableNameIsInvalid(joinColumn.getTable())) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
 					new String[] {joinColumn.getTable(), joinColumn.getName()}, 
-					joinColumn, joinColumn.getTableTextRange(astRoot))
+					joinColumn,
+					joinColumn.getTableTextRange(astRoot)
+				)
 			);
 			return;
 		}
@@ -363,7 +365,9 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
 					new String[] {joinColumn.getName()}, 
-					joinColumn, joinColumn.getNameTextRange(astRoot))
+					joinColumn,
+					joinColumn.getNameTextRange(astRoot)
+				)
 			);
 		}
 
@@ -373,13 +377,15 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
 					new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-					joinColumn, joinColumn.getReferencedColumnNameTextRange(astRoot))
+					joinColumn,
+					joinColumn.getReferencedColumnNameTextRange(astRoot)
+				)
 			);
 		}
 	}
 
 
-	// ********** JavaJoinColumn.Owner implementation **********
+	// ********** join column owner adapter **********
 
 	public class JoinColumnOwner implements JavaJoinColumn.Owner {
 

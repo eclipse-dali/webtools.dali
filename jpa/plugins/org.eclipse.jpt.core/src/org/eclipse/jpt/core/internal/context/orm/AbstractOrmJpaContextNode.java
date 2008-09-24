@@ -34,7 +34,7 @@ public abstract class AbstractOrmJpaContextNode
 	 * All subclass implementations {@link #addToMessages(List<IMessage>)} 
 	 * should be preceded by a "super" call to this method
 	 */
-	public void addToMessages(List<IMessage> messages) {
+	public void validate(List<IMessage> messages) {
 		// do nothing by default
 	}
 

@@ -51,16 +51,15 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 	// **************** persistence units **************************************
 	
 	public ListIterator<PersistenceUnit> persistenceUnits() {
-		if (persistenceUnit == null) {
-			return EmptyListIterator.instance();
-		}
-		else {
-			return new SingleElementListIterator<PersistenceUnit>(persistenceUnit);
-		}
+		return (this.persistenceUnit == null) ? EmptyListIterator.<PersistenceUnit>instance() : this.persistenceUnits_();
+	}
+	
+	protected ListIterator<PersistenceUnit> persistenceUnits_() {
+		return new SingleElementListIterator<PersistenceUnit>(this.persistenceUnit);
 	}
 	
 	public int persistenceUnitsSize() {
-		return (persistenceUnit == null) ? 0 : 1;
+		return (this.persistenceUnit == null) ? 0 : 1;
 	}
 	
 	public PersistenceUnit addPersistenceUnit() {
@@ -68,54 +67,57 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 	}
 	
 	public PersistenceUnit addPersistenceUnit(int index) {
-		if (index > 0 || persistenceUnit != null) {
-			throw new IllegalStateException("This implementation does not support multiple persistence units.");
+		if (index > 0 || this.persistenceUnit != null) {
+			throw new IllegalStateException("This implementation does not support multiple persistence units."); //$NON-NLS-1$
 		}
 		XmlPersistenceUnit xmlPersistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
-		persistenceUnit = createPersistenceUnit(xmlPersistenceUnit);
-		xmlPersistence.getPersistenceUnits().add(xmlPersistenceUnit);
-		fireItemAdded(PERSISTENCE_UNITS_LIST, index, persistenceUnit);
-		return persistenceUnit;
+		this.persistenceUnit = createPersistenceUnit(xmlPersistenceUnit);
+		this.xmlPersistence.getPersistenceUnits().add(xmlPersistenceUnit);
+		fireItemAdded(PERSISTENCE_UNITS_LIST, index, this.persistenceUnit);
+		return this.persistenceUnit;
 	}
 	
-	public void removePersistenceUnit(PersistenceUnit persistenceUnit) {
+	public void removePersistenceUnit(PersistenceUnit pu) {
+		if (pu != this.persistenceUnit) {
+			throw new IllegalArgumentException("Invalid persistence unit: " + pu); //$NON-NLS-1$
+		}
 		removePersistenceUnit(0);
 	}
 	
 	public void removePersistenceUnit(int index) {
-		if (index > 0 ) {
-			throw new IllegalArgumentException(new Integer(index).toString());
+		if (index > 0 || this.persistenceUnit == null) {
+			throw new IndexOutOfBoundsException("index: " + index); //$NON-NLS-1$
 		}
-		PersistenceUnit oldPersistenceUnit = persistenceUnit;
-		persistenceUnit.dispose();
-		persistenceUnit = null;
-		xmlPersistence.getPersistenceUnits().remove(index);
+		PersistenceUnit oldPersistenceUnit = this.persistenceUnit;
+		this.persistenceUnit.dispose();
+		this.persistenceUnit = null;
+		this.xmlPersistence.getPersistenceUnits().remove(index);
 		fireItemRemoved(PERSISTENCE_UNITS_LIST, index, oldPersistenceUnit);
 	}
 	
 	protected void addPersistenceUnit_(PersistenceUnit newPersistenceUnit) {
-		persistenceUnit = newPersistenceUnit;
-		fireItemAdded(PERSISTENCE_UNITS_LIST, 0, persistenceUnit);
+		this.persistenceUnit = newPersistenceUnit;
+		fireItemAdded(PERSISTENCE_UNITS_LIST, 0, this.persistenceUnit);
 	}
 	
 	protected void removePersistenceUnit_(PersistenceUnit oldPersistenceUnit) {
-		persistenceUnit.dispose();
-		persistenceUnit = null;
+		this.persistenceUnit.dispose();
+		this.persistenceUnit = null;
 		fireItemRemoved(PERSISTENCE_UNITS_LIST, 0, oldPersistenceUnit);
 	}
 	
 	
 	// **************** updating ***********************************************
 	
-	protected void initialize(XmlPersistence xmlPersistence) {
-		this.xmlPersistence = xmlPersistence;
-		initializePersistenceUnits(xmlPersistence);
+	protected void initialize(XmlPersistence persistence) {
+		this.xmlPersistence = persistence;
+		initializePersistenceUnits(persistence);
 	}
 	
 	protected void initializePersistenceUnits(XmlPersistence persistence) {
 		// only adding one here, until we support multiple persistence units
-		if (xmlPersistence.getPersistenceUnits().size() > 0) {
-			persistenceUnit = createPersistenceUnit(persistence.getPersistenceUnits().get(0));
+		if (this.xmlPersistence.getPersistenceUnits().size() > 0) {
+			this.persistenceUnit = createPersistenceUnit(persistence.getPersistenceUnits().get(0));
 		}
 	}
 	
@@ -126,12 +128,12 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 			xmlPersistenceUnit = persistence.getPersistenceUnits().get(0);
 		}
 				
-		if (persistenceUnit != null) {
+		if (this.persistenceUnit != null) {
 			if (xmlPersistenceUnit != null) {
-				persistenceUnit.update(xmlPersistenceUnit);
+				this.persistenceUnit.update(xmlPersistenceUnit);
 			}
 			else {
-				removePersistenceUnit_(persistenceUnit);
+				removePersistenceUnit_(this.persistenceUnit);
 			}
 		}
 		else {
@@ -150,78 +152,76 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 	
 	@Override
 	public PersistenceUnit getPersistenceUnit() {
-		throw new UnsupportedOperationException("No PersistenceUnit in this context");
+		throw new UnsupportedOperationException("No PersistenceUnit in this context"); //$NON-NLS-1$
 	}
 	
 	public JpaStructureNode getStructureNode(int textOffset) {
-		for (PersistenceUnit persistenceUnit : CollectionTools.iterable(persistenceUnits())) {
-			if (persistenceUnit.containsOffset(textOffset)) {
-				return persistenceUnit.getStructureNode(textOffset);
+		for (PersistenceUnit pu : CollectionTools.iterable(persistenceUnits())) {
+			if (pu.containsOffset(textOffset)) {
+				return pu.getStructureNode(textOffset);
 			}
 		}
 		return this;
 	}
 	
 	public boolean containsOffset(int textOffset) {
-		if (xmlPersistence == null) {
-			return false;
-		}
-		return xmlPersistence.containsOffset(textOffset);
+		return (this.xmlPersistence == null) ? false : this.xmlPersistence.containsOffset(textOffset);
 	}
 	
 	public TextRange getSelectionTextRange() {
-		return xmlPersistence.getSelectionTextRange();
+		return this.xmlPersistence.getSelectionTextRange();
 	}
 	
 	public TextRange getValidationTextRange() {
-		return xmlPersistence.getValidationTextRange();
+		return this.xmlPersistence.getValidationTextRange();
 	}
 
+	public void dispose() {
+		for (PersistenceUnit pu : CollectionTools.iterable(persistenceUnits())) {
+			pu.dispose();
+		}
+	}
+
+
+	// ********** validation **********
 
 	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
-		//persistence root validation
-		addNoPersistenceUnitMessage(messages);
-		
-		// note to neil (or whomever): extraneous persistence units can be
-		// accessed through the XmlPersistence resource object
-		addMultiplePersistenceUnitMessage(messages);
-		
-		
-		//persistence unit validation
-		if (persistenceUnit != null) {
-			persistenceUnit.addToMessages(messages);
-		}
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
+		this.checkForMultiplePersistenceUnits(messages);
+		this.validatePersistenceUnit(messages);
 	}
-	
-	protected void addNoPersistenceUnitMessage(List<IMessage> messages) {
-		if (persistenceUnit == null) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENCE_NO_PERSISTENCE_UNIT,
-						this, 
-						this.getValidationTextRange())
-				);
-		}
-	}
-	
-	protected void addMultiplePersistenceUnitMessage(List<IMessage> messages) {
-		if (xmlPersistence.getPersistenceUnits().size() > 1) {
+
+	/**
+	 * extraneous persistence units can be
+	 * accessed through the XmlPersistence resource object
+	 */
+	protected void checkForMultiplePersistenceUnits(List<IMessage> messages) {
+		if (this.xmlPersistence.getPersistenceUnits().size() > 1) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
-						IMessage.NORMAL_SEVERITY,
-						JpaValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS,
-						this, 
-						this.getValidationTextRange())
-				);
+					IMessage.NORMAL_SEVERITY,
+					JpaValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS,
+					this, 
+					this.getValidationTextRange()
+				)
+			);
 		}
 	}
 	
-	public void dispose() {
-		for (PersistenceUnit persistenceUnit : CollectionTools.iterable(persistenceUnits())) {
-			persistenceUnit.dispose();
+	protected void validatePersistenceUnit(List<IMessage> messages) {
+		if (this.persistenceUnit == null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENCE_NO_PERSISTENCE_UNIT,
+					this, 
+					this.getValidationTextRange()
+				)
+			);
+			return;
 		}
+		this.persistenceUnit.validate(messages);
 	}
+
 }

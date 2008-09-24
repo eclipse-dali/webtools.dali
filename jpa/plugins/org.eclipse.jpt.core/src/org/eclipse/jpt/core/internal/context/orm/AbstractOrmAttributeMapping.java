@@ -216,7 +216,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 	
 	
-	protected boolean entityOwned() {
+	protected boolean ownerIsEntity() {
 		return getTypeMapping().getKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY;
 	}
 
@@ -240,15 +240,15 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	// ********** validation **********
 
 	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
-		this.checkAttribute(messages);
-		this.checkModifiers(messages);
-		this.checkMapping(messages);
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
+		this.validateAttribute(messages);
+		this.validateModifiers(messages);
+		this.validateMapping(messages);
 	}
 	
-	protected void checkAttribute(List<IMessage> messages) {
-		if (StringTools.stringIsEmpty(this.getName())) {
+	protected void validateAttribute(List<IMessage> messages) {
+		if (StringTools.stringIsEmpty(this.name)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -265,7 +265,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,
-					new String[] {this.getName(), this.getPersistentAttribute().getPersistentType().getMapping().getClass_()},
+					new String[] {this.name, this.getPersistentAttribute().getPersistentType().getMapping().getClass_()},
 					this, 
 					this.getNameTextRange()
 				)
@@ -273,7 +273,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		}
 	}
 	
-	protected void checkModifiers(List<IMessage> messages) {
+	protected void validateModifiers(List<IMessage> messages) {
 		if (this.getKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
 			return;
 		}
@@ -284,43 +284,37 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		JavaResourcePersistentAttribute jrpa = jpa.getResourcePersistentAttribute();
 
 		if (jrpa.isForField()) {
+			if (jrpa.isFinal()) {
+				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD));
+			}
+			if (jrpa.isPublic()) {
+				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD));
+			}
+		} else {
 			//TODO validation : need to have a validation message for final methods as well.
 			//From the JPA spec : No methods or persistent instance variables of the entity class may be final.
-			if (jrpa.isFinal()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD,
-						new String[] {this.getName()},
-						this.getPersistentAttribute(),
-						this.getPersistentAttribute().getValidationTextRange()
-					)
-				);
-			}
-			
-			if (jrpa.isPublic()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD,
-						new String[] {this.getName()},
-						this.getPersistentAttribute(), 
-						this.getPersistentAttribute().getValidationTextRange()
-					)
-				);
-				
-			}
 		}
 	}
 
+	protected IMessage buildAttributeMessage(String msgID) {
+		OrmPersistentAttribute pa = this.getPersistentAttribute();
+		return DefaultJpaValidationMessages.buildMessage(
+			IMessage.HIGH_SEVERITY,
+			msgID,
+			new String[] {this.name},
+			pa, 
+			pa.getValidationTextRange()
+		);
+	}
+
 	//TODO validation message - i think more info is needed in this message.  include type mapping type?
-	protected void checkMapping(List<IMessage> messages) {
+	protected void validateMapping(List<IMessage> messages) {
 		if ( ! this.getTypeMapping().attributeMappingKeyAllowed(this.getKey())) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
-					new String[] {this.getName()},
+					new String[] {this.name},
 					this, 
 					this.getValidationTextRange()
 				)
@@ -328,4 +322,9 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		}
 	}
 	
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getAttributeName());
+	}
+
 }

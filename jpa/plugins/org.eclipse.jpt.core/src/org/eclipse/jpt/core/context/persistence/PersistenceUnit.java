@@ -9,13 +9,24 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.persistence;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
+
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.Query;
+import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
+import org.eclipse.jpt.core.context.java.JavaGenerator;
+import org.eclipse.jpt.core.context.java.JavaQuery;
+import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
+import org.eclipse.jpt.core.context.orm.OrmGenerator;
+import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * 
@@ -401,7 +412,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 		String DEFAULT_CASCADE_PERSIST_PROPERTY = "defaultCascadePersist"; //$NON-NLS-1$
 	
 	
-	// **************** global generator and query support *********************
+	// **************** generators *********************
 	
 	/**
 	 * Identifier for changes to the list of global generators.
@@ -424,6 +435,37 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	 * included duplicately named generators.
 	 */
 	ListIterator<Generator> allGenerators();
+
+	/**
+	 * Return an array of the names of the generators defined in the persistence
+	 * unit, with duplicates removed.
+	 */
+	String[] uniqueGeneratorNames();
+
+	/**
+	 * Validate the ORM generators held by the specified generator holder.
+	 */
+	void validateGenerators(OrmGeneratorHolder generatorHolder, List<IMessage> messages);
+
+	/**
+	 * Validate the Java generators held by the specified generator holder.
+	 */
+	void validateGenerators(JavaGeneratorHolder generatorHolder, List<IMessage> messages, CompilationUnit astRoot);
+
+	/**
+	 * Validate whether the specified ORM generated value matches a
+	 * generator defined in the persistence unit.
+	 */
+	void validateGeneratedValue(OrmGeneratedValueHolder generatedValueHolder, List<IMessage> messages);
+
+	/**
+	 * Validate whether the specified Java generated value matches a
+	 * generator defined in the persistence unit.
+	 */
+	void validateGeneratedValue(JavaGeneratedValueHolder generatedValueHolder, List<IMessage> messages, CompilationUnit astRoot);
+	
+	
+	// **************** queries *********************
 	
 	/**
 	 * Identifier for changes to the list of global queries.
@@ -447,6 +489,16 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	 */
 	ListIterator<Query> allQueries();
 	
+	/**
+	 * Validate the ORM queries held by the specified query holder.
+	 */
+	void validateQueries(OrmQueryHolder queryHolder, List<IMessage> messages);
+
+	/**
+	 * Validate the Java queries held by the specified query holder.
+	 */
+	void validateQueries(JavaQueryHolder queryHolder, List<IMessage> messages, CompilationUnit astRoot);
+
 	
 	// **************** updating ***********************************************
 	
@@ -470,5 +522,32 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	 * the given text offset
 	 */
 	boolean containsOffset(int textOffset);
+
+	
+	// ********** validation callbacks **********
+	
+	interface OrmGeneratorHolder {
+		Iterator<OrmGenerator> generators();
+	}
+
+	interface JavaGeneratorHolder {
+		Iterator<JavaGenerator> generators();
+	}
+
+	interface OrmGeneratedValueHolder {
+		OrmGeneratedValue getGeneratedValue();
+	}
+
+	interface JavaGeneratedValueHolder {
+		JavaGeneratedValue getGeneratedValue();
+	}
+
+	interface OrmQueryHolder {
+		Iterator<OrmQuery> queries();
+	}
+
+	interface JavaQueryHolder {
+		Iterator<JavaQuery> queries();
+	}
 
 }

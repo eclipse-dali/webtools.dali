@@ -126,4 +126,10 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		TextRange textRange = this.getResourceMapping().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getPersistentType().getValidationTextRange(astRoot);
 	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getPersistentType().getName());
+	}
+
 }

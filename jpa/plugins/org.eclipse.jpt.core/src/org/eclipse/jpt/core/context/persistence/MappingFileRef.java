@@ -38,7 +38,7 @@ public interface MappingFileRef extends PersistenceJpaContextNode, JpaStructureN
 	/**
 	 * String constant associated with changes to the file name
 	 */
-	String FILE_NAME_PROPERTY = "fileNameProperty";
+	String FILE_NAME_PROPERTY = "fileName"; //$NON-NLS-1$
 	
 	/**
 	 * Return the file name of the mapping file ref.
@@ -53,7 +53,7 @@ public interface MappingFileRef extends PersistenceJpaContextNode, JpaStructureN
 	
 	// **************** orm xml ************************************************
 	
-	String ORM_XML_PROPERTY = "ormXmlProperty";
+	String ORM_XML_PROPERTY = "ormXml"; //$NON-NLS-1$
 	
 	OrmXml getOrmXml();	
 	
@@ -73,9 +73,9 @@ public interface MappingFileRef extends PersistenceJpaContextNode, JpaStructureN
 	
 	/**
 	 * Return the OrmPersistentType listed in this mapping file
-	 * with the given fullyQualifiedTypeName.  Return null if none exists.
+	 * with the given name.  Return null if none exists.
 	 */
-	OrmPersistentType getPersistentType(String fullyQualifiedTypeName);
+	OrmPersistentType getPersistentType(String typeName);
 	
 	/**
 	 * Return whether the text representation of this persistence unit contains

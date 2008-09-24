@@ -272,57 +272,60 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	// ****************** validation ****************
 	
 	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
-		if (this.connectionProfileIsActive() && this.entityOwned()) {
-			this.addColumnMessages(messages);
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
+		if (this.connectionProfileIsActive() && this.ownerIsEntity()) {
+			this.validateColumn(messages);
 		}
 	}
 	
-	protected void addColumnMessages(List<IMessage> messages) {
-		if (this.getTypeMapping().tableNameIsInvalid(this.column.getTable())) {
-			if (getPersistentAttribute().isVirtual()) {
+	protected void validateColumn(List<IMessage> messages) {
+		String tableName = this.column.getTable();
+		if (this.getTypeMapping().tableNameIsInvalid(tableName)) {
+			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_TABLE,
-						new String[] {getName(), this.column.getTable(), this.column.getName()},
+						new String[] {this.getName(), tableName, this.column.getName()},
 						this.column, 
-						this.column.getTableTextRange())
+						this.column.getTableTextRange()
+					)
 				);
-			}
-			else {
+			} else {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
-						new String[] {this.column.getTable(), this.column.getName()}, 
+						new String[] {tableName, this.column.getName()}, 
 						this.column, 
-						this.column.getTableTextRange())
+						this.column.getTableTextRange()
+					)
 				);
 			}
 			return;
 		}
 		
 		if ( ! this.column.isResolved()) {
-			if (getPersistentAttribute().isVirtual()) {
+			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
-						new String[] {getName(), this.column.getName()}, 
+						new String[] {this.getName(), this.column.getName()}, 
 						this.column, 
-						this.column.getNameTextRange())
+						this.column.getNameTextRange()
+					)
 				);
-			}
-			else {
+			} else {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
 						new String[] {this.column.getName()}, 
 						this.column, 
-						this.column.getNameTextRange())
+						this.column.getNameTextRange()
+					)
 				);
 			}
 		}

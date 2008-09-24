@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -25,7 +26,6 @@ import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.IdClass;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
@@ -55,6 +55,7 @@ import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.context.java.JavaTableGenerator;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.resource.java.NullAssociationOverride;
 import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -88,16 +89,16 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEntity
+public class GenericJavaEntity
+	extends AbstractJavaTypeMapping
+	implements JavaEntity, PersistenceUnit.JavaGeneratorHolder, PersistenceUnit.JavaQueryHolder
 {
 	protected EntityAnnotation entityResource;
 	
@@ -357,7 +358,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 					);
 	}
 
-	private Iterator<org.eclipse.jpt.db.Table> associatedDbTablesIncludingInherited() {
+	protected Iterator<org.eclipse.jpt.db.Table> associatedDbTablesIncludingInherited() {
 		return new FilteringIterator<org.eclipse.jpt.db.Table, org.eclipse.jpt.db.Table>(this.associatedDbTablesIncludingInherited_()) {
 			@Override
 			protected boolean accept(org.eclipse.jpt.db.Table t) {
@@ -366,7 +367,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		};
 	}
 
-	private Iterator<org.eclipse.jpt.db.Table> associatedDbTablesIncludingInherited_() {
+	protected Iterator<org.eclipse.jpt.db.Table> associatedDbTablesIncludingInherited_() {
 		return new TransformationIterator<Table, org.eclipse.jpt.db.Table>(this.associatedTablesIncludingInherited()) {
 			@Override
 			protected org.eclipse.jpt.db.Table transform(Table t) {
@@ -665,11 +666,19 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, newSequenceGenerator);
 	}
 	
-	@SuppressWarnings("unchecked")
-	protected Iterator<JavaGenerator> generators() {
-		return new CompositeIterator<JavaGenerator>(
-			(getSequenceGenerator() == null) ? EmptyIterator.instance() : new SingleElementIterator(getSequenceGenerator()),
-			(getTableGenerator() == null) ? EmptyIterator.instance() : new SingleElementIterator(getTableGenerator()));
+	public final Iterator<JavaGenerator> generators() {
+		ArrayList<JavaGenerator> generators = new ArrayList<JavaGenerator>();
+		this.addGeneratorsTo(generators);
+		return generators.iterator();
+	}
+
+	protected void addGeneratorsTo(ArrayList<JavaGenerator> generators) {
+		if (this.sequenceGenerator != null) {
+			generators.add(this.sequenceGenerator);
+		}
+		if (this.tableGenerator != null) {
+			generators.add(this.tableGenerator);
+		}
 	}
 
 	public ListIterator<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
@@ -922,7 +931,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		return containsOverride(name, virtualAssociationOverrides());
 	}
 
-	private BaseOverride getOverrideNamed(String name, ListIterator<? extends BaseOverride> overrides) {
+	protected BaseOverride getOverrideNamed(String name, ListIterator<? extends BaseOverride> overrides) {
 		for (BaseOverride override : CollectionTools.iterable(overrides)) {
 			String overrideName = override.getName();
 			if (overrideName == null && name == null) {
@@ -935,7 +944,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		return null;
 	}
 
-	private boolean containsOverride(String name, ListIterator<? extends BaseOverride> overrides) {
+	protected boolean containsOverride(String name, ListIterator<? extends BaseOverride> overrides) {
 		return getOverrideNamed(name, overrides) != null;
 	}
 
@@ -1150,7 +1159,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected Iterator<JavaQuery> queries() {
+	public Iterator<JavaQuery> queries() {
 		return new CompositeIterator<JavaQuery>(this.namedNativeQueries(), this.namedQueries());
 	}
 
@@ -1851,49 +1860,47 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	//********** Validation ********************************************
 	
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
 		
-		getTable().addToMessages(messages, astRoot);
-		addIdMessages(messages, astRoot);
-		addGeneratorMessages(messages, astRoot);
-		addQueryMessages(messages, astRoot);
+		this.table.validate(messages, astRoot);
+		this.validateId(messages, astRoot);
+		this.getPersistenceUnit().validateGenerators(this, messages, astRoot);
+		this.getPersistenceUnit().validateQueries(this, messages, astRoot);
 		
 		for (Iterator<JavaSecondaryTable> stream = this.specifiedSecondaryTables(); stream.hasNext();) {
-			stream.next().addToMessages(messages, astRoot);
+			stream.next().validate(messages, astRoot);
 		}
 
 		for (Iterator<JavaAttributeOverride> stream = this.attributeOverrides(); stream.hasNext();) {
-			stream.next().addToMessages(messages, astRoot);
+			stream.next().validate(messages, astRoot);
 		}
 		
 		for (Iterator<JavaAssociationOverride> stream = this.associationOverrides(); stream.hasNext();) {
-			stream.next().addToMessages(messages, astRoot);
+			stream.next().validate(messages, astRoot);
 		}
 		
 	}
 	
-	protected void addIdMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		addNoIdMessage(messages, astRoot);
-	}
-	
-	protected void addNoIdMessage(List<IMessage> messages, CompilationUnit astRoot) {
-		if (entityHasNoId()) {
+	protected void validateId(List<IMessage> messages, CompilationUnit astRoot) {
+		if (this.entityHasNoId()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.ENTITY_NO_ID,
 					new String[] {this.getName()},
-					this, this.getValidationTextRange(astRoot))
+					this,
+					this.getValidationTextRange(astRoot)
+				)
 			);
 		}
 	}
 	
-	private boolean entityHasNoId() {
+	protected boolean entityHasNoId() {
 		return ! this.entityHasId();
 	}
 
-	private boolean entityHasId() {
+	protected boolean entityHasId() {
 		for (Iterator<PersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext(); ) {
 			if (stream.next().isIdAttribute()) {
 				return true;
@@ -1902,54 +1909,9 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		return false;
 	}
 	
-	protected void addGeneratorMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		List<Generator> masterList = CollectionTools.list(getPersistenceUnit().allGenerators());
-		
-		for (Iterator<JavaGenerator> stream = this.generators(); stream.hasNext() ; ) {
-			JavaGenerator current = stream.next();
-			masterList.remove(current);
-			
-			for (Generator each : masterList) {
-				if (! each.overrides(current) && each.getName() != null && each.getName().equals(current.getName())) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-							new String[] {current.getName()},
-							current,
-							current.getNameTextRange(astRoot))
-					);
-				}
-			}
-			
-			masterList.add(current);
-		}
-	}
-	
-	protected void addQueryMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		List<Query> masterList = CollectionTools.list(getPersistenceUnit().allQueries());
-		
-		for (Iterator<JavaQuery> stream = this.queries(); stream.hasNext() ; ) {
-			JavaQuery current = stream.next();
-			masterList.remove(current);
-			
-			for (Query each : masterList) {
-				if (! each.overrides(current) && each.getName() != null && each.getName().equals(current.getName())) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.QUERY_DUPLICATE_NAME,
-							new String[] {current.getName()},
-							current,
-							current.getNameTextRange(astRoot))
-					);
-				}
-			}
-			
-			masterList.add(current);
-		}
-	}
-	
+
+	// ********** pk join column owner **********
+
 	class PrimaryKeyJoinColumnOwner implements JavaBaseJoinColumn.Owner
 	{
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
@@ -1985,6 +1947,9 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		}
 	}
 	
+
+	// ********** attribute override owner **********
+
 	class AttributeOverrideOwner implements AttributeOverride.Owner {
 
 		public ColumnMapping getColumnMapping(String attributeName) {
@@ -2020,6 +1985,9 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		}
 	}
 
+
+	// ********** association override owner **********
+
 	class AssociationOverrideOwner implements AssociationOverride.Owner {
 
 		public RelationshipMapping getRelationshipMapping(String attributeName) {
@@ -2054,4 +2022,5 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			return null;
 		}
 	}
+
 }

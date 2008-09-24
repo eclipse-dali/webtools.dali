@@ -333,9 +333,9 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 	}
 	
 	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
-		getMapping().addToMessages(messages);
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
+		this.attributeMapping.validate(messages);
 	}
 	
 	public TextRange getValidationTextRange() {

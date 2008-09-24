@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -230,7 +229,7 @@ public interface JpaProject extends JpaNode {
 	/**
 	 * Return the {@link JpaRootContextNode} representing the JPA content of this project
 	 */
-	JpaRootContextNode getRootContext();
+	JpaRootContextNode getRootContextNode();
 	
 	/**
 	 * Return the names of the JPA project's annotated classes.
@@ -270,11 +269,6 @@ public interface JpaProject extends JpaNode {
 	 * Return project's validation messages.
 	 */
 	Iterator<IMessage> validationMessages();
-
-	/**
-	 * Add to the list of current validation messages
-	 */
-	void addToMessages(List<IMessage> messages);
 
 
 	// **************** support for modifying shared documents *****************

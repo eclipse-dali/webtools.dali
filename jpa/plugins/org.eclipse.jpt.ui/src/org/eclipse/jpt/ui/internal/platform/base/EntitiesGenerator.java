@@ -90,7 +90,7 @@ public class EntitiesGenerator {
 		
 		if (wizard.synchronizePersistenceXml()) {
 			// we currently only support *one* persistence.xml file per project
-			PersistenceXml persistenceXml = this.project.getRootContext().getPersistenceXml();
+			PersistenceXml persistenceXml = this.project.getRootContextNode().getPersistenceXml();
 			if (persistenceXml != null) {
 				// TODO casting to IFile - just trying to get rid of all compiler errors for now
 				synchClassesJob = new SynchronizeClassesJob((IFile) persistenceXml.getResource());

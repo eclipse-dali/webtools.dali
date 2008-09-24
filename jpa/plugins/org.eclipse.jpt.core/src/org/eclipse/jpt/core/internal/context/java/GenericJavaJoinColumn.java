@@ -148,42 +148,28 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	}
 	
 	@Override
-	public void initialize(JoinColumnAnnotation jca) {
-		this.joinColumn = jca;
-		super.initialize(jca);
-		this.specifiedReferencedColumnName = jca.getReferencedColumnName();
-		this.defaultReferencedColumnName = this.defaultReferencedColumnName();
+	public void initialize(JoinColumnAnnotation annotation) {
+		this.joinColumn = annotation;
+		super.initialize(annotation);
+		this.specifiedReferencedColumnName = annotation.getReferencedColumnName();
+		this.defaultReferencedColumnName = this.buildDefaultReferencedColumnName();
 	}
 	
 	@Override
-	public void update(JoinColumnAnnotation jca) {
-		this.joinColumn = jca;
-		super.update(jca);
-		this.setSpecifiedReferencedColumnName_(jca.getReferencedColumnName());
-		this.setDefaultReferencedColumnName(this.defaultReferencedColumnName());
+	public void update(JoinColumnAnnotation annotation) {
+		this.joinColumn = annotation;
+		super.update(annotation);
+		this.setSpecifiedReferencedColumnName_(annotation.getReferencedColumnName());
+		this.setDefaultReferencedColumnName(this.buildDefaultReferencedColumnName());
 	}
 	
 	@Override
 	protected String buildDefaultName() {
-		RelationshipMapping relationshipMapping = getOwner().getRelationshipMapping();
-		if (relationshipMapping == null) {
-			return null;
-		}
-		if (!getOwner().getRelationshipMapping().isRelationshipOwner()) {
-			return null;
-		}
 		return MappingTools.buildJoinColumnDefaultName(this);
 	}
 	
-	protected String defaultReferencedColumnName() {
-		RelationshipMapping relationshipMapping = getOwner().getRelationshipMapping();
-		if (relationshipMapping == null) {
-			return null;
-		}
-		if (!getOwner().getRelationshipMapping().isRelationshipOwner()) {
-			return null;
-		}
-		return MappingTools.buildJoinColumnDefaultReferencedColumnName(this);
+	protected String buildDefaultReferencedColumnName() {
+		return MappingTools.buildJoinColumnDefaultReferencedColumnName(this.getOwner());
 	}
 	
 	@Override
@@ -199,8 +185,8 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	}
 
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
 		if ( ! this.isResolved()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -208,7 +194,8 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 					JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
 					new String[] {this.getName()}, 
 					this,
-					this.getNameTextRange(astRoot))
+					this.getNameTextRange(astRoot)
+				)
 			);
 		}
 
@@ -219,7 +206,8 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 					JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
 					new String[] {this.getReferencedColumnName(), this.getName()}, 
 					this,
-					this.getReferencedColumnNameTextRange(astRoot))
+					this.getReferencedColumnNameTextRange(astRoot)
+				)
 			);
 		}
 	}

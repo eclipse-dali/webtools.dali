@@ -54,8 +54,8 @@ public class EclipseLinkJavaMappedSuperclassImpl extends GenericJavaMappedSuperc
 	//********** Validation ********************************************
 
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
-		getCaching().addToMessages(messages, astRoot);
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
+		this.eclipseLinkCaching.validate(messages, astRoot);
 	}
 }

@@ -121,9 +121,9 @@ public class JpaFileTests extends ContextModelTestCase
 	public void testUpdatePersistenceRootStructureNodePersistenceRemoved() throws Exception {
 		IFile file = persistenceResource().getResourceModel().getFile();
 		JpaFile persistenceXmlJpaFile = JptCorePlugin.getJpaFile(file);
-		assertEquals(rootContext().getPersistenceXml().getPersistence(), persistenceXmlJpaFile.rootStructureNodes().next());
+		assertEquals(getRootContextNode().getPersistenceXml().getPersistence(), persistenceXmlJpaFile.rootStructureNodes().next());
 		
-		rootContext().getPersistenceXml().removePersistence();	
+		getRootContextNode().getPersistenceXml().removePersistence();	
 		assertFalse(persistenceXmlJpaFile.rootStructureNodes().hasNext());
 	}
 	
@@ -135,7 +135,7 @@ public class JpaFileTests extends ContextModelTestCase
 		
 		assertEquals(ormPersistentType.getJavaPersistentType(), javaJpaFile.rootStructureNodes().next());
 		
-		rootContext().getPersistenceXml().removePersistence();
+		getRootContextNode().getPersistenceXml().removePersistence();
 		assertFalse(javaJpaFile.rootStructureNodes().hasNext());
 	}
 	
@@ -147,15 +147,15 @@ public class JpaFileTests extends ContextModelTestCase
 		
 		assertEquals(javaPersistentType(), javaJpaFile.rootStructureNodes().next());
 		
-		rootContext().getPersistenceXml().removePersistence();
+		getRootContextNode().getPersistenceXml().removePersistence();
 		assertFalse(javaJpaFile.rootStructureNodes().hasNext());
 	}
 
 	public void testPersistenceRootStructureNodeRemovedFromResourceModel() throws Exception {
 		IFile file = persistenceResource().getResourceModel().getFile();
 		JpaFile persistenceXmlJpaFile = JptCorePlugin.getJpaFile(file);
-		rootContext().getPersistenceXml().getPersistence();
-		assertEquals(rootContext().getPersistenceXml().getPersistence(), persistenceXmlJpaFile.rootStructureNodes().next());
+		getRootContextNode().getPersistenceXml().getPersistence();
+		assertEquals(getRootContextNode().getPersistenceXml().getPersistence(), persistenceXmlJpaFile.rootStructureNodes().next());
 		
 		persistenceResource().getContents().remove(persistenceResource().getPersistence());
 		
@@ -165,9 +165,9 @@ public class JpaFileTests extends ContextModelTestCase
 	public void testUpdatePersistenceRootStructureNodePersistenceXmlRemoved() throws Exception {
 		IFile file = persistenceResource().getResourceModel().getFile();
 		JpaFile persistenceXmlJpaFile = JptCorePlugin.getJpaFile(file);
-		assertEquals(rootContext().getPersistenceXml().getPersistence(), persistenceXmlJpaFile.rootStructureNodes().next());
+		assertEquals(getRootContextNode().getPersistenceXml().getPersistence(), persistenceXmlJpaFile.rootStructureNodes().next());
 		
-		rootContext().removePersistenceXml();
+		getRootContextNode().removePersistenceXml();
 		assertFalse(persistenceXmlJpaFile.rootStructureNodes().hasNext());
 	}
 	
@@ -179,7 +179,7 @@ public class JpaFileTests extends ContextModelTestCase
 		
 		assertEquals(ormPersistentType.getJavaPersistentType(), javaJpaFile.rootStructureNodes().next());
 		
-		rootContext().removePersistenceXml();
+		getRootContextNode().removePersistenceXml();
 		assertFalse(javaJpaFile.rootStructureNodes().hasNext());
 	}
 	
@@ -191,7 +191,7 @@ public class JpaFileTests extends ContextModelTestCase
 		
 		assertEquals(javaPersistentType(), javaJpaFile.rootStructureNodes().next());
 		
-		rootContext().removePersistenceXml();
+		getRootContextNode().removePersistenceXml();
 		assertFalse(javaJpaFile.rootStructureNodes().hasNext());
 	}
 	
@@ -312,7 +312,7 @@ public class JpaFileTests extends ContextModelTestCase
 		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType();
 		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
 		
-		jpaProject().getRootContext().getPersistenceXml().getPersistence().removePersistenceUnit(0);
+		jpaProject().getRootContextNode().getPersistenceXml().getPersistence().removePersistenceUnit(0);
 
 		assertFalse(javaJpaFile.rootStructureNodes().hasNext());
 		assertEquals(0, javaJpaFile.rootStructureNodesSize());

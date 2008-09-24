@@ -177,35 +177,38 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	//***********  Validation  ******************************
 	
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
-		if (this.entityOwned() && this.connectionProfileIsActive()) {
-			this.addColumnMessages(messages, astRoot);
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
+		if (this.ownerIsEntity() && this.connectionProfileIsActive()) {
+			this.validateColumn(messages, astRoot);
 		}
 	}
 	
-	protected void addColumnMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		if (this.getTypeMapping().tableNameIsInvalid(this.column.getTable())) {
+	protected void validateColumn(List<IMessage> messages, CompilationUnit astRoot) {
+		String tableName = this.column.getTable();
+		if (this.getTypeMapping().tableNameIsInvalid(tableName)) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
-						new String[] {this.column.getTable(), this.column.getName()}, 
-						this.column,
-						this.column.getTableTextRange(astRoot))
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
+					new String[] {tableName, this.column.getName()}, 
+					this.column,
+					this.column.getTableTextRange(astRoot)
+				)
+			);
 			return;
 		}
 		
 		if ( ! this.column.isResolved()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-						new String[] {this.column.getName()}, 
-						this.column,
-						this.column.getNameTextRange(astRoot))
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
+					new String[] {this.column.getName()}, 
+					this.column,
+					this.column.getNameTextRange(astRoot)
+				)
+			);
 		}
 	}
 	

@@ -66,7 +66,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 		return this.getTypeMapping().getKey() == MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
 	}
 	
-	protected boolean entityOwned() {
+	protected boolean ownerIsEntity() {
 		return this.getTypeMapping().getKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY;
 	}
 	
@@ -120,47 +120,40 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 	//************ Validation *************************
 	
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
-		
-		this.checkModifiers(messages, astRoot);
-		this.checkMappingType(messages, astRoot);
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
+		this.validateModifiers(messages, astRoot);
+		this.validateMappingType(messages, astRoot);
 	}
 	
-	protected void checkModifiers(List<IMessage> messages, CompilationUnit astRoot) {
-		JavaPersistentAttribute attribute = this.getPersistentAttribute();
-		if (attribute.getMappingKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
+	protected void validateModifiers(List<IMessage> messages, CompilationUnit astRoot) {
+		if (this.getPersistentAttribute().getMappingKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
 			return;
 		}
 		
 		if (this.resourcePersistentAttribute.isForField()) {
 			if (this.resourcePersistentAttribute.isFinal()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD,
-						new String[] {attribute.getName()},
-						attribute,
-						attribute.getValidationTextRange(astRoot)
-					)
-				);
+				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD, astRoot));
 			}
 			
 			if (this.resourcePersistentAttribute.isPublic()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD,
-						new String[] {attribute.getName()},
-						attribute,
-						attribute.getValidationTextRange(astRoot)
-					)
-				);
+				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD, astRoot));
 			}
 		}
 	}
+
+	protected IMessage buildAttributeMessage(String msgID, CompilationUnit astRoot) {
+		JavaPersistentAttribute attribute = this.getPersistentAttribute();
+		return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				msgID,
+				new String[] {attribute.getName()},
+				attribute,
+				attribute.getValidationTextRange(astRoot)
+			);
+	}
 	
-	protected void checkMappingType(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateMappingType(List<IMessage> messages, CompilationUnit astRoot) {
 		if ( ! this.getTypeMapping().attributeMappingKeyAllowed(this.getKey())) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -184,4 +177,9 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 		return (resourceMapping == null) ? null : resourceMapping.getTextRange(astRoot);
 	}
 	
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getAttributeName());
+	}
+
 }

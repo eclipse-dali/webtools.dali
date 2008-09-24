@@ -24,13 +24,13 @@ public class PersistenceTests extends ContextModelTestCase
 	}
 	
 	protected Persistence persistence() {
-		return rootContext().getPersistenceXml().getPersistence();
+		return getRootContextNode().getPersistenceXml().getPersistence();
 	}
 	
 	public void testUpdateAddPersistenceUnit() throws Exception {
 		PersistenceResource prm = persistenceResource();
 		XmlPersistence xmlPersistence = prm.getPersistence();
-		Persistence persistence = rootContext().getPersistenceXml().getPersistence();
+		Persistence persistence = getRootContextNode().getPersistenceXml().getPersistence();
 		
 		// clear xml persistence units, test that it's clear in context
 		xmlPersistence.getPersistenceUnits().clear();
@@ -80,7 +80,7 @@ public class PersistenceTests extends ContextModelTestCase
 	public void testUpdateRemovePersistenceUnit() throws Exception {
 		PersistenceResource prm = persistenceResource();
 		XmlPersistence xmlPersistence = prm.getPersistence();
-		Persistence persistence = rootContext().getPersistenceXml().getPersistence();
+		Persistence persistence = getRootContextNode().getPersistenceXml().getPersistence();
 		
 		// add a persistence unit and test that there are two existing xml and 
 		// one context persistence unit

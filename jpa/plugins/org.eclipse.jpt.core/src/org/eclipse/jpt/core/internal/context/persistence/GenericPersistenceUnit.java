@@ -11,18 +11,28 @@ package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
+
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.GeneratedValue;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.Query;
+import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
+import org.eclipse.jpt.core.context.java.JavaGenerator;
+import org.eclipse.jpt.core.context.java.JavaQuery;
+import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
+import org.eclipse.jpt.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -47,6 +57,7 @@ import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -679,7 +690,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	
-	// **************** global generator and query support *********************
+	// **************** generators *********************
 	
 	public void addGenerator(Generator generator) {
 		this.generators.add(generator);
@@ -688,6 +699,110 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	public ListIterator<Generator> allGenerators() {
 		return new CloneListIterator<Generator>(this.generators);
 	}
+
+	protected Iterator<String> allGeneratorNames() {
+		return new TransformationIterator<Generator, String>(this.allGenerators()) {
+			@Override
+			protected String transform(Generator generator) {
+				return generator.getName();
+			}
+		};
+	}
+	
+	protected Iterator<String> allNonNullGeneratorNames() {
+		return new FilteringIterator<String, String>(this.allGeneratorNames()) {
+			@Override
+			protected boolean accept(String generatorName) {
+				return generatorName != null;
+			}
+		};
+	}
+	
+	public String[] uniqueGeneratorNames() {
+		HashSet<String> names = CollectionTools.set(this.allNonNullGeneratorNames());
+		return names.toArray(new String[names.size()]);
+	}
+	
+	public void validateGenerators(OrmGeneratorHolder generatorHolder, List<IMessage> messages) {
+		ArrayList<Generator> allGenerators = CollectionTools.list(this.allGenerators());
+		for (Iterator<OrmGenerator> stream = generatorHolder.generators(); stream.hasNext(); ) {
+			OrmGenerator generator = stream.next();
+			this.validateGenerator(generator, generator.getNameTextRange(), allGenerators, messages);
+		}
+	}
+
+	public void validateGenerators(JavaGeneratorHolder generatorHolder, List<IMessage> messages, CompilationUnit astRoot) {
+		ArrayList<Generator> allGenerators = CollectionTools.list(this.allGenerators());
+		for (Iterator<JavaGenerator> stream = generatorHolder.generators(); stream.hasNext(); ) {
+			JavaGenerator generator = stream.next();
+			this.validateGenerator(generator, generator.getNameTextRange(astRoot), allGenerators, messages);
+		}
+	}
+	
+	protected void validateGenerator(Generator generator, TextRange generatorNameTextRange, ArrayList<Generator> allGenerators, List<IMessage> messages) {
+		for (Generator otherGenerator : allGenerators) {
+			if (this.generatorsAreDuplicates(generator, otherGenerator)) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+						new String[] {generator.getName()},
+						generator,
+						generatorNameTextRange
+					)
+				);
+			}
+		}
+	}
+
+	protected boolean generatorsAreDuplicates(Generator generator, Generator otherGenerator) {
+		if (otherGenerator == generator) {
+			return false;
+		}
+		if (otherGenerator.overrides(generator)) {
+			return false;
+		}
+		String otherName = otherGenerator.getName();
+		return (otherName != null) && otherName.equals(generator.getName());
+	}
+
+	public void validateGeneratedValue(OrmGeneratedValueHolder generatedValueHolder, List<IMessage> messages) {
+		OrmGeneratedValue generatedValue = generatedValueHolder.getGeneratedValue();
+		if (generatedValue != null) {
+			this.validateGeneratedValue(generatedValue, generatedValue.getGeneratorTextRange(), generatedValueHolder, messages);
+		}
+	}
+
+	public void validateGeneratedValue(JavaGeneratedValueHolder generatedValueHolder, List<IMessage> messages, CompilationUnit astRoot) {
+		JavaGeneratedValue generatedValue = generatedValueHolder.getGeneratedValue();
+		if (generatedValue != null) {
+			this.validateGeneratedValue(generatedValue, generatedValue.getGeneratorTextRange(astRoot), generatedValueHolder, messages);
+		}
+	}
+
+	protected void validateGeneratedValue(GeneratedValue generatedValue, TextRange generatedValueGeneratorTextRange, Object holder, List<IMessage> messages) {
+		String generatorName = generatedValue.getGenerator();
+		if (generatorName == null) {
+			return;
+		}
+		for (Iterator<Generator> stream = this.allGenerators(); stream.hasNext(); ) {
+			if (generatorName.equals(stream.next().getName())) {
+				return;  // match found
+			}
+		}
+		messages.add(
+			DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME,
+				new String[] {generatorName},
+				holder,
+				generatedValueGeneratorTextRange
+			)
+		);
+	}
+
+	
+	// **************** queries *********************
 	
 	public void addQuery(Query query) {
 		this.queries.add(query);
@@ -696,7 +811,50 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	public ListIterator<Query> allQueries() {
 		return new CloneListIterator<Query>(this.queries);
 	}
+
+	public void validateQueries(OrmQueryHolder queryHolder, List<IMessage> messages) {
+		ArrayList<Query> allQueries = CollectionTools.list(this.allQueries());
+		for (Iterator<OrmQuery> stream = queryHolder.queries(); stream.hasNext(); ) {
+			OrmQuery query = stream.next();
+			this.validateQuery(query, query.getNameTextRange(), allQueries, messages);
+		}
+	}
+
+	public void validateQueries(JavaQueryHolder queryHolder, List<IMessage> messages, CompilationUnit astRoot) {
+		ArrayList<Query> allQueries = CollectionTools.list(this.allQueries());
+		for (Iterator<JavaQuery> stream = queryHolder.queries(); stream.hasNext(); ) {
+			JavaQuery query = stream.next();
+			this.validateQuery(query, query.getNameTextRange(astRoot), allQueries, messages);
+		}
+	}
 	
+	protected void validateQuery(Query query, TextRange queryNameTextRange, ArrayList<Query> allQueries, List<IMessage> messages) {
+		for (Query otherQuery : allQueries) {
+			if (this.queriesAreDuplicates(query, otherQuery)) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.QUERY_DUPLICATE_NAME,
+						new String[] {query.getName()},
+						query,
+						queryNameTextRange
+					)
+				);
+			}
+		}
+	}
+
+	protected boolean queriesAreDuplicates(Query query, Query otherQuery) {
+		if (otherQuery == query) {
+			return false;
+		}
+		if (otherQuery.overrides(query)) {
+			return false;
+		}
+		String otherName = otherQuery.getName();
+		return (otherName != null) && otherName.equals(query.getName());
+	}
+
 
 	// **************** updating ***********************************************
 	
@@ -973,8 +1131,8 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 				return true;
 			}
 		}
-		for (MappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
-			if (mappingFileRef.getPersistentType(className) != null) {
+		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
+			if (stream.next().getPersistentType(className) != null) {
 				return true;
 			}
 		}
@@ -1059,23 +1217,22 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	// ********** Validation ***********************************************
 	
 	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
-		addMappingFileMessages(messages);	
-		addClassMessages(messages);
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
+		this.validateMappingFiles(messages);	
+		this.validateClassRefs(messages);
 	}
 	
-	protected void addMappingFileMessages(List<IMessage> messages) {
-		addMultipleMetadataMessages(messages);
-		addDuplicateMappingFileMessages(messages);
-		
-		for (Iterator<MappingFileRef> stream =  mappingFileRefs(); stream.hasNext();) {
-			stream.next().addToMessages(messages);
+	protected void validateMappingFiles(List<IMessage> messages) {
+		this.checkForMultiplePersistenceUnitDefaults(messages);
+		this.checkForDuplicateMappingFiles(messages);
+		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext();) {
+			stream.next().validate(messages);
 		}
 	}
 	
-	protected void addMultipleMetadataMessages(List<IMessage> messages) {
-		Collection<PersistenceUnitDefaults> puDefaultsCollection = persistenceUnitDefaultsForValidation();
+	protected void checkForMultiplePersistenceUnitDefaults(List<IMessage> messages) {
+		Collection<PersistenceUnitDefaults> puDefaultsCollection = this.buildPersistenceUnitDefaultsCollection();
 		if (puDefaultsCollection.size() > 1) {
 			for (PersistenceUnitDefaults puDefaults : puDefaultsCollection) {
 				messages.add(
@@ -1083,72 +1240,77 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.ENTITY_MAPPINGS_MULTIPLE_METADATA,
 						new String[] {this.getName()},
-						puDefaults)
+						puDefaults
+					)
 				);
 			}
 		}
 	}
-	
-	protected void addDuplicateMappingFileMessages(List<IMessage> messages) {
-		HashBag<String> fileBag = new HashBag<String>(
-				CollectionTools.collection(
-						new TransformationIterator<MappingFileRef, String>(this.mappingFileRefs()) {
-							@Override
-							protected String transform(MappingFileRef mappingFileRef) {
-								return mappingFileRef.getFileName();
-							}
-						}
-				)
-		);
+
+	protected void checkForDuplicateMappingFiles(List<IMessage> messages) {
+		HashBag<String> fileNames = new HashBag<String>();
+		CollectionTools.addAll(fileNames, this.mappingFileRefNames());
 		for (MappingFileRef mappingFileRef : CollectionTools.iterable(this.mappingFileRefs())) {
-			if (fileBag.count(mappingFileRef.getFileName()) > 1) {
+			String fileName = mappingFileRef.getFileName();
+			if (fileNames.count(fileName) > 1) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_MAPPING_FILE,
-						new String[] {mappingFileRef.getFileName()}, 
+						new String[] {fileName}, 
 						mappingFileRef, 
-						mappingFileRef.getValidationTextRange())
+						mappingFileRef.getValidationTextRange()
+					)
 				);
 			}
 		}
 	}
 		
-	protected void addClassMessages(List<IMessage> messages) {
-		addDuplicateClassMessages(messages);
-		
-		for (ClassRef classRef : CollectionTools.iterable(classRefs())) {
-			classRef.addToMessages(messages);
-		}
+	protected Iterator<String> mappingFileRefNames() {
+		return new TransformationIterator<MappingFileRef, String>(this.mappingFileRefs()) {
+			@Override
+			protected String transform(MappingFileRef mappingFileRef) {
+				return mappingFileRef.getFileName();
+			}
+		};
 	}
 	
-	protected void addDuplicateClassMessages(List<IMessage> messages) {
-		HashBag<String> classNameBag = new HashBag<String>(
-				CollectionTools.collection(
-						new TransformationIterator<ClassRef, String>(this.classRefs()) {
-							@Override
-							protected String transform(ClassRef classRef) {
-								return classRef.getClassName();
-							}
-						}
-				)
-		);
-		for (ClassRef javaClassRef : CollectionTools.iterable(this.classRefs())) {
-			if (javaClassRef.getClassName() != null
-					&& classNameBag.count(javaClassRef.getClassName()) > 1) {
+	protected void validateClassRefs(List<IMessage> messages) {
+		this.checkForDuplicateClasses(messages);
+		for (Iterator<ClassRef> stream = this.classRefs(); stream.hasNext(); ) {
+			stream.next().validate(messages);
+		}
+	}
+
+	protected void checkForDuplicateClasses(List<IMessage> messages) {
+		HashBag<String> classNames = new HashBag<String>();
+		CollectionTools.addAll(classNames, this.classRefNames());
+		for (ClassRef classRef : CollectionTools.iterable(this.classRefs())) {
+			String className = classRef.getClassName();
+			if ((className != null) && (classNames.count(className) > 1)) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
-						new String[] {javaClassRef.getClassName()}, 
-						javaClassRef, 
-						javaClassRef.getValidationTextRange())
+						new String[] {className}, 
+						classRef, 
+						classRef.getValidationTextRange()
+					)
 				);
 			}
 		}
 	}
 	
-	private Collection<PersistenceUnitDefaults> persistenceUnitDefaultsForValidation() {
+	protected Iterator<String> classRefNames() {
+		return new TransformationIterator<ClassRef, String>(this.classRefs()) {
+			@Override
+			protected String transform(ClassRef classRef) {
+				return classRef.getClassName();
+			}
+		};
+	}
+
+	protected Collection<PersistenceUnitDefaults> buildPersistenceUnitDefaultsCollection() {
 		ArrayList<PersistenceUnitDefaults> result = new ArrayList<PersistenceUnitDefaults>();
 		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
 			PersistenceUnitDefaults defaults = stream.next().getPersistenceUnitDefaults();
@@ -1162,8 +1324,8 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	//*************************************
 	
 	public PersistentType getPersistentType(String fullyQualifiedTypeName) {
-		for (MappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
-			OrmPersistentType ormPersistentType = mappingFileRef.getPersistentType(fullyQualifiedTypeName);
+		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
+			OrmPersistentType ormPersistentType = stream.next().getPersistentType(fullyQualifiedTypeName);
 			if (ormPersistentType != null) {
 				return ormPersistentType;
 			}
@@ -1212,11 +1374,11 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	public void dispose() {
-		for (ClassRef classRef : CollectionTools.iterable(classRefs())) {
-			classRef.dispose();
+		for (Iterator<ClassRef> stream = this.classRefs(); stream.hasNext(); ) {
+			stream.next().dispose();
 		}
-		for (MappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
-			mappingFileRef.dispose();
+		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
+			stream.next().dispose();
 		}
 	}
 }

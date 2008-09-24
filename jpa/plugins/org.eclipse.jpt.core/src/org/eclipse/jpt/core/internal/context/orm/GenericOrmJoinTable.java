@@ -470,14 +470,14 @@ public class GenericOrmJoinTable
 	// ************************** validation ***********************
 
 	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
 		if (this.connectionProfileIsActive()) {
-			this.checkDatabase(messages);
+			this.validateAgainstDatabase(messages);
 		}
 	}
 
-	protected void checkDatabase(List<IMessage> messages) {
+	protected void validateAgainstDatabase(List<IMessage> messages) {
 		OrmRelationshipMapping mapping = this.getRelationshipMapping();
 
 		if ( ! this.hasResolvedCatalog()) {
@@ -488,7 +488,8 @@ public class GenericOrmJoinTable
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_CATALOG,
 						new String[] {mapping.getName(), this.getCatalog(), this.getName()}, 
 						this,
-						this.getCatalogTextRange())
+						this.getCatalogTextRange()
+					)
 				);
 				
 			} else {
@@ -498,7 +499,8 @@ public class GenericOrmJoinTable
 						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG,
 						new String[] {this.getCatalog(), this.getName()}, 
 						this,
-						this.getCatalogTextRange())
+						this.getCatalogTextRange()
+					)
 				);
 			}
 			return;
@@ -512,9 +514,9 @@ public class GenericOrmJoinTable
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA,
 						new String[] {mapping.getName(), this.getSchema(), this.getName()}, 
 						this,
-						this.getSchemaTextRange())
+						this.getSchemaTextRange()
+					)
 				);
-				
 			} else {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -522,7 +524,8 @@ public class GenericOrmJoinTable
 						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
 						new String[] {this.getSchema(), this.getName()}, 
 						this,
-						this.getSchemaTextRange())
+						this.getSchemaTextRange()
+					)
 				);
 			}
 			return;
@@ -536,10 +539,10 @@ public class GenericOrmJoinTable
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME,
 						new String[] {mapping.getName(), this.getName()}, 
 						this,
-						this.getNameTextRange())
+						this.getNameTextRange()
+					)
 				);
-			}
-			else {
+			} else {
 				String attributeName = mapping.getPersistentAttribute().getName();
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -547,19 +550,20 @@ public class GenericOrmJoinTable
 						JpaValidationMessages.JOIN_TABLE_CANNOT_BE_DETERMINED,
 						new String[] {attributeName},
 						this,
-						this.getNameTextRange())
+						this.getNameTextRange()
+					)
 				);
 			}
 			return;
 		}
 
-		this.checkJoinColumns(this.joinColumns(), messages);
-		this.checkJoinColumns(this.inverseJoinColumns(), messages);
+		this.validateJoinColumns(this.joinColumns(), messages);
+		this.validateJoinColumns(this.inverseJoinColumns(), messages);
 	}
 
-	protected void checkJoinColumns(Iterator<OrmJoinColumn> joinColumns, List<IMessage> messages) {
+	protected void validateJoinColumns(Iterator<OrmJoinColumn> joinColumns, List<IMessage> messages) {
 		while (joinColumns.hasNext()) {
-			joinColumns.next().addToMessages(messages);
+			joinColumns.next().validate(messages);
 		}
 	}
 

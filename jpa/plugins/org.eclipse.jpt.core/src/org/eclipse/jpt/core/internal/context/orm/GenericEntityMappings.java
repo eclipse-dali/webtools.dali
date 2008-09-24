@@ -37,8 +37,7 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
@@ -58,10 +57,12 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-
+/**
+ * 
+ */
 public class GenericEntityMappings
 	extends AbstractOrmJpaContextNode
-	implements EntityMappings
+	implements EntityMappings, PersistenceUnit.OrmGeneratorHolder, PersistenceUnit.OrmQueryHolder
 {
 	protected XmlEntityMappings xmlEntityMappings;
 	
@@ -805,9 +806,9 @@ public class GenericEntityMappings
 		}
 	}
 
-	
-	// *************************************************************************
-	
+
+	// ********** validation **********
+
 	public JpaStructureNode getStructureNode(int textOffset) {
 		for (OrmPersistentType persistentType: CollectionTools.iterable(ormPersistentTypes())) {
 			if (persistentType.contains(textOffset)) {
@@ -833,71 +834,64 @@ public class GenericEntityMappings
 	}
 	
 	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
+		this.validateGenerators(messages);
+		this.validateQueries(messages);
+		for (Iterator<OrmPersistentType> stream = this.ormPersistentTypes(); stream.hasNext(); ) {
+			this.validatePersistentType(stream.next(), messages);
+		}
+	}
+
+	protected void validateGenerators(List<IMessage> messages) {
 		try {
-			addGeneratorMessages(messages);
-			addQueryMessages(messages);
+			this.getPersistenceUnit().validateGenerators(this, messages);
 		} catch (Throwable exception) {
-			JptCorePlugin.log(exception);
-		}
-		for (OrmPersistentType ormPersistentType : CollectionTools.iterable(this.ormPersistentTypes())) {
-			try {
-				ormPersistentType.addToMessages(messages);
-			} catch (Throwable exception) {
-				JptCorePlugin.log(exception);			
-			}
+			JptCorePlugin.log(exception);  // unlikely...
 		}
 	}
-	
+
+	/**
+	 * Return all the generators, table and sequence.
+	 */
 	@SuppressWarnings("unchecked")
-	protected void addGeneratorMessages(List<IMessage> messages) {
-		List<Generator> masterList = CollectionTools.list(getPersistenceUnit().allGenerators());
-		
-		for (Iterator<OrmGenerator> stream = new CompositeIterator<OrmGenerator>(this.tableGenerators(), this.sequenceGenerators()); stream.hasNext() ; ) {
-			OrmGenerator current = stream.next();
-			masterList.remove(current);
-			
-			for (Generator each : masterList) {
-				if (! each.overrides(current) && each.getName() != null && each.getName().equals(current.getName())) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-							new String[] {current.getName()},
-							current,
-							current.getNameTextRange())
-					);
-				}
-			}
-			masterList.add(current);
+	public Iterator<OrmGenerator> generators() {
+		return new CompositeIterator<OrmGenerator>(
+						this.tableGenerators(),
+						this.sequenceGenerators()
+				);
+	}
+
+	protected void validateQueries(List<IMessage> messages) {
+		try {
+			this.getPersistenceUnit().validateQueries(this, messages);
+		} catch (Throwable exception) {
+			JptCorePlugin.log(exception);  // unlikely...
 		}
 	}
-	
+
+	/**
+	 * Return all the queries, named and named native.
+	 */
 	@SuppressWarnings("unchecked")
-	protected void addQueryMessages(List<IMessage> messages) {
-		List<Query> masterList = CollectionTools.list(getPersistenceUnit().allQueries());
-		
-		for (Iterator<OrmQuery> stream = new CompositeIterator<OrmQuery>(this.namedQueries(), this.namedNativeQueries()); stream.hasNext() ; ) {
-			OrmQuery current = stream.next();
-			masterList.remove(current);
-			
-			for (Query each : masterList) {
-				if (! each.overrides(current) && each.getName() != null && each.getName().equals(current.getName())) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.QUERY_DUPLICATE_NAME,
-							new String[] {current.getName()},
-							current,
-							current.getNameTextRange())
-					);
-				}
-			}
-			masterList.add(current);
+	public Iterator<OrmQuery> queries() {
+		return new CompositeIterator<OrmQuery>(
+						this.namedQueries(),
+						this.namedNativeQueries()
+				);
+	}
+
+	protected void validatePersistentType(OrmPersistentType persistentType, List<IMessage> messages) {
+		try {
+			persistentType.validate(messages);
+		} catch (Throwable exception) {
+			JptCorePlugin.log(exception);			
 		}
 	}
-	
+
+
+	// ********** dispose **********
+
 	public void dispose() {
 		for (OrmPersistentType  ormPersistentType : CollectionTools.iterable(ormPersistentTypes())) {
 			ormPersistentType.dispose();

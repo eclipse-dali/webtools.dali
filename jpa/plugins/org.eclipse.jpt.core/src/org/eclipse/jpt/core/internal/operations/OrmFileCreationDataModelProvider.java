@@ -398,7 +398,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 		if (jpaProject == null) {
 			return null;
 		}
-		PersistenceXml persistenceXml = jpaProject.getRootContext().getPersistenceXml();
+		PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
 		if (persistenceXml == null) {
 			return null;
 		}
@@ -417,7 +417,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 		JpaProject jpaProject = 
 			(StringTools.stringIsEmpty(pUnitName)) ? null : getJpaProject();
 		PersistenceXml persistenceXml = 
-			(jpaProject == null) ? null : jpaProject.getRootContext().getPersistenceXml();
+			(jpaProject == null) ? null : jpaProject.getRootContextNode().getPersistenceXml();
 		Persistence persistence = 
 			(persistenceXml == null) ? null : persistenceXml.getPersistence();
 		if (persistence != null) {
@@ -452,7 +452,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 				protected Iterator<PersistenceUnit> transform(IProject jpaIProject) {
 					JpaProject jpaProject = JptCorePlugin.getJpaProject(jpaIProject);
 					PersistenceXml persistenceXml = 
-						(jpaProject == null) ? null : jpaProject.getRootContext().getPersistenceXml();
+						(jpaProject == null) ? null : jpaProject.getRootContextNode().getPersistenceXml();
 					Persistence persistence = 
 						(persistenceXml == null) ? null : persistenceXml.getPersistence();
 					return (persistence == null) ? EmptyIterator.<PersistenceUnit>instance() : persistence.persistenceUnits();

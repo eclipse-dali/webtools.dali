@@ -29,7 +29,11 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
+/**
+ * 
+ */
+public class GenericJavaPersistentAttribute
+	extends AbstractJavaJpaContextNode
 	implements JavaPersistentAttribute
 {
 	protected String name;
@@ -39,6 +43,7 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	protected JavaAttributeMapping specifiedMapping;
 
 	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
+
 
 	public GenericJavaPersistentAttribute(JavaPersistentType parent, JavaResourcePersistentAttribute jrpa) {
 		super(parent);
@@ -301,28 +306,33 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		}
 		return this.getMapping().javaCompletionProposals(pos, filter, astRoot);
 	}
-	
-	//************* Validation ******************************
-	
+
+
+	// ********** validation **********
+
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
 		
 		if (this.specifiedMapping != null) {
-			this.specifiedMapping.addToMessages(messages, astRoot);
+			this.specifiedMapping.validate(messages, astRoot);
 		}
 		else if (this.defaultMapping != null) {
-			this.defaultMapping.addToMessages(messages, astRoot);
+			this.defaultMapping.validate(messages, astRoot);
 		}
 	}
 	
+
+	// ********** misc **********
+
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
-		sb.append(getName());
+		sb.append(this.name);
 	}
 	
 	public void dispose() {
 		//nothing to dispose
 	}
+
 }

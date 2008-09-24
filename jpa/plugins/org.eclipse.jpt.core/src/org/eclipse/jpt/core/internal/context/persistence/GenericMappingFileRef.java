@@ -200,69 +200,64 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 		}
 		return this.xmlMappingFileRef.getValidationTextRange();
 	}
-	
-	//**************** Validation *************************
-	
-	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
-		this.addUnspecifiedMappingFileMessage(messages);
-		this.addUnresolvedMappingFileMessage(messages);
-		this.addInvalidMappingFileContentMessage(messages);
-		if (getOrmXml() != null) {
-			getOrmXml().addToMessages(messages);
-		}
-	}
-	
-	
-	protected void addUnspecifiedMappingFileMessage(List<IMessage> messages) {
-		if (StringTools.stringIsEmpty(getFileName())) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE,
-					this, 
-					getValidationTextRange())
-			);
-		}
-	}
-	
-	protected void addUnresolvedMappingFileMessage(List<IMessage> messages) {
-		if (!StringTools.stringIsEmpty(getFileName()) && getOrmXml() == null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
-					new String[] {getFileName()}, 
-					this, 
-					getValidationTextRange()) 
-			);
-		}
-	}
-	
-	protected void addInvalidMappingFileContentMessage(List<IMessage> messages) {
-		if (getOrmXml() != null 
-				&& getOrmXml().getEntityMappings() == null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE,
-					new String[] {getFileName()}, 
-					this,
-					getValidationTextRange())
-			);
-		}
-	}
 
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
-		sb.append(getFileName());
+		sb.append(this.getFileName());
 	}
-	
+
 	public void dispose() {
-		if (getOrmXml() != null) {
-			getOrmXml().dispose();
+		if (this.getOrmXml() != null) {
+			this.getOrmXml().dispose();
 		}
 	}
+
+
+	//**************** Validation *************************
+
+	@Override
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
+
+		if (StringTools.stringIsEmpty(this.fileName)) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE,
+					this,
+					this.getValidationTextRange()
+				)
+			);
+			return;
+		}
+
+		if (this.ormXml == null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
+					new String[] {this.fileName},
+					this,
+					this.getValidationTextRange()
+				)
+			);
+			return;
+		}
+
+		if (this.ormXml.getEntityMappings() == null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE,
+					new String[] {this.fileName},
+					this,
+					this.getValidationTextRange()
+				)
+			);
+		}
+
+		this.ormXml.validate(messages);
+	}
+
 }

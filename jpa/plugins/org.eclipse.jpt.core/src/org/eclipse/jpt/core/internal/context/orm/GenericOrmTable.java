@@ -86,47 +86,50 @@ public class GenericOrmTable
 	//*********** Validation *******************************
 	
 	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
 		if (this.connectionProfileIsActive()) {
-			this.checkDatabase(messages);
+			this.validateAgainstDatabase(messages);
 		}
 	}
 
-	protected void checkDatabase(List<IMessage> messages) {
+	protected void validateAgainstDatabase(List<IMessage> messages) {
 		if ( ! this.hasResolvedCatalog()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.TABLE_UNRESOLVED_CATALOG,
-						new String[] {this.getCatalog(), this.getName()}, 
-						this,
-						this.getCatalogTextRange())
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.TABLE_UNRESOLVED_CATALOG,
+					new String[] {this.getCatalog(), this.getName()}, 
+					this,
+					this.getCatalogTextRange()
+				)
+			);
 			return;
 		}
 		
 		if ( ! this.hasResolvedSchema()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
-						new String[] {this.getSchema(), this.getName()}, 
-						this,
-						this.getSchemaTextRange())
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
+					new String[] {this.getSchema(), this.getName()}, 
+					this,
+					this.getSchemaTextRange()
+				)
+			);
 			return;
 		}
 		
 		if ( ! this.isResolved()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.TABLE_UNRESOLVED_NAME,
-						new String[] {this.getName()}, 
-						this, 
-						this.getNameTextRange())
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.TABLE_UNRESOLVED_NAME,
+					new String[] {this.getName()}, 
+					this, 
+					this.getNameTextRange()
+				)
+			);
 			return;
 		}
 	}

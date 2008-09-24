@@ -11,6 +11,8 @@ package org.eclipse.jpt.core.internal.context;
 
 import java.util.Collection;
 import java.util.List;
+
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -20,8 +22,10 @@ import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProvider;
@@ -31,10 +35,15 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericRootContextNode extends AbstractJpaContextNode 
+/**
+ * 
+ */
+public class GenericRootContextNode
+	extends AbstractJpaContextNode 
 	implements JpaRootContextNode
 {
 	/* This object has no parent, so it must point to the JPA project */
@@ -47,7 +56,7 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 	public GenericRootContextNode(JpaProject jpaProject) {
 		super(null);
 		if (jpaProject == null) {
-			throw new IllegalArgumentException("The JPA project must not be null");
+			throw new IllegalArgumentException("The JPA project must not be null"); //$NON-NLS-1$
 		}
 		this.jpaProject = jpaProject;
 		
@@ -74,7 +83,11 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 	
 	@Override
 	public IResource getResource() {
-		return getJpaProject().getProject();
+		return this.getProject();
+	}
+	
+	protected IProject getProject() {
+		return this.jpaProject.getProject();
 	}
 	
 	@Override
@@ -121,7 +134,7 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 			throw new IllegalStateException();
 		}
 		PersistenceResourceModelProvider modelProvider =
-			PersistenceResourceModelProvider.getDefaultModelProvider(getJpaProject().getProject());
+			PersistenceResourceModelProvider.getDefaultModelProvider(this.getProject());
 		PersistenceResource resource = modelProvider.getResource();
 		modelProvider.modify(new Runnable() {
 				public void run() {
@@ -181,83 +194,66 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 	
 	// **************** Validation *********************************************
 	
-	/* If this is true, it may be assumed that all the requirements are valid 
-	 * for further validation.  For example, if this is true at the point we
-	 * are validating persistence units, it may be assumed that there is a 
-	 * single persistence.xml and that it has valid content down to the 
-	 * persistence unit level.  */
-	private boolean okToContinueValidation = true;
-	
-	public void addToMessages(List<IMessage> messages) {
-		addNoPersistenceXmlMessage(messages);
-		//TODO - multiple persistence unit message
-		addOrphanedJavaClassMessages(messages);
-		
-		if(okToContinueValidation) {
-			getPersistenceXml().addToMessages(messages);
-		}
-		
-	}
-	
-	protected void addNoPersistenceXmlMessage(List<IMessage> messages) {
-		if (persistenceXml == null) {
+	public void validate(List<IMessage> messages) {
+		if (this.persistenceXml == null) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY, 
-						JpaValidationMessages.PROJECT_NO_PERSISTENCE_XML,
-						this)
-				);
-			okToContinueValidation = false;
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY, 
+					JpaValidationMessages.PROJECT_NO_PERSISTENCE_XML,
+					this
+				)
+			);
+			return;
 		}
+		if ( ! this.jpaProject.discoversAnnotatedClasses()) {
+			this.validateOrphanClasses(messages);
+		}
+		this.persistenceXml.validate(messages);
 	}
-	
-	
 
-	
-	protected void addOrphanedJavaClassMessages(List<IMessage> messages) {
-		if (getPersistenceXml() == null) {
-			//handled with other validation
+	protected void validateOrphanClasses(List<IMessage> messages) {
+		Persistence persistence = this.persistenceXml.getPersistence();
+		if (persistence == null) {
+			// handled with other validation
 			return;
 		}
-		if (getPersistenceXml().getPersistence() == null) {
-			//handled with other validation
+		if (persistence.persistenceUnitsSize() != 1) {
+			// the context model currently only supports 1 persistence unit
 			return;
 		}
-		if (getJpaProject().discoversAnnotatedClasses()) {
-			return;
-		}
-		Collection<String> orphanedClassNames = CollectionTools.collection(getJpaProject().annotatedClassNames());
-		if (getPersistenceXml().getPersistence().persistenceUnitsSize() != 1) {
-			//context model currently only supports 1 persistenceUnit
-			return;
-		}
-		PersistenceUnit persistenceUnit = getPersistenceXml().getPersistence().persistenceUnits().next();
-		for (String typeName : CollectionTools.iterable(getJpaProject().annotatedClassNames())) {
+		PersistenceUnit persistenceUnit = persistence.persistenceUnits().next();
+		HashBag<String> orphans = CollectionTools.bag(this.jpaProject.annotatedClassNames());
+		for (String typeName : CollectionTools.iterable(this.jpaProject.annotatedClassNames())) {
 			for (ClassRef classRef : CollectionTools.iterable(persistenceUnit.specifiedClassRefs())) {
 				if (classRef.isFor(typeName)) {
-					orphanedClassNames.remove(typeName);
+					orphans.remove(typeName);
 				}
 			}
 			for (MappingFileRef mappingFileRef : CollectionTools.iterable(persistenceUnit.mappingFileRefs())) {
-				if (mappingFileRef.getOrmXml() == null || mappingFileRef.getOrmXml().getEntityMappings() == null) {
-					continue;
-				}
-				if (mappingFileRef.getOrmXml().getEntityMappings().getPersistentType(typeName) != null) {
-					orphanedClassNames.remove(typeName);
+				OrmXml ormXml = mappingFileRef.getOrmXml();
+				if (ormXml != null) {
+					EntityMappings entityMappings = ormXml.getEntityMappings();
+					if (entityMappings != null) {
+						if (entityMappings.getPersistentType(typeName) != null) {
+							orphans.remove(typeName);
+						}
+					}
 				}
 			}
 		}
 		
-		for (String orphanedTypeName : orphanedClassNames) {
-			JavaResourcePersistentType javaResourcePersistentType = getJpaProject().getJavaResourcePersistentType(orphanedTypeName);
+		for (String orphan : orphans) {
+			JavaResourcePersistentType javaResourcePersistentType = this.jpaProject.getJavaResourcePersistentType(orphan);
 				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CONTEXT,
-							new String[] {persistenceUnit.getName()},
-							javaResourcePersistentType.getResourceModel().getFile(),
-							javaResourcePersistentType.getMappingAnnotation().getTextRange(JDTTools.buildASTRoot(javaResourcePersistentType.getJpaCompilationUnit().getCompilationUnit())))
-					);
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CONTEXT,
+						new String[] {persistenceUnit.getName()},
+						javaResourcePersistentType.getResourceModel().getFile(),
+						javaResourcePersistentType.getMappingAnnotation().getTextRange(JDTTools.buildASTRoot(javaResourcePersistentType.getJpaCompilationUnit().getCompilationUnit()))
+					)
+				);
 		}
 	}
+
 }

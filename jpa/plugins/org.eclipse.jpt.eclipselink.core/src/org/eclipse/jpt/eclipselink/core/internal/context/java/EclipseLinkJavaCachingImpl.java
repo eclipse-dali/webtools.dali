@@ -534,12 +534,12 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 	}
 
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
-		addExpiryMessages(messages, astRoot);
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
+		this.validateExpiry(messages, astRoot);
 	}
 
-	protected void addExpiryMessages(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateExpiry(List<IMessage> messages, CompilationUnit astRoot) {
 		CacheAnnotation cache = getCacheAnnotation();
 		if (cache.getExpiry() != null && cache.getExpiryTimeOfDay() != null) {
 			messages.add(
@@ -548,7 +548,8 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 					EclipseLinkJpaValidationMessages.CACHE_EXPIRY_AND_EXPIRY_TIME_OF_DAY_BOTH_SPECIFIED,
 					new String[] {this.getParent().getPersistentType().getName()},
 					this, 
-					getValidationTextRange(astRoot))
+					getValidationTextRange(astRoot)
+				)
 			);
 		}
 	}

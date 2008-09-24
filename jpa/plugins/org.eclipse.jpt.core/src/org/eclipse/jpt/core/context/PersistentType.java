@@ -112,6 +112,6 @@ public interface PersistentType extends JpaContextNode, JpaStructureNode
 	/**
 	 * Add to the list of current validation messages
 	 */
-	void addToMessages(List<IMessage> messages);
+	void validate(List<IMessage> messages);
 
 }

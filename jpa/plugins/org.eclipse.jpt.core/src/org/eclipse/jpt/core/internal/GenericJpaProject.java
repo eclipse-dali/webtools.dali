@@ -459,7 +459,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 
 	// ********** context model **********
 
-	public JpaRootContextNode getRootContext() {
+	public JpaRootContextNode getRootContextNode() {
 		return this.rootContextNode;
 	}
 
@@ -536,66 +536,49 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	
 	public Iterator<IMessage> validationMessages() {
 		List<IMessage> messages = new ArrayList<IMessage>();
-		this.jpaPlatform.addToMessages(this, messages);
+		this.validate(messages);
 		return messages.iterator();
 	}
 	
-	public void addToMessages(List<IMessage> messages) {
-		//start with the project - then down
-		//project validation
-		addProjectLevelMessages(messages);
-		
-		//context model validation
-		getRootContext().addToMessages(messages);
+	protected void validate(List<IMessage> messages) {
+		this.validateConnection(messages);
+		this.rootContextNode.validate(messages);
 	}
 
-	protected void addProjectLevelMessages(List<IMessage> messages) {
-		this.checkConnection(messages);
-		this.checkForMultiplePersistenceXml(messages);
-	}
-
-	protected void checkConnection(List<IMessage> messages) {
+	protected void validateConnection(List<IMessage> messages) {
 		String cpName = this.dataSource.getConnectionProfileName();
-		ConnectionProfile cp = this.dataSource.getConnectionProfile();
 		if (StringTools.stringIsEmpty(cpName)) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.NORMAL_SEVERITY,
-						JpaValidationMessages.PROJECT_NO_CONNECTION,
-						this
-					)
-				);
-		} else if (cp == null) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.NORMAL_SEVERITY,
-						JpaValidationMessages.PROJECT_INVALID_CONNECTION,
-						new String[] {cpName},
-						this
-					)
-				);
-		} else if (cp.isInactive()) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.NORMAL_SEVERITY,
-						JpaValidationMessages.PROJECT_INACTIVE_CONNECTION,
-						new String[] {cpName},
-						this
-					)
-				);
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.NORMAL_SEVERITY,
+					JpaValidationMessages.PROJECT_NO_CONNECTION,
+					this
+				)
+			);
+			return;
 		}
-	}
-	
-	protected void checkForMultiplePersistenceXml(@SuppressWarnings("unused") List<IMessage> messages) {
-//		if (validPersistenceXmlFiles.size() > 1) {
-//			messages.add(
-//					JpaValidationMessages.buildMessage(
-//						IMessage.HIGH_SEVERITY,
-//						IJpaValidationMessages.PROJECT_MULTIPLE_PERSISTENCE_XML,
-//						jpaProject
-//					)
-//				);
-//		}
+		ConnectionProfile cp = this.dataSource.getConnectionProfile();
+		if (cp == null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.NORMAL_SEVERITY,
+					JpaValidationMessages.PROJECT_INVALID_CONNECTION,
+					new String[] {cpName},
+					this
+				)
+			);
+			return;
+		}
+		if (cp.isInactive()) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.NORMAL_SEVERITY,
+					JpaValidationMessages.PROJECT_INACTIVE_CONNECTION,
+					new String[] {cpName},
+					this
+				)
+			);
+		}
 	}
 	
 	
@@ -767,7 +750,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	 */
 	public IStatus update(IProgressMonitor monitor) {
 		try {
-			this.getRootContext().update(monitor);
+			this.rootContextNode.update(monitor);
 		} catch (OperationCanceledException ex) {
 			return Status.CANCEL_STATUS;
 		} catch (Throwable ex) {

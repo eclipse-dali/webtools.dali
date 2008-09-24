@@ -22,7 +22,6 @@ import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.IdClass;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
@@ -57,6 +56,7 @@ import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -81,14 +81,14 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implements OrmEntity
+public class GenericOrmEntity
+	extends AbstractOrmTypeMapping<XmlEntity>
+	implements OrmEntity, PersistenceUnit.OrmGeneratorHolder, PersistenceUnit.OrmQueryHolder
 {
 	protected String specifiedName;
 
@@ -185,12 +185,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 	@Override
 	public String getPrimaryTableName() {
-		return getTable().getName();
+		return this.table.getName();
 	}
 	
 	@Override
 	public org.eclipse.jpt.db.Table getPrimaryDbTable() {
-		return getTable().getDbTable();
+		return this.table.getDbTable();
 	}
 
 	private static final org.eclipse.jpt.db.Table[] EMPTY_DB_TABLE_ARRAY = new org.eclipse.jpt.db.Table[0];
@@ -224,7 +224,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	@Override
 	public Schema getDbSchema() {
-		return getTable().getDbSchema();
+		return this.table.getDbSchema();
 	}
 	
 	public JavaEntity getJavaEntity() {
@@ -458,7 +458,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 
 	public Iterator<Table> associatedTables() {
-		return new CompositeIterator<Table>(this.getTable(), this.secondaryTables());
+		return new CompositeIterator<Table>(this.table, this.secondaryTables());
 	}
 
 	public Iterator<Table> associatedTablesIncludingInherited() {
@@ -602,11 +602,19 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, newTableGenerator);
 	}
 	
-	@SuppressWarnings("unchecked")
-	protected Iterator<OrmGenerator> generators() {
-		return new CompositeIterator<OrmGenerator>(
-			(getSequenceGenerator() == null) ? EmptyIterator.instance() : new SingleElementIterator(getSequenceGenerator()),
-			(getTableGenerator() == null) ? EmptyIterator.instance() : new SingleElementIterator(getTableGenerator()));
+	public Iterator<OrmGenerator> generators() {
+		ArrayList<OrmGenerator> generators = new ArrayList<OrmGenerator>();
+		this.addGeneratorsTo(generators);
+		return generators.iterator();
+	}
+
+	protected void addGeneratorsTo(ArrayList<OrmGenerator> generators) {
+		if (this.sequenceGenerator != null) {
+			generators.add(this.sequenceGenerator);
+		}
+		if (this.tableGenerator != null) {
+			generators.add(this.tableGenerator);
+		}
 	}
 
 	public String getDefaultDiscriminatorValue() {
@@ -1032,7 +1040,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected Iterator<OrmQuery> queries() {
+	public Iterator<OrmQuery> queries() {
 		return new CompositeIterator<OrmQuery>(this.namedQueries(), this.namedNativeQueries());
 	}
 
@@ -1873,38 +1881,37 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	//**********  Validation **************************
 	
 	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
-		getTable().addToMessages(messages);	
-		addIdMessages(messages);
-		addGeneratorMessages(messages);
-		addQueryMessages(messages);
-		for (OrmSecondaryTable secondaryTable : CollectionTools.iterable(secondaryTables())) {
-			secondaryTable.addToMessages(messages);
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
+
+		this.table.validate(messages);	
+		this.validateId(messages);
+		this.getPersistenceUnit().validateGenerators(this, messages);
+		this.getPersistenceUnit().validateQueries(this, messages);
+
+		for (Iterator<OrmSecondaryTable> stream = this.secondaryTables(); stream.hasNext(); ) {
+			stream.next().validate(messages);
 		}
 
-		for (OrmAttributeOverride attributeOverride : CollectionTools.iterable(attributeOverrides())) {
-			attributeOverride.addToMessages(messages);
+		for (Iterator<OrmAttributeOverride> stream = this.attributeOverrides(); stream.hasNext(); ) {
+			stream.next().validate(messages);
 		}
 
-		for (OrmAssociationOverride associationOverride : CollectionTools.iterable(associationOverrides())) {
-			associationOverride.addToMessages(messages);
+		for (Iterator<OrmAssociationOverride> stream = this.associationOverrides(); stream.hasNext(); ) {
+			stream.next().validate(messages);
 		}
 	}
 	
-	protected void addIdMessages(List<IMessage> messages) {
-		addNoIdMessage(messages);
-	}
-	
-	protected void addNoIdMessage(List<IMessage> messages) {
-		if (entityHasNoId()) {
+	protected void validateId(List<IMessage> messages) {
+		if (this.entityHasNoId()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.ENTITY_NO_ID,
 					new String[] {this.getName()},
 					this, 
-					this.getValidationTextRange())
+					this.getValidationTextRange()
+				)
 			);
 		}
 	}
@@ -1913,54 +1920,6 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return ! this.entityHasId();
 	}
 	
-	protected void addGeneratorMessages(List<IMessage> messages) {
-		List<Generator> masterList = CollectionTools.list(getPersistenceUnit().allGenerators());
-		
-		for (Iterator<OrmGenerator> stream = this.generators(); stream.hasNext() ; ) {
-			OrmGenerator current = stream.next();
-			masterList.remove(current);
-			
-			for (Generator each : masterList) {
-				if (! each.overrides(current) && each.getName() != null && each.getName().equals(current.getName())) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-							new String[] {current.getName()},
-							current,
-							current.getNameTextRange())
-					);
-				}
-			}
-		
-			masterList.add(current);
-		}
-	}
-	
-	protected void addQueryMessages(List<IMessage> messages) {
-		List<Query> masterList = CollectionTools.list(getPersistenceUnit().allQueries());
-		
-		for (Iterator<OrmQuery> stream = this.queries(); stream.hasNext() ; ) {
-			OrmQuery current = stream.next();
-			masterList.remove(current);
-			
-			for (Query each : masterList) {
-				if (! each.overrides(current) && each.getName() != null && each.getName().equals(current.getName())) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.QUERY_DUPLICATE_NAME,
-							new String[] {current.getName()},
-							current,
-							current.getNameTextRange())
-					);
-				}
-			}
-			
-			masterList.add(current);
-		}
-	}
-
 	private boolean entityHasId() {
 		for (Iterator<PersistentAttribute> stream = this.getPersistentType().allAttributes(); stream.hasNext(); ) {
 			if (stream.next().isIdAttribute()) {

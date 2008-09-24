@@ -15,22 +15,26 @@ import org.eclipse.jpt.core.context.persistence.PersistenceJpaContextNode;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public abstract class AbstractPersistenceJpaContextNode extends AbstractJpaContextNode implements PersistenceJpaContextNode
+public abstract class AbstractPersistenceJpaContextNode
+	extends AbstractJpaContextNode
+	implements PersistenceJpaContextNode
 {
+
 	// ********** constructor **********
 
 	protected AbstractPersistenceJpaContextNode(JpaContextNode parent) {
 		super(parent);
 	}
 	
+
 	// ********** validation **********
 	
 	/**
 	 * All subclass implementations {@link #addToMessages(List<IMessage>)} 
 	 * should be preceded by a "super" call to this method
 	 */
-	public void addToMessages(List<IMessage> messages) {
-		
+	public void validate(List<IMessage> messages) {
+		// do nothing by default
 	}
 
 }

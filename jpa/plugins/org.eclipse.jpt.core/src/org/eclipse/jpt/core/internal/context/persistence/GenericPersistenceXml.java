@@ -25,7 +25,11 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
+/**
+ * 
+ */
+public class GenericPersistenceXml
+	extends AbstractPersistenceJpaContextNode
 	implements PersistenceXml
 {
 	protected PersistenceResource persistenceResource;
@@ -50,71 +54,71 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 	
 	@Override
 	public IResource getResource() {
-		return persistenceResource.getFile();
+		return this.persistenceResource.getFile();
 	}
 	
 	// **************** persistence ********************************************
 	
 	public Persistence getPersistence() {
-		return persistence;
+		return this.persistence;
 	}
 	
 	public Persistence addPersistence() {
-		if (persistence != null) {
+		if (this.persistence != null) {
 			throw new IllegalStateException();
 		}
 		
 		XmlPersistence xmlPersistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
-		persistence = buildPersistence(xmlPersistence);
-		persistenceResource.getContents().add(xmlPersistence);
-		firePropertyChanged(PERSISTENCE_PROPERTY, null, persistence);
-		return persistence;
+		this.persistence = buildPersistence(xmlPersistence);
+		this.persistenceResource.getContents().add(xmlPersistence);
+		firePropertyChanged(PERSISTENCE_PROPERTY, null, this.persistence);
+		return this.persistence;
 	}
 	
 	public void removePersistence() {
-		if (persistence == null) {
+		if (this.persistence == null) {
 			throw new IllegalStateException();
 		}
 		getJpaFile(this.persistenceResource.getResourceModel()).removeRootStructureNode(this.persistenceResource);
 		this.persistence.dispose();
-		Persistence oldPersistence = persistence;
-		persistence = null;
-		XmlPersistence xmlPersistence = persistenceResource.getPersistence();
-		persistenceResource.getContents().remove(xmlPersistence);
+		Persistence oldPersistence = this.persistence;
+		this.persistence = null;
+		XmlPersistence xmlPersistence = this.persistenceResource.getPersistence();
+		this.persistenceResource.getContents().remove(xmlPersistence);
 		firePropertyChanged(PERSISTENCE_PROPERTY, oldPersistence, null);
 	}
 	
 	protected void setPersistence_(Persistence newPersistence) {
-		Persistence oldPersistence = persistence;
-		persistence = newPersistence;
+		Persistence oldPersistence = this.persistence;
+		this.persistence = newPersistence;
 		firePropertyChanged(PERSISTENCE_PROPERTY, oldPersistence, newPersistence);
 	}
 	
 	
 	// **************** updating ***********************************************
 	
-	protected void initialize(PersistenceResource persistenceResource) {
-		this.persistenceResource = persistenceResource;
-		if (persistenceResource.getPersistence() != null) {
-			this.persistence = buildPersistence(persistenceResource.getPersistence());
+	protected void initialize(PersistenceResource pr) {
+		this.persistenceResource = pr;
+		if (pr.getPersistence() != null) {
+			this.persistence = buildPersistence(pr.getPersistence());
 		}
 	}
 
-	public void update(PersistenceResource persistenceResource) {
-		this.persistenceResource = persistenceResource;
-		if (persistenceResource.getPersistence() != null) {
+	public void update(PersistenceResource pr) {
+		this.persistenceResource = pr;
+		if (pr.getPersistence() != null) {
 			if (this.persistence != null) {
-				getJpaFile(this.persistenceResource.getResourceModel()).addRootStructureNode(this.persistenceResource, this.persistence);
-				this.persistence.update(persistenceResource.getPersistence());
+				this.getJpaFile(this.persistenceResource.getResourceModel()).addRootStructureNode(this.persistenceResource, this.persistence);
+				this.persistence.update(pr.getPersistence());
 			}
 			else {
-				setPersistence_(buildPersistence(persistenceResource.getPersistence()));
+				setPersistence_(buildPersistence(pr.getPersistence()));
 			}
 		}
 		else {
-			if (getPersistence() != null) {
-				getJpaFile(this.persistenceResource.getResourceModel()).removeRootStructureNode(this.persistenceResource);
-				getPersistence().dispose();
+			if (this.persistence != null) {
+				this.getJpaFile(this.persistenceResource.getResourceModel()).removeRootStructureNode(this.persistenceResource);
+				this.persistence.dispose();
 			}
 			setPersistence_(null);
 		}
@@ -129,13 +133,13 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 	
 	@Override
 	public PersistenceUnit getPersistenceUnit() {
-		throw new UnsupportedOperationException("No PersistenceUnit in this context");
+		throw new UnsupportedOperationException("No Persistence Unit in this context"); //$NON-NLS-1$
 	}
 	
 	
 	public JpaStructureNode getStructureNode(int textOffset) {
-		if (persistence.containsOffset(textOffset)) {
-			return persistence.getStructureNode(textOffset);
+		if (this.persistence.containsOffset(textOffset)) {
+			return this.persistence.getStructureNode(textOffset);
 		}
 		return this;
 	}
@@ -152,28 +156,22 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 	
 	// **************** validation *********************************************
 	
-	private boolean okToContinueValidation = true;
-
 	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
-		addInvalidPersistenceXmlContentMessage(messages);
-		
-		if (okToContinueValidation){
-			getPersistence().addToMessages(messages);
-		}
-	}
-	
-	protected void addInvalidPersistenceXmlContentMessage(List<IMessage> messages) {
+	public void validate(List<IMessage> messages) {
+		super.validate(messages);
+
 		if (this.persistence == null) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENCE_XML_INVALID_CONTENT,
-						this)
-				);
-			okToContinueValidation = false;
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENCE_XML_INVALID_CONTENT,
+					this
+				)
+			);
+			return;
 		}
+
+		this.persistence.validate(messages);
 	}
 
 	public void dispose() {
