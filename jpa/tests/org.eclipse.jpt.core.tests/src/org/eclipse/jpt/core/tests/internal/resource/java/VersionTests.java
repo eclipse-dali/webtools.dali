@@ -25,7 +25,6 @@ public class VersionTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestVersion() throws Exception {
-		this.createAnnotationAndMembers("Version", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

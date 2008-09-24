@@ -29,27 +29,8 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 	public NamedNativeQueriesTests(String name) {
 		super(name);
 	}
-
-	private void createNamedNativeQueryAnnotation() throws Exception {
-		createQueryHintAnnotation();
-		this.createAnnotationAndMembers("NamedNativeQuery", "String name(); " +
-			"String query();" + 
-			"QueryHint[] hints() default{};");
-	}
-	
-	private void createNamedNativeQueriesAnnotation() throws Exception {
-		createNamedNativeQueryAnnotation();
-		this.createAnnotationAndMembers("NamedNativeQueries", 
-			"NamedNativeQuery[] value();");
-	}
-	
-	private void createQueryHintAnnotation() throws Exception {
-		this.createAnnotationAndMembers("QueryHint", "String name(); " +
-			"String value();");
-	}
 	
 	private ICompilationUnit createTestNamedNativeQueries() throws Exception {
-		createNamedNativeQueriesAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -76,7 +57,6 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 	
 
 	private ICompilationUnit createTestNamedNativeQueryWithStringElement(final String elementName, final String value) throws Exception {
-		createNamedNativeQueriesAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -90,7 +70,6 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestNamedNativeQueryWithResultClass() throws Exception {
-		createNamedNativeQueriesAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -102,8 +81,8 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 			}
 		});
 	}
+	
 	private ICompilationUnit createTestNamedNativeQueryWithQueryHints() throws Exception {
-		createNamedNativeQueriesAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -117,7 +96,6 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestNamedNativeQuery() throws Exception {
-		createNamedNativeQueriesAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

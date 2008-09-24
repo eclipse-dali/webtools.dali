@@ -25,7 +25,6 @@ public class TransientTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestTransient() throws Exception {
-		this.createAnnotationAndMembers("Transient", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

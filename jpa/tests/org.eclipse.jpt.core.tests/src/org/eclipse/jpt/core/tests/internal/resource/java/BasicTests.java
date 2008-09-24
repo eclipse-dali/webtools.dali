@@ -25,7 +25,6 @@ public class BasicTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestBasic() throws Exception {
-		this.createAnnotationAndMembers("Basic", "boolean optional() default true;");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -39,7 +38,6 @@ public class BasicTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestBasicWithOptional() throws Exception {
-		this.createAnnotationAndMembers("Basic", "boolean optional() default true;");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -53,8 +51,6 @@ public class BasicTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestBasicWithFetch() throws Exception {
-		this.createAnnotationAndMembers("Basic", "boolean optional() default true; FetchType fetch() default FetchType.EAGER;");
-		this.createEnumAndMembers("FetchType", "EAGER, LAZY");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

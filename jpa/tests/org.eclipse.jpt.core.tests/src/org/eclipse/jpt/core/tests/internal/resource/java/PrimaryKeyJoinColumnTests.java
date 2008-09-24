@@ -26,16 +26,8 @@ public class PrimaryKeyJoinColumnTests extends JavaResourceModelTestCase {
 	public PrimaryKeyJoinColumnTests(String name) {
 		super(name);
 	}
-	
-	private void createPrimaryKeyJoinColumnAnnotation() throws Exception {
-		this.createAnnotationAndMembers("PrimaryKeyJoinColumn", 
-			"String name() default \"\"; " +
-			"String referencedColumnName() default \"\"; " +
-			"String columnDefinition() default \"\"; ");
-	}
 
 	private ICompilationUnit createTestPrimaryKeyJoinColumn() throws Exception {
-		createPrimaryKeyJoinColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -49,7 +41,6 @@ public class PrimaryKeyJoinColumnTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestPrimaryKeyJoinColumnWithName() throws Exception {
-		createPrimaryKeyJoinColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -63,7 +54,6 @@ public class PrimaryKeyJoinColumnTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestPrimaryKeyJoinColumnWithReferencedColumnName() throws Exception {
-		createPrimaryKeyJoinColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -77,7 +67,6 @@ public class PrimaryKeyJoinColumnTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestPrimaryKeyJoinColumnWithColumnDefinition() throws Exception {
-		createPrimaryKeyJoinColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

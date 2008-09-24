@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.tests.internal.utility.jdt.JptCoreUtilityJdtTests;
  * until jpa.jar is checked into CVS.
  */
 public class JptCoreTests {
-	private static final String JPA_JAR_PROPERTY = TestJpaProject.JAR_NAME_SYSTEM_PROPERTY;
+	private static final String JPA_JAR_PROPERTY = TestJpaProject.JPA_JAR_NAME_SYSTEM_PROPERTY;
 
 	public static Test suite() {
 		return suite(false);

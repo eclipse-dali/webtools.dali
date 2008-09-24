@@ -28,7 +28,6 @@ public class EntityTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestEntity() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -42,7 +41,6 @@ public class EntityTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestEntityWithName() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -56,8 +54,6 @@ public class EntityTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestMappedSuperclassAndEntity() throws Exception {
-		this.createAnnotationAndMembers("MappedSuperclass", "");
-		this.createAnnotationAndMembers("Entity", "String name();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

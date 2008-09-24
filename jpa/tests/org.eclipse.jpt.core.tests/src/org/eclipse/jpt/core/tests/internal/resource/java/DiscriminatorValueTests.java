@@ -23,7 +23,6 @@ public class DiscriminatorValueTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestDiscriminatorValue() throws Exception {
-		this.createAnnotationAndMembers("DiscriminatorValue", "String value() default \"\";");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -37,7 +36,6 @@ public class DiscriminatorValueTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestDiscriminatorValueWithValue() throws Exception {
-		this.createAnnotationAndMembers("DiscriminatorValue", "String value() default \"\";");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

@@ -25,7 +25,6 @@ public class IdTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestId() throws Exception {
-		this.createAnnotationAndMembers("Id", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

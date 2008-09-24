@@ -32,22 +32,8 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 	public TableGeneratorTests(String name) {
 		super(name);
 	}
-
-	private void createTableGeneratorAnnotation() throws Exception {
-		this.createAnnotationAndMembers("TableGenerator", "String name(); " +
-			"String table() default \"\"" +
-			"String catalog() default \"\"" +
-			"String schema() default \"\"" +
-			"String pkColumnName() default \"\"" +
-			"String valueColumnName() default \"\"" +
-			"String pkColumnValue() default \"\"" +
-			"int initialValue() default 0" +
-			"int allocationSize() default 50" + 
-			"UniqueConstraint[] uniqueConstraints() default{}");
-	}
 	
 	private ICompilationUnit createTestTableGeneratorOnField() throws Exception {
-		createTableGeneratorAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -61,7 +47,6 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestTableGeneratorOnType() throws Exception {
-		createTableGeneratorAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -102,7 +87,6 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestTableGeneratorWithStringElement(final String elementName, final String value) throws Exception {
-		createTableGeneratorAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -124,7 +108,6 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestTableGeneratorWithIntElement(final String elementName, final int value) throws Exception {
-		createTableGeneratorAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -138,8 +121,6 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestTableGeneratorWithUniqueConstraints() throws Exception {
-		createTableGeneratorAnnotation();
-		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -437,7 +418,6 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 	
 	public void testUniqueConstraints2() throws Exception {
 		ICompilationUnit cu = this.createTestTableGeneratorOnField();
-		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
@@ -461,7 +441,6 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 	
 	public void testAddUniqueConstraint() throws Exception {
 		ICompilationUnit cu = this.createTestTableGeneratorOnField();
-		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		

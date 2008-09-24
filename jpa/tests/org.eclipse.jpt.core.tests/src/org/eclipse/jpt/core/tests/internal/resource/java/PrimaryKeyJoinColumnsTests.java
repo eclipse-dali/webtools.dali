@@ -29,21 +29,7 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 		super(name);
 	}
 	
-	private void createPrimaryKeyJoinColumnAnnotation() throws Exception {
-		this.createAnnotationAndMembers("PrimaryKeyJoinColumn", 
-			"String name() default \"\"; " +
-			"String referencedColumnName() default \"\"; " +
-			"String columnDefinition() default \"\";");
-	}
-	
-	private void createPrimaryKeyJoinColumnsAnnotation() throws Exception {
-		createPrimaryKeyJoinColumnAnnotation();
-		this.createAnnotationAndMembers("PrimaryKeyJoinColumns", 
-			"PrimaryKeyJoinColumn[] value();");
-	}
-
 	private ICompilationUnit createTestPrimaryKeyJoinColumns() throws Exception {
-		createPrimaryKeyJoinColumnsAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -57,7 +43,6 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestPrimaryKeyJoinColumnWithName() throws Exception {
-		createPrimaryKeyJoinColumnsAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -71,7 +56,6 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestPrimaryKeyJoinColumnWithReferencedColumnName() throws Exception {
-		createPrimaryKeyJoinColumnsAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -85,7 +69,6 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestPrimaryKeyJoinColumnWithColumnDefinition() throws Exception {
-		createPrimaryKeyJoinColumnsAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -99,7 +82,6 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestPrimaryKeyJoinColumn() throws Exception {
-		createPrimaryKeyJoinColumnsAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

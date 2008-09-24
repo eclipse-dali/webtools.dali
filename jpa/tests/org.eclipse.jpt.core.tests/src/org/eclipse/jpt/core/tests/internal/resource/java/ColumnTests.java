@@ -27,22 +27,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		super(name);
 	}
 
-	private void createColumnAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Column", 
-			"String name() default \"\"; " +
-			"boolean unique() default false; " +
-			"boolean nullable() default true; " +
-			"boolean insertable() default true; " +
-			"boolean updatable() default true; " +
-			"String columnDefinition() default \"\"; " +
-			"String table() default \"\"; " +
-			"int length() default 255; " +
-			"int precision() default 0; " +
-			"int scale() default 0;");
-	}
-
 	private ICompilationUnit createTestColumn() throws Exception {
-		createColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -56,7 +41,6 @@ public class ColumnTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestColumnWithName() throws Exception {
-		createColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -70,7 +54,6 @@ public class ColumnTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestColumnWithTable() throws Exception {
-		createColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -84,7 +67,6 @@ public class ColumnTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestColumnWithColumnDefinition() throws Exception {
-		createColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -98,7 +80,6 @@ public class ColumnTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestColumnWithBooleanElement(final String booleanElement) throws Exception {
-		createColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -112,7 +93,6 @@ public class ColumnTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestColumnWithIntElement(final String intElement) throws Exception {
-		createColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

@@ -27,16 +27,8 @@ public class SequenceGeneratorTests extends JavaResourceModelTestCase {
 	public SequenceGeneratorTests(String name) {
 		super(name);
 	}
-
-	private void createSequenceGeneratorAnnotation() throws Exception {
-		this.createAnnotationAndMembers("SequenceGenerator", "String name(); " +
-			"String sequenceName() default \"\"" +
-			"int initialValue() default 1" +
-			"int allocationSize() default 50");
-	}
 	
 	private ICompilationUnit createTestSequenceGeneratorOnField() throws Exception {
-		createSequenceGeneratorAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -50,7 +42,6 @@ public class SequenceGeneratorTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestSequenceGeneratorOnType() throws Exception {
-		createSequenceGeneratorAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -71,9 +62,7 @@ public class SequenceGeneratorTests extends JavaResourceModelTestCase {
 		return createTestSequenceGeneratorWithStringElement("sequenceName", GENERATOR_SEQUENCE_NAME);
 	}
 		
-	private ICompilationUnit createTestSequenceGeneratorWithStringElement(final String elementName, final String value) throws Exception {
-		createSequenceGeneratorAnnotation();
-		return this.createTestType(new DefaultAnnotationWriter() {
+	private ICompilationUnit createTestSequenceGeneratorWithStringElement(final String elementName, final String value) throws Exception {		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
 				return new ArrayIterator<String>(JPA.SEQUENCE_GENERATOR);
@@ -94,7 +83,6 @@ public class SequenceGeneratorTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestSequenceGeneratorWithIntElement(final String elementName, final int value) throws Exception {
-		createSequenceGeneratorAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

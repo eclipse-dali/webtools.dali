@@ -26,12 +26,10 @@ public class EclipseLinkJavaResourceModelTestCase extends JavaResourceModelTestC
 		super(name);
 	}
 	
-	@Override
 	protected ICompilationUnit createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
 		return createAnnotationAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, annotationName, annotationBody);
 	}
-		
-	@Override
+	
 	protected ICompilationUnit createEnumAndMembers(String enumName, String enumBody) throws Exception {
 		return createEnumAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, enumName, enumBody);
 	}

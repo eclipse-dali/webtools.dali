@@ -26,30 +26,8 @@ public class AttributeOverrideTests extends JavaResourceModelTestCase {
 	public AttributeOverrideTests(String name) {
 		super(name);
 	}
-	
-	private void createAttributeOverrideAnnotation() throws Exception {
-		this.createAnnotationAndMembers("AttributeOverride", 
-			"String name(); " +
-			"Column column(); ");
-	}
-
-	private void createColumnAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Column", 
-			"String name() default \"\"; " +
-			"boolean unique() default false; " +
-			"boolean nullable() default true; " +
-			"boolean insertable() default true; " +
-			"boolean updatable() default true; " +
-			"String columnDefinition() default \"\"; " +
-			"String table() default \"\"; " +
-			"int length() default 255; " +
-			"int precision() default 0; " +
-			"int scale() default 0;");
-	}
 
 	private ICompilationUnit createTestAttributeOverrideOnField() throws Exception {
-		createAttributeOverrideAnnotation();
-		createColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -63,8 +41,6 @@ public class AttributeOverrideTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestAttributeOverrideWithColumnOnField() throws Exception {
-		createAttributeOverrideAnnotation();
-		createColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

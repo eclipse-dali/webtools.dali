@@ -26,18 +26,8 @@ public class TableTests extends JavaResourceModelTestCase {
 	public TableTests(String name) {
 		super(name);
 	}
-
-	private void createTableAnnotation() throws Exception {
-		createUniqueConstraintAnnotation();
-		this.createAnnotationAndMembers("Table", "String name() default \"\"; String catalog() default \"\"; String schema() default \"\"; UniqueConstraint[] uniqueConstraints() default {};");
-	}
-	
-	private void createUniqueConstraintAnnotation() throws Exception {
-		createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
-	}
 	
 	private ICompilationUnit createTestTable() throws Exception {
-		createTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -51,7 +41,6 @@ public class TableTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestTableWithName() throws Exception {
-		createTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -65,7 +54,6 @@ public class TableTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestTableWithSchema() throws Exception {
-		createTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -79,7 +67,6 @@ public class TableTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestTableWithCatalog() throws Exception {
-		createTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -93,7 +80,6 @@ public class TableTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestTableWithUniqueConstraints() throws Exception {
-		createTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

@@ -29,27 +29,8 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 	public JoinColumnsTests(String name) {
 		super(name);
 	}
-	
-	private void createJoinColumnAnnotation() throws Exception {
-		this.createAnnotationAndMembers("JoinColumn", 
-			"String name() default \"\"; " +
-			"String referencedColumnName() default \"\"; " +
-			"boolean unique() default false; " +
-			"boolean nullable() default true; " +
-			"boolean insertable() default true; " +
-			"boolean updatable() default true; " +
-			"String columnDefinition() default \"\"; " +
-			"String table() default \"\"; ");
-	}
-	
-	private void createJoinColumnsAnnotation() throws Exception {
-		createJoinColumnAnnotation();
-		this.createAnnotationAndMembers("JoinColumns", 
-			"JoinColumn[] value();");
-	}
 
 	private ICompilationUnit createTestJoinColumns() throws Exception {
-		createJoinColumnsAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -63,7 +44,6 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestJoinColumnWithName() throws Exception {
-		createJoinColumnsAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -77,7 +57,6 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestJoinColumnWithTable() throws Exception {
-		createJoinColumnsAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -91,7 +70,6 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestJoinColumnWithReferencedColumnName() throws Exception {
-		createJoinColumnsAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -105,7 +83,6 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestJoinColumnWithColumnDefinition() throws Exception {
-		createJoinColumnsAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -119,7 +96,6 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestJoinColumnWithBooleanElement(final String booleanElement) throws Exception {
-		createJoinColumnsAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -133,7 +109,6 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestJoinColumn() throws Exception {
-		createJoinColumnsAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

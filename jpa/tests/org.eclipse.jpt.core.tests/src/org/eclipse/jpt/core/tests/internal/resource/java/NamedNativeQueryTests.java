@@ -26,21 +26,8 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 	public NamedNativeQueryTests(String name) {
 		super(name);
 	}
-
-	private void createNamedNativeQueryAnnotation() throws Exception {
-		createQueryHintAnnotation();
-		this.createAnnotationAndMembers("NamedNativeQuery", "String name(); " +
-			"String query();" + 
-			"QueryHint[] hints() default{};");
-	}
-	
-	private void createQueryHintAnnotation() throws Exception {
-		this.createAnnotationAndMembers("QueryHint", "String name(); " +
-			"String value();");
-	}
 	
 	private ICompilationUnit createTestNamedNativeQuery() throws Exception {
-		createNamedNativeQueryAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -67,7 +54,6 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 	
 
 	private ICompilationUnit createTestNamedNativeQueryWithStringElement(final String elementName, final String value) throws Exception {
-		createNamedNativeQueryAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -81,7 +67,6 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestNamedNativeQueryWithResultClass() throws Exception {
-		createNamedNativeQueryAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -93,8 +78,8 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 			}
 		});
 	}
+	
 	private ICompilationUnit createTestNamedNativeQueryWithQueryHints() throws Exception {
-		createNamedNativeQueryAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

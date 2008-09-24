@@ -23,13 +23,8 @@ public class IdClassTests extends JavaResourceModelTestCase {
 	public IdClassTests(String name) {
 		super(name);
 	}
-
-	private void createIdClassAnnotation() throws Exception {
-		this.createAnnotationAndMembers("IdClass", "Class value();");
-	}
 	
 	private ICompilationUnit createTestIdClass() throws Exception {
-		createIdClassAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -43,7 +38,6 @@ public class IdClassTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestIdClassWithValue() throws Exception {
-		createIdClassAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

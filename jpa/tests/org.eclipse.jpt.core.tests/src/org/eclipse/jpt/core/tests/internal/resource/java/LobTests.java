@@ -24,7 +24,6 @@ public class LobTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestLob() throws Exception {
-		this.createAnnotationAndMembers("Lob", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

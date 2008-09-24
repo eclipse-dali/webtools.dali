@@ -27,26 +27,7 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 		super(name);
 	}
 	
-	private void createAssociationOverrideAnnotation() throws Exception {
-		createJoinColumnAnnotation();
-		this.createAnnotationAndMembers("AssociationOverride", 
-			"String name(); " +
-			"JoinColumn[] joinColumns(); ");
-	}
-
-	private void createJoinColumnAnnotation() throws Exception {
-		this.createAnnotationAndMembers("JoinColumn", "String name() default \"\";" +
-				"String referencedColumnName() default \"\";" +
-				"boolean unique() default false;" +
-				"boolean nullable() default true;" +
-				"boolean insertable() default true;" +
-				"boolean updatable() default true;" +
-				"String columnDefinition() default \"\";" +
-				"String table() default \"\";");	
-	}
-
 	private ICompilationUnit createTestAssociationOverrideOnField() throws Exception {
-		createAssociationOverrideAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -60,7 +41,6 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestAssociationOverrideWithJoinColumns() throws Exception {
-		createAssociationOverrideAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

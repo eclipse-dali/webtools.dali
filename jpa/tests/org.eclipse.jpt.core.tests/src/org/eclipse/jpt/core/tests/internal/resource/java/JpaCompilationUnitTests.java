@@ -13,7 +13,6 @@ import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.resource.java.EntityAnnotation;
@@ -36,13 +35,7 @@ public class JpaCompilationUnitTests extends AnnotationTestCase {
 		return new TestJpaProject(projectName, autoBuild);  // false = no auto-build
 	}
 	
-	private void createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		this.javaProject.createCompilationUnit("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
-	}
-	
 	private ICompilationUnit createTestEntity() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
-
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

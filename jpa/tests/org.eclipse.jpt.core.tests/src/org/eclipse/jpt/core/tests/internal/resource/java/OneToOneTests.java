@@ -25,8 +25,6 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestOneToOne() throws Exception {
-		this.createAnnotationAndMembers("OneToOne", "FetchType fetch() default FetchType.LAZY; CascadeType[] cascade() default = {};");
-		this.createEnumAndMembers("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -40,8 +38,6 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestOneToOneWithFetch() throws Exception {
-		this.createAnnotationAndMembers("OneToOne", "FetchType fetch() default FetchType.LAZY;");
-		this.createEnumAndMembers("FetchType", "EAGER, LAZY");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -55,7 +51,6 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestOneToOneWithTargetEntity() throws Exception {
-		this.createAnnotationAndMembers("OneToOne", "Class targetEntity() default void.class;");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -69,7 +64,6 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestOneToOneWithOptional() throws Exception {
-		this.createAnnotationAndMembers("OneToOne", "boolean optional() default true;");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -83,7 +77,6 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestOneToOneWithMappedBy() throws Exception {
-		this.createAnnotationAndMembers("OneToOne", "String mappedBy() default\"\";");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -97,8 +90,6 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestOneToOneWithCascade() throws Exception {
-		this.createAnnotationAndMembers("OneToOne", "CascadeType[] cascade() default = {};");
-		this.createEnumAndMembers("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -112,8 +103,6 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestOneToOneWithMultipleCascade() throws Exception {
-		this.createAnnotationAndMembers("OneToOne", "CascadeType[] cascade() default = {};");
-		this.createEnumAndMembers("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -127,8 +116,6 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestOneToOneWithDuplicateCascade() throws Exception {
-		this.createAnnotationAndMembers("OneToOne", "CascadeType[] cascade() default = {};");
-		this.createEnumAndMembers("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

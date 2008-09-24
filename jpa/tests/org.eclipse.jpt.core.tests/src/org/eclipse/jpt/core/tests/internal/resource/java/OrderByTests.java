@@ -24,7 +24,6 @@ public class OrderByTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestOrderBy() throws Exception {
-		this.createAnnotationAndMembers("OrderBy", "String value() default \"\";");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -38,7 +37,6 @@ public class OrderByTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestOrderByWithValue() throws Exception {
-		this.createAnnotationAndMembers("OrderBy", "String value() default \"\";");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

@@ -25,8 +25,6 @@ public class EnumeratedTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestEnumerated() throws Exception {
-		this.createAnnotationAndMembers("Enumerated", "EnumType value();");
-		this.createEnumAndMembers("EnumType", "ORDINAL, STRING");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -40,8 +38,6 @@ public class EnumeratedTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestEnumeratedWithValue() throws Exception {
-		this.createAnnotationAndMembers("Enumerated", "EnumType value();");
-		this.createEnumAndMembers("EnumType", "ORDINAL, STRING");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

@@ -27,7 +27,7 @@ import org.eclipse.jpt.eclipselink.core.tests.internal.schema.generation.JptEcli
  */
 public class JptEclipseLinkCoreTests
 {
-	private static final String JPA_JAR_PROPERTY = TestJpaProject.JAR_NAME_SYSTEM_PROPERTY;
+	private static final String JPA_JAR_PROPERTY = TestJpaProject.JPA_JAR_NAME_SYSTEM_PROPERTY;
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptEclipseLinkCoreTests.class.getPackage().getName());

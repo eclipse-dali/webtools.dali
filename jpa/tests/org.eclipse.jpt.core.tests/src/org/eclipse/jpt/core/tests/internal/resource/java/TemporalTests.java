@@ -25,8 +25,6 @@ public class TemporalTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestTemporal() throws Exception {
-		this.createAnnotationAndMembers("Temporal", "TemporalType value();");
-		this.createEnumAndMembers("TemporalType", "DATE, TIME, TIMESTAMP");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -40,8 +38,6 @@ public class TemporalTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestTemporalWithValue() throws Exception {
-		this.createAnnotationAndMembers("Temporal", "TemporalType value();");
-		this.createEnumAndMembers("TemporalType", "DATE, TIME, TIMESTAMP");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

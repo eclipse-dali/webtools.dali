@@ -14,10 +14,13 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceProxy;
 import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
@@ -29,6 +32,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 public class JavaResourceModelTestCase extends AnnotationTestCase
@@ -97,8 +101,17 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		protected TestJpaProject(JpaProject.Config config) throws CoreException {
 			super(config);
 			this.setUpdater(Updater.Null.instance());// ignore all updates, since there is no context model
+			this.addJar(org.eclipse.jpt.core.tests.internal.projects.TestJpaProject.jpaJarName());
 		}
 
+		protected void addJar(String jarPath) throws JavaModelException {
+			this.addClasspathEntry(JavaCore.newLibraryEntry(new Path(jarPath), null, null));
+		}
+
+		private void addClasspathEntry(IClasspathEntry entry) throws JavaModelException {
+			getJavaProject().setRawClasspath(CollectionTools.add(getJavaProject().getRawClasspath(), entry), null);
+		}
+		
 		@Override
 		protected IResourceProxyVisitor buildInitialResourceProxyVisitor() {
 			return new IResourceProxyVisitor() {

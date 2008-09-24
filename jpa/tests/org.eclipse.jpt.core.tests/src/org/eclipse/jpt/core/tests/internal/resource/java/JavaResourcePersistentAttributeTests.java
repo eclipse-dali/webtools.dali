@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -40,8 +39,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 	}
 		
 	private ICompilationUnit createTestEntity() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
-
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -55,8 +52,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 	}
 	
 	private ICompilationUnit createTestEntityWithNonResolvingField() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
-
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -75,8 +70,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		});
 	}
 	private ICompilationUnit createTestEntityWithNonResolvingMethod() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
-
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -109,9 +102,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 	}
 
 	private ICompilationUnit createTestEntityMultipleVariableDeclarationsPerLine() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
-		this.createAnnotationAndMembers("Column", "String name();");
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -137,9 +127,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 	}
 
 	private ICompilationUnit createTestEntityWithIdAndBasic() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
-		this.createAnnotationAndMembers("Id", "");
-		this.createAnnotationAndMembers("Basic", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -160,10 +147,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 	}
 	
 	private ICompilationUnit createTestEntityAnnotatedField() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
-		this.createAnnotationAndMembers("Column", "String name();");
-		this.createAnnotationAndMembers("Id", "String name();");
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -185,8 +168,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 	}	
 	
 	private ICompilationUnit createTestEntityWithColumn() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
-		this.createAnnotationAndMembers("Column", "String name(); String table();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -205,10 +186,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 	}
 	
 	private ICompilationUnit createTestEntityWithIdColumnGeneratedValue() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
-		this.createAnnotationAndMembers("Column", "String name(); String table();");
-		this.createAnnotationAndMembers("GeneratedValue", "");
-		this.createAnnotationAndMembers("Id", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -231,8 +208,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 
 	
 	private ICompilationUnit createTestEntityMultipleColumns() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
-		this.createAnnotationAndMembers("Column", "String name();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -253,8 +228,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 	}
 
 	private ICompilationUnit createTestEmbeddedWithAttributeOverride() throws Exception {
-		this.createAnnotationAndMembers("Embedded", "String name();");
-		this.createAnnotationAndMembers("AttributeOverride", "String name();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -269,9 +242,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		});
 	}
 	private ICompilationUnit createTestEmbeddedWithAttributeOverrides() throws Exception {
-		this.createAnnotationAndMembers("Embedded", "String name();");
-		this.createAnnotationAndMembers("AttributeOverride", "String name();");
-		this.createAnnotationAndMembers("AttributeOverrides", "AttributeOverride[] value();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -286,8 +256,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		});
 	}
 	private ICompilationUnit createTestEmbeddedWithAttributeOverridesEmpty() throws Exception {
-		this.createAnnotationAndMembers("Embedded", "String name();");
-		this.createAnnotationAndMembers("AttributeOverrides", "AttributeOverride[] value();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -303,9 +271,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 	}
 	
 	private ICompilationUnit createTestEmbeddedWith2AttributeOverrides() throws Exception {
-		this.createAnnotationAndMembers("Embedded", "String name();");
-		this.createAnnotationAndMembers("AttributeOverride", "String name();");
-		this.createAnnotationAndMembers("AttributeOverrides", "AttributeOverride[] value();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -321,9 +286,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 	}
 	
 	private ICompilationUnit createTestEmbeddedWithAttributeOverrideAndAttributeOverrides() throws Exception {
-		this.createAnnotationAndMembers("Embedded", "String name();");
-		this.createAnnotationAndMembers("AttributeOverride", "String name();");
-		this.createAnnotationAndMembers("AttributeOverrides", "AttributeOverride[] value();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -448,7 +410,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		assertSourceContains("@Basic", cu);
 		assertSourceContains("@Id", cu);
 		
-		this.createAnnotationAndMembers("OneToMany", "");
 		attributeResource.setMappingAnnotation(JPA.ONE_TO_MANY);
 		assertEquals(1, attributeResource.mappingAnnotationsSize());
 		javaAttributeMappingAnnotation = attributeResource.getMappingAnnotation();
@@ -464,7 +425,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		assertEquals(0, attributeResource.mappingAnnotationsSize());
 		
-		this.createAnnotationAndMembers("Id", "");
 		attributeResource.setMappingAnnotation(JPA.ID);
 		assertTrue(attributeResource.getMappingAnnotation() instanceof IdAnnotation);
 		assertSourceContains("@Id", cu);
@@ -476,7 +436,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		assertNull(attributeResource.getMappingAnnotation());
 		
-		this.createAnnotationAndMembers("Id", "");
 		attributeResource.setMappingAnnotation(JPA.ID);
 		assertTrue(attributeResource.getMappingAnnotation() instanceof IdAnnotation);
 		
@@ -490,7 +449,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		assertTrue(attributeResource.getMappingAnnotation() instanceof IdAnnotation);
 		
-		this.createAnnotationAndMembers("Basic", "");
 		attributeResource.setMappingAnnotation(JPA.BASIC);
 		assertTrue(attributeResource.getMappingAnnotation() instanceof BasicAnnotation);
 		
@@ -545,7 +503,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 			}
 		});		
 		
-		this.createAnnotationAndMembers("OneToOne", "");
 		cu.createImport("javax.persistence.OneToOne", null, new NullProgressMonitor());
 		
 		idField(cu).edit(new Editor() {
@@ -614,7 +571,6 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 	//	@AttributeOverride(name="FOO")		@AttributeOverrides({@AttributeOverride(name="FOO"), @AttributeOverride(name="BAR")})	
 	public void testAddJavaAttributeAnnotationNestableContainer2() throws Exception {
 		ICompilationUnit cu = createTestEmbeddedWithAttributeOverride();
-		this.createAnnotationAndMembers("AttributeOverrides", "String name();");
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		

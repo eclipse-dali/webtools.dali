@@ -26,7 +26,6 @@ public class EmbeddedTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestEmbedded() throws Exception {
-		this.createAnnotationAndMembers("Embedded", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

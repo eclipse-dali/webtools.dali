@@ -25,7 +25,6 @@ public class MappedSuperclassTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestMappedSuperclass() throws Exception {
-		this.createAnnotationAndMembers("MappedSuperclass", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -39,8 +38,6 @@ public class MappedSuperclassTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestMappedSuperclassAndEntity() throws Exception {
-		this.createAnnotationAndMembers("MappedSuperclass", "");
-		this.createAnnotationAndMembers("Entity", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

@@ -28,34 +28,8 @@ public class AssociationOverridesTests extends JavaResourceModelTestCase {
 	public AssociationOverridesTests(String name) {
 		super(name);
 	}
-	
-	private void createAssociationOverrideAnnotation() throws Exception {
-		createJoinColumnAnnotation();
-		this.createAnnotationAndMembers("AssociationOverride", 
-			"String name(); " +
-			"Column column(); ");
-	}
-	
-	private void createAssociationOverridesAnnotation() throws Exception {
-		createAssociationOverrideAnnotation();
-		this.createAnnotationAndMembers("AssociationOverrides", 
-			"AssociationOverride[] value();");
-	}
-
-	private void createJoinColumnAnnotation() throws Exception {
-		this.createAnnotationAndMembers("JoinColumn", "String name() default \"\";" +
-				"String referencedColumnName() default \"\";" +
-				"boolean unique() default false;" +
-				"boolean nullable() default true;" +
-				"boolean insertable() default true;" +
-				"boolean updatable() default true;" +
-				"String columnDefinition() default \"\";" +
-				"String table() default \"\";");
-		
-	}
 
 	private ICompilationUnit createTestAssociationOverrideOnField() throws Exception {
-		createAssociationOverridesAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -67,8 +41,8 @@ public class AssociationOverridesTests extends JavaResourceModelTestCase {
 			}
 		});
 	}
+	
 	private ICompilationUnit createTestAssociationOverrideWithJoinColumns() throws Exception {
-		createAssociationOverridesAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -82,7 +56,6 @@ public class AssociationOverridesTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestAssociationOverride() throws Exception {
-		createAssociationOverridesAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

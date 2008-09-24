@@ -25,7 +25,7 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 public class TestJpaProject extends TestJavaProject {
 	private final JpaProject jpaProject;
 
-	public static final String JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.jpa.jar";
+	public static final String JPA_JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.jpa.jar";
 
 
 	// ********** builders **********
@@ -54,15 +54,15 @@ public class TestJpaProject extends TestJavaProject {
 		super(projectName, autoBuild);
 		this.installFacet("jst.utility", "1.0");
 		this.installFacet("jpt.jpa", "1.0", jpaConfig);
-		this.addJar(this.jarName());
+		this.addJar(jpaJarName());
 		this.jpaProject = JptCorePlugin.getJpaProject(this.getProject());
 		this.jpaProject.setUpdater(new SynchronousJpaProjectUpdater(this.jpaProject));
 	}
 
-	protected String jarName() {
-		String jarName = System.getProperty(JAR_NAME_SYSTEM_PROPERTY);
+	public static String jpaJarName() {
+		String jarName = System.getProperty(JPA_JAR_NAME_SYSTEM_PROPERTY);
 		if (jarName == null) {
-			throw new RuntimeException("missing Java system property: \"" + JAR_NAME_SYSTEM_PROPERTY + "\"");
+			throw new RuntimeException("missing Java system property: \"" + JPA_JAR_NAME_SYSTEM_PROPERTY + "\"");
 		}
 		return jarName;
 	}

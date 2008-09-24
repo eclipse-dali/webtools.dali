@@ -25,7 +25,6 @@ public class EmbeddableTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestEmbeddable() throws Exception {
-		this.createAnnotationAndMembers("Embeddable", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -39,8 +38,6 @@ public class EmbeddableTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestEmbeddableAndEntity() throws Exception {
-		this.createAnnotationAndMembers("Embeddable", "");
-		this.createAnnotationAndMembers("Entity", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

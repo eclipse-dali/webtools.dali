@@ -24,7 +24,6 @@ public class MapKeyTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestMapKey() throws Exception {
-		this.createAnnotationAndMembers("MapKey", "String name() default \"\";");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -38,7 +37,6 @@ public class MapKeyTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestMapKeyWithName() throws Exception {
-		this.createAnnotationAndMembers("MapKey", "String name() default \"\";");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

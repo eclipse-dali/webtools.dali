@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -28,31 +27,8 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 	public JoinTableTests(String name) {
 		super(name);
 	}
-
-	private void createJoinColumnAnnotation() throws Exception {
-		this.createAnnotationAndMembers("JoinColumn", "String name() default \"\";" +
-				"String referencedColumnName() default \"\";" +
-				"boolean unique() default false;" +
-				"boolean nullable() default true;" +
-				"boolean insertable() default true;" +
-				"boolean updatable() default true;" +
-				"String columnDefinition() default \"\";" +
-				"String table() default \"\";");
-		
-	}
-
-	private void createUniqueConstraintAnnotation() throws Exception {
-		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
-	}
-	
-	private void createJoinTableAnnotation() throws Exception {
-		createJoinColumnAnnotation();
-		createUniqueConstraintAnnotation();
-		this.createAnnotationAndMembers("JoinTable", "String name() default \"\"; String catalog() default \"\"; String schema() default \"\";JoinColumn[] joinColumns() default {}; JoinColumn[] inverseJoinColumns() default {}; UniqueConstraint[] uniqueConstraints() default {};");
-	}
 	
 	private ICompilationUnit createTestJoinTable() throws Exception {
-		createJoinTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -66,7 +42,6 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestJoinTableWithName() throws Exception {
-		createJoinTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -80,7 +55,6 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestJoinTableWithSchema() throws Exception {
-		createJoinTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -95,7 +69,6 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestJoinTableWithCatalog() throws Exception {
-		createJoinTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -109,7 +82,6 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestJoinTableWithUniqueConstraints() throws Exception {
-		createJoinTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -123,7 +95,6 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestJoinTableWithJoinColumns() throws Exception {
-		createJoinTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -137,7 +108,6 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestJoinTableWithInverseJoinColumns() throws Exception {
-		createJoinTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

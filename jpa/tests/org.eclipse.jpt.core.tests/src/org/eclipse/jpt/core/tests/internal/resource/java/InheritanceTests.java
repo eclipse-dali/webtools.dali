@@ -24,8 +24,6 @@ public class InheritanceTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestInheritance() throws Exception {
-		this.createAnnotationAndMembers("Inheritance", "InheritanceType strategy() default SINGLE_TABLE;");
-		this.createEnumAndMembers("InheritanceType", "SINGLE_TABLE, JOINED, TABLE_PER_CLASS");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -39,8 +37,6 @@ public class InheritanceTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestInheritanceWithStrategy() throws Exception {
-		this.createAnnotationAndMembers("Inheritance", "InheritanceType strategy() default SINGLE_TABLE;");
-		this.createEnumAndMembers("InheritanceType", "SINGLE_TABLE, JOINED, TABLE_PER_CLASS");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

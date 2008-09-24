@@ -25,8 +25,6 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestOneToMany() throws Exception {
-		this.createAnnotationAndMembers("OneToMany", "FetchType fetch() default FetchType.LAZY; CascadeType[] cascade() default = {};");
-		this.createEnumAndMembers("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -40,8 +38,6 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestOneToManyWithFetch() throws Exception {
-		this.createAnnotationAndMembers("OneToMany", "FetchType fetch() default FetchType.LAZY;");
-		this.createEnumAndMembers("FetchType", "EAGER, LAZY");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -55,7 +51,6 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestOneToManyWithTargetEntity() throws Exception {
-		this.createAnnotationAndMembers("OneToMany", "Class targetEntity() default void.class;");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -69,7 +64,6 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestOneToManyWithMappedBy() throws Exception {
-		this.createAnnotationAndMembers("OneToMany", "String mappedBy() default\"\";");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -83,8 +77,6 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestOneToManyWithCascade() throws Exception {
-		this.createAnnotationAndMembers("OneToMany", "CascadeType[] cascade() default = {};");
-		this.createEnumAndMembers("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -98,8 +90,6 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestOneToManyWithMultipleCascade() throws Exception {
-		this.createAnnotationAndMembers("OneToMany", "CascadeType[] cascade() default = {};");
-		this.createEnumAndMembers("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -113,8 +103,6 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestOneToManyWithDuplicateCascade() throws Exception {
-		this.createAnnotationAndMembers("OneToMany", "CascadeType[] cascade() default = {};");
-		this.createEnumAndMembers("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

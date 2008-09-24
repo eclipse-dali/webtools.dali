@@ -25,18 +25,8 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 	public DiscriminatorColumnTests(String name) {
 		super(name);
 	}
-		
-	private void createDiscriminatorColumnAnnotation() throws Exception {
-		this.createEnumAndMembers("DiscriminatorType", "STRING, CHAR, INTEGER");
-		this.createAnnotationAndMembers("DiscriminatorColumn", 
-			"String name() default \"DTYPE\"; " +
-			"DiscriminatorType discriminatorType() default STRING; " +
-			"String columnDefinition() default \"\"; " +
-			"int length() default 31;");
-	}
-
+	
 	private ICompilationUnit createTestDiscriminatorColumn() throws Exception {
-		createDiscriminatorColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -50,7 +40,6 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestDiscriminatorColumnWithName() throws Exception {
-		createDiscriminatorColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -64,7 +53,6 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestDiscriminatorColumnWithColumnDefinition() throws Exception {
-		createDiscriminatorColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -78,7 +66,6 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestDiscriminatorColumnWithDiscriminatorType() throws Exception {
-		createDiscriminatorColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -92,7 +79,6 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestColumnWithIntElement(final String intElement) throws Exception {
-		createDiscriminatorColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

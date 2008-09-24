@@ -27,27 +27,8 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 	public NamedQueriesTests(String name) {
 		super(name);
 	}
-
-	private void createNamedQueryAnnotation() throws Exception {
-		createQueryHintAnnotation();
-		this.createAnnotationAndMembers("NamedQuery", "String name(); " +
-			"String query();" + 
-			"QueryHint[] hints() default{};");
-	}
-	
-	private void createNamedQueriesAnnotation() throws Exception {
-		createNamedQueryAnnotation();
-		this.createAnnotationAndMembers("NamedQueries", 
-			"NamedQuery[] value();");
-	}
-	
-	private void createQueryHintAnnotation() throws Exception {
-		this.createAnnotationAndMembers("QueryHint", "String name(); " +
-			"String value();");
-	}
 	
 	private ICompilationUnit createTestNamedQueries() throws Exception {
-		createNamedQueriesAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -69,7 +50,6 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestNamedQueryWithStringElement(final String elementName, final String value) throws Exception {
-		createNamedQueriesAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -83,7 +63,6 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestNamedQueryWithQueryHints() throws Exception {
-		createNamedQueriesAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -98,7 +77,6 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 
 
 	private ICompilationUnit createTestNamedQuery() throws Exception {
-		createNamedQueriesAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

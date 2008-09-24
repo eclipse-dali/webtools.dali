@@ -24,18 +24,8 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 	public GeneratedValueTests(String name) {
 		super(name);
 	}
-
-	private void createGenerationTypeEnum() throws Exception {
-		this.createEnumAndMembers("GenerationType", "TABLE, SEQUENCE, IDENTITY, AUTO;");	
-	}
-	
-	private void createGeneratedValueAnnotation() throws Exception {
-		this.createAnnotationAndMembers("GeneratedValue", "GenerationType strategy() default AUTO; String generator() default \"\"");
-		createGenerationTypeEnum();
-	}
 	
 	private ICompilationUnit createTestGeneratedValue() throws Exception {
-		createGeneratedValueAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -49,7 +39,6 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestGeneratedValueWithGenerator() throws Exception {
-		createGeneratedValueAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -63,7 +52,6 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestGeneratedValueWithStrategy() throws Exception {
-		createGeneratedValueAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

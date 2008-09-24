@@ -28,26 +28,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		super(name);
 	}
 	
-	private void createUniqueConstraintAnnotation()  throws Exception {
-		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
-	}
-	
-	private void createPrimaryKeyJoinColumnAnnotation()  throws Exception {
-		this.createAnnotationAndMembers("PrimaryKeyJoinColumn", "String name() default \"\"; String referencedColumnName() default \"\";String columnDefinition() default \"\";");
-	}
-
-	private void createSecondaryTableAnnotation()  throws Exception {
-		createPrimaryKeyJoinColumnAnnotation();
-		createUniqueConstraintAnnotation();
-		this.createAnnotationAndMembers("SecondaryTable", "String name() default \"\"; " +
-				"String catalog() default \"\";" +
-				"String schema() default \"\";" +
-				"PrimaryKeyJoinColumn[] pkJoinColumns() default {};" +
-				"UniqueConstraint[] uniqueConstraints() default {};");
-	}
-	
 	private ICompilationUnit createTestSecondaryTable() throws Exception {
-		createSecondaryTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -61,7 +42,6 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestSecondaryTableWithName() throws Exception {
-		createSecondaryTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -75,7 +55,6 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestSecondaryTableWithSchema() throws Exception {
-		createSecondaryTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -87,8 +66,8 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 			}
 		});
 	}
+	
 	private ICompilationUnit createTestSecondaryTableWithCatalog() throws Exception {
-		createSecondaryTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -100,10 +79,8 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 			}
 		});
 	}
-
 	
 	private ICompilationUnit createTestSecondaryTableWithUniqueConstraints() throws Exception {
-		createSecondaryTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -117,7 +94,6 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestSecondaryTableWithPkJoinColumns() throws Exception {
-		createSecondaryTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

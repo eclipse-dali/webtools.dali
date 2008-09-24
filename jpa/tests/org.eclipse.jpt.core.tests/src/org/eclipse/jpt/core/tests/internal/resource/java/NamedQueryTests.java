@@ -26,21 +26,8 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 	public NamedQueryTests(String name) {
 		super(name);
 	}
-
-	private void createNamedQueryAnnotation() throws Exception {
-		createQueryHintAnnotation();
-		this.createAnnotationAndMembers("NamedQuery", "String name(); " +
-			"String query();" + 
-			"QueryHint[] hints() default{};");
-	}
-	
-	private void createQueryHintAnnotation() throws Exception {
-		this.createAnnotationAndMembers("QueryHint", "String name(); " +
-			"String value();");
-	}
 	
 	private ICompilationUnit createTestNamedQuery() throws Exception {
-		createNamedQueryAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -62,7 +49,6 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestNamedQueryWithStringElement(final String elementName, final String value) throws Exception {
-		createNamedQueryAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -76,7 +62,6 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestNamedQueryWithQueryHints() throws Exception {
-		createNamedQueryAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
