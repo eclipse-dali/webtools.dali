@@ -30,15 +30,32 @@ public interface Column
 	 */
 	Table getTable();
 
+
+	// ********** constraints **********
+
 	/**
 	 * Return whether the column is part of it's table's primary key.
 	 */
-	boolean isPrimaryKeyColumn();
+	boolean isPartOfPrimaryKey();
 
 	/**
 	 * Return whether the column is part of one of it's table's foreign keys.
 	 */
-	boolean isForeignKeyColumn();
+	boolean isPartOfForeignKey();
+
+	/**
+	 * Return whether the column is part of a unique constraint defined for its
+	 * table.
+	 */
+	boolean isPartOfUniqueConstraint();
+
+	/**
+	 * Return whether the column is nullable.
+	 */
+	boolean isNullable();
+
+
+	// ********** data type **********
 
 	/**
 	 * Return the name of the column's datatype.
@@ -46,10 +63,33 @@ public interface Column
 	String getDataTypeName();
 
 	/**
+	 * Return whether the column's type is numeric.
+	 */
+	boolean isNumeric();
+
+	/**
+	 * Return the column's precision if it is a NumericalDataType;
+	 * otherwise, return -1.
+	 */
+	public int getPrecision();
+
+	/**
+	 * Return the column's scale if it is an ExactNumericDataType;
+	 * otherwise, return -1.
+	 */
+	public int getScale();
+
+	/**
+	 * If the column is a CharacterStringDataType, return its length;
+	 * otherwise, return -1.
+	 */
+	public int getLength();
+
+	/**
 	 * Return whether the column's datatype is a LOB type
 	 * (i.e. BLOB, CLOB, or NCLOB).
 	 */
-	boolean dataTypeIsLOB();
+	boolean isLOB();
 
 
 	// ********** Java type **********

@@ -173,7 +173,7 @@ class GenTable {
 		return new FilteringIterator<Column, Column>(this.table.primaryKeyColumns()) {
 			@Override
 			protected boolean accept(Column pkColumn) {
-				return pkColumn.isForeignKeyColumn();
+				return pkColumn.isPartOfForeignKey();
 			}
 		};
 	}
@@ -186,7 +186,7 @@ class GenTable {
 		return new FilteringIterator<Column, Column>(this.table.primaryKeyColumns()) {
 			@Override
 			protected boolean accept(Column pkColumn) {
-				return ! pkColumn.isForeignKeyColumn();
+				return ! pkColumn.isPartOfForeignKey();
 			}
 		};
 	}
@@ -199,7 +199,7 @@ class GenTable {
 		return new FilteringIterator<Column, Column>(this.table.columns()) {
 			@Override
 			protected boolean accept(Column column) {
-				return ! (column.isPrimaryKeyColumn() || column.isForeignKeyColumn());
+				return ! (column.isPartOfPrimaryKey() || column.isPartOfForeignKey());
 			}
 		};
 	}

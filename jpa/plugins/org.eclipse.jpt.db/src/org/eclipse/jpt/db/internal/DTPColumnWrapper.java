@@ -12,7 +12,10 @@ package org.eclipse.jpt.db.internal;
 import java.text.Collator;
 
 import org.eclipse.datatools.modelbase.dbdefinition.PredefinedDataTypeDefinition;
+import org.eclipse.datatools.modelbase.sql.datatypes.CharacterStringDataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.DataType;
+import org.eclipse.datatools.modelbase.sql.datatypes.ExactNumericDataType;
+import org.eclipse.datatools.modelbase.sql.datatypes.NumericalDataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.PredefinedDataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.PrimitiveType;
 import org.eclipse.jpt.db.Column;
@@ -58,17 +61,61 @@ final class DTPColumnWrapper
 		return (DTPTableWrapper) this.getParent();
 	}
 
-	public boolean isPrimaryKeyColumn() {
+	public boolean isPartOfPrimaryKey() {
 		return this.getTable().primaryKeyColumnsContains(this);
 	}
 
-	public boolean isForeignKeyColumn() {
+	public boolean isPartOfForeignKey() {
 		return this.getTable().foreignKeyBaseColumnsContains(this);
+	}
+
+	public boolean isPartOfUniqueConstraint() {
+		return this.dtpColumn.isPartOfUniqueConstraint();
+	}
+
+	public boolean isNullable() {
+		return this.dtpColumn.isNullable();
 	}
 
 	public String getDataTypeName() {
 		DataType dataType = this.dtpColumn.getDataType();
 		return (dataType == null) ? null : dataType.getName();
+	}
+
+	public boolean isLOB() {
+		DataType dataType = this.dtpColumn.getDataType();
+		return (dataType instanceof PredefinedDataType) ?
+						primitiveTypeIsLob(((PredefinedDataType) dataType).getPrimitiveType())
+					:
+						false;
+	}
+
+	public boolean isNumeric() {
+		return this.dtpColumn.getDataType() instanceof NumericalDataType;
+	}	
+
+	public int getPrecision() {
+		DataType dataType = this.dtpColumn.getDataType();
+		return (dataType instanceof NumericalDataType) ?
+						((NumericalDataType) dataType).getPrecision()
+					:
+						-1;
+	}
+
+	public int getScale(){
+		DataType dataType = this.dtpColumn.getDataType();
+		return (dataType instanceof ExactNumericDataType) ?
+						((ExactNumericDataType) dataType).getScale()
+					:
+						-1;
+	}
+
+	public int getLength() {
+		DataType dataType = this.dtpColumn.getDataType();
+		return (dataType instanceof CharacterStringDataType) ?
+						((CharacterStringDataType) dataType).getLength()
+					:
+						-1;
 	}
 
 	public String getJavaTypeDeclaration() {
@@ -99,14 +146,6 @@ final class DTPColumnWrapper
 
 	private PredefinedDataTypeDefinition getDefinition(PredefinedDataType dataType) {
 		return this.getDatabase().getDTPDefinition().getPredefinedDataTypeDefinition(dataType.getName());
-	}
-
-	public boolean dataTypeIsLOB() {
-		DataType dataType = this.dtpColumn.getDataType();
-		return (dataType instanceof PredefinedDataType) ?
-						primitiveTypeIsLob(((PredefinedDataType) dataType).getPrimitiveType())
-					:
-						false;
 	}
 
 

@@ -292,7 +292,7 @@ public class EntityGenerator {
 			String columnName = this.config.getDatabaseAnnotationNameBuilder().buildColumnAnnotationName(fieldName, column);
 			this.printColumnAnnotationOn(columnName, pw);
 		}
-		if (column.dataTypeIsLOB()) {
+		if (column.isLOB()) {
 			pw.printAnnotation(JPA.LOB);
 			pw.println();
 		}

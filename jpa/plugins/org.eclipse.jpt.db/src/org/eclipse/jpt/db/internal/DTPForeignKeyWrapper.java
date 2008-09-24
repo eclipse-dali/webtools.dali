@@ -168,7 +168,7 @@ final class DTPForeignKeyWrapper
 		return new FilteringIterator<Column, Column>(this.baseColumns()) {
 			@Override
 			protected boolean accept(Column column) {
-				return ! column.isPrimaryKeyColumn();
+				return ! column.isPartOfPrimaryKey();
 			}
 		};
 	}
