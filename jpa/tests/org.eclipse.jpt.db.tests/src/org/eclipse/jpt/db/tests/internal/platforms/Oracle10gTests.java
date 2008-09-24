@@ -74,17 +74,13 @@ public class Oracle10gTests extends DTPPlatformTests {
 
 	@Override
 	protected boolean supportsCatalogs() {
-		return true;
+		return false;
 	}
 
 	@Override
-	public void testOffline() {
+	protected boolean executeOfflineTests() {
 		// working offline is pretty ugly
-	}
-
-	@Override
-	public void testConnectionListenerOffline() {
-		// working offline is pretty ugly
+		return false;
 	}
 
 	public void testDatabase() throws Exception {
@@ -95,7 +91,7 @@ public class Oracle10gTests extends DTPPlatformTests {
 		// Oracle should have a schema with the same name as the user
 		Schema schema = this.getDatabase().getSchemaForIdentifier(this.getUserID());
 		assertNotNull(schema);
-		assertSame(this.getDatabase().getDefaultCatalog().getDefaultSchema(), schema);
+		assertSame(this.getDatabase().getDefaultSchema(), schema);
 
 		this.connectionProfile.removeConnectionListener(listener);
 		this.connectionProfile.disconnect();
@@ -131,19 +127,19 @@ public class Oracle10gTests extends DTPPlatformTests {
 		assertSame(pkColumn, idColumn);
 		assertEquals("NUMBER", idColumn.getDataTypeName());
 		assertSame(fooTable, idColumn.getTable());
-		assertTrue(idColumn.isPrimaryKeyColumn());
-		assertFalse(idColumn.isForeignKeyColumn());
+		assertTrue(idColumn.isPartOfPrimaryKey());
+		assertFalse(idColumn.isPartOfForeignKey());
 		assertEquals("java.math.BigDecimal", idColumn.getJavaTypeDeclaration());
 
 		Column nameColumn = fooTable.getColumnForIdentifier("name");
 		assertEquals("VARCHAR2", nameColumn.getDataTypeName());
 		assertEquals("java.lang.String", nameColumn.getJavaTypeDeclaration());
-		assertFalse(nameColumn.isPrimaryKeyColumn());
+		assertFalse(nameColumn.isPartOfPrimaryKey());
 
 		Column barColumn = fooTable.getColumnForIdentifier("bar_id");
 		assertEquals("NUMBER", barColumn.getDataTypeName());
-		assertTrue(barColumn.isForeignKeyColumn());
-		assertFalse(barColumn.isPrimaryKeyColumn());
+		assertTrue(barColumn.isPartOfForeignKey());
+		assertFalse(barColumn.isPartOfPrimaryKey());
 
 		ForeignKey barFK = fooTable.foreignKeys().next();  // there should only be 1 foreign key
 		assertEquals(1, barFK.columnPairsSize());
@@ -164,7 +160,7 @@ public class Oracle10gTests extends DTPPlatformTests {
 		assertFalse(barTable.isPossibleJoinTable());
 		assertEquals("BLOB", barTable.getColumnForIdentifier("chunk").getDataTypeName());
 		assertEquals("byte[]", barTable.getColumnForIdentifier("chunk").getJavaTypeDeclaration());
-		assertTrue(barTable.getColumnForIdentifier("chunk").dataTypeIsLOB());
+		assertTrue(barTable.getColumnForIdentifier("chunk").isLOB());
 		assertSame(barTable, barFK.getReferencedTable());
 
 		// FOO_BAZ
@@ -174,7 +170,7 @@ public class Oracle10gTests extends DTPPlatformTests {
 		assertEquals(2, foo_bazTable.foreignKeysSize());
 		assertTrue(foo_bazTable.isPossibleJoinTable());
 		assertTrue(foo_bazTable.joinTableNameIsDefault());
-		assertTrue(foo_bazTable.getColumnForIdentifier("foo_id").isForeignKeyColumn());
+		assertTrue(foo_bazTable.getColumnForIdentifier("foo_id").isPartOfForeignKey());
 
 		this.dropTable("foo_baz");
 		this.dropTable("baz");

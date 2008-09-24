@@ -982,7 +982,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(4, CollectionTools.size(childEntity.associatedTablesIncludingInherited()));
 	}
 	
-	public void testAssociatedTableIdentifiersIncludingInherited() throws Exception {
+	public void testAssociatedTableNamesIncludingInherited() throws Exception {
 		createTestEntityWithSecondaryTables();
 		createTestSubType();
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
@@ -1486,7 +1486,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertNull(javaEntity().getDefaultPrimaryKeyJoinColumn());
 	}
 	
-	public void testTableIdentifierIsInvalid() throws Exception {
+	public void testTableNameIsInvalid() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 

@@ -82,9 +82,9 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 		}
 
 		SecondaryTable secondaryTable = this.getSubject().addSpecifiedSecondaryTable();
-		secondaryTable.setSpecifiedName(dialog.getSelectedTableIdentifier());
-		secondaryTable.setSpecifiedCatalog(dialog.getSelectedCatalogIdentifier());
-		secondaryTable.setSpecifiedSchema(dialog.getSelectedSchemaIdentifier());
+		secondaryTable.setSpecifiedName(dialog.getSelectedTable());
+		secondaryTable.setSpecifiedCatalog(dialog.getSelectedCatalog());
+		secondaryTable.setSpecifiedSchema(dialog.getSelectedSchema());
 
 		listSelectionModel.setSelectedValue(secondaryTable);
 	}
@@ -170,9 +170,9 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 			return;
 		}
 
-		secondaryTable.setSpecifiedName(dialog.getSelectedTableIdentifier());
-		secondaryTable.setSpecifiedCatalog(dialog.getSelectedCatalogIdentifier());
-		secondaryTable.setSpecifiedSchema(dialog.getSelectedSchemaIdentifier());
+		secondaryTable.setSpecifiedName(dialog.getSelectedTable());
+		secondaryTable.setSpecifiedCatalog(dialog.getSelectedCatalog());
+		secondaryTable.setSpecifiedSchema(dialog.getSelectedSchema());
 	}
 
 }

@@ -70,4 +70,10 @@ public class Oracle10gXETests extends DTPPlatformTests {
 		return true;
 	}
 
+	@Override
+	protected boolean executeOfflineTests() {
+		// working offline is pretty ugly
+		return false;
+	}
+
 }

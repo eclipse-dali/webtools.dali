@@ -10,6 +10,7 @@
 package org.eclipse.jpt.db.internal;
 
 import java.text.Collator;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -27,9 +28,13 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 /**
  * Wrap a DTP Database.
  * 
- * Sometimes the database will directly hold schemata; but if the database
- * supports catalogs, it will not hold the schemata directly, but will delegate
- * to the "default" catalog.
+ * Catalogs vs. Schemata:
+ * Typically, if a DTP database does not support "catalogs",
+ * o.e.datatools.modelbase.sql.schema.Database#getCatalogs() will return a
+ * single catalog without a name (actually, it's an empty string). This catalog
+ * will contain all the database's schemata. We try to ignore this catalog and
+ * return the schemata from the database directly. (Note MySQL does not seem
+ * to be consistent with this pattern.)
  * 
  * Note:
  * We use "name" when dealing with the unmodified name of a database object
@@ -67,6 +72,11 @@ final class DTPDatabaseWrapper
 
 	// ********** DTPWrapper implementation **********
 
+	/* TODO
+	 * We might want to listen to the "virtual" catalog; but that's probably
+	 * not necessary since there is not easy way for the user to refresh it
+	 * (i.e. it is not displayed in the DTP UI).
+	 */
 	@Override
 	synchronized void catalogObjectChanged() {
 		super.catalogObjectChanged();
@@ -84,7 +94,13 @@ final class DTPDatabaseWrapper
 	@Override
 	@SuppressWarnings("unchecked")
 	List<org.eclipse.datatools.modelbase.sql.schema.Schema> getDTPSchemata() {
-		return this.dtpDatabase.getSchemas();
+		List<org.eclipse.datatools.modelbase.sql.schema.Catalog> dtpCatalogs = this.getDTPCatalogs();
+		// if there are no catalogs, the database must hold the schemata directly
+		if ((dtpCatalogs == null) || dtpCatalogs.isEmpty()) {
+			return this.dtpDatabase.getSchemas();
+		}
+		org.eclipse.datatools.modelbase.sql.schema.Catalog virtualCatalog = getVirtualCatalog(dtpCatalogs);
+		return (virtualCatalog != null) ? virtualCatalog.getSchemas() : Collections.emptyList();
 	}
 
 	@Override
@@ -129,9 +145,38 @@ final class DTPDatabaseWrapper
 	// ***** catalogs
 
 	public boolean supportsCatalogs() {
-		// if the DTP database does not have any schemata, it must have catalogs...
-		List<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata = this.getDTPSchemata();
-		return (dtpSchemata == null) || dtpSchemata.isEmpty();
+		return supportsCatalogs(this.getDTPCatalogs());
+	}
+
+	private static boolean supportsCatalogs(List<org.eclipse.datatools.modelbase.sql.schema.Catalog> dtpCatalogs) {
+		// if there are no catalogs, they must not be supported
+		if ((dtpCatalogs == null) || dtpCatalogs.isEmpty()) {
+			return false;
+		}
+
+		// if we only have a single catalog with an empty name,
+		// they are not really supported either...
+		return ! listContainsOnlyAVirtualCatalog(dtpCatalogs);
+	}
+
+	/**
+	 * pre-condition: 'dtpCatalogs' is not null
+	 */
+	private static boolean listContainsOnlyAVirtualCatalog(List<org.eclipse.datatools.modelbase.sql.schema.Catalog> dtpCatalogs) {
+		return getVirtualCatalog(dtpCatalogs) != null;
+	}
+
+	/**
+	 * pre-condition: 'dtpCatalogs' is not null
+	 */
+	private static org.eclipse.datatools.modelbase.sql.schema.Catalog getVirtualCatalog(List<org.eclipse.datatools.modelbase.sql.schema.Catalog> dtpCatalogs) {
+		if (dtpCatalogs.size() == 1) {
+			org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog = dtpCatalogs.get(0);
+			if (dtpCatalog.getName().equals("")) { //$NON-NLS-1$
+				return dtpCatalog;
+			}
+		}
+		return null;
 	}
 
 	public Iterator<Catalog> catalogs() {
@@ -151,7 +196,7 @@ final class DTPDatabaseWrapper
 
 	private DTPCatalogWrapper[] buildCatalogs() {
 		List<org.eclipse.datatools.modelbase.sql.schema.Catalog> dtpCatalogs = this.getDTPCatalogs();
-		if ((dtpCatalogs == null) || dtpCatalogs.isEmpty()) {
+		if ( ! supportsCatalogs(dtpCatalogs)) {
 			return EMPTY_CATALOGS;
 		}
 		DTPCatalogWrapper[] result = new DTPCatalogWrapper[dtpCatalogs.size()];
@@ -218,9 +263,12 @@ final class DTPDatabaseWrapper
 	@Override
 	synchronized DTPSchemaWrapper[] getSchemata() {
 		DTPCatalogWrapper cat = this.getDefaultCatalog();
-		return (cat == null) ? super.getSchemata() : cat.getSchemata();
+		return (cat != null) ? cat.getSchemata() : super.getSchemata();
 	}
 
+	/**
+	 * Return the specified schema container's default schema.
+	 */
 	DTPSchemaWrapper getDefaultSchema(DTPSchemaContainerWrapper schemaContainer) {
 		return this.getVendor().getDefaultSchema(schemaContainer);
 	}
@@ -418,7 +466,15 @@ final class DTPDatabaseWrapper
 
 		// ********** default catalog and schema **********
 
+		/**
+		 * Return whether the vendor supports catalogs.
+		 */
+		abstract boolean supportsCatalogs();
+
 		DTPCatalogWrapper getDefaultCatalog(DTPDatabaseWrapper database) {
+			if ( ! this.supportsCatalogs()) {
+				throw new UnsupportedOperationException();
+			}
 			return database.getCatalogForIdentifier(this.getDefaultCatalogIdentifier(database));
 		}
 
@@ -426,6 +482,9 @@ final class DTPDatabaseWrapper
 		 * Typically, the name of the default catalog is the user name.
 		 */
 		String getDefaultCatalogIdentifier(DTPDatabaseWrapper database) {
+			if ( ! this.supportsCatalogs()) {
+				throw new UnsupportedOperationException();
+			}
 			return database.getConnectionProfile().getUserName();
 		}
 
@@ -677,6 +736,11 @@ final class DTPDatabaseWrapper
 			return "Default Vendor"; //$NON-NLS-1$
 		}
 
+		@Override
+		boolean supportsCatalogs() {
+			return true;  // hmmm...  ~bjv
+		}
+
 	}
 
 	private static class Derby extends Vendor {
@@ -691,12 +755,9 @@ final class DTPDatabaseWrapper
 			return "Derby"; //$NON-NLS-1$
 		}
 
-		/**
-		 * Derby has a single, unnamed catalog that contains all the schemata.
-		 */
 		@Override
-		String getDefaultCatalogIdentifier(DTPDatabaseWrapper database) {
-			return ""; //$NON-NLS-1$
+		boolean supportsCatalogs() {
+			return false;
 		}
 
 		/**
@@ -732,6 +793,17 @@ final class DTPDatabaseWrapper
 			return "HSQLDB"; //$NON-NLS-1$
 		}
 
+		@Override
+		boolean supportsCatalogs() {
+			return false;
+		}
+
+		@Override
+		String getDefaultSchemaIdentifier(DTPSchemaContainerWrapper sc) {
+			return PUBLIC_SCHEMA_NAME;
+		}
+		private static final String PUBLIC_SCHEMA_NAME = "PUBLIC";  //$NON-NLS-1$
+
 	}
 
 	private static class DB2 extends Vendor {
@@ -752,6 +824,11 @@ final class DTPDatabaseWrapper
 		}
 
 		@Override
+		boolean supportsCatalogs() {
+			return false;
+		}
+
+		@Override
 		char[] getNormalNamePartCharacters() {
 			return NORMAL_NAME_PART_CHARACTERS;
 		}
@@ -769,6 +846,11 @@ final class DTPDatabaseWrapper
 		@Override
 		String getName() {
 			return "Informix"; //$NON-NLS-1$
+		}
+
+		@Override
+		boolean supportsCatalogs() {
+			return false;
 		}
 
 		@Override
@@ -800,6 +882,11 @@ final class DTPDatabaseWrapper
 		@Override
 		String getName() {
 			return "SQL Server"; //$NON-NLS-1$
+		}
+
+		@Override
+		boolean supportsCatalogs() {
+			return true;
 		}
 
 		/**
@@ -856,6 +943,11 @@ final class DTPDatabaseWrapper
 			return "MySql"; //$NON-NLS-1$
 		}
 
+		@Override
+		boolean supportsCatalogs() {
+			return false;
+		}
+
 		/**
 		 * MySQL is a bit unusual, so we force exact matches.
 		 * (e.g. MySQL folds database and table names to lowercase on Windows
@@ -875,10 +967,14 @@ final class DTPDatabaseWrapper
 
 		/**
 		 * MySQL has a single schema with the same name as the database.
+		 * Although you can qualify identifiers with a database/schema name
+		 * in MySQL, only the database/schema specified at login seems to be
+		 * available in the DTP model.... (In MySQL, SCHEMA is a synonym for
+		 * DATABASE.)
 		 */
 		@Override
 		String getDefaultSchemaIdentifier(DTPSchemaContainerWrapper sc) {
-			return sc.getDatabase().getName();
+			return sc.getDatabase().getName();  // hmmm... ~bjv
 		}
 
 		/**
@@ -921,12 +1017,9 @@ final class DTPDatabaseWrapper
 			return "Oracle"; //$NON-NLS-1$
 		}
 
-		/**
-		 * Oracle has a single, unnamed catalog that contains all the schemata.
-		 */
 		@Override
-		String getDefaultCatalogIdentifier(DTPDatabaseWrapper database) {
-			return ""; //$NON-NLS-1$
+		boolean supportsCatalogs() {
+			return false;
 		}
 
 		@Override
@@ -954,12 +1047,9 @@ final class DTPDatabaseWrapper
 			return Folder.LOWER;
 		}
 
-		/**
-		 * PostgreSQL has a single, unnamed catalog that contains all the schemata.
-		 */
 		@Override
-		String getDefaultCatalogIdentifier(DTPDatabaseWrapper database) {
-			return ""; //$NON-NLS-1$
+		boolean supportsCatalogs() {
+			return false;
 		}
 
 		/**
@@ -969,8 +1059,8 @@ final class DTPDatabaseWrapper
 		 */
 		@Override
 		DTPSchemaWrapper getDefaultSchema(DTPSchemaContainerWrapper sc) {
-			DTPSchemaWrapper schema = super.getDefaultSchema(sc);
-			return (schema != null) ? schema : sc.getSchemaNamed(PUBLIC_SCHEMA_NAME);
+			DTPSchemaWrapper userSchema = super.getDefaultSchema(sc);
+			return (userSchema != null) ? userSchema : sc.getSchemaNamed(PUBLIC_SCHEMA_NAME);
 		}
 		private static final String PUBLIC_SCHEMA_NAME = "public";  //$NON-NLS-1$
 
@@ -998,6 +1088,11 @@ final class DTPDatabaseWrapper
 		@Override
 		String getName() {
 			return "MaxDB"; //$NON-NLS-1$
+		}
+
+		@Override
+		boolean supportsCatalogs() {
+			return false;
 		}
 
 		@Override
@@ -1030,8 +1125,25 @@ final class DTPDatabaseWrapper
 			return this.name;
 		}
 
+		@Override
+		boolean supportsCatalogs() {
+			return true;
+		}
+
 		/**
-		 * The default schema on Sybase for any database (catalog) is 'dbo'.
+		 * The typical default schema on Sybase for any database (catalog) is
+		 * 'dbo'.
+		 * 
+		 * Actually, the default schema is more like a search path:
+		 * The server looks for a schema object (e.g table) first in the user's
+		 * schema, the it look for the schema object in the database owner's
+		 * schema (dbo). As a result, it's really not possible to specify
+		 * the "default" schema without knowing the schema object we are
+		 * looking for.
+		 * 
+		 * (Note: the current 'user' is not the same thing as the current
+		 * 'login' - see sp_adduser and sp_addlogin; so we probably can't
+		 * use ConnectionProfile#getUserName().)
 		 */
 		@Override
 		String getDefaultSchemaIdentifier(DTPSchemaContainerWrapper sc) {

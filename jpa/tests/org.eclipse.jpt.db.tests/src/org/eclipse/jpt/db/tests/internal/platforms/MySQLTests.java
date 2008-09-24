@@ -90,6 +90,11 @@ public class MySQLTests extends DTPPlatformTests {
 		return false;
 	}
 
+	@Override
+	protected boolean executeOfflineTests() {
+		return true;
+	}
+
 	public void testDatabase() throws Exception {
 		this.connectionProfile.connect();
 		TestConnectionListener listener = new TestConnectionListener();
@@ -109,6 +114,8 @@ public class MySQLTests extends DTPPlatformTests {
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
 
+		// once you have connected, specifying a database, DTP seems to
+		// only make that database available...
 //		this.dropDatabase("table_test");
 
 //		this.executeUpdate("CREATE DATABASE table_test");
@@ -141,19 +148,19 @@ public class MySQLTests extends DTPPlatformTests {
 		assertSame(pkColumn, idColumn);
 		assertEquals("INT", idColumn.getDataTypeName());
 		assertSame(fooTable, idColumn.getTable());
-		assertTrue(idColumn.isPrimaryKeyColumn());
-		assertFalse(idColumn.isForeignKeyColumn());
+		assertTrue(idColumn.isPartOfPrimaryKey());
+		assertFalse(idColumn.isPartOfForeignKey());
 		assertEquals("int", idColumn.getJavaTypeDeclaration());
 
 		Column nameColumn = fooTable.getColumnNamed("name");
 		assertEquals("VARCHAR", nameColumn.getDataTypeName());
 		assertEquals("java.lang.String", nameColumn.getJavaTypeDeclaration());
-		assertFalse(nameColumn.isPrimaryKeyColumn());
+		assertFalse(nameColumn.isPartOfPrimaryKey());
 
 		Column barColumn = fooTable.getColumnNamed("bar_id");
 		assertEquals("INT", barColumn.getDataTypeName());
-		assertTrue(barColumn.isForeignKeyColumn());
-		assertFalse(barColumn.isPrimaryKeyColumn());
+		assertTrue(barColumn.isPartOfForeignKey());
+		assertFalse(barColumn.isPartOfPrimaryKey());
 
 		ForeignKey barFK = fooTable.foreignKeys().next();  // there should only be 1 foreign key
 		assertEquals(1, barFK.columnPairsSize());
@@ -174,7 +181,7 @@ public class MySQLTests extends DTPPlatformTests {
 		assertFalse(barTable.isPossibleJoinTable());
 		assertEquals("BLOB", barTable.getColumnNamed("chunk").getDataTypeName());
 		assertEquals("byte[]", barTable.getColumnNamed("chunk").getJavaTypeDeclaration());
-		assertTrue(barTable.getColumnNamed("chunk").dataTypeIsLOB());
+		assertTrue(barTable.getColumnNamed("chunk").isLOB());
 		assertSame(barTable, barFK.getReferencedTable());
 
 		// FOO_BAZ
@@ -184,7 +191,7 @@ public class MySQLTests extends DTPPlatformTests {
 		assertEquals(2, foo_bazTable.foreignKeysSize());
 		assertTrue(foo_bazTable.isPossibleJoinTable());
 		assertTrue(foo_bazTable.joinTableNameIsDefault());
-		assertTrue(foo_bazTable.getColumnNamed("foo_id").isForeignKeyColumn());
+		assertTrue(foo_bazTable.getColumnNamed("foo_id").isPartOfForeignKey());
 
 		this.dropTable(this.getDatabaseName(), "foo_baz");
 		this.dropTable(this.getDatabaseName(), "baz");

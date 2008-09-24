@@ -23,8 +23,11 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
 
-public class MappingTools
-{
+/**
+ * Gather some of the behavior common to the Java and XML models. :-(
+ */
+public class MappingTools {
+
 	/**
 	 * Default join table name from the JPA spec:
 	 * 	The concatenated names of the two associated primary
@@ -45,6 +48,29 @@ public class MappingTools
 		if ( ! relationshipMapping.isRelationshipOwner()) {
 			return null;
 		}
+		if (relationshipMapping.getJpaProject().getDataSource().connectionProfileIsActive()) {
+			return buildDbJoinTableDefaultName(relationshipMapping);
+		}
+		// continue with a "best effort":
+		String owningTableName = relationshipMapping.getTypeMapping().getPrimaryTableName();
+		if (owningTableName == null) {
+			return null;
+		}
+		Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
+		if (targetEntity == null) {
+			return null;
+		}
+		String targetTableName = targetEntity.getPrimaryTableName();
+		if (targetTableName == null) {
+			return null;
+		}
+		return owningTableName + '_' + targetTableName;
+	}
+
+	/**
+	 * Use the database to build a more accurate default name.
+	 */
+	protected static String buildDbJoinTableDefaultName(RelationshipMapping relationshipMapping) {
 		Table owningTable = relationshipMapping.getTypeMapping().getPrimaryDbTable();
 		if (owningTable == null) {
 			return null;
@@ -69,20 +95,29 @@ public class MappingTools
 	 * OneToMany or ManyToMany) is
 	 *     [target entity name]_[referenced column name]
 	 * 
-	 * See the comments in #buildJoinTableDefaultName(RelationshipMapping)
+	 * @see #buildJoinTableDefaultName(RelationshipMapping)
 	 */
 	public static String buildJoinColumnDefaultName(JoinColumn joinColumn) {
-		if (joinColumn.getOwner().joinColumnsSize() != 1) {
+		JoinColumn.Owner owner = joinColumn.getOwner();
+		RelationshipMapping relationshipMapping = owner.getRelationshipMapping();
+		if (relationshipMapping == null) {
 			return null;
 		}
-		String prefix = joinColumn.getOwner().getAttributeName();
-		if (prefix == null) {
-			prefix = targetEntityName(joinColumn);
-		}
-		if (prefix == null) {
+		if ( ! relationshipMapping.isRelationshipOwner()) {
 			return null;
 		}
-		// TODO not sure which of these is correct...
+		if (owner.joinColumnsSize() != 1) {
+			return null;
+		}
+		String prefix = owner.getAttributeName();
+		if (prefix == null) {
+			Entity targetEntity = owner.getTargetEntity();
+			if (targetEntity == null) {
+				return null;
+			}
+			prefix = targetEntity.getName();
+		}
+		// not sure which of these is correct...
 		// (the spec implies that the referenced column is always the
 		// primary key column of the target entity)
 		// Column targetColumn = joinColumn.getTargetPrimaryKeyDbColumn();
@@ -91,30 +126,34 @@ public class MappingTools
 			return null;
 		}
 		String name = prefix + '_' + targetColumn.getName();
-		return targetColumn.getDatabase().convertNameToIdentifier(name);
+		// not sure which of these is correct...
+		// converting the name to an identifier will result in the identifier
+		// being delimited nearly every time (at least on non-Sybase/MS
+		// databases); but that probably is not the intent of the spec...
+		// return targetColumn.getDatabase().convertNameToIdentifier(name);
+		return name;
 	}
 
 	/**
-	 * return the name of the target entity
+	 * If appropriate, return the name of the single primary key column of the
+	 * target entity.
 	 */
-	protected static String targetEntityName(JoinColumn joinColumn) {
-		Entity targetEntity = joinColumn.getOwner().getTargetEntity();
-		return (targetEntity == null) ? null : targetEntity.getName();
-	}
-
-	public static String buildJoinColumnDefaultReferencedColumnName(JoinColumn joinColumn) {
-		if (joinColumn.getOwner().joinColumnsSize() != 1) {
+	public static String buildJoinColumnDefaultReferencedColumnName(JoinColumn.Owner joinColumnOwner) {
+		RelationshipMapping relationshipMapping = joinColumnOwner.getRelationshipMapping();
+		if (relationshipMapping == null) {
 			return null;
 		}
-		return targetPrimaryKeyColumnName(joinColumn);
-	}
-
-	/**
-	 * return the name of the single primary key column of the target entity
-	 */
-	protected static String targetPrimaryKeyColumnName(JoinColumn joinColumn) {
-		Entity targetEntity = joinColumn.getOwner().getTargetEntity();
-		return (targetEntity == null) ? null : targetEntity.getPrimaryKeyColumnName();
+		if ( ! relationshipMapping.isRelationshipOwner()) {
+			return null;
+		}
+		if (joinColumnOwner.joinColumnsSize() != 1) {
+			return null;
+		}
+		Entity targetEntity = joinColumnOwner.getTargetEntity();
+		if (targetEntity == null) {
+			return null;
+		}
+		return targetEntity.getPrimaryKeyColumnName();
 	}
 	
 	
@@ -124,10 +163,11 @@ public class MappingTools
 			return null;
 		}
 		PersistentType persistentType = persistentAttribute.getPersistenceUnit().getPersistentType(qualifiedTypeName);
-		if (persistentType != null) {
-			if (persistentType.getMappingKey() == MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
-				return (Embeddable) persistentType.getMapping();
-			}
+		if (persistentType == null) {
+			return null;
+		}
+		if (persistentType.getMappingKey() == MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
+			return (Embeddable) persistentType.getMapping();
 		}
 		return null;
 	}
@@ -136,14 +176,16 @@ public class MappingTools
 		if (attributeName == null || embeddable == null) {
 			return null;
 		}
-		for (Iterator<PersistentAttribute> stream = embeddable.getPersistentType().allAttributes(); stream.hasNext();) {
+		for (Iterator<PersistentAttribute> stream = embeddable.getPersistentType().allAttributes(); stream.hasNext(); ) {
 			PersistentAttribute persAttribute = stream.next();
 			if (attributeName.equals(persAttribute.getName())) {
 				if (persAttribute.getMapping() instanceof ColumnMapping) {
 					return (ColumnMapping) persAttribute.getMapping();
 				}
+				// keep looking or return null???
 			}
 		}
 		return null;		
 	}
+
 }

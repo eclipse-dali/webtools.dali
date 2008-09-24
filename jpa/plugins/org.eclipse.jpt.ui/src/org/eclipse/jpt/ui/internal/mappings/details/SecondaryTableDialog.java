@@ -34,9 +34,9 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Clients can use this dialog to prompt the user for SecondaryTable settings.
  * Use the following once the dialog is closed:
- *     @see #getSelectedTableIdentifier()
- *     @see #getSelectedCatalogIdentifier()
- *     @see #getSelectedSchemaIdentifier()
+ *     @see #getSelectedTable()
+ *     @see #getSelectedCatalog()
+ *     @see #getSelectedSchema()
  */
 public class SecondaryTableDialog extends Dialog {
 
@@ -46,17 +46,17 @@ public class SecondaryTableDialog extends Dialog {
 	 * when creating a new SecondaryTable, 'secondaryTable' will be null
 	 */
 	private final SecondaryTable secondaryTable;
-	private final String defaultCatalogIdentifier;
-	private final String defaultSchemaIdentifier;
+	private final String defaultCatalog;
+	private final String defaultSchema;
 	
 	protected Combo tableCombo;
 	protected Combo catalogCombo;
 	protected Combo schemaCombo;
 
 	// these values are set upon close
-	private String selectedTableIdentifier;
-	private String selectedSchemaIdentifier;
-	private String selectedCatalogIdentifier;
+	private String selectedTable;
+	private String selectedSchema;
+	private String selectedCatalog;
 
 
 	// ********** constructors **********
@@ -64,8 +64,8 @@ public class SecondaryTableDialog extends Dialog {
 	/**
 	 * Use this constructor to create a new secondary table
 	 */
-	public SecondaryTableDialog(Shell parent, JpaProject jpaProject, String defaultCatalogIdentifier, String defaultSchemaIdentifier) {
-		this(parent, jpaProject, null, defaultCatalogIdentifier, defaultSchemaIdentifier);
+	public SecondaryTableDialog(Shell parent, JpaProject jpaProject, String defaultCatalog, String defaultSchema) {
+		this(parent, jpaProject, null, defaultCatalog, defaultSchema);
 	}
 
 	/**
@@ -78,12 +78,12 @@ public class SecondaryTableDialog extends Dialog {
 	/**
 	 * internal constructor
 	 */
-	protected SecondaryTableDialog(Shell parent, JpaProject jpaProject, SecondaryTable secondaryTable, String defaultCatalogIdentifier, String defaultSchemaIdentifier) {
+	protected SecondaryTableDialog(Shell parent, JpaProject jpaProject, SecondaryTable secondaryTable, String defaultCatalog, String defaultSchema) {
 		super(parent);
 		this.jpaProject = jpaProject;
 		this.secondaryTable = secondaryTable;
-		this.defaultCatalogIdentifier = defaultCatalogIdentifier;
-		this.defaultSchemaIdentifier = defaultSchemaIdentifier;
+		this.defaultCatalog = defaultCatalog;
+		this.defaultSchema = defaultSchema;
 	}
 
 
@@ -184,8 +184,8 @@ public class SecondaryTableDialog extends Dialog {
 		}
 
 		// add the default catalog first
-		if (this.defaultCatalogIdentifier != null) {
-			this.catalogCombo.add(NLS.bind(JptUiMappingsMessages.SecondaryTableDialog_defaultCatalog, this.defaultCatalogIdentifier));
+		if (this.defaultCatalog != null) {
+			this.catalogCombo.add(NLS.bind(JptUiMappingsMessages.SecondaryTableDialog_defaultCatalog, this.defaultCatalog));
 		}
 
 		if (database != null) {
@@ -213,13 +213,13 @@ public class SecondaryTableDialog extends Dialog {
 	// assume the catalog combo has been populated by now
 	protected void populateSchemaCombo() {
 		// add the default schema first
-		if (this.defaultSchemaIdentifier != null) {
-			this.schemaCombo.add(NLS.bind(JptUiMappingsMessages.SecondaryTableDialog_defaultSchema, this.defaultSchemaIdentifier));
+		if (this.defaultSchema != null) {
+			this.schemaCombo.add(NLS.bind(JptUiMappingsMessages.SecondaryTableDialog_defaultSchema, this.defaultSchema));
 		}
 
-		SchemaContainer schemaContainer = this.getCurrentSchemaContainer();
-		if (schemaContainer != null) {
-			for (Iterator<String> stream = schemaContainer.sortedSchemaIdentifiers(); stream.hasNext(); ) {
+		SchemaContainer sc = this.getCurrentDbSchemaContainer();
+		if (sc != null) {
+			for (Iterator<String> stream = sc.sortedSchemaIdentifiers(); stream.hasNext(); ) {
 				this.schemaCombo.add(stream.next());
 			}
 		}
@@ -239,9 +239,9 @@ public class SecondaryTableDialog extends Dialog {
 	// assume the schema combo has been populated by now
 	protected void populateTableCombo() {
 		// we don't need to add a "default" to the table combo
-		Schema schema = this.getCurrentSchema();
-		if (schema != null) {
-			for (Iterator<String> stream = schema.sortedTableIdentifiers(); stream.hasNext(); ) {
+		Schema dbSchema = this.getCurrentDbSchema();
+		if (dbSchema != null) {
+			for (Iterator<String> stream = dbSchema.sortedTableIdentifiers(); stream.hasNext(); ) {
 				this.tableCombo.add(stream.next());
 			}
 		}
@@ -271,10 +271,10 @@ public class SecondaryTableDialog extends Dialog {
 	}
 
 	protected void refreshSchemaCombo() {
-		String schemaIdentifier = this.schemaCombo.getText();
+		String schema = this.schemaCombo.getText();
 		this.schemaCombo.removeAll();
 		this.populateSchemaCombo();
-		this.schemaCombo.setText(schemaIdentifier);
+		this.schemaCombo.setText(schema);
 	}
 
 	protected SelectionListener buildSchemaSelectionListener() {
@@ -297,10 +297,10 @@ public class SecondaryTableDialog extends Dialog {
 	}
 
 	protected void refreshTableCombo() {
-		String tableIdentifier = this.tableCombo.getText();
+		String table = this.tableCombo.getText();
 		this.tableCombo.removeAll();
 		this.populateTableCombo();
-		this.tableCombo.setText(tableIdentifier);
+		this.tableCombo.setText(table);
 	}
 
 
@@ -318,7 +318,7 @@ public class SecondaryTableDialog extends Dialog {
 		return this.jpaProject.getDataSource().getDatabase();
 	}
 
-	protected SchemaContainer getCurrentSchemaContainer() {
+	protected SchemaContainer getCurrentDbSchemaContainer() {
 		Database database = this.getDatabase();
 		if (database == null) {
 			return null;
@@ -326,29 +326,29 @@ public class SecondaryTableDialog extends Dialog {
 		if ( ! database.supportsCatalogs()) {
 			return database;
 		}
-		String catalogIdentifier = this.getCurrentCatalogIdentifier();
-		return (catalogIdentifier == null) ? null : database.getCatalogForIdentifier(catalogIdentifier);
+		String catalog = this.getCurrentCatalog();
+		return (catalog == null) ? null : database.getCatalogForIdentifier(catalog);
 	}
 
-	protected String getCurrentCatalogIdentifier() {
-		if ((this.defaultCatalogIdentifier != null) && (this.catalogCombo.getSelectionIndex() == 0)) {
-			return this.defaultCatalogIdentifier;
+	protected String getCurrentCatalog() {
+		if ((this.defaultCatalog != null) && (this.catalogCombo.getSelectionIndex() == 0)) {
+			return this.defaultCatalog;
 		}
 		return convertText(this.catalogCombo);
 	}
 
-	protected Schema getCurrentSchema() {
-		String schemaIdentifier = this.getCurrentSchemaIdentifier();
-		if (schemaIdentifier == null) {
+	protected Schema getCurrentDbSchema() {
+		String schema = this.getCurrentSchema();
+		if (schema == null) {
 			return null;
 		}
-		SchemaContainer schemaContainer = this.getCurrentSchemaContainer();
-		return (schemaContainer == null) ? null : schemaContainer.getSchemaForIdentifier(schemaIdentifier);
+		SchemaContainer sc = this.getCurrentDbSchemaContainer();
+		return (sc == null) ? null : sc.getSchemaForIdentifier(schema);
 	}
 
-	protected String getCurrentSchemaIdentifier() {
-		if ((this.defaultSchemaIdentifier != null) && (this.schemaCombo.getSelectionIndex() == 0)) {
-			return this.defaultSchemaIdentifier;
+	protected String getCurrentSchema() {
+		if ((this.defaultSchema != null) && (this.schemaCombo.getSelectionIndex() == 0)) {
+			return this.defaultSchema;
 		}
 		return convertText(this.schemaCombo);
 	}
@@ -361,9 +361,9 @@ public class SecondaryTableDialog extends Dialog {
 	 */
 	@Override
 	public boolean close() {
-		this.selectedTableIdentifier = this.tableCombo.getText();
-		this.selectedCatalogIdentifier = convertText(this.catalogCombo, this.defaultCatalogIdentifier);
-		this.selectedSchemaIdentifier = convertText(this.schemaCombo, this.defaultSchemaIdentifier);
+		this.selectedTable = this.tableCombo.getText();
+		this.selectedCatalog = convertText(this.catalogCombo, this.defaultCatalog);
+		this.selectedSchema = convertText(this.schemaCombo, this.defaultSchema);
 		return super.close();
 	}
 
@@ -392,27 +392,27 @@ public class SecondaryTableDialog extends Dialog {
 	// ********** public API **********
 
 	/**
-	 * Return the selected table identifier. Return an empty string if nothing
+	 * Return the selected table. Return an empty string if nothing
 	 * is selected (since there is no default).
 	 */
-	public String getSelectedTableIdentifier() {
-		return this.selectedTableIdentifier;
+	public String getSelectedTable() {
+		return this.selectedTable;
 	}
 
 	/**
-	 * Return the selected catalog identifier. Return null if either nothing or
+	 * Return the selected catalog. Return null if either nothing or
 	 * the default catalog is selected.
 	 */
-	public String getSelectedCatalogIdentifier() {
-		return this.selectedCatalogIdentifier;
+	public String getSelectedCatalog() {
+		return this.selectedCatalog;
 	}
 
 	/**
-	 * Return the selected schema identifier. Return null if either nothing or
+	 * Return the selected schema. Return null if either nothing or
 	 * the default schema is selected.
 	 */
-	public String getSelectedSchemaIdentifier() {
-		return this.selectedSchemaIdentifier;
+	public String getSelectedSchema() {
+		return this.selectedSchema;
 	}
 
 }

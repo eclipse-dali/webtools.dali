@@ -18,12 +18,11 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.RandomAccess;
-import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
 
@@ -666,25 +665,19 @@ public final class CollectionTools {
 	 * Return a bag corresponding to the specified enumeration.
 	 * HashBag(java.util.Enumeration enumeration)
 	 */
-	public static <E> Bag<E> bag(Enumeration<? extends E> enumeration) {
-		return (enumeration.hasMoreElements()) ?
-				bag(enumeration, new HashBag<E>())
-			:
-				Bag.Empty.<E>instance();
+	public static <E> HashBag<E> bag(Enumeration<? extends E> enumeration) {
+		return bag(enumeration, new HashBag<E>());
 	}
 
 	/**
 	 * Return a bag corresponding to the specified enumeration.
 	 * HashBag(java.util.Enumeration enumeration)
 	 */
-	public static <E> Bag<E> bag(Enumeration<? extends E> enumeration, int size) {
-		return (enumeration.hasMoreElements()) ?
-				bag(enumeration, new HashBag<E>(size))
-			:
-				Bag.Empty.<E>instance();
+	public static <E> HashBag<E> bag(Enumeration<? extends E> enumeration, int size) {
+		return bag(enumeration, new HashBag<E>(size));
 	}
 
-	private static <E> Bag<E> bag(Enumeration<? extends E> enumeration, HashBag<E> bag) {
+	private static <E> HashBag<E> bag(Enumeration<? extends E> enumeration, HashBag<E> bag) {
 		while (enumeration.hasMoreElements()) {
 			bag.add(enumeration.nextElement());
 		}
@@ -695,7 +688,7 @@ public final class CollectionTools {
 	 * Return a bag corresponding to the specified iterable.
 	 * HashBag(java.lang.Iterable iterable)
 	 */
-	public static <E> Bag<E> bag(Iterable<? extends E> iterable) {
+	public static <E> HashBag<E> bag(Iterable<? extends E> iterable) {
 		return bag(iterable.iterator());
 	}
 
@@ -703,7 +696,7 @@ public final class CollectionTools {
 	 * Return a bag corresponding to the specified iterable.
 	 * HashBag(java.lang.Iterable iterable)
 	 */
-	public static <E> Bag<E> bag(Iterable<? extends E> iterable, int size) {
+	public static <E> HashBag<E> bag(Iterable<? extends E> iterable, int size) {
 		return bag(iterable.iterator(), size);
 	}
 
@@ -711,25 +704,19 @@ public final class CollectionTools {
 	 * Return a bag corresponding to the specified iterator.
 	 * HashBag(java.util.Iterator iterator)
 	 */
-	public static <E> Bag<E> bag(Iterator<? extends E> iterator) {
-		return (iterator.hasNext()) ?
-				bag(iterator, new HashBag<E>())
-			:
-				Bag.Empty.<E>instance();
+	public static <E> HashBag<E> bag(Iterator<? extends E> iterator) {
+		return bag(iterator, new HashBag<E>());
 	}
 
 	/**
 	 * Return a bag corresponding to the specified iterator.
 	 * HashBag(java.util.Iterator iterator)
 	 */
-	public static <E> Bag<E> bag(Iterator<? extends E> iterator, int size) {
-		return (iterator.hasNext()) ?
-				bag(iterator, new HashBag<E>(size))
-			:
-				Bag.Empty.<E>instance();
+	public static <E> HashBag<E> bag(Iterator<? extends E> iterator, int size) {
+		return bag(iterator, new HashBag<E>(size));
 	}
 
-	private static <E> Bag<E> bag(Iterator<? extends E> iterator, HashBag<E> bag) {
+	private static <E> HashBag<E> bag(Iterator<? extends E> iterator, HashBag<E> bag) {
 		while (iterator.hasNext()) {
 			bag.add(iterator.next());
 		}
@@ -740,12 +727,9 @@ public final class CollectionTools {
 	 * Return a bag corresponding to the specified array.
 	 * HashBag(Object[] array)
 	 */
-	public static <E> Bag<E> bag(E... array) {
+	public static <E> HashBag<E> bag(E... array) {
 		int len = array.length;
-		if (len == 0) {
-			return Bag.Empty.<E>instance();
-		}
-		Bag<E> bag = new HashBag<E>(len);
+		HashBag<E> bag = new HashBag<E>(len);
 		for (E item : array) {
 			bag.add(item);
 		}
@@ -755,49 +739,49 @@ public final class CollectionTools {
 	/**
 	 * Return a collection corresponding to the specified enumeration.
 	 */
-	public static <E> Collection<E> collection(Enumeration<? extends E> enumeration) {
+	public static <E> HashBag<E> collection(Enumeration<? extends E> enumeration) {
 		return bag(enumeration);
 	}
 
 	/**
 	 * Return a collection corresponding to the specified enumeration.
 	 */
-	public static <E> Collection<E> collection(Enumeration<? extends E> enumeration, int size) {
+	public static <E> HashBag<E> collection(Enumeration<? extends E> enumeration, int size) {
 		return bag(enumeration, size);
 	}
 
 	/**
 	 * Return a collection corresponding to the specified iterable.
 	 */
-	public static <E> Collection<E> collection(Iterable<? extends E> iterable) {
+	public static <E> HashBag<E> collection(Iterable<? extends E> iterable) {
 		return collection(iterable.iterator());
 	}
 
 	/**
 	 * Return a collection corresponding to the specified iterable.
 	 */
-	public static <E> Collection<E> collection(Iterable<? extends E> iterable, int size) {
+	public static <E> HashBag<E> collection(Iterable<? extends E> iterable, int size) {
 		return collection(iterable.iterator(), size);
 	}
 
 	/**
 	 * Return a collection corresponding to the specified iterator.
 	 */
-	public static <E> Collection<E> collection(Iterator<? extends E> iterator) {
+	public static <E> HashBag<E> collection(Iterator<? extends E> iterator) {
 		return bag(iterator);
 	}
 
 	/**
 	 * Return a collection corresponding to the specified iterator.
 	 */
-	public static <E> Collection<E> collection(Iterator<? extends E> iterator, int size) {
+	public static <E> HashBag<E> collection(Iterator<? extends E> iterator, int size) {
 		return bag(iterator, size);
 	}
 
 	/**
 	 * Return a collection corresponding to the specified array.
 	 */
-	public static <E> Collection<E> collection(E... array) {
+	public static <E> HashBag<E> collection(E... array) {
 		return bag(array);
 	}
 
@@ -1708,7 +1692,7 @@ public final class CollectionTools {
 	 * Return a list corresponding to the specified iterable.
 	 * java.lang.Iterable#toList()
 	 */
-	public static <E> List<E> list(Iterable<? extends E> iterable) {
+	public static <E> ArrayList<E> list(Iterable<? extends E> iterable) {
 		return list(iterable.iterator());
 	}
 
@@ -1716,7 +1700,7 @@ public final class CollectionTools {
 	 * Return a list corresponding to the specified iterable.
 	 * java.lang.Iterable#toList()
 	 */
-	public static <E> List<E> list(Iterable<? extends E> iterable, int size) {
+	public static <E> ArrayList<E> list(Iterable<? extends E> iterable, int size) {
 		return list(iterable.iterator(), size);
 	}
 
@@ -1724,19 +1708,19 @@ public final class CollectionTools {
 	 * Return a list corresponding to the specified iterator.
 	 * java.util.Iterator#toList()
 	 */
-	public static <E> List<E> list(Iterator<? extends E> iterator) {
-		return (iterator.hasNext()) ? list(iterator, new ArrayList<E>()) : Collections.<E>emptyList();
+	public static <E> ArrayList<E> list(Iterator<? extends E> iterator) {
+		return list(iterator, new ArrayList<E>());
 	}
 
 	/**
 	 * Return a list corresponding to the specified iterator.
 	 * java.util.Iterator#toList()
 	 */
-	public static <E> List<E> list(Iterator<? extends E> iterator, int size) {
-		return (iterator.hasNext()) ? list(iterator, new ArrayList<E>(size)) : Collections.<E>emptyList();
+	public static <E> ArrayList<E> list(Iterator<? extends E> iterator, int size) {
+		return list(iterator, new ArrayList<E>(size));
 	}
 
-	private static <E> List<E> list(Iterator<? extends E> iterator, ArrayList<E> list) {
+	private static <E> ArrayList<E> list(Iterator<? extends E> iterator, ArrayList<E> list) {
 		while (iterator.hasNext()) {
 			list.add(iterator.next());
 		}
@@ -1748,8 +1732,8 @@ public final class CollectionTools {
 	 * Unlike java.util.Arrays.asList(Object[]), the list
 	 * is modifiable and is not backed by the array.
 	 */
-	public static <E> List<E> list(E... array) {
-		List<E> list = new ArrayList<E>(array.length);
+	public static <E> ArrayList<E> list(E... array) {
+		ArrayList<E> list = new ArrayList<E>(array.length);
 		for (E item : array) {
 			list.add(item);
 		}
@@ -2483,7 +2467,7 @@ public final class CollectionTools {
 	 * Return the removed elements.
 	 * java.util.List#remove(int index, int length)
 	 */
-	public static <E> List<E> removeElementsAtIndex(List<E> list, int index, int length) {
+	public static <E> ArrayList<E> removeElementsAtIndex(List<E> list, int index, int length) {
 		List<E> subList = list.subList(index, index + length);
 		ArrayList<E> result = new ArrayList<E>(subList);
 		subList.clear();
@@ -2552,18 +2536,22 @@ public final class CollectionTools {
 		if ((len == 0) || (len == 1)) {
 			return array;
 		}
-		List<E> list = removeDuplicateElements(Arrays.asList(array), len);
-		return list.toArray(newArray(array, list.size()));
+		ArrayList<E> temp = list(array);
+		return removeDuplicateElements(temp, len) ?
+					temp.toArray(newArray(array, temp.size()))
+				:
+					array;
 	}
 
 	/**
 	 * Remove any duplicate elements from the specified list,
 	 * while maintaining the order.
+	 * Return whether the list changed as a result.
 	 */
-	public static <E> List<E> removeDuplicateElements(List<E> list) {
+	public static <E> boolean removeDuplicateElements(List<E> list) {
 		int size = list.size();
 		if ((size == 0) || (size == 1)) {
-			return list;
+			return false;
 		}
 		return removeDuplicateElements(list, size);
 	}
@@ -2571,15 +2559,26 @@ public final class CollectionTools {
 	/**
 	 * assume list is non-empty
 	 */
-	private static <E> List<E> removeDuplicateElements(List<E> list, int size) {
-		List<E> result = new ArrayList<E>(size);
-		Set<E> set = new HashSet<E>(size);		// take advantage of hashed look-up
+	private static <E> boolean removeDuplicateElements(List<E> list, int size) {
+		LinkedHashSet<E> temp = new LinkedHashSet<E>(size);		// take advantage of hashed look-up
+		boolean changed = false;
 		for (E item : list) {
-			if (set.add(item)) {
-				result.add(item);
+			if ( ! temp.add(item)) {
+				changed = true;  // duplicate item
 			}
 		}
-		return result;
+		if (changed) {
+			int i = 0;
+			for (Iterator<E> stream = temp.iterator(); stream.hasNext(); ) {
+				list.set(i, stream.next());
+				i++;
+			}
+			int tempSize = temp.size();
+			for (i = list.size(); i-- > tempSize; ) {
+				list.remove(i);  // pull off the end
+			}
+		}
+		return changed;
 	}
 
 	/**
@@ -3043,7 +3042,7 @@ public final class CollectionTools {
 	 * Return a set corresponding to the specified iterable.
 	 * java.util.HashSet(java.lang.Iterable iterable)
 	 */
-	public static <E> Set<E> set(Iterable<? extends E> iterable) {
+	public static <E> HashSet<E> set(Iterable<? extends E> iterable) {
 		return set(iterable.iterator());
 	}
 
@@ -3051,7 +3050,7 @@ public final class CollectionTools {
 	 * Return a set corresponding to the specified iterable.
 	 * java.util.HashSet(java.lang.Iterable iterable)
 	 */
-	public static <E> Set<E> set(Iterable<? extends E> iterable, int size) {
+	public static <E> HashSet<E> set(Iterable<? extends E> iterable, int size) {
 		return set(iterable.iterator(), size);
 	}
 
@@ -3059,7 +3058,7 @@ public final class CollectionTools {
 	 * Return a set corresponding to the specified iterator.
 	 * java.util.HashSet(java.util.Iterator iterator)
 	 */
-	public static <E> Set<E> set(Iterator<? extends E> iterator) {
+	public static <E> HashSet<E> set(Iterator<? extends E> iterator) {
 		return set(iterator, new HashSet<E>());
 	}
 
@@ -3067,11 +3066,11 @@ public final class CollectionTools {
 	 * Return a set corresponding to the specified iterator.
 	 * java.util.HashSet(java.util.Iterator iterator)
 	 */
-	public static <E> Set<E> set(Iterator<? extends E> iterator, int size) {
+	public static <E> HashSet<E> set(Iterator<? extends E> iterator, int size) {
 		return set(iterator, new HashSet<E>(size));
 	}
 
-	private static <E> Set<E> set(Iterator<? extends E> iterator, HashSet<E> set) {
+	private static <E> HashSet<E> set(Iterator<? extends E> iterator, HashSet<E> set) {
 		while (iterator.hasNext()) {
 			set.add(iterator.next());
 		}
@@ -3082,8 +3081,8 @@ public final class CollectionTools {
 	 * Return a set corresponding to the specified array.
 	 * java.util.HashSet(Object[] array)
 	 */
-	public static <E> Set<E> set(E... array) {
-		Set<E> set = new HashSet<E>(array.length);
+	public static <E> HashSet<E> set(E... array) {
+		HashSet<E> set = new HashSet<E>(array.length);
 		for (E item : array) {
 			set.add(item);
 		}
@@ -3195,7 +3194,7 @@ public final class CollectionTools {
 	 * Return a sorted set corresponding to the specified iterable.
 	 * java.util.TreeSet(java.lang.Iterable iterable)
 	 */
-	public static <E extends Comparable<? super E>> SortedSet<E> sortedSet(Iterable<? extends E> iterable) {
+	public static <E extends Comparable<? super E>> TreeSet<E> sortedSet(Iterable<? extends E> iterable) {
 		return sortedSet(iterable, null);
 	}
 
@@ -3203,7 +3202,7 @@ public final class CollectionTools {
 	 * Return a sorted set corresponding to the specified iterable.
 	 * java.util.TreeSet(java.lang.Iterable iterable)
 	 */
-	public static <E extends Comparable<? super E>> SortedSet<E> sortedSet(Iterable<? extends E> iterable, int size) {
+	public static <E extends Comparable<? super E>> TreeSet<E> sortedSet(Iterable<? extends E> iterable, int size) {
 		return sortedSet(iterable, size, null);
 	}
 
@@ -3212,7 +3211,7 @@ public final class CollectionTools {
 	 * and comparator.
 	 * java.util.TreeSet(java.lang.Iterable iterable, java.util.Comparator c)
 	 */
-	public static <E> SortedSet<E> sortedSet(Iterable<? extends E> iterable, Comparator<? super E> comparator) {
+	public static <E> TreeSet<E> sortedSet(Iterable<? extends E> iterable, Comparator<? super E> comparator) {
 		return sortedSet(iterable.iterator(), comparator);
 	}
 
@@ -3221,7 +3220,7 @@ public final class CollectionTools {
 	 * and comparator.
 	 * java.util.TreeSet(java.lang.Iterable iterable, java.util.Comparator c)
 	 */
-	public static <E> SortedSet<E> sortedSet(Iterable<? extends E> iterable, int size, Comparator<? super E> comparator) {
+	public static <E> TreeSet<E> sortedSet(Iterable<? extends E> iterable, int size, Comparator<? super E> comparator) {
 		return sortedSet(iterable.iterator(), size, comparator);
 	}
 
@@ -3229,7 +3228,7 @@ public final class CollectionTools {
 	 * Return a sorted set corresponding to the specified iterator.
 	 * java.util.TreeSet(java.util.Iterator iterator)
 	 */
-	public static <E extends Comparable<? super E>> SortedSet<E> sortedSet(Iterator<? extends E> iterator) {
+	public static <E extends Comparable<? super E>> TreeSet<E> sortedSet(Iterator<? extends E> iterator) {
 		return sortedSet(iterator, null);
 	}
 
@@ -3237,7 +3236,7 @@ public final class CollectionTools {
 	 * Return a sorted set corresponding to the specified iterator.
 	 * java.util.TreeSet(java.util.Iterator iterator)
 	 */
-	public static <E extends Comparable<? super E>> SortedSet<E> sortedSet(Iterator<? extends E> iterator, int size) {
+	public static <E extends Comparable<? super E>> TreeSet<E> sortedSet(Iterator<? extends E> iterator, int size) {
 		return sortedSet(iterator, size, null);
 	}
 
@@ -3246,7 +3245,7 @@ public final class CollectionTools {
 	 * and comparator.
 	 * java.util.TreeSet(java.util.Iterator iterator, java.util.Comparator c)
 	 */
-	public static <E> SortedSet<E> sortedSet(Iterator<? extends E> iterator, Comparator<? super E> comparator) {
+	public static <E> TreeSet<E> sortedSet(Iterator<? extends E> iterator, Comparator<? super E> comparator) {
 		return sortedSet(list(iterator), comparator);
 	}
 
@@ -3255,12 +3254,12 @@ public final class CollectionTools {
 	 * and comparator.
 	 * java.util.TreeSet(java.util.Iterator iterator, java.util.Comparator c)
 	 */
-	public static <E> SortedSet<E> sortedSet(Iterator<? extends E> iterator, int size, Comparator<? super E> comparator) {
+	public static <E> TreeSet<E> sortedSet(Iterator<? extends E> iterator, int size, Comparator<? super E> comparator) {
 		return sortedSet(list(iterator, size), comparator);
 	}
 
-	private static <E> SortedSet<E> sortedSet(List<E> list, Comparator<? super E> comparator) {
-		SortedSet<E> sortedSet = new TreeSet<E>(comparator);
+	private static <E> TreeSet<E> sortedSet(List<E> list, Comparator<? super E> comparator) {
+		TreeSet<E> sortedSet = new TreeSet<E>(comparator);
 		sortedSet.addAll(list);
 		return sortedSet;
 	}
@@ -3269,7 +3268,7 @@ public final class CollectionTools {
 	 * Return a sorted set corresponding to the specified array.
 	 * java.util.TreeSet(Object[] array)
 	 */
-	public static <E extends Comparable<? super E>> SortedSet<E> sortedSet(E... array) {
+	public static <E extends Comparable<? super E>> TreeSet<E> sortedSet(E... array) {
 		return sortedSet(array, null);
 	}
 
@@ -3278,8 +3277,8 @@ public final class CollectionTools {
 	 * and comparator.
 	 * java.util.TreeSet(Object[] array, java.util.Comparator c)
 	 */
-	public static <E> SortedSet<E> sortedSet(E[] array, Comparator<? super E> comparator) {
-		SortedSet<E> sortedSet = new TreeSet<E>(comparator);
+	public static <E> TreeSet<E> sortedSet(E[] array, Comparator<? super E> comparator) {
+		TreeSet<E> sortedSet = new TreeSet<E>(comparator);
 		sortedSet.addAll(Arrays.asList(array));
 		return sortedSet;
 	}

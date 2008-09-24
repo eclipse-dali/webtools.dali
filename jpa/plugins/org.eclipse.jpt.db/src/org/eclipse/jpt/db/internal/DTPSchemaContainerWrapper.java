@@ -114,7 +114,7 @@ abstract class DTPSchemaContainerWrapper
 	private DTPSchemaWrapper[] buildSchemata() {
 		List<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata = this.getDTPSchemata();
 		DTPSchemaWrapper[] result = new DTPSchemaWrapper[dtpSchemata.size()];
-		for (int i = result.length; i-- > 0;) {
+		for (int i = result.length; i-- > 0; ) {
 			result[i] = new DTPSchemaWrapper(this, dtpSchemata.get(i));
 		}
 		return CollectionTools.sort(result);

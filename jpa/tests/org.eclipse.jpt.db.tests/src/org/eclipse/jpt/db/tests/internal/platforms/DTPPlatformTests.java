@@ -392,7 +392,12 @@ public abstract class DTPPlatformTests extends TestCase {
 		}
 	}
 
-	public void testOffline() {
+	protected abstract boolean executeOfflineTests();
+
+	public final void testOffline() {
+		if ( ! this.executeOfflineTests()) {
+			return;
+		}
 		if ( ! this.connectionProfile.supportsWorkOfflineMode()) {
 			return;
 		}
@@ -438,7 +443,10 @@ public abstract class DTPPlatformTests extends TestCase {
 		assertTrue(this.connectionProfileHasNoListeners());
 	}
 
-	public void testConnectionListenerOffline() {
+	public final void testConnectionListenerOffline() {
+		if ( ! this.executeOfflineTests()) {
+			return;
+		}
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
 
@@ -495,15 +503,25 @@ public abstract class DTPPlatformTests extends TestCase {
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
 
+		List<org.eclipse.datatools.modelbase.sql.schema.Catalog> dtpCatalogs = this.getDTPCatalogs();
+		org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog = null;
 		org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema = null;
 		Schema schema = null;
 		if (this.connectionProfile.getDatabase().supportsCatalogs()) {
-			org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog = this.getFirstDTPCatalog();
+			dtpCatalog = dtpCatalogs.get(0);
 			dtpSchema = (org.eclipse.datatools.modelbase.sql.schema.Schema) dtpCatalog.getSchemas().get(0);
 			schema = this.getCatalogNamed(dtpCatalog.getName()).getSchemaNamed(dtpSchema.getName());
 		} else {
-			dtpSchema = (org.eclipse.datatools.modelbase.sql.schema.Schema) this.getDTPDatabase().getSchemas().get(0);
-			schema = this.connectionProfile.getDatabase().getSchemaNamed(dtpSchema.getName());
+			if (dtpCatalogs.isEmpty()) {
+				dtpSchema = (org.eclipse.datatools.modelbase.sql.schema.Schema) this.getDTPDatabase().getSchemas().get(0);
+				schema = this.connectionProfile.getDatabase().getSchemaNamed(dtpSchema.getName());
+			} else {
+				dtpCatalog = dtpCatalogs.get(0);  // should be the "virtual" catalog
+				assertEquals("", dtpCatalog.getName());
+				dtpSchema = (org.eclipse.datatools.modelbase.sql.schema.Schema) dtpCatalog.getSchemas().get(0);
+				// the schemata are held directly by the database in this situation
+				schema = this.getDatabase().getSchemaNamed(dtpSchema.getName());
+			}
 		}
 		assertTrue(schema.tablesSize() >= 0);  // force tables to be loaded
 		((ICatalogObject) dtpSchema).refresh();
@@ -601,8 +619,13 @@ public abstract class DTPPlatformTests extends TestCase {
 		return (org.eclipse.datatools.modelbase.sql.schema.Database) ClassTools.fieldValue(database, "dtpDatabase");
 	}
 
+	@SuppressWarnings("unchecked")
+	protected List<org.eclipse.datatools.modelbase.sql.schema.Catalog> getDTPCatalogs() {
+		return this.getDTPDatabase().getCatalogs();
+	}
+
 	protected org.eclipse.datatools.modelbase.sql.schema.Catalog getFirstDTPCatalog() {
-		return (org.eclipse.datatools.modelbase.sql.schema.Catalog) this.getDTPDatabase().getCatalogs().get(0);
+		return this.getDTPCatalogs().get(0);
 	}
 
 	protected org.eclipse.datatools.modelbase.sql.schema.Catalog getDTPCatalogNamed(String name) {
@@ -794,7 +817,7 @@ public abstract class DTPPlatformTests extends TestCase {
 		pw.print(column.getName());
 		pw.print(" : ");
 		pw.print(column.getDataTypeName());
-		if (column.isPrimaryKeyColumn()) {
+		if (column.isPartOfPrimaryKey()) {
 			pw.print(" [primary key]");
 		}
 		pw.println();

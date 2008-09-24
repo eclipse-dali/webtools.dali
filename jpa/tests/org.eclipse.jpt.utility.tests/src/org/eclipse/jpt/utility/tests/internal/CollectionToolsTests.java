@@ -34,6 +34,7 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyEnumeration;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
+@SuppressWarnings("nls")
 public class CollectionToolsTests extends TestCase {
 
 	public CollectionToolsTests(String name) {
@@ -3711,13 +3712,23 @@ public class CollectionToolsTests extends TestCase {
 		assertEquals(10, a[2]);
 	}
 
-	public void testRemoveDuplicateElementsList() {
+	public void testRemoveDuplicateElementsList1() {
 		List<String> list = this.buildStringVector1();
 		list.add("zero");
 		list.add("zero");
 		list.add("two");
 		list.add("zero");
-		list = CollectionTools.removeDuplicateElements(list);
+		assertTrue(CollectionTools.removeDuplicateElements(list));
+		int i = 0;
+		assertEquals("zero", list.get(i++));
+		assertEquals("one", list.get(i++));
+		assertEquals("two", list.get(i++));
+		assertEquals(i, list.size());
+	}
+
+	public void testRemoveDuplicateElementsList2() {
+		List<String> list = this.buildStringVector1();
+		assertFalse(CollectionTools.removeDuplicateElements(list));
 		int i = 0;
 		assertEquals("zero", list.get(i++));
 		assertEquals("one", list.get(i++));
@@ -3727,14 +3738,14 @@ public class CollectionToolsTests extends TestCase {
 
 	public void testRemoveDuplicateElementsList_Empty() {
 		List<String> list = new ArrayList<String>();
-		list = CollectionTools.removeDuplicateElements(list);
+		assertFalse(CollectionTools.removeDuplicateElements(list));
 		assertEquals(0, list.size());
 	}
 
 	public void testRemoveDuplicateElementsList_SingleElement() {
 		List<String> list = new ArrayList<String>();
 		list.add("zero");
-		list = CollectionTools.removeDuplicateElements(list);
+		assertFalse(CollectionTools.removeDuplicateElements(list));
 		assertEquals(1, list.size());
 	}
 

@@ -288,7 +288,7 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 		 */
 		private void updateSchemaComboBox() {
 			this.schemaComboBox.removeAll();
-			for (Iterator<String> stream = this.getSchemaIdentifiers(); stream.hasNext(); ) {
+			for (Iterator<String> stream = this.getSchemata(); stream.hasNext(); ) {
 				this.schemaComboBox.add(stream.next());
 			}
 			// the current schema *should* be in the current connection profile
@@ -297,7 +297,7 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 			}
 		}
 
-		private Iterator<String> getSchemaIdentifiers() {
+		private Iterator<String> getSchemata() {
 			SchemaContainer sc = DatabaseConnectionWizardPage.this.jpaProject.getDefaultDbSchemaContainer();
 			return (sc == null) ? EmptyIterator.<String>instance() : sc.sortedSchemaIdentifiers();
 		}

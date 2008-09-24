@@ -78,17 +78,13 @@ public class PostgreSQLTests extends DTPPlatformTests {
 
 	@Override
 	protected boolean supportsCatalogs() {
-		return true;
+		return false;
 	}
 
 	@Override
-	public void testOffline() {
+	protected boolean executeOfflineTests() {
 		// DTP does not support PostgreSQL off-line - see 226704/241558
-	}
-
-	@Override
-	public void testConnectionListenerOffline() {
-		// DTP does not support PostgreSQL off-line - see 226704/241558
+		return false;
 	}
 
 	public void testSchema() throws Exception {
@@ -234,19 +230,19 @@ public class PostgreSQLTests extends DTPPlatformTests {
 		assertSame(pkColumn, idColumn);
 		assertEquals("INT4", idColumn.getDataTypeName());
 		assertSame(fooTable, idColumn.getTable());
-		assertTrue(idColumn.isPrimaryKeyColumn());
-		assertFalse(idColumn.isForeignKeyColumn());
+		assertTrue(idColumn.isPartOfPrimaryKey());
+		assertFalse(idColumn.isPartOfForeignKey());
 		assertEquals("java.lang.Integer", idColumn.getJavaTypeDeclaration());
 
 		Column nameColumn = fooTable.getColumnForIdentifier("NAME");
 		assertEquals("VARCHAR", nameColumn.getDataTypeName());
 		assertEquals("java.lang.String", nameColumn.getJavaTypeDeclaration());
-		assertFalse(nameColumn.isPrimaryKeyColumn());
+		assertFalse(nameColumn.isPartOfPrimaryKey());
 
 		Column barColumn = fooTable.getColumnForIdentifier("BAR_ID");
 		assertEquals("INT4", barColumn.getDataTypeName());
-		assertTrue(barColumn.isForeignKeyColumn());
-		assertFalse(barColumn.isPrimaryKeyColumn());
+		assertTrue(barColumn.isPartOfForeignKey());
+		assertFalse(barColumn.isPartOfPrimaryKey());
 
 		ForeignKey barFK = fooTable.foreignKeys().next();  // there should only be 1 foreign key
 		assertEquals(1, barFK.columnPairsSize());
@@ -277,7 +273,7 @@ public class PostgreSQLTests extends DTPPlatformTests {
 		assertEquals(2, foo_bazTable.foreignKeysSize());
 		assertTrue(foo_bazTable.isPossibleJoinTable());
 		assertTrue(foo_bazTable.joinTableNameIsDefault());
-		assertTrue(foo_bazTable.getColumnForIdentifier("FOO_ID").isForeignKeyColumn());
+		assertTrue(foo_bazTable.getColumnForIdentifier("FOO_ID").isPartOfForeignKey());
 
 		this.dropTable("TABLE_TEST", "FOO_BAZ");
 		this.dropTable("TABLE_TEST", "BAZ");

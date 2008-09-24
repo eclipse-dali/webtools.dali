@@ -10,7 +10,6 @@
 package org.eclipse.jpt.db.tests.internal.platforms;
 
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
-import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Schema;
@@ -88,6 +87,11 @@ public class DerbyTests extends DTPPlatformTests {
 
 	@Override
 	protected boolean supportsCatalogs() {
+		return false;
+	}
+
+	@Override
+	protected boolean executeOfflineTests() {
 		return true;
 	}
 
@@ -104,25 +108,17 @@ public class DerbyTests extends DTPPlatformTests {
 
 		Schema schema1 = this.getDatabase().getSchemaNamed("TEST1");
 		assertNotNull(schema1);
-		Catalog catalog = this.getDatabase().getCatalogNamed("");  // Derby's only catalog
-		Schema schema1a = catalog.getSchemaNamed("TEST1");
-		assertNotNull(schema1a);
-		assertSame(schema1, schema1a);  // same schema should be returned by both database and catalog
 
 		this.executeUpdate("CREATE SCHEMA TEST2");
 		Schema schema2 = this.getDatabase().getSchemaNamed("TEST2");
 		assertNull(schema2);  // should be null until refresh
 
-		((ICatalogObject) getDTPCatalog(catalog)).refresh();
-		assertSame(catalog, listener.changedCatalog);
-		assertSame(catalog, this.getDatabase().getCatalogNamed(""));
+		((ICatalogObject) this.getDTPDatabase()).refresh();
+		assertSame(this.getDatabase(), listener.changedDatabase);
 
 		schema2 = this.getDatabase().getSchemaNamed("TEST2");
 		assertNotNull(schema2);
-		Schema schema2a = catalog.getSchemaNamed("TEST2");
-		assertNotNull(schema2a);
-		assertSame(schema2, schema2a);
-		assertNotSame(schema1, catalog.getSchemaNamed("TEST1"));  // we should have a new schema after the refresh
+		assertNotSame(schema1, this.getDatabase().getSchemaNamed("TEST1"));  // we should have a new schema after the refresh
 
 		this.dropSchema("TEST2");
 		this.dropSchema("TEST1");
@@ -245,19 +241,19 @@ public class DerbyTests extends DTPPlatformTests {
 		assertSame(pkColumn, idColumn);
 		assertEquals("INTEGER", idColumn.getDataTypeName());
 		assertSame(fooTable, idColumn.getTable());
-		assertTrue(idColumn.isPrimaryKeyColumn());
-		assertFalse(idColumn.isForeignKeyColumn());
+		assertTrue(idColumn.isPartOfPrimaryKey());
+		assertFalse(idColumn.isPartOfForeignKey());
 		assertEquals("int", idColumn.getJavaTypeDeclaration());
 
 		Column nameColumn = fooTable.getColumnNamed("NAME");
 		assertEquals("VARCHAR", nameColumn.getDataTypeName());
 		assertEquals("java.lang.String", nameColumn.getJavaTypeDeclaration());
-		assertFalse(nameColumn.isPrimaryKeyColumn());
+		assertFalse(nameColumn.isPartOfPrimaryKey());
 
 		Column barColumn = fooTable.getColumnNamed("BAR_ID");
 		assertEquals("INTEGER", barColumn.getDataTypeName());
-		assertTrue(barColumn.isForeignKeyColumn());
-		assertFalse(barColumn.isPrimaryKeyColumn());
+		assertTrue(barColumn.isPartOfForeignKey());
+		assertFalse(barColumn.isPartOfPrimaryKey());
 
 		ForeignKey barFK = fooTable.foreignKeys().next();  // there should only be 1 foreign key
 		assertEquals(1, barFK.columnPairsSize());
@@ -278,7 +274,7 @@ public class DerbyTests extends DTPPlatformTests {
 		assertFalse(barTable.isPossibleJoinTable());
 		assertEquals("BLOB", barTable.getColumnNamed("CHUNK").getDataTypeName());
 		assertEquals("byte[]", barTable.getColumnNamed("CHUNK").getJavaTypeDeclaration());
-		assertTrue(barTable.getColumnNamed("CHUNK").dataTypeIsLOB());
+		assertTrue(barTable.getColumnNamed("CHUNK").isLOB());
 		assertSame(barTable, barFK.getReferencedTable());
 
 		// FOO_BAZ
@@ -288,7 +284,7 @@ public class DerbyTests extends DTPPlatformTests {
 		assertEquals(2, foo_bazTable.foreignKeysSize());
 		assertTrue(foo_bazTable.isPossibleJoinTable());
 		assertTrue(foo_bazTable.joinTableNameIsDefault());
-		assertTrue(foo_bazTable.getColumnNamed("FOO_ID").isForeignKeyColumn());
+		assertTrue(foo_bazTable.getColumnNamed("FOO_ID").isPartOfForeignKey());
 
 		this.dropTable("TABLE_TEST", "FOO_BAZ");
 		this.dropTable("TABLE_TEST", "BAZ");
