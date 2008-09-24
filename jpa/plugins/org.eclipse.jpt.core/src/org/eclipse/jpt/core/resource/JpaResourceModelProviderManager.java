@@ -16,9 +16,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.internal.resource.JpaResourceModelProviderRegistry;
+import org.eclipse.jpt.core.utility.PlatformUtilities;
 
 public class JpaResourceModelProviderManager
 {
@@ -40,7 +40,7 @@ public class JpaResourceModelProviderManager
 			throws CoreException, IOException {
 		IProject project = file.getProject();
 		IPath path = file.getProjectRelativePath();
-		IContentType contentType = Platform.getContentTypeManager().findContentTypeFor(file.getContents(), file.getName());
+		IContentType contentType = PlatformUtilities.contentType(file);
 		if (contentType == null) {
 			return null;
 		}

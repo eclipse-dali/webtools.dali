@@ -9,16 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.EntityGeneratorDatabaseAnnotationNameBuilder;
@@ -51,6 +46,7 @@ import org.eclipse.jpt.core.internal.context.java.JavaOneToManyMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaOneToOneMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingProvider;
+import org.eclipse.jpt.core.utility.PlatformUtilities;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.DatabaseFinder;
 import org.eclipse.jpt.db.JptDbPlugin;
@@ -119,7 +115,7 @@ public class GenericJpaPlatform
 		if (! JavaCore.create(file.getProject()).isOnClasspath(file)) {
 			return null;
 		}
-		IContentType contentType = this.contentType(file);
+		IContentType contentType = PlatformUtilities.contentType(file);
 		if (contentType == null) {
 			return null;
 		}
@@ -138,32 +134,6 @@ public class GenericJpaPlatform
 				|| contentTypeId.equals(JptCorePlugin.ORM_XML_CONTENT_TYPE);
 	}
 	
-	// attempting to get the contentType based on the file contents.
-	// have to check the file contents instead of just the file name
-	// because for xml we base it on the rootElement name
-	private IContentType contentType(IFile file) {
-		InputStream inputStream = null;
-		try {
-			inputStream = file.getContents();
-			return Platform.getContentTypeManager().findContentTypeFor(inputStream, file.getName());
-		}
-		catch (IOException ex) {
-			JptCorePlugin.log(ex);
-		}
-		catch (CoreException ex) {
-			JptCorePlugin.log(ex);
-		}
-		finally {
-			try {
-				if (inputStream != null) {
-					inputStream.close();
-				}
-			} catch (IOException ex) {
-				JptCorePlugin.log(ex);
-			}
-		}
-		return null;
-	}
 
 	// **************** Java annotation support ********************************
 
