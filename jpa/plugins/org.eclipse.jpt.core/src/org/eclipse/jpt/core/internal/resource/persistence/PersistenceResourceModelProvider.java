@@ -65,7 +65,7 @@ public class PersistenceResourceModelProvider extends AbstractResourceModelProvi
 		XmlPersistenceUnit persistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
 		persistenceUnit.setName(getProject().getName());
 		persistence.getPersistenceUnits().add(persistenceUnit);
-		resource.getContents().add(persistence);
+		getResourceContents(resource).add(persistence);
 	}
 	
 	@Override

@@ -63,7 +63,7 @@ public class EclipseLinkOrmResourceModelProvider extends AbstractResourceModelPr
 	protected void populateRoot(JpaXmlResource resource) {
 		XmlEntityMappings entityMappings = EclipseLinkOrmFactory.eINSTANCE.createXmlEntityMappings();
 		entityMappings.setVersion(EclipseLinkConstants.VERSION_1_0_TEXT);
-		resource.getContents().add(entityMappings);
+		getResourceContents(resource).add(entityMappings);
 	}
 	
 	@Override

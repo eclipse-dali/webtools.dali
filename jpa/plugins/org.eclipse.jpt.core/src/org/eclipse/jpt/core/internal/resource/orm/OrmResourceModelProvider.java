@@ -62,7 +62,7 @@ public class OrmResourceModelProvider extends AbstractResourceModelProvider
 	protected void populateRoot(JpaXmlResource resource) {
 		XmlEntityMappings entityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
 		entityMappings.setVersion(JpaConstants.VERSION_1_0_TEXT);
-		resource.getContents().add(entityMappings);
+		getResourceContents(resource).add(entityMappings);
 	}
 	
 	@Override

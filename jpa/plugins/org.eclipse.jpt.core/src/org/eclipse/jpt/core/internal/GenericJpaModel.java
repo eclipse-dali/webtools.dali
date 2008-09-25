@@ -19,8 +19,6 @@ import org.eclipse.core.resources.IResourceProxy;
 import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaModel;
@@ -30,7 +28,6 @@ import org.eclipse.jpt.core.JpaProject.Config;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProvider;
-import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -245,14 +242,6 @@ public class GenericJpaModel
 		catch (Exception e) {
 			JptCorePlugin.log(e);
 		}
-	}
-
-	/**
-	 * minimize the scope of the suppressed warnings
-	 */
-	@SuppressWarnings("unchecked")
-	private EList<EObject> getResourceContents(OrmResource resource) {
-		return resource.getContents();
 	}
 
 	// TODO remove classpath items? persistence.xml? orm.xml?

@@ -33,7 +33,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.jem.util.emf.workbench.FlexibleProjectResourceSet;
@@ -161,6 +163,15 @@ public abstract class AbstractResourceModelProvider
 	 */
 	protected void populateRoot(JpaXmlResource resource) {}
 	
+
+	/**
+	 * minimize the scope of the suppressed warnings
+	 */
+	@SuppressWarnings("unchecked")
+	protected EList<EObject> getResourceContents(JpaXmlResource resource) {
+		return resource.getContents();
+	}
+
 	public void addListener(JpaResourceModelProviderListener listener) {
 		listeners.add(listener);
 	}
@@ -292,6 +303,7 @@ public abstract class AbstractResourceModelProvider
 	// **************** member classes *****************************************
 	
 	protected class ResourceAdapter extends AdapterImpl {
+		@Override
 		public void notifyChanged(Notification notification) {
 			if ( notification.getEventType() == Notification.SET && notification.getFeatureID(null) == Resource.RESOURCE__IS_LOADED) {
 				resourceIsLoadedChanged((Resource) notification.getNotifier(), notification.getOldBooleanValue(), notification.getNewBooleanValue());
