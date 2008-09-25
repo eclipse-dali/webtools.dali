@@ -19,10 +19,6 @@ import org.eclipse.core.resources.IResourceProxy;
 import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.core.ElementChangedEvent;
@@ -209,36 +205,18 @@ public class GenericJpaModel
 
 	// ********** Facet events **********
 
-	// create persistence.xml and orm.xml in jobs so we don't deadlock
-	// with the Resource Change Event that comes in from another
-	// thread after the Eclipse project is created by the project facet
-	// wizard (which happens before the wizard notifies us); the Artifact
-	// Edits will hang during #save(), waiting for the workspace lock held
-	// by the Resource Change Notification loop
 	synchronized void jpaFacetedProjectPostInstall(IProjectFacetActionEvent event) {
 		IProject project = event.getProject().getProject();
 		IDataModel dataModel = (IDataModel) event.getActionConfig();
 
 		boolean buildOrmXml = dataModel.getBooleanProperty(JpaFacetDataModelProperties.CREATE_ORM_XML);
-		this.buildProjectXmlJob(project, buildOrmXml).schedule();
+		this.createProjectXml(project, buildOrmXml);
 
 		// assume(?) this is the first event to indicate we need to add the JPA project to the JPA model
 		this.addJpaProject(project);
 	}
 
-	private Job buildProjectXmlJob(final IProject project, final boolean buildOrmXml) {
-		Job job = new Job("Create Project XML files") {
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				GenericJpaModel.this.createProjectXml(project, buildOrmXml);
-				return Status.OK_STATUS;
-			}
-		};
-		job.setRule(ResourcesPlugin.getWorkspace().getRoot());
-		return job;
-	}
-
-	/* private */ void createProjectXml(IProject project, boolean buildOrmXml) {
+	private void createProjectXml(IProject project, boolean buildOrmXml) {
 		this.createPersistenceXml(project);
 
 		if (buildOrmXml) {
