@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.GenericJpaModel;
 import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.tests.internal.projects.TestFacetedProject;
+import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestPlatformProject;
 import org.eclipse.jpt.utility.internal.ClassTools;
 
@@ -74,15 +75,10 @@ public class JpaModelTests extends TestCase {
 	 * pre-existing entities added.
 	 */
 	private TestFacetedProject buildTestProject() throws Exception {
-		TestFacetedProject testProject = TestFacetedProject.buildFacetedProject(ClassTools.shortClassNameForObject(this), true);
-		testProject.installFacet("jst.java", "5.0");
+		TestJavaProject testProject = TestJavaProject.buildJavaProject(ClassTools.shortClassNameForObject(this), true);
 		testProject.installFacet("jst.utility", "1.0");
-		testProject.createFile(
-			new Path("src/test/pkg/TestEntity.java"),
-			"package test.pkg; @Entity public class TestEntity {}");
-		testProject.createFile(
-			new Path("src/test/pkg/TestEntity2.java"),
-			"package test.pkg; @Entity public class TestEntity2 {}");
+		testProject.createCompilationUnit("test.pkg", "TestEntity.java", "@Entity public class TestEntity {}");
+		testProject.createCompilationUnit("test.pkg", "TestEntity2.java", "@Entity public class TestEntity2 {}");
 		return testProject;
 	}	
 
