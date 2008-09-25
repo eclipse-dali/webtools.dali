@@ -78,10 +78,10 @@ public class JpaModelTests extends TestCase {
 		testProject.installFacet("jst.java", "5.0");
 		testProject.installFacet("jst.utility", "1.0");
 		testProject.createFile(
-			new Path("src/test.pkg/TestEntity.java"),
+			new Path("src/test/pkg/TestEntity.java"),
 			"package test.pkg; @Entity public class TestEntity {}");
 		testProject.createFile(
-			new Path("src/test.pkg/TestEntity2.java"),
+			new Path("src/test/pkg/TestEntity2.java"),
 			"package test.pkg; @Entity public class TestEntity2 {}");
 		return testProject;
 	}	
@@ -101,13 +101,12 @@ public class JpaModelTests extends TestCase {
 		assertEquals(1, JptCorePlugin.getJpaModel().jpaProjectsSize());
 		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull(jpaProject);
-//		assertEquals(4, jpaProject.jpaFilesSize());
-		assertNotNull(jpaProject.getJpaFile(this.file(this.testProject, "src/test.pkg/TestEntity.java")));
-		assertNotNull(jpaProject.getJpaFile(this.file(this.testProject, "src/test.pkg/TestEntity2.java")));
-		// persistence.xml and orm.xml are created in the background, so they probably
-		// won't be there yet...
-//		assertNotNull(jpaProject.jpaFile(this.file(testProject, "src/META-INF/persistence.xml")));
-//		assertNotNull(jpaProject.jpaFile(this.file(testProject, "src/META-INF/orm.xml")));
+		assertEquals(4, jpaProject.jpaFilesSize());
+		assertNotNull(jpaProject.getJpaFile(this.file(this.testProject, "src/test/pkg/TestEntity.java")));
+		assertNotNull(jpaProject.getJpaFile(this.file(this.testProject, "src/test/pkg/TestEntity2.java")));
+
+		assertNotNull(jpaProject.getJpaFile(this.file(this.testProject, "src/META-INF/persistence.xml")));
+		assertNotNull(jpaProject.getJpaFile(this.file(this.testProject, "src/META-INF/orm.xml")));
 
 		this.testProject.uninstallFacet("jpt.jpa", "1.0");
 		assertEquals(0, JptCorePlugin.getJpaModel().jpaProjectsSize());
@@ -127,13 +126,12 @@ public class JpaModelTests extends TestCase {
 		assertTrue(this.testProject.getProject().isOpen());
 		jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull(jpaProject);
-//		assertEquals(4, jpaProject.jpaFilesSize());
-		assertNotNull(jpaProject.getJpaFile(this.file(this.testProject, "src/test.pkg/TestEntity.java")));
-		assertNotNull(jpaProject.getJpaFile(this.file(this.testProject, "src/test.pkg/TestEntity2.java")));
-		// persistence.xml and orm.xml are created in the background, so they probably
-		// won't be there yet...
-//		assertNotNull(jpaProject.jpaFile(this.file(testProject, "src/META-INF/persistence.xml")));
-//		assertNotNull(jpaProject.jpaFile(this.file(testProject, "src/META-INF/orm.xml")));
+		assertEquals(4, jpaProject.jpaFilesSize());
+		assertNotNull(jpaProject.getJpaFile(this.file(this.testProject, "src/test/pkg/TestEntity.java")));
+		assertNotNull(jpaProject.getJpaFile(this.file(this.testProject, "src/test/pkg/TestEntity2.java")));
+
+		assertNotNull(jpaProject.getJpaFile(this.file(this.testProject, "src/META-INF/persistence.xml")));
+		assertNotNull(jpaProject.getJpaFile(this.file(this.testProject, "src/META-INF/orm.xml")));
 	}
 
 	public void testProjectDeleteReimport() throws Exception {
@@ -157,13 +155,11 @@ public class JpaModelTests extends TestCase {
 		assertTrue(JptCorePlugin.projectHasJpaFacet(project));
 		jpaProject = JptCorePlugin.getJpaProject(project);
 		assertNotNull(jpaProject);
-//		assertEquals(4, jpaProject.jpaFilesSize());
-		assertNotNull(jpaProject.getJpaFile(this.file(this.testProject, "src/test.pkg/TestEntity.java")));
-		assertNotNull(jpaProject.getJpaFile(this.file(this.testProject, "src/test.pkg/TestEntity2.java")));
-		// persistence.xml and orm.xml are created in the background, so they probably
-		// won't be there yet...
-//		assertNotNull(jpaProject.jpaFile(this.file(testProject, "src/META-INF/persistence.xml")));
-//		assertNotNull(jpaProject.jpaFile(this.file(testProject, "src/META-INF/orm.xml")));
+		assertEquals(4, jpaProject.jpaFilesSize());
+		assertNotNull(jpaProject.getJpaFile(this.file(this.testProject, "src/test/pkg/TestEntity.java")));
+		assertNotNull(jpaProject.getJpaFile(this.file(this.testProject, "src/test/pkg/TestEntity2.java")));
+		assertNotNull(jpaProject.getJpaFile(this.file(this.testProject, "src/META-INF/persistence.xml")));
+		assertNotNull(jpaProject.getJpaFile(this.file(this.testProject, "src/META-INF/orm.xml")));
 	}
 
 	//TODO - Commented out this test, since it was failing in the I-Build and we're not sure why.
