@@ -40,11 +40,11 @@ public abstract class AbstractJavaResourceNode
 	protected void checkParent(JavaResourceNode p) {
 		if (p == null) {
 			if (this.requiresParent()) {
-				throw new IllegalArgumentException("'parent' cannot be null");
+				throw new IllegalArgumentException("'parent' cannot be null"); //$NON-NLS-1$
 			}
 		} else {
 			if (this.forbidsParent()) {
-				throw new IllegalArgumentException("'parent' must be null");
+				throw new IllegalArgumentException("'parent' must be null"); //$NON-NLS-1$
 			}
 		}
 	}

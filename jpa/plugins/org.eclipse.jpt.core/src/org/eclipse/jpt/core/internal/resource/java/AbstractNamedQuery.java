@@ -50,7 +50,7 @@ public abstract class AbstractNamedQuery extends AbstractResourceAnnotation<Type
 	
 	private String query;
 	
-	private final List<NestableQueryHint> hints;
+	protected final List<NestableQueryHint> hints;
 	private final HintsContainerAnnotation hintsContainerAnnotation;
 	
 	protected AbstractNamedQuery(JavaResourceNode parent, Type type,DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
@@ -153,7 +153,7 @@ public abstract class AbstractNamedQuery extends AbstractResourceAnnotation<Type
 		ContainerAnnotationTools.synchAnnotationsAfterRemove(index, this.hintsContainerAnnotation);
 	}
 	
-	private void removeHint(NestableQueryHint queryHint) {
+	protected void removeHint(NestableQueryHint queryHint) {
 		removeItemFromList(queryHint, this.hints, HINTS_LIST);
 	}
 
@@ -308,6 +308,11 @@ public abstract class AbstractNamedQuery extends AbstractResourceAnnotation<Type
 		
 		public String getElementName() {
 			return "hints";
+		}
+
+		@Override
+		public void toString(StringBuilder sb) {
+			sb.append(this.getAnnotationName());
 		}
 
 	}

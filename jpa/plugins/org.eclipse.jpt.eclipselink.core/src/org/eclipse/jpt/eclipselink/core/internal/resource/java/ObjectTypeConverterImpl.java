@@ -61,7 +61,7 @@ public class ObjectTypeConverterImpl extends AbstractResourceAnnotation<Attribut
 	private String objectType;
 	private String defaultObjectValue;
 	
-	private final List<NestableConversionValue> conversionValues;
+	protected final List<NestableConversionValue> conversionValues;
 	private final ConversionValuesContainerAnnotation conversionValuesContainerAnnotation;
 	
 	protected ObjectTypeConverterImpl(JavaResourcePersistentAttribute parent, Attribute attribute) {
@@ -165,7 +165,7 @@ public class ObjectTypeConverterImpl extends AbstractResourceAnnotation<Attribut
 		return conversionValue;
 	}
 	
-	private void addConversionValue(int index, NestableConversionValue conversionValue) {
+	protected void addConversionValue(int index, NestableConversionValue conversionValue) {
 		addItemToList(index, conversionValue, this.conversionValues, AssociationOverrideAnnotation.JOIN_COLUMNS_LIST);
 	}
 	
@@ -176,7 +176,7 @@ public class ObjectTypeConverterImpl extends AbstractResourceAnnotation<Attribut
 		ContainerAnnotationTools.synchAnnotationsAfterRemove(index, this.conversionValuesContainerAnnotation);
 	}
 
-	private void removeConversionValue(NestableConversionValue conversionValue) {
+	protected void removeConversionValue(NestableConversionValue conversionValue) {
 		removeItemFromList(conversionValue, this.conversionValues, AssociationOverrideAnnotation.JOIN_COLUMNS_LIST);
 	}
 
@@ -378,6 +378,12 @@ public class ObjectTypeConverterImpl extends AbstractResourceAnnotation<Attribut
 		public String getElementName() {
 			return EclipseLinkJPA.OBJECT_TYPE_CONVERTER__CONVERSION_VALUES;
 		}
+
+		@Override
+		public void toString(StringBuilder sb) {
+			sb.append(this.getAnnotationName());
+		}
+
 	}
 
 }
