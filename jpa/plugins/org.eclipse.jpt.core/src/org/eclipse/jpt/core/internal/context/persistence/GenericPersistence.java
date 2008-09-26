@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;

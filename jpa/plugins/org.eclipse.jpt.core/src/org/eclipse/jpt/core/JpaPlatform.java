@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
-import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -18,7 +16,6 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.DatabaseFinder;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * This interface is to be implemented by a JPA vendor to provide extensions to 
