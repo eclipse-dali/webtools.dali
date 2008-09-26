@@ -53,7 +53,7 @@ public abstract class AbstractJavaJpaContextNode
 	// ********** validation **********
 	
 	/**
-	 * All subclass implementations {@link #addToMessages(List, CompilationUnit))} 
+	 * All subclass implementations {@link #validate(List, CompilationUnit))} 
 	 * should be preceded by a "super" call to this method
 	 */
 	public void validate(List<IMessage> messages, CompilationUnit astRoot) {

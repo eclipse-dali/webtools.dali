@@ -31,7 +31,7 @@ public abstract class AbstractOrmJpaContextNode
 	// ********** validation **********
 	
 	/**
-	 * All subclass implementations {@link #addToMessages(List<IMessage>)} 
+	 * All subclass implementations {@link #validate(List<IMessage>)} 
 	 * should be preceded by a "super" call to this method
 	 */
 	public void validate(List<IMessage> messages) {
