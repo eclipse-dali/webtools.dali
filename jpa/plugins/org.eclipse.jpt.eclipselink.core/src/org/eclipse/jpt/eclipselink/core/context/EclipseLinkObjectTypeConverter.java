@@ -34,7 +34,6 @@ public interface EclipseLinkObjectTypeConverter extends EclipseLinkNamedConverte
 		String OBJECT_TYPE_PROPERTY = "objectTypeProperty";
 
 	
-		
 	// **************** conversion values **************************************
 
 	/**
@@ -76,6 +75,18 @@ public interface EclipseLinkObjectTypeConverter extends EclipseLinkNamedConverte
 	void moveConversionValue(int targetIndex, int sourceIndex);
 		String CONVERSION_VALUES_LIST = "conversionValuesList"; //$NON-NLS-1$
 
-		
+	
+	/**
+	 * Returns a ListIterator of the ConversionValue dataValues.
+	 * @return
+	 */
 	ListIterator<String> dataValues();
+	
+	
+	// **************** default object value **************************************
+	
+	String getDefaultObjectValue();
+	void setDefaultObjectValue(String defaultObjectValue);
+		String DEFAULT_OBJECT_VALUE_PROPERTY = "defaultObjectValueProperty";
+
 }

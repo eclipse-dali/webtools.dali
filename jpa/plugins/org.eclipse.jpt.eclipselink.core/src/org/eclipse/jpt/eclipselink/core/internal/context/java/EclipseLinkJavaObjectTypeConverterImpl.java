@@ -39,7 +39,9 @@ public class EclipseLinkJavaObjectTypeConverterImpl extends AbstractJavaJpaConte
 	private String dataType;
 	
 	private String objectType;
-	
+
+	private String defaultObjectValue;
+
 	private final List<EclipseLinkJavaConversionValue> conversionValues;
 	
 	public EclipseLinkJavaObjectTypeConverterImpl(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
@@ -185,6 +187,23 @@ public class EclipseLinkJavaObjectTypeConverterImpl extends AbstractJavaJpaConte
 			}
 		};
 	}
+		
+	public String getDefaultObjectValue() {
+		return this.defaultObjectValue;
+	}
+	
+	public void setDefaultObjectValue(String newDefaultObjectValue) {
+		String oldDefaultObjectValue = this.defaultObjectValue;
+		this.defaultObjectValue = newDefaultObjectValue;
+		getResourceConverter().setDefaultObjectValue(newDefaultObjectValue);
+		firePropertyChanged(DEFAULT_OBJECT_VALUE_PROPERTY, oldDefaultObjectValue, newDefaultObjectValue);
+	}
+	
+	protected void setDefaultObjectValue_(String newDefaultObjectValue) {
+		String oldDefaultObjectValue = this.defaultObjectValue;
+		this.defaultObjectValue = newDefaultObjectValue;
+		firePropertyChanged(DEFAULT_OBJECT_VALUE_PROPERTY, oldDefaultObjectValue, newDefaultObjectValue);
+	}
 	
 	protected void initialize(JavaResourcePersistentMember jrpm) {
 		this.resourcePersistentMember = jrpm;
@@ -192,6 +211,7 @@ public class EclipseLinkJavaObjectTypeConverterImpl extends AbstractJavaJpaConte
 		this.name = this.name(resourceConverter);
 		this.dataType = this.dataType(resourceConverter);
 		this.objectType = this.objectType(resourceConverter);
+		this.defaultObjectValue = this.defaultObjectValue(resourceConverter);
 		this.initializeConversionValues(resourceConverter);
 	}
 	
@@ -218,6 +238,7 @@ public class EclipseLinkJavaObjectTypeConverterImpl extends AbstractJavaJpaConte
 		this.setName_(this.name(resourceConverter));
 		this.setDataType_(this.dataType(resourceConverter));
 		this.setObjectType_(this.objectType(resourceConverter));
+		this.setDefaultObjectValue_(this.defaultObjectValue(resourceConverter));
 		this.updateConversionValues(resourceConverter);
 	}
 
@@ -250,6 +271,10 @@ public class EclipseLinkJavaObjectTypeConverterImpl extends AbstractJavaJpaConte
 
 	protected String objectType(ObjectTypeConverterAnnotation resourceConverter) {
 		return resourceConverter == null ? null : resourceConverter.getObjectType();
+	}
+
+	protected String defaultObjectValue(ObjectTypeConverterAnnotation resourceConverter) {
+		return resourceConverter == null ? null : resourceConverter.getDefaultObjectValue();
 	}
 
 	// ********** validation **********

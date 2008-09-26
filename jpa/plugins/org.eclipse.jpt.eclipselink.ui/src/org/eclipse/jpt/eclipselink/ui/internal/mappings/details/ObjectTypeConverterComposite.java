@@ -29,6 +29,7 @@ import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAd
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -80,6 +81,14 @@ public class ObjectTypeConverterComposite extends FormPane<EclipseLinkObjectType
 		addObjectTypeChooser(container);
 		
 		addConversionValuesTable(container);
+
+		addLabeledEditableCCombo(
+			container,
+			EclipseLinkUiMappingsMessages.ObjectTypeConverterComposite_defaultObjectValueLabel,
+			buildDefaultObjectValueListHolder(),
+			buildDefaultObjectValueHolder(),
+			null
+		);
 
 		new PaneEnabler(buildBooleanHolder(), this);
 	}
@@ -318,6 +327,33 @@ public class ObjectTypeConverterComposite extends FormPane<EclipseLinkObjectType
 		return new TableLabelProvider();
 	}
 	
+	protected ListValueModel<String> buildDefaultObjectValueListHolder() {
+		return new TransformationListValueModelAdapter<EclipseLinkConversionValue, String>(buildConversionValuesListModel()) {
+			@Override
+			protected String transformItem(EclipseLinkConversionValue conversionValue) {
+				return conversionValue.getObjectValue();
+			}
+		};
+	}
+	
+	protected WritablePropertyValueModel<String> buildDefaultObjectValueHolder() {
+		return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(
+				getSubjectHolder(), EclipseLinkObjectTypeConverter.DEFAULT_OBJECT_VALUE_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+				return this.subject.getDefaultObjectValue();
+			}
+		
+			@Override
+			protected void setValue_(String value) {
+				if (value.length() == 0) {
+					value = null;
+				}
+				this.subject.setDefaultObjectValue(value);
+			}
+		};
+	}
+
 	protected PropertyValueModel<Boolean> buildBooleanHolder() {
 		return new TransformationPropertyValueModel<EclipseLinkObjectTypeConverter, Boolean>(getSubjectHolder()) {
 			@Override
@@ -423,6 +459,4 @@ public class ObjectTypeConverterComposite extends FormPane<EclipseLinkObjectType
 			}
 		}
 	}
-
-
 }

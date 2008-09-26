@@ -82,6 +82,8 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	public static String ObjectTypeConverterComposite_conversionValueEdit;
 	public static String ObjectTypeConverterComposite_conversionValuesDataValueColumn;
 	public static String ObjectTypeConverterComposite_conversionValuesObjectValueColumn;
+	public static String ObjectTypeConverterComposite_defaultObjectValueLabel;
+	
 	public static String ConversionValueDialog_addConversionValue;
 	public static String ConversionValueDialog_editConversionValue;
 	public static String ConversionValueDialog_addConversionValueDescriptionTitle;
