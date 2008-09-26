@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
+import java.util.Set;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
@@ -59,15 +60,17 @@ public class ConversionValueDialog extends ValidatingDialog<ConversionValueState
 	protected ConversionValueStateObject buildStateObject() {
 		String dataValue = null;
 		String objectValue = null;
-		
+		Set<String> dataValues = CollectionTools.set(this.objectTypeConverter.dataValues());
 		if (isEditDialog()) {
 			dataValue = this.conversionValue.getDataValue();
 			objectValue = this.conversionValue.getObjectValue();
+			//remove *this* dataValue, don't want a duplicate data value error
+			dataValues.remove(dataValue);
 		}
 		return new ConversionValueStateObject(
 			dataValue, 
 			objectValue, 
-			CollectionTools.collection(this.objectTypeConverter.dataValues()));
+			dataValues);
 	}
 
 	// ********** open **********
