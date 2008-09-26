@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 
 public class LobImpl extends AbstractResourceAnnotation<Attribute> implements LobAnnotation
 {
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	protected LobImpl(JavaResourceNode parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
