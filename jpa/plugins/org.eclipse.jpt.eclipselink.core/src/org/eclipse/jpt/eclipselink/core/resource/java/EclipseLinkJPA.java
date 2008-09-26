@@ -71,7 +71,7 @@ public interface EclipseLinkJPA {
 		String CONVERTER__CONVERTER_CLASS = "converterClass";
 	
 	String EXISTENCE_CHECKING = PACKAGE_ + "ExistenceChecking";
-	String EXISTENCE_CHECKING__VALUE = "value";
+		String EXISTENCE_CHECKING__VALUE = "value";
 
 	String EXISTENCE_TYPE = PACKAGE_ + "ExistenceType";
 	String EXISTENCE_TYPE_ = EXISTENCE_TYPE + ".";
@@ -79,6 +79,14 @@ public interface EclipseLinkJPA {
 	String EXISTENCE_TYPE__CHECK_DATABASE = EXISTENCE_TYPE_ + "CHECK_DATABASE";
 	String EXISTENCE_TYPE__ASSUME_EXISTENCE = EXISTENCE_TYPE_ + "ASSUME_EXISTENCE";
 	String EXISTENCE_TYPE__ASSUME_NON_EXISTENCE = EXISTENCE_TYPE_ + "ASSUME_NON_EXISTENCE";
+
+	String JOIN_FETCH = PACKAGE_ + "JoinFetch";
+		String JOIN_FETCH_VALUE = "value";
+
+	String JOIN_FETCH_TYPE = PACKAGE_ + "JoinFetchType";
+	String JOIN_FETCH_TYPE_ = JOIN_FETCH_TYPE + ".";
+	String JOIN_FETCH_TYPE__INNER = JOIN_FETCH_TYPE_ + "INNER";
+	String JOIN_FETCH_TYPE__OUTER = JOIN_FETCH_TYPE_ + "OUTER";
 
 	String MUTABLE = PACKAGE_ + "Mutable";
 		String MUTABLE__VALUE = "value";
@@ -90,6 +98,8 @@ public interface EclipseLinkJPA {
 		String OBJECT_TYPE_CONVERTER__CONVERSION_VALUES = "conversionValues";
 		String OBJECT_TYPE_CONVERTER__DEFAULT_OBJECT_VALUE = "defaultObjectValue";
 
+	String PRIVATE_OWNED = PACKAGE_ + "PrivateOwned";
+	
 	String READ_TRANSFORMER = PACKAGE_ + "ReadTransformer";
 		String READ_TRANSFORMER__TRANSFORMER_CLASS = "transformerClass";
 		String READ_TRANSFORMER__METHOD = "method";
