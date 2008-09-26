@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context;
 
+import java.util.ListIterator;
+
 /**
  * Corresponds to a ObjectTypeConverter resource model object
  * 
@@ -31,4 +33,49 @@ public interface EclipseLinkObjectTypeConverter extends EclipseLinkNamedConverte
 	void setObjectType(String objectType);
 		String OBJECT_TYPE_PROPERTY = "objectTypeProperty";
 
+	
+		
+	// **************** conversion values **************************************
+
+	/**
+	 * Return a list iterator of the conversion values.
+	 * This will not be null.
+	 */
+	<T extends EclipseLinkConversionValue> ListIterator<T> conversionValues();
+
+	/**
+	 * Return the number of conversion values.
+	 */
+	int conversionValuesSize();
+
+	/**
+	 * Add a conversion value to the object type mapping return the object 
+	 * representing it.
+	 */
+	EclipseLinkConversionValue addConversionValue(int index);
+
+	/**
+	 * Add a conversion value to the object type mapping return the object 
+	 * representing it.
+	 */
+	EclipseLinkConversionValue addConversionValue();
+
+	/**
+	 * Remove the conversion value at the given index from the entity.
+	 */
+	void removeConversionValue(int index);
+
+	/**
+	 * Remove the conversion value from the entity.
+	 */
+	void removeConversionValue(EclipseLinkConversionValue conversionValue);
+
+	/**
+	 * Move the conversion values from the source index to the target index.
+	 */
+	void moveConversionValue(int targetIndex, int sourceIndex);
+		String CONVERSION_VALUES_LIST = "conversionValuesList"; //$NON-NLS-1$
+
+		
+	ListIterator<String> dataValues();
 }

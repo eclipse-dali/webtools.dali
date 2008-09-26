@@ -294,7 +294,7 @@ public abstract class Dialog<T extends Node> extends TitleAreaDialog
 	 *
 	 * @return The pane showing the custom widgets
 	 */
-	DialogPane<?> getPane() {
+	protected DialogPane<?> getPane() {
 		return pane;
 	}
 

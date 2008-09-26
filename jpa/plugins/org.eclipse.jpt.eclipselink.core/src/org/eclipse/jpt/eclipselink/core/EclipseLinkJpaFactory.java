@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConvert;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
@@ -51,12 +52,12 @@ public interface EclipseLinkJpaFactory extends JpaFactory
 	EclipseLinkJavaObjectTypeConverter buildEclipseLinkJavaObjectTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm);
 	
 	EclipseLinkJavaStructConverter buildEclipseLinkJavaStructConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm);
-
+	
+	EclipseLinkJavaConversionValue buildJavaConversionValue(EclipseLinkJavaObjectTypeConverter parent);
+	
 	//********* covariant overrides ***********
 	
 	EclipseLinkJavaEntity buildJavaEntity(JavaPersistentType parent);
 	
 	EclipseLinkJavaMappedSuperclass buildJavaMappedSuperclass(JavaPersistentType parent);
-
-	
 }

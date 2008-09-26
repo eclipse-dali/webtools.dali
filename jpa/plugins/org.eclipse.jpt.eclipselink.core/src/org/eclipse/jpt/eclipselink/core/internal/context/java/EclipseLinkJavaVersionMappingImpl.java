@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaVersionMapping;
@@ -16,6 +18,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaVersionMappingImpl extends GenericJavaVersionMapping
 {
@@ -51,5 +54,15 @@ public class EclipseLinkJavaVersionMappingImpl extends GenericJavaVersionMapping
 			return EclipseLinkConvert.ECLIPSE_LINK_CONVERTER;
 		}
 		return null;
+	}
+	
+	//************ validation ****************
+	
+	@Override
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
+		if (getSpecifiedConverter() != null) {
+			getSpecifiedConverter().validate(messages, astRoot);
+		}
 	}
 }

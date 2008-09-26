@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConvert;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
@@ -38,6 +39,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaTypeConverte
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaCachingImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConversionValueImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConvertImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConverterImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEntityImpl;
@@ -107,6 +109,10 @@ public class EclipseLinkJpaFactoryImpl extends GenericJpaFactory implements Ecli
 	
 	public EclipseLinkJavaTypeConverter buildEclipseLinkJavaTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
 		return new EclipseLinkJavaTypeConverterImpl(parent, jrpm);
+	}
+	
+	public EclipseLinkJavaConversionValue buildJavaConversionValue(EclipseLinkJavaObjectTypeConverter parent) {
+		return new EclipseLinkJavaConversionValueImpl(parent);
 	}
 	
 	@Override

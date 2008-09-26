@@ -9,10 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context.java;
 
-import java.util.ListIterator;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConversionValue;
+import org.eclipse.jpt.eclipselink.core.resource.java.ConversionValueAnnotation;
 
 /**
+ * Corresponds to a Convert resource model object
+ * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -22,11 +27,20 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJavaObjectTypeConverter extends EclipseLinkObjectTypeConverter, EclipseLinkJavaNamedConverter
+public interface EclipseLinkJavaConversionValue extends EclipseLinkConversionValue, JavaJpaContextNode
 {
-
-	//************ covariant overrides ****************
 	
-	@SuppressWarnings("unchecked")
-	ListIterator<EclipseLinkJavaConversionValue> conversionValues();
+	void initialize(ConversionValueAnnotation resourceConversionValue);
+
+	/**
+	 * Update the EclipseLinkJavaConversionValue context model object to match the ConversionValueAnnotation 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(ConversionValueAnnotation resourceConversionValue);
+	
+	TextRange getDataValueTextRange(CompilationUnit astRoot);
+
+	TextRange getObjectValueTextRange(CompilationUnit astRoot);
+
+
 }

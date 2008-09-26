@@ -10,16 +10,20 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.java;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.resource.java.ConversionValueAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkJavaContextModelTestCase
@@ -32,15 +36,20 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkJavaCont
 	private void createObjectTypeConverterAnnotation() throws Exception {
 		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ObjectTypeConverter", "String name(); Class dataType() default void.class;  Class objectType() default void.class;");		
 	}
+	
+	private void createConversionValueAnnotation() throws Exception {
+		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ConversionValue", "String dataValue(); String objectValue();");		
+	}
 
 	
 	private ICompilationUnit createTestEntityWithConvertAndObjectTypeConverter() throws Exception {
 		createConvertAnnotation();
 		createObjectTypeConverterAnnotation();
+		createConversionValueAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, EclipseLinkJPA.CONVERT, EclipseLinkJPA.OBJECT_TYPE_CONVERTER);
+				return new ArrayIterator<String>(JPA.ENTITY, EclipseLinkJPA.CONVERT, EclipseLinkJPA.OBJECT_TYPE_CONVERTER, EclipseLinkJPA.CONVERSION_VALUE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -71,7 +80,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkJavaCont
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Convert(\"foo\")").append(CR);
-				sb.append("    @ObjectTypeConverter(dataType=Foo.class");
+				sb.append("    @ObjectTypeConverter(dataType=Foo.class)");
 			}
 		});
 	}
@@ -92,7 +101,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkJavaCont
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Convert(\"foo\")").append(CR);
-				sb.append("    @ObjectTypeConverter(objectType=Foo.class");
+				sb.append("    @ObjectTypeConverter(objectType=Foo.class)");
 			}
 		});
 	}
@@ -311,4 +320,217 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkJavaCont
 		converterAnnotation.setObjectType("FooBar");
 		assertEquals("FooBar", ((EclipseLinkObjectTypeConverter) eclipseLinkConvert.getConverter()).getObjectType());	
 	}
+	
+	
+	public void testAddConversionValue() throws Exception {
+		createTestEntityWithConvertAndObjectTypeConverter();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
+		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
+		EclipseLinkObjectTypeConverter converter = (EclipseLinkObjectTypeConverter) eclipseLinkConvert.getConverter();
+		
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) attributeResource.getAnnotation(ObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		
+		EclipseLinkConversionValue conversionValue = converter.addConversionValue(0);
+		conversionValue.setDataValue("F");
+		conversionValue.setObjectValue("female");
+		
+		ListIterator<ConversionValueAnnotation> resourceConversionValues = converterAnnotation.conversionValues();
+		ConversionValueAnnotation resourceConversionValue = resourceConversionValues.next();
+		assertEquals("F", resourceConversionValue.getDataValue());
+		assertEquals("female", resourceConversionValue.getObjectValue());
+		
+		EclipseLinkConversionValue conversionValue2 = converter.addConversionValue(0);
+		conversionValue2.setDataValue("M");
+		conversionValue2.setObjectValue("male");
+		
+		resourceConversionValues = converterAnnotation.conversionValues();
+		resourceConversionValue = resourceConversionValues.next();
+		assertEquals("M", resourceConversionValue.getDataValue());
+		assertEquals("male", resourceConversionValue.getObjectValue());
+		resourceConversionValue = resourceConversionValues.next();
+		assertEquals("F", resourceConversionValue.getDataValue());
+		assertEquals("female", resourceConversionValue.getObjectValue());
+		
+		EclipseLinkConversionValue conversionValue3 = converter.addConversionValue(1);
+		conversionValue3.setDataValue("O");
+		conversionValue3.setObjectValue("male");
+		
+		resourceConversionValues = converterAnnotation.conversionValues();
+		resourceConversionValue = resourceConversionValues.next();
+		assertEquals("M", resourceConversionValue.getDataValue());
+		assertEquals("male", resourceConversionValue.getObjectValue());
+		resourceConversionValue = resourceConversionValues.next();
+		assertEquals("O", resourceConversionValue.getDataValue());
+		assertEquals("male", resourceConversionValue.getObjectValue());
+		resourceConversionValue = resourceConversionValues.next();
+		assertEquals("F", resourceConversionValue.getDataValue());
+		assertEquals("female", resourceConversionValue.getObjectValue());
+		
+		ListIterator<EclipseLinkConversionValue> conversionValues = converter.conversionValues();
+		assertEquals(conversionValue2, conversionValues.next());
+		assertEquals(conversionValue3, conversionValues.next());
+		assertEquals(conversionValue, conversionValues.next());
+		
+		conversionValues = converter.conversionValues();
+		assertEquals("M", conversionValues.next().getDataValue());
+		assertEquals("O", conversionValues.next().getDataValue());
+		assertEquals("F", conversionValues.next().getDataValue());
+	}
+	
+	public void testRemoveConversionValue() throws Exception {
+		createTestEntityWithConvertAndObjectTypeConverter();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
+		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
+		EclipseLinkObjectTypeConverter converter = (EclipseLinkObjectTypeConverter) eclipseLinkConvert.getConverter();
+		
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) attributeResource.getAnnotation(ObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		
+		converter.addConversionValue(0).setDataValue("F");
+		converter.addConversionValue(1).setDataValue("M");
+		converter.addConversionValue(2).setDataValue("O");
+		
+		ListIterator<ConversionValueAnnotation> resourceConversionValues = converterAnnotation.conversionValues();
+		assertEquals(3, CollectionTools.size(resourceConversionValues));
+		
+		converter.removeConversionValue(0);
+		resourceConversionValues = converterAnnotation.conversionValues();
+		assertEquals(2, CollectionTools.size(resourceConversionValues));
+		resourceConversionValues = converterAnnotation.conversionValues();
+		assertEquals("M", resourceConversionValues.next().getDataValue());
+		assertEquals("O", resourceConversionValues.next().getDataValue());
+
+		converter.removeConversionValue(0);
+		resourceConversionValues = converterAnnotation.conversionValues();
+		assertEquals(1, CollectionTools.size(resourceConversionValues));
+		resourceConversionValues = converterAnnotation.conversionValues();
+		assertEquals("O", resourceConversionValues.next().getDataValue());
+		
+		converter.removeConversionValue(0);
+		resourceConversionValues = converterAnnotation.conversionValues();
+		assertEquals(0, CollectionTools.size(resourceConversionValues));
+	}
+
+	public void testMoveConversionValue() throws Exception {
+		createTestEntityWithConvertAndObjectTypeConverter();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
+		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
+		EclipseLinkObjectTypeConverter converter = (EclipseLinkObjectTypeConverter) eclipseLinkConvert.getConverter();
+		
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) attributeResource.getAnnotation(ObjectTypeConverterAnnotation.ANNOTATION_NAME);
+
+		converter.addConversionValue(0).setDataValue("F");
+		converter.addConversionValue(1).setDataValue("M");
+		converter.addConversionValue(2).setDataValue("O");
+		
+		ListIterator<ConversionValueAnnotation> resourceConversionValues = converterAnnotation.conversionValues();
+		assertEquals(3, CollectionTools.size(resourceConversionValues));
+		
+		converter.moveConversionValue(2,0);
+		resourceConversionValues = converterAnnotation.conversionValues();
+		assertEquals(3, CollectionTools.size(resourceConversionValues));
+		resourceConversionValues = converterAnnotation.conversionValues();
+		assertEquals("M", resourceConversionValues.next().getDataValue());
+		assertEquals("O", resourceConversionValues.next().getDataValue());
+		assertEquals("F", resourceConversionValues.next().getDataValue());
+		
+		converter.moveConversionValue(0,1);
+		resourceConversionValues = converterAnnotation.conversionValues();
+		assertEquals(3, CollectionTools.size(resourceConversionValues));
+		resourceConversionValues = converterAnnotation.conversionValues();
+		assertEquals("O", resourceConversionValues.next().getDataValue());
+		assertEquals("M", resourceConversionValues.next().getDataValue());
+		assertEquals("F", resourceConversionValues.next().getDataValue());
+	}
+	
+	public void testUpdateConversionValues() throws Exception {
+		createTestEntityWithConvertAndObjectTypeConverter();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
+		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
+		EclipseLinkObjectTypeConverter converter = (EclipseLinkObjectTypeConverter) eclipseLinkConvert.getConverter();
+		
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) attributeResource.getAnnotation(ObjectTypeConverterAnnotation.ANNOTATION_NAME);
+		
+		converterAnnotation.addConversionValue(0).setDataValue("F");
+		converterAnnotation.addConversionValue(1).setDataValue("M");
+		converterAnnotation.addConversionValue(2).setDataValue("O");
+
+		ListIterator<EclipseLinkConversionValue> conversionValues = converter.conversionValues();
+		assertEquals("F", conversionValues.next().getDataValue());
+		assertEquals("M", conversionValues.next().getDataValue());
+		assertEquals("O", conversionValues.next().getDataValue());
+		assertFalse(conversionValues.hasNext());
+		
+		converterAnnotation.moveConversionValue(2, 0);
+		conversionValues = converter.conversionValues();
+		assertEquals("M", conversionValues.next().getDataValue());
+		assertEquals("O", conversionValues.next().getDataValue());
+		assertEquals("F", conversionValues.next().getDataValue());
+		assertFalse(conversionValues.hasNext());
+		
+		converterAnnotation.moveConversionValue(0, 1);
+		conversionValues = converter.conversionValues();
+		assertEquals("O", conversionValues.next().getDataValue());
+		assertEquals("M", conversionValues.next().getDataValue());
+		assertEquals("F", conversionValues.next().getDataValue());
+		assertFalse(conversionValues.hasNext());
+		
+		converterAnnotation.removeConversionValue(1);
+		conversionValues = converter.conversionValues();
+		assertEquals("O", conversionValues.next().getDataValue());
+		assertEquals("F", conversionValues.next().getDataValue());
+		assertFalse(conversionValues.hasNext());
+		
+		converterAnnotation.removeConversionValue(1);
+		conversionValues = converter.conversionValues();
+		assertEquals("O", conversionValues.next().getDataValue());
+		assertFalse(conversionValues.hasNext());
+		
+		converterAnnotation.removeConversionValue(0);
+		conversionValues = converter.conversionValues();
+		assertFalse(conversionValues.hasNext());
+	}
+	
+	public void testConversionValuesSize() throws Exception {
+		createTestEntityWithConvertAndObjectTypeConverter();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
+		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
+		EclipseLinkObjectTypeConverter converter = (EclipseLinkObjectTypeConverter) eclipseLinkConvert.getConverter();
+		
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) attributeResource.getAnnotation(ObjectTypeConverterAnnotation.ANNOTATION_NAME);
+	
+		assertEquals(0, converter.conversionValuesSize());
+		
+		converterAnnotation.addConversionValue(0).setDataValue("F");
+		converterAnnotation.addConversionValue(1).setDataValue("M");
+		converterAnnotation.addConversionValue(2).setDataValue("O");
+		
+		assertEquals(3, converter.conversionValuesSize());
+	}
+
 }

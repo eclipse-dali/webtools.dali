@@ -7,12 +7,13 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.context.java;
+package org.eclipse.jpt.eclipselink.core.context;
 
-import java.util.ListIterator;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
+import org.eclipse.jpt.core.context.JpaContextNode;
 
 /**
+ * Corresponds to a ConversionValue resource model object
+ * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -22,11 +23,15 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJavaObjectTypeConverter extends EclipseLinkObjectTypeConverter, EclipseLinkJavaNamedConverter
+public interface EclipseLinkConversionValue extends JpaContextNode
 {
+	String getDataValue();	
+	void setDataValue(String dataValue);
+		String DATA_VALUE_PROPERTY = "dataValueProperty";
+		
+	String getObjectValue();	
+	void setObjectValue(String objectValue);
+		String OBJECT_VALUE_PROPERTY = "objectValueProperty";
 
-	//************ covariant overrides ****************
-	
-	@SuppressWarnings("unchecked")
-	ListIterator<EclipseLinkJavaConversionValue> conversionValues();
+	EclipseLinkObjectTypeConverter getParent();
 }
