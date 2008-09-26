@@ -32,14 +32,14 @@ public interface ExistenceCheckingAnnotation extends JavaResourceNode
 	String ANNOTATION_NAME = EclipseLinkJPA.EXISTENCE_CHECKING;
 	
 	/**
-	 * Corresponds to the value element of the Cache annotation.
+	 * Corresponds to the value element of the ExistenceChecking annotation.
 	 * Returns null if the value element does not exist in java.
 	 */
 	ExistenceType getValue();
 	
 	/**
-	 * Corresponds to the type element of the Cache annotation.
-	 * Set to null to remove the type element.
+	 * Corresponds to the value element of the ExistenceChecking annotation.
+	 * Set to null to remove the value element.
 	 */
 	void setValue(ExistenceType value);
 		String VALUE_PROPERTY = "valueProperty";
