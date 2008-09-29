@@ -339,5 +339,10 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 			return AbstractResourceTable.this.getUniqueConstraintsElementName();
 		}
 
+		@Override
+		public void toString(StringBuilder sb) {
+			sb.append(this.getAnnotationName());
+		}
+
 	}
 }

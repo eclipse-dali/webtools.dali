@@ -182,4 +182,10 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 		// java is at the base of the tree
 		return false;
 	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+	
 }

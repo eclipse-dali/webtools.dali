@@ -45,7 +45,7 @@ public class SecondaryTableImpl extends AbstractResourceTable implements Nestabl
 {	
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(SecondaryTableAnnotation.ANNOTATION_NAME);
 	
-	private final List<NestablePrimaryKeyJoinColumn> pkJoinColumns;
+	protected final List<NestablePrimaryKeyJoinColumn> pkJoinColumns;
 	
 	private final PkJoinColumnsContainerAnnotation pkJoinColumnsContainerAnnotation;
 	
@@ -290,6 +290,12 @@ public class SecondaryTableImpl extends AbstractResourceTable implements Nestabl
 		public String getElementName() {
 			return JPA.SECONDARY_TABLE__PK_JOIN_COLUMNS;
 		}
+
+		@Override
+		public void toString(StringBuilder sb) {
+			sb.append(this.getAnnotationName());
+		}
+
 	}
 
 	public static class SecondaryTableAnnotationDefinition implements AnnotationDefinition

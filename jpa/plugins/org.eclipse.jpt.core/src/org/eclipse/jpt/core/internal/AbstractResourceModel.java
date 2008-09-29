@@ -32,4 +32,9 @@ public abstract class AbstractResourceModel
 		// do nothing by default
 	}
 
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.file.getName());
+	}
+
 }

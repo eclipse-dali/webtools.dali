@@ -43,9 +43,9 @@ public class JoinTableImpl extends AbstractResourceTable implements JoinTableAnn
 
 	private static final DeclarationAnnotationElementAdapter<String> CATALOG_ADAPTER = ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__CATALOG);
 	
-	private final List<NestableJoinColumn> joinColumns;
+	protected final List<NestableJoinColumn> joinColumns;
 	
-	private final List<NestableJoinColumn> inverseJoinColumns;
+	protected final List<NestableJoinColumn> inverseJoinColumns;
 	
 	private final JoinColumnsContainerAnnotation joinColumnsContainerAnnotation;
 	
@@ -215,7 +215,7 @@ public class JoinTableImpl extends AbstractResourceTable implements JoinTableAnn
 		return JoinColumnImpl.createJoinTableInverseJoinColumn(this, getMember(), index);
 	}
 
-	private class JoinColumnsContainerAnnotation extends AbstractContainerAnnotation {
+	protected class JoinColumnsContainerAnnotation extends AbstractContainerAnnotation {
 
 		public NestableJoinColumn addInternal(int index) {
 			NestableJoinColumn joinColumn = JoinTableImpl.this.createJoinColumn(index);
@@ -261,7 +261,7 @@ public class JoinTableImpl extends AbstractResourceTable implements JoinTableAnn
 		}
 	}
 	
-	private class InverseJoinColumnsContainerAnnotation extends AbstractContainerAnnotation {
+	protected class InverseJoinColumnsContainerAnnotation extends AbstractContainerAnnotation {
 
 		public NestableJoinColumn addInternal(int index) {
 			NestableJoinColumn joinColumn = JoinTableImpl.this.createInverseJoinColumn(index);
@@ -358,6 +358,12 @@ public class JoinTableImpl extends AbstractResourceTable implements JoinTableAnn
 		public TextRange getTextRange(CompilationUnit astRoot) {
 			return JoinTableImpl.this.getTextRange(astRoot);
 		}
+		
+		@Override
+		public void toString(StringBuilder sb) {
+			sb.append(this.getAnnotationName());
+		}
+		
 	}
 	public static class JoinTableAnnotationDefinition implements AnnotationDefinition
 	{

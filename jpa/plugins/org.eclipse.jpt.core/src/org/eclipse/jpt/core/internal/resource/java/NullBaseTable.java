@@ -83,18 +83,18 @@ public abstract class NullBaseTable extends AbstractJavaResourceNode implements 
 		return createTableResource().addUniqueConstraint(index);		
 	}
 
-	public void removeUniqueConstraint(int index) {
+	public void removeUniqueConstraint(@SuppressWarnings("unused") int index) {
 		throw new UnsupportedOperationException();
 	}
 
-	public int indexOfUniqueConstraint(UniqueConstraintAnnotation uniqueConstraint) {
+	public int indexOfUniqueConstraint(@SuppressWarnings("unused") UniqueConstraintAnnotation uniqueConstraint) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
+	public void moveUniqueConstraint(@SuppressWarnings("unused") int targetIndex, @SuppressWarnings("unused") int sourceIndex) {
 		throw new UnsupportedOperationException();
 	}
-	public UniqueConstraintAnnotation uniqueConstraintAt(int index) {
+	public UniqueConstraintAnnotation uniqueConstraintAt(@SuppressWarnings("unused") int index) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -110,32 +110,37 @@ public abstract class NullBaseTable extends AbstractJavaResourceNode implements 
 		return null;
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange(@SuppressWarnings("unused") CompilationUnit astRoot) {
 		return null;
 	}
 
-	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
+	public TextRange getCatalogTextRange(@SuppressWarnings("unused") CompilationUnit astRoot) {
 		return null;
 	}
 
-	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
+	public TextRange getSchemaTextRange(@SuppressWarnings("unused") CompilationUnit astRoot) {
 		return null;
 	}
 
-	public boolean nameTouches(int pos, CompilationUnit astRoot) {
+	public boolean nameTouches(@SuppressWarnings("unused") int pos, @SuppressWarnings("unused") CompilationUnit astRoot) {
 		return false;
 	}
 
-	public boolean catalogTouches(int pos, CompilationUnit astRoot) {
+	public boolean catalogTouches(@SuppressWarnings("unused") int pos, @SuppressWarnings("unused") CompilationUnit astRoot) {
 		return false;
 	}
 
-	public boolean schemaTouches(int pos, CompilationUnit astRoot) {
+	public boolean schemaTouches(@SuppressWarnings("unused") int pos, @SuppressWarnings("unused") CompilationUnit astRoot) {
 		return false;
 	}
 
 	public void update(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getName());
 	}
 
 }

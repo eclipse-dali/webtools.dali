@@ -187,6 +187,11 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 		return null;
 	}
 
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+
 	class JoinColumnOwner implements OrmJoinColumn.Owner
 	{
 

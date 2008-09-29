@@ -478,6 +478,12 @@ public class TableGeneratorImpl
 		public String getElementName() {
 			return JPA.TABLE_GENERATOR__UNIQUE_CONSTRAINTS;
 		}
+
+		@Override
+		public void toString(StringBuilder sb) {
+			sb.append(this.getAnnotationName());
+		}
+
 	}
 	
 

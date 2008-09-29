@@ -67,4 +67,10 @@ public class GenericOrmQueryHint extends AbstractOrmJpaContextNode implements Or
 	public TextRange getValidationTextRange() {
 		return this.resourceQueryHint.getValidationTextRange();
 	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+
 }

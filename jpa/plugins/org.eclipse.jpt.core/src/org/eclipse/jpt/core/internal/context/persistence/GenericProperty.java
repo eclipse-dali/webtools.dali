@@ -79,13 +79,10 @@ public class GenericProperty extends AbstractPersistenceJpaContextNode
 	
 	// **************** toString
 	@Override
-	public void toString(StringBuilder sb)
-	{
-		sb.append(" (name: ");
-		sb.append(name);
-		sb.append(", value: ");
-		sb.append(value);
-		sb.append(')');
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+		sb.append(" = "); //$NON-NLS-1$
+		sb.append(this.value);
 	}
 
 }

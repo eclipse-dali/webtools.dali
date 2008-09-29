@@ -43,7 +43,7 @@ public class AssociationOverrideImpl
 {		
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 		
-	private final List<NestableJoinColumn> joinColumns;
+	protected final List<NestableJoinColumn> joinColumns;
 	
 	private final JoinColumnsContainerAnnotation joinColumnsContainerAnnotation;
 	
@@ -109,7 +109,7 @@ public class AssociationOverrideImpl
 		ContainerAnnotationTools.synchAnnotationsAfterRemove(index, this.joinColumnsContainerAnnotation);
 	}
 
-	private void removeJoinColumn(NestableJoinColumn joinColumn) {
+	protected void removeJoinColumn(NestableJoinColumn joinColumn) {
 		removeItemFromList(joinColumn, this.joinColumns, AssociationOverrideAnnotation.JOIN_COLUMNS_LIST);
 	}
 
@@ -247,6 +247,11 @@ public class AssociationOverrideImpl
 		
 		public String getElementName() {
 			return JPA.ASSOCIATION_OVERRIDE__JOIN_COLUMNS;
+		}
+
+		@Override
+		public void toString(StringBuilder sb) {
+			sb.append(this.getAnnotationName());
 		}
 
 	}

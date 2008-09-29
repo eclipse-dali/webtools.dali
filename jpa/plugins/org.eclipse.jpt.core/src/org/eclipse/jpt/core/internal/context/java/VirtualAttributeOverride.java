@@ -104,4 +104,9 @@ public class VirtualAttributeOverride extends AbstractJavaResourceNode implement
 		return null;
 	}
 
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+
 }

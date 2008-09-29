@@ -130,4 +130,9 @@ public abstract class AbstractResourceAnnotation<E extends Member>
 		return (elementTextRange != null) && elementTextRange.touches(pos);
 	}
 
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getAnnotationName());
+	}
+
 }

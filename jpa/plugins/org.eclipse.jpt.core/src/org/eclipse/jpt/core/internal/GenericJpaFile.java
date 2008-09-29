@@ -125,9 +125,10 @@ public class GenericJpaFile extends AbstractJpaNode implements JpaFile
 	
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(getFile().toString());
-		sb.append(" (resourceType: ");
-		sb.append(getResourceType());
-		sb.append(")");
+		sb.append(this.file);
+		sb.append(" (resourceType: "); //$NON-NLS-1$
+		sb.append(this.getResourceType());
+		sb.append(')');
 	}
+
 }

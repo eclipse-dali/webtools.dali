@@ -213,4 +213,9 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 		}
 	}
 	
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+
 }

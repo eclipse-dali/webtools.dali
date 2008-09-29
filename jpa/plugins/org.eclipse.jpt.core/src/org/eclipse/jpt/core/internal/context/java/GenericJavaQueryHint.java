@@ -67,4 +67,10 @@ public class GenericJavaQueryHint extends AbstractJavaJpaContextNode implements 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.resourceQueryHint.getTextRange(astRoot);
 	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+	
 }

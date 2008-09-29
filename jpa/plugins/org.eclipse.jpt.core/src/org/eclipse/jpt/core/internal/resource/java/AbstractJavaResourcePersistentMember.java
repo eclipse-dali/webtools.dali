@@ -520,6 +520,11 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 		};
 	}
 
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getMember());
+	}
+
 
 	// ********** AST visitor **********
 

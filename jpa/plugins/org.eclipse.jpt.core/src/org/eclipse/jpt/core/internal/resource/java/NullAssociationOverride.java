@@ -113,4 +113,9 @@ public class NullAssociationOverride extends AbstractJavaResourceNode implements
 		return null;
 	}
 
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getName());
+	}
+
 }

@@ -187,5 +187,9 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 		return this.getOwner().getDefaultColumnName();
 	}
 
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getName());
+	}
 
 }

@@ -183,16 +183,6 @@ public class EntityCacheProperties extends AbstractModel {
 	}
 
 	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		StringTools.buildSimpleToStringOn(this, sb);
-		sb.append(" (");
-		this.toString(sb);
-		sb.append(')');
-		return sb.toString();
-	}
-
-	@Override
 	public void toString(StringBuilder sb) {
 		sb.append("name: ");
 		sb.append(this.entityName);

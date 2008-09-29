@@ -172,4 +172,10 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 	public TextRange getNameTextRange() {
 		return this.getResourceQuery().getNameTextRange();
 	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+
 }
