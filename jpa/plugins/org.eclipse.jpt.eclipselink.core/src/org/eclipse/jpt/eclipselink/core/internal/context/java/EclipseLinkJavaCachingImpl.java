@@ -302,7 +302,6 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 		boolean oldExistenceChecking = this.existenceChecking;
 		this.existenceChecking = newExistenceChecking;
 		firePropertyChanged(EXISTENCE_CHECKING_PROPERTY, oldExistenceChecking, newExistenceChecking);
-		setDefaultExistenceType(caclulateDefaultExistenceType());
 	}
 	
 	protected ExistenceType caclulateDefaultExistenceType() {
@@ -335,7 +334,9 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 			if (newSpecifiedExistenceType != null) {
 				setExistenceChecking(true);
 			}
-			else throw new IllegalStateException();
+			else {
+				return;
+			}
 		}
 		ExistenceType oldSpecifiedExistenceType = this.specifiedExistenceType;
 		this.specifiedExistenceType = newSpecifiedExistenceType;
@@ -381,7 +382,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 	
 	public EclipseLinkJavaExpiryTimeOfDay addExpiryTimeOfDay() {
 		if (this.expiryTimeOfDay != null) {
-			throw new IllegalStateException("expiryTimeOfDay already exists, use getExpiryTimeOfDay()");
+			throw new IllegalStateException("expiryTimeOfDay already exists, use getExpiryTimeOfDay()"); //$NON-NLS-1$
 		}
 		if (this.resourcePersistentType.getAnnotation(getCacheAnnotationName()) == null) {
 			this.resourcePersistentType.addAnnotation(getCacheAnnotationName());
@@ -397,7 +398,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 	
 	public void removeExpiryTimeOfDay() {
 		if (this.expiryTimeOfDay == null) {
-			throw new IllegalStateException("timeOfDayExpiry does not exist");
+			throw new IllegalStateException("timeOfDayExpiry does not exist"); //$NON-NLS-1$
 		}
 		EclipseLinkExpiryTimeOfDay oldExpiryTimeOfDay = this.expiryTimeOfDay;
 		this.expiryTimeOfDay = null;

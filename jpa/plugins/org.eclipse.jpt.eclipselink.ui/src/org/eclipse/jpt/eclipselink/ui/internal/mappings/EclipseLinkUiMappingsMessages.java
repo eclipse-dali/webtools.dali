@@ -77,6 +77,10 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	public static String ExpiryComposite_dailyExpiry;
 	public static String ExpiryComposite_timeOfDayExpiryExpireAt;
 	
+	public static String JoinFetchComposite_label;
+	public static String JoinFetchComposite_inner;
+	public static String JoinFetchComposite_outer;	
+	
 	public static String ObjectTypeConverterComposite_dataTypeLabel;
 	public static String ObjectTypeConverterComposite_objectTypeLabel;
 	public static String ObjectTypeConverterComposite_conversionValueEdit;

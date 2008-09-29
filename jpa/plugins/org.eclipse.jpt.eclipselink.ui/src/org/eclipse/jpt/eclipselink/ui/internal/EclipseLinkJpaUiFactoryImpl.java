@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.context.ManyToManyMapping;
+import org.eclipse.jpt.core.context.ManyToOneMapping;
 import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.OneToOneMapping;
@@ -34,6 +36,8 @@ import org.eclipse.jpt.eclipselink.ui.internal.java.details.EclipseLinkJavaEntit
 import org.eclipse.jpt.eclipselink.ui.internal.logging.PersistenceXmlLoggingTab;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkBasicMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkIdMappingComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkManyToManyMappingComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkManyToOneMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkMappedSuperclassComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkVersionMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipselinkOneToManyMappingComposite;
@@ -102,6 +106,24 @@ public class EclipseLinkJpaUiFactoryImpl extends BaseJpaUiFactory implements Ecl
 		WidgetFactory widgetFactory) {
 
 		return new EclipselinkOneToManyMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createManyToManyMappingComposite(
+		PropertyValueModel<ManyToManyMapping> subjectHolder, 
+		Composite parent, 
+		WidgetFactory widgetFactory) {
+
+		return new EclipseLinkManyToManyMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createManyToOneMappingComposite(
+		PropertyValueModel<ManyToOneMapping> subjectHolder, 
+		Composite parent, 
+		WidgetFactory widgetFactory) {
+
+		return new EclipseLinkManyToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override

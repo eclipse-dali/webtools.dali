@@ -14,15 +14,19 @@ import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToOneMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
 import org.eclipse.jpt.eclipselink.core.resource.java.PrivateOwnedAnnotation;
 
 public class EclipseLinkJavaOneToOneMappingImpl extends GenericJavaOneToOneMapping implements EclipseLinkOneToOneMapping
 {
 	
-	private boolean privateOwned;
+	protected boolean privateOwned;
 	
+	protected final JavaJoinFetchable joinFetchable;
+
 	public EclipseLinkJavaOneToOneMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
+		this.joinFetchable = new EclipseLinkJavaJoinFetchable(parent);
 	}
 	
 	@Override
@@ -75,16 +79,23 @@ public class EclipseLinkJavaOneToOneMappingImpl extends GenericJavaOneToOneMappi
 		firePropertyChanged(PRIVATE_OWNED_PROPERTY, oldPrivateOwned, newPrivateOwned);
 	}
 	
+	public JavaJoinFetchable getJoinFetchable() {
+		return this.joinFetchable;
+	}
+
+	
 	@Override
 	public void initialize(JavaResourcePersistentAttribute jrpa) {
 		super.initialize(jrpa);
 		this.privateOwned = privateOwned();
+		this.joinFetchable.initialize(jrpa);
 	}
 	
 	@Override
-	public void update(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
-		super.update(javaResourcePersistentAttribute);
+	public void update(JavaResourcePersistentAttribute jrpa) {
+		super.update(jrpa);
 		setPrivateOwned_(privateOwned());
+		this.joinFetchable.update(jrpa);
 	}
 	
 	private boolean privateOwned() {

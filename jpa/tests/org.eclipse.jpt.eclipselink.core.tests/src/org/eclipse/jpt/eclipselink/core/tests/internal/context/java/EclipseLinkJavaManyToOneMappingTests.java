@@ -10,26 +10,20 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.java;
 
 import java.util.Iterator;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchable;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.PrivateOwnedAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextModelTestCase
+public class EclipseLinkJavaManyToOneMappingTests extends EclipseLinkJavaContextModelTestCase
 {
-
-	private void createPrivateOwnedAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "PrivateOwned", "");		
-	}
 
 	private void createJoinFetchAnnotation() throws Exception{
 		createJoinFetchTypeEnum();
@@ -39,36 +33,14 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 	private void createJoinFetchTypeEnum() throws Exception {
 		this.createEnumAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, "JoinFetchType", "INNER, OUTER;");	
 	}
-	
-
-	private ICompilationUnit createTestEntityWithPrivateOwnedOneToOne() throws Exception {
-		createPrivateOwnedAnnotation();
 		
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_ONE, EclipseLinkJPA.PRIVATE_OWNED);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Entity").append(CR);
-			}
-			
-			@Override
-			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@OneToOne").append(CR);
-				sb.append("@PrivateOwned").append(CR);
-			}
-		});
-	}
-	
-	private ICompilationUnit createTestEntityWithJoinFetchOneToOne() throws Exception {
+	private ICompilationUnit createTestEntityWithJoinFetchManyToOne() throws Exception {
 		createJoinFetchAnnotation();
 		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_ONE, EclipseLinkJPA.JOIN_FETCH);
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.MANY_TO_ONE, EclipseLinkJPA.JOIN_FETCH);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -77,72 +49,24 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 			
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@OneToOne").append(CR);
+				sb.append("@ManyToOne").append(CR);
 				sb.append("@JoinFetch").append(CR);
 			}
 		});
 	}
 
-	public EclipseLinkJavaOneToOneMappingTests(String name) {
+	public EclipseLinkJavaManyToOneMappingTests(String name) {
 		super(name);
 	}
 
-
-	public void testGetPrivateOwned() throws Exception {
-		createTestEntityWithPrivateOwnedOneToOne();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		assertEquals(true, oneToOneMapping.getPrivateOwned());
-	}
-
-	public void testSetPrivateOwned() throws Exception {
-		createTestEntityWithPrivateOwnedOneToOne();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		assertEquals(true, oneToOneMapping.getPrivateOwned());
-		
-		oneToOneMapping.setPrivateOwned(false);
-		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.getAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME));
-		assertEquals(false, oneToOneMapping.getPrivateOwned());
-
-		oneToOneMapping.setPrivateOwned(true);
-		assertNotNull(attributeResource.getAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME));
-		assertEquals(true, oneToOneMapping.getPrivateOwned());
-	}
-	
-	public void testPrivateOwnedUpdatesFromResourceModelChange() throws Exception {
-		createTestEntityWithPrivateOwnedOneToOne();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		assertEquals(true, oneToOneMapping.getPrivateOwned());
-		
-		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		attributeResource.removeAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME);
-		
-		assertEquals(false, oneToOneMapping.getPrivateOwned());
-		
-		attributeResource.addAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME);
-		assertEquals(true, oneToOneMapping.getPrivateOwned());
-	}
 	
 	public void testHasJoinFetch() throws Exception {
-		createTestEntityWithJoinFetchOneToOne();
+		createTestEntityWithJoinFetchManyToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		JoinFetchable joinFetchable = oneToOneMapping.getJoinFetchable();
+		EclipseLinkRelationshipMapping manyToOneMapping = (EclipseLinkRelationshipMapping) persistentAttribute.getSpecifiedMapping();
+		JoinFetchable joinFetchable = manyToOneMapping.getJoinFetchable();
 		assertEquals(true, joinFetchable.hasJoinFetch());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -156,12 +80,12 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 	}
 	
 	public void testSetJoinFetch() throws Exception {
-		createTestEntityWithJoinFetchOneToOne();
+		createTestEntityWithJoinFetchManyToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		JoinFetchable joinFetchable = oneToOneMapping.getJoinFetchable();
+		EclipseLinkRelationshipMapping manyToOneMapping = (EclipseLinkRelationshipMapping) persistentAttribute.getSpecifiedMapping();
+		JoinFetchable joinFetchable = manyToOneMapping.getJoinFetchable();
 		assertEquals(true, joinFetchable.hasJoinFetch());
 		
 		joinFetchable.setJoinFetch(false);
@@ -176,12 +100,12 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 	}
 	
 	public void testGetSpecifiedJoinFetch() throws Exception {
-		createTestEntityWithJoinFetchOneToOne();
+		createTestEntityWithJoinFetchManyToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		JoinFetchable joinFetchable = oneToOneMapping.getJoinFetchable();
+		EclipseLinkRelationshipMapping manyToOneMapping = (EclipseLinkRelationshipMapping) persistentAttribute.getSpecifiedMapping();
+		JoinFetchable joinFetchable = manyToOneMapping.getJoinFetchable();
 		assertEquals(null, joinFetchable.getSpecifiedJoinFetch());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -202,12 +126,12 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 	}
 	
 	public void testSetSpecifiedJoinFetch() throws Exception {
-		createTestEntityWithJoinFetchOneToOne();
+		createTestEntityWithJoinFetchManyToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		JoinFetchable joinFetchable = oneToOneMapping.getJoinFetchable();
+		EclipseLinkRelationshipMapping manyToOneMapping = (EclipseLinkRelationshipMapping) persistentAttribute.getSpecifiedMapping();
+		JoinFetchable joinFetchable = manyToOneMapping.getJoinFetchable();
 		assertEquals(null, joinFetchable.getSpecifiedJoinFetch());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -229,12 +153,12 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 	}
 	
 	public void testGetDefaultJoinFetch() throws Exception {
-		createTestEntityWithJoinFetchOneToOne();
+		createTestEntityWithJoinFetchManyToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		JoinFetchable joinFetchable = oneToOneMapping.getJoinFetchable();
+		EclipseLinkRelationshipMapping manyToOneMapping = (EclipseLinkRelationshipMapping) persistentAttribute.getSpecifiedMapping();
+		JoinFetchable joinFetchable = manyToOneMapping.getJoinFetchable();
 		assertEquals(JoinFetchable.DEFAULT_JOIN_FETCH_TYPE, joinFetchable.getDefaultJoinFetch());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -247,12 +171,12 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 	}
 	
 	public void testGetJoinFetch() throws Exception {
-		createTestEntityWithJoinFetchOneToOne();
+		createTestEntityWithJoinFetchManyToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		JoinFetchable joinFetchable = oneToOneMapping.getJoinFetchable();
+		EclipseLinkRelationshipMapping manyToOneMapping = (EclipseLinkRelationshipMapping) persistentAttribute.getSpecifiedMapping();
+		JoinFetchable joinFetchable = manyToOneMapping.getJoinFetchable();
 		assertEquals(JoinFetchable.DEFAULT_JOIN_FETCH_TYPE, joinFetchable.getJoinFetch());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
