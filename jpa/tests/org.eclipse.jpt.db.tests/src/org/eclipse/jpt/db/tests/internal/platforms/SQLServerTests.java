@@ -77,7 +77,7 @@ public class SQLServerTests extends DTPPlatformTests {
 
 	@Override
 	protected boolean executeOfflineTests() {
-		return true;  // ???
+		return true;  // haven't actually tried this yet...
 	}
 
 }

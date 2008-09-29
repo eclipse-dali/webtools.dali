@@ -9,15 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.tests.internal.platforms;
 
+import java.util.Properties;
+
+import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 
-
 /**
- * SQL Server 2005 Driver Test
+ * MySQL
  * 
  * Notes:
  * - We can only get database objects from the database associated with our
@@ -91,8 +93,19 @@ public class MySQLTests extends DTPPlatformTests {
 	}
 
 	@Override
+	protected Properties buildDTPConnectionProfileProperties() {
+		Properties p = super.buildDTPConnectionProfileProperties();
+		p.setProperty(IJDBCDriverDefinitionConstants.DATABASE_NAME_PROP_ID, this.getDatabaseName());
+		return p;
+	}
+
+	private String getDatabaseName() {
+		return "dalitest";
+	}
+
+	@Override
 	protected boolean executeOfflineTests() {
-		return true;
+		return true;  // seems to work...
 	}
 
 	public void testDatabase() throws Exception {
@@ -100,7 +113,7 @@ public class MySQLTests extends DTPPlatformTests {
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
 
-		// MySQL has a single schema with the same name as the database
+		// DTP: MySQL has a single schema with the same name as the database
 		Schema schema = this.getDatabase().getSchemaNamed(this.getDatabaseName());
 		assertNotNull(schema);
 		assertSame(this.getDatabase().getDefaultSchema(), schema);
@@ -114,14 +127,9 @@ public class MySQLTests extends DTPPlatformTests {
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
 
-		// once you have connected, specifying a database, DTP seems to
-		// only make that database available...
-//		this.dropDatabase("table_test");
-
-//		this.executeUpdate("CREATE DATABASE table_test");
-
-		// we must execute a USE statement before defining our tables
-		this.executeUpdate("USE " + this.getDatabaseName());
+		this.dropDatabase(this.getDatabaseName());
+		this.executeUpdate("CREATE DATABASE " + this.getDatabaseName());
+		this.getJDBCConnection().setCatalog(this.getDatabaseName());
 
 		this.dropTable(this.getDatabaseName(), "foo_baz");
 		this.dropTable(this.getDatabaseName(), "baz");
@@ -198,7 +206,7 @@ public class MySQLTests extends DTPPlatformTests {
 		this.dropTable(this.getDatabaseName(), "foo");
 		this.dropTable(this.getDatabaseName(), "bar");
 
-//		this.dropDatabase("table_test");
+		this.dropDatabase(this.getDatabaseName());
 
 		this.connectionProfile.removeConnectionListener(listener);
 		this.connectionProfile.disconnect();
@@ -255,8 +263,9 @@ public class MySQLTests extends DTPPlatformTests {
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
 
-		// we must execute a USE statement before defining our tables
-		this.executeUpdate("USE " + this.getDatabaseName());
+		this.dropDatabase(this.getDatabaseName());
+		this.executeUpdate("CREATE DATABASE " + this.getDatabaseName());
+		this.getJDBCConnection().setCatalog(this.getDatabaseName());
 
 		this.dropTable(this.getDatabaseName(), "test1");
 		this.dropTable(this.getDatabaseName(), "TEST2");
@@ -284,6 +293,8 @@ public class MySQLTests extends DTPPlatformTests {
 		this.dropTable(this.getDatabaseName(), "TEST2");
 		this.dropTable(this.getDatabaseName(), "`TEST3`");
 
+		this.dropDatabase(this.getDatabaseName());
+
 		this.connectionProfile.removeConnectionListener(listener);
 		this.connectionProfile.disconnect();
 	}
@@ -293,8 +304,10 @@ public class MySQLTests extends DTPPlatformTests {
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
 
-		// we must execute a USE statement before defining our tables
-		this.executeUpdate("USE " + this.getDatabaseName());
+		this.dropDatabase(this.getDatabaseName());
+		this.executeUpdate("CREATE DATABASE " + this.getDatabaseName());
+		this.getJDBCConnection().setCatalog(this.getDatabaseName());
+
 		this.dropTable(this.getDatabaseName(), "test");
 
 		// lowercase
@@ -337,6 +350,8 @@ public class MySQLTests extends DTPPlatformTests {
 
 		this.dropTable(this.getDatabaseName(), "test");
 
+		this.dropDatabase(this.getDatabaseName());
+
 		this.connectionProfile.removeConnectionListener(listener);
 		this.connectionProfile.disconnect();
 	}
@@ -345,8 +360,8 @@ public class MySQLTests extends DTPPlatformTests {
 		this.executeUpdate("DROP TABLE IF EXISTS " + dbName + '.' + tableName);
 	}
 
-//	private void dropDatabase(String name) throws Exception {
-//		this.executeUpdate("DROP DATABASE IF EXISTS " + name);
-//	}
-//
+	private void dropDatabase(String name) throws Exception {
+		this.executeUpdate("DROP DATABASE IF EXISTS " + name);
+	}
+
 }

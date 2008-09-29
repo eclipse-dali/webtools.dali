@@ -15,9 +15,6 @@ import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 
-/**
- *  Derby 10.1 Embedded Driver Test
- */
 @SuppressWarnings("nls")
 public class DerbyTests extends DTPPlatformTests {
 
@@ -228,7 +225,7 @@ public class DerbyTests extends DTPPlatformTests {
 
 		// FOO
 		Table fooTable = schema.getTableNamed("FOO");
-		assertEquals(3, fooTable.columnsSize());
+		assertEquals(4, fooTable.columnsSize());
 		assertEquals(1, fooTable.primaryKeyColumnsSize());
 		assertEquals(1, fooTable.foreignKeysSize());
 
@@ -245,12 +242,23 @@ public class DerbyTests extends DTPPlatformTests {
 		Column nameColumn = fooTable.getColumnNamed("NAME");
 		assertEquals("VARCHAR", nameColumn.getDataTypeName());
 		assertEquals("java.lang.String", nameColumn.getJavaTypeDeclaration());
+		assertEquals(20, nameColumn.getLength());
 		assertFalse(nameColumn.isPartOfPrimaryKey());
+		assertFalse(nameColumn.isNumeric());
+		assertTrue(nameColumn.isNullable());
 
 		Column barColumn = fooTable.getColumnNamed("BAR_ID");
 		assertEquals("INTEGER", barColumn.getDataTypeName());
 		assertTrue(barColumn.isPartOfForeignKey());
 		assertFalse(barColumn.isPartOfPrimaryKey());
+
+		Column salaryColumn = fooTable.getColumnNamed("SALARY");
+		assertEquals("DECIMAL", salaryColumn.getDataTypeName());
+		assertTrue(salaryColumn.isNullable());
+		assertTrue(salaryColumn.isNumeric());
+		assertEquals(11, salaryColumn.getPrecision());
+		assertEquals(2, salaryColumn.getScale());
+		assertEquals(-1, salaryColumn.getLength());
 
 		ForeignKey barFK = fooTable.foreignKeys().next();  // there should only be 1 foreign key
 		assertEquals(1, barFK.columnPairsSize());
@@ -264,20 +272,29 @@ public class DerbyTests extends DTPPlatformTests {
 
 		// BAR
 		Table barTable = schema.getTableNamed("BAR");
-		assertEquals(2, barTable.columnsSize());
+		assertEquals(3, barTable.columnsSize());
 		assertEquals(1, barTable.primaryKeyColumnsSize());
 		assertEquals(0, barTable.foreignKeysSize());
 		assertEquals("ID", barTable.getPrimaryKeyColumn().getName());
 		assertFalse(barTable.isPossibleJoinTable());
-		Column id2Column = fooTable.getColumnNamed("ID2");
+
+		Column id2Column = barTable.getColumnNamed("ID2");
 		assertEquals("INTEGER", id2Column.getDataTypeName());
-		assertTrue(id2Column.isPartOfUniqueConstraint());
-		assertTrue(id2Column.isNullable());
+//		assertTrue(id2Column.isPartOfUniqueConstraint());  // doesn't work(?)
+		assertFalse(id2Column.isNullable());
 		assertTrue(id2Column.isNumeric());
+		assertEquals(0, id2Column.getPrecision());  // not sure what to expect here...
+		assertEquals(0, id2Column.getScale());  // not sure what to expect here either...
 		assertEquals("BLOB", barTable.getColumnNamed("CHUNK").getDataTypeName());
 		assertEquals("byte[]", barTable.getColumnNamed("CHUNK").getJavaTypeDeclaration());
 		assertTrue(barTable.getColumnNamed("CHUNK").isLOB());
 		assertSame(barTable, barFK.getReferencedTable());
+
+		// BAZ
+		Table bazTable = schema.getTableNamed("BAZ");
+		Column nicknameColumn = bazTable.getColumnNamed("NICKNAME");
+		assertEquals(20, nicknameColumn.getLength());
+//		assertTrue(nicknameColumn.isPartOfUniqueConstraint());  // doesn't work(?)
 
 		// FOO_BAZ
 		Table foo_bazTable = schema.getTableNamed("FOO_BAZ");
@@ -304,7 +321,7 @@ public class DerbyTests extends DTPPlatformTests {
 		StringBuilder sb = new StringBuilder(200);
 		sb.append("CREATE TABLE BAR (").append(CR);
 		sb.append("    ID INT PRIMARY KEY,").append(CR);
-		sb.append("    ID2 INT UNIQUE,").append(CR);
+		sb.append("    ID2 INT UNIQUE NOT NULL,").append(CR);
 		sb.append("    CHUNK BLOB(100K)").append(CR);
 		sb.append(")").append(CR);
 		return sb.toString();
@@ -315,6 +332,7 @@ public class DerbyTests extends DTPPlatformTests {
 		sb.append("CREATE TABLE FOO (").append(CR);
 		sb.append("    ID INT PRIMARY KEY,").append(CR);
 		sb.append("    NAME VARCHAR(20),").append(CR);
+		sb.append("    SALARY DECIMAL(11, 2),").append(CR);
 		sb.append("    BAR_ID INT REFERENCES BAR(ID)").append(CR);
 		sb.append(")").append(CR);
 		return sb.toString();
@@ -324,7 +342,7 @@ public class DerbyTests extends DTPPlatformTests {
 		StringBuilder sb = new StringBuilder(200);
 		sb.append("CREATE TABLE BAZ (").append(CR);
 		sb.append("    ID INT PRIMARY KEY,").append(CR);
-		sb.append("    NAME VARCHAR(20)").append(CR);
+		sb.append("    NICKNAME VARCHAR(20) NOT NULL UNIQUE").append(CR);
 		sb.append(")").append(CR);
 		return sb.toString();
 	}

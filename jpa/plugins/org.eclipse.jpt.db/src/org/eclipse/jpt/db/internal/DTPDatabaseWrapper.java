@@ -966,11 +966,16 @@ final class DTPDatabaseWrapper
 		}
 
 		/**
-		 * MySQL has a single schema with the same name as the database.
-		 * Although you can qualify identifiers with a database/schema name
-		 * in MySQL, only the database/schema specified at login seems to be
-		 * available in the DTP model.... (In MySQL, SCHEMA is a synonym for
-		 * DATABASE.)
+		 * The DTP model for MySQL has a database that contains no catalogs
+		 * but directly holds a single schema with the same name as the database.
+		 * Although you can qualify identifiers with a database name
+		 * in MySQL, only the database specified at login seems to be available
+		 * in the DTP model.... 
+		 * NB: In MySQL DDL, SCHEMA is a synonym for DATABASE; but the JDBC
+		 * method DatabaseMetaData.getSchemas() returns an empty list,
+		 * while getCatalogs() returns a list of the available databases.
+		 * You can also use the JDBC method Connection.setCatalog(String) to
+		 * set the default database.
 		 */
 		@Override
 		String getDefaultSchemaIdentifier(DTPSchemaContainerWrapper sc) {

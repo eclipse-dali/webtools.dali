@@ -82,14 +82,6 @@ final class DTPColumnWrapper
 		return (dataType == null) ? null : dataType.getName();
 	}
 
-	public boolean isLOB() {
-		DataType dataType = this.dtpColumn.getDataType();
-		return (dataType instanceof PredefinedDataType) ?
-						primitiveTypeIsLob(((PredefinedDataType) dataType).getPrimitiveType())
-					:
-						false;
-	}
-
 	public boolean isNumeric() {
 		return this.dtpColumn.getDataType() instanceof NumericalDataType;
 	}	
@@ -116,6 +108,14 @@ final class DTPColumnWrapper
 						((CharacterStringDataType) dataType).getLength()
 					:
 						-1;
+	}
+
+	public boolean isLOB() {
+		DataType dataType = this.dtpColumn.getDataType();
+		return (dataType instanceof PredefinedDataType) ?
+						primitiveTypeIsLob(((PredefinedDataType) dataType).getPrimitiveType())
+					:
+						false;
 	}
 
 	public String getJavaTypeDeclaration() {

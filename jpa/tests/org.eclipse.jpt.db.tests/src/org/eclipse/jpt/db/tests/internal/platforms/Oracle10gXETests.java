@@ -67,7 +67,7 @@ public class Oracle10gXETests extends DTPPlatformTests {
 
 	@Override
 	protected boolean supportsCatalogs() {
-		return true;
+		return false;
 	}
 
 	@Override

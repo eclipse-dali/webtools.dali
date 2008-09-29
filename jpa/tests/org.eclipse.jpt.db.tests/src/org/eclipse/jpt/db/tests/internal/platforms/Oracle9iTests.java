@@ -67,7 +67,7 @@ public class Oracle9iTests extends DTPPlatformTests {
 
 	@Override
 	protected boolean supportsCatalogs() {
-		return true;
+		return false;
 	}
 
 	@Override

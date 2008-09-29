@@ -14,14 +14,18 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+
+import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -60,8 +64,6 @@ import org.eclipse.jpt.utility.internal.IndentingPrintWriter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ResultSetIterator;
 
-import junit.framework.TestCase;
-
 /**
  * Base class for testing DTP wrappers on various databases.
  */
@@ -71,7 +73,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	/**
 	 * The platform properties are loaded from a Java properties file in the
 	 * 'org.eclipse.jpt.db.tests/config' directory. Each database platform has
-	 * its own properties file (e.g. 'derby101.properties').
+	 * its own properties file (e.g. 'derby.properties').
 	 */
 	private Properties platformProperties;
 
@@ -96,9 +98,6 @@ public abstract class DTPPlatformTests extends TestCase {
 
 	private static final String DB_URL_PROPERTY = "url";
 		// required - no default
-
-	private static final String DB_DATABASE_PROPERTY = "database";
-		private static final String DB_DATABASE_DEFAULT = "testdb";
 
 
 
@@ -207,7 +206,6 @@ public abstract class DTPPlatformTests extends TestCase {
 		p.setProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID, this.getJDBCURL());
 		p.setProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID, this.getUserID());
 		p.setProperty(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID, this.getPassword());
-		p.setProperty(IJDBCDriverDefinitionConstants.DATABASE_NAME_PROP_ID, this.getDatabaseName());
 		return p;
 	}
 
@@ -252,13 +250,6 @@ public abstract class DTPPlatformTests extends TestCase {
 		return this.platformProperties.getProperty(DB_PASSWORD_PROPERTY, DB_PASSWORD_DEFAULT);
 	}
 
-	/**
-	 * The database name is optional and can be set in the properties file.
-	 */
-	protected String getDatabaseName() {
-		return this.platformProperties.getProperty(DB_DATABASE_PROPERTY, DB_DATABASE_DEFAULT);
-	}
-
 	// ***** DTP connection profile
 	private void buildDTPConnectionProfile() throws ConnectionProfileException {
 		if (this.getDTPProfileManager().getProfileByName(this.getProfileName()) != null) {
@@ -285,9 +276,8 @@ public abstract class DTPPlatformTests extends TestCase {
 		return ConnectionProfile.CONNECTION_PROFILE_TYPE;
 	}
 	 
-	private Properties buildDTPConnectionProfileProperties() {
+	protected Properties buildDTPConnectionProfileProperties() {
 		Properties p = new Properties();
-		p.setProperty(IJDBCDriverDefinitionConstants.DATABASE_NAME_PROP_ID, this.getDatabaseName());
 		p.setProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID, this.getUserID());
 		p.setProperty(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID, this.getPassword());
 		p.setProperty(ConnectionProfile.DRIVER_DEFINITION_PROP_ID, this.getDriverDefinitionID());
@@ -544,6 +534,14 @@ public abstract class DTPPlatformTests extends TestCase {
 
 	protected abstract boolean supportsCatalogs();
 
+//	public void testDEBUG() throws Exception {
+//		this.connectionProfile.connect();
+//		this.dumpJDBCCatalogs();
+//		this.dumpJDBCSchemata();
+//		this.dumpDatabaseContainers();
+//		this.connectionProfile.disconnect();
+//	}
+
 
 	// ********** convenience methods **********
 
@@ -670,43 +668,104 @@ public abstract class DTPPlatformTests extends TestCase {
 	}
 
 	protected void dump(String sql) throws SQLException {
-		for (Object[] row : this.execute(sql)) {
-			for (int i = 0; i < row.length; i++) {
-				if (i > 0) {
-					System.out.print(' ');
-				}
-				System.out.print(StringTools.padOrTruncate(String.valueOf(row[i]), 20));
+		this.dump(sql, 20);
+	}
+
+	protected void dump(String sql, int columnWidth) throws SQLException {
+		IndentingPrintWriter pw = new IndentingPrintWriter(new OutputStreamWriter(System.out));
+		// synchronize the console so everything is contiguous
+		synchronized (System.out) {
+			this.dumpOn(sql, pw, columnWidth);
+		}
+		pw.flush();
+	}
+
+	protected void dumpOn(String sql, IndentingPrintWriter pw, int columnWidth) throws SQLException {
+		pw.println(sql);
+		for (ArrayList<Object> row : this.execute(sql)) {
+			for (Object columnValue : row) {
+				StringTools.padOrTruncateOn(String.valueOf(columnValue), columnWidth, pw);
+				pw.print(' ');
 			}
-			System.out.println();
+			pw.println();
 		}
 	}
 
-	protected List<Object[]> execute(String sql) throws SQLException {
+	protected ArrayList<ArrayList<Object>> execute(String sql) throws SQLException {
 		Statement jdbcStatement = this.createJDBCStatement();
 		jdbcStatement.execute(sql);
-		ResultSet resultSet = jdbcStatement.getResultSet();
-		ResultSetMetaData metaData = resultSet.getMetaData();
-		int columnCount = metaData.getColumnCount();
-		ArrayList<Object[]> rows = new ArrayList<Object[]>();
-		for (Iterator<Object[]> stream = new ResultSetIterator<Object[]>(resultSet, new LocalResultSetIteratorAdapter(columnCount)); stream.hasNext(); ) {
-			rows.add(stream.next());
-		}
+		ArrayList<ArrayList<Object>> rows = this.buildRows(jdbcStatement.getResultSet());
 		jdbcStatement.close();
 		return rows;
 	}
 
-	public class LocalResultSetIteratorAdapter implements ResultSetIterator.Adapter<Object[]> {
-		private int columnCount;
-		public LocalResultSetIteratorAdapter(int columnCount) {
+	protected ArrayList<ArrayList<Object>> buildRows(ResultSet resultSet) throws SQLException {
+		ArrayList<ArrayList<Object>> rows = new ArrayList<ArrayList<Object>>();
+		for (Iterator<ArrayList<Object>> stream = this.buildArrayIterator(resultSet); stream.hasNext(); ) {
+			rows.add(stream.next());
+		}
+		return rows;
+	}
+
+	protected Iterator<ArrayList<Object>> buildArrayIterator(ResultSet resultSet) throws SQLException {
+		return new ResultSetIterator<ArrayList<Object>>(resultSet, new ListResultSetIteratorAdapter(resultSet.getMetaData().getColumnCount()));
+	}
+
+	public class ListResultSetIteratorAdapter implements ResultSetIterator.Adapter<ArrayList<Object>> {
+		private final int columnCount;
+		public ListResultSetIteratorAdapter(int columnCount) {
 			super();
 			this.columnCount = columnCount;
 		}
-		public Object[] buildNext(ResultSet rs) throws SQLException {
-			Object[] row = new Object[this.columnCount];
-			for (int i = 0; i < row.length; i++) {
-				row[i] = rs.getObject(i + 1);  // NB: ResultSet index/subscript is 1-based
+		public ArrayList<Object> buildNext(ResultSet rs) throws SQLException {
+			ArrayList<Object> list = new ArrayList<Object>(this.columnCount);
+			for (int i = 1; i <= this.columnCount; i++) {  // NB: ResultSet index/subscript is 1-based
+				list.add(rs.getObject(i));
 			}
-			return row;
+			return list;
+		}
+	}
+
+	protected ArrayList<HashMap<String, Object>> execute2(String sql) throws SQLException {
+		Statement jdbcStatement = this.createJDBCStatement();
+		jdbcStatement.execute(sql);
+		ArrayList<HashMap<String, Object>> rows = this.buildMaps(jdbcStatement.getResultSet());
+		jdbcStatement.close();
+		return rows;
+	}
+
+	protected ArrayList<HashMap<String, Object>> buildMaps(ResultSet resultSet) throws SQLException {
+		ArrayList<HashMap<String, Object>> rows = new ArrayList<HashMap<String, Object>>();
+		for (Iterator<HashMap<String, Object>> stream = this.buildMapIterator(resultSet); stream.hasNext(); ) {
+			rows.add(stream.next());
+		}
+		return rows;
+	}
+
+	protected Iterator<HashMap<String, Object>> buildMapIterator(ResultSet resultSet) throws SQLException {
+		return new ResultSetIterator<HashMap<String, Object>>(resultSet, new MapResultSetIteratorAdapter(this.buildColumnNames(resultSet)));
+	}
+
+	protected String[] buildColumnNames(ResultSet resultSet) throws SQLException {
+		String[] names = new String[resultSet.getMetaData().getColumnCount()];
+		for (int i = 0; i < names.length; i++) {
+			names[i] = resultSet.getMetaData().getColumnName(i + 1);  // NB: ResultSet index/subscript is 1-based
+		}
+		return names;
+	}
+
+	public class MapResultSetIteratorAdapter implements ResultSetIterator.Adapter<HashMap<String, Object>> {
+		private final String[] columnNames;
+		public MapResultSetIteratorAdapter(String[] columnNames) {
+			super();
+			this.columnNames = columnNames;
+		}
+		public HashMap<String, Object> buildNext(ResultSet rs) throws SQLException {
+			HashMap<String, Object> map = new HashMap<String, Object>(this.columnNames.length);
+			for (int i = 0; i < this.columnNames.length; i++) {
+				map.put(this.columnNames[i], rs.getObject(i + 1));  // NB: ResultSet index/subscript is 1-based
+			}
+			return map;
 		}
 	}
 
@@ -718,8 +777,12 @@ public abstract class DTPPlatformTests extends TestCase {
 		return ((ConnectionInfo) this.getDTPManagedConnection().getConnection().getRawConnection()).getSharedConnection();
 	}
 
+	protected DatabaseMetaData getDatabaseMetaData() throws SQLException {
+		return this.getJDBCConnection().getMetaData();
+	}
 
-	// ********** dump database schema **********
+
+	// ********** dump DTP metadata **********
 
 	/**
 	 * dump all the database metadata to the console
@@ -761,7 +824,7 @@ public abstract class DTPPlatformTests extends TestCase {
 		pw.print("catalog: ");
 		pw.println(catalog.getName());
 		pw.indent();
-		this.dumpSchemaContainerOn(catalog, pw, deep);
+			this.dumpSchemaContainerOn(catalog, pw, deep);
 		pw.undent();
 	}
 
@@ -789,12 +852,12 @@ public abstract class DTPPlatformTests extends TestCase {
 		pw.println(schema.getName());
 		if (deep) {
 			pw.indent();
-			for (Iterator<Table> stream = schema.tables(); stream.hasNext(); ) {
-				this.dumpTableOn(stream.next(), pw);
-			}
-			for (Iterator<Sequence> stream = schema.sequences(); stream.hasNext(); ) {
-				this.dumpSequenceOn(stream.next(), pw);
-			}
+				for (Iterator<Table> stream = schema.tables(); stream.hasNext(); ) {
+					this.dumpTableOn(stream.next(), pw);
+				}
+				for (Iterator<Sequence> stream = schema.sequences(); stream.hasNext(); ) {
+					this.dumpSequenceOn(stream.next(), pw);
+				}
 			pw.undent();
 		}
 	}
@@ -803,12 +866,12 @@ public abstract class DTPPlatformTests extends TestCase {
 		pw.print("table: ");
 		pw.println(table.getName());
 		pw.indent();
-		for (Iterator<Column> stream = table.columns(); stream.hasNext(); ) {
-			this.dumpColumnOn(stream.next(), pw);
-		}
-		for (Iterator<ForeignKey> stream = table.foreignKeys(); stream.hasNext(); ) {
-			this.dumpForeignKeyOn(stream.next(), pw);
-		}
+			for (Iterator<Column> stream = table.columns(); stream.hasNext(); ) {
+				this.dumpColumnOn(stream.next(), pw);
+			}
+			for (Iterator<ForeignKey> stream = table.foreignKeys(); stream.hasNext(); ) {
+				this.dumpForeignKeyOn(stream.next(), pw);
+			}
 		pw.undent();
 	}
 
@@ -845,6 +908,78 @@ public abstract class DTPPlatformTests extends TestCase {
 	protected void dumpSequenceOn(Sequence sequence, IndentingPrintWriter pw) {
 		pw.print("sequence: ");
 		pw.println(sequence.getName());
+	}
+
+
+	// ********** dump JDBC metadata **********
+
+	protected void dumpJDBCCatalogs() throws SQLException {
+		IndentingPrintWriter pw = new IndentingPrintWriter(new OutputStreamWriter(System.out));
+		// synchronize the console so everything is contiguous
+		synchronized (System.out) {
+			this.dumpJDBCCatalogsOn(pw);
+		}
+		pw.flush();
+	}
+
+	protected void dumpJDBCCatalogsOn(IndentingPrintWriter pw) throws SQLException {
+		pw.println("JDBC catalogs: ");
+		pw.indent();
+			ArrayList<ArrayList<Object>> rows = this.buildRows(this.getJDBCConnection().getMetaData().getCatalogs());
+			for (Iterator<ArrayList<Object>> stream = rows.iterator(); stream.hasNext(); ) {
+				pw.println(stream.next().get(0));
+			}
+		pw.undent();
+	}
+
+	protected void dumpJDBCSchemata() throws SQLException {
+		IndentingPrintWriter pw = new IndentingPrintWriter(new OutputStreamWriter(System.out));
+		// synchronize the console so everything is contiguous
+		synchronized (System.out) {
+			this.dumpJDBCSchemataOn(pw);
+		}
+		pw.flush();
+	}
+
+	protected void dumpJDBCSchemataOn(IndentingPrintWriter pw) throws SQLException {
+		pw.println("JDBC schemata: ");
+		pw.indent();
+			ArrayList<ArrayList<Object>> rows = this.buildRows(this.getJDBCConnection().getMetaData().getSchemas());
+			for (ArrayList<Object> row : rows) {
+				if (row.size() == 2) {  // catalogs were added in jdk 1.4
+					Object catalog = row.get(1);
+					pw.print(catalog);
+					pw.print('.');
+				}
+				Object schema = row.get(0);
+				pw.println(schema);
+			}
+		pw.undent();
+	}
+
+	protected void dump(ResultSet resultSet) throws SQLException {
+		IndentingPrintWriter pw = new IndentingPrintWriter(new OutputStreamWriter(System.out));
+		// synchronize the console so everything is contiguous
+		synchronized (System.out) {
+			this.dumpOn(resultSet, pw);
+		}
+		pw.flush();
+	}
+
+	protected void dumpOn(ResultSet resultSet, IndentingPrintWriter pw) throws SQLException {
+		ArrayList<HashMap<String, Object>> maps = this.buildMaps(resultSet);
+		for (Iterator<HashMap<String, Object>> mapStream = maps.iterator(); mapStream.hasNext(); ) {
+			for (Iterator<Map.Entry<String, Object>> entryStream = mapStream.next().entrySet().iterator(); entryStream.hasNext(); ) {
+				Map.Entry<String, Object> entry = entryStream.next();
+				pw.print(entry.getKey());
+				pw.print(" = ");
+				pw.print(entry.getValue());
+				pw.println();
+			}
+			if (mapStream.hasNext()) {
+				pw.println();
+			}
+		}
 	}
 
 

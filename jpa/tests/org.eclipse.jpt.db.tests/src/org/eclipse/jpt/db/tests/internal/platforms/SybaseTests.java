@@ -16,10 +16,6 @@ import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 
-
-/**
- *  Oracle 10g Thin Driver Test
- */
 @SuppressWarnings("nls")
 public class SybaseTests extends DTPPlatformTests {
 
@@ -91,7 +87,7 @@ public class SybaseTests extends DTPPlatformTests {
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
 
-		this.executeUpdate("use master");
+		this.getJDBCConnection().setCatalog("master");
 		this.executeUpdateIgnoreErrors("drop database test1");
 		this.executeUpdateIgnoreErrors("drop database test2");
 
@@ -128,10 +124,10 @@ public class SybaseTests extends DTPPlatformTests {
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
 
-		this.executeUpdate("use master");
+		this.getJDBCConnection().setCatalog("master");
 		this.executeUpdateIgnoreErrors("drop database table_test");
 		this.executeUpdate("create database table_test");
-		this.executeUpdate("use table_test");
+		this.getJDBCConnection().setCatalog("table_test");
 
 		this.executeUpdate(this.buildBarDDL());
 		this.executeUpdate(this.buildFooDDL());
@@ -150,17 +146,34 @@ public class SybaseTests extends DTPPlatformTests {
 		Column pkColumn = fooTable.getPrimaryKeyColumn();
 		assertEquals("id", pkColumn.getName());
 		Column idColumn = fooTable.getColumnNamed("id");
-		assertSame(pkColumn, idColumn);
-		assertEquals("INT", idColumn.getDataTypeName());
 		assertSame(fooTable, idColumn.getTable());
+		assertSame(pkColumn, idColumn);
 		assertTrue(idColumn.isPartOfPrimaryKey());
 		assertFalse(idColumn.isPartOfForeignKey());
+		assertTrue(idColumn.isPartOfUniqueConstraint());
+		assertFalse(idColumn.isNullable());
+
+		assertEquals("INT", idColumn.getDataTypeName());
+		assertTrue(idColumn.isNumeric());
+		assertEquals(0, idColumn.getPrecision());
+		assertEquals(0, idColumn.getScale());
+		assertEquals(-1, idColumn.getLength());
+		assertFalse(idColumn.isLOB());
 		assertEquals("int", idColumn.getJavaTypeDeclaration());
 
 		Column nameColumn = fooTable.getColumnNamed("name");
-		assertEquals("VARCHAR", nameColumn.getDataTypeName());
-		assertEquals("java.lang.String", nameColumn.getJavaTypeDeclaration());
 		assertFalse(nameColumn.isPartOfPrimaryKey());
+		assertFalse(nameColumn.isPartOfForeignKey());
+		assertTrue(nameColumn.isPartOfUniqueConstraint());
+		assertFalse(nameColumn.isNullable());  // implied "NOT NULL" ?
+
+		assertEquals("VARCHAR", nameColumn.getDataTypeName());
+		assertFalse(nameColumn.isNumeric());
+		assertEquals(-1, nameColumn.getPrecision());
+		assertEquals(-1, nameColumn.getScale());
+		assertEquals(20, nameColumn.getLength());
+		assertFalse(nameColumn.isLOB());
+		assertEquals("java.lang.String", nameColumn.getJavaTypeDeclaration());
 
 		Column barColumn = fooTable.getColumnNamed("bar_id");
 		assertEquals("INT", barColumn.getDataTypeName());
@@ -184,10 +197,33 @@ public class SybaseTests extends DTPPlatformTests {
 		assertEquals(0, barTable.foreignKeysSize());
 		assertEquals("id", barTable.getPrimaryKeyColumn().getName());
 		assertFalse(barTable.isPossibleJoinTable());
-		assertEquals("IMAGE", barTable.getColumnNamed("chunk").getDataTypeName());
-		assertEquals("byte[]", barTable.getColumnNamed("chunk").getJavaTypeDeclaration());
-		assertTrue(barTable.getColumnNamed("chunk").isLOB());
+		Column chunkColumn = barTable.getColumnNamed("chunk");
+		assertEquals("IMAGE", chunkColumn.getDataTypeName());
+		assertFalse(chunkColumn.isNumeric());
+		assertTrue(chunkColumn.isLOB());
+		assertEquals("byte[]", chunkColumn.getJavaTypeDeclaration());
 		assertSame(barTable, barFK.getReferencedTable());
+
+		// BAZ
+		Table bazTable = schema.getTableNamed("baz");
+		assertEquals(4, bazTable.columnsSize());
+		assertEquals(1, bazTable.primaryKeyColumnsSize());
+		assertEquals(0, bazTable.foreignKeysSize());
+
+		Column nicknameColumn = bazTable.getColumnNamed("nickname");
+		assertTrue(nicknameColumn.isNullable());
+
+		Column songColumn = bazTable.getColumnNamed("song");
+		assertFalse(songColumn.isNullable());
+
+		Column salaryColumn = bazTable.getColumnNamed("salary");
+		assertFalse(salaryColumn.isPartOfUniqueConstraint());
+		assertEquals("DECIMAL", salaryColumn.getDataTypeName());
+		assertTrue(salaryColumn.isNumeric());
+		assertEquals(10, salaryColumn.getPrecision());
+		assertEquals(2, salaryColumn.getScale());
+		assertEquals(-1, salaryColumn.getLength());
+		assertFalse(salaryColumn.isLOB());
 
 		// FOO_BAZ
 		Table foo_bazTable = schema.getTableNamed("foo_baz");
@@ -203,7 +239,7 @@ public class SybaseTests extends DTPPlatformTests {
 		this.executeUpdate("drop table foo");
 		this.executeUpdate("drop table bar");
 
-		this.executeUpdate("use master");
+		this.getJDBCConnection().setCatalog("master");
 		this.executeUpdate("drop database table_test");
 
 		this.connectionProfile.removeConnectionListener(listener);
@@ -225,7 +261,7 @@ public class SybaseTests extends DTPPlatformTests {
 		StringBuilder sb = new StringBuilder(200);
 		sb.append("create table foo (").append(CR);
 		sb.append("    id integer primary key,").append(CR);
-		sb.append("    name varchar(20),").append(CR);
+		sb.append("    name varchar(20) unique,").append(CR);
 		sb.append("    bar_id integer references bar(id)").append(CR);
 		sb.append(")").append(CR);
 		return sb.toString();
@@ -235,7 +271,9 @@ public class SybaseTests extends DTPPlatformTests {
 		StringBuilder sb = new StringBuilder(200);
 		sb.append("create table baz (").append(CR);
 		sb.append("    id integer primary key,").append(CR);
-		sb.append("    name varchar(20)").append(CR);
+		sb.append("    nickname varchar(20) null,").append(CR);
+		sb.append("    song varchar(20) not null,").append(CR);
+		sb.append("    salary decimal(10, 2)").append(CR);
 		sb.append(")").append(CR);
 		return sb.toString();
 	}
@@ -254,10 +292,10 @@ public class SybaseTests extends DTPPlatformTests {
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
 
-		this.executeUpdate("use master");
+		this.getJDBCConnection().setCatalog("master");
 		this.executeUpdateIgnoreErrors("drop database table_lookup_test");
 		this.executeUpdate("create database table_lookup_test");
-		this.executeUpdate("use table_lookup_test");
+		this.getJDBCConnection().setCatalog("table_lookup_test");
 
 		this.executeUpdate("create table test1 (id integer, name varchar(20))");
 		this.executeUpdate("create table TEST2 (id integer, name varchar(20))");
@@ -278,7 +316,7 @@ public class SybaseTests extends DTPPlatformTests {
 		this.executeUpdate("drop table TEST2");
 		this.executeUpdate("drop table test1");
 
-		this.executeUpdate("use master");
+		this.getJDBCConnection().setCatalog("master");
 		this.executeUpdate("drop database table_lookup_test");
 
 		this.connectionProfile.removeConnectionListener(listener);
@@ -290,10 +328,10 @@ public class SybaseTests extends DTPPlatformTests {
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
 
-		this.executeUpdate("use master");
+		this.getJDBCConnection().setCatalog("master");
 		this.executeUpdateIgnoreErrors("drop database column_lookup_test");
 		this.executeUpdate("create database column_lookup_test");
-		this.executeUpdate("use column_lookup_test");
+		this.getJDBCConnection().setCatalog("column_lookup_test");
 
 		// lowercase
 		this.executeUpdate("create table test (id integer, name varchar(20))");
@@ -335,7 +373,7 @@ public class SybaseTests extends DTPPlatformTests {
 
 		this.executeUpdate("drop table test");
 
-		this.executeUpdate("use master");
+		this.getJDBCConnection().setCatalog("master");
 		this.executeUpdate("drop database column_lookup_test");
 
 		this.connectionProfile.removeConnectionListener(listener);

@@ -15,10 +15,6 @@ import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 
-
-/**
- *  Oracle 10g Thin Driver Test
- */
 @SuppressWarnings("nls")
 public class PostgreSQLTests extends DTPPlatformTests {
 
