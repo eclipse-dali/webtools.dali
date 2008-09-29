@@ -96,12 +96,12 @@ public class GenericJavaOneToOneMapping
 		this.primaryKeyJoinColumns.add(index, pkJoinColumn);
 		PrimaryKeyJoinColumnAnnotation pkJoinColumnAnnotation = (PrimaryKeyJoinColumnAnnotation) this.getResourcePersistentAttribute().addAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		pkJoinColumn.initialize(pkJoinColumnAnnotation);
-		this.fireItemAdded(PRIMAY_KEY_JOIN_COLUMNS_LIST, index, pkJoinColumn);
+		this.fireItemAdded(PRIMARY_KEY_JOIN_COLUMNS_LIST, index, pkJoinColumn);
 		return pkJoinColumn;
 	}
 
 	protected void addPrimaryKeyJoinColumn(int index, JavaPrimaryKeyJoinColumn joinColumn) {
-		this.addItemToList(index, joinColumn, this.primaryKeyJoinColumns, PRIMAY_KEY_JOIN_COLUMNS_LIST);
+		this.addItemToList(index, joinColumn, this.primaryKeyJoinColumns, PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 
 	protected void addPrimaryKeyJoinColumn(JavaPrimaryKeyJoinColumn joinColumn) {
@@ -115,17 +115,17 @@ public class GenericJavaOneToOneMapping
 	public void removePrimaryKeyJoinColumn(int index) {
 		JavaPrimaryKeyJoinColumn pkJoinColumn = this.primaryKeyJoinColumns.remove(index);
 		this.getResourcePersistentAttribute().removeAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
-		this.fireItemRemoved(PRIMAY_KEY_JOIN_COLUMNS_LIST, index, pkJoinColumn);
+		this.fireItemRemoved(PRIMARY_KEY_JOIN_COLUMNS_LIST, index, pkJoinColumn);
 	}
 
 	protected void removePrimaryKeyJoinColumn_(JavaPrimaryKeyJoinColumn joinColumn) {
-		this.removeItemFromList(joinColumn, this.primaryKeyJoinColumns, PRIMAY_KEY_JOIN_COLUMNS_LIST);
+		this.removeItemFromList(joinColumn, this.primaryKeyJoinColumns, PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
 	public void movePrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.primaryKeyJoinColumns, targetIndex, sourceIndex);
 		this.getResourcePersistentAttribute().move(targetIndex, sourceIndex, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
-		this.fireItemMoved(PRIMAY_KEY_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
+		this.fireItemMoved(PRIMARY_KEY_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 	
 	public boolean containsPrimaryKeyJoinColumns() {

@@ -98,12 +98,12 @@ public class GenericOrmOneToOneMapping
 		OrmPrimaryKeyJoinColumn contextPkJoinColumn = this.buildPrimaryKeyJoinColumn(resourcePkJoinColumn);
 		this.primaryKeyJoinColumns.add(index, contextPkJoinColumn);
 		this.getAttributeMapping().getPrimaryKeyJoinColumns().add(index, resourcePkJoinColumn);
-		this.fireItemAdded(PRIMAY_KEY_JOIN_COLUMNS_LIST, index, contextPkJoinColumn);
+		this.fireItemAdded(PRIMARY_KEY_JOIN_COLUMNS_LIST, index, contextPkJoinColumn);
 		return contextPkJoinColumn;
 	}
 
 	protected void addPrimaryKeyJoinColumn(int index, OrmPrimaryKeyJoinColumn joinColumn) {
-		this.addItemToList(index, joinColumn, this.primaryKeyJoinColumns, PRIMAY_KEY_JOIN_COLUMNS_LIST);
+		this.addItemToList(index, joinColumn, this.primaryKeyJoinColumns, PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 
 	protected void addPrimaryKeyJoinColumn(OrmPrimaryKeyJoinColumn joinColumn) {
@@ -117,17 +117,17 @@ public class GenericOrmOneToOneMapping
 	public void removePrimaryKeyJoinColumn(int index) {
 		OrmPrimaryKeyJoinColumn removedPkJoinColumn = this.primaryKeyJoinColumns.remove(index);
 		this.getAttributeMapping().getPrimaryKeyJoinColumns().remove(index);
-		this.fireItemRemoved(PRIMAY_KEY_JOIN_COLUMNS_LIST, index, removedPkJoinColumn);
+		this.fireItemRemoved(PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPkJoinColumn);
 	}
 
 	protected void removePrimaryKeyJoinColumn_(OrmPrimaryKeyJoinColumn joinColumn) {
-		removeItemFromList(joinColumn, this.primaryKeyJoinColumns, PRIMAY_KEY_JOIN_COLUMNS_LIST);
+		removeItemFromList(joinColumn, this.primaryKeyJoinColumns, PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
 	public void movePrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.primaryKeyJoinColumns, targetIndex, sourceIndex);
 		this.getAttributeMapping().getPrimaryKeyJoinColumns().move(targetIndex, sourceIndex);
-		fireItemMoved(PRIMAY_KEY_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
+		fireItemMoved(PRIMARY_KEY_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 	
 	public boolean containsPrimaryKeyJoinColumns() {
