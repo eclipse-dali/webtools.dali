@@ -89,7 +89,7 @@ public class OneToManyMappingComposite extends FormPane<OneToManyMapping>
 		};
 	}
 
-	private PropertyValueModel<JoinTable> buildJointTableHolder() {
+	private PropertyValueModel<JoinTable> buildJoinTableHolder() {
 		return new TransformationPropertyValueModel<OneToManyMapping, JoinTable>(getSubjectHolder()) {
 			@Override
 			protected JoinTable transform_(OneToManyMapping value) {
@@ -128,7 +128,7 @@ public class OneToManyMappingComposite extends FormPane<OneToManyMapping>
 
 		new JoinTableComposite(
 			this,
-			buildJointTableHolder(),
+			buildJoinTableHolder(),
 			container
 		);
 	}
