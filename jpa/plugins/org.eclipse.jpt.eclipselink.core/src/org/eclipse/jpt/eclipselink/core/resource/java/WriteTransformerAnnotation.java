@@ -54,7 +54,7 @@ public interface WriteTransformerAnnotation extends TransformerAnnotation
 	 */
 	ColumnAnnotation getNonNullColumn();
 	
-	String COLUMN_PROPERTY = "columnProperty";
+	String COLUMN_PROPERTY = "columnProperty"; //$NON-NLS-1$
 	
 	/**
 	 * Return the {@link TextRange} for the column element.  If the column element 

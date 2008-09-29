@@ -43,7 +43,7 @@ public interface ConverterAnnotation extends JavaResourceNode
 	 * Set to null to remove the name element.
 	 */
 	void setName(String value);
-		String NAME_PROPERTY = "nameProperty";
+		String NAME_PROPERTY = "nameProperty"; //$NON-NLS-1$
 
 	/**
 	 * Corresponds to the converterClass element of the Converter annotation.
@@ -56,7 +56,7 @@ public interface ConverterAnnotation extends JavaResourceNode
 	 * Set to null to remove the converterClass element.
 	 */
 	void setConverterClass(String value);
-		String CONVERTER_CLASS_PROPERTY = "converterClassProperty";
+		String CONVERTER_CLASS_PROPERTY = "converterClassProperty"; //$NON-NLS-1$
 
 	/**
 	 * Return the {@link TextRange} for the name element.  If the name element 

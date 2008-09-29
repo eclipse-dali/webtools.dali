@@ -26,6 +26,6 @@ public interface EclipseLinkConverter extends EclipseLinkNamedConverter
 		
 	String getConverterClass();	
 	void setConverterClass(String converterClass);
-		String CONVERTER_CLASS_PROPERTY = "converterClassProperty";
+		String CONVERTER_CLASS_PROPERTY = "converterClassProperty"; //$NON-NLS-1$
 
 }

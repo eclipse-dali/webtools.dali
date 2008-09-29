@@ -42,7 +42,7 @@ public interface JoinFetchAnnotation extends JavaResourceNode
 	 * Set to null to remove the value element.
 	 */
 	void setValue(JoinFetchType value);
-		String VALUE_PROPERTY = "valueProperty";
+		String VALUE_PROPERTY = "valueProperty"; //$NON-NLS-1$
 	
 		
 	/**

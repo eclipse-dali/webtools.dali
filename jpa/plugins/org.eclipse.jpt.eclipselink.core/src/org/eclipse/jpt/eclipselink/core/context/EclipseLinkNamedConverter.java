@@ -32,15 +32,15 @@ public interface EclipseLinkNamedConverter extends JpaContextNode
 	 */
 	String getType();
 	
-	String CONVERTER = "converter";
-	String NO_CONVERTER = "noConverter";
-	String OBJECT_TYPE_CONVERTER = "objectTypeConverter";
-	String STRUCT_CONVERTER = "structConverter";
-	String TYPE_CONVERTER = "typeConverter";
+	String CONVERTER = "converter"; //$NON-NLS-1$
+	String NO_CONVERTER = "noConverter"; //$NON-NLS-1$
+	String OBJECT_TYPE_CONVERTER = "objectTypeConverter"; //$NON-NLS-1$
+	String STRUCT_CONVERTER = "structConverter"; //$NON-NLS-1$
+	String TYPE_CONVERTER = "typeConverter"; //$NON-NLS-1$
 	
 	String getName();	
 	void setName(String name);
-		String NAME_PROPERTY = "nameProperty";
+		String NAME_PROPERTY = "nameProperty"; //$NON-NLS-1$
 
 	/**
 	 * Remove the EclipseLinkNamedConverter from the resource model

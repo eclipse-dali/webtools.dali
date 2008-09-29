@@ -53,7 +53,7 @@ public enum CacheType {
 			case NONE:
 				return NONE;
 			default:
-				throw new IllegalArgumentException("unknown cache type: " + javaCacheType);
+				throw new IllegalArgumentException("unknown cache type: " + javaCacheType); //$NON-NLS-1$
 		}
 	}
 
@@ -77,7 +77,7 @@ public enum CacheType {
 			case NONE:
 				return org.eclipse.jpt.eclipselink.core.resource.java.CacheType.NONE;
 			default:
-				throw new IllegalArgumentException("unknown cache type: " + cacheType);
+				throw new IllegalArgumentException("unknown cache type: " + cacheType); //$NON-NLS-1$
 		}
 	}
 	

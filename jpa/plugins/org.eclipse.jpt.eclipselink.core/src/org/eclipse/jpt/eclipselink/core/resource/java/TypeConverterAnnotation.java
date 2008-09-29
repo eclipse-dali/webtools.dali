@@ -43,7 +43,7 @@ public interface TypeConverterAnnotation extends JavaResourceNode
 	 * Set to null to remove the name element.
 	 */
 	void setName(String value);
-		String NAME_PROPERTY = "nameProperty";
+		String NAME_PROPERTY = "nameProperty"; //$NON-NLS-1$
 
 	/**
 	 * Corresponds to the dataType element of the TypeConverter annotation.
@@ -56,7 +56,7 @@ public interface TypeConverterAnnotation extends JavaResourceNode
 	 * Set to null to remove the dataType element.
 	 */
 	void setDataType(String value);
-		String DATA_TYPE_PROPERTY = "dataTypeProperty";
+		String DATA_TYPE_PROPERTY = "dataTypeProperty"; //$NON-NLS-1$
 
 	/**
 	 * Corresponds to the objectType element of the TypeConverter annotation.
@@ -69,7 +69,7 @@ public interface TypeConverterAnnotation extends JavaResourceNode
 	 * Set to null to remove the objectType element.
 	 */
 	void setObjectType(String value);
-		String OBJECT_TYPE_PROPERTY = "objectTypeProperty";
+		String OBJECT_TYPE_PROPERTY = "objectTypeProperty"; //$NON-NLS-1$
 
 	/**
 	 * Return the {@link TextRange} for the name element.  If the name element 

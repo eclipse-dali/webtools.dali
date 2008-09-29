@@ -60,7 +60,7 @@ public enum CacheCoordinationType {
 			case NONE :
 				return EclipseLinkJPA.CACHE_COORDINATION_TYPE__NONE;
 			default :
-				throw new IllegalArgumentException("unknown cache coordination type: " + cacheCoordinationType);
+				throw new IllegalArgumentException("unknown cache coordination type: " + cacheCoordinationType); //$NON-NLS-1$
 		}
 	}
 }

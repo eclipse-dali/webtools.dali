@@ -28,18 +28,18 @@ public interface EclipseLinkExpiryTimeOfDay extends JpaContextNode
 	
 	Integer getHour();
 	void setHour(Integer hour);
-		String HOUR_PROPERTY = "hourProperty";
+		String HOUR_PROPERTY = "hourProperty"; //$NON-NLS-1$
 
 	Integer getMinute();
 	void setMinute(Integer minute);
-		String MINUTE_PROPERTY = "minuteProperty";
+		String MINUTE_PROPERTY = "minuteProperty"; //$NON-NLS-1$
 	
 	Integer getSecond();
 	void setSecond(Integer second);
-		String SECOND_PROPERTY = "secondProperty";
+		String SECOND_PROPERTY = "secondProperty"; //$NON-NLS-1$
 	
 	Integer getMillisecond();
 	void setMillisecond(Integer millisecond);
-		String MILLISECOND_PROPERTY = "millisecondProperty";
+		String MILLISECOND_PROPERTY = "millisecondProperty"; //$NON-NLS-1$
 
 }

@@ -27,5 +27,5 @@ public interface PrivateOwnable extends JpaContextNode
 {
 	boolean getPrivateOwned();
 	void setPrivateOwned(boolean privateOwned);
-		String PRIVATE_OWNED_PROPERTY = "privateOwnedProperty";
+		String PRIVATE_OWNED_PROPERTY = "privateOwnedProperty"; //$NON-NLS-1$
 }

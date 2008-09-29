@@ -51,7 +51,7 @@ public enum JoinFetchType {
 			case OUTER :
 				return EclipseLinkJPA.JOIN_FETCH_TYPE__OUTER;
 			default :
-				throw new IllegalArgumentException("unknown join fetch type: " + joinFetchType);
+				throw new IllegalArgumentException("unknown join fetch type: " + joinFetchType); //$NON-NLS-1$
 		}
 	}
 }

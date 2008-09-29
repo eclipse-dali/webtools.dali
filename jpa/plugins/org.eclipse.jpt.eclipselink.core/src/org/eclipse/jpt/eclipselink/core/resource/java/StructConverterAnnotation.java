@@ -43,7 +43,7 @@ public interface StructConverterAnnotation extends JavaResourceNode
 	 * Set to null to remove the name element.
 	 */
 	void setName(String value);
-		String NAME_PROPERTY = "nameProperty";
+		String NAME_PROPERTY = "nameProperty"; //$NON-NLS-1$
 
 	/**
 	 * Corresponds to the converter element of the StructConverter annotation.
@@ -56,7 +56,7 @@ public interface StructConverterAnnotation extends JavaResourceNode
 	 * Set to null to remove the converter element.
 	 */
 	void setConverter(String value);
-		String CONVERTER_PROPERTY = "converterProperty";
+		String CONVERTER_PROPERTY = "converterProperty"; //$NON-NLS-1$
 
 	/**
 	 * Return the {@link TextRange} for the name element.  If the name element 

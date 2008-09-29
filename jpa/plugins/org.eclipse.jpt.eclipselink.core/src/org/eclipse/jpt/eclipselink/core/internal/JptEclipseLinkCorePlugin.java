@@ -22,7 +22,7 @@ import org.osgi.framework.BundleContext;
 public class JptEclipseLinkCorePlugin extends Plugin
 {
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.jpt.eclipselink.core";
+	public static final String PLUGIN_ID = "org.eclipse.jpt.eclipselink.core"; //$NON-NLS-1$
 	
 	/**
 	 * Value of the content-type for eclipselink-orm.xml mappings files. Use this 
@@ -33,7 +33,7 @@ public class JptEclipseLinkCorePlugin extends Plugin
 	 */
 	public static final String ECLIPSELINK_ORM_XML_CONTENT_TYPE = PLUGIN_ID + ".content.orm"; //$NON-NLS-1$
 	
-	public static final String DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH = "META-INF/eclipselink-orm.xml";
+	public static final String DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH = "META-INF/eclipselink-orm.xml"; //$NON-NLS-1$
 	
 	
 	// The shared instance

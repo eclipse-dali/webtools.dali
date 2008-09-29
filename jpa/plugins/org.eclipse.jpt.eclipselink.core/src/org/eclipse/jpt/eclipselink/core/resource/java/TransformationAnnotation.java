@@ -43,7 +43,7 @@ public interface TransformationAnnotation extends JavaResourceNode
 	 * Set to null to remove the fetch element.
 	 */
 	void setFetch(FetchType fetch);
-		String FETCH_PROPERTY = "fetchProperty";
+		String FETCH_PROPERTY = "fetchProperty"; //$NON-NLS-1$
 		
 	/**
 	 * Corresponds to the optional element of the Transformation annotation.
@@ -56,7 +56,7 @@ public interface TransformationAnnotation extends JavaResourceNode
 	 * Set to null to remove the optional element.
 	 */
 	void setOptional(Boolean optional);
-		String OPTIONAL_PROPERTY = "optionalProperty";
+		String OPTIONAL_PROPERTY = "optionalProperty"; //$NON-NLS-1$
 	
 	/**
 	 * Return the {@link TextRange} for the fetch element.  If the fetch element 

@@ -61,7 +61,7 @@ public enum ExistenceType {
 			case ASSUME_NON_EXISTENCE :
 				return EclipseLinkJPA.EXISTENCE_TYPE__ASSUME_NON_EXISTENCE;
 			default :
-				throw new IllegalArgumentException("unknown existence type: " + existenceType);
+				throw new IllegalArgumentException("unknown existence type: " + existenceType); //$NON-NLS-1$
 		}
 	}
 }

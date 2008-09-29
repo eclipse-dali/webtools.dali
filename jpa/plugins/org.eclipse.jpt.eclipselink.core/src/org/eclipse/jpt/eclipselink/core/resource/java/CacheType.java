@@ -79,7 +79,7 @@ public enum CacheType {
 			case NONE :
 				return EclipseLinkJPA.CACHE_TYPE__NONE;
 			default :
-				throw new IllegalArgumentException("unknown cache type: " + cacheType);
+				throw new IllegalArgumentException("unknown cache type: " + cacheType); //$NON-NLS-1$
 		}
 	}
 }

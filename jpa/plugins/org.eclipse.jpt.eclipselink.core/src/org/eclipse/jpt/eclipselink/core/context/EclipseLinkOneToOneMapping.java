@@ -23,6 +23,6 @@ import org.eclipse.jpt.core.context.OneToOneMapping;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkOneToOneMapping extends OneToOneMapping, PrivateOwnable
+public interface EclipseLinkOneToOneMapping extends OneToOneMapping, EclipseLinkRelationshipMapping, PrivateOwnable
 {
 }

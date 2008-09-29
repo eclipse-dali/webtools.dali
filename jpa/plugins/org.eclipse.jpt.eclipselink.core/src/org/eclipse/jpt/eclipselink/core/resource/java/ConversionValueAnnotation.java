@@ -43,7 +43,7 @@ public interface ConversionValueAnnotation extends JavaResourceNode
 	 * Set to null to remove the dataValue element.
 	 */
 	void setDataValue(String dataValue);
-		String DATA_VALUE_PROPERTY = "dataValueProperty";
+		String DATA_VALUE_PROPERTY = "dataValueProperty"; //$NON-NLS-1$
 
 	/**
 	 * Corresponds to the objectValue element of the ConversionValue annotation.
@@ -56,7 +56,7 @@ public interface ConversionValueAnnotation extends JavaResourceNode
 	 * Set to null to remove the objectValue element.
 	 */
 	void setObjectValue(String objectValue);
-		String OBJECT_VALUE_PROPERTY = "objectValueProperty";
+		String OBJECT_VALUE_PROPERTY = "objectValueProperty"; //$NON-NLS-1$
 		
 	/**
 	 * Return the {@link TextRange} for the dataValue element.  If the dataValue element 

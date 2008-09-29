@@ -42,7 +42,7 @@ public interface TimeOfDayAnnotation extends JavaResourceNode
 	 * Set to null to remove the hour valuePair from the annotation
 	 */
 	void setHour(Integer hour);
-		String HOUR_PROPERTY = "hourProperty";
+		String HOUR_PROPERTY = "hourProperty"; //$NON-NLS-1$
 		
 	/**
 	 * Corresponds to the minute element of the TimeOfDay annotation.
@@ -55,7 +55,7 @@ public interface TimeOfDayAnnotation extends JavaResourceNode
 	 * Set to null to remove the minute valuePair from the annotation
 	 */
 	void setMinute(Integer minute);
-		String MINUTE_PROPERTY = "minuteProperty";
+		String MINUTE_PROPERTY = "minuteProperty"; //$NON-NLS-1$
 		
 	/**
 	 * Corresponds to the second element of the TimeOfDay annotation.
@@ -68,7 +68,7 @@ public interface TimeOfDayAnnotation extends JavaResourceNode
 	 * Set to null to remove the second valuePair from the annotation
 	 */
 	void setSecond(Integer second);
-		String SECOND_PROPERTY = "secondProperty";
+		String SECOND_PROPERTY = "secondProperty"; //$NON-NLS-1$
 
 	
 	/**
@@ -82,7 +82,7 @@ public interface TimeOfDayAnnotation extends JavaResourceNode
 	 * Set to null to remove the millisecond valuePair from the annotation
 	 */
 	void setMillisecond(Integer millisecond);
-		String MILLISECOND_PROPERTY = "millisecondProperty";
+		String MILLISECOND_PROPERTY = "millisecondProperty"; //$NON-NLS-1$
 		
 	
 	/**

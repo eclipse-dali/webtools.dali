@@ -27,11 +27,11 @@ public interface EclipseLinkObjectTypeConverter extends EclipseLinkNamedConverte
 {
 	String getDataType();	
 	void setDataType(String dataType);
-		String DATA_TYPE_PROPERTY = "dataTypeProperty";
+		String DATA_TYPE_PROPERTY = "dataTypeProperty"; //$NON-NLS-1$
 		
 	String getObjectType();	
 	void setObjectType(String objectType);
-		String OBJECT_TYPE_PROPERTY = "objectTypeProperty";
+		String OBJECT_TYPE_PROPERTY = "objectTypeProperty"; //$NON-NLS-1$
 
 	
 	// **************** conversion values **************************************

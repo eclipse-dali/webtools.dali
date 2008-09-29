@@ -42,7 +42,7 @@ public interface ExistenceCheckingAnnotation extends JavaResourceNode
 	 * Set to null to remove the value element.
 	 */
 	void setValue(ExistenceType value);
-		String VALUE_PROPERTY = "valueProperty";
+		String VALUE_PROPERTY = "valueProperty"; //$NON-NLS-1$
 	
 		
 	/**

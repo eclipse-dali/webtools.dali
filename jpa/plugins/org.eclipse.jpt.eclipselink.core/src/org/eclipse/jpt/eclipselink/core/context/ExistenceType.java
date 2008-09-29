@@ -44,7 +44,7 @@ public enum ExistenceType {
 			case ASSUME_NON_EXISTENCE:
 				return ASSUME_NON_EXISTENCE;
 			default:
-				throw new IllegalArgumentException("unknown existence type: " + javaExistenceType);
+				throw new IllegalArgumentException("unknown existence type: " + javaExistenceType); //$NON-NLS-1$
 		}
 	}
 
@@ -62,7 +62,7 @@ public enum ExistenceType {
 			case ASSUME_NON_EXISTENCE:
 				return org.eclipse.jpt.eclipselink.core.resource.java.ExistenceType.ASSUME_NON_EXISTENCE;
 			default:
-				throw new IllegalArgumentException("unknown existence type: " + existenceType);
+				throw new IllegalArgumentException("unknown existence type: " + existenceType); //$NON-NLS-1$
 		}
 	}
 	

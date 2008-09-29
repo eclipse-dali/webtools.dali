@@ -22,10 +22,11 @@ package org.eclipse.jpt.eclipselink.core.resource.java;
  * @version 2.1
  * @since 2.1
  */
+@SuppressWarnings("nls")
 public interface EclipseLinkJPA {
 
 	// EclipseLink JPA package
-	String PACKAGE = "org.eclipse.persistence.annotations";
+	String PACKAGE = "org.eclipse.persistence.annotations"; //$NON-NLS-1$
 	String PACKAGE_ = PACKAGE + ".";
 
 

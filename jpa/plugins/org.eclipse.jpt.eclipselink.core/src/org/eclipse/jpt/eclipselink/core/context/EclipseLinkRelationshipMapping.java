@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context;
 
-import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 
 /**
- * Corresponds to a ConversionValue resource model object
+ * 
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -23,15 +23,7 @@ import org.eclipse.jpt.core.context.JpaContextNode;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkConversionValue extends JpaContextNode
+public interface EclipseLinkRelationshipMapping extends RelationshipMapping
 {
-	String getDataValue();	
-	void setDataValue(String dataValue);
-		String DATA_VALUE_PROPERTY = "dataValueProperty"; //$NON-NLS-1$
-		
-	String getObjectValue();	
-	void setObjectValue(String objectValue);
-		String OBJECT_VALUE_PROPERTY = "objectValueProperty"; //$NON-NLS-1$
-
-	EclipseLinkObjectTypeConverter getParent();
+	JoinFetchable getJoinFetchable();
 }

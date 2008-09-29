@@ -42,7 +42,7 @@ public interface TransformerAnnotation extends JavaResourceNode
 	 * Set to null to remove the transformerClass element.
 	 */
 	void setTransformerClass(String transformerClass);
-		String TRANSFORMER_CLASS_PROPERTY = "transformerClassProperty";
+		String TRANSFORMER_CLASS_PROPERTY = "transformerClassProperty"; //$NON-NLS-1$
 
 	/**
 	 * Corresponds to the method element of the *Transformer annotation.
@@ -55,7 +55,7 @@ public interface TransformerAnnotation extends JavaResourceNode
 	 * Set to null to remove the method element.
 	 */
 	void setMethod(String method);
-		String METHOD_PROPERTY = "methodProperty";
+		String METHOD_PROPERTY = "methodProperty"; //$NON-NLS-1$
 		
 	/**
 	 * Return the {@link TextRange} for the transformerClass element.  If the transformerClass element 

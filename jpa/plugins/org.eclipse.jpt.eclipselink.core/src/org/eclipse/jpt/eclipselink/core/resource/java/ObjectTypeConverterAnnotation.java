@@ -49,7 +49,7 @@ public interface ObjectTypeConverterAnnotation extends TypeConverterAnnotation
 	
 	void moveConversionValue(int targetIndex, int sourceIndex);
 	
-		String CONVERSION_VALUES_LIST = "conversionValuesList";
+		String CONVERSION_VALUES_LIST = "conversionValuesList"; //$NON-NLS-1$
 		
 		
 	/**
@@ -63,7 +63,7 @@ public interface ObjectTypeConverterAnnotation extends TypeConverterAnnotation
 	 * Set to null to remove the defaultObjectValue element.
 	 */
 	void setDefaultObjectValue(String value);
-		String DEFAULT_OBJECT_VALUE_PROPERTY = "defaultObjectValueProperty";
+		String DEFAULT_OBJECT_VALUE_PROPERTY = "defaultObjectValueProperty"; //$NON-NLS-1$
 		
 	/**
 	 * Return the {@link TextRange} for the defaultObjectValue element.  If the defaultObjectValue element 

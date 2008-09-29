@@ -42,7 +42,7 @@ public interface CacheAnnotation extends JavaResourceNode
 	 * Set to null to remove the type element.
 	 */
 	void setType(CacheType type);
-		String TYPE_PROPERTY = "typeProperty";	
+		String TYPE_PROPERTY = "typeProperty"; //$NON-NLS-1$
 
 	/**
 	 * Corresponds to the size element of the Cache annotation.
@@ -55,7 +55,7 @@ public interface CacheAnnotation extends JavaResourceNode
 	 * Set to null to remove the size valuePair from the annotation
 	 */
 	void setSize(Integer size);
-		String SIZE_PROPERTY = "sizeProperty";
+		String SIZE_PROPERTY = "sizeProperty"; //$NON-NLS-1$
 		
 	/**
 	 * Corresponds to the shared element of the Cache annotation.
@@ -68,7 +68,7 @@ public interface CacheAnnotation extends JavaResourceNode
 	 * Set to null to remove the shared element.
 	 */
 	void setShared(Boolean shared);
-		String SHARED_PROPERTY = "sharedProperty";
+		String SHARED_PROPERTY = "sharedProperty"; //$NON-NLS-1$
 
 	
 	/**
@@ -82,12 +82,12 @@ public interface CacheAnnotation extends JavaResourceNode
 	 * Set to null to remove the expiry valuePair from the annotation
 	 */
 	void setExpiry(Integer expiry);
-		String EXPIRY_PROPERTY = "expiryProperty";
+		String EXPIRY_PROPERTY = "expiryProperty"; //$NON-NLS-1$
 
 	TimeOfDayAnnotation addExpiryTimeOfDay();
 	void removeExpiryTimeOfDay();
 	TimeOfDayAnnotation getExpiryTimeOfDay();
-		String EXPIRY_TIME_OF_DAY_PROPERTY = "expiryTimeOfDayProperty";
+		String EXPIRY_TIME_OF_DAY_PROPERTY = "expiryTimeOfDayProperty"; //$NON-NLS-1$
 		
 	/**
 	 * Corresponds to the alwaysRefresh element of the Cache annotation.
@@ -100,7 +100,7 @@ public interface CacheAnnotation extends JavaResourceNode
 	 * Set to null to remove the alwaysRefresh element.
 	 */
 	void setAlwaysRefresh(Boolean alwaysRefresh);
-		String ALWAYS_REFRESH_PROPERTY = "alwaysRefreshProperty";
+		String ALWAYS_REFRESH_PROPERTY = "alwaysRefreshProperty"; //$NON-NLS-1$
 		
 	/**
 	 * Corresponds to the refreshOnlyIfNewer element of the Cache annotation.
@@ -113,7 +113,7 @@ public interface CacheAnnotation extends JavaResourceNode
 	 * Set to null to remove the refreshOnlyIfNewer element.
 	 */
 	void setRefreshOnlyIfNewer(Boolean refreshOnlyIfNewer);
-		String REFRESH_ONLY_IF_NEWER_PROPERTY = "refreshOnlyIfNewerProperty";
+		String REFRESH_ONLY_IF_NEWER_PROPERTY = "refreshOnlyIfNewerProperty"; //$NON-NLS-1$
 		
 	/**
 	 * Corresponds to the disableHits element of the Cache annotation.
@@ -126,7 +126,7 @@ public interface CacheAnnotation extends JavaResourceNode
 	 * Set to null to remove the disableHits element.
 	 */
 	void setDisableHits(Boolean disableHits);
-		String DISABLE_HITS_PROPERTY = "disableHitsProperty";
+		String DISABLE_HITS_PROPERTY = "disableHitsProperty"; //$NON-NLS-1$
 		
 	/**
 	 * Corresponds to the type element of the Cache annotation.
@@ -139,7 +139,7 @@ public interface CacheAnnotation extends JavaResourceNode
 	 * Set to null to remove the type element.
 	 */
 	void setCoordinationType(CacheCoordinationType coordinationType);
-		String COORDINATION_TYPE_PROPERTY = "coordinationTypeProperty";
+		String COORDINATION_TYPE_PROPERTY = "coordinationTypeProperty"; //$NON-NLS-1$
 
 			
 	/**

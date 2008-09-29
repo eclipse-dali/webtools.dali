@@ -34,7 +34,7 @@ public interface EclipseLinkCaching extends JpaContextNode
 	Boolean getShared();
 	
 	Boolean getDefaultShared();
-		String DEFAULT_SHARED_PROPERTY = "defaultSharedProperty";
+		String DEFAULT_SHARED_PROPERTY = "defaultSharedProperty"; //$NON-NLS-1$
 		Boolean DEFAULT_SHARED = Boolean.TRUE;
 	
 	Boolean getSpecifiedShared();
@@ -46,7 +46,7 @@ public interface EclipseLinkCaching extends JpaContextNode
 	 * @param newSpecifiedShared
 	 */
 	void setSpecifiedShared(Boolean newSpecifiedShared);
-		String SPECIFIED_SHARED_PROPERTY = "specifiedSharedProperty";
+		String SPECIFIED_SHARED_PROPERTY = "specifiedSharedProperty"; //$NON-NLS-1$
 	
 	
 	//***************** cache type ************************
@@ -58,12 +58,12 @@ public interface EclipseLinkCaching extends JpaContextNode
 	CacheType getType();
 	
 	CacheType getDefaultType();		
-		String DEFAULT_TYPE_PROPERTY = "defaultTypeProperty";
+		String DEFAULT_TYPE_PROPERTY = "defaultTypeProperty"; //$NON-NLS-1$
 		CacheType DEFAULT_TYPE = CacheType.SOFT_WEAK;
 		
 	CacheType getSpecifiedType();	
 	void setSpecifiedType(CacheType newSpecifiedType);
-		String SPECIFIED_TYPE_PROPERTY = "specifiedTypeProperty";
+		String SPECIFIED_TYPE_PROPERTY = "specifiedTypeProperty"; //$NON-NLS-1$
 	
 	
 	//***************** size ************************
@@ -76,11 +76,11 @@ public interface EclipseLinkCaching extends JpaContextNode
 
 	Integer getDefaultSize();
 		Integer DEFAULT_SIZE = Integer.valueOf(100);
-		String DEFAULT_SIZE_PROPERTY = "defaultSizeProperty";
+		String DEFAULT_SIZE_PROPERTY = "defaultSizeProperty"; //$NON-NLS-1$
 
 	Integer getSpecifiedSize();
 	void setSpecifiedSize(Integer newSpecifiedSize);
-		String SPECIFIED_SIZE_PROPERTY = "spcifiedSizeProperty";
+		String SPECIFIED_SIZE_PROPERTY = "spcifiedSizeProperty"; //$NON-NLS-1$
 	
 	//***************** always refresh ************************		
 		
@@ -91,12 +91,12 @@ public interface EclipseLinkCaching extends JpaContextNode
 	Boolean getAlwaysRefresh();
 	
 	Boolean getDefaultAlwaysRefresh();
-		String DEFAULT_ALWAYS_REFRESH_PROPERTY = "defaultAlwaysRefreshProperty";
+		String DEFAULT_ALWAYS_REFRESH_PROPERTY = "defaultAlwaysRefreshProperty"; //$NON-NLS-1$
 		Boolean DEFAULT_ALWAYS_REFRESH = Boolean.FALSE;
 	
 	Boolean getSpecifiedAlwaysRefresh();
 	void setSpecifiedAlwaysRefresh(Boolean newSpecifiedAlwaysRefresh);
-		String SPECIFIED_ALWAYS_REFRESH_PROPERTY = "specifiedAlwaysRefreshProperty";
+		String SPECIFIED_ALWAYS_REFRESH_PROPERTY = "specifiedAlwaysRefreshProperty"; //$NON-NLS-1$
 
 
 	//***************** refresh only if newer ************************
@@ -108,12 +108,12 @@ public interface EclipseLinkCaching extends JpaContextNode
 	Boolean getRefreshOnlyIfNewer();
 	
 	Boolean getDefaultRefreshOnlyIfNewer();
-		String DEFAULT_REFRESH_ONLY_IF_NEWER_PROPERTY = "defaultRefreshOnlyIfNewerProperty";
+		String DEFAULT_REFRESH_ONLY_IF_NEWER_PROPERTY = "defaultRefreshOnlyIfNewerProperty"; //$NON-NLS-1$
 		Boolean DEFAULT_REFRESH_ONLY_IF_NEWER = Boolean.FALSE;
 	
 	Boolean getSpecifiedRefreshOnlyIfNewer();
 	void setSpecifiedRefreshOnlyIfNewer(Boolean newSpecifiedRefreshOnlyIfNewer);
-		String SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY = "specifiedRefreshOnlyIfNewerProperty";
+		String SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY = "specifiedRefreshOnlyIfNewerProperty"; //$NON-NLS-1$
 
 		
 	//***************** disable hits ************************
@@ -125,12 +125,12 @@ public interface EclipseLinkCaching extends JpaContextNode
 	Boolean getDisableHits();
 	
 	Boolean getDefaultDisableHits();
-		String DEFAULT_DISABLE_HITS_PROPERTY = "defaultDisableHitsProperty";
+		String DEFAULT_DISABLE_HITS_PROPERTY = "defaultDisableHitsProperty"; //$NON-NLS-1$
 		Boolean DEFAULT_DISABLE_HITS = Boolean.FALSE;
 	
 	Boolean getSpecifiedDisableHits();
 	void setSpecifiedDisableHits(Boolean newSpecifiedDisableHits);
-		String SPECIFIED_DISABLE_HITS_PROPERTY = "specifiedDisableHitsProperty";
+		String SPECIFIED_DISABLE_HITS_PROPERTY = "specifiedDisableHitsProperty"; //$NON-NLS-1$
 
 		
 	//***************** coordination type ************************
@@ -142,12 +142,12 @@ public interface EclipseLinkCaching extends JpaContextNode
 	CacheCoordinationType getCoordinationType();
 	
 	CacheCoordinationType getDefaultCoordinationType();		
-		String DEFAULT_COORDINATION_TYPE_PROPERTY = "defaultCoordinationTypeProperty";
+		String DEFAULT_COORDINATION_TYPE_PROPERTY = "defaultCoordinationTypeProperty"; //$NON-NLS-1$
 		CacheCoordinationType DEFAULT_COORDINATION_TYPE = CacheCoordinationType.SEND_OBJECT_CHANGES;
 		
 	CacheCoordinationType getSpecifiedCoordinationType();	
 	void setSpecifiedCoordinationType(CacheCoordinationType newSpecifiedCoordinationType);
-		String SPECIFIED_COORDINATION_TYPE_PROPERTY = "specifiedCoordinationTypeProperty";
+		String SPECIFIED_COORDINATION_TYPE_PROPERTY = "specifiedCoordinationTypeProperty"; //$NON-NLS-1$
 
 			
 	//***************** existence checking ************************
@@ -160,7 +160,7 @@ public interface EclipseLinkCaching extends JpaContextNode
 	 */
 	boolean hasExistenceChecking();
 	void setExistenceChecking(boolean existenceChecking);
-		String EXISTENCE_CHECKING_PROPERTY = "existenceCheckingProperty";
+		String EXISTENCE_CHECKING_PROPERTY = "existenceCheckingProperty"; //$NON-NLS-1$
 	
 	/**
 	 * This is the combination of defaultExistenceType and specifiedExistenceType.
@@ -169,13 +169,13 @@ public interface EclipseLinkCaching extends JpaContextNode
 	ExistenceType getExistenceType();
 	
 	ExistenceType getDefaultExistenceType();		
-		String DEFAULT_EXISTENCE_TYPE_PROPERTY = "defaultExistenceTypeProperty";
+		String DEFAULT_EXISTENCE_TYPE_PROPERTY = "defaultExistenceTypeProperty"; //$NON-NLS-1$
 		//default if hasExistenceChecking returns false
 		ExistenceType DEFAULT_EXISTENCE_TYPE = ExistenceType.CHECK_DATABASE;
 		
 	ExistenceType getSpecifiedExistenceType();	
 	void setSpecifiedExistenceType(ExistenceType newSpecifiedExistenceType);
-		String SPECIFIED_EXISTENCE_TYPE_PROPERTY = "specifiedExistenceTypeProperty";
+		String SPECIFIED_EXISTENCE_TYPE_PROPERTY = "specifiedExistenceTypeProperty"; //$NON-NLS-1$
 
 		
 	//***************** expiry ************************
@@ -192,7 +192,7 @@ public interface EclipseLinkCaching extends JpaContextNode
 	 * @param expiry
 	 */
 	void setExpiry(Integer expiry);
-		String EXPIRY_PROPERTY = "expiryProperty";
+		String EXPIRY_PROPERTY = "expiryProperty"; //$NON-NLS-1$
 	
 		
 	/**
@@ -212,5 +212,5 @@ public interface EclipseLinkCaching extends JpaContextNode
 	 * Removes the Cache expiryTimeOfDay annotation/xml element
 	 */
 	void removeExpiryTimeOfDay();
-		String EXPIRY_TIME_OF_DAY_PROPERTY = "expiryTimeOfDayProperty";
+		String EXPIRY_TIME_OF_DAY_PROPERTY = "expiryTimeOfDayProperty"; //$NON-NLS-1$
 }

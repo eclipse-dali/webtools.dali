@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
 
 public class EclipseLinkJpaPlatform extends GenericJpaPlatform
 {
-	public static String ID = "org.eclipse.eclipselink.platform";
+	public static String ID = "org.eclipse.eclipselink.platform"; //$NON-NLS-1$
 
 	// ********* constructor *********
 	public EclipseLinkJpaPlatform() {

@@ -27,23 +27,23 @@ import org.eclipse.jpt.core.context.JpaContextNode;
 public interface EclipseLinkConvert extends JpaContextNode, Converter
 {
 	
-	String ECLIPSE_LINK_CONVERTER = "eclipseLinkConverter";
+	String ECLIPSE_LINK_CONVERTER = "eclipseLinkConverter"; //$NON-NLS-1$
 	
 	String getConverterName();
 	
 	String getDefaultConverterName();
-		String DEFAULT_CONVERTER_NAME_PROPERTY = "defaultConverterNameProperty";
+		String DEFAULT_CONVERTER_NAME_PROPERTY = "defaultConverterNameProperty"; //$NON-NLS-1$
 
 	String getSpecifiedConverterName();
 	
 	void setSpecifiedConverterName(String converterName);
-		String SPECIFIED_CONVERTER_NAME_PROPERTY = "specifiedConverterNameProperty";
+		String SPECIFIED_CONVERTER_NAME_PROPERTY = "specifiedConverterNameProperty"; //$NON-NLS-1$
 	
 	/**
 	 * Reserved name for specifying a serialized object converter.  In this
 	 * case there does not need to be a corresponding @Converter defined.
 	 */
-	String SERIALIZED_CONVERTER = "serialized";
+	String SERIALIZED_CONVERTER = "serialized"; //$NON-NLS-1$
 	
 	/**
 	 * Reserved name for specifying a class instance converter.  Will use a ClassInstanceConverter
@@ -52,14 +52,14 @@ public interface EclipseLinkConvert extends JpaContextNode, Converter
 	 * of that class built with a no-args constructor
 	 * In this case there does not need to be a corresponding @Converter defined.
 	 */
-	String CLASS_INSTANCE_CONVERTER = "class-instance";
+	String CLASS_INSTANCE_CONVERTER = "class-instance"; //$NON-NLS-1$
 	
 	/**
 	 * Reserved name for specifying no converter.  This can be used to override a situation where either 
 	 *  another converter is defaulted or another converter is set.
 	 *  In this case there does not need to be a corresponding @Converter defined.
 	 */
-	String NO_CONVERTER = "none";
+	String NO_CONVERTER = "none"; //$NON-NLS-1$
 	
 	String[] RESERVED_CONVERTER_NAMES = {NO_CONVERTER, CLASS_INSTANCE_CONVERTER, SERIALIZED_CONVERTER};
 	
@@ -70,7 +70,7 @@ public interface EclipseLinkConvert extends JpaContextNode, Converter
 	 * @return
 	 */
 	EclipseLinkNamedConverter getConverter();
-		String CONVERTER_PROPERTY = "converterProperty";
+		String CONVERTER_PROPERTY = "converterProperty"; //$NON-NLS-1$
 	
 	/**
 	 * Possible values for converter type are:

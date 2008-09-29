@@ -26,7 +26,7 @@ public interface EclipseLinkResourceModel extends ResourceModel
 	 * Constant representing an eclipselink mapping file (e.g. eclipselink-orm.xml) resource type
 	 * @see org.eclipse.jpt.core.ResourceModel#getResourceType()
 	 */
-	static final String ECLIPSELINK_ORM_RESOURCE_TYPE = "ECLIPSELINK_ORM_RESOURCE_TYPE";
+	static final String ECLIPSELINK_ORM_RESOURCE_TYPE = "ECLIPSELINK_ORM_RESOURCE_TYPE"; //$NON-NLS-1$
 
 }
 
