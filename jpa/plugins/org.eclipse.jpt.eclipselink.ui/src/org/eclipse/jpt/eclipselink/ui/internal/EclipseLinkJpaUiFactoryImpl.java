@@ -14,6 +14,8 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.MappedSuperclass;
+import org.eclipse.jpt.core.context.OneToManyMapping;
+import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -34,6 +36,8 @@ import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkBasic
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkIdMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkMappedSuperclassComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkVersionMappingComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipselinkOneToManyMappingComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipselinkOneToOneMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.options.PersistenceXmlOptionsTab;
 import org.eclipse.jpt.eclipselink.ui.internal.schema.generation.PersistenceXmlSchemaGenerationTab;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -80,6 +84,24 @@ public class EclipseLinkJpaUiFactoryImpl extends BaseJpaUiFactory implements Ecl
 		WidgetFactory widgetFactory) {
 
 		return new EclipseLinkVersionMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createOneToOneMappingComposite(
+		PropertyValueModel<OneToOneMapping> subjectHolder, 
+		Composite parent, 
+		WidgetFactory widgetFactory) {
+
+		return new EclipselinkOneToOneMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createOneToManyMappingComposite(
+		PropertyValueModel<OneToManyMapping> subjectHolder, 
+		Composite parent, 
+		WidgetFactory widgetFactory) {
+
+		return new EclipselinkOneToManyMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override

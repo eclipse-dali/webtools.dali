@@ -97,6 +97,8 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	public static String ConversionValueStateObject_objectValueMustBeSpecified;
 	public static String ConversionValueStateObject_dataValueAlreadyExists;
 	
+	public static String PrivateOwnedComposite_privateOwnedLabel;
+	
 	public static String TypeConverterComposite_dataTypeLabel;
 	public static String TypeConverterComposite_objectTypeLabel;
 	

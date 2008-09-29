@@ -24,7 +24,7 @@ public class PrivateOwnedTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 	
 	private void createPrivateOwnedAnnotation() throws Exception {
-		this.createAnnotationAndMembers("PrivateOwned", "PrivateOwned");
+		this.createAnnotationAndMembers("PrivateOwned", "");
 	}
 
 	private ICompilationUnit createTestPrivateOwned() throws Exception {

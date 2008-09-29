@@ -16,6 +16,8 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
+import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
@@ -46,6 +48,8 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEnt
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaIdMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaMappedSuperclassImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaObjectTypeConverterImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMappingImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaStructConverterImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaTypeConverterImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingImpl;
@@ -85,6 +89,16 @@ public class EclipseLinkJpaFactoryImpl extends GenericJpaFactory implements Ecli
 	@Override
 	public JavaVersionMapping buildJavaVersionMapping(JavaPersistentAttribute parent) {
 		return new EclipseLinkJavaVersionMappingImpl(parent);
+	}
+	
+	@Override
+	public JavaOneToManyMapping buildJavaOneToManyMapping(JavaPersistentAttribute parent) {
+		return new EclipseLinkJavaOneToManyMappingImpl(parent);
+	}
+	
+	@Override
+	public JavaOneToOneMapping buildJavaOneToOneMapping(JavaPersistentAttribute parent) {
+		return new EclipseLinkJavaOneToOneMappingImpl(parent);
 	}
 	
 	public EclipseLinkJavaCaching buildEclipseLinkJavaCaching(JavaTypeMapping parent) {
