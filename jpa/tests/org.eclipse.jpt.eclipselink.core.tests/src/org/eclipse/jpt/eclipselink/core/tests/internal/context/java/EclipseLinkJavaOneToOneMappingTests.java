@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchable;
+import org.eclipse.jpt.eclipselink.core.context.PrivateOwnable;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.PrivateOwnedAnnotation;
@@ -94,7 +95,8 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		assertEquals(true, oneToOneMapping.getPrivateOwned());
+		PrivateOwnable privateOwnable = oneToOneMapping.getPrivateOwnable();
+		assertEquals(true, privateOwnable.getPrivateOwned());
 	}
 
 	public void testSetPrivateOwned() throws Exception {
@@ -103,18 +105,19 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		assertEquals(true, oneToOneMapping.getPrivateOwned());
+		PrivateOwnable privateOwnable = oneToOneMapping.getPrivateOwnable();
+		assertEquals(true, privateOwnable.getPrivateOwned());
 		
-		oneToOneMapping.setPrivateOwned(false);
+		privateOwnable.setPrivateOwned(false);
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.getAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME));
-		assertEquals(false, oneToOneMapping.getPrivateOwned());
+		assertEquals(false, privateOwnable.getPrivateOwned());
 
-		oneToOneMapping.setPrivateOwned(true);
+		privateOwnable.setPrivateOwned(true);
 		assertNotNull(attributeResource.getAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME));
-		assertEquals(true, oneToOneMapping.getPrivateOwned());
+		assertEquals(true, privateOwnable.getPrivateOwned());
 	}
 	
 	public void testPrivateOwnedUpdatesFromResourceModelChange() throws Exception {
@@ -123,17 +126,18 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		assertEquals(true, oneToOneMapping.getPrivateOwned());
+		PrivateOwnable privateOwnable = oneToOneMapping.getPrivateOwnable();
+		assertEquals(true, privateOwnable.getPrivateOwned());
 		
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		attributeResource.removeAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME);
 		
-		assertEquals(false, oneToOneMapping.getPrivateOwned());
+		assertEquals(false, privateOwnable.getPrivateOwned());
 		
 		attributeResource.addAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME);
-		assertEquals(true, oneToOneMapping.getPrivateOwned());
+		assertEquals(true, privateOwnable.getPrivateOwned());
 	}
 	
 	public void testHasJoinFetch() throws Exception {

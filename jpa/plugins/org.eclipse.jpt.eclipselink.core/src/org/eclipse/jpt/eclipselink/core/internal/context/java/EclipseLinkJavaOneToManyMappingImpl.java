@@ -14,19 +14,21 @@ import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToManyMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
+import org.eclipse.jpt.eclipselink.core.context.PrivateOwnable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwnable;
 import org.eclipse.jpt.eclipselink.core.resource.java.PrivateOwnedAnnotation;
 
 public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMapping implements EclipseLinkOneToManyMapping
 {
 	
-	protected boolean privateOwned;
-	
 	protected final JavaJoinFetchable joinFetchable;
+	protected final JavaPrivateOwnable privateOwnable;
 	
 	public EclipseLinkJavaOneToManyMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
-		this.joinFetchable = new EclipseLinkJavaJoinFetchable(parent);
+		this.joinFetchable = new EclipseLinkJavaJoinFetchable(parent);//TODO build with jpaFactory
+		this.privateOwnable = new EclipseLinkJavaPrivateOwnable(parent);
 	}
 	
 	@Override
@@ -49,55 +51,26 @@ public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMap
 	protected void removeResourcePrivateOwned() {
 		this.resourcePersistentAttribute.removeAnnotation(getPrivateOwnedAnnotationName());
 	}
-
-	public boolean getPrivateOwned() {
-		return this.privateOwned;
-	}
-	
-	public void setPrivateOwned(boolean newPrivateOwned) {
-		if (this.privateOwned == newPrivateOwned) {
-			return;
-		}
-		boolean oldPrivateOwned = this.privateOwned;
-		this.privateOwned = newPrivateOwned;
-
-		if (newPrivateOwned) {
-			addResourcePrivateOwned();
-		}
-		else {
-			//have to check if annotation exists in case the change is from false to null or vice versa
-			if (getResourcePrivateOwned() != null) {
-				removeResourcePrivateOwned();
-			}
-		}
-		firePropertyChanged(PRIVATE_OWNED_PROPERTY, oldPrivateOwned, newPrivateOwned);
-	}
-	
-	protected void setPrivateOwned_(boolean newPrivateOwned) {
-		boolean oldPrivateOwned = this.privateOwned;
-		this.privateOwned = newPrivateOwned;
-		firePropertyChanged(PRIVATE_OWNED_PROPERTY, oldPrivateOwned, newPrivateOwned);
-	}
 	
 	public JavaJoinFetchable getJoinFetchable() {
 		return this.joinFetchable;
+	}
+
+	public PrivateOwnable getPrivateOwnable() {
+		return this.privateOwnable;
 	}
 	
 	@Override
 	public void initialize(JavaResourcePersistentAttribute jrpa) {
 		super.initialize(jrpa);
-		this.privateOwned = privateOwned();
 		this.joinFetchable.initialize(jrpa);
+		this.privateOwnable.initialize(jrpa);
 	}
 	
 	@Override
 	public void update(JavaResourcePersistentAttribute jrpa) {
 		super.update(jrpa);
-		this.setPrivateOwned_(privateOwned());
 		this.joinFetchable.update(jrpa);
-	}
-	
-	private boolean privateOwned() {
-		return getResourcePrivateOwned() != null;
+		this.privateOwnable.update(jrpa);
 	}
 }

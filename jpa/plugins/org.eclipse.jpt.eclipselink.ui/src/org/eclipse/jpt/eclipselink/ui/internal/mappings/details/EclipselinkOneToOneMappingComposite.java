@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchable;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwnable;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
@@ -115,12 +114,8 @@ public class EclipselinkOneToOneMappingComposite extends FormPane<OneToOneMappin
 		// Optional check box
 		new OptionalComposite(this, addSubPane(subPane, 4));
 		
-		addCheckBox(
-			subPane,
-			EclipseLinkUiMappingsMessages.PrivateOwnedComposite_privateOwnedLabel,
-			buildPrivateOwnedHolder(),
-			null
-		);
+		// Private owned check box
+		new PrivateOwnedComposite(this, buildPrivateOwnableHolder(), subPane);
 
 		// Cascade widgets
 		new CascadeComposite(this, buildCascadeHolder(), container);
@@ -138,6 +133,15 @@ public class EclipselinkOneToOneMappingComposite extends FormPane<OneToOneMappin
 		};
 	}
 	
+	private PropertyValueModel<PrivateOwnable> buildPrivateOwnableHolder() {
+		return new PropertyAspectAdapter<OneToOneMapping, PrivateOwnable>(getSubjectHolder()) {
+			@Override
+			protected PrivateOwnable buildValue_() {
+				return ((EclipseLinkOneToOneMapping) this.subject).getPrivateOwnable();
+			}
+		};
+	}
+
 	private PropertyValueModel<Cascade> buildCascadeHolder() {
 		return new TransformationPropertyValueModel<OneToOneMapping, Cascade>(getSubjectHolder()) {
 		
@@ -147,18 +151,4 @@ public class EclipselinkOneToOneMappingComposite extends FormPane<OneToOneMappin
 			}
 		};
 	}
-
-	private PropertyAspectAdapter<OneToOneMapping, Boolean> buildPrivateOwnedHolder() {
-		return new PropertyAspectAdapter<OneToOneMapping, Boolean>(getSubjectHolder(), PrivateOwnable.PRIVATE_OWNED_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(((PrivateOwnable) this.subject).getPrivateOwned());
-			}
-			@Override
-			protected void setValue_(Boolean value) {
-				((PrivateOwnable) this.subject).setPrivateOwned(value.booleanValue());
-			}
-		};
-	}
-
 }

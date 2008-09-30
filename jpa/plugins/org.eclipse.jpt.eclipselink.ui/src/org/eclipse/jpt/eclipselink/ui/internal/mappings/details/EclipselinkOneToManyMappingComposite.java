@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,6 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchable;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwnable;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -123,13 +122,8 @@ public class EclipselinkOneToManyMappingComposite extends FormPane<OneToManyMapp
 		// Mapped By widgets
 		new MappedByComposite(this, subPane);
 		
-		// Private Owned widgets
-		addCheckBox(
-			subPane,
-			EclipseLinkUiMappingsMessages.PrivateOwnedComposite_privateOwnedLabel,
-			buildPrivateOwnedHolder(),
-			null
-		);
+		// Private owned widgets
+		new PrivateOwnedComposite(this, buildPrivateOwnableHolder(), subPane);
 
 		// Cascade widgets
 		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 4));
@@ -150,6 +144,15 @@ public class EclipselinkOneToManyMappingComposite extends FormPane<OneToManyMapp
 			buildJoinTableHolder(),
 			container
 		);
+	}
+	
+	private PropertyValueModel<PrivateOwnable> buildPrivateOwnableHolder() {
+		return new PropertyAspectAdapter<OneToManyMapping, PrivateOwnable>(getSubjectHolder()) {
+			@Override
+			protected PrivateOwnable buildValue_() {
+				return ((EclipseLinkOneToManyMapping) this.subject).getPrivateOwnable();
+			}
+		};
 	}
 	
 	private PropertyValueModel<JoinFetchable> buildJoinFetchableHolder() {
@@ -175,19 +178,6 @@ public class EclipselinkOneToManyMappingComposite extends FormPane<OneToManyMapp
 			@Override
 			protected JoinTable transform_(OneToManyMapping value) {
 				return value.getJoinTable();
-			}
-		};
-	}
-	
-	private PropertyAspectAdapter<OneToManyMapping, Boolean> buildPrivateOwnedHolder() {
-		return new PropertyAspectAdapter<OneToManyMapping, Boolean>(getSubjectHolder(), PrivateOwnable.PRIVATE_OWNED_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(((PrivateOwnable) this.subject).getPrivateOwned());
-			}
-			@Override
-			protected void setValue_(Boolean value) {
-				((PrivateOwnable) this.subject).setPrivateOwned(value.booleanValue());
 			}
 		};
 	}
