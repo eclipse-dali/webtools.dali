@@ -50,7 +50,7 @@ public class OrmModelTests extends TestCase
 		OrmResourceModelProvider modelProvider = 
 			OrmResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
 		assertNotNull(modelProvider);
-		OrmResource resource = (OrmResource) modelProvider.getResource();
+		OrmResource resource = modelProvider.getResource();
 		assertNotNull(resource);
 	}
 	
@@ -58,7 +58,7 @@ public class OrmModelTests extends TestCase
 		OrmResourceModelProvider modelProvider = 
 			OrmResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
 		assertNotNull(modelProvider);
-		OrmResource resource = (OrmResource) modelProvider.getResource();
+		OrmResource resource = modelProvider.getResource();
 		assertNotNull(resource);
 	}
 	
@@ -66,7 +66,7 @@ public class OrmModelTests extends TestCase
 		OrmResourceModelProvider modelProvider = 
 			OrmResourceModelProvider.getModelProvider(jpaProject.getProject(), "META-INF/orm2.xml");
 		assertNotNull(modelProvider);
-		OrmResource resource = (OrmResource) modelProvider.getResource();
+		OrmResource resource = modelProvider.getResource();
 		assertNotNull(resource);
 	}
 	
@@ -75,7 +75,7 @@ public class OrmModelTests extends TestCase
 		OrmResourceModelProvider modelProvider = 
 			OrmResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
 		assertNotNull(modelProvider);
-		OrmResource resource = (OrmResource) modelProvider.getResource();
+		OrmResource resource = modelProvider.getResource();
 		assertNotNull(resource);
 		assertTrue(resource.exists());
 	}

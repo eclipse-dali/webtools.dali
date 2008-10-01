@@ -70,7 +70,7 @@ public class PersistenceModelTests extends TestCase
 		PersistenceResourceModelProvider modelProvider = 
 			PersistenceResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
 		assertNotNull(modelProvider);
-		PersistenceResource resource = (PersistenceResource) modelProvider.getResource();
+		PersistenceResource resource = modelProvider.getResource();
 		assertNotNull(resource);
 		assertTrue(resource.exists());
 	}
