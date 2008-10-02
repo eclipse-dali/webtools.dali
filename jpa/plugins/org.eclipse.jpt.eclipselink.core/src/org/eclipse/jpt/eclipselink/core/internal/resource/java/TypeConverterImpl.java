@@ -14,15 +14,13 @@ import org.eclipse.jpt.core.internal.resource.java.AbstractResourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.internal.utility.jdt.StringExpressionConverter;
+import org.eclipse.jpt.core.internal.utility.jdt.TypeStringExpressionConverter;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
@@ -30,7 +28,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.TypeConverterAnnotation;
 
 
-public class TypeConverterImpl extends AbstractResourceAnnotation<Attribute> implements TypeConverterAnnotation
+public class TypeConverterImpl extends AbstractResourceAnnotation<Member> implements TypeConverterAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
@@ -47,11 +45,11 @@ public class TypeConverterImpl extends AbstractResourceAnnotation<Attribute> imp
 	private String dataType;
 	private String objectType;
 	
-	protected TypeConverterImpl(JavaResourcePersistentAttribute parent, Attribute attribute) {
-		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
-		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, NAME_ADAPTER);
-		this.dataTypeAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, DATA_TYPE_ADAPTER);
-		this.objectTypeAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, OBJECT_TYPE_ADAPTER);
+	protected TypeConverterImpl(JavaResourcePersistentMember parent, Member member) {
+		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
+		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, NAME_ADAPTER);
+		this.dataTypeAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, DATA_TYPE_ADAPTER);
+		this.objectTypeAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, OBJECT_TYPE_ADAPTER);
 	}
 	
 	public void initialize(CompilationUnit astRoot) {
@@ -143,11 +141,11 @@ public class TypeConverterImpl extends AbstractResourceAnnotation<Attribute> imp
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildDataTypeAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.TYPE_CONVERTER__DATE_TYPE, false, SimpleTypeStringExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.TYPE_CONVERTER__DATE_TYPE, false, TypeStringExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildObjectTypeAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.TYPE_CONVERTER__OBJECT_TYPE, false, SimpleTypeStringExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.TYPE_CONVERTER__OBJECT_TYPE, false, TypeStringExpressionConverter.instance());
 	}
 	
 	public static class TypeConverterAnnotationDefinition implements AnnotationDefinition
@@ -170,7 +168,7 @@ public class TypeConverterImpl extends AbstractResourceAnnotation<Attribute> imp
 		}
 
 		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-			return new TypeConverterImpl((JavaResourcePersistentAttribute) parent, (Attribute) member);
+			return new TypeConverterImpl(parent, member);
 		}
 		
 		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {

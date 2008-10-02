@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.tests.internal.utility.jdt;
 
 import java.util.Arrays;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTNodeTextRange;
 import org.eclipse.jpt.core.internal.utility.jdt.AnnotationStringArrayExpressionConverter;
@@ -27,6 +26,7 @@ import org.eclipse.jpt.core.internal.utility.jdt.PrimitiveTypeStringExpressionCo
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.internal.utility.jdt.StringExpressionConverter;
+import org.eclipse.jpt.core.internal.utility.jdt.TypeStringExpressionConverter;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
@@ -666,6 +666,62 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		ICompilationUnit cu = this.createTestType("@annot.Foo(bar=void.class)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa, "bar", PrimitiveTypeStringExpressionConverter.instance());
+		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(cu), daea);
+		assertEquals("void", aea.getValue());
+	}
+
+	public void testTypeLiteral1() throws Exception {
+		this.createAnnotationAndMembers("Foo", "Class bar();");
+		ICompilationUnit cu = this.createTestType("@annot.Foo(bar=java.lang.Object.class)");
+		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
+		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa, "bar", TypeStringExpressionConverter.instance());
+		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(cu), daea);
+		assertEquals("java.lang.Object", aea.getValue());
+	}
+
+	public void testTypeLiteral2() throws Exception {
+		this.createAnnotationAndMembers("Foo", "Class bar();");
+		ICompilationUnit cu = this.createTestType();
+		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
+		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa, "bar", TypeStringExpressionConverter.instance());
+		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(cu), daea);
+		aea.setValue("java.lang.Object");
+		this.assertSourceContains("@Foo(bar=java.lang.Object.class)", cu);
+	}
+
+	public void testTypeLiteral3() throws Exception {
+		this.createAnnotationAndMembers("Foo", "Class bar();");
+		ICompilationUnit cu = this.createTestType("@annot.Foo(bar=java.util.Map.Entry.class)");
+		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
+		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa, "bar", TypeStringExpressionConverter.instance());
+		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(cu), daea);
+		assertEquals("java.util.Map.Entry", aea.getValue());
+	}
+
+	public void testTypeLiteral14() throws Exception {
+		this.createAnnotationAndMembers("Foo", "Class bar();");
+		ICompilationUnit cu = this.createTestType("@annot.Foo(bar=int.class)");
+		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
+		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa, "bar", TypeStringExpressionConverter.instance());
+		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(cu), daea);
+		assertEquals("int", aea.getValue());
+	}
+
+	public void testTypeLiteral5() throws Exception {
+		this.createAnnotationAndMembers("Foo", "Class bar();");
+		ICompilationUnit cu = this.createTestType();
+		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
+		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa, "bar", TypeStringExpressionConverter.instance());
+		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(cu), daea);
+		aea.setValue("int");
+		this.assertSourceContains("@Foo(bar=int.class)", cu);
+	}
+
+	public void testTypeLiteral6() throws Exception {
+		this.createAnnotationAndMembers("Foo", "Class bar();");
+		ICompilationUnit cu = this.createTestType("@annot.Foo(bar=void.class)");
+		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
+		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa, "bar", TypeStringExpressionConverter.instance());
 		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(cu), daea);
 		assertEquals("void", aea.getValue());
 	}

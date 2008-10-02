@@ -114,6 +114,10 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 		assertEquals("Bar", converter.getDataType());
 		
 		assertSourceContains("@TypeConverter(dataType=Bar.class)", cu);
+		
+		converter.setDataType("int");
+		assertEquals("int", converter.getDataType());
+		assertSourceContains("@TypeConverter(dataType=int.class)", cu);
 	}
 	
 	public void testSetDataTypeNull() throws Exception {
@@ -152,6 +156,10 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 		assertEquals("Bar", converter.getObjectType());
 		
 		assertSourceContains("@TypeConverter(objectType=Bar.class)", cu);
+		
+		converter.setObjectType("int");
+		assertEquals("int", converter.getObjectType());
+		assertSourceContains("@TypeConverter(objectType=int.class)", cu);
 	}
 	
 	public void testSetObjectTypeNull() throws Exception {

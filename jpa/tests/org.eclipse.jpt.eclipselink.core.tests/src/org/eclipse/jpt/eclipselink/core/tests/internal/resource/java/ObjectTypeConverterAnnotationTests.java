@@ -160,6 +160,10 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 		assertEquals("Bar", converter.getDataType());
 		
 		assertSourceContains("@ObjectTypeConverter(dataType=Bar.class)", cu);
+		
+		converter.setDataType("int");
+		assertEquals("int", converter.getDataType());
+		assertSourceContains("@ObjectTypeConverter(dataType=int.class)", cu);
 	}
 	
 	public void testSetDataTypeNull() throws Exception {
@@ -198,6 +202,10 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 		assertEquals("Bar", converter.getObjectType());
 		
 		assertSourceContains("@ObjectTypeConverter(objectType=Bar.class)", cu);
+		
+		converter.setObjectType("int");
+		assertEquals("int", converter.getObjectType());
+		assertSourceContains("@ObjectTypeConverter(objectType=int.class)", cu);
 	}
 	
 	public void testSetObjectTypeNull() throws Exception {
