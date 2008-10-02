@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.AbstractResourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
@@ -41,6 +42,7 @@ public class ConverterImpl extends AbstractResourceAnnotation<Member> implements
 	
 	private String name;
 	private String converterClass;
+	private boolean implementsConverter;
 	
 	protected ConverterImpl(JavaResourcePersistentMember parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
@@ -51,6 +53,7 @@ public class ConverterImpl extends AbstractResourceAnnotation<Member> implements
 	public void initialize(CompilationUnit astRoot) {
 		this.name = this.name(astRoot);
 		this.converterClass = this.converterClass(astRoot);
+		this.implementsConverter = this.implementsConverter(astRoot);
 	}
 	
 	public String getAnnotationName() {
@@ -86,6 +89,16 @@ public class ConverterImpl extends AbstractResourceAnnotation<Member> implements
 		firePropertyChanged(CONVERTER_CLASS_PROPERTY, oldConverterClass, newConverterClass);
 	}
 	
+	public boolean implementsConverter() {
+		return this.implementsConverter;
+	}
+	
+	protected void setImplementsConverter(boolean newImplementsConverter) {
+		boolean oldImplementsConverter = this.implementsConverter;
+		this.implementsConverter = newImplementsConverter;
+		firePropertyChanged(IMPLEMENTS_CONVERTER_PROPERTY, oldImplementsConverter, newImplementsConverter);
+	}
+
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(NAME_ADAPTER, astRoot);
 	}
@@ -97,6 +110,7 @@ public class ConverterImpl extends AbstractResourceAnnotation<Member> implements
 	public void update(CompilationUnit astRoot) {
 		this.setName(this.name(astRoot));
 		this.setConverterClass(this.converterClass(astRoot));
+		this.setImplementsConverter(this.implementsConverter(astRoot));
 	}
 	
 	protected String name(CompilationUnit astRoot) {
@@ -105,6 +119,13 @@ public class ConverterImpl extends AbstractResourceAnnotation<Member> implements
 	
 	protected String converterClass(CompilationUnit astRoot) {
 		return this.converterClassAdapter.getValue(astRoot);
+	}
+
+	private boolean implementsConverter(CompilationUnit astRoot) {
+		if (this.converterClass == null) {
+			return false;
+		}
+		return JDTTools.findTypeInHierarchy(this.converterClassAdapter.getExpression(astRoot), ECLIPSELINK_CONVERTER_CLASS_NAME) != null;
 	}
 	
 	// ********** static methods **********

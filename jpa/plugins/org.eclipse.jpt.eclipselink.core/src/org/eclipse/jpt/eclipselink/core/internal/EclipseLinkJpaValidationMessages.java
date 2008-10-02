@@ -15,7 +15,9 @@ public interface EclipseLinkJpaValidationMessages {
 	public static final String BUNDLE_NAME = "eclipselink_jpa_validation";
 	
 	public static final String CACHE_EXPIRY_AND_EXPIRY_TIME_OF_DAY_BOTH_SPECIFIED = "CACHE_EXPIRY_AND_EXPIRY_TIME_OF_DAY_BOTH_SPECIFIED";
+
+	public static final String CONVERTER_CLASS_IMPLEMENTS_CONVERTER = "CONVERTER_CLASS_IMPLEMENTS_CONVERTER";
 	
 	public static final String MULTIPLE_OBJECT_VALUES_FOR_DATA_VALUE = "MULTIPLE_OBJECT_VALUES_FOR_DATA_VALUE";
-
+	
 }

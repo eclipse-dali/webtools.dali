@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
+import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
@@ -17,7 +18,10 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkNamedConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
+import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConverterAnnotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaConverterImpl extends AbstractJavaJpaContextNode implements EclipseLinkJavaConverter
 {	
@@ -117,4 +121,29 @@ public class EclipseLinkJavaConverterImpl extends AbstractJavaJpaContextNode imp
 		return resourceConverter == null ? null : resourceConverter.getConverterClass();
 	}
 
+	public TextRange getConverterClassTextRange(CompilationUnit astRoot) {
+		return getResourceConverter().getConverterClassTextRange(astRoot);
+	}
+	
+	//************ validation ***************
+	
+	@Override
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
+		validateConverterClass(messages, astRoot);
+	}
+	
+	protected void validateConverterClass(List<IMessage> messages, CompilationUnit astRoot) {
+		if (!getResourceConverter().implementsConverter()) {
+			messages.add(
+				DefaultEclipseLinkJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					EclipseLinkJpaValidationMessages.CONVERTER_CLASS_IMPLEMENTS_CONVERTER,
+					new String[] {this.converterClass},
+					this, 
+					getConverterClassTextRange(astRoot)
+				)
+			);
+		}
+	}
 }

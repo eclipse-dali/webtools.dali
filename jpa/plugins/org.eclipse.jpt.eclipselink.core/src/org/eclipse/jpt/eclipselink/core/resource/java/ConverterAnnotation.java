@@ -57,6 +57,15 @@ public interface ConverterAnnotation extends JavaResourceNode
 	 */
 	void setConverterClass(String value);
 		String CONVERTER_CLASS_PROPERTY = "converterClassProperty"; //$NON-NLS-1$
+		
+	/**
+	 * Return whether the converterClass implements the eclipselink Converter interface
+	 * @see ConverterAnnotation#ECLIPSELINK_CONVERTER_CLASS_NAME
+	 * @return
+	 */
+	boolean implementsConverter();
+		String IMPLEMENTS_CONVERTER_PROPERTY = "implementsConverterProperty"; //$NON-NLS-1$		
+		String ECLIPSELINK_CONVERTER_CLASS_NAME = "org.eclipse.persistence.mappings.converters.Converter"; //$NON-NLS-1$
 
 	/**
 	 * Return the {@link TextRange} for the name element.  If the name element 

@@ -67,7 +67,7 @@ public class JDTTools {
 			return null;
 		}
 		IVariableBinding variableBinding = (IVariableBinding) binding;
-		return variableBinding.getType().getQualifiedName() + "." + variableBinding.getName();
+		return variableBinding.getType().getQualifiedName() + '.' + variableBinding.getName();
 	}
 	
 	public static String resolveAnnotation(Annotation node) {
@@ -83,11 +83,16 @@ public class JDTTools {
 	}
 	
 	public static String resolveFullyQualifiedName(Expression expression) {
+		ITypeBinding resolvedTypeBinding = resolveTypeBinding(expression);
+		if (resolvedTypeBinding != null) {
+			return resolvedTypeBinding.getQualifiedName();
+		}
+		return null;
+	}
+	
+	public static ITypeBinding resolveTypeBinding(Expression expression) {
 		if (expression.getNodeType() == ASTNode.TYPE_LITERAL) {
-			ITypeBinding resolvedTypeBinding = ((TypeLiteral) expression).getType().resolveBinding();
-			if (resolvedTypeBinding != null) {
-				return resolvedTypeBinding.getQualifiedName();
-			}
+			return ((TypeLiteral) expression).getType().resolveBinding();
 		}
 		return null;
 	}
@@ -114,6 +119,51 @@ public class JDTTools {
 	@SuppressWarnings("unchecked")
 	private static List<SingleVariableDeclaration> parameters(MethodDeclaration methodDeclaration) {
 		return methodDeclaration.parameters();
+	}
+	
+	/**
+	 * Given an Expression return the ITypeBinding for the fullyQualifiedTypeName if it 
+	 * exists in the type hierarchy.  The expression should be a TypeLiteral or this will
+	 * just return null.
+	 */
+	public static ITypeBinding findTypeInHierarchy(Expression expression, String fullyQualifiedTypeName) {
+		ITypeBinding typeBinding = resolveTypeBinding(expression);
+		if (typeBinding != null) {
+			return findTypeInHierarchy(typeBinding, fullyQualifiedTypeName);
+		}
+		return null;
+	}
+	
+	/**
+	 * Finds a type binding for a given fully qualified type in the hierarchy of a type.
+	 * Returns <code>null</code> if no type binding is found.
+	 * @param hierarchyType the binding representing the hierarchy
+	 * @param fullyQualifiedTypeName the fully qualified name to search for
+	 * @return the type binding
+	 */
+	//copied from org.eclipse.jdt.internal.corext.dom.Bindings
+	public static ITypeBinding findTypeInHierarchy(ITypeBinding hierarchyType, String fullyQualifiedTypeName) {
+		if (hierarchyType.isArray() || hierarchyType.isPrimitive()) {
+			return null;
+		}
+		if (fullyQualifiedTypeName.equals(hierarchyType.getQualifiedName())) {
+			return hierarchyType;
+		}
+		ITypeBinding superClass= hierarchyType.getSuperclass();
+		if (superClass != null) {
+			ITypeBinding res= findTypeInHierarchy(superClass, fullyQualifiedTypeName);
+			if (res != null) {
+				return res;
+			}
+		}
+		ITypeBinding[] superInterfaces= hierarchyType.getInterfaces();
+		for (int i= 0; i < superInterfaces.length; i++) {
+			ITypeBinding res= findTypeInHierarchy(superInterfaces[i], fullyQualifiedTypeName);
+			if (res != null) {
+				return res;
+			}			
+		}
+		return null;
 	}
 
 }
