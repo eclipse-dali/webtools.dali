@@ -12,6 +12,8 @@ package org.eclipse.jpt.eclipselink.core.internal;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.ResourceModel;
+import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
@@ -25,9 +27,11 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
@@ -44,6 +48,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaTypeConverte
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwnable;
+import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkOrmXml;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaCachingImpl;
@@ -65,12 +70,45 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaPri
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaStructConverterImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaTypeConverterImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingImpl;
-import org.eclipse.jpt.eclipselink.core.resource.elorm.EclipseLinkOrmResourceModel;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlImpl;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResourceModel;
 
-public class EclipseLinkJpaFactoryImpl extends GenericJpaFactory implements EclipseLinkJpaFactory
+public class EclipseLinkJpaFactoryImpl extends GenericJpaFactory 
+	implements EclipseLinkJpaFactory
 {
 	protected EclipseLinkJpaFactoryImpl() {
 		super();
+	}
+	
+	
+	// **************** Resource objects ***************************************
+	
+	@Override
+	public ResourceModel buildResourceModel(JpaProject jpaProject, IFile file, String contentTypeId) {
+		if (JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE.equals(contentTypeId)) {
+			return buildEclipseLinkOrmResourceModel(file);
+		}
+		return super.buildResourceModel(jpaProject, file, contentTypeId);
+	}
+	
+	protected ResourceModel buildEclipseLinkOrmResourceModel(IFile file) {
+		return new EclipseLinkOrmResourceModel(file);
+	}
+	
+	
+	// **************** Context objects ****************************************
+	
+	@Override
+	public XmlContextNode buildContext(JpaContextNode parent, JpaXmlResource resource) {
+		if (resource instanceof EclipseLinkOrmResource) {
+			return buildEclipseLinkOrmXml((MappingFileRef) parent, (EclipseLinkOrmResource) resource);
+		}
+		return super.buildContext(parent, resource);
+	}
+	
+	public EclipseLinkOrmXml buildEclipseLinkOrmXml(MappingFileRef parent, EclipseLinkOrmResource resource) {
+		return new EclipseLinkOrmXmlImpl(parent, resource);
 	}
 
 	@Override
@@ -167,17 +205,4 @@ public class EclipseLinkJpaFactoryImpl extends GenericJpaFactory implements Ecli
 	public JavaConverterHolder buildJavaConverterHolder(JavaTypeMapping parent) {
 		return new EclipseLinkJavaConverterHolder(parent);
 	}
-	
-	@Override
-	public ResourceModel buildResourceModel(JpaProject jpaProject, IFile file, String contentTypeId) {
-		if (JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE.equals(contentTypeId)) {
-			return buildEclipseLinkOrmResourceModel(file);
-		}
-		return super.buildResourceModel(jpaProject, file, contentTypeId);
-	}
-	
-	protected ResourceModel buildEclipseLinkOrmResourceModel(IFile file) {
-		return new EclipseLinkOrmResourceModel(file);
-	}
-
 }

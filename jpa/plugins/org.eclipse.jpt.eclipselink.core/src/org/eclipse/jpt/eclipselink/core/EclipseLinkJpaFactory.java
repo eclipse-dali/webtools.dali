@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
@@ -29,6 +30,8 @@ import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaTypeConverte
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwnable;
+import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkOrmXml;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
 
 /**
  * Use EclipseLinkJpaFactory to create any EclispeLink specific
@@ -45,6 +48,8 @@ import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwnable;
  */
 public interface EclipseLinkJpaFactory extends JpaFactory
 {	
+	EclipseLinkOrmXml buildEclipseLinkOrmXml(MappingFileRef parent, EclipseLinkOrmResource resource);
+	
 	EclipseLinkJavaCaching buildEclipseLinkJavaCaching(JavaTypeMapping parent);
 	
 	EclipseLinkJavaConvert buildEclipseLinkJavaConvert(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa);
