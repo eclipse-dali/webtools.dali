@@ -18,18 +18,18 @@ import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAd
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConversionValueAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.NestableConversionValue;
 import org.eclipse.jpt.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 
 
-public class ConversionValueImpl extends AbstractResourceAnnotation<Attribute> implements ConversionValueAnnotation, NestableConversionValue
+public class ConversionValueImpl extends AbstractResourceAnnotation<Member> implements ConversionValueAnnotation, NestableConversionValue
 {
 	// hold this so we can get the 'dataValue' text range
 	private final DeclarationAnnotationElementAdapter<String> dataValueDeclarationAdapter;
@@ -43,8 +43,8 @@ public class ConversionValueImpl extends AbstractResourceAnnotation<Attribute> i
 	private String dataValue;
 	private String objectValue;
 	
-	public ConversionValueImpl(ObjectTypeConverterAnnotation parent, Attribute attribute, IndexedDeclarationAnnotationAdapter idaa) {
-		super(parent, attribute, idaa, new MemberIndexedAnnotationAdapter(attribute, idaa));
+	public ConversionValueImpl(ObjectTypeConverterAnnotation parent, Member member, IndexedDeclarationAnnotationAdapter idaa) {
+		super(parent, member, idaa, new MemberIndexedAnnotationAdapter(member, idaa));
 		this.dataValueDeclarationAdapter = this.dataValueAdapter(idaa);
 		this.dataValueAdapter = this.buildAdapter(this.dataValueDeclarationAdapter);
 		this.objectValueDeclarationAdapter = this.objectValueAdapter(idaa);
@@ -141,8 +141,8 @@ public class ConversionValueImpl extends AbstractResourceAnnotation<Attribute> i
 
 	// ********** static methods **********	
 	
-	static ConversionValueImpl createConversionValue(ObjectTypeConverterAnnotation parent, Attribute attribute, DeclarationAnnotationAdapter daa, int index) {
-		return new ConversionValueImpl(parent, attribute, buildConversionValueAnnotationAdapter(daa, index));
+	static ConversionValueImpl createConversionValue(ObjectTypeConverterAnnotation parent, Member member, DeclarationAnnotationAdapter daa, int index) {
+		return new ConversionValueImpl(parent, member, buildConversionValueAnnotationAdapter(daa, index));
 	}
 
 	private static IndexedDeclarationAnnotationAdapter buildConversionValueAnnotationAdapter(DeclarationAnnotationAdapter daa, int index) {

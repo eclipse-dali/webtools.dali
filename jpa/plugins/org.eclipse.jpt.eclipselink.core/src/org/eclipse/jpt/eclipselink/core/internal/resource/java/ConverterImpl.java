@@ -18,11 +18,9 @@ import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConve
 import org.eclipse.jpt.core.internal.utility.jdt.StringExpressionConverter;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
@@ -30,7 +28,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 
 
-public class ConverterImpl extends AbstractResourceAnnotation<Attribute> implements ConverterAnnotation
+public class ConverterImpl extends AbstractResourceAnnotation<Member> implements ConverterAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
@@ -44,10 +42,10 @@ public class ConverterImpl extends AbstractResourceAnnotation<Attribute> impleme
 	private String name;
 	private String converterClass;
 	
-	protected ConverterImpl(JavaResourcePersistentAttribute parent, Attribute attribute) {
-		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
-		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, NAME_ADAPTER);
-		this.converterClassAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, CONVERTER_CLASS_ADAPTER);
+	protected ConverterImpl(JavaResourcePersistentMember parent, Member member) {
+		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
+		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, NAME_ADAPTER);
+		this.converterClassAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, CONVERTER_CLASS_ADAPTER);
 	}
 	
 	public void initialize(CompilationUnit astRoot) {
@@ -138,7 +136,7 @@ public class ConverterImpl extends AbstractResourceAnnotation<Attribute> impleme
 		}
 
 		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-			return new ConverterImpl((JavaResourcePersistentAttribute) parent, (Attribute) member);
+			return new ConverterImpl(parent, member);
 		}
 		
 		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {

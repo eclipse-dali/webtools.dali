@@ -17,11 +17,9 @@ import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdap
 import org.eclipse.jpt.core.internal.utility.jdt.StringExpressionConverter;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
@@ -29,7 +27,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.StructConverterAnnotation;
 
 
-public class StructConverterImpl extends AbstractResourceAnnotation<Attribute> implements StructConverterAnnotation
+public class StructConverterImpl extends AbstractResourceAnnotation<Member> implements StructConverterAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
@@ -43,10 +41,10 @@ public class StructConverterImpl extends AbstractResourceAnnotation<Attribute> i
 	private String name;
 	private String converter;
 	
-	protected StructConverterImpl(JavaResourcePersistentAttribute parent, Attribute attribute) {
-		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
-		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, NAME_ADAPTER);
-		this.converterAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, CONVERTER_ADAPTER);
+	protected StructConverterImpl(JavaResourcePersistentMember parent, Member member) {
+		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
+		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, NAME_ADAPTER);
+		this.converterAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, CONVERTER_ADAPTER);
 	}
 	
 	public void initialize(CompilationUnit astRoot) {
@@ -137,7 +135,7 @@ public class StructConverterImpl extends AbstractResourceAnnotation<Attribute> i
 		}
 
 		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-			return new StructConverterImpl((JavaResourcePersistentAttribute) parent, (Attribute) member);
+			return new StructConverterImpl(parent, member);
 		}
 		
 		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
