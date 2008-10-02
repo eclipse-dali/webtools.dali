@@ -25,6 +25,7 @@ import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveTablePane;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -87,6 +88,7 @@ public class ObjectTypeConverterComposite extends FormPane<EclipseLinkObjectType
 			EclipseLinkUiMappingsMessages.ObjectTypeConverterComposite_defaultObjectValueLabel,
 			buildDefaultObjectValueListHolder(),
 			buildDefaultObjectValueHolder(),
+			buildStringConverter(),
 			null
 		);
 
@@ -346,10 +348,18 @@ public class ObjectTypeConverterComposite extends FormPane<EclipseLinkObjectType
 		
 			@Override
 			protected void setValue_(String value) {
-				if (value.length() == 0) {
+				if (value != null && value.length() == 0) {
 					value = null;
 				}
 				this.subject.setDefaultObjectValue(value);
+			}
+		};
+	}
+	
+	protected final StringConverter<String> buildStringConverter() {
+		return new StringConverter<String>() {
+			public String convertToString(String value) {
+				return (value == null) ? "" : value; //$NON-NLS-1$
 			}
 		};
 	}
@@ -388,7 +398,7 @@ public class ObjectTypeConverterComposite extends FormPane<EclipseLinkObjectType
 			}
 			
 			if (value == null) {
-				value = "";
+				value = ""; //$NON-NLS-1$
 			}
 		
 			return value;
