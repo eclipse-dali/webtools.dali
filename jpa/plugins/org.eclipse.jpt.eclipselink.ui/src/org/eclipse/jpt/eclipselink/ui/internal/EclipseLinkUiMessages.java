@@ -22,6 +22,10 @@ public class EclipseLinkUiMessages extends NLS
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, EclipseLinkUiMessages.class);
 	}
+	
+	public static String MappingFileWizard_title;
+	public static String MappingFileWizardPage_title;
+	public static String MappingFileWizardPage_desc;
 
 	public static String Boolean_True;
 	public static String Boolean_False;

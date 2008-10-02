@@ -63,8 +63,12 @@ public class MappingFileWizard extends DataModelWizard
 	@Override
 	protected void doAddPages() {
 		super.doAddPages();
-		page = new MappingFileWizardPage(getDataModel(), "Page_1");
+		page = buildMappingFileWizardPage();
 		addPage(page);
+	}
+	
+	protected MappingFileWizardPage buildMappingFileWizardPage() {
+		return new MappingFileWizardPage(getDataModel(), "Page_1");
 	}
 	
 	@Override

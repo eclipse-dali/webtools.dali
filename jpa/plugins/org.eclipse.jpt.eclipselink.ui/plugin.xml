@@ -9,5 +9,25 @@
             id="org.eclipse.eclipselink.platform">
       </jpaPlatform>
    </extension>
+   
+   
+   <extension
+		point="org.eclipse.ui.newWizards">
+		
+		<category
+			id="org.eclipse.jpt.eclipselink"
+			name="%eclipseLinkWizardCategoryName"
+			parentCategory="org.eclipse.jpt"/>
+		
+		<wizard
+            id="org.eclipse.jpt.eclipselink.ui.wizard.newEclipseLinkMappingFile"
+			name="%newEclipseLinkMappingFileWizardName"
+			icon="platform:/plugin/org.eclipse.jpt.ui/icons/full/etool16/new_jpa_file_wiz.gif"
+			category="org.eclipse.jpt/org.eclipse.jpt.eclipselink"
+			class="org.eclipse.jpt.eclipselink.ui.internal.wizards.EclipseLinkMappingFileWizard">
+			<description>%newEclipseLinkJpaMappingFileWizardDesc</description>
+		</wizard>
+      
+	</extension>
 
 </plugin>
