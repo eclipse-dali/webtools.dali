@@ -49,17 +49,18 @@ public class ExistenceCheckingComposite extends FormPane<EclipseLinkCaching> {
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		Composite subPane = addSubPane(container, 2, 8, 0, 0, 0);
-		
-		
-		addCheckBox(
-			subPane, 
-			EclipseLinkUiMappingsMessages.ExistenceCheckingComposite_label, 
-			buildExistenceCheckingHolder(),
-			null);
-		
-		
-		addExistenceCheckingTypeCombo(subPane);
+
+		addLabeledComposite( 
+            container, 
+            addCheckBox( 
+                 container, 
+                 EclipseLinkUiMappingsMessages.ExistenceCheckingComposite_label, 
+                 buildExistenceCheckingHolder(), 
+                 null 
+            ), 
+            addExistenceCheckingTypeCombo(container).getControl(), 
+            null 
+       );
 	}
 
 	private EnumFormComboViewer<EclipseLinkCaching, ExistenceType> addExistenceCheckingTypeCombo(Composite container) {

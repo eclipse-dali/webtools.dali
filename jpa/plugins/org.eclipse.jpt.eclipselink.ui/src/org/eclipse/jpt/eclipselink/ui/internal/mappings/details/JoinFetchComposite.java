@@ -55,14 +55,17 @@ public class JoinFetchComposite extends FormPane<JoinFetchable> {
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		Composite subPane = addSubPane(container, 2, 8, 0, 0, 0);
-		addCheckBox(
-			subPane, 
-			EclipseLinkUiMappingsMessages.JoinFetchComposite_label, 
-			buildJoinFetchHolder(),
-			null);
-		
-		addJoinFetchTypeCombo(subPane);
+		addLabeledComposite( 
+            container, 
+            addCheckBox( 
+                 container, 
+                 EclipseLinkUiMappingsMessages.JoinFetchComposite_label, 
+                 buildJoinFetchHolder(), 
+                 null 
+            ), 
+            addJoinFetchTypeCombo(container).getControl(), 
+            null 
+       );
 	}
 	
 
