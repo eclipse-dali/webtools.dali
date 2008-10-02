@@ -152,7 +152,7 @@ public class MappingFileWizardPage extends DataModelWizardPage
 		data = new GridData();
 		filePathLabel.setLayoutData(data);
 		
-		filePathText = new Text(composite, SWT.BORDER | SWT.READ_ONLY);
+		filePathText = new Text(composite, SWT.BORDER);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.widthHint = 300;
 		data.horizontalSpan = 1;
