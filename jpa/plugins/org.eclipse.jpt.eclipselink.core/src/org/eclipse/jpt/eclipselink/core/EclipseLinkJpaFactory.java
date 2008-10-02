@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.core;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -25,6 +26,9 @@ import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperc
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaStructConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwnable;
 
 /**
  * Use EclipseLinkJpaFactory to create any EclispeLink specific
@@ -54,6 +58,13 @@ public interface EclipseLinkJpaFactory extends JpaFactory
 	EclipseLinkJavaStructConverter buildEclipseLinkJavaStructConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm);
 	
 	EclipseLinkJavaConversionValue buildJavaConversionValue(EclipseLinkJavaObjectTypeConverter parent);
+	
+	JavaJoinFetchable buildJavaJoinFetchable(JavaPersistentAttribute parent);
+	
+	JavaPrivateOwnable buildJavaPrivateOwnable(JavaPersistentAttribute parent);
+	
+	JavaConverterHolder buildJavaConverterHolder(JavaTypeMapping parent);
+	
 	
 	//********* covariant overrides ***********
 	

@@ -11,20 +11,22 @@ package org.eclipse.jpt.ui;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.BasicMapping;
-import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
-import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
+import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -66,15 +68,28 @@ public interface JpaUiFactory
 		WidgetFactory widgetFactory);
 
 	/**
-	 * Creates a new <code>JpaComposite</code> used to edit an <code>Embeddable</code>.
+	 * Creates a new <code>JpaComposite</code> used to edit an <code>JavaEmbeddable</code>.
 	 *
-	 * @param subjectHolder The holder of the basic mapping
+	 * @param subjectHolder The holder of the embeddable
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite createEmbeddableComposite(
-		PropertyValueModel<Embeddable> subjectHolder,
+	JpaComposite createJavaEmbeddableComposite(
+		PropertyValueModel<JavaEmbeddable> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory);
+
+	/**
+	 * Creates a new <code>JpaComposite</code> used to edit an <code>OrmEmbeddable</code>.
+	 *
+	 * @param subjectHolder The holder of the embeddable
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create the widgets
+	 * @return A new <code>JpaComposite</code>
+	 */
+	JpaComposite createOrmEmbeddableComposite(
+		PropertyValueModel<OrmEmbeddable> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
 
@@ -170,15 +185,28 @@ public interface JpaUiFactory
 		WidgetFactory widgetFactory);
 
 	/**
-	 * Creates a new <code>JpaComposite</code> used to edit a <code>MappedSuperclass</code>.
+	 * Creates a new <code>JpaComposite</code> used to edit a <code>JavaMappedSuperclass</code>.
 	 *
 	 * @param subjectHolder The holder of the mapped superclass
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite createMappedSuperclassComposite(
-		PropertyValueModel<MappedSuperclass> subjectHolder,
+	JpaComposite createJavaMappedSuperclassComposite(
+		PropertyValueModel<JavaMappedSuperclass> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory);
+
+	/**
+	 * Creates a new <code>JpaComposite</code> used to edit a <code>OrmMappedSuperclass</code>.
+	 *
+	 * @param subjectHolder The holder of the mapped superclass
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create the widgets
+	 * @return A new <code>JpaComposite</code>
+	 */
+	JpaComposite createOrmMappedSuperclassComposite(
+		PropertyValueModel<OrmMappedSuperclass> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
 

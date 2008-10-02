@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CachingComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -28,13 +29,13 @@ import org.eclipse.swt.widgets.Composite;
  * @see EclipseLinkJavaEntity
  * @see EclipselinkJpaUiFactory - The factory creating this pane
  *
- * @version 2.0
+ * @version 2.1
  * @since 1.0
  */
 public class EclipseLinkJavaEntityComposite extends AbstractEntityComposite<JavaEntity>
 {
 	/**
-	 * Creates a new <code>JavaEntityComposite</code>.
+	 * Creates a new <code>EclipseLinkJavaEntityComposite</code>.
 	 *
 	 * @param subjectHolder The holder of the subject <code>JavaEntity</code>
 	 * @param parent The parent container
@@ -56,6 +57,7 @@ public class EclipseLinkJavaEntityComposite extends AbstractEntityComposite<Java
 		initializeInheritancePane(container);
 		initializeAttributeOverridesPane(container);
 		initializeGeneratorsPane(container);
+		initializeConvertersPane(container);
 		initializeSecondaryTablesPane(container);
 	}
 	
@@ -81,6 +83,25 @@ public class EclipseLinkJavaEntityComposite extends AbstractEntityComposite<Java
 		
 	}
 
+	protected void initializeConvertersPane(Composite container) {
+
+		container = addCollapsableSection(
+			container,
+			EclipseLinkUiMappingsMessages.EclipseLinkJavaEntityComposite_converters
+		);
+
+		new ConvertersComposite(this, buildConverterHolderValueModel(), container);
+	}
+
+	protected PropertyValueModel<JavaConverterHolder> buildConverterHolderValueModel() {
+		return new PropertyAspectAdapter<JavaEntity, JavaConverterHolder>(getSubjectHolder()) {
+			@Override
+			protected JavaConverterHolder buildValue_() {
+				return ((EclipseLinkJavaEntity) this.subject).getConverterHolder();
+			}	
+		};
+	}
+	
 	@Override
 	protected void addSecondaryTablesComposite(Composite container) {
 		new JavaSecondaryTablesComposite(this, container);

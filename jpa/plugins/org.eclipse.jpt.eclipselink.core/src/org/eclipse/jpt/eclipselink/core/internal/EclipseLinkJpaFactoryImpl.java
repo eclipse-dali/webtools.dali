@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
+import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
@@ -40,20 +41,27 @@ import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperc
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaStructConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwnable;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaCachingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConversionValueImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConvertImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConverterHolder;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConverterImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEmbeddableImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEntityImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaIdMappingImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaJoinFetchable;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaManyToManyMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaManyToOneMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaMappedSuperclassImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaObjectTypeConverterImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaPrivateOwnable;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaStructConverterImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaTypeConverterImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingImpl;
@@ -73,6 +81,11 @@ public class EclipseLinkJpaFactoryImpl extends GenericJpaFactory implements Ecli
 	@Override
 	public JavaBasicMapping buildJavaBasicMapping(JavaPersistentAttribute parent) {
 		return new EclipseLinkJavaBasicMappingImpl(parent);
+	}
+	
+	@Override
+	public JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent) {
+		return new EclipseLinkJavaEmbeddableImpl(parent);
 	}
 	
 	@Override
@@ -141,6 +154,18 @@ public class EclipseLinkJpaFactoryImpl extends GenericJpaFactory implements Ecli
 	
 	public EclipseLinkJavaConversionValue buildJavaConversionValue(EclipseLinkJavaObjectTypeConverter parent) {
 		return new EclipseLinkJavaConversionValueImpl(parent);
+	}
+	
+	public JavaJoinFetchable buildJavaJoinFetchable(JavaPersistentAttribute parent) {
+		return new EclipseLinkJavaJoinFetchable(parent);
+	}
+	
+	public JavaPrivateOwnable buildJavaPrivateOwnable(JavaPersistentAttribute parent) {
+		return new EclipseLinkJavaPrivateOwnable(parent);
+	}
+	
+	public JavaConverterHolder buildJavaConverterHolder(JavaTypeMapping parent) {
+		return new EclipseLinkJavaConverterHolder(parent);
 	}
 	
 	@Override

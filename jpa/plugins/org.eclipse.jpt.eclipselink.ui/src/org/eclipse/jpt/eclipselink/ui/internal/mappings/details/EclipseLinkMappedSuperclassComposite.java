@@ -15,7 +15,6 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.IdClassComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -30,7 +29,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class EclipseLinkMappedSuperclassComposite extends FormPane<MappedSuperclass>
+public abstract class EclipseLinkMappedSuperclassComposite<T extends MappedSuperclass> extends FormPane<T>
                                        implements JpaComposite
 {
 	/**
@@ -40,21 +39,12 @@ public class EclipseLinkMappedSuperclassComposite extends FormPane<MappedSupercl
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EclipseLinkMappedSuperclassComposite(PropertyValueModel<MappedSuperclass> subjectHolder,
+	public EclipseLinkMappedSuperclassComposite(PropertyValueModel<? extends T> subjectHolder,
 	                                 Composite parent,
 	                                 WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
-
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		// Primary Key Class widgets
-		new IdClassComposite(this, container);
-		initializeCachingPane(container);
-	}
-	
 	
 	protected void initializeCachingPane(Composite container) {
 
@@ -66,8 +56,8 @@ public class EclipseLinkMappedSuperclassComposite extends FormPane<MappedSupercl
 		new CachingComposite(this, buildCachingHolder(), container);
 	}
 
-	private PropertyAspectAdapter<MappedSuperclass, EclipseLinkCaching> buildCachingHolder() {
-		return new PropertyAspectAdapter<MappedSuperclass, EclipseLinkCaching>(
+	private PropertyAspectAdapter<T, EclipseLinkCaching> buildCachingHolder() {
+		return new PropertyAspectAdapter<T, EclipseLinkCaching>(
 			getSubjectHolder())
 		{
 			@Override

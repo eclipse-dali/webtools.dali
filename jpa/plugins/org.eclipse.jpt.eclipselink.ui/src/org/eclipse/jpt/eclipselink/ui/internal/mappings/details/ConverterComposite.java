@@ -95,7 +95,7 @@ public class ConverterComposite extends FormPane<EclipseLinkConverter>
 				return new PropertyAspectAdapter<EclipseLinkConverter, String>(getSubjectHolder(), EclipseLinkConverter.CONVERTER_CLASS_PROPERTY) {
 					@Override
 					protected String buildValue_() {
-						return subject.getConverterClass();
+						return this.subject.getConverterClass();
 					}
 
 					@Override
@@ -105,7 +105,7 @@ public class ConverterComposite extends FormPane<EclipseLinkConverter>
 							value = null;
 						}
 
-						subject.setConverterClass(value);
+						this.subject.setConverterClass(value);
 					}
 				};
 			}

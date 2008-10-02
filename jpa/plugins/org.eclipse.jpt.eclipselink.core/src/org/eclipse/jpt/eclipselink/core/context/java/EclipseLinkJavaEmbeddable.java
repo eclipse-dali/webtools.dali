@@ -9,10 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context.java;
 
-import java.util.Iterator;
-import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
+import org.eclipse.jpt.core.context.java.JavaEmbeddable;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEmbeddable;
 
 /**
  * 
@@ -26,15 +24,8 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJavaMappedSuperclass extends EclipseLinkMappedSuperclass, JavaMappedSuperclass
+public interface EclipseLinkJavaEmbeddable extends EclipseLinkEmbeddable, JavaEmbeddable
 {
 	JavaConverterHolder getConverterHolder();
 
-	EclipseLinkJavaCaching getCaching();
-
-
-	//********* covariant overrides ***********
-	
-	Iterator<JavaPersistentAttribute> overridableAttributes();
-	Iterator<JavaPersistentAttribute> overridableAssociations();
 }

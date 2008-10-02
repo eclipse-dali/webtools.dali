@@ -7,12 +7,9 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.context.java;
+package org.eclipse.jpt.eclipselink.core.context;
 
-import java.util.Iterator;
-import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
+import org.eclipse.jpt.core.context.Embeddable;
 
 /**
  * 
@@ -26,15 +23,6 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJavaMappedSuperclass extends EclipseLinkMappedSuperclass, JavaMappedSuperclass
+public interface EclipseLinkEmbeddable extends Embeddable
 {
-	JavaConverterHolder getConverterHolder();
-
-	EclipseLinkJavaCaching getCaching();
-
-
-	//********* covariant overrides ***********
-	
-	Iterator<JavaPersistentAttribute> overridableAttributes();
-	Iterator<JavaPersistentAttribute> overridableAssociations();
 }

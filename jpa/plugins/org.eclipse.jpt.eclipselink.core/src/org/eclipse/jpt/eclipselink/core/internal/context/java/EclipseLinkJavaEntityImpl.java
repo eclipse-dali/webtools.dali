@@ -17,38 +17,46 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements EclipseLinkJavaEntity
 {
-	protected EclipseLinkJavaCaching eclipseLinkCaching;
+	protected final EclipseLinkJavaCaching eclipseLinkCaching;
+	
+	protected final JavaConverterHolder converterHolder;
 	
 	public EclipseLinkJavaEntityImpl(JavaPersistentType parent) {
 		super(parent);
 		this.eclipseLinkCaching = getJpaFactory().buildEclipseLinkJavaCaching(this);
-	}
-
-	
-	public EclipseLinkJavaCaching getCaching() {
-		return this.eclipseLinkCaching;
+		this.converterHolder = getJpaFactory().buildJavaConverterHolder(this);
 	}
 	
 	@Override
 	protected EclipseLinkJpaFactory getJpaFactory() {
 		return (EclipseLinkJpaFactory) super.getJpaFactory();
+	}	
+	
+	public EclipseLinkJavaCaching getCaching() {
+		return this.eclipseLinkCaching;
 	}
 	
-	
-	@Override
-	public void update(JavaResourcePersistentType resourcePersistentType) {
-		super.update(resourcePersistentType);
-		this.eclipseLinkCaching.update(resourcePersistentType);
+	public JavaConverterHolder getConverterHolder() {
+		return this.converterHolder;
 	}
 	
 	@Override
-	public void initialize(JavaResourcePersistentType resourcePersistentType) {
-		super.initialize(resourcePersistentType);
-		this.eclipseLinkCaching.initialize(resourcePersistentType);
+	public void initialize(JavaResourcePersistentType jrpt) {
+		super.initialize(jrpt);
+		this.eclipseLinkCaching.initialize(jrpt);
+		this.converterHolder.initialize(jrpt);
+	}
+	
+	@Override
+	public void update(JavaResourcePersistentType jrpt) {
+		super.update(jrpt);
+		this.eclipseLinkCaching.update(jrpt);
+		this.converterHolder.update(jrpt);
 	}
 	
 	//********** Validation ********************************************
@@ -57,5 +65,6 @@ public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements Ecli
 	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
 		super.validate(messages, astRoot);
 		this.eclipseLinkCaching.validate(messages, astRoot);
+		this.converterHolder.validate(messages, astRoot);
 	}
 }

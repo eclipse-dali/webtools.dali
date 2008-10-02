@@ -111,7 +111,7 @@ public class SpinnerModelAdapterTest {
 
 		assertEquals(
 			"The model's value was somehow changed",
-			value,
+			Integer.valueOf(value),
 			model.getValue()
 		);
 	}
@@ -224,7 +224,7 @@ public class SpinnerModelAdapterTest {
 
 		assertEquals(
 			"The number holder's value should be " + value,
-			value,
+			Integer.valueOf(value),
 			numberHolder.getValue()
 		);
 
@@ -281,7 +281,7 @@ public class SpinnerModelAdapterTest {
 
 		assertEquals(
 			"The model's value was somehow changed",
-			value,
+			Integer.valueOf(value),
 			model.getValue()
 		);
 
@@ -297,7 +297,7 @@ public class SpinnerModelAdapterTest {
 
 		assertEquals(
 			"The model's value was supposed to be updated",
-			value,
+			Integer.valueOf(value),
 			model.getValue()
 		);
 

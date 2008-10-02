@@ -35,7 +35,11 @@ public class EclipseLinkJpaAnnotationProvider
 	protected void addTypeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
 		super.addTypeAnnotationDefinitionsTo(definitions);
 		definitions.add(CacheAnnotationDefinition.instance());
+		definitions.add(ConverterAnnotationDefinition.instance());
 		definitions.add(ExistenceCheckingAnnotationDefinition.instance());
+		definitions.add(ObjectTypeConverterAnnotationDefinition.instance());
+		definitions.add(StructConverterAnnotationDefinition.instance());		
+		definitions.add(TypeConverterAnnotationDefinition.instance());		
 	}
 
 	@Override
