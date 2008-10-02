@@ -13,8 +13,8 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.resource.orm;
 import junit.framework.TestCase;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
-import org.eclipse.jpt.eclipselink.core.internal.resource.elorm.EclipseLinkOrmResourceModelProvider;
-import org.eclipse.jpt.eclipselink.core.resource.elorm.EclipseLinkOrmResource;
+import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmResourceModelProvider;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
 
 public class EclipseLinkOrmResourceModelTests extends TestCase
 {
