@@ -11,12 +11,13 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.GeneratedValue;
 import org.eclipse.jpt.core.context.GenerationType;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
-import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.utility.TextRange;
 
-public class GenericOrmGeneratedValue extends AbstractOrmJpaContextNode implements OrmGeneratedValue
+public class GenericOrmGeneratedValue extends AbstractXmlContextNode implements OrmGeneratedValue
 {
 
 	protected GenerationType specifiedStrategy;
@@ -26,14 +27,14 @@ public class GenericOrmGeneratedValue extends AbstractOrmJpaContextNode implemen
 
 	protected XmlGeneratedValue resourceGeneratedValue;
 	
-	public GenericOrmGeneratedValue(OrmJpaContextNode parent, XmlGeneratedValue resourceGeneratedValue) {
+	public GenericOrmGeneratedValue(XmlContextNode parent, XmlGeneratedValue resourceGeneratedValue) {
 		super(parent);
 		this.initialize(resourceGeneratedValue);
 	}
 	
 	@Override
-	public OrmJpaContextNode getParent() {
-		return (OrmJpaContextNode) super.getParent();
+	public XmlContextNode getParent() {
+		return (XmlContextNode) super.getParent();
 	}
 	
 	public GenerationType getStrategy() {

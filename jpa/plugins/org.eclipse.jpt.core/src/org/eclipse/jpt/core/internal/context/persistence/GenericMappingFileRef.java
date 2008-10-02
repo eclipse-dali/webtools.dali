@@ -10,12 +10,16 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.persistence;
 
+import java.io.IOException;
 import java.util.List;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
@@ -23,13 +27,18 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.resource.JpaResourceModelProvider;
+import org.eclipse.jpt.core.resource.JpaResourceModelProviderManager;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode 
+public class GenericMappingFileRef extends AbstractXmlContextNode 
 	implements MappingFileRef
 {
 	//this is null for the implied mappingFileRef case
@@ -37,7 +46,7 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 	
 	protected String fileName;
 	
-	protected OrmXml ormXml;
+	protected MappingFile mappingFile;
 	
 	public GenericMappingFileRef(PersistenceUnit parent, XmlMappingFileRef mappingFileRef) {
 		super(parent);
@@ -71,14 +80,14 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 		firePropertyChanged(FILE_NAME_PROPERTY, oldFileName, newFileName);
 	}
 	
-	public OrmXml getOrmXml() {
-		return this.ormXml;
+	public MappingFile getMappingFile() {
+		return this.mappingFile;
 	}
 	
-	protected void setOrmXml(OrmXml newOrmXml) {
-		OrmXml oldOrmXml = this.ormXml;
-		this.ormXml = newOrmXml;
-		firePropertyChanged(ORM_XML_PROPERTY, oldOrmXml, newOrmXml);
+	protected void setMappingFile(MappingFile newMappingFile) {
+		MappingFile oldMappingFile = this.mappingFile;
+		this.mappingFile = newMappingFile;
+		firePropertyChanged(MAPPING_FILE_PROPERTY, oldMappingFile, newMappingFile);
 	}
 	
 	
@@ -106,7 +115,7 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 			OrmResource ormResource = modelProvider.getResource();
 			
 			if (ormResource != null && ormResource.exists()) {
-				ormXml = buildOrmXml(ormResource);
+				mappingFile = buildMappingFile(ormResource);
 			}
 		}
 	}
@@ -114,7 +123,7 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 	public void update(XmlMappingFileRef mappingFileRef) {
 		xmlMappingFileRef = mappingFileRef;
 		updateFileName();
-		updateOrmXml();
+		updateMappingFile();
 	}
 	
 	protected void updateFileName() {
@@ -126,52 +135,68 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 		}
 	}
 	
-	protected void updateOrmXml() {
+	protected void updateMappingFile() {
 		if (fileName != null) {
 			IProject project = getJpaProject().getProject();
-			OrmResourceModelProvider modelProvider =
-				OrmResourceModelProvider.getModelProvider(project, fileName);
-			OrmResource ormResource = modelProvider.getResource();
-			if (ormResource != null && ormResource.exists()) {
-				if (ormXml != null) {
-					ormXml.update(ormResource);
+			IVirtualFile vFile = ComponentCore.createFile(project, new Path(fileName));
+			IFile realFile = vFile.getUnderlyingFile();
+			
+			if (realFile != null) {
+				JpaXmlResource resource = null;
+				try {
+					JpaResourceModelProvider modelProvider =
+						JpaResourceModelProviderManager.getModelProvider(realFile);
+					if (modelProvider != null) {
+						resource = modelProvider.getResource();
+					}
 				}
-				else {
-					setOrmXml(buildOrmXml(ormResource));
+				catch (IOException ioe) {/* resource is null */}
+				catch (CoreException ce) {/* resource is null */}
+				
+				if (resource != null) {
+					if (getMappingFile() != null && ! resource.equals(getMappingFile().getXmlResource())) {
+						getMappingFile().dispose();
+					}
+					if (getMappingFile() == null) {
+						setMappingFile(buildMappingFile(resource));
+					}
+					else {
+						getMappingFile().update(resource);
+					}
+					return;
 				}
-			}
-			else {
-				if (getOrmXml() != null) {
-					getOrmXml().dispose();
-				}
-				setOrmXml(null);
 			}
 		}
-		else {
-			if (getOrmXml() != null) {
-				getOrmXml().dispose();
-			}
-			setOrmXml(null);
+		
+		if (getMappingFile() != null) {
+			getMappingFile().dispose();
+			setMappingFile(null);
 		}
 	}
 	
-	protected OrmXml buildOrmXml(OrmResource ormResource) {
-		return getJpaFactory().buildOrmXml(this, ormResource);
+	protected MappingFile buildMappingFile(JpaXmlResource resource) {
+		try {
+			return (MappingFile) getJpaFactory().buildContext(this, resource);
+		}
+		catch (ClassCastException cce) {
+			// resource does not correspond to a mapping file
+			return null;
+		}
 	}
 	
 	
 	// *************************************************************************
 	
 	public PersistenceUnitDefaults getPersistenceUnitDefaults() {
-		if (getOrmXml() != null) {
-			return getOrmXml().getPersistenceUnitDefaults();
+		if (getMappingFile() != null) {
+			return getMappingFile().getPersistenceUnitDefaults();
 		}
 		return null;
 	}
 	
 	public OrmPersistentType getPersistentType(String fullyQualifiedTypeName) {
-		if (getOrmXml() != null) {
-			return getOrmXml().getPersistentType(fullyQualifiedTypeName);
+		if (getMappingFile() != null) {
+			return getMappingFile().getPersistentType(fullyQualifiedTypeName);
 		}
 		return null;
 	}
@@ -208,8 +233,8 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 	}
 
 	public void dispose() {
-		if (this.getOrmXml() != null) {
-			this.getOrmXml().dispose();
+		if (this.getMappingFile() != null) {
+			this.getMappingFile().dispose();
 		}
 	}
 
@@ -232,7 +257,7 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 			return;
 		}
 
-		if (this.ormXml == null) {
+		if (this.mappingFile == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -245,7 +270,7 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 			return;
 		}
 
-		if (this.ormXml.getEntityMappings() == null) {
+		if (this.mappingFile.getEntityMappings() == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -257,7 +282,7 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 			);
 		}
 
-		this.ormXml.validate(messages);
+		this.mappingFile.validate(messages);
 	}
 
 }

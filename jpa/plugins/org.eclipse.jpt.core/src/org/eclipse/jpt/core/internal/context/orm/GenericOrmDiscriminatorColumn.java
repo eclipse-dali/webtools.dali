@@ -11,8 +11,8 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
-import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlDiscriminatorColumn;
@@ -30,7 +30,7 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 
 	protected XmlEntity entity;
 	
-	public GenericOrmDiscriminatorColumn(OrmJpaContextNode parent, OrmNamedColumn.Owner owner) {
+	public GenericOrmDiscriminatorColumn(XmlContextNode parent, OrmNamedColumn.Owner owner) {
 		super(parent, owner);
 	}
 

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 
 /**
@@ -20,7 +21,7 @@ import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface PersistenceUnitMetadata extends OrmJpaContextNode
+public interface PersistenceUnitMetadata extends XmlContextNode
 {
 	boolean isXmlMappingMetadataComplete();
 	void setXmlMappingMetadataComplete(boolean value);

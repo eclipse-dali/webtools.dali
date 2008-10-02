@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 
@@ -25,7 +25,7 @@ public class GenericOrmSequenceGenerator
 	protected String defaultSequenceName;
 
 
-	public GenericOrmSequenceGenerator(OrmJpaContextNode parent, XmlSequenceGenerator resourceSequenceGenerator) {
+	public GenericOrmSequenceGenerator(XmlContextNode parent, XmlSequenceGenerator resourceSequenceGenerator) {
 		super(parent);
 		this.initialize(resourceSequenceGenerator);
 	}

@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.Query;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -22,7 +23,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmQuery extends Query, OrmJpaContextNode
+public interface OrmQuery extends Query, XmlContextNode
 {
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmQueryHint> hints();

@@ -10,15 +10,16 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.NamedColumn;
-import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlNamedColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
 
 
-public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends AbstractOrmJpaContextNode
+public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends AbstractXmlContextNode
 	implements OrmNamedColumn
 {
 	protected Owner owner;
@@ -29,14 +30,14 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 
 	protected String columnDefinition;
 
-	protected AbstractOrmNamedColumn(OrmJpaContextNode parent, Owner owner) {
+	protected AbstractOrmNamedColumn(XmlContextNode parent, Owner owner) {
 		super(parent);
 		this.owner = owner;
 	}
 
 	@Override
-	public OrmJpaContextNode getParent() {
-		return (OrmJpaContextNode) super.getParent();
+	public XmlContextNode getParent() {
+		return (XmlContextNode) super.getParent();
 	}
 	
 	public void initializeFrom(NamedColumn oldColumn) {

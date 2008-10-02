@@ -130,7 +130,7 @@ public class JpaResourceModelProviderRegistry
 	public JpaResourceModelProviderFactory getResourceModelProviderFactory(String fileContentType) {
 		IConfigurationElement configElement = configElements.get(fileContentType);
 		if (configElement == null) {
-			throw new IllegalArgumentException(fileContentType);
+			return null;
 		}
 		JpaResourceModelProviderFactory factory;
 		try {

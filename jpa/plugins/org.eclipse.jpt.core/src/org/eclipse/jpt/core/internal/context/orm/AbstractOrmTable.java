@@ -15,8 +15,9 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.UniqueConstraint;
-import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlBaseTable;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
@@ -34,7 +35,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
  * 
  */
 public abstract class AbstractOrmTable
-	extends AbstractOrmJpaContextNode
+	extends AbstractXmlContextNode
 	implements Table, UniqueConstraint.Owner
 {
 	protected String specifiedName;
@@ -51,7 +52,7 @@ public abstract class AbstractOrmTable
 
 	// ********** constructor **********
 
-	protected AbstractOrmTable(OrmJpaContextNode parent) {
+	protected AbstractOrmTable(XmlContextNode parent) {
 		super(parent);
 		this.uniqueConstraints = new ArrayList<OrmUniqueConstraint>();
 	}
@@ -448,8 +449,8 @@ public abstract class AbstractOrmTable
 	 * covariant override
 	 */
 	@Override
-	public OrmJpaContextNode getParent() {
-		return (OrmJpaContextNode) super.getParent();
+	public XmlContextNode getParent() {
+		return (XmlContextNode) super.getParent();
 	}
 
 	@Override

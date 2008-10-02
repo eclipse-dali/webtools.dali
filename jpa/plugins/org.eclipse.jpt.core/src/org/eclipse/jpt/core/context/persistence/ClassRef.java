@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context.persistence;
 
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 
@@ -22,7 +23,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ClassRef extends PersistenceJpaContextNode, JpaStructureNode
+public interface ClassRef extends XmlContextNode, JpaStructureNode
 {
 	/**
 	 * Return true if the IClassRef matches the fullyQualfiedTypeName

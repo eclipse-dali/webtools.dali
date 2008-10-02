@@ -14,10 +14,11 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.QueryHint;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaQuery;
-import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryHint;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlQuery;
 import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
@@ -25,7 +26,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 
-public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJpaContextNode 
+public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractXmlContextNode 
 	implements OrmQuery
 {
 
@@ -37,7 +38,7 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 
 	protected E resourceQuery;
 	
-	protected AbstractOrmQuery(OrmJpaContextNode parent, E resourceQuery) {
+	protected AbstractOrmQuery(XmlContextNode parent, E resourceQuery) {
 		super(parent);
 		this.hints = new ArrayList<OrmQueryHint>();
 		this.initialize(resourceQuery);

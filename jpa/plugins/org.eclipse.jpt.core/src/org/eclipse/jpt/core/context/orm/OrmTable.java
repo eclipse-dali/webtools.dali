@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 
 /**
@@ -22,7 +23,7 @@ import org.eclipse.jpt.core.resource.orm.XmlEntity;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmTable extends Table, OrmJpaContextNode
+public interface OrmTable extends Table, XmlContextNode
 {
 	void initialize(XmlEntity resourceEntity);
 

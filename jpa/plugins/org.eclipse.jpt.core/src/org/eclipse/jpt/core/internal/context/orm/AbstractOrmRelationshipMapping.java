@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;

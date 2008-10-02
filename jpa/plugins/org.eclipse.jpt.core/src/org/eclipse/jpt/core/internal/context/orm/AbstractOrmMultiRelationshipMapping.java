@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;

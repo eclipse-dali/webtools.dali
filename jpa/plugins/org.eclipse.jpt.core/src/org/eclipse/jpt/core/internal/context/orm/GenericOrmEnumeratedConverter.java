@@ -14,11 +14,12 @@ import org.eclipse.jpt.core.context.EnumType;
 import org.eclipse.jpt.core.context.EnumeratedConverter;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
-import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
+import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 
-public class GenericOrmEnumeratedConverter extends AbstractOrmJpaContextNode
+public class GenericOrmEnumeratedConverter extends AbstractXmlContextNode
 	implements EnumeratedConverter, OrmConverter
 {
 	private EnumType specifiedEnumType;

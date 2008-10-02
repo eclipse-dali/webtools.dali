@@ -33,7 +33,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * persistence resource model object XmlJavaClassRef.
  * XmlJavaClassRef corresponds to the class tag in the persistence.xml
  */
-public class GenericClassRef extends AbstractPersistenceJpaContextNode 
+public class GenericClassRef extends AbstractXmlContextNode 
 	implements ClassRef
 {
 	//this is null for the implied classRef case

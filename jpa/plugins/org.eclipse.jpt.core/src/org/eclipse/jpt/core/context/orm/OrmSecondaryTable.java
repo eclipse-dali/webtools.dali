@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.SecondaryTable;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
 
 /**
@@ -22,7 +23,7 @@ import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmSecondaryTable extends SecondaryTable, OrmJpaContextNode
+public interface OrmSecondaryTable extends SecondaryTable, XmlContextNode
 {
 
 	/**

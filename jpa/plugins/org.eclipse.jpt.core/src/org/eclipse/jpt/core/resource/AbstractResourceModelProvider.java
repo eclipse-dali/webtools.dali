@@ -106,10 +106,6 @@ public abstract class AbstractResourceModelProvider
 				this.resource = 
 					(JpaXmlResource)((FlexibleProjectResourceSet) getResourceSet()).createResource(fileUri, resourceFactory);
 			}
-			
-			if (this.resource != null) {
-				this.resource.eAdapters().add(this.resourceAdapter);
-			}
 		}
 		return this.resource;
 	}
@@ -173,11 +169,29 @@ public abstract class AbstractResourceModelProvider
 	}
 
 	public void addListener(JpaResourceModelProviderListener listener) {
+		if (!hasListeners()) {
+			engageResource();
+		}
 		listeners.add(listener);
 	}
 	
 	public void removeListener(JpaResourceModelProviderListener listener) {
 		listeners.remove(listener);
+		if (! hasListeners()) {
+			disengageResource();
+		}
+	}
+	
+	private void engageResource() {
+		if (this.resource != null) {
+			this.resource.eAdapters().add(this.resourceAdapter);
+		}
+ 	}
+	
+	private void disengageResource() {
+		if (this.resource != null) {
+			this.resource.eAdapters().remove(this.resourceAdapter);
+		}
 	}
 	
 	public boolean hasListeners() {

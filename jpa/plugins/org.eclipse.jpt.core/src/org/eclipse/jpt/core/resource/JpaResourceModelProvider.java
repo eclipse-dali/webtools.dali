@@ -11,9 +11,12 @@
 package org.eclipse.jpt.core.resource;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 
 public interface JpaResourceModelProvider
 {
+	JpaXmlResource getResource();
+	
 	IStatus validateEdit(Object context);
 	
 	void modify(Runnable runnable);

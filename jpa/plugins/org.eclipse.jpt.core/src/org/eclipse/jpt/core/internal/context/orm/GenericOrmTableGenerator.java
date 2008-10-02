@@ -13,9 +13,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.UniqueConstraint;
-import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -58,7 +57,7 @@ public class GenericOrmTableGenerator
 
 	// ********** constructor **********
 
-	public GenericOrmTableGenerator(OrmJpaContextNode parent, XmlTableGenerator resourceTableGenerator) {
+	public GenericOrmTableGenerator(XmlContextNode parent, XmlTableGenerator resourceTableGenerator) {
 		super(parent);
 		this.uniqueConstraints = new ArrayList<OrmUniqueConstraint>();
 		this.initialize(resourceTableGenerator);

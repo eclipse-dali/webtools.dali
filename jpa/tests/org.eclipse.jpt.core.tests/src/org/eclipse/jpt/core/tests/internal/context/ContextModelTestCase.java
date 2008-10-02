@@ -116,7 +116,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	protected EntityMappings entityMappings() {
-		return persistenceUnit().mappingFileRefs().next().getOrmXml().getEntityMappings();
+		return persistenceUnit().mappingFileRefs().next().getMappingFile().getEntityMappings();
 	}
 	
 	protected XmlPersistenceUnit xmlPersistenceUnit() {

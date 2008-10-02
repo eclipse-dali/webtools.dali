@@ -28,7 +28,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericPersistence extends AbstractPersistenceJpaContextNode
+public class GenericPersistence extends AbstractXmlContextNode
 	implements Persistence
 {	
 	protected XmlPersistence xmlPersistence;

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.NamedNativeQuery;
-import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
 
@@ -24,7 +24,7 @@ public class GenericOrmNamedNativeQuery extends AbstractOrmQuery<XmlNamedNativeQ
 	protected String resultSetMapping;
 
 
-	public GenericOrmNamedNativeQuery(OrmJpaContextNode parent, XmlNamedNativeQuery resourceQuery) {
+	public GenericOrmNamedNativeQuery(XmlContextNode parent, XmlNamedNativeQuery resourceQuery) {
 		super(parent, resourceQuery);
 	}
 	

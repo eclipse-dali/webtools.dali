@@ -40,7 +40,7 @@ public class OrmXmlTests extends ContextModelTestCase
 	}
 	
 	protected OrmXml ormXml() {
-		return persistenceUnit().mappingFileRefs().next().getOrmXml();
+		return (OrmXml) persistenceUnit().mappingFileRefs().next().getMappingFile();
 	}
 	
 	public void testUpdateAddEntityMappings() throws Exception {
@@ -48,12 +48,13 @@ public class OrmXmlTests extends ContextModelTestCase
 		ormResource.getContents().clear();
 		ormResource.save(null);
 		
-		assertNull(ormXml().getEntityMappings());
+		// removing root node now results in reducing content type to simple xml
+		assertNull(ormXml());
 		
 		ormResource.getContents().add(OrmFactory.eINSTANCE.createXmlEntityMappings());
+		ormResource.save(null);
 		
 		assertNotNull(ormXml().getEntityMappings());
-		
 	}
 	
 	public void testModifyAddEntityMappings() {

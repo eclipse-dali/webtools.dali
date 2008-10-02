@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.context.orm;
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
@@ -26,7 +27,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmTypeMapping extends TypeMapping, OrmJpaContextNode
+public interface OrmTypeMapping extends TypeMapping, XmlContextNode
 {
 	String JAVA_PERSISTENT_TYPE_PROPERTY = "javaPersistentTypeProperty";
 

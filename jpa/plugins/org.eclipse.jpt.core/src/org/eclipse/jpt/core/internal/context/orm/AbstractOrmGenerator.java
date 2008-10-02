@@ -10,9 +10,10 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.Generator;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaGenerator;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
-import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlGenerator;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Catalog;
@@ -23,7 +24,7 @@ import org.eclipse.jpt.db.SchemaContainer;
  * 
  */
 public abstract class AbstractOrmGenerator<T extends XmlGenerator>
-	extends AbstractOrmJpaContextNode 
+	extends AbstractXmlContextNode 
 	implements OrmGenerator
 {
 
@@ -38,7 +39,7 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 	protected T resourceGenerator;
 
 
-	protected AbstractOrmGenerator(OrmJpaContextNode parent) {
+	protected AbstractOrmGenerator(XmlContextNode parent) {
 		super(parent);
 	}
 
@@ -204,8 +205,8 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 	}
 	
 	@Override
-	public OrmJpaContextNode getParent() {
-		return (OrmJpaContextNode) super.getParent();
+	public XmlContextNode getParent() {
+		return (XmlContextNode) super.getParent();
 	}
 	
 	public boolean overrides(Generator generator) {

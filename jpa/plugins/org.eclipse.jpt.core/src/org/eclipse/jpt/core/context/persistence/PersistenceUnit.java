@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.Query;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
 import org.eclipse.jpt.core.context.java.JavaGenerator;
 import org.eclipse.jpt.core.context.java.JavaQuery;
@@ -37,7 +38,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructureNode
+public interface PersistenceUnit extends XmlContextNode, JpaStructureNode
 {
 	// **************** parent *************************************************
 	

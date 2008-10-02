@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.AssociationOverride;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 
 /**
@@ -22,7 +23,7 @@ import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmAssociationOverride extends AssociationOverride, OrmJpaContextNode
+public interface OrmAssociationOverride extends AssociationOverride, XmlContextNode
 {
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmJoinColumn> joinColumns();

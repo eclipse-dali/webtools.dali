@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
-import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -33,7 +33,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 
 	protected XmlJoinColumn resourceJoinColumn;
 
-	public GenericOrmJoinColumn(OrmJpaContextNode parent, OrmJoinColumn.Owner owner, XmlJoinColumn resourceJoinColumn) {
+	public GenericOrmJoinColumn(XmlContextNode parent, OrmJoinColumn.Owner owner, XmlJoinColumn resourceJoinColumn) {
 		super(parent, owner);
 		this.initialize(resourceJoinColumn);
 	}

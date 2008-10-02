@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
+import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
@@ -93,16 +94,16 @@ public class GenericNavigatorItemContentProviderFactory
 		protected ListValueModel<JpaContextNode> buildChildrenModel() {
 			List<ListValueModel<? extends JpaContextNode>> list = new ArrayList<ListValueModel<? extends JpaContextNode>>();
 			list.add(buildSpecifiedOrmXmlLvm());
-			list.add(buildImpliedOrmXmlLvm());
+			list.add(buildImpliedMappingFileLvm());
 			list.add(buildPersistentTypeLvm());
 			return new CompositeListValueModel<ListValueModel<? extends JpaContextNode>, JpaContextNode>(list);
 		}
 		
 		private ListValueModel<JpaContextNode> buildSpecifiedOrmXmlLvm() {
 			return new CollectionListValueModelAdapter<JpaContextNode>(
-				new FilteringCollectionValueModel<OrmXml>(
-					new ListCollectionValueModelAdapter<OrmXml>(
-						new TransformationListValueModelAdapter<MappingFileRef, OrmXml>(
+				new FilteringCollectionValueModel<MappingFile>(
+					new ListCollectionValueModelAdapter<MappingFile>(
+						new TransformationListValueModelAdapter<MappingFileRef, MappingFile>(
 							new ItemPropertyListValueModelAdapter<MappingFileRef>(
 								new ListAspectAdapter<PersistenceUnit, MappingFileRef>(
 										PersistenceUnit.SPECIFIED_MAPPING_FILE_REFS_LIST,
@@ -115,17 +116,17 @@ public class GenericNavigatorItemContentProviderFactory
 									protected int size_() {
 										return subject.specifiedMappingFileRefsSize();
 									}
-								}, MappingFileRef.ORM_XML_PROPERTY)) {
+								}, MappingFileRef.MAPPING_FILE_PROPERTY)) {
 							@Override
-							protected OrmXml transformItem(MappingFileRef item) {
-								return item.getOrmXml();
+							protected MappingFile transformItem(MappingFileRef item) {
+								return item.getMappingFile();
 							}
 						})) {
 					@Override
-					protected Iterator<OrmXml> filter(Iterator<? extends OrmXml> items) {
-						return new FilteringIterator<OrmXml, OrmXml>(items) {
+					protected Iterator<MappingFile> filter(Iterator<? extends MappingFile> items) {
+						return new FilteringIterator<MappingFile, MappingFile>(items) {
 							@Override
-							protected boolean accept(OrmXml o) {
+							protected boolean accept(MappingFile o) {
 								return o != null;
 							}
 						};
@@ -133,9 +134,9 @@ public class GenericNavigatorItemContentProviderFactory
 				});
 		}
 		
-		private ListValueModel<OrmXml> buildImpliedOrmXmlLvm() {
-			return new PropertyListValueModelAdapter<OrmXml>(
-				new PropertyAspectAdapter<MappingFileRef, OrmXml>(
+		private ListValueModel<MappingFile> buildImpliedMappingFileLvm() {
+			return new PropertyListValueModelAdapter<MappingFile>(
+				new PropertyAspectAdapter<MappingFileRef, MappingFile>(
 						new PropertyAspectAdapter<PersistenceUnit, MappingFileRef>(
 								PersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY,
 								model()) {
@@ -144,10 +145,10 @@ public class GenericNavigatorItemContentProviderFactory
 								return subject.getImpliedMappingFileRef();
 							}
 						},
-						MappingFileRef.ORM_XML_PROPERTY) {
+						MappingFileRef.MAPPING_FILE_PROPERTY) {
 					@Override
-					protected OrmXml buildValue_() {
-						return subject.getOrmXml();
+					protected MappingFile buildValue_() {
+						return subject.getMappingFile();
 					}
 				}
 			);

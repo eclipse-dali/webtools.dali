@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
-
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;

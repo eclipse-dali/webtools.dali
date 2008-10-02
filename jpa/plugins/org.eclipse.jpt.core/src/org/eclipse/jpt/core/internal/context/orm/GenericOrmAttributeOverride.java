@@ -14,9 +14,10 @@ import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
-import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -27,7 +28,7 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
+public class GenericOrmAttributeOverride extends AbstractXmlContextNode
 	implements OrmAttributeOverride, OrmColumn.Owner
 {
 
@@ -40,15 +41,15 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 
 	protected final OrmColumn column;
 
-	public GenericOrmAttributeOverride(OrmJpaContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride resourceAttributeOverride) {
+	public GenericOrmAttributeOverride(XmlContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride resourceAttributeOverride) {
 		super(parent);
 		this.owner = owner;
 		this.column = getJpaFactory().buildOrmColumn(this, this);
 		this.initialize(resourceAttributeOverride);
 	}
 	@Override
-	public OrmJpaContextNode getParent() {
-		return (OrmJpaContextNode) super.getParent();
+	public XmlContextNode getParent() {
+		return (XmlContextNode) super.getParent();
 	}
 
 	public OrmAttributeOverride setVirtual(boolean virtual) {

@@ -168,7 +168,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 		return super.getPropertyDescriptor(propertyName);
 	}
 	
-	private DataModelPropertyDescriptor accessPropertyDescriptor(AccessType accessType) {
+	protected DataModelPropertyDescriptor accessPropertyDescriptor(AccessType accessType) {
 		if (accessType == null) {
 			return new DataModelPropertyDescriptor(null, JptCoreMessages.NONE);
 		}
@@ -199,7 +199,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 		return super.validate(propertyName);
 	}
 	
-	private IStatus validateProjectSourceFolderAndFilePath() {
+	protected IStatus validateProjectSourceFolderAndFilePath() {
 		String projectName = (String) getProperty(PROJECT_NAME);
 		if (StringTools.stringIsEmpty(projectName)) {
 			return new Status(
@@ -234,6 +234,12 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
 				NLS.bind(JptCoreMessages.VALIDATE_SOURCE_FOLDER_NOT_SOURCE_FOLDER, sourceFolderPath));
 		}
+		String filePath = getStringProperty(FILE_PATH);
+		if (StringTools.stringIsEmpty(filePath)) {
+			return new Status(
+				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
+				JptCoreMessages.VALIDATE_FILE_PATH_NOT_SPECIFIED);
+		}
 		if (getExistingOrmFile() != null) {
 			return new Status(
 				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
@@ -242,7 +248,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 		return Status.OK_STATUS;
 	}
 	
-	private IStatus validatePersistenceUnit() {
+	protected IStatus validatePersistenceUnit() {
 		boolean addToPUnit = getBooleanProperty(ADD_TO_PERSISTENCE_UNIT);
 		String projectName = getStringProperty(PROJECT_NAME);
 		String pUnitName = getStringProperty(PERSISTENCE_UNIT);
@@ -265,7 +271,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	// **************** helper methods *****************************************
 	
 	// Copied from ArtifactEditOperationDataModelProvider
-	private IProject getProject() {
+	protected IProject getProject() {
 		String projectName = (String) model.getProperty(PROJECT_NAME);
 		if (StringTools.stringIsEmpty(projectName)) {
 			return null;
@@ -273,7 +279,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 		return ProjectUtilities.getProject(projectName);
 	}
 	
-	private JpaProject getJpaProject() {
+	protected JpaProject getJpaProject() {
 		IProject project = getProject();
 		if (project == null) {
 			return null;
@@ -285,7 +291,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	 * Return a best guess java source folder for the specified project
 	 */
 	// Copied from NewJavaClassDataModelProvider
-	private IFolder getDefaultSourceFolder() {
+	protected IFolder getDefaultSourceFolder() {
 		IProject project = getProject();
 		if (project == null) {
 			return null;
@@ -305,7 +311,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	/**
 	 * Return whether the path provided can not be a valid IFolder path
 	 */
-	private boolean sourceFolderIsIllegal(String folderPath) {
+	protected boolean sourceFolderIsIllegal(String folderPath) {
 		IProject project = getProject();
 		if (project == null) {
 			return false;
@@ -322,7 +328,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	/**
 	 * Return whether the path provided is in the current project
 	 */
-	private boolean sourceFolderNotInProject(String folderPath) {
+	protected boolean sourceFolderNotInProject(String folderPath) {
 		IProject project = getProject();
 		if (project == null) {
 			return false;
@@ -341,7 +347,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	 * Return an IFolder represented by the SOURCE_FOLDER property, verified
 	 * to exist
 	 */
-	private IFolder getVerifiedSourceFolder() {
+	protected IFolder getVerifiedSourceFolder() {
 		String folderPath = getStringProperty(SOURCE_FOLDER);
 		IProject project = getProject();
 		if (project == null) {
@@ -364,7 +370,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	 * Return the source folder, provided it is verified to be an actual java
 	 * source folder
 	 */
-	private IFolder getVerifiedJavaSourceFolder() {
+	protected IFolder getVerifiedJavaSourceFolder() {
 		IFolder folder = getVerifiedSourceFolder();
 		if (folder == null) {
 			return null;
@@ -380,7 +386,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 		return folder;
 	}
 	
-	private IFile getExistingOrmFile() {
+	protected IFile getExistingOrmFile() {
 		IFolder folder = getVerifiedSourceFolder();
 		if (folder == null) {
 			return null;
@@ -393,7 +399,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 		return existingFile;
 	}
 	
-	private PersistenceUnit getDefaultPersistenceUnit() {
+	protected PersistenceUnit getDefaultPersistenceUnit() {
 		JpaProject jpaProject = getJpaProject();
 		if (jpaProject == null) {
 			return null;
@@ -412,7 +418,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 		return persistence.persistenceUnits().next();
 	}
 	
-	private PersistenceUnit getPersistenceUnit() {
+	protected PersistenceUnit getPersistenceUnit() {
 		String pUnitName = getStringProperty(PERSISTENCE_UNIT);
 		JpaProject jpaProject = 
 			(StringTools.stringIsEmpty(pUnitName)) ? null : getJpaProject();
@@ -431,7 +437,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 		return null;
 	}
 	
-	private Iterator<IProject> jpaIProjects() {
+	protected Iterator<IProject> jpaIProjects() {
 		return new FilteringIterator<IProject, IProject>(CollectionTools.iterator(ProjectUtilities.getAllProjects())) {
 			@Override
 			protected boolean accept(IProject project) {
@@ -445,7 +451,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 		};
 	}
 	
-	private Iterator<PersistenceUnit> persistenceUnits() {
+	protected Iterator<PersistenceUnit> persistenceUnits() {
 		return new CompositeIterator<PersistenceUnit>(
 			new TransformationIterator<IProject, Iterator<PersistenceUnit>>(jpaIProjects()) {
 				@Override
@@ -460,7 +466,7 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 			});
 	}
 	
-	private Iterator<String> persistenceUnitNames() {
+	protected Iterator<String> persistenceUnitNames() {
 		return new TransformationIterator<PersistenceUnit, String>(persistenceUnits()) {
 			@Override
 			protected String transform(PersistenceUnit next) {

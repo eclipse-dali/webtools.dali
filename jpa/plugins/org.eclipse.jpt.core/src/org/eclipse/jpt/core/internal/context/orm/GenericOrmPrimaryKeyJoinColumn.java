@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
-import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -27,7 +27,7 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 
 	protected XmlPrimaryKeyJoinColumn resourcePkJoinColumn;
 	
-	public GenericOrmPrimaryKeyJoinColumn(OrmJpaContextNode parent, OrmBaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
+	public GenericOrmPrimaryKeyJoinColumn(XmlContextNode parent, OrmBaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
 		super(parent, owner);
 		this.initialize(resourcePkJoinColumn);
 	}

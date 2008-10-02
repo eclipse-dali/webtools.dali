@@ -15,7 +15,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
@@ -45,6 +44,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -76,7 +76,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * 
  */
 public class GenericOrmPersistentType
-	extends AbstractOrmJpaContextNode
+	extends AbstractXmlContextNode
 	implements OrmPersistentType
 {
 	protected final List<OrmPersistentAttribute> specifiedPersistentAttributes;

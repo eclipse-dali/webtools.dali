@@ -11,18 +11,18 @@ package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.JpaContextNode;
-import org.eclipse.jpt.core.context.persistence.PersistenceJpaContextNode;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public abstract class AbstractPersistenceJpaContextNode
+public abstract class AbstractXmlContextNode
 	extends AbstractJpaContextNode
-	implements PersistenceJpaContextNode
+	implements XmlContextNode
 {
 
 	// ********** constructor **********
 
-	protected AbstractPersistenceJpaContextNode(JpaContextNode parent) {
+	protected AbstractXmlContextNode(JpaContextNode parent) {
 		super(parent);
 	}
 	

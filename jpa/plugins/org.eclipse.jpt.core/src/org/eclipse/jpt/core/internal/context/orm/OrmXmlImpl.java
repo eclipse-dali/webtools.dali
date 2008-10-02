@@ -17,17 +17,16 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-/**
- * 
- */
 public class OrmXmlImpl
-	extends AbstractOrmJpaContextNode
+	extends AbstractXmlContextNode
 	implements OrmXml
 {
 	protected OrmResource ormResource;
@@ -57,6 +56,10 @@ public class OrmXmlImpl
 	@Override
 	public IResource getResource() {
 		return ormResource.getFile();
+	}
+	
+	public JpaXmlResource getXmlResource() {
+		return ormResource;
 	}
 	
 	// **************** persistence ********************************************
@@ -113,9 +116,15 @@ public class OrmXmlImpl
 		}
 	}
 
-	public void update(OrmResource resource) {
-		this.ormResource = resource;
-		XmlEntityMappings xmlEntityMappings = resource.getEntityMappings();
+	public void update(JpaXmlResource resource) {
+		OrmResource ormResource;
+		try {
+			ormResource = (OrmResource) resource;
+		} catch (ClassCastException cce) {
+			throw new IllegalArgumentException(resource.toString());
+		}
+		this.ormResource = ormResource;
+		XmlEntityMappings xmlEntityMappings = this.ormResource.getEntityMappings();
 		if (xmlEntityMappings != null) {
 			if (this.entityMappings != null) {
 				this.getJpaFile(this.ormResource.getResourceModel()).addRootStructureNode(this.ormResource, this.entityMappings);

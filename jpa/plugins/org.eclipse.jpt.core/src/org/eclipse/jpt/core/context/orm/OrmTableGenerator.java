@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.TableGenerator;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 
 /**
@@ -22,7 +23,7 @@ import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmTableGenerator extends TableGenerator, OrmGenerator, OrmJpaContextNode
+public interface OrmTableGenerator extends TableGenerator, OrmGenerator, XmlContextNode
 {
 
 	/**

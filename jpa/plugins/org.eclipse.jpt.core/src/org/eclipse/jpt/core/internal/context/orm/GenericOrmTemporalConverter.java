@@ -14,10 +14,11 @@ import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.core.context.TemporalType;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 
-public class GenericOrmTemporalConverter extends AbstractOrmJpaContextNode
+public class GenericOrmTemporalConverter extends AbstractXmlContextNode
 	implements TemporalConverter, OrmConverter
 {
 	private TemporalType temporalType;

@@ -51,13 +51,13 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 		// Create source folder if it does not exist
 		IFolder folder = createSourceFolder();
 		// Create orm file
-		createOrmXml(folder);
+		createMappingFile(folder);
 		// Add orm file to persistence unit if specified
-		addOrmXmlToPersistenceXml();
+		addMappingFileToPersistenceXml();
 		return OK_STATUS;
 	}
 	
-	private IProject getProject() throws ExecutionException {
+	protected IProject getProject() throws ExecutionException {
 		String projectName = (String) getDataModel().getProperty(PROJECT_NAME);
 		IProject project = ProjectUtilities.getProject(projectName);
 		if (project == null) {
@@ -66,7 +66,7 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 		return project;
 	}
 	
-	private JpaProject getJpaProject() throws ExecutionException {
+	protected JpaProject getJpaProject() throws ExecutionException {
 		IProject project = getProject();
 		JpaProject jpaProject = JptCorePlugin.getJpaProject(project);
 		if (jpaProject == null) {
@@ -75,7 +75,7 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 		return jpaProject;
 	}
 	
-	private PersistenceUnit getPersistenceUnit() throws ExecutionException {
+	protected PersistenceUnit getPersistenceUnit() throws ExecutionException {
 		String pUnitName = getDataModel().getStringProperty(PERSISTENCE_UNIT);
 		JpaProject jpaProject = getJpaProject();
 		PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
@@ -102,7 +102,7 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 	 * This method may return null.
 	 */
 	// copied from NewJavaClassOperation
-	private IFolder createSourceFolder() throws ExecutionException {
+	protected IFolder createSourceFolder() throws ExecutionException {
 		// Get the source folder name from the data model
 		String folderPath = model.getStringProperty(SOURCE_FOLDER);
 		IProject project = getProject();
@@ -120,7 +120,7 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void createOrmXml(IFolder folder) throws ExecutionException {
+	protected void createMappingFile(IFolder folder) throws ExecutionException {
 		String filePath = getDataModel().getStringProperty(FILE_PATH);
 		IFile file = folder.getFile(new Path(filePath));
 		final OrmResourceModelProvider modelProvider =
@@ -146,7 +146,7 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 			});
 	}
 	
-	private void addOrmXmlToPersistenceXml() throws ExecutionException {
+	protected void addMappingFileToPersistenceXml() throws ExecutionException {
 		if (! getDataModel().getBooleanProperty(ADD_TO_PERSISTENCE_UNIT)) {
 			return;
 		}

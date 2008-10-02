@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.SequenceGenerator;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 
 /**
@@ -21,7 +22,7 @@ import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmSequenceGenerator extends SequenceGenerator, OrmGenerator, OrmJpaContextNode
+public interface OrmSequenceGenerator extends SequenceGenerator, OrmGenerator, XmlContextNode
 {
 	
 	/**

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
@@ -24,7 +25,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmAttributeMapping extends AttributeMapping, OrmJpaContextNode
+public interface OrmAttributeMapping extends AttributeMapping, XmlContextNode
 {
 	OrmPersistentAttribute getPersistentAttribute();
 

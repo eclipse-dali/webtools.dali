@@ -62,7 +62,7 @@ import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
+public class GenericPersistenceUnit extends AbstractXmlContextNode
 	implements PersistenceUnit
 {
 	protected XmlPersistenceUnit xmlPersistenceUnit;

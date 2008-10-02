@@ -25,7 +25,6 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
-import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JpaFileTests extends ContextModelTestCase
@@ -102,9 +101,9 @@ public class JpaFileTests extends ContextModelTestCase
 
 		xmlPersistenceUnit().getMappingFiles().remove(0);
 		assertNotNull(persistenceUnit().getImpliedMappingFileRef());
-		assertEquals(persistenceUnit().getImpliedMappingFileRef().getOrmXml().getEntityMappings(), ormXmlJpaFile.rootStructureNodes().next());
+		assertEquals(persistenceUnit().getImpliedMappingFileRef().getMappingFile().getEntityMappings(), ormXmlJpaFile.rootStructureNodes().next());
 				
-		persistenceUnit().getImpliedMappingFileRef().getOrmXml().removeEntityMappings();		
+		((OrmXml) persistenceUnit().getImpliedMappingFileRef().getMappingFile()).removeEntityMappings();		
 		assertFalse(ormXmlJpaFile.rootStructureNodes().hasNext());
 	}
 	
@@ -364,7 +363,7 @@ public class JpaFileTests extends ContextModelTestCase
 		MappingFileRef mappingFileRef = persistenceUnit().mappingFileRefs().next();
 		mappingFileRef.setFileName("foo");
 		
-		ormPersistentType = persistenceUnit().getImpliedMappingFileRef().getOrmXml().getEntityMappings().ormPersistentTypes().next();
+		ormPersistentType = persistenceUnit().getImpliedMappingFileRef().getMappingFile().getEntityMappings().ormPersistentTypes().next();
 		assertEquals(ormPersistentType.getJavaPersistentType(), javaJpaFile.rootStructureNodes().next());
 		
 		IFile file = persistenceResource().getResourceModel().getFile();

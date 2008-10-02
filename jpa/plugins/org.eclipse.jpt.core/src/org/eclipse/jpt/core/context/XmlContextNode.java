@@ -7,32 +7,27 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.context.orm;
+package org.eclipse.jpt.core.context;
 
 import java.util.List;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
- * ORM JPA context nodes have slightly different validation protocol than Java
- * JPA context nodes.
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmJpaContextNode
-	extends JpaContextNode
+public interface XmlContextNode extends JpaContextNode
 {
+	// **************** validation **************************************
 
 	/**
-	 * Add to the list of current validation messages.
+	 * Add to the list of current validation messages
 	 */
 	void validate(List<IMessage> messages);
 
 	TextRange getValidationTextRange();
-
 }

@@ -9,20 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.context.MappingFile;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.resource.orm.OrmResource;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmXml extends OrmJpaContextNode, JpaStructureNode
+public interface OrmXml extends XmlContextNode, MappingFile
 {
 	
 	MappingFileRef getParent();
@@ -52,20 +50,4 @@ public interface OrmXml extends OrmJpaContextNode, JpaStructureNode
 	 * Throws {@link IllegalStateException} if a persistence node does not exist.
 	 */
 	void removeEntityMappings();
-	
-	PersistenceUnitDefaults getPersistenceUnitDefaults();
-	
-	/**
-	 * Return the OrmPersistentType listed in this mapping file
-	 * with the given fullyQualifiedTypeName.  Return null if none exists.
-	 */
-	OrmPersistentType getPersistentType(String fullyQualifiedTypeName);
-
-	// **************** updating **********************************************
-	
-	/**
-	 * Update the OrmXml context model object to match the OrmResource 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(OrmResource ormResource);
 }

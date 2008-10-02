@@ -29,7 +29,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * 
  */
 public class GenericPersistenceXml
-	extends AbstractPersistenceJpaContextNode
+	extends AbstractXmlContextNode
 	implements PersistenceXml
 {
 	protected PersistenceResource persistenceResource;

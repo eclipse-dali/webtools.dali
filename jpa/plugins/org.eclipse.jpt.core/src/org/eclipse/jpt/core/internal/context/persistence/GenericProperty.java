@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
-public class GenericProperty extends AbstractPersistenceJpaContextNode
+public class GenericProperty extends AbstractXmlContextNode
 	implements Property
 {
 	protected String name;

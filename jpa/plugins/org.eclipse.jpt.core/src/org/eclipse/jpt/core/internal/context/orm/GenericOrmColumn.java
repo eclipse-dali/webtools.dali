@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
-import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 
 public class GenericOrmColumn extends AbstractOrmBaseColumn<XmlColumn> implements OrmColumn
@@ -22,7 +22,7 @@ public class GenericOrmColumn extends AbstractOrmBaseColumn<XmlColumn> implement
 
 	protected Integer specifiedScale;
 
-	public GenericOrmColumn(OrmJpaContextNode parent, OrmColumn.Owner owner) {
+	public GenericOrmColumn(XmlContextNode parent, OrmColumn.Owner owner) {
 		super(parent, owner);
 	}
 	

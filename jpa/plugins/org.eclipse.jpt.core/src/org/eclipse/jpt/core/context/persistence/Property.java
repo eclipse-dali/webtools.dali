@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.persistence;
 
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 
 /**
@@ -20,7 +21,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlProperty;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface Property extends PersistenceJpaContextNode
+public interface Property extends XmlContextNode
 {
 	// **************** name ***************************************************
 	

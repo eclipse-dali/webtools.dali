@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context;
 
 import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -19,9 +18,9 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
+import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
@@ -38,11 +37,7 @@ import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-/**
- * 
- */
-public class GenericRootContextNode
-	extends AbstractJpaContextNode 
+public class GenericRootContextNode extends AbstractJpaContextNode 
 	implements JpaRootContextNode
 {
 	/* This object has no parent, so it must point to the JPA project */
@@ -222,21 +217,16 @@ public class GenericRootContextNode
 		}
 		PersistenceUnit persistenceUnit = persistence.persistenceUnits().next();
 		HashBag<String> orphans = CollectionTools.bag(this.jpaProject.annotatedClassNames());
-		for (String typeName : CollectionTools.iterable(this.jpaProject.annotatedClassNames())) {
+		for (String javaTypeName : CollectionTools.iterable(this.jpaProject.annotatedClassNames())) {
 			for (ClassRef classRef : CollectionTools.iterable(persistenceUnit.specifiedClassRefs())) {
-				if (classRef.isFor(typeName)) {
-					orphans.remove(typeName);
+				if (classRef.isFor(javaTypeName)) {
+					orphans.remove(javaTypeName);
 				}
 			}
 			for (MappingFileRef mappingFileRef : CollectionTools.iterable(persistenceUnit.mappingFileRefs())) {
-				OrmXml ormXml = mappingFileRef.getOrmXml();
-				if (ormXml != null) {
-					EntityMappings entityMappings = ormXml.getEntityMappings();
-					if (entityMappings != null) {
-						if (entityMappings.getPersistentType(typeName) != null) {
-							orphans.remove(typeName);
-						}
-					}
+				MappingFile mappingFile = mappingFileRef.getMappingFile();
+				if (mappingFile != null && mappingFile.getPersistentType(javaTypeName) != null) {
+					orphans.remove(javaTypeName);
 				}
 			}
 		}

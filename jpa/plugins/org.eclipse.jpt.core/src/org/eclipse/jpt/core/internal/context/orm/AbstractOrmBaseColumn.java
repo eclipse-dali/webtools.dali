@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.BaseColumn;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmBaseColumn;
-import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAbstractColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -31,7 +31,7 @@ public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends
 	
 	protected Boolean specifiedUpdatable;
 
-	protected AbstractOrmBaseColumn(OrmJpaContextNode parent, OrmBaseColumn.Owner owner) {
+	protected AbstractOrmBaseColumn(XmlContextNode parent, OrmBaseColumn.Owner owner) {
 		super(parent, owner);
 	}
 	

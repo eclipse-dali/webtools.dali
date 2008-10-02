@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;

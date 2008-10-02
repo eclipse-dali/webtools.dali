@@ -10,10 +10,10 @@
 package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.QueryHolder;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
@@ -28,7 +28,7 @@ import org.eclipse.jpt.db.SchemaContainer;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface EntityMappings extends OrmJpaContextNode, JpaStructureNode, QueryHolder
+public interface EntityMappings extends XmlContextNode, JpaStructureNode, QueryHolder
 {
 	
 	String getVersion();

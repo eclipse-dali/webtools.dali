@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
@@ -45,7 +46,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
+public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 	implements OrmPersistentAttribute
 {
 

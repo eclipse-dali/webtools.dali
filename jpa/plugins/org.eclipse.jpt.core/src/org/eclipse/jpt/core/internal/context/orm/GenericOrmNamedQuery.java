@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 
@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 public class GenericOrmNamedQuery extends AbstractOrmQuery<XmlNamedQuery> implements OrmNamedQuery
 {
 
-	public GenericOrmNamedQuery(OrmJpaContextNode parent, XmlNamedQuery resourceNamedQuery) {
+	public GenericOrmNamedQuery(XmlContextNode parent, XmlNamedQuery resourceNamedQuery) {
 		super(parent, resourceNamedQuery);
 	}
 

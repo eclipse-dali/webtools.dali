@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.Converter;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
 
 /**
@@ -24,7 +25,7 @@ import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
  * @version 2.1
  * @since 2.1
  */
-public interface OrmConverter extends OrmJpaContextNode, Converter
+public interface OrmConverter extends XmlContextNode, Converter
 {
 	/**
 	 * Update the OrmConverter context model object to match the XmlConvertibleMapping 

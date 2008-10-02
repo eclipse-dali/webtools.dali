@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
@@ -25,7 +26,7 @@ import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmPersistentType extends PersistentType, OrmJpaContextNode
+public interface OrmPersistentType extends PersistentType, XmlContextNode
 {
 	/**
 	 * Overriden to return {@link OrmPersistentAttribute}s

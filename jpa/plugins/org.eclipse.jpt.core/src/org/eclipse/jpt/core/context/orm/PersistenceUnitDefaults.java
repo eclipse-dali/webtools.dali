@@ -10,14 +10,13 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,7 +24,7 @@ import org.eclipse.jpt.db.SchemaContainer;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface PersistenceUnitDefaults
-	extends OrmJpaContextNode
+	extends XmlContextNode
 {
 
 	AccessType getAccess();

@@ -13,14 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.UniqueConstraint;
-import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class GenericOrmUniqueConstraint extends AbstractOrmJpaContextNode
+public class GenericOrmUniqueConstraint extends AbstractXmlContextNode
 	implements OrmUniqueConstraint
 {
 	
@@ -30,7 +31,7 @@ public class GenericOrmUniqueConstraint extends AbstractOrmJpaContextNode
 	
 	protected UniqueConstraint.Owner owner;
 	
-	public GenericOrmUniqueConstraint(OrmJpaContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint) {
+	public GenericOrmUniqueConstraint(XmlContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint) {
 		super(parent);
 		this.owner = owner;
 		this.columnNames = new ArrayList<String>();

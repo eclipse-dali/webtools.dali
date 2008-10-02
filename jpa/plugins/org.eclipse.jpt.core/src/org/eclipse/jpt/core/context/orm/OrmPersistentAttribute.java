@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
@@ -31,7 +32,7 @@ import org.eclipse.jpt.core.resource.orm.XmlVersion;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmPersistentAttribute extends PersistentAttribute, OrmJpaContextNode
+public interface OrmPersistentAttribute extends PersistentAttribute, XmlContextNode
 {
 	
 	/**

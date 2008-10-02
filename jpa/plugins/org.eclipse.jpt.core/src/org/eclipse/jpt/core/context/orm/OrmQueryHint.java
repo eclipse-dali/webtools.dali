@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.QueryHint;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
 
 /**
@@ -21,7 +22,7 @@ import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmQueryHint extends QueryHint, OrmJpaContextNode
+public interface OrmQueryHint extends QueryHint, XmlContextNode
 {
 	/**
 	 * Update the OrmQueryHint context model object to match the XmlQueryHint 

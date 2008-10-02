@@ -15,8 +15,8 @@ import org.eclipse.jpt.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
-import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
+import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 

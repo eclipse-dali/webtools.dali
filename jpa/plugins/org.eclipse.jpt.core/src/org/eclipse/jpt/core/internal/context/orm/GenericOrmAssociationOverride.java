@@ -12,15 +12,16 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.AssociationOverride;
+import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
-import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
@@ -28,7 +29,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
+public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 	implements OrmAssociationOverride
 {
 
@@ -43,7 +44,7 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 	protected XmlAssociationOverride resourceAssociationOverride;
 
 
-	public GenericOrmAssociationOverride(OrmJpaContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride resourceAssociationOverride) {
+	public GenericOrmAssociationOverride(XmlContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride resourceAssociationOverride) {
 		super(parent);
 		this.owner = owner;
 		this.specifiedJoinColumns = new ArrayList<OrmJoinColumn>();
