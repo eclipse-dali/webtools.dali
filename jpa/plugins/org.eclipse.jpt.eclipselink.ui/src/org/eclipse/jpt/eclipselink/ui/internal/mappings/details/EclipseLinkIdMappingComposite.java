@@ -97,14 +97,14 @@ public class EclipseLinkIdMappingComposite extends FormPane<IdMapping>
 		initializeConversionPane(container);
 
 		// Generation pane
-		new GenerationComposite(this, addSubPane(container, 10));
+		new GenerationComposite(this, container);
 	}
 	
 	
 	private void initializeConversionPane(Composite container) {
 
 		container = addCollapsableSection(
-			container,
+			addSubPane(container, 5),
 			JptUiMappingsMessages.IdMappingComposite_conversion
 		);
 		((GridLayout) container.getLayout()).numColumns = 2;
