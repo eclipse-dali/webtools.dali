@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.jface;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;

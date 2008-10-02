@@ -12,7 +12,6 @@ package org.eclipse.jpt.utility.internal;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.text.Collator;
-
 import org.eclipse.jpt.utility.JavaType;
 
 /**

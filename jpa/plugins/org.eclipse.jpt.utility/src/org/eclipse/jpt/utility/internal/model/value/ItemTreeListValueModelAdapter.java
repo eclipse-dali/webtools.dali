@@ -10,7 +10,6 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Arrays;
-
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
 import org.eclipse.jpt.utility.model.listener.TreeChangeListener;

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.utility.internal.model.value.swing;
 
 import java.io.Serializable;
-
 import javax.swing.event.EventListenerList;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;

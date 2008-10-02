@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.connection;
 
 import java.util.Map;
-
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.core.context.persistence.Property;

@@ -12,7 +12,6 @@ package org.eclipse.jpt.utility.internal.node;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
 import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
 
 /**

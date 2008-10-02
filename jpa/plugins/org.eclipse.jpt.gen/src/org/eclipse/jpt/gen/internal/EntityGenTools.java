@@ -10,7 +10,6 @@
 package org.eclipse.jpt.gen.internal;
 
 import java.util.Collection;
-
 import org.eclipse.jpt.utility.internal.NameTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 

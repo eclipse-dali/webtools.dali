@@ -10,11 +10,9 @@
 package org.eclipse.jpt.utility.tests.internal;
 
 import java.util.EmptyStackException;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.SimpleStack;
 import org.eclipse.jpt.utility.internal.Stack;
-
-import junit.framework.TestCase;
 
 public class SimpleStackTests extends TestCase {
 

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.utility.jdt;
 
 import java.util.List;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;

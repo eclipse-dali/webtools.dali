@@ -12,7 +12,6 @@ package org.eclipse.jpt.utility.internal;
 import java.io.Serializable;
 import java.util.AbstractCollection;
 import java.util.Iterator;
-
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**

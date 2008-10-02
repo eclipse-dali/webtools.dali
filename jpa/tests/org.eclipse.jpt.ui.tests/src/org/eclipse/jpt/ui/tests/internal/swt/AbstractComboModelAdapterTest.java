@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.tests.internal.swt;
 
+import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -31,8 +32,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 @SuppressWarnings("nls")
 public abstract class AbstractComboModelAdapterTest {

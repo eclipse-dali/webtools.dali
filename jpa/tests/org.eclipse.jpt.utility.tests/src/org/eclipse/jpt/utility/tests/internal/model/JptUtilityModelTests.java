@@ -9,11 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model;
 
-import org.eclipse.jpt.utility.tests.internal.model.listener.JptUtilityModelListenerTests;
-import org.eclipse.jpt.utility.tests.internal.model.value.JptUtilityModelValueTests;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import org.eclipse.jpt.utility.tests.internal.model.listener.JptUtilityModelListenerTests;
+import org.eclipse.jpt.utility.tests.internal.model.value.JptUtilityModelValueTests;
 
 public class JptUtilityModelTests {
 

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.Range;
@@ -22,8 +22,6 @@ import org.eclipse.jpt.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.jpt.utility.internal.node.Problem;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 public class AbstractNodeTests extends TestCase {
 	private TestWorkbenchModel root;

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.db.internal;
 
 import java.text.Collator;
-
 import org.eclipse.jpt.db.Sequence;
 
 /**

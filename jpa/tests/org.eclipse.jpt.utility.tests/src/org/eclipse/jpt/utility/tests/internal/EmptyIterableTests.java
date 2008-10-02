@@ -9,9 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
-import org.eclipse.jpt.utility.internal.EmptyIterable;
-
 import junit.framework.TestCase;
+import org.eclipse.jpt.utility.internal.EmptyIterable;
 
 public class EmptyIterableTests extends TestCase {
 

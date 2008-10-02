@@ -9,9 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
-import org.eclipse.jpt.utility.internal.SynchronizedObject;
-
 import junit.framework.TestCase;
+import org.eclipse.jpt.utility.internal.SynchronizedObject;
 
 public class SynchronizedObjectTests extends TestCase {
 	private volatile SynchronizedObject<Object> so;

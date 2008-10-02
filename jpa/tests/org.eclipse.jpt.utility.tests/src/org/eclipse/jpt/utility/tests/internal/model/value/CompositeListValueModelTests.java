@@ -14,13 +14,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 public class CompositeListValueModelTests extends TestCase {
 	private SimpleListValueModel<String> lvm0;

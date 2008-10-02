@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.resource.java.BaseColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.BaseColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.utility.TextRange;
 

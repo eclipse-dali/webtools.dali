@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.internal.context;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;

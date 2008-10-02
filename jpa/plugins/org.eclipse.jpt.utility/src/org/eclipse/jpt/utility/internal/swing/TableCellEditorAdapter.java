@@ -10,7 +10,6 @@
 package org.eclipse.jpt.utility.internal.swing;
 
 import java.awt.Component;
-
 import javax.swing.AbstractCellEditor;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;

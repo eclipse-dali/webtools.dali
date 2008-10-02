@@ -12,7 +12,6 @@ package org.eclipse.jpt.utility.internal.model.value;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;

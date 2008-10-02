@@ -20,7 +20,6 @@ import java.awt.event.WindowListener;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -35,7 +34,6 @@ import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EnumerationIterator;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;

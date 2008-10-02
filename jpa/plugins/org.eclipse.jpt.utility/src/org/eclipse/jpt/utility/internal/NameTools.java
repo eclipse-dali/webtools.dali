@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.SortedSet;
-
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 /**

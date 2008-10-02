@@ -25,7 +25,6 @@ import java.util.Random;
 import java.util.RandomAccess;
 import java.util.TreeSet;
 import java.util.Vector;
-
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.GenericIteratorWrapper;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;

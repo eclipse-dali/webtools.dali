@@ -12,7 +12,6 @@ package org.eclipse.jpt.utility.internal.model.value.prefs;
 import java.util.prefs.PreferenceChangeEvent;
 import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
-
 import org.eclipse.jpt.utility.internal.BidiStringConverter;
 import org.eclipse.jpt.utility.internal.model.value.AspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;

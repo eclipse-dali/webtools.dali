@@ -11,7 +11,6 @@ package org.eclipse.jpt.db.internal;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.CollectionTools;

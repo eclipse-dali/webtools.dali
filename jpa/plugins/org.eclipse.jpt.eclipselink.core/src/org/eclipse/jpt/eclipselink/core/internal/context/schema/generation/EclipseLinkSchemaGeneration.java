@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.schema.generation;
 
 import java.util.Map;
-
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnitProperties;

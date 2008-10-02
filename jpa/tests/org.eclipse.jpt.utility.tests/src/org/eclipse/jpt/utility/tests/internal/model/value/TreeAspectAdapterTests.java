@@ -11,7 +11,7 @@ package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.Collection;
 import java.util.Iterator;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
@@ -27,8 +27,6 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.TreeValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 public class TreeAspectAdapterTests extends TestCase {
 	private TestSubject subject1;

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.schema.generation;
 
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;

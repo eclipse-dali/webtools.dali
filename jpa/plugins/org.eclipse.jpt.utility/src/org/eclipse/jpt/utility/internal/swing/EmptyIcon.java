@@ -11,7 +11,6 @@ package org.eclipse.jpt.utility.internal.swing;
 
 import java.awt.Component;
 import java.awt.Graphics;
-
 import javax.swing.Icon;
 
 /**

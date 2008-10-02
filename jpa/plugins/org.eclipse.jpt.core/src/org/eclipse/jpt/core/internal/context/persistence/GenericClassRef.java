@@ -11,7 +11,6 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
-
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;

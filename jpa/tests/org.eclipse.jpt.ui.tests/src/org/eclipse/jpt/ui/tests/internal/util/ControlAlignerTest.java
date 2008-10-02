@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.tests.internal.util;
 
+import static org.junit.Assert.*;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jpt.ui.internal.util.ControlAligner;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
@@ -28,8 +29,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 @SuppressWarnings("nls")
 public final class ControlAlignerTest {

@@ -9,11 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
-import org.eclipse.jpt.utility.tests.internal.model.value.prefs.JptUtilityModelValuePrefsTests;
-import org.eclipse.jpt.utility.tests.internal.model.value.swing.JptUtilityModelValueSwingTests;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import org.eclipse.jpt.utility.tests.internal.model.value.prefs.JptUtilityModelValuePrefsTests;
+import org.eclipse.jpt.utility.tests.internal.model.value.swing.JptUtilityModelValueSwingTests;
 
 public class JptUtilityModelValueTests {
 	

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.db.Schema;
 
 /**

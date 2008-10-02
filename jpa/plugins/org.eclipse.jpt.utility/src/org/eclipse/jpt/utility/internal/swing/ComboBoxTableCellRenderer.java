@@ -14,7 +14,6 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
@@ -27,7 +26,6 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
-
 import org.eclipse.jpt.utility.internal.ClassTools;
 
 /**

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.ui.internal.caching;
 
 import java.util.ArrayList;
-
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;

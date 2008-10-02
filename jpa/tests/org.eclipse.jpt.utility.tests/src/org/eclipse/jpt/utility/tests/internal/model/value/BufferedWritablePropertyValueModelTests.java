@@ -10,7 +10,7 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.Date;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.BufferedWritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -20,8 +20,6 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 public class BufferedWritablePropertyValueModelTests extends TestCase {
 	private Employee employee;

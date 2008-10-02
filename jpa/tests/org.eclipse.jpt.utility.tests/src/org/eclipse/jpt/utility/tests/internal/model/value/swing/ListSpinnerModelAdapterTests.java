@@ -12,15 +12,13 @@ package org.eclipse.jpt.utility.tests.internal.model.value.swing;
 import javax.swing.SpinnerModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ListSpinnerModelAdapter;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 public class ListSpinnerModelAdapterTests extends TestCase {
 	private WritablePropertyValueModel<Object> valueHolder;

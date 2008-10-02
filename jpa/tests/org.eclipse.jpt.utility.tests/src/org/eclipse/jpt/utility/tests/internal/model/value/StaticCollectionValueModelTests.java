@@ -10,14 +10,12 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.Collection;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.model.value.StaticCollectionValueModel;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 public class StaticCollectionValueModelTests extends TestCase {
 

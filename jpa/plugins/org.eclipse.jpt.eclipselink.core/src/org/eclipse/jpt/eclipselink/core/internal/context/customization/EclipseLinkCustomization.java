@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
-
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;

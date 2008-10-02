@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
-import org.eclipse.jpt.utility.internal.Association;
-import org.eclipse.jpt.utility.internal.SimpleAssociation;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.eclipse.jpt.utility.internal.Association;
+import org.eclipse.jpt.utility.internal.SimpleAssociation;
 
 public class SimpleAssociationTests extends TestCase {
 	private SimpleAssociation<String, String> assoc;

@@ -11,7 +11,7 @@ package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueCollectionAdapter;
@@ -21,8 +21,6 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 public class ValueCollectionAdapterTests extends TestCase {
 	private Junk junk;

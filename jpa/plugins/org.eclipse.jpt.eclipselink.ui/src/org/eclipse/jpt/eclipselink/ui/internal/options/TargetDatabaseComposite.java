@@ -13,7 +13,6 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
-
 import org.eclipse.jpt.eclipselink.core.internal.context.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.options.TargetDatabase;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;

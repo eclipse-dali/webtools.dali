@@ -11,9 +11,8 @@ package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.Collection;
 import java.util.List;
-
 import javax.swing.JList;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.Bag;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
@@ -25,8 +24,6 @@ import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 public class CollectionListValueModelAdapterTests extends TestCase {
 	private ListValueModel<String> adapter;

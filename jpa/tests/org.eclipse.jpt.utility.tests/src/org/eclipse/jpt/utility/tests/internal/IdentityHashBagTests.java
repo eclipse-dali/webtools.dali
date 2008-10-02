@@ -14,11 +14,9 @@ import java.util.Collection;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.IdentityHashBag;
-
-import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class IdentityHashBagTests extends TestCase {

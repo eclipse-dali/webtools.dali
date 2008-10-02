@@ -10,7 +10,6 @@
 package org.eclipse.jpt.db.internal;
 
 import java.text.Collator;
-
 import org.eclipse.datatools.modelbase.dbdefinition.PredefinedDataTypeDefinition;
 import org.eclipse.datatools.modelbase.sql.datatypes.CharacterStringDataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.DataType;

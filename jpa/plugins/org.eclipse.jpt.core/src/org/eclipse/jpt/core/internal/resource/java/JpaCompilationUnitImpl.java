@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;

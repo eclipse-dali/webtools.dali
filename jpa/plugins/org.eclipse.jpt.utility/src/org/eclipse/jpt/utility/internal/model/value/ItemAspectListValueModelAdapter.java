@@ -15,7 +15,6 @@ import java.util.EventObject;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.utility.internal.Counter;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.model.Model;

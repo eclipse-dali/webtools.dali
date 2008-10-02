@@ -12,7 +12,6 @@ package org.eclipse.jpt.gen.internal;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;

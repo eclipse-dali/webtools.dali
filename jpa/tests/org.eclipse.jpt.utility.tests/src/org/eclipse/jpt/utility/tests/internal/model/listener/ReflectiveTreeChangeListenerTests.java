@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
@@ -26,8 +26,6 @@ import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.ReflectiveChangeListener;
 import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
-
-import junit.framework.TestCase;
 
 public class ReflectiveTreeChangeListenerTests extends TestCase {
 	

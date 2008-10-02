@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.tests.internal.utility.jdt;
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
-
+import junit.framework.TestCase;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -38,8 +38,6 @@ import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 /**
  * Provide an easy(?) way to build an annotated source file.

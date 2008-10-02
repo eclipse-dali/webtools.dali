@@ -10,7 +10,6 @@
 package org.eclipse.jpt.db.tests.internal.platforms;
 
 import java.util.Properties;
-
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.jpt.db.Column;

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.tests.internal.util;
 
+import static org.junit.Assert.assertEquals;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.ui.internal.util.LabeledLabel;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
@@ -22,8 +23,6 @@ import org.eclipse.swt.widgets.Label;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 @SuppressWarnings("nls")
 public final class LabeledControlUpdaterTest {

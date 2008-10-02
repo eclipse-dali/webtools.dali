@@ -10,9 +10,9 @@
 package org.eclipse.jpt.ui.internal.orm.details;
 
 import java.util.Collection;
-
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.SequenceGenerator;
+import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;

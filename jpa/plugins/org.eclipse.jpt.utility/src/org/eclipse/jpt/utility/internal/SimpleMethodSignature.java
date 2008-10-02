@@ -14,7 +14,6 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.text.Collator;
 import java.util.Arrays;
-
 import org.eclipse.jpt.utility.JavaType;
 import org.eclipse.jpt.utility.MethodSignature;
 

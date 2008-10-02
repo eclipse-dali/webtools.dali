@@ -19,7 +19,6 @@ import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ButtonModel;
@@ -46,7 +45,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.text.Document;
-
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;

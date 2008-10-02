@@ -12,7 +12,6 @@ package org.eclipse.jpt.db.internal;
 import java.text.Collator;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.datatools.modelbase.sql.constraints.PrimaryKey;
 import org.eclipse.datatools.modelbase.sql.tables.BaseTable;
 import org.eclipse.jpt.db.Column;

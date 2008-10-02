@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.tests.internal.util;
 
+import static org.junit.Assert.assertEquals;
 import org.eclipse.core.runtime.AssertionFailedException;
 import org.eclipse.jpt.ui.internal.util.LabeledButton;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
@@ -20,8 +21,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 @SuppressWarnings("nls")
 public final class LabeledButtonTest {

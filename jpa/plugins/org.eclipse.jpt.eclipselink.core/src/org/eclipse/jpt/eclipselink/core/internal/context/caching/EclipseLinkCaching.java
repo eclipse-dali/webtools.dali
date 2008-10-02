@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
-
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnitProperties;

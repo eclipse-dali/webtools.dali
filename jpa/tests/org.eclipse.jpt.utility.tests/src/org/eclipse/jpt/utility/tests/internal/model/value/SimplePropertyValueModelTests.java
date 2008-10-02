@@ -9,14 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 public class SimplePropertyValueModelTests extends TestCase {
 	private WritablePropertyValueModel<String> objectHolder;

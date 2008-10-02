@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.extension.resource;
 
+import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 
 /**

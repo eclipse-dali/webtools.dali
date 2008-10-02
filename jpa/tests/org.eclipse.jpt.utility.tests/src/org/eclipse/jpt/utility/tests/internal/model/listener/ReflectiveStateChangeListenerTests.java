@@ -10,15 +10,13 @@
 package org.eclipse.jpt.utility.tests.internal.model.listener;
 
 import java.lang.reflect.Method;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.listener.ReflectiveChangeListener;
 import org.eclipse.jpt.utility.model.listener.StateChangeListener;
-
-import junit.framework.TestCase;
 
 public class ReflectiveStateChangeListenerTests extends TestCase {
 	

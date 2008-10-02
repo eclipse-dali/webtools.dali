@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.wizards;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;

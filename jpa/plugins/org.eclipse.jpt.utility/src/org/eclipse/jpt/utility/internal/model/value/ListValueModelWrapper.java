@@ -10,7 +10,6 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.ListIterator;
-
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;

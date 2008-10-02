@@ -10,7 +10,6 @@
 package org.eclipse.jpt.utility.internal.swing;
 
 import java.awt.Component;
-
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.JList;

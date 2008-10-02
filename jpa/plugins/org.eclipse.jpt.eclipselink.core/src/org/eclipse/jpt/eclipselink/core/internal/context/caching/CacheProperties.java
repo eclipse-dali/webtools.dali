@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.caching;
 
 import java.io.Serializable;
-
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**

@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.ui.internal.connection;
 
 import java.util.Comparator;
 import java.util.Iterator;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;

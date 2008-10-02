@@ -10,10 +10,8 @@
 package org.eclipse.jpt.core.tests.internal;
 
 import java.io.File;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
 import org.eclipse.jpt.core.tests.internal.context.JptCoreContextModelTests;
 import org.eclipse.jpt.core.tests.internal.model.JptCoreModelTests;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;

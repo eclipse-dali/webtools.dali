@@ -12,7 +12,6 @@ package org.eclipse.jpt.utility.model.event;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.utility.model.Model;
 
 /**

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.customization;
 
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;

@@ -15,13 +15,12 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-
 import javax.swing.Icon;
 import javax.swing.JTree;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.IndentingPrintWriter;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -48,8 +47,6 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.TreeNodeValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
-
-import junit.framework.TestCase;
 
 /**
  * 

@@ -12,7 +12,7 @@ package org.eclipse.jpt.utility.tests.internal.model.value;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
@@ -25,8 +25,6 @@ import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 public class CollectionAspectAdapterTests extends TestCase {
 	private TestSubject subject1;

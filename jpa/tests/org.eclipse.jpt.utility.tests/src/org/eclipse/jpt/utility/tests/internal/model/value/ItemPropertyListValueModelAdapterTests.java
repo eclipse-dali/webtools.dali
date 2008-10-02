@@ -16,9 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
 import javax.swing.Icon;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.Bag;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -29,8 +28,6 @@ import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.swing.Displayable;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 public class ItemPropertyListValueModelAdapterTests extends TestCase {
 	private Junk foo;

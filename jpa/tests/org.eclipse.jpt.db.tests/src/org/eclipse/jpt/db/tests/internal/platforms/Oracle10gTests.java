@@ -10,7 +10,6 @@
 package org.eclipse.jpt.db.tests.internal.platforms;
 
 import java.sql.SQLException;
-
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ForeignKey;

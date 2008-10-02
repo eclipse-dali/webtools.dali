@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.ui.internal.ddlgen;
 
 import java.util.Iterator;
-
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;

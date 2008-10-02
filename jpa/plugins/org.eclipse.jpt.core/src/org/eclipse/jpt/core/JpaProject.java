@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core;
 
 import java.util.Iterator;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;

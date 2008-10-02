@@ -11,7 +11,6 @@ package org.eclipse.jpt.utility.internal.model;
 
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;

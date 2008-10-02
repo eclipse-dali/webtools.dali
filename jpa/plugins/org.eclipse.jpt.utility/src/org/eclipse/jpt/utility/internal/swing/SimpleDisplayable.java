@@ -10,7 +10,6 @@
 package org.eclipse.jpt.utility.internal.swing;
 
 import javax.swing.Icon;
-
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 
 /**

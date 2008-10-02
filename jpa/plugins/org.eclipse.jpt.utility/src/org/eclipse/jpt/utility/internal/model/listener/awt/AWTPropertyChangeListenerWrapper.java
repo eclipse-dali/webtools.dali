@@ -10,7 +10,6 @@
 package org.eclipse.jpt.utility.internal.model.listener.awt;
 
 import java.awt.EventQueue;
-
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 

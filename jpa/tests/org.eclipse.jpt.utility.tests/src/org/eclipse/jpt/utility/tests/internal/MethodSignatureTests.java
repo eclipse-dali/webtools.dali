@@ -11,13 +11,11 @@ package org.eclipse.jpt.utility.tests.internal;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.JavaType;
 import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.SimpleJavaType;
 import org.eclipse.jpt.utility.internal.SimpleMethodSignature;
-
-import junit.framework.TestCase;
 
 public class MethodSignatureTests extends TestCase {
 

@@ -13,11 +13,9 @@ import java.util.EventObject;
 import java.util.List;
 import java.util.prefs.AbstractPreferences;
 import java.util.prefs.Preferences;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 /**
  * set up and tear down a test node for any subclass that

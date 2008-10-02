@@ -10,7 +10,6 @@
 package org.eclipse.jpt.utility.model.value;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.utility.model.Model;
 
 /**

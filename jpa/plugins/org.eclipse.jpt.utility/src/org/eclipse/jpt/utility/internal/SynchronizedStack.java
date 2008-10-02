@@ -11,7 +11,6 @@ package org.eclipse.jpt.utility.internal;
 
 import java.io.Serializable;
 import java.util.EmptyStackException;
-
 import org.eclipse.jpt.utility.Command;
 
 /**

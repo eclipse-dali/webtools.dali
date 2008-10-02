@@ -10,7 +10,6 @@
 package org.eclipse.jpt.utility.model.listener;
 
 import java.lang.reflect.Method;
-
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.model.event.ChangeEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;

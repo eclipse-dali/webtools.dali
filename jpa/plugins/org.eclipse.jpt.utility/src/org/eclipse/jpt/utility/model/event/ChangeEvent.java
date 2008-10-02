@@ -10,7 +10,6 @@
 package org.eclipse.jpt.utility.model.event;
 
 import java.util.EventObject;
-
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.model.Model;
 

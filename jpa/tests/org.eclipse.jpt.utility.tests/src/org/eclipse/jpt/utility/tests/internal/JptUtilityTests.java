@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
 import org.eclipse.jpt.utility.tests.internal.iterators.JptUtilityIteratorsTests;
 import org.eclipse.jpt.utility.tests.internal.model.JptUtilityModelTests;
 import org.eclipse.jpt.utility.tests.internal.node.JptUtilityNodeTests;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 /**
  * decentralize test creation code

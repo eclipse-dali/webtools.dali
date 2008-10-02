@@ -12,7 +12,6 @@ package org.eclipse.jpt.db.internal;
 import java.text.Collator;
 import java.util.Iterator;
 import java.util.Vector;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.datatools.connectivity.ConnectEvent;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
@@ -20,6 +19,7 @@ import org.eclipse.datatools.connectivity.IManagedConnection;
 import org.eclipse.datatools.connectivity.IManagedConnectionOfflineListener;
 import org.eclipse.datatools.connectivity.drivers.DriverManager;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
+import org.eclipse.datatools.connectivity.internal.ManagedConnection;
 import org.eclipse.datatools.connectivity.sqm.core.connection.ConnectionInfo;
 import org.eclipse.datatools.sqltools.core.DatabaseIdentifier;
 import org.eclipse.datatools.sqltools.core.profile.ProfileUtil;

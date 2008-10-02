@@ -10,7 +10,6 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;

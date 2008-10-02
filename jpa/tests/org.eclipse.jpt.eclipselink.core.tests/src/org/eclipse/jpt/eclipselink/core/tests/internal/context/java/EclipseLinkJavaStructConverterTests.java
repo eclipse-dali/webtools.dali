@@ -18,8 +18,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
-import org.eclipse.jpt.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class EclipseLinkJavaStructConverterTests extends EclipseLinkJavaContextModelTestCase

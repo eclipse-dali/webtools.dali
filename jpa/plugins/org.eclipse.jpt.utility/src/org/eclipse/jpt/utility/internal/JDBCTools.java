@@ -11,7 +11,6 @@ package org.eclipse.jpt.utility.internal;
 
 import java.sql.Types;
 import java.util.HashMap;
-
 import org.eclipse.jpt.utility.JavaType;
 
 /**

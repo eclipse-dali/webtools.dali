@@ -9,10 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.JavaType;
 import org.eclipse.jpt.utility.internal.SimpleJavaType;
-
-import junit.framework.TestCase;
 
 public class JavaTypeTests extends TestCase {
 

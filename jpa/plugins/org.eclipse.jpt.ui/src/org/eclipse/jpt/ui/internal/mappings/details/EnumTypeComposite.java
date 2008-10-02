@@ -9,6 +9,7 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
+import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.EnumType;
 import org.eclipse.jpt.core.context.EnumeratedConverter;
 import org.eclipse.jpt.ui.WidgetFactory;

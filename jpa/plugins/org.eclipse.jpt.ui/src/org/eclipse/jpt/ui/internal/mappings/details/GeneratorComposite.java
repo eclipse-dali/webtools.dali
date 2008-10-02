@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.GeneratorHolder;
+import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.ui.internal.util.LabeledLabel;

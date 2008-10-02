@@ -12,10 +12,9 @@ package org.eclipse.jpt.utility.tests.internal.model.value.swing;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import javax.swing.ComboBoxModel;
 import javax.swing.ListModel;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -27,8 +26,6 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.model.value.CoordinatedList;
-
-import junit.framework.TestCase;
 
 public class ComboBoxModelAdapterTests extends TestCase {
 

@@ -11,7 +11,6 @@ package org.eclipse.jpt.utility.internal.swing;
 
 import java.awt.Color;
 import java.awt.Component;
-
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JSpinner;

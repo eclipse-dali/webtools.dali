@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 
 public class ReadOnlyCompositeListIteratorTests extends CompositeIteratorTests {

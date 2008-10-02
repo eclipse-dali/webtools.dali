@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.java;
 
 import java.util.Iterator;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;

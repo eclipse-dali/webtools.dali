@@ -10,9 +10,8 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.Collection;
-
 import javax.swing.JList;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
@@ -25,8 +24,6 @@ import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 public class PropertyCollectionValueModelAdapterTests extends TestCase {
 	private CollectionValueModel<String> adapter;

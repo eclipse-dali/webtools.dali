@@ -10,7 +10,6 @@
 package org.eclipse.jpt.utility.internal.model.listener.awt;
 
 import java.awt.EventQueue;
-
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 

@@ -9,11 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 public class StaticValueModelTests extends TestCase {
 	private PropertyValueModel<String> objectHolder;

@@ -12,7 +12,7 @@ package org.eclipse.jpt.utility.tests.internal.model.value;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.Bag;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Transformer;
@@ -27,8 +27,6 @@ import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 public class CompositeCollectionValueModelTests extends TestCase {
 	private Neighborhood neighborhood;

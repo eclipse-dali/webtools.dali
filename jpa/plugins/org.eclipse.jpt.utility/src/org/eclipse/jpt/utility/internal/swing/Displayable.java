@@ -11,9 +11,7 @@ package org.eclipse.jpt.utility.internal.swing;
 
 import java.text.Collator;
 import java.util.Comparator;
-
 import javax.swing.Icon;
-
 import org.eclipse.jpt.utility.model.Model;
 
 /**

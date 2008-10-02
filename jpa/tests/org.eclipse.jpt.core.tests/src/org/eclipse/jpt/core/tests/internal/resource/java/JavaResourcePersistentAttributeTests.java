@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.IdImpl;

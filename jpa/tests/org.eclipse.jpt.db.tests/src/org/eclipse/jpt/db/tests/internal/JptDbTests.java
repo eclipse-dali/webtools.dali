@@ -9,10 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.tests.internal;
 
-import org.eclipse.jpt.db.tests.internal.platforms.AllPlatformTests;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import org.eclipse.jpt.db.tests.internal.platforms.AllPlatformTests;
 
 /**
  *  JPT DB Tests

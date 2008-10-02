@@ -9,9 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
-import org.eclipse.jpt.utility.internal.BooleanHolder;
-
 import junit.framework.TestCase;
+import org.eclipse.jpt.utility.internal.BooleanHolder;
 
 public class BooleanHolderTests extends TestCase {
 

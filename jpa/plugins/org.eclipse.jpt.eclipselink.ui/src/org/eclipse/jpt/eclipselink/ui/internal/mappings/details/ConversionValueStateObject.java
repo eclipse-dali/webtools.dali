@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 import java.util.Collection;
 import java.util.List;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.NewNameDialog;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.utility.internal.node.Node;

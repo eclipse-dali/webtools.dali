@@ -13,7 +13,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
@@ -21,7 +20,6 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
-
 import org.eclipse.jpt.utility.internal.swing.TableCellEditorAdapter.ImmediateEditListener;
 
 /**

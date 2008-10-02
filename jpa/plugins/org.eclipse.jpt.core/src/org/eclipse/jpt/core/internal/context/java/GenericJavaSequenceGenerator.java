@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;

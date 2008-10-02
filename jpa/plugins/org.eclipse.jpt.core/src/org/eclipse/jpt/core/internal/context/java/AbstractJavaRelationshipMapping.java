@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;

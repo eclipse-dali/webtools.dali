@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.core.JpaDataSource;

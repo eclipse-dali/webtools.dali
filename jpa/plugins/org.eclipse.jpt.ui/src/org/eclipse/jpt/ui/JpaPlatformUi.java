@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui;
 import java.util.Iterator;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;

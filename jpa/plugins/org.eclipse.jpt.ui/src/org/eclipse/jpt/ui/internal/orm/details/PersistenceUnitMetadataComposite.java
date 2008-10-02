@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.orm.details;
 
 import java.util.Collection;
-
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;

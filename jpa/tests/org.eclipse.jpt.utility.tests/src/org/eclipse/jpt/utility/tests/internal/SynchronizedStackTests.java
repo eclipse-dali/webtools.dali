@@ -10,7 +10,6 @@
 package org.eclipse.jpt.utility.tests.internal;
 
 import java.util.EmptyStackException;
-
 import org.eclipse.jpt.utility.internal.SimpleStack;
 import org.eclipse.jpt.utility.internal.Stack;
 import org.eclipse.jpt.utility.internal.SynchronizedStack;

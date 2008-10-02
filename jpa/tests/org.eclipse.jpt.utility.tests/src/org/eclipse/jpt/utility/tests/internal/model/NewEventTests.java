@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model;
 
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
@@ -16,8 +17,6 @@ import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.ChangeEvent;
 import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 /**
  * test what it takes to add a new type of event to

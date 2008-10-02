@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.tests.extension.resource;
 
 import java.util.List;
-
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;

@@ -14,7 +14,6 @@ package org.eclipse.jpt.ui.internal.wizards.entity;
 import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
 import org.eclipse.osgi.util.NLS;
 
 public class EntityWizardMsg extends NLS {	

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.mappings.db;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.db.Catalog;

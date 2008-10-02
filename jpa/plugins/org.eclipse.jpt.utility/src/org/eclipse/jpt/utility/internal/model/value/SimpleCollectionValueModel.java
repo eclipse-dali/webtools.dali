@@ -11,7 +11,6 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;

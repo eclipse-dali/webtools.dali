@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.internal.context;
 
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;

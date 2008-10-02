@@ -15,6 +15,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConversionValue;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkNamedConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;

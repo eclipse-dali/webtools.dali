@@ -12,7 +12,6 @@ package org.eclipse.jpt.db.internal;
 import java.text.Collator;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Sequence;
 import org.eclipse.jpt.db.Table;

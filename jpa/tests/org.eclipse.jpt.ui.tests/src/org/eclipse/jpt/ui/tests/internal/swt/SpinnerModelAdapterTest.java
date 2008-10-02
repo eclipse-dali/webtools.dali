@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.tests.internal.swt;
 
+import static org.junit.Assert.*;
 import org.eclipse.jpt.ui.internal.swt.SpinnerModelAdapter;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -21,8 +22,6 @@ import org.eclipse.swt.widgets.Spinner;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 @SuppressWarnings("nls")
 public class SpinnerModelAdapterTest {

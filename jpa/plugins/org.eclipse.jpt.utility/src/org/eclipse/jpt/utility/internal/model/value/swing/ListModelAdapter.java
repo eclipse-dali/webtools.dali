@@ -11,7 +11,6 @@ package org.eclipse.jpt.utility.internal.model.value.swing;
 
 import javax.swing.AbstractListModel;
 import javax.swing.event.ListDataListener;
-
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTListChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;

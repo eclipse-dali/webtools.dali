@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.BidiTransformer;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.CachingTransformationWritablePropertyValueModel;
@@ -18,8 +19,6 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 @SuppressWarnings("nls")
 public class CachingTransformationWritablePropertyValueModelTests extends TestCase {

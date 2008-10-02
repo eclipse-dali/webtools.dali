@@ -11,7 +11,6 @@ package org.eclipse.jpt.utility.internal.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-
 import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -25,7 +24,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
 import org.eclipse.jpt.utility.internal.SimpleStringMatcher;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.StringMatcher;

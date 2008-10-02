@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.ui.internal.platform;
 
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;

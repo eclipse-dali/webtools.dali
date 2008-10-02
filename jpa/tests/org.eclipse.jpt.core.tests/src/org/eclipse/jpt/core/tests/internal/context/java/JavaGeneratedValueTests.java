@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.context.GeneratedValue;
 import org.eclipse.jpt.core.context.GenerationType;

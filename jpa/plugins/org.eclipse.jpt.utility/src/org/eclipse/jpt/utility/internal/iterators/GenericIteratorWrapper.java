@@ -10,7 +10,6 @@
 package org.eclipse.jpt.utility.internal.iterators;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**

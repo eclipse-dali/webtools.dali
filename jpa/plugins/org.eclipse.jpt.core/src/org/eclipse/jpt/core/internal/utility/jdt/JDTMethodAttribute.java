@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.utility.jdt;
 import java.beans.Introspector;
 import java.util.Arrays;
 import java.util.List;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IMethodBinding;

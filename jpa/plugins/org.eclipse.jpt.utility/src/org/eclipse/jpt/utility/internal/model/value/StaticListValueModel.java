@@ -12,7 +12,6 @@ package org.eclipse.jpt.utility.internal.model.value;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;

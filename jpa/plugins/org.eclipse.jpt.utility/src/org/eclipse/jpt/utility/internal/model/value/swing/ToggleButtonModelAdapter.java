@@ -11,10 +11,8 @@ package org.eclipse.jpt.utility.internal.model.value.swing;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
-
 import javax.swing.JToggleButton.ToggleButtonModel;
 import javax.swing.event.ChangeListener;
-
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;

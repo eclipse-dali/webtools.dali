@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.utility.jdt;
 
 import java.util.Arrays;
-
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;

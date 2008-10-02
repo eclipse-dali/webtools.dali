@@ -10,7 +10,6 @@
 package org.eclipse.jpt.utility.internal;
 
 import java.io.Serializable;
-
 import org.eclipse.jpt.utility.Command;
 
 /**

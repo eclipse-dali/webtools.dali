@@ -11,10 +11,8 @@ package org.eclipse.jpt.utility.internal.model.value.swing;
 
 import java.util.Arrays;
 import java.util.List;
-
 import javax.swing.SpinnerListModel;
 import javax.swing.event.ChangeListener;
-
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;

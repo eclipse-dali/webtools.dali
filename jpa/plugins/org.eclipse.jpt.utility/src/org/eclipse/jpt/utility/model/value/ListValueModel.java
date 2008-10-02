@@ -11,7 +11,6 @@ package org.eclipse.jpt.utility.model.value;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.utility.model.Model;
 
 /**

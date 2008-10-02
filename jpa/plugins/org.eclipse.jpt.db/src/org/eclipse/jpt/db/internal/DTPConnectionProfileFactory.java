@@ -11,7 +11,6 @@ package org.eclipse.jpt.db.internal;
 
 import java.util.Iterator;
 import java.util.Vector;
-
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.IProfileListener1;
 import org.eclipse.datatools.connectivity.ProfileManager;

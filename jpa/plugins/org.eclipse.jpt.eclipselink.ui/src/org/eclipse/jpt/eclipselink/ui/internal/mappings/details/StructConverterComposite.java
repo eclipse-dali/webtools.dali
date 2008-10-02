@@ -10,6 +10,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkNamedConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;

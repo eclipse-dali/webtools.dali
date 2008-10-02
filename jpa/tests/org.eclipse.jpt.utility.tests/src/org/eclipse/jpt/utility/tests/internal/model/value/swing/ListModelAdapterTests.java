@@ -16,9 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
 import javax.swing.ListModel;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.Bag;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.HashBag;
@@ -30,8 +29,6 @@ import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.model.value.CoordinatedList;
-
-import junit.framework.TestCase;
 
 public class ListModelAdapterTests extends TestCase {
 

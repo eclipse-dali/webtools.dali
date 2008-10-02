@@ -11,7 +11,6 @@ package org.eclipse.jpt.utility.tests.internal;
 
 import java.io.StringWriter;
 import java.io.Writer;
-
 import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.StringTools;
 

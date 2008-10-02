@@ -9,11 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.model.value.NullCollectionValueModel;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 public class NullCollectionValueModelTests extends TestCase {
 	private CollectionValueModel<Object> collectionHolder;
