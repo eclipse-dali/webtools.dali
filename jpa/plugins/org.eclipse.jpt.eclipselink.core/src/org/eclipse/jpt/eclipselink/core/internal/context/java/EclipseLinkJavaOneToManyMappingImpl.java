@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToManyMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -18,6 +20,7 @@ import org.eclipse.jpt.eclipselink.core.context.PrivateOwnable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwnable;
 import org.eclipse.jpt.eclipselink.core.resource.java.PrivateOwnedAnnotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMapping implements EclipseLinkOneToManyMapping
 {
@@ -27,8 +30,8 @@ public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMap
 	
 	public EclipseLinkJavaOneToManyMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
-		this.joinFetchable = new EclipseLinkJavaJoinFetchable(parent);//TODO build with jpaFactory
-		this.privateOwnable = new EclipseLinkJavaPrivateOwnable(parent);
+		this.joinFetchable = getJpaFactory().buildJavaJoinFetchable(parent);
+		this.privateOwnable = getJpaFactory().buildJavaPrivateOwnable(parent);
 	}
 	
 	@Override
@@ -72,5 +75,12 @@ public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMap
 		super.update(jrpa);
 		this.joinFetchable.update(jrpa);
 		this.privateOwnable.update(jrpa);
+	}
+		
+	@Override
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
+		this.joinFetchable.validate(messages, astRoot);
+		this.privateOwnable.validate(messages, astRoot);
 	}
 }

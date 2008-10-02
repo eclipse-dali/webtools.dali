@@ -9,11 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaManyToOneMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaManyToOneMappingImpl extends GenericJavaManyToOneMapping implements EclipseLinkRelationshipMapping
 {
@@ -22,9 +26,14 @@ public class EclipseLinkJavaManyToOneMappingImpl extends GenericJavaManyToOneMap
 
 	public EclipseLinkJavaManyToOneMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
-		this.joinFetchable = new EclipseLinkJavaJoinFetchable(parent);
+		this.joinFetchable = getJpaFactory().buildJavaJoinFetchable(parent);
 	}
 
+	@Override
+	protected EclipseLinkJpaFactory getJpaFactory() {
+		return (EclipseLinkJpaFactory) super.getJpaFactory();
+	}
+	
 	public JavaJoinFetchable getJoinFetchable() {
 		return this.joinFetchable;
 	}
@@ -40,4 +49,12 @@ public class EclipseLinkJavaManyToOneMappingImpl extends GenericJavaManyToOneMap
 		super.update(jrpa);
 		this.joinFetchable.update(jrpa);
 	}
+	
+	
+	@Override
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
+		this.joinFetchable.validate(messages, astRoot);
+	}
+
 }

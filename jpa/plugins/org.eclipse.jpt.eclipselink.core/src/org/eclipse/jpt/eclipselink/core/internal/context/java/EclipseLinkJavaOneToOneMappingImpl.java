@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToOneMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -17,6 +19,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwnable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwnable;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaOneToOneMappingImpl extends GenericJavaOneToOneMapping implements EclipseLinkOneToOneMapping
 {
@@ -26,8 +29,8 @@ public class EclipseLinkJavaOneToOneMappingImpl extends GenericJavaOneToOneMappi
 
 	public EclipseLinkJavaOneToOneMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
-		this.joinFetchable = new EclipseLinkJavaJoinFetchable(parent);
-		this.privateOwnable = new EclipseLinkJavaPrivateOwnable(parent);
+		this.joinFetchable = getJpaFactory().buildJavaJoinFetchable(parent);
+		this.privateOwnable = getJpaFactory().buildJavaPrivateOwnable(parent);
 	}
 	
 	@Override
@@ -56,4 +59,12 @@ public class EclipseLinkJavaOneToOneMappingImpl extends GenericJavaOneToOneMappi
 		this.joinFetchable.update(jrpa);
 		this.privateOwnable.update(jrpa);
 	}
+	
+	@Override
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
+		this.joinFetchable.validate(messages, astRoot);
+		this.privateOwnable.validate(messages, astRoot);
+	}
+
 }
