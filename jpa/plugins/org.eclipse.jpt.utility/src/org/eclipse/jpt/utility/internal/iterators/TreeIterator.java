@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.iterators;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -34,7 +33,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 public class TreeIterator<E>
 	implements Iterator<E>
 {
-	private final Collection<Iterator<? extends E>> iterators;
+	private final LinkedList<Iterator<? extends E>> iterators;
 	private final Midwife<E> midwife;
 	private Iterator<? extends E> currentIterator;
 
@@ -164,7 +163,7 @@ public class TreeIterator<E>
 			}
 			@Override
 			public String toString() {
-				return "TreeIterator.Midwife.Null";
+				return "TreeIterator.Midwife.Null"; //$NON-NLS-1$
 			}
 		}
 
@@ -186,7 +185,7 @@ public class TreeIterator<E>
 			}
 			@Override
 			public String toString() {
-				return "TreeIterator.Midwife.Disabled";
+				return "TreeIterator.Midwife.Disabled"; //$NON-NLS-1$
 			}
 		}
 
