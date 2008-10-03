@@ -17,6 +17,7 @@ import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -204,7 +205,7 @@ public class ChangeSupport
 				throw new IllegalArgumentException("listener not registered"); //$NON-NLS-1$
 			}
 			if ( ! gll.removeListener(listener)) {  // leave the GLL, even if it is empty?
-				throw new IllegalArgumentException("listener not registered"); //$NON-NLS-1$
+				throw new IllegalArgumentException("listener not registered: " + listener); //$NON-NLS-1$
 			}
 		}
 	}
