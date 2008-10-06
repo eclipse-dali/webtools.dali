@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -24,7 +24,7 @@ public class EclipseLinkJavaPrivateOwnable extends AbstractJavaJpaContextNode im
 	
 	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
 	
-	public EclipseLinkJavaPrivateOwnable(JavaPersistentAttribute parent) {
+	public EclipseLinkJavaPrivateOwnable(JavaAttributeMapping parent) {
 		super(parent);
 	}
 	

@@ -194,11 +194,11 @@ public class EclipseLinkJpaFactoryImpl extends GenericJpaFactory
 		return new EclipseLinkJavaConversionValueImpl(parent);
 	}
 	
-	public JavaJoinFetchable buildJavaJoinFetchable(JavaPersistentAttribute parent) {
+	public JavaJoinFetchable buildJavaJoinFetchable(JavaAttributeMapping parent) {
 		return new EclipseLinkJavaJoinFetchable(parent);
 	}
 	
-	public JavaPrivateOwnable buildJavaPrivateOwnable(JavaPersistentAttribute parent) {
+	public JavaPrivateOwnable buildJavaPrivateOwnable(JavaAttributeMapping parent) {
 		return new EclipseLinkJavaPrivateOwnable(parent);
 	}
 	

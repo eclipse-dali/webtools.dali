@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -28,7 +28,7 @@ public class EclipseLinkJavaJoinFetchable extends AbstractJavaJpaContextNode imp
 	
 	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
 	
-	public EclipseLinkJavaJoinFetchable(JavaPersistentAttribute parent) {
+	public EclipseLinkJavaJoinFetchable(JavaAttributeMapping parent) {
 		super(parent);
 	}
 

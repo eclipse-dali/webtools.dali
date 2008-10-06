@@ -26,7 +26,7 @@ public class EclipseLinkJavaManyToManyMappingImpl extends GenericJavaManyToManyM
 
 	public EclipseLinkJavaManyToManyMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
-		this.joinFetchable = getJpaFactory().buildJavaJoinFetchable(parent);
+		this.joinFetchable = getJpaFactory().buildJavaJoinFetchable(this);
 	}
 
 	@Override

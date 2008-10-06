@@ -29,8 +29,8 @@ public class EclipseLinkJavaOneToOneMappingImpl extends GenericJavaOneToOneMappi
 
 	public EclipseLinkJavaOneToOneMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
-		this.joinFetchable = getJpaFactory().buildJavaJoinFetchable(parent);
-		this.privateOwnable = getJpaFactory().buildJavaPrivateOwnable(parent);
+		this.joinFetchable = getJpaFactory().buildJavaJoinFetchable(this);
+		this.privateOwnable = getJpaFactory().buildJavaPrivateOwnable(this);
 	}
 	
 	@Override

@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.core;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -64,9 +63,9 @@ public interface EclipseLinkJpaFactory extends JpaFactory
 	
 	EclipseLinkJavaConversionValue buildJavaConversionValue(EclipseLinkJavaObjectTypeConverter parent);
 	
-	JavaJoinFetchable buildJavaJoinFetchable(JavaPersistentAttribute parent);
+	JavaJoinFetchable buildJavaJoinFetchable(JavaAttributeMapping parent);
 	
-	JavaPrivateOwnable buildJavaPrivateOwnable(JavaPersistentAttribute parent);
+	JavaPrivateOwnable buildJavaPrivateOwnable(JavaAttributeMapping parent);
 	
 	JavaConverterHolder buildJavaConverterHolder(JavaTypeMapping parent);
 	
