@@ -444,6 +444,9 @@ public class GenericJavaIdMapping
 		}
 		this.getPersistenceUnit().validateGeneratedValue(this, messages, astRoot);
 		this.getPersistenceUnit().validateGenerators(this, messages, astRoot);
+		if (this.specifiedConverter != null) {
+			this.specifiedConverter.validate(messages, astRoot);
+		}
 	}
 		
 	protected void validateColumn(List<IMessage> messages, CompilationUnit astRoot) {

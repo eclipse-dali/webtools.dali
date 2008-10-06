@@ -287,6 +287,9 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 		if (this.ownerIsEntity() && this.connectionProfileIsActive()) {
 			this.validateColumn(messages, astRoot);
 		}
+		if (this.specifiedConverter != null) {
+			this.specifiedConverter.validate(messages, astRoot);
+		}
 	}
 	
 	protected void validateColumn(List<IMessage> messages, CompilationUnit astRoot) {
