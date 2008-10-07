@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.eclipselink.core.ddlgen;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.100.qualifier
 Bundle-ClassPath: lib/persistence.jar
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.jpt.eclipselink.core;bundle-version="[1.0.0,2.0.0)"
