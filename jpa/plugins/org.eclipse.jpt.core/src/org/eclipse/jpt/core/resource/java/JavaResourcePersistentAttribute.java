@@ -36,12 +36,18 @@ public interface JavaResourcePersistentAttribute extends JavaResourcePersistentM
 	boolean typeIsBasic();
 		String TYPE_IS_BASIC_PROPERTY = "typeIsBasicProperty";
 	
+	boolean typeIsSerializable();
+		String TYPE_IS_SERIALIZABLE_PROPERTY = "typeIsSerializableProperty";
+		
+	boolean typeIsDateOrCalendar();
+		String TYPE_IS_DATE_OR_CALENDAR_PROPERTY = "typeIsDateOrCalendarProperty";
+	
 	boolean isFinal();
 		String FINAL_PROPERTY = "finalProperty";
 	
 	boolean isPublic();
 		String PUBLIC_PROPERTY = "publicProperty";
-	
+
 	/**
 	 * Return true if the attribute type is a container:
 	 * java.util.Collection

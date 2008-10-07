@@ -18,6 +18,7 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTFieldAttribute;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTMethodAttribute;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -39,6 +40,10 @@ public class JavaResourcePersistentAttributeImpl
 	private String qualifiedTypeName;
 	
 	private boolean typeIsContainer;
+	
+	private boolean typeIsSerializable;
+	
+	private boolean typeIsDateOrCalendar;
 	
 	private String qualifiedReferenceEntityTypeName;
 	
@@ -212,6 +217,26 @@ public class JavaResourcePersistentAttributeImpl
 		this.typeIsBasic = newTypeIsBasic;
 		firePropertyChanged(TYPE_IS_BASIC_PROPERTY, oldTypeIsBasic, newTypeIsBasic);
 	}
+	
+	public boolean typeIsSerializable() {
+		return this.typeIsSerializable;
+	}
+	
+	protected void setTypeIsSerializable(boolean newTypeIsSerializable) {
+		boolean oldTypeIsSerializable = this.typeIsSerializable;
+		this.typeIsSerializable = newTypeIsSerializable;
+		firePropertyChanged(TYPE_IS_SERIALIZABLE_PROPERTY, oldTypeIsSerializable, newTypeIsSerializable);
+	}
+	
+	public boolean typeIsDateOrCalendar() {
+		return this.typeIsDateOrCalendar;
+	}
+	
+	protected void setTypeIsDateOrCalendar(boolean newTypeIsDateOrCalendar) {
+		boolean oldTypeIsDateOrCalendar = this.typeIsDateOrCalendar;
+		this.typeIsDateOrCalendar = newTypeIsDateOrCalendar;
+		firePropertyChanged(TYPE_IS_DATE_OR_CALENDAR_PROPERTY, oldTypeIsDateOrCalendar, newTypeIsDateOrCalendar);
+	}
 
 	public String getQualifiedTypeName() {
 		return this.qualifiedTypeName;
@@ -263,6 +288,8 @@ public class JavaResourcePersistentAttributeImpl
 		this.typeIsContainer = this.typeIsContainer(astRoot);
 		this.final_ = this.isFinal(astRoot);
 		this.public_ = this.isPublic(astRoot);
+		this.typeIsSerializable = this.typeIsSerializable(astRoot);
+		this.typeIsDateOrCalendar = this.typeIsDateOrCalendar(astRoot);
 	}
 
 	@Override
@@ -275,6 +302,8 @@ public class JavaResourcePersistentAttributeImpl
 		this.setTypeIsContainer(this.typeIsContainer(astRoot));
 		this.setFinal(this.isFinal(astRoot));
 		this.setPublic(this.isPublic(astRoot));
+		this.setTypeIsSerializable(this.typeIsSerializable(astRoot));
+		this.setTypeIsDateOrCalendar(this.typeIsDateOrCalendar(astRoot));
 	}
 
 	@Override
@@ -285,6 +314,8 @@ public class JavaResourcePersistentAttributeImpl
 		this.setQualifiedReferenceEntityTypeName(this.qualifiedReferenceEntityTypeName(astRoot));
 		this.setQualifiedReferenceEntityElementTypeName(this.qualifiedReferenceEntityElementTypeName(astRoot));
 		this.setTypeIsContainer(this.typeIsContainer(astRoot));
+		this.setTypeIsSerializable(this.typeIsSerializable(astRoot));
+		this.setTypeIsDateOrCalendar(this.typeIsDateOrCalendar(astRoot));
 	}
 
 	protected boolean typeIsBasic(CompilationUnit astRoot) {
@@ -299,6 +330,14 @@ public class JavaResourcePersistentAttributeImpl
 	protected boolean isPublic(CompilationUnit astRoot) {
 		IBinding binding = getMember().getBinding(astRoot);	
 		return (binding == null) ? false : Modifier.isPublic(binding.getModifiers());
+	}
+
+	protected boolean typeIsSerializable(CompilationUnit astRoot) {
+		return typeImplementsSerializable(this.getMember().getTypeBinding(astRoot), astRoot.getAST());
+	}
+
+	protected boolean typeIsDateOrCalendar(CompilationUnit astRoot) {
+		return typeImplementsDateOrCalendar(this.getMember().getTypeBinding(astRoot));
 	}
 	
 	protected String qualifiedReferenceEntityTypeName(CompilationUnit astRoot) {
@@ -477,6 +516,31 @@ public class JavaResourcePersistentAttributeImpl
 	}
 
 	private static final String SERIALIZABLE_TYPE_NAME = java.io.Serializable.class.getName();
+
+	/**
+	 * Return whether the specified type implements java.util.Date or java.util.Calendar.
+	 */
+	private static boolean typeImplementsDateOrCalendar(ITypeBinding typeBinding) {
+		return typeImplementsDate(typeBinding) || typeImplementsCalendar(typeBinding);
+	}
+
+	/**
+	 * Return whether the specified type implements java.util.Date.
+	 */
+	private static boolean typeImplementsDate(ITypeBinding typeBinding) {
+		return JDTTools.findTypeInHierarchy(typeBinding, DATE_TYPE_NAME) != null;
+	}
+
+	private static final String DATE_TYPE_NAME = java.util.Date.class.getName();
+	
+	/**
+	 * Return whether the specified type implements java.util.Calendar.
+	 */
+	private static boolean typeImplementsCalendar(ITypeBinding typeBinding) {
+		return JDTTools.findTypeInHierarchy(typeBinding, CALENDAR_TYPE_NAME) != null;
+	}
+
+	private static final String CALENDAR_TYPE_NAME = java.util.Calendar.class.getName();
 	
 	@Override
 	public void toString(StringBuilder sb) {
