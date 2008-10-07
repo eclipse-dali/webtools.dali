@@ -16,11 +16,13 @@ import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.CacheImpl.CacheAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.ConvertImpl.ConvertAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.ConverterImpl.ConverterAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.CustomizerImpl.CustomizerAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.ExistenceCheckingImpl.ExistenceCheckingAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.JoinFetchImpl.JoinFetchAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.MutableImpl.MutableAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.ObjectTypeConverterImpl.ObjectTypeConverterAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.PrivateOwnedImpl.PrivateOwnedAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.ReadOnlyImpl.ReadOnlyAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.ReadTransformerImpl.ReadTransformerAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.StructConverterImpl.StructConverterAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.TransformationImpl.TransformationAnnotationDefinition;
@@ -36,8 +38,10 @@ public class EclipseLinkJpaAnnotationProvider
 		super.addTypeAnnotationDefinitionsTo(definitions);
 		definitions.add(CacheAnnotationDefinition.instance());
 		definitions.add(ConverterAnnotationDefinition.instance());
+		definitions.add(CustomizerAnnotationDefinition.instance());
 		definitions.add(ExistenceCheckingAnnotationDefinition.instance());
 		definitions.add(ObjectTypeConverterAnnotationDefinition.instance());
+		definitions.add(ReadOnlyAnnotationDefinition.instance());
 		definitions.add(StructConverterAnnotationDefinition.instance());		
 		definitions.add(TypeConverterAnnotationDefinition.instance());		
 	}

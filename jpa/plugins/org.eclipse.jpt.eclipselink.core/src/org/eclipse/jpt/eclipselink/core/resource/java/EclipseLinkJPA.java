@@ -70,6 +70,9 @@ public interface EclipseLinkJPA {
 	String CONVERTER = PACKAGE_ + "Converter";
 		String CONVERTER__NAME = "name";
 		String CONVERTER__CONVERTER_CLASS = "converterClass";
+
+	String CUSTOMIZER = PACKAGE_ + "Customizer";
+		String CUSTOMIZER__VALUE = "value";
 	
 	String EXISTENCE_CHECKING = PACKAGE_ + "ExistenceChecking";
 		String EXISTENCE_CHECKING__VALUE = "value";
@@ -100,6 +103,8 @@ public interface EclipseLinkJPA {
 		String OBJECT_TYPE_CONVERTER__DEFAULT_OBJECT_VALUE = "defaultObjectValue";
 
 	String PRIVATE_OWNED = PACKAGE_ + "PrivateOwned";
+	
+	String READ_ONLY = PACKAGE_ + "ReadOnly";
 	
 	String READ_TRANSFORMER = PACKAGE_ + "ReadTransformer";
 		String READ_TRANSFORMER__TRANSFORMER_CLASS = "transformerClass";
