@@ -15,10 +15,11 @@ import org.eclipse.jpt.core.context.ConvertibleMapping;
 import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkVersionMapping;
+import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.ColumnComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TemporalTypeComposite;
@@ -84,11 +85,21 @@ public class EclipseLinkVersionMappingComposite extends FormPane<VersionMapping>
 
 	@Override
 	protected void initializeLayout(Composite container) {
+		initializeGeneralPane(container);
+		initializeConversionPane(container);
+	}
+	
+	private void initializeGeneralPane(Composite container) {
+		int groupBoxMargin = getGroupBoxMargin();
 
 		// Column widgets
 		new ColumnComposite(this, buildColumnHolder(), container);
-
-		initializeConversionPane(container);
+		
+		// Align the widgets under the ColumnComposite
+		container = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+		
+		// Mutable widgets
+		new MutableComposite(this, buildMutableHolder(), container);
 	}
 	
 	private void initializeConversionPane(Composite container) {
@@ -214,5 +225,15 @@ public class EclipseLinkVersionMappingComposite extends FormPane<VersionMapping>
 			}
 		};
 	}
+	
+	private PropertyValueModel<Mutable> buildMutableHolder() {
+		return new PropertyAspectAdapter<VersionMapping, Mutable>(getSubjectHolder()) {
+			@Override
+			protected Mutable buildValue_() {
+				return ((EclipseLinkVersionMapping) this.subject).getMutable();
+			}
+		};
+	}
+	
 
 }

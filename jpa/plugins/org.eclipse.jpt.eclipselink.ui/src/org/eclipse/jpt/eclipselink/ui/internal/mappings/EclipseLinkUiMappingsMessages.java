@@ -89,6 +89,11 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	public static String JoinFetchComposite_inner;
 	public static String JoinFetchComposite_outer;	
 	
+	public static String MutableComposite_mutableLabel;
+	public static String MutableComposite_mutableLabelDefault;
+	public static String MutableComposite_true;
+	public static String MutableComposite_false;
+	
 	public static String ObjectTypeConverterComposite_dataTypeLabel;
 	public static String ObjectTypeConverterComposite_objectTypeLabel;
 	public static String ObjectTypeConverterComposite_conversionValueEdit;

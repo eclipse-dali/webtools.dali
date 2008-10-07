@@ -9,19 +9,26 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaIdMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaIdMapping;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaMutable;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkJavaIdMappingImpl extends GenericJavaIdMapping
+public class EclipseLinkJavaIdMappingImpl extends GenericJavaIdMapping implements EclipseLinkJavaIdMapping
 {
+	protected final JavaMutable mutable;
 	
 	public EclipseLinkJavaIdMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
+		this.mutable = getJpaFactory().buildJavaMutable(this);
 	}
 	
 	@Override
@@ -52,5 +59,35 @@ public class EclipseLinkJavaIdMappingImpl extends GenericJavaIdMapping
 		}
 		return null;
 	}
+	
+	
+	//************ EclipselinkJavaIdMapping implementation ****************
+	
+	public JavaMutable getMutable() {
+		return this.mutable;
+	}
+	
+	
+	//************ initialization/update ****************
 
+	@Override
+	public void initialize(JavaResourcePersistentAttribute jrpa) {
+		super.initialize(jrpa);
+		this.mutable.initialize(jrpa);
+	}
+	
+	@Override
+	public void update(JavaResourcePersistentAttribute jrpa) {
+		super.update(jrpa);
+		this.mutable.update(jrpa);
+	}
+	
+	
+	//************ validation ****************
+	
+	@Override
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
+		this.mutable.validate(messages, astRoot);
+	}
 }

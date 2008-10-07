@@ -28,6 +28,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaStructConver
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaMutable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwnable;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkOrmXml;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
@@ -69,6 +70,7 @@ public interface EclipseLinkJpaFactory extends JpaFactory
 	
 	JavaConverterHolder buildJavaConverterHolder(JavaTypeMapping parent);
 	
+	JavaMutable buildJavaMutable(JavaAttributeMapping parent);
 	
 	//********* covariant overrides ***********
 	

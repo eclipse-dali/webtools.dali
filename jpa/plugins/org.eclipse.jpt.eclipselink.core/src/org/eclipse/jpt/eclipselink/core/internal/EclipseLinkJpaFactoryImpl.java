@@ -47,6 +47,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaStructConver
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaMutable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwnable;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkOrmXml;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
@@ -63,6 +64,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaJoi
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaManyToManyMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaManyToOneMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaMappedSuperclassImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaMutable;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaObjectTypeConverterImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingImpl;
@@ -204,5 +206,9 @@ public class EclipseLinkJpaFactoryImpl extends GenericJpaFactory
 	
 	public JavaConverterHolder buildJavaConverterHolder(JavaTypeMapping parent) {
 		return new EclipseLinkJavaConverterHolder(parent);
+	}
+	
+	public JavaMutable buildJavaMutable(JavaAttributeMapping parent) {
+		return new EclipseLinkJavaMutable(parent);
 	}
 }

@@ -15,11 +15,12 @@ import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.ConvertibleMapping;
 import org.eclipse.jpt.core.context.EnumeratedConverter;
 import org.eclipse.jpt.core.context.TemporalConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
+import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.ColumnComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.EnumTypeComposite;
@@ -117,8 +118,11 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 
 		new FetchTypeComposite(this, container);
 		new OptionalComposite(this, addSubPane(container, 4));
-
+		
+		// Mutable widgets
+		new MutableComposite(this, buildMutableHolder(), container);
 	}
+	
 	private void initializeConversionPane(Composite container) {
 
 		container = addCollapsableSection(
@@ -181,6 +185,15 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 			@Override
 			protected Column transform_(BasicMapping value) {
 				return value.getColumn();
+			}
+		};
+	}
+	
+	private PropertyValueModel<Mutable> buildMutableHolder() {
+		return new PropertyAspectAdapter<BasicMapping, Mutable>(getSubjectHolder()) {
+			@Override
+			protected Mutable buildValue_() {
+				return ((EclipseLinkBasicMapping) this.subject).getMutable();
 			}
 		};
 	}
