@@ -37,6 +37,7 @@ public interface EclipseLinkJavaEntity extends EclipseLinkEntity, JavaEntity
 
 	EclipseLinkJavaCaching getCaching();
 
+	JavaReadOnly getReadOnly();
 	
 	// included these to prevent warnings on the implementation
 	ListIterator<JavaSecondaryTable> secondaryTables();	

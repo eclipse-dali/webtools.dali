@@ -26,7 +26,9 @@ public class JptEclipseLinkCoreJavaContextModelTests extends TestCase
 		suite.addTestSuite(EclipseLinkJavaCachingTests.class);
 		suite.addTestSuite(EclipseLinkJavaConvertTests.class);
 		suite.addTestSuite(EclipseLinkJavaConverterTests.class);
+		suite.addTestSuite(EclipseLinkJavaEntityTests.class);
 		suite.addTestSuite(EclipseLinkJavaIdMappingTests.class);
+		suite.addTestSuite(EclipseLinkJavaMappedSuperclassTests.class);
 		suite.addTestSuite(EclipseLinkJavaObjectTypeConverterTests.class);
 		suite.addTestSuite(EclipseLinkJavaOneToManyMappingTests.class);
 		suite.addTestSuite(EclipseLinkJavaOneToOneMappingTests.class);		

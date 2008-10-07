@@ -11,10 +11,12 @@ package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
+import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkMappedSuperclassComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ReadOnlyComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.IdClassComposite;
@@ -54,6 +56,7 @@ public class EclipseLinkJavaMappedSuperclassComposite extends EclipseLinkMappedS
 		
 		initializeCachingPane(container);
 		initializeConvertersPane(container);
+		initializeAdvancedPane(container);
 	}
 	
 	protected void initializeConvertersPane(Composite container) {
@@ -71,6 +74,27 @@ public class EclipseLinkJavaMappedSuperclassComposite extends EclipseLinkMappedS
 			protected JavaConverterHolder buildValue_() {
 				return ((EclipseLinkJavaMappedSuperclass) this.subject).getConverterHolder();
 			}	
+		};
+	}
+	
+	protected void initializeAdvancedPane(Composite container) {
+
+		container = addCollapsableSection(
+			container,
+			EclipseLinkUiMappingsMessages.EclipseLinkJavaEntityComposite_advanced
+		);
+
+		
+		// Read only widgets
+		new ReadOnlyComposite(this, buildReadOnlyHolder(), container);
+	}
+	
+	private PropertyValueModel<ReadOnly> buildReadOnlyHolder() {
+		return new PropertyAspectAdapter<JavaMappedSuperclass, ReadOnly>(getSubjectHolder()) {
+			@Override
+			protected ReadOnly buildValue_() {
+				return ((EclipseLinkMappedSuperclass) this.subject).getReadOnly();
+			}
 		};
 	}
 

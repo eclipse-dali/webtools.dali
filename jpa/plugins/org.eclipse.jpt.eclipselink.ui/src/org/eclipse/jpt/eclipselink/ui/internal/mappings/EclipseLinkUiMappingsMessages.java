@@ -28,9 +28,11 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	public static String CacheTypeComposite_hard_weak;
 	public static String CacheTypeComposite_cache;
 	public static String CacheTypeComposite_none;
+	public static String EclipseLinkJavaEntityComposite_advanced;
 	public static String EclipseLinkJavaEntityComposite_caching;
 	public static String EclipseLinkJavaEntityComposite_converters;
 	public static String EclipseLinkJavaEmbeddableComposite_converters;
+	public static String EclipseLinkJavaMappedSuperclassComposite_advanced;
 	public static String EclipseLinkJavaMappedSuperclassComposite_converters;
 	public static String EclipseLinkMappedSuperclassComposite_caching;
 	
@@ -115,6 +117,8 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	public static String ConversionValueStateObject_dataValueAlreadyExists;
 	
 	public static String PrivateOwnedComposite_privateOwnedLabel;
+	
+	public static String ReadOnlyComposite_readOnlyLabel;
 	
 	public static String TypeConverterComposite_dataTypeLabel;
 	public static String TypeConverterComposite_objectTypeLabel;

@@ -9,10 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context.java;
 
-import java.util.Iterator;
-import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
+import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 
 /**
  * 
@@ -22,21 +21,20 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * @version 2.1
- * @since 2.1
  */
-public interface EclipseLinkJavaMappedSuperclass extends EclipseLinkMappedSuperclass, JavaMappedSuperclass
+public interface JavaReadOnly extends JavaJpaContextNode, ReadOnly
 {
-	JavaConverterHolder getConverterHolder();
-
-	EclipseLinkJavaCaching getCaching();
 	
-	JavaReadOnly getReadOnly();
-
-
-	//********* covariant overrides ***********
+	/**
+	 * Initialize the JavaReadOnly context model object to match the ReadOnlyAnnotation 
+	 * resource model object. This should be called immediately after object creation.
+	 */
+	void initialize(JavaResourcePersistentType jrpt);
 	
-	Iterator<JavaPersistentAttribute> overridableAttributes();
-	Iterator<JavaPersistentAttribute> overridableAssociations();
+	/**
+	 * Update the JavaReadOnly context model object to match the ReadOnlyAnnotation 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(JavaResourcePersistentType jrpt);	
+
 }

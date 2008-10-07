@@ -18,6 +18,7 @@ import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaReadOnly;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements EclipseLinkJavaEntity
@@ -26,10 +27,13 @@ public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements Ecli
 	
 	protected final JavaConverterHolder converterHolder;
 	
+	protected final JavaReadOnly readOnlyHolder;
+	
 	public EclipseLinkJavaEntityImpl(JavaPersistentType parent) {
 		super(parent);
 		this.eclipseLinkCaching = getJpaFactory().buildEclipseLinkJavaCaching(this);
 		this.converterHolder = getJpaFactory().buildJavaConverterHolder(this);
+		this.readOnlyHolder = getJpaFactory().buildJavaReadOnly(this);
 	}
 	
 	@Override
@@ -45,11 +49,16 @@ public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements Ecli
 		return this.converterHolder;
 	}
 	
+	public JavaReadOnly getReadOnly() {
+		return this.readOnlyHolder;
+	}
+	
 	@Override
 	public void initialize(JavaResourcePersistentType jrpt) {
 		super.initialize(jrpt);
 		this.eclipseLinkCaching.initialize(jrpt);
 		this.converterHolder.initialize(jrpt);
+		this.readOnlyHolder.initialize(jrpt);
 	}
 	
 	@Override
@@ -57,6 +66,7 @@ public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements Ecli
 		super.update(jrpt);
 		this.eclipseLinkCaching.update(jrpt);
 		this.converterHolder.update(jrpt);
+		this.readOnlyHolder.update(jrpt);
 	}
 	
 	//********** Validation ********************************************
@@ -66,5 +76,6 @@ public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements Ecli
 		super.validate(messages, astRoot);
 		this.eclipseLinkCaching.validate(messages, astRoot);
 		this.converterHolder.validate(messages, astRoot);
+		this.readOnlyHolder.validate(messages, astRoot);
 	}
 }

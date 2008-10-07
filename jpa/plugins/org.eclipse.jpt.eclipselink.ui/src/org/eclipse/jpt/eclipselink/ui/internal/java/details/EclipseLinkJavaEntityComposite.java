@@ -9,12 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
+import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
+import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CachingComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ReadOnlyComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.java.details.JavaInheritanceComposite;
 import org.eclipse.jpt.ui.internal.java.details.JavaSecondaryTablesComposite;
@@ -59,6 +63,7 @@ public class EclipseLinkJavaEntityComposite extends AbstractEntityComposite<Java
 		initializeGeneratorsPane(container);
 		initializeConvertersPane(container);
 		initializeSecondaryTablesPane(container);
+		initializeAdvancedPane(container);
 	}
 	
 	protected void initializeCachingPane(Composite container) {
@@ -112,4 +117,24 @@ public class EclipseLinkJavaEntityComposite extends AbstractEntityComposite<Java
 		new JavaInheritanceComposite(this, container);
 	}
 	
+	protected void initializeAdvancedPane(Composite container) {
+
+		container = addCollapsableSection(
+			container,
+			EclipseLinkUiMappingsMessages.EclipseLinkJavaEntityComposite_advanced
+		);
+
+		
+		// Read only widgets
+		new ReadOnlyComposite(this, buildReadOnlyHolder(), container);
+	}
+	
+	private PropertyValueModel<ReadOnly> buildReadOnlyHolder() {
+		return new PropertyAspectAdapter<Entity, ReadOnly>(getSubjectHolder()) {
+			@Override
+			protected ReadOnly buildValue_() {
+				return ((EclipseLinkEntity) this.subject).getReadOnly();
+			}
+		};
+	}
 }
