@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -61,7 +60,7 @@ import org.eclipse.wst.validation.internal.operations.ValidatorJob;
  */
 public class EclipseLinkDDLGenerator
 {
-	static public String ECLIPSELINK_DDL_GEN_JAR_VERSION = "1.0.0";	//$NON-NLS-1$
+	static public String ECLIPSELINK_DDL_GEN_JAR_VERSION = "1.0.100";	//$NON-NLS-1$
 	static public String LAUNCH_CONFIG_NAME = "EclipseLink";   //$NON-NLS-1$
 	static public String DDL_GEN_PACKAGE_NAME = "org.eclipse.jpt.eclipselink.core.ddlgen";   //$NON-NLS-1$
 	static public String ECLIPSELINK_DDL_GEN_CLASS = DDL_GEN_PACKAGE_NAME + ".Main";	  //$NON-NLS-1$
