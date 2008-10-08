@@ -190,14 +190,14 @@ public class GenerationComposite extends FormPane<IdMapping>
 		// Primary Key Generation section
 		container = addCollapsableSection(
 			container,
-			JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration,
+			JptUiMappingsMessages.IdMappingComposite_primaryKeyGenerationSection,
 			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
 		);
 
 		// Primary Key Generation check box
 		Button primaryKeyGenerationCheckBox = addCheckBox(
 			container,
-			JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration,
+			JptUiMappingsMessages.IdMappingComposite_primaryKeyGenerationCheckBox,
 			buildPrimaryKeyGenerationHolder(),
 			JpaHelpContextIds.MAPPING_PRIMARY_KEY_GENERATION
 		);
@@ -227,14 +227,14 @@ public class GenerationComposite extends FormPane<IdMapping>
 		// Sequence Generator sub-section
 		container = addCollapsableSubSection(
 			container,
-			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
+			JptUiMappingsMessages.IdMappingComposite_sequenceGeneratorSection,
 			sequenceGeneratorExpansionStateHolder
 		);
 
 		// Sequence Generator check box
 		Button sequenceGeneratorCheckBox = addCheckBox(
 			container,
-			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
+			JptUiMappingsMessages.IdMappingComposite_sequenceGeneratorCheckBox,
 			buildSequenceGeneratorBooleanHolder(),
 			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR
 		);
@@ -251,13 +251,13 @@ public class GenerationComposite extends FormPane<IdMapping>
 		// Table Generator sub-section
 		container = addCollapsableSubSection(
 			container,
-			JptUiMappingsMessages.IdMappingComposite_tableGenerator,
+			JptUiMappingsMessages.IdMappingComposite_tableGeneratorSection,
 			tableGeneratorExpansionStateHolder
 		);
 
 		Button tableGeneratorCheckBox = addCheckBox(
 			container,
-			JptUiMappingsMessages.IdMappingComposite_tableGenerator,
+			JptUiMappingsMessages.IdMappingComposite_tableGeneratorCheckBox,
 			buildTableGeneratorBooleanHolder(),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR
 		);

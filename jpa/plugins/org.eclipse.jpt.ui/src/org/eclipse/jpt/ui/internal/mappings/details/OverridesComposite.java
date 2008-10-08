@@ -130,7 +130,7 @@ public class OverridesComposite extends FormPane<Entity>
 		// Overrides group pane
 		container = addTitledGroup(
 			container,
-			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
+			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverridesGroup
 		);
 
 		// Overrides list pane

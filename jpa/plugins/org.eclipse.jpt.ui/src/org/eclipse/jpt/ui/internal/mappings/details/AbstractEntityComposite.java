@@ -167,7 +167,7 @@ public abstract class AbstractEntityComposite<T extends Entity> extends FormPane
 
 		container = addCollapsableSection(
 			container,
-			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
+			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverridesSection
 		);
 
 		new OverridesComposite(this, container);
@@ -187,7 +187,7 @@ public abstract class AbstractEntityComposite<T extends Entity> extends FormPane
 
 		container = addCollapsableSection(
 			container,
-			JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration
+			JptUiMappingsMessages.IdMappingComposite_primaryKeyGenerationSection
 		);
 
 		new GeneratorsComposite(this, container);

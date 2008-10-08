@@ -132,7 +132,7 @@ public class EmbeddedAttributeOverridesComposite extends FormPane<BaseEmbeddedMa
 		// Attribute Overrides group box
 		container = addTitledGroup(
 			container,
-			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
+			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverridesGroup
 		);
 
 		// Attribute Overrides list

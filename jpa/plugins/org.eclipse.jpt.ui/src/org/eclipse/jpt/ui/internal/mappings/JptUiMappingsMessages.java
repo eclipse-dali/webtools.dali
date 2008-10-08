@@ -20,7 +20,8 @@ import org.eclipse.osgi.util.NLS;
 public class JptUiMappingsMessages {
 
 	public static String AccessTypeCombo_default;
-	public static String AttributeOverridesComposite_attributeOverrides;
+	public static String AttributeOverridesComposite_attributeOverridesGroup;
+	public static String AttributeOverridesComposite_attributeOverridesSection;
 	public static String AttributeOverridesComposite_overrideDefault;
 	public static String BasicGeneralSection_enumeratedLabel;
 	public static String BasicGeneralSection_fetchLabel;
@@ -92,11 +93,18 @@ public class JptUiMappingsMessages {
 	public static String GeneratedValueComposite_table;
 	public static String GeneratorComposite_allocationSize;
 	public static String GeneratorComposite_initialValue;
+	public static String GeneratorsComposite_sequenceGeneratorCheckBox;
+	public static String GeneratorsComposite_sequenceGeneratorSection;
+	public static String GeneratorsComposite_tableGeneratorCheckBox;
+	public static String GeneratorsComposite_tableGeneratorSection;
 	public static String IdClassComposite_label;
 	public static String IdMappingComposite_pk_generation;
-	public static String IdMappingComposite_primaryKeyGeneration;
-	public static String IdMappingComposite_sequenceGenerator;
-	public static String IdMappingComposite_tableGenerator;
+	public static String IdMappingComposite_primaryKeyGenerationCheckBox;
+	public static String IdMappingComposite_primaryKeyGenerationSection;
+	public static String IdMappingComposite_sequenceGeneratorCheckBox;
+	public static String IdMappingComposite_sequenceGeneratorSection;
+	public static String IdMappingComposite_tableGeneratorCheckBox;
+	public static String IdMappingComposite_tableGeneratorSection;
 	public static String IdMappingComposite_conversion;
 	public static String IdMappingComposite_noConverter;
 	public static String IdMappingComposite_temporalConverter;

@@ -144,14 +144,14 @@ public class GeneratorsComposite extends Pane<GeneratorHolder>
 		// Sequence Generator sub-section
 		container = addCollapsableSubSection(
 			addSubPane(container, 10),
-			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
+			JptUiMappingsMessages.GeneratorsComposite_sequenceGeneratorSection,
 			sequenceGeneratorExpansionStateHolder
 		);
 
 		// Sequence Generator check box
 		Button sequenceGeneratorCheckBox = addCheckBox(
 			addSubPane(container, 5),
-			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
+			JptUiMappingsMessages.GeneratorsComposite_sequenceGeneratorCheckBox,
 			buildSequenceGeneratorBooleanHolder(),
 			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR
 		);
@@ -168,13 +168,13 @@ public class GeneratorsComposite extends Pane<GeneratorHolder>
 		// Table Generator sub-section
 		container = addCollapsableSubSection(
 			container,
-			JptUiMappingsMessages.IdMappingComposite_tableGenerator,
+			JptUiMappingsMessages.GeneratorsComposite_tableGeneratorSection,
 			tableGeneratorExpansionStateHolder
 		);
 
 		Button tableGeneratorCheckBox = addCheckBox(
 			addSubPane(container, 5),
-			JptUiMappingsMessages.IdMappingComposite_tableGenerator,
+			JptUiMappingsMessages.GeneratorsComposite_tableGeneratorCheckBox,
 			buildTableGeneratorBooleanHolder(),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR
 		);
