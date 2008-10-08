@@ -68,8 +68,8 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 			throw new NullPointerException();
 		}
 		this.jpaProject = jpaProject;
-		this.setTitle(JptUiMessages.DatabaseReconnectWizardPage_databaseConnection);
-		this.setMessage(JptUiMessages.DatabaseReconnectWizardPage_reconnectToDatabase);
+		this.setTitle(JptUiMessages.DatabaseConnectionWizardPage_databaseConnection);
+		this.setMessage(JptUiMessages.DatabaseConnectionWizardPage_reconnectToDatabase);
 	}
 
 	public void createControl(Composite parent) {
@@ -176,23 +176,23 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 			Group group = new Group(composite, SWT.NONE);
 			group.setLayout(new GridLayout(2, false));  // false = do not make columns equal width
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			group.setText(JptUiMessages.DatabaseReconnectWizardPage_database);
+			group.setText(JptUiMessages.DatabaseConnectionWizardPage_database);
 			// TODO PlatformUI.getWorkbench().getHelpSystem().setHelp(this.group, JpaHelpContextIds.XXX);
 
 			// connection combo-box
-			this.buildLabel(group, 1, JptUiMessages.DatabaseReconnectWizardPage_connection);
+			this.buildLabel(group, 1, JptUiMessages.DatabaseConnectionWizardPage_connection);
 			this.connectionComboBox = this.buildComboBox(group, this.buildConnectionComboBoxSelectionListener());
 
 			// schema combo-box
-			this.buildLabel(group, 1, JptUiMessages.DatabaseReconnectWizardPage_schema);
+			this.buildLabel(group, 1, JptUiMessages.DatabaseConnectionWizardPage_schema);
 			this.schemaComboBox = this.buildComboBox(group, this.buildSchemaComboBoxSelectionListener());
-			this.buildLabel(group, 2, JptUiMessages.DatabaseReconnectWizardPage_schemaInfo);
+			this.buildLabel(group, 2, JptUiMessages.DatabaseConnectionWizardPage_schemaInfo);
 
 			// add connection link
-			this.buildLink(group, JptUiMessages.DatabaseReconnectWizardPage_addConnectionLink, this.buildAddConnectionLinkSelectionListener());
+			this.buildLink(group, JptUiMessages.DatabaseConnectionWizardPage_addConnectionLink, this.buildAddConnectionLinkSelectionListener());
 
 			// reconnect link
-			this.reconnectLink = this.buildLink(group, JptUiMessages.DatabaseReconnectWizardPage_reconnectLink, this.buildReconnectLinkSelectionListener());
+			this.reconnectLink = this.buildLink(group, JptUiMessages.DatabaseConnectionWizardPage_reconnectLink, this.buildReconnectLinkSelectionListener());
 
 			this.connectionListener = this.buildConnectionListener();
 
@@ -493,7 +493,6 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 			Label label = new Label(parent, SWT.NONE);
 			label.setText(text);
 			GridData gd = new GridData();
-			gd.horizontalIndent = 30;
 			gd.horizontalSpan = span;
 			label.setLayoutData(gd);
 			return label;
