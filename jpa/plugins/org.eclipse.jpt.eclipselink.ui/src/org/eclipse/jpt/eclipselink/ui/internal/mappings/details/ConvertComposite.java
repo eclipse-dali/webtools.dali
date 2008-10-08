@@ -62,7 +62,7 @@ public class ConvertComposite extends FormPane<EclipseLinkConvert>
 	 * <code>null</code> when it's time to set the new selected value into the
 	 * model.
 	 */
-	protected static String DEFAULT_KEY = "?!#!?#?#?default?#?!#?!#?";
+	protected static String DEFAULT_KEY = "?!#!?#?#?default?#?!#?!#?"; //$NON-NLS-1$
 	
 	
 	/**
@@ -185,7 +185,7 @@ public class ConvertComposite extends FormPane<EclipseLinkConvert>
 		return new PropertyAspectAdapter<EclipseLinkConvert, String>(getSubjectHolder(), EclipseLinkConvert.DEFAULT_CONVERTER_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				String name = subject.getDefaultConverterName();
+				String name = this.subject.getDefaultConverterName();
 
 				if (name == null) {
 					name = DEFAULT_KEY;
