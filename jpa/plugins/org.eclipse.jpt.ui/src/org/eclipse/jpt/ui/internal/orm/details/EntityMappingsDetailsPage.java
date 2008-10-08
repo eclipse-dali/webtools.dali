@@ -245,13 +245,13 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 		// Generators pane
 		new OrmGeneratorsComposite(
 			this,
-			addSubPane(container, 5)
+			container
 		);
 
 		// Queries pane
 		new OrmQueriesComposite(
 			this,
-			addSubPane(container, 5)
+			container
 		);
 	}
 }
