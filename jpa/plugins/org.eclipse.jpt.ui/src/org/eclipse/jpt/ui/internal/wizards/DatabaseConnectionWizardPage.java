@@ -69,7 +69,7 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 		}
 		this.jpaProject = jpaProject;
 		this.setTitle(JptUiMessages.DatabaseConnectionWizardPage_databaseConnection);
-		this.setMessage(JptUiMessages.DatabaseConnectionWizardPage_reconnectToDatabase);
+		this.setMessage(JptUiMessages.DatabaseConnectionWizardPage_connectToDatabase);
 	}
 
 	public void createControl(Composite parent) {
@@ -192,7 +192,7 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 			this.buildLink(group, JptUiMessages.DatabaseConnectionWizardPage_addConnectionLink, this.buildAddConnectionLinkSelectionListener());
 
 			// reconnect link
-			this.reconnectLink = this.buildLink(group, JptUiMessages.DatabaseConnectionWizardPage_reconnectLink, this.buildReconnectLinkSelectionListener());
+			this.reconnectLink = this.buildLink(group, JptUiMessages.DatabaseConnectionWizardPage_connectLink, this.buildReconnectLinkSelectionListener());
 
 			this.connectionListener = this.buildConnectionListener();
 

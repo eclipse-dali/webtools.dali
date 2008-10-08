@@ -41,8 +41,8 @@ public class JptUiMessages {
 	public static String DatabaseConnectionWizardPage_connection;
 	public static String DatabaseConnectionWizardPage_database;
 	public static String DatabaseConnectionWizardPage_databaseConnection;
-	public static String DatabaseConnectionWizardPage_reconnectLink;
-	public static String DatabaseConnectionWizardPage_reconnectToDatabase;
+	public static String DatabaseConnectionWizardPage_connectLink;
+	public static String DatabaseConnectionWizardPage_connectToDatabase;
 	public static String DatabaseConnectionWizardPage_schema;
 	public static String DatabaseConnectionWizardPage_schemaInfo;
 	public static String EnumComboViewer_default;
