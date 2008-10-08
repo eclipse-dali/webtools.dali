@@ -44,7 +44,8 @@ public class EntityWizardMsg extends NLS {
     public static String TABLE_NAME;
     public static String TABLE_NAME_GROUP;
     public static String USE_DEFAULT;
-    public static String ENTITY_FIELDS;
+    public static String ENTITY_FIELDS_DIALOG_TITLE;
+    public static String ENTITY_FIELDS_GROUP;
     public static String KEY;
     public static String NAME_COLUMN;
     public static String TYPE_COLUMN;

@@ -91,7 +91,7 @@ public class EntityRowTableWizardSection extends Composite {
 	private Button addButton;
 	private Button editButton;
 	private Button removeButton;
-	private String title = EntityWizardMsg.ENTITY_FIELDS;
+	private String title = EntityWizardMsg.ENTITY_FIELDS_DIALOG_TITLE;
 	private String[] labelsForCombo = VALID_TYPES;
 	private String[] labelsForText = new String[]{EntityWizardMsg.TYPE_TEXT_FIELD, EntityWizardMsg.NAME_TEXT_FIELD};
 	private IDataModel model;
@@ -116,18 +116,12 @@ public class EntityRowTableWizardSection extends Composite {
 		this.setLayout(layout);
 		this.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		Label titleLabel = new Label(this, SWT.LEFT);
-		titleLabel.setText(title);
-		GridData data = new GridData();
-		data.horizontalSpan = 2;
-		titleLabel.setLayoutData(data);
-
 		mTableWidget = new Table(this, SWT.CHECK | SWT.FULL_SELECTION | SWT.BORDER);
         mTableWidget.setHeaderVisible(true);
         mTableWidget.setLinesVisible(true);
 
         mTableViewer = new CheckboxTableViewer(mTableWidget);
-        data = new GridData(GridData.FILL_BOTH);
+        GridData data = new GridData(GridData.FILL_BOTH);
         data.verticalSpan = 2;
 		mTableWidget.setLayoutData(data);
 		mTableViewer.setContentProvider(new EntityRowContentProvider());

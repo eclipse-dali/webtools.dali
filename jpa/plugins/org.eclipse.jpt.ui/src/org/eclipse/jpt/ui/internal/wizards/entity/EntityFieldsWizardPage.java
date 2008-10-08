@@ -76,7 +76,7 @@ public class EntityFieldsWizardPage extends DataModelWizardPage {
 		tableNameText.setEnabled(!tableNameCheckButton.getSelection());
 		isButtonsCreated = true;
 		initNameGroup();
-		EntityRowTableWizardSection initSection = new EntityRowTableWizardSection(composite, model, IEntityDataModelProperties.ENTITY_FIELDS);
+		createEntityFieldsGroup(composite);
 
 		Group accessTypeGroup = createGroup(composite, EntityWizardMsg.ACCESS_TYPE);
 		fieldAccessButton = createRadioButton(accessTypeGroup, EntityWizardMsg.FIELD_BASED, IEntityDataModelProperties.FIELD_ACCESS_TYPE);
@@ -102,7 +102,17 @@ public class EntityFieldsWizardPage extends DataModelWizardPage {
 		}
 		return WTPCommonPlugin.OK_STATUS;
 	}
-
+	
+	protected void createEntityFieldsGroup(Composite parent) {
+		Group group = new Group(parent, SWT.NONE);		
+		GridData groupGridData = new GridData(GridData.FILL_BOTH);
+		groupGridData.horizontalSpan = 3;
+		group.setLayoutData(groupGridData);
+		group.setLayout(new GridLayout(3, false));
+		group.setText(EntityWizardMsg.ENTITY_FIELDS_GROUP);
+		new EntityRowTableWizardSection(group, model, IEntityDataModelProperties.ENTITY_FIELDS);
+	}
+	
 	/**
 	 * Create named group
 	 * @param parent the main composite
