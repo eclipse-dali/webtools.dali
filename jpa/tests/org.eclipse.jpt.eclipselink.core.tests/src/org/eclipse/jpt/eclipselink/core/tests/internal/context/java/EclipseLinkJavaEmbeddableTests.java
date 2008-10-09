@@ -14,52 +14,52 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.context.Customizer;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEmbeddable;
 import org.eclipse.jpt.eclipselink.core.resource.java.CustomizerAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestCase
+public class EclipseLinkJavaEmbeddableTests extends EclipseLinkJavaContextModelTestCase
 {
 
 	private void createCustomizerAnnotation() throws Exception {
 		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Customizer", "Class value();");		
 	}
 	
-	private ICompilationUnit createTestEntityWithConvertAndCustomizerClass() throws Exception {
+	private ICompilationUnit createTestEmbeddableWithConvertAndCustomizerClass() throws Exception {
 		createCustomizerAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, EclipseLinkJPA.CUSTOMIZER);
+				return new ArrayIterator<String>(JPA.EMBEDDABLE, EclipseLinkJPA.CUSTOMIZER);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Entity").append(CR);
+				sb.append("@Embeddable").append(CR);
 				sb.append("    @Customizer(Foo.class");
 			}
 		});
 	}
 
-	public EclipseLinkJavaEntityTests(String name) {
+	public EclipseLinkJavaEmbeddableTests(String name) {
 		super(name);
 	}
 
 
 	public void testGetCustomizerClass() throws Exception {
-		createTestEntityWithConvertAndCustomizerClass();
+		createTestEmbeddableWithConvertAndCustomizerClass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Customizer customizer = ((EclipseLinkEntity) javaPersistentType().getMapping()).getCustomizer();
+		Customizer customizer = ((EclipseLinkEmbeddable) javaPersistentType().getMapping()).getCustomizer();
 		
 		assertEquals("Foo", customizer.getCustomizerClass());
 	}
 
 	public void testSetCustomizerClass() throws Exception {
-		createTestEntityWithConvertAndCustomizerClass();
+		createTestEmbeddableWithConvertAndCustomizerClass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Customizer customizer = ((EclipseLinkEntity) javaPersistentType().getMapping()).getCustomizer();
+		Customizer customizer = ((EclipseLinkEmbeddable) javaPersistentType().getMapping()).getCustomizer();
 		assertEquals("Foo", customizer.getCustomizerClass());
 		
 		customizer.setCustomizerClass("Bar");
@@ -83,10 +83,10 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 	}
 	
 	public void testGetCustomizerClassUpdatesFromResourceModelChange() throws Exception {
-		createTestEntityWithConvertAndCustomizerClass();
+		createTestEmbeddableWithConvertAndCustomizerClass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		EclipseLinkEntity entity = (EclipseLinkEntity) javaPersistentType().getMapping();
-		Customizer customizer = entity.getCustomizer();
+		EclipseLinkEmbeddable embeddable = (EclipseLinkEmbeddable) javaPersistentType().getMapping();
+		Customizer customizer = embeddable.getCustomizer();
 
 		assertEquals("Foo", customizer.getCustomizerClass());
 		

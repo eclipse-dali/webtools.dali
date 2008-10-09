@@ -69,6 +69,8 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	public static String ConvertersComposite_structConverter;
 	public static String ConvertersComposite_typeConverter;
 	
+	public static String CustomizerComposite_classLabel;
+		
 	public static String EclipseLinkBasicMappingComposite_eclipseLinkConverter;
 	public static String EclipseLinkIdMappingComposite_eclipseLinkConverter;
 	public static String EclipseLinkVersionMappingComposite_eclipseLinkConverter;

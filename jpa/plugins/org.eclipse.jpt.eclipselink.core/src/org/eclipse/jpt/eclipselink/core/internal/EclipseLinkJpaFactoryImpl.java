@@ -46,6 +46,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaObjectTypeCo
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaStructConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaMutable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwnable;
@@ -58,6 +59,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaCon
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConvertImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConverterHolder;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConverterImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaCustomizer;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEmbeddableImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEntityImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaIdMappingImpl;
@@ -208,6 +210,10 @@ public class EclipseLinkJpaFactoryImpl extends GenericJpaFactory
 	
 	public JavaConverterHolder buildJavaConverterHolder(JavaTypeMapping parent) {
 		return new EclipseLinkJavaConverterHolder(parent);
+	}
+	
+	public JavaCustomizer buildJavaCustomizer(JavaTypeMapping parent) {
+		return new EclipseLinkJavaCustomizer(parent);
 	}
 	
 	public JavaMutable buildJavaMutable(JavaAttributeMapping parent) {

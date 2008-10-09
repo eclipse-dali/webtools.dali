@@ -28,4 +28,6 @@ public interface EclipseLinkEntity extends Entity
 	EclipseLinkCaching getCaching();
 	
 	ReadOnly getReadOnly();
+	
+	Customizer getCustomizer();
 }

@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
@@ -18,6 +19,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CachingComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CustomizerComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ReadOnlyComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.java.details.JavaInheritanceComposite;
@@ -34,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see EclipselinkJpaUiFactory - The factory creating this pane
  *
  * @version 2.1
- * @since 1.0
+ * @since 2.1
  */
 public class EclipseLinkJavaEntityComposite extends AbstractEntityComposite<JavaEntity>
 {
@@ -125,8 +127,8 @@ public class EclipseLinkJavaEntityComposite extends AbstractEntityComposite<Java
 		);
 
 		
-		// Read only widgets
 		new ReadOnlyComposite(this, buildReadOnlyHolder(), container);
+		new CustomizerComposite(this, buildCustomizerHolder(), container);
 	}
 	
 	private PropertyValueModel<ReadOnly> buildReadOnlyHolder() {
@@ -134,6 +136,15 @@ public class EclipseLinkJavaEntityComposite extends AbstractEntityComposite<Java
 			@Override
 			protected ReadOnly buildValue_() {
 				return ((EclipseLinkEntity) this.subject).getReadOnly();
+			}
+		};
+	}
+	
+	private PropertyValueModel<Customizer> buildCustomizerHolder() {
+		return new PropertyAspectAdapter<Entity, Customizer>(getSubjectHolder()) {
+			@Override
+			protected Customizer buildValue_() {
+				return ((EclipseLinkEntity) this.subject).getCustomizer();
 			}
 		};
 	}

@@ -25,4 +25,6 @@ import org.eclipse.jpt.core.context.Embeddable;
  */
 public interface EclipseLinkEmbeddable extends Embeddable
 {
+	Customizer getCustomizer();
+
 }

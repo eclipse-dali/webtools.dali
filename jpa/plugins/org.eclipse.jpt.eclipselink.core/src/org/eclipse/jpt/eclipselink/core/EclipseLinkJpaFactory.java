@@ -27,6 +27,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaObjectTypeCo
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaStructConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaMutable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwnable;
@@ -70,6 +71,8 @@ public interface EclipseLinkJpaFactory extends JpaFactory
 	JavaPrivateOwnable buildJavaPrivateOwnable(JavaAttributeMapping parent);
 	
 	JavaConverterHolder buildJavaConverterHolder(JavaTypeMapping parent);
+	
+	JavaCustomizer buildJavaCustomizer(JavaTypeMapping parent);
 	
 	JavaMutable buildJavaMutable(JavaAttributeMapping parent);
 	

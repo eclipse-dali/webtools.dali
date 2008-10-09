@@ -7,13 +7,12 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.context.java;
+package org.eclipse.jpt.eclipselink.core.context;
 
-import org.eclipse.jpt.core.context.java.JavaEmbeddable;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEmbeddable;
+import org.eclipse.jpt.core.context.JpaContextNode;
 
 /**
- * 
+ * Corresponds to a Customizer resource model object
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,10 +23,11 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEmbeddable;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJavaEmbeddable extends EclipseLinkEmbeddable, JavaEmbeddable
+public interface Customizer extends JpaContextNode
 {
-	JavaConverterHolder getConverterHolder();
-	
-	JavaCustomizer getCustomizer();
+		
+	String getCustomizerClass();	
+	void setCustomizerClass(String customizerClass);
+		String CUSTOMIZER_CLASS_PROPERTY = "customizerClassProperty"; //$NON-NLS-1$
 
 }

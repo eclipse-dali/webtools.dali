@@ -33,6 +33,8 @@ public interface EclipseLinkJavaMappedSuperclass extends EclipseLinkMappedSuperc
 	EclipseLinkJavaCaching getCaching();
 	
 	JavaReadOnly getReadOnly();
+	
+	JavaCustomizer getCustomizer();
 
 
 	//********* covariant overrides ***********

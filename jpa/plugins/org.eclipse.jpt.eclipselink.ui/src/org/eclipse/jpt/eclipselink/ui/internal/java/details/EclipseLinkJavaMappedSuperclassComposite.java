@@ -10,11 +10,13 @@
 package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CustomizerComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkMappedSuperclassComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ReadOnlyComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -85,8 +87,8 @@ public class EclipseLinkJavaMappedSuperclassComposite extends EclipseLinkMappedS
 		);
 
 		
-		// Read only widgets
 		new ReadOnlyComposite(this, buildReadOnlyHolder(), container);
+		new CustomizerComposite(this, buildCustomizerHolder(), container);
 	}
 	
 	private PropertyValueModel<ReadOnly> buildReadOnlyHolder() {
@@ -94,6 +96,15 @@ public class EclipseLinkJavaMappedSuperclassComposite extends EclipseLinkMappedS
 			@Override
 			protected ReadOnly buildValue_() {
 				return ((EclipseLinkMappedSuperclass) this.subject).getReadOnly();
+			}
+		};
+	}
+	
+	private PropertyValueModel<Customizer> buildCustomizerHolder() {
+		return new PropertyAspectAdapter<JavaMappedSuperclass, Customizer>(getSubjectHolder()) {
+			@Override
+			protected Customizer buildValue_() {
+				return ((EclipseLinkMappedSuperclass) this.subject).getCustomizer();
 			}
 		};
 	}

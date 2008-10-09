@@ -9,14 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
-import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
+import org.eclipse.jpt.eclipselink.core.context.Customizer;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEmbeddable;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CustomizerComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -52,6 +53,7 @@ public class EclipseLinkJavaEmbeddableComposite extends FormPane<JavaEmbeddable>
 	@Override
 	protected void initializeLayout(Composite container) {
 		initializeConvertersPane(container);
+		initializeAdvancedPane(container);
 	}
 
 	protected void initializeConvertersPane(Composite container) {
@@ -70,6 +72,25 @@ public class EclipseLinkJavaEmbeddableComposite extends FormPane<JavaEmbeddable>
 			protected JavaConverterHolder buildValue_() {
 				return ((EclipseLinkJavaEmbeddable) this.subject).getConverterHolder();
 			}	
+		};
+	}
+	
+	
+	protected void initializeAdvancedPane(Composite container) {
+		container = addCollapsableSection(
+			container,
+			EclipseLinkUiMappingsMessages.EclipseLinkJavaEntityComposite_advanced
+		);
+		
+		new CustomizerComposite(this, buildCustomizerHolder(), container);
+	}
+	
+	private PropertyValueModel<Customizer> buildCustomizerHolder() {
+		return new PropertyAspectAdapter<JavaEmbeddable, Customizer>(getSubjectHolder()) {
+			@Override
+			protected Customizer buildValue_() {
+				return ((EclipseLinkEmbeddable) this.subject).getCustomizer();
+			}
 		};
 	}
 

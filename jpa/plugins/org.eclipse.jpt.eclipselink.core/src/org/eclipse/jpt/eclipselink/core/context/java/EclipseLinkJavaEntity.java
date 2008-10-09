@@ -39,6 +39,8 @@ public interface EclipseLinkJavaEntity extends EclipseLinkEntity, JavaEntity
 
 	JavaReadOnly getReadOnly();
 	
+	JavaCustomizer getCustomizer();
+	
 	// included these to prevent warnings on the implementation
 	ListIterator<JavaSecondaryTable> secondaryTables();	
 	ListIterator<JavaSecondaryTable> specifiedSecondaryTables();

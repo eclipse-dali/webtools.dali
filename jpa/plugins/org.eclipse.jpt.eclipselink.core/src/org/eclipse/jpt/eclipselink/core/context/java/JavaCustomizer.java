@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaEmbeddable;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEmbeddable;
+import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.eclipselink.core.context.Customizer;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,10 +23,18 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEmbeddable;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJavaEmbeddable extends EclipseLinkEmbeddable, JavaEmbeddable
+public interface JavaCustomizer extends Customizer, JavaJpaContextNode
 {
-	JavaConverterHolder getConverterHolder();
-	
-	JavaCustomizer getCustomizer();
+	/**
+	 * Initialize the JavaCustomizer context model object to match the JavaResourcePersistentType 
+	 * resource model object. This should be called immediately after object creation.
+	 */
+	void initialize(JavaResourcePersistentType jrpt);
+
+	/**
+	 * Update the JavaCustomizer context model object to match the JavaResourcePersistentType 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(JavaResourcePersistentType jrpt);
 
 }

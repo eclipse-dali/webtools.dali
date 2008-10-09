@@ -28,4 +28,7 @@ public interface EclipseLinkMappedSuperclass extends MappedSuperclass
 	EclipseLinkCaching getCaching();
 	
 	ReadOnly getReadOnly();
+	
+	Customizer getCustomizer();
+
 }

@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaCustomizer;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaEmbeddableImpl extends GenericJavaEmbeddable implements EclipseLinkJavaEmbeddable
@@ -24,13 +25,20 @@ public class EclipseLinkJavaEmbeddableImpl extends GenericJavaEmbeddable impleme
 	
 	protected final JavaConverterHolder converterHolder;
 	
+	protected final JavaCustomizer customizer;
+	
 	public EclipseLinkJavaEmbeddableImpl(JavaPersistentType parent) {
 		super(parent);
 		this.converterHolder = getJpaFactory().buildJavaConverterHolder(this);
+		this.customizer = getJpaFactory().buildJavaCustomizer(this);
 	}
 	
 	public JavaConverterHolder getConverterHolder() {
 		return this.converterHolder;
+	}
+	
+	public JavaCustomizer getCustomizer() {
+		return this.customizer;
 	}
 	
 	@Override
@@ -43,12 +51,14 @@ public class EclipseLinkJavaEmbeddableImpl extends GenericJavaEmbeddable impleme
 	public void initialize(JavaResourcePersistentType jrpt) {
 		super.initialize(jrpt);
 		this.converterHolder.initialize(jrpt);
+		this.customizer.initialize(jrpt);
 	}
 	
 	@Override
 	public void update(JavaResourcePersistentType jrpt) {
 		super.update(jrpt);
 		this.converterHolder.update(jrpt);
+		this.customizer.update(jrpt);
 	}
 	
 	//********** Validation ********************************************
@@ -57,5 +67,6 @@ public class EclipseLinkJavaEmbeddableImpl extends GenericJavaEmbeddable impleme
 	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
 		super.validate(messages, astRoot);
 		this.converterHolder.validate(messages, astRoot);
+		this.customizer.validate(messages, astRoot);
 	}
 }
