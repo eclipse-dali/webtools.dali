@@ -21,8 +21,8 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see ReadOnly
  *
- * @version 2.0
- * @since 1.0
+ * @version 2.1
+ * @since 2.1
  */
 public class ReadOnlyComposite extends FormPane<ReadOnly>
 {

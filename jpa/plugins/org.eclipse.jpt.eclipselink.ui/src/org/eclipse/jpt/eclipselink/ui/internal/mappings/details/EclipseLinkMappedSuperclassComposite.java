@@ -26,8 +26,8 @@ import org.eclipse.swt.widgets.Composite;
  * @see EclipseLinkMappedSuperclass
  * @see EclipselinkJpaUiFactory - The factory creating this pane
  *
- * @version 2.0
- * @since 1.0
+ * @version 2.1
+ * @since 2.1
  */
 public abstract class EclipseLinkMappedSuperclassComposite<T extends MappedSuperclass> extends FormPane<T>
                                        implements JpaComposite

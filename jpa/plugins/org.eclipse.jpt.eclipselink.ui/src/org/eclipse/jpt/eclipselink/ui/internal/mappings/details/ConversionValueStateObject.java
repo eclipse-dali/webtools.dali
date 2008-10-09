@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 import java.util.Collection;
 import java.util.List;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.NewNameDialog;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.utility.internal.node.Node;
@@ -24,8 +23,8 @@ import org.eclipse.jpt.utility.internal.node.Problem;
  *
  * @see NewNameDialog
  *
- * @version 2.0
- * @since 2.0
+ * @version 2.1
+ * @since 2.1
  */
 @SuppressWarnings("nls")
 final class ConversionValueStateObject extends AbstractNode

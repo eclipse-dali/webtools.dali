@@ -21,8 +21,8 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see BasicMapping
  *
- * @version 2.0
- * @since 1.0
+ * @version 2.1
+ * @since 2.1
  */
 public class PrivateOwnedComposite extends FormPane<PrivateOwnable>
 {

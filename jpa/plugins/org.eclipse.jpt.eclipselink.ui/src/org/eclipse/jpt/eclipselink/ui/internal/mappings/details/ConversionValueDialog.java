@@ -28,6 +28,8 @@ import org.eclipse.swt.widgets.Text;
  *     @see #getSelectedTable()
  *     @see #getSelectedCatalog()
  *     @see #getSelectedSchema()
+ * @version 2.1
+ * @since 2.1
  */
 public class ConversionValueDialog extends ValidatingDialog<ConversionValueStateObject> {
 

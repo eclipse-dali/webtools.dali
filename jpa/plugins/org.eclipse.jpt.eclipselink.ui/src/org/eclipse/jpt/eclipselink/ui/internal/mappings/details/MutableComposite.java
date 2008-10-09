@@ -27,8 +27,8 @@ import org.eclipse.swt.widgets.Composite;
  * @see Mutable
  * @see EclipseLinkBasicMappingComposite - A container of this pane
  *
- * @version 1.0
- * @since 2.0
+ * @version 2.1
+ * @since 2.1
  */
 public class MutableComposite extends FormPane<Mutable>
 {
