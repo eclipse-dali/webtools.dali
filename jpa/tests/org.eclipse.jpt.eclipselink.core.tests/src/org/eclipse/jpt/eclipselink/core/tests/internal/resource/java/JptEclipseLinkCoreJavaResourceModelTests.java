@@ -22,6 +22,7 @@ public class JptEclipseLinkCoreJavaResourceModelTests {
 		TestSuite suite = new TestSuite(JptEclipseLinkCoreJavaResourceModelTests.class.getName());
 		
 		suite.addTestSuite(CacheTests.class);
+		suite.addTestSuite(ChangeTrackingTests.class);
 		suite.addTestSuite(ConversionValueAnnotationTests.class);
 		suite.addTestSuite(ConvertAnnotationTests.class);
 		suite.addTestSuite(ConverterAnnotationTests.class);

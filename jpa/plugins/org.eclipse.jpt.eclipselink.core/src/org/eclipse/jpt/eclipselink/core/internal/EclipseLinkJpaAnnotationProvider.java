@@ -14,6 +14,7 @@ import java.util.List;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.CacheImpl.CacheAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.ChangeTrackingImpl.ChangeTrackingAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.ConvertImpl.ConvertAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.ConverterImpl.ConverterAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.CustomizerImpl.CustomizerAnnotationDefinition;
@@ -37,6 +38,7 @@ public class EclipseLinkJpaAnnotationProvider
 	protected void addTypeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
 		super.addTypeAnnotationDefinitionsTo(definitions);
 		definitions.add(CacheAnnotationDefinition.instance());
+		definitions.add(ChangeTrackingAnnotationDefinition.instance());
 		definitions.add(ConverterAnnotationDefinition.instance());
 		definitions.add(CustomizerAnnotationDefinition.instance());
 		definitions.add(ExistenceCheckingAnnotationDefinition.instance());
