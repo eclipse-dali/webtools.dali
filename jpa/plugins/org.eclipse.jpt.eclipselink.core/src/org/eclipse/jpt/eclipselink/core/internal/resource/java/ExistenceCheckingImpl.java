@@ -112,7 +112,7 @@ public class ExistenceCheckingImpl extends AbstractResourceAnnotation<Type> impl
 		}
 		
 		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
-			return new NullExistenceCheckingAnnotation((JavaResourcePersistentType) parent);
+			return null;
 		}
 
 		public String getAnnotationName() {
