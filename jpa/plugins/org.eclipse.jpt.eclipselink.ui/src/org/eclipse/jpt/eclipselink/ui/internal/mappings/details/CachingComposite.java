@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -56,11 +56,11 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class CachingComposite extends FormPane<EclipseLinkCaching>
+public class CachingComposite extends FormPane<Caching>
 {
 
 	public CachingComposite(FormPane<?> parentPane,
-        PropertyValueModel<EclipseLinkCaching> subjectHolder,
+        PropertyValueModel<Caching> subjectHolder,
         Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -108,7 +108,7 @@ public class CachingComposite extends FormPane<EclipseLinkCaching>
 	}
 	
 	private PropertyValueModel<Boolean> buildSharedCacheEnabler() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_SHARED_PROPERTY) {
+		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.SPECIFIED_SHARED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getShared();
@@ -117,7 +117,7 @@ public class CachingComposite extends FormPane<EclipseLinkCaching>
 	}	
 	
 	private WritablePropertyValueModel<Boolean> buildSharedHolder() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_SHARED_PROPERTY) {
+		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.SPECIFIED_SHARED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedShared();

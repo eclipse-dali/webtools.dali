@@ -17,8 +17,8 @@ import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConversionValue;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConvert;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
@@ -28,6 +28,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaStructConver
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCustomizer;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaMutable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwnable;
@@ -52,7 +53,9 @@ public interface EclipseLinkJpaFactory extends JpaFactory
 {	
 	EclipseLinkOrmXml buildEclipseLinkOrmXml(MappingFileRef parent, EclipseLinkOrmResource resource);
 	
-	EclipseLinkJavaCaching buildEclipseLinkJavaCaching(JavaTypeMapping parent);
+	JavaCaching buildJavaCaching(JavaTypeMapping parent);
+	
+	JavaExpiryTimeOfDay buildJavaExpiryTimeOfDay(JavaCaching parent);
 	
 	EclipseLinkJavaConvert buildEclipseLinkJavaConvert(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa);
 	
@@ -64,7 +67,7 @@ public interface EclipseLinkJpaFactory extends JpaFactory
 	
 	EclipseLinkJavaStructConverter buildEclipseLinkJavaStructConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm);
 	
-	EclipseLinkJavaConversionValue buildJavaConversionValue(EclipseLinkJavaObjectTypeConverter parent);
+	JavaConversionValue buildJavaConversionValue(EclipseLinkJavaObjectTypeConverter parent);
 	
 	JavaJoinFetchable buildJavaJoinFetchable(JavaAttributeMapping parent);
 	

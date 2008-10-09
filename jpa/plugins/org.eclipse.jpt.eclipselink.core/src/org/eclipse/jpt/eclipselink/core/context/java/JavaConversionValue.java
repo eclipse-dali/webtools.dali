@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.context.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConversionValue;
+import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConversionValueAnnotation;
 
 /**
@@ -27,7 +27,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.ConversionValueAnnotation;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJavaConversionValue extends EclipseLinkConversionValue, JavaJpaContextNode
+public interface JavaConversionValue extends ConversionValue, JavaJpaContextNode
 {
 	
 	void initialize(ConversionValueAnnotation resourceConversionValue);

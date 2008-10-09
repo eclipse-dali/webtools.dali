@@ -10,7 +10,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.Collection;
 import org.eclipse.jpt.eclipselink.core.context.CacheType;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class CacheTypeComposite extends FormPane<EclipseLinkCaching> {
+public class CacheTypeComposite extends FormPane<Caching> {
 
 	/**
 	 * Creates a new <code>CacheTypeComposite</code>.
@@ -40,21 +40,21 @@ public class CacheTypeComposite extends FormPane<EclipseLinkCaching> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public CacheTypeComposite(FormPane<? extends EclipseLinkCaching> parentPane,
+	public CacheTypeComposite(FormPane<? extends Caching> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent);
 	}
 
-	private EnumFormComboViewer<EclipseLinkCaching, CacheType> addCacheTypeCombo(Composite container) {
+	private EnumFormComboViewer<Caching, CacheType> addCacheTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<EclipseLinkCaching, CacheType>(this, container) {
+		return new EnumFormComboViewer<Caching, CacheType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(EclipseLinkCaching.DEFAULT_TYPE_PROPERTY);
-				propertyNames.add(EclipseLinkCaching.SPECIFIED_TYPE_PROPERTY);
+				propertyNames.add(Caching.DEFAULT_TYPE_PROPERTY);
+				propertyNames.add(Caching.SPECIFIED_TYPE_PROPERTY);
 			}
 
 			@Override

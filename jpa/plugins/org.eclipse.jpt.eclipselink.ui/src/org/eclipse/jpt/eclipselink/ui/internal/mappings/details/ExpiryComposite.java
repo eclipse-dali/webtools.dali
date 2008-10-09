@@ -8,8 +8,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
+import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.ExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -47,9 +47,9 @@ import org.eclipse.swt.widgets.Spinner;
  * @version 2.1
  * @since 2.1
  */
-public class ExpiryComposite extends FormPane<EclipseLinkCaching> {
+public class ExpiryComposite extends FormPane<Caching> {
 
-	public ExpiryComposite(FormPane<? extends EclipseLinkCaching> parentPane,
+	public ExpiryComposite(FormPane<? extends Caching> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent);
@@ -140,7 +140,7 @@ public class ExpiryComposite extends FormPane<EclipseLinkCaching> {
 			EclipseLinkUiMappingsMessages.ExpiryComposite_timeOfDayExpiryExpireAt
 		);
 		
-		PropertyValueModel<EclipseLinkExpiryTimeOfDay> timeOfDayExpiryHolder = buildTimeOfDayExpiryHolder();
+		PropertyValueModel<ExpiryTimeOfDay> timeOfDayExpiryHolder = buildTimeOfDayExpiryHolder();
 		DateTime dateTime = addUnmanagedDateTime(
 			container, 
 			buildTimeOfDayExpiryHourHolder(timeOfDayExpiryHolder), 
@@ -152,10 +152,10 @@ public class ExpiryComposite extends FormPane<EclipseLinkCaching> {
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildNoExpiryHolder() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
+		return new PropertyAspectAdapter<Caching, Boolean>(
 					getSubjectHolder(), 
-					EclipseLinkCaching.EXPIRY_PROPERTY, 
-					EclipseLinkCaching.EXPIRY_TIME_OF_DAY_PROPERTY) {
+					Caching.EXPIRY_PROPERTY, 
+					Caching.EXPIRY_TIME_OF_DAY_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getExpiry() == null && this.subject.getExpiryTimeOfDay() == null);
@@ -172,9 +172,9 @@ public class ExpiryComposite extends FormPane<EclipseLinkCaching> {
 	}
 
 	private WritablePropertyValueModel<Boolean> buildExpiryHolder() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
+		return new PropertyAspectAdapter<Caching, Boolean>(
 					getSubjectHolder(), 
-					EclipseLinkCaching.EXPIRY_PROPERTY) {
+					Caching.EXPIRY_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getExpiry() != null);
@@ -190,9 +190,9 @@ public class ExpiryComposite extends FormPane<EclipseLinkCaching> {
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildTimeOfDayExpiryBooleanHolder() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
+		return new PropertyAspectAdapter<Caching, Boolean>(
 					getSubjectHolder(), 
-					EclipseLinkCaching.EXPIRY_TIME_OF_DAY_PROPERTY) {
+					Caching.EXPIRY_TIME_OF_DAY_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getExpiryTimeOfDay() != null);
@@ -208,7 +208,7 @@ public class ExpiryComposite extends FormPane<EclipseLinkCaching> {
 	}
 
 	private WritablePropertyValueModel<Integer> buildTimeToLiveExpiryHolder() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(getSubjectHolder(), EclipseLinkCaching.EXPIRY_PROPERTY) {
+		return new PropertyAspectAdapter<Caching, Integer>(getSubjectHolder(), Caching.EXPIRY_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
 				return this.subject.getExpiry();
@@ -225,7 +225,7 @@ public class ExpiryComposite extends FormPane<EclipseLinkCaching> {
 	}
 	
 	private PropertyValueModel<Boolean> buildTimeToLiveExpiryEnabler() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.EXPIRY_PROPERTY) {
+		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.EXPIRY_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getExpiry() != null);
@@ -234,7 +234,7 @@ public class ExpiryComposite extends FormPane<EclipseLinkCaching> {
 	}
 	
 	private PropertyValueModel<Boolean> buildTimeOfDayExpiryEnabler() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.EXPIRY_TIME_OF_DAY_PROPERTY) {
+		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.EXPIRY_TIME_OF_DAY_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getExpiryTimeOfDay() != null);
@@ -242,19 +242,19 @@ public class ExpiryComposite extends FormPane<EclipseLinkCaching> {
 		};
 	}
 	
-	private PropertyValueModel<EclipseLinkExpiryTimeOfDay> buildTimeOfDayExpiryHolder() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, EclipseLinkExpiryTimeOfDay>(getSubjectHolder(), EclipseLinkCaching.EXPIRY_TIME_OF_DAY_PROPERTY) {
+	private PropertyValueModel<ExpiryTimeOfDay> buildTimeOfDayExpiryHolder() {
+		return new PropertyAspectAdapter<Caching, ExpiryTimeOfDay>(getSubjectHolder(), Caching.EXPIRY_TIME_OF_DAY_PROPERTY) {
 			@Override
-			protected EclipseLinkExpiryTimeOfDay buildValue_() {
+			protected ExpiryTimeOfDay buildValue_() {
 				return this.subject.getExpiryTimeOfDay();
 			}
 		};
 	}
 
-	private WritablePropertyValueModel<Integer> buildTimeOfDayExpiryHourHolder(PropertyValueModel<EclipseLinkExpiryTimeOfDay> timeOfDayExpiryHolder) {
-		return new PropertyAspectAdapter<EclipseLinkExpiryTimeOfDay, Integer>(
+	private WritablePropertyValueModel<Integer> buildTimeOfDayExpiryHourHolder(PropertyValueModel<ExpiryTimeOfDay> timeOfDayExpiryHolder) {
+		return new PropertyAspectAdapter<ExpiryTimeOfDay, Integer>(
 					timeOfDayExpiryHolder, 
-					EclipseLinkExpiryTimeOfDay.HOUR_PROPERTY) {
+					ExpiryTimeOfDay.HOUR_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
 				return this.subject.getHour();
@@ -267,10 +267,10 @@ public class ExpiryComposite extends FormPane<EclipseLinkCaching> {
 		};
 	}
 
-	private WritablePropertyValueModel<Integer> buildTimeOfDayExpiryMinuteHolder(PropertyValueModel<EclipseLinkExpiryTimeOfDay> timeOfDayExpiryHolder) {
-		return new PropertyAspectAdapter<EclipseLinkExpiryTimeOfDay, Integer>(
+	private WritablePropertyValueModel<Integer> buildTimeOfDayExpiryMinuteHolder(PropertyValueModel<ExpiryTimeOfDay> timeOfDayExpiryHolder) {
+		return new PropertyAspectAdapter<ExpiryTimeOfDay, Integer>(
 					timeOfDayExpiryHolder, 
-					EclipseLinkExpiryTimeOfDay.MINUTE_PROPERTY) {
+					ExpiryTimeOfDay.MINUTE_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
 				return this.subject.getMinute();
@@ -283,10 +283,10 @@ public class ExpiryComposite extends FormPane<EclipseLinkCaching> {
 		};
 	}
 
-	private WritablePropertyValueModel<Integer> buildTimeOfDayExpirySecondHolder(PropertyValueModel<EclipseLinkExpiryTimeOfDay> timeOfDayExpiryHolder) {
-		return new PropertyAspectAdapter<EclipseLinkExpiryTimeOfDay, Integer>(
+	private WritablePropertyValueModel<Integer> buildTimeOfDayExpirySecondHolder(PropertyValueModel<ExpiryTimeOfDay> timeOfDayExpiryHolder) {
+		return new PropertyAspectAdapter<ExpiryTimeOfDay, Integer>(
 					timeOfDayExpiryHolder, 
-					EclipseLinkExpiryTimeOfDay.SECOND_PROPERTY) {
+					ExpiryTimeOfDay.SECOND_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
 				return this.subject.getSecond();

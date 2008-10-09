@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class RefreshOnlyIfNewerComposite extends FormPane<EclipseLinkCaching>
+public class RefreshOnlyIfNewerComposite extends FormPane<Caching>
 {
 	/**
 	 * Creates a new <code>OptionalComposite</code>.
@@ -38,14 +38,14 @@ public class RefreshOnlyIfNewerComposite extends FormPane<EclipseLinkCaching>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public RefreshOnlyIfNewerComposite(FormPane<? extends EclipseLinkCaching> parentPane,
+	public RefreshOnlyIfNewerComposite(FormPane<? extends Caching> parentPane,
 	                         Composite parent)
 	{
 		super(parentPane, parent);
 	}
 
 	private WritablePropertyValueModel<Boolean> buildRefreshOnlyIfNewerHolder() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY) {
+		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedRefreshOnlyIfNewer();

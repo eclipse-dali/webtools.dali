@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.MappedSuperclass;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -56,12 +56,12 @@ public abstract class EclipseLinkMappedSuperclassComposite<T extends MappedSuper
 		new CachingComposite(this, buildCachingHolder(), container);
 	}
 
-	private PropertyAspectAdapter<T, EclipseLinkCaching> buildCachingHolder() {
-		return new PropertyAspectAdapter<T, EclipseLinkCaching>(
+	private PropertyAspectAdapter<T, Caching> buildCachingHolder() {
+		return new PropertyAspectAdapter<T, Caching>(
 			getSubjectHolder())
 		{
 			@Override
-			protected EclipseLinkCaching buildValue_() {
+			protected Caching buildValue_() {
 				return ((EclipseLinkMappedSuperclass) this.subject).getCaching();
 			}
 		};

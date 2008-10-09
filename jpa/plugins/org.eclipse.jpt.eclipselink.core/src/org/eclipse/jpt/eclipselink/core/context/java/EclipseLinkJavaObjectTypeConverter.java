@@ -28,5 +28,5 @@ public interface EclipseLinkJavaObjectTypeConverter extends EclipseLinkObjectTyp
 	//************ covariant overrides ****************
 	
 	@SuppressWarnings("unchecked")
-	ListIterator<EclipseLinkJavaConversionValue> conversionValues();
+	ListIterator<JavaConversionValue> conversionValues();
 }

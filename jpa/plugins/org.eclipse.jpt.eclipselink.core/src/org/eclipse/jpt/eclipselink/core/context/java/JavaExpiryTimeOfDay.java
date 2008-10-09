@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
+import org.eclipse.jpt.eclipselink.core.context.ExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.resource.java.TimeOfDayAnnotation;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.TimeOfDayAnnotation;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJavaExpiryTimeOfDay extends EclipseLinkExpiryTimeOfDay, JavaJpaContextNode
+public interface JavaExpiryTimeOfDay extends ExpiryTimeOfDay, JavaJpaContextNode
 {
 	/**
 	 * Initialize the EclipseLinkJavaExpiryTimeOfDay context model object to match the TimeOfDayAnnotation 

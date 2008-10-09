@@ -15,13 +15,14 @@ import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.context.CacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.CacheType;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
+import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.ExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.ExistenceType;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaExpiryTimeOfDay;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheAnnotation;
@@ -29,7 +30,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.ExistenceCheckingAnnotatio
 import org.eclipse.jpt.eclipselink.core.resource.java.TimeOfDayAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode implements EclipseLinkJavaCaching
+public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implements JavaCaching
 {
 	
 	protected CacheType specifiedType;
@@ -46,12 +47,12 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 	protected CacheCoordinationType specifiedCoordinationType;
 	
 	protected Integer expiry;
-	protected EclipseLinkJavaExpiryTimeOfDay expiryTimeOfDay;
+	protected JavaExpiryTimeOfDay expiryTimeOfDay;
 	
 	
 	protected JavaResourcePersistentType resourcePersistentType;
 	
-	public EclipseLinkJavaCachingImpl(JavaTypeMapping parent) {
+	public EclipseLinkJavaCaching(JavaTypeMapping parent) {
 		super(parent);
 	}
 	
@@ -59,6 +60,12 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 	public JavaTypeMapping getParent() {
 		return (JavaTypeMapping) super.getParent();
 	}
+	
+	@Override
+	protected EclipseLinkJpaFactory getJpaFactory() {
+		return (EclipseLinkJpaFactory) super.getJpaFactory();
+	}
+	
 
 	//query for the cache annotation every time on setters.
 	//call one setter and the CacheAnnotation could change. 
@@ -116,7 +123,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 	}
 
 	public Integer getDefaultSize() {
-		return EclipseLinkCaching.DEFAULT_SIZE;
+		return Caching.DEFAULT_SIZE;
 	}
 	
 	public Integer getSpecifiedSize() {
@@ -142,7 +149,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 	}
 	
 	public Boolean getDefaultShared() {
-		return EclipseLinkCaching.DEFAULT_SHARED;
+		return Caching.DEFAULT_SHARED;
 	}
 	
 	public Boolean getSpecifiedShared() {
@@ -153,7 +160,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 		Boolean oldShared = this.specifiedShared;
 		this.specifiedShared = newSpecifiedShared;
 		this.getCacheAnnotation().setShared(newSpecifiedShared);
-		firePropertyChanged(EclipseLinkCaching.SPECIFIED_SHARED_PROPERTY, oldShared, newSpecifiedShared);
+		firePropertyChanged(Caching.SPECIFIED_SHARED_PROPERTY, oldShared, newSpecifiedShared);
 		
 		if (newSpecifiedShared == Boolean.FALSE) {
 			setSpecifiedType(null);
@@ -172,7 +179,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 	protected void setSpecifiedShared_(Boolean newSpecifiedShared) {
 		Boolean oldSpecifiedShared = this.specifiedShared;
 		this.specifiedShared = newSpecifiedShared;
-		firePropertyChanged(EclipseLinkCaching.SPECIFIED_SHARED_PROPERTY, oldSpecifiedShared, newSpecifiedShared);
+		firePropertyChanged(Caching.SPECIFIED_SHARED_PROPERTY, oldSpecifiedShared, newSpecifiedShared);
 	}
 
 	public Boolean getAlwaysRefresh() {
@@ -180,7 +187,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 	}
 	
 	public Boolean getDefaultAlwaysRefresh() {
-		return EclipseLinkCaching.DEFAULT_ALWAYS_REFRESH;
+		return Caching.DEFAULT_ALWAYS_REFRESH;
 	}
 	
 	public Boolean getSpecifiedAlwaysRefresh() {
@@ -191,13 +198,13 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 		Boolean oldAlwaysRefresh = this.specifiedAlwaysRefresh;
 		this.specifiedAlwaysRefresh = newSpecifiedAlwaysRefresh;
 		this.getCacheAnnotation().setAlwaysRefresh(newSpecifiedAlwaysRefresh);
-		firePropertyChanged(EclipseLinkCaching.SPECIFIED_ALWAYS_REFRESH_PROPERTY, oldAlwaysRefresh, newSpecifiedAlwaysRefresh);
+		firePropertyChanged(Caching.SPECIFIED_ALWAYS_REFRESH_PROPERTY, oldAlwaysRefresh, newSpecifiedAlwaysRefresh);
 	}
 
 	protected void setSpecifiedAlwaysRefresh_(Boolean newSpecifiedAlwaysRefresh) {
 		Boolean oldAlwaysRefresh = this.specifiedAlwaysRefresh;
 		this.specifiedAlwaysRefresh = newSpecifiedAlwaysRefresh;
-		firePropertyChanged(EclipseLinkCaching.SPECIFIED_ALWAYS_REFRESH_PROPERTY, oldAlwaysRefresh, newSpecifiedAlwaysRefresh);
+		firePropertyChanged(Caching.SPECIFIED_ALWAYS_REFRESH_PROPERTY, oldAlwaysRefresh, newSpecifiedAlwaysRefresh);
 	}
 
 	public Boolean getRefreshOnlyIfNewer() {
@@ -205,7 +212,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 	}
 	
 	public Boolean getDefaultRefreshOnlyIfNewer() {
-		return EclipseLinkCaching.DEFAULT_REFRESH_ONLY_IF_NEWER;
+		return Caching.DEFAULT_REFRESH_ONLY_IF_NEWER;
 	}
 	
 	public Boolean getSpecifiedRefreshOnlyIfNewer() {
@@ -216,13 +223,13 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 		Boolean oldRefreshOnlyIfNewer = this.specifiedRefreshOnlyIfNewer;
 		this.specifiedRefreshOnlyIfNewer = newSpecifiedRefreshOnlyIfNewer;
 		this.getCacheAnnotation().setRefreshOnlyIfNewer(newSpecifiedRefreshOnlyIfNewer);
-		firePropertyChanged(EclipseLinkCaching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY, oldRefreshOnlyIfNewer, newSpecifiedRefreshOnlyIfNewer);
+		firePropertyChanged(Caching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY, oldRefreshOnlyIfNewer, newSpecifiedRefreshOnlyIfNewer);
 	}
 
 	protected void setSpecifiedRefreshOnlyIfNewer_(Boolean newSpecifiedRefreshOnlyIfNewer) {
 		Boolean oldRefreshOnlyIfNewer = this.specifiedRefreshOnlyIfNewer;
 		this.specifiedRefreshOnlyIfNewer = newSpecifiedRefreshOnlyIfNewer;
-		firePropertyChanged(EclipseLinkCaching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY, oldRefreshOnlyIfNewer, newSpecifiedRefreshOnlyIfNewer);
+		firePropertyChanged(Caching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY, oldRefreshOnlyIfNewer, newSpecifiedRefreshOnlyIfNewer);
 	}
 
 	public Boolean getDisableHits() {
@@ -230,7 +237,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 	}
 	
 	public Boolean getDefaultDisableHits() {
-		return EclipseLinkCaching.DEFAULT_DISABLE_HITS;
+		return Caching.DEFAULT_DISABLE_HITS;
 	}
 	
 	public Boolean getSpecifiedDisableHits() {
@@ -241,13 +248,13 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 		Boolean oldDisableHits = this.specifiedDisableHits;
 		this.specifiedDisableHits = newSpecifiedDisableHits;
 		this.getCacheAnnotation().setDisableHits(newSpecifiedDisableHits);
-		firePropertyChanged(EclipseLinkCaching.SPECIFIED_DISABLE_HITS_PROPERTY, oldDisableHits, newSpecifiedDisableHits);
+		firePropertyChanged(Caching.SPECIFIED_DISABLE_HITS_PROPERTY, oldDisableHits, newSpecifiedDisableHits);
 	}
 
 	protected void setSpecifiedDisableHits_(Boolean newSpecifiedDisableHits) {
 		Boolean oldDisableHits = this.specifiedDisableHits;
 		this.specifiedDisableHits = newSpecifiedDisableHits;
-		firePropertyChanged(EclipseLinkCaching.SPECIFIED_DISABLE_HITS_PROPERTY, oldDisableHits, newSpecifiedDisableHits);
+		firePropertyChanged(Caching.SPECIFIED_DISABLE_HITS_PROPERTY, oldDisableHits, newSpecifiedDisableHits);
 	}
 	
 	public CacheCoordinationType getCoordinationType() {
@@ -376,18 +383,18 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 		firePropertyChanged(EXPIRY_PROPERTY, oldExpiry, newExpiry);
 	}
 	
-	public EclipseLinkJavaExpiryTimeOfDay getExpiryTimeOfDay() {
+	public JavaExpiryTimeOfDay getExpiryTimeOfDay() {
 		return this.expiryTimeOfDay;
 	}
 	
-	public EclipseLinkJavaExpiryTimeOfDay addExpiryTimeOfDay() {
+	public JavaExpiryTimeOfDay addExpiryTimeOfDay() {
 		if (this.expiryTimeOfDay != null) {
 			throw new IllegalStateException("expiryTimeOfDay already exists, use getExpiryTimeOfDay()"); //$NON-NLS-1$
 		}
 		if (this.resourcePersistentType.getAnnotation(getCacheAnnotationName()) == null) {
 			this.resourcePersistentType.addAnnotation(getCacheAnnotationName());
 		}
-		EclipseLinkJavaExpiryTimeOfDay newExpiryTimeOfDay =  new EclipseLinkJavaExpiryTimeOfDayImpl(this);
+		JavaExpiryTimeOfDay newExpiryTimeOfDay = getJpaFactory().buildJavaExpiryTimeOfDay(this);
 		this.expiryTimeOfDay = newExpiryTimeOfDay;
 		TimeOfDayAnnotation timeOfDayAnnotation = getCacheAnnotation().addExpiryTimeOfDay();
 		newExpiryTimeOfDay.initialize(timeOfDayAnnotation);
@@ -400,14 +407,14 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 		if (this.expiryTimeOfDay == null) {
 			throw new IllegalStateException("timeOfDayExpiry does not exist"); //$NON-NLS-1$
 		}
-		EclipseLinkExpiryTimeOfDay oldExpiryTimeOfDay = this.expiryTimeOfDay;
+		ExpiryTimeOfDay oldExpiryTimeOfDay = this.expiryTimeOfDay;
 		this.expiryTimeOfDay = null;
 		getCacheAnnotation().removeExpiryTimeOfDay();
 		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, oldExpiryTimeOfDay, null);
 	}
 	
-	protected void setExpiryTimeOfDay(EclipseLinkJavaExpiryTimeOfDay newExpiryTimeOfDay) {
-		EclipseLinkJavaExpiryTimeOfDay oldExpiryTimeOfDay = this.expiryTimeOfDay;
+	protected void setExpiryTimeOfDay(JavaExpiryTimeOfDay newExpiryTimeOfDay) {
+		JavaExpiryTimeOfDay oldExpiryTimeOfDay = this.expiryTimeOfDay;
 		this.expiryTimeOfDay = newExpiryTimeOfDay;
 		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, oldExpiryTimeOfDay, newExpiryTimeOfDay);
 	}
@@ -441,7 +448,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 		}
 		else {
 			if (cache.getExpiry() == null) { //handle with validation if both expiry and expiryTimeOfDay are set
-				this.expiryTimeOfDay = new EclipseLinkJavaExpiryTimeOfDayImpl(this);
+				this.expiryTimeOfDay =getJpaFactory().buildJavaExpiryTimeOfDay(this);
 				this.expiryTimeOfDay.initialize(cache.getExpiryTimeOfDay());
 			}
 		}
@@ -480,7 +487,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 				getExpiryTimeOfDay().update(cache.getExpiryTimeOfDay());
 			}
 			else if (cache.getExpiry() == null){
-				setExpiryTimeOfDay(new EclipseLinkJavaExpiryTimeOfDayImpl(this));
+				setExpiryTimeOfDay(getJpaFactory().buildJavaExpiryTimeOfDay(this));
 				getExpiryTimeOfDay().initialize(cache.getExpiryTimeOfDay());
 			}
 			else { //handle with validation if both expiry and expiryTimeOfDay are set

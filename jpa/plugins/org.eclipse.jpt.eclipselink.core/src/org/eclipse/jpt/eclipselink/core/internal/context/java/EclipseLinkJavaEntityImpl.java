@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaEntity;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCustomizer;
@@ -24,7 +24,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements EclipseLinkJavaEntity
 {
-	protected final EclipseLinkJavaCaching eclipseLinkCaching;
+	protected final JavaCaching eclipseLinkCaching;
 	
 	protected final JavaConverterHolder converterHolder;
 	
@@ -34,7 +34,7 @@ public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements Ecli
 	
 	public EclipseLinkJavaEntityImpl(JavaPersistentType parent) {
 		super(parent);
-		this.eclipseLinkCaching = getJpaFactory().buildEclipseLinkJavaCaching(this);
+		this.eclipseLinkCaching = getJpaFactory().buildJavaCaching(this);
 		this.converterHolder = getJpaFactory().buildJavaConverterHolder(this);
 		this.readOnly = getJpaFactory().buildJavaReadOnly(this);
 		this.customizer = getJpaFactory().buildJavaCustomizer(this);
@@ -45,7 +45,7 @@ public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements Ecli
 		return (EclipseLinkJpaFactory) super.getJpaFactory();
 	}	
 	
-	public EclipseLinkJavaCaching getCaching() {
+	public JavaCaching getCaching() {
 		return this.eclipseLinkCaching;
 	}
 	

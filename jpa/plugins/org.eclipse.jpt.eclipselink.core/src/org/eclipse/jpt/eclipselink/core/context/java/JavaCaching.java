@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.context.Caching;
 
 /**
  * 
@@ -25,7 +25,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJavaCaching extends EclipseLinkCaching, JavaJpaContextNode
+public interface JavaCaching extends Caching, JavaJpaContextNode
 {
 	
 	/**
@@ -43,8 +43,8 @@ public interface EclipseLinkJavaCaching extends EclipseLinkCaching, JavaJpaConte
 	
 	//********* covariant overrides ************
 	
-	EclipseLinkJavaExpiryTimeOfDay getExpiryTimeOfDay();
+	JavaExpiryTimeOfDay getExpiryTimeOfDay();
 	
-	EclipseLinkJavaExpiryTimeOfDay addExpiryTimeOfDay();
+	JavaExpiryTimeOfDay addExpiryTimeOfDay();
 
 }

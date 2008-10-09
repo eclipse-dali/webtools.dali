@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaMappedSuperclass;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCustomizer;
@@ -24,7 +24,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaMappedSuperclassImpl extends GenericJavaMappedSuperclass implements EclipseLinkJavaMappedSuperclass
 {
-	protected EclipseLinkJavaCaching eclipseLinkCaching;
+	protected JavaCaching eclipseLinkCaching;
 	
 	protected final JavaConverterHolder converterHolder;
 	
@@ -34,13 +34,13 @@ public class EclipseLinkJavaMappedSuperclassImpl extends GenericJavaMappedSuperc
 	
 	public EclipseLinkJavaMappedSuperclassImpl(JavaPersistentType parent) {
 		super(parent);
-		this.eclipseLinkCaching = getJpaFactory().buildEclipseLinkJavaCaching(this);
+		this.eclipseLinkCaching = getJpaFactory().buildJavaCaching(this);
 		this.converterHolder = getJpaFactory().buildJavaConverterHolder(this);
 		this.readOnly = getJpaFactory().buildJavaReadOnly(this);
 		this.customizer = getJpaFactory().buildJavaCustomizer(this);
 	}
 	
-	public EclipseLinkJavaCaching getCaching() {
+	public JavaCaching getCaching() {
 		return this.eclipseLinkCaching;
 	}
 	

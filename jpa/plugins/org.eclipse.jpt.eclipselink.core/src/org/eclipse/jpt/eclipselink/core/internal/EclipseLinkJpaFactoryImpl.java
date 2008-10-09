@@ -36,8 +36,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConversionValue;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConvert;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
@@ -47,6 +47,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaStructConver
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCustomizer;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaMutable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwnable;
@@ -54,14 +55,15 @@ import org.eclipse.jpt.eclipselink.core.context.java.JavaReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkOrmXml;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMappingImpl;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaCachingImpl;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConversionValueImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaCaching;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConversionValue;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConvertImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConverterHolder;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConverterImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaCustomizer;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEmbeddableImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEntityImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaIdMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaJoinFetchable;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaManyToManyMappingImpl;
@@ -172,8 +174,12 @@ public class EclipseLinkJpaFactoryImpl extends GenericJpaFactory
 		return new EclipseLinkJavaManyToOneMappingImpl(parent);
 	}
 	
-	public EclipseLinkJavaCaching buildEclipseLinkJavaCaching(JavaTypeMapping parent) {
-		return new EclipseLinkJavaCachingImpl(parent);
+	public JavaCaching buildJavaCaching(JavaTypeMapping parent) {
+		return new EclipseLinkJavaCaching(parent);
+	}
+	
+	public JavaExpiryTimeOfDay buildJavaExpiryTimeOfDay(JavaCaching parent) {
+		return new EclipseLinkJavaExpiryTimeOfDay(parent);
 	}
 	
 	public EclipseLinkJavaConvert buildEclipseLinkJavaConvert(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa) {
@@ -196,8 +202,8 @@ public class EclipseLinkJpaFactoryImpl extends GenericJpaFactory
 		return new EclipseLinkJavaTypeConverterImpl(parent, jrpm);
 	}
 	
-	public EclipseLinkJavaConversionValue buildJavaConversionValue(EclipseLinkJavaObjectTypeConverter parent) {
-		return new EclipseLinkJavaConversionValueImpl(parent);
+	public JavaConversionValue buildJavaConversionValue(EclipseLinkJavaObjectTypeConverter parent) {
+		return new EclipseLinkJavaConversionValue(parent);
 	}
 	
 	public JavaJoinFetchable buildJavaJoinFetchable(JavaAttributeMapping parent) {

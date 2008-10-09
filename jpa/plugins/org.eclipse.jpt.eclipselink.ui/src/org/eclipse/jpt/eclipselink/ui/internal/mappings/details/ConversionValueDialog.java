@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.Set;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConversionValue;
+import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.DialogPane;
@@ -36,7 +36,7 @@ public class ConversionValueDialog extends ValidatingDialog<ConversionValueState
 	/**
 	 * when creating a new EclipseLinkConversionValue, 'conversionValue' will be null
 	 */
-	private final EclipseLinkConversionValue conversionValue;
+	private final ConversionValue conversionValue;
 
 	private EclipseLinkObjectTypeConverter objectTypeConverter;
 	
@@ -52,7 +52,7 @@ public class ConversionValueDialog extends ValidatingDialog<ConversionValueState
 	/**
 	 * Use this constructor to edit an existing conversion value
 	 */
-	public ConversionValueDialog(Shell parent, EclipseLinkObjectTypeConverter objectTypeConverter, EclipseLinkConversionValue conversionValue) {
+	public ConversionValueDialog(Shell parent, EclipseLinkObjectTypeConverter objectTypeConverter, ConversionValue conversionValue) {
 		super(parent);
 		this.objectTypeConverter = objectTypeConverter;
 		this.conversionValue = conversionValue;

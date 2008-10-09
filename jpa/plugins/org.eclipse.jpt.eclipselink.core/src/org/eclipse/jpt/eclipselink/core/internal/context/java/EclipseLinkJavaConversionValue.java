@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConversionValue;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
@@ -22,7 +22,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.ConversionValueAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkJavaConversionValueImpl extends AbstractJavaJpaContextNode implements EclipseLinkJavaConversionValue
+public class EclipseLinkJavaConversionValue extends AbstractJavaJpaContextNode implements JavaConversionValue
 {	
 	private ConversionValueAnnotation resourceConversionValue;
 	
@@ -30,7 +30,7 @@ public class EclipseLinkJavaConversionValueImpl extends AbstractJavaJpaContextNo
 	
 	private String objectValue;
 	
-	public EclipseLinkJavaConversionValueImpl(EclipseLinkJavaObjectTypeConverter parent) {
+	public EclipseLinkJavaConversionValue(EclipseLinkJavaObjectTypeConverter parent) {
 		super(parent);
 	}
 	

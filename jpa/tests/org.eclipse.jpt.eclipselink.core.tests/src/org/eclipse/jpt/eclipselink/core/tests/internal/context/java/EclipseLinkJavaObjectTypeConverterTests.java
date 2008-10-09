@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConversionValue;
+import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConversionValueAnnotation;
@@ -335,7 +335,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkJavaCont
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		ObjectTypeConverterAnnotation converterAnnotation = (ObjectTypeConverterAnnotation) attributeResource.getAnnotation(ObjectTypeConverterAnnotation.ANNOTATION_NAME);
 		
-		EclipseLinkConversionValue conversionValue = converter.addConversionValue(0);
+		ConversionValue conversionValue = converter.addConversionValue(0);
 		conversionValue.setDataValue("F");
 		conversionValue.setObjectValue("female");
 		
@@ -344,7 +344,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkJavaCont
 		assertEquals("F", resourceConversionValue.getDataValue());
 		assertEquals("female", resourceConversionValue.getObjectValue());
 		
-		EclipseLinkConversionValue conversionValue2 = converter.addConversionValue(0);
+		ConversionValue conversionValue2 = converter.addConversionValue(0);
 		conversionValue2.setDataValue("M");
 		conversionValue2.setObjectValue("male");
 		
@@ -356,7 +356,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkJavaCont
 		assertEquals("F", resourceConversionValue.getDataValue());
 		assertEquals("female", resourceConversionValue.getObjectValue());
 		
-		EclipseLinkConversionValue conversionValue3 = converter.addConversionValue(1);
+		ConversionValue conversionValue3 = converter.addConversionValue(1);
 		conversionValue3.setDataValue("O");
 		conversionValue3.setObjectValue("male");
 		
@@ -371,7 +371,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkJavaCont
 		assertEquals("F", resourceConversionValue.getDataValue());
 		assertEquals("female", resourceConversionValue.getObjectValue());
 		
-		ListIterator<EclipseLinkConversionValue> conversionValues = converter.conversionValues();
+		ListIterator<ConversionValue> conversionValues = converter.conversionValues();
 		assertEquals(conversionValue2, conversionValues.next());
 		assertEquals(conversionValue3, conversionValues.next());
 		assertEquals(conversionValue, conversionValues.next());
@@ -474,7 +474,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkJavaCont
 		converterAnnotation.addConversionValue(1).setDataValue("M");
 		converterAnnotation.addConversionValue(2).setDataValue("O");
 
-		ListIterator<EclipseLinkConversionValue> conversionValues = converter.conversionValues();
+		ListIterator<ConversionValue> conversionValues = converter.conversionValues();
 		assertEquals("F", conversionValues.next().getDataValue());
 		assertEquals("M", conversionValues.next().getDataValue());
 		assertEquals("O", conversionValues.next().getDataValue());

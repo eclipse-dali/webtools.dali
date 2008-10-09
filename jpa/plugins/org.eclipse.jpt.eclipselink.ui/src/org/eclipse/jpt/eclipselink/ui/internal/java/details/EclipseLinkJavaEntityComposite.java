@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.Customizer;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
@@ -78,12 +78,12 @@ public class EclipseLinkJavaEntityComposite extends AbstractEntityComposite<Java
 		new CachingComposite(this, buildCachingHolder(), container);
 	}
 
-	private PropertyAspectAdapter<JavaEntity, EclipseLinkCaching> buildCachingHolder() {
-		return new PropertyAspectAdapter<JavaEntity, EclipseLinkCaching>(
+	private PropertyAspectAdapter<JavaEntity, Caching> buildCachingHolder() {
+		return new PropertyAspectAdapter<JavaEntity, Caching>(
 			getSubjectHolder())
 		{
 			@Override
-			protected EclipseLinkCaching buildValue_() {
+			protected Caching buildValue_() {
 				return ((EclipseLinkJavaEntity) this.subject).getCaching();
 			}
 		};

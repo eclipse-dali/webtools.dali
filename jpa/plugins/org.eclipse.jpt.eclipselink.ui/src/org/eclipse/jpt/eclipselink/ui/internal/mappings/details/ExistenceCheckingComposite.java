@@ -9,7 +9,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.context.ExistenceType;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class ExistenceCheckingComposite extends FormPane<EclipseLinkCaching> {
+public class ExistenceCheckingComposite extends FormPane<Caching> {
 
 	/**
 	 * Creates a new <code>ExistenceCheckingComposite</code>.
@@ -41,7 +41,7 @@ public class ExistenceCheckingComposite extends FormPane<EclipseLinkCaching> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public ExistenceCheckingComposite(FormPane<? extends EclipseLinkCaching> parentPane,
+	public ExistenceCheckingComposite(FormPane<? extends Caching> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent);
@@ -63,15 +63,15 @@ public class ExistenceCheckingComposite extends FormPane<EclipseLinkCaching> {
        );
 	}
 
-	private EnumFormComboViewer<EclipseLinkCaching, ExistenceType> addExistenceCheckingTypeCombo(Composite container) {
+	private EnumFormComboViewer<Caching, ExistenceType> addExistenceCheckingTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<EclipseLinkCaching, ExistenceType>(this, container) {
+		return new EnumFormComboViewer<Caching, ExistenceType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(EclipseLinkCaching.DEFAULT_EXISTENCE_TYPE_PROPERTY);
-				propertyNames.add(EclipseLinkCaching.SPECIFIED_EXISTENCE_TYPE_PROPERTY);
+				propertyNames.add(Caching.DEFAULT_EXISTENCE_TYPE_PROPERTY);
+				propertyNames.add(Caching.SPECIFIED_EXISTENCE_TYPE_PROPERTY);
 			}
 
 			@Override
@@ -111,7 +111,7 @@ public class ExistenceCheckingComposite extends FormPane<EclipseLinkCaching> {
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildExistenceCheckingHolder() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.EXISTENCE_CHECKING_PROPERTY) {
+		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.EXISTENCE_CHECKING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.hasExistenceChecking();

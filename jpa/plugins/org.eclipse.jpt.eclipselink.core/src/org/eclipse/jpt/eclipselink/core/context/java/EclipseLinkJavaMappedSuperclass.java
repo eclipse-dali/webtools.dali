@@ -30,7 +30,7 @@ public interface EclipseLinkJavaMappedSuperclass extends EclipseLinkMappedSuperc
 {
 	JavaConverterHolder getConverterHolder();
 
-	EclipseLinkJavaCaching getCaching();
+	JavaCaching getCaching();
 	
 	JavaReadOnly getReadOnly();
 	

@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.context.JpaContextNode;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkCaching extends JpaContextNode
+public interface Caching extends JpaContextNode
 {
 	//***************** shared ************************
 	
@@ -200,13 +200,13 @@ public interface EclipseLinkCaching extends JpaContextNode
 	 * If this returns a non-null value then getExpiry will return null.
 	 * It is not valid to specify both.
 	 */
-	EclipseLinkExpiryTimeOfDay getExpiryTimeOfDay();
+	ExpiryTimeOfDay getExpiryTimeOfDay();
 	
 	/**
 	 * Add Cache expiryTimeOfDay annotation or xml element, this will set 
 	 * Expiry to null as it is not valid to set both expiry and timeOfDayExpiry
 	 */
-	EclipseLinkExpiryTimeOfDay addExpiryTimeOfDay();
+	ExpiryTimeOfDay addExpiryTimeOfDay();
 	
 	/**
 	 * Removes the Cache expiryTimeOfDay annotation/xml element

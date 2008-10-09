@@ -40,7 +40,7 @@ public interface EclipseLinkObjectTypeConverter extends EclipseLinkNamedConverte
 	 * Return a list iterator of the conversion values.
 	 * This will not be null.
 	 */
-	<T extends EclipseLinkConversionValue> ListIterator<T> conversionValues();
+	<T extends ConversionValue> ListIterator<T> conversionValues();
 
 	/**
 	 * Return the number of conversion values.
@@ -51,13 +51,13 @@ public interface EclipseLinkObjectTypeConverter extends EclipseLinkNamedConverte
 	 * Add a conversion value to the object type mapping return the object 
 	 * representing it.
 	 */
-	EclipseLinkConversionValue addConversionValue(int index);
+	ConversionValue addConversionValue(int index);
 
 	/**
 	 * Add a conversion value to the object type mapping return the object 
 	 * representing it.
 	 */
-	EclipseLinkConversionValue addConversionValue();
+	ConversionValue addConversionValue();
 
 	/**
 	 * Remove the conversion value at the given index from the entity.
@@ -67,7 +67,7 @@ public interface EclipseLinkObjectTypeConverter extends EclipseLinkNamedConverte
 	/**
 	 * Remove the conversion value from the entity.
 	 */
-	void removeConversionValue(EclipseLinkConversionValue conversionValue);
+	void removeConversionValue(ConversionValue conversionValue);
 
 	/**
 	 * Move the conversion values from the source index to the target index.
