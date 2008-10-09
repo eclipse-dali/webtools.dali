@@ -29,5 +29,7 @@ public interface EclipseLinkJavaEmbeddable extends EclipseLinkEmbeddable, JavaEm
 	JavaConverterHolder getConverterHolder();
 	
 	JavaCustomizer getCustomizer();
+	
+	JavaChangeTracking getChangeTracking();
 
 }

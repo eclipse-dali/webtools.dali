@@ -10,11 +10,13 @@
 package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
+import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEmbeddable;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ChangeTrackingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CustomizerComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -83,6 +85,7 @@ public class EclipseLinkJavaEmbeddableComposite extends FormPane<JavaEmbeddable>
 		);
 		
 		new CustomizerComposite(this, buildCustomizerHolder(), container);
+		new ChangeTrackingComposite(this, buildChangeTrackingHolder(), container);
 	}
 	
 	private PropertyValueModel<Customizer> buildCustomizerHolder() {
@@ -93,5 +96,13 @@ public class EclipseLinkJavaEmbeddableComposite extends FormPane<JavaEmbeddable>
 			}
 		};
 	}
-
+	
+	private PropertyValueModel<ChangeTracking> buildChangeTrackingHolder() {
+		return new PropertyAspectAdapter<JavaEmbeddable, ChangeTracking>(getSubjectHolder()) {
+			@Override
+			protected ChangeTracking buildValue_() {
+				return ((EclipseLinkEmbeddable) this.subject).getChangeTracking();
+			}
+		};
+	}
 }

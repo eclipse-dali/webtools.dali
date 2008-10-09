@@ -41,6 +41,8 @@ public interface EclipseLinkJavaEntity extends EclipseLinkEntity, JavaEntity
 	
 	JavaCustomizer getCustomizer();
 	
+	JavaChangeTracking getChangeTracking();
+	
 	// included these to prevent warnings on the implementation
 	ListIterator<JavaSecondaryTable> secondaryTables();	
 	ListIterator<JavaSecondaryTable> specifiedSecondaryTables();

@@ -9,12 +9,13 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.eclipselink.core.context.Caching;
-import org.eclipse.jpt.eclipselink.core.context.ExistenceType;
+import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
+import org.eclipse.jpt.eclipselink.core.context.ChangeTrackingType;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -23,28 +24,28 @@ import org.eclipse.swt.widgets.Composite;
  * <pre>
  * -------------------------------------------------------------------------
  * |       			  		---------------------------------------------- |
- * | x Existence Checking:  |                                          |v| |
+ * | x Change Tracking :    |                                          |v| |
  * |       					---------------------------------------------- |
  * -------------------------------------------------------------------------</pre>
  *
- * @see EclipseLinkCaching
- * @see CachingComposite - A container of this widget
+ * @see ChangeTracking
  *
  * @version 2.1
  * @since 2.1
  */
-public class ExistenceCheckingComposite extends FormPane<Caching> {
+public class ChangeTrackingComposite extends FormPane<ChangeTracking> {
 
 	/**
-	 * Creates a new <code>ExistenceCheckingComposite</code>.
+	 * Creates a new <code>ChangeTrackingComposite</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public ExistenceCheckingComposite(FormPane<? extends Caching> parentPane,
-	                          Composite parent) {
+	public ChangeTrackingComposite(FormPane<?> parentPane, 
+								PropertyValueModel<? extends ChangeTracking> subjectHolder,
+								Composite parent) {
 
-		super(parentPane, parent);
+		super(parentPane, subjectHolder, parent);
 	}
 
 	@Override
@@ -54,53 +55,53 @@ public class ExistenceCheckingComposite extends FormPane<Caching> {
             container, 
             addCheckBox( 
                  container, 
-                 EclipseLinkUiMappingsMessages.ExistenceCheckingComposite_label, 
-                 buildExistenceCheckingHolder(), 
+                 EclipseLinkUiMappingsMessages.ChangeTrackingComposite_label, 
+                 buildChangeTrackingHolder(), 
                  null 
             ), 
-            addExistenceCheckingTypeCombo(container).getControl(), 
+            addChangeTrackingTypeCombo(container).getControl(), 
             null 
        );
 	}
 
-	private EnumFormComboViewer<Caching, ExistenceType> addExistenceCheckingTypeCombo(Composite container) {
+	private EnumFormComboViewer<ChangeTracking, ChangeTrackingType> addChangeTrackingTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<Caching, ExistenceType>(this, container) {
+		return new EnumFormComboViewer<ChangeTracking, ChangeTrackingType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Caching.DEFAULT_EXISTENCE_TYPE_PROPERTY);
-				propertyNames.add(Caching.SPECIFIED_EXISTENCE_TYPE_PROPERTY);
+				propertyNames.add(ChangeTracking.DEFAULT_CHANGE_TRACKING_TYPE_PROPERTY);
+				propertyNames.add(ChangeTracking.SPECIFIED_CHANGE_TRACKING_TYPE_PROPERTY);
 			}
 
 			@Override
-			protected ExistenceType[] getChoices() {
-				return ExistenceType.values();
+			protected ChangeTrackingType[] getChoices() {
+				return ChangeTrackingType.values();
 			}
 
 			@Override
-			protected ExistenceType getDefaultValue() {
-				return getSubject().getDefaultExistenceType();
+			protected ChangeTrackingType getDefaultValue() {
+				return getSubject().getDefaultChangeTrackingType();
 			}
 
 			@Override
-			protected String displayString(ExistenceType value) {
+			protected String displayString(ChangeTrackingType value) {
 				return buildDisplayString(
 					EclipseLinkUiMappingsMessages.class,
-					ExistenceCheckingComposite.this,
+					ChangeTrackingComposite.this,
 					value
 				);
 			}
 
 			@Override
-			protected ExistenceType getValue() {
-				return getSubject().getSpecifiedExistenceType();
+			protected ChangeTrackingType getValue() {
+				return getSubject().getSpecifiedChangeTrackingType();
 			}
 
 			@Override
-			protected void setValue(ExistenceType value) {
-				getSubject().setSpecifiedExistenceType(value);
+			protected void setValue(ChangeTrackingType value) {
+				getSubject().setSpecifiedChangeTrackingType(value);
 			}
 			
 			@Override
@@ -110,16 +111,16 @@ public class ExistenceCheckingComposite extends FormPane<Caching> {
 		};
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildExistenceCheckingHolder() {
-		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.EXISTENCE_CHECKING_PROPERTY) {
+	private WritablePropertyValueModel<Boolean> buildChangeTrackingHolder() {
+		return new PropertyAspectAdapter<ChangeTracking, Boolean>(getSubjectHolder(), ChangeTracking.CHANGE_TRACKING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.hasExistenceChecking());
+				return Boolean.valueOf(this.subject.hasChangeTracking());
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				this.subject.setExistenceChecking(value.booleanValue());
+				this.subject.setChangeTracking(value.booleanValue());
 			}
 		};
 	}

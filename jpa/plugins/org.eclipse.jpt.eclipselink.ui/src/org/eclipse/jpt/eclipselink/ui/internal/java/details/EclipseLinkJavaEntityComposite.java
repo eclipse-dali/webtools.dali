@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
@@ -19,6 +20,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CachingComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ChangeTrackingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CustomizerComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ReadOnlyComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -129,6 +131,7 @@ public class EclipseLinkJavaEntityComposite extends AbstractEntityComposite<Java
 		
 		new ReadOnlyComposite(this, buildReadOnlyHolder(), container);
 		new CustomizerComposite(this, buildCustomizerHolder(), container);
+		new ChangeTrackingComposite(this, buildChangeTrackingHolder(), container);
 	}
 	
 	private PropertyValueModel<ReadOnly> buildReadOnlyHolder() {
@@ -145,6 +148,15 @@ public class EclipseLinkJavaEntityComposite extends AbstractEntityComposite<Java
 			@Override
 			protected Customizer buildValue_() {
 				return ((EclipseLinkEntity) this.subject).getCustomizer();
+			}
+		};
+	}	
+	
+	private PropertyValueModel<ChangeTracking> buildChangeTrackingHolder() {
+		return new PropertyAspectAdapter<Entity, ChangeTracking>(getSubjectHolder()) {
+			@Override
+			protected ChangeTracking buildValue_() {
+				return ((EclipseLinkEntity) this.subject).getChangeTracking();
 			}
 		};
 	}

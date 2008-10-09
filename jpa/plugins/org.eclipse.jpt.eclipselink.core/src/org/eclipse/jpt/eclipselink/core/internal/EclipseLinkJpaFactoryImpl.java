@@ -37,6 +37,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConvert;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverter;
@@ -56,6 +57,7 @@ import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkOrmXml;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaCaching;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaChangeTracking;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConversionValue;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConvert;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConverterHolder;
@@ -229,4 +231,9 @@ public class EclipseLinkJpaFactoryImpl extends GenericJpaFactory
 	public JavaReadOnly buildJavaReadOnly(JavaTypeMapping parent) {
 		return new EclipseLinkJavaReadOnly(parent);
 	}
+	
+	public JavaChangeTracking buildJavaChangeTracking(JavaTypeMapping parent) {
+		return new EclipseLinkJavaChangeTracking(parent);
+	}
+
 }

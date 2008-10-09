@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaReadOnly;
@@ -32,11 +33,14 @@ public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements Ecli
 	
 	protected final JavaCustomizer customizer;
 	
+	protected final JavaChangeTracking changeTracking;
+
 	public EclipseLinkJavaEntityImpl(JavaPersistentType parent) {
 		super(parent);
 		this.eclipseLinkCaching = getJpaFactory().buildJavaCaching(this);
 		this.converterHolder = getJpaFactory().buildJavaConverterHolder(this);
 		this.readOnly = getJpaFactory().buildJavaReadOnly(this);
+		this.changeTracking = getJpaFactory().buildJavaChangeTracking(this);
 		this.customizer = getJpaFactory().buildJavaCustomizer(this);
 	}
 	
@@ -61,6 +65,10 @@ public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements Ecli
 		return this.customizer;
 	}
 	
+	public JavaChangeTracking getChangeTracking() {
+		return this.changeTracking;
+	}
+	
 	@Override
 	public void initialize(JavaResourcePersistentType jrpt) {
 		super.initialize(jrpt);
@@ -68,6 +76,7 @@ public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements Ecli
 		this.converterHolder.initialize(jrpt);
 		this.readOnly.initialize(jrpt);
 		this.customizer.initialize(jrpt);
+		this.changeTracking.initialize(jrpt);
 	}
 	
 	@Override
@@ -77,6 +86,7 @@ public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements Ecli
 		this.converterHolder.update(jrpt);
 		this.readOnly.update(jrpt);
 		this.customizer.update(jrpt);
+		this.changeTracking.update(jrpt);
 	}
 	
 	//********** Validation ********************************************
@@ -88,5 +98,6 @@ public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements Ecli
 		this.converterHolder.validate(messages, astRoot);
 		this.readOnly.validate(messages, astRoot);
 		this.customizer.validate(messages, astRoot);
+		this.changeTracking.validate(messages, astRoot);
 	}
 }

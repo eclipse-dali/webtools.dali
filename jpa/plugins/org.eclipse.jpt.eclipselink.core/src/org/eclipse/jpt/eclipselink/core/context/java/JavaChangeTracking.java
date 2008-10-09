@@ -7,9 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.context;
+package org.eclipse.jpt.eclipselink.core.context.java;
 
-import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
 
 /**
  * 
@@ -23,13 +25,19 @@ import org.eclipse.jpt.core.context.Entity;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkEntity extends Entity
+public interface JavaChangeTracking extends ChangeTracking, JavaJpaContextNode
 {
-	Caching getCaching();
 	
-	ReadOnly getReadOnly();
+	/**
+	 * Initialize the JavaChangeTracking context model object to match the ChangeTrackingAnnotation 
+	 * resource model object. This should be called immediately after object creation.
+	 */
+	void initialize(JavaResourcePersistentType jrpt);
 	
-	Customizer getCustomizer();
-	
-	ChangeTracking getChangeTracking();
+	/**
+	 * Update the JavaChangeTracking context model object to match the ChangeTrackingAnnotation 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(JavaResourcePersistentType jrpt);	
+
 }

@@ -30,5 +30,7 @@ public interface EclipseLinkMappedSuperclass extends MappedSuperclass
 	ReadOnly getReadOnly();
 	
 	Customizer getCustomizer();
+	
+	ChangeTracking getChangeTracking();
 
 }
