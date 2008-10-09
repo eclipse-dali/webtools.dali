@@ -16,7 +16,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
@@ -172,14 +171,6 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	
 	protected void deleteResource(Resource resource) throws CoreException {
 		WorkbenchResourceHelper.deleteResource(resource);
-	}
-	
-	protected ICompilationUnit createAnnotationAndMembers(String packageName, String annotationName, String annotationBody) throws Exception {
-		return this.javaProject.createCompilationUnit(packageName, annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
-	}
-	
-	protected ICompilationUnit createEnumAndMembers(String packageName, String enumName, String enumBody) throws Exception {
-		return this.javaProject.createCompilationUnit(packageName, enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
 	}
 
 }
