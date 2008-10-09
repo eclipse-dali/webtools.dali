@@ -21,7 +21,7 @@ package org.eclipse.jpt.eclipselink.core.context;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkStructConverter extends EclipseLinkNamedConverter
+public interface StructConverter extends EclipseLinkConverter
 {
 	String getConverterClass();	
 	void setConverterClass(String converterClass);

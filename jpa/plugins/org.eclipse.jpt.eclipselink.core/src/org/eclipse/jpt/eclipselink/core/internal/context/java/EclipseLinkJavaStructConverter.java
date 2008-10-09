@@ -15,11 +15,11 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkNamedConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaStructConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaStructConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.StructConverterAnnotation;
 
-public class EclipseLinkJavaStructConverterImpl extends AbstractJavaJpaContextNode implements EclipseLinkJavaStructConverter
+public class EclipseLinkJavaStructConverter extends AbstractJavaJpaContextNode implements JavaStructConverter
 {	
 	private JavaResourcePersistentMember resourcePersistentMember;
 	
@@ -27,7 +27,7 @@ public class EclipseLinkJavaStructConverterImpl extends AbstractJavaJpaContextNo
 	
 	private String converterClass;
 	
-	public EclipseLinkJavaStructConverterImpl(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
+	public EclipseLinkJavaStructConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
 		super(parent);
 		this.initialize(jrpm);
 	}
@@ -38,7 +38,7 @@ public class EclipseLinkJavaStructConverterImpl extends AbstractJavaJpaContextNo
 	}
 
 	public String getType() {
-		return EclipseLinkNamedConverter.STRUCT_CONVERTER;
+		return EclipseLinkConverter.STRUCT_CONVERTER;
 	}
 
 	protected String getAnnotationName() {

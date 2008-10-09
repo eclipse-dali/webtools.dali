@@ -9,7 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context.java;
 
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
+import java.util.ListIterator;
+import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -21,7 +22,11 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJavaStructConverter extends EclipseLinkStructConverter, EclipseLinkJavaNamedConverter
+public interface JavaObjectTypeConverter extends ObjectTypeConverter, EclipseLinkJavaConverter
 {
 
+	//************ covariant overrides ****************
+	
+	@SuppressWarnings("unchecked")
+	ListIterator<JavaConversionValue> conversionValues();
 }

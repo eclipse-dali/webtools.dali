@@ -7,13 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.context;
+package org.eclipse.jpt.eclipselink.core.context.java;
 
-import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.eclipselink.core.context.Converter;
 
 /**
- * Corresponds to a ConversionValue resource model object
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -23,15 +21,7 @@ import org.eclipse.jpt.core.context.JpaContextNode;
  * @version 2.1
  * @since 2.1
  */
-public interface ConversionValue extends JpaContextNode
+public interface JavaConverter extends Converter, EclipseLinkJavaConverter
 {
-	String getDataValue();	
-	void setDataValue(String dataValue);
-		String DATA_VALUE_PROPERTY = "dataValueProperty"; //$NON-NLS-1$
-		
-	String getObjectValue();	
-	void setObjectValue(String objectValue);
-		String OBJECT_VALUE_PROPERTY = "objectValueProperty"; //$NON-NLS-1$
 
-	ObjectTypeConverter getParent();
 }

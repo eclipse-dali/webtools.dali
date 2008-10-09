@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.context.JpaContextNode;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkConvert extends JpaContextNode, Converter
+public interface Convert extends JpaContextNode, Converter
 {
 	
 	String ECLIPSE_LINK_CONVERTER = "eclipseLinkConverter"; //$NON-NLS-1$
@@ -69,7 +69,7 @@ public interface EclipseLinkConvert extends JpaContextNode, Converter
 	 * This will return null if there is no converter specified on the mapping
 	 * @return
 	 */
-	EclipseLinkNamedConverter getConverter();
+	EclipseLinkConverter getConverter();
 		String CONVERTER_PROPERTY = "converterProperty"; //$NON-NLS-1$
 	
 	/**

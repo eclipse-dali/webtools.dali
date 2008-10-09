@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.Converter;
+import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.StructConverter;
+import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ConverterComposite;
@@ -170,10 +170,10 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 		};
 	}
 	
-	private PropertyValueModel<EclipseLinkConverter> buildConverterHolder() {
-		return new PropertyAspectAdapter<JavaConverterHolder, EclipseLinkConverter>(getSubjectHolder(), JavaConverterHolder.CONVERTER_PROPERTY) {
+	private PropertyValueModel<Converter> buildConverterHolder() {
+		return new PropertyAspectAdapter<JavaConverterHolder, Converter>(getSubjectHolder(), JavaConverterHolder.CONVERTER_PROPERTY) {
 			@Override
-			protected EclipseLinkConverter buildValue_() {
+			protected Converter buildValue_() {
 				return this.subject.getConverter();
 			}
 		};
@@ -198,10 +198,10 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 		};
 	}
 	
-	private PropertyValueModel<EclipseLinkTypeConverter> buildTypeConverterHolder() {
-		return new PropertyAspectAdapter<JavaConverterHolder, EclipseLinkTypeConverter>(getSubjectHolder(), JavaConverterHolder.TYPE_CONVERTER_PROPERTY) {
+	private PropertyValueModel<TypeConverter> buildTypeConverterHolder() {
+		return new PropertyAspectAdapter<JavaConverterHolder, TypeConverter>(getSubjectHolder(), JavaConverterHolder.TYPE_CONVERTER_PROPERTY) {
 			@Override
-			protected EclipseLinkTypeConverter buildValue_() {
+			protected TypeConverter buildValue_() {
 				return this.subject.getTypeConverter();
 			}
 		};
@@ -226,10 +226,10 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 		};
 	}
 	
-	private PropertyValueModel<EclipseLinkObjectTypeConverter> buildObjectTypeConverterHolder() {
-		return new PropertyAspectAdapter<JavaConverterHolder, EclipseLinkObjectTypeConverter>(getSubjectHolder(), JavaConverterHolder.OBJECT_TYPE_CONVERTER_PROPERTY) {
+	private PropertyValueModel<ObjectTypeConverter> buildObjectTypeConverterHolder() {
+		return new PropertyAspectAdapter<JavaConverterHolder, ObjectTypeConverter>(getSubjectHolder(), JavaConverterHolder.OBJECT_TYPE_CONVERTER_PROPERTY) {
 			@Override
-			protected EclipseLinkObjectTypeConverter buildValue_() {
+			protected ObjectTypeConverter buildValue_() {
 				return this.subject.getObjectTypeConverter();
 			}
 		};
@@ -255,10 +255,10 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 		};
 	}
 	
-	private PropertyValueModel<EclipseLinkStructConverter> buildStructConverterHolder() {
-		return new PropertyAspectAdapter<JavaConverterHolder, EclipseLinkStructConverter>(getSubjectHolder(), JavaConverterHolder.STRUCT_CONVERTER_PROPERTY) {
+	private PropertyValueModel<StructConverter> buildStructConverterHolder() {
+		return new PropertyAspectAdapter<JavaConverterHolder, StructConverter>(getSubjectHolder(), JavaConverterHolder.STRUCT_CONVERTER_PROPERTY) {
 			@Override
-			protected EclipseLinkStructConverter buildValue_() {
+			protected StructConverter buildValue_() {
 				return this.subject.getStructConverter();
 			}
 		};

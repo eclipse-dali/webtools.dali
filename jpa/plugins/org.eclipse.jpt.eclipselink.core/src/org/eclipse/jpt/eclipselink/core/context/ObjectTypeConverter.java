@@ -23,7 +23,7 @@ import java.util.ListIterator;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkObjectTypeConverter extends EclipseLinkNamedConverter
+public interface ObjectTypeConverter extends EclipseLinkConverter
 {
 	String getDataType();	
 	void setDataType(String dataType);
@@ -87,6 +87,6 @@ public interface EclipseLinkObjectTypeConverter extends EclipseLinkNamedConverte
 	
 	String getDefaultObjectValue();
 	void setDefaultObjectValue(String defaultObjectValue);
-		String DEFAULT_OBJECT_VALUE_PROPERTY = "defaultObjectValueProperty";
+		String DEFAULT_OBJECT_VALUE_PROPERTY = "defaultObjectValueProperty"; //$NON-NLS-1$
 
 }

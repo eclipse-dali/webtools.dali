@@ -10,8 +10,8 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkNamedConverter;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.eclipselink.core.context.StructConverter;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class StructConverterComposite extends FormPane<EclipseLinkStructConverter>
+public class StructConverterComposite extends FormPane<StructConverter>
 {
 
 	/**
@@ -47,7 +47,7 @@ public class StructConverterComposite extends FormPane<EclipseLinkStructConverte
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public StructConverterComposite(PropertyValueModel<? extends EclipseLinkStructConverter> subjectHolder,
+	public StructConverterComposite(PropertyValueModel<? extends StructConverter> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 
@@ -68,8 +68,8 @@ public class StructConverterComposite extends FormPane<EclipseLinkStructConverte
 	}
 	
 	protected WritablePropertyValueModel<String> buildNameTextHolder() {
-		return new PropertyAspectAdapter<EclipseLinkStructConverter, String>(
-				getSubjectHolder(), EclipseLinkNamedConverter.NAME_PROPERTY) {
+		return new PropertyAspectAdapter<StructConverter, String>(
+				getSubjectHolder(), EclipseLinkConverter.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getName();
@@ -86,13 +86,13 @@ public class StructConverterComposite extends FormPane<EclipseLinkStructConverte
 	}
 
 	
-	private ClassChooserPane<EclipseLinkStructConverter> addClassChooser(Composite container) {
+	private ClassChooserPane<StructConverter> addClassChooser(Composite container) {
 
-		return new ClassChooserPane<EclipseLinkStructConverter>(this, container) {
+		return new ClassChooserPane<StructConverter>(this, container) {
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<EclipseLinkStructConverter, String>(getSubjectHolder(), EclipseLinkStructConverter.CONVERTER_CLASS_PROPERTY) {
+				return new PropertyAspectAdapter<StructConverter, String>(getSubjectHolder(), StructConverter.CONVERTER_CLASS_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return subject.getConverterClass();
@@ -139,9 +139,9 @@ public class StructConverterComposite extends FormPane<EclipseLinkStructConverte
 
 
 	protected PropertyValueModel<Boolean> buildBooleanHolder() {
-		return new TransformationPropertyValueModel<EclipseLinkStructConverter, Boolean>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<StructConverter, Boolean>(getSubjectHolder()) {
 			@Override
-			protected Boolean transform(EclipseLinkStructConverter value) {
+			protected Boolean transform(StructConverter value) {
 				return Boolean.valueOf(value != null);
 			}
 		};

@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
+import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
@@ -118,7 +118,7 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getSpecifiedMapping();
 
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, basicMapping.getConverter().getType());
+		assertEquals(Convert.ECLIPSE_LINK_CONVERTER, basicMapping.getConverter().getType());
 	}
 	
 	public void testGetConvert2() throws Exception {
@@ -128,8 +128,8 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
 
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, basicMapping.getConverter().getType());
-		assertEquals(EclipseLinkConvert.CLASS_INSTANCE_CONVERTER, ((EclipseLinkConvert) basicMapping.getConverter()).getConverterName());
+		assertEquals(Convert.ECLIPSE_LINK_CONVERTER, basicMapping.getConverter().getType());
+		assertEquals(Convert.CLASS_INSTANCE_CONVERTER, ((Convert) basicMapping.getConverter()).getConverterName());
 	}
 
 	public void testSetConvert() throws Exception {
@@ -168,8 +168,8 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 		ConvertAnnotation convert = (ConvertAnnotation) attributeResource.addAnnotation(ConvertAnnotation.ANNOTATION_NAME);
 		convert.setValue("foo");
 		
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, basicMapping.getConverter().getType());
-		assertEquals("foo", ((EclipseLinkConvert) basicMapping.getConverter()).getConverterName());
+		assertEquals(Convert.ECLIPSE_LINK_CONVERTER, basicMapping.getConverter().getType());
+		assertEquals("foo", ((Convert) basicMapping.getConverter()).getConverterName());
 		
 		attributeResource.removeAnnotation(ConvertAnnotation.ANNOTATION_NAME);
 		

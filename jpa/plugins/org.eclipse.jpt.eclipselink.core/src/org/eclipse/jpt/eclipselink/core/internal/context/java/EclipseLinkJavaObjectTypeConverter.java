@@ -20,9 +20,9 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkNamedConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConversionValue;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConversionValueAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -30,7 +30,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkJavaObjectTypeConverterImpl extends AbstractJavaJpaContextNode implements EclipseLinkJavaObjectTypeConverter
+public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNode implements JavaObjectTypeConverter
 {	
 	private JavaResourcePersistentMember resourcePersistentMember;
 	
@@ -44,7 +44,7 @@ public class EclipseLinkJavaObjectTypeConverterImpl extends AbstractJavaJpaConte
 
 	private final List<JavaConversionValue> conversionValues;
 	
-	public EclipseLinkJavaObjectTypeConverterImpl(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
+	public EclipseLinkJavaObjectTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
 		super(parent);
 		this.conversionValues = new ArrayList<JavaConversionValue>();
 		this.initialize(jrpm);
@@ -56,7 +56,7 @@ public class EclipseLinkJavaObjectTypeConverterImpl extends AbstractJavaJpaConte
 	}
 
 	public String getType() {
-		return EclipseLinkNamedConverter.OBJECT_TYPE_CONVERTER;
+		return EclipseLinkConverter.OBJECT_TYPE_CONVERTER;
 	}
 
 	protected String getAnnotationName() {

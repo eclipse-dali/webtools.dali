@@ -19,13 +19,13 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConversionValue;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConvert;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaConvert;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaStructConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaStructConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaExpiryTimeOfDay;
@@ -57,17 +57,17 @@ public interface EclipseLinkJpaFactory extends JpaFactory
 	
 	JavaExpiryTimeOfDay buildJavaExpiryTimeOfDay(JavaCaching parent);
 	
-	EclipseLinkJavaConvert buildEclipseLinkJavaConvert(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa);
+	JavaConvert buildJavaConvert(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa);
 	
-	EclipseLinkJavaConverter buildEclipseLinkJavaConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm);
+	JavaConverter buildJavaConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm);
 	
-	EclipseLinkJavaTypeConverter buildEclipseLinkJavaTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm);
+	JavaTypeConverter buildJavaTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm);
 	
-	EclipseLinkJavaObjectTypeConverter buildEclipseLinkJavaObjectTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm);
+	JavaObjectTypeConverter buildJavaObjectTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm);
 	
-	EclipseLinkJavaStructConverter buildEclipseLinkJavaStructConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm);
+	JavaStructConverter buildJavaStructConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm);
 	
-	JavaConversionValue buildJavaConversionValue(EclipseLinkJavaObjectTypeConverter parent);
+	JavaConversionValue buildJavaConversionValue(JavaObjectTypeConverter parent);
 	
 	JavaJoinFetchable buildJavaJoinFetchable(JavaAttributeMapping parent);
 	

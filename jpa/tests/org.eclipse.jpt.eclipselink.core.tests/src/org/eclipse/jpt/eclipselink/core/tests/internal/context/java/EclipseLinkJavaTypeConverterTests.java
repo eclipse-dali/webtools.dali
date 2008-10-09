@@ -16,8 +16,8 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.Convert;
+import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.TypeConverterAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -108,8 +108,8 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkJavaContextMod
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
-		EclipseLinkTypeConverter converter = (EclipseLinkTypeConverter) eclipseLinkConvert.getConverter();
+		Convert eclipseLinkConvert = (Convert) basicMapping.getConverter();
+		TypeConverter converter = (TypeConverter) eclipseLinkConvert.getConverter();
 		
 		assertEquals("foo", converter.getName());
 	}
@@ -120,8 +120,8 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkJavaContextMod
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
-		EclipseLinkTypeConverter converter = (EclipseLinkTypeConverter) eclipseLinkConvert.getConverter();
+		Convert eclipseLinkConvert = (Convert) basicMapping.getConverter();
+		TypeConverter converter = (TypeConverter) eclipseLinkConvert.getConverter();
 		assertEquals("foo", converter.getName());
 		
 		converter.setName("bar");
@@ -151,8 +151,8 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkJavaContextMod
 				
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
-		EclipseLinkTypeConverter converter = (EclipseLinkTypeConverter) eclipseLinkConvert.getConverter();
+		Convert eclipseLinkConvert = (Convert) basicMapping.getConverter();
+		TypeConverter converter = (TypeConverter) eclipseLinkConvert.getConverter();
 
 		assertEquals("foo", converter.getName());
 		
@@ -178,8 +178,8 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkJavaContextMod
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
-		EclipseLinkTypeConverter converter = (EclipseLinkTypeConverter) eclipseLinkConvert.getConverter();
+		Convert eclipseLinkConvert = (Convert) basicMapping.getConverter();
+		TypeConverter converter = (TypeConverter) eclipseLinkConvert.getConverter();
 		
 		assertEquals("Foo", converter.getDataType());
 	}
@@ -190,8 +190,8 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkJavaContextMod
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
-		EclipseLinkTypeConverter converter = (EclipseLinkTypeConverter) eclipseLinkConvert.getConverter();
+		Convert eclipseLinkConvert = (Convert) basicMapping.getConverter();
+		TypeConverter converter = (TypeConverter) eclipseLinkConvert.getConverter();
 		assertEquals("Foo", converter.getDataType());
 		
 		converter.setDataType("Bar");
@@ -221,8 +221,8 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkJavaContextMod
 				
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
-		EclipseLinkTypeConverter converter = (EclipseLinkTypeConverter) eclipseLinkConvert.getConverter();
+		Convert eclipseLinkConvert = (Convert) basicMapping.getConverter();
+		TypeConverter converter = (TypeConverter) eclipseLinkConvert.getConverter();
 
 		assertEquals("Foo", converter.getDataType());
 		
@@ -239,7 +239,7 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkJavaContextMod
 		assertNotNull(eclipseLinkConvert.getConverter());
 		
 		converterAnnotation.setDataType("FooBar");
-		assertEquals("FooBar", ((EclipseLinkTypeConverter) eclipseLinkConvert.getConverter()).getDataType());	
+		assertEquals("FooBar", ((TypeConverter) eclipseLinkConvert.getConverter()).getDataType());	
 	}
 	
 	public void testGetObjectType() throws Exception {
@@ -248,8 +248,8 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkJavaContextMod
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
-		EclipseLinkTypeConverter converter = (EclipseLinkTypeConverter) eclipseLinkConvert.getConverter();
+		Convert eclipseLinkConvert = (Convert) basicMapping.getConverter();
+		TypeConverter converter = (TypeConverter) eclipseLinkConvert.getConverter();
 		
 		assertEquals("Foo", converter.getObjectType());
 	}
@@ -260,8 +260,8 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkJavaContextMod
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
-		EclipseLinkTypeConverter converter = (EclipseLinkTypeConverter) eclipseLinkConvert.getConverter();
+		Convert eclipseLinkConvert = (Convert) basicMapping.getConverter();
+		TypeConverter converter = (TypeConverter) eclipseLinkConvert.getConverter();
 		assertEquals("Foo", converter.getObjectType());
 		
 		converter.setObjectType("Bar");
@@ -291,8 +291,8 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkJavaContextMod
 				
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
-		EclipseLinkTypeConverter converter = (EclipseLinkTypeConverter) eclipseLinkConvert.getConverter();
+		Convert eclipseLinkConvert = (Convert) basicMapping.getConverter();
+		TypeConverter converter = (TypeConverter) eclipseLinkConvert.getConverter();
 
 		assertEquals("Foo", converter.getObjectType());
 		
@@ -309,6 +309,6 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkJavaContextMod
 		assertNotNull(eclipseLinkConvert.getConverter());
 		
 		converterAnnotation.setObjectType("FooBar");
-		assertEquals("FooBar", ((EclipseLinkTypeConverter) eclipseLinkConvert.getConverter()).getObjectType());	
+		assertEquals("FooBar", ((TypeConverter) eclipseLinkConvert.getConverter()).getObjectType());	
 	}
 }

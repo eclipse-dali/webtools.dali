@@ -38,23 +38,23 @@ public interface JavaConverterHolder extends JavaJpaContextNode
 	 */
 	void update(JavaResourcePersistentType jrpt);
 	
-	EclipseLinkJavaConverter getConverter();
-	EclipseLinkJavaConverter addConverter();
+	JavaConverter getConverter();
+	JavaConverter addConverter();
 	void removeConverter();
 	String CONVERTER_PROPERTY = "converterProperty"; //$NON-NLS-1$
 	
-	EclipseLinkJavaObjectTypeConverter getObjectTypeConverter();
-	EclipseLinkJavaObjectTypeConverter addObjectTypeConverter();
+	JavaObjectTypeConverter getObjectTypeConverter();
+	JavaObjectTypeConverter addObjectTypeConverter();
 	void removeObjectTypeConverter();
 	String OBJECT_TYPE_CONVERTER_PROPERTY = "objectTypeConverterProperty"; //$NON-NLS-1$
 	
-	EclipseLinkJavaStructConverter getStructConverter();
-	EclipseLinkJavaStructConverter addStructConverter();
+	JavaStructConverter getStructConverter();
+	JavaStructConverter addStructConverter();
 	void removeStructConverter();
 	String STRUCT_CONVERTER_PROPERTY = "structConverterProperty"; //$NON-NLS-1$
 	
-	EclipseLinkJavaTypeConverter getTypeConverter();
-	EclipseLinkJavaTypeConverter addTypeConverter();
+	JavaTypeConverter getTypeConverter();
+	JavaTypeConverter addTypeConverter();
 	void removeTypeConverter();
 	String TYPE_CONVERTER_PROPERTY = "typeCnverterProperty"; //$NON-NLS-1$
 	

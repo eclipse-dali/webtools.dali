@@ -9,7 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context.java;
 
+import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -21,7 +24,11 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJavaConverter extends EclipseLinkConverter, EclipseLinkJavaNamedConverter
+public interface EclipseLinkJavaConverter extends EclipseLinkConverter, JavaJpaContextNode
 {
-
+	/**
+	 * Update the EclipseLinkJavaNamedConverter context model object to match the JavaResourcePersistentAttribute 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(JavaResourcePersistentMember jrpm);
 }

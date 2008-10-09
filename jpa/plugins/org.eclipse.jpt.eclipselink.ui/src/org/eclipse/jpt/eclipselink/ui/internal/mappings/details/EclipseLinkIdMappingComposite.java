@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.ConvertibleMapping;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.TemporalConverter;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
+import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
@@ -169,11 +169,11 @@ public class EclipseLinkIdMappingComposite extends FormPane<IdMapping>
 		};
 	}
 
-	private PropertyValueModel<EclipseLinkConvert> buildEclipseLinkConverterHolder(PropertyValueModel<Converter> converterHolder) {
-		return new TransformationPropertyValueModel<Converter, EclipseLinkConvert>(converterHolder) {
+	private PropertyValueModel<Convert> buildEclipseLinkConverterHolder(PropertyValueModel<Converter> converterHolder) {
+		return new TransformationPropertyValueModel<Converter, Convert>(converterHolder) {
 			@Override
-			protected EclipseLinkConvert transform_(Converter converter) {
-				return (converter != null && converter.getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) ? (EclipseLinkConvert) converter : null;
+			protected Convert transform_(Converter converter) {
+				return (converter != null && converter.getType() == Convert.ECLIPSE_LINK_CONVERTER) ? (Convert) converter : null;
 			}
 		};
 	}
@@ -206,13 +206,13 @@ public class EclipseLinkIdMappingComposite extends FormPane<IdMapping>
 				if (converter == null) {
 					return Boolean.FALSE;
 				}
-				return Boolean.valueOf(converter.getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
+				return Boolean.valueOf(converter.getType() == Convert.ECLIPSE_LINK_CONVERTER);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setSpecifiedConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
+					this.subject.setSpecifiedConverter(Convert.ECLIPSE_LINK_CONVERTER);
 				}
 			}
 		};

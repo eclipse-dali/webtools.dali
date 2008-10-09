@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.Set;
 import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.ui.internal.widgets.ValidatingDialog;
@@ -38,21 +38,21 @@ public class ConversionValueDialog extends ValidatingDialog<ConversionValueState
 	 */
 	private final ConversionValue conversionValue;
 
-	private EclipseLinkObjectTypeConverter objectTypeConverter;
+	private ObjectTypeConverter objectTypeConverter;
 	
 	// ********** constructors **********
 
 	/**
 	 * Use this constructor to create a new conversion value
 	 */
-	public ConversionValueDialog(Shell parent, EclipseLinkObjectTypeConverter objectTypeConverter) {
+	public ConversionValueDialog(Shell parent, ObjectTypeConverter objectTypeConverter) {
 		this(parent,objectTypeConverter, null);
 	}
 
 	/**
 	 * Use this constructor to edit an existing conversion value
 	 */
-	public ConversionValueDialog(Shell parent, EclipseLinkObjectTypeConverter objectTypeConverter, ConversionValue conversionValue) {
+	public ConversionValueDialog(Shell parent, ObjectTypeConverter objectTypeConverter, ConversionValue conversionValue) {
 		super(parent);
 		this.objectTypeConverter = objectTypeConverter;
 		this.conversionValue = conversionValue;

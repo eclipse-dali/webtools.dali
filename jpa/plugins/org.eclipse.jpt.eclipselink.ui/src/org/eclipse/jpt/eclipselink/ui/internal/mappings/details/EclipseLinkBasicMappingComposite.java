@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.context.ConvertibleMapping;
 import org.eclipse.jpt.core.context.EnumeratedConverter;
 import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
+import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -169,7 +169,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		Button elConverterButton = addRadioButton(
 			container, 
 			EclipseLinkUiMappingsMessages.EclipseLinkBasicMappingComposite_eclipseLinkConverter, 
-			buildConverterBooleanHolder(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER), 
+			buildConverterBooleanHolder(Convert.ECLIPSE_LINK_CONVERTER), 
 			null);
 		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
 
@@ -225,11 +225,11 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		};
 	}
 	
-	private PropertyValueModel<EclipseLinkConvert> buildEclipseLinkConverterHolder(PropertyValueModel<Converter> converterHolder) {
-		return new TransformationPropertyValueModel<Converter, EclipseLinkConvert>(converterHolder) {
+	private PropertyValueModel<Convert> buildEclipseLinkConverterHolder(PropertyValueModel<Converter> converterHolder) {
+		return new TransformationPropertyValueModel<Converter, Convert>(converterHolder) {
 			@Override
-			protected EclipseLinkConvert transform_(Converter converter) {
-				return (converter != null && converter.getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) ? (EclipseLinkConvert) converter : null;
+			protected Convert transform_(Converter converter) {
+				return (converter != null && converter.getType() == Convert.ECLIPSE_LINK_CONVERTER) ? (Convert) converter : null;
 			}
 		};
 	}

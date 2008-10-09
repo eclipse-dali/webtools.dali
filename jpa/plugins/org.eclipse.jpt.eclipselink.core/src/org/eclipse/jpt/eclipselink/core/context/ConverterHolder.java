@@ -32,7 +32,7 @@ public interface ConverterHolder extends JpaContextNode
 	 * Return a list iterator of the converters.
 	 * This will not be null.
 	 */
-	<T extends EclipseLinkConverter> ListIterator<T> converters();
+	<T extends Converter> ListIterator<T> converters();
 
 	/**
 	 * Return the number of converters.
@@ -42,7 +42,7 @@ public interface ConverterHolder extends JpaContextNode
 	/**
 	 * Add a converter to the converter holder, return the object representing it.
 	 */
-	EclipseLinkConverter addConverter(int index);
+	Converter addConverter(int index);
 
 	/**
 	 * Remove the converter at the index from the converter holder.
@@ -52,7 +52,7 @@ public interface ConverterHolder extends JpaContextNode
 	/**
 	 * Remove the converter at from the converter holder.
 	 */
-	void removeConverter(EclipseLinkConverter converter);
+	void removeConverter(Converter converter);
 
 	/**
 	 * Move the converter from the source index to the target index.
@@ -68,7 +68,7 @@ public interface ConverterHolder extends JpaContextNode
 	 * Return a list iterator of the object type converters.
 	 * This will not be null.
 	 */
-	<T extends EclipseLinkObjectTypeConverter> ListIterator<T> objectTypeConverters();
+	<T extends ObjectTypeConverter> ListIterator<T> objectTypeConverters();
 
 	/**
 	 * Return the number of object type converters.
@@ -78,7 +78,7 @@ public interface ConverterHolder extends JpaContextNode
 	/**
 	 * Add a object type converter to the converter holder, return the object representing it.
 	 */
-	EclipseLinkConverter addObjectTypeConverter(int index);
+	Converter addObjectTypeConverter(int index);
 
 	/**
 	 * Remove the object type converter at the index from the converter holder.
@@ -88,7 +88,7 @@ public interface ConverterHolder extends JpaContextNode
 	/**
 	 * Remove the object type converter at from the converter holder.
 	 */
-	void removeObjectTypeConverter(EclipseLinkObjectTypeConverter converter);
+	void removeObjectTypeConverter(ObjectTypeConverter converter);
 
 	/**
 	 * Move the object type converter from the source index to the target index.
@@ -104,7 +104,7 @@ public interface ConverterHolder extends JpaContextNode
 	 * Return a list iterator of the struct converters.
 	 * This will not be null.
 	 */
-	<T extends EclipseLinkStructConverter> ListIterator<T> structConverters();
+	<T extends StructConverter> ListIterator<T> structConverters();
 
 	/**
 	 * Return the number of struct converters.
@@ -114,7 +114,7 @@ public interface ConverterHolder extends JpaContextNode
 	/**
 	 * Add a struct converter to the converter holder, return the object representing it.
 	 */
-	EclipseLinkStructConverter addStructConverter(int index);
+	StructConverter addStructConverter(int index);
 
 	/**
 	 * Remove the struct converter at the index from the converter holder.
@@ -124,7 +124,7 @@ public interface ConverterHolder extends JpaContextNode
 	/**
 	 * Remove the struct converter at from the converter holder.
 	 */
-	void removeStructConverter(EclipseLinkStructConverter converter);
+	void removeStructConverter(StructConverter converter);
 
 	/**
 	 * Move the struct converter from the source index to the target index.
@@ -140,7 +140,7 @@ public interface ConverterHolder extends JpaContextNode
 	 * Return a list iterator of the type converters.
 	 * This will not be null.
 	 */
-	<T extends EclipseLinkTypeConverter> ListIterator<T> typeConverters();
+	<T extends TypeConverter> ListIterator<T> typeConverters();
 
 	/**
 	 * Return the number of type converters.
@@ -150,7 +150,7 @@ public interface ConverterHolder extends JpaContextNode
 	/**
 	 * Add a type converter to the converter holder, return the object representing it.
 	 */
-	EclipseLinkStructConverter addTypeConverter(int index);
+	StructConverter addTypeConverter(int index);
 
 	/**
 	 * Remove the type converter at the index from the converter holder.
@@ -160,7 +160,7 @@ public interface ConverterHolder extends JpaContextNode
 	/**
 	 * Remove the type converter at from the converter holder.
 	 */
-	void removeTypeConverter(EclipseLinkTypeConverter converter);
+	void removeTypeConverter(TypeConverter converter);
 
 	/**
 	 * Move the type converter from the source index to the target index.

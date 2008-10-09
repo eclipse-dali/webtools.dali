@@ -7,11 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.context.java;
-
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
+package org.eclipse.jpt.eclipselink.core.context;
 
 /**
+ * Corresponds to a TypeConverter resource model object
+ * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -21,7 +21,14 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJavaTypeConverter extends EclipseLinkTypeConverter, EclipseLinkJavaNamedConverter
+public interface TypeConverter extends EclipseLinkConverter
 {
+	String getDataType();	
+	void setDataType(String dataType);
+		String DATA_TYPE_PROPERTY = "dataTypeProperty"; //$NON-NLS-1$
+		
+	String getObjectType();	
+	void setObjectType(String objectType);
+		String OBJECT_TYPE_PROPERTY = "objectTypeProperty"; //$NON-NLS-1$
 
 }

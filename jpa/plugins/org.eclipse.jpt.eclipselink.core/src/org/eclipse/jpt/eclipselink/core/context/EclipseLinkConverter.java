@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context;
 
+import org.eclipse.jpt.core.context.JpaContextNode;
+
 /**
- * Corresponds to a Converter resource model object
+ * Corresponds to a *Converter resource model object
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,11 +23,33 @@ package org.eclipse.jpt.eclipselink.core.context;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkConverter extends EclipseLinkNamedConverter
+public interface EclipseLinkConverter extends JpaContextNode
 {
-		
-	String getConverterClass();	
-	void setConverterClass(String converterClass);
-		String CONVERTER_CLASS_PROPERTY = "converterClassProperty"; //$NON-NLS-1$
+	/**
+	 * Return a string that represents the type of converter.
+	 * Possibilities are below, NO_CONVERTER, CONVERTER, 
+	 * OBJECT_TYPE_CONVERTER, STRUCT_CONVERTER, TYPE_CONVERTER
+	 */
+	String getType();
+	
+	String CONVERTER = "converter"; //$NON-NLS-1$
+	String NO_CONVERTER = "noConverter"; //$NON-NLS-1$
+	String OBJECT_TYPE_CONVERTER = "objectTypeConverter"; //$NON-NLS-1$
+	String STRUCT_CONVERTER = "structConverter"; //$NON-NLS-1$
+	String TYPE_CONVERTER = "typeConverter"; //$NON-NLS-1$
+	
+	String getName();	
+	void setName(String name);
+		String NAME_PROPERTY = "nameProperty"; //$NON-NLS-1$
+
+	/**
+	 * Remove the EclipseLinkNamedConverter from the resource model
+	 */
+	void removeFromResourceModel();
+	
+	/**
+	 * Add the appropriate EclipseLinkNamedConverter to the resource model
+	 */
+	void addToResourceModel();
 
 }

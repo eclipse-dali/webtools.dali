@@ -10,8 +10,8 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkNamedConverter;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class TypeConverterComposite extends FormPane<EclipseLinkTypeConverter>
+public class TypeConverterComposite extends FormPane<TypeConverter>
 {
 
 	/**
@@ -47,7 +47,7 @@ public class TypeConverterComposite extends FormPane<EclipseLinkTypeConverter>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TypeConverterComposite(PropertyValueModel<? extends EclipseLinkTypeConverter> subjectHolder,
+	public TypeConverterComposite(PropertyValueModel<? extends TypeConverter> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 
@@ -69,8 +69,8 @@ public class TypeConverterComposite extends FormPane<EclipseLinkTypeConverter>
 	}
 	
 	protected WritablePropertyValueModel<String> buildNameTextHolder() {
-		return new PropertyAspectAdapter<EclipseLinkTypeConverter, String>(
-				getSubjectHolder(), EclipseLinkNamedConverter.NAME_PROPERTY) {
+		return new PropertyAspectAdapter<TypeConverter, String>(
+				getSubjectHolder(), EclipseLinkConverter.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getName();
@@ -87,13 +87,13 @@ public class TypeConverterComposite extends FormPane<EclipseLinkTypeConverter>
 	}
 
 	
-	private ClassChooserPane<EclipseLinkTypeConverter> addDataTypeChooser(Composite container) {
+	private ClassChooserPane<TypeConverter> addDataTypeChooser(Composite container) {
 
-		return new ClassChooserPane<EclipseLinkTypeConverter>(this, container) {
+		return new ClassChooserPane<TypeConverter>(this, container) {
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<EclipseLinkTypeConverter, String>(getSubjectHolder(), EclipseLinkTypeConverter.DATA_TYPE_PROPERTY) {
+				return new PropertyAspectAdapter<TypeConverter, String>(getSubjectHolder(), TypeConverter.DATA_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return subject.getDataType();
@@ -138,13 +138,13 @@ public class TypeConverterComposite extends FormPane<EclipseLinkTypeConverter>
 		};
 	}
 
-	private ClassChooserPane<EclipseLinkTypeConverter> addObjectTypeChooser(Composite container) {
+	private ClassChooserPane<TypeConverter> addObjectTypeChooser(Composite container) {
 
-		return new ClassChooserPane<EclipseLinkTypeConverter>(this, container) {
+		return new ClassChooserPane<TypeConverter>(this, container) {
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<EclipseLinkTypeConverter, String>(getSubjectHolder(), EclipseLinkTypeConverter.OBJECT_TYPE_PROPERTY) {
+				return new PropertyAspectAdapter<TypeConverter, String>(getSubjectHolder(), TypeConverter.OBJECT_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return subject.getObjectType();
@@ -190,9 +190,9 @@ public class TypeConverterComposite extends FormPane<EclipseLinkTypeConverter>
 	}
 
 	protected PropertyValueModel<Boolean> buildBooleanHolder() {
-		return new TransformationPropertyValueModel<EclipseLinkTypeConverter, Boolean>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<TypeConverter, Boolean>(getSubjectHolder()) {
 			@Override
-			protected Boolean transform(EclipseLinkTypeConverter value) {
+			protected Boolean transform(TypeConverter value) {
 				return Boolean.valueOf(value != null);
 			}
 		};

@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaBasicMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
+import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaMutable;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
@@ -43,8 +43,8 @@ public class EclipseLinkJavaBasicMappingImpl extends GenericJavaBasicMapping imp
 		if (javaConverter != null) {
 			return javaConverter;
 		}
-		if (converterType == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
-			return getJpaFactory().buildEclipseLinkJavaConvert(this, this.resourcePersistentAttribute);
+		if (converterType == Convert.ECLIPSE_LINK_CONVERTER) {
+			return getJpaFactory().buildJavaConvert(this, this.resourcePersistentAttribute);
 		}
 		return null;
 	}
@@ -56,7 +56,7 @@ public class EclipseLinkJavaBasicMappingImpl extends GenericJavaBasicMapping imp
 			return specifiedConverterType;
 		}
 		if (jrpa.getAnnotation(ConvertAnnotation.ANNOTATION_NAME) != null) {
-			return EclipseLinkConvert.ECLIPSE_LINK_CONVERTER;
+			return Convert.ECLIPSE_LINK_CONVERTER;
 		}
 		return null;
 	}

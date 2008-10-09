@@ -38,13 +38,13 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConversionValue;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConvert;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaConvert;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaStructConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaStructConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaExpiryTimeOfDay;
@@ -57,9 +57,9 @@ import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceU
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConversionValue;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConvertImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConvert;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConverterHolder;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConverterImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaCustomizer;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEmbeddableImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEntityImpl;
@@ -70,13 +70,13 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaMan
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaManyToOneMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaMappedSuperclassImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaMutable;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaObjectTypeConverterImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaPrivateOwnable;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaReadOnly;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaStructConverterImpl;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaTypeConverterImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaStructConverter;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaTypeConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlImpl;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
@@ -182,27 +182,27 @@ public class EclipseLinkJpaFactoryImpl extends GenericJpaFactory
 		return new EclipseLinkJavaExpiryTimeOfDay(parent);
 	}
 	
-	public EclipseLinkJavaConvert buildEclipseLinkJavaConvert(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa) {
-		return new EclipseLinkJavaConvertImpl(parent, jrpa);
+	public JavaConvert buildJavaConvert(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa) {
+		return new EclipseLinkJavaConvert(parent, jrpa);
 	}
 	
-	public EclipseLinkJavaConverter buildEclipseLinkJavaConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
-		return new EclipseLinkJavaConverterImpl(parent, jrpm);
+	public JavaConverter buildJavaConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
+		return new EclipseLinkJavaConverter(parent, jrpm);
 	}
 	
-	public EclipseLinkJavaObjectTypeConverter buildEclipseLinkJavaObjectTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
-		return new EclipseLinkJavaObjectTypeConverterImpl(parent, jrpm);
+	public JavaObjectTypeConverter buildJavaObjectTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
+		return new EclipseLinkJavaObjectTypeConverter(parent, jrpm);
 	}
 	
-	public EclipseLinkJavaStructConverter buildEclipseLinkJavaStructConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
-		return new EclipseLinkJavaStructConverterImpl(parent, jrpm);
+	public JavaStructConverter buildJavaStructConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
+		return new EclipseLinkJavaStructConverter(parent, jrpm);
 	}
 	
-	public EclipseLinkJavaTypeConverter buildEclipseLinkJavaTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
-		return new EclipseLinkJavaTypeConverterImpl(parent, jrpm);
+	public JavaTypeConverter buildJavaTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
+		return new EclipseLinkJavaTypeConverter(parent, jrpm);
 	}
 	
-	public JavaConversionValue buildJavaConversionValue(EclipseLinkJavaObjectTypeConverter parent) {
+	public JavaConversionValue buildJavaConversionValue(JavaObjectTypeConverter parent) {
 		return new EclipseLinkJavaConversionValue(parent);
 	}
 	
