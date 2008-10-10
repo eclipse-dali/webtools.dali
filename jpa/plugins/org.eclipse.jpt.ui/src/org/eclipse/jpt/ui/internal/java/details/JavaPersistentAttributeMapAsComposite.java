@@ -41,17 +41,11 @@ public class JavaPersistentAttributeMapAsComposite extends PersistentAttributeMa
 		super(parentPane, parent);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders() {
 		return getJpaPlatformUi().javaAttributeMappingUiProviders();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
 		return getJpaPlatformUi().defaultJavaAttributeMappingUiProviders();

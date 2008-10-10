@@ -40,17 +40,11 @@ public class OrmPersistentAttributeMapAsComposite extends PersistentAttributeMap
 		super(parentPane, parent);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders() {
 		return getJpaPlatformUi().ormAttributeMappingUiProviders();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
 		return getJpaPlatformUi().defaultOrmAttributeMappingUiProviders();
