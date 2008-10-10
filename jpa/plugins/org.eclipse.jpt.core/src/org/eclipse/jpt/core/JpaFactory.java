@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
+import org.eclipse.jpt.core.context.PersistentTypeContext;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
@@ -84,6 +85,7 @@ import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmPersistentTypeContext;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryHint;
@@ -96,7 +98,7 @@ import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
-import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
+import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -223,9 +225,9 @@ public interface JpaFactory
 	
 	PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent, XmlEntityMappings entityMappings);
 	
-	PersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent, XmlEntityMappings entityMappings);
+	OrmPersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent, XmlEntityMappings entityMappings);
 	
-	OrmPersistentType buildOrmPersistentType(EntityMappings parent, String mappingKey);
+	OrmPersistentType buildOrmPersistentType(OrmPersistentTypeContext parent, String mappingKey);
 	
 	OrmEntity buildOrmEntity(OrmPersistentType parent);
 	
@@ -291,7 +293,7 @@ public interface JpaFactory
 	
 	// **************** java context objects ***********************************
 	
-	JavaPersistentType buildJavaPersistentType(JpaContextNode parent, JavaResourcePersistentType jrpt);
+	JavaPersistentType buildJavaPersistentType(PersistentTypeContext parent, JavaResourcePersistentType jrpt);
 	
 	JavaEntity buildJavaEntity(JavaPersistentType parent);
 	

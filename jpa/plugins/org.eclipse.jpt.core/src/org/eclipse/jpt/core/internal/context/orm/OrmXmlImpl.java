@@ -12,10 +12,11 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
-import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
@@ -39,18 +40,12 @@ public class OrmXmlImpl
 		this.initialize(ormResource);
 	}
 	
+	
+	// **************** JpaNode impl *******************************************
+	
 	@Override
 	public MappingFileRef getParent() {
 		return (MappingFileRef) super.getParent();
-	}
-	
-	public String getId() {
-		// isn't actually displayed, so needs no details page
-		return null;
-	}
-	
-	public OrmPersistentType getPersistentType(String fullyQualifiedTypeName) {
-		return (this.entityMappings == null) ? null : this.entityMappings.getPersistentType(fullyQualifiedTypeName);
 	}
 	
 	@Override
@@ -58,13 +53,42 @@ public class OrmXmlImpl
 		return ormResource.getFile();
 	}
 	
+	
+	// **************** JpaContextNode impl ************************************
+	
+	@Override
+	public MappingFileRoot getMappingFileRoot() {
+		// TODO Auto-generated method stub
+		return getEntityMappings();
+	}
+	
+	
+	// **************** JpaStructureNode impl **********************************
+	
+	public String getId() {
+		// isn't actually displayed, so needs no details page
+		return null;
+	}
+	
+	
+	// **************** MappingFile impl ***************************************
+	
 	public JpaXmlResource getXmlResource() {
 		return ormResource;
 	}
 	
+	public MappingFileRoot getRoot() {
+		return getEntityMappings();
+	}
+	
+	public OrmPersistentType getPersistentType(String fullyQualifiedTypeName) {
+		return (this.entityMappings == null) ? null : this.entityMappings.getPersistentType(fullyQualifiedTypeName);
+	}
+	
+	
+	
 	// **************** persistence ********************************************
 	
-	@Override
 	public EntityMappings getEntityMappings() {
 		return this.entityMappings;
 	}
@@ -101,11 +125,11 @@ public class OrmXmlImpl
 		firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, oldEntityMappings, null);
 	}
 	
-	public PersistenceUnitDefaults getPersistenceUnitDefaults() {
+	public OrmPersistenceUnitDefaults getPersistenceUnitDefaults() {
 		return (this.entityMappings == null) ? null : this.entityMappings.getPersistenceUnitDefaults();
 	}
-
-
+	
+	
 	// **************** updating ***********************************************
 	
 	protected void initialize(OrmResource resource) {

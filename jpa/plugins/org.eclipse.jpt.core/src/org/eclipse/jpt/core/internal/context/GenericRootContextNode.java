@@ -19,8 +19,7 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.MappingFile;
-import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
@@ -99,14 +98,8 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 	}
 	
 	@Override
-	public EntityMappings getEntityMappings() {
-		// No EntityMappings in this context
-		return null;
-	}
-	
-	@Override
-	public OrmPersistentType getOrmPersistentType() {
-		// No OrmPersistentType in this context
+	public MappingFileRoot getMappingFileRoot() {
+		// No MappingFileRoot in this context
 		return null;
 	}
 	

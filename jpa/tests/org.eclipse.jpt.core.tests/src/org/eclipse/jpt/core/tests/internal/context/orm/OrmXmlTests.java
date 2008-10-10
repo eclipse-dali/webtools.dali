@@ -54,7 +54,7 @@ public class OrmXmlTests extends ContextModelTestCase
 		ormResource.getContents().add(OrmFactory.eINSTANCE.createXmlEntityMappings());
 		ormResource.save(null);
 		
-		assertNotNull(ormXml().getEntityMappings());
+		assertNotNull(ormXml().getRoot());
 	}
 	
 	public void testModifyAddEntityMappings() {
@@ -63,11 +63,11 @@ public class OrmXmlTests extends ContextModelTestCase
 		assertNull(ormResource.getEntityMappings());
 		
 		OrmXml ormXml = ormXml();
-		assertNull(ormXml.getEntityMappings());
+		assertNull(ormXml.getRoot());
 		
 		ormXml.addEntityMappings();
 		
-		assertNotNull(ormXml.getEntityMappings());
+		assertNotNull(ormXml.getRoot());
 		
 		boolean exceptionThrown = false;
 		try {
@@ -83,21 +83,21 @@ public class OrmXmlTests extends ContextModelTestCase
 	public void testUpdateRemoveEntityMappings() throws Exception {
 		OrmResource ormResource = ormResource();
 		
-		assertNotNull(ormXml().getEntityMappings());
+		assertNotNull(ormXml().getRoot());
 		
 		ormResource.getContents().clear();
 		
-		assertNull(ormXml().getEntityMappings());
+		assertNull(ormXml().getRoot());
 	}
 	
 	public void testModifyRemoveEntityMappings() {
 		OrmXml ormXml = ormXml();
 		
-		assertNotNull(ormXml.getEntityMappings());
+		assertNotNull(ormXml.getRoot());
 		
 		ormXml.removeEntityMappings();
 		
-		assertNull(ormXml.getEntityMappings());
+		assertNull(ormXml.getRoot());
 		
 		boolean exceptionThrown = false;
 		try {

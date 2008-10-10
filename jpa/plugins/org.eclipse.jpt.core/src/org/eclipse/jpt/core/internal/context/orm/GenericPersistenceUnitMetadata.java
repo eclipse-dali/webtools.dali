@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
+import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -23,7 +23,7 @@ public class GenericPersistenceUnitMetadata extends AbstractXmlContextNode
 {
 	protected boolean xmlMappingMetadataComplete;
 
-	protected final PersistenceUnitDefaults persistenceUnitDefaults;
+	protected final OrmPersistenceUnitDefaults persistenceUnitDefaults;
 
 	protected XmlEntityMappings entityMappings;
 
@@ -61,7 +61,7 @@ public class GenericPersistenceUnitMetadata extends AbstractXmlContextNode
 		firePropertyChanged(PersistenceUnitMetadata.XML_MAPPING_METADATA_COMPLETE_PROPERTY, oldXmlMappingMetadataComplete, newXmlMappingMetadataComplete);
 	}
 
-	public PersistenceUnitDefaults getPersistenceUnitDefaults() {
+	public OrmPersistenceUnitDefaults getPersistenceUnitDefaults() {
 		return this.persistenceUnitDefaults;
 	}
 	

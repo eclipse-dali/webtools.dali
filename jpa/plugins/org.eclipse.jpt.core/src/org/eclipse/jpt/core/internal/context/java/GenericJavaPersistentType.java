@@ -20,9 +20,9 @@ import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.PersistentTypeContext;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
@@ -56,7 +56,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 
 	protected JavaResourcePersistentType resourcePersistentType;
 
-	public GenericJavaPersistentType(JpaContextNode parent, JavaResourcePersistentType jrpt) {
+	public GenericJavaPersistentType(PersistentTypeContext parent, JavaResourcePersistentType jrpt) {
 		super(parent);
 		this.attributes = new ArrayList<JavaPersistentAttribute>();
 		this.initialize(jrpt);
@@ -74,6 +74,11 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 	
 	//****************** PersistentType implementation *******************
+	
+	public PersistentTypeContext getContext() {
+		return (PersistentTypeContext) getParent();
+	}
+	
 	public String getName() {
 		return this.name;
 	}
@@ -361,13 +366,8 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	 * 		Default to FIELD if all else fails.
 	 */
 	protected AccessType access(JavaResourcePersistentType jrpt) {
-		AccessType javaAccess = null;
-		boolean metadataComplete = false;
-		if (getOrmPersistentType() != null) {
-			javaAccess = getOrmPersistentType().getMapping().getSpecifiedAccess();
-			metadataComplete = getOrmPersistentType().getMapping().isMetadataComplete();
-		}
-		if (javaAccess == null && !metadataComplete) {
+		AccessType javaAccess = getContext().getSpecifiedPersistentTypeAccess();
+		if (javaAccess == null) {
 			javaAccess = AccessType.fromJavaResourceModel(jrpt.getAccess());
 		}
 		if (javaAccess == null) {
@@ -376,18 +376,10 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 			}
 		}
 		if (javaAccess == null) {
-			if (getEntityMappings() != null) {
-				javaAccess = getEntityMappings().getAccess();
-			}
+			javaAccess = getContext().getDefaultPersistentTypeAccess();
 		}
 		if (javaAccess == null) {
-			//have to check persistence-unit separately in the case where it is not listed directly in an orm.xml
-			//if it is listed in an orm.xml then the entityMappings().getAccess() check will cover persistence-unit.defaultAccess
-			if (getPersistenceUnit() != null) {
-				javaAccess = getPersistenceUnit().getDefaultAccess();
-			}
-		}
-		if (javaAccess == null) {
+			// last ditch attempt to allow the user to annotate *something*
 			javaAccess = AccessType.FIELD;
 		}
 		return javaAccess;

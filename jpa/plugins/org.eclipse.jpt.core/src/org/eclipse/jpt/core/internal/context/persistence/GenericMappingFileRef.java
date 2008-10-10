@@ -19,8 +19,8 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.MappingFile;
+import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -187,9 +187,9 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 	
 	// *************************************************************************
 	
-	public PersistenceUnitDefaults getPersistenceUnitDefaults() {
-		if (getMappingFile() != null) {
-			return getMappingFile().getPersistenceUnitDefaults();
+	public MappingFilePersistenceUnitDefaults getPersistenceUnitDefaults() {
+		if (getMappingFile() != null && getMappingFile().getRoot() != null) {
+			return getMappingFile().getRoot().getPersistenceUnitDefaults();
 		}
 		return null;
 	}
@@ -270,7 +270,7 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 			return;
 		}
 
-		if (this.mappingFile.getEntityMappings() == null) {
+		if (this.mappingFile.getRoot() == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

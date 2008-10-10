@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.orm.details;
 
 import java.util.Collection;
 import org.eclipse.jpt.core.context.AccessType;
-import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
+import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see PersistenceUnitMetadata
- * @see PersistenceUnitDefaults
+ * @see OrmPersistenceUnitDefaults
  * @see EntityMappingsDetailsPage - The parent container
  * @see CatalogCombo
  * @see SchemaCombo
@@ -75,14 +75,14 @@ public class PersistenceUnitMetadataComposite extends FormPane<PersistenceUnitMe
 		super(parentPane, subjectHolder, parent);
 	}
 
-	private EnumFormComboViewer<PersistenceUnitDefaults, AccessType> addAccessTypeCombo(Composite container) {
+	private EnumFormComboViewer<OrmPersistenceUnitDefaults, AccessType> addAccessTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<PersistenceUnitDefaults, AccessType>(this, buildPersistenceUnitDefaultsHolder(), container) {
+		return new EnumFormComboViewer<OrmPersistenceUnitDefaults, AccessType>(this, buildPersistenceUnitDefaultsHolder(), container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(PersistenceUnitDefaults.ACCESS_PROPERTY);
+				propertyNames.add(OrmPersistenceUnitDefaults.ACCESS_PROPERTY);
 			}
 
 			@Override
@@ -117,7 +117,7 @@ public class PersistenceUnitMetadataComposite extends FormPane<PersistenceUnitMe
 	}
 
 	private WritablePropertyValueModel<Boolean> buildCascadePersistHolder() {
-		return new PropertyAspectAdapter<PersistenceUnitDefaults, Boolean>(buildPersistenceUnitDefaultsHolder(), PersistenceUnitDefaults.CASCADE_PERSIST_PROPERTY) {
+		return new PropertyAspectAdapter<OrmPersistenceUnitDefaults, Boolean>(buildPersistenceUnitDefaultsHolder(), OrmPersistenceUnitDefaults.CASCADE_PERSIST_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.isCascadePersist();
@@ -130,15 +130,15 @@ public class PersistenceUnitMetadataComposite extends FormPane<PersistenceUnitMe
 		};
 	}
 
-	private CatalogCombo<PersistenceUnitDefaults> addCatalogCombo(Composite container) {
+	private CatalogCombo<OrmPersistenceUnitDefaults> addCatalogCombo(Composite container) {
 
-		return new CatalogCombo<PersistenceUnitDefaults>(this, buildPersistenceUnitDefaultsHolder(), container) {
+		return new CatalogCombo<OrmPersistenceUnitDefaults>(this, buildPersistenceUnitDefaultsHolder(), container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(PersistenceUnitDefaults.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(PersistenceUnitDefaults.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.add(OrmPersistenceUnitDefaults.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(OrmPersistenceUnitDefaults.SPECIFIED_CATALOG_PROPERTY);
 			}
 
 			@Override
@@ -158,24 +158,24 @@ public class PersistenceUnitMetadataComposite extends FormPane<PersistenceUnitMe
 		};
 	}
 
-	private PropertyValueModel<PersistenceUnitDefaults> buildPersistenceUnitDefaultsHolder() {
-		return new TransformationPropertyValueModel<PersistenceUnitMetadata, PersistenceUnitDefaults>(getSubjectHolder()) {
+	private PropertyValueModel<OrmPersistenceUnitDefaults> buildPersistenceUnitDefaultsHolder() {
+		return new TransformationPropertyValueModel<PersistenceUnitMetadata, OrmPersistenceUnitDefaults>(getSubjectHolder()) {
 			@Override
-			protected PersistenceUnitDefaults transform_(PersistenceUnitMetadata value) {
+			protected OrmPersistenceUnitDefaults transform_(PersistenceUnitMetadata value) {
 				return value.getPersistenceUnitDefaults();
 			}
 		};
 	}
 
-	private SchemaCombo<PersistenceUnitDefaults> addSchemaCombo(Composite container) {
+	private SchemaCombo<OrmPersistenceUnitDefaults> addSchemaCombo(Composite container) {
 
-		return new SchemaCombo<PersistenceUnitDefaults>(this, buildPersistenceUnitDefaultsHolder(), container) {
+		return new SchemaCombo<OrmPersistenceUnitDefaults>(this, buildPersistenceUnitDefaultsHolder(), container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(PersistenceUnitDefaults.DEFAULT_SCHEMA_PROPERTY);
-				propertyNames.add(PersistenceUnitDefaults.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.add(OrmPersistenceUnitDefaults.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(OrmPersistenceUnitDefaults.SPECIFIED_SCHEMA_PROPERTY);
 			}
 
 			@Override

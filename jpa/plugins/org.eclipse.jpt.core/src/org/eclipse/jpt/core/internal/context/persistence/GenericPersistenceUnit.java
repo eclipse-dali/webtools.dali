@@ -23,6 +23,8 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.GeneratedValue;
 import org.eclipse.jpt.core.context.Generator;
+import org.eclipse.jpt.core.context.MappingFile;
+import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
@@ -32,7 +34,6 @@ import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
-import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
@@ -636,11 +637,11 @@ public class GenericPersistenceUnit extends AbstractXmlContextNode
 	
 	//TODO validation for multiple persistenceUnitDefaults.
 	
-	//Take the first PersistenceUnitDefaults found in an orm.xml file and use
+	//Take the first MappingFilePersistenceUnitDefaults found in a mapping file and use
 	//this for the defaults of the PersistenceUnit.
-	protected PersistenceUnitDefaults getPersistenceUnitDefaults() {
+	protected MappingFilePersistenceUnitDefaults getPersistenceUnitDefaults() {
 		for (Iterator<MappingFileRef> stream= this.mappingFileRefs(); stream.hasNext(); ) {
-			PersistenceUnitDefaults defaults = stream.next().getPersistenceUnitDefaults();
+			MappingFilePersistenceUnitDefaults defaults = stream.next().getPersistenceUnitDefaults();
 			if (defaults != null) {
 				return defaults;
 			}
@@ -917,7 +918,7 @@ public class GenericPersistenceUnit extends AbstractXmlContextNode
 	}
 	
 	protected void initializePersistenceUnitDefaults() {
-		PersistenceUnitDefaults defaults = this.getPersistenceUnitDefaults();
+		MappingFilePersistenceUnitDefaults defaults = this.getPersistenceUnitDefaults();
 		this.defaultAccess = this.buildDefaultAccess(defaults);
 		this.defaultCatalog = this.buildDefaultCatalog(defaults);
 		this.defaultSchema = this.buildDefaultSchema(defaults);
@@ -1175,28 +1176,28 @@ public class GenericPersistenceUnit extends AbstractXmlContextNode
 	}
 		
 	protected void updatePersistenceUnitDefaults() {
-		PersistenceUnitDefaults defaults = getPersistenceUnitDefaults();
+		MappingFilePersistenceUnitDefaults defaults = getPersistenceUnitDefaults();
 		this.setDefaultAccess(this.buildDefaultAccess(defaults));
 		this.setDefaultCatalog(this.buildDefaultCatalog(defaults));
 		this.setDefaultSchema(this.buildDefaultSchema(defaults));
 		this.setDefaultCascadePersist(this.buildDefaultCascadePersist(defaults));
 	}
 
-	protected AccessType buildDefaultAccess(PersistenceUnitDefaults defaults) {
+	protected AccessType buildDefaultAccess(MappingFilePersistenceUnitDefaults defaults) {
 		return (defaults == null) ? null : defaults.getAccess();
 	}
 	
-	protected String buildDefaultCatalog(PersistenceUnitDefaults defaults) {
+	protected String buildDefaultCatalog(MappingFilePersistenceUnitDefaults defaults) {
 		String catalog = (defaults == null) ? null : defaults.getCatalog();
 		return (catalog != null) ? catalog : this.getJpaProject().getDefaultCatalog();
 	}
 
-	protected String buildDefaultSchema(PersistenceUnitDefaults defaults) {
+	protected String buildDefaultSchema(MappingFilePersistenceUnitDefaults defaults) {
 		String schema = (defaults == null) ? null : defaults.getSchema();
 		return (schema != null) ? schema : this.getJpaProject().getDefaultSchema();
 	}
 	
-	protected boolean buildDefaultCascadePersist(PersistenceUnitDefaults defaults) {
+	protected boolean buildDefaultCascadePersist(MappingFilePersistenceUnitDefaults defaults) {
 		return (defaults == null) ? false : defaults.isCascadePersist();
 	}
 	
@@ -1231,21 +1232,33 @@ public class GenericPersistenceUnit extends AbstractXmlContextNode
 	}
 	
 	protected void checkForMultiplePersistenceUnitDefaults(List<IMessage> messages) {
-		Collection<PersistenceUnitDefaults> puDefaultsCollection = this.buildPersistenceUnitDefaultsCollection();
-		if (puDefaultsCollection.size() > 1) {
-			for (PersistenceUnitDefaults puDefaults : puDefaultsCollection) {
+		boolean foundDefaultsToUse = false;
+		Iterator<MappingFileRef> stream = mappingFileRefs();
+		while (stream.hasNext() && ! foundDefaultsToUse) {
+			MappingFileRef mappingFileRef = stream.next();
+			MappingFile mappingFile = mappingFileRef.getMappingFile();
+			if (mappingFile != null && mappingFile.getRoot() != null 
+					&& mappingFile.getRoot().getPersistenceUnitDefaults() != null) {
+				foundDefaultsToUse = true;
+			}
+		}
+		while (stream.hasNext()) {
+			MappingFileRef mappingFileRef = stream.next();
+			MappingFile mappingFile = mappingFileRef.getMappingFile();
+			if (mappingFile != null && mappingFile.getRoot() != null 
+					&& mappingFile.getRoot().getPersistenceUnitDefaults() != null) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ENTITY_MAPPINGS_MULTIPLE_METADATA,
-						new String[] {this.getName()},
-						puDefaults
+						IMessage.NORMAL_SEVERITY,
+						JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_DEFAULTS,
+						new String[] {mappingFileRef.getFileName()},
+						mappingFileRef
 					)
 				);
 			}
 		}
 	}
-
+	
 	protected void checkForDuplicateMappingFiles(List<IMessage> messages) {
 		HashBag<String> fileNames = new HashBag<String>();
 		CollectionTools.addAll(fileNames, this.mappingFileRefNames());
@@ -1309,12 +1322,12 @@ public class GenericPersistenceUnit extends AbstractXmlContextNode
 		};
 	}
 
-	protected Collection<PersistenceUnitDefaults> buildPersistenceUnitDefaultsCollection() {
-		ArrayList<PersistenceUnitDefaults> result = new ArrayList<PersistenceUnitDefaults>();
+	protected Collection<MappingFile> buildMappingFiles() {
+		ArrayList<MappingFile> result = new ArrayList<MappingFile>();
 		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
-			PersistenceUnitDefaults defaults = stream.next().getPersistenceUnitDefaults();
-			if (defaults.resourceExists()) {
-				result.add(defaults);
+			MappingFile mappingFile = stream.next().getMappingFile();
+			if (mappingFile != null) {
+				result.add(mappingFile);
 			}
 		}
 		return result;

@@ -73,7 +73,7 @@ public class GenericJavaTable
 	 *   EntityMappings.getSchema()
 	 *     check for specified schema
 	 *   PersistenceUnit.getDefaultSchema()
-	 *     PersistenceUnitDefaults.getSchema()
+	 *     OrmPersistenceUnitDefaults.getSchema()
 	 *   JpaProject.getDefaultSchema()
 	 *     check for user override project setting
 	 *   Catalog.getDefaultSchema()

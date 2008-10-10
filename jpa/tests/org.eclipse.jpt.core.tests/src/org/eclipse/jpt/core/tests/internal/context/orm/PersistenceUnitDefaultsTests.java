@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
-import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
+import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
@@ -35,12 +35,12 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 		persistenceResource().save(null);
 	}
 	
-	protected PersistenceUnitDefaults persistenceUnitDefaults() {
+	protected OrmPersistenceUnitDefaults persistenceUnitDefaults() {
 		return entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults();
 	}
 	
 	public void testIsAllFeaturesUnset() throws Exception {
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getAccess());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		
@@ -82,7 +82,7 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 	}
 
 	public void testUpdateSchema() throws Exception {
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getSchema());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		
@@ -100,7 +100,7 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 	}
 	
 	public void testModifySchema() throws Exception {		
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getSchema());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		
@@ -116,7 +116,7 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 	}
 	
 	public void testModifySchema2() throws Exception {
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getSchema());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		
@@ -134,7 +134,7 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 	}
 	
 	public void testModifySchema3() throws Exception {
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getSchema());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		//set another element on the persistence-unit-metadata element so only persistence-unit-defaults element gets removed
@@ -153,7 +153,7 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateCatalog() throws Exception {
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getCatalog());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		
@@ -171,7 +171,7 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 	}
 	
 	public void testModifyCatalog() throws Exception {		
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getCatalog());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		
@@ -187,7 +187,7 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 	}
 	
 	public void testModifyCatalog2() throws Exception {
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getCatalog());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		
@@ -205,7 +205,7 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 	}
 	
 	public void testModifyCatalog3() throws Exception {
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getCatalog());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		//set another element on the persistence-unit-metadata element so only persistence-unit-defaults element gets removed
@@ -224,7 +224,7 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateCascadePersist() throws Exception {
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertFalse(persistenceUnitDefaults.isCascadePersist());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		
@@ -242,7 +242,7 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 	}
 	
 	public void testModifyCascadePersist() throws Exception {		
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertFalse(persistenceUnitDefaults.isCascadePersist());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		
@@ -258,7 +258,7 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 	}
 	
 	public void testModifyCascadePersist2() throws Exception {
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertFalse(persistenceUnitDefaults.isCascadePersist());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		
@@ -276,7 +276,7 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 	}
 	
 	public void testModifyCascadePersist3() throws Exception {
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertFalse(persistenceUnitDefaults.isCascadePersist());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		//set another element on the persistence-unit-metadata element so only persistence-unit-defaults element gets removed
@@ -296,7 +296,7 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 	
 	
 	public void testUpdateAccess() throws Exception {
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getAccess());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		
@@ -314,7 +314,7 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 	}
 	
 	public void testModifyAccess() throws Exception {		
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getAccess());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		
@@ -330,7 +330,7 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 	}
 	
 	public void testModifyAccess2() throws Exception {
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getAccess());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		
@@ -348,7 +348,7 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 	}
 	
 	public void testModifyAccess3() throws Exception {
-		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getAccess());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		//set another element on the persistence-unit-metadata element so only persistence-unit-defaults element gets removed

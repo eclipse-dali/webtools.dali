@@ -15,6 +15,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -28,7 +29,7 @@ public class RemovePersistentClassHandler extends AbstractHandler
 		// only applies for multiply selected OrmPersistentType objects in a tree
 		for (Iterator<OrmPersistentType> stream = selection.iterator(); stream.hasNext(); ) {
 			OrmPersistentType persistentType = stream.next();
-			persistentType.getEntityMappings().removeOrmPersistentType(persistentType);
+			((EntityMappings) persistentType.getMappingFileRoot()).removeOrmPersistentType(persistentType);
 		}
 		
 		return null;

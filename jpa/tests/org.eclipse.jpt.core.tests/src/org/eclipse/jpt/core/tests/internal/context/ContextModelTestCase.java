@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
+import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
@@ -115,7 +116,8 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	protected EntityMappings entityMappings() {
-		return persistenceUnit().mappingFileRefs().next().getMappingFile().getEntityMappings();
+		MappingFile mappingFile = persistenceUnit().mappingFileRefs().next().getMappingFile();
+		return (mappingFile == null) ? null : (EntityMappings) mappingFile.getRoot();
 	}
 	
 	protected XmlPersistenceUnit xmlPersistenceUnit() {

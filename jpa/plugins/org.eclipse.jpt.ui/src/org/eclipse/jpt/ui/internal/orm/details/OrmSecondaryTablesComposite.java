@@ -23,8 +23,8 @@ import org.eclipse.jpt.ui.internal.mappings.details.AbstractSecondaryTablesCompo
 import org.eclipse.jpt.ui.internal.mappings.details.PrimaryKeyJoinColumnsInSecondaryTableComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.SecondaryTableDialog;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -170,17 +170,21 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 			container
 		);
 	}
-
+	
 	private void installListPaneEnabler(WritablePropertyValueModel<Boolean> defineInXmlHolder,
 	                                    AddRemoveListPane<Entity> listPane) {
 
 		new PaneEnabler(defineInXmlHolder, listPane);
 	}
-
+	
 	@Override
 	protected SecondaryTableDialog buildSecondaryTableDialogForAdd() {
-		//defaultSchema and defaultCatalog should not be taken from the Table in this case.  The table default schema could be what is the specified schema on the java table.
-		return new SecondaryTableDialog(getControl().getShell(), getSubject().getJpaProject(), getSubject().getEntityMappings().getDefaultCatalog(), getSubject().getEntityMappings().getDefaultSchema());
+		// defaultSchema and defaultCatalog should not be taken from the Table in this case.  
+		// The table default schema could be what is the specified schema on the java table.
+		return new SecondaryTableDialog(
+			getControl().getShell(), getSubject().getJpaProject(), 
+			getSubject().getMappingFileRoot().getCatalog(), 
+			getSubject().getMappingFileRoot().getSchema());
 	}
 
 	private class DefineInXmlHolder extends ListPropertyValueModelAdapter<Boolean>

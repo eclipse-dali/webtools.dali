@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.db.Catalog;
@@ -23,10 +24,9 @@ import org.eclipse.jpt.db.SchemaContainer;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface PersistenceUnitDefaults
-	extends XmlContextNode
-{
-
+public interface OrmPersistenceUnitDefaults
+	extends XmlContextNode, MappingFilePersistenceUnitDefaults
+{	
 	AccessType getAccess();
 	void setAccess(AccessType value);
 		String ACCESS_PROPERTY = "access"; //$NON-NLS-1$
@@ -60,13 +60,13 @@ public interface PersistenceUnitDefaults
 		String CASCADE_PERSIST_PROPERTY = "cascadePersist"; //$NON-NLS-1$
 	
 	/**
-	 * Update the PersistenceUnitDefaults context model object to match the XmlEntityMappings 
+	 * Update the OrmPersistenceUnitDefaults context model object to match the XmlEntityMappings 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update(XmlEntityMappings entityMappings);
 	
 	/**
-	 * Return whether the underlying resource exists for the PersistenceUnitDefaults object
+	 * Return whether the underlying resource exists for the OrmPersistenceUnitDefaults object
 	 * If there is a node in the orm.xml file for persistence-unit-default, this returns true, otherwise false.
 	 * @return
 	 */

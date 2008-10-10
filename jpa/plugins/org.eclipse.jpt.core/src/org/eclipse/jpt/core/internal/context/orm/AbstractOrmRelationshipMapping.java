@@ -187,7 +187,9 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 		PersistentType persistentType = getPersistenceUnit().getPersistentType(getTargetEntity());
 		if (persistentType == null) {
 			// try to resolve by prepending the global package name
-			persistentType = getPersistenceUnit().getPersistentType(getEntityMappings().getPackage() + '.' + getTargetEntity());
+			String packageName = 
+				getPersistentAttribute().getPersistentType().getContext().getDefaultPersistentTypePackage();
+			persistentType = getPersistenceUnit().getPersistentType(packageName + '.' + getTargetEntity());
 		}
 		return persistentType;
 	}

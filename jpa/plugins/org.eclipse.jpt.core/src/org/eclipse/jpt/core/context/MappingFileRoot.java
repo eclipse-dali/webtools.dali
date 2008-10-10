@@ -11,8 +11,6 @@
 package org.eclipse.jpt.core.context;
 
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -21,30 +19,29 @@ import org.eclipse.jpt.core.resource.common.JpaXmlResource;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface MappingFile extends XmlContextNode, JpaStructureNode
+public interface MappingFileRoot extends XmlContextNode, JpaStructureNode
 {
 	/**
-	 * Return the underlying xml resource
+	 * Return the specified access if present, otherwise return the default
+	 * access.
 	 */
-	JpaXmlResource getXmlResource();
+	AccessType getAccess();
 	
 	/**
-	 * Return the root object of this mapping file
+	 * Return the specified catalog if present, otherwise return the default
+	 * catalog.
 	 */
-	MappingFileRoot getRoot();
+	String getCatalog();
 	
 	/**
-	 * Return the OrmPersistentType listed in this mapping file
-	 * with the given fullyQualifiedTypeName.  Return null if none exists.
+	 * Return the specified schema if present, otherwise return the default
+	 * schema.
 	 */
-	OrmPersistentType getPersistentType(String fullyQualifiedTypeName);
-	
-	
-	// **************** updating **********************************************
+	String getSchema();
 	
 	/**
-	 * Update the MappingFile context model object to match the JpaXmlResource 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 * Return the defaults defined within this mapping file *for the persistence unit*.
+	 * Return null if none exists.
 	 */
-	void update(JpaXmlResource mappingFileResource);
+	MappingFilePersistenceUnitDefaults getPersistenceUnitDefaults();
 }

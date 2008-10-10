@@ -26,6 +26,11 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  */
 public interface PersistentType extends JpaContextNode, JpaStructureNode
 {
+	/**
+	 * Return the owning context
+	 */
+	PersistentTypeContext getContext();
+	
 	String getName();
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	

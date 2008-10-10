@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
+import org.eclipse.jpt.core.context.PersistentTypeContext;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
@@ -91,6 +92,7 @@ import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmPersistentTypeContext;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryHint;
@@ -103,7 +105,7 @@ import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
-import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
+import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -306,7 +308,7 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericPersistenceUnitMetadata(parent, xmlEntityMappings);
 	}
 	
-	public PersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent, XmlEntityMappings xmlEntityMappings) {
+	public OrmPersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent, XmlEntityMappings xmlEntityMappings) {
 		return new GenericPersistenceUnitDefaults(parent, xmlEntityMappings);
 	}
 	
@@ -334,7 +336,7 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericProperty(parent, xmlProperty);
 	}
 	
-	public JavaPersistentType buildJavaPersistentType(JpaContextNode parent, JavaResourcePersistentType jrpt) {
+	public JavaPersistentType buildJavaPersistentType(PersistentTypeContext parent, JavaResourcePersistentType jrpt) {
 		return new GenericJavaPersistentType(parent, jrpt);
 	}
 	
@@ -478,7 +480,7 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericJavaLobConverter(parent, jrpa);
 	}
 	
-	public OrmPersistentType buildOrmPersistentType(EntityMappings parent, String mappingKey) {
+	public OrmPersistentType buildOrmPersistentType(OrmPersistentTypeContext parent, String mappingKey) {
 		return new GenericOrmPersistentType(parent, mappingKey);
 	}
 	

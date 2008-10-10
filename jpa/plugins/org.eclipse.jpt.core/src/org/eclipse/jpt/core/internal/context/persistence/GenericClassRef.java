@@ -13,6 +13,8 @@ package org.eclipse.jpt.core.internal.context.persistence;
 import java.util.List;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.PersistentTypeContext;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -33,7 +35,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * XmlJavaClassRef corresponds to the class tag in the persistence.xml
  */
 public class GenericClassRef extends AbstractXmlContextNode 
-	implements ClassRef
+	implements ClassRef, PersistentTypeContext
 {
 	//this is null for the implied classRef case
 	protected XmlJavaClassRef xmlJavaClassRef;
@@ -66,6 +68,18 @@ public class GenericClassRef extends AbstractXmlContextNode
 	
 	public boolean isVirtual() {
 		return this.xmlJavaClassRef == null;
+	}
+	
+	
+	// **************** PersistentTypeContext impl *****************************
+	
+	public AccessType getSpecifiedPersistentTypeAccess() {
+		// no access type is *specified* at this level
+		return null;
+	}
+	
+	public AccessType getDefaultPersistentTypeAccess() {
+		return getPersistenceUnit().getDefaultAccess();
 	}
 	
 	

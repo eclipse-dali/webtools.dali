@@ -11,9 +11,9 @@ package org.eclipse.jpt.core.context.persistence;
 
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.MappingFile;
+import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 
 /**
@@ -68,7 +68,7 @@ public interface MappingFileRef extends XmlContextNode, JpaStructureNode
 	
 	// *************************************************************************
 	
-	PersistenceUnitDefaults getPersistenceUnitDefaults();
+	MappingFilePersistenceUnitDefaults getPersistenceUnitDefaults();
 	
 	/**
 	 * Return the OrmPersistentType listed in this mapping file

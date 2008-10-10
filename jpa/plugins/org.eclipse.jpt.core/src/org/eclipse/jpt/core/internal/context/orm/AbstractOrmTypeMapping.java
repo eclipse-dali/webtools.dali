@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -33,27 +32,61 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> extends AbstractXmlContextNode implements OrmTypeMapping
+public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> extends AbstractXmlContextNode 
+	implements OrmTypeMapping
 {
-
 	protected String class_;
 	
 	public AccessType defaultAccess;
-
+	
 	protected AccessType specifiedAccess;
-
+	
 	public boolean defaultMetadataComplete;
-
+	
 	protected Boolean specifiedMetadataComplete;
-
+	
 	protected JavaPersistentType javaPersistentType;
-
+	
 	protected T typeMapping;
+	
 	
 	protected AbstractOrmTypeMapping(OrmPersistentType parent) {
 		super(parent);
 	}
-
+	
+	
+	// **************** PersistentTypeContext impl *****************************
+	
+	public AccessType getSpecifiedPersistentTypeAccess() {
+		AccessType accessType = getSpecifiedAccess();
+		if (accessType == null && getPersistentType().getParentPersistentType() instanceof OrmPersistentType) {
+			accessType = ((OrmPersistentType) getPersistentType().getParentPersistentType()).getMapping().getSpecifiedAccess();
+		}
+		if (accessType == null && isMetadataComplete()) {
+			accessType = getPersistentType().getContext().getDefaultPersistentTypeAccess();
+			// FIELD here is a default.  We're specifying metadata complete, which means
+			// that annotations aren't to be used, so we basically *have* to have an 
+			// access type coming from xml.  We're using FIELD, since it's the same 
+			// default we use in java when we have no other option.
+			if (accessType == null) {
+				accessType = AccessType.FIELD;
+			}
+		}
+		return accessType;
+	}
+	
+	public AccessType getDefaultPersistentTypeAccess() {
+		AccessType accessType = null;
+		if (accessType == null && getPersistentType().getParentPersistentType() instanceof OrmPersistentType) {
+			accessType = ((OrmPersistentType) getPersistentType().getParentPersistentType()).getMapping().getDefaultAccess();
+		}
+		if (accessType == null) {
+			accessType = getPersistentType().getContext().getDefaultPersistentTypeAccess();
+		}
+		return accessType;
+	}
+	
+	
 	public boolean isMapped() {
 		return true;
 	}
@@ -203,17 +236,9 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 	public T getTypeMappingResource() {
 		return this.typeMapping;
 	}
-	
-	protected PersistenceUnitMetadata getPersistenceUnitMetadata() {
-		return getEntityMappings().getPersistenceUnitMetadata();
-	}
-
-	protected boolean defaultMetadataComplete() {
-		return getPersistenceUnitMetadata().isXmlMappingMetadataComplete();
-	}
 
 	protected AccessType defaultAccess() {
-		if (!isMetadataComplete()) {
+		if (! isMetadataComplete()) {
 			if (getJavaPersistentType() != null) {
 				if (getJavaPersistentType().hasAnyAttributeMappingAnnotations()) {
 					return getJavaPersistentType().getAccess();
@@ -223,7 +248,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 				}
 			}
 		}
-		return getEntityMappings().getAccess();
+		return getMappingFileRoot().getAccess();
 	}
 	
 	public JavaPersistentType getJavaPersistentType() {
@@ -248,7 +273,8 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		JavaResourcePersistentType persistentTypeResource = getJpaProject().getJavaResourcePersistentType(getClass_());
 		if (persistentTypeResource == null) {
 			// try to resolve by prepending the global package name
-			persistentTypeResource = getJpaProject().getJavaResourcePersistentType(getEntityMappings().getPackage() + '.' + getClass_());
+			String packageName = getPersistentType().getContext().getDefaultPersistentTypePackage();
+			persistentTypeResource = getJpaProject().getJavaResourcePersistentType(packageName + '.' + getClass_());
 		}
 		return persistentTypeResource;
 	}
@@ -277,7 +303,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		this.class_ = mapping.getClassName();
 		this.initializeJavaPersistentType();
 		this.specifiedMetadataComplete = this.metadataComplete(mapping);
-		this.defaultMetadataComplete = this.defaultMetadataComplete();
+		this.defaultMetadataComplete = getPersistentType().getContext().isDefaultPersistentTypeMetadataComplete();
 		this.specifiedAccess = AccessType.fromXmlResourceModel(mapping.getAccess());
 		this.defaultAccess = this.defaultAccess();
 	}
@@ -287,7 +313,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		this.setClass(mapping.getClassName());
 		this.updateJavaPersistentType();
 		this.setSpecifiedMetadataComplete(this.metadataComplete(mapping));
-		this.setDefaultMetadataComplete(this.defaultMetadataComplete());
+		this.setDefaultMetadataComplete(getPersistentType().getContext().isDefaultPersistentTypeMetadataComplete());
 		this.setSpecifiedAccess(AccessType.fromXmlResourceModel(mapping.getAccess()));
 		this.setDefaultAccess(this.defaultAccess());
 	}

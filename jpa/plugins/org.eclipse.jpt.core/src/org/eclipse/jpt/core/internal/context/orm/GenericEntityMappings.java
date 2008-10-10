@@ -19,6 +19,8 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.Generator;
+import org.eclipse.jpt.core.context.MappingFileDefaults;
+import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.context.Query;
@@ -27,6 +29,7 @@ import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
+import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
@@ -34,7 +37,6 @@ import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
-import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
@@ -57,9 +59,6 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-/**
- * 
- */
 public class GenericEntityMappings
 	extends AbstractXmlContextNode
 	implements EntityMappings, PersistenceUnit.OrmGeneratorHolder, PersistenceUnit.OrmQueryHolder
@@ -105,18 +104,62 @@ public class GenericEntityMappings
 		this.initialize(xmlEntityMappings);
 	}
 	
-	public String getId() {
-		return OrmStructureNodes.ENTITY_MAPPINGS_ID;
-	}
 	
-	@Override
-	public EntityMappings getEntityMappings() {
-		return this;
-	}
+	// **************** JpaNode impl *******************************************
 	
 	@Override
 	public OrmXml getParent() {
 		return (OrmXml) super.getParent();
+	}
+	
+	
+	// **************** JpaContextNode impl ************************************
+	
+	@Override
+	public MappingFileRoot getMappingFileRoot() {
+		return this;
+	}
+	
+	
+	// **************** JpaStructureNode impl **********************************
+	
+	public String getId() {
+		return OrmStructureNodes.ENTITY_MAPPINGS_ID;
+	}
+	
+	
+	// **************** OrmPersistentTypeContext impl **************************
+	
+	public AccessType getSpecifiedPersistentTypeAccess() {
+		if (getPersistenceUnitMetadata().isXmlMappingMetadataComplete()) {
+			return getSpecifiedAccess();
+		}
+		return null;
+	}
+	
+	public AccessType getDefaultPersistentTypeAccess() {
+		return getAccess();
+	}
+	
+	public String getDefaultPersistentTypePackage() {
+		return getPackage();
+	}
+	
+	public boolean isDefaultPersistentTypeMetadataComplete() {
+		return getPersistenceUnitMetadata().isXmlMappingMetadataComplete();
+	}
+	
+	public void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping) {
+		ormPersistentType.dispose();
+		int sourceIndex = this.persistentTypes.indexOf(ormPersistentType);
+		this.persistentTypes.remove(sourceIndex);
+		oldMapping.removeFromResourceModel(this.xmlEntityMappings);
+		int targetIndex = insertionIndex(ormPersistentType);
+		this.persistentTypes.add(targetIndex, ormPersistentType);
+		newMapping.addToResourceModel(this.xmlEntityMappings);
+		newMapping.initializeFrom(oldMapping);
+		//TODO are the source and target correct in this case, or is target off by one???
+		fireItemMoved(PERSISTENT_TYPES_LIST, targetIndex, sourceIndex);
 	}
 	
 	public OrmPersistentType getPersistentType(String fullyQualifiedTypeName) {
@@ -334,19 +377,6 @@ public class GenericEntityMappings
 		removeItemFromList(ormPersistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
 	}
 
-	public void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping) {
-		ormPersistentType.dispose();
-		int sourceIndex = this.persistentTypes.indexOf(ormPersistentType);
-		this.persistentTypes.remove(sourceIndex);
-		oldMapping.removeFromResourceModel(this.xmlEntityMappings);
-		int targetIndex = insertionIndex(ormPersistentType);
-		this.persistentTypes.add(targetIndex, ormPersistentType);
-		newMapping.addToResourceModel(this.xmlEntityMappings);
-		newMapping.initializeFrom(oldMapping);
-		//TODO are the source and target correct in this case, or is target off by one???
-		fireItemMoved(PERSISTENT_TYPES_LIST, targetIndex, sourceIndex);
-	}
-	
 	public ListIterator<OrmSequenceGenerator> sequenceGenerators() {
 		return new CloneListIterator<OrmSequenceGenerator>(this.sequenceGenerators);
 	}
@@ -536,8 +566,24 @@ public class GenericEntityMappings
 		}
 		return false;
 	}
+	
+	public MappingFileDefaults getDefaults() {
+		return new MappingFileDefaults() {
+			public AccessType getAccess() {
+				return GenericEntityMappings.this.getAccess();
+			}
+			
+			public String getCatalog() {
+				return GenericEntityMappings.this.getCatalog();
+			}
+			
+			public String getSchema() {
+				return GenericEntityMappings.this.getSchema();
+			}
+		};
+	}
 
-	public PersistenceUnitDefaults getPersistenceUnitDefaults() {
+	public OrmPersistenceUnitDefaults getPersistenceUnitDefaults() {
 		return getPersistenceUnitMetadata().getPersistenceUnitDefaults();
 	}
 	

@@ -41,9 +41,6 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-/**
- * 
- */
 public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	extends AbstractXmlContextNode
 	implements OrmAttributeMapping

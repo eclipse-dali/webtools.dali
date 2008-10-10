@@ -18,8 +18,6 @@ import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -28,6 +26,8 @@ import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
  */
 public interface OrmPersistentType extends PersistentType, XmlContextNode
 {
+	public OrmPersistentTypeContext getContext();
+	
 	/**
 	 * Overriden to return {@link OrmPersistentAttribute}s
 	 */
@@ -43,9 +43,10 @@ public interface OrmPersistentType extends PersistentType, XmlContextNode
 	 * Overriden to return an {@link OrmTypeMapping}
 	 */
 	OrmTypeMapping getMapping();
-
-	//******************* specified attributes *******************
-
+	
+	
+	//***************** specified attributes ***********************************
+	
 	/**
 	 * Return a read only iterator of the specified {@link OrmPersistentAttribute}s.
 	 */
@@ -55,13 +56,14 @@ public interface OrmPersistentType extends PersistentType, XmlContextNode
 	 * Return the number of specified {@link OrmPersistentAttribute}s.
 	 */
 	int specifiedAttributesSize();
-
+	
 	//TODO these are currently only used by tests, possibly remove them.  OrmPersistenAttributes.setVirtual(boolean) is used by the UI
 	OrmPersistentAttribute addSpecifiedPersistentAttribute(String mappingKey, String attributeName);
 	void removeSpecifiedPersistentAttribute(OrmPersistentAttribute ormPersistentAttribute);
-
 	
-	//******************* vritual attributes *******************
+	
+	//***************** virtual attributes *************************************
+	
 	String VIRTUAL_ATTRIBUTES_LIST = "virtualAttributes"; //$NON-NLS-1$
 
 	/**

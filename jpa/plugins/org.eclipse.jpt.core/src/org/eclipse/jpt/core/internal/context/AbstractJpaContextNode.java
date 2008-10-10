@@ -11,8 +11,7 @@ package org.eclipse.jpt.core.internal.context;
 
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.context.JpaContextNode;
-import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.AbstractJpaNode;
 import org.eclipse.jpt.db.Catalog;
@@ -54,20 +53,8 @@ public abstract class AbstractJpaContextNode
 		return this.getParent().getPersistenceUnit();
 	}
 
-	/**
-	 * Overridden in GenericRootContextNode to return null.
-	 * Overridden in GenericEntityMappings to return itself.
-	 */
-	public EntityMappings getEntityMappings() {
-		return this.getParent().getEntityMappings();
-	}
-
-	/**
-	 * Overridden in GenericRootContextNode to return null.
-	 * Overridden in GenericOrmPersistentType to return itself.
-	 */
-	public OrmPersistentType getOrmPersistentType() {
-		return this.getParent().getOrmPersistentType();
+	public MappingFileRoot getMappingFileRoot() {
+		return this.getParent().getMappingFileRoot();
 	}
 
 	public Schema getContextDefaultDbSchema() {
@@ -86,8 +73,8 @@ public abstract class AbstractJpaContextNode
 	}
 
 	protected String getContextDefaultSchema() {
-		EntityMappings em = this.getEntityMappings();
-		return (em != null) ? em.getSchema() : this.getPersistenceUnit().getDefaultSchema();
+		MappingFileRoot mfr = this.getMappingFileRoot();
+		return (mfr != null) ? mfr.getSchema() : this.getPersistenceUnit().getDefaultSchema();
 	}
 
 	public Catalog getContextDefaultDbCatalog() {
@@ -99,8 +86,7 @@ public abstract class AbstractJpaContextNode
 	}
 
 	protected String getContextDefaultCatalog() {
-		EntityMappings em = this.getEntityMappings();
-		return (em != null) ? em.getCatalog() : this.getPersistenceUnit().getDefaultCatalog();
+		MappingFileRoot mfr = this.getMappingFileRoot();
+		return (mfr != null) ? mfr.getCatalog() : this.getPersistenceUnit().getDefaultCatalog();
 	}
-
 }

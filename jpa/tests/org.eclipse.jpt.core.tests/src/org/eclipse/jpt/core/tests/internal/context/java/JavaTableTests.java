@@ -146,10 +146,10 @@ public class JavaTableTests extends ContextModelTestCase
 		
 		assertNull(javaEntity.getTable().getDefaultSchema());
 		
-		ormEntity.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
 		assertEquals("FOO", javaEntity.getTable().getDefaultSchema());
 		
-		ormEntity.getEntityMappings().setSpecifiedSchema("BAR");
+		entityMappings().setSpecifiedSchema("BAR");
 		assertEquals("BAR", javaEntity.getTable().getDefaultSchema());
 		
 		ormEntity.getTable().setSpecifiedSchema("XML_SCHEMA");
@@ -263,10 +263,10 @@ public class JavaTableTests extends ContextModelTestCase
 		
 		assertNull(javaEntity.getTable().getDefaultCatalog());
 		
-		ormEntity.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");
 		assertEquals("FOO", javaEntity.getTable().getDefaultCatalog());
 		
-		ormEntity.getEntityMappings().setSpecifiedCatalog("BAR");
+		entityMappings().setSpecifiedCatalog("BAR");
 		assertEquals("BAR", javaEntity.getTable().getDefaultCatalog());
 		
 		ormEntity.getTable().setSpecifiedCatalog("XML_CATALOG");

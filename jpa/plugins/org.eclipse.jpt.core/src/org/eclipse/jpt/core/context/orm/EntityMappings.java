@@ -10,25 +10,24 @@
 package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.MappingFileDefaults;
+import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.QueryHolder;
-import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface EntityMappings extends XmlContextNode, JpaStructureNode, QueryHolder
+public interface EntityMappings 
+	extends MappingFileRoot, OrmPersistentTypeContext, QueryHolder
 {
 	
 	String getVersion();
@@ -119,7 +118,9 @@ public interface EntityMappings extends XmlContextNode, JpaStructureNode, QueryH
 	void removeNamedNativeQuery(int index);
 	void moveNamedNativeQuery(int targetIndex, int sourceIndex);
 	
-	PersistenceUnitDefaults getPersistenceUnitDefaults();
+	MappingFileDefaults getDefaults();
+	
+	OrmPersistenceUnitDefaults getPersistenceUnitDefaults();
 	
 	/**
 	 * Return the {@link OrmPersistentType) listed in this mapping file

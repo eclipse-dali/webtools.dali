@@ -502,4 +502,4 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 		return result.toString();
 	}
 
-} // PersistenceUnitDefaults
+} // OrmPersistenceUnitDefaults

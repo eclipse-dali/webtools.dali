@@ -397,7 +397,7 @@ public interface PersistenceUnit extends XmlContextNode, JpaStructureNode
 	void removeProperty(String key, String value);
 	
 	
-	// **************** PersistenceUnitDefaults ********************************
+	// **************** OrmPersistenceUnitDefaults ********************************
 	
 	AccessType getDefaultAccess();
 		String DEFAULT_ACCESS_PROPERTY = "defaultAccess"; //$NON-NLS-1$

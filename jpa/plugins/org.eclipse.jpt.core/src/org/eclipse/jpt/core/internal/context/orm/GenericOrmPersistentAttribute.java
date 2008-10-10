@@ -155,7 +155,7 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 		if (isVirtual()) {
 			throw new IllegalStateException("Attribute is already virtual");
 		}
-		getOrmPersistentType().makePersistentAttributeVirtual(this);
+		getPersistentType().makePersistentAttributeVirtual(this);
 	}
 	
 	public void makeSpecified() {
@@ -165,14 +165,14 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 		if (getMappingKey() == MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
 			throw new IllegalStateException("Use makeSpecified(String) instead and specify a mapping type");
 		}
-		getOrmPersistentType().makePersistentAttributeSpecified(this);
+		getPersistentType().makePersistentAttributeSpecified(this);
 	}
 	
 	public void makeSpecified(String mappingKey) {
 		if (!isVirtual()) {
 			throw new IllegalStateException("Attribute is already specified");
 		}
-		getOrmPersistentType().makePersistentAttributeSpecified(this, mappingKey);
+		getPersistentType().makePersistentAttributeSpecified(this, mappingKey);
 	}
 	
 	public String getPrimaryKeyColumnName() {

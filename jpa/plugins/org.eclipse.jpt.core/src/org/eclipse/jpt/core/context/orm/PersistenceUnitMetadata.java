@@ -27,7 +27,7 @@ public interface PersistenceUnitMetadata extends XmlContextNode
 	void setXmlMappingMetadataComplete(boolean value);
 		String XML_MAPPING_METADATA_COMPLETE_PROPERTY = "xmlMappingMetadataCompleteProperty";
 
-	PersistenceUnitDefaults getPersistenceUnitDefaults();
+	OrmPersistenceUnitDefaults getPersistenceUnitDefaults();
 		
 	/**
 	 * Update the PersistenceUnitMetadata context model object to match the XmlEntityMappings 

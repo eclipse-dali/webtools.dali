@@ -581,7 +581,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		ormEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
 		assertEquals(InheritanceType.JOINED, ormEntity.getDefaultInheritanceStrategy());
 		
-		ormEntity.getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		//this setting overrides the false meta-data complete found on ormEntity
 		assertEquals(InheritanceType.SINGLE_TABLE, ormEntity.getDefaultInheritanceStrategy());
 	}
@@ -612,7 +612,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertNull(parentXmlEntity.getSpecifiedInheritanceStrategy());
 		assertNull(childXmlEntity.getSpecifiedInheritanceStrategy());
 		
-		parentPersistentType.getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		assertEquals(InheritanceType.SINGLE_TABLE, parentXmlEntity.getDefaultInheritanceStrategy());
 		assertEquals(InheritanceType.SINGLE_TABLE, childXmlEntity.getDefaultInheritanceStrategy());
 	}

@@ -10,8 +10,6 @@
 package org.eclipse.jpt.core.context;
 
 import org.eclipse.jpt.core.JpaNode;
-import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
@@ -31,21 +29,20 @@ public interface JpaContextNode
 	extends JpaNode
 {
 	/**
-	 * Return the persistence unit if the context node is within a
-	 * persistence.xml context. Otherwise return null.
+	 * Return the persistence unit if the context node is within a 
+	 * persistence.xml context.  Otherwise return null.
 	 */
 	PersistenceUnit getPersistenceUnit();
 	
 	/**
-	 * Return the entity mappings if the context node is within an orm.xml
-	 * context. Otherwise return null.
+	 * Return the mapping file root object if the context node is within a 
+	 * mapping file context.  Otherwise return null.
 	 */
-	EntityMappings getEntityMappings();
-
-	OrmPersistentType getOrmPersistentType();
+	MappingFileRoot getMappingFileRoot();
 
 	SchemaContainer getContextDefaultDbSchemaContainer();
+	
 	Catalog getContextDefaultDbCatalog();
+	
 	Schema getContextDefaultDbSchema();
-
 }

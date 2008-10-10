@@ -204,10 +204,10 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		
 		assertNull(idMapping.getTableGenerator().getDefaultSchema());
 		
-		ormEntity.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
 		assertEquals("FOO", idMapping.getTableGenerator().getDefaultSchema());
 		
-		ormEntity.getEntityMappings().setSpecifiedSchema("BAR");
+		entityMappings().setSpecifiedSchema("BAR");
 		assertEquals("BAR", idMapping.getTableGenerator().getDefaultSchema());
 		
 		ormEntity.getTable().setSpecifiedSchema("XML_SCHEMA");

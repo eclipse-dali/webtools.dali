@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.PersistentTypeContext;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
@@ -34,13 +35,13 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
-import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmPersistentTypeContext;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
@@ -72,9 +73,6 @@ import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-/**
- * 
- */
 public class GenericOrmPersistentType
 	extends AbstractXmlContextNode
 	implements OrmPersistentType
@@ -89,12 +87,20 @@ public class GenericOrmPersistentType
 	
 	protected PersistentType parentPersistentType;
 	
-	public GenericOrmPersistentType(EntityMappings parent, String mappingKey) {
+	
+	public GenericOrmPersistentType(PersistentTypeContext parent, String mappingKey) {
 		super(parent);
 		this.typeMappingProviders = buildTypeMappingProviders();
 		this.ormTypeMapping = buildOrmTypeMapping(mappingKey);
 		this.specifiedPersistentAttributes = new ArrayList<OrmPersistentAttribute>();
 		this.virtualPersistentAttributes = new ArrayList<OrmPersistentAttribute>();
+	}
+	
+	
+	//***************** PersistentType implementation **************************
+	
+	public OrmPersistentTypeContext getContext() {
+		return (OrmPersistentTypeContext) getParent();
 	}
 	
 	public String getId() {
@@ -109,7 +115,7 @@ public class GenericOrmPersistentType
 		if (className.equals(fullyQualifiedTypeName)) {
 			return true;
 		}
-		if ((getEntityMappings().getPackage() + '.' +  className).equals(fullyQualifiedTypeName)) {
+		if ((getContext().getDefaultPersistentTypePackage() + '.' +  className).equals(fullyQualifiedTypeName)) {
 			return true;
 		}
 		return false;
@@ -146,7 +152,7 @@ public class GenericOrmPersistentType
 		}
 		OrmTypeMapping oldMapping = getMapping();
 		this.ormTypeMapping = buildOrmTypeMapping(newMappingKey);
-		getEntityMappings().changeMapping(this, oldMapping, this.ormTypeMapping);
+		getContext().changeMapping(this, oldMapping, this.ormTypeMapping);
 		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.ormTypeMapping);
 	}
 	
@@ -854,11 +860,6 @@ public class GenericOrmPersistentType
 		else {
 			return null;
 		}
-	}
-	
-	@Override
-	public OrmPersistentType getOrmPersistentType() {
-		return this;
 	}
 	
 	public JpaStructureNode getStructureNode(int textOffset) {
