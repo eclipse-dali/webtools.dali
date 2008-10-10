@@ -113,7 +113,7 @@ public class JpaDetailsView extends AbstractJpaView
 
 		String platformId = structureNode.getJpaProject().getJpaPlatform().getId();
 		JpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
-		return jpaPlatformUI.detailsProvider(structureNode);
+		return jpaPlatformUI.getDetailsProvider(structureNode);
 
 		//TODO this view and the detailsProviders Map is not created on a per project basis.
 		//the detailsProviders and their fileContentTypes could overlap across project, this would cause problems with storing this map.

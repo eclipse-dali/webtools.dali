@@ -126,7 +126,7 @@ public abstract class BaseJpaPlatformUi implements JpaPlatformUi
 		providers.add(new OrmDetailsProvider());
 	}
 
-	public JpaDetailsProvider detailsProvider(JpaStructureNode structureNode) {
+	public JpaDetailsProvider getDetailsProvider(JpaStructureNode structureNode) {
 		// TODO: To implement, this is written only for testing
 		detailsProviders();
 		if (structureNode instanceof JavaJpaContextNode) {
