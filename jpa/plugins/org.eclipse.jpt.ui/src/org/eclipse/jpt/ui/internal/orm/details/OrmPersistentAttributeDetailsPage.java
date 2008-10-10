@@ -70,17 +70,11 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 		super(parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders() {
 		return jpaPlatformUi().ormAttributeMappingUiProviders();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	protected AttributeMappingUiProvider<? extends AttributeMapping>[] attributeMappingUiProvidersFor(PersistentAttribute persistentAttribute) {
@@ -97,17 +91,11 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
-	protected AttributeMappingUiProvider<AttributeMapping> defaultAttributeMappingUiProvider(String key) {
+	protected AttributeMappingUiProvider<AttributeMapping> getDefaultAttributeMappingUiProvider(String key) {
 		throw new UnsupportedOperationException("Xml attributeMappings should not be default");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
 		return jpaPlatformUi().defaultOrmAttributeMappingUiProviders();
@@ -122,9 +110,6 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -162,9 +147,6 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 		new PaneEnabler(buildPaneEnablerHolder(), panes);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void mappingPageChanged(JpaComposite mappingComposite) {
 		if (mappingComposite == null) {

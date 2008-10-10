@@ -61,16 +61,13 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 		super(parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders() {
 		return jpaPlatformUi().javaAttributeMappingUiProviders();
 	}
 
 	/**
-	 * These IAtttributeMappingUiProviders will be used as elements in the attributeMapping combo
+	 * These AtttributeMappingUiProviders will be used as elements in the attributeMapping combo
 	 * The first element in the combo will be one of the defaultAttributeMappingUiProviders or
 	 * if none of those apply the nullAttributeMappingUiProvider will be used. The rest of the elements
 	 * will be the attributeMappingUiProviders.  The defaultAttributeMappingUiProvider is
@@ -79,7 +76,7 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 	@Override
 	protected AttributeMappingUiProvider<? extends AttributeMapping>[] attributeMappingUiProvidersFor(PersistentAttribute persistentAttribute) {
 		AttributeMappingUiProvider<? extends AttributeMapping>[] providers = new AttributeMappingUiProvider<?>[CollectionTools.size(attributeMappingUiProviders()) + 1];
-		providers[0] =  defaultAttributeMappingUiProvider(persistentAttribute.getDefaultMappingKey());
+		providers[0] =  getDefaultAttributeMappingUiProvider(persistentAttribute.getDefaultMappingKey());
 		int i = 1;
 		for (Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> iterator = attributeMappingUiProviders(); iterator.hasNext(); ) {
 			providers[i++] = iterator.next();
@@ -87,11 +84,8 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 		return providers;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
-	protected AttributeMappingUiProvider<? extends AttributeMapping> defaultAttributeMappingUiProvider(String key) {
+	protected AttributeMappingUiProvider<? extends AttributeMapping> getDefaultAttributeMappingUiProvider(String key) {
 		for (Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> i = defaultAttributeMappingUiProviders(); i.hasNext(); ) {
 			AttributeMappingUiProvider<? extends AttributeMapping> provider = i.next();
 
@@ -103,17 +97,11 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 		return this.nullAttributeMappingUiProvider();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
 		return jpaPlatformUi().defaultJavaAttributeMappingUiProviders();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 

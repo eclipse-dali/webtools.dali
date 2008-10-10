@@ -69,7 +69,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		propertyNames.add(PersistentAttribute.SPECIFIED_MAPPING_PROPERTY);
 	}
 
-	protected AttributeMappingUiProvider<? extends AttributeMapping> attributeMappingUiProvider(String key) {
+	protected AttributeMappingUiProvider<? extends AttributeMapping> getAttributeMappingUiProvider(String key) {
 		for (Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> i = attributeMappingUiProviders(); i.hasNext(); ) {
 			AttributeMappingUiProvider<? extends AttributeMapping> provider = i.next();
 			if (provider.getMappingKey() == key) {
@@ -103,7 +103,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	                                                               String mappingKey) {
 
 		AttributeMappingUiProvider<AttributeMapping> uiProvider =
-			(AttributeMappingUiProvider<AttributeMapping>) mappingUIProvider(mappingKey);
+			(AttributeMappingUiProvider<AttributeMapping>) getMappingUIProvider(mappingKey);
 
 		return uiProvider.buildAttributeMappingComposite(
 			jpaUiFactory(),
@@ -135,7 +135,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	}
 
 	protected abstract AttributeMappingUiProvider<? extends AttributeMapping>
-		defaultAttributeMappingUiProvider(String key);
+		getDefaultAttributeMappingUiProvider(String key);
 
 	protected abstract Iterator<AttributeMappingUiProvider<? extends AttributeMapping>>
 		defaultAttributeMappingUiProviders();
@@ -188,7 +188,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		}
 	}
 
-	private JpaComposite mappingCompositeFor(String key) {
+	private JpaComposite getMappingComposite(String key) {
 		JpaComposite composite = this.mappingComposites.get(key);
 		if (composite != null) {
 			return composite;
@@ -206,15 +206,15 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	protected void mappingPageChanged(JpaComposite mappingComposite) {
 	}
 
-	private AttributeMappingUiProvider<? extends AttributeMapping> mappingUIProvider(String key) {
+	private AttributeMappingUiProvider<? extends AttributeMapping> getMappingUIProvider(String key) {
 
 		if (this.getSubject().getMapping() == null ||
 		    this.getSubject().getMapping().isDefault()) {
 
-			return defaultAttributeMappingUiProvider(key);
+			return getDefaultAttributeMappingUiProvider(key);
 		}
 
-		return attributeMappingUiProvider(key);
+		return getAttributeMappingUiProvider(key);
 	}
 
 	private void populateMappingPage(String mappingKey) {
@@ -244,7 +244,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 
 		// Change the current mapping pane with the new one
 		if (this.currentMappingKey != null) {
-			this.currentMappingComposite = mappingCompositeFor(mappingKey);
+			this.currentMappingComposite = getMappingComposite(mappingKey);
 
 			try {
 				this.log(
