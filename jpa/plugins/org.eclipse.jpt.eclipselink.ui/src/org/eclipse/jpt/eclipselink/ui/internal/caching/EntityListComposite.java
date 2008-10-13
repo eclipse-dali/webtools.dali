@@ -24,10 +24,7 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.ui.JptEclipseLinkUiPlugin;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -123,15 +120,8 @@ public class EntityListComposite extends Pane<Caching>
 	
 	private String getEntityName(String fullyQualifiedTypeName) {
 
-		PersistentType persistentType = getSubject().persistenceUnit().getPersistentType(fullyQualifiedTypeName);
-
-		if (persistentType != null && persistentType.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
-			TypeMapping mapping = persistentType.getMapping();
-			if (mapping instanceof Entity) {
-				return ((Entity)mapping).getName();
-			}
-		}
-		return null;
+		Entity entity = getSubject().persistenceUnit().getEntity(fullyQualifiedTypeName);
+		return entity != null ? entity.getName() : null;
 	}
 	
 	private IType chooseEntity() {

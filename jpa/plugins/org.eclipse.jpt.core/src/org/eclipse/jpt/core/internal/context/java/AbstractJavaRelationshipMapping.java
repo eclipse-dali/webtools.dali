@@ -10,10 +10,8 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
-import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
@@ -172,11 +170,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 		if (qualifiedTargetEntity == null) {
 			return null;
 		}
-		PersistentType persistentType = getPersistenceUnit().getPersistentType(qualifiedTargetEntity);
-		if (persistentType != null && persistentType.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
-			return (Entity) persistentType.getMapping();
-		}
-		return null;
+		return getPersistenceUnit().getEntity(qualifiedTargetEntity);
 	}
 
 

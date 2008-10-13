@@ -15,6 +15,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.Query;
@@ -516,6 +517,14 @@ public interface PersistenceUnit extends XmlContextNode, JpaStructureNode
 	 * fully qualified type name
 	 */
 	PersistentType getPersistentType(String fullyQualifiedTypeName);
+	
+	/**
+	 * Return the Entity specified in this PersistenceUnit with the given
+	 * fully qualified type name.  Will return null if there is no persistentType 
+	 * with this name or if the persistentType is not mapped as an entity.
+	 * @see MappingKeys.ENTITY_TYPE_MAPPING_KEY
+	 */
+	Entity getEntity(String fullyQualifiedTypeName);
 	
 	/**
 	 * Return whether the text representation of this persistence unit contains

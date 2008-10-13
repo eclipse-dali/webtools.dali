@@ -20,7 +20,9 @@ import java.util.Set;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.GeneratedValue;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.MappingFile;
@@ -1346,6 +1348,17 @@ public class GenericPersistenceUnit extends AbstractXmlContextNode
 			if (classRef.isFor(fullyQualifiedTypeName)) {
 				return classRef.getJavaPersistentType();
 			}
+		}
+		return null;
+	}
+	
+	public Entity getEntity(String fullyQualifiedTypeName) {
+		PersistentType persistentType = this.getPersistentType(fullyQualifiedTypeName);
+		if (persistentType == null) {
+			return null;
+		}
+		if (persistentType.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
+			return (Entity) persistentType.getMapping();
 		}
 		return null;
 	}
