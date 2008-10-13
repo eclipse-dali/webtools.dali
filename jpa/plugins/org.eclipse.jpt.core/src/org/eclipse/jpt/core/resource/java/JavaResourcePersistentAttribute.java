@@ -34,19 +34,19 @@ public interface JavaResourcePersistentAttribute extends JavaResourcePersistentM
 	boolean isForProperty();
 	
 	boolean typeIsBasic();
-		String TYPE_IS_BASIC_PROPERTY = "typeIsBasicProperty";
+		String TYPE_IS_BASIC_PROPERTY = "typeIsBasicProperty"; //$NON-NLS-1$
 	
 	boolean typeIsSerializable();
-		String TYPE_IS_SERIALIZABLE_PROPERTY = "typeIsSerializableProperty";
+		String TYPE_IS_SERIALIZABLE_PROPERTY = "typeIsSerializableProperty"; //$NON-NLS-1$
 		
 	boolean typeIsDateOrCalendar();
-		String TYPE_IS_DATE_OR_CALENDAR_PROPERTY = "typeIsDateOrCalendarProperty";
+		String TYPE_IS_DATE_OR_CALENDAR_PROPERTY = "typeIsDateOrCalendarProperty"; //$NON-NLS-1$
 	
 	boolean isFinal();
-		String FINAL_PROPERTY = "finalProperty";
+		String FINAL_PROPERTY = "finalProperty"; //$NON-NLS-1$
 	
 	boolean isPublic();
-		String PUBLIC_PROPERTY = "publicProperty";
+		String PUBLIC_PROPERTY = "publicProperty"; //$NON-NLS-1$
 
 	/**
 	 * Return true if the attribute type is a container:
@@ -57,13 +57,13 @@ public interface JavaResourcePersistentAttribute extends JavaResourcePersistentM
 	 * @return
 	 */
 	boolean typeIsContainer();
-		String TYPE_IS_CONTAINER_PROPERTY = "typeIsContainerProperty";
+		String TYPE_IS_CONTAINER_PROPERTY = "typeIsContainerProperty"; //$NON-NLS-1$
 
 	/**
 	 * Returns the resolved qualfied type name for the attribute
 	 */
 	String getQualifiedTypeName();
-		String QUALIFIED_TYPE_NAME_PROPERTY = "qualfiedTypeNameProperty";
+		String QUALIFIED_TYPE_NAME_PROPERTY = "qualfiedTypeNameProperty"; //$NON-NLS-1$
 	
 	/**
 	 * Returns the resolved qualfied type name for the attribute
@@ -71,13 +71,13 @@ public interface JavaResourcePersistentAttribute extends JavaResourcePersistentM
 	 * see typeIsContainer() to be used with this
 	 */
 	String getQualifiedReferenceEntityTypeName();
-		String QUALIFIED_REFERENCE_ENTITY_TYPE_NAME_PROPERTY = "qualfiedReferenceEntityTypeNameProperty";
+		String QUALIFIED_REFERENCE_ENTITY_TYPE_NAME_PROPERTY = "qualfiedReferenceEntityTypeNameProperty"; //$NON-NLS-1$
 
 	/**
 	 * Returns the fully qualified type parameter for use as a target entity
 	 */
 	String getQualifiedReferenceEntityElementTypeName();
-		String QUALIFIED_REFERENCE_ENTITY_ELEMENT_TYPE_NAME_PROPERTY = "qualfiedReferenceEntityElementTypeNameProperty";
+		String QUALIFIED_REFERENCE_ENTITY_ELEMENT_TYPE_NAME_PROPERTY = "qualfiedReferenceEntityElementTypeNameProperty"; //$NON-NLS-1$
 		
 	/**
 	 * Return true if this attribute has any mapping or non-mapping annotations
