@@ -16,8 +16,8 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.java.details.NullTypeMappingUiProvider;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.graphics.Image;
@@ -47,11 +47,8 @@ public class JavaPersistentTypeMapAsComposite extends PersistentTypeMapAsComposi
 		super(parentPane, parent);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
-	protected MappingUiProvider<JavaPersistentType> buildDefaultProvider() {
+	protected MappingUiProvider<JavaPersistentType> getDefaultProvider() {
 		return new MappingUiProvider<JavaPersistentType>() {
 
 			public Image getImage() {
@@ -59,18 +56,19 @@ public class JavaPersistentTypeMapAsComposite extends PersistentTypeMapAsComposi
 			}
 
 			public String getLabel() {
-				return JptUiMessages.MapAsComposite_default;
+				return JptUiMappingsMessages.NullTypeMappingUiProvider_label;
 			}
 
+			public String getLinkLabel() {
+				return null;
+			}
+			
 			public String getMappingKey() {
 				return null;
 			}
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders() {
 

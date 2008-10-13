@@ -41,11 +41,8 @@ public class OrmPersistentTypeMapAsComposite extends PersistentTypeMapAsComposit
 		super(parentPane, parent);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
-	protected MappingUiProvider<?> buildDefaultProvider() {
+	protected MappingUiProvider<?> getDefaultProvider() {
 		return null;
 	}
 

@@ -45,7 +45,11 @@ public class OrmEntityUiProvider implements TypeMappingUiProvider<OrmEntity>
 	}
 
 	public String getLabel() {
-		return JptUiMappingsMessages.PersistentTypePage_EntityLabel;
+		return JptUiMappingsMessages.EntityUiProvider_label;
+	}
+
+	public String getLinkLabel() {
+		return JptUiMappingsMessages.EntityUiProvider_linkLabel;
 	}
 
 	public Image getImage() {

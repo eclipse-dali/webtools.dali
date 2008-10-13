@@ -17,12 +17,9 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
-import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
-import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -68,42 +65,17 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 	 */
 	protected abstract Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders();
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
-	protected MappingUiProvider<T> buildDefaultProvider() {
+	protected MappingUiProvider<?> getDefaultProvider() {
+		String mappingKey = getSubject().getDefaultMappingKey();
 
-		if (getSubject().getDefaultMappingKey() == null) {
+		if (mappingKey == null) {
 			return null;
 		}
 
-		return new MappingUiProvider<T>() {
-
-			public Image getImage() {
-				String mappingKey = getSubject().getDefaultMappingKey();
-				return JpaMappingImageHelper.imageForAttributeMapping(mappingKey);
-			}
-
-			public String getLabel() {
-				String mappingKey = getSubject().getDefaultMappingKey();
-
-				return SWTUtil.buildDisplayString(
-					JptUiMessages.class,
-					MapAsComposite.class,
-					mappingKey + "_default2"
-				);
-			}
-
-			public String getMappingKey() {
-				return null;
-			}
-		};
+		return getDefaultProvider(mappingKey);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected MappingChangeHandler buildMappingChangeHandler() {
 		return new MappingChangeHandler() {
@@ -112,35 +84,27 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 				String mappingKey = getSubject().getMappingKey();
 
 				if (mappingKey != MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
-					return JptUiMessages.MapAsComposite_mappedAttributeText;
+					return JptUiMappingsMessages.MapAsComposite_mappedAttributeText;
 				}
 				if (getSubject().isVirtual()) {
-					return JptUiMessages.MapAsComposite_virtualAttributeText;
+					return JptUiMappingsMessages.MapAsComposite_virtualAttributeText;
 				}
 
-				return JptUiMessages.MapAsComposite_unmappedAttributeText;
+				return JptUiMappingsMessages.MapAsComposite_unmappedAttributeText;
 			}
 
-			public String getMappingType() {
+			public String getMappingText() {
 				String mappingKey = getSubject().getMappingKey();
 
 				if (mappingKey == null) {
-					return JptUiMessages.MapAsComposite_changeMappingType;
+					return JptUiMappingsMessages.MapAsComposite_changeMappingType;
 				}
 
 				if (getSubject().getSpecifiedMapping() == null) {
-					return SWTUtil.buildDisplayString(
-						JptUiMessages.class,
-						MapAsComposite.class,
-						mappingKey + "_default"
-					);
+					return getDefaultProvider(getSubject().getDefaultMappingKey()).getLinkLabel();
 				}
 
-				return SWTUtil.buildDisplayString(
-					JptUiMessages.class,
-					MapAsComposite.class,
-					mappingKey
-				);
+				return getProvider(mappingKey).getLinkLabel();
 			}
 
 			public void morphMapping(MappingUiProvider<?> provider) {
@@ -154,6 +118,11 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 			public Iterator<? extends MappingUiProvider<?>> providers() {
 				return attributeMappingUiProviders();
 			}
+			
+			public Iterator<? extends MappingUiProvider<?>> defaultProviders() {
+				return defaultAttributeMappingUiProviders();
+			}
+			
 		};
 	}
 

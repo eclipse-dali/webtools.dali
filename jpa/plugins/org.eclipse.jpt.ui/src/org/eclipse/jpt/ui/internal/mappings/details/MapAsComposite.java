@@ -23,11 +23,11 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
-import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.osgi.util.NLS;
@@ -65,16 +65,16 @@ import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
 @SuppressWarnings("nls")
 public abstract class MapAsComposite<T extends Model> extends Pane<T> {
 
-	private boolean dragEvent;
-	private boolean enabled;
-	private Cursor handCursor;
-	private MappingChangeHandler mappingChangeHandler;
-	private int mappingTypeLength;
-	private int mappingTypeStart;
-	private boolean mouseDown;
-	private int nameLength;
-	private int nameStart;
-	private StyledText styledText;
+	protected boolean dragEvent;
+	protected boolean enabled;
+	protected Cursor handCursor;
+	protected MappingChangeHandler mappingChangeHandler;
+	protected int mappingTypeLength;
+	protected int mappingTypeStart;
+	protected boolean mouseDown;
+	protected int nameLength;
+	protected int nameStart;
+	protected StyledText styledText;
 
 	/**
 	 * The constant ID used to retrieve the dialog settings.
@@ -98,7 +98,25 @@ public abstract class MapAsComposite<T extends Model> extends Pane<T> {
 	 *
 	 * @return A provider that acts as a default mapping provider
 	 */
-	protected abstract MappingUiProvider<?> buildDefaultProvider();
+	protected abstract MappingUiProvider<?> getDefaultProvider();
+
+	protected MappingUiProvider<?> getDefaultProvider(String mappingKey) {
+		for (MappingUiProvider<?> provider : CollectionTools.iterable(this.mappingChangeHandler.defaultProviders())) {
+			if (provider.getMappingKey().equals(mappingKey)) {
+				return provider;
+			}
+		}
+		return null;		
+	}
+	
+	protected MappingUiProvider<?> getProvider(String mappingKey) {
+		for (MappingUiProvider<?> provider : CollectionTools.iterable(this.mappingChangeHandler.providers())) {
+			if (provider.getMappingKey() == mappingKey) {
+				return provider;
+			}
+		}
+		return null;		
+	}
 
 	/**
 	 * Creates the handler responsible to give the information required for
@@ -381,7 +399,7 @@ public abstract class MapAsComposite<T extends Model> extends Pane<T> {
 			name = JptUiMappingsMessages.NoNameSet;
 		}
 
-		String mappingType = mappingChangeHandler.getMappingType();
+		String mappingType = mappingChangeHandler.getMappingText();
 		String text = buildText(name, mappingType);
 
 		mappingTypeStart  = text.lastIndexOf(mappingType);
@@ -413,7 +431,7 @@ public abstract class MapAsComposite<T extends Model> extends Pane<T> {
 		 *
 		 * @return A human readable text describing the mapping type
 		 */
-		String getMappingType();
+		String getMappingText();
 
 		/**
 		 * Morphes the current mapping into a new type by using the given provider.
@@ -435,6 +453,13 @@ public abstract class MapAsComposite<T extends Model> extends Pane<T> {
 		 * @return The supported types of mapping
 		 */
 		Iterator<? extends MappingUiProvider<?>> providers();
+		
+		/**
+		 * Returns the list of default providers that are registered with the JPT plugin.
+		 *
+		 * @return The supported types of mapping
+		 */
+		Iterator<? extends MappingUiProvider<?>> defaultProviders();
 	}
 
 	/**
@@ -450,8 +475,8 @@ public abstract class MapAsComposite<T extends Model> extends Pane<T> {
 		 */
 		private MappingSelectionDialog() {
 			super(MapAsComposite.this.getShell(), false);
-			setMessage(JptUiMessages.MapAsComposite_labelText);
-			setTitle(JptUiMessages.MapAsComposite_dialogTitle);
+			setMessage(JptUiMappingsMessages.MapAsComposite_labelText);
+			setTitle(JptUiMappingsMessages.MapAsComposite_dialogTitle);
 			setListLabelProvider(buildLabelProvider());
 			setDetailsLabelProvider(buildLabelProvider());
 		}
@@ -511,7 +536,7 @@ public abstract class MapAsComposite<T extends Model> extends Pane<T> {
 
 			try {
 				// Add the default provider
-				defaultProvider = buildDefaultProvider();
+				defaultProvider = getDefaultProvider();
 
 				if (defaultProvider != null) {
 					provider.add(defaultProvider, itemsFilter);

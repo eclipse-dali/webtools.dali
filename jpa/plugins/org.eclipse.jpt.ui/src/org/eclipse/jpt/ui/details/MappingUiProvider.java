@@ -37,6 +37,11 @@ public interface MappingUiProvider<T> {
 	String getLabel();
 
 	/**
+	 * Returns a human readable text of the mapping type to be used in the mapping change link label
+	 */
+	String getLinkLabel();
+	
+	/**
 	 * Returns an image that represents the mapping type defined by this provider.
 	 *
 	 * @return An image representing a mapping or <code>null</code> if no image

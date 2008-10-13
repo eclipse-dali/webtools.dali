@@ -65,8 +65,6 @@ public class JptUiMappingsMessages {
 	public static String ColumnComposite_updatableWithDefault;
 	public static String DatabaseObjectCombo_defaultEmpty;
 	public static String DatabaseObjectCombo_defaultWithOneParm;
-	public static String DefaultBasicMappingUiProvider_Default;
-	public static String DefaultEmbeddedMappingUiProvider_Default;
 	public static String DefaultWithoutValue;
 	public static String DefaultWithValue;
 	public static String DiscriminatorColumnComposite_defaultEmpty;
@@ -166,6 +164,51 @@ public class JptUiMappingsMessages {
 	public static String JoinTableComposite_overrideDefaultInverseJoinColumns;
 	public static String JoinTableComposite_overrideDefaultJoinColumns;
 	public static String JoinTableComposite_remove;
+	
+	public static String DefaultBasicMappingUiProvider_label;
+	public static String DefaultEmbeddedMappingUiProvider_label;
+	public static String BasicMappingUiProvider_label;
+	public static String EmbeddedIdMappingUiProvider_label;
+	public static String EmbeddedMappingUiProvider_label;
+	public static String IdMappingUiProvider_label;
+	public static String ManyToManyMappingUiProvider_label;
+	public static String ManyToOneMappingUiProvider_label;
+	public static String OneToManyMappingUiProvider_label;
+	public static String OneToOneMappingUiProvider_label;
+	public static String TransientMappingUiProvider_label;
+	public static String VersionMappingUiProvider_label;
+	public static String DefaultBasicMappingUiProvider_linkLabel;
+	public static String DefaultEmbeddedMappingUiProvider_linkLabel;
+	public static String BasicMappingUiProvider_linkLabel;
+	public static String EmbeddedIdMappingUiProvider_linkLabel;
+	public static String EmbeddedMappingUiProvider_linkLabel;
+	public static String IdMappingUiProvider_linkLabel;
+	public static String ManyToManyMappingUiProvider_linkLabel;
+	public static String ManyToOneMappingUiProvider_linkLabel;
+	public static String OneToManyMappingUiProvider_linkLabel;
+	public static String OneToOneMappingUiProvider_linkLabel;
+	public static String TransientMappingUiProvider_linkLabel;
+	public static String VersionMappingUiProvider_linkLabel;
+
+	public static String MapAsComposite_changeMappingType;
+	public static String MapAsComposite_default;
+	public static String MapAsComposite_dialogTitle;
+	public static String MapAsComposite_labelText;
+	public static String MapAsComposite_mappedAttributeText;
+	public static String MapAsComposite_mappedTypeText;
+	public static String MapAsComposite_unmappedAttributeText;
+	public static String MapAsComposite_unmappedTypeText;
+	public static String MapAsComposite_virtualAttributeText;
+	
+	public static String EmbeddableUiProvider_label;
+	public static String EntityUiProvider_label;
+	public static String MappedSuperclassUiProvider_label;
+	public static String EmbeddableUiProvider_linkLabel;
+	public static String EntityUiProvider_linkLabel;
+	public static String MappedSuperclassUiProvider_linkLabel;
+
+	public static String NullTypeMappingUiProvider_label;
+	
 	public static String MetaDataCompleteCombo_Default;
 	public static String MultiRelationshipMappingComposite_cascadeType;
 	public static String MultiRelationshipMappingComposite_fetchType;
@@ -196,20 +239,6 @@ public class JptUiMappingsMessages {
 	public static String OverridesComposite_attribute;
 	public static String OverridesComposite_joinColumn;
 	public static String OverridesComposite_noName;
-	public static String PersistentAttributePage_BasicLabel;
-	public static String PersistentAttributePage_EmbeddedIdLabel;
-	public static String PersistentAttributePage_EmbeddedLabel;
-	public static String PersistentAttributePage_IdLabel;
-	public static String PersistentAttributePage_ManyToManyLabel;
-	public static String PersistentAttributePage_ManyToOneLabel;
-	public static String PersistentAttributePage_OneToManyLabel;
-	public static String PersistentAttributePage_OneToOneLabel;
-	public static String PersistentAttributePage_TransientLabel;
-	public static String PersistentAttributePage_VersionLabel;
-	public static String PersistentTypePage_EmbeddableLabel;
-	public static String PersistentTypePage_EntityLabel;
-	public static String PersistentTypePage_MappedSuperclassLabel;
-	public static String PersistentTypePage_UnmappedLabel;
 	public static String PrimaryKeyJoinColumnDialog_addDescriptionTitle;
 	public static String PrimaryKeyJoinColumnDialog_addTitle;
 	public static String PrimaryKeyJoinColumnDialog_editDescriptionTitle;

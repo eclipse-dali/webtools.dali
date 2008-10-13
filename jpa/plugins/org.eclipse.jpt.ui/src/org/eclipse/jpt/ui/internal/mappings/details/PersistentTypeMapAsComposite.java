@@ -16,10 +16,10 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
-import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -46,9 +46,6 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 		super(parentPane, parent);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
@@ -56,9 +53,6 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 		propertyNames.add(PersistentType.NAME_PROPERTY);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected MappingChangeHandler buildMappingChangeHandler() {
 		return new MappingChangeHandler() {
@@ -67,24 +61,20 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 				String mappingKey = getSubject().getMappingKey();
 
 				if (mappingKey != null) {
-					return JptUiMessages.MapAsComposite_mappedTypeText;
+					return JptUiMappingsMessages.MapAsComposite_mappedTypeText;
 				}
 
-				return JptUiMessages.MapAsComposite_unmappedTypeText;
+				return JptUiMappingsMessages.MapAsComposite_unmappedTypeText;
 			}
 
-			public String getMappingType() {
+			public String getMappingText() {
 				String mappingKey = getSubject().getMappingKey();
 
 				if (mappingKey == null) {
-					return JptUiMessages.MapAsComposite_changeMappingType;
+					return JptUiMappingsMessages.MapAsComposite_changeMappingType;
 				}
 
-				return SWTUtil.buildDisplayString(
-					JptUiMessages.class,
-					MapAsComposite.class,
-					mappingKey
-				);
+				return getProvider(mappingKey).getLinkLabel();
 			}
 
 			public void morphMapping(MappingUiProvider<?> provider) {
@@ -97,6 +87,10 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 
 			public Iterator<? extends MappingUiProvider<?>> providers() {
 				return typeMappingUiProviders();
+			}
+			
+			public Iterator<? extends MappingUiProvider<?>> defaultProviders() {
+				return EmptyIterator.instance();
 			}
 		};
 	}
@@ -112,17 +106,11 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 		return JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected String getMappingKey() {
 		return getSubject().getMappingKey();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);

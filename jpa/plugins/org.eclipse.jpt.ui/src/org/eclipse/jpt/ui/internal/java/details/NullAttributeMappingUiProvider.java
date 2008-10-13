@@ -43,30 +43,22 @@ public class NullAttributeMappingUiProvider
 		super();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	public String getMappingKey() {
 		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	public String getLabel() {
 		return JptUiMappingsMessages.NullAttributeMappingUiProvider_label;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
+	public String getLinkLabel() {
+		return null;
+	}
+
 	public Image getImage() {
 		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	public JpaComposite buildAttributeMappingComposite(
 		JpaUiFactory factory,
 		PropertyValueModel<AttributeMapping> subjectHolder,
@@ -86,9 +78,6 @@ public class NullAttributeMappingUiProvider
 			super(subjectHolder, parent, widgetFactory);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 */
 		@Override
 		protected void initializeLayout(Composite container) {
 		}

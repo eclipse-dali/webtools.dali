@@ -18,7 +18,6 @@ import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
@@ -47,10 +46,11 @@ public class DefaultEmbeddedMappingUiProvider
 	}
 
 	public String getLabel() {
-		return NLS.bind(
-			JptUiMappingsMessages.DefaultEmbeddedMappingUiProvider_Default,
-			JptUiMappingsMessages.PersistentAttributePage_EmbeddedLabel
-		);
+		return JptUiMappingsMessages.DefaultEmbeddedMappingUiProvider_label;
+	}
+
+	public String getLinkLabel() {
+		return JptUiMappingsMessages.DefaultEmbeddedMappingUiProvider_linkLabel;
 	}
 
 	public Image getImage() {

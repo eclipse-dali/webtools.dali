@@ -10,8 +10,11 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.java;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -78,6 +81,27 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkJavaContext
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@OneToMany").append(CR);
 				sb.append("@JoinFetch").append(CR);
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityWithDefaultOneToMany() throws Exception {
+		createJoinFetchAnnotation();
+		
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("private java.util.Collection<" + TYPE_NAME + "> myTypes;").append(CR);
+				sb.append(CR);
 			}
 		});
 	}
@@ -264,5 +288,18 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkJavaContext
 		
 		joinFetchable.setSpecifiedJoinFetch(JoinFetchType.INNER);	
 		assertEquals(JoinFetchType.INNER, joinFetchable.getJoinFetch());
+	}
+	
+	
+	public void testDefaultOneToMany() throws Exception {
+		createTestEntityWithDefaultOneToMany();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		ListIterator<JavaPersistentAttribute> attributes = javaPersistentType().attributes();
+		JavaPersistentAttribute persistentAttribute = attributes.next();
+		assertNull(persistentAttribute.getSpecifiedMapping());
+		assertEquals(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
+		
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, attributes.next().getDefaultMappingKey());
 	}
 }

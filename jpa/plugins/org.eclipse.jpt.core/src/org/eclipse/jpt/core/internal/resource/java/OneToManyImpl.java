@@ -150,7 +150,7 @@ public class OneToManyImpl extends AbstractRelationshipMappingAnnotation impleme
 		}
 		
 		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
-			return null;
+			return new NullOneToMany(parent);
 		}
 
 		public String getAnnotationName() {

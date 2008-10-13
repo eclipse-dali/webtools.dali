@@ -45,9 +45,13 @@ public class JavaEntityUiProvider implements TypeMappingUiProvider<JavaEntity>
 	}
 
 	public String getLabel() {
-		return JptUiMappingsMessages.PersistentTypePage_EntityLabel;
+		return JptUiMappingsMessages.EntityUiProvider_label;
 	}
 
+	public String getLinkLabel() {
+		return JptUiMappingsMessages.EntityUiProvider_linkLabel;
+	}
+	
 	public Image getImage() {
 		return JpaMappingImageHelper.imageForTypeMapping(getMappingKey());
 	}

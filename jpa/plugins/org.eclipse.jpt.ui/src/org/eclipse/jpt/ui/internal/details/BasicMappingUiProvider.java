@@ -56,9 +56,13 @@ public class BasicMappingUiProvider
 	}
 
 	public String getLabel() {
-		return JptUiMappingsMessages.PersistentAttributePage_BasicLabel;
+		return JptUiMappingsMessages.BasicMappingUiProvider_label;
 	}
 
+	public String getLinkLabel() {
+		return JptUiMappingsMessages.BasicMappingUiProvider_linkLabel;
+	}
+	
 	public String getMappingKey() {
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}

@@ -47,7 +47,11 @@ public class VersionMappingUiProvider
 	}
 
 	public String getLabel() {
-		return JptUiMappingsMessages.PersistentAttributePage_VersionLabel;
+		return JptUiMappingsMessages.VersionMappingUiProvider_label;
+	}
+
+	public String getLinkLabel() {
+		return JptUiMappingsMessages.VersionMappingUiProvider_linkLabel;
 	}
 
 	public Image getImage() {

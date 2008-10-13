@@ -9,9 +9,13 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal;
 
+import java.util.List;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFactory;
+import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingProvider;
 
 public class EclipseLinkJpaPlatform extends GenericJpaPlatform
 {
@@ -45,4 +49,11 @@ public class EclipseLinkJpaPlatform extends GenericJpaPlatform
 			super.supportsContentType(contentTypeId);
 	}
 	
+	@Override
+	protected void addDefaultJavaAttributeMappingProvidersTo(List<DefaultJavaAttributeMappingProvider> providers) {
+		providers.add(EclipseLinkJavaOneToOneMappingProvider.instance());
+		providers.add(EclipseLinkJavaOneToManyMappingProvider.instance());
+		//add these before calling super, want to check for Basic last in case the reference object is Serializable
+		super.addDefaultJavaAttributeMappingProvidersTo(providers);
+	}
 }

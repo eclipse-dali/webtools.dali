@@ -46,7 +46,11 @@ public class ManyToOneMappingUiProvider
 	}
 
 	public String getLabel() {
-		return JptUiMappingsMessages.PersistentAttributePage_ManyToOneLabel;
+		return JptUiMappingsMessages.ManyToOneMappingUiProvider_label;
+	}
+
+	public String getLinkLabel() {
+		return JptUiMappingsMessages.ManyToOneMappingUiProvider_linkLabel;
 	}
 
 	public Image getImage() {

@@ -47,7 +47,11 @@ public class EmbeddedMappingUiProvider
 	}
 
 	public String getLabel() {
-		return JptUiMappingsMessages.PersistentAttributePage_EmbeddedLabel;
+		return JptUiMappingsMessages.EmbeddedMappingUiProvider_label;
+	}
+
+	public String getLinkLabel() {
+		return JptUiMappingsMessages.EmbeddedMappingUiProvider_linkLabel;
 	}
 
 	public Image getImage() {

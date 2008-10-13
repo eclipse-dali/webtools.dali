@@ -193,7 +193,7 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 		}
 		
 		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
-			return null;
+			return new NullOneToOne(parent);
 		}
 
 		public String getAnnotationName() {

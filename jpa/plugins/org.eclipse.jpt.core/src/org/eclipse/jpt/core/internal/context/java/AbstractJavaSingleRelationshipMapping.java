@@ -288,11 +288,11 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	 * eliminate any "container" types
 	 */
 	@Override
-	protected String buildDefaultTargetEntity(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
-		if (javaResourcePersistentAttribute.typeIsContainer()) {
+	protected String buildDefaultTargetEntity(JavaResourcePersistentAttribute jrpa) {
+		if (jrpa.typeIsContainer()) {
 			return null;
 		}
-		return javaResourcePersistentAttribute.getQualifiedReferenceEntityTypeName();
+		return jrpa.getQualifiedReferenceEntityTypeName();
 	}
 
 

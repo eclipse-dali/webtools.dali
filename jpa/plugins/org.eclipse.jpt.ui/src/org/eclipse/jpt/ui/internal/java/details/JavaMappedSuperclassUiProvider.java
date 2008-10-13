@@ -45,9 +45,13 @@ public class JavaMappedSuperclassUiProvider implements TypeMappingUiProvider<Jav
 	}
 
 	public String getLabel() {
-		return JptUiMappingsMessages.PersistentTypePage_MappedSuperclassLabel;
+		return JptUiMappingsMessages.MappedSuperclassUiProvider_label;
 	}
 
+	public String getLinkLabel() {
+		return JptUiMappingsMessages.MappedSuperclassUiProvider_linkLabel;
+	}
+	
 	public Image getImage() {
 		return JpaMappingImageHelper.imageForTypeMapping(getMappingKey());
 	}

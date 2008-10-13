@@ -45,9 +45,13 @@ public class JavaEmbeddableUiProvider implements TypeMappingUiProvider<JavaEmbed
 	}
 
 	public String getLabel() {
-		return JptUiMappingsMessages.PersistentTypePage_EmbeddableLabel;
+		return JptUiMappingsMessages.EmbeddableUiProvider_label;
 	}
 
+	public String getLinkLabel() {
+		return JptUiMappingsMessages.EmbeddableUiProvider_linkLabel;
+	}
+	
 	public Image getImage() {
 		return JpaMappingImageHelper.imageForTypeMapping(getMappingKey());
 	}

@@ -47,9 +47,13 @@ public class NullTypeMappingUiProvider implements TypeMappingUiProvider<TypeMapp
 	}
 
 	public String getLabel() {
-		return JptUiMappingsMessages.PersistentTypePage_UnmappedLabel;
+		return JptUiMappingsMessages.NullTypeMappingUiProvider_label;
 	}
 
+	public String getLinkLabel() {
+		return null;
+	}
+	
 	public Image getImage() {
 		return JpaMappingImageHelper.imageForTypeMapping(
 			MappingKeys.NULL_TYPE_MAPPING_KEY

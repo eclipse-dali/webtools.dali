@@ -21,6 +21,8 @@ import org.eclipse.jpt.eclipselink.core.EclipseLinkResourceModel;
 import org.eclipse.jpt.eclipselink.ui.EclipseLinkJpaUiFactory;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactoryImpl;
 import org.eclipse.jpt.eclipselink.ui.internal.ddlgen.EclipseLinkDDLGeneratorUi;
+import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToManyMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToOneMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.persistencexml.details.PersistenceDetailsProvider;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
@@ -81,6 +83,14 @@ public class EclipseLinkJpaPlatformUI extends BaseJpaPlatformUi
 		super.addJavaAttributeMappingUiProvidersTo(providers);
 	}
 
+	@Override
+	protected void addDefaultJavaAttributeMappingUiProvidersTo(
+							List<AttributeMappingUiProvider<? extends AttributeMapping>> providers) {
+		super.addDefaultJavaAttributeMappingUiProvidersTo(providers);
+		providers.add(DefaultOneToOneMappingUiProvider.instance());
+		providers.add(DefaultOneToManyMappingUiProvider.instance());		
+	}
+	
 	@Override
 	protected void addJavaTypeMappingUiProvidersTo(
 							List<TypeMappingUiProvider<? extends TypeMapping>> providers) {

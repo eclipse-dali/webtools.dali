@@ -46,7 +46,11 @@ public class IdMappingUiProvider
 	}
 
 	public String getLabel() {
-		return JptUiMappingsMessages.PersistentAttributePage_IdLabel;
+		return JptUiMappingsMessages.IdMappingUiProvider_label;
+	}
+
+	public String getLinkLabel() {
+		return JptUiMappingsMessages.IdMappingUiProvider_linkLabel;
 	}
 
 	public Image getImage() {

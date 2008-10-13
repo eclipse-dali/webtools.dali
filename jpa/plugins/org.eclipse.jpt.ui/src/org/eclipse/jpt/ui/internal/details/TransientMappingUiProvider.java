@@ -47,7 +47,11 @@ public class TransientMappingUiProvider
 	}
 
 	public String getLabel() {
-		return JptUiMappingsMessages.PersistentAttributePage_TransientLabel;
+		return JptUiMappingsMessages.TransientMappingUiProvider_label;
+	}
+
+	public String getLinkLabel() {
+		return JptUiMappingsMessages.TransientMappingUiProvider_linkLabel;
 	}
 
 	public Image getImage() {

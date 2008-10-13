@@ -7,61 +7,61 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal.orm.details;
+package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
+import org.eclipse.jpt.core.context.OneToManyMapping;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-public class OrmMappedSuperclassUiProvider implements TypeMappingUiProvider<OrmMappedSuperclass>
+public class DefaultOneToManyMappingUiProvider
+	implements AttributeMappingUiProvider<OneToManyMapping>
 {
 	// singleton
-	private static final OrmMappedSuperclassUiProvider INSTANCE = new OrmMappedSuperclassUiProvider();
+	private static final DefaultOneToManyMappingUiProvider INSTANCE = new DefaultOneToManyMappingUiProvider();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static TypeMappingUiProvider<OrmMappedSuperclass> instance() {
+	public static AttributeMappingUiProvider<OneToManyMapping> instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private OrmMappedSuperclassUiProvider() {
+	private DefaultOneToManyMappingUiProvider() {
 		super();
 	}
 
 	public String getMappingKey() {
-		return MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY;
+		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
 	public String getLabel() {
-		return JptUiMappingsMessages.MappedSuperclassUiProvider_label;
+		return EclipseLinkUiMappingsMessages.DefaultOneToManyMappingUiProvider_label;
 	}
 
 	public String getLinkLabel() {
-		return JptUiMappingsMessages.MappedSuperclassUiProvider_linkLabel;
+		return EclipseLinkUiMappingsMessages.DefaultOneToManyMappingUiProvider_linkLabel;
 	}
 
 	public Image getImage() {
-		return JpaMappingImageHelper.imageForTypeMapping(getMappingKey());
+		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
 	}
 
-	public JpaComposite buildPersistentTypeMappingComposite(
-		JpaUiFactory factory,
-		PropertyValueModel<OrmMappedSuperclass> subjectHolder,
+	public JpaComposite buildAttributeMappingComposite(JpaUiFactory factory,
+		PropertyValueModel<OneToManyMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory) {
 
-		return factory.createOrmMappedSuperclassComposite(subjectHolder, parent, widgetFactory);
+		return factory.createOneToManyMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }
