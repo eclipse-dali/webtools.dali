@@ -130,7 +130,7 @@ public class GenericEntityMappings
 	
 	// **************** OrmPersistentTypeContext impl **************************
 	
-	public AccessType getSpecifiedPersistentTypeAccess() {
+	public AccessType getOverridePersistentTypeAccess() {
 		if (getPersistenceUnitMetadata().isXmlMappingMetadataComplete()) {
 			return getSpecifiedAccess();
 		}

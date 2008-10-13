@@ -57,7 +57,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 	
 	// **************** PersistentTypeContext impl *****************************
 	
-	public AccessType getSpecifiedPersistentTypeAccess() {
+	public AccessType getOverridePersistentTypeAccess() {
 		AccessType accessType = getSpecifiedAccess();
 		if (accessType == null && getPersistentType().getParentPersistentType() instanceof OrmPersistentType) {
 			accessType = ((OrmPersistentType) getPersistentType().getParentPersistentType()).getMapping().getSpecifiedAccess();

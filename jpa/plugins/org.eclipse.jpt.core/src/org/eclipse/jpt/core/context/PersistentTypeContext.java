@@ -13,13 +13,13 @@ package org.eclipse.jpt.core.context;
 public interface PersistentTypeContext extends JpaContextNode
 {
 	/**
-	 * Return the access type specified for the owned persistent type,
-	 * null if none is specified
+	 * Return the access type that overrides any access specified locally for the 
+	 * owned persistent type, null if there is no such access override
 	 */
-	AccessType getSpecifiedPersistentTypeAccess();
+	AccessType getOverridePersistentTypeAccess();
 	
 	/**
-	 * Return the default access type for the owned persistent type,
+	 * Return the default access type to be applied to the owned persistent type,
 	 * null if no default applies
 	 */
 	AccessType getDefaultPersistentTypeAccess();

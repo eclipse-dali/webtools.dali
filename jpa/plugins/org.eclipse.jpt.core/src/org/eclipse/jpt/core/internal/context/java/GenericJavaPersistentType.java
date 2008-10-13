@@ -366,7 +366,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	 * 		Default to FIELD if all else fails.
 	 */
 	protected AccessType access(JavaResourcePersistentType jrpt) {
-		AccessType javaAccess = getContext().getSpecifiedPersistentTypeAccess();
+		AccessType javaAccess = getContext().getOverridePersistentTypeAccess();
 		if (javaAccess == null) {
 			javaAccess = AccessType.fromJavaResourceModel(jrpt.getAccess());
 		}

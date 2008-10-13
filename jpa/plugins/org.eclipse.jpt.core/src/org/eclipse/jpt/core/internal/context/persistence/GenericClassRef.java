@@ -73,8 +73,8 @@ public class GenericClassRef extends AbstractXmlContextNode
 	
 	// **************** PersistentTypeContext impl *****************************
 	
-	public AccessType getSpecifiedPersistentTypeAccess() {
-		// no access type is *specified* at this level
+	public AccessType getOverridePersistentTypeAccess() {
+		// no access type at this level overrides any local access type specification
 		return null;
 	}
 	
