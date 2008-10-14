@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.AccessType;
-import org.eclipse.jpt.core.context.MappingFileDefaults;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.QueryHolder;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
@@ -117,8 +116,6 @@ public interface EntityMappings
 	OrmNamedNativeQuery addNamedNativeQuery(int index);
 	void removeNamedNativeQuery(int index);
 	void moveNamedNativeQuery(int targetIndex, int sourceIndex);
-	
-	MappingFileDefaults getDefaults();
 	
 	OrmPersistenceUnitDefaults getPersistenceUnitDefaults();
 	
