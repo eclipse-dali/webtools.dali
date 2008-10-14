@@ -32,7 +32,7 @@ public final class DTPConnectionProfileRepository
 
 	private LocalProfileListener profileListener;
 
-	private final Vector<DTPConnectionProfileWrapper> connectionProfiles = new Vector<DTPConnectionProfileWrapper>();
+	private Vector<DTPConnectionProfileWrapper> connectionProfiles;
 
 
 	// ********** singleton **********
@@ -58,27 +58,20 @@ public final class DTPConnectionProfileRepository
 	 */
 	public synchronized void start() {
 		this.dtpProfileManager = ProfileManager.getInstance();
-		for (IConnectionProfile dtpProfile : this.dtpProfileManager.getProfiles()) {
-			this.connectionProfiles.add(new DTPConnectionProfileWrapper(dtpProfile));
-		}
-		//add the profile listener after initializing the profiles.  otherwise we end up
-		//with duplicate connection profiles.  The DTP loadProfiles() action both
-		//loads the profiles and fires event notification for each added profile.
-		//This is a temporary measure for bug 246948 and we can hopefully get DTP
-		//to fix the underlying issue.
 		this.profileListener = new LocalProfileListener();
-		this.dtpProfileManager.addProfileListener(this.profileListener);
 	}
 
 	/**
 	 * called by plug-in
 	 */
 	public synchronized void stop() {
-		for (DTPConnectionProfileWrapper profile : this.connectionProfiles) {
-			profile.dispose();
+		if (this.connectionProfiles != null) {
+			for (DTPConnectionProfileWrapper profile : this.connectionProfiles) {
+				profile.dispose();
+			}
+			this.dtpProfileManager.removeProfileListener(this.profileListener);
+			this.connectionProfiles = null;
 		}
-		this.connectionProfiles.clear();
-		this.dtpProfileManager.removeProfileListener(this.profileListener);
 		this.profileListener = null;
 		this.dtpProfileManager = null;
 	}
@@ -86,16 +79,37 @@ public final class DTPConnectionProfileRepository
 
 	// ********** profiles **********
 
+	private synchronized Vector<DTPConnectionProfileWrapper> getConnectionProfiles() {
+		if (this.connectionProfiles == null) {
+			this.connectionProfiles = this.buildConnectionProfiles();
+			//Add the profile listener after initializing the profiles; otherwise we end up
+			//with duplicate connection profiles.  The DTP #loadProfiles() method both
+			//loads the profiles and fires event notification for each added profile.
+			//This is a temporary measure for bug 246948 and we can hopefully get DTP
+			//to fix the underlying issue.
+			this.dtpProfileManager.addProfileListener(this.profileListener);
+		}
+		return this.connectionProfiles;
+	}
+
+	private Vector<DTPConnectionProfileWrapper> buildConnectionProfiles() {
+		Vector<DTPConnectionProfileWrapper> profiles = new Vector<DTPConnectionProfileWrapper>();
+		for (IConnectionProfile dtpProfile : this.dtpProfileManager.getProfiles()) {
+			profiles.add(new DTPConnectionProfileWrapper(dtpProfile));
+		}
+		return profiles;
+	}
+
 	public synchronized Iterator<ConnectionProfile> connectionProfiles() {
-		return new CloneIterator<ConnectionProfile>(this.connectionProfiles);  // read-only
+		return new CloneIterator<ConnectionProfile>(this.getConnectionProfiles());  // read-only
 	}
 
 	private synchronized Iterator<DTPConnectionProfileWrapper> connectionProfileWrappers() {
-		return new CloneIterator<DTPConnectionProfileWrapper>(this.connectionProfiles);  // read-only
+		return new CloneIterator<DTPConnectionProfileWrapper>(this.getConnectionProfiles());  // read-only
 	}
 
 	public int connectionProfilesSize() {
-		return this.connectionProfiles.size();
+		return this.getConnectionProfiles().size();
 	}
 
 	public Iterator<String> connectionProfileNames() {
@@ -122,18 +136,18 @@ public final class DTPConnectionProfileRepository
 	}
 
 	synchronized DTPConnectionProfileWrapper addConnectionProfile(IConnectionProfile dtpConnectionProfile) {
-		for (DTPConnectionProfileWrapper wrapper : this.connectionProfiles) {
+		for (DTPConnectionProfileWrapper wrapper : this.getConnectionProfiles()) {
 			if (wrapper.wraps(dtpConnectionProfile)) {
 				throw new IllegalStateException("duplicate connection profile: " + dtpConnectionProfile.getName());  //$NON-NLS-1$
 			}
 		}
 		DTPConnectionProfileWrapper wrapper = new DTPConnectionProfileWrapper(dtpConnectionProfile);
-		this.connectionProfiles.add(wrapper);
+		this.getConnectionProfiles().add(wrapper);
 		return wrapper;
 	}
 
 	synchronized DTPConnectionProfileWrapper removeConnectionProfile(IConnectionProfile dtpConnectionProfile) {
-		for (Iterator<DTPConnectionProfileWrapper> stream = this.connectionProfiles.iterator(); stream.hasNext(); ) {
+		for (Iterator<DTPConnectionProfileWrapper> stream = this.getConnectionProfiles().iterator(); stream.hasNext(); ) {
 			DTPConnectionProfileWrapper wrapper = stream.next();
 			if (wrapper.wraps(dtpConnectionProfile)) {
 				stream.remove();
@@ -144,7 +158,7 @@ public final class DTPConnectionProfileRepository
 	}
 
 	synchronized DTPConnectionProfileWrapper connectionProfile(IConnectionProfile dtpConnectionProfile) {
-		for (DTPConnectionProfileWrapper wrapper : this.connectionProfiles) {
+		for (DTPConnectionProfileWrapper wrapper : this.getConnectionProfiles()) {
 			if (wrapper.wraps(dtpConnectionProfile)) {
 				return wrapper;
 			}
