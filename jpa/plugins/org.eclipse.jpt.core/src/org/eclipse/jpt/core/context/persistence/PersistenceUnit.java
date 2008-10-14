@@ -9,29 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.persistence;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
-import org.eclipse.jpt.core.context.java.JavaGenerator;
-import org.eclipse.jpt.core.context.java.JavaQuery;
-import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
-import org.eclipse.jpt.core.context.orm.OrmGenerator;
-import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -442,28 +431,6 @@ public interface PersistenceUnit extends XmlContextNode, JpaStructureNode
 	 * unit, with duplicates removed.
 	 */
 	String[] uniqueGeneratorNames();
-
-	/**
-	 * Validate the ORM generators held by the specified generator holder.
-	 */
-	void validateGenerators(OrmGeneratorHolder generatorHolder, List<IMessage> messages);
-
-	/**
-	 * Validate the Java generators held by the specified generator holder.
-	 */
-	void validateGenerators(JavaGeneratorHolder generatorHolder, List<IMessage> messages, CompilationUnit astRoot);
-
-	/**
-	 * Validate whether the specified ORM generated value matches a
-	 * generator defined in the persistence unit.
-	 */
-	void validateGeneratedValue(OrmGeneratedValueHolder generatedValueHolder, List<IMessage> messages);
-
-	/**
-	 * Validate whether the specified Java generated value matches a
-	 * generator defined in the persistence unit.
-	 */
-	void validateGeneratedValue(JavaGeneratedValueHolder generatedValueHolder, List<IMessage> messages, CompilationUnit astRoot);
 	
 	
 	// **************** queries *********************
@@ -489,16 +456,6 @@ public interface PersistenceUnit extends XmlContextNode, JpaStructureNode
 	 * included duplicately named queries.
 	 */
 	ListIterator<Query> allQueries();
-	
-	/**
-	 * Validate the ORM queries held by the specified query holder.
-	 */
-	void validateQueries(OrmQueryHolder queryHolder, List<IMessage> messages);
-
-	/**
-	 * Validate the Java queries held by the specified query holder.
-	 */
-	void validateQueries(JavaQueryHolder queryHolder, List<IMessage> messages, CompilationUnit astRoot);
 
 	
 	// **************** updating ***********************************************
@@ -531,32 +488,4 @@ public interface PersistenceUnit extends XmlContextNode, JpaStructureNode
 	 * the given text offset
 	 */
 	boolean containsOffset(int textOffset);
-
-	
-	// ********** validation callbacks **********
-	
-	interface OrmGeneratorHolder {
-		Iterator<OrmGenerator> generators();
-	}
-
-	interface JavaGeneratorHolder {
-		Iterator<JavaGenerator> generators();
-	}
-
-	interface OrmGeneratedValueHolder {
-		OrmGeneratedValue getGeneratedValue();
-	}
-
-	interface JavaGeneratedValueHolder {
-		JavaGeneratedValue getGeneratedValue();
-	}
-
-	interface OrmQueryHolder {
-		Iterator<OrmQuery> queries();
-	}
-
-	interface JavaQueryHolder {
-		Iterator<JavaQuery> queries();
-	}
-
 }

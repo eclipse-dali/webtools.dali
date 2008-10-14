@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
+import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * 
@@ -215,6 +216,11 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 		}
 		// this isn't ideal, but it will have to do until we have further adopter input
 		return this.getName().equals(generator.getName()) && generator instanceof JavaGenerator;
+	}
+	
+	public boolean duplicates(Generator generator) {
+		return ! StringTools.stringIsEmpty(getName()) && getName().equals(generator.getName())
+			&& ! this.overrides(generator) && ! generator.overrides(this);
 	}
 
 	@Override

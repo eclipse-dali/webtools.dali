@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.resource.java.QueryAnnotation;
 import org.eclipse.jpt.core.resource.java.QueryHintAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 
@@ -182,10 +183,14 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 		// java is at the base of the tree
 		return false;
 	}
-
+	
+	public boolean duplicates(Query query) {
+		return ! StringTools.stringIsEmpty(this.getName()) && getName().equals(query.getName()) 
+			&& ! this.overrides(query) && ! query.overrides(this);
+	}
+	
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
 	}
-	
 }

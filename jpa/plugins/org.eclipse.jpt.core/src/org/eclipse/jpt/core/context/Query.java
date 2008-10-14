@@ -78,9 +78,16 @@ public interface Query extends JpaContextNode
 	// **************** validation *********************************************
 	
 	/**
-	 * Return true if this query overrides the definition of the specified
-	 * query
+	 * Return true if this query overrides the definition of the given query
 	 * (for example, a query defined in orm.xml overrides one defined in java)
 	 */
 	boolean overrides(Query query);
+	
+	/**
+	 * Return true if this query is a duplicate of the given query
+	 * A query is not a duplicate of another query if is the same exact query,
+	 * if it is a nameless query (which is an error condition), or if it overrides 
+	 * or is overridden by the other query. 
+	 */
+	boolean duplicates(Query query);
 }

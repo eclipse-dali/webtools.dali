@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.IdClass;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
@@ -55,7 +56,6 @@ import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -77,6 +77,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
@@ -87,7 +88,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class GenericOrmEntity
 	extends AbstractOrmTypeMapping<XmlEntity>
-	implements OrmEntity, PersistenceUnit.OrmGeneratorHolder, PersistenceUnit.OrmQueryHolder
+	implements OrmEntity
 {
 	protected String specifiedName;
 
@@ -1876,8 +1877,20 @@ public class GenericOrmEntity
 		// if we encounter only a single primary key column name, return it
 		return pkColumnName;
 	}
-
-	//**********  Validation **************************
+	
+	public void removeFromResourceModel(XmlEntityMappings entityMappings) {
+		entityMappings.getEntities().remove(this.getTypeMappingResource());
+	}
+	
+	public XmlEntity addToResourceModel(XmlEntityMappings entityMappings) {
+		XmlEntity entity = OrmFactory.eINSTANCE.createXmlEntity();
+		getPersistentType().initialize(entity);
+		entityMappings.getEntities().add(entity);
+		return entity;
+	}
+	
+	
+	// **************** validation *********************************************
 	
 	@Override
 	public void validate(List<IMessage> messages) {
@@ -1885,8 +1898,8 @@ public class GenericOrmEntity
 
 		this.table.validate(messages);	
 		this.validateId(messages);
-		this.getPersistenceUnit().validateGenerators(this, messages);
-		this.getPersistenceUnit().validateQueries(this, messages);
+		this.validateGenerators(messages);
+		this.validateQueries(messages);
 
 		for (Iterator<OrmSecondaryTable> stream = this.secondaryTables(); stream.hasNext(); ) {
 			stream.next().validate(messages);
@@ -1928,19 +1941,52 @@ public class GenericOrmEntity
 		return false;
 	}
 	
-	public TypeMapping typeMapping() {
-		return this;
+	protected void validateGenerators(List<IMessage> messages) {
+		List<Generator> masterList = CollectionTools.list(getPersistenceUnit().allGenerators());
+		
+		for (Iterator<OrmGenerator> stream = this.generators(); stream.hasNext() ; ) {
+			OrmGenerator current = stream.next();
+			masterList.remove(current);
+			
+			for (Generator each : masterList) {
+				if (! StringTools.stringIsEmpty(current.getName()) && each.duplicates(current)) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+							new String[] {current.getName()},
+							current,
+							current.getNameTextRange())
+					);
+				}
+			}
+		
+			masterList.add(current);
+		}
 	}
 	
-	public void removeFromResourceModel(XmlEntityMappings entityMappings) {
-		entityMappings.getEntities().remove(this.getTypeMappingResource());
-	}
-	
-	public XmlEntity addToResourceModel(XmlEntityMappings entityMappings) {
-		XmlEntity entity = OrmFactory.eINSTANCE.createXmlEntity();
-		getPersistentType().initialize(entity);
-		entityMappings.getEntities().add(entity);
-		return entity;
+	protected void validateQueries(List<IMessage> messages) {
+		List<Query> masterList = CollectionTools.list(getPersistenceUnit().allQueries());
+		
+		for (Iterator<OrmQuery> stream = this.queries(); stream.hasNext() ; ) {
+			OrmQuery current = stream.next();
+			masterList.remove(current);
+			
+			for (Query each : masterList) {
+				if (! StringTools.stringIsEmpty(current.getName()) && each.duplicates(current)) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.QUERY_DUPLICATE_NAME,
+							new String[] {current.getName()},
+							current,
+							current.getNameTextRange())
+					);
+				}
+			}
+			
+			masterList.add(current);
+		}
 	}
 	
 	@Override
@@ -1948,6 +1994,7 @@ public class GenericOrmEntity
 		super.toString(sb);
 		sb.append(getName());
 	}
+	
 	
 	class PrimaryKeyJoinColumnOwner implements OrmBaseJoinColumn.Owner
 	{

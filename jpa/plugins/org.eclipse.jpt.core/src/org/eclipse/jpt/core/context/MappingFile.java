@@ -11,7 +11,6 @@
 package org.eclipse.jpt.core.context;
 
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 
 /**
@@ -34,10 +33,10 @@ public interface MappingFile extends XmlContextNode, JpaStructureNode
 	MappingFileRoot getRoot();
 	
 	/**
-	 * Return the OrmPersistentType listed in this mapping file
+	 * Return the PersistentType listed in this mapping file
 	 * with the given fullyQualifiedTypeName.  Return null if none exists.
 	 */
-	OrmPersistentType getPersistentType(String fullyQualifiedTypeName);
+	PersistentType getPersistentType(String fullyQualifiedTypeName);
 	
 	
 	// **************** updating **********************************************

@@ -17,25 +17,16 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.GeneratedValue;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.Query;
-import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
-import org.eclipse.jpt.core.context.java.JavaGenerator;
-import org.eclipse.jpt.core.context.java.JavaQuery;
-import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
-import org.eclipse.jpt.core.context.orm.OrmGenerator;
-import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
@@ -724,84 +715,6 @@ public class GenericPersistenceUnit extends AbstractXmlContextNode
 		HashSet<String> names = CollectionTools.set(this.allNonNullGeneratorNames());
 		return names.toArray(new String[names.size()]);
 	}
-	
-	public void validateGenerators(OrmGeneratorHolder generatorHolder, List<IMessage> messages) {
-		ArrayList<Generator> allGenerators = CollectionTools.list(this.allGenerators());
-		for (Iterator<OrmGenerator> stream = generatorHolder.generators(); stream.hasNext(); ) {
-			OrmGenerator generator = stream.next();
-			this.validateGenerator(generator, generator.getNameTextRange(), allGenerators, messages);
-		}
-	}
-
-	public void validateGenerators(JavaGeneratorHolder generatorHolder, List<IMessage> messages, CompilationUnit astRoot) {
-		ArrayList<Generator> allGenerators = CollectionTools.list(this.allGenerators());
-		for (Iterator<JavaGenerator> stream = generatorHolder.generators(); stream.hasNext(); ) {
-			JavaGenerator generator = stream.next();
-			this.validateGenerator(generator, generator.getNameTextRange(astRoot), allGenerators, messages);
-		}
-	}
-	
-	protected void validateGenerator(Generator generator, TextRange generatorNameTextRange, ArrayList<Generator> allGenerators, List<IMessage> messages) {
-		for (Generator otherGenerator : allGenerators) {
-			if (this.generatorsAreDuplicates(generator, otherGenerator)) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-						new String[] {generator.getName()},
-						generator,
-						generatorNameTextRange
-					)
-				);
-			}
-		}
-	}
-
-	protected boolean generatorsAreDuplicates(Generator generator, Generator otherGenerator) {
-		if (otherGenerator == generator) {
-			return false;
-		}
-		if (otherGenerator.overrides(generator)) {
-			return false;
-		}
-		String otherName = otherGenerator.getName();
-		return (otherName != null) && otherName.equals(generator.getName());
-	}
-
-	public void validateGeneratedValue(OrmGeneratedValueHolder generatedValueHolder, List<IMessage> messages) {
-		OrmGeneratedValue generatedValue = generatedValueHolder.getGeneratedValue();
-		if (generatedValue != null) {
-			this.validateGeneratedValue(generatedValue, generatedValue.getGeneratorTextRange(), generatedValueHolder, messages);
-		}
-	}
-
-	public void validateGeneratedValue(JavaGeneratedValueHolder generatedValueHolder, List<IMessage> messages, CompilationUnit astRoot) {
-		JavaGeneratedValue generatedValue = generatedValueHolder.getGeneratedValue();
-		if (generatedValue != null) {
-			this.validateGeneratedValue(generatedValue, generatedValue.getGeneratorTextRange(astRoot), generatedValueHolder, messages);
-		}
-	}
-
-	protected void validateGeneratedValue(GeneratedValue generatedValue, TextRange generatedValueGeneratorTextRange, Object holder, List<IMessage> messages) {
-		String generatorName = generatedValue.getGenerator();
-		if (generatorName == null) {
-			return;
-		}
-		for (Iterator<Generator> stream = this.allGenerators(); stream.hasNext(); ) {
-			if (generatorName.equals(stream.next().getName())) {
-				return;  // match found
-			}
-		}
-		messages.add(
-			DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME,
-				new String[] {generatorName},
-				holder,
-				generatedValueGeneratorTextRange
-			)
-		);
-	}
 
 	
 	// **************** queries *********************
@@ -813,51 +726,8 @@ public class GenericPersistenceUnit extends AbstractXmlContextNode
 	public ListIterator<Query> allQueries() {
 		return new CloneListIterator<Query>(this.queries);
 	}
-
-	public void validateQueries(OrmQueryHolder queryHolder, List<IMessage> messages) {
-		ArrayList<Query> allQueries = CollectionTools.list(this.allQueries());
-		for (Iterator<OrmQuery> stream = queryHolder.queries(); stream.hasNext(); ) {
-			OrmQuery query = stream.next();
-			this.validateQuery(query, query.getNameTextRange(), allQueries, messages);
-		}
-	}
-
-	public void validateQueries(JavaQueryHolder queryHolder, List<IMessage> messages, CompilationUnit astRoot) {
-		ArrayList<Query> allQueries = CollectionTools.list(this.allQueries());
-		for (Iterator<JavaQuery> stream = queryHolder.queries(); stream.hasNext(); ) {
-			JavaQuery query = stream.next();
-			this.validateQuery(query, query.getNameTextRange(astRoot), allQueries, messages);
-		}
-	}
 	
-	protected void validateQuery(Query query, TextRange queryNameTextRange, ArrayList<Query> allQueries, List<IMessage> messages) {
-		for (Query otherQuery : allQueries) {
-			if (this.queriesAreDuplicates(query, otherQuery)) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.QUERY_DUPLICATE_NAME,
-						new String[] {query.getName()},
-						query,
-						queryNameTextRange
-					)
-				);
-			}
-		}
-	}
-
-	protected boolean queriesAreDuplicates(Query query, Query otherQuery) {
-		if (otherQuery == query) {
-			return false;
-		}
-		if (otherQuery.overrides(query)) {
-			return false;
-		}
-		String otherName = otherQuery.getName();
-		return (otherName != null) && otherName.equals(query.getName());
-	}
-
-
+	
 	// **************** updating ***********************************************
 	
 	protected void initialize(XmlPersistenceUnit xpu) {
@@ -1339,9 +1209,9 @@ public class GenericPersistenceUnit extends AbstractXmlContextNode
 	
 	public PersistentType getPersistentType(String fullyQualifiedTypeName) {
 		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
-			OrmPersistentType ormPersistentType = stream.next().getPersistentType(fullyQualifiedTypeName);
-			if (ormPersistentType != null) {
-				return ormPersistentType;
+			PersistentType persistentType = stream.next().getPersistentType(fullyQualifiedTypeName);
+			if (persistentType != null) {
+				return persistentType;
 			}
 		}
 		for (ClassRef classRef : CollectionTools.iterable(classRefs())) {

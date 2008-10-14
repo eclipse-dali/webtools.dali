@@ -14,6 +14,7 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Converter;
+import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
@@ -22,7 +23,6 @@ import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.context.java.JavaTableGenerator;
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
@@ -34,6 +34,8 @@ import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -43,7 +45,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class GenericJavaIdMapping
 	extends AbstractJavaAttributeMapping<IdAnnotation>
-	implements JavaIdMapping, PersistenceUnit.JavaGeneratorHolder, PersistenceUnit.JavaGeneratedValueHolder
+	implements JavaIdMapping
 {
 	protected final JavaColumn column;
 
@@ -442,8 +444,8 @@ public class GenericJavaIdMapping
 		if (this.ownerIsEntity() && this.connectionProfileIsActive()) {
 			this.validateColumn(messages, astRoot);
 		}
-		this.getPersistenceUnit().validateGeneratedValue(this, messages, astRoot);
-		this.getPersistenceUnit().validateGenerators(this, messages, astRoot);
+		this.validateGeneratedValue(messages, astRoot);
+		this.validateGenerators(messages, astRoot);
 		if (this.specifiedConverter != null) {
 			this.specifiedConverter.validate(messages, astRoot);
 		}
@@ -476,4 +478,51 @@ public class GenericJavaIdMapping
 		}
 	}
 	
+	protected void validateGeneratedValue(List<IMessage> messages, CompilationUnit astRoot) {
+		if (this.generatedValue == null) {
+			return;
+		}
+		String generatorName = this.generatedValue.getGenerator();
+		if (generatorName == null) {
+			return;
+		}
+		
+		for (Generator nextMasterGenerator : CollectionTools.iterable(getPersistenceUnit().allGenerators())) {
+			if (generatorName.equals(nextMasterGenerator.getName())) {
+				return;
+			}
+		}
+		
+		messages.add(
+			DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME,
+				new String[] {generatorName},
+				this,
+				this.generatedValue.getGeneratorTextRange(astRoot))
+			);
+	}
+	
+	protected void validateGenerators(List<IMessage> messages, CompilationUnit astRoot) {
+		List<Generator> masterList = CollectionTools.list(getPersistenceUnit().allGenerators());
+		
+		for (Iterator<JavaGenerator> stream = this.generators(); stream.hasNext() ; ) {
+			JavaGenerator current = stream.next();
+			
+			for (Generator each : masterList) {
+				if (! StringTools.stringIsEmpty(current.getName()) && each.duplicates(current)) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+							new String[] {current.getName()},
+							current,
+							current.getNameTextRange(astRoot))
+					);
+				}
+			}
+			
+			masterList.add(current);
+		}
+	}	
 }

@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlQuery;
 import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 
@@ -164,6 +165,11 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractXmlCo
 		}
 		// this isn't ideal, but it will have to do until we have further adopter input
 		return this.getName().equals(query.getName()) && query instanceof JavaQuery;
+	}
+	
+	public boolean duplicates(Query query) {
+		return ! StringTools.stringIsEmpty(getName()) && getName().equals(query.getName()) 
+			&& ! this.overrides(query) && ! query.overrides(this);
 	}
 
 	public TextRange getValidationTextRange() {

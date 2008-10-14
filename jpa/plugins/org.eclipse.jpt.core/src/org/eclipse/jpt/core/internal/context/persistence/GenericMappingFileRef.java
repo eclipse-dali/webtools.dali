@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
-import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -194,7 +194,7 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 		return null;
 	}
 	
-	public OrmPersistentType getPersistentType(String fullyQualifiedTypeName) {
+	public PersistentType getPersistentType(String fullyQualifiedTypeName) {
 		if (getMappingFile() != null) {
 			return getMappingFile().getPersistentType(fullyQualifiedTypeName);
 		}

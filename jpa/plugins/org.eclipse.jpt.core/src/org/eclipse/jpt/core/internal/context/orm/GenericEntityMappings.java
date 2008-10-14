@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.Generator;
-import org.eclipse.jpt.core.context.MappingFileDefaults;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.NamedQuery;
@@ -38,8 +37,9 @@ import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
@@ -55,13 +55,14 @@ import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class GenericEntityMappings
 	extends AbstractXmlContextNode
-	implements EntityMappings, PersistenceUnit.OrmGeneratorHolder, PersistenceUnit.OrmQueryHolder
+	implements EntityMappings
 {
 	protected XmlEntityMappings xmlEntityMappings;
 	
@@ -566,22 +567,6 @@ public class GenericEntityMappings
 		}
 		return false;
 	}
-	
-	public MappingFileDefaults getDefaults() {
-		return new MappingFileDefaults() {
-			public AccessType getAccess() {
-				return GenericEntityMappings.this.getAccess();
-			}
-			
-			public String getCatalog() {
-				return GenericEntityMappings.this.getCatalog();
-			}
-			
-			public String getSchema() {
-				return GenericEntityMappings.this.getSchema();
-			}
-		};
-	}
 
 	public OrmPersistenceUnitDefaults getPersistenceUnitDefaults() {
 		return getPersistenceUnitMetadata().getPersistenceUnitDefaults();
@@ -853,8 +838,6 @@ public class GenericEntityMappings
 	}
 
 
-	// ********** validation **********
-
 	public JpaStructureNode getStructureNode(int textOffset) {
 		for (OrmPersistentType persistentType: CollectionTools.iterable(ormPersistentTypes())) {
 			if (persistentType.contains(textOffset)) {
@@ -879,6 +862,9 @@ public class GenericEntityMappings
 		return null;
 	}
 	
+	
+	// **************** validation *********************************************
+	
 	@Override
 	public void validate(List<IMessage> messages) {
 		super.validate(messages);
@@ -888,43 +874,53 @@ public class GenericEntityMappings
 			this.validatePersistentType(stream.next(), messages);
 		}
 	}
-
+	
+	@SuppressWarnings("unchecked")
 	protected void validateGenerators(List<IMessage> messages) {
-		try {
-			this.getPersistenceUnit().validateGenerators(this, messages);
-		} catch (Throwable exception) {
-			JptCorePlugin.log(exception);  // unlikely...
+		List<Generator> masterList = CollectionTools.list(getPersistenceUnit().allGenerators());
+		
+		for (Iterator<OrmGenerator> stream = new CompositeIterator<OrmGenerator>(this.tableGenerators(), this.sequenceGenerators()); stream.hasNext() ; ) {
+			OrmGenerator current = stream.next();
+			masterList.remove(current);
+			
+			for (Generator each : masterList) {
+				if (! StringTools.stringIsEmpty(current.getName()) && each.duplicates(current)) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+							new String[] {current.getName()},
+							current,
+							current.getNameTextRange())
+					);
+				}
+			}
+			masterList.add(current);
 		}
 	}
-
-	/**
-	 * Return all the generators, table and sequence.
-	 */
+	
 	@SuppressWarnings("unchecked")
-	public Iterator<OrmGenerator> generators() {
-		return new CompositeIterator<OrmGenerator>(
-						this.tableGenerators(),
-						this.sequenceGenerators()
-				);
-	}
-
 	protected void validateQueries(List<IMessage> messages) {
-		try {
-			this.getPersistenceUnit().validateQueries(this, messages);
-		} catch (Throwable exception) {
-			JptCorePlugin.log(exception);  // unlikely...
+		List<Query> masterList = CollectionTools.list(getPersistenceUnit().allQueries());
+		
+		for (Iterator<OrmQuery> stream = new CompositeIterator<OrmQuery>(this.namedQueries(), this.namedNativeQueries()); stream.hasNext() ; ) {
+			OrmQuery current = stream.next();
+			masterList.remove(current);
+			
+			for (Query each : masterList) {
+				if (! StringTools.stringIsEmpty(current.getName()) && each.duplicates(current)) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.QUERY_DUPLICATE_NAME,
+							new String[] {current.getName()},
+							current,
+							current.getNameTextRange())
+					);
+				}
+			}
+			masterList.add(current);
 		}
-	}
-
-	/**
-	 * Return all the queries, named and named native.
-	 */
-	@SuppressWarnings("unchecked")
-	public Iterator<OrmQuery> queries() {
-		return new CompositeIterator<OrmQuery>(
-						this.namedQueries(),
-						this.namedNativeQueries()
-				);
 	}
 
 	protected void validatePersistentType(OrmPersistentType persistentType, List<IMessage> messages) {

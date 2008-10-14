@@ -14,8 +14,6 @@ import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -57,11 +55,18 @@ public interface Generator
 	// ********** validation **********
 	
 	/**
-	 * Return true if this generator overrides the definition of the specified
-	 * generator
+	 * Return true if this generator overrides the definition of the given generator
 	 * (for example, a generator defined in orm.xml overrides one defined in java)
 	 */
 	boolean overrides(Generator generator);
+	
+	/**
+	 * Return true if this generator is a duplicate of the given generator
+	 * A generator is not a duplicate of another generator if is the same exact generator,
+	 * if it is a nameless generator (which is an error condition), or if it overrides 
+	 * or is overridden by the other generator. 
+	 */
+	boolean duplicates(Generator generator);
 
 	boolean isVirtual();
 

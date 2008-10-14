@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Converter;
+import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
@@ -24,7 +25,6 @@ import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
@@ -35,6 +35,8 @@ import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -42,7 +44,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  */
 public class GenericOrmIdMapping
 	extends AbstractOrmAttributeMapping<XmlId>
-	implements OrmIdMapping, PersistenceUnit.OrmGeneratorHolder, PersistenceUnit.OrmGeneratedValueHolder
+	implements OrmIdMapping
 {
 	protected final OrmColumn column;
 
@@ -428,8 +430,8 @@ public class GenericOrmIdMapping
 		if (this.connectionProfileIsActive() && this.ownerIsEntity()) {
 			this.validateColumn(messages);
 		}
-		this.getPersistenceUnit().validateGeneratedValue(this, messages);
-		this.getPersistenceUnit().validateGenerators(this, messages);
+		this.validateGeneratedValue(messages);
+		this.validateGenerators(messages);
 	}
 	
 	protected void validateColumn(List<IMessage> messages) {
@@ -485,4 +487,55 @@ public class GenericOrmIdMapping
 		}
 	}
 	
+	protected void validateGeneratedValue(List<IMessage> messages) {
+		if (this.generatedValue == null) {
+			return;
+		}
+		String generatorName = this.generatedValue.getGenerator();
+		if (generatorName == null) {
+			return;
+		}
+		
+		for (Generator nextMasterGenerator : CollectionTools.iterable(getPersistenceUnit().allGenerators())) {
+			if (generatorName.equals(nextMasterGenerator.getName())) {
+				return;
+			}
+		}
+		
+		messages.add(
+			DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME,
+				new String[] {generatorName},
+				this,
+				this.generatedValue.getGeneratorTextRange())
+			);
+	}
+	
+	protected void validateGenerators(List<IMessage> messages) {
+		List<Generator> masterList = CollectionTools.list(getPersistenceUnit().allGenerators());
+		
+		for (Iterator<OrmGenerator> stream = this.generators(); stream.hasNext() ; ) {
+			OrmGenerator current = stream.next();
+			if (current.isVirtual()) {
+				return;
+			}
+			masterList.remove(current);
+			
+			for (Generator each : masterList) {
+				if (! StringTools.stringIsEmpty(current.getName()) && each.duplicates(current)) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+							new String[] {current.getName()},
+							current,
+							current.getNameTextRange())
+					);
+				}
+			}
+			
+			masterList.add(current);
+		}
+	}
 }
