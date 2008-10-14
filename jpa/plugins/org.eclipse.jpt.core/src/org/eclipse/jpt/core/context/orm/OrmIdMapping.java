@@ -13,30 +13,29 @@ import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.resource.orm.XmlId;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmIdMapping extends IdMapping, OrmColumnMapping, OrmAttributeMapping, OrmGeneratorHolder
+public interface OrmIdMapping 
+	extends IdMapping, OrmColumnMapping, OrmAttributeMapping, OrmGeneratorHolder
 {
-	
 	void initialize(XmlId id);
-
+	
 	/**
 	 * Update the OrmIdMapping context model object to match the XmlId 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update(XmlId id);
 	
+	
 	//********* covariant overrides **********
+	
 	OrmConverter getDefaultConverter();
 	OrmConverter getSpecifiedConverter();
 	
 	OrmGeneratedValue getGeneratedValue();
 	OrmGeneratedValue addGeneratedValue();	
-
 }

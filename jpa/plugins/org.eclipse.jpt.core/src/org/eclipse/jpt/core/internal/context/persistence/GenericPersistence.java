@@ -222,5 +222,4 @@ public class GenericPersistence extends AbstractXmlContextNode
 		}
 		this.persistenceUnit.validate(messages);
 	}
-
 }

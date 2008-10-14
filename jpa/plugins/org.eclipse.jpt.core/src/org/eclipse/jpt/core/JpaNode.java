@@ -26,7 +26,6 @@ import org.eclipse.jpt.utility.model.Model;
 public interface JpaNode
 	extends Model, IAdaptable
 {
-
 	/**
 	 * Return the JPA project the node belongs to.
 	 */
@@ -42,5 +41,4 @@ public interface JpaNode
 	 * Return the JPA node's parent. The JPA project will not have a parent.
 	 */
 	JpaNode getParent();
-
 }

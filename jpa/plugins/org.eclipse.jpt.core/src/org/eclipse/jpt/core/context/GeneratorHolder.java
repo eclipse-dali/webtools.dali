@@ -10,8 +10,6 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -22,22 +20,24 @@ public interface GeneratorHolder
 	extends JpaContextNode
 {
 	//******************** table generator *****************
-	TableGenerator getTableGenerator();
-
-	TableGenerator addTableGenerator();
-
-	void removeTableGenerator();
-
+	
 	String TABLE_GENERATOR_PROPERTY = "tableGenerator"; //$NON-NLS-1$
-
+	
+	TableGenerator getTableGenerator();
+	
+	TableGenerator addTableGenerator();
+	
+	void removeTableGenerator();
+	
 	
 	//******************** sequence generator *****************
-	SequenceGenerator getSequenceGenerator();
-
-	SequenceGenerator addSequenceGenerator();
-
-	void removeSequenceGenerator();
-
+	
 	String SEQUENCE_GENERATOR_PROPERTY = "sequenceGenerator"; //$NON-NLS-1$
-
+	
+	SequenceGenerator getSequenceGenerator();
+	
+	SequenceGenerator addSequenceGenerator();
+	
+	void removeSequenceGenerator();
+	
 }
