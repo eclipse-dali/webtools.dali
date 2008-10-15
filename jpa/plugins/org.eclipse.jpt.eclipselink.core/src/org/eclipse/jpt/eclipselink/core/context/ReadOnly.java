@@ -25,11 +25,11 @@ import org.eclipse.jpt.core.context.JpaContextNode;
  */
 public interface ReadOnly extends JpaContextNode
 {
-	Boolean getReadOnly();
+	boolean isReadOnly();
 	
-	Boolean getDefaultReadOnly();
+	boolean isDefaultReadOnly();
 		String DEFAULT_READ_ONLY_PROPERTY = "defaultReadOnly"; //$NON-NLS-1$
-		Boolean DEFAULT_READ_ONLY = Boolean.FALSE;
+		boolean DEFAULT_READ_ONLY = false;
 	Boolean getSpecifiedReadOnly();
 	void setSpecifiedReadOnly(Boolean newSpecifiedReadOnly);
 		String SPECIFIED_READ_ONLY_PROPERTY = "specifiedReadOnly"; //$NON-NLS-1$

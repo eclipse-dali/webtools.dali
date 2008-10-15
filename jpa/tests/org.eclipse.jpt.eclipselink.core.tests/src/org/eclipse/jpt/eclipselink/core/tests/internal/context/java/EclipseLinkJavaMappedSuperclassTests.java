@@ -102,7 +102,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkJavaContext
 		
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) javaPersistentType().getMapping();
 		ReadOnly readOnly = mappedSuperclass.getReadOnly();
-		assertEquals(Boolean.TRUE, readOnly.getReadOnly());
+		assertEquals(true, readOnly.isReadOnly());
 	}
 
 	public void testGetSpecifiedReadOnly() throws Exception {
@@ -121,7 +121,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkJavaContext
 		
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) javaPersistentType().getMapping();
 		ReadOnly readOnly = mappedSuperclass.getReadOnly();
-		assertEquals(Boolean.FALSE, readOnly.getDefaultReadOnly());
+		assertEquals(false, readOnly.isDefaultReadOnly());
 	}
 
 	public void testSetSpecifiedReadOnly() throws Exception {
@@ -130,7 +130,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkJavaContext
 		
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) javaPersistentType().getMapping();
 		ReadOnly readOnly = mappedSuperclass.getReadOnly();
-		assertEquals(Boolean.TRUE, readOnly.getReadOnly());
+		assertEquals(true, readOnly.isReadOnly());
 		
 		readOnly.setSpecifiedReadOnly(Boolean.FALSE);
 		
@@ -160,7 +160,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkJavaContext
 		typeResource.removeAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(null, readOnly.getSpecifiedReadOnly());
-		assertEquals(Boolean.FALSE, readOnly.getDefaultReadOnly());
+		assertEquals(false, readOnly.isDefaultReadOnly());
 		
 		typeResource.addAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME);
 		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());

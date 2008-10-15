@@ -45,11 +45,11 @@ public class EclipseLinkJavaReadOnly extends AbstractJavaJpaContextNode implemen
 		this.resourcePersistentType.removeAnnotation(getReadOnlyAnnotationName());
 	}
 
-	public Boolean getReadOnly() {
-		return (this.getSpecifiedReadOnly() == null) ? this.getDefaultReadOnly() : this.getSpecifiedReadOnly();
+	public boolean isReadOnly() {
+		return (this.getSpecifiedReadOnly() == null) ? this.isDefaultReadOnly() : this.getSpecifiedReadOnly().booleanValue();
 	}
 	
-	public Boolean getDefaultReadOnly() {
+	public boolean isDefaultReadOnly() {
 		return ReadOnly.DEFAULT_READ_ONLY;
 	}
 	

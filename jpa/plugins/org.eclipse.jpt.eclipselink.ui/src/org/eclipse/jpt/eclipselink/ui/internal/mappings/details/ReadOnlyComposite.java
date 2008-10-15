@@ -63,12 +63,12 @@ public class ReadOnlyComposite extends FormPane<ReadOnly>
 		{
 			@Override
 			protected Boolean buildValue_() {
-				return subject.getSpecifiedReadOnly();
+				return this.subject.getSpecifiedReadOnly();
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				subject.setSpecifiedReadOnly(value);
+				this.subject.setSpecifiedReadOnly(value);
 			}
 
 			@Override
@@ -94,18 +94,15 @@ public class ReadOnlyComposite extends FormPane<ReadOnly>
 
 				if ((getSubject() != null) && (value == null)) {
 
-					Boolean defaultValue = getSubject().getDefaultReadOnly();
+					boolean defaultValue = getSubject().isDefaultReadOnly();
 
-					if (defaultValue != null) {
+					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+					                                           JptUiMappingsMessages.Boolean_False;
 
-						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-						                                           JptUiMappingsMessages.Boolean_False;
-
-						return NLS.bind(
-							EclipseLinkUiMappingsMessages.ReadOnlyComposite_readOnlyWithDefault,
-							defaultStringValue
-						);
-					}
+					return NLS.bind(
+						EclipseLinkUiMappingsMessages.ReadOnlyComposite_readOnlyWithDefault,
+						defaultStringValue
+					);
 				}
 
 				return EclipseLinkUiMappingsMessages.ReadOnlyComposite_readOnlyLabel;
