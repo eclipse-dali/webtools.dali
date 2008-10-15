@@ -14,13 +14,14 @@ import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaReadOnly;
 import org.eclipse.jpt.eclipselink.core.resource.java.ReadOnlyAnnotation;
 
 public class EclipseLinkJavaReadOnly extends AbstractJavaJpaContextNode implements JavaReadOnly
 {
 	
-	protected boolean readOnly;
+	protected Boolean specifiedReadOnly;
 	
 	protected JavaResourcePersistentType resourcePersistentType;
 	
@@ -44,18 +45,26 @@ public class EclipseLinkJavaReadOnly extends AbstractJavaJpaContextNode implemen
 		this.resourcePersistentType.removeAnnotation(getReadOnlyAnnotationName());
 	}
 
-	public boolean getReadOnly() {
-		return this.readOnly;
+	public Boolean getReadOnly() {
+		return (this.getSpecifiedReadOnly() == null) ? this.getDefaultReadOnly() : this.getSpecifiedReadOnly();
 	}
 	
-	public void setReadOnly(boolean newReadOnly) {
-		if (this.readOnly == newReadOnly) {
+	public Boolean getDefaultReadOnly() {
+		return ReadOnly.DEFAULT_READ_ONLY;
+	}
+	
+	public Boolean getSpecifiedReadOnly() {
+		return this.specifiedReadOnly;
+	}
+	
+	public void setSpecifiedReadOnly(Boolean newReadOnly) {
+		if (this.specifiedReadOnly == newReadOnly) {
 			return;
 		}
-		boolean oldReadOnly = this.readOnly;
-		this.readOnly = newReadOnly;
+		Boolean oldReadOnly = this.specifiedReadOnly;
+		this.specifiedReadOnly = newReadOnly;
 
-		if (newReadOnly) {
+		if (newReadOnly != null && newReadOnly.booleanValue()) {
 			addResourceReadOnly();
 		}
 		else {
@@ -64,27 +73,27 @@ public class EclipseLinkJavaReadOnly extends AbstractJavaJpaContextNode implemen
 				removeResourceReadOnly();
 			}
 		}
-		firePropertyChanged(READ_ONLY_PROPERTY, oldReadOnly, newReadOnly);
+		firePropertyChanged(SPECIFIED_READ_ONLY_PROPERTY, oldReadOnly, newReadOnly);
 	}
 	
-	protected void setReadOnly_(boolean newReadOnly) {
-		boolean oldReadOnly = this.readOnly;
-		this.readOnly = newReadOnly;
-		firePropertyChanged(READ_ONLY_PROPERTY, oldReadOnly, newReadOnly);
+	protected void setSpecifiedReadOnly_(Boolean newReadOnly) {
+		Boolean oldReadOnly = this.specifiedReadOnly;
+		this.specifiedReadOnly = newReadOnly;
+		firePropertyChanged(SPECIFIED_READ_ONLY_PROPERTY, oldReadOnly, newReadOnly);
 	}
 	
 	public void initialize(JavaResourcePersistentType jrpt) {
 		this.resourcePersistentType = jrpt;
-		this.readOnly = readOnly();
+		this.specifiedReadOnly = readOnly();
 	}
 	
 	public void update(JavaResourcePersistentType jrpt) {
 		this.resourcePersistentType = jrpt;
-		this.setReadOnly_(readOnly());
+		this.setSpecifiedReadOnly_(readOnly());
 	}
 	
-	private boolean readOnly() {
-		return getResourceReadOnly() != null;
+	private Boolean readOnly() {
+		return getResourceReadOnly() == null ? null : Boolean.TRUE;
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {

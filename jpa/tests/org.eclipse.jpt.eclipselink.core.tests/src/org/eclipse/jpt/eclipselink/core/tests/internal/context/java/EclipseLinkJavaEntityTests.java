@@ -17,9 +17,11 @@ import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.ChangeTrackingType;
 import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
+import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 import org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.CustomizerAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.java.ReadOnlyAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestCase
@@ -37,6 +39,11 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 	private void createChangeTrackingTypeEnum() throws Exception {
 		this.createEnumAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, "ChangeTrackingType", "ATTRIBUTE, OBJECT, DEFERRED, AUTO;");	
 	}
+
+	private void createReadOnlyAnnotation() throws Exception{
+		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ReadOnly", "");		
+	}
+	
 	
 	private ICompilationUnit createTestEntityWithConvertAndCustomizerClass() throws Exception {
 		createCustomizerAnnotation();
@@ -65,6 +72,22 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity").append(CR);
 				sb.append("    @ChangeTracking").append(CR);
+			}
+		});
+	}
+
+	private ICompilationUnit createTestEntityWithReadOnly() throws Exception {
+		createReadOnlyAnnotation();
+		
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, EclipseLinkJPA.READ_ONLY);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+				sb.append("@ReadOnly").append(CR);
 			}
 		});
 	}
@@ -248,4 +271,76 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 		changeTracking.setSpecifiedChangeTrackingType(ChangeTrackingType.DEFERRED);	
 		assertEquals(ChangeTrackingType.DEFERRED, changeTracking.getChangeTrackingType());
 	}
+	
+	public void testGetReadOnly() throws Exception {
+		createTestEntityWithReadOnly();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		EclipseLinkEntity mappedSuperclass = (EclipseLinkEntity) javaPersistentType().getMapping();
+		ReadOnly readOnly = mappedSuperclass.getReadOnly();
+		assertEquals(Boolean.TRUE, readOnly.getReadOnly());
+	}
+
+	public void testGetSpecifiedReadOnly() throws Exception {
+		createTestEntityWithReadOnly();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		EclipseLinkEntity mappedSuperclass = (EclipseLinkEntity) javaPersistentType().getMapping();
+		ReadOnly readOnly = mappedSuperclass.getReadOnly();
+		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
+	}
+
+	//TODO test inheriting a default readonly from you superclass
+	public void testGetDefaultReadOnly() throws Exception {
+		createTestEntityWithReadOnly();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		EclipseLinkEntity mappedSuperclass = (EclipseLinkEntity) javaPersistentType().getMapping();
+		ReadOnly readOnly = mappedSuperclass.getReadOnly();
+		assertEquals(Boolean.FALSE, readOnly.getDefaultReadOnly());
+	}
+
+	public void testSetSpecifiedReadOnly() throws Exception {
+		createTestEntityWithReadOnly();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		EclipseLinkEntity mappedSuperclass = (EclipseLinkEntity) javaPersistentType().getMapping();
+		ReadOnly readOnly = mappedSuperclass.getReadOnly();
+		assertEquals(Boolean.TRUE, readOnly.getReadOnly());
+		
+		readOnly.setSpecifiedReadOnly(Boolean.FALSE);
+		
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		assertNull(typeResource.getAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
+		assertEquals(null, readOnly.getSpecifiedReadOnly());//Boolean.FALSE and null really mean the same thing since there are only 2 states in the java resource model
+
+		readOnly.setSpecifiedReadOnly(Boolean.TRUE);
+		assertNotNull(typeResource.getAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
+		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
+
+		readOnly.setSpecifiedReadOnly(null);
+		assertNull(typeResource.getAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
+		assertEquals(null, readOnly.getSpecifiedReadOnly());//Boolean.FALSE and null really mean the same thing since there are only 2 states in the java resource model
+	}
+	
+	public void testSpecifiedReadOnlyUpdatesFromResourceModelChange() throws Exception {
+		createTestEntityWithReadOnly();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		EclipseLinkEntity mappedSuperclass = (EclipseLinkEntity) javaPersistentType().getMapping();
+		ReadOnly readOnly = mappedSuperclass.getReadOnly();
+		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
+		
+		
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		typeResource.removeAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME);
+		
+		assertEquals(null, readOnly.getSpecifiedReadOnly());
+		assertEquals(Boolean.FALSE, readOnly.getDefaultReadOnly());
+		
+		typeResource.addAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME);
+		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
+	}
+
+
 }

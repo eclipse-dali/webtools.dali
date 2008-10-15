@@ -102,44 +102,68 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkJavaContext
 		
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) javaPersistentType().getMapping();
 		ReadOnly readOnly = mappedSuperclass.getReadOnly();
-		assertEquals(true, readOnly.getReadOnly());
+		assertEquals(Boolean.TRUE, readOnly.getReadOnly());
 	}
 
-	public void testSetReadOnly() throws Exception {
+	public void testGetSpecifiedReadOnly() throws Exception {
 		createTestMappedSuperclassWithReadOnly();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) javaPersistentType().getMapping();
 		ReadOnly readOnly = mappedSuperclass.getReadOnly();
-		assertEquals(true, readOnly.getReadOnly());
+		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
+	}
+
+	//TODO test inheriting a default readonly from you superclass
+	public void testGetDefaultReadOnly() throws Exception {
+		createTestMappedSuperclassWithReadOnly();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		readOnly.setReadOnly(false);
+		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) javaPersistentType().getMapping();
+		ReadOnly readOnly = mappedSuperclass.getReadOnly();
+		assertEquals(Boolean.FALSE, readOnly.getDefaultReadOnly());
+	}
+
+	public void testSetSpecifiedReadOnly() throws Exception {
+		createTestMappedSuperclassWithReadOnly();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) javaPersistentType().getMapping();
+		ReadOnly readOnly = mappedSuperclass.getReadOnly();
+		assertEquals(Boolean.TRUE, readOnly.getReadOnly());
+		
+		readOnly.setSpecifiedReadOnly(Boolean.FALSE);
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		assertNull(typeResource.getAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
-		assertEquals(false, readOnly.getReadOnly());
+		assertEquals(null, readOnly.getSpecifiedReadOnly());//Boolean.FALSE and null really mean the same thing since there are only 2 states in the java resource model
 
-		readOnly.setReadOnly(true);
+		readOnly.setSpecifiedReadOnly(Boolean.TRUE);
 		assertNotNull(typeResource.getAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
-		assertEquals(true, readOnly.getReadOnly());
+		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
+
+		readOnly.setSpecifiedReadOnly(null);
+		assertNull(typeResource.getAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
+		assertEquals(null, readOnly.getSpecifiedReadOnly());//Boolean.FALSE and null really mean the same thing since there are only 2 states in the java resource model
 	}
 	
-	public void testReadOnlyUpdatesFromResourceModelChange() throws Exception {
+	public void testSpecifiedReadOnlyUpdatesFromResourceModelChange() throws Exception {
 		createTestMappedSuperclassWithReadOnly();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) javaPersistentType().getMapping();
 		ReadOnly readOnly = mappedSuperclass.getReadOnly();
-		assertEquals(true, readOnly.getReadOnly());
+		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
 		
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.removeAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME);
 		
-		assertEquals(false, readOnly.getReadOnly());
+		assertEquals(null, readOnly.getSpecifiedReadOnly());
+		assertEquals(Boolean.FALSE, readOnly.getDefaultReadOnly());
 		
 		typeResource.addAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME);
-		assertEquals(true, readOnly.getReadOnly());
+		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
 	}
 
 	public void testGetCustomizerClass() throws Exception {

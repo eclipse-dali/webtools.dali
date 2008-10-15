@@ -11,9 +11,13 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -38,30 +42,75 @@ public class ReadOnlyComposite extends FormPane<ReadOnly>
 
 			super(parentPane, subjectHolder, parent);
 	}
+
+	@Override
+	protected void initializeLayout(Composite container) {
+		// Unique tri-state check box
+		addTriStateCheckBoxWithDefault(
+			container,
+			EclipseLinkUiMappingsMessages.ReadOnlyComposite_readOnlyLabel,
+			buildReadOnlyHolder(),
+			buildReadOnlyStringHolder(),
+			null
+		);
+	}
 	
-	private PropertyAspectAdapter<ReadOnly, Boolean> buildReadOnlyHolder() {
-
-		return new PropertyAspectAdapter<ReadOnly, Boolean>(getSubjectHolder(), ReadOnly.READ_ONLY_PROPERTY) {
-
+	private WritablePropertyValueModel<Boolean> buildReadOnlyHolder() {
+		return new PropertyAspectAdapter<ReadOnly, Boolean>(
+			getSubjectHolder(),
+			ReadOnly.DEFAULT_READ_ONLY_PROPERTY,
+			ReadOnly.SPECIFIED_READ_ONLY_PROPERTY)
+		{
 			@Override
 			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.getReadOnly());
+				return subject.getSpecifiedReadOnly();
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				this.subject.setReadOnly(value.booleanValue());
+				subject.setSpecifiedReadOnly(value);
+			}
+
+			@Override
+			protected void subjectChanged() {
+				Object oldValue = this.getValue();
+				super.subjectChanged();
+				Object newValue = this.getValue();
+
+				// Make sure the default value is appended to the text
+				if (oldValue == newValue && newValue == null) {
+					this.fireAspectChange(Boolean.TRUE, newValue);
+				}
 			}
 		};
 	}
 
-	@Override
-	protected void initializeLayout(Composite container) {
-		addCheckBox(
-			container,
-			EclipseLinkUiMappingsMessages.ReadOnlyComposite_readOnlyLabel,
-			buildReadOnlyHolder(),
-			null
-		);
+	private PropertyValueModel<String> buildReadOnlyStringHolder() {
+
+		return new TransformationPropertyValueModel<Boolean, String>(buildReadOnlyHolder()) {
+
+			@Override
+			protected String transform(Boolean value) {
+
+				if ((getSubject() != null) && (value == null)) {
+
+					Boolean defaultValue = getSubject().getDefaultReadOnly();
+
+					if (defaultValue != null) {
+
+						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+						                                           JptUiMappingsMessages.Boolean_False;
+
+						return NLS.bind(
+							EclipseLinkUiMappingsMessages.ReadOnlyComposite_readOnlyWithDefault,
+							defaultStringValue
+						);
+					}
+				}
+
+				return EclipseLinkUiMappingsMessages.ReadOnlyComposite_readOnlyLabel;
+			}
+		};
 	}
+
 }
