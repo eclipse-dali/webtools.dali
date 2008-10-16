@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
@@ -29,7 +30,6 @@ import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customiza
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.internal.context.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
-import org.eclipse.jpt.eclipselink.ui.EclipseLinkJpaUiFactory;
 import org.eclipse.jpt.eclipselink.ui.internal.caching.PersistenceXmlCachingTab;
 import org.eclipse.jpt.eclipselink.ui.internal.connection.PersistenceXmlConnectionTab;
 import org.eclipse.jpt.eclipselink.ui.internal.customization.PersistenceXmlCustomizationTab;
@@ -45,6 +45,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkVersi
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipselinkOneToManyMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipselinkOneToOneMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.options.PersistenceXmlOptionsTab;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmEntityComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.schema.generation.PersistenceXmlSchemaGenerationTab;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -56,14 +57,129 @@ import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueM
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * EclipseLinkJpaUiFactory
- */
-public class EclipseLinkJpaUiFactoryImpl extends BaseJpaUiFactory implements EclipseLinkJpaUiFactory
+public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 {
-	public EclipseLinkJpaUiFactoryImpl() {
+	public EclipseLinkJpaUiFactory() {
 		super();
 	}
+	
+	
+	// **************** persistence.xml ui *************************************
+	
+	@Override
+	public ListIterator<JpaPageComposite> createPersistenceUnitComposites(
+						PropertyValueModel<PersistenceUnit> subjectHolder,
+						Composite parent,
+						WidgetFactory widgetFactory) {
+		
+		PropertyValueModel<EclipseLinkPersistenceUnit> eclipseLinkPersistenceUnitHolder = 
+			this.buildEclipseLinkPersistenceUnitHolder(subjectHolder);
+		ArrayList<JpaPageComposite> pages = 
+			new ArrayList<JpaPageComposite>(8);
+
+		pages.add(new PersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory));
+		
+		PropertyValueModel<Connection> connectionHolder = 
+			this.buildConnectionHolder(eclipseLinkPersistenceUnitHolder);
+		pages.add(new PersistenceXmlConnectionTab(connectionHolder, parent, widgetFactory));
+		
+		PropertyValueModel<Customization> customizationHolder = 
+			this.buildCustomizationHolder(eclipseLinkPersistenceUnitHolder);
+		pages.add(new PersistenceXmlCustomizationTab(customizationHolder, parent, widgetFactory));
+		
+		PropertyValueModel<Caching> cachingHolder = 
+			this.buildCachingHolder(eclipseLinkPersistenceUnitHolder);
+		pages.add(new PersistenceXmlCachingTab(cachingHolder, parent, widgetFactory));
+		
+		PropertyValueModel<Logging> loggingHolder = 
+			this.buildLoggingHolder(eclipseLinkPersistenceUnitHolder);
+		pages.add(new PersistenceXmlLoggingTab(loggingHolder, parent, widgetFactory));
+
+		PropertyValueModel<Options> optionsHolder = 
+			this.buildOptionsHolder(eclipseLinkPersistenceUnitHolder);
+		pages.add(new PersistenceXmlOptionsTab(optionsHolder, parent, widgetFactory));
+		
+		PropertyValueModel<SchemaGeneration> schemaGenHolder = 
+			this.buildSchemaGenerationHolder(eclipseLinkPersistenceUnitHolder);
+		pages.add(new PersistenceXmlSchemaGenerationTab(schemaGenHolder, parent, widgetFactory));
+		
+		pages.add(new PersistenceUnitPropertiesComposite(subjectHolder, parent, widgetFactory));
+		
+		return pages.listIterator();
+	}
+
+	private PropertyValueModel<EclipseLinkPersistenceUnit> buildEclipseLinkPersistenceUnitHolder(
+				PropertyValueModel<PersistenceUnit> subjectHolder) {
+		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkPersistenceUnit>(subjectHolder) {
+			@Override
+			protected EclipseLinkPersistenceUnit transform_(PersistenceUnit value) {
+				return (EclipseLinkPersistenceUnit) value;
+			}
+		};
+	}
+
+	private PropertyValueModel<Connection> buildConnectionHolder(
+				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
+		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Connection>(subjectHolder) {
+			@Override
+			protected Connection transform_(EclipseLinkPersistenceUnit value) {
+				return value.getConnection();
+			}
+		};
+	}
+
+	private PropertyValueModel<Customization> buildCustomizationHolder(
+				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
+		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Customization>(subjectHolder) {
+			@Override
+			protected Customization transform_(EclipseLinkPersistenceUnit value) {
+				return value.getCustomization();
+			}
+		};
+	}
+
+	private PropertyValueModel<Caching> buildCachingHolder(
+				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
+		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Caching>(subjectHolder) {
+			@Override
+			protected Caching transform_(EclipseLinkPersistenceUnit value) {
+				return value.getCaching();
+			}
+		};
+	}
+
+	private PropertyValueModel<Logging> buildLoggingHolder(
+				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
+		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Logging>(subjectHolder) {
+			@Override
+			protected Logging transform_(EclipseLinkPersistenceUnit value) {
+				return value.getLogging();
+			}
+		};
+	}
+
+	private PropertyValueModel<Options> buildOptionsHolder(
+				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
+		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Options>(subjectHolder) {
+			@Override
+			protected Options transform_(EclipseLinkPersistenceUnit value) {
+				return value.getOptions();
+			}
+		};
+	}
+
+	private PropertyValueModel<SchemaGeneration> buildSchemaGenerationHolder(
+				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
+		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, SchemaGeneration>(subjectHolder) {
+			@Override
+			protected SchemaGeneration transform_(EclipseLinkPersistenceUnit value) {
+				return value.getSchemaGeneration();
+			}
+		};
+	}
+	
+	
+	// **************** mapping UI *********************************************
 	
 	@Override
 	public JpaComposite createBasicMappingComposite(
@@ -128,142 +244,37 @@ public class EclipseLinkJpaUiFactoryImpl extends BaseJpaUiFactory implements Ecl
 		return new EclipseLinkManyToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
+	
+	// **************** java-specific mapping UI *******************************
+	
 	@Override
 	public JpaComposite createJavaEmbeddableComposite(
-		PropertyValueModel<JavaEmbeddable> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
+			PropertyValueModel<JavaEmbeddable> subjectHolder,
+			Composite parent, WidgetFactory widgetFactory) {
 		return new EclipseLinkJavaEmbeddableComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createJavaEntityComposite(
-		PropertyValueModel<JavaEntity> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
+			PropertyValueModel<JavaEntity> subjectHolder,
+			Composite parent, WidgetFactory widgetFactory) {
 		return new EclipseLinkJavaEntityComposite(subjectHolder, parent, widgetFactory);
 	}
 
 	@Override
 	public JpaComposite createJavaMappedSuperclassComposite(
-		PropertyValueModel<JavaMappedSuperclass> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
+			PropertyValueModel<JavaMappedSuperclass> subjectHolder,
+			Composite parent, WidgetFactory widgetFactory) {
 		return new EclipseLinkJavaMappedSuperclassComposite(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
+	// **************** mapping file specific mapping UI ***********************
+	
 	@Override
-	public ListIterator<JpaPageComposite> createPersistenceUnitComposites(
-						PropertyValueModel<PersistenceUnit> subjectHolder,
-						Composite parent,
-						WidgetFactory widgetFactory) {
-		
-		PropertyValueModel<EclipseLinkPersistenceUnit> eclipseLinkPersistenceUnitHolder = 
-			this.buildEclipseLinkPersistenceUnitHolder(subjectHolder);
-		ArrayList<JpaPageComposite> pages = 
-			new ArrayList<JpaPageComposite>(8);
-
-		pages.add(new PersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory));
-		
-		PropertyValueModel<Connection> connectionHolder = 
-			this.buildConnectionHolder(eclipseLinkPersistenceUnitHolder);
-		pages.add(new PersistenceXmlConnectionTab(connectionHolder, parent, widgetFactory));
-		
-		PropertyValueModel<Customization> customizationHolder = 
-			this.buildCustomizationHolder(eclipseLinkPersistenceUnitHolder);
-		pages.add(new PersistenceXmlCustomizationTab(customizationHolder, parent, widgetFactory));
-		
-		PropertyValueModel<Caching> cachingHolder = 
-			this.buildCachingHolder(eclipseLinkPersistenceUnitHolder);
-		pages.add(new PersistenceXmlCachingTab(cachingHolder, parent, widgetFactory));
-		
-		PropertyValueModel<Logging> loggingHolder = 
-			this.buildLoggingHolder(eclipseLinkPersistenceUnitHolder);
-		pages.add(new PersistenceXmlLoggingTab(loggingHolder, parent, widgetFactory));
-
-		PropertyValueModel<Options> optionsHolder = 
-			this.buildOptionsHolder(eclipseLinkPersistenceUnitHolder);
-		pages.add(new PersistenceXmlOptionsTab(optionsHolder, parent, widgetFactory));
-		
-		PropertyValueModel<SchemaGeneration> schemaGenHolder = 
-			this.buildSchemaGenerationHolder(eclipseLinkPersistenceUnitHolder);
-		pages.add(new PersistenceXmlSchemaGenerationTab(schemaGenHolder, parent, widgetFactory));
-		
-		pages.add(new PersistenceUnitPropertiesComposite(subjectHolder, parent, widgetFactory));
-		
-		return pages.listIterator();
-	}
-
-	private PropertyValueModel<Connection> buildConnectionHolder(
-				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Connection>(subjectHolder) {
-			@Override
-			protected Connection transform_(EclipseLinkPersistenceUnit value) {
-				return value.getConnection();
-			}
-		};
-	}
-
-	private PropertyValueModel<Options> buildOptionsHolder(
-				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Options>(subjectHolder) {
-			@Override
-			protected Options transform_(EclipseLinkPersistenceUnit value) {
-				return value.getOptions();
-			}
-		};
-	}
-
-	private PropertyValueModel<Logging> buildLoggingHolder(
-				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Logging>(subjectHolder) {
-			@Override
-			protected Logging transform_(EclipseLinkPersistenceUnit value) {
-				return value.getLogging();
-			}
-		};
-	}
-
-	private PropertyValueModel<Customization> buildCustomizationHolder(
-				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Customization>(subjectHolder) {
-			@Override
-			protected Customization transform_(EclipseLinkPersistenceUnit value) {
-				return value.getCustomization();
-			}
-		};
-	}
-
-	private PropertyValueModel<Caching> buildCachingHolder(
-				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Caching>(subjectHolder) {
-			@Override
-			protected Caching transform_(EclipseLinkPersistenceUnit value) {
-				return value.getCaching();
-			}
-		};
-	}
-
-	private PropertyValueModel<SchemaGeneration> buildSchemaGenerationHolder(
-				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, SchemaGeneration>(subjectHolder) {
-			@Override
-			protected SchemaGeneration transform_(EclipseLinkPersistenceUnit value) {
-				return value.getSchemaGeneration();
-			}
-		};
-	}
-
-	private PropertyValueModel<EclipseLinkPersistenceUnit> buildEclipseLinkPersistenceUnitHolder(
-				PropertyValueModel<PersistenceUnit> subjectHolder) {
-		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkPersistenceUnit>(subjectHolder) {
-			@Override
-			protected EclipseLinkPersistenceUnit transform_(PersistenceUnit value) {
-				return (EclipseLinkPersistenceUnit) value;
-			}
-		};
+	public JpaComposite createOrmEntityComposite(
+			PropertyValueModel<OrmEntity> subjectHolder, 
+			Composite parent, WidgetFactory widgetFactory) {
+		return new EclipseLinkOrmEntityComposite(subjectHolder, parent, widgetFactory);
 	}
 }

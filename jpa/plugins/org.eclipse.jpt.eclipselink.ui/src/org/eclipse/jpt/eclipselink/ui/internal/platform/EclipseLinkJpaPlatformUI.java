@@ -17,9 +17,10 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.resource.orm.OrmResourceModel;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkResourceModel;
-import org.eclipse.jpt.eclipselink.ui.EclipseLinkJpaUiFactory;
-import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactoryImpl;
+import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactory;
+import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactory;
 import org.eclipse.jpt.eclipselink.ui.internal.ddlgen.EclipseLinkDDLGeneratorUi;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToManyMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToOneMappingUiProvider;
@@ -28,44 +29,44 @@ import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
+import org.eclipse.jpt.ui.internal.structure.OrmResourceModelStructureProvider;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
-/**
- * EclipseLinkPlatformUI
- */
 public class EclipseLinkJpaPlatformUI extends BaseJpaPlatformUi
 {
 	public EclipseLinkJpaPlatformUI() {
 		super();
 	}
 	
+	
 	// **************** structure view content *********************************
-
+	
 	@Override
 	public JpaStructureProvider buildStructureProvider(JpaFile jpaFile) {
 		ResourceModel resourceModel = jpaFile.getResourceModel();
 		String resourceType = resourceModel.getResourceType();
-
+		
 		if (resourceType == EclipseLinkResourceModel.ECLIPSELINK_ORM_RESOURCE_TYPE) {
-//TODO		return new OrmResourceModelStructureProvider((OrmResourceModel) resourceModel);
+			return new OrmResourceModelStructureProvider((OrmResourceModel) resourceModel);
 		}
-
+		
 		return super.buildStructureProvider(jpaFile);
 	}
-
-	// ********* navigator content *********
+	
+	
+	// **************** navigator content **************************************
+	
 	public JpaNavigatorProvider buildNavigatorProvider() {
 		return new EclipseLinkNavigatorProvider();
 	}
-
+	
 	@Override
 	protected EclipseLinkJpaUiFactory createJpaUiFactory() {
-		return new EclipseLinkJpaUiFactoryImpl();
+		return new EclipseLinkJpaUiFactory();
 	}
-
+	
 	public void generateDDL(JpaProject project, IStructuredSelection selection) {
-
 		String projectLocation = project.getProject().getLocation().toString();
 		
 		EclipseLinkDDLGeneratorUi.generate(project, projectLocation, selection);
