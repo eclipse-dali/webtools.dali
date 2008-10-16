@@ -11,9 +11,9 @@ package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.Customizer;
-import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
@@ -74,7 +74,7 @@ public class EclipseLinkJavaEntityComposite extends AbstractEntityComposite<Java
 
 		container = addCollapsableSection(
 			addSubPane(container, 5),
-			EclipseLinkUiMappingsMessages.EclipseLinkJavaEntityComposite_caching
+			EclipseLinkUiMappingsMessages.EclipseLinkTypeMappingComposite_caching
 		);
 
 		new CachingComposite(this, buildCachingHolder(), container);
@@ -96,7 +96,7 @@ public class EclipseLinkJavaEntityComposite extends AbstractEntityComposite<Java
 
 		container = addCollapsableSection(
 			container,
-			EclipseLinkUiMappingsMessages.EclipseLinkJavaEntityComposite_converters
+			EclipseLinkUiMappingsMessages.EclipseLinkTypeMappingComposite_converters
 		);
 
 		new ConvertersComposite(this, buildConverterHolderValueModel(), container);
@@ -125,7 +125,7 @@ public class EclipseLinkJavaEntityComposite extends AbstractEntityComposite<Java
 
 		container = addCollapsableSection(
 			container,
-			EclipseLinkUiMappingsMessages.EclipseLinkJavaEntityComposite_advanced
+			EclipseLinkUiMappingsMessages.EclipseLinkTypeMappingComposite_advanced
 		);
 
 		

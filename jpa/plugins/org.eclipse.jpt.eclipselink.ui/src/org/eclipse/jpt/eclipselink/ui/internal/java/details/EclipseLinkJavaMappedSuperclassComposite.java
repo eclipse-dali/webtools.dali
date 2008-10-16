@@ -66,7 +66,7 @@ public class EclipseLinkJavaMappedSuperclassComposite extends EclipseLinkMappedS
 	protected void initializeConvertersPane(Composite container) {
 		container = addCollapsableSection(
 			container,
-			EclipseLinkUiMappingsMessages.EclipseLinkJavaMappedSuperclassComposite_converters
+			EclipseLinkUiMappingsMessages.EclipseLinkTypeMappingComposite_converters
 		);
 
 		new ConvertersComposite(this, buildConverterHolderValueModel(), container);
@@ -85,7 +85,7 @@ public class EclipseLinkJavaMappedSuperclassComposite extends EclipseLinkMappedS
 
 		container = addCollapsableSection(
 			container,
-			EclipseLinkUiMappingsMessages.EclipseLinkJavaEntityComposite_advanced
+			EclipseLinkUiMappingsMessages.EclipseLinkTypeMappingComposite_advanced
 		);
 
 		

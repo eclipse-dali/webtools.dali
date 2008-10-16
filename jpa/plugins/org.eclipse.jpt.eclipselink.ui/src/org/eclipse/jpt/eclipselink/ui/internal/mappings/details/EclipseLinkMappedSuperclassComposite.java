@@ -50,7 +50,7 @@ public abstract class EclipseLinkMappedSuperclassComposite<T extends MappedSuper
 
 		container = addCollapsableSection(
 			addSubPane(container, 5),
-			EclipseLinkUiMappingsMessages.EclipseLinkMappedSuperclassComposite_caching
+			EclipseLinkUiMappingsMessages.EclipseLinkTypeMappingComposite_caching
 		);
 
 		new CachingComposite(this, buildCachingHolder(), container);

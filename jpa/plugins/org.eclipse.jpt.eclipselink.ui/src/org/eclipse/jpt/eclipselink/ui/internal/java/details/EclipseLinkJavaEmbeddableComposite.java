@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
+import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.Customizer;
@@ -20,6 +21,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ChangeTrackingCo
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CustomizerComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -62,7 +64,7 @@ public class EclipseLinkJavaEmbeddableComposite extends FormPane<JavaEmbeddable>
 
 		container = addCollapsableSection(
 			addSubPane(container, 5),
-			EclipseLinkUiMappingsMessages.EclipseLinkJavaEmbeddableComposite_converters
+			EclipseLinkUiMappingsMessages.EclipseLinkTypeMappingComposite_converters
 		);
 
 		new ConvertersComposite(this, buildConverterHolderValueModel(), container);
@@ -81,7 +83,7 @@ public class EclipseLinkJavaEmbeddableComposite extends FormPane<JavaEmbeddable>
 	protected void initializeAdvancedPane(Composite container) {
 		container = addCollapsableSection(
 			container,
-			EclipseLinkUiMappingsMessages.EclipseLinkJavaEntityComposite_advanced
+			EclipseLinkUiMappingsMessages.EclipseLinkTypeMappingComposite_advanced
 		);
 		
 		new CustomizerComposite(this, buildCustomizerHolder(), container);
