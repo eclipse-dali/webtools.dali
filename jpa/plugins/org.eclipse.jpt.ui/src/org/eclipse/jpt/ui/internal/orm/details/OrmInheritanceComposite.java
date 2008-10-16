@@ -31,7 +31,7 @@ public class OrmInheritanceComposite extends AbstractInheritanceComposite<OrmEnt
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OrmInheritanceComposite(Pane<OrmEntity> parentPane,
+	public OrmInheritanceComposite(Pane<? extends OrmEntity> parentPane,
 	                            Composite parent) {
 
 		super(parentPane, parent);
