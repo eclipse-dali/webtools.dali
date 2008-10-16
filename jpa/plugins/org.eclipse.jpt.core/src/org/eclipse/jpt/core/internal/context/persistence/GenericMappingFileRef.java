@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -175,8 +176,9 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 	}
 	
 	protected MappingFile buildMappingFile(JpaXmlResource resource) {
+		XmlContextNode context = getJpaFactory().buildContext(this, resource);
 		try {
-			return (MappingFile) getJpaFactory().buildContext(this, resource);
+			return (MappingFile) context;
 		}
 		catch (ClassCastException cce) {
 			// resource does not correspond to a mapping file
