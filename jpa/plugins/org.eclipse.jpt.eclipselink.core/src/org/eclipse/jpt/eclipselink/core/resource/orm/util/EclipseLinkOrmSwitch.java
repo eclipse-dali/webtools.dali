@@ -118,6 +118,16 @@ public class EclipseLinkOrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS:
+			{
+				XmlMappedSuperclass xmlMappedSuperclass = (XmlMappedSuperclass)theEObject;
+				T result = caseXmlMappedSuperclass(xmlMappedSuperclass);
+				if (result == null) result = caseXmlMappedSuperclass_1(xmlMappedSuperclass);
+				if (result == null) result = caseXmlReadOnly(xmlMappedSuperclass);
+				if (result == null) result = caseAbstractXmlTypeMapping(xmlMappedSuperclass);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -155,6 +165,22 @@ public class EclipseLinkOrmSwitch<T>
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Mapped Superclass</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Mapped Superclass</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseXmlMappedSuperclass(XmlMappedSuperclass object)
+	{
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Abstract Xml Type Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -182,6 +208,22 @@ public class EclipseLinkOrmSwitch<T>
 	 * @generated
 	 */
 	public T caseXmlEntity_1(org.eclipse.jpt.core.resource.orm.XmlEntity object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Mapped Superclass</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Mapped Superclass</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseXmlMappedSuperclass_1(org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass object)
 	{
 		return null;
 	}

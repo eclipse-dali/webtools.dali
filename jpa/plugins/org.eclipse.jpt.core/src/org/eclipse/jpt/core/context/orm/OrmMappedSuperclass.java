@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.MappedSuperclass;
+import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 
 /**
@@ -24,6 +25,12 @@ import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
  */
 public interface OrmMappedSuperclass extends MappedSuperclass, OrmTypeMapping
 {
+	/**
+	 * Return the Java Mapped Superclass this ORM MappedSuperclass corresponds to.  
+	 * Return null if there is no java persistent type or it is not a mapped superclass.
+	 */
+	JavaMappedSuperclass getJavaMappedSuperclass();
+	
 	void initialize(XmlMappedSuperclass mappedSuperclass);
 
 	/**

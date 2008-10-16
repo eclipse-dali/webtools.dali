@@ -79,6 +79,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 		switch (eClass.getClassifierID())
 		{
 			case EclipseLinkOrmPackage.XML_ENTITY: return (EObject)createXmlEntity();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -93,6 +94,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlEntity xmlEntity = new XmlEntity();
 		return xmlEntity;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlMappedSuperclass createXmlMappedSuperclass()
+	{
+		XmlMappedSuperclass xmlMappedSuperclass = new XmlMappedSuperclass();
+		return xmlMappedSuperclass;
 	}
 
 	/**

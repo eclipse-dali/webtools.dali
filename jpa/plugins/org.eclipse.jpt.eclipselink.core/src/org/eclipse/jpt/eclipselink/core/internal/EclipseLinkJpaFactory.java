@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
+import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -81,6 +82,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaStr
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaTypeConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEntity;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmReadOnly;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXml;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
@@ -136,6 +138,11 @@ public class EclipseLinkJpaFactory extends GenericJpaFactory
 	@Override
 	public EclipseLinkOrmEntity buildOrmEntity(OrmPersistentType parent) {
 		return new EclipseLinkOrmEntity(parent);
+	}
+	
+	@Override
+	public OrmMappedSuperclass buildOrmMappedSuperclass(OrmPersistentType parent) {
+		return new EclipseLinkOrmMappedSuperclass(parent);
 	}
 	
 	public EclipseLinkOrmReadOnly buildOrmReadOnly(OrmTypeMapping parent) {

@@ -93,6 +93,11 @@ public class EclipseLinkOrmAdapterFactory extends AdapterFactoryImpl
 				return createXmlEntityAdapter();
 			}
 			@Override
+			public Adapter caseXmlMappedSuperclass(XmlMappedSuperclass object)
+			{
+				return createXmlMappedSuperclassAdapter();
+			}
+			@Override
 			public Adapter caseAbstractXmlTypeMapping(AbstractXmlTypeMapping object)
 			{
 				return createAbstractXmlTypeMappingAdapter();
@@ -101,6 +106,11 @@ public class EclipseLinkOrmAdapterFactory extends AdapterFactoryImpl
 			public Adapter caseXmlEntity_1(org.eclipse.jpt.core.resource.orm.XmlEntity object)
 			{
 				return createXmlEntity_1Adapter();
+			}
+			@Override
+			public Adapter caseXmlMappedSuperclass_1(org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass object)
+			{
+				return createXmlMappedSuperclass_1Adapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object)
@@ -155,6 +165,21 @@ public class EclipseLinkOrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass
+	 * @generated
+	 */
+	public Adapter createXmlMappedSuperclassAdapter()
+	{
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping <em>Abstract Xml Type Mapping</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -180,6 +205,21 @@ public class EclipseLinkOrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createXmlEntity_1Adapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass
+	 * @generated
+	 */
+	public Adapter createXmlMappedSuperclass_1Adapter()
 	{
 		return null;
 	}

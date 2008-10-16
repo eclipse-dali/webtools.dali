@@ -13,6 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.IdClass;
 import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
@@ -32,6 +33,13 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 	
 	public GenericOrmMappedSuperclass(OrmPersistentType parent) {
 		super(parent);
+	}
+	
+	public JavaMappedSuperclass getJavaMappedSuperclass() {
+		if (this.javaPersistentType != null && this.javaPersistentType.getMappingKey() == MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY) {
+			return (JavaMappedSuperclass) this.javaPersistentType.getMapping();
+		}
+		return null;
 	}
 
 	public String getIdClass() {
