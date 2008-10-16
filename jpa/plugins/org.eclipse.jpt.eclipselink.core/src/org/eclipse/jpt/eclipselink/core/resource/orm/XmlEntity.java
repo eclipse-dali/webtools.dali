@@ -11,7 +11,9 @@
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
@@ -19,12 +21,18 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * A representation of the model object '<em><b>Xml Entity</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * <ul>
+ *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getCustomizer <em>Customizer</em>}</li>
+ * </ul>
+ * </p>
  *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity()
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity implements XmlReadOnly, XmlCustomizer
+public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity implements XmlReadOnly
 {
 	/**
 	 * The default value of the '{@link #getReadOnly() <em>Read Only</em>}' attribute.
@@ -47,24 +55,14 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	protected Boolean readOnly = READ_ONLY_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getCustomizerClassName() <em>Customizer Class Name</em>}' attribute.
+	 * The cached value of the '{@link #getCustomizer() <em>Customizer</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getCustomizerClassName()
+	 * @see #getCustomizer()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String CUSTOMIZER_CLASS_NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getCustomizerClassName() <em>Customizer Class Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getCustomizerClassName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String customizerClassName = CUSTOMIZER_CLASS_NAME_EDEFAULT;
+	protected XmlCustomizer customizer;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -123,38 +121,79 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Customizer Class Name</b></em>' attribute.
+	 * Returns the value of the '<em><b>Customizer</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Customizer Class Name</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Customizer</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Customizer Class Name</em>' attribute.
-	 * @see #setCustomizerClassName(String)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCustomizer_CustomizerClassName()
-	 * @model
+	 * @return the value of the '<em>Customizer</em>' containment reference.
+	 * @see #setCustomizer(XmlCustomizer)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_Customizer()
+	 * @model containment="true"
 	 * @generated
 	 */
-	public String getCustomizerClassName()
+	public XmlCustomizer getCustomizer()
 	{
-		return customizerClassName;
+		return customizer;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getCustomizerClassName <em>Customizer Class Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Customizer Class Name</em>' attribute.
-	 * @see #getCustomizerClassName()
 	 * @generated
 	 */
-	public void setCustomizerClassName(String newCustomizerClassName)
+	public NotificationChain basicSetCustomizer(XmlCustomizer newCustomizer, NotificationChain msgs)
 	{
-		String oldCustomizerClassName = customizerClassName;
-		customizerClassName = newCustomizerClassName;
+		XmlCustomizer oldCustomizer = customizer;
+		customizer = newCustomizer;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER_CLASS_NAME, oldCustomizerClassName, customizerClassName));
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER, oldCustomizer, newCustomizer);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getCustomizer <em>Customizer</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Customizer</em>' containment reference.
+	 * @see #getCustomizer()
+	 * @generated
+	 */
+	public void setCustomizer(XmlCustomizer newCustomizer)
+	{
+		if (newCustomizer != customizer)
+		{
+			NotificationChain msgs = null;
+			if (customizer != null)
+				msgs = ((InternalEObject)customizer).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER, null, msgs);
+			if (newCustomizer != null)
+				msgs = ((InternalEObject)newCustomizer).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER, null, msgs);
+			msgs = basicSetCustomizer(newCustomizer, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER, newCustomizer, newCustomizer));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+	{
+		switch (featureID)
+		{
+			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
+				return basicSetCustomizer(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -169,8 +208,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 		{
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				return getReadOnly();
-			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER_CLASS_NAME:
-				return getCustomizerClassName();
+			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
+				return getCustomizer();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -188,8 +227,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				setReadOnly((Boolean)newValue);
 				return;
-			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER_CLASS_NAME:
-				setCustomizerClassName((String)newValue);
+			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
+				setCustomizer((XmlCustomizer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -208,8 +247,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				setReadOnly(READ_ONLY_EDEFAULT);
 				return;
-			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER_CLASS_NAME:
-				setCustomizerClassName(CUSTOMIZER_CLASS_NAME_EDEFAULT);
+			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
+				setCustomizer((XmlCustomizer)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -227,8 +266,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 		{
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				return READ_ONLY_EDEFAULT == null ? readOnly != null : !READ_ONLY_EDEFAULT.equals(readOnly);
-			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER_CLASS_NAME:
-				return CUSTOMIZER_CLASS_NAME_EDEFAULT == null ? customizerClassName != null : !CUSTOMIZER_CLASS_NAME_EDEFAULT.equals(customizerClassName);
+			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
+				return customizer != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -246,14 +285,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY: return EclipseLinkOrmPackage.XML_READ_ONLY__READ_ONLY;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlCustomizer.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER_CLASS_NAME: return EclipseLinkOrmPackage.XML_CUSTOMIZER__CUSTOMIZER_CLASS_NAME;
 				default: return -1;
 			}
 		}
@@ -276,14 +307,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlCustomizer.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_CUSTOMIZER__CUSTOMIZER_CLASS_NAME: return EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER_CLASS_NAME;
-				default: return -1;
-			}
-		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -300,8 +323,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (readOnly: ");
 		result.append(readOnly);
-		result.append(", customizerClassName: ");
-		result.append(customizerClassName);
 		result.append(')');
 		return result.toString();
 	}

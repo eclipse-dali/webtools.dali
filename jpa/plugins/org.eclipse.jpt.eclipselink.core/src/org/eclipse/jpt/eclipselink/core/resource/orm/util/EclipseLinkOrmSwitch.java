@@ -114,7 +114,6 @@ public class EclipseLinkOrmSwitch<T>
 				T result = caseXmlEntity(xmlEntity);
 				if (result == null) result = caseXmlEntity_1(xmlEntity);
 				if (result == null) result = caseXmlReadOnly(xmlEntity);
-				if (result == null) result = caseXmlCustomizer(xmlEntity);
 				if (result == null) result = caseAbstractXmlTypeMapping(xmlEntity);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
