@@ -45,6 +45,5 @@ Export-Package: org.eclipse.jpt.eclipselink.core,
  org.eclipse.jpt.eclipselink.core.internal.resource.orm,
  org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators,
  org.eclipse.jpt.eclipselink.core.resource.java,
- org.eclipse.jpt.eclipselink.core.resource.orm,
- org.eclipse.jpt.eclipselink.core.resource.orm.util
+ org.eclipse.jpt.eclipselink.core.resource.orm
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
