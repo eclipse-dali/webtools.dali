@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
-import org.eclipse.jpt.core.resource.common.JpaXmlResourceModel;
+import org.eclipse.jpt.core.resource.orm.OrmResourceModel;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkResourceModel;
 import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmResourceModelProvider;
 
@@ -23,7 +23,7 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmReso
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public class EclipseLinkOrmResourceModel extends JpaXmlResourceModel
+public class EclipseLinkOrmResourceModel extends OrmResourceModel
 {
 	public EclipseLinkOrmResourceModel(IFile file) {
 		super(file);
