@@ -141,7 +141,7 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 			IVirtualFile vFile = ComponentCore.createFile(project, new Path(fileName));
 			IFile realFile = vFile.getUnderlyingFile();
 			
-			if (realFile != null) {
+			if (realFile != null  && realFile.exists()) {
 				JpaXmlResource resource = null;
 				try {
 					JpaResourceModelProvider modelProvider =
