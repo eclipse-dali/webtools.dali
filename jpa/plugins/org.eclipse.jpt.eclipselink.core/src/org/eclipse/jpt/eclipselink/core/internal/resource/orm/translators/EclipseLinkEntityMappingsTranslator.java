@@ -40,6 +40,6 @@ public class EclipseLinkEntityMappingsTranslator extends EntityMappingsTranslato
 	
 	@Override
 	protected Translator createMappedSuperclassTranslator() {
-		return new EclipseLinkMappedSuperclassTranslator(ENTITY, ORM_PKG.getXmlEntityMappings_MappedSuperclasses());
+		return new EclipseLinkMappedSuperclassTranslator(MAPPED_SUPERCLASS, ORM_PKG.getXmlEntityMappings_MappedSuperclasses());
 	}
 }
