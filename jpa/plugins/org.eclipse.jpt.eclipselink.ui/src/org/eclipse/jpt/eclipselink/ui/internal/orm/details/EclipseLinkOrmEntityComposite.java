@@ -48,6 +48,7 @@ public class EclipseLinkOrmEntityComposite extends AbstractEntityComposite<OrmEn
 		initializeInheritancePane(container);
 		initializeAttributeOverridesPane(container);
 		initializeGeneratorsPane(container);
+//		TODO - initializeConvertersPane(container);
 		initializeSecondaryTablesPane(container);
 		initializeAdvancedPane(container);
 	}
