@@ -39,42 +39,13 @@ public class JpaPerspectiveFactory implements IPerspectiveFactory {
 		outputFolder.addPlaceholder(IProgressConstants.PROGRESS_VIEW_ID);
 
 		//JPA Details (Split with Problems/Console area)
-		layout.addView("org.eclipse.jpt.ui.jpaDetailsView",
-				IPageLayout.RIGHT, (float) .60, "bottom");
+		layout.addView("org.eclipse.jpt.ui.jpaDetailsView", //$NON-NLS-1$
+				IPageLayout.RIGHT, (float) .60, "bottom"); //$NON-NLS-1$
 		
 		//JPA Structure area
 		IFolderLayout outlineFolder = layout.createFolder(
 				"right", IPageLayout.RIGHT, (float) 0.75, editorArea); //$NON-NLS-1$
-		outlineFolder.addView("org.eclipse.jpt.ui.jpaStructureView");
+		outlineFolder.addView("org.eclipse.jpt.ui.jpaStructureView"); //$NON-NLS-1$
 		outlineFolder.addView(IPageLayout.ID_OUTLINE);
-
-		layout.addActionSet(JavaUI.ID_ACTION_SET);
-		layout.addActionSet(JavaUI.ID_ELEMENT_CREATION_ACTION_SET);
-		layout.addActionSet(IPageLayout.ID_NAVIGATE_ACTION_SET);
-
-		// views - java
-		layout.addShowViewShortcut(JavaUI.ID_PACKAGES);
-		layout.addShowViewShortcut(JavaUI.ID_TYPE_HIERARCHY);
-		layout.addShowViewShortcut(JavaUI.ID_SOURCE_VIEW);
-		layout.addShowViewShortcut(JavaUI.ID_JAVADOC_VIEW);
-
-		// views - standard workbench
-		layout.addShowViewShortcut(ProjectExplorer.VIEW_ID);
-		layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
-		layout.addShowViewShortcut(IPageLayout.ID_PROBLEM_VIEW);
-		layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
-
-		// new actions - Java project creation wizard
-		layout.addNewWizardShortcut("org.eclipse.jpt.ui.wizard.newJpaProject"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewPackageCreationWizard"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewClassCreationWizard"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewInterfaceCreationWizard"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewEnumCreationWizard"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewAnnotationCreationWizard"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewSourceFolderCreationWizard"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewSnippetFileCreationWizard"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.folder");//$NON-NLS-1$
-		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.file");//$NON-NLS-1$
-		layout.addNewWizardShortcut("org.eclipse.ui.editors.wizards.UntitledTextFileWizard");//$NON-NLS-1$
 	}
 }
