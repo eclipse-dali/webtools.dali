@@ -98,6 +98,11 @@ public class EclipseLinkOrmAdapterFactory extends AdapterFactoryImpl
 				return createXmlMappedSuperclassAdapter();
 			}
 			@Override
+			public Adapter caseXmlCustomizer(XmlCustomizer object)
+			{
+				return createXmlCustomizerAdapter();
+			}
+			@Override
 			public Adapter caseAbstractXmlTypeMapping(AbstractXmlTypeMapping object)
 			{
 				return createAbstractXmlTypeMappingAdapter();
@@ -175,6 +180,21 @@ public class EclipseLinkOrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createXmlMappedSuperclassAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizer <em>Xml Customizer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizer
+	 * @generated
+	 */
+	public Adapter createXmlCustomizerAdapter()
 	{
 		return null;
 	}

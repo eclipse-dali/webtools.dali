@@ -6,6 +6,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlReadOnly" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="readOnly" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntity #//XmlReadOnly"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntity #//XmlReadOnly #//XmlCustomizer"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlMappedSuperclass #//XmlReadOnly"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlCustomizer" abstract="true" interface="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="customizerClassName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
 </ecore:EPackage>

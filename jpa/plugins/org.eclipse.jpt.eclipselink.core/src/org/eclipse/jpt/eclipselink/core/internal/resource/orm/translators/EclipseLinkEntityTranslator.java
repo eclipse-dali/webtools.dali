@@ -30,6 +30,7 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 	}
 	
 	
+	@Override
 	protected Translator[] createChildren() {
 		return new Translator[] {
 			createNameTranslator(),
@@ -69,4 +70,9 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 	protected Translator createReadOnlyTranslator() {
 		return new Translator(READ_ONLY, ECLIPSELINK_ORM_PKG.getXmlReadOnly_ReadOnly(), DOM_ATTRIBUTE);
 	}
+	
+	protected Translator createCustomizerTranslator() {
+		return new Translator(CLASS, ECLIPSELINK_ORM_PKG.getXmlCustomizer_CustomizerClassName(), DOM_ATTRIBUTE);
+	}
+
 }

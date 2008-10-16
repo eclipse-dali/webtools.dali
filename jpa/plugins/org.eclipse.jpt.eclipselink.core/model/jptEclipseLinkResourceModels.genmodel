@@ -16,5 +16,8 @@
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEntity"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlMappedSuperclass"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlCustomizer">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCustomizer/customizerClassName"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

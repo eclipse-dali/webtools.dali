@@ -114,6 +114,7 @@ public class EclipseLinkOrmSwitch<T>
 				T result = caseXmlEntity(xmlEntity);
 				if (result == null) result = caseXmlEntity_1(xmlEntity);
 				if (result == null) result = caseXmlReadOnly(xmlEntity);
+				if (result == null) result = caseXmlCustomizer(xmlEntity);
 				if (result == null) result = caseAbstractXmlTypeMapping(xmlEntity);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -125,6 +126,13 @@ public class EclipseLinkOrmSwitch<T>
 				if (result == null) result = caseXmlMappedSuperclass_1(xmlMappedSuperclass);
 				if (result == null) result = caseXmlReadOnly(xmlMappedSuperclass);
 				if (result == null) result = caseAbstractXmlTypeMapping(xmlMappedSuperclass);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case EclipseLinkOrmPackage.XML_CUSTOMIZER:
+			{
+				XmlCustomizer xmlCustomizer = (XmlCustomizer)theEObject;
+				T result = caseXmlCustomizer(xmlCustomizer);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -176,6 +184,22 @@ public class EclipseLinkOrmSwitch<T>
 	 * @generated
 	 */
 	public T caseXmlMappedSuperclass(XmlMappedSuperclass object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Customizer</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Customizer</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseXmlCustomizer(XmlCustomizer object)
 	{
 		return null;
 	}
