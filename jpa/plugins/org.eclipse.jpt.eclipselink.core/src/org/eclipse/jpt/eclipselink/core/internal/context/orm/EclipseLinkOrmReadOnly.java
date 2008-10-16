@@ -1,0 +1,73 @@
+/*******************************************************************************
+ *  Copyright (c) 2008  Oracle. 
+ *  All rights reserved.  This program and the accompanying materials are 
+ *  made available under the terms of the Eclipse Public License v1.0 which 
+ *  accompanies this distribution, and is available at 
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *  Contributors: 
+ *  	Oracle - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.jpt.eclipselink.core.internal.context.orm;
+
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
+import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaReadOnly;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly;
+
+public class EclipseLinkOrmReadOnly extends AbstractJpaContextNode
+	implements ReadOnly
+{
+	protected XmlReadOnly resource;
+	
+	protected boolean defaultReadOnly;
+	
+	protected Boolean specifiedReadOnly;
+	
+	
+	public EclipseLinkOrmReadOnly(OrmTypeMapping parent) {
+		super(parent);
+	}
+	
+	
+	public boolean isReadOnly() {
+		return (getSpecifiedReadOnly() == null) ? isDefaultReadOnly() : getSpecifiedReadOnly();
+	}
+	
+	public boolean isDefaultReadOnly() {
+		return defaultReadOnly;
+	}
+	
+	public void setDefaultReadOnly(boolean newValue) {
+		boolean oldValue = this.defaultReadOnly;
+		this.defaultReadOnly = newValue;
+		firePropertyChanged(DEFAULT_READ_ONLY_PROPERTY, oldValue, newValue);
+	}
+	
+	public Boolean getSpecifiedReadOnly() {
+		return specifiedReadOnly;
+	}
+	
+	public void setSpecifiedReadOnly(Boolean newReadOnly) {
+		Boolean oldReadOnly = this.specifiedReadOnly;
+		this.specifiedReadOnly = newReadOnly;
+		this.resource.setReadOnly(newReadOnly);
+		firePropertyChanged(SPECIFIED_READ_ONLY_PROPERTY, oldReadOnly, newReadOnly);
+	}
+	
+	
+	// **************** initialize/update **************************************
+	
+	protected void initialize(XmlReadOnly resource, JavaReadOnly javaReadOnly) {
+		this.resource = resource;
+		this.defaultReadOnly = (javaReadOnly == null) ? false : javaReadOnly.isReadOnly();
+		this.specifiedReadOnly = resource.getReadOnly();
+	}
+	
+	protected void update(XmlReadOnly resource, JavaReadOnly javaReadOnly) {
+		this.resource = resource;
+		setDefaultReadOnly((javaReadOnly == null) ? false : javaReadOnly.isReadOnly());
+		setSpecifiedReadOnly(resource.getReadOnly());
+	}
+}

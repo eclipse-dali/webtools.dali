@@ -174,5 +174,4 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	protected void deleteResource(Resource resource) throws CoreException {
 		WorkbenchResourceHelper.deleteResource(resource);
 	}
-
 }

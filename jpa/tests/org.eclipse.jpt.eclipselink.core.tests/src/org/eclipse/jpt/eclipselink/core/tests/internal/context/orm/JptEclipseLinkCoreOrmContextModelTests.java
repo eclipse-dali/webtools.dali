@@ -8,29 +8,25 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.tests.internal.context;
+package org.eclipse.jpt.eclipselink.core.tests.internal.context.orm;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.eclipse.jpt.eclipselink.core.tests.internal.context.java.JptEclipseLinkCoreJavaContextModelTests;
-import org.eclipse.jpt.eclipselink.core.tests.internal.context.orm.JptEclipseLinkCoreOrmContextModelTests;
 
-public class JptEclipseLinkCoreContextModelTests extends TestCase
+public class JptEclipseLinkCoreOrmContextModelTests extends TestCase
 {
 	public static Test suite() {
 		return suite(true);
 	}
 	
 	public static Test suite(boolean all) {
-		TestSuite suite = new TestSuite(JptEclipseLinkCoreContextModelTests.class.getName());
-		suite.addTest(JptEclipseLinkCoreJavaContextModelTests.suite(all));
-		suite.addTest(JptEclipseLinkCoreOrmContextModelTests.suite(all));
+		TestSuite suite = new TestSuite(JptEclipseLinkCoreOrmContextModelTests.class.getName());
+		suite.addTestSuite(EclipseLinkOrmEntityTests.class);
 		return suite;
 	}
-
-	private JptEclipseLinkCoreContextModelTests() {
-		super();
+	
+	private JptEclipseLinkCoreOrmContextModelTests() {
 		throw new UnsupportedOperationException();
 	}
 }

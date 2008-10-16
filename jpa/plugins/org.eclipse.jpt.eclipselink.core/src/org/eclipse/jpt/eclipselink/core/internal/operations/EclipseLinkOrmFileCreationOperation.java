@@ -15,13 +15,13 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationOperation;
+import org.eclipse.jpt.core.resource.orm.AccessType;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults;
+import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata;
 import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmResourceModelProvider;
-import org.eclipse.jpt.eclipselink.core.resource.orm.AccessType;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlPersistenceUnitDefaults;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlPersistenceUnitMetadata;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public class EclipseLinkOrmFileCreationOperation extends OrmFileCreationOperation
@@ -42,15 +42,15 @@ public class EclipseLinkOrmFileCreationOperation extends OrmFileCreationOperatio
 				public void run() {
 					EclipseLinkOrmResource ormResource = modelProvider.getResource();
 					
-					XmlEntityMappings entityMappings = EclipseLinkOrmFactory.eINSTANCE.createXmlEntityMappings();
+					XmlEntityMappings entityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
 					entityMappings.setVersion("1.0");
 					ormResource.getContents().add(entityMappings);
 					
 					AccessType defaultAccess = (AccessType) getDataModel().getProperty(DEFAULT_ACCESS); 
 					if (defaultAccess != null) {
-						XmlPersistenceUnitMetadata puMetadata = EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata();
+						XmlPersistenceUnitMetadata puMetadata = OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata();
 						entityMappings.setPersistenceUnitMetadata(puMetadata);
-						XmlPersistenceUnitDefaults puDefaults = EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
+						XmlPersistenceUnitDefaults puDefaults = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
 						puMetadata.setPersistenceUnitDefaults(puDefaults);
 						puDefaults.setAccess(defaultAccess);
 					}

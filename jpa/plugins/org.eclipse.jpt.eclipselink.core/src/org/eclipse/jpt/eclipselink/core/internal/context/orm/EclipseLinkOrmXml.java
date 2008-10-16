@@ -7,16 +7,15 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.tests.internal.context.java;
+package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.internal.context.orm.OrmXmlImpl;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
 
-public class EclipseLinkJavaContextModelTestCase extends EclipseLinkContextModelTestCase
-{	
-	public static final String ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME = "org.eclipse.persistence.annotations";
-	
-	
-	public EclipseLinkJavaContextModelTestCase(String name) {
-		super(name);
+public class EclipseLinkOrmXml extends OrmXmlImpl
+{
+	public EclipseLinkOrmXml(MappingFileRef parent, EclipseLinkOrmResource ormResource) {
+		super(parent, ormResource);
 	}
 }

@@ -65,123 +65,123 @@ public class EntityTranslator extends Translator
 		};
 	}
 
-	private Translator createNameTranslator() {
+	protected Translator createNameTranslator() {
 		return new Translator(NAME, ORM_PKG.getXmlEntity_Name(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createClassTranslator() {
+	protected Translator createClassTranslator() {
 		return new Translator(CLASS, ORM_PKG.getAbstractXmlTypeMapping_ClassName(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createAccessTranslator() {
+	protected Translator createAccessTranslator() {
 		return new Translator(ACCESS, ORM_PKG.getAbstractXmlTypeMapping_Access(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createMetadataCompleteTranslator() {
+	protected Translator createMetadataCompleteTranslator() {
 		return new Translator(METADATA_COMPLETE, ORM_PKG.getAbstractXmlTypeMapping_MetadataComplete(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createDescriptionTranslator() {
+	protected Translator createDescriptionTranslator() {
 		return new Translator(DESCRIPTION, ORM_PKG.getAbstractXmlTypeMapping_Description());
 	}
 	
-	private Translator createTableTranslator() {
+	protected Translator createTableTranslator() {
 		return new TableTranslator(TABLE, ORM_PKG.getXmlEntity_Table());
 	}
 	
-	private Translator createSecondaryTableTranslator() {
+	protected Translator createSecondaryTableTranslator() {
 		return new SecondaryTableTranslator(SECONDARY_TABLE, ORM_PKG.getXmlEntity_SecondaryTables());
 	}	
 	
-	private Translator createPrimaryKeyJoinColumnTranslator() {
+	protected Translator createPrimaryKeyJoinColumnTranslator() {
 		return new PrimaryKeyJoinColumnTranslator(PRIMARY_KEY_JOIN_COLUMN, ORM_PKG.getXmlEntity_PrimaryKeyJoinColumns());
 	}
 	
-	private Translator createIdClassTranslator() {
+	protected Translator createIdClassTranslator() {
 		return new IdClassTranslator(ID_CLASS, ORM_PKG.getXmlEntity_IdClass());
 	}
 	
-	private Translator createInheritanceTranslator() {
+	protected Translator createInheritanceTranslator() {
 		return new InheritanceTranslator(INHERITANCE, ORM_PKG.getXmlEntity_Inheritance());
 	}
 	
-	private Translator createDiscriminatorValueTranslator() {
+	protected Translator createDiscriminatorValueTranslator() {
 		return new Translator(DISCRIMINATOR_VALUE, ORM_PKG.getXmlEntity_DiscriminatorValue());
 	}
 	
-	private Translator createDiscriminatorColumnTranslator() {
+	protected Translator createDiscriminatorColumnTranslator() {
 		return new DiscriminatorColumnTranslator(DISCRIMINATOR_COLUMN, ORM_PKG.getXmlEntity_DiscriminatorColumn());
 	}
 	
-	private Translator createSequenceGeneratorTranslator() {
+	protected Translator createSequenceGeneratorTranslator() {
 		return new SequenceGeneratorTranslator(SEQUENCE_GENERATOR, ORM_PKG.getXmlEntity_SequenceGenerator());
 	}
 	
-	private Translator createTableGeneratorTranslator() {
+	protected Translator createTableGeneratorTranslator() {
 		return new TableGeneratorTranslator(TABLE_GENERATOR, ORM_PKG.getXmlEntity_TableGenerator());
 	}
 	
-	private Translator createNamedQueryTranslator() {
+	protected Translator createNamedQueryTranslator() {
 		return new NamedQueryTranslator(NAMED_QUERY, ORM_PKG.getXmlEntity_NamedQueries());
 	}
 	
-	private Translator createNamedNativeQueryTranslator() {
+	protected Translator createNamedNativeQueryTranslator() {
 		return new NamedNativeQueryTranslator(NAMED_NATIVE_QUERY, ORM_PKG.getXmlEntity_NamedNativeQueries());
 	}
 	
-	private Translator createSqlResultSetMappingTranslator() {
+	protected Translator createSqlResultSetMappingTranslator() {
 		return new SqlResultSetMappingTranslator(SQL_RESULT_SET_MAPPING, ORM_PKG.getXmlEntity_SqlResultSetMappings());
 	}
 	
-	private Translator createExcludeDefaultListenersTranslator() {
+	protected Translator createExcludeDefaultListenersTranslator() {
 		return new EmptyTagBooleanTranslator(EXCLUDE_DEFAULT_LISTENERS, ORM_PKG.getXmlEntity_ExcludeDefaultListeners());
 	}
 	
-	private Translator createExcludeSuperclassListenersTranslator() {
+	protected Translator createExcludeSuperclassListenersTranslator() {
 		return new EmptyTagBooleanTranslator(EXCLUDE_SUPERCLASS_LISTENERS, ORM_PKG.getXmlEntity_ExcludeSuperclassListeners());
 	}
 	
-	private Translator createEntityListenersTranslator() {
+	protected Translator createEntityListenersTranslator() {
 		return new EntityListenersTranslator(ENTITY_LISTENERS, ORM_PKG.getXmlEntity_EntityListeners());
 	}
 	
-	private Translator createPrePersistTranslator() {
+	protected Translator createPrePersistTranslator() {
 		return new EventMethodTranslator(PRE_PERSIST, ORM_PKG.getXmlEntity_PrePersist());
 	}
 	
-	private Translator createPostPersistTranslator() {
+	protected Translator createPostPersistTranslator() {
 		return new EventMethodTranslator(POST_PERSIST, ORM_PKG.getXmlEntity_PostPersist());
 	}
 	
-	private Translator createPreRemoveTranslator() {
+	protected Translator createPreRemoveTranslator() {
 		return new EventMethodTranslator(PRE_REMOVE, ORM_PKG.getXmlEntity_PreRemove());
 	}
 	
-	private Translator createPostRemoveTranslator() {
+	protected Translator createPostRemoveTranslator() {
 		return new EventMethodTranslator(POST_REMOVE, ORM_PKG.getXmlEntity_PostRemove());
 	}
 	
-	private Translator createPreUpdateTranslator() {
+	protected Translator createPreUpdateTranslator() {
 		return new EventMethodTranslator(PRE_UPDATE, ORM_PKG.getXmlEntity_PreUpdate());
 	}
 	
-	private Translator createPostUpdateTranslator() {
+	protected Translator createPostUpdateTranslator() {
 		return new EventMethodTranslator(POST_UPDATE, ORM_PKG.getXmlEntity_PostUpdate());
 	}
 	
-	private Translator createPostLoadTranslator() {
+	protected Translator createPostLoadTranslator() {
 		return new EventMethodTranslator(POST_LOAD, ORM_PKG.getXmlEntity_PostLoad());
 	}
 	
-	private Translator createAttributeOverrideTranslator() {
+	protected Translator createAttributeOverrideTranslator() {
 		return new AttributeOverrideTranslator(ATTRIBUTE_OVERRIDE, ORM_PKG.getXmlEntity_AttributeOverrides());
 	}
 	
-	private Translator createAssociationOverrideTranslator() {
+	protected Translator createAssociationOverrideTranslator() {
 		return new AssociationOverrideTranslator(ASSOCIATION_OVERRIDE, ORM_PKG.getXmlEntity_AssociationOverrides());
 	}
 	
-	private Translator createAttributesTranslator() {
+	protected Translator createAttributesTranslator() {
 		return new AttributesTranslator(ATTRIBUTES, ORM_PKG.getAbstractXmlTypeMapping_Attributes());
 	}
 }

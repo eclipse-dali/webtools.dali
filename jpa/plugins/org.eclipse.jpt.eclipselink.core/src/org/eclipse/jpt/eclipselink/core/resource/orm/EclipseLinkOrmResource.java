@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
-import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.EntityMappingsTranslator;
+import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.EclipseLinkEntityMappingsTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -34,10 +34,6 @@ public class EclipseLinkOrmResource extends OrmResource
 	}
 	
 	public Translator getRootTranslator() {
-		return EntityMappingsTranslator.INSTANCE;
-	}
-	
-	public org.eclipse.jpt.core.resource.orm.XmlEntityMappings getEntityMappings() {
-		return null;
+		return EclipseLinkEntityMappingsTranslator.INSTANCE;
 	}
 }

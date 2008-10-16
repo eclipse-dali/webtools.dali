@@ -34,7 +34,7 @@ public class EclipseLinkJpaPlatform extends GenericJpaPlatform
 	// ********* Model construction / updating *********
 	@Override
 	protected JpaFactory buildJpaFactory() {
-		return new EclipseLinkJpaFactoryImpl();
+		return new EclipseLinkJpaFactory();
 	}
 
 	// ********* java annotation support *********	

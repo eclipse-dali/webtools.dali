@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.orm.translators;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.wst.common.internal.emf.resource.ConstantAttributeTranslator;
 import org.eclipse.wst.common.internal.emf.resource.RootTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -21,8 +22,13 @@ public class EntityMappingsTranslator extends RootTranslator
 	private Translator[] children;
 	
 	
+	protected EntityMappingsTranslator(String domNameAndPath, EClass eClass) {
+		super(domNameAndPath, eClass);
+	}
+	
+	
 	public EntityMappingsTranslator() {
-		super(ENTITY_MAPPINGS, ORM_PKG.getXmlEntityMappings());
+		this(ENTITY_MAPPINGS, ORM_PKG.getXmlEntityMappings());
 	}
 	
 	@Override
@@ -33,12 +39,12 @@ public class EntityMappingsTranslator extends RootTranslator
 		return this.children;
 	}
 	
-	private Translator[] createChildren() {
+	protected Translator[] createChildren() {
 		return new Translator[] {
 			createVersionTranslator(),
-			new ConstantAttributeTranslator(XML_NS, ORM_NS_URL),
-			new ConstantAttributeTranslator(XML_NS_XSI, XSI_NS_URL),
-			new ConstantAttributeTranslator(XSI_SCHEMA_LOCATION, ORM_NS_URL + ' ' + ORM_SCHEMA_LOC_1_0),
+			createNamespaceTranslator(),
+			createSchemaNamespaceTranslator(),
+			createSchemaLocationTranslator(),
 			createDescriptionTranslator(),
 			createPersistenceUnitMetadataTranslator(),
 			createPackageTranslator(),
@@ -54,65 +60,77 @@ public class EntityMappingsTranslator extends RootTranslator
 			createEntityTranslator(),
 			createEmbeddableTranslator()
 		};
-	}	
+	}
 	
-	private Translator createVersionTranslator() {
+	protected Translator createNamespaceTranslator() {
+		return new ConstantAttributeTranslator(XML_NS, ORM_NS_URL);		
+	}
+	
+	protected Translator createSchemaNamespaceTranslator() {
+		return 	new ConstantAttributeTranslator(XML_NS_XSI, XSI_NS_URL);
+	}
+		
+	protected Translator createSchemaLocationTranslator() {
+		return new ConstantAttributeTranslator(XSI_SCHEMA_LOCATION, ORM_NS_URL + ' ' + ORM_SCHEMA_LOC_1_0);
+	}
+	
+	protected Translator createVersionTranslator() {
 		return new Translator(VERSION, ORM_PKG.getXmlEntityMappings_Version(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createDescriptionTranslator() {
+	protected Translator createDescriptionTranslator() {
 		return new Translator(DESCRIPTION, ORM_PKG.getXmlEntityMappings_Description());
 	}
 	
-	private Translator createPersistenceUnitMetadataTranslator() {
+	protected Translator createPersistenceUnitMetadataTranslator() {
 		return new PersistenceUnitMetadataTranslator(PERSISTENCE_UNIT_METADATA, ORM_PKG.getXmlEntityMappings_PersistenceUnitMetadata());
 	}
 	
-	private Translator createPackageTranslator() {
+	protected Translator createPackageTranslator() {
 		return new Translator(PACKAGE, ORM_PKG.getXmlEntityMappings_Package());
 	}
 	
-	private Translator createSchemaTranslator() {
+	protected Translator createSchemaTranslator() {
 		return new Translator(SCHEMA, ORM_PKG.getXmlEntityMappings_Schema());
 	}
 	
-	private Translator createCatalogTranslator() {
+	protected Translator createCatalogTranslator() {
 		return new Translator(CATALOG, ORM_PKG.getXmlEntityMappings_Catalog());
 	}
 	
-	private Translator createAccessTranslator() {
+	protected Translator createAccessTranslator() {
 		return new Translator(ACCESS, ORM_PKG.getXmlEntityMappings_Access());
 	}
 	
-	private Translator createSequenceGeneratorTranslator() {
+	protected Translator createSequenceGeneratorTranslator() {
 		return new SequenceGeneratorTranslator(SEQUENCE_GENERATOR, ORM_PKG.getXmlEntityMappings_SequenceGenerators());
 	}
 	
-	private Translator createTableGeneratorTranslator() {
+	protected Translator createTableGeneratorTranslator() {
 		return new TableGeneratorTranslator(TABLE_GENERATOR, ORM_PKG.getXmlEntityMappings_TableGenerators());
 	}
 	
-	private Translator createNamedQueryTranslator() {
+	protected Translator createNamedQueryTranslator() {
 		return new NamedQueryTranslator(NAMED_QUERY, ORM_PKG.getXmlEntityMappings_NamedQueries());
 	}
 	
-	private Translator createNamedNativeQueryTranslator() {
+	protected Translator createNamedNativeQueryTranslator() {
 		return new NamedNativeQueryTranslator(NAMED_NATIVE_QUERY, ORM_PKG.getXmlEntityMappings_NamedNativeQueries());
 	}
 	
-	private Translator createSqlResultSetMappingTranslator() {
+	protected Translator createSqlResultSetMappingTranslator() {
 		return new SqlResultSetMappingTranslator(SQL_RESULT_SET_MAPPING, ORM_PKG.getXmlEntityMappings_SqlResultSetMappings());
 	}
 	
-	private Translator createMappedSuperclassTranslator() {
+	protected Translator createMappedSuperclassTranslator() {
 		return new MappedSuperclassTranslator(MAPPED_SUPERCLASS, ORM_PKG.getXmlEntityMappings_MappedSuperclasses());
 	}
 	
-	private Translator createEntityTranslator() {
+	protected Translator createEntityTranslator() {
 		return new EntityTranslator(ENTITY, ORM_PKG.getXmlEntityMappings_Entities());
 	}
 	
-	private Translator createEmbeddableTranslator() {
+	protected Translator createEmbeddableTranslator() {
 		return new EmbeddableTranslator(EMBEDDABLE, ORM_PKG.getXmlEntityMappings_Embeddables());
 	}
 }
