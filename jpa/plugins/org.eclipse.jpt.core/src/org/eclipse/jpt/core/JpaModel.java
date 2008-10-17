@@ -44,7 +44,7 @@ public interface JpaModel extends Model {
 	 * it will build all the JPA projects.
 	 */
 	Iterator<JpaProject> jpaProjects() throws CoreException;
-		public static final String JPA_PROJECTS_COLLECTION = "jpaProjects";
+		public static final String JPA_PROJECTS_COLLECTION = "jpaProjects"; //$NON-NLS-1$
 
 	/**
 	 * Return the size of the JPA model's list of JPA projects.
