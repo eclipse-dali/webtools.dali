@@ -25,9 +25,14 @@ import org.eclipse.jpt.core.context.JpaContextNode;
  */
 public interface Customizer extends JpaContextNode
 {
-		
-	String getCustomizerClass();	
-	void setCustomizerClass(String customizerClass);
-		String CUSTOMIZER_CLASS_PROPERTY = "customizerClassProperty"; //$NON-NLS-1$
+	
+	String getCustomizerClass();
+	
+	String getDefaultCustomizerClass();
+		String DEFAULT_CUSTOMIZER_CLASS_PROPERTY = "defaultCustomizerClassProperty"; //$NON-NLS-1$
+	
+	String getSpecifiedCustomizerClass();	
+	void setSpecifiedCustomizerClass(String customizerClass);
+		String SPECIFIED_CUSTOMIZER_CLASS_PROPERTY = "specifiedCustomizerClassProperty"; //$NON-NLS-1$
 
 }

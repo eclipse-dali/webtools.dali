@@ -39,6 +39,7 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 			createMetadataCompleteTranslator(),
 			createReadOnlyTranslator(),
 			createDescriptionTranslator(),
+			createCustomizerTranslator(),
 			createTableTranslator(),
 			createSecondaryTableTranslator(),
 			createPrimaryKeyJoinColumnTranslator(),
@@ -72,7 +73,7 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 	}
 	
 	protected Translator createCustomizerTranslator() {
-		return new Translator(CLASS, ECLIPSELINK_ORM_PKG.getXmlCustomizer_CustomizerClassName(), DOM_ATTRIBUTE);
+		return new CustomizerTranslator(CUSTOMIZER, ECLIPSELINK_ORM_PKG.getXmlCustomizerHolder_Customizer());
 	}
 
 }

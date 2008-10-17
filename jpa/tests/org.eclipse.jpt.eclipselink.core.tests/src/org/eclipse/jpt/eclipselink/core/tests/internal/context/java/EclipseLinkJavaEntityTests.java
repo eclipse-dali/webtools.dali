@@ -103,7 +103,7 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 		
 		Customizer customizer = ((EclipseLinkEntity) javaPersistentType().getMapping()).getCustomizer();
 		
-		assertEquals("Foo", customizer.getCustomizerClass());
+		assertEquals("Foo", customizer.getSpecifiedCustomizerClass());
 	}
 
 	public void testSetCustomizerClass() throws Exception {
@@ -111,24 +111,24 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		Customizer customizer = ((EclipseLinkEntity) javaPersistentType().getMapping()).getCustomizer();
-		assertEquals("Foo", customizer.getCustomizerClass());
+		assertEquals("Foo", customizer.getSpecifiedCustomizerClass());
 		
-		customizer.setCustomizerClass("Bar");
-		assertEquals("Bar", customizer.getCustomizerClass());
+		customizer.setSpecifiedCustomizerClass("Bar");
+		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
 			
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CustomizerAnnotation customizerAnnotation = (CustomizerAnnotation) typeResource.getAnnotation(CustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", customizerAnnotation.getValue());
 
 		
-		customizer.setCustomizerClass(null);
-		assertEquals(null, customizer.getCustomizerClass());
+		customizer.setSpecifiedCustomizerClass(null);
+		assertEquals(null, customizer.getSpecifiedCustomizerClass());
 		customizerAnnotation = (CustomizerAnnotation) typeResource.getAnnotation(CustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals(null, customizerAnnotation);
 
 
-		customizer.setCustomizerClass("Bar");
-		assertEquals("Bar", customizer.getCustomizerClass());
+		customizer.setSpecifiedCustomizerClass("Bar");
+		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
 		customizerAnnotation = (CustomizerAnnotation) typeResource.getAnnotation(CustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", customizerAnnotation.getValue());
 	}
@@ -139,21 +139,21 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 		EclipseLinkEntity entity = (EclipseLinkEntity) javaPersistentType().getMapping();
 		Customizer customizer = entity.getCustomizer();
 
-		assertEquals("Foo", customizer.getCustomizerClass());
+		assertEquals("Foo", customizer.getSpecifiedCustomizerClass());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CustomizerAnnotation customizerAnnotation = (CustomizerAnnotation) typeResource.getAnnotation(CustomizerAnnotation.ANNOTATION_NAME);
 		customizerAnnotation.setValue("Bar");
-		assertEquals("Bar", customizer.getCustomizerClass());
+		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
 		
 		typeResource.removeAnnotation(CustomizerAnnotation.ANNOTATION_NAME);
-		assertEquals(null, customizer.getCustomizerClass());
+		assertEquals(null, customizer.getSpecifiedCustomizerClass());
 		
 		customizerAnnotation = (CustomizerAnnotation) typeResource.addAnnotation(CustomizerAnnotation.ANNOTATION_NAME);		
-		assertEquals(null, customizer.getCustomizerClass());
+		assertEquals(null, customizer.getSpecifiedCustomizerClass());
 		
 		customizerAnnotation.setValue("FooBar");
-		assertEquals("FooBar", customizer.getCustomizerClass());	
+		assertEquals("FooBar", customizer.getSpecifiedCustomizerClass());	
 	}
 	
 	public void testHasChangeTracking() throws Exception {

@@ -58,10 +58,18 @@ public class EclipseLinkJavaCustomizer extends AbstractJavaJpaContextNode implem
 	}
 	
 	public String getCustomizerClass() {
+		return getSpecifiedCustomizerClass();
+	}
+	
+	public String getDefaultCustomizerClass() {
+		return null;
+	}
+	
+	public String getSpecifiedCustomizerClass() {
 		return this.customizerClass;
 	}
 
-	public void setCustomizerClass(String newCustomizerClass) {
+	public void setSpecifiedCustomizerClass(String newCustomizerClass) {
 		if (attributeValueHasNotChanged(this.customizerClass, newCustomizerClass)) {
 			return;
 		}
@@ -76,13 +84,13 @@ public class EclipseLinkJavaCustomizer extends AbstractJavaJpaContextNode implem
 		if (newCustomizerClass != null) {
 			getResourceCustomizer().setValue(newCustomizerClass);
 		}
-		firePropertyChanged(CUSTOMIZER_CLASS_PROPERTY, oldCustomizerClass, newCustomizerClass);
+		firePropertyChanged(SPECIFIED_CUSTOMIZER_CLASS_PROPERTY, oldCustomizerClass, newCustomizerClass);
 	}
 	
 	protected void setCustomizerClass_(String newCustomizerClass) {
 		String oldCustomizerClass = this.customizerClass;
 		this.customizerClass = newCustomizerClass;
-		firePropertyChanged(CUSTOMIZER_CLASS_PROPERTY, oldCustomizerClass, newCustomizerClass);
+		firePropertyChanged(SPECIFIED_CUSTOMIZER_CLASS_PROPERTY, oldCustomizerClass, newCustomizerClass);
 	}
 	
 	public void initialize(JavaResourcePersistentType jrpt) {

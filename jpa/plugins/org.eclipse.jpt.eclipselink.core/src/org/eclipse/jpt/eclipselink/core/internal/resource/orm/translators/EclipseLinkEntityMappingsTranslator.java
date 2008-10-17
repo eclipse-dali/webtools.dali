@@ -34,6 +34,11 @@ public class EclipseLinkEntityMappingsTranslator extends EntityMappingsTranslato
 	}
 	
 	@Override
+	protected Translator createEmbeddableTranslator() {
+		return new EclipseLinkEmbeddableTranslator(EMBEDDABLE, ORM_PKG.getXmlEntityMappings_Embeddables());
+	}
+	
+	@Override
 	protected Translator createEntityTranslator() {
 		return new EclipseLinkEntityTranslator(ENTITY, ORM_PKG.getXmlEntityMappings_Entities());
 	}

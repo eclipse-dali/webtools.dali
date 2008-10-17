@@ -38,6 +38,7 @@ public class EclipseLinkMappedSuperclassTranslator extends MappedSuperclassTrans
 			createMetadataCompleteTranslator(),
 			createReadOnlyTranslator(),
 			createDescriptionTranslator(),
+			createCustomizerTranslator(),
 			createIdClassTranslator(),
 			createExcludeDefaultListenersTranslator(),
 			createExcludeSuperclassListenersTranslator(),
@@ -56,4 +57,9 @@ public class EclipseLinkMappedSuperclassTranslator extends MappedSuperclassTrans
 	protected Translator createReadOnlyTranslator() {
 		return new Translator(READ_ONLY, ECLIPSELINK_ORM_PKG.getXmlReadOnly_ReadOnly(), DOM_ATTRIBUTE);
 	}
+	
+	protected Translator createCustomizerTranslator() {
+		return new CustomizerTranslator(CUSTOMIZER, ECLIPSELINK_ORM_PKG.getXmlCustomizerHolder_Customizer());
+	}
+
 }

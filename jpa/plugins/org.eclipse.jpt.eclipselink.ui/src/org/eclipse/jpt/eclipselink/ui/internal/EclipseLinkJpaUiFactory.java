@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -46,6 +47,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkVersi
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipselinkOneToManyMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipselinkOneToOneMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.options.PersistenceXmlOptionsTab;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmEmbeddableComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmEntityComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmMappedSuperclassComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.schema.generation.PersistenceXmlSchemaGenerationTab;
@@ -285,5 +287,13 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 			PropertyValueModel<OrmMappedSuperclass> subjectHolder, 
 			Composite parent, WidgetFactory widgetFactory) {
 		return new EclipseLinkOrmMappedSuperclassComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createOrmEmbeddableComposite(
+			PropertyValueModel<OrmEmbeddable> subjectHolder, 
+			Composite parent, 
+			WidgetFactory widgetFactory) {
+		return new EclipseLinkOrmEmbeddableComposite(subjectHolder, parent, widgetFactory);
 	}
 }

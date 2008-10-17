@@ -11,12 +11,13 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaReadOnly;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly;
 
-public class EclipseLinkOrmReadOnly extends AbstractJpaContextNode
+public class EclipseLinkOrmReadOnly extends AbstractXmlContextNode
 	implements ReadOnly
 {
 	protected XmlReadOnly resource;
@@ -32,11 +33,11 @@ public class EclipseLinkOrmReadOnly extends AbstractJpaContextNode
 	
 	
 	public boolean isReadOnly() {
-		return (getSpecifiedReadOnly() == null) ? isDefaultReadOnly() : getSpecifiedReadOnly();
+		return (this.specifiedReadOnly == null) ? this.defaultReadOnly : this.specifiedReadOnly.booleanValue();
 	}
 	
 	public boolean isDefaultReadOnly() {
-		return defaultReadOnly;
+		return this.defaultReadOnly;
 	}
 	
 	public void setDefaultReadOnly(boolean newValue) {
@@ -46,7 +47,7 @@ public class EclipseLinkOrmReadOnly extends AbstractJpaContextNode
 	}
 	
 	public Boolean getSpecifiedReadOnly() {
-		return specifiedReadOnly;
+		return this.specifiedReadOnly;
 	}
 	
 	public void setSpecifiedReadOnly(Boolean newReadOnly) {
@@ -69,5 +70,12 @@ public class EclipseLinkOrmReadOnly extends AbstractJpaContextNode
 		this.resource = resource;
 		setDefaultReadOnly((javaReadOnly == null) ? false : javaReadOnly.isReadOnly());
 		setSpecifiedReadOnly(resource.getReadOnly());
+	}
+	
+	
+	// **************** validation **************************************
+	
+	public TextRange getValidationTextRange() {
+		return this.resource.getReadOnlyTextRange();
 	}
 }

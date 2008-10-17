@@ -15,8 +15,10 @@ import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.common.JpaEObject;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <!-- begin-user-doc -->
@@ -194,6 +196,10 @@ public class XmlCustomizer extends AbstractJpaEObject implements JpaEObject
 		result.append(customizerClassName);
 		result.append(')');
 		return result.toString();
+	}
+
+	public TextRange getCustomizerClassNameTextRange() {
+		return getAttributeTextRange(OrmXmlMapper.CLASS);
 	}
 
 } // XmlCustomizer

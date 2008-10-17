@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
@@ -81,6 +82,8 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaRea
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaStructConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaTypeConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmCustomizer;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEmbeddable;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEntity;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmReadOnly;
@@ -136,6 +139,11 @@ public class EclipseLinkJpaFactory extends GenericJpaFactory
 	}
 	
 	@Override
+	public OrmEmbeddable buildOrmEmbeddable(OrmPersistentType parent) {
+		return new EclipseLinkOrmEmbeddable(parent);
+	}
+	
+	@Override
 	public EclipseLinkOrmEntity buildOrmEntity(OrmPersistentType parent) {
 		return new EclipseLinkOrmEntity(parent);
 	}
@@ -147,6 +155,10 @@ public class EclipseLinkJpaFactory extends GenericJpaFactory
 	
 	public EclipseLinkOrmReadOnly buildOrmReadOnly(OrmTypeMapping parent) {
 		return new EclipseLinkOrmReadOnly(parent);
+	}
+	
+	public EclipseLinkOrmCustomizer buildOrmCustomizer(OrmTypeMapping parent) {
+		return new EclipseLinkOrmCustomizer(parent);
 	}
 	
 	

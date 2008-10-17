@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -45,6 +46,24 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 	
 	private void createReadOnlyAnnotation() throws Exception{
 		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ReadOnly", "");		
+	}
+	
+	private ICompilationUnit createTestMappedSuperclassForCustomizer() throws Exception {
+		createCustomizerAnnotation();
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.MAPPED_SUPERCLASS, EclipseLinkJPA.CUSTOMIZER);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@MappedSuperclass").append(CR);
+			}
+		});
+	}
+	
+	private void createCustomizerAnnotation() throws Exception{
+		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Customizer", "Class value()");		
 	}
 	
 	public void testUpdateReadOnly() throws Exception {
@@ -93,6 +112,18 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		assertTrue(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
 		assertNull(ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
 		
+		// set metadataComplete to True, check defaults not from java
+
+		ormContextMappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
+		
+		assertNull(resourceMappedSuperclass.getReadOnly());
+		assertTrue(javaContextMappedSuperclass.getReadOnly().isReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().isReadOnly());
+		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
+		assertNull(ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());
+
+		ormContextMappedSuperclass.setSpecifiedMetadataComplete(null);
+
 		// set xml read only to false, check override
 		
 		resourceMappedSuperclass.setReadOnly(Boolean.FALSE);
@@ -185,4 +216,116 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		assertFalse(ormContextMappedSuperclass.getReadOnly().isDefaultReadOnly());
 		assertNull(ormContextMappedSuperclass.getReadOnly().getSpecifiedReadOnly());	
 	}
+	
+	public void testUpdateCustomizerClass() throws Exception {
+		createTestMappedSuperclassForCustomizer();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkJavaMappedSuperclass javaContextMappedSuperclass = (EclipseLinkJavaMappedSuperclass) ormPersistentType.getJavaPersistentType().getMapping();
+		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
+		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) ormResource().getEntityMappings().getMappedSuperclasses().get(0);
+
+
+		// check defaults
+		
+		assertNull(resourceMappedSuperclass.getCustomizer());
+		assertNull(javaContextMappedSuperclass.getCustomizer().getCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getDefaultCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getSpecifiedCustomizerClass());
+		
+		// set xml customizer, check defaults
+		resourceMappedSuperclass.setCustomizer(EclipseLinkOrmFactory.eINSTANCE.createXmlCustomizer());
+		assertNull(resourceMappedSuperclass.getCustomizer().getCustomizerClassName());
+		assertNull(javaContextMappedSuperclass.getCustomizer().getCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getDefaultCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getSpecifiedCustomizerClass());
+
+		
+		// set xml customizer class, check override
+		
+		resourceMappedSuperclass.getCustomizer().setCustomizerClassName("foo");
+		
+		assertEquals("foo", resourceMappedSuperclass.getCustomizer().getCustomizerClassName());
+		assertNull(javaContextMappedSuperclass.getCustomizer().getCustomizerClass());
+		assertEquals("foo", ormContextMappedSuperclass.getCustomizer().getCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getDefaultCustomizerClass());
+		assertEquals("foo", ormContextMappedSuperclass.getCustomizer().getSpecifiedCustomizerClass());
+		
+		// clear xml customizer class, set java customizer class, check defaults
+		
+		resourceMappedSuperclass.getCustomizer().setCustomizerClassName(null);
+		javaContextMappedSuperclass.getCustomizer().setSpecifiedCustomizerClass("bar");
+		
+		assertNull(resourceMappedSuperclass.getCustomizer().getCustomizerClassName());
+		assertEquals("bar", javaContextMappedSuperclass.getCustomizer().getCustomizerClass());
+		assertEquals("bar", ormContextMappedSuperclass.getCustomizer().getCustomizerClass());
+		assertEquals("bar", ormContextMappedSuperclass.getCustomizer().getDefaultCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getSpecifiedCustomizerClass());
+
+		// set metadataComplete to True, check defaults not from java
+
+		ormContextMappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
+		
+		assertNull(resourceMappedSuperclass.getCustomizer().getCustomizerClassName());
+		assertEquals("bar", javaContextMappedSuperclass.getCustomizer().getCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getDefaultCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getSpecifiedCustomizerClass());
+
+		ormContextMappedSuperclass.setSpecifiedMetadataComplete(null);
+		
+		// set xml customizer class, check override
+		
+		resourceMappedSuperclass.getCustomizer().setCustomizerClassName("foo");
+		
+		assertEquals("foo", resourceMappedSuperclass.getCustomizer().getCustomizerClassName());
+		assertEquals("bar", javaContextMappedSuperclass.getCustomizer().getCustomizerClass());
+		assertEquals("foo", ormContextMappedSuperclass.getCustomizer().getCustomizerClass());
+		assertEquals("bar", ormContextMappedSuperclass.getCustomizer().getDefaultCustomizerClass());
+		assertEquals("foo", ormContextMappedSuperclass.getCustomizer().getSpecifiedCustomizerClass());
+
+		//set xml customizer null
+		javaContextMappedSuperclass.getCustomizer().setSpecifiedCustomizerClass(null);
+		resourceMappedSuperclass.setCustomizer(null);
+		assertNull(resourceMappedSuperclass.getCustomizer());
+		assertNull(javaContextMappedSuperclass.getCustomizer().getCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getDefaultCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getSpecifiedCustomizerClass());
+
+	}
+	
+	public void testModifyCustomizerClass() throws Exception {
+		createTestMappedSuperclassForCustomizer();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
+		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) ormResource().getEntityMappings().getMappedSuperclasses().get(0);
+		
+		// check defaults
+		
+		assertNull(resourceMappedSuperclass.getCustomizer());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getDefaultCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getSpecifiedCustomizerClass());
+		
+		// set context customizer, check resource
+		
+		ormContextMappedSuperclass.getCustomizer().setSpecifiedCustomizerClass("foo");
+		
+		assertEquals("foo", resourceMappedSuperclass.getCustomizer().getCustomizerClassName());
+		assertEquals("foo", ormContextMappedSuperclass.getCustomizer().getCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getDefaultCustomizerClass());
+		assertEquals("foo", ormContextMappedSuperclass.getCustomizer().getSpecifiedCustomizerClass());
+				
+		// set context customizer to null, check resource
+		
+		ormContextMappedSuperclass.getCustomizer().setSpecifiedCustomizerClass(null);
+		
+		assertNull(resourceMappedSuperclass.getCustomizer());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getDefaultCustomizerClass());
+		assertNull(ormContextMappedSuperclass.getCustomizer().getSpecifiedCustomizerClass());
+	}
+
 }

@@ -53,10 +53,10 @@ public class CustomizerComposite extends FormPane<Customizer>
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<Customizer, String>(getSubjectHolder(), Customizer.CUSTOMIZER_CLASS_PROPERTY) {
+				return new PropertyAspectAdapter<Customizer, String>(getSubjectHolder(), Customizer.SPECIFIED_CUSTOMIZER_CLASS_PROPERTY) {
 					@Override
 					protected String buildValue_() {
-						return this.subject.getCustomizerClass();
+						return this.subject.getSpecifiedCustomizerClass();
 					}
 
 					@Override
@@ -66,14 +66,14 @@ public class CustomizerComposite extends FormPane<Customizer>
 							value = null;
 						}
 
-						this.subject.setCustomizerClass(value);
+						this.subject.setSpecifiedCustomizerClass(value);
 					}
 				};
 			}
 
 			@Override
 			protected String getClassName() {
-				return getSubject().getCustomizerClass();
+				return getSubject().getSpecifiedCustomizerClass();
 			}
 
 			@Override
@@ -92,7 +92,7 @@ public class CustomizerComposite extends FormPane<Customizer>
 
 				if (type != null) {
 					String className = type.getFullyQualifiedName('.');
-					getSubject().setCustomizerClass(className);
+					getSubject().setSpecifiedCustomizerClass(className);
 				}
 			}
 		};

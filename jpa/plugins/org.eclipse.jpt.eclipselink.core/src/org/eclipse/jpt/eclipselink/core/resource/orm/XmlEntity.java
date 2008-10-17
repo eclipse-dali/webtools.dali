@@ -15,6 +15,8 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.EclipseLinkOrmXmlMapper;
 
 /**
  * <!-- begin-user-doc -->
@@ -337,4 +339,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 		return result.toString();
 	}
 
+	public TextRange getReadOnlyTextRange() {
+		return getAttributeTextRange(EclipseLinkOrmXmlMapper.READ_ONLY);
+	}
 } // XmlEntity

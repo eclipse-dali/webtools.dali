@@ -39,23 +39,23 @@ public class EmbeddableTranslator extends Translator
 		};
 	}
 	
-	private Translator createClassTranslator() {
+	protected Translator createClassTranslator() {
 		return new Translator(CLASS, ORM_PKG.getAbstractXmlTypeMapping_ClassName(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createAccessTranslator() {
+	protected Translator createAccessTranslator() {
 		return new Translator(ACCESS, ORM_PKG.getAbstractXmlTypeMapping_Access(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createMetadataCompleteTranslator() {
+	protected Translator createMetadataCompleteTranslator() {
 		return new Translator(METADATA_COMPLETE, ORM_PKG.getAbstractXmlTypeMapping_MetadataComplete(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createDescriptionTranslator() {
+	protected Translator createDescriptionTranslator() {
 		return new Translator(DESCRIPTION, ORM_PKG.getAbstractXmlTypeMapping_Description());
 	}
 	
-	private Translator createAttributesTranslator() {
+	protected Translator createAttributesTranslator() {
 		return new AttributesTranslator(ATTRIBUTES, ORM_PKG.getAbstractXmlTypeMapping_Attributes());
 	}
 }
