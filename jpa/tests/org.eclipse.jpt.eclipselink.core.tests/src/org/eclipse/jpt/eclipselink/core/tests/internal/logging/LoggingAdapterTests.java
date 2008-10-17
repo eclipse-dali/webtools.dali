@@ -147,7 +147,7 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 	}
 
 	// ********** Timestamp tests **********
-	public void testSetThrowExceptions() throws Exception {
+	public void testSetTimestamp() throws Exception {
 		this.verifyModelInitialized(
 			TIMESTAMP_KEY,
 			TIMESTAMP_TEST_VALUE);
@@ -157,7 +157,7 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 			TIMESTAMP_TEST_VALUE_2);
 	}
 
-	public void testAddRemoveThrowExceptions() throws Exception {
+	public void testAddRemoveTimestamp() throws Exception {
 		this.verifyAddRemoveProperty(
 			TIMESTAMP_KEY,
 			TIMESTAMP_TEST_VALUE,
