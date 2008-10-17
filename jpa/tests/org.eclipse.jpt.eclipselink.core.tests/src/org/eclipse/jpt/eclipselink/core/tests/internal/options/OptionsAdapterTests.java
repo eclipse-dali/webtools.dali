@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
- * Tests the update of model objects by the Logging adapter when the
+ * Tests the update of model objects by the Option adapter when the
  * PersistenceUnit changes.
  */
 public class OptionsAdapterTests extends PersistenceUnitTestCase
@@ -56,6 +56,10 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	public static final String SESSION_EVENT_LISTENER_TEST_VALUE = "acme.CustomSessionEventListener";
 	public static final String SESSION_EVENT_LISTENER_TEST_VALUE_2 = "oracle.sessions.CustomSessionEventListener";
 
+	public static final String TEMPORAL_MUTABLE_KEY = Options.ECLIPSELINK_TEMPORAL_MUTABLE;
+	public static final Boolean TEMPORAL_MUTABLE_TEST_VALUE = true;
+	public static final Boolean TEMPORAL_MUTABLE_TEST_VALUE_2 = ! TEMPORAL_MUTABLE_TEST_VALUE;
+
 	public OptionsAdapterTests(String name) {
 		super(name);
 	}
@@ -73,6 +77,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 		this.options.addPropertyChangeListener(Options.SESSION_EVENT_LISTENER_PROPERTY, propertyChangeListener);
 		this.options.addPropertyChangeListener(
 			Options.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY, propertyChangeListener);
+		this.options.addPropertyChangeListener(Options.TEMPORAL_MUTABLE_PROPERTY, propertyChangeListener);
 
 		this.clearEvent();
 	}
@@ -82,7 +87,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	 */
 	@Override
 	protected void populatePu() {
-		this.modelPropertiesSizeOriginal = 6;
+		this.modelPropertiesSizeOriginal = 7;
 		this.propertiesTotal = this.modelPropertiesSizeOriginal + 4; // 4 misc properties
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
@@ -96,6 +101,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 		this.persistenceUnitPut(TARGET_SERVER_KEY, TARGET_SERVER_TEST_VALUE);
 		this.persistenceUnitPut(SESSION_EVENT_LISTENER_KEY, SESSION_EVENT_LISTENER_TEST_VALUE);
 		this.persistenceUnitPut("misc.property.4", "value.4");
+		this.persistenceUnitPut(TEMPORAL_MUTABLE_KEY, TEMPORAL_MUTABLE_TEST_VALUE.toString());
 		return;
 	}
 	
@@ -116,6 +122,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 		this.verifyHasListeners(this.options, Options.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY);
 		this.verifyHasListeners(this.options, Options.TARGET_DATABASE_PROPERTY);
 		this.verifyHasListeners(this.options, Options.SESSION_EVENT_LISTENER_PROPERTY);
+		this.verifyHasListeners(this.options, Options.TEMPORAL_MUTABLE_PROPERTY);
 		this.verifyHasListeners(propertyListAdapter);
 		
 		EclipseLinkOptions elOptions = (EclipseLinkOptions) this.options;
@@ -127,6 +134,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 		this.verifyHasListeners(this.options, Options.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY);
 		this.verifyHasListeners(this.options, Options.TARGET_DATABASE_PROPERTY);
 		this.verifyHasListeners(this.options, Options.SESSION_EVENT_LISTENER_PROPERTY);
+		this.verifyHasListeners(this.options, Options.TEMPORAL_MUTABLE_PROPERTY);
 	}
 
 
@@ -309,6 +317,24 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 			SESSION_EVENT_LISTENER_TEST_VALUE_2);
 	}
 
+	// ********** TemporalMutable tests **********
+	public void testSetTemporalMutable() throws Exception {
+		this.verifyModelInitialized(
+			TEMPORAL_MUTABLE_KEY,
+			TEMPORAL_MUTABLE_TEST_VALUE);
+		this.verifySetProperty(
+			TEMPORAL_MUTABLE_KEY,
+			TEMPORAL_MUTABLE_TEST_VALUE,
+			TEMPORAL_MUTABLE_TEST_VALUE_2);
+	}
+
+	public void testAddRemoveTemporalMutable() throws Exception {
+		this.verifyAddRemoveProperty(
+			TEMPORAL_MUTABLE_KEY,
+			TEMPORAL_MUTABLE_TEST_VALUE,
+			TEMPORAL_MUTABLE_TEST_VALUE_2);
+	}
+
 	// ********** get/set property **********
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
@@ -324,6 +350,8 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 			this.setTargetServerProperty(newValue);
 		else if (propertyName.equals(Options.SESSION_EVENT_LISTENER_PROPERTY))
 			this.options.setEventListener((String) newValue);
+		else if (propertyName.equals(Options.TEMPORAL_MUTABLE_PROPERTY))
+			this.options.setTemporalMutable((Boolean) newValue);
 		else
 			this.throwMissingDefinition("setProperty", propertyName);
 	}
@@ -357,6 +385,8 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 			modelValue = this.options.getTargetServer();
 		else if (propertyName.equals(Options.SESSION_EVENT_LISTENER_PROPERTY))
 			modelValue = this.options.getEventListener();
+		else if (propertyName.equals(Options.TEMPORAL_MUTABLE_PROPERTY))
+			modelValue = this.options.getTemporalMutable();
 		else
 			this.throwMissingDefinition("getProperty", propertyName);
 		return modelValue;

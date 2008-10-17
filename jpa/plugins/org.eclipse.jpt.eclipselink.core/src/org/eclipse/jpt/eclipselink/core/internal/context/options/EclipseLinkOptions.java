@@ -29,6 +29,7 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	private String targetDatabase; // storing EclipseLinkStringValue since value can be TargetDatabase or custom class
 	private String targetServer; // storing EclipseLinkStringValue since value can be TargetServer or custom class
 	private String eventListener;
+	private Boolean temporalMutable;
 
 
 	// ********** constructors **********
@@ -53,6 +54,8 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 		this.targetServer = this.getTargetServerFromPersistenceXml();
 		this.eventListener = 
 			this.getStringValue(ECLIPSELINK_SESSION_EVENT_LISTENER);
+		this.temporalMutable = 
+			this.getBooleanValue(ECLIPSELINK_TEMPORAL_MUTABLE);
 	}
 	
 	protected String getTargetDatabaseFromPersistenceXml() {
@@ -109,6 +112,9 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 		propertyNames.put(
 			ECLIPSELINK_SESSION_EVENT_LISTENER,
 			SESSION_EVENT_LISTENER_PROPERTY);
+		propertyNames.put(
+			ECLIPSELINK_TEMPORAL_MUTABLE,
+			TEMPORAL_MUTABLE_PROPERTY);
 	}
 
 	public void propertyChanged(PropertyChangeEvent event) {
@@ -130,6 +136,9 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 		}
 		else if (aspectName.equals(SESSION_EVENT_LISTENER_PROPERTY)) {
 			this.eventListenerChanged(event);
+		}
+		else if (aspectName.equals(TEMPORAL_MUTABLE_PROPERTY)) {
+			this.temporalMutableChanged(event);
 		}
 		else {
 			throw new IllegalArgumentException("Illegal event received - property not applicable: " + aspectName);
@@ -353,6 +362,32 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 
 	public String getDefaultEventListener() {
 		return DEFAULT_SESSION_EVENT_LISTENER;
+	}
+	
+	// ********** TemporalMutable **********
+
+	public Boolean getTemporalMutable() {
+		return this.temporalMutable;
+	}
+
+	public void setTemporalMutable(Boolean newTemporalMutable) {
+		Boolean old = this.temporalMutable;
+		this.temporalMutable = newTemporalMutable;
+		this.putProperty(TEMPORAL_MUTABLE_PROPERTY, newTemporalMutable);
+		this.firePropertyChanged(TEMPORAL_MUTABLE_PROPERTY, old, newTemporalMutable);
+	}
+
+	private void temporalMutableChanged(PropertyChangeEvent event) {
+		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		Boolean newValue = getBooleanValueOf(stringValue);
+		
+		Boolean old = this.temporalMutable;
+		this.temporalMutable = newValue;
+		this.firePropertyChanged(event.getAspectName(), old, newValue);
+	}
+	
+	public Boolean getDefaultTemporalMutable() {
+		return DEFAULT_TEMPORAL_MUTABLE;
 	}
 
 }

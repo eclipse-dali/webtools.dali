@@ -14,10 +14,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
-import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * EclipseLinkOptionsComposite
@@ -33,12 +30,15 @@ public class EclipseLinkOptionsComposite
 
 	@Override
 	protected void initializeLayout(Composite parent) {
-		Section section = getWidgetFactory().createSection(parent, SWT.FLAT | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION);
-		section.setText(EclipseLinkUiMessages.PersistenceXmlOptionsTab_sectionTitle);
-		section.setDescription(EclipseLinkUiMessages.PersistenceXmlOptionsTab_sectionDescription);
-		Composite composite = getWidgetFactory().createComposite(section);
-		composite.setLayout(new GridLayout(1, false));
-		section.setClient(composite);
+		this.initializeSessionOptionsPane(parent);
+		this.initializeMiscellaneousPane(parent);
+	}
+	
+	private void initializeSessionOptionsPane(Composite parent) {
+		Composite composite = this.addSection(parent, 
+				EclipseLinkUiMessages.PersistenceXmlOptionsTab_sessionSectionTitle,
+				EclipseLinkUiMessages.PersistenceXmlOptionsTab_sessionSectionDescription);
+		
 		this.updateGridData(composite);
 		this.updateGridData(composite.getParent());
 
@@ -55,6 +55,17 @@ public class EclipseLinkOptionsComposite
 		new IncludeDescriptorQueriesComposite(this, composite);
 		
 		return;
+	}
+	
+	private void initializeMiscellaneousPane(Composite parent) {
+		Composite composite = this.addSection(parent, 
+				EclipseLinkUiMessages.PersistenceXmlOptionsTab_miscellaneousSectionTitle,
+				EclipseLinkUiMessages.PersistenceXmlOptionsTab_miscellaneousSectionDescription);
+		
+		this.updateGridData(composite);
+		this.updateGridData(composite.getParent());
+
+		new TemporalMutableComposite(this, composite);
 	}
 
 	private void updateGridData(Composite container) {

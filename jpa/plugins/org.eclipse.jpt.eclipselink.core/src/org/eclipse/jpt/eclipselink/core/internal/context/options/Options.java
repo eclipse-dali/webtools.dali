@@ -69,4 +69,13 @@ public interface Options extends PersistenceUnitProperties
 		static final String ECLIPSELINK_SESSION_EVENT_LISTENER = "eclipselink.session-event-listener";
 		static final String DEFAULT_SESSION_EVENT_LISTENER = null;	// no default
 
+
+	Boolean getDefaultTemporalMutable();
+	Boolean getTemporalMutable();
+	void setTemporalMutable(Boolean temporalMutable);
+		static final String TEMPORAL_MUTABLE_PROPERTY = "temporalMutableProperty";
+		// EclipseLink key string
+		static final String ECLIPSELINK_TEMPORAL_MUTABLE = "eclipselink.temporal.mutable";
+		static final Boolean DEFAULT_TEMPORAL_MUTABLE = Boolean.FALSE;
+	
 }

@@ -233,8 +233,8 @@ public class EclipseLinkUiMessages extends NLS
 
 	// Session Options
 	public static String PersistenceXmlOptionsTab_title;
-	public static String PersistenceXmlOptionsTab_sectionTitle;
-	public static String PersistenceXmlOptionsTab_sectionDescription;
+	public static String PersistenceXmlOptionsTab_sessionSectionTitle;
+	public static String PersistenceXmlOptionsTab_sessionSectionDescription;
 	public static String PersistenceXmlOptionsTab_defaultWithOneParam;
 	public static String PersistenceXmlOptionsTab_defaultEmpty;
 
@@ -246,6 +246,12 @@ public class EclipseLinkUiMessages extends NLS
 
 	public static String PersistenceXmlOptionsTab_eventListenerLabel;
 	public static String PersistenceXmlOptionsTab_targetDatabaseLabel;
+	
+	public static String PersistenceXmlOptionsTab_miscellaneousSectionTitle;
+	public static String PersistenceXmlOptionsTab_miscellaneousSectionDescription;
+	
+	public static String PersistenceXmlOptionsTab_temporalMutableLabel;
+	public static String PersistenceXmlOptionsTab_temporalMutableLabelDefault;
 
 	public static String TargetDatabaseComposite_attunity;
 	public static String TargetDatabaseComposite_auto;
