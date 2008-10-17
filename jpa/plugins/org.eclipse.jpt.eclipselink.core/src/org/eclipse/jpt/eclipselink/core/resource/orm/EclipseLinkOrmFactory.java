@@ -80,6 +80,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 		switch (eClass.getClassifierID())
 		{
 			case EclipseLinkOrmPackage.XML_CUSTOMIZER: return (EObject)createXmlCustomizer();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE: return (EObject)createXmlEmbeddable();
 			case EclipseLinkOrmPackage.XML_ENTITY: return (EObject)createXmlEntity();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
 			case EclipseLinkOrmPackage.XML_ID: return (EObject)createXmlId();
@@ -137,6 +138,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlCustomizer xmlCustomizer = new XmlCustomizer();
 		return xmlCustomizer;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlEmbeddable createXmlEmbeddable()
+	{
+		XmlEmbeddable xmlEmbeddable = new XmlEmbeddable();
+		return xmlEmbeddable;
 	}
 
 	/**

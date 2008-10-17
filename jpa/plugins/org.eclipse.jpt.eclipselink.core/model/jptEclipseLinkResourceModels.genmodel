@@ -24,6 +24,7 @@
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlCustomizerHolder">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlCustomizerHolder/customizer"/>
     </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEmbeddable"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEntity"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlMappedSuperclass"/>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlMutable">

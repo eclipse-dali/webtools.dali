@@ -14,6 +14,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="customizer" eType="#//XmlCustomizer"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEmbeddable #//XmlCustomizerHolder"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntity #//XmlReadOnly #//XmlCustomizerHolder"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlMappedSuperclass #//XmlReadOnly #//XmlCustomizerHolder"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlMutable" abstract="true" interface="true">

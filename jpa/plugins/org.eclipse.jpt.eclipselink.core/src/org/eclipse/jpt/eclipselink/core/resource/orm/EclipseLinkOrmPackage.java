@@ -104,7 +104,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity()
 	 * @generated
 	 */
-	public static final int XML_ENTITY = 3;
+	public static final int XML_ENTITY = 4;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}' class.
@@ -114,7 +114,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass()
 	 * @generated
 	 */
-	public static final int XML_MAPPED_SUPERCLASS = 4;
+	public static final int XML_MAPPED_SUPERCLASS = 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlPrivateOwned <em>Xml Private Owned</em>}' class.
@@ -124,7 +124,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPrivateOwned()
 	 * @generated
 	 */
-	public static final int XML_PRIVATE_OWNED = 9;
+	public static final int XML_PRIVATE_OWNED = 10;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne <em>Xml One To One</em>}' class.
@@ -134,7 +134,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToOne()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_ONE = 11;
+	public static final int XML_ONE_TO_ONE = 12;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany <em>Xml One To Many</em>}' class.
@@ -144,7 +144,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToMany()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY = 12;
+	public static final int XML_ONE_TO_MANY = 13;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizer <em>Xml Customizer</em>}' class.
@@ -201,6 +201,79 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_CUSTOMIZER_HOLDER_FEATURE_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable <em>Xml Embeddable</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable()
+	 * @generated
+	 */
+	public static final int XML_EMBEDDABLE = 3;
+
+	/**
+	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__CLASS_NAME = OrmPackage.XML_EMBEDDABLE__CLASS_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__ACCESS = OrmPackage.XML_EMBEDDABLE__ACCESS;
+
+	/**
+	 * The feature id for the '<em><b>Metadata Complete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__METADATA_COMPLETE = OrmPackage.XML_EMBEDDABLE__METADATA_COMPLETE;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__DESCRIPTION = OrmPackage.XML_EMBEDDABLE__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__ATTRIBUTES = OrmPackage.XML_EMBEDDABLE__ATTRIBUTES;
+
+	/**
+	 * The feature id for the '<em><b>Customizer</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__CUSTOMIZER = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Embeddable</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE_FEATURE_COUNT = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
@@ -678,7 +751,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMutable()
 	 * @generated
 	 */
-	public static final int XML_MUTABLE = 5;
+	public static final int XML_MUTABLE = 6;
 
 	/**
 	 * The feature id for the '<em><b>Mutable</b></em>' attribute.
@@ -706,7 +779,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlId()
 	 * @generated
 	 */
-	public static final int XML_ID = 6;
+	public static final int XML_ID = 7;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -806,7 +879,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasic()
 	 * @generated
 	 */
-	public static final int XML_BASIC = 7;
+	public static final int XML_BASIC = 8;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -897,7 +970,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlVersion()
 	 * @generated
 	 */
-	public static final int XML_VERSION = 8;
+	public static final int XML_VERSION = 9;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -988,7 +1061,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlJoinFetch()
 	 * @generated
 	 */
-	public static final int XML_JOIN_FETCH = 10;
+	public static final int XML_JOIN_FETCH = 11;
 
 	/**
 	 * The feature id for the '<em><b>Join Fetch</b></em>' attribute.
@@ -1232,7 +1305,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlManyToOne()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_ONE = 13;
+	public static final int XML_MANY_TO_ONE = 14;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1323,7 +1396,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlManyToMany()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_MANY = 14;
+	public static final int XML_MANY_TO_MANY = 15;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1423,7 +1496,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlJoinFetchType()
 	 * @generated
 	 */
-	public static final int XML_JOIN_FETCH_TYPE = 15;
+	public static final int XML_JOIN_FETCH_TYPE = 16;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1536,6 +1609,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlCustomizerHolderEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlEmbeddableEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -1926,6 +2006,20 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable <em>Xml Embeddable</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Embeddable</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable
+	 * @generated
+	 */
+	public EClass getXmlEmbeddable()
+	{
+		return xmlEmbeddableEClass;
+	}
+
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1965,6 +2059,8 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 		xmlCustomizerHolderEClass = createEClass(XML_CUSTOMIZER_HOLDER);
 		createEReference(xmlCustomizerHolderEClass, XML_CUSTOMIZER_HOLDER__CUSTOMIZER);
+
+		xmlEmbeddableEClass = createEClass(XML_EMBEDDABLE);
 
 		xmlEntityEClass = createEClass(XML_ENTITY);
 
@@ -2030,6 +2126,8 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		xmlEmbeddableEClass.getESuperTypes().add(theOrmPackage.getXmlEmbeddable());
+		xmlEmbeddableEClass.getESuperTypes().add(this.getXmlCustomizerHolder());
 		xmlEntityEClass.getESuperTypes().add(theOrmPackage.getXmlEntity());
 		xmlEntityEClass.getESuperTypes().add(this.getXmlReadOnly());
 		xmlEntityEClass.getESuperTypes().add(this.getXmlCustomizerHolder());
@@ -2062,6 +2160,8 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 		initEClass(xmlCustomizerHolderEClass, XmlCustomizerHolder.class, "XmlCustomizerHolder", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlCustomizerHolder_Customizer(), this.getXmlCustomizer(), null, "customizer", null, 0, 1, XmlCustomizerHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlEmbeddableEClass, XmlEmbeddable.class, "XmlEmbeddable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlEntityEClass, XmlEntity.class, "XmlEntity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2320,6 +2420,16 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference XML_CUSTOMIZER_HOLDER__CUSTOMIZER = eINSTANCE.getXmlCustomizerHolder_Customizer();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable <em>Xml Embeddable</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable()
+		 * @generated
+		 */
+		public static final EClass XML_EMBEDDABLE = eINSTANCE.getXmlEmbeddable();
 
 	}
 
