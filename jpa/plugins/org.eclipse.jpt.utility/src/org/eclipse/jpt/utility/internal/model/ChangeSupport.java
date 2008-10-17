@@ -73,7 +73,7 @@ public class ChangeSupport
 	protected final Model source;
 
 	/** Associate a listener class to a collection of "generic" listeners for that class. */
-	transient private GenericListenerList[] genericListeners = EMPTY_GENERIC_LISTENERS;
+	private transient GenericListenerList[] genericListeners = EMPTY_GENERIC_LISTENERS;
 		private static final GenericListenerList[] EMPTY_GENERIC_LISTENERS = new GenericListenerList[0];
 
 	/** Associate aspect names to child change support objects. */
@@ -2242,8 +2242,8 @@ public class ChangeSupport
 		s.defaultWriteObject();
 
 		// only write out Serializable listeners
-		int len1 = this.genericListeners.length;
-		for (int i = 0; i < len1; i++) {
+		int len = this.genericListeners.length;
+		for (int i = 0; i < len; i++) {
 			this.writeObject(s, this.genericListeners[i]);
 		}
 		s.writeObject(null);
@@ -2280,7 +2280,7 @@ public class ChangeSupport
 			GenericListenerList gll = null;
 			while (null != (o = s.readObject())) {
 				if (gll == null) {
-					gll = this.addGenericListenerListInternal(listenerClass, (ChangeListener) o);
+					gll = this.addGenericListenerList_(listenerClass, (ChangeListener) o);
 				} else {
 					gll.addListener((ChangeListener) o);
 				}
@@ -2289,7 +2289,7 @@ public class ChangeSupport
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T extends ChangeListener> GenericListenerList addGenericListenerListInternal(Class<T> listenerClass, ChangeListener listener) {
+	private <T extends ChangeListener> GenericListenerList addGenericListenerList_(Class<T> listenerClass, ChangeListener listener) {
 		return this.addGenericListenerList(listenerClass, (T) listener);
 	}
 
