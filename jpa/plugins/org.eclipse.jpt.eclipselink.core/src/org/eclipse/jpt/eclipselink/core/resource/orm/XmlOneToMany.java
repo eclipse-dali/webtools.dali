@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: XmlOneToMany.java,v 1.3 2008/10/16 21:17:50 pfullbright Exp $
+ * $Id: XmlOneToMany.java,v 1.4 2008/10/17 20:31:16 kmoore Exp $
  */
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
@@ -47,14 +47,10 @@ public class XmlOneToMany extends XmlOneToManyImpl implements XmlPrivateOwned, X
 	protected boolean privateOwned = PRIVATE_OWNED_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getJoinFetch() <em>Join Fetch</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getJoinFetch()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final XmlJoinFetchType JOIN_FETCH_EDEFAULT = XmlJoinFetchType.INNER;
+	protected static final XmlJoinFetchType JOIN_FETCH_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getJoinFetch() <em>Join Fetch</em>}' attribute.

@@ -108,14 +108,10 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	protected Boolean shared = SHARED_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getType()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final CacheType TYPE_EDEFAULT = CacheType.FULL;
+	protected static final CacheType TYPE_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
@@ -188,14 +184,10 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	protected Boolean disableHits = DISABLE_HITS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getCoordinationType() <em>Coordination Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getCoordinationType()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final CacheCoordinationType COORDINATION_TYPE_EDEFAULT = CacheCoordinationType.SEND_OBJECT_CHANGES;
+	protected static final CacheCoordinationType COORDINATION_TYPE_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getCoordinationType() <em>Coordination Type</em>}' attribute.
@@ -543,7 +535,7 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	{
 		if (expiryTimeOfDay != null && ((EObject)expiryTimeOfDay).eIsProxy())
 		{
-			InternalEObject oldExpiryTimeOfDay = (InternalEObject)expiryTimeOfDay;
+			InternalEObject oldExpiryTimeOfDay = expiryTimeOfDay;
 			expiryTimeOfDay = (XmlTimeOfDay)eResolveProxy(oldExpiryTimeOfDay);
 			if (expiryTimeOfDay != oldExpiryTimeOfDay)
 			{
