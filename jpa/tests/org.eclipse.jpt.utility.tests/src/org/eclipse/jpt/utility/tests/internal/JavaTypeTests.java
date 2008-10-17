@@ -13,6 +13,7 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.utility.JavaType;
 import org.eclipse.jpt.utility.internal.SimpleJavaType;
 
+@SuppressWarnings("nls")
 public class JavaTypeTests extends TestCase {
 
 	public JavaTypeTests(String name) {

@@ -81,7 +81,7 @@ public class Range
 
 	@Override
 	public String toString() {
-		return "[" + this.start + ", " + this.end + ']';
+		return '[' + this.start + ", " + this.end + ']'; //$NON-NLS-1$
 	}
 
 }

@@ -145,7 +145,7 @@ public class CloneIterator<E>
 			}
 			@Override
 			public String toString() {
-				return "CloneIterator.Mutator.ReadOnly";
+				return "CloneIterator.Mutator.ReadOnly"; //$NON-NLS-1$
 			}
 		}
 

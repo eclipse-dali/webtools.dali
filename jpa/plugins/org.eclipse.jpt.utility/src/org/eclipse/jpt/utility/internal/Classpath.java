@@ -50,7 +50,7 @@ public class Classpath
 	 * Return the Java "boot" classpath. This includes rt.jar.
 	 */
 	public static Classpath bootClasspath() {
-		return new Classpath(System.getProperty("sun.boot.class.path"));
+		return new Classpath(System.getProperty("sun.boot.class.path")); //$NON-NLS-1$
 	}
 	
 	/**
@@ -72,7 +72,7 @@ public class Classpath
 	 * Return the Java "system" classpath.
 	 */
 	public static Classpath javaClasspath() {
-		return new Classpath(System.getProperty("java.class.path"));
+		return new Classpath(System.getProperty("java.class.path")); //$NON-NLS-1$
 	}
 
 	/**
@@ -164,7 +164,7 @@ public class Classpath
 	 * e.g. "java.lang.String" is converted to "java/lang/String.class"
 	 */
 	public static String convertToArchiveClassFileEntryName(String className) {
-		return convertToArchiveEntryNameBase(className) + ".class";
+		return convertToArchiveEntryNameBase(className) + ".class"; //$NON-NLS-1$
 	}
 	
 	/**
@@ -202,7 +202,7 @@ public class Classpath
 	 * and "java\\lang\\String.class" on Windows
 	 */
 	public static String convertToClassFileName(String className) {
-		return convertToFileNameBase(className) + ".class";
+		return convertToFileNameBase(className) + ".class"; //$NON-NLS-1$
 	}
 	
 	/**
@@ -236,7 +236,7 @@ public class Classpath
 	 * and "java\\lang\\String.java" on Windows
 	 */
 	public static String convertToJavaFileName(String className) {
-		return convertToFileNameBase(className) + ".java";
+		return convertToFileNameBase(className) + ".java"; //$NON-NLS-1$
 	}
 
 	/**
@@ -293,7 +293,7 @@ public class Classpath
 	 */
 	public static boolean fileNameIsArchive(String fileName) {
 		String ext = FileTools.extension(fileName).toLowerCase();
-		return ext.equals(".jar") || ext.equals(".zip");
+		return ext.equals(".jar") || ext.equals(".zip"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	/**
@@ -325,15 +325,15 @@ public class Classpath
 			throw new RuntimeException(ex);
 		}
 		String protocol = url.getProtocol().toLowerCase();
-		if (protocol.equals("jar")) {
+		if (protocol.equals("jar")) { //$NON-NLS-1$
 			// if the class is in a JAR, the URL will look something like this:
 			//     jar:file:/C:/jdk/1.4.2_04/jre/lib/rt.jar!/java/lang/String.class
 			return path.substring(0, path.indexOf('!'));
-		} else if (protocol.equals("file")) {
+		} else if (protocol.equals("file")) { //$NON-NLS-1$
 			// if the class is in a directory, the URL will look something like this:
 			//     file:/C:/dev/main/mwdev/class/org/eclipse/dali/utility/Classpath.class
 			return path.substring(0, path.length() - convertToClassFileName(javaClass).length() - 1);
-		} else if (protocol.equals("bundleresource")) {
+		} else if (protocol.equals("bundleresource")) { //$NON-NLS-1$
 			// if the class is in a bundle resource (Eclipse?), the URL will look something like this:
 			//     bundleresource://43/org/eclipse/dali/utility/Classpath.class
 			return path.substring(0, path.length() - convertToClassFileName(javaClass).length() - 1);
@@ -353,7 +353,7 @@ public class Classpath
 	 * Return the directory names used by the Java Extension Mechanism.
 	 */
 	public static String[] javaExtensionDirectoryNames() {
-		return System.getProperty("java.ext.dirs").split(File.pathSeparator);
+		return System.getProperty("java.ext.dirs").split(File.pathSeparator); //$NON-NLS-1$
 	}
 
 
@@ -381,7 +381,7 @@ public class Classpath
 	private static FileFilter jarFileFilter() {
 		return new FileFilter() {
 			public boolean accept(File file) {
-				return FileTools.extension(file.getName()).toLowerCase().equals(".jar");
+				return FileTools.extension(file.getName()).toLowerCase().equals(".jar"); //$NON-NLS-1$
 			}
 		};
 	}
@@ -469,7 +469,7 @@ public class Classpath
 		Entry[] localEntries = this.entries;
 		int max = localEntries.length - 1;
 		if (max == -1) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		StringBuilder sb = new StringBuilder(2000);
 		// stop one short of the end of the array
@@ -620,7 +620,7 @@ public class Classpath
 		Entry(String fileName) {
 			super();
 			if ((fileName == null) || (fileName.length() == 0)) {
-				throw new IllegalArgumentException("'fileName' must be non-empty");
+				throw new IllegalArgumentException("'fileName' must be non-empty"); //$NON-NLS-1$
 			}
 			this.fileName = fileName;
 			this.file = new File(fileName);
@@ -823,7 +823,7 @@ public class Classpath
 		 * a class loader.
 		 */
 		boolean fileNameMightBeForClassFile(String name) {
-			return FileTools.extension(name).toLowerCase().equals(".class")
+			return FileTools.extension(name).toLowerCase().equals(".class") //$NON-NLS-1$
 					&& (name.indexOf(' ') == -1);
 		}
 
