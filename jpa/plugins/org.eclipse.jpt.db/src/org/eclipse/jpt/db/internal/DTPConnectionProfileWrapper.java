@@ -10,8 +10,7 @@
 package org.eclipse.jpt.db.internal;
 
 import java.text.Collator;
-import java.util.Iterator;
-import java.util.Vector;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.datatools.connectivity.ConnectEvent;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
@@ -19,7 +18,6 @@ import org.eclipse.datatools.connectivity.IManagedConnection;
 import org.eclipse.datatools.connectivity.IManagedConnectionOfflineListener;
 import org.eclipse.datatools.connectivity.drivers.DriverManager;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
-import org.eclipse.datatools.connectivity.internal.ManagedConnection;
 import org.eclipse.datatools.connectivity.sqm.core.connection.ConnectionInfo;
 import org.eclipse.datatools.sqltools.core.DatabaseIdentifier;
 import org.eclipse.datatools.sqltools.core.profile.ProfileUtil;
@@ -27,8 +25,8 @@ import org.eclipse.jpt.db.ConnectionListener;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.DatabaseFinder;
 import org.eclipse.jpt.db.DatabaseObject;
+import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 
 /**
  *  Wrap a DTP ConnectionProfile
@@ -380,30 +378,26 @@ final class DTPConnectionProfileWrapper
 	 * IManagedConnectionOfflineListener events to ConnectionListeners.
 	 */
 	class LocalConnectionListener implements IManagedConnectionOfflineListener {
-		private Vector<ConnectionListener> listeners = new Vector<ConnectionListener>();
+		private ListenerList<ConnectionListener> listenerList = new ListenerList<ConnectionListener>(ConnectionListener.class);
 
 		LocalConnectionListener() {
 			super();
 		}
 
 		void addConnectionListener(ConnectionListener listener) {
-			this.listeners.add(listener);
+			this.listenerList.add(listener);
 		}
 
 		void removeConnectionListener(ConnectionListener listener) {
-			this.listeners.remove(listener);
-		}
-
-		private Iterator<ConnectionListener> listeners() {
-			return new CloneIterator<ConnectionListener>(this.listeners);
+			this.listenerList.remove(listener);
 		}
 
 		boolean hasNoListeners() {
-			return this.listeners.isEmpty();
+			return this.listenerList.isEmpty();
 		}
 
 		boolean hasAnyListeners() {
-			return ! this.listeners.isEmpty();
+			return ! this.listenerList.isEmpty();
 		}
 
 
@@ -413,8 +407,8 @@ final class DTPConnectionProfileWrapper
 		public void opened(ConnectEvent event) {
 			// do not build the database here - it is built on-demand
 			// forward event to listeners
-			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
-				stream.next().opened(DTPConnectionProfileWrapper.this);
+			for (ConnectionListener listener : this.listenerList.getListeners()) {
+				listener.opened(DTPConnectionProfileWrapper.this);
 			}
 		}
 
@@ -426,15 +420,15 @@ final class DTPConnectionProfileWrapper
 		 */
 		public void modified(ConnectEvent event) {
 			// forward event to listeners
-			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
-				stream.next().modified(DTPConnectionProfileWrapper.this);
+			for (ConnectionListener listener : this.listenerList.getListeners()) {
+				listener.modified(DTPConnectionProfileWrapper.this);
 			}
 		}
 
 		public boolean okToClose(ConnectEvent event) {
 			// forward event to listeners
-			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
-				if ( ! stream.next().okToClose(DTPConnectionProfileWrapper.this)) {
+			for (ConnectionListener listener : this.listenerList.getListeners()) {
+				if ( ! listener.okToClose(DTPConnectionProfileWrapper.this)) {
 					return false;
 				}
 			}
@@ -443,8 +437,8 @@ final class DTPConnectionProfileWrapper
 
 		public void aboutToClose(ConnectEvent event) {
 			// forward event to listeners
-			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
-				stream.next().aboutToClose(DTPConnectionProfileWrapper.this);
+			for (ConnectionListener listener : this.listenerList.getListeners()) {
+				listener.aboutToClose(DTPConnectionProfileWrapper.this);
 			}
 		}
 
@@ -453,8 +447,8 @@ final class DTPConnectionProfileWrapper
 			// clear the database
 			DTPConnectionProfileWrapper.this.clearDatabase();
 			// forward event to listeners
-			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
-				stream.next().closed(DTPConnectionProfileWrapper.this);
+			for (ConnectionListener listener : this.listenerList.getListeners()) {
+				listener.closed(DTPConnectionProfileWrapper.this);
 			}
 		}
 
@@ -493,44 +487,44 @@ final class DTPConnectionProfileWrapper
 		// ********** internal methods **********
 
 		void databaseChanged(DTPDatabaseWrapper db) {
-			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
-				stream.next().databaseChanged(DTPConnectionProfileWrapper.this, db);
+			for (ConnectionListener listener : this.listenerList.getListeners()) {
+				listener.databaseChanged(DTPConnectionProfileWrapper.this, db);
 			}
 		}
 
 		void catalogChanged(DTPCatalogWrapper catalog) {
-			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
-				stream.next().catalogChanged(DTPConnectionProfileWrapper.this, catalog);
+			for (ConnectionListener listener : this.listenerList.getListeners()) {
+				listener.catalogChanged(DTPConnectionProfileWrapper.this, catalog);
 			}
 		}
 
 		void schemaChanged(DTPSchemaWrapper schema) {
-			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
-				stream.next().schemaChanged(DTPConnectionProfileWrapper.this, schema);
+			for (ConnectionListener listener : this.listenerList.getListeners()) {
+				listener.schemaChanged(DTPConnectionProfileWrapper.this, schema);
 			}
 		}
 
 		void sequenceChanged(DTPSequenceWrapper sequence) {
-			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
-				stream.next().sequenceChanged(DTPConnectionProfileWrapper.this, sequence);
+			for (ConnectionListener listener : this.listenerList.getListeners()) {
+				listener.sequenceChanged(DTPConnectionProfileWrapper.this, sequence);
 			}
 		}
 
 		void tableChanged(DTPTableWrapper table) {
-			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
-				stream.next().tableChanged(DTPConnectionProfileWrapper.this, table);
+			for (ConnectionListener listener : this.listenerList.getListeners()) {
+				listener.tableChanged(DTPConnectionProfileWrapper.this, table);
 			}
 		}
 
 		void columnChanged(DTPColumnWrapper column) {
-			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
-				stream.next().columnChanged(DTPConnectionProfileWrapper.this, column);
+			for (ConnectionListener listener : this.listenerList.getListeners()) {
+				listener.columnChanged(DTPConnectionProfileWrapper.this, column);
 			}
 		}
 
 		void foreignKeyChanged(DTPForeignKeyWrapper foreignKey) {
-			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
-				stream.next().foreignKeyChanged(DTPConnectionProfileWrapper.this, foreignKey);
+			for (ConnectionListener listener : this.listenerList.getListeners()) {
+				listener.foreignKeyChanged(DTPConnectionProfileWrapper.this, foreignKey);
 			}
 		}
 

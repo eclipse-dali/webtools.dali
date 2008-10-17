@@ -10,7 +10,7 @@
 package org.eclipse.jpt.db.internal;
 
 import java.util.Iterator;
-import java.util.Vector;
+
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.IProfileListener1;
 import org.eclipse.datatools.connectivity.ProfileManager;
@@ -18,8 +18,8 @@ import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.ConnectionProfileListener;
 import org.eclipse.jpt.db.DatabaseFinder;
+import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
@@ -116,38 +116,34 @@ public final class DTPConnectionProfileFactory
 	 * Forward events to the factory's listeners.
 	 */
 	private class LocalProfileListener implements IProfileListener1 {
-		private Vector<ConnectionProfileListener> listeners = new Vector<ConnectionProfileListener>();
+		private ListenerList<ConnectionProfileListener> listenerList = new ListenerList<ConnectionProfileListener>(ConnectionProfileListener.class);
 
 		LocalProfileListener() {
 			super();
 		}
 
 		void addConnectionProfileListener(ConnectionProfileListener listener) {
-			this.listeners.add(listener);
+			this.listenerList.add(listener);
 		}
 
 		void removeConnectionProfileListener(ConnectionProfileListener listener) {
-			this.listeners.remove(listener);
-		}
-
-		private Iterator<ConnectionProfileListener> listeners() {
-			return new CloneIterator<ConnectionProfileListener>(this.listeners);
+			this.listenerList.remove(listener);
 		}
 
 		// ********** IProfileListener implementation **********
 
 		public void profileAdded(IConnectionProfile dtpProfile) {
 			String name = dtpProfile.getName();
-			for (Iterator<ConnectionProfileListener> stream = this.listeners(); stream.hasNext(); ) {
-				stream.next().connectionProfileAdded(name);
+			for (ConnectionProfileListener listener : this.listenerList.getListeners()) {
+				listener.connectionProfileAdded(name);
 			}
 		}
 
 		public void profileChanged(IConnectionProfile dtpProfile, String oldName, String oldDescription, Boolean oldAutoConnect) {
 			String newName = dtpProfile.getName();
 			if ( ! newName.equals(oldName)) {
-				for (Iterator<ConnectionProfileListener> stream = this.listeners(); stream.hasNext(); ) {
-					stream.next().connectionProfileRenamed(oldName, newName);
+				for (ConnectionProfileListener listener : this.listenerList.getListeners()) {
+					listener.connectionProfileRenamed(oldName, newName);
 				}
 			}
 		}
@@ -159,8 +155,8 @@ public final class DTPConnectionProfileFactory
 
 		public void profileDeleted(IConnectionProfile dtpProfile) {
 			String name = dtpProfile.getName();
-			for (Iterator<ConnectionProfileListener> stream = this.listeners(); stream.hasNext(); ) {
-				stream.next().connectionProfileRemoved(name);
+			for (ConnectionProfileListener listener : this.listenerList.getListeners()) {
+				listener.connectionProfileRemoved(name);
 			}
 		}
 
