@@ -438,7 +438,7 @@ public final class ClassTools {
 			// stop one short of the end of the array
 			for (int i = 0; i < max; i++) {
 				sb.append(parameterTypes[i].getName());
-				sb.append(", ");
+				sb.append(", "); //$NON-NLS-1$
 			}
 			sb.append(parameterTypes[max].getName());
 		}
@@ -978,7 +978,7 @@ public final class ClassTools {
 	public static String packageNameForClassNamed(String className) {
 		int lastPeriod = className.lastIndexOf('.');
 		if (lastPeriod == -1) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		return className.substring(0, lastPeriod);
 	}
@@ -992,7 +992,7 @@ public final class ClassTools {
 		StringBuilder sb = new StringBuilder(200);
 		sb.append(shortNameFor(javaClass));
 		if ( ! javaClass.isPrimitive()) {
-			sb.append(" (");
+			sb.append(" ("); //$NON-NLS-1$
 			sb.append(packageNameFor(javaClass));
 			sb.append(')');
 		}
@@ -1437,7 +1437,7 @@ public final class ClassTools {
 	 * Return the class for the specified "type declaration".
 	 */
 	public static Class<?> classForTypeDeclaration(String typeDeclaration) throws ClassNotFoundException {
-		return classForTypeDeclaration(typeDeclaration, ClassTools.class.getClassLoader());
+		return classForTypeDeclaration(typeDeclaration, null);
 	}
 	
 	/**
@@ -1446,7 +1446,7 @@ public final class ClassTools {
 	 */
 	public static Class<?> classForTypeDeclaration(String typeDeclaration, ClassLoader classLoader) throws ClassNotFoundException {
 		TypeDeclaration td = typeDeclaration(typeDeclaration);
-		return classForTypeDeclaration(td.elementTypeName, td.arrayDepth);
+		return classForTypeDeclaration(td.elementTypeName, td.arrayDepth, classLoader);
 	}
 
 	private static TypeDeclaration typeDeclaration(String typeDeclaration) {
@@ -1531,7 +1531,7 @@ public final class ClassTools {
 			if (typeDeclaration.charAt(close - 1) == TYPE_DECLARATION_ARRAY_OPEN) {
 				depth++;
 			} else {
-				throw new IllegalArgumentException("invalid type declaration: " + typeDeclaration);
+				throw new IllegalArgumentException("invalid type declaration: " + typeDeclaration); //$NON-NLS-1$
 			}
 			close = last - (depth * 2);
 		}
@@ -1549,7 +1549,7 @@ public final class ClassTools {
 		}
 
 		if (elementTypeName.equals(VOID_CLASS_NAME)) {
-			throw new IllegalArgumentException("'" + VOID_CLASS_NAME + "' must have an array depth of zero: " + arrayDepth + '.');
+			throw new IllegalArgumentException('\'' + VOID_CLASS_NAME + "' must have an array depth of zero: " + arrayDepth + '.'); //$NON-NLS-1$
 		}
 		// array
 		StringBuilder sb = new StringBuilder(100);
@@ -1657,7 +1657,7 @@ public final class ClassTools {
 		final char code;
 		final Class<?> javaClass;
 		final Class<?> wrapperClass;
-		private static final String WRAPPER_CLASS_TYPE_FIELD_NAME = "TYPE";
+		private static final String WRAPPER_CLASS_TYPE_FIELD_NAME = "TYPE"; //$NON-NLS-1$
 		// e.g. java.lang.Boolean.TYPE => boolean.class
 		Primitive(char code, Class<?> wrapperClass) {
 			this.code = code;
