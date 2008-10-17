@@ -543,7 +543,7 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	{
 		if (expiryTimeOfDay != null && ((EObject)expiryTimeOfDay).eIsProxy())
 		{
-			InternalEObject oldExpiryTimeOfDay = expiryTimeOfDay;
+			InternalEObject oldExpiryTimeOfDay = (InternalEObject)expiryTimeOfDay;
 			expiryTimeOfDay = (XmlTimeOfDay)eResolveProxy(oldExpiryTimeOfDay);
 			if (expiryTimeOfDay != oldExpiryTimeOfDay)
 			{

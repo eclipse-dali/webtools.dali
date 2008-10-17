@@ -15,28 +15,6 @@
         containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEmbeddable #//XmlCustomizerHolder"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntity #//XmlReadOnly #//XmlCustomizerHolder"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlMappedSuperclass #//XmlReadOnly #//XmlCustomizerHolder"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlMutable" abstract="true" interface="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mutable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlId" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlIdImpl #//XmlMutable"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlBasic" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlBasicImpl #//XmlMutable"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlVersion" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlVersionImpl #//XmlMutable"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlPrivateOwned" abstract="true" interface="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="privateOwned" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlJoinFetch" abstract="true" interface="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="joinFetch" eType="#//XmlJoinFetchType"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="XmlJoinFetchType">
-    <eLiterals name="INNER"/>
-    <eLiterals name="OUTER" value="1" literal="OUTER"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToOne" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlOneToOneImpl #//XmlPrivateOwned #//XmlJoinFetch"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlOneToManyImpl #//XmlPrivateOwned #//XmlJoinFetch"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToOne" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToOneImpl #//XmlJoinFetch"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToManyImpl #//XmlJoinFetch"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTimeOfDay">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="hour" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="minute" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
@@ -70,6 +48,32 @@
         defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expiryTimeOfDay" eType="#//XmlTimeOfDay"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlCacheHolder" abstract="true" interface="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cache" eType="#//XmlCache"
+        containment="true" resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntity #//XmlReadOnly #//XmlCustomizerHolder #//XmlCacheHolder"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlMappedSuperclass #//XmlReadOnly #//XmlCustomizerHolder #//XmlCacheHolder"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMutable" abstract="true" interface="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mutable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlId" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlIdImpl #//XmlMutable"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlBasic" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlBasicImpl #//XmlMutable"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlVersion" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlVersionImpl #//XmlMutable"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlPrivateOwned" abstract="true" interface="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="privateOwned" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlJoinFetch" abstract="true" interface="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="joinFetch" eType="#//XmlJoinFetchType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="XmlJoinFetchType">
+    <eLiterals name="INNER"/>
+    <eLiterals name="OUTER" value="1" literal="OUTER"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToOne" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlOneToOneImpl #//XmlPrivateOwned #//XmlJoinFetch"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlOneToManyImpl #//XmlPrivateOwned #//XmlJoinFetch"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToOne" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToOneImpl #//XmlJoinFetch"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToManyImpl #//XmlJoinFetch"/>
   <eClassifiers xsi:type="ecore:EEnum" name="ExistenceType">
     <eLiterals name="CHECK_CACHE"/>
     <eLiterals name="CHECK_DATABASE" value="1"/>

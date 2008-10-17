@@ -11,10 +11,6 @@
   <foreignModel>eclipselink_orm.ecore</foreignModel>
   <genPackages prefix="EclipseLinkOrm" basePackage="org.eclipse.jpt.eclipselink.core.resource"
       disposableProviderFactory="true" adapterFactory="false" ecorePackage="eclipselink_orm.ecore#/">
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//XmlJoinFetchType">
-      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlJoinFetchType/INNER"/>
-      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlJoinFetchType/OUTER"/>
-    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//CacheType">
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheType/FULL"/>
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheType/WEAK"/>
@@ -29,6 +25,10 @@
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CoordinationType/INVALIDATE_CHANGED_OBJECTS"/>
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CoordinationType/SEND_NEW_OBJECTS_WITH_CHANGES"/>
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CoordinationType/NONE"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//XmlJoinFetchType">
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlJoinFetchType/INNER"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlJoinFetchType/OUTER"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//ExistenceType">
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//ExistenceType/CHECK_CACHE"/>
@@ -46,6 +46,26 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlCustomizerHolder/customizer"/>
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEmbeddable"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlTimeOfDay">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTimeOfDay/hour"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTimeOfDay/minute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTimeOfDay/second"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTimeOfDay/millisecond"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlCache">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/expiry"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/size"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/shared"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/alwaysRefresh"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/refreshOnlyIfNewer"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/disableHits"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/coordinationType"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlCache/expiryTimeOfDay"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlCacheHolder">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlCacheHolder/cache"/>
+    </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEntity"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlMappedSuperclass"/>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlMutable">
@@ -64,22 +84,5 @@
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlOneToMany"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToOne"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToMany"/>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlTimeOfDay">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTimeOfDay/hour"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTimeOfDay/minute"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTimeOfDay/second"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTimeOfDay/millisecond"/>
-    </genClasses>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlCache">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/expiry"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/size"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/shared"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/type"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/alwaysRefresh"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/refreshOnlyIfNewer"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/disableHits"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/coordinationType"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlCache/expiryTimeOfDay"/>
-    </genClasses>
   </genPackages>
 </genmodel:GenModel>
