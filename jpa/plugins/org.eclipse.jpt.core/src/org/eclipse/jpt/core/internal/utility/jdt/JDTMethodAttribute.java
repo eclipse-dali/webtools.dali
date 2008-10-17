@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.utility.jdt;
 import java.beans.Introspector;
 import java.util.Arrays;
 import java.util.List;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IMethodBinding;
@@ -138,7 +139,7 @@ public class JDTMethodAttribute
 
 	@Override
 	public boolean matches(String memberName, int occurrence) {
-		throw new UnsupportedOperationException("Use #matches(org.eclipse.jdt.core.dom.MethodDeclaration, int).");
+		throw new UnsupportedOperationException("Use #matches(org.eclipse.jdt.core.dom.MethodDeclaration, int)."); //$NON-NLS-1$
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
@@ -151,9 +152,9 @@ public class JDTMethodAttribute
 	public String getAttributeName() {
 		String name = this.getName_();
 		int beginIndex = 0;
-		if (name.startsWith("get")) {
+		if (name.startsWith("get")) { //$NON-NLS-1$
 			beginIndex = 3;
-		} else if (name.startsWith("is")) {
+		} else if (name.startsWith("is")) { //$NON-NLS-1$
 			beginIndex = 2;
 		}
 		return Introspector.decapitalize(name.substring(beginIndex));

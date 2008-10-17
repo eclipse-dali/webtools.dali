@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.utility.jdt;
 
 import java.util.List;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -155,11 +156,11 @@ public class JDTFieldAttribute
 				return fieldDeclaration;
 			}
 			public String getDescription() {
-				return "field declaration";
+				return "field declaration"; //$NON-NLS-1$
 			}
 			@Override
 			public String toString() {
-				return "FIELD_DECLARATION_SELECTOR";
+				return "FIELD_DECLARATION_SELECTOR"; //$NON-NLS-1$
 			}
 		};
 
@@ -169,11 +170,11 @@ public class JDTFieldAttribute
 				return variableDeclarationFragment;
 			}
 			public String getDescription() {
-				return "variable declaration fragment";
+				return "variable declaration fragment"; //$NON-NLS-1$
 			}
 			@Override
 			public String toString() {
-				return "VARIABLE_DECLARATION_FRAGMENT_SELECTOR";
+				return "VARIABLE_DECLARATION_FRAGMENT_SELECTOR"; //$NON-NLS-1$
 			}
 		};
 

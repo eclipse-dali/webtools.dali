@@ -43,7 +43,7 @@ public abstract class AbstractExpressionConverter<T>
 	 * Return the expression for a null object. By default, a null object will
 	 * be converted into a null expression.
 	 */
-	protected Expression convertNull(AST ast) {
+	protected Expression convertNull(@SuppressWarnings("unused") AST ast) {
 		return null;
 	}
 

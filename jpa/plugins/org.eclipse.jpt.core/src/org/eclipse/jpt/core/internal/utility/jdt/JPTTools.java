@@ -46,7 +46,7 @@ public class JPTTools {
 			return false;
 		}
 		String returnTypeName = returnType.getQualifiedName();
-		if (returnTypeName.equals("void")) {
+		if (returnTypeName.equals("void")) { //$NON-NLS-1$
 			return false;
 		}
 		if (methodBinding.getParameterTypes().length != 0) {
@@ -56,16 +56,16 @@ public class JPTTools {
 		String methodName = methodBinding.getName();
 		int beginIndex = 0;
 		boolean booleanGetter = false;
-		if (methodName.startsWith("is")) {
-			if (returnTypeName.equals("boolean")) {
+		if (methodName.startsWith("is")) { //$NON-NLS-1$
+			if (returnTypeName.equals("boolean")) { //$NON-NLS-1$
 				beginIndex = 2;
 			} else {
 				return false;
 			}
 		} else {
-			if (methodName.startsWith("get")) {
+			if (methodName.startsWith("get")) { //$NON-NLS-1$
 				beginIndex = 3;
-				if (returnTypeName.equals("boolean")) {
+				if (returnTypeName.equals("boolean")) { //$NON-NLS-1$
 					booleanGetter = true;
 				}
 			} else {
@@ -80,22 +80,22 @@ public class JPTTools {
 		// then #isProperty() takes precedence and we ignore #getProperty()
 		// (see the JavaBeans spec 1.01)
 		if (booleanGetter) {
-			IMethodBinding isMethod = methodBindingNoParameters(methodBinding.getDeclaringClass(), "is" + capitalizedAttributeName);
+			IMethodBinding isMethod = methodBindingNoParameters(methodBinding.getDeclaringClass(), "is" + capitalizedAttributeName); //$NON-NLS-1$
 			if (isMethod == null) {
 				return false;
 			}
-			if (isMethod.getReturnType().getName().equals("boolean")) {
+			if (isMethod.getReturnType().getName().equals("boolean")) { //$NON-NLS-1$
 				return false;
 			}
 		}
-		IMethodBinding setMethod = methodBindingOneParameter(methodBinding.getDeclaringClass(), "set" + capitalizedAttributeName, returnTypeName);
+		IMethodBinding setMethod = methodBindingOneParameter(methodBinding.getDeclaringClass(), "set" + capitalizedAttributeName, returnTypeName); //$NON-NLS-1$
 		if (setMethod == null) {
 			return false;
 		}
 		if (methodHasBadModifiers(setMethod)) {
 			return false;
 		}
-		if ( ! setMethod.getReturnType().getName().equals("void")) {
+		if ( ! setMethod.getReturnType().getName().equals("void")) { //$NON-NLS-1$
 			return false;
 		}
 		return true;
