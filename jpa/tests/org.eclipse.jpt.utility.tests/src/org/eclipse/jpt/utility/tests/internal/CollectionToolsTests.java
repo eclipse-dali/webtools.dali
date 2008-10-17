@@ -1077,6 +1077,20 @@ public class CollectionToolsTests extends TestCase {
 		assertEquals(0, b.size());
 	}
 
+	public void testClearObjectArray() {
+		String[] a = this.buildStringArray1();
+		assertEquals(3, a.length);
+		a = CollectionTools.clear(a);
+		assertEquals(0, a.length);
+	}
+
+	public void testClearObjectArray_Empty() {
+		String[] a = new String[0];
+		assertEquals(0, a.length);
+		a = CollectionTools.clear(a);
+		assertEquals(0, a.length);
+	}
+
 	public void testCollectionEnumeration() {
 		Collection<String> c = CollectionTools.collection(this.buildStringVector1().elements());
 		assertEquals(3, c.size());

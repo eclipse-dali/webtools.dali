@@ -736,6 +736,17 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Clear the specified array.
+	 * java.util.Arrays#clear(Object[] array)
+	 */
+	public static <E> E[] clear(E[] array) {
+		if (array.length == 0) {
+			return array;
+		}
+		return newArray(array, 0);
+	}
+
+	/**
 	 * Return a collection corresponding to the specified enumeration.
 	 */
 	public static <E> HashBag<E> collection(Enumeration<? extends E> enumeration) {
