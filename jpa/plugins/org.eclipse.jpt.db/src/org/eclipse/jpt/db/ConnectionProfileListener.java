@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.db;
 
+import java.util.EventListener;
+
 /**
  * A ProfileListener is notified of any changes to the DTP connection profiles.
  * 
@@ -20,7 +22,9 @@ package org.eclipse.jpt.db;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ConnectionProfileListener {
+public interface ConnectionProfileListener
+	extends EventListener
+{
 
 	/**
 	 * The specified profile has been added.
