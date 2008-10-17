@@ -1489,6 +1489,161 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_MANY_FEATURE_COUNT = OrmPackage.XML_MANY_TO_MANY_IMPL_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay <em>Xml Time Of Day</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTimeOfDay()
+	 * @generated
+	 */
+	public static final int XML_TIME_OF_DAY = 16;
+
+	/**
+	 * The feature id for the '<em><b>Hour</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TIME_OF_DAY__HOUR = 0;
+
+	/**
+	 * The feature id for the '<em><b>Minute</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TIME_OF_DAY__MINUTE = 1;
+
+	/**
+	 * The feature id for the '<em><b>Second</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TIME_OF_DAY__SECOND = 2;
+
+	/**
+	 * The feature id for the '<em><b>Millisecond</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TIME_OF_DAY__MILLISECOND = 3;
+
+	/**
+	 * The number of structural features of the '<em>Xml Time Of Day</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TIME_OF_DAY_FEATURE_COUNT = 4;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache <em>Xml Cache</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCache()
+	 * @generated
+	 */
+	public static final int XML_CACHE = 17;
+
+	/**
+	 * The feature id for the '<em><b>Expiry</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE__EXPIRY = 0;
+
+	/**
+	 * The feature id for the '<em><b>Size</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE__SIZE = 1;
+
+	/**
+	 * The feature id for the '<em><b>Shared</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE__SHARED = 2;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE__TYPE = 3;
+
+	/**
+	 * The feature id for the '<em><b>Always Refresh</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE__ALWAYS_REFRESH = 4;
+
+	/**
+	 * The feature id for the '<em><b>Refresh Only If Newer</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE__REFRESH_ONLY_IF_NEWER = 5;
+
+	/**
+	 * The feature id for the '<em><b>Disable Hits</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE__DISABLE_HITS = 6;
+
+	/**
+	 * The feature id for the '<em><b>Coordination Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE__COORDINATION_TYPE = 7;
+
+	/**
+	 * The feature id for the '<em><b>Expiry Time Of Day</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE__EXPIRY_TIME_OF_DAY = 8;
+
+	/**
+	 * The number of structural features of the '<em>Xml Cache</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE_FEATURE_COUNT = 9;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType <em>Xml Join Fetch Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1496,7 +1651,37 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlJoinFetchType()
 	 * @generated
 	 */
-	public static final int XML_JOIN_FETCH_TYPE = 16;
+	public static final int XML_JOIN_FETCH_TYPE = 18;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.CacheType <em>Cache Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.CacheType
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCacheType()
+	 * @generated
+	 */
+	public static final int CACHE_TYPE = 19;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.CoordinationType <em>Coordination Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.CoordinationType
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCoordinationType()
+	 * @generated
+	 */
+	public static final int COORDINATION_TYPE = 20;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType <em>Existence Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getExistenceType()
+	 * @generated
+	 */
+	public static final int EXISTENCE_TYPE = 21;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1594,7 +1779,42 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass xmlTimeOfDayEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlCacheEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EEnum xmlJoinFetchTypeEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum cacheTypeEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum coordinationTypeEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum existenceTypeEEnum = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1934,6 +2154,229 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay <em>Xml Time Of Day</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Time Of Day</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay
+	 * @generated
+	 */
+	public EClass getXmlTimeOfDay()
+	{
+		return xmlTimeOfDayEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay#getHour <em>Hour</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Hour</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay#getHour()
+	 * @see #getXmlTimeOfDay()
+	 * @generated
+	 */
+	public EAttribute getXmlTimeOfDay_Hour()
+	{
+		return (EAttribute)xmlTimeOfDayEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay#getMinute <em>Minute</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Minute</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay#getMinute()
+	 * @see #getXmlTimeOfDay()
+	 * @generated
+	 */
+	public EAttribute getXmlTimeOfDay_Minute()
+	{
+		return (EAttribute)xmlTimeOfDayEClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay#getSecond <em>Second</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Second</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay#getSecond()
+	 * @see #getXmlTimeOfDay()
+	 * @generated
+	 */
+	public EAttribute getXmlTimeOfDay_Second()
+	{
+		return (EAttribute)xmlTimeOfDayEClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay#getMillisecond <em>Millisecond</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Millisecond</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay#getMillisecond()
+	 * @see #getXmlTimeOfDay()
+	 * @generated
+	 */
+	public EAttribute getXmlTimeOfDay_Millisecond()
+	{
+		return (EAttribute)xmlTimeOfDayEClass.getEStructuralFeatures().get(3);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache <em>Xml Cache</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Cache</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache
+	 * @generated
+	 */
+	public EClass getXmlCache()
+	{
+		return xmlCacheEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getExpiry <em>Expiry</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Expiry</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getExpiry()
+	 * @see #getXmlCache()
+	 * @generated
+	 */
+	public EAttribute getXmlCache_Expiry()
+	{
+		return (EAttribute)xmlCacheEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getSize <em>Size</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Size</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getSize()
+	 * @see #getXmlCache()
+	 * @generated
+	 */
+	public EAttribute getXmlCache_Size()
+	{
+		return (EAttribute)xmlCacheEClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getShared <em>Shared</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Shared</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getShared()
+	 * @see #getXmlCache()
+	 * @generated
+	 */
+	public EAttribute getXmlCache_Shared()
+	{
+		return (EAttribute)xmlCacheEClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getType()
+	 * @see #getXmlCache()
+	 * @generated
+	 */
+	public EAttribute getXmlCache_Type()
+	{
+		return (EAttribute)xmlCacheEClass.getEStructuralFeatures().get(3);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getAlwaysRefresh <em>Always Refresh</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Always Refresh</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getAlwaysRefresh()
+	 * @see #getXmlCache()
+	 * @generated
+	 */
+	public EAttribute getXmlCache_AlwaysRefresh()
+	{
+		return (EAttribute)xmlCacheEClass.getEStructuralFeatures().get(4);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getRefreshOnlyIfNewer <em>Refresh Only If Newer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Refresh Only If Newer</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getRefreshOnlyIfNewer()
+	 * @see #getXmlCache()
+	 * @generated
+	 */
+	public EAttribute getXmlCache_RefreshOnlyIfNewer()
+	{
+		return (EAttribute)xmlCacheEClass.getEStructuralFeatures().get(5);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getDisableHits <em>Disable Hits</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Disable Hits</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getDisableHits()
+	 * @see #getXmlCache()
+	 * @generated
+	 */
+	public EAttribute getXmlCache_DisableHits()
+	{
+		return (EAttribute)xmlCacheEClass.getEStructuralFeatures().get(6);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getCoordinationType <em>Coordination Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Coordination Type</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getCoordinationType()
+	 * @see #getXmlCache()
+	 * @generated
+	 */
+	public EAttribute getXmlCache_CoordinationType()
+	{
+		return (EAttribute)xmlCacheEClass.getEStructuralFeatures().get(7);
+	}
+
+
+	/**
+	 * Returns the meta object for the reference '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getExpiryTimeOfDay <em>Expiry Time Of Day</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Expiry Time Of Day</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getExpiryTimeOfDay()
+	 * @see #getXmlCache()
+	 * @generated
+	 */
+	public EReference getXmlCache_ExpiryTimeOfDay()
+	{
+		return (EReference)xmlCacheEClass.getEStructuralFeatures().get(8);
+	}
+
+
+	/**
 	 * Returns the meta object for enum '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType <em>Xml Join Fetch Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1944,6 +2387,48 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public EEnum getXmlJoinFetchType()
 	{
 		return xmlJoinFetchTypeEEnum;
+	}
+
+
+	/**
+	 * Returns the meta object for enum '{@link org.eclipse.jpt.eclipselink.core.resource.orm.CacheType <em>Cache Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Cache Type</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.CacheType
+	 * @generated
+	 */
+	public EEnum getCacheType()
+	{
+		return cacheTypeEEnum;
+	}
+
+
+	/**
+	 * Returns the meta object for enum '{@link org.eclipse.jpt.eclipselink.core.resource.orm.CoordinationType <em>Coordination Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Coordination Type</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.CoordinationType
+	 * @generated
+	 */
+	public EEnum getCoordinationType()
+	{
+		return coordinationTypeEEnum;
+	}
+
+
+	/**
+	 * Returns the meta object for enum '{@link org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType <em>Existence Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Existence Type</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType
+	 * @generated
+	 */
+	public EEnum getExistenceType()
+	{
+		return existenceTypeEEnum;
 	}
 
 
@@ -2089,8 +2574,28 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 		xmlManyToManyEClass = createEClass(XML_MANY_TO_MANY);
 
+		xmlTimeOfDayEClass = createEClass(XML_TIME_OF_DAY);
+		createEAttribute(xmlTimeOfDayEClass, XML_TIME_OF_DAY__HOUR);
+		createEAttribute(xmlTimeOfDayEClass, XML_TIME_OF_DAY__MINUTE);
+		createEAttribute(xmlTimeOfDayEClass, XML_TIME_OF_DAY__SECOND);
+		createEAttribute(xmlTimeOfDayEClass, XML_TIME_OF_DAY__MILLISECOND);
+
+		xmlCacheEClass = createEClass(XML_CACHE);
+		createEAttribute(xmlCacheEClass, XML_CACHE__EXPIRY);
+		createEAttribute(xmlCacheEClass, XML_CACHE__SIZE);
+		createEAttribute(xmlCacheEClass, XML_CACHE__SHARED);
+		createEAttribute(xmlCacheEClass, XML_CACHE__TYPE);
+		createEAttribute(xmlCacheEClass, XML_CACHE__ALWAYS_REFRESH);
+		createEAttribute(xmlCacheEClass, XML_CACHE__REFRESH_ONLY_IF_NEWER);
+		createEAttribute(xmlCacheEClass, XML_CACHE__DISABLE_HITS);
+		createEAttribute(xmlCacheEClass, XML_CACHE__COORDINATION_TYPE);
+		createEReference(xmlCacheEClass, XML_CACHE__EXPIRY_TIME_OF_DAY);
+
 		// Create enums
 		xmlJoinFetchTypeEEnum = createEEnum(XML_JOIN_FETCH_TYPE);
+		cacheTypeEEnum = createEEnum(CACHE_TYPE);
+		coordinationTypeEEnum = createEEnum(COORDINATION_TYPE);
+		existenceTypeEEnum = createEEnum(EXISTENCE_TYPE);
 	}
 
 	/**
@@ -2190,10 +2695,48 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 		initEClass(xmlManyToManyEClass, XmlManyToMany.class, "XmlManyToMany", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+		initEClass(xmlTimeOfDayEClass, XmlTimeOfDay.class, "XmlTimeOfDay", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlTimeOfDay_Hour(), theXMLTypePackage.getIntObject(), "hour", null, 0, 1, XmlTimeOfDay.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlTimeOfDay_Minute(), theXMLTypePackage.getIntObject(), "minute", null, 0, 1, XmlTimeOfDay.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlTimeOfDay_Second(), theXMLTypePackage.getIntObject(), "second", null, 0, 1, XmlTimeOfDay.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlTimeOfDay_Millisecond(), theXMLTypePackage.getIntObject(), "millisecond", null, 0, 1, XmlTimeOfDay.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlCacheEClass, XmlCache.class, "XmlCache", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlCache_Expiry(), theXMLTypePackage.getIntObject(), "expiry", null, 0, 1, XmlCache.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlCache_Size(), theXMLTypePackage.getIntObject(), "size", null, 0, 1, XmlCache.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlCache_Shared(), theXMLTypePackage.getBooleanObject(), "shared", null, 0, 1, XmlCache.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlCache_Type(), this.getCacheType(), "type", null, 0, 1, XmlCache.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlCache_AlwaysRefresh(), theXMLTypePackage.getBooleanObject(), "alwaysRefresh", null, 0, 1, XmlCache.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlCache_RefreshOnlyIfNewer(), theXMLTypePackage.getBooleanObject(), "refreshOnlyIfNewer", null, 0, 1, XmlCache.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlCache_DisableHits(), theXMLTypePackage.getBooleanObject(), "disableHits", null, 0, 1, XmlCache.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlCache_CoordinationType(), this.getCoordinationType(), "coordinationType", "", 0, 1, XmlCache.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlCache_ExpiryTimeOfDay(), this.getXmlTimeOfDay(), null, "expiryTimeOfDay", null, 0, 1, XmlCache.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		// Initialize enums and add enum literals
 		initEEnum(xmlJoinFetchTypeEEnum, XmlJoinFetchType.class, "XmlJoinFetchType");
 		addEEnumLiteral(xmlJoinFetchTypeEEnum, XmlJoinFetchType.INNER);
 		addEEnumLiteral(xmlJoinFetchTypeEEnum, XmlJoinFetchType.OUTER);
+
+		initEEnum(cacheTypeEEnum, CacheType.class, "CacheType");
+		addEEnumLiteral(cacheTypeEEnum, CacheType.FULL);
+		addEEnumLiteral(cacheTypeEEnum, CacheType.WEAK);
+		addEEnumLiteral(cacheTypeEEnum, CacheType.SOFT);
+		addEEnumLiteral(cacheTypeEEnum, CacheType.SOFT_WEAK);
+		addEEnumLiteral(cacheTypeEEnum, CacheType.HARD_WEAK);
+		addEEnumLiteral(cacheTypeEEnum, CacheType.CACHE);
+		addEEnumLiteral(cacheTypeEEnum, CacheType.NONE);
+
+		initEEnum(coordinationTypeEEnum, CoordinationType.class, "CoordinationType");
+		addEEnumLiteral(coordinationTypeEEnum, CoordinationType.SEND_OBJECT_CHANGES);
+		addEEnumLiteral(coordinationTypeEEnum, CoordinationType.INVALIDATE_CHANGED_OBJECTS);
+		addEEnumLiteral(coordinationTypeEEnum, CoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES);
+		addEEnumLiteral(coordinationTypeEEnum, CoordinationType.NONE);
+
+		initEEnum(existenceTypeEEnum, ExistenceType.class, "ExistenceType");
+		addEEnumLiteral(existenceTypeEEnum, ExistenceType.CHECK_CACHE);
+		addEEnumLiteral(existenceTypeEEnum, ExistenceType.CHECK_DATABASE);
+		addEEnumLiteral(existenceTypeEEnum, ExistenceType.ASSUME_EXISTENCE);
+		addEEnumLiteral(existenceTypeEEnum, ExistenceType.ASSUME_NON_EXISTENCE);
 
 		// Create resource
 		createResource(eNS_URI);
@@ -2376,6 +2919,130 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		public static final EClass XML_MANY_TO_MANY = eINSTANCE.getXmlManyToMany();
 
 		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay <em>Xml Time Of Day</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTimeOfDay()
+		 * @generated
+		 */
+		public static final EClass XML_TIME_OF_DAY = eINSTANCE.getXmlTimeOfDay();
+
+		/**
+		 * The meta object literal for the '<em><b>Hour</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_TIME_OF_DAY__HOUR = eINSTANCE.getXmlTimeOfDay_Hour();
+
+		/**
+		 * The meta object literal for the '<em><b>Minute</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_TIME_OF_DAY__MINUTE = eINSTANCE.getXmlTimeOfDay_Minute();
+
+		/**
+		 * The meta object literal for the '<em><b>Second</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_TIME_OF_DAY__SECOND = eINSTANCE.getXmlTimeOfDay_Second();
+
+		/**
+		 * The meta object literal for the '<em><b>Millisecond</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_TIME_OF_DAY__MILLISECOND = eINSTANCE.getXmlTimeOfDay_Millisecond();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache <em>Xml Cache</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCache()
+		 * @generated
+		 */
+		public static final EClass XML_CACHE = eINSTANCE.getXmlCache();
+
+		/**
+		 * The meta object literal for the '<em><b>Expiry</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_CACHE__EXPIRY = eINSTANCE.getXmlCache_Expiry();
+
+		/**
+		 * The meta object literal for the '<em><b>Size</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_CACHE__SIZE = eINSTANCE.getXmlCache_Size();
+
+		/**
+		 * The meta object literal for the '<em><b>Shared</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_CACHE__SHARED = eINSTANCE.getXmlCache_Shared();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_CACHE__TYPE = eINSTANCE.getXmlCache_Type();
+
+		/**
+		 * The meta object literal for the '<em><b>Always Refresh</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_CACHE__ALWAYS_REFRESH = eINSTANCE.getXmlCache_AlwaysRefresh();
+
+		/**
+		 * The meta object literal for the '<em><b>Refresh Only If Newer</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_CACHE__REFRESH_ONLY_IF_NEWER = eINSTANCE.getXmlCache_RefreshOnlyIfNewer();
+
+		/**
+		 * The meta object literal for the '<em><b>Disable Hits</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_CACHE__DISABLE_HITS = eINSTANCE.getXmlCache_DisableHits();
+
+		/**
+		 * The meta object literal for the '<em><b>Coordination Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_CACHE__COORDINATION_TYPE = eINSTANCE.getXmlCache_CoordinationType();
+
+		/**
+		 * The meta object literal for the '<em><b>Expiry Time Of Day</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_CACHE__EXPIRY_TIME_OF_DAY = eINSTANCE.getXmlCache_ExpiryTimeOfDay();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType <em>Xml Join Fetch Type</em>}' enum.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2384,6 +3051,36 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EEnum XML_JOIN_FETCH_TYPE = eINSTANCE.getXmlJoinFetchType();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.CacheType <em>Cache Type</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.CacheType
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCacheType()
+		 * @generated
+		 */
+		public static final EEnum CACHE_TYPE = eINSTANCE.getCacheType();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.CoordinationType <em>Coordination Type</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.CoordinationType
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCoordinationType()
+		 * @generated
+		 */
+		public static final EEnum COORDINATION_TYPE = eINSTANCE.getCoordinationType();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType <em>Existence Type</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getExistenceType()
+		 * @generated
+		 */
+		public static final EEnum EXISTENCE_TYPE = eINSTANCE.getExistenceType();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizer <em>Xml Customizer</em>}' class.

@@ -90,6 +90,8 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY: return (EObject)createXmlOneToMany();
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE: return (EObject)createXmlManyToOne();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY: return (EObject)createXmlManyToMany();
+			case EclipseLinkOrmPackage.XML_TIME_OF_DAY: return (EObject)createXmlTimeOfDay();
+			case EclipseLinkOrmPackage.XML_CACHE: return (EObject)createXmlCache();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -107,6 +109,12 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 		{
 			case EclipseLinkOrmPackage.XML_JOIN_FETCH_TYPE:
 				return createXmlJoinFetchTypeFromString(eDataType, initialValue);
+			case EclipseLinkOrmPackage.CACHE_TYPE:
+				return createCacheTypeFromString(eDataType, initialValue);
+			case EclipseLinkOrmPackage.COORDINATION_TYPE:
+				return createCoordinationTypeFromString(eDataType, initialValue);
+			case EclipseLinkOrmPackage.EXISTENCE_TYPE:
+				return createExistenceTypeFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -124,6 +132,12 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 		{
 			case EclipseLinkOrmPackage.XML_JOIN_FETCH_TYPE:
 				return convertXmlJoinFetchTypeToString(eDataType, instanceValue);
+			case EclipseLinkOrmPackage.CACHE_TYPE:
+				return convertCacheTypeToString(eDataType, instanceValue);
+			case EclipseLinkOrmPackage.COORDINATION_TYPE:
+				return convertCoordinationTypeToString(eDataType, instanceValue);
+			case EclipseLinkOrmPackage.EXISTENCE_TYPE:
+				return convertExistenceTypeToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -255,6 +269,28 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public XmlTimeOfDay createXmlTimeOfDay()
+	{
+		XmlTimeOfDay xmlTimeOfDay = new XmlTimeOfDay();
+		return xmlTimeOfDay;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlCache createXmlCache()
+	{
+		XmlCache xmlCache = new XmlCache();
+		return xmlCache;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public XmlJoinFetchType createXmlJoinFetchTypeFromString(EDataType eDataType, String initialValue)
 	{
 		XmlJoinFetchType result = XmlJoinFetchType.get(initialValue);
@@ -268,6 +304,72 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * @generated
 	 */
 	public String convertXmlJoinFetchTypeToString(EDataType eDataType, Object instanceValue)
+	{
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public CacheType createCacheTypeFromString(EDataType eDataType, String initialValue)
+	{
+		CacheType result = CacheType.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertCacheTypeToString(EDataType eDataType, Object instanceValue)
+	{
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public CoordinationType createCoordinationTypeFromString(EDataType eDataType, String initialValue)
+	{
+		CoordinationType result = CoordinationType.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertCoordinationTypeToString(EDataType eDataType, Object instanceValue)
+	{
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ExistenceType createExistenceTypeFromString(EDataType eDataType, String initialValue)
+	{
+		ExistenceType result = ExistenceType.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertExistenceTypeToString(EDataType eDataType, Object instanceValue)
 	{
 		return instanceValue == null ? null : instanceValue.toString();
 	}

@@ -37,4 +37,43 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlOneToManyImpl #//XmlPrivateOwned #//XmlJoinFetch"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToOne" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToOneImpl #//XmlJoinFetch"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToManyImpl #//XmlJoinFetch"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTimeOfDay">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="hour" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minute" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="second" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="millisecond" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="CacheType">
+    <eLiterals name="FULL"/>
+    <eLiterals name="WEAK" value="1"/>
+    <eLiterals name="SOFT" value="2"/>
+    <eLiterals name="SOFT_WEAK" value="3"/>
+    <eLiterals name="HARD_WEAK" value="4"/>
+    <eLiterals name="CACHE" value="5"/>
+    <eLiterals name="NONE" value="6"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="CoordinationType">
+    <eLiterals name="SEND_OBJECT_CHANGES"/>
+    <eLiterals name="INVALIDATE_CHANGED_OBJECTS" value="1"/>
+    <eLiterals name="SEND_NEW_OBJECTS_WITH_CHANGES" value="2"/>
+    <eLiterals name="NONE" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlCache">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="expiry" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="size" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shared" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//CacheType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alwaysRefresh" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="refreshOnlyIfNewer" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="disableHits" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="coordinationType" eType="#//CoordinationType"
+        defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expiryTimeOfDay" eType="#//XmlTimeOfDay"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ExistenceType">
+    <eLiterals name="CHECK_CACHE"/>
+    <eLiterals name="CHECK_DATABASE" value="1"/>
+    <eLiterals name="ASSUME_EXISTENCE" value="2"/>
+    <eLiterals name="ASSUME_NON_EXISTENCE" value="3"/>
+  </eClassifiers>
 </ecore:EPackage>
