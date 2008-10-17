@@ -40,6 +40,7 @@ public class JptUtilityTests {
 		suite.addTestSuite(IndentingPrintWriterTests.class);
 		suite.addTestSuite(JavaTypeTests.class);
 		suite.addTestSuite(JDBCTypeTests.class);
+		suite.addTestSuite(ListenerListTests.class);
 		suite.addTestSuite(MethodSignatureTests.class);
 		suite.addTestSuite(NameToolsTests.class);
 		suite.addTestSuite(RangeTests.class);
