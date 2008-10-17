@@ -106,6 +106,11 @@ public class StructConverterImpl extends AbstractResourceAnnotation<Member> impl
 		return this.converterAdapter.getValue(astRoot);
 	}
 	
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+	
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
 		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.STRUCT_CONVERTER__NAME, false, StringExpressionConverter.instance());

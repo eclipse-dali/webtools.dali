@@ -233,6 +233,11 @@ public class ObjectTypeConverterImpl extends AbstractResourceAnnotation<Member> 
 		return this.defaultObjectValueAdapter.getValue(astRoot);
 	}
 	
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+	
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
 		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLinkJPA.OBJECT_TYPE_CONVERTER__NAME, false, StringExpressionConverter.instance());

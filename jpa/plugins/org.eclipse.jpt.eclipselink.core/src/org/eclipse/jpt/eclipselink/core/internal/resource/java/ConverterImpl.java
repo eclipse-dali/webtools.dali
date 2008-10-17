@@ -127,6 +127,11 @@ public class ConverterImpl extends AbstractResourceAnnotation<Member> implements
 		}
 		return JDTTools.findTypeInHierarchy(this.converterClassAdapter.getExpression(astRoot), ECLIPSELINK_CONVERTER_CLASS_NAME) != null;
 	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
 	
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
