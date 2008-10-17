@@ -242,6 +242,11 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this.uniqueConstraintsContainerAnnotation);
 	}
 
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+
 	
 	private class UniqueConstraintsContainerAnnotation extends AbstractJavaResourceNode 
 		implements ContainerAnnotation<NestableUniqueConstraint> 
@@ -341,7 +346,7 @@ public abstract class AbstractResourceTable extends AbstractResourceAnnotation<M
 
 		@Override
 		public void toString(StringBuilder sb) {
-			sb.append(this.getAnnotationName());
+			AbstractResourceTable.this.toString(sb);
 		}
 
 	}

@@ -140,6 +140,11 @@ public class QueryHintImpl extends AbstractResourceAnnotation<Type>
 		setValue(oldQueryHint.getValue());
 	}
 	
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+	
 	// ********** static methods **********
 	static QueryHintImpl createNamedQueryQueryHint(JavaResourceNode parent, Type type,  DeclarationAnnotationAdapter namedQueryAdapter, int index) {
 		return new QueryHintImpl(parent, type, buildNamedQueryQueryHintAnnotationAdapter(namedQueryAdapter, index));

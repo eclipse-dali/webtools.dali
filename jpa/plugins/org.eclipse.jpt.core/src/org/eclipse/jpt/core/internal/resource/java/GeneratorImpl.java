@@ -152,6 +152,11 @@ public abstract class GeneratorImpl
 		return this.initialValueAdapter.getValue(astRoot);
 	}
 	
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+	
 	// ********** static methods **********
 	protected static DeclarationAnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(annotationAdapter, elementName);

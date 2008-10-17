@@ -144,4 +144,9 @@ public abstract class AbstractNamedColumn extends AbstractResourceAnnotation<Mem
 		return this.columnDefinitionAdapter.getValue(astRoot);
 	}
 
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+
 }

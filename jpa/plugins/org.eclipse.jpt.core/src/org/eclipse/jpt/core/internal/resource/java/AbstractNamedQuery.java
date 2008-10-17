@@ -214,6 +214,11 @@ public abstract class AbstractNamedQuery extends AbstractResourceAnnotation<Type
 		}
 	}
 
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+
 	
 	private class HintsContainerAnnotation extends AbstractJavaResourceNode implements ContainerAnnotation<NestableQueryHint> {
 
@@ -312,7 +317,7 @@ public abstract class AbstractNamedQuery extends AbstractResourceAnnotation<Type
 
 		@Override
 		public void toString(StringBuilder sb) {
-			sb.append(this.getAnnotationName());
+			AbstractNamedQuery.this.toString(sb);
 		}
 
 	}

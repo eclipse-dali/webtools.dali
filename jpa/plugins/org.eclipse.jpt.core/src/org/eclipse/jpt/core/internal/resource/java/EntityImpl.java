@@ -79,6 +79,11 @@ public class EntityImpl extends AbstractResourceAnnotation<Type> implements Enti
 		return this.nameAdapter.getValue(astRoot);
 	}
 
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+	
 	//*********** static methods ****************
 	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ENTITY__NAME, false); // false = do not remove annotation when empty

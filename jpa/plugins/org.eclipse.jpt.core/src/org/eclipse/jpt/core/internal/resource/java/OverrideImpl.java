@@ -89,4 +89,10 @@ public abstract class OverrideImpl
 	protected String name(CompilationUnit astRoot) {
 		return this.nameAdapter.getValue(astRoot);
 	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+	
 }
