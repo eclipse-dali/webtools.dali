@@ -128,7 +128,7 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 			return Boolean.valueOf(connectionIsActive());
 		}
 		if (propertyName.equals(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)) {
-			return Boolean.FALSE;
+			return Boolean.valueOf(connectionIsActive());
 		}
 		if (propertyName.equals(DB_DRIVER_NAME)) {
 			return getDefaultDriverName();
@@ -193,6 +193,9 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (propertyName.equals(CONNECTION_ACTIVE)) {
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.VALID_VALUES_CHG);
+			this.model.notifyPropertyChange(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH, IDataModel.ENABLE_CHG);
+			this.model.notifyPropertyChange(DB_DRIVER_NAME, IDataModel.ENABLE_CHG);
+			this.model.notifyPropertyChange(DB_DRIVER_JARS, IDataModel.ENABLE_CHG);
 		}
 		if (propertyName.equals(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)) {
 			this.model.notifyPropertyChange(DB_DRIVER_NAME, IDataModel.ENABLE_CHG);
