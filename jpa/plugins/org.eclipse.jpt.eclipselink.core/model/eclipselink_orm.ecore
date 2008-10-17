@@ -30,7 +30,7 @@
     <eLiterals name="CACHE" value="5"/>
     <eLiterals name="NONE" value="6"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="CoordinationType">
+  <eClassifiers xsi:type="ecore:EEnum" name="CacheCoordinationType">
     <eLiterals name="SEND_OBJECT_CHANGES"/>
     <eLiterals name="INVALIDATE_CHANGED_OBJECTS" value="1"/>
     <eLiterals name="SEND_NEW_OBJECTS_WITH_CHANGES" value="2"/>
@@ -44,7 +44,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="alwaysRefresh" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="refreshOnlyIfNewer" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="disableHits" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="coordinationType" eType="#//CoordinationType"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="coordinationType" eType="#//CacheCoordinationType"
         defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expiryTimeOfDay" eType="#//XmlTimeOfDay"/>
   </eClassifiers>

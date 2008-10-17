@@ -17,14 +17,14 @@ import org.eclipse.emf.common.util.Enumerator;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the literals of the enumeration '<em><b>Coordination Type</b></em>',
+ * A representation of the literals of the enumeration '<em><b>Cache Coordination Type</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
- * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCoordinationType()
+ * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCacheCoordinationType()
  * @model
  * @generated
  */
-public enum CoordinationType implements Enumerator
+public enum CacheCoordinationType implements Enumerator
 {
 	/**
 	 * The '<em><b>SEND OBJECT CHANGES</b></em>' literal object.
@@ -127,13 +127,13 @@ public enum CoordinationType implements Enumerator
 	public static final int NONE_VALUE = 3;
 
 	/**
-	 * An array of all the '<em><b>Coordination Type</b></em>' enumerators.
+	 * An array of all the '<em><b>Cache Coordination Type</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private static final CoordinationType[] VALUES_ARRAY =
-		new CoordinationType[]
+	private static final CacheCoordinationType[] VALUES_ARRAY =
+		new CacheCoordinationType[]
 		{
 			SEND_OBJECT_CHANGES,
 			INVALIDATE_CHANGED_OBJECTS,
@@ -142,24 +142,24 @@ public enum CoordinationType implements Enumerator
 		};
 
 	/**
-	 * A public read-only list of all the '<em><b>Coordination Type</b></em>' enumerators.
+	 * A public read-only list of all the '<em><b>Cache Coordination Type</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static final List<CoordinationType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+	public static final List<CacheCoordinationType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>Coordination Type</b></em>' literal with the specified literal value.
+	 * Returns the '<em><b>Cache Coordination Type</b></em>' literal with the specified literal value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static CoordinationType get(String literal)
+	public static CacheCoordinationType get(String literal)
 	{
 		for (int i = 0; i < VALUES_ARRAY.length; ++i)
 		{
-			CoordinationType result = VALUES_ARRAY[i];
+			CacheCoordinationType result = VALUES_ARRAY[i];
 			if (result.toString().equals(literal))
 			{
 				return result;
@@ -169,16 +169,16 @@ public enum CoordinationType implements Enumerator
 	}
 
 	/**
-	 * Returns the '<em><b>Coordination Type</b></em>' literal with the specified name.
+	 * Returns the '<em><b>Cache Coordination Type</b></em>' literal with the specified name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static CoordinationType getByName(String name)
+	public static CacheCoordinationType getByName(String name)
 	{
 		for (int i = 0; i < VALUES_ARRAY.length; ++i)
 		{
-			CoordinationType result = VALUES_ARRAY[i];
+			CacheCoordinationType result = VALUES_ARRAY[i];
 			if (result.getName().equals(name))
 			{
 				return result;
@@ -188,12 +188,12 @@ public enum CoordinationType implements Enumerator
 	}
 
 	/**
-	 * Returns the '<em><b>Coordination Type</b></em>' literal with the specified integer value.
+	 * Returns the '<em><b>Cache Coordination Type</b></em>' literal with the specified integer value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static CoordinationType get(int value)
+	public static CacheCoordinationType get(int value)
 	{
 		switch (value)
 		{
@@ -232,7 +232,7 @@ public enum CoordinationType implements Enumerator
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private CoordinationType(int value, String name, String literal)
+	private CacheCoordinationType(int value, String name, String literal)
 	{
 		this.value = value;
 		this.name = name;
@@ -281,4 +281,4 @@ public enum CoordinationType implements Enumerator
 		return literal;
 	}
 	
-} //CoordinationType
+} //CacheCoordinationType

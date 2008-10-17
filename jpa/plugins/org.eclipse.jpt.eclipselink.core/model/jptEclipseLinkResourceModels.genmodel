@@ -20,11 +20,11 @@
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheType/CACHE"/>
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheType/NONE"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//CoordinationType">
-      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CoordinationType/SEND_OBJECT_CHANGES"/>
-      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CoordinationType/INVALIDATE_CHANGED_OBJECTS"/>
-      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CoordinationType/SEND_NEW_OBJECTS_WITH_CHANGES"/>
-      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CoordinationType/NONE"/>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//CacheCoordinationType">
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheCoordinationType/SEND_OBJECT_CHANGES"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheCoordinationType/INVALIDATE_CHANGED_OBJECTS"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheCoordinationType/SEND_NEW_OBJECTS_WITH_CHANGES"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheCoordinationType/NONE"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//XmlJoinFetchType">
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlJoinFetchType/INNER"/>

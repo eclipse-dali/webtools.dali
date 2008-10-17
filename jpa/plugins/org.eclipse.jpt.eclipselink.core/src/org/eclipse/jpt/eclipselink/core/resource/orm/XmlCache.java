@@ -195,7 +195,7 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	 * @generated
 	 * @ordered
 	 */
-	protected static final CoordinationType COORDINATION_TYPE_EDEFAULT = CoordinationType.SEND_OBJECT_CHANGES;
+	protected static final CacheCoordinationType COORDINATION_TYPE_EDEFAULT = CacheCoordinationType.SEND_OBJECT_CHANGES;
 
 	/**
 	 * The cached value of the '{@link #getCoordinationType() <em>Coordination Type</em>}' attribute.
@@ -205,7 +205,7 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	 * @generated
 	 * @ordered
 	 */
-	protected CoordinationType coordinationType = COORDINATION_TYPE_EDEFAULT;
+	protected CacheCoordinationType coordinationType = COORDINATION_TYPE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getExpiryTimeOfDay() <em>Expiry Time Of Day</em>}' reference.
@@ -489,7 +489,7 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	/**
 	 * Returns the value of the '<em><b>Coordination Type</b></em>' attribute.
 	 * The default value is <code>""</code>.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.eclipselink.core.resource.orm.CoordinationType}.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Coordination Type</em>' attribute isn't clear,
@@ -497,13 +497,13 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Coordination Type</em>' attribute.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.CoordinationType
-	 * @see #setCoordinationType(CoordinationType)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType
+	 * @see #setCoordinationType(CacheCoordinationType)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCache_CoordinationType()
 	 * @model default=""
 	 * @generated
 	 */
-	public CoordinationType getCoordinationType()
+	public CacheCoordinationType getCoordinationType()
 	{
 		return coordinationType;
 	}
@@ -513,13 +513,13 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Coordination Type</em>' attribute.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.CoordinationType
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType
 	 * @see #getCoordinationType()
 	 * @generated
 	 */
-	public void setCoordinationType(CoordinationType newCoordinationType)
+	public void setCoordinationType(CacheCoordinationType newCoordinationType)
 	{
-		CoordinationType oldCoordinationType = coordinationType;
+		CacheCoordinationType oldCoordinationType = coordinationType;
 		coordinationType = newCoordinationType == null ? COORDINATION_TYPE_EDEFAULT : newCoordinationType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_CACHE__COORDINATION_TYPE, oldCoordinationType, coordinationType));
@@ -645,7 +645,7 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 				setDisableHits((Boolean)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_CACHE__COORDINATION_TYPE:
-				setCoordinationType((CoordinationType)newValue);
+				setCoordinationType((CacheCoordinationType)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_CACHE__EXPIRY_TIME_OF_DAY:
 				setExpiryTimeOfDay((XmlTimeOfDay)newValue);

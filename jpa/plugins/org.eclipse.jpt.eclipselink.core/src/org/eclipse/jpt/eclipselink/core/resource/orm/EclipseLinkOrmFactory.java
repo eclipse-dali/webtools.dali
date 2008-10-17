@@ -109,8 +109,8 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 		{
 			case EclipseLinkOrmPackage.CACHE_TYPE:
 				return createCacheTypeFromString(eDataType, initialValue);
-			case EclipseLinkOrmPackage.COORDINATION_TYPE:
-				return createCoordinationTypeFromString(eDataType, initialValue);
+			case EclipseLinkOrmPackage.CACHE_COORDINATION_TYPE:
+				return createCacheCoordinationTypeFromString(eDataType, initialValue);
 			case EclipseLinkOrmPackage.XML_JOIN_FETCH_TYPE:
 				return createXmlJoinFetchTypeFromString(eDataType, initialValue);
 			case EclipseLinkOrmPackage.EXISTENCE_TYPE:
@@ -132,8 +132,8 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 		{
 			case EclipseLinkOrmPackage.CACHE_TYPE:
 				return convertCacheTypeToString(eDataType, instanceValue);
-			case EclipseLinkOrmPackage.COORDINATION_TYPE:
-				return convertCoordinationTypeToString(eDataType, instanceValue);
+			case EclipseLinkOrmPackage.CACHE_COORDINATION_TYPE:
+				return convertCacheCoordinationTypeToString(eDataType, instanceValue);
 			case EclipseLinkOrmPackage.XML_JOIN_FETCH_TYPE:
 				return convertXmlJoinFetchTypeToString(eDataType, instanceValue);
 			case EclipseLinkOrmPackage.EXISTENCE_TYPE:
@@ -335,9 +335,9 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public CoordinationType createCoordinationTypeFromString(EDataType eDataType, String initialValue)
+	public CacheCoordinationType createCacheCoordinationTypeFromString(EDataType eDataType, String initialValue)
 	{
-		CoordinationType result = CoordinationType.get(initialValue);
+		CacheCoordinationType result = CacheCoordinationType.get(initialValue);
 		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
 		return result;
 	}
@@ -347,7 +347,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertCoordinationTypeToString(EDataType eDataType, Object instanceValue)
+	public String convertCacheCoordinationTypeToString(EDataType eDataType, Object instanceValue)
 	{
 		return instanceValue == null ? null : instanceValue.toString();
 	}

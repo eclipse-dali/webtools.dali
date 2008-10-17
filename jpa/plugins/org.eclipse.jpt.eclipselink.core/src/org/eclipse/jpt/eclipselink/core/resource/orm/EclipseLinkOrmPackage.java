@@ -1710,14 +1710,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int CACHE_TYPE = 19;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.CoordinationType <em>Coordination Type</em>}' enum.
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType <em>Cache Coordination Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.CoordinationType
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCoordinationType()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCacheCoordinationType()
 	 * @generated
 	 */
-	public static final int COORDINATION_TYPE = 20;
+	public static final int CACHE_COORDINATION_TYPE = 20;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType <em>Existence Type</em>}' enum.
@@ -1860,7 +1860,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EEnum coordinationTypeEEnum = null;
+	private EEnum cacheCoordinationTypeEEnum = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -2487,16 +2487,16 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for enum '{@link org.eclipse.jpt.eclipselink.core.resource.orm.CoordinationType <em>Coordination Type</em>}'.
+	 * Returns the meta object for enum '{@link org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType <em>Cache Coordination Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for enum '<em>Coordination Type</em>'.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.CoordinationType
+	 * @return the meta object for enum '<em>Cache Coordination Type</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType
 	 * @generated
 	 */
-	public EEnum getCoordinationType()
+	public EEnum getCacheCoordinationType()
 	{
-		return coordinationTypeEEnum;
+		return cacheCoordinationTypeEEnum;
 	}
 
 
@@ -2678,7 +2678,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 		// Create enums
 		cacheTypeEEnum = createEEnum(CACHE_TYPE);
-		coordinationTypeEEnum = createEEnum(COORDINATION_TYPE);
+		cacheCoordinationTypeEEnum = createEEnum(CACHE_COORDINATION_TYPE);
 		xmlJoinFetchTypeEEnum = createEEnum(XML_JOIN_FETCH_TYPE);
 		existenceTypeEEnum = createEEnum(EXISTENCE_TYPE);
 	}
@@ -2769,7 +2769,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		initEAttribute(getXmlCache_AlwaysRefresh(), theXMLTypePackage.getBooleanObject(), "alwaysRefresh", null, 0, 1, XmlCache.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlCache_RefreshOnlyIfNewer(), theXMLTypePackage.getBooleanObject(), "refreshOnlyIfNewer", null, 0, 1, XmlCache.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlCache_DisableHits(), theXMLTypePackage.getBooleanObject(), "disableHits", null, 0, 1, XmlCache.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlCache_CoordinationType(), this.getCoordinationType(), "coordinationType", "", 0, 1, XmlCache.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlCache_CoordinationType(), this.getCacheCoordinationType(), "coordinationType", "", 0, 1, XmlCache.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlCache_ExpiryTimeOfDay(), this.getXmlTimeOfDay(), null, "expiryTimeOfDay", null, 0, 1, XmlCache.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlCacheHolderEClass, XmlCacheHolder.class, "XmlCacheHolder", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2812,11 +2812,11 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		addEEnumLiteral(cacheTypeEEnum, CacheType.CACHE);
 		addEEnumLiteral(cacheTypeEEnum, CacheType.NONE);
 
-		initEEnum(coordinationTypeEEnum, CoordinationType.class, "CoordinationType");
-		addEEnumLiteral(coordinationTypeEEnum, CoordinationType.SEND_OBJECT_CHANGES);
-		addEEnumLiteral(coordinationTypeEEnum, CoordinationType.INVALIDATE_CHANGED_OBJECTS);
-		addEEnumLiteral(coordinationTypeEEnum, CoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES);
-		addEEnumLiteral(coordinationTypeEEnum, CoordinationType.NONE);
+		initEEnum(cacheCoordinationTypeEEnum, CacheCoordinationType.class, "CacheCoordinationType");
+		addEEnumLiteral(cacheCoordinationTypeEEnum, CacheCoordinationType.SEND_OBJECT_CHANGES);
+		addEEnumLiteral(cacheCoordinationTypeEEnum, CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS);
+		addEEnumLiteral(cacheCoordinationTypeEEnum, CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES);
+		addEEnumLiteral(cacheCoordinationTypeEEnum, CacheCoordinationType.NONE);
 
 		initEEnum(xmlJoinFetchTypeEEnum, XmlJoinFetchType.class, "XmlJoinFetchType");
 		addEEnumLiteral(xmlJoinFetchTypeEEnum, XmlJoinFetchType.INNER);
@@ -3171,14 +3171,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		public static final EEnum CACHE_TYPE = eINSTANCE.getCacheType();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.CoordinationType <em>Coordination Type</em>}' enum.
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType <em>Cache Coordination Type</em>}' enum.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.CoordinationType
-		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCoordinationType()
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCacheCoordinationType()
 		 * @generated
 		 */
-		public static final EEnum COORDINATION_TYPE = eINSTANCE.getCoordinationType();
+		public static final EEnum CACHE_COORDINATION_TYPE = eINSTANCE.getCacheCoordinationType();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType <em>Existence Type</em>}' enum.
