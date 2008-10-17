@@ -75,15 +75,15 @@ public class SecondaryTablesImpl extends AbstractResourceAnnotation<Member> impl
 	}
 	
 	protected void add(int index, NestableSecondaryTable secondaryTable) {
-		addItemToList(index, secondaryTable, this.secondaryTables, SecondaryTablesAnnotation.SECONDARY_TABLES_LIST);
+		addItemToList(index, secondaryTable, this.secondaryTables, SECONDARY_TABLES_LIST);
 	}
 	
 	public void remove(NestableSecondaryTable secondaryTable) {
-		removeItemFromList(secondaryTable, this.secondaryTables, SecondaryTablesAnnotation.SECONDARY_TABLES_LIST);
+		removeItemFromList(secondaryTable, this.secondaryTables, SECONDARY_TABLES_LIST);
 	}
 	
 	public void remove(int index) {
-		removeItemFromList(index, this.secondaryTables, SecondaryTablesAnnotation.SECONDARY_TABLES_LIST);
+		removeItemFromList(index, this.secondaryTables, SECONDARY_TABLES_LIST);
 	}
 	
 	public int indexOf(NestableSecondaryTable secondaryTable) {
@@ -104,7 +104,7 @@ public class SecondaryTablesImpl extends AbstractResourceAnnotation<Member> impl
 	}
 
 	public void move(int targetIndex, int sourceIndex) {
-		moveItemInList(targetIndex, sourceIndex,  this.secondaryTables, SecondaryTablesAnnotation.SECONDARY_TABLES_LIST);
+		moveItemInList(targetIndex, sourceIndex,  this.secondaryTables, SECONDARY_TABLES_LIST);
 	}
 	//TODO this move is different than how we handle SecondarTable.pkJoinColumns
 //	public void movePkJoinColumn(int oldIndex, int newIndex) {
