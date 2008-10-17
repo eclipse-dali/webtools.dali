@@ -234,6 +234,17 @@ public class GenericOrmEntity
 		return null;
 	}
 
+	/**
+	 * This checks metaDataComplete before returning the JavaEntity.
+	 * As far as defaults are concerned, if metadataComplete is true, the JavaEntity is ignored.
+	 */
+	protected JavaEntity getJavaEntityForDefaults() {
+		if (isMetadataComplete()) {
+			return null;
+		}
+		return getJavaEntity();
+	}
+	
 	public String getName() {
 		return (this.getSpecifiedName() == null) ? getDefaultName() : this.getSpecifiedName();
 	}

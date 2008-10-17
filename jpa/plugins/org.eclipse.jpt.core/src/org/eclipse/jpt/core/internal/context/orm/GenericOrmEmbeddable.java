@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.Iterator;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -23,6 +24,24 @@ public class GenericOrmEmbeddable extends AbstractOrmTypeMapping<XmlEmbeddable> 
 {
 	public GenericOrmEmbeddable(OrmPersistentType parent) {
 		super(parent);
+	}
+	
+	public JavaEmbeddable getJavaEmbeddable() {
+		if (this.javaPersistentType != null && this.javaPersistentType.getMappingKey() == MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
+			return (JavaEmbeddable) this.javaPersistentType.getMapping();
+		}
+		return null;
+	}
+
+	/**
+	 * This checks metaDataComplete before returning the JavaEmbeddable.
+	 * As far as defaults are concerned, if metadataComplete is true, the JavaEmbeddable is ignored.
+	 */
+	protected JavaEmbeddable getJavaEmbeddableForDefaults() {
+		if (isMetadataComplete()) {
+			return null;
+		}
+		return getJavaEmbeddable();
 	}
 	
 	public String getKey() {

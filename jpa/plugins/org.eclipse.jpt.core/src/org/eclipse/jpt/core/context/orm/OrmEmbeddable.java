@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.Embeddable;
+import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 
 /**
@@ -24,6 +25,12 @@ import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
  */
 public interface OrmEmbeddable extends Embeddable, OrmTypeMapping
 {
+	/**
+	 * Return the Java Embeddable this ORM Embeddable corresponds to.  
+	 * Return null if there is no java persistent type or it is not an embeddable.
+	 */
+	JavaEmbeddable getJavaEmbeddable();
+
 	void initialize(XmlEmbeddable mappedSuperclass);
 
 	/**

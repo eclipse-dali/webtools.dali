@@ -42,6 +42,18 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 		return null;
 	}
 
+	/**
+	 * This checks metaDataComplete before returning the JavaMappedSuperclass.
+	 * As far as defaults are concerned, if metadataComplete is true, the JavaMappedSuperclass is ignored.
+	 */
+	protected JavaMappedSuperclass getJavaMappedSuperclassForDefaults() {
+		if (isMetadataComplete()) {
+			return null;
+		}
+		return getJavaMappedSuperclass();
+	}
+
+	
 	public String getIdClass() {
 		return this.idClass;
 	}
