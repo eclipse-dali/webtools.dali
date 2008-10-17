@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestPlatformProject;
 import org.eclipse.jpt.utility.internal.ClassTools;
 
+@SuppressWarnings("nls")
 public class JpaModelTests extends TestCase {
 
 	/** carriage return */

@@ -35,6 +35,7 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class PersistenceUnitTests extends ContextModelTestCase
 {
 	
@@ -683,6 +684,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	public void testRenamePersistentTypeImpliedClassRefs() throws Exception {
 		getJavaProject().getJpaProject().setDiscoversAnnotatedClasses(true);
 		ICompilationUnit testType = createTestEntity();
+		@SuppressWarnings("unused")
 		ICompilationUnit otherTestType = this.createTestOtherTypeEntity();
 		
 		ListIterator<ClassRef> classRefs = persistenceUnit().impliedClassRefs();
