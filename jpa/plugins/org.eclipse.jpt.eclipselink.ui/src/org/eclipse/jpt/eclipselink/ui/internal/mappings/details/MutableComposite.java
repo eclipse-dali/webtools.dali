@@ -89,7 +89,7 @@ public class MutableComposite extends FormPane<Mutable>
 			protected String transform(Boolean value) {
 
 				if ((getSubject() != null) && (value == null)) {
-					boolean defaultValue = getSubject().getDefaultMutable();
+					boolean defaultValue = getSubject().isDefaultMutable();
 					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
 					                                           JptUiMappingsMessages.Boolean_False;
 

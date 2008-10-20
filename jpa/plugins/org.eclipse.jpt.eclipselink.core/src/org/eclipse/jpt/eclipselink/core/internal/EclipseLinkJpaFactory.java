@@ -27,10 +27,14 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
+import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
+import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -82,11 +86,13 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaRea
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaStructConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaTypeConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmCustomizer;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEmbeddable;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEntity;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmIdMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmMappedSuperclass;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmReadOnly;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmVersionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXml;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResourceModel;
@@ -153,12 +159,23 @@ public class EclipseLinkJpaFactory extends GenericJpaFactory
 		return new EclipseLinkOrmMappedSuperclass(parent);
 	}
 	
-	public EclipseLinkOrmReadOnly buildOrmReadOnly(OrmTypeMapping parent) {
-		return new EclipseLinkOrmReadOnly(parent);
-	}
-	
 	public EclipseLinkOrmCustomizer buildOrmCustomizer(OrmTypeMapping parent) {
 		return new EclipseLinkOrmCustomizer(parent);
+	}
+	
+	@Override
+	public OrmIdMapping buildOrmIdMapping(OrmPersistentAttribute parent) {
+		return new EclipseLinkOrmIdMapping(parent);
+	}
+	
+	@Override
+	public OrmBasicMapping buildOrmBasicMapping(OrmPersistentAttribute parent) {
+		return new EclipseLinkOrmBasicMapping(parent);
+	}
+	
+	@Override
+	public OrmVersionMapping buildOrmVersionMapping(OrmPersistentAttribute parent) {
+		return new EclipseLinkOrmVersionMapping(parent);
 	}
 	
 	

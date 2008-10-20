@@ -22,7 +22,6 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-
 public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCase
 {
 	public EclipseLinkOrmEntityTests(String name) {
@@ -330,5 +329,4 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		assertNull(ormContextEntity.getCustomizer().getDefaultCustomizerClass());
 		assertNull(ormContextEntity.getCustomizer().getSpecifiedCustomizerClass());
 	}
-
 }

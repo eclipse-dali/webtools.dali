@@ -25,8 +25,12 @@ public class JptEclipseLinkCoreOrmContextModelTests extends TestCase
 		suite.addTestSuite(EclipseLinkOrmEmbeddableTests.class);
 		suite.addTestSuite(EclipseLinkOrmEntityTests.class);
 		suite.addTestSuite(EclipseLinkOrmMappedSuperclassTests.class);
+		suite.addTestSuite(EclipseLinkOrmIdMappingTests.class);
+		suite.addTestSuite(EclipseLinkOrmBasicMappingTests.class);
+		suite.addTestSuite(EclipseLinkOrmVersionMappingTests.class);
 		return suite;
 	}
+	
 	
 	private JptEclipseLinkCoreOrmContextModelTests() {
 		throw new UnsupportedOperationException();

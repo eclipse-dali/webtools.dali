@@ -2,17 +2,16 @@
  * <copyright>
  * </copyright>
  *
- * $Id: XmlBasic.java,v 1.3 2008/10/16 21:17:50 pfullbright Exp $
+ * $Id: XmlBasic.java,v 1.4 2008/10/20 20:09:59 pfullbright Exp $
  */
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.jpt.core.resource.orm.XmlBasicImpl;
+import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.EclipseLinkOrmXmlMapper;
 
 /**
  * <!-- begin-user-doc -->
@@ -222,5 +221,8 @@ public class XmlBasic extends XmlBasicImpl implements XmlMutable
 		result.append(')');
 		return result.toString();
 	}
-
-} // XmlBasic
+	
+	public TextRange getMutableTextRange() {
+		return getAttributeTextRange(EclipseLinkOrmXmlMapper.MUTABLE);
+	}
+}

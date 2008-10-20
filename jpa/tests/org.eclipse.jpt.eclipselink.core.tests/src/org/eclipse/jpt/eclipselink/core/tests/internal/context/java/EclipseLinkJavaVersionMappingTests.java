@@ -30,7 +30,6 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class EclipseLinkJavaVersionMappingTests extends EclipseLinkJavaContextModelTestCase
 {
-
 	private void createConvertAnnotation() throws Exception{
 		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Convert", "String value() default \"none\";");		
 	}
@@ -235,39 +234,39 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkJavaContextMo
 		assertEquals(null, mutableAnnotation.getValue());
 	}
 	
-	public void testGetDefaultMutable() throws Exception {
+	public void testIsDefaultMutable() throws Exception {
 		createTestEntityWithMutableVersion();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		EclipseLinkVersionMapping versionMapping = (EclipseLinkVersionMapping) persistentAttribute.getSpecifiedMapping();
 		Mutable mutable = versionMapping.getMutable();
-		assertEquals(true, mutable.getDefaultMutable());
+		assertTrue(mutable.isDefaultMutable());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		attributeResource.removeAnnotation(MutableAnnotation.ANNOTATION_NAME);
-		assertEquals(true, mutable.getDefaultMutable());
+		assertTrue(mutable.isDefaultMutable());
 		
 		mutable.setSpecifiedMutable(Boolean.FALSE);	
-		assertEquals(true, mutable.getDefaultMutable());
+		assertTrue(mutable.isDefaultMutable());
 	}
 	
-	public void testGetMutable() throws Exception {
+	public void testIsMutable() throws Exception {
 		createTestEntityWithMutableVersion();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		EclipseLinkVersionMapping versionMapping = (EclipseLinkVersionMapping) persistentAttribute.getSpecifiedMapping();
 		Mutable mutable = versionMapping.getMutable();
-		assertEquals(true, mutable.getMutable());
+		assertTrue(mutable.isMutable());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		attributeResource.removeAnnotation(MutableAnnotation.ANNOTATION_NAME);
-		assertEquals(true, mutable.getMutable());
+		assertTrue(mutable.isMutable());
 		
 		mutable.setSpecifiedMutable(Boolean.TRUE);	
-		assertEquals(true, mutable.getMutable());
+		assertTrue(mutable.isMutable());
 	}
 }

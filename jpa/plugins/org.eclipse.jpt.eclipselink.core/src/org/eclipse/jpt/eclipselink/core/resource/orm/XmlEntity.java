@@ -440,4 +440,4 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	public TextRange getReadOnlyTextRange() {
 		return getAttributeTextRange(EclipseLinkOrmXmlMapper.READ_ONLY);
 	}
-} // XmlEntity
+}

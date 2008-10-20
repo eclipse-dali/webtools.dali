@@ -15,12 +15,13 @@ import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.ConvertibleMapping;
 import org.eclipse.jpt.core.context.EnumeratedConverter;
 import org.eclipse.jpt.core.context.TemporalConverter;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.ColumnComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.EnumTypeComposite;
@@ -64,6 +65,11 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
  * | | OptionalComposite                                                     | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | MutableComposite                                                      | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |

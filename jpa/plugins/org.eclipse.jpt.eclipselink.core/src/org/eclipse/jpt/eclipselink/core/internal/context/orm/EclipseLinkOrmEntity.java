@@ -21,7 +21,6 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaReadOnly;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly;
@@ -36,15 +35,10 @@ public class EclipseLinkOrmEntity extends GenericOrmEntity
 	
 	public EclipseLinkOrmEntity(OrmPersistentType parent) {
 		super(parent);
-		this.readOnly = getJpaFactory().buildOrmReadOnly(this);
-		this.customizer = getJpaFactory().buildOrmCustomizer(this);
+		this.readOnly = new EclipseLinkOrmReadOnly(this);
+		this.customizer = new EclipseLinkOrmCustomizer(this);
 	}
 	
-	
-	@Override
-	protected EclipseLinkJpaFactory getJpaFactory() {
-		return (EclipseLinkJpaFactory) super.getJpaFactory();
-	}
 	
 	public Caching getCaching() {
 		// TODO Auto-generated method stub

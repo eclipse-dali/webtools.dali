@@ -75,5 +75,9 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 	protected Translator createCustomizerTranslator() {
 		return new CustomizerTranslator(CUSTOMIZER, ECLIPSELINK_ORM_PKG.getXmlCustomizerHolder_Customizer());
 	}
-
+	
+	@Override
+	protected Translator createAttributesTranslator() {
+		return new EclipseLinkAttributesTranslator(ATTRIBUTES, ORM_PKG.getAbstractXmlTypeMapping_Attributes());
+	}
 }

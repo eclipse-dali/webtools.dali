@@ -36,7 +36,7 @@ public class EclipseLinkOrmMappedSuperclass extends GenericOrmMappedSuperclass
 	
 	public EclipseLinkOrmMappedSuperclass(OrmPersistentType parent) {
 		super(parent);
-		this.readOnly = getJpaFactory().buildOrmReadOnly(this);
+		this.readOnly = new EclipseLinkOrmReadOnly(this);
 		this.customizer = getJpaFactory().buildOrmCustomizer(this);
 	}
 	

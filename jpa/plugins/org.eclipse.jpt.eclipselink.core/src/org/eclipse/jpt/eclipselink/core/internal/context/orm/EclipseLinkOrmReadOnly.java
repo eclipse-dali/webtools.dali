@@ -50,11 +50,11 @@ public class EclipseLinkOrmReadOnly extends AbstractXmlContextNode
 		return this.specifiedReadOnly;
 	}
 	
-	public void setSpecifiedReadOnly(Boolean newReadOnly) {
-		Boolean oldReadOnly = this.specifiedReadOnly;
-		this.specifiedReadOnly = newReadOnly;
-		this.resource.setReadOnly(newReadOnly);
-		firePropertyChanged(SPECIFIED_READ_ONLY_PROPERTY, oldReadOnly, newReadOnly);
+	public void setSpecifiedReadOnly(Boolean newSpecifiedReadOnly) {
+		Boolean oldSpecifiedReadOnly = this.specifiedReadOnly;
+		this.specifiedReadOnly = newSpecifiedReadOnly;
+		this.resource.setReadOnly(newSpecifiedReadOnly);
+		firePropertyChanged(SPECIFIED_READ_ONLY_PROPERTY, oldSpecifiedReadOnly, newSpecifiedReadOnly);
 	}
 	
 	

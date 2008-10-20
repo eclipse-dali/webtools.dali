@@ -36,9 +36,6 @@
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//ExistenceType/ASSUME_EXISTENCE"/>
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//ExistenceType/ASSUME_NON_EXISTENCE"/>
     </genEnums>
-    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlReadOnly">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlReadOnly/readOnly"/>
-    </genClasses>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlCustomizer">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCustomizer/customizerClassName"/>
     </genClasses>
@@ -46,6 +43,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlCustomizerHolder/customizer"/>
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEmbeddable"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlReadOnly">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlReadOnly/readOnly"/>
+    </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlTimeOfDay">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTimeOfDay/hour"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTimeOfDay/minute"/>

@@ -2,11 +2,12 @@
  * <copyright>
  * </copyright>
  *
- * $Id: XmlMutable.java,v 1.1 2008/10/16 21:17:50 pfullbright Exp $
+ * $Id: XmlMutable.java,v 1.2 2008/10/20 20:09:59 pfullbright Exp $
  */
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import org.eclipse.jpt.core.resource.common.JpaEObject;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <!-- begin-user-doc -->
@@ -52,5 +53,9 @@ public interface XmlMutable extends JpaEObject
 	 * @generated
 	 */
 	void setMutable(Boolean value);
-
-} // XmlMutable
+	
+	/**
+	 * Return the {@link TextRange} for the mutable attibute.
+	 */
+	TextRange getMutableTextRange();
+}

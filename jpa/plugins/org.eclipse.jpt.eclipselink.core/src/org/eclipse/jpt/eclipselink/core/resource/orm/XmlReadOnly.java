@@ -61,6 +61,4 @@ public interface XmlReadOnly extends JpaEObject
 	 * Return the {@link TextRange} for the read-only attibute.
 	 */
 	TextRange getReadOnlyTextRange();
-	
-
-} // XmlReadOnly
+}

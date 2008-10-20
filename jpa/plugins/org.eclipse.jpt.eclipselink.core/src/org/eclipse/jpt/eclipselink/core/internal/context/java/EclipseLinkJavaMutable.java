@@ -20,7 +20,6 @@ import org.eclipse.jpt.eclipselink.core.resource.java.MutableAnnotation;
 
 public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implements JavaMutable
 {
-
 	protected boolean defaultMutable;
 	protected Boolean specifiedMutable;
 	
@@ -46,8 +45,7 @@ public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implement
 		this.resourcePersistentAttribute.removeAnnotation(getMutableAnnotationName());
 	}
 
-
-	protected boolean caclulateDefaultMutable() {
+	protected boolean calculateDefaultMutable() {
 		if (this.resourcePersistentAttribute.typeIsDateOrCalendar()) {
 			//TODO calculate the default based on the persistence.xml mutable 
 			//property setting  for Date and Calendar bug 228042
@@ -56,11 +54,11 @@ public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implement
 		return this.resourcePersistentAttribute.typeIsSerializable();
 	}
 
-	public boolean getMutable() {
+	public boolean isMutable() {
 		return this.specifiedMutable != null ? this.specifiedMutable.booleanValue() : this.defaultMutable; 
 	}
 	
-	public boolean getDefaultMutable() {
+	public boolean isDefaultMutable() {
 		return this.defaultMutable;
 	}
 	
@@ -113,14 +111,14 @@ public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implement
 		this.resourcePersistentAttribute = jrpa;
 		MutableAnnotation resourceMutable = this.getResourceMutable();
 		this.specifiedMutable = this.specifiedMutable(resourceMutable);
-		this.defaultMutable = this.caclulateDefaultMutable();
+		this.defaultMutable = this.calculateDefaultMutable();
 	}
 	
 	public void update(JavaResourcePersistentAttribute jrpa) {
 		this.resourcePersistentAttribute = jrpa;
 		MutableAnnotation resourceMutable = this.getResourceMutable();
 		this.setSpecifiedMutable_(this.specifiedMutable(resourceMutable));
-		this.setDefaultMutable(this.caclulateDefaultMutable());
+		this.setDefaultMutable(this.calculateDefaultMutable());
 	}
 	
 	private Boolean specifiedMutable(MutableAnnotation resourceMutable) {

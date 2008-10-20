@@ -12,8 +12,6 @@ package org.eclipse.jpt.eclipselink.core.context;
 import org.eclipse.jpt.core.context.JpaContextNode;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -22,13 +20,12 @@ import org.eclipse.jpt.core.context.JpaContextNode;
  */
 public interface Mutable extends JpaContextNode
 {
-	boolean getMutable();
-
-	boolean getDefaultMutable();
-		String DEFAULT_MUTABLE_PROPERTY = "defaultMutableProperty"; //$NON-NLS-1$
-		
+	boolean isMutable();
+	
+	boolean isDefaultMutable();
+		String DEFAULT_MUTABLE_PROPERTY = "defaultMutableProperty";  //$NON-NLS-1$
+	
 	Boolean getSpecifiedMutable();
 	void setSpecifiedMutable(Boolean newSpecifiedMutable);
-		String SPECIFIED_MUTABLE_PROPERTY = "specifiedMutableProperty"; //$NON-NLS-1$
-	
+		String SPECIFIED_MUTABLE_PROPERTY = "specifiedMutableProperty";  //$NON-NLS-1$
 }
