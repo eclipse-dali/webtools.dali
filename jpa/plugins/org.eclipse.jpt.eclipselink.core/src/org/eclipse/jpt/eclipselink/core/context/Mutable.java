@@ -22,19 +22,9 @@ import org.eclipse.jpt.core.context.JpaContextNode;
  */
 public interface Mutable extends JpaContextNode
 {
-	
-	/**
-	 * Return true if the mutable model object exists.  
-	 * Have to have a separate flag for this since the default mutable type
-	 * is different depending on whether hasMutable() returns true or false.
-	 */
-	boolean hasMutable();
-	void setMutable(boolean mutable);
-		String MUTABLE_PROPERTY = "mutableProperty"; //$NON-NLS-1$
+	boolean getMutable();
 
-	Boolean getMutable();
-
-	Boolean getDefaultMutable();
+	boolean getDefaultMutable();
 		String DEFAULT_MUTABLE_PROPERTY = "defaultMutableProperty"; //$NON-NLS-1$
 		
 	Boolean getSpecifiedMutable();

@@ -20,9 +20,8 @@ import org.eclipse.jpt.eclipselink.core.resource.java.MutableAnnotation;
 
 public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implements JavaMutable
 {
-	
-	protected boolean mutable;	
-	protected Boolean defaultMutable;
+
+	protected boolean defaultMutable;
 	protected Boolean specifiedMutable;
 	
 	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
@@ -46,52 +45,30 @@ public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implement
 	protected void removeResourceMutable() {
 		this.resourcePersistentAttribute.removeAnnotation(getMutableAnnotationName());
 	}
-	
-	public boolean hasMutable() {
-		return this.mutable;
-	}
-	
-	public void setMutable(boolean newMutable) {
-		boolean oldMutable = this.mutable;
-		this.mutable = newMutable;
-		if (newMutable) {
-			addResourceMutable();
-		}
-		else {
-			removeResourceMutable();
-		}
-		firePropertyChanged(MUTABLE_PROPERTY, oldMutable, newMutable);
-		setDefaultMutable(caclulateDefaultMutable());
-	}
-	
-	protected void setMutable_(boolean newMutable) {
-		boolean oldMutable = this.mutable;
-		this.mutable = newMutable;
-		firePropertyChanged(MUTABLE_PROPERTY, oldMutable, newMutable);
-	}
 
-	protected Boolean caclulateDefaultMutable() {
-		if (hasMutable()) {
-			return Boolean.TRUE;
+
+	protected boolean caclulateDefaultMutable() {
+		if (getResourceMutable() != null) {
+			return true;
 		}
 		if (this.resourcePersistentAttribute.typeIsDateOrCalendar()) {
 			//TODO calculate the default based on the persistence.xml mutable 
 			//property setting  for Date and Calendar bug 228042
-			return Boolean.FALSE;
+			return false;
 		}
-		return Boolean.valueOf(this.resourcePersistentAttribute.typeIsSerializable());
+		return this.resourcePersistentAttribute.typeIsSerializable();
 	}
 
-	public Boolean getMutable() {
-		return this.specifiedMutable != null ? this.specifiedMutable : this.defaultMutable; 
+	public boolean getMutable() {
+		return this.specifiedMutable != null ? this.specifiedMutable.booleanValue() : this.defaultMutable; 
 	}
 	
-	public Boolean getDefaultMutable() {
+	public boolean getDefaultMutable() {
 		return this.defaultMutable;
 	}
 	
-	protected void setDefaultMutable(Boolean newDefaultMutable) {
-		Boolean oldDefaultMutable = this.defaultMutable;
+	protected void setDefaultMutable(boolean newDefaultMutable) {
+		boolean oldDefaultMutable = this.defaultMutable;
 		this.defaultMutable = newDefaultMutable;
 		firePropertyChanged(DEFAULT_MUTABLE_PROPERTY, oldDefaultMutable, newDefaultMutable);
 	}
@@ -101,18 +78,32 @@ public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implement
 	}
 	
 	public void setSpecifiedMutable(Boolean newSpecifiedMutable) {
-		if (!hasMutable()) {
-			if (newSpecifiedMutable != null) {
-				setMutable(true);
+		if (this.specifiedMutable == newSpecifiedMutable) {
+			return;
+		}
+		Boolean oldSpecifiedMutable = this.specifiedMutable;
+		this.specifiedMutable = newSpecifiedMutable;
+
+		if (newSpecifiedMutable != null) {
+			if (getResourceMutable() == null) {
+				addResourceMutable();
+			}
+			if (newSpecifiedMutable.booleanValue()) {
+				if (getResourceMutable().getValue() == Boolean.FALSE) {
+					getResourceMutable().setValue(null);
+				}
 			}
 			else {
-				return;
+				getResourceMutable().setValue(Boolean.FALSE);
 			}
-		}		
-		Boolean oldMutable = this.specifiedMutable;
-		this.specifiedMutable = newSpecifiedMutable;
-		this.getResourceMutable().setValue(newSpecifiedMutable);
-		firePropertyChanged(Mutable.SPECIFIED_MUTABLE_PROPERTY, oldMutable, newSpecifiedMutable);
+		}
+		else {
+			//have to check if annotation exists in case the change is from false to null or vice versa
+			if (getResourceMutable() != null) {
+				removeResourceMutable();
+			}
+		}
+		firePropertyChanged(Mutable.SPECIFIED_MUTABLE_PROPERTY, oldSpecifiedMutable, newSpecifiedMutable);
 	}
 	
 	protected void setSpecifiedMutable_(Boolean newSpecifiedMutable) {
@@ -124,7 +115,6 @@ public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implement
 	public void initialize(JavaResourcePersistentAttribute jrpa) {
 		this.resourcePersistentAttribute = jrpa;
 		MutableAnnotation resourceMutable = this.getResourceMutable();
-		this.mutable = resourceMutable != null;
 		this.specifiedMutable = this.specifiedMutable(resourceMutable);
 		this.defaultMutable = this.caclulateDefaultMutable();
 	}
@@ -132,13 +122,18 @@ public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implement
 	public void update(JavaResourcePersistentAttribute jrpa) {
 		this.resourcePersistentAttribute = jrpa;
 		MutableAnnotation resourceMutable = this.getResourceMutable();
-		setMutable_(resourceMutable != null);
 		this.setSpecifiedMutable_(this.specifiedMutable(resourceMutable));
 		this.setDefaultMutable(this.caclulateDefaultMutable());
 	}
 	
 	private Boolean specifiedMutable(MutableAnnotation resourceMutable) {
-		return resourceMutable == null ? null : resourceMutable.getValue();
+		if (resourceMutable == null) {
+			return null;
+		}
+		if (resourceMutable.getValue() == null) { //@Mutable is equivalent to @Mutable(true)
+			return Boolean.TRUE;
+		}
+		return resourceMutable.getValue();
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
