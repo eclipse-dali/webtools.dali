@@ -9,15 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
 
-import org.eclipse.jpt.core.resource.java.JavaResourceModel;
+import org.eclipse.jpt.core.internal.JavaJpaFile;
 import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
 import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 
 public class JavaResourceModelStructureProvider
 	extends ResourceModelStructureProvider
 {
-	public JavaResourceModelStructureProvider(JavaResourceModel resourceModel) {
-		super(resourceModel);
+	public JavaResourceModelStructureProvider(JavaJpaFile jpaFile) {
+		super(jpaFile);
 	}
 	
 	public TreeItemContentProviderFactory getTreeItemContentProviderFactory() {

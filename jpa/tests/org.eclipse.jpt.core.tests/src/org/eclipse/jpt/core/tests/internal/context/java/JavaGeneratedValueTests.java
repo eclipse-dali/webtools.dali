@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.context.GeneratedValue;
 import org.eclipse.jpt.core.context.GenerationType;
@@ -57,8 +58,8 @@ public class JavaGeneratedValueTests extends ContextModelTestCase
 
 		//change resource model sequenceGenerator name, verify the context model is updated
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getAnnotation(JPA.GENERATED_VALUE);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getSupportingAnnotation(JPA.GENERATED_VALUE);
 		
 		generatedValue.setGenerator("foo");
 		
@@ -77,8 +78,8 @@ public class JavaGeneratedValueTests extends ContextModelTestCase
 		assertEquals("foo", idMapping.getGeneratedValue().getGenerator());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getAnnotation(JPA.GENERATED_VALUE);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getSupportingAnnotation(JPA.GENERATED_VALUE);
 		
 		assertEquals("foo", generatedValue.getGenerator());
 	}
@@ -95,8 +96,8 @@ public class JavaGeneratedValueTests extends ContextModelTestCase
 		assertNotNull(idMapping.getGeneratedValue());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getAnnotation(JPA.GENERATED_VALUE);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getSupportingAnnotation(JPA.GENERATED_VALUE);
 		
 		assertNotNull(generatedValue);
 	}
@@ -110,8 +111,8 @@ public class JavaGeneratedValueTests extends ContextModelTestCase
 
 		//change resource model sequenceGenerator name, verify the context model is updated
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getAnnotation(JPA.GENERATED_VALUE);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getSupportingAnnotation(JPA.GENERATED_VALUE);
 		
 		generatedValue.setStrategy(org.eclipse.jpt.core.resource.java.GenerationType.IDENTITY);
 		
@@ -131,15 +132,15 @@ public class JavaGeneratedValueTests extends ContextModelTestCase
 		assertEquals(GenerationType.IDENTITY, idMapping.getGeneratedValue().getStrategy());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getAnnotation(JPA.GENERATED_VALUE);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.getSupportingAnnotation(JPA.GENERATED_VALUE);
 		
 		assertEquals(org.eclipse.jpt.core.resource.java.GenerationType.IDENTITY, generatedValue.getStrategy());
 		
 		idMapping.getGeneratedValue().setSpecifiedStrategy(null);
 		
 		assertEquals(GeneratedValue.DEFAULT_STRATEGY, idMapping.getGeneratedValue().getStrategy());
-		generatedValue = (GeneratedValueAnnotation) attributeResource.getAnnotation(JPA.GENERATED_VALUE);
+		generatedValue = (GeneratedValueAnnotation) attributeResource.getSupportingAnnotation(JPA.GENERATED_VALUE);
 		assertNotNull(generatedValue);
 		assertNull(generatedValue.getStrategy());
 	}

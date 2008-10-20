@@ -42,7 +42,7 @@ public class EclipseLinkJavaChangeTracking extends AbstractJavaJpaContextNode im
 	}
 	
 	protected ChangeTrackingAnnotation getChangeTrackingAnnotation() {
-		return (ChangeTrackingAnnotation) this.resourcePersistentType.getAnnotation(getChangeTrackingAnnotationName());
+		return (ChangeTrackingAnnotation) this.resourcePersistentType.getSupportingAnnotation(getChangeTrackingAnnotationName());
 	}
 	
 	protected String getChangeTrackingAnnotationName() {
@@ -57,10 +57,10 @@ public class EclipseLinkJavaChangeTracking extends AbstractJavaJpaContextNode im
 		boolean oldChangeTracking = this.changeTracking;
 		this.changeTracking = newChangeTracking;
 		if (newChangeTracking) {
-			this.resourcePersistentType.addAnnotation(getChangeTrackingAnnotationName());
+			this.resourcePersistentType.addSupportingAnnotation(getChangeTrackingAnnotationName());
 		}
 		else {
-			this.resourcePersistentType.removeAnnotation(getChangeTrackingAnnotationName());
+			this.resourcePersistentType.removeSupportingAnnotation(getChangeTrackingAnnotationName());
 		}
 		firePropertyChanged(CHANGE_TRACKING_PROPERTY, oldChangeTracking, newChangeTracking);
 	}

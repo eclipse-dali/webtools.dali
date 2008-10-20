@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
@@ -67,12 +68,12 @@ import org.eclipse.jpt.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.core.resource.java.InheritanceAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.NamedNativeQueriesAnnotation;
 import org.eclipse.jpt.core.resource.java.NamedNativeQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.NamedQueriesAnnotation;
 import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnsAnnotation;
 import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
@@ -83,7 +84,6 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -216,10 +216,8 @@ public class GenericJavaEntity
 	}
 	
 	protected void initializeSecondaryTables(JavaResourcePersistentType resourcePersistentType) {
-		ListIterator<JavaResourceNode> annotations = resourcePersistentType.annotations(SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
-		
-		while(annotations.hasNext()) {
-			this.specifiedSecondaryTables.add(buildSecondaryTable((SecondaryTableAnnotation) annotations.next()));
+		for (ListIterator<NestableAnnotation> stream = resourcePersistentType.supportingAnnotations(SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME); stream.hasNext(); ) {
+			this.specifiedSecondaryTables.add(buildSecondaryTable((SecondaryTableAnnotation) stream.next()));
 		}
 	}
 	
@@ -238,10 +236,8 @@ public class GenericJavaEntity
 	}
 	
 	protected void initializePrimaryKeyJoinColumns(JavaResourcePersistentType resourcePersistentType) {
-		ListIterator<JavaResourceNode> annotations = resourcePersistentType.annotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
-		
-		while(annotations.hasNext()) {
-			this.specifiedPrimaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn((PrimaryKeyJoinColumnAnnotation) annotations.next()));
+		for (ListIterator<NestableAnnotation> stream = resourcePersistentType.supportingAnnotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME); stream.hasNext(); ) {
+			this.specifiedPrimaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn((PrimaryKeyJoinColumnAnnotation) stream.next()));
 		}
 	}
 	
@@ -257,10 +253,8 @@ public class GenericJavaEntity
 	}	
 
 	protected void initializeSpecifiedAttributeOverrides(JavaResourcePersistentType persistentTypeResource) {
-		ListIterator<JavaResourceNode> annotations = persistentTypeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
-		
-		while(annotations.hasNext()) {
-			this.specifiedAttributeOverrides.add(buildAttributeOverride((AttributeOverrideAnnotation) annotations.next()));
+		for (ListIterator<NestableAnnotation> stream = persistentTypeResource.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME); stream.hasNext(); ) {
+			this.specifiedAttributeOverrides.add(buildAttributeOverride((AttributeOverrideAnnotation) stream.next()));
 		}
 	}
 	
@@ -274,10 +268,8 @@ public class GenericJavaEntity
 	}
 	
 	protected void initializeSpecifiedAssociationOverrides(JavaResourcePersistentType resourcePersistentType) {
-		ListIterator<JavaResourceNode> annotations = resourcePersistentType.annotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
-		
-		while(annotations.hasNext()) {
-			this.specifiedAssociationOverrides.add(buildAssociationOverride((AssociationOverrideAnnotation) annotations.next()));
+		for (ListIterator<NestableAnnotation> stream = resourcePersistentType.supportingAnnotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME); stream.hasNext(); ) {
+			this.specifiedAssociationOverrides.add(buildAssociationOverride((AssociationOverrideAnnotation) stream.next()));
 		}
 	}
 	
@@ -292,18 +284,14 @@ public class GenericJavaEntity
 	}
 
 	protected void initializeNamedQueries(JavaResourcePersistentType resourcePersistentType) {
-		ListIterator<JavaResourceNode> annotations = resourcePersistentType.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
-		
-		while(annotations.hasNext()) {
-			this.namedQueries.add(buildNamedQuery((NamedQueryAnnotation) annotations.next()));
+		for (ListIterator<NestableAnnotation> stream = resourcePersistentType.supportingAnnotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME); stream.hasNext(); ) {
+			this.namedQueries.add(buildNamedQuery((NamedQueryAnnotation) stream.next()));
 		}
 	}
 	
 	protected void initializeNamedNativeQueries(JavaResourcePersistentType resourcePersistentType) {
-		ListIterator<JavaResourceNode> annotations = resourcePersistentType.annotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
-		
-		while(annotations.hasNext()) {
-			this.namedNativeQueries.add(buildNamedNativeQuery((NamedNativeQueryAnnotation) annotations.next()));
+		for (ListIterator<NestableAnnotation> stream = resourcePersistentType.supportingAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME); stream.hasNext(); ) {
+			this.namedNativeQueries.add(buildNamedNativeQuery((NamedNativeQueryAnnotation) stream.next()));
 		}
 	}
 
@@ -312,15 +300,15 @@ public class GenericJavaEntity
 	//You could call more than one setter before this object has received any notification
 	//from the java resource model
 	protected InheritanceAnnotation getResourceInheritance() {
-		return (InheritanceAnnotation) this.javaResourcePersistentType.getNonNullAnnotation(InheritanceAnnotation.ANNOTATION_NAME);
+		return (InheritanceAnnotation) this.javaResourcePersistentType.getNonNullSupportingAnnotation(InheritanceAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected DiscriminatorValueAnnotation getResourceDiscriminatorValue() {
-		return (DiscriminatorValueAnnotation) this.javaResourcePersistentType.getNonNullAnnotation(DiscriminatorValueAnnotation.ANNOTATION_NAME);
+		return (DiscriminatorValueAnnotation) this.javaResourcePersistentType.getNonNullSupportingAnnotation(DiscriminatorValueAnnotation.ANNOTATION_NAME);
 	}
 
 	protected void initializeIdClass(JavaResourcePersistentType jrpt) {
-		IdClassAnnotation resourceIdClass = (IdClassAnnotation) jrpt.getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		IdClassAnnotation resourceIdClass = (IdClassAnnotation) jrpt.getSupportingAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 		if (resourceIdClass != null) {
 			this.idClass = resourceIdClass.getValue();
 		}
@@ -469,7 +457,7 @@ public class GenericJavaEntity
 	public JavaSecondaryTable addSpecifiedSecondaryTable(int index) {
 		JavaSecondaryTable secondaryTable = getJpaFactory().buildJavaSecondaryTable(this);
 		this.specifiedSecondaryTables.add(index, secondaryTable);
-		SecondaryTableAnnotation secondaryTableResource = (SecondaryTableAnnotation) this.javaResourcePersistentType.addAnnotation(index, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
+		SecondaryTableAnnotation secondaryTableResource = (SecondaryTableAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
 		secondaryTable.initialize(secondaryTableResource);
 		fireItemAdded(Entity.SPECIFIED_SECONDARY_TABLES_LIST, index, secondaryTable);
 		return secondaryTable;
@@ -493,7 +481,7 @@ public class GenericJavaEntity
 	
 	public void removeSpecifiedSecondaryTable(int index) {
 		JavaSecondaryTable removedSecondaryTable = this.specifiedSecondaryTables.remove(index);
-		this.javaResourcePersistentType.removeAnnotation(index, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeSupportingAnnotation(index, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(Entity.SPECIFIED_SECONDARY_TABLES_LIST, index, removedSecondaryTable);
 	}
 	
@@ -503,7 +491,7 @@ public class GenericJavaEntity
 	
 	public void moveSpecifiedSecondaryTable(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedSecondaryTables, targetIndex, sourceIndex);
-		this.javaResourcePersistentType.move(targetIndex, sourceIndex, SecondaryTablesAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, SecondaryTablesAnnotation.ANNOTATION_NAME);
 		fireItemMoved(Entity.SPECIFIED_SECONDARY_TABLES_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -608,7 +596,7 @@ public class GenericJavaEntity
 			throw new IllegalStateException("tableGenerator already exists"); //$NON-NLS-1$
 		}
 		this.tableGenerator = getJpaFactory().buildJavaTableGenerator(this);
-		TableGeneratorAnnotation tableGeneratorResource = (TableGeneratorAnnotation) this.javaResourcePersistentType.addAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+		TableGeneratorAnnotation tableGeneratorResource = (TableGeneratorAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 		this.tableGenerator.initialize(tableGeneratorResource);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
 		return this.tableGenerator;
@@ -620,7 +608,7 @@ public class GenericJavaEntity
 		}
 		JavaTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = null;
-		this.javaResourcePersistentType.removeAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, null);
 	}
 	
@@ -639,7 +627,7 @@ public class GenericJavaEntity
 			throw new IllegalStateException("sequenceGenerator already exists"); //$NON-NLS-1$
 		}
 		this.sequenceGenerator = getJpaFactory().buildJavaSequenceGenerator(this);
-		SequenceGeneratorAnnotation sequenceGeneratorResource = (SequenceGeneratorAnnotation) this.javaResourcePersistentType.addAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+		SequenceGeneratorAnnotation sequenceGeneratorResource = (SequenceGeneratorAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 		this.sequenceGenerator.initialize(sequenceGeneratorResource);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
 		return this.sequenceGenerator;
@@ -651,7 +639,7 @@ public class GenericJavaEntity
 		}
 		JavaSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
 		this.sequenceGenerator = null;
-		this.javaResourcePersistentType.removeAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator,null);
 	}
 	
@@ -665,7 +653,7 @@ public class GenericJavaEntity
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, newSequenceGenerator);
 	}
 	
-	public final Iterator<JavaGenerator> generators() {
+	protected final Iterator<JavaGenerator> generators() {
 		ArrayList<JavaGenerator> generators = new ArrayList<JavaGenerator>();
 		this.addGeneratorsTo(generators);
 		return generators.iterator();
@@ -732,7 +720,7 @@ public class GenericJavaEntity
 		}
 		JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
-		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = (PrimaryKeyJoinColumnAnnotation) this.javaResourcePersistentType.addAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = (PrimaryKeyJoinColumnAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		primaryKeyJoinColumn.initialize(pkJoinColumnResource);
 		this.fireItemAdded(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
 		if (oldDefaultPkJoinColumn != null) {
@@ -761,7 +749,7 @@ public class GenericJavaEntity
 			//in the UI because the change notifications end up in the wrong order.
 			this.defaultPrimaryKeyJoinColumn = buildPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumn(this.javaResourcePersistentType));
 		}
-		this.javaResourcePersistentType.removeAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeSupportingAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
 		if (this.defaultPrimaryKeyJoinColumn != null) {
 			//fire change notification if a defaultJoinColumn was created above
@@ -774,7 +762,7 @@ public class GenericJavaEntity
 	}
 	
 	public void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
-		this.javaResourcePersistentType.move(targetIndex, sourceIndex, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		moveItemInList(targetIndex, sourceIndex, this.specifiedPrimaryKeyJoinColumns, Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);		
 	}
 	
@@ -806,7 +794,7 @@ public class GenericJavaEntity
 	protected JavaAttributeOverride addSpecifiedAttributeOverride(int index) {
 		JavaAttributeOverride attributeOverride = getJpaFactory().buildJavaAttributeOverride(this, createAttributeOverrideOwner());
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
-		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		attributeOverride.initialize(attributeOverrideResource);
 		this.fireItemAdded(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
@@ -839,7 +827,7 @@ public class GenericJavaEntity
 			}
 		}
 
-		this.javaResourcePersistentType.removeAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeSupportingAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		
 		if (virtualAttributeOverride != null) {
@@ -853,7 +841,7 @@ public class GenericJavaEntity
 		JavaAttributeOverride newAttributeOverride = getJpaFactory().buildJavaAttributeOverride(this, createAttributeOverrideOwner());
 		this.specifiedAttributeOverrides.add(index, newAttributeOverride);
 		
-		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		newAttributeOverride.initialize(attributeOverrideResource);
 		
 		int defaultIndex = this.virtualAttributeOverrides.indexOf(oldAttributeOverride);
@@ -886,7 +874,7 @@ public class GenericJavaEntity
 
 	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedAttributeOverrides, targetIndex, sourceIndex);
-		this.javaResourcePersistentType.move(targetIndex, sourceIndex, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		fireItemMoved(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -976,7 +964,7 @@ public class GenericJavaEntity
 	public JavaAssociationOverride addSpecifiedAssociationOverride(int index) {
 		JavaAssociationOverride associationOverride = getJpaFactory().buildJavaAssociationOverride(this, createAssociationOverrideOwner());
 		this.specifiedAssociationOverrides.add(index, associationOverride);
-		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
+		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
 		associationOverride.initialize(associationOverrideResource);
 		this.fireItemAdded(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
 		return associationOverride;
@@ -1000,7 +988,7 @@ public class GenericJavaEntity
 	
 	public void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedAssociationOverrides, targetIndex, sourceIndex);
-		this.javaResourcePersistentType.move(targetIndex, sourceIndex, AssociationOverridesAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, AssociationOverridesAnnotation.ANNOTATION_NAME);
 		fireItemMoved(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 
@@ -1031,7 +1019,7 @@ public class GenericJavaEntity
 			}
 		}
 
-		this.javaResourcePersistentType.removeAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeSupportingAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
 		
 		if (virtualAssociationOverride != null) {
@@ -1045,7 +1033,7 @@ public class GenericJavaEntity
 		JavaAssociationOverride newAssociationOverride = getJpaFactory().buildJavaAssociationOverride(this, createAssociationOverrideOwner());
 		this.specifiedAssociationOverrides.add(index, newAssociationOverride);
 		
-		AssociationOverrideAnnotation attributeOverrideResource = (AssociationOverrideAnnotation) this.javaResourcePersistentType.addAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
+		AssociationOverrideAnnotation attributeOverrideResource = (AssociationOverrideAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
 		newAssociationOverride.initialize(attributeOverrideResource);
 		
 		int virtualIndex = this.virtualAssociationOverrides.indexOf(oldAssociationOverride);
@@ -1078,7 +1066,7 @@ public class GenericJavaEntity
 	public JavaNamedQuery addNamedQuery(int index) {
 		JavaNamedQuery namedQuery = getJpaFactory().buildJavaNamedQuery(this);
 		this.namedQueries.add(index, namedQuery);
-		NamedQueryAnnotation namedQueryAnnotation = (NamedQueryAnnotation) this.javaResourcePersistentType.addAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+		NamedQueryAnnotation namedQueryAnnotation = (NamedQueryAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		namedQuery.initialize(namedQueryAnnotation);
 		fireItemAdded(QueryHolder.NAMED_QUERIES_LIST, index, namedQuery);
 		return namedQuery;
@@ -1098,7 +1086,7 @@ public class GenericJavaEntity
 	
 	public void removeNamedQuery(int index) {
 		JavaNamedQuery removedNamedQuery = this.namedQueries.remove(index);
-		this.javaResourcePersistentType.removeAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeSupportingAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(QueryHolder.NAMED_QUERIES_LIST, index, removedNamedQuery);
 	}	
 	
@@ -1108,7 +1096,7 @@ public class GenericJavaEntity
 	
 	public void moveNamedQuery(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.namedQueries, targetIndex, sourceIndex);
-		this.javaResourcePersistentType.move(targetIndex, sourceIndex, NamedQueriesAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, NamedQueriesAnnotation.ANNOTATION_NAME);
 		fireItemMoved(QueryHolder.NAMED_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -1123,7 +1111,7 @@ public class GenericJavaEntity
 	public JavaNamedNativeQuery addNamedNativeQuery(int index) {
 		JavaNamedNativeQuery namedNativeQuery = getJpaFactory().buildJavaNamedNativeQuery(this);
 		this.namedNativeQueries.add(index, namedNativeQuery);
-		NamedNativeQueryAnnotation namedNativeQueryAnnotation = (NamedNativeQueryAnnotation) this.javaResourcePersistentType.addAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
+		NamedNativeQueryAnnotation namedNativeQueryAnnotation = (NamedNativeQueryAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		namedNativeQuery.initialize(namedNativeQueryAnnotation);		
 		fireItemAdded(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
 		return namedNativeQuery;
@@ -1143,7 +1131,7 @@ public class GenericJavaEntity
 	
 	public void removeNamedNativeQuery(int index) {
 		JavaNamedNativeQuery removedNamedNativeQuery = this.namedNativeQueries.remove(index);
-		this.javaResourcePersistentType.removeAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeSupportingAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, removedNamedNativeQuery);
 	}	
 	
@@ -1153,7 +1141,7 @@ public class GenericJavaEntity
 	
 	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.namedNativeQueries, targetIndex, sourceIndex);
-		this.javaResourcePersistentType.move(targetIndex, sourceIndex, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		fireItemMoved(QueryHolder.NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -1190,15 +1178,15 @@ public class GenericJavaEntity
 	}
 
 	protected IdClassAnnotation getResourceIdClass() {
-		return (IdClassAnnotation) this.javaResourcePersistentType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		return (IdClassAnnotation) this.javaResourcePersistentType.getSupportingAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void addResourceIdClass() {
-		this.javaResourcePersistentType.addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.addSupportingAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void removeResourceIdClass() {
-		this.javaResourcePersistentType.removeAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeSupportingAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 
 	public Entity getParentEntity() {
@@ -1499,7 +1487,7 @@ public class GenericJavaEntity
 	
 	protected void updateSecondaryTables(JavaResourcePersistentType persistentTypeResource) {
 		ListIterator<JavaSecondaryTable> secondaryTables = specifiedSecondaryTables();
-		ListIterator<JavaResourceNode> resourceSecondaryTables = persistentTypeResource.annotations(SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
+		ListIterator<NestableAnnotation> resourceSecondaryTables = persistentTypeResource.supportingAnnotations(SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
 		
 		while (secondaryTables.hasNext()) {
 			JavaSecondaryTable secondaryTable = secondaryTables.next();
@@ -1546,7 +1534,7 @@ public class GenericJavaEntity
 	}
 	
 	protected TableGeneratorAnnotation tableGenerator(JavaResourcePersistentType persistentTypeResource) {
-		return (TableGeneratorAnnotation) persistentTypeResource.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+		return (TableGeneratorAnnotation) persistentTypeResource.getSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 	}
 
 	protected void updateSequenceGenerator(JavaResourcePersistentType persistentTypeResource) {
@@ -1573,13 +1561,13 @@ public class GenericJavaEntity
 	}
 	
 	protected SequenceGeneratorAnnotation sequenceGenerator(JavaResourcePersistentType persistentTypeResource) {
-		return (SequenceGeneratorAnnotation) persistentTypeResource.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+		return (SequenceGeneratorAnnotation) persistentTypeResource.getSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 	}
 
 	
 	protected void updateSpecifiedPrimaryKeyJoinColumns(JavaResourcePersistentType persistentTypeResource) {
 		ListIterator<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns = specifiedPrimaryKeyJoinColumns();
-		ListIterator<JavaResourceNode> resourcePrimaryKeyJoinColumns = persistentTypeResource.annotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+		ListIterator<NestableAnnotation> resourcePrimaryKeyJoinColumns = persistentTypeResource.supportingAnnotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		
 		while (primaryKeyJoinColumns.hasNext()) {
 			JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = primaryKeyJoinColumns.next();
@@ -1617,7 +1605,7 @@ public class GenericJavaEntity
 		
 	protected void updateSpecifiedAttributeOverrides(JavaResourcePersistentType persistentTypeResource) {
 		ListIterator<JavaAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
-		ListIterator<JavaResourceNode> resourceAttributeOverrides = persistentTypeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		ListIterator<NestableAnnotation> resourceAttributeOverrides = persistentTypeResource.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		
 		while (attributeOverrides.hasNext()) {
 			JavaAttributeOverride attributeOverride = attributeOverrides.next();
@@ -1673,7 +1661,7 @@ public class GenericJavaEntity
 
 	protected void updateSpecifiedAssociationOverrides(JavaResourcePersistentType resourcePersistentType) {
 		ListIterator<JavaAssociationOverride> associationOverrides = specifiedAssociationOverrides();
-		ListIterator<JavaResourceNode> resourceAssociationOverrides = resourcePersistentType.annotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
+		ListIterator<NestableAnnotation> resourceAssociationOverrides = resourcePersistentType.supportingAnnotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
 		
 		while (associationOverrides.hasNext()) {
 			JavaAssociationOverride associationOverride = associationOverrides.next();
@@ -1722,7 +1710,7 @@ public class GenericJavaEntity
 
 	protected void updateNamedQueries(JavaResourcePersistentType resourcePersistentType) {
 		ListIterator<JavaNamedQuery> queries = namedQueries();
-		ListIterator<JavaResourceNode> resourceNamedQueries = resourcePersistentType.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+		ListIterator<NestableAnnotation> resourceNamedQueries = resourcePersistentType.supportingAnnotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		
 		while (queries.hasNext()) {
 			JavaNamedQuery namedQuery = queries.next();
@@ -1741,7 +1729,7 @@ public class GenericJavaEntity
 	
 	protected void updateNamedNativeQueries(JavaResourcePersistentType resourcePersistentType) {
 		ListIterator<JavaNamedNativeQuery> queries = namedNativeQueries();
-		ListIterator<JavaResourceNode> resourceNamedNativeQueries = resourcePersistentType.annotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
+		ListIterator<NestableAnnotation> resourceNamedNativeQueries = resourcePersistentType.supportingAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		
 		while (queries.hasNext()) {
 			JavaNamedNativeQuery namedQuery = queries.next();
@@ -1772,7 +1760,7 @@ public class GenericJavaEntity
 	}
 
 	protected void updateIdClass(JavaResourcePersistentType resourcePersistentType) {
-		IdClassAnnotation annotation = (IdClassAnnotation) resourcePersistentType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		IdClassAnnotation annotation = (IdClassAnnotation) resourcePersistentType.getSupportingAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 		if (annotation != null) {
 			setIdClass_(annotation.getValue());
 		}
@@ -1909,50 +1897,38 @@ public class GenericJavaEntity
 	}
 	
 	protected void validateGenerators(List<IMessage> messages, CompilationUnit astRoot) {
-		List<Generator> masterList = CollectionTools.list(getPersistenceUnit().allGenerators());
-		
-		for (Iterator<JavaGenerator> stream = this.generators(); stream.hasNext() ; ) {
-			JavaGenerator current = stream.next();
-			masterList.remove(current);
-			
-			for (Generator each : masterList) {
-				if (! StringTools.stringIsEmpty(current.getName()) && each.duplicates(current)) {
+		for (Iterator<JavaGenerator> localGenerators = this.generators(); localGenerators.hasNext(); ) {
+			JavaGenerator localGenerator = localGenerators.next();
+			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().allGenerators(); globalGenerators.hasNext(); ) {
+				if (localGenerator.duplicates(globalGenerators.next())) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-							new String[] {current.getName()},
-							current,
-							current.getNameTextRange(astRoot))
+							new String[] {localGenerator.getName()},
+							localGenerator,
+							localGenerator.getNameTextRange(astRoot))
 					);
 				}
 			}
-			
-			masterList.add(current);
 		}
 	}
 	
 	protected void validateQueries(List<IMessage> messages, CompilationUnit astRoot) {
-		List<Query> masterList = CollectionTools.list(getPersistenceUnit().allQueries());
-		
-		for (Iterator<JavaQuery> stream = this.queries(); stream.hasNext() ; ) {
-			JavaQuery current = stream.next();
-			masterList.remove(current);
-			
-			for (Query each : masterList) {
-				if (! StringTools.stringIsEmpty(current.getName()) && each.duplicates(current)) {
+		for (Iterator<JavaQuery> localQueries = this.queries(); localQueries.hasNext(); ) {
+			JavaQuery localQuery = localQueries.next();
+			for (Iterator<Query> globalQueries = this.getPersistenceUnit().allQueries(); globalQueries.hasNext(); ) {
+				if (localQuery.duplicates(globalQueries.next())) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.QUERY_DUPLICATE_NAME,
-							new String[] {current.getName()},
-							current,
-							current.getNameTextRange(astRoot))
+							new String[] {localQuery.getName()},
+							localQuery,
+							localQuery.getNameTextRange(astRoot))
 					);
 				}
 			}
-			
-			masterList.add(current);
 		}
 	}
 	

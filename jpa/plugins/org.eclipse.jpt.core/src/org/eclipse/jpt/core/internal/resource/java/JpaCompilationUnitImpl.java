@@ -9,37 +9,45 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import java.util.Iterator;
 import java.util.List;
-import org.eclipse.core.resources.IFile;
+
+import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
+import org.eclipse.jpt.core.ResourceModelListener;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
-import org.eclipse.jpt.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
+import org.eclipse.jpt.utility.internal.BitTools;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
+/**
+ * 
+ */
 public class JpaCompilationUnitImpl
 	extends AbstractJavaResourceNode
 	implements JpaCompilationUnit
 {
-	protected final JpaAnnotationProvider annotationProvider;
+	private final ICompilationUnit compilationUnit;
 
-	protected final CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
+	private final JpaAnnotationProvider annotationProvider;
 
-	protected final AnnotationEditFormatter annotationEditFormatter;
+	private final CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
 
-	protected final JavaResourceModel javaResourceModel;
+	private final AnnotationEditFormatter annotationEditFormatter;
 
-	protected final ICompilationUnit compilationUnit;
+	private final ResourceModelListener resourceModelListener;
 
 	/**
 	 * The primary type of the AST compilation unit. We are not going to handle
@@ -54,19 +62,25 @@ public class JpaCompilationUnitImpl
 	// ********** construction **********
 
 	public JpaCompilationUnitImpl(
-			IFile file, 
+			ICompilationUnit compilationUnit,
 			JpaAnnotationProvider annotationProvider, 
 			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
 			AnnotationEditFormatter annotationEditFormatter,
-			JavaResourceModel javaResourceModel) {
+			ResourceModelListener resourceModelListener) {
 		super(null);  // the JPA compilation unit is the root of its sub-tree
+		this.compilationUnit = compilationUnit;
 		this.annotationProvider = annotationProvider;
 		this.modifySharedDocumentCommandExecutorProvider = modifySharedDocumentCommandExecutorProvider;
 		this.annotationEditFormatter = annotationEditFormatter;
-		this.javaResourceModel = javaResourceModel;
-		this.compilationUnit = JavaCore.createCompilationUnitFrom(file);
+		this.resourceModelListener = resourceModelListener;
+		this.persistentType = this.buildPersistentType();
+	}
+
+	protected JavaResourcePersistentType buildPersistentType() {
 		this.openCompilationUnit();
-		this.persistentType = this.buildJavaResourcePersistentType();
+		CompilationUnit astRoot = this.buildASTRoot();
+		this.closeCompilationUnit();
+		return this.buildPersistentType(astRoot);
 	}
 
 	protected void openCompilationUnit() {
@@ -77,13 +91,17 @@ public class JpaCompilationUnitImpl
 		}
 	}
 
-	protected JavaResourcePersistentType buildJavaResourcePersistentType() {
-		return this.buildJavaResourcePersistentType(this.buildASTRoot());
+	protected void closeCompilationUnit() {
+		try {
+			this.compilationUnit.close();
+		} catch (JavaModelException ex) {
+			// hmmm
+		}
 	}
 
-	protected JavaResourcePersistentType buildJavaResourcePersistentType(CompilationUnit astRoot) {
+	protected JavaResourcePersistentType buildPersistentType(CompilationUnit astRoot) {
 		TypeDeclaration td = this.getPrimaryType(astRoot);
-		return (td == null) ? null : this.buildJavaResourcePersistentType(astRoot, td);
+		return (td == null) ? null : this.buildPersistentType(astRoot, td);
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -91,7 +109,7 @@ public class JpaCompilationUnitImpl
 	}
 
 
-	// ********** overrides **********
+	// ********** AbstractJavaResourceNode overrides **********
 
 	@Override
 	protected boolean requiresParent() {
@@ -108,60 +126,16 @@ public class JpaCompilationUnitImpl
 		return this.annotationProvider;
 	}
 	
-	@Override
-	public CommandExecutorProvider getModifySharedDocumentCommandExecutorProvider() {
-		return this.modifySharedDocumentCommandExecutorProvider;
-	}
-	
-	@Override
-	public AnnotationEditFormatter getAnnotationEditFormatter()  {
-		return this.annotationEditFormatter;
-	}
-	
-	@Override
-	public JavaResourceModel getResourceModel() {
-		return this.javaResourceModel;
-	}
-	
 
-	// ********** JpaCompilationUnit implementation **********
-
-	public ICompilationUnit getCompilationUnit() {
-		return this.compilationUnit;
-	}
-	
-	public JavaResourcePersistentType getJavaPersistentTypeResource(String fullyQualifiedTypeName) {
-		return (this.persistentType == null) ? null : this.persistentType.getJavaPersistentTypeResource(fullyQualifiedTypeName);
-	}
-
-	/**
-	 * The persistentType resource for the compilation unit's primary type.
-	 * Will be null if the primary type is null.
-	 */
-	public JavaResourcePersistentType getPersistentType() {	
-		return this.persistentType;
-		//TODO should i only be returning this if it returns true to isPersistable?
-		//that's how we handle nestedTypes on JavaPersistentTypeResource
-		//return this.persistentType.isPersistable() ? this.persistentType : null;
-	}
-	
-	protected void setPersistentType(JavaResourcePersistentType persistentType) {
-		JavaResourcePersistentType old = this.persistentType;
-		this.persistentType = persistentType;
-		this.firePropertyChanged(PERSISTENT_TYPE_PROPERTY, old, persistentType);
-	}
-
-	public void updateFromJava() {
-		this.update(this.buildASTRoot());
-	}
+	// ********** JavaResourceNode implementation **********
 
 	public void update(CompilationUnit astRoot) {
 		TypeDeclaration td = this.getPrimaryType(astRoot);
 		if (td == null) {
-			this.setPersistentType(null);
+			this.persistentType = null;
 		} else {
 			if (this.persistentType == null) {
-				this.setPersistentType(this.buildJavaResourcePersistentType(astRoot, td));
+				this.persistentType = this.buildPersistentType(astRoot, td);
 			} else {
 				this.persistentType.update(astRoot);
 			}
@@ -172,14 +146,106 @@ public class JpaCompilationUnitImpl
 		return null;
 	}
 
-	public void resourceChanged() {
-		this.javaResourceModel.resourceChanged();
+
+	// ********** JpaCompilationUnit implementation **********
+
+	public ICompilationUnit getCompilationUnit() {
+		return this.compilationUnit;
+	}
+	
+	public Iterator<JavaResourcePersistentType> persistableTypes() {
+		return (this.persistentType == null) ?
+				EmptyIterator.<JavaResourcePersistentType>instance() :
+				this.persistentType.allPersistableTypes();
+	}
+
+	public void resourceModelChanged() {
+		this.resourceModelListener.resourceModelChanged();
 	}
 
 	public void resolveTypes() {
 		if (this.persistentType != null) {
 			this.persistentType.resolveTypes(this.buildASTRoot());
 		}
+	}
+
+	public CommandExecutorProvider getModifySharedDocumentCommandExecutorProvider() {
+		return this.modifySharedDocumentCommandExecutorProvider;
+	}
+	
+	public AnnotationEditFormatter getAnnotationEditFormatter()  {
+		return this.annotationEditFormatter;
+	}
+	
+
+	// ********** Java changes **********
+
+	public void javaElementChanged(ElementChangedEvent event) {
+		this.synchWithJavaDelta(event.getDelta());
+	}
+
+	protected void synchWithJavaDelta(IJavaElementDelta delta) {
+		switch (delta.getElement().getElementType()) {
+			case IJavaElement.JAVA_PROJECT :
+				if (this.classpathHasChanged(delta)) {
+					this.updateFromJava();
+					break;  // no need to check further
+				}
+			case IJavaElement.JAVA_MODEL :
+			case IJavaElement.PACKAGE_FRAGMENT_ROOT :
+			case IJavaElement.PACKAGE_FRAGMENT :
+				this.synchChildrenWithJavaDelta(delta);
+				break;
+			case IJavaElement.COMPILATION_UNIT :
+				if (this.deltaIsRelevant(delta)) {
+					this.updateFromJava();
+				}
+				break;
+			default :
+				break; // the element type is somehow held by a compilation unit (i.e. probably doesn't happen)
+		}
+	}
+
+	protected void synchChildrenWithJavaDelta(IJavaElementDelta delta) {
+		for (IJavaElementDelta child : delta.getAffectedChildren()) {
+			this.synchWithJavaDelta(child); // recurse
+		}
+	}
+
+	// 235384 - We need to update all compilation units when a classpath change occurs.
+	// The persistence.jar could have been added to or removed from the
+	// classpath which affects whether we know about the JPA annotations.
+	protected boolean classpathHasChanged(IJavaElementDelta delta) {
+		return BitTools.anyFlagsAreSet(delta.getFlags(), this.getClasspathChangedFlags());
+	}
+
+	protected int getClasspathChangedFlags() {
+		return CLASSPATH_CHANGED_FLAGS;
+	}
+
+	protected static final int CLASSPATH_CHANGED_FLAGS =
+			IJavaElementDelta.F_RESOLVED_CLASSPATH_CHANGED |
+			IJavaElementDelta.F_CLASSPATH_CHANGED;
+
+	protected boolean deltaIsRelevant(IJavaElementDelta delta) {
+		// ignore changes to/from primary working copy - no content has changed;
+		// and make sure there are no other flags set that indicate *both* a
+		// change to/from primary working copy *and* content has changed
+		if (BitTools.onlyFlagIsSet(delta.getFlags(), IJavaElementDelta.F_PRIMARY_WORKING_COPY)) {
+			return false;
+		}
+
+		// we get the java notification for removal before we get the resource notification;
+		// we do not need to handle this event and will get exceptions building an astRoot if we try
+		if (delta.getKind() == IJavaElementDelta.REMOVED) {
+			return false;
+		}
+
+		return delta.getElement().equals(this.compilationUnit);
+	}
+
+	protected void updateFromJava() {
+		this.update(this.buildASTRoot());
 	}
 
 
@@ -189,8 +255,7 @@ public class JpaCompilationUnitImpl
 		return JDTTools.buildASTRoot(this.compilationUnit);
 	}
 
-	// TODO use JPA factory
-	protected JavaResourcePersistentType buildJavaResourcePersistentType(CompilationUnit astRoot, TypeDeclaration typeDeclaration) {
+	protected JavaResourcePersistentType buildPersistentType(CompilationUnit astRoot, TypeDeclaration typeDeclaration) {
 		return JavaResourcePersistentTypeImpl.newInstance(this, typeDeclaration, astRoot);
 	}
 
@@ -209,7 +274,7 @@ public class JpaCompilationUnitImpl
 		for (AbstractTypeDeclaration atd : types(astRoot)) {
 			if ((atd.getNodeType() == ASTNode.TYPE_DECLARATION)
 					&& atd.getName().getFullyQualifiedName().equals(primaryTypeName)) {
-				return atd.resolveBinding() != null ? (TypeDeclaration) atd : null;
+				return (atd.resolveBinding()) != null ? (TypeDeclaration) atd : null;
 			}
 		}
 		return null;
@@ -229,7 +294,7 @@ public class JpaCompilationUnitImpl
 	}
 
 	protected static String removeJavaExtension(String fileName) {
-		int index = fileName.lastIndexOf(".java");
+		int index = fileName.lastIndexOf(".java"); //$NON-NLS-1$
 		return (index == -1) ? fileName : fileName.substring(0, index);
 	}
 

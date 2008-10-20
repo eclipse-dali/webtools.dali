@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
+import java.util.EventListener;
 
 /**
- * 
+ * The listener is notified whenever anything in the JPA resource model changes.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -20,7 +20,8 @@ import org.eclipse.jpt.utility.model.listener.ChangeListener;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ResourceModelListener extends ChangeListener
+public interface ResourceModelListener
+	extends EventListener
 {
 	void resourceModelChanged();
 }

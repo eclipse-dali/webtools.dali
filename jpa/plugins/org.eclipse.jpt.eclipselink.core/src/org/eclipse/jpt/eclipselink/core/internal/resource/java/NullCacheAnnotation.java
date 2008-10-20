@@ -51,7 +51,7 @@ public class NullCacheAnnotation extends AbstractJavaResourceNode implements Cac
 	}
 	
 	protected CacheAnnotation createCacheResource() {
-		return (CacheAnnotation) getParent().addAnnotation(getAnnotationName());
+		return (CacheAnnotation) getParent().addSupportingAnnotation(getAnnotationName());
 	}
 	
 	public CacheType getType() {

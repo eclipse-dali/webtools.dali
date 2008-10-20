@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.resource.persistence;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.internal.resource.persistence.translators.PersistenceTranslator;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
@@ -23,26 +24,36 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public class PersistenceResource extends JpaXmlResource
+public class PersistenceResource
+	extends JpaXmlResource
 {
-	public PersistenceResource(Renderer aRenderer) {
-		super(aRenderer);
+	public PersistenceResource(URI uri, Renderer renderer) {
+		super(uri, renderer);
 	}
 
-	public PersistenceResource(URI uri, Renderer aRenderer) {
-		super(uri, aRenderer);
+	public Translator getRootTranslator() {
+		return PersistenceTranslator.INSTANCE;
 	}
-	
+
+	@Override
+	public String getType() {
+		return JpaFile.PERSISTENCE_RESOURCE_TYPE;
+	}
+
+	public XmlPersistence getPersistence() {
+		return (XmlPersistence) this.getRootObject();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public EList eAdapters() {
+		return super.eAdapters();
+	}
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public EList getContents() {
 		return super.getContents();
 	}
-	
-	public Translator getRootTranslator() {
-		return PersistenceTranslator.INSTANCE;
-	}
-	
-	public XmlPersistence getPersistence() {
-		return (XmlPersistence) getRootObject();
-	}
+
 }

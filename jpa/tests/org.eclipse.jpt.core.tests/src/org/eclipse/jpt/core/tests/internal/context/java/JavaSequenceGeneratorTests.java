@@ -58,8 +58,8 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 
 		//change resource model sequenceGenerator name, verify the context model is updated
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR);
 		
 		sequenceGenerator.setName("foo");
 		
@@ -78,8 +78,8 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		assertEquals("foo", idMapping.getSequenceGenerator().getName());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR);
 		
 		assertEquals("foo", sequenceGenerator.getName());
 	}
@@ -96,8 +96,8 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		assertNull(idMapping.getSequenceGenerator());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR);
 		
 		assertNull(sequenceGenerator);
 	}
@@ -110,8 +110,8 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		assertEquals(SequenceGenerator.DEFAULT_INITIAL_VALUE, idMapping.getSequenceGenerator().getInitialValue());
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);	
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
 		sequenceGenerator.setInitialValue(Integer.valueOf(82));
 		
@@ -141,14 +141,14 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		idMapping.getSequenceGenerator().setSpecifiedInitialValue(Integer.valueOf(20));
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);	
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
 		assertEquals(Integer.valueOf(20), sequenceGenerator.getInitialValue());
 		
 		idMapping.getSequenceGenerator().setName(null);
 		idMapping.getSequenceGenerator().setSpecifiedInitialValue(null);
-		assertNull(attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR));
+		assertNull(attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR));
 	}
 	
 	public void testGetAllocationSize() throws Exception {
@@ -160,8 +160,8 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		assertEquals(Generator.DEFAULT_ALLOCATION_SIZE, idMapping.getSequenceGenerator().getAllocationSize());
 
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);	
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
 		sequenceGenerator.setAllocationSize(Integer.valueOf(20));
 		
@@ -191,14 +191,14 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		idMapping.getSequenceGenerator().setSpecifiedAllocationSize(Integer.valueOf(25));
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);	
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
 		assertEquals(Integer.valueOf(25), sequenceGenerator.getAllocationSize());
 		
 		idMapping.getSequenceGenerator().setName(null);
 		idMapping.getSequenceGenerator().setSpecifiedAllocationSize(null);
-		assertNull(attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR));
+		assertNull(attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR));
 	}
 	
 	
@@ -211,8 +211,8 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		assertNull(idMapping.getSequenceGenerator().getSequenceName());
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);	
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
 		sequenceGenerator.setSequenceName("mySequenceName");
 		
@@ -242,14 +242,14 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		idMapping.getSequenceGenerator().setSpecifiedSequenceName("mySequenceName");
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR);	
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
 		assertEquals("mySequenceName", sequenceGenerator.getSequenceName());
 		
 		idMapping.getSequenceGenerator().setName(null);
 		idMapping.getSequenceGenerator().setSpecifiedSequenceName(null);
-		assertNull(attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR));
+		assertNull(attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR));
 	}
 
 }

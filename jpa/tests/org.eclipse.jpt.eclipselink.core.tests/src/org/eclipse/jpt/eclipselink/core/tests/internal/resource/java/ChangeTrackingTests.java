@@ -17,6 +17,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class ChangeTrackingTests extends EclipseLinkJavaResourceModelTestCase {
 
 	public ChangeTrackingTests(String name) {
@@ -64,7 +65,7 @@ public class ChangeTrackingTests extends EclipseLinkJavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestChangeTracking();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		ChangeTrackingAnnotation existenceChecking = (ChangeTrackingAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CHANGE_TRACKING);
+		ChangeTrackingAnnotation existenceChecking = (ChangeTrackingAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.CHANGE_TRACKING);
 		assertNotNull(existenceChecking);
 	}
 
@@ -72,7 +73,7 @@ public class ChangeTrackingTests extends EclipseLinkJavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestChangeTrackingWithValue();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
-		ChangeTrackingAnnotation existenceChecking = (ChangeTrackingAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CHANGE_TRACKING);
+		ChangeTrackingAnnotation existenceChecking = (ChangeTrackingAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.CHANGE_TRACKING);
 		assertEquals(ChangeTrackingType.DEFERRED, existenceChecking.getValue());
 	}
 
@@ -80,7 +81,7 @@ public class ChangeTrackingTests extends EclipseLinkJavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestChangeTrackingWithValue();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
-		ChangeTrackingAnnotation existenceChecking = (ChangeTrackingAnnotation) typeResource.getAnnotation(EclipseLinkJPA.CHANGE_TRACKING);
+		ChangeTrackingAnnotation existenceChecking = (ChangeTrackingAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.CHANGE_TRACKING);
 		assertEquals(ChangeTrackingType.DEFERRED, existenceChecking.getValue());
 		
 		existenceChecking.setValue(ChangeTrackingType.ATTRIBUTE);

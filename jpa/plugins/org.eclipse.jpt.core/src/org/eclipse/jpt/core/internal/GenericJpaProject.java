@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -33,14 +34,11 @@ import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.ResourceModelListener;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.Database;
@@ -48,11 +46,9 @@ import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
@@ -98,7 +94,10 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	protected boolean discoversAnnotatedClasses;
 
 	/**
-	 * The JPA files associated with the JPA project.
+	 * The JPA files associated with the JPA project:
+	 *     java
+	 *     persistence.xml
+	 *     orm.xml
 	 */
 	protected final Vector<JpaFile> jpaFiles;
 
@@ -136,9 +135,6 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 
 	// ********** constructor/initialization **********
 
-	/**
-	 * The project and JPA platform are required.
-	 */
 	public GenericJpaProject(JpaProject.Config config) throws CoreException {
 		super(null);  // JPA project is the root of the containment tree
 		if ((config.getProject() == null) || (config.getJpaPlatform() == null)) {
@@ -197,7 +193,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	}
 
 	protected JpaRootContextNode buildRootContextNode() {
-		return this.getJpaFactory().buildRootContext(this);
+		return this.getJpaFactory().buildRootContextNode(this);
 	}
 
 	// ***** inner class
@@ -213,7 +209,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 				case IResource.FOLDER :
 					return true;  // visit children
 				case IResource.FILE :
-					GenericJpaProject.this.addJpaFileInternal((IFile) resource.requestResource());
+					GenericJpaProject.this.addJpaFile_((IFile) resource.requestResource());
 					return false;  // no children
 				default :
 					return false;  // no children
@@ -369,7 +365,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	}
 	
 	
-	// **************** JPA files **********************************************
+	// ********** JPA files **********
 
 	public Iterator<JpaFile> jpaFiles() {
 		return new CloneIterator<JpaFile>(this.jpaFiles);  // read-only
@@ -379,6 +375,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		return this.jpaFiles.size();
 	}
 
+	@Override
 	public JpaFile getJpaFile(IFile file) {
 		synchronized (this.jpaFiles) {
 			for (JpaFile jpaFile : this.jpaFiles) {
@@ -390,21 +387,12 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		return null;
 	}
 
-	public Iterator<JpaFile> jpaFiles(final String resourceType) {
-		return new FilteringIterator<JpaFile, JpaFile>(this.jpaFiles()) {
-			@Override
-			protected boolean accept(JpaFile o) {
-				return o.getResourceType().equals(resourceType);
-			}
-		};
-	}
-
 	/**
 	 * Add a JPA file for the specified file, if appropriate.
 	 * Return true if a JPA File was created and added, false otherwise
 	 */
 	protected boolean addJpaFile(IFile file) {
-		JpaFile jpaFile = this.addJpaFileInternal(file);
+		JpaFile jpaFile = this.addJpaFile_(file);
 		if (jpaFile != null) {
 			this.fireItemAdded(JPA_FILES_COLLECTION, jpaFile);
 			return true;
@@ -417,13 +405,17 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	 * an event; useful during construction.
 	 * Return the new JPA file, null if it was not created.
 	 */
-	protected JpaFile addJpaFileInternal(IFile file) {
-		JpaFile jpaFile = this.jpaPlatform.buildJpaFile(this, file);
+	protected JpaFile addJpaFile_(IFile file) {
+		if ( ! this.getJavaProject().isOnClasspath(file)) {
+			return null;  // the file must be on the Java classpath
+		}
+
+		JpaFile jpaFile = this.getJpaPlatform().buildJpaFile(this, file);
 		if (jpaFile == null) {
 			return null;
 		}
+		jpaFile.addResourceModelListener(this.resourceModelListener);
 		this.jpaFiles.add(jpaFile);
-		jpaFile.getResourceModel().addResourceModelChangeListener(this.resourceModelListener);
 		return jpaFile;
 	}
 
@@ -432,22 +424,23 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	 * Return true if a JPA File was removed, false otherwise
 	 */
 	protected boolean removeJpaFile(IFile file) {
-		JpaFile jpaFile = this.getJpaFile(file);
-		if (jpaFile != null) { //a JpaFile is not added for every IFile
-			removeJpaFile(jpaFile);
-			return true;
+		synchronized (this.jpaFiles) {
+			JpaFile jpaFile = this.getJpaFile(file);
+			if (jpaFile != null) {  // a JpaFile is not added for every IFile
+				this.removeJpaFile(jpaFile);
+				return true;
+			}
+			return false;
 		}
-		return false;
 	}
 	
 	/**
 	 * Remove the JPA file and dispose of it
 	 */
 	protected void removeJpaFile(JpaFile jpaFile) {
-		jpaFile.getResourceModel().removeResourceModelChangeListener(this.resourceModelListener);
-		jpaFile.dispose();
+		jpaFile.removeResourceModelListener(this.resourceModelListener);
 		if ( ! this.removeItemFromCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION)) {
-			throw new IllegalArgumentException("JPA file: " + jpaFile.getFile().getName()); //$NON-NLS-1$
+			throw new IllegalArgumentException(jpaFile.toString());
 		}
 	}
 
@@ -466,55 +459,41 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	// ********** more queries **********
 
 	public Iterator<String> annotatedClassNames() {
-		return new TransformationIterator<JavaResourcePersistentType, String>(this.annotatedJavaPersistentTypes()) {
+		return new TransformationIterator<JavaResourcePersistentType, String>(this.persistedJavaResourcePersistentTypes()) {
 			@Override
-			protected String transform(JavaResourcePersistentType next) {
-				return next.getQualifiedName();
+			protected String transform(JavaResourcePersistentType jrpt) {
+				return jrpt.getQualifiedName();
 			}
 		};
 	}
 	
-	protected Iterator<JavaResourcePersistentType> annotatedJavaPersistentTypes() {
-		return new FilteringIterator<JavaResourcePersistentType, JavaResourcePersistentType>(this.javaResourcePersistentTypes()) {
+	protected Iterator<JavaResourcePersistentType> persistedJavaResourcePersistentTypes() {
+		return new FilteringIterator<JavaResourcePersistentType, JavaResourcePersistentType>(this.persistableJavaResourcePersistentTypes()) {
 			@Override
-			protected boolean accept(JavaResourcePersistentType persistentType) {
-				return (persistentType == null) ? false : persistentType.isPersisted();
+			protected boolean accept(JavaResourcePersistentType jrpt) {
+				return jrpt.isPersisted();
 			}
 		};
 	}
 	
-	protected Iterator<JavaResourcePersistentType> javaResourcePersistentTypes() {
-		return new CompositeIterator<JavaResourcePersistentType>(
-			new TransformationIterator<JpaCompilationUnit, Iterator<JavaResourcePersistentType>>(jpaCompilationUnitResources()) {
-				@Override
-				protected Iterator<JavaResourcePersistentType> transform(JpaCompilationUnit next) {
-					if (next.getPersistentType() == null) {
-						return EmptyIterator.instance();
-					}
-					return new CompositeIterator<JavaResourcePersistentType>(next.getPersistentType(), next.getPersistentType().nestedTypes());
-				}
-			});
+	protected Iterator<JavaResourcePersistentType> persistableJavaResourcePersistentTypes() {
+		return new CompositeIterator<JavaResourcePersistentType>(this.persistableJavaResourcePersistentTypeIterators());
 	}
 
-	public Iterator<JpaFile> javaJpaFiles() {
-		return this.jpaFiles(ResourceModel.JAVA_RESOURCE_TYPE);
-	}
-	
-	protected Iterator<JpaCompilationUnit> jpaCompilationUnitResources() {
-		return new TransformationIterator<JpaFile, JpaCompilationUnit>(this.javaJpaFiles()) {
+	protected Iterator<Iterator<JavaResourcePersistentType>> persistableJavaResourcePersistentTypeIterators() {
+		return new TransformationIterator<JpaFile, Iterator<JavaResourcePersistentType>>(this.jpaFiles()) {
 			@Override
-			protected JpaCompilationUnit transform(JpaFile jpaFile) {
-				return ((JavaResourceModel) jpaFile.getResourceModel()).getJpaCompilationUnit();
+			protected Iterator<JavaResourcePersistentType> transform(JpaFile jpaFile) {
+				return jpaFile.persistableTypes();
 			}
 		};
 	}
 
-	// look for binary stuff here...
 	public JavaResourcePersistentType getJavaResourcePersistentType(String typeName) {
-		for (JpaCompilationUnit jpCompilationUnitResource : CollectionTools.iterable(this.jpaCompilationUnitResources())) {
-			JavaResourcePersistentType jptr =  jpCompilationUnitResource.getJavaPersistentTypeResource(typeName);
-			if (jptr != null) {
-				return jptr;
+		for (Iterator<JavaResourcePersistentType> stream = this.persistableJavaResourcePersistentTypes(); stream.hasNext(); ) {
+			JavaResourcePersistentType pt =  stream.next();
+			if (pt.getQualifiedName().equals(typeName)) {
+				return pt;
 			}
 		}
 //		this.javaProject().findType(typeName);
@@ -602,10 +581,6 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		if (this.updater != null) {
 			this.updater.dispose();
 		}
-		// use clone iterator while deleting JPA files
-		for (Iterator<JpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
-			this.removeJpaFile(stream.next());
-		}
 		this.dataSource.dispose();
 	}
 
@@ -628,8 +603,8 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		ResourceDeltaVisitor resourceDeltaVisitor = this.buildResourceDeltaVisitor();
 		delta.accept(resourceDeltaVisitor);
 		if (resourceDeltaVisitor.jpaFilesChanged()) {
-			for(JpaFile jpaFile : CollectionTools.iterable(jpaFiles())) {
-				jpaFile.getResourceModel().resolveTypes();
+			for (Iterator<JpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
+				stream.next().jpaFilesChanged();
 			}
 		}
 	}
@@ -656,7 +631,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 
 	// ***** inner class
 	/**
-	 * add a JPA file for every [appropriate] file encountered by the visitor
+	 * add or remove a JPA file for every [appropriate] file encountered by the visitor
 	 */
 	protected class ResourceDeltaVisitor implements IResourceDeltaVisitor {
 		private boolean jpaFilesChanged = false;
@@ -664,6 +639,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		protected ResourceDeltaVisitor() {
 			super();
 		}
+
 		public boolean visit(IResourceDelta delta) throws CoreException {
 			IResource res = delta.getResource();
 			switch (res.getType()) {
@@ -680,13 +656,15 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 					return false;  // no children
 			}
 		}
+
 		/**
-		 * Used to determine if the JPA files collection was modified while
-		 * traversing the IResourceDelta.  Return true if a JPA file was added/removed
+		 * Return whether the collection of JPA files was modified while
+		 * traversing the IResourceDelta (i.e. a JPA file was added or removed).
 		 */
 		protected boolean jpaFilesChanged() {
 			return this.jpaFilesChanged;
 		}
+
 	}
 
 

@@ -24,6 +24,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.ReadOnlyAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestCase
 {
 
@@ -117,19 +118,19 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
 			
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		CustomizerAnnotation customizerAnnotation = (CustomizerAnnotation) typeResource.getAnnotation(CustomizerAnnotation.ANNOTATION_NAME);		
+		CustomizerAnnotation customizerAnnotation = (CustomizerAnnotation) typeResource.getSupportingAnnotation(CustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", customizerAnnotation.getValue());
 
 		
 		customizer.setSpecifiedCustomizerClass(null);
 		assertEquals(null, customizer.getSpecifiedCustomizerClass());
-		customizerAnnotation = (CustomizerAnnotation) typeResource.getAnnotation(CustomizerAnnotation.ANNOTATION_NAME);		
+		customizerAnnotation = (CustomizerAnnotation) typeResource.getSupportingAnnotation(CustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals(null, customizerAnnotation);
 
 
 		customizer.setSpecifiedCustomizerClass("Bar");
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
-		customizerAnnotation = (CustomizerAnnotation) typeResource.getAnnotation(CustomizerAnnotation.ANNOTATION_NAME);		
+		customizerAnnotation = (CustomizerAnnotation) typeResource.getSupportingAnnotation(CustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", customizerAnnotation.getValue());
 	}
 	
@@ -142,14 +143,14 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 		assertEquals("Foo", customizer.getSpecifiedCustomizerClass());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		CustomizerAnnotation customizerAnnotation = (CustomizerAnnotation) typeResource.getAnnotation(CustomizerAnnotation.ANNOTATION_NAME);
+		CustomizerAnnotation customizerAnnotation = (CustomizerAnnotation) typeResource.getSupportingAnnotation(CustomizerAnnotation.ANNOTATION_NAME);
 		customizerAnnotation.setValue("Bar");
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
 		
-		typeResource.removeAnnotation(CustomizerAnnotation.ANNOTATION_NAME);
+		typeResource.removeSupportingAnnotation(CustomizerAnnotation.ANNOTATION_NAME);
 		assertEquals(null, customizer.getSpecifiedCustomizerClass());
 		
-		customizerAnnotation = (CustomizerAnnotation) typeResource.addAnnotation(CustomizerAnnotation.ANNOTATION_NAME);		
+		customizerAnnotation = (CustomizerAnnotation) typeResource.addSupportingAnnotation(CustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals(null, customizer.getSpecifiedCustomizerClass());
 		
 		customizerAnnotation.setValue("FooBar");
@@ -165,11 +166,11 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 		assertEquals(true, changeTracking.hasChangeTracking());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		typeResource.removeAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
+		typeResource.removeSupportingAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(false, changeTracking.hasChangeTracking());
 		
-		typeResource.addAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
+		typeResource.addSupportingAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
 		assertEquals(true, changeTracking.hasChangeTracking());
 	}
 	
@@ -183,11 +184,11 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 		
 		changeTracking.setChangeTracking(false);
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		assertNull(typeResource.getAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getSupportingAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME));
 		assertFalse(changeTracking.hasChangeTracking());
 		
 		changeTracking.setChangeTracking(true);
-		assertNotNull(typeResource.getAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME));
+		assertNotNull(typeResource.getSupportingAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME));
 		assertTrue(changeTracking.hasChangeTracking());
 	}
 	
@@ -200,7 +201,7 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 		assertEquals(null, changeTracking.getSpecifiedChangeTrackingType());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		ChangeTrackingAnnotation changeTrackingAnnotation = (ChangeTrackingAnnotation) typeResource.getAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
+		ChangeTrackingAnnotation changeTrackingAnnotation = (ChangeTrackingAnnotation) typeResource.getSupportingAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
 		changeTrackingAnnotation.setValue(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.OBJECT);
 		
 		assertEquals(ChangeTrackingType.OBJECT, changeTracking.getSpecifiedChangeTrackingType());
@@ -211,7 +212,7 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 		changeTrackingAnnotation.setValue(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.DEFERRED);
 		assertEquals(ChangeTrackingType.DEFERRED, changeTracking.getSpecifiedChangeTrackingType());
 		
-		typeResource.removeAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
+		typeResource.removeSupportingAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
 		assertEquals(null, changeTracking.getSpecifiedChangeTrackingType());
 	}
 	
@@ -224,7 +225,7 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 		assertEquals(null, changeTracking.getSpecifiedChangeTrackingType());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		ChangeTrackingAnnotation changeTrackingAnnotation = (ChangeTrackingAnnotation) typeResource.getAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
+		ChangeTrackingAnnotation changeTrackingAnnotation = (ChangeTrackingAnnotation) typeResource.getSupportingAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
 		assertEquals(null, changeTrackingAnnotation.getValue());
 		
 		changeTracking.setSpecifiedChangeTrackingType(ChangeTrackingType.OBJECT);	
@@ -237,7 +238,7 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.ATTRIBUTE, changeTrackingAnnotation.getValue());
 		
 		changeTracking.setChangeTracking(false);
-		assertNull(typeResource.getAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getSupportingAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testGetDefaultChangeTracking() throws Exception {
@@ -249,7 +250,7 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 		assertEquals(ChangeTracking.DEFAULT_CHANGE_TRACKING_TYPE, changeTracking.getDefaultChangeTrackingType());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		typeResource.removeAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
+		typeResource.removeSupportingAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
 		assertEquals(ChangeTracking.DEFAULT_CHANGE_TRACKING_TYPE, changeTracking.getDefaultChangeTrackingType());
 		
 		changeTracking.setSpecifiedChangeTrackingType(ChangeTrackingType.ATTRIBUTE);	
@@ -265,7 +266,7 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 		assertEquals(ChangeTracking.DEFAULT_CHANGE_TRACKING_TYPE, changeTracking.getChangeTrackingType());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		typeResource.removeAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
+		typeResource.removeSupportingAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
 		assertEquals(ChangeTracking.DEFAULT_CHANGE_TRACKING_TYPE, changeTracking.getChangeTrackingType());
 		
 		changeTracking.setSpecifiedChangeTrackingType(ChangeTrackingType.DEFERRED);	
@@ -311,15 +312,15 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 		readOnly.setSpecifiedReadOnly(Boolean.FALSE);
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		assertNull(typeResource.getAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getSupportingAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
 		assertEquals(null, readOnly.getSpecifiedReadOnly());//Boolean.FALSE and null really mean the same thing since there are only 2 states in the java resource model
 
 		readOnly.setSpecifiedReadOnly(Boolean.TRUE);
-		assertNotNull(typeResource.getAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
+		assertNotNull(typeResource.getSupportingAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
 		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
 
 		readOnly.setSpecifiedReadOnly(null);
-		assertNull(typeResource.getAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getSupportingAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
 		assertEquals(null, readOnly.getSpecifiedReadOnly());//Boolean.FALSE and null really mean the same thing since there are only 2 states in the java resource model
 	}
 	
@@ -333,12 +334,12 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkJavaContextModelTestC
 		
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		typeResource.removeAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME);
+		typeResource.removeSupportingAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(null, readOnly.getSpecifiedReadOnly());
 		assertEquals(false, readOnly.isDefaultReadOnly());
 		
-		typeResource.addAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME);
+		typeResource.addSupportingAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME);
 		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
 	}
 

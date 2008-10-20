@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IBinding;
@@ -23,27 +23,29 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.MethodAttribute;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
+/**
+ * 
+ */
 public class JavaResourcePersistentAttributeImpl
 	extends AbstractJavaResourcePersistentMember<Attribute>
 	implements JavaResourcePersistentAttribute
 {
 
 	private boolean typeIsBasic;
-	
+
 	private String qualifiedTypeName;
 	
-	private boolean typeIsContainer;
-	
 	private boolean typeIsSerializable;
-	
+
 	private boolean typeIsDateOrCalendar;
+
+	private boolean typeIsContainer;
 	
 	private String qualifiedReferenceEntityTypeName;
 	
@@ -101,68 +103,56 @@ public class JavaResourcePersistentAttributeImpl
 		super(parent, attribute);
 	}
 	
+	@Override
+	public void initialize(CompilationUnit astRoot) {
+		super.initialize(astRoot);
+		this.typeIsBasic = this.buildTypeIsBasic(astRoot);
+		this.qualifiedTypeName = this.buildQualifiedTypeName(astRoot);
+		this.qualifiedReferenceEntityTypeName = this.buildQualifiedReferenceEntityTypeName(astRoot);
+		this.qualifiedReferenceEntityElementTypeName = this.buildQualifiedReferenceEntityElementTypeName(astRoot);
+		this.typeIsSerializable = this.buildTypeIsSerializable(astRoot);
+		this.typeIsDateOrCalendar = this.buildTypeIsDateOrCalendar(astRoot);
+		this.typeIsContainer = this.buildTypeIsContainer(astRoot);
+		this.final_ = this.buildFinal(astRoot);
+		this.public_ = this.buildPublic(astRoot);
+	}
+
 	public String getName() {
-		return getMember().getAttributeName();
+		return this.getMember().getAttributeName();
 	}
 
 	// ******** AbstractJavaPersistentResource implementation ********
 	
 	@Override
 	protected Annotation buildMappingAnnotation(String mappingAnnotationName) {
-		return getAnnotationProvider().buildAttributeMappingAnnotation(this, getMember(), mappingAnnotationName);
+		return this.getAnnotationProvider().buildAttributeMappingAnnotation(this, this.getMember(), mappingAnnotationName);
 	}
 
 	@Override
-	protected Annotation buildAnnotation(String annotationName) {
-		return getAnnotationProvider().buildAttributeAnnotation(this, getMember(), annotationName);
+	protected Annotation buildSupportingAnnotation(String annotationName) {
+		return this.getAnnotationProvider().buildAttributeSupportingAnnotation(this, this.getMember(), annotationName);
 	}
 		
 	@Override
-	protected Annotation buildNullAnnotation(String annotationName) {
-		return getAnnotationProvider().buildNullAttributeAnnotation(this, getMember(), annotationName);
+	protected Annotation buildNullSupportingAnnotation(String annotationName) {
+		return this.getAnnotationProvider().buildNullAttributeSupportingAnnotation(this, this.getMember(), annotationName);
 	}
 	
 	@Override
 	protected Annotation buildNullMappingAnnotation(String annotationName) {
-		return getAnnotationProvider().buildNullAttributeMappingAnnotation(this, getMember(), annotationName);
+		return this.getAnnotationProvider().buildNullAttributeMappingAnnotation(this, this.getMember(), annotationName);
 	}
 	
 	@Override
-	protected ListIterator<String> possibleMappingAnnotationNames() {
-		return getAnnotationProvider().attributeMappingAnnotationNames();
+	protected ListIterator<String> validMappingAnnotationNames() {
+		return this.getAnnotationProvider().attributeMappingAnnotationNames();
 	}
 		
 	@Override
-	protected boolean isPossibleAnnotation(String annotationName) {
-		return CollectionTools.contains(getAnnotationProvider().attributeAnnotationNames(), annotationName);
-	}
-	
-	@Override
-	protected boolean isPossibleMappingAnnotation(String annotationName) {
-		return CollectionTools.contains(getAnnotationProvider().attributeMappingAnnotationNames(), annotationName);
+	protected ListIterator<String> validSupportingAnnotationNames() {
+		return this.getAnnotationProvider().attributeSupportingAnnotationNames();
 	}
 
-	@Override
-	@SuppressWarnings("unchecked")
-	//overriding purely to suppress the warning you get at the class level
-	public ListIterator<NestableAnnotation> annotations(String nestableAnnotationName, String containerAnnotationName) {
-		return super.annotations(nestableAnnotationName, containerAnnotationName);
-	}
-	
-	@Override
-	@SuppressWarnings("unchecked")
-	//overriding purely to suppress the warning you get at the class level
-	public Iterator<Annotation> mappingAnnotations() {
-		return super.mappingAnnotations();
-	}
-	
-	@Override
-	@SuppressWarnings("unchecked")
-	//overriding purely to suppress the warning you get at the class level
-	public Iterator<Annotation> annotations() {
-		return super.annotations();
-	}
-	
 	@Override
 	public boolean isFor(MethodSignature signature, int occurrence) {
 		return ((MethodAttribute) this.getMember()).matches(signature, occurrence);
@@ -171,18 +161,18 @@ public class JavaResourcePersistentAttributeImpl
 	// ******** JavaPersistentAttributeResource implementation ********
 		
 	public boolean isForField() {
-		return getMember().isField();
+		return this.getMember().isField();
 	}
 	
 	public boolean isForProperty() {
-		return !isForField();
+		return ! this.isForField();
 	}
 	
-	public boolean hasAnyAnnotation() {
-		if (mappingAnnotationsSize() > 0) {
+	public boolean hasAnyAnnotations() {
+		if (this.mappingAnnotationsSize() > 0) {
 			return true;
 		}
-		if (annotationsSize() > 0) {
+		if (this.supportingAnnotationsSize() > 0) {
 			return true;
 		}
 		return false;
@@ -192,155 +182,133 @@ public class JavaResourcePersistentAttributeImpl
 		return this.public_;
 	}
 	
-	protected void setPublic(boolean newPublic) {
-		boolean oldPublic = this.public_;
-		this.public_ = newPublic;
-		firePropertyChanged(PUBLIC_PROPERTY, oldPublic, newPublic);
+	protected void setPublic(boolean public_) {
+		boolean old = this.public_;
+		this.public_ = public_;
+		this.firePropertyChanged(PUBLIC_PROPERTY, old, public_);
 	}
 	
 	public boolean isFinal() {
 		return this.final_;
 	}
 	
-	protected void setFinal(boolean newFinal) {
-		boolean oldFinal = this.final_;
-		this.final_ = newFinal;
-		firePropertyChanged(FINAL_PROPERTY, oldFinal, newFinal);
+	protected void setFinal(boolean final_) {
+		boolean old = this.final_;
+		this.final_ = final_;
+		this.firePropertyChanged(FINAL_PROPERTY, old, final_);
 	}
 	
 	public boolean typeIsBasic() {
 		return this.typeIsBasic;
 	}
 	
-	protected void setTypeIsBasic(boolean newTypeIsBasic) {
-		boolean oldTypeIsBasic = this.typeIsBasic;
-		this.typeIsBasic = newTypeIsBasic;
-		firePropertyChanged(TYPE_IS_BASIC_PROPERTY, oldTypeIsBasic, newTypeIsBasic);
-	}
-	
-	public boolean typeIsSerializable() {
-		return this.typeIsSerializable;
-	}
-	
-	protected void setTypeIsSerializable(boolean newTypeIsSerializable) {
-		boolean oldTypeIsSerializable = this.typeIsSerializable;
-		this.typeIsSerializable = newTypeIsSerializable;
-		firePropertyChanged(TYPE_IS_SERIALIZABLE_PROPERTY, oldTypeIsSerializable, newTypeIsSerializable);
-	}
-	
-	public boolean typeIsDateOrCalendar() {
-		return this.typeIsDateOrCalendar;
-	}
-	
-	protected void setTypeIsDateOrCalendar(boolean newTypeIsDateOrCalendar) {
-		boolean oldTypeIsDateOrCalendar = this.typeIsDateOrCalendar;
-		this.typeIsDateOrCalendar = newTypeIsDateOrCalendar;
-		firePropertyChanged(TYPE_IS_DATE_OR_CALENDAR_PROPERTY, oldTypeIsDateOrCalendar, newTypeIsDateOrCalendar);
+	protected void setTypeIsBasic(boolean typeIsBasic) {
+		boolean old = this.typeIsBasic;
+		this.typeIsBasic = typeIsBasic;
+		this.firePropertyChanged(TYPE_IS_BASIC_PROPERTY, old, typeIsBasic);
 	}
 
 	public String getQualifiedTypeName() {
 		return this.qualifiedTypeName;
 	}
 	
-	protected void setQualifiedTypeName(String newQualifiedTypeName) {
-		String oldQualifiedTypeName = this.qualifiedTypeName;
-		this.qualifiedTypeName = newQualifiedTypeName;
-		firePropertyChanged(QUALIFIED_TYPE_NAME_PROPERTY, oldQualifiedTypeName, newQualifiedTypeName);		
+	protected void setQualifiedTypeName(String qualifiedTypeName) {
+		String old = this.qualifiedTypeName;
+		this.qualifiedTypeName = qualifiedTypeName;
+		this.firePropertyChanged(QUALIFIED_TYPE_NAME_PROPERTY, old, qualifiedTypeName);		
 	}
 	
 	public String getQualifiedReferenceEntityTypeName() {
 		return this.qualifiedReferenceEntityTypeName;
 	}
 	
-	protected void setQualifiedReferenceEntityTypeName(String newQualifiedReferenceEntityTypeName) {
-		String oldQualifiedReferenceEntityTypeName = this.qualifiedReferenceEntityTypeName;
-		this.qualifiedReferenceEntityTypeName = newQualifiedReferenceEntityTypeName;
-		firePropertyChanged(QUALIFIED_REFERENCE_ENTITY_TYPE_NAME_PROPERTY, oldQualifiedReferenceEntityTypeName, newQualifiedReferenceEntityTypeName);
+	protected void setQualifiedReferenceEntityTypeName(String qualifiedReferenceEntityTypeName) {
+		String old = this.qualifiedReferenceEntityTypeName;
+		this.qualifiedReferenceEntityTypeName = qualifiedReferenceEntityTypeName;
+		this.firePropertyChanged(QUALIFIED_REFERENCE_ENTITY_TYPE_NAME_PROPERTY, old, qualifiedReferenceEntityTypeName);
 	}
 	
 	public String getQualifiedReferenceEntityElementTypeName() {
 		return this.qualifiedReferenceEntityElementTypeName;
 	}
 	
-	protected void setQualifiedReferenceEntityElementTypeName(String newQualifiedReferenceEntityElementTypeName) {
-		String oldQualifiedReferenceEntityElementTypeName = this.qualifiedReferenceEntityElementTypeName;
-		this.qualifiedReferenceEntityElementTypeName = newQualifiedReferenceEntityElementTypeName;
-		firePropertyChanged(QUALIFIED_REFERENCE_ENTITY_ELEMENT_TYPE_NAME_PROPERTY, oldQualifiedReferenceEntityElementTypeName, newQualifiedReferenceEntityElementTypeName);
+	protected void setQualifiedReferenceEntityElementTypeName(String qualifiedReferenceEntityElementTypeName) {
+		String old = this.qualifiedReferenceEntityElementTypeName;
+		this.qualifiedReferenceEntityElementTypeName = qualifiedReferenceEntityElementTypeName;
+		this.firePropertyChanged(QUALIFIED_REFERENCE_ENTITY_ELEMENT_TYPE_NAME_PROPERTY, old, qualifiedReferenceEntityElementTypeName);
 	}
 	
+	public boolean typeIsSerializable() {
+		return this.typeIsSerializable;
+	}
+	
+	protected void setTypeIsSerializable(boolean typeIsSerializable) {
+		boolean old = this.typeIsSerializable;
+		this.typeIsSerializable = typeIsSerializable;
+		this.firePropertyChanged(TYPE_IS_SERIALIZABLE_PROPERTY, old, typeIsSerializable);
+	}
+	
+	public boolean typeIsDateOrCalendar() {
+		return this.typeIsDateOrCalendar;
+	}
+	
+	protected void setTypeIsDateOrCalendar(boolean typeIsDateOrCalendar) {
+		boolean old = this.typeIsDateOrCalendar;
+		this.typeIsDateOrCalendar = typeIsDateOrCalendar;
+		firePropertyChanged(TYPE_IS_DATE_OR_CALENDAR_PROPERTY, old, typeIsDateOrCalendar);
+	}
+
 	public boolean typeIsContainer() {
 		return this.typeIsContainer;
 	}
 	
-	protected void setTypeIsContainer(boolean newTypeIsContainer) {
-		boolean oldTypeIsContainer = this.typeIsContainer;
-		this.typeIsContainer = newTypeIsContainer;
-		firePropertyChanged(TYPE_IS_CONTAINER_PROPERTY, oldTypeIsContainer, newTypeIsContainer);
+	protected void setTypeIsContainer(boolean typeIsContainer) {
+		boolean old = this.typeIsContainer;
+		this.typeIsContainer = typeIsContainer;
+		this.firePropertyChanged(TYPE_IS_CONTAINER_PROPERTY, old, typeIsContainer);
 	}
 	
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		this.typeIsBasic = this.typeIsBasic(astRoot);
-		this.qualifiedTypeName = this.qualifiedTypeName(astRoot);
-		this.qualifiedReferenceEntityTypeName = this.qualifiedReferenceEntityTypeName(astRoot);
-		this.qualifiedReferenceEntityElementTypeName = this.qualifiedReferenceEntityElementTypeName(astRoot);
-		this.typeIsContainer = this.typeIsContainer(astRoot);
-		this.final_ = this.isFinal(astRoot);
-		this.public_ = this.isPublic(astRoot);
-		this.typeIsSerializable = this.typeIsSerializable(astRoot);
-		this.typeIsDateOrCalendar = this.typeIsDateOrCalendar(astRoot);
-	}
-
-	@Override
 	public void update(CompilationUnit astRoot) {
 		super.update(astRoot);
-		this.setTypeIsBasic(this.typeIsBasic(astRoot));
-		this.setQualifiedTypeName(this.qualifiedTypeName(astRoot));
-		this.setQualifiedReferenceEntityTypeName(this.qualifiedReferenceEntityTypeName(astRoot));
-		this.setQualifiedReferenceEntityElementTypeName(this.qualifiedReferenceEntityElementTypeName(astRoot));
-		this.setTypeIsContainer(this.typeIsContainer(astRoot));
-		this.setFinal(this.isFinal(astRoot));
-		this.setPublic(this.isPublic(astRoot));
-		this.setTypeIsSerializable(this.typeIsSerializable(astRoot));
-		this.setTypeIsDateOrCalendar(this.typeIsDateOrCalendar(astRoot));
+		this.setTypeIsBasic(this.buildTypeIsBasic(astRoot));
+		this.setQualifiedTypeName(this.buildQualifiedTypeName(astRoot));
+		this.setQualifiedReferenceEntityTypeName(this.buildQualifiedReferenceEntityTypeName(astRoot));
+		this.setQualifiedReferenceEntityElementTypeName(this.buildQualifiedReferenceEntityElementTypeName(astRoot));
+		this.setTypeIsSerializable(this.buildTypeIsSerializable(astRoot));
+		this.setTypeIsDateOrCalendar(this.buildTypeIsDateOrCalendar(astRoot));
+		this.setTypeIsContainer(this.buildTypeIsContainer(astRoot));
+		this.setFinal(this.buildFinal(astRoot));
+		this.setPublic(this.buildPublic(astRoot));
 	}
 
 	@Override
 	public void resolveTypes(CompilationUnit astRoot) {
 		super.resolveTypes(astRoot);
-		this.setTypeIsBasic(this.typeIsBasic(astRoot));
-		this.setQualifiedTypeName(this.qualifiedTypeName(astRoot));
-		this.setQualifiedReferenceEntityTypeName(this.qualifiedReferenceEntityTypeName(astRoot));
-		this.setQualifiedReferenceEntityElementTypeName(this.qualifiedReferenceEntityElementTypeName(astRoot));
-		this.setTypeIsContainer(this.typeIsContainer(astRoot));
-		this.setTypeIsSerializable(this.typeIsSerializable(astRoot));
-		this.setTypeIsDateOrCalendar(this.typeIsDateOrCalendar(astRoot));
+		this.setTypeIsBasic(this.buildTypeIsBasic(astRoot));
+		this.setQualifiedTypeName(this.buildQualifiedTypeName(astRoot));
+		this.setQualifiedReferenceEntityTypeName(this.buildQualifiedReferenceEntityTypeName(astRoot));
+		this.setQualifiedReferenceEntityElementTypeName(this.buildQualifiedReferenceEntityElementTypeName(astRoot));
+		this.setTypeIsSerializable(this.buildTypeIsSerializable(astRoot));
+		this.setTypeIsDateOrCalendar(this.buildTypeIsDateOrCalendar(astRoot));
+		this.setTypeIsContainer(this.buildTypeIsContainer(astRoot));
 	}
 
-	protected boolean typeIsBasic(CompilationUnit astRoot) {
+	protected boolean buildTypeIsBasic(CompilationUnit astRoot) {
 		return typeIsBasic(this.getMember().getTypeBinding(astRoot), astRoot.getAST());
 	}
 	
-	protected boolean isFinal(CompilationUnit astRoot) {
-		IBinding binding = getMember().getBinding(astRoot);
+	protected boolean buildFinal(CompilationUnit astRoot) {
+		IBinding binding = this.getMember().getBinding(astRoot);
 		return (binding == null) ? false : Modifier.isFinal(binding.getModifiers());
 	}
 		
-	protected boolean isPublic(CompilationUnit astRoot) {
-		IBinding binding = getMember().getBinding(astRoot);	
+	protected boolean buildPublic(CompilationUnit astRoot) {
+		IBinding binding = this.getMember().getBinding(astRoot);	
 		return (binding == null) ? false : Modifier.isPublic(binding.getModifiers());
 	}
-
-	protected boolean typeIsSerializable(CompilationUnit astRoot) {
-		return typeImplementsSerializable(this.getMember().getTypeBinding(astRoot), astRoot.getAST());
-	}
-
-	protected boolean typeIsDateOrCalendar(CompilationUnit astRoot) {
-		return typeImplementsDateOrCalendar(this.getMember().getTypeBinding(astRoot));
-	}
 	
-	protected String qualifiedReferenceEntityTypeName(CompilationUnit astRoot) {
+	protected String buildQualifiedReferenceEntityTypeName(CompilationUnit astRoot) {
 		ITypeBinding typeBinding = this.getMember().getTypeBinding(astRoot);
 		return (typeBinding == null) ? null : buildReferenceEntityTypeName(typeBinding);
 	}
@@ -355,7 +323,7 @@ public class JavaResourcePersistentAttributeImpl
 		return typeBinding.getTypeDeclaration().getQualifiedName();
 	}
 	
-	protected String qualifiedReferenceEntityElementTypeName(CompilationUnit astRoot) {
+	protected String buildQualifiedReferenceEntityElementTypeName(CompilationUnit astRoot) {
 		ITypeBinding typeBinding = this.getMember().getTypeBinding(astRoot);
 		if (typeBinding == null) {
 			return null;
@@ -371,7 +339,16 @@ public class JavaResourcePersistentAttributeImpl
 	}
 
 	
-	protected boolean typeIsContainer(CompilationUnit astRoot) {
+	protected boolean buildTypeIsSerializable(CompilationUnit astRoot) {
+		return typeImplementsSerializable(this.getMember().getTypeBinding(astRoot), astRoot.getAST());
+	}
+
+	protected boolean buildTypeIsDateOrCalendar(CompilationUnit astRoot) {
+		return typeImplementsDateOrCalendar(this.getMember().getTypeBinding(astRoot));
+	}
+	
+
+	protected boolean buildTypeIsContainer(CompilationUnit astRoot) {
 		String typeName = buildReferenceEntityTypeName(this.getMember().getTypeBinding(astRoot));
 		return (typeName == null) ? false : typeNamedIsContainer(typeName);
 	}
@@ -391,7 +368,7 @@ public class JavaResourcePersistentAttributeImpl
 		java.util.Map.class.getName()
 	};
 	
-	protected String qualifiedTypeName(CompilationUnit astRoot) {
+	protected String buildQualifiedTypeName(CompilationUnit astRoot) {
 		ITypeBinding typeBinding = this.getMember().getTypeBinding(astRoot);
 		return (typeBinding == null) ? null : typeBinding.getTypeDeclaration().getQualifiedName();
 	}
@@ -516,7 +493,7 @@ public class JavaResourcePersistentAttributeImpl
 	}
 
 	private static final String SERIALIZABLE_TYPE_NAME = java.io.Serializable.class.getName();
-
+	
 	/**
 	 * Return whether the specified type implements java.util.Date or java.util.Calendar.
 	 */
@@ -544,6 +521,7 @@ public class JavaResourcePersistentAttributeImpl
 	
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(getName());
+		sb.append(this.getName());
 	}
+
 }

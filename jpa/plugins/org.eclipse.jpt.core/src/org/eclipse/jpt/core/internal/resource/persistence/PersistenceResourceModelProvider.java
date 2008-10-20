@@ -10,20 +10,25 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.persistence;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaConstants;
+import org.eclipse.jpt.core.internal.resource.JpaResourceModelProviderManager;
 import org.eclipse.jpt.core.resource.AbstractResourceModelProvider;
-import org.eclipse.jpt.core.resource.JpaResourceModelProviderManager;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 
-public class PersistenceResourceModelProvider extends AbstractResourceModelProvider
+/**
+ * 
+ */
+public class PersistenceResourceModelProvider
+	extends AbstractResourceModelProvider
 {
 	/**
 	 * (Convenience method) Returns a persistence resource model provider for 
@@ -34,11 +39,19 @@ public class PersistenceResourceModelProvider extends AbstractResourceModelProvi
 	}
 	
 	/**
+	 * (Convenience method) Returns a persistence resource model provider for 
+	 * the given file.
+	 */
+	public static PersistenceResourceModelProvider getModelProvider(IFile file) {
+		return getModelProvider(file.getProject(), file.getProjectRelativePath().toString());
+	}
+	
+	/**
 	 * (Convenience method) Returns an persistence resource model provider for
 	 * the given project in the specified location
 	 */
 	public static PersistenceResourceModelProvider getModelProvider(IProject project, String location) {
-		return (PersistenceResourceModelProvider) JpaResourceModelProviderManager.getModelProvider(
+		return (PersistenceResourceModelProvider) JpaResourceModelProviderManager.instance().getModelProvider(
 			project, 
 			new Path(JptCorePlugin.getDeploymentURI(project, location)),
 			JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE);

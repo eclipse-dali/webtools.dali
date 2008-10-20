@@ -45,11 +45,11 @@ public class GenericJavaEnumeratedConverter extends AbstractJavaJpaContextNode
 	}
 	
 	public void addToResourceModel() {
-		this.resourcePersistenceAttribute.addAnnotation(getAnnotationName());
+		this.resourcePersistenceAttribute.addSupportingAnnotation(getAnnotationName());
 	}
 	
 	public void removeFromResourceModel() {
-		this.resourcePersistenceAttribute.removeAnnotation(getAnnotationName());
+		this.resourcePersistenceAttribute.removeSupportingAnnotation(getAnnotationName());
 	}
 	
 	public EnumType getEnumType() {
@@ -78,7 +78,7 @@ public class GenericJavaEnumeratedConverter extends AbstractJavaJpaContextNode
 	}
 
 	protected EnumeratedAnnotation getResourceEnumerated() {
-		return (EnumeratedAnnotation) this.resourcePersistenceAttribute.getAnnotation(getAnnotationName());
+		return (EnumeratedAnnotation) this.resourcePersistenceAttribute.getSupportingAnnotation(getAnnotationName());
 	}
 	
 	protected void initialize(JavaResourcePersistentAttribute jrpa) {

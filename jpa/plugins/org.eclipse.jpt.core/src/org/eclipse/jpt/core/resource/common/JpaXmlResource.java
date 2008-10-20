@@ -9,22 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.common;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.URIConverter;
-import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jem.util.plugin.JEMUtilPlugin;
 import org.eclipse.jpt.core.ResourceModelListener;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
-import org.eclipse.wst.common.internal.emf.resource.TranslatorResource;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceImpl;
-import org.xml.sax.EntityResolver;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -33,133 +29,138 @@ import org.xml.sax.EntityResolver;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public abstract class JpaXmlResource extends TranslatorResourceImpl
+public abstract class JpaXmlResource
+	extends TranslatorResourceImpl
 {
-	private EntityResolver entityResolver;
-	
-	protected JpaXmlResourceModel resourceModel;
-	
-	protected final Collection<ResourceModelListener> resourceModelListeners;
-	
-	
-	protected JpaXmlResource(Renderer aRenderer) {
-		super(aRenderer);
-		this.resourceModelListeners = new ArrayList<ResourceModelListener>();
+	private ResourceModelListener resourceModelListener;
+
+
+	// ********** constructor **********
+
+	protected JpaXmlResource(URI uri, Renderer renderer) {
+		super(uri, renderer);
 	}
-	
-	protected JpaXmlResource(URI uri, Renderer aRenderer) {
-		super(uri, aRenderer);
-		this.resourceModelListeners = new ArrayList<ResourceModelListener>();
-	}
-	
+
+
+	// ********** BasicNotifierImpl override **********
+
 	/**
-	 * override to prevent notification when the object's state is unchanged
+	 * override to prevent notification when the resource's state is unchanged
+	 * or the resource is not loaded
 	 */
 	@Override
 	public void eNotify(Notification notification) {
-		if (!notification.isTouch() && isLoaded()) {
+		if ( ! notification.isTouch() && this.isLoaded()) {
 			super.eNotify(notification);
-			resourceChanged();
+			this.resourceModelChanged();
 		}
 	}
 
+
+	// ********** TranslatorResourceImpl implementation **********
+
 	/**
-	 * @see TranslatorResourceImpl#getDefaultPublicId() 
+	 * only applicable for DTD-based files
 	 */
 	@Override
 	protected String getDefaultPublicId() {
 		return null;
-		// only applicable for DTD-based files
 	}
-	
+
 	/**
-	 * @see TranslatorResourceImpl#getDefaultSystemId() 
+	 * only applicable for DTD-based files
 	 */
 	@Override
 	protected String getDefaultSystemId() {
 		return null;
-		// only applicable for DTD-based files
 	}
-	
+
 	/**
-	 * @see TranslatorResourceImpl#getDefaultVersionId() 
+	 * this seems to be the default version of the spec for this doc
+	 * and the id 10 maps to the version 1.0
 	 */
 	@Override
 	protected int getDefaultVersionID() {
 		return 10;
-		// this seems to be the default version of the spec for this doc
-		// and the id 10 maps to the version 1.0
 	}
-	
+
+
+	// ********** TranslatorResource implementation **********
+
 	/**
-	 * @see TranslatorResource#getDoctype() 
+	 * only applicable for DTD-based files
 	 */
 	public String getDoctype() {
 		return null;
-		// only applicable for DTD-based files
 	}
-	
-	public IFile getFile() {
-		IFile file = null;
-		file = getFile(getURI());
-		if (file == null) {
-			if (getResourceSet() != null) {
-				URIConverter converter = getResourceSet().getURIConverter();
-				URI convertedUri = converter.normalize(getURI());
-				if (! getURI().equals(convertedUri)) {
-					file = getFile(convertedUri);
-				}
-			}
-		}
-		return file;
-	}
-	
-	/**
-	 * Return the IFile for the <code>uri</code> within the Workspace. This URI is assumed to be
-	 * absolute in the following format: platform:/resource/....
-	 */
-	private IFile getFile(URI uri) {
-		if (WorkbenchResourceHelperBase.isPlatformResourceURI(uri)) {
-			String fileString = URI.decode(uri.path());
-			fileString = fileString.substring(JEMUtilPlugin.PLATFORM_RESOURCE.length() + 1);
-			return ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(fileString));
-		}
-		return null;
-	}
-	
+
+
+	// ********** convenience methods **********
+
 	public boolean exists() {
-		return getFile().exists();
+		return this.getFile().exists();
 	}
-	
-	public void javaElementChanged(ElementChangedEvent event) {
-		// nothing to do yet
+
+	public IFile getFile() {
+		IFile file = getFile(this.uri);
+		return (file != null) ? file : this.getConvertedURIFile();
 	}
-	
-	public JpaXmlResourceModel getResourceModel() {
-		return this.resourceModel;
+
+	protected IFile getConvertedURIFile() {
+		if (this.resourceSet == null) {
+			return null;
+		}
+		URI convertedURI = this.resourceSet.getURIConverter().normalize(this.uri);
+		return this.uri.equals(convertedURI) ? null : getFile(convertedURI);
 	}
-	
-	public void setResourceModel(JpaXmlResourceModel resourceModel) {
-		this.resourceModel = resourceModel;
+
+	/**
+	 * Return the Eclipse file for the specified URI.
+	 * This URI is assumed to be absolute in the following format:
+	 *     platform:/resource/....
+	 */
+	protected static IFile getFile(URI uri) {
+		if ( ! WorkbenchResourceHelperBase.isPlatformResourceURI(uri)) {
+			return null;
+		}
+		String fileName = URI.decode(uri.path()).substring(JEMUtilPlugin.PLATFORM_RESOURCE.length() + 1);
+		return ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(fileName));
 	}
-	
-	public void resourceChanged() {
-		for (ResourceModelListener listener : this.resourceModelListeners) {
-			listener.resourceModelChanged();
+
+	public abstract String getType();
+
+	@Override
+	public String toString() {
+		// implementation in TranslatorResourceImpl is a bit off...
+		return StringTools.buildToStringFor(this, this.getURI());
+	}
+
+
+	// ********** resource model changes **********
+
+	public void setResourceModelListener(ResourceModelListener resourceModelListener) {
+		this.resourceModelListener = resourceModelListener;
+	}
+
+	public void resourceModelChanged() {
+		if (this.resourceModelListener != null) {
+			this.resourceModelListener.resourceModelChanged();
 		}
 	}
-	
-	public void addResourceModelChangeListener(ResourceModelListener listener) {
-		if (listener == null) {
-			throw new IllegalArgumentException("Listener cannot be null");
-		}
-		this.resourceModelListeners.add(listener);
+
+
+	// ********** compiler warning fixes **********
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public EList eAdapters() {
+		return super.eAdapters();
 	}
-	
-	public void removeResourceModelChangeListener(ResourceModelListener listener) {
-		if (!this.resourceModelListeners.contains(listener)) {
-			throw new IllegalArgumentException("Listener " + listener + " was never added");		
-		}
-		this.resourceModelListeners.add(listener);
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public EList getContents() {
+		return super.getContents();
 	}
+
 }

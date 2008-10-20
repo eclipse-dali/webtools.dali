@@ -37,15 +37,15 @@ public class EclipseLinkJavaJoinFetchable extends AbstractJavaJpaContextNode imp
 	}
 	
 	protected JoinFetchAnnotation getResourceJoinFetch() {
-		return (JoinFetchAnnotation) this.resourcePersistentAttribute.getAnnotation(getJoinFetchAnnotationName());
+		return (JoinFetchAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getJoinFetchAnnotationName());
 	}
 	
 	protected void addResourceJoinFetch() {
-		this.resourcePersistentAttribute.addAnnotation(getJoinFetchAnnotationName());
+		this.resourcePersistentAttribute.addSupportingAnnotation(getJoinFetchAnnotationName());
 	}
 	
 	protected void removeResourceJoinFetch() {
-		this.resourcePersistentAttribute.removeAnnotation(getJoinFetchAnnotationName());
+		this.resourcePersistentAttribute.removeSupportingAnnotation(getJoinFetchAnnotationName());
 	}
 	
 	public boolean hasJoinFetch() {

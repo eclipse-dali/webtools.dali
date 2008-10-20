@@ -44,15 +44,15 @@ public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMap
 	}
 	
 	protected PrivateOwnedAnnotation getResourcePrivateOwned() {
-		return (PrivateOwnedAnnotation) this.resourcePersistentAttribute.getAnnotation(getPrivateOwnedAnnotationName());
+		return (PrivateOwnedAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getPrivateOwnedAnnotationName());
 	}
 	
 	protected void addResourcePrivateOwned() {
-		this.resourcePersistentAttribute.addAnnotation(getPrivateOwnedAnnotationName());
+		this.resourcePersistentAttribute.addSupportingAnnotation(getPrivateOwnedAnnotationName());
 	}
 	
 	protected void removeResourcePrivateOwned() {
-		this.resourcePersistentAttribute.removeAnnotation(getPrivateOwnedAnnotationName());
+		this.resourcePersistentAttribute.removeSupportingAnnotation(getPrivateOwnedAnnotationName());
 	}
 	
 	public JavaJoinFetchable getJoinFetchable() {

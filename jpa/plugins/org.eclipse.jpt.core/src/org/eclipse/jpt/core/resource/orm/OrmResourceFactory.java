@@ -24,7 +24,8 @@ import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceFactory;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public class OrmResourceFactory extends TranslatorResourceFactory
+public class OrmResourceFactory
+	extends TranslatorResourceFactory
 {
 	public OrmResourceFactory() {
 		this(RendererFactory.getDefaultRendererFactory());
@@ -38,12 +39,9 @@ public class OrmResourceFactory extends TranslatorResourceFactory
 		super(aRendererFactory, listeningForUpdates);
 	}
 	
-	
-	/**
-	 * @see TranslatorResourceFactory#createResource(URI, Renderer)
-	 */
 	@Override
 	protected TranslatorResource createResource(URI uri, Renderer renderer) {
 		return new OrmResource(uri, renderer);
 	}
+
 }

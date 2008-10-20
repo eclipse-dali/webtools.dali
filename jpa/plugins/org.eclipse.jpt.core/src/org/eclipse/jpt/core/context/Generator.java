@@ -55,13 +55,13 @@ public interface Generator
 	// ********** validation **********
 	
 	/**
-	 * Return true if this generator overrides the definition of the given generator
-	 * (for example, a generator defined in orm.xml overrides one defined in java)
+	 * Return whether the generator overrides the definition of the given generator
+	 * (e.g. a generator defined in orm.xml overrides one defined in java).
 	 */
 	boolean overrides(Generator generator);
 	
 	/**
-	 * Return true if this generator is a duplicate of the given generator
+	 * Return whether the generator is a duplicate of the given generator.
 	 * A generator is not a duplicate of another generator if is the same exact generator,
 	 * if it is a nameless generator (which is an error condition), or if it overrides 
 	 * or is overridden by the other generator. 

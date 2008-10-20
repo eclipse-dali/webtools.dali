@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
@@ -31,6 +32,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinColumnsAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
@@ -94,7 +96,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		}
 		JavaJoinColumn joinColumn = this.getJpaFactory().buildJavaJoinColumn(this, this.createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
-		JoinColumnAnnotation joinColumnAnnotation = (JoinColumnAnnotation) this.getResourcePersistentAttribute().addAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
+		JoinColumnAnnotation joinColumnAnnotation = (JoinColumnAnnotation) this.getResourcePersistentAttribute().addSupportingAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
 		joinColumn.initialize(joinColumnAnnotation);
 		this.fireItemAdded(SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		if (oldDefaultJoinColumn != null) {
@@ -123,7 +125,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 			//in the UI because the change notifications end up in the wrong order.
 			this.defaultJoinColumn = this.buildJoinColumn(new NullJoinColumn(this.getResourcePersistentAttribute()));
 		}
-		this.getResourcePersistentAttribute().removeAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
+		this.getResourcePersistentAttribute().removeSupportingAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
 		this.fireItemRemoved(SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 		if (this.defaultJoinColumn != null) {
 			//fire change notification if a defaultJoinColumn was created above
@@ -137,7 +139,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedJoinColumns, targetIndex, sourceIndex);
-		this.getResourcePersistentAttribute().move(targetIndex, sourceIndex, JoinColumnsAnnotation.ANNOTATION_NAME);
+		this.getResourcePersistentAttribute().moveSupportingAnnotation(targetIndex, sourceIndex, JoinColumnsAnnotation.ANNOTATION_NAME);
 		this.fireItemMoved(SPECIFIED_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 
@@ -209,7 +211,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	}
 	
 	protected void initializeSpecifiedJoinColumns(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
-		ListIterator<JavaResourceNode> annotations = javaResourcePersistentAttribute.annotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
+		ListIterator<NestableAnnotation> annotations = javaResourcePersistentAttribute.supportingAnnotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
 			this.specifiedJoinColumns.add(buildJoinColumn((JoinColumnAnnotation) annotations.next()));
@@ -244,7 +246,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	
 	protected void updateSpecifiedJoinColumns(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
 		ListIterator<JavaJoinColumn> joinColumns = specifiedJoinColumns();
-		ListIterator<JavaResourceNode> resourceJoinColumns = javaResourcePersistentAttribute.annotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
+		ListIterator<NestableAnnotation> resourceJoinColumns = javaResourcePersistentAttribute.supportingAnnotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
 		
 		while (joinColumns.hasNext()) {
 			JavaJoinColumn joinColumn = joinColumns.next();

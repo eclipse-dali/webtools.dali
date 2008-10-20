@@ -298,12 +298,8 @@ public class GenericPersistenceUnit extends AbstractXmlContextNode
 	}
 	
 	protected void removeSpecifiedMappingFileRef_(MappingFileRef mappingFileRef) {
-		removeSpecifiedMappingFileRef_(specifiedMappingFileRefs.indexOf(mappingFileRef));
-	}
-	
-	protected void removeSpecifiedMappingFileRef_(int index) {
-		specifiedMappingFileRefs.get(index).dispose();
-		removeItemFromList(index, specifiedMappingFileRefs, SPECIFIED_MAPPING_FILE_REFS_LIST);
+		mappingFileRef.dispose();
+		this.removeItemFromList(mappingFileRef, this.specifiedMappingFileRefs, SPECIFIED_MAPPING_FILE_REFS_LIST);
 	}
 	
 	
@@ -390,11 +386,7 @@ public class GenericPersistenceUnit extends AbstractXmlContextNode
 	
 	protected void removeSpecifiedClassRef_(ClassRef classRef) {
 		classRef.dispose();
-		removeSpecifiedClassRef_(this.specifiedClassRefs.indexOf(classRef));
-	}
-	
-	protected void removeSpecifiedClassRef_(int index) {
-		removeItemFromList(index, this.specifiedClassRefs, SPECIFIED_CLASS_REFS_LIST);
+		this.removeItemFromList(classRef, this.specifiedClassRefs, SPECIFIED_CLASS_REFS_LIST);
 	}
 	
 	
@@ -420,11 +412,7 @@ public class GenericPersistenceUnit extends AbstractXmlContextNode
 	
 	protected void removeImpliedClassRef(ClassRef classRef) {
 		classRef.dispose();
-		removeImpliedClassRef(impliedClassRefs.indexOf(classRef));
-	}
-	
-	protected void removeImpliedClassRef(int index) {
-		removeItemFromList(index, impliedClassRefs, IMPLIED_CLASS_REFS_LIST);
+		this.removeItemFromList(classRef, this.impliedClassRefs, IMPLIED_CLASS_REFS_LIST);
 	}
 	
 	
@@ -618,11 +606,7 @@ public class GenericPersistenceUnit extends AbstractXmlContextNode
 	}
 	
 	protected void removeProperty_(Property property) {
-		removeProperty_(this.properties.indexOf(property));
-	}
-	
-	protected void removeProperty_(int index) {
-		removeItemFromList(index, this.properties, PROPERTIES_LIST);
+		this.removeItemFromList(property, this.properties, PROPERTIES_LIST);
 	}
 	
 	

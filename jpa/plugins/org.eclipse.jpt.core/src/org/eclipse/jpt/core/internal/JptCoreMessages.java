@@ -40,6 +40,9 @@ public class JptCoreMessages {
 	public static String INVALID_PERSISTENCE_XML_CONTENT;
 	public static String ERROR_SYNCHRONIZING_CLASSES_COULD_NOT_VALIDATE;
 	public static String ERROR_WRITING_FILE;
+	public static String RESOURCE_MODEL_PROVIDER_REGISTRY_MISSING_ATTRIBUTE;
+	public static String RESOURCE_MODEL_PROVIDER_REGISTRY_DUPLICATE_FILE_CONTENT_TYPE;
+	public static String RESOURCE_MODEL_PROVIDER_REGISTRY_FAILED_INSTANTIATION;
 
 	private static final String BUNDLE_NAME = "jpa_core"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptCoreMessages.class;

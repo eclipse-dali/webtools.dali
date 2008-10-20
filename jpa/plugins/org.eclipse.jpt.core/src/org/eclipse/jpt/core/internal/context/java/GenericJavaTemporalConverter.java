@@ -44,11 +44,11 @@ public class GenericJavaTemporalConverter extends AbstractJavaJpaContextNode
 	}
 	
 	public void addToResourceModel() {
-		this.resourcePersistentAttribute.addAnnotation(getAnnotationName());
+		this.resourcePersistentAttribute.addSupportingAnnotation(getAnnotationName());
 	}
 	
 	public void removeFromResourceModel() {
-		this.resourcePersistentAttribute.removeAnnotation(getAnnotationName());
+		this.resourcePersistentAttribute.removeSupportingAnnotation(getAnnotationName());
 	}
 	
 	public TemporalType getTemporalType() {
@@ -70,7 +70,7 @@ public class GenericJavaTemporalConverter extends AbstractJavaJpaContextNode
 
 
 	protected TemporalAnnotation getResourceTemporal() {
-		return (TemporalAnnotation) this.resourcePersistentAttribute.getAnnotation(getAnnotationName());
+		return (TemporalAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getAnnotationName());
 	}
 
 	protected void initialize(JavaResourcePersistentAttribute jrpa) {

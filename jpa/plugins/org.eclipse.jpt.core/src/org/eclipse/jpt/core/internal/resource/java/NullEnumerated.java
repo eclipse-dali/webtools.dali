@@ -49,7 +49,7 @@ public class NullEnumerated extends AbstractJavaResourceNode implements Enumerat
 	}
 		
 	protected EnumeratedAnnotation createEnumeratedResource() {
-		return (EnumeratedAnnotation) getParent().addAnnotation(getAnnotationName());
+		return (EnumeratedAnnotation) getParent().addSupportingAnnotation(getAnnotationName());
 	}
 
 

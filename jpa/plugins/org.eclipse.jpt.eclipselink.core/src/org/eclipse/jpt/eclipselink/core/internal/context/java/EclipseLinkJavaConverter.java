@@ -50,11 +50,11 @@ public class EclipseLinkJavaConverter extends AbstractJavaJpaContextNode impleme
 	}
 		
 	public void addToResourceModel() {
-		this.resourcePersistentMember.addAnnotation(getAnnotationName());
+		this.resourcePersistentMember.addSupportingAnnotation(getAnnotationName());
 	}
 	
 	public void removeFromResourceModel() {
-		this.resourcePersistentMember.removeAnnotation(getAnnotationName());
+		this.resourcePersistentMember.removeSupportingAnnotation(getAnnotationName());
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
@@ -62,7 +62,7 @@ public class EclipseLinkJavaConverter extends AbstractJavaJpaContextNode impleme
 	}
 
 	protected ConverterAnnotation getResourceConverter() {
-		return (ConverterAnnotation) this.resourcePersistentMember.getAnnotation(getAnnotationName());
+		return (ConverterAnnotation) this.resourcePersistentMember.getSupportingAnnotation(getAnnotationName());
 	}
 	
 	public String getConverterClass() {

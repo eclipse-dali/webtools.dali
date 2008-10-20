@@ -12,11 +12,11 @@ package org.eclipse.jpt.core;
 import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
 /**
- * A JpaProject contains Jpa files for all IFiles in the project that
- * are relevant to the JpaPlatform.
- * @see JpaFactory#hasRelevantContent(IFile), this method should be moved to JpaPlatform
+ * A JPA Project contains JPA files for all files in the project that
+ * are relevant to the JPA platform.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,71 +24,107 @@ import org.eclipse.jdt.core.ElementChangedEvent;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaFile extends JpaNode
+public interface JpaFile
+	extends JpaNode
 {
-	/**
-	 * Return the type of resource represented by this JPA file
-	 * @see ResourceModel#getResourceType()
-	 */
-	String getResourceType();
 
 	/**
-	 * Return the IFile associated with this JPA file
+	 * Return the JPA file's Eclipse file.
 	 */
 	IFile getFile();
 
 	/**
-	 * Return the resource model represented by this JPA file
+	 * Return all the types that are "persistable", as defined by the JPA spec.
 	 */
-	ResourceModel getResourceModel();
-	
+	Iterator<JavaResourcePersistentType> persistableTypes();
+
+	// ********** event handlers **********
+
 	/**
-	 * Forward the Java element changed event to the JPA file's content.
+	 * A JDT Java element has changed. Synchronize the JPA file's resource
+	 * model.
 	 */
 	void javaElementChanged(ElementChangedEvent event);
 
 	/**
-	 * The JPA file has been removed from the JPA project. Clean up any
-	 * hooks to external resources etc.
+	 * Calculate any information that is dependent on other files
+	 * being added or removed. For now, only the Java resource model needs
+	 * this; in particular, it needs to re-calculate resolved types.
 	 */
-	void dispose();
-	
+	void jpaFilesChanged();
 
-	// **************** root structure nodes *************************************
-	
+
+	// ********** resource type **********
+
 	/**
-	 * String constant associated with changes to the root structure nodes collection
+	 * Return the type of resource held by the JPA file.
 	 */
-	String ROOT_STRUCTURE_NODES_COLLECTION = "rootStructureNodes";
-	
+	String getResourceType();
+
 	/**
-	 * Return the root context model objects represented by this JPA file.
+	 * Constant representing a Java resource type.
+	 * @see #getResourceType()
+	 */
+	static final String JAVA_RESOURCE_TYPE = "JAVA_RESOURCE_TYPE"; //$NON-NLS-1$
+
+	/**
+	 * Constant representing a persistence.xml resource type.
+	 * @see #getResourceType()
+	 */
+	static final String PERSISTENCE_RESOURCE_TYPE = "PERSISTENCE_RESOURCE_TYPE"; //$NON-NLS-1$
+
+	/**
+	 * Constant representing a mapping file (e.g. orm.xml) resource type.
+	 * @see #getResourceType()
+	 */
+	static final String ORM_RESOURCE_TYPE = "ORM_RESOURCE_TYPE"; //$NON-NLS-1$
+
+
+	// ********** resource model listeners **********
+
+	/**
+	 * Changes to the resource model result in events. In particular, the JPA
+	 * project performs an "update" whenever a resource changes.
+	 */
+	void addResourceModelListener(ResourceModelListener listener);
+
+	/**
+	 * @see #addResourceModelChangeListener(ResourceModelListener)
+	 */
+	void removeResourceModelListener(ResourceModelListener listener);
+
+
+	// ********** root structure nodes **********
+
+	/**
+	 * Return the JPA file's root structure nodes.
 	 */
 	Iterator<JpaStructureNode> rootStructureNodes();
-	
+		String ROOT_STRUCTURE_NODES_COLLECTION = "rootStructureNodes"; //$NON-NLS-1$
+
 	/**
-	 * Return the number of root context model objects represented by this JPA file.
+	 * Return the count of the JPA file's root context model objects.
 	 */
 	int rootStructureNodesSize();
 
 	/**
-	 * Add a root context model object represented by this JPA file.
+	 * Add a root context structure node.
 	 * There is the potential for multiple root structure nodes 
-	 * for a particular key.  For example a java file that is listed
+	 * for a particular key. For example, a Java file that is listed
 	 * both as a <class> in the persistence.xml and as an <entity> in
-	 * an orm.xml file.  In this case the orm.xml file needs to set
-	 * the root structure node after the java class reference.
-	 * Last one in during project update wins.
-	 * 
-	 * Call removeRootStructureNode(Object) to clean up when a file is
-	 * deleted.
+	 * an orm.xml file. In this case the orm.xml file needs to set
+	 * the root structure node after the Java class reference.
+	 * Last one in during project "update" wins.
 	 */
-	void addRootStructureNode(Object key, JpaStructureNode rootStructureNode);	
-	
+	void addRootStructureNode(Object key, JpaStructureNode rootStructureNode);
+
+	/**
+	 * @see #addRootStructureNode(Object, JpaStructureNode)
+	 */
 	void removeRootStructureNode(Object key);
 
 	/**
-	 * Return the structure node best represented by the location in the file.
+	 * Return the structure node best corresponding to the location in the file.
 	 */
 	JpaStructureNode getStructureNode(int textOffset);
 

@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.context.java;
 import org.eclipse.jpt.core.JpaFactory;
 
 /**
- * Map a string key to a type mapping and its corresponding
- * Java annotation adapter.
+ * Map a string key to an attribute mapping and its corresponding
+ * Java annotation.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,17 +24,20 @@ import org.eclipse.jpt.core.JpaFactory;
 public interface JavaAttributeMappingProvider {
 
 	/**
-	 * A unique String that corresponds to the IJavaAttributeMapping key 
+	 * Return the attribute mapping's key.
 	 */
 	String getKey();
 
-	String getAnnotationName();
-	
 	/**
-	 * Create an {@link JavaAttributeMapping} for the given attribute.  Use the {@link JpaFactory}
-	 * for creation so that extenders can create their own {@link JpaFactory} instead of 
-	 * creating their own {@link JavaAttributeMappingProvider}.
+	 * Return the attribute mapping's Java annotation name.
 	 */
-	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory);
+	String getAnnotationName();
+
+	/**
+	 * Build a Java attribute mapping for the specified attribute. Use the specified
+	 * factory for creation so extenders can simply override the appropriate
+	 * creation method instead of building a provider for the same key.
+	 */
+	public JavaAttributeMapping buildMapping(JavaPersistentAttribute attribute, JpaFactory factory);
 
 }

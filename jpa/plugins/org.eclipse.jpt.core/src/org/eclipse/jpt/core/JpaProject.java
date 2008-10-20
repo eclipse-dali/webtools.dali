@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core;
 
 import java.util.Iterator;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
@@ -208,13 +209,6 @@ public interface JpaProject extends JpaNode {
 	 */
 	JpaFile getJpaFile(IFile file);
 
-	/**
-	 * Return the JPA project's JPA files for the specified content type ID.
-	 * The content type ID should match that given in the
-	 * JPA file content provider.
-	 */
-	Iterator<JpaFile> jpaFiles(String contentTypeId);
-	
 	
 	// **************** various queries ****************************************
 	
@@ -236,8 +230,8 @@ public interface JpaProject extends JpaNode {
 	Iterator<String> annotatedClassNames();
 	
 	/**
-	 * Return the Java persistent type resource for the specified fully qualified type name;
-	 * null, if none exists.
+	 * Return the Java resource persistent type for the specified fully
+	 * qualified type name; return null, if none exists.
 	 */
 	JavaResourcePersistentType getJavaResourcePersistentType(String typeName);
 	

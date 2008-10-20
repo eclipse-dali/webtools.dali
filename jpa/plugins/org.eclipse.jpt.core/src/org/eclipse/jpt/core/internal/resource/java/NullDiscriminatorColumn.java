@@ -33,7 +33,7 @@ public class NullDiscriminatorColumn extends NullNamedColumn implements Discrimi
 
 	@Override
 	protected DiscriminatorColumnAnnotation createResourceColumn() {
-		return (DiscriminatorColumnAnnotation) getParent().addAnnotation(getAnnotationName());
+		return (DiscriminatorColumnAnnotation) getParent().addSupportingAnnotation(getAnnotationName());
 	}
 
 	public DiscriminatorType getDiscriminatorType() {

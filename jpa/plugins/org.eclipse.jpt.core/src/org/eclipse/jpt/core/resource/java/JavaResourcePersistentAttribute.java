@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
-import org.eclipse.jpt.core.utility.jdt.Member;
-
 /**
  * 
  * 
@@ -20,68 +18,67 @@ import org.eclipse.jpt.core.utility.jdt.Member;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-//TODO how do we handle:
+//TODO determine how we handle:
 //  @Basic
 //  private String foo, bar;
-public interface JavaResourcePersistentAttribute extends JavaResourcePersistentMember
+public interface JavaResourcePersistentAttribute
+	extends JavaResourcePersistentMember
 {
 	String getName();
-	
-	Member getMember();
 	
 	boolean isForField();
 	
 	boolean isForProperty();
 	
 	boolean typeIsBasic();
-		String TYPE_IS_BASIC_PROPERTY = "typeIsBasicProperty"; //$NON-NLS-1$
-	
-	boolean typeIsSerializable();
-		String TYPE_IS_SERIALIZABLE_PROPERTY = "typeIsSerializableProperty"; //$NON-NLS-1$
-		
-	boolean typeIsDateOrCalendar();
-		String TYPE_IS_DATE_OR_CALENDAR_PROPERTY = "typeIsDateOrCalendarProperty"; //$NON-NLS-1$
+		String TYPE_IS_BASIC_PROPERTY = "typeIsBasic"; //$NON-NLS-1$
 	
 	boolean isFinal();
-		String FINAL_PROPERTY = "finalProperty"; //$NON-NLS-1$
+		String FINAL_PROPERTY = "final"; //$NON-NLS-1$
 	
 	boolean isPublic();
-		String PUBLIC_PROPERTY = "publicProperty"; //$NON-NLS-1$
-
-	/**
-	 * Return true if the attribute type is a container:
-	 * java.util.Collection
-	 * java.util.Set
-	 * java.util.List
-	 * java.util.Map
-	 * @return
-	 */
-	boolean typeIsContainer();
-		String TYPE_IS_CONTAINER_PROPERTY = "typeIsContainerProperty"; //$NON-NLS-1$
-
-	/**
-	 * Returns the resolved qualfied type name for the attribute
-	 */
-	String getQualifiedTypeName();
-		String QUALIFIED_TYPE_NAME_PROPERTY = "qualfiedTypeNameProperty"; //$NON-NLS-1$
+		String PUBLIC_PROPERTY = "public"; //$NON-NLS-1$
+	
+	boolean typeIsSerializable();
+		String TYPE_IS_SERIALIZABLE_PROPERTY = "typeIsSerializable"; //$NON-NLS-1$
+		
+	boolean typeIsDateOrCalendar();
+		String TYPE_IS_DATE_OR_CALENDAR_PROPERTY = "typeIsDateOrCalendar"; //$NON-NLS-1$
 	
 	/**
-	 * Returns the resolved qualfied type name for the attribute
-	 * if it as valid as a target entity type.  i.e. not an array.
-	 * see typeIsContainer() to be used with this
+	 * Return whether the attribute type is a container:
+	 *     java.util.Collection
+	 *     java.util.Set
+	 *     java.util.List
+	 *     java.util.Map
 	 */
-	String getQualifiedReferenceEntityTypeName();
-		String QUALIFIED_REFERENCE_ENTITY_TYPE_NAME_PROPERTY = "qualfiedReferenceEntityTypeNameProperty"; //$NON-NLS-1$
+	boolean typeIsContainer();
+		String TYPE_IS_CONTAINER_PROPERTY = "typeIsContainer"; //$NON-NLS-1$
 
 	/**
-	 * Returns the fully qualified type parameter for use as a target entity
+	 * Return the resolved qualified type name for the attribute.
+	 */
+	String getQualifiedTypeName();
+		String QUALIFIED_TYPE_NAME_PROPERTY = "qualifiedTypeName"; //$NON-NLS-1$
+	
+	/**
+	 * Return the resolved qualified type name for the attribute
+	 * if it as valid as a target entity type; i.e. not an array.
+	 * @see #typeIsContainer()
+	 */
+	String getQualifiedReferenceEntityTypeName();
+		String QUALIFIED_REFERENCE_ENTITY_TYPE_NAME_PROPERTY = "qualifiedReferenceEntityTypeName"; //$NON-NLS-1$
+
+	/**
+	 * Return the fully qualified type parameter for use as a target entity.
 	 */
 	String getQualifiedReferenceEntityElementTypeName();
-		String QUALIFIED_REFERENCE_ENTITY_ELEMENT_TYPE_NAME_PROPERTY = "qualfiedReferenceEntityElementTypeNameProperty"; //$NON-NLS-1$
+		String QUALIFIED_REFERENCE_ENTITY_ELEMENT_TYPE_NAME_PROPERTY = "qualifiedReferenceEntityElementTypeName"; //$NON-NLS-1$
 		
 	/**
-	 * Return true if this attribute has any mapping or non-mapping annotations
-	 * (of course only persistence related annotations)
+	 * Return whether the attribute has any mapping or non-mapping annotations
+	 * (of course only persistence-related annotations).
 	 */
-	boolean hasAnyAnnotation();
+	boolean hasAnyAnnotations();
+
 }

@@ -10,21 +10,21 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
 
-import org.eclipse.jpt.core.ResourceModel;
+import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
 public abstract class ResourceModelStructureProvider
 	implements JpaStructureProvider
 {
-	protected ResourceModel resourceModel;
+	protected JpaFile jpaFile;
 	
 	
-	public ResourceModelStructureProvider(ResourceModel resourceModel) {
-		this.resourceModel = resourceModel;
+	public ResourceModelStructureProvider(JpaFile jpaFile) {
+		this.jpaFile = jpaFile;
 	}
 	
 	public Object getInput() {
-		return resourceModel;
+		return jpaFile;
 	}
 	
 	public void dispose() {

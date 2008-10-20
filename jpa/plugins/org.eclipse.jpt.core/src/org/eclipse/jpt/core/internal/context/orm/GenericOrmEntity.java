@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
@@ -77,7 +78,6 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
@@ -613,7 +613,7 @@ public class GenericOrmEntity
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, newTableGenerator);
 	}
 	
-	public Iterator<OrmGenerator> generators() {
+	protected Iterator<OrmGenerator> generators() {
 		ArrayList<OrmGenerator> generators = new ArrayList<OrmGenerator>();
 		this.addGeneratorsTo(generators);
 		return generators.iterator();
@@ -1953,50 +1953,38 @@ public class GenericOrmEntity
 	}
 	
 	protected void validateGenerators(List<IMessage> messages) {
-		List<Generator> masterList = CollectionTools.list(getPersistenceUnit().allGenerators());
-		
-		for (Iterator<OrmGenerator> stream = this.generators(); stream.hasNext() ; ) {
-			OrmGenerator current = stream.next();
-			masterList.remove(current);
-			
-			for (Generator each : masterList) {
-				if (! StringTools.stringIsEmpty(current.getName()) && each.duplicates(current)) {
+		for (Iterator<OrmGenerator> localGenerators = this.generators(); localGenerators.hasNext(); ) {
+			OrmGenerator localGenerator = localGenerators.next();
+			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().allGenerators(); globalGenerators.hasNext(); ) {
+				if (localGenerator.duplicates(globalGenerators.next())) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-							new String[] {current.getName()},
-							current,
-							current.getNameTextRange())
+							new String[] {localGenerator.getName()},
+							localGenerator,
+							localGenerator.getNameTextRange())
 					);
 				}
 			}
-		
-			masterList.add(current);
 		}
 	}
 	
 	protected void validateQueries(List<IMessage> messages) {
-		List<Query> masterList = CollectionTools.list(getPersistenceUnit().allQueries());
-		
-		for (Iterator<OrmQuery> stream = this.queries(); stream.hasNext() ; ) {
-			OrmQuery current = stream.next();
-			masterList.remove(current);
-			
-			for (Query each : masterList) {
-				if (! StringTools.stringIsEmpty(current.getName()) && each.duplicates(current)) {
+		for (Iterator<OrmQuery> localQueries = this.queries(); localQueries.hasNext(); ) {
+			OrmQuery localQuery = localQueries.next();
+			for (Iterator<Query> globalQueries = this.getPersistenceUnit().allQueries(); globalQueries.hasNext(); ) {
+				if (localQuery.duplicates(globalQueries.next())) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.QUERY_DUPLICATE_NAME,
-							new String[] {current.getName()},
-							current,
-							current.getNameTextRange())
+							new String[] {localQuery.getName()},
+							localQuery,
+							localQuery.getNameTextRange())
 					);
 				}
 			}
-			
-			masterList.add(current);
 		}
 	}
 	

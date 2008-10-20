@@ -85,15 +85,15 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 	}
 	
 	protected ConverterAnnotation getResourceConverter() {
-		return (ConverterAnnotation) this.resourcePersistentType.getAnnotation(getConverterAnnotationName());
+		return (ConverterAnnotation) this.resourcePersistentType.getSupportingAnnotation(getConverterAnnotationName());
 	}
 	
 	protected void removeResourceConverter() {
-		this.resourcePersistentType.removeAnnotation(getConverterAnnotationName());
+		this.resourcePersistentType.removeSupportingAnnotation(getConverterAnnotationName());
 	}
 	
 	protected void addResourceConverter() {
-		this.resourcePersistentType.addAnnotation(getConverterAnnotationName());
+		this.resourcePersistentType.addSupportingAnnotation(getConverterAnnotationName());
 	}
 	
 	
@@ -138,15 +138,15 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 	}
 	
 	protected ObjectTypeConverterAnnotation getResourceObjectTypeConverter() {
-		return (ObjectTypeConverterAnnotation) this.resourcePersistentType.getAnnotation(getObjectTypeConverterAnnotationName());
+		return (ObjectTypeConverterAnnotation) this.resourcePersistentType.getSupportingAnnotation(getObjectTypeConverterAnnotationName());
 	}
 	
 	protected void removeResourceObjectTypeConverter() {
-		this.resourcePersistentType.removeAnnotation(getObjectTypeConverterAnnotationName());
+		this.resourcePersistentType.removeSupportingAnnotation(getObjectTypeConverterAnnotationName());
 	}
 	
 	protected void addResourceObjectTypeConverter() {
-		this.resourcePersistentType.addAnnotation(getObjectTypeConverterAnnotationName());
+		this.resourcePersistentType.addSupportingAnnotation(getObjectTypeConverterAnnotationName());
 	}
 	
 	
@@ -191,15 +191,15 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 	}
 	
 	protected TypeConverterAnnotation getResourceTypeConverter() {
-		return (TypeConverterAnnotation) this.resourcePersistentType.getAnnotation(getTypeConverterAnnotationName());
+		return (TypeConverterAnnotation) this.resourcePersistentType.getSupportingAnnotation(getTypeConverterAnnotationName());
 	}
 	
 	protected void removeResourceTypeConverter() {
-		this.resourcePersistentType.removeAnnotation(getTypeConverterAnnotationName());
+		this.resourcePersistentType.removeSupportingAnnotation(getTypeConverterAnnotationName());
 	}
 	
 	protected void addResourceTypeConverter() {
-		this.resourcePersistentType.addAnnotation(getTypeConverterAnnotationName());
+		this.resourcePersistentType.addSupportingAnnotation(getTypeConverterAnnotationName());
 	}
 	
 	
@@ -244,15 +244,15 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 	}
 	
 	protected StructConverterAnnotation getResourceStructConverter() {
-		return (StructConverterAnnotation) this.resourcePersistentType.getAnnotation(getStructConverterAnnotationName());
+		return (StructConverterAnnotation) this.resourcePersistentType.getSupportingAnnotation(getStructConverterAnnotationName());
 	}
 	
 	protected void removeResourceStructConverter() {
-		this.resourcePersistentType.removeAnnotation(getStructConverterAnnotationName());
+		this.resourcePersistentType.removeSupportingAnnotation(getStructConverterAnnotationName());
 	}
 	
 	protected void addResourceStructConverter() {
-		this.resourcePersistentType.addAnnotation(getStructConverterAnnotationName());
+		this.resourcePersistentType.addSupportingAnnotation(getStructConverterAnnotationName());
 	}
 	
 	public void update(JavaResourcePersistentType jrpt) {

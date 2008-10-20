@@ -12,12 +12,13 @@ package org.eclipse.jpt.ui.internal.structure;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.core.internal.XmlJpaFile;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
@@ -35,8 +36,8 @@ public class PersistenceItemContentProviderFactory
 	public TreeItemContentProvider buildItemContentProvider(
 			Object item, DelegatingContentAndLabelProvider contentAndLabelProvider) {
 		DelegatingTreeContentAndLabelProvider treeContentProvider = (DelegatingTreeContentAndLabelProvider) contentAndLabelProvider;
-		if (item instanceof PersistenceResourceModel) {
-			return new ResourceModelItemContentProvider((PersistenceResourceModel) item, treeContentProvider);
+		if (item instanceof XmlJpaFile) {
+			return new ResourceModelItemContentProvider((XmlJpaFile) item, treeContentProvider);
 		}
 		else if (item instanceof Persistence) {
 			return new PersistenceItemContentProvider((Persistence) item, treeContentProvider);

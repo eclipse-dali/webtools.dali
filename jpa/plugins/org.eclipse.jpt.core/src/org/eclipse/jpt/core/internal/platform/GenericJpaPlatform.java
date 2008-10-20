@@ -9,21 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
+
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.EntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaFileProvider;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
@@ -31,6 +33,9 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
+import org.eclipse.jpt.core.internal.JavaJpaFileProvider;
+import org.eclipse.jpt.core.internal.OrmJpaFileProvider;
+import org.eclipse.jpt.core.internal.PersistenceJpaFileProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaBasicMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaEmbeddableProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedIdMappingProvider;
@@ -46,13 +51,13 @@ import org.eclipse.jpt.core.internal.context.java.JavaOneToManyMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaOneToOneMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingProvider;
-import org.eclipse.jpt.core.utility.PlatformUtilities;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.DatabaseFinder;
 import org.eclipse.jpt.db.JptDbPlugin;
-import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
+/**
+ * 
+ */
 public class GenericJpaPlatform
 	implements JpaPlatform
 {
@@ -60,15 +65,17 @@ public class GenericJpaPlatform
 
 	private String id;
 
-	protected JpaFactory jpaFactory;
+	private JpaFactory jpaFactory;
 
-	protected JpaAnnotationProvider annotationProvider;
+	private JpaAnnotationProvider annotationProvider;
 
-	protected List<JavaTypeMappingProvider> javaTypeMappingProviders;
+	private JpaFileProvider[] jpaFileProviders;
 
-	protected List<JavaAttributeMappingProvider> javaAttributeMappingProviders;
+	private JavaTypeMappingProvider[] javaTypeMappingProviders;
 
-	protected List<DefaultJavaAttributeMappingProvider> defaultJavaAttributeMappingProviders;
+	private JavaAttributeMappingProvider[] javaAttributeMappingProviders;
+
+	private DefaultJavaAttributeMappingProvider[] defaultJavaAttributeMappingProviders;
 
 
 	/**
@@ -83,18 +90,14 @@ public class GenericJpaPlatform
 	}
 
 	/**
-	 * *************
-	 * * IMPORTANT *   For INTERNAL use only !!
-	 * *************
-	 * 
-	 * @see JpaPlatform#setId(String)
+	 * For INTERNAL use only!!
 	 */
-	public void setId(String theId) {
-		this.id = theId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 
-	// **************** Model construction/updating **************************
+	// ********** factory **********
 
 	public synchronized JpaFactory getJpaFactory() {
 		if (this.jpaFactory == null) {
@@ -107,35 +110,88 @@ public class GenericJpaPlatform
 		return new GenericJpaFactory();
 	}
 
-	//TODO Something still needs to change here with this API.  buildJpaFile is having to do too much
-	//and it is odd to return null from it.  We should probably have API that returns the 
-	//contentTypeId if it is relevant to the platform, then we would only ever call buildJpaFile
-	//if that was non-null.  Or the buildJpaFile api should just be removed completely
+
+	// ********** JPA files **********
+
 	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file) {
-		if (! JavaCore.create(file.getProject()).isOnClasspath(file)) {
-			return null;
+		String contentTypeId = this.getContentTypeId(file);
+		return (contentTypeId == null) ? null : this.buildJpaFileForContentTypeId(jpaProject, file, contentTypeId);
+	}
+
+	protected JpaFile buildJpaFileForContentTypeId(JpaProject jpaProject, IFile file, String contentTypeID) {
+		JpaFileProvider provider = this.getJpaFileProviderForContentTypeId(contentTypeID);
+		return (provider == null) ? null : provider.buildJpaFile(jpaProject, file, this.getJpaFactory());
+	}
+
+	/**
+	 * Return null if we don't have a provider for the specified content
+	 * (since we don't have control over the possible content IDs).
+	 * Also, use #equals(Object) for the same reason.
+	 */
+	protected JpaFileProvider getJpaFileProviderForContentTypeId(String contentTypeID) {
+		for (JpaFileProvider provider : this.getJpaFileProviders()) {
+			if (provider.getContentId().equals(contentTypeID)) {
+				return provider;
+			}
 		}
-		IContentType contentType = PlatformUtilities.contentType(file);
-		if (contentType == null) {
-			return null;
-		}
-		String contentTypeId = contentType.getId();
-		if (supportsContentType(contentTypeId)) {
-			ResourceModel resourceModel = getJpaFactory().buildResourceModel(jpaProject, file, contentTypeId);
-			return getJpaFactory().buildJpaFile(jpaProject, file, resourceModel);
-		}
-		
 		return null;
 	}
-	
-	protected boolean supportsContentType(String contentTypeId) {
-		return contentTypeId.equals(JavaCore.JAVA_SOURCE_CONTENT_TYPE)
-				|| contentTypeId.equals(JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE)
-				|| contentTypeId.equals(JptCorePlugin.ORM_XML_CONTENT_TYPE);
-	}
-	
 
-	// **************** Java annotation support ********************************
+	protected synchronized JpaFileProvider[] getJpaFileProviders() {
+		if (this.jpaFileProviders == null) {
+			this.jpaFileProviders = this.buildJpaFileProviders();
+		}
+		return this.jpaFileProviders;
+	}
+
+	protected JpaFileProvider[] buildJpaFileProviders() {
+		ArrayList<JpaFileProvider> providers = new ArrayList<JpaFileProvider>();
+		this.addJpaFileProvidersTo(providers);
+		return providers.toArray(new JpaFileProvider[providers.size()]);
+	}
+
+	/**
+	 * Override this to specify more or different JPA file providers.
+	 * The default includes support for Java, persistence.xml, and orm.xml
+	 * files
+	 */
+	protected void addJpaFileProvidersTo(List<JpaFileProvider> providers) {
+		providers.add(JavaJpaFileProvider.instance());
+		providers.add(PersistenceJpaFileProvider.instance());
+		providers.add(OrmJpaFileProvider.instance());
+	}
+
+	protected String getContentTypeId(IFile file) {
+		IContentType contentType = this.getContentType(file);
+		return (contentType == null) ? null : contentType.getId();
+	}
+
+	protected IContentType getContentType(IFile file) {
+		InputStream inputStream = null;
+		try {
+			inputStream = file.getContents();
+		} catch (CoreException ex) {
+			JptCorePlugin.log(ex);
+			return null;  // cannot find the file
+		}
+
+		IContentType contentType = null;
+		try {
+			contentType = Platform.getContentTypeManager().findContentTypeFor(inputStream, file.getName());
+		} catch (IOException ex) {
+			JptCorePlugin.log(ex);
+		} finally {
+			try {
+				inputStream.close();
+			} catch (IOException ex) {
+				JptCorePlugin.log(ex);
+			}
+		}
+		return contentType;
+	}
+
+
+	// ********** Java annotations **********
 
 	public synchronized JpaAnnotationProvider getAnnotationProvider() {
 		if (this.annotationProvider == null) {
@@ -149,28 +205,33 @@ public class GenericJpaPlatform
 	}
 
 
-	// **************** Type mapping providers ********************************
+	// ********** Java type mappings **********
 
-	public JavaTypeMapping buildJavaTypeMappingFromMappingKey(String typeMappingKey, JavaPersistentType parent) {
-		return this.javaTypeMappingProviderFromMappingKey(typeMappingKey).buildMapping(parent, this.getJpaFactory());
+	public JavaTypeMapping buildJavaTypeMappingFromMappingKey(String key, JavaPersistentType type) {
+		return this.getJavaTypeMappingProviderForMappingKey(key).buildMapping(type, this.getJpaFactory());
 	}
 
-	public JavaTypeMapping buildJavaTypeMappingFromAnnotation(String mappingAnnotationName, JavaPersistentType parent) {
-		return this.javaTypeMappingProviderFromAnnotation(mappingAnnotationName).buildMapping(parent, this.getJpaFactory());
+	public JavaTypeMapping buildJavaTypeMappingFromAnnotation(String annotationName, JavaPersistentType type) {
+		return this.getJavaTypeMappingProviderForAnnotation(annotationName).buildMapping(type, this.getJpaFactory());
 	}
 
-	protected synchronized Iterator<JavaTypeMappingProvider> javaTypeMappingProviders() {
+	protected synchronized JavaTypeMappingProvider[] getJavaTypeMappingProviders() {
 		if (this.javaTypeMappingProviders == null) {
-			this.javaTypeMappingProviders = new ArrayList<JavaTypeMappingProvider>();
-			this.addJavaTypeMappingProvidersTo(this.javaTypeMappingProviders);
+			this.javaTypeMappingProviders = this.buildJavaTypeMappingProviders();
 		}
-		return new CloneIterator<JavaTypeMappingProvider>(this.javaTypeMappingProviders);
+		return this.javaTypeMappingProviders;
+	}
+
+	protected JavaTypeMappingProvider[] buildJavaTypeMappingProviders() {
+		ArrayList<JavaTypeMappingProvider> providers = new ArrayList<JavaTypeMappingProvider>();
+		this.addJavaTypeMappingProvidersTo(providers);
+		return providers.toArray(new JavaTypeMappingProvider[providers.size()]);
 	}
 
 	/**
 	 * Override this to specify more or different type mapping providers.
 	 * The default includes the JPA spec-defined type mappings of 
-	 * Entity, MappedSuperclass, and Embeddable
+	 * Entity, MappedSuperclass, and Embeddable.
 	 */
 	protected void addJavaTypeMappingProvidersTo(List<JavaTypeMappingProvider> providers) {
 		providers.add(JavaEntityProvider.instance());
@@ -179,19 +240,17 @@ public class GenericJpaPlatform
 		providers.add(JavaNullTypeMappingProvider.instance());
 	}
 
-	protected JavaTypeMappingProvider javaTypeMappingProviderFromMappingKey(String typeMappingKey) {
-		for (Iterator<JavaTypeMappingProvider> stream = this.javaTypeMappingProviders(); stream.hasNext(); ) {
-			JavaTypeMappingProvider provider = stream.next();
-			if (provider.getKey() == typeMappingKey) {
+	protected JavaTypeMappingProvider getJavaTypeMappingProviderForMappingKey(String key) {
+		for (JavaTypeMappingProvider provider : this.getJavaTypeMappingProviders()) {
+			if (provider.getKey() == key) {
 				return provider;
 			}
 		}
-		throw new IllegalArgumentException("Illegal type mapping key: " + typeMappingKey); //$NON-NLS-1$
+		throw new IllegalArgumentException("Illegal type mapping key: " + key); //$NON-NLS-1$
 	}
 
-	protected JavaTypeMappingProvider javaTypeMappingProviderFromAnnotation(String annotationName) {
-		for (Iterator<JavaTypeMappingProvider> stream = this.javaTypeMappingProviders(); stream.hasNext(); ) {
-			JavaTypeMappingProvider provider = stream.next();
+	protected JavaTypeMappingProvider getJavaTypeMappingProviderForAnnotation(String annotationName) {
+		for (JavaTypeMappingProvider provider : this.getJavaTypeMappingProviders()) {
 			if (provider.getAnnotationName() == annotationName) {
 				return provider;
 			}
@@ -200,26 +259,31 @@ public class GenericJpaPlatform
 	}
 
 
-	// **************** Attribute mapping providers ********************************
+	// ********** Java attribute mappings **********
 
-	public JavaAttributeMapping buildJavaAttributeMappingFromMappingKey(String attributeMappingKey, JavaPersistentAttribute parent) {
-		return this.javaAttributeMappingProviderFromMappingKey(attributeMappingKey).buildMapping(parent, this.getJpaFactory());
+	public JavaAttributeMapping buildJavaAttributeMappingFromMappingKey(String key, JavaPersistentAttribute attribute) {
+		return this.getJavaAttributeMappingProviderForMappingKey(key).buildMapping(attribute, this.getJpaFactory());
 	}
 
-	public JavaAttributeMapping buildJavaAttributeMappingFromAnnotation(String mappingAnnotationName, JavaPersistentAttribute parent) {
-		return this.javaAttributeMappingProviderFromAnnotation(mappingAnnotationName).buildMapping(parent, this.getJpaFactory());
+	public JavaAttributeMapping buildJavaAttributeMappingFromAnnotation(String annotationName, JavaPersistentAttribute attribute) {
+		return this.getJavaAttributeMappingProviderForAnnotation(annotationName).buildMapping(attribute, this.getJpaFactory());
 	}
 
-	public JavaAttributeMapping buildDefaultJavaAttributeMapping(JavaPersistentAttribute parent) {
-		return this.defaultJavaAttributeMappingProvider(parent).buildMapping(parent, this.getJpaFactory());
+	public JavaAttributeMapping buildDefaultJavaAttributeMapping(JavaPersistentAttribute attribute) {
+		return this.getDefaultJavaAttributeMappingProvider(attribute).buildMapping(attribute, this.getJpaFactory());
 	}
 
-	protected synchronized Iterator<JavaAttributeMappingProvider> javaAttributeMappingProviders() {
+	protected synchronized JavaAttributeMappingProvider[] getJavaAttributeMappingProviders() {
 		if (this.javaAttributeMappingProviders == null) {
-			this.javaAttributeMappingProviders = new ArrayList<JavaAttributeMappingProvider>();
-			this.addJavaAttributeMappingProvidersTo(this.javaAttributeMappingProviders);
+			this.javaAttributeMappingProviders = this.buildJavaAttributeMappingProviders();
 		}
-		return new CloneIterator<JavaAttributeMappingProvider>(this.javaAttributeMappingProviders);
+		return this.javaAttributeMappingProviders;
+	}
+
+	protected JavaAttributeMappingProvider[] buildJavaAttributeMappingProviders() {
+		ArrayList<JavaAttributeMappingProvider> providers = new ArrayList<JavaAttributeMappingProvider>();
+		this.addJavaAttributeMappingProvidersTo(providers);
+		return providers.toArray(new JavaAttributeMappingProvider[providers.size()]);
 	}
 
 	/**
@@ -240,19 +304,17 @@ public class GenericJpaPlatform
 		providers.add(JavaVersionMappingProvider.instance());
 	}
 
-	protected JavaAttributeMappingProvider javaAttributeMappingProviderFromMappingKey(String attributeMappingKey) {
-		for (Iterator<JavaAttributeMappingProvider> stream = this.javaAttributeMappingProviders(); stream.hasNext(); ) {
-			JavaAttributeMappingProvider provider = stream.next();
-			if (provider.getKey() == attributeMappingKey) {
+	protected JavaAttributeMappingProvider getJavaAttributeMappingProviderForMappingKey(String key) {
+		for (JavaAttributeMappingProvider provider : this.getJavaAttributeMappingProviders()) {
+			if (provider.getKey() == key) {
 				return provider;
 			}
 		}
-		throw new IllegalArgumentException("Illegal attribute mapping key: " + attributeMappingKey); //$NON-NLS-1$
+		throw new IllegalArgumentException("Illegal attribute mapping key: " + key); //$NON-NLS-1$
 	}
 
-	protected JavaAttributeMappingProvider javaAttributeMappingProviderFromAnnotation(String annotationName) {
-		for (Iterator<JavaAttributeMappingProvider> stream = this.javaAttributeMappingProviders(); stream.hasNext(); ) {
-			JavaAttributeMappingProvider provider = stream.next();
+	protected JavaAttributeMappingProvider getJavaAttributeMappingProviderForAnnotation(String annotationName) {
+		for (JavaAttributeMappingProvider provider : this.getJavaAttributeMappingProviders()) {
 			if (provider.getAnnotationName() == annotationName) {
 				return provider;
 			}
@@ -260,12 +322,17 @@ public class GenericJpaPlatform
 		throw new IllegalArgumentException("Illegal annotation name: " + annotationName); //$NON-NLS-1$
 	}
 
-	protected synchronized ListIterator<DefaultJavaAttributeMappingProvider> defaultJavaAttributeMappingProviders() {
+	protected synchronized DefaultJavaAttributeMappingProvider[] getDefaultJavaAttributeMappingProviders() {
 		if (this.defaultJavaAttributeMappingProviders == null) {
-			this.defaultJavaAttributeMappingProviders = new ArrayList<DefaultJavaAttributeMappingProvider>();
-			this.addDefaultJavaAttributeMappingProvidersTo(this.defaultJavaAttributeMappingProviders);
+			this.defaultJavaAttributeMappingProviders = this.buildDefaultJavaAttributeMappingProviders();
 		}
-		return new CloneListIterator<DefaultJavaAttributeMappingProvider>(this.defaultJavaAttributeMappingProviders);
+		return this.defaultJavaAttributeMappingProviders;
+	}
+
+	protected DefaultJavaAttributeMappingProvider[] buildDefaultJavaAttributeMappingProviders() {
+		ArrayList<DefaultJavaAttributeMappingProvider> providers = new ArrayList<DefaultJavaAttributeMappingProvider>();
+		this.addDefaultJavaAttributeMappingProvidersTo(providers);
+		return providers.toArray(new DefaultJavaAttributeMappingProvider[providers.size()]);
 	}
 
 	/**
@@ -278,18 +345,17 @@ public class GenericJpaPlatform
 		providers.add(JavaBasicMappingProvider.instance());
 	}
 
-	protected JavaAttributeMappingProvider defaultJavaAttributeMappingProvider(JavaPersistentAttribute persistentAttribute) {
-		for (Iterator<DefaultJavaAttributeMappingProvider> stream = this.defaultJavaAttributeMappingProviders(); stream.hasNext(); ) {
-			DefaultJavaAttributeMappingProvider provider = stream.next();
-			if (provider.defaultApplies(persistentAttribute)) {
+	protected JavaAttributeMappingProvider getDefaultJavaAttributeMappingProvider(JavaPersistentAttribute attribute) {
+		for (DefaultJavaAttributeMappingProvider provider : this.getDefaultJavaAttributeMappingProviders()) {
+			if (provider.defaultApplies(attribute)) {
 				return provider;
 			}
 		}
 		return this.getNullAttributeMappingProvider();
 	}
 
-	public String getDefaultJavaAttributeMappingKey(JavaPersistentAttribute persistentAttribute) {
-		return this.defaultJavaAttributeMappingProvider(persistentAttribute).getKey();
+	public String getDefaultJavaAttributeMappingKey(JavaPersistentAttribute attribute) {
+		return this.getDefaultJavaAttributeMappingProvider(attribute).getKey();
 	}
 
 	/**
@@ -301,7 +367,7 @@ public class GenericJpaPlatform
 	}
 
 
-	// **************** Database *********************************************
+	// ********** database **********
 
 	public ConnectionProfileFactory getConnectionProfileFactory() {
 		return JptDbPlugin.instance().getConnectionProfileFactory();

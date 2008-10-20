@@ -43,7 +43,7 @@ public class JpaStructurePage extends Page
 {
 	private JpaStructureProvider structureProvider;
 	
-	private ListenerList selectionChangedListeners;
+	private final ListenerList selectionChangedListenerList;
 	
 	private Composite control;
 	
@@ -54,7 +54,7 @@ public class JpaStructurePage extends Page
 	public JpaStructurePage(JpaStructureView jpaStructureView, JpaStructureProvider structureProvider) {
 		this.jpaStructureView = jpaStructureView;
 		this.structureProvider = structureProvider;
-		this.selectionChangedListeners = new ListenerList();
+		this.selectionChangedListenerList = new ListenerList();
 	}
 	
 	@Override
@@ -138,11 +138,11 @@ public class JpaStructurePage extends Page
 	// **************** ISelectionProvider impl ********************************
 	
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
-		selectionChangedListeners.add(listener);
+		selectionChangedListenerList.add(listener);
 	}
 	
 	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
-		selectionChangedListeners.remove(listener);
+		selectionChangedListenerList.remove(listener);
 	}
 	
 	public ITreeSelection getSelection() {
@@ -179,7 +179,7 @@ public class JpaStructurePage extends Page
 				new SelectionChangedEvent(this, selection);
 		
 		// fire the event
-		Object[] listeners = selectionChangedListeners.getListeners();
+		Object[] listeners = selectionChangedListenerList.getListeners();
 		for (int i = 0; i < listeners.length; ++i) {
 			final ISelectionChangedListener l = (ISelectionChangedListener) listeners[i];
 			SafeRunner.run(

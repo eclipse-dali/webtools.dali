@@ -46,7 +46,7 @@ public abstract class NullBaseTable extends AbstractJavaResourceNode implements 
 	}
 	
 	protected TableAnnotation createTableResource() {
-		return (TableAnnotation) getParent().addAnnotation(getAnnotationName());
+		return (TableAnnotation) getParent().addSupportingAnnotation(getAnnotationName());
 	}
 	
 	public String getName() {

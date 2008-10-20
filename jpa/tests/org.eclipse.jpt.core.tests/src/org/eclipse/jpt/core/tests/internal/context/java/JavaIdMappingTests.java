@@ -131,14 +131,14 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertEquals(TemporalType.TIME, ((TemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(BasicAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getSupportingAnnotation(ColumnAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToDefault() throws Exception {
@@ -161,13 +161,13 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertEquals(TemporalType.TIME, ((TemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getSupportingAnnotation(ColumnAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToVersionMapping() throws Exception {
@@ -190,14 +190,14 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertEquals(TemporalType.TIME, ((TemporalConverter) ((VersionMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(VersionAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getSupportingAnnotation(ColumnAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToEmbeddedMapping() throws Exception {
@@ -219,14 +219,14 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedMapping);
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(ColumnAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToTransientMapping() throws Exception {
@@ -248,14 +248,14 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof TransientMapping);
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(TransientAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(ColumnAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToEmbeddedIdMapping() throws Exception {
@@ -277,14 +277,14 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedIdMapping);
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(ColumnAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToOneToOneMapping() throws Exception {
@@ -306,14 +306,14 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof OneToOneMapping);
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(ColumnAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToOneToManyMapping() throws Exception {
@@ -335,14 +335,14 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof OneToManyMapping);
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(ColumnAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToManyToOneMapping() throws Exception {
@@ -364,14 +364,14 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof ManyToOneMapping);
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(ColumnAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToManyToManyMapping() throws Exception {
@@ -393,14 +393,14 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof ManyToManyMapping);
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(ColumnAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(ColumnAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testGetTemporal() throws Exception {
@@ -425,13 +425,13 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(org.eclipse.jpt.core.resource.java.TemporalType.TIME, temporal.getValue());
 		
 		idMapping.setSpecifiedConverter(null);
-		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testGetTemporalUpdatesFromResourceModelChange() throws Exception {
@@ -445,13 +445,13 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.addAnnotation(TemporalAnnotation.ANNOTATION_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.addSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		temporal.setValue(org.eclipse.jpt.core.resource.java.TemporalType.DATE);
 		
 		assertEquals(TemporalType.DATE, ((TemporalConverter) idMapping.getConverter()).getTemporalType());
 		
-		attributeResource.removeAnnotation(TemporalAnnotation.ANNOTATION_NAME);
+		attributeResource.removeSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(Converter.NO_CONVERTER, idMapping.getConverter().getType());
 		assertFalse(idMapping.isDefault());
@@ -469,8 +469,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertEquals("id", idMapping.getColumn().getName());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addAnnotation(JPA.COLUMN);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addSupportingAnnotation(JPA.COLUMN);
 		column.setName("foo");
 		
 		assertEquals("foo", idMapping.getColumn().getSpecifiedName());
@@ -488,10 +488,10 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertEquals(0, CollectionTools.size(idMapping.getPersistenceUnit().allGenerators()));
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		attributeResource.addAnnotation(JPA.SEQUENCE_GENERATOR);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		attributeResource.addSupportingAnnotation(JPA.SEQUENCE_GENERATOR);
 		assertNotNull(idMapping.getSequenceGenerator());
-		assertEquals(1, attributeResource.annotationsSize());
+		assertEquals(1, attributeResource.supportingAnnotationsSize());
 		assertEquals(1, CollectionTools.size(idMapping.getPersistenceUnit().allGenerators()));
 		
 		idMapping.getSequenceGenerator().setName("foo");
@@ -510,9 +510,9 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		idMapping.addSequenceGenerator();
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 	
-		assertNotNull(attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR));
+		assertNotNull(attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR));
 		assertNotNull(idMapping.getSequenceGenerator());
 		
 		//try adding another sequence generator, should get an IllegalStateException
@@ -532,14 +532,14 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		attributeResource.addAnnotation(JPA.SEQUENCE_GENERATOR);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		attributeResource.addSupportingAnnotation(JPA.SEQUENCE_GENERATOR);
 		
 		
 		idMapping.removeSequenceGenerator();
 		
 		assertNull(idMapping.getSequenceGenerator());
-		assertNull(attributeResource.getAnnotation(JPA.SEQUENCE_GENERATOR));
+		assertNull(attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR));
 
 		//try removing the sequence generator again, should get an IllegalStateException
 		try {
@@ -560,10 +560,10 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertEquals(0, CollectionTools.size(idMapping.getPersistenceUnit().allGenerators()));
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		attributeResource.addAnnotation(JPA.TABLE_GENERATOR);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		attributeResource.addSupportingAnnotation(JPA.TABLE_GENERATOR);
 		assertNotNull(idMapping.getTableGenerator());		
-		assertEquals(1, attributeResource.annotationsSize());
+		assertEquals(1, attributeResource.supportingAnnotationsSize());
 		assertEquals(1, CollectionTools.size(idMapping.getPersistenceUnit().allGenerators()));
 		
 		idMapping.getTableGenerator().setName("foo");
@@ -582,9 +582,9 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		idMapping.addTableGenerator();
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 	
-		assertNotNull(attributeResource.getAnnotation(JPA.TABLE_GENERATOR));
+		assertNotNull(attributeResource.getSupportingAnnotation(JPA.TABLE_GENERATOR));
 		assertNotNull(idMapping.getTableGenerator());
 		
 		//try adding another table generator, should get an IllegalStateException
@@ -604,14 +604,14 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		attributeResource.addAnnotation(JPA.TABLE_GENERATOR);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		attributeResource.addSupportingAnnotation(JPA.TABLE_GENERATOR);
 		
 		
 		idMapping.removeTableGenerator();
 		
 		assertNull(idMapping.getTableGenerator());
-		assertNull(attributeResource.getAnnotation(JPA.TABLE_GENERATOR));
+		assertNull(attributeResource.getSupportingAnnotation(JPA.TABLE_GENERATOR));
 		
 		//try removing the table generator again, should get an IllegalStateException
 		try {
@@ -632,11 +632,11 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertNull(idMapping.getGeneratedValue());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		attributeResource.addAnnotation(JPA.GENERATED_VALUE);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		attributeResource.addSupportingAnnotation(JPA.GENERATED_VALUE);
 		
 		assertNotNull(idMapping.getGeneratedValue());		
-		assertEquals(1, attributeResource.annotationsSize());
+		assertEquals(1, attributeResource.supportingAnnotationsSize());
 	}
 	
 	public void testGetGeneratedValue2() throws Exception {
@@ -647,10 +647,10 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 
 		assertNotNull(idMapping.getGeneratedValue());
-		assertEquals(1, attributeResource.annotationsSize());
+		assertEquals(1, attributeResource.supportingAnnotationsSize());
 	}
 	
 	public void testAddGeneratedValue() throws Exception {
@@ -665,9 +665,9 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		idMapping.addGeneratedValue();
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 	
-		assertNotNull(attributeResource.getAnnotation(JPA.GENERATED_VALUE));
+		assertNotNull(attributeResource.getSupportingAnnotation(JPA.GENERATED_VALUE));
 		assertNotNull(idMapping.getGeneratedValue());
 		
 		//try adding another generated value, should get an IllegalStateException
@@ -687,14 +687,14 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
-		attributeResource.addAnnotation(JPA.GENERATED_VALUE);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		attributeResource.addSupportingAnnotation(JPA.GENERATED_VALUE);
 		
 		
 		idMapping.removeGeneratedValue();
 		
 		assertNull(idMapping.getGeneratedValue());
-		assertNull(attributeResource.getAnnotation(JPA.GENERATED_VALUE));
+		assertNull(attributeResource.getSupportingAnnotation(JPA.GENERATED_VALUE));
 		
 		//try removing the generatedValue again, should get an IllegalStateException
 		try {

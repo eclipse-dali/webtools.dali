@@ -14,17 +14,16 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.resource.java.JavaResourceModel;
-import org.eclipse.jpt.core.resource.orm.OrmResourceModel;
-import org.eclipse.jpt.core.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.core.internal.JavaJpaFile;
+import org.eclipse.jpt.core.internal.XmlJpaFile;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
@@ -84,17 +83,16 @@ public abstract class BaseJpaPlatformUi implements JpaPlatformUi
 	// **************** structure view content *********************************
 
 	public JpaStructureProvider buildStructureProvider(JpaFile jpaFile) {
-		ResourceModel resourceModel = jpaFile.getResourceModel();
-		String resourceType = resourceModel.getResourceType();
+		String resourceType = jpaFile.getResourceType();
 
-		if (resourceType == ResourceModel.JAVA_RESOURCE_TYPE) {
-			return new JavaResourceModelStructureProvider((JavaResourceModel) resourceModel);
+		if (resourceType == JpaFile.JAVA_RESOURCE_TYPE) {
+			return new JavaResourceModelStructureProvider((JavaJpaFile) jpaFile);
 		}
-		else if (resourceType == ResourceModel.ORM_RESOURCE_TYPE) {
-			return new OrmResourceModelStructureProvider((OrmResourceModel) resourceModel);
+		if (resourceType == JpaFile.ORM_RESOURCE_TYPE) {
+			return new OrmResourceModelStructureProvider((XmlJpaFile) jpaFile);
 		}
-		else if (resourceType == ResourceModel.PERSISTENCE_RESOURCE_TYPE) {
-			return new PersistenceResourceModelStructureProvider((PersistenceResourceModel) resourceModel);
+		if (resourceType == JpaFile.PERSISTENCE_RESOURCE_TYPE) {
+			return new PersistenceResourceModelStructureProvider((XmlJpaFile) jpaFile);
 		}
 
 		return null;
@@ -132,9 +130,7 @@ public abstract class BaseJpaPlatformUi implements JpaPlatformUi
 		if (structureNode instanceof JavaJpaContextNode) {
 			return detailsProviders.get(0);
 		}
-		else {
-			return detailsProviders.get(1);
-		}
+		return detailsProviders.get(1);
 //		for (Iterator<IJpaDetailsProvider> i = this.detailsProviders(); i.hasNext(); ) {
 //			IJpaDetailsProvider provider = i.next();
 //			if (provider.fileContentType().equals(fileContentType)) {

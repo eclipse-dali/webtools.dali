@@ -55,7 +55,7 @@ public class EnumeratedTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) attributeResource.getAnnotation(JPA.ENUMERATED);
+		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) attributeResource.getSupportingAnnotation(JPA.ENUMERATED);
 		assertNotNull(enumerated);
 	}
 	
@@ -64,7 +64,7 @@ public class EnumeratedTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) attributeResource.getAnnotation(JPA.ENUMERATED);
+		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) attributeResource.getSupportingAnnotation(JPA.ENUMERATED);
 		assertEquals(EnumType.ORDINAL, enumerated.getValue());
 	}
 	
@@ -73,7 +73,7 @@ public class EnumeratedTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 
-		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) attributeResource.getAnnotation(JPA.ENUMERATED);
+		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) attributeResource.getSupportingAnnotation(JPA.ENUMERATED);
 
 		enumerated.setValue(EnumType.STRING);
 		

@@ -64,11 +64,11 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 	}
 		
 	public void addToResourceModel() {
-		this.resourcePersistentMember.addAnnotation(getAnnotationName());
+		this.resourcePersistentMember.addSupportingAnnotation(getAnnotationName());
 	}
 	
 	public void removeFromResourceModel() {
-		this.resourcePersistentMember.removeAnnotation(getAnnotationName());
+		this.resourcePersistentMember.removeSupportingAnnotation(getAnnotationName());
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
@@ -76,7 +76,7 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 	}
 
 	protected ObjectTypeConverterAnnotation getResourceConverter() {
-		return (ObjectTypeConverterAnnotation) this.resourcePersistentMember.getAnnotation(getAnnotationName());
+		return (ObjectTypeConverterAnnotation) this.resourcePersistentMember.getSupportingAnnotation(getAnnotationName());
 	}
 
 	public String getName() {

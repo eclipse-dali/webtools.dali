@@ -7,13 +7,16 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.resource.orm;
+package org.eclipse.jpt.core.internal;
+
+import java.util.Iterator;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.jpt.core.ResourceModel;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
+import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
-import org.eclipse.jpt.core.resource.common.JpaXmlResourceModel;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -22,28 +25,32 @@ import org.eclipse.jpt.core.resource.common.JpaXmlResourceModel;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public class OrmResourceModel extends JpaXmlResourceModel
+public class XmlJpaFile
+	extends AbstractJpaFile
 {
-	public OrmResourceModel(IFile file) {
-		super(file);
+	private final JpaXmlResource resource;
+
+
+	public XmlJpaFile(JpaProject jpaProject, IFile file, JpaXmlResource resource) {
+		super(jpaProject, file);
+		this.resource = resource;
+		this.resource.setResourceModelListener(this.getResourceModelListener());
 	}
-	
-	@Override
-	protected JpaXmlResource buildResource(IFile file) {
-		OrmResourceModelProvider modelProvider =
-			OrmResourceModelProvider.getModelProvider(file.getProject(), file.getProjectRelativePath().toString());
-		return modelProvider.getResource();
+
+	public Iterator<JavaResourcePersistentType> persistableTypes() {
+		return EmptyIterator.<JavaResourcePersistentType>instance();
 	}
-	
-	/**
-	 * @see ResourceModel#getResourceType()
-	 */
+
 	public String getResourceType() {
-		return ResourceModel.ORM_RESOURCE_TYPE;
+		return this.resource.getType();
 	}
-	
-	@Override
-	public OrmResource getResource() {
-		return (OrmResource) super.getResource();
+
+	public void javaElementChanged(ElementChangedEvent event) {
+		// nothing to do yet
 	}
+
+	public void jpaFilesChanged() {
+		// nothing to do yet
+	}
+
 }

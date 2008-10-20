@@ -66,7 +66,7 @@ public class JoinFetchTests extends EclipseLinkJavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 
-		JoinFetchAnnotation joinFetch = (JoinFetchAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.JOIN_FETCH);
+		JoinFetchAnnotation joinFetch = (JoinFetchAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.JOIN_FETCH);
 		assertNotNull(joinFetch);
 	}
 
@@ -75,7 +75,7 @@ public class JoinFetchTests extends EclipseLinkJavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		JoinFetchAnnotation joinFetch = (JoinFetchAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.JOIN_FETCH);
+		JoinFetchAnnotation joinFetch = (JoinFetchAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.JOIN_FETCH);
 		assertEquals(JoinFetchType.OUTER, joinFetch.getValue());
 	}
 
@@ -84,7 +84,7 @@ public class JoinFetchTests extends EclipseLinkJavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		JoinFetchAnnotation joinFetch = (JoinFetchAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.JOIN_FETCH);
+		JoinFetchAnnotation joinFetch = (JoinFetchAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.JOIN_FETCH);
 		assertEquals(JoinFetchType.OUTER, joinFetch.getValue());
 		
 		joinFetch.setValue(JoinFetchType.INNER);

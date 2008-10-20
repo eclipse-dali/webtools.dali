@@ -54,7 +54,7 @@ public class OrderByTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getAnnotation(JPA.ORDER_BY);
+		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getSupportingAnnotation(JPA.ORDER_BY);
 		assertNotNull(orderBy);
 	}
 	
@@ -63,7 +63,7 @@ public class OrderByTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getAnnotation(JPA.ORDER_BY);
+		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getSupportingAnnotation(JPA.ORDER_BY);
 		assertEquals("key", orderBy.getValue());
 	}
 	
@@ -72,7 +72,7 @@ public class OrderByTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 
-		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getAnnotation(JPA.ORDER_BY);
+		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getSupportingAnnotation(JPA.ORDER_BY);
 
 		orderBy.setValue("foo");
 		

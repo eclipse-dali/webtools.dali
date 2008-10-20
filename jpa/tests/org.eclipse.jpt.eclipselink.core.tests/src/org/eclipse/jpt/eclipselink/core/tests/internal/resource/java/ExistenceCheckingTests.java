@@ -64,7 +64,7 @@ public class ExistenceCheckingTests extends EclipseLinkJavaResourceModelTestCase
 		ICompilationUnit cu = this.createTestExistenceChecking();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		ExistenceCheckingAnnotation existenceChecking = (ExistenceCheckingAnnotation) typeResource.getAnnotation(EclipseLinkJPA.EXISTENCE_CHECKING);
+		ExistenceCheckingAnnotation existenceChecking = (ExistenceCheckingAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.EXISTENCE_CHECKING);
 		assertNotNull(existenceChecking);
 	}
 
@@ -72,7 +72,7 @@ public class ExistenceCheckingTests extends EclipseLinkJavaResourceModelTestCase
 		ICompilationUnit cu = this.createTestExistenceCheckingWithValue();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
-		ExistenceCheckingAnnotation existenceChecking = (ExistenceCheckingAnnotation) typeResource.getAnnotation(EclipseLinkJPA.EXISTENCE_CHECKING);
+		ExistenceCheckingAnnotation existenceChecking = (ExistenceCheckingAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.EXISTENCE_CHECKING);
 		assertEquals(ExistenceType.ASSUME_EXISTENCE, existenceChecking.getValue());
 	}
 
@@ -80,7 +80,7 @@ public class ExistenceCheckingTests extends EclipseLinkJavaResourceModelTestCase
 		ICompilationUnit cu = this.createTestExistenceCheckingWithValue();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
-		ExistenceCheckingAnnotation existenceChecking = (ExistenceCheckingAnnotation) typeResource.getAnnotation(EclipseLinkJPA.EXISTENCE_CHECKING);
+		ExistenceCheckingAnnotation existenceChecking = (ExistenceCheckingAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.EXISTENCE_CHECKING);
 		assertEquals(ExistenceType.ASSUME_EXISTENCE, existenceChecking.getValue());
 		
 		existenceChecking.setValue(ExistenceType.ASSUME_NON_EXISTENCE);

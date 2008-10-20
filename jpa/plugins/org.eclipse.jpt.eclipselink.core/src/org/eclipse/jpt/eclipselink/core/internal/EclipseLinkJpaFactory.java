@@ -10,8 +10,8 @@
 package org.eclipse.jpt.eclipselink.core.internal;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -38,6 +38,7 @@ import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.internal.XmlJpaFile;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -94,10 +95,11 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmIdMap
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmVersionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXml;
+import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmResourceModelProvider;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResourceModel;
 
-public class EclipseLinkJpaFactory extends GenericJpaFactory
+public class EclipseLinkJpaFactory
+	extends GenericJpaFactory
 {
 	protected EclipseLinkJpaFactory() {
 		super();
@@ -106,27 +108,19 @@ public class EclipseLinkJpaFactory extends GenericJpaFactory
 	
 	// **************** Resource objects ***************************************
 	
-	@Override
-	public ResourceModel buildResourceModel(JpaProject jpaProject, IFile file, String contentTypeId) {
-		if (JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE.equals(contentTypeId)) {
-			return buildEclipseLinkOrmResourceModel(file);
-		}
-		return super.buildResourceModel(jpaProject, file, contentTypeId);
-	}
-	
-	protected ResourceModel buildEclipseLinkOrmResourceModel(IFile file) {
-		return new EclipseLinkOrmResourceModel(file);
+	public JpaFile buildEclipseLinkOrmJpaFile(JpaProject jpaProject, IFile file) {
+		return new XmlJpaFile(jpaProject, file, EclipseLinkOrmResourceModelProvider.getModelProvider(file).getResource());
 	}
 	
 	
 	// **************** Context objects ****************************************
 	
 	@Override
-	public XmlContextNode buildContext(JpaContextNode parent, JpaXmlResource resource) {
+	public XmlContextNode buildContextNode(JpaContextNode parent, JpaXmlResource resource) {
 		if (resource instanceof EclipseLinkOrmResource) {
 			return buildEclipseLinkOrmXml((MappingFileRef) parent, (EclipseLinkOrmResource) resource);
 		}
-		return super.buildContext(parent, resource);
+		return super.buildContextNode(parent, resource);
 	}
 	
 	

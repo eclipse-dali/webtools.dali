@@ -9,9 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.structure;
 
-import org.eclipse.jpt.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
-import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 
 /**

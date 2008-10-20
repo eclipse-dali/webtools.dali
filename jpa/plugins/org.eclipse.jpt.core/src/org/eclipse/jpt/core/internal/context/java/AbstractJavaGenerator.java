@@ -190,11 +190,14 @@ public abstract class AbstractJavaGenerator
 		return false;
 	}
 	
-	public boolean duplicates(Generator generator) {
-		return ! StringTools.stringIsEmpty(getName()) && getName().equals(generator.getName())
-			&& ! this.overrides(generator) && ! generator.overrides(this);
+	public boolean duplicates(Generator other) {
+		return (this != other)
+				&& ! StringTools.stringIsEmpty(this.name)
+				&& this.name.equals(other.getName())
+				&& ! this.overrides(other)
+				&& ! other.overrides(this);
 	}
-
+	
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);

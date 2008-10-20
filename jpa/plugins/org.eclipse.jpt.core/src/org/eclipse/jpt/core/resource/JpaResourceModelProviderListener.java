@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.resource;
 
+import java.util.EventListener;
+
 public interface JpaResourceModelProviderListener
+	extends EventListener
 {
 	public void modelChanged(JpaResourceModelProviderEvent event);
 }

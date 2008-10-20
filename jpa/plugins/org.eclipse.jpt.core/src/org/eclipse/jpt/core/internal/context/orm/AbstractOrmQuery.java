@@ -116,15 +116,15 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractXmlCo
 	}
 
 	
-	protected void initialize(E resourceQuery) {
-		this.resourceQuery = resourceQuery;
-		this.name = resourceQuery.getName();
-		this.query = resourceQuery.getQuery();
-		this.initializeHints(resourceQuery);
+	protected void initialize(E xmlQuery) {
+		this.resourceQuery = xmlQuery;
+		this.name = xmlQuery.getName();
+		this.query = xmlQuery.getQuery();
+		this.initializeHints(xmlQuery);
 	}
 	
-	protected void initializeHints(E resourceQuery) {
-		for (XmlQueryHint resourceQueryHint : resourceQuery.getHints()) {
+	protected void initializeHints(E xmlQuery) {
+		for (XmlQueryHint resourceQueryHint : xmlQuery.getHints()) {
 			this.hints.add(buildQueryHint(resourceQueryHint));
 		}
 	}
@@ -133,16 +133,16 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractXmlCo
 		return getJpaFactory().buildOrmQueryHint(this, resourceQueryHint);
 	}
 	
-	public void update(E resourceQuery) {
-		this.resourceQuery = resourceQuery;
-		this.setName(resourceQuery.getName());
-		this.setQuery(resourceQuery.getQuery());
-		this.updateHints(resourceQuery);
+	public void update(E xmlQuery) {
+		this.resourceQuery = xmlQuery;
+		this.setName(xmlQuery.getName());
+		this.setQuery(xmlQuery.getQuery());
+		this.updateHints(xmlQuery);
 	}
 	
-	protected void updateHints(E resourceQuery) {
+	protected void updateHints(E xmlQuery) {
 		ListIterator<OrmQueryHint> contextHints = hints();
-		ListIterator<XmlQueryHint> resourceHints = new CloneListIterator<XmlQueryHint>(resourceQuery.getHints());//prevent ConcurrentModificiationException
+		ListIterator<XmlQueryHint> resourceHints = new CloneListIterator<XmlQueryHint>(xmlQuery.getHints());//prevent ConcurrentModificiationException
 		
 		while (contextHints.hasNext()) {
 			OrmQueryHint contextHint = contextHints.next();
@@ -159,17 +159,19 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractXmlCo
 		}
 	}
 	
-	public boolean overrides(Query query) {
-		if (getName() == null) {
-			return false;
-		}
+	public boolean overrides(Query other) {
 		// this isn't ideal, but it will have to do until we have further adopter input
-		return this.getName().equals(query.getName()) && query instanceof JavaQuery;
+		return (this.name != null)
+				&& this.name.equals(other.getName())
+				&& (other instanceof JavaQuery);
 	}
 	
-	public boolean duplicates(Query query) {
-		return ! StringTools.stringIsEmpty(getName()) && getName().equals(query.getName()) 
-			&& ! this.overrides(query) && ! query.overrides(this);
+	public boolean duplicates(Query other) {
+		return (this != other)
+				&& ! StringTools.stringIsEmpty(this.name)
+				&& this.name.equals(other.getName())
+				&& ! this.overrides(other)
+				&& ! other.overrides(this);
 	}
 
 	public TextRange getValidationTextRange() {

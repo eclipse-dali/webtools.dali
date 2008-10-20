@@ -11,8 +11,8 @@ package org.eclipse.jpt.core.resource.common;
 
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Map;
 import java.util.Set;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -20,10 +20,8 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.eclipse.jpt.core.internal.utility.emf.DOMUtilities;
 import org.eclipse.jpt.core.utility.AbstractTextRange;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.wst.common.internal.emf.resource.EMF2DOMAdapter;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
@@ -45,7 +43,9 @@ import org.w3c.dom.Node;
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class AbstractJpaEObject extends EObjectImpl implements JpaEObject
+public abstract class AbstractJpaEObject
+	extends EObjectImpl
+	implements JpaEObject
 {
 	protected IDOMNode node;
 	
@@ -53,7 +53,7 @@ public abstract class AbstractJpaEObject extends EObjectImpl implements JpaEObje
 	 * Sets of "insignificant" feature ids, keyed by class.
 	 * This is built up lazily, as the objects are modified.
 	 */
-	private static final Map<Class<? extends AbstractJpaEObject>, Set<Integer>> insignificantFeatureIdSets = new Hashtable<Class<? extends AbstractJpaEObject>, Set<Integer>>();
+	private static final Hashtable<Class<? extends AbstractJpaEObject>, HashSet<Integer>> insignificantFeatureIdSets = new Hashtable<Class<? extends AbstractJpaEObject>, HashSet<Integer>>();
 	
 	/**
 	 * <!-- begin-user-doc -->
@@ -63,54 +63,73 @@ public abstract class AbstractJpaEObject extends EObjectImpl implements JpaEObje
 	protected AbstractJpaEObject() {
 		super();
 	}
-	
-	
-	// **************** IJpaEObject implementation *****************************
-		
-	public IResource getPlatformResource() {
-		return getResource().getFile();
-	}
-	
+
+
+	// ********** JpaEObject implementation **********
+
 	public JpaXmlResource getResource() {
-		return (JpaXmlResource) eResource();
+		return (JpaXmlResource) this.eResource();
 	}
-	
+
+	public IResource getPlatformResource() {
+		return this.getResource().getFile();
+	}
+
 	/*
-	 * Must be overridden by actual root object to return itself
+	 * Must be overridden by actual root object to return itself.
 	 */
 	public JpaEObject getRoot() {
-		return ((JpaEObject) eContainer()).getRoot();
-		
+		return ((JpaEObject) this.eContainer()).getRoot();
 	}
-	
-	
-	// **************** change notification ************************************
-	
+
+	public boolean isAllFeaturesUnset() {
+		for (EStructuralFeature feature : this.eClass().getEAllStructuralFeatures()) {
+			if (this.eIsSet(feature)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+	// ********** change notification **********
+
+	/**
+	 * override to build a custom list for the adapters
+	 */
+	@Override
+	public EList<Adapter> eAdapters() {
+		if (this.eAdapters == null) {
+			this.eAdapters = new XmlEAdapterList<Adapter>(this);
+		}
+		return this.eAdapters;
+	}
+
 	/**
 	 * override to prevent notification when the object's state is unchanged
 	 */
 	@Override
 	public void eNotify(Notification notification) {
-		if (!notification.isTouch()) {
+		if ( ! notification.isTouch()) {
 			super.eNotify(notification);
 			this.featureChanged(notification.getFeatureID(this.getClass()));
 		}
 	}
-	
+
 	protected void featureChanged(int featureId) {
 		if (this.featureIsSignificant(featureId)) { 
-			getResource().resourceChanged();
+			this.getResource().resourceModelChanged();
 		}
 	}
-	
+
 	protected boolean featureIsSignificant(int featureId) {
 		return ! this.featureIsInsignificant(featureId);
 	}
-	
+
 	protected boolean featureIsInsignificant(int featureId) {
 		return this.insignificantFeatureIds().contains(new Integer(featureId));
 	}
-	
+
 	/**
 	 * Return a set of the object's "insignificant" feature ids.
 	 * These are the EMF features that will not be used to determine if all
@@ -125,7 +144,7 @@ public abstract class AbstractJpaEObject extends EObjectImpl implements JpaEObje
 	 */
 	protected Set<Integer> insignificantFeatureIds() {
 		synchronized (insignificantFeatureIdSets) {
-			Set<Integer> insignificantXmlFeatureIds = insignificantFeatureIdSets.get(this.getClass());
+			HashSet<Integer> insignificantXmlFeatureIds = insignificantFeatureIdSets.get(this.getClass());
 			if (insignificantXmlFeatureIds == null) {
 				insignificantXmlFeatureIds = new HashSet<Integer>();
 				this.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);
@@ -134,46 +153,61 @@ public abstract class AbstractJpaEObject extends EObjectImpl implements JpaEObje
 			return insignificantXmlFeatureIds;
 		}
 	}
-	
+
 	/**
 	 * Add the object's "insignificant" feature ids to the specified set.
 	 * These are the EMF features that, when they change, will NOT cause the
-	 * object (or its containing tree) to be resynched, i.e. defaults calculated.
+	 * object (or its containing tree) to be updated, i.e. defaults calculated.
 	 * If class-based calculation of your "insignificant" features is sufficient,
 	 * override this method. If you need instance-based calculation,
 	 * override #insignificantXmlFeatureIds().
 	 */
-	protected void addInsignificantXmlFeatureIdsTo(Set<Integer> insignificantXmlFeatureIds) {
+	protected void addInsignificantXmlFeatureIdsTo(@SuppressWarnings("unused") Set<Integer> insignificantXmlFeatureIds) {
 	// when you override this method, don't forget to include:
 	//	super.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);
 	}
+
+
+	// ********** text ranges **********
+
+	/**
+	 * Return a text range for the specified attribute node.
+	 * If the attribute node does not exist, return a text range for the 
+	 */
+	protected TextRange getAttributeTextRange(String attributeName) {
+		IDOMNode attributeNode = this.getAttributeNode(attributeName);
+		return (attributeNode != null) ? buildTextRange(attributeNode) : this.getValidationTextRange();
+	}
 	
+	protected IDOMNode getAttributeNode(String attributeName) {
+		return (IDOMNode) this.node.getAttributes().getNamedItem(attributeName);
+	}
 	
-	// *************************************************************************
+	public TextRange getValidationTextRange() {
+		return this.getFullTextRange();
+	}
 	
-	public boolean isAllFeaturesUnset() {
-		for (EStructuralFeature feature : eClass().getEAllStructuralFeatures()) {
-			if (eIsSet(feature)) {
-				return false;
-			}
-		}
-		return true;
+	public TextRange getSelectionTextRange() {
+		return this.getFullTextRange();
+	}
+	
+	protected TextRange getFullTextRange() {
+		return buildTextRange(this.node);
+	}
+	
+	protected static TextRange buildTextRange(IDOMNode domNode) {
+		return (domNode == null) ? null : new DOMNodeTextRange(domNode);
+	}
+	
+	public boolean containsOffset(int textOffset) {
+		return (this.node == null) ? false : this.node.contains(textOffset);
 	}
 
-	@Override
-	public EList<Adapter> eAdapters() {
-		if (this.eAdapters == null) {
-			this.eAdapters = new XmlEAdapterList<Adapter>(this);
-		}
-		return this.eAdapters;
-	}
 
-	public IDOMNode getNode() {
-		return this.node;
-	}
+	// ********** custom adapter list **********
 
-
-	protected class XmlEAdapterList<E extends Object & Adapter> extends EAdapterList<E>
+	protected class XmlEAdapterList<E extends Object & Adapter>
+		extends EAdapterList<E>
 	{
 		public XmlEAdapterList(Notifier notifier) {
 			super(notifier);
@@ -182,58 +216,32 @@ public abstract class AbstractJpaEObject extends EObjectImpl implements JpaEObje
 		@Override
 		protected void didAdd(int index, E newObject) {
 			super.didAdd(index, newObject);
-			try {
-				node = (IDOMNode) ClassTools.executeMethod(newObject, "getNode");
-			}
-			catch (RuntimeException re) {
-				// nothing to do
+			if (newObject instanceof EMF2DOMAdapter) {
+				Object n = ((EMF2DOMAdapter) newObject).getNode();
+				if (newObject instanceof IDOMNode) {
+					AbstractJpaEObject.this.node = (IDOMNode) n;
+				}
 			}
 		}
 
 		@Override
 		protected void didRemove(int index, E oldObject) {
-			super.didRemove(index, oldObject);
-			if ((oldObject instanceof EMF2DOMAdapter) && (((EMF2DOMAdapter) oldObject).getNode() == AbstractJpaEObject.this.node)) {
+			if ((oldObject instanceof EMF2DOMAdapter) &&
+					(((EMF2DOMAdapter) oldObject).getNode() == AbstractJpaEObject.this.node)) {
 				AbstractJpaEObject.this.node = null;
 			}
+			super.didRemove(index, oldObject);
 		}
 	}
-	
-	protected TextRange getAttributeTextRange(String attributeName) {
-		IDOMNode node = (IDOMNode) DOMUtilities.childAttributeNode(this.node, attributeName);
-		return (node == null) ? getValidationTextRange() : buildTextRange(node);
-	}
-	
-	public TextRange getValidationTextRange() {
-		return getFullTextRange();
-	}
-	
-	public TextRange getSelectionTextRange() {
-		return getFullTextRange();
-	}
-	
-	public TextRange getFullTextRange() {
-		return buildTextRange(this.node);
-	}
-	
-	protected TextRange buildTextRange(IDOMNode domNode) {
-		if (domNode == null) {
-			return null;
-		}
-		return new DOMNodeTextRange(domNode);
-	}
-	
-	public boolean containsOffset(int textOffset) {
-		if (node == null) {
-			return false;
-		}
-		return node.contains(textOffset);
-	}
-	
+
+
+	// ********** DOM node text range **********
+
 	/**
 	 * Adapt an IDOMNode to the TextRange interface.
 	 */
-	private static class DOMNodeTextRange extends AbstractTextRange
+	protected static class DOMNodeTextRange
+		extends AbstractTextRange
 	{
 		private final IDOMNode node;
 
@@ -254,8 +262,9 @@ public abstract class AbstractJpaEObject extends EObjectImpl implements JpaEObje
 		}
 
 		public int getLineNumber() {
-			return this.node.getStructuredDocument().getLineOfOffset(getOffset()) + 1;
+			return this.node.getStructuredDocument().getLineOfOffset(this.getOffset()) + 1;
 		}
 
 	}
+
 }

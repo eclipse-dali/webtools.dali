@@ -20,7 +20,7 @@ import org.eclipse.jpt.db.DatabaseFinder;
 /**
  * This interface is to be implemented by a JPA vendor to provide extensions to 
  * the core JPA model.  The core JPA model will provide functionality for JPA
- * spec annotations in java, persistence.xml and (orm.xml) mapping files.
+ * spec annotations in java, persistence.xml and mapping (orm.xml) files.
  * The org.eclipse.jpt.core.genericPlatform extension supplies 
  * resource models for those file types.  As another vendor option you 
  * will have to supply those resource models as well or different ones 
@@ -51,89 +51,91 @@ public interface JpaPlatform
 	 */
 	void setId(String theId);
 
-	
-	// **************** Model construction/updating **************************
-	
-	/**
-	 * Construct a JPA file for the specified file, to be added to the specified 
-	 * JPA project. (Defer to the factory for actual object creation.)  
-	 * Return null if unable to create the JPA file (e.g. the content type is 
-	 * unrecognized).
-	 */
-	JpaFile buildJpaFile(JpaProject jpaProject, IFile file);
-	
+
+	// ********** factory **********
+
 	/**
 	 * Return a factory responsible for creating core (e.g. JpaProject), resource
 	 * (e.g. PersistenceResource), and context (e.g. PersistenceUnit) model
 	 * objects
 	 */
 	JpaFactory getJpaFactory();
-	
-	
-	// **************** Java annotation support ********************************
-	
+
+
+	// ********** JPA files **********
+
+	/**
+	 * Return a JPA file corresponding to the specified Eclipse file.
+	 * Return null if the file's content is unsupported.
+	 */
+	JpaFile buildJpaFile(JpaProject jpaProject, IFile file);
+
+
+	// ********** Java annotations **********
+
 	/**
 	 * Return an annotation provider responsible for determining what annotations
 	 * are supported and constructing java resource model objects
 	 */
 	JpaAnnotationProvider getAnnotationProvider();
-	
-	
-	// **************** Java type mapping providers ********************************
-	
-	/**
-	 * Build a Java type mapping with the given mapping key and parent.  Throws a IllegalArgumentException
-	 * if the typeMappingKey is not supported by this platform.
-	 * Override {@link org.eclipse.jpt.core.internal.platform.GenericJpaPlatform#addJavaTypeMappingProvidersTo(List<JavaTypeMappingProvider>)}
-	 * to add new supported type mappings to the platform
-	 */
-	JavaTypeMapping buildJavaTypeMappingFromMappingKey(String typeMappingKey, JavaPersistentType parent);
-	
-	/**
-	 * Build a Java type mapping with the given mapping annotation and parent.  Throws a IllegalArgumentException
-	 * if the mapping annotation is not supported by this platform.
-	 * Override {@link org.eclipse.jpt.core.internal.platform.GenericJpaPlatform#addJavaTypeMappingProvidersTo(List<JavaTypeMappingProvider>)}
-	 * to add new supported type mappings to the platform
-	 */
-	JavaTypeMapping buildJavaTypeMappingFromAnnotation(String mappingAnnotationName, JavaPersistentType parent);
 
 
-	// **************** Java attribute mapping providers ********************************
+	// ********** Java type mappings **********
 
 	/**
-	 * Build a Java attribute mapping with the given mapping key and parent.  Throws a IllegalArgumentException
-	 * if the attributeMappingKey is not supported by this platform.
-	 * Override {@link org.eclipse.jpt.core.internal.platform.GenericJpaPlatform#addJavaAttributeMappingProvidersTo(List<JavaAttributeMappingProvider>)}
-	 * to add new supported attribute mappings to the platform
+	 * Build a Java type mapping for the specified key and persistent type.
+	 * Use identity when comparing keys; so clients must use the same key
+	 * constants as the providers.
+	 * Throw an IllegalArgumentException if the key is not supported by the
+	 * platform.
 	 */
-	JavaAttributeMapping buildJavaAttributeMappingFromMappingKey(String attributeMappingKey, JavaPersistentAttribute parent);
-	
+	JavaTypeMapping buildJavaTypeMappingFromMappingKey(String key, JavaPersistentType type);
+
 	/**
-	 * Build a Java attribute mapping with the given mapping annotation and parent.  Throws a IllegalArgumentException
-	 * if the mapping annotation is not supported by this platform.
-	 * Override {@link org.eclipse.jpt.core.internal.platform.GenericJpaPlatform#addJavaAttributeMappingProvidersTo(List<JavaAttributeMappingProvider>)}
-	 * to add new supported attribute mappings to the platform
+	 * Build a Java type mapping for the specified annotation and persistent
+	 * type. Use identity when comparing annotation names; so clients must
+	 * use the same name constants as the providers.
+	 * Throw an IllegalArgumentException if the mapping annotation is not
+	 * supported by the platform.
 	 */
-	JavaAttributeMapping buildJavaAttributeMappingFromAnnotation(String mappingAnnotationName, JavaPersistentAttribute parent);
-	
-	/**
-	 * Build a default Java attribute mapping with the given mapping annotation and parent.  Throws a IllegalArgumentException
-	 * if the mapping annotation is not supported by this platform.
-	 * Override {@link org.eclipse.jpt.core.internal.platform.GenericJpaPlatform#addDefaultJavaAttributeMappingProvidersTo(List<DefaultJavaAttributeMappingProvider>)}
-	 * to add new supported attribute mappings to the platform
-	 */
-	JavaAttributeMapping buildDefaultJavaAttributeMapping(JavaPersistentAttribute parent);
-	
-	/**
-	 * Return the attribute mapping key corresponding to the default atribute mapping
-	 * that applies to the Java persistent attribute.  This will be based on the attribute's
-	 * type.  See {@link org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider#defaultApplies(JavaPersistentAttribute)}
-	 */
-	String getDefaultJavaAttributeMappingKey(JavaPersistentAttribute persistentAttribute);
+	JavaTypeMapping buildJavaTypeMappingFromAnnotation(String annotationName, JavaPersistentType type);
 
 
-	// ************* Database ************************************************************
-	
+	// ********** Java attribute mappings **********
+
+	/**
+	 * Build a Java attribute mapping for the specified key and persistent attribute.
+	 * Use identity when comparing keys; so clients must use the same key
+	 * constants as the providers.
+	 * Throw an IllegalArgumentException if the key is not supported by the
+	 * platform.
+	 */
+	JavaAttributeMapping buildJavaAttributeMappingFromMappingKey(String key, JavaPersistentAttribute attribute);
+
+	/**
+	 * Build a Java attribute mapping for the specified annotation and persistent
+	 * attribute. Use identity when comparing annotation names; so clients must
+	 * use the same name constants as the providers.
+	 * Throw an IllegalArgumentException if the mapping annotation is not
+	 * supported by the platform.
+	 */
+	JavaAttributeMapping buildJavaAttributeMappingFromAnnotation(String annotationName, JavaPersistentAttribute attribute);
+
+	/**
+	 * Build a default Java attribute mapping for the specified persistent attribute.
+	 */
+	JavaAttributeMapping buildDefaultJavaAttributeMapping(JavaPersistentAttribute attribute);
+
+	/**
+	 * Return the Java attribute mapping key for the default mapping for the
+	 * specified attribute.
+	 * @see org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider#defaultApplies(JavaPersistentAttribute)
+	 */
+	String getDefaultJavaAttributeMappingKey(JavaPersistentAttribute attribute);
+
+
+	// ********** database **********
+
 	/**
 	 * Return a connection repository that can be used to query the database
 	 * about database metadata.

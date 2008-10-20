@@ -105,13 +105,13 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		assertNotNull(attributeResource.getAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER));
+		assertNotNull(attributeResource.getSupportingAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER));
 		
-		attributeResource.removeAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER)	;
-		assertNull(attributeResource.getAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER));
+		attributeResource.removeSupportingAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER)	;
+		assertNull(attributeResource.getSupportingAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER));
 		
-		attributeResource.addAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
-		assertNotNull(attributeResource.getAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER));
+		attributeResource.addSupportingAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
+		assertNotNull(attributeResource.getSupportingAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER));
 	}
 
 	public void testGetTransformerClass() throws Exception {
@@ -119,7 +119,7 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		WriteTransformerAnnotation writeTransformer = (WriteTransformerAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
+		WriteTransformerAnnotation writeTransformer = (WriteTransformerAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
 		assertEquals("Foo", writeTransformer.getTransformerClass());
 	}
 
@@ -128,7 +128,7 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		WriteTransformerAnnotation writeTransformer = (WriteTransformerAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
+		WriteTransformerAnnotation writeTransformer = (WriteTransformerAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
 		assertEquals("Foo", writeTransformer.getTransformerClass());
 		
 		writeTransformer.setTransformerClass("Bar");
@@ -142,7 +142,7 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		WriteTransformerAnnotation writeTransformer = (WriteTransformerAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
+		WriteTransformerAnnotation writeTransformer = (WriteTransformerAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
 		assertEquals("Foo", writeTransformer.getTransformerClass());
 		
 		writeTransformer.setTransformerClass(null);
@@ -157,7 +157,7 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		WriteTransformerAnnotation writeTransformer = (WriteTransformerAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
+		WriteTransformerAnnotation writeTransformer = (WriteTransformerAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
 		assertEquals("transformerMethod", writeTransformer.getMethod());
 	}
 
@@ -166,7 +166,7 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		WriteTransformerAnnotation writeTransformer = (WriteTransformerAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
+		WriteTransformerAnnotation writeTransformer = (WriteTransformerAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
 		assertEquals("transformerMethod", writeTransformer.getMethod());
 		
 		writeTransformer.setMethod("foo");
@@ -180,7 +180,7 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		WriteTransformerAnnotation writeTransformer = (WriteTransformerAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
+		WriteTransformerAnnotation writeTransformer = (WriteTransformerAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
 		assertEquals("transformerMethod", writeTransformer.getMethod());
 		
 		writeTransformer.setMethod(null);
@@ -196,7 +196,7 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		WriteTransformerAnnotation writeTransformer = (WriteTransformerAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
+		WriteTransformerAnnotation writeTransformer = (WriteTransformerAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
 		assertNotNull(writeTransformer.getColumn());
 		assertEquals("FOO", writeTransformer.getColumn().getName());
 	}
@@ -206,7 +206,7 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		WriteTransformerAnnotation writeTransformer = (WriteTransformerAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
+		WriteTransformerAnnotation writeTransformer = (WriteTransformerAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
 		assertNull(writeTransformer.getColumn());
 		
 		writeTransformer.addColumn();
@@ -224,7 +224,7 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		WriteTransformerAnnotation writeTransformer = (WriteTransformerAnnotation) attributeResource.getAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
+		WriteTransformerAnnotation writeTransformer = (WriteTransformerAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.WRITE_TRANSFORMER);
 		assertNotNull(writeTransformer.getColumn());
 		assertEquals("FOO", writeTransformer.getColumn().getName());
 		

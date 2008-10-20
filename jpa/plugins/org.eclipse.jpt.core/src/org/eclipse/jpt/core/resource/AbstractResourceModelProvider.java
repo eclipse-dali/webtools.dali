@@ -24,7 +24,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -43,6 +42,7 @@ import org.eclipse.jem.util.emf.workbench.ProjectResourceSet;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
+import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.componentcore.internal.impl.ModuleURIUtil;
 import org.eclipse.wst.common.componentcore.internal.impl.PlatformURLModuleConnection;
@@ -64,7 +64,7 @@ public abstract class AbstractResourceModelProvider
 	
 	protected final ResourceAdapter resourceAdapter = new ResourceAdapter();
 	
-	protected final ListenerList listeners = new ListenerList();
+	protected final ListenerList<JpaResourceModelProviderListener> listenerList = new ListenerList<JpaResourceModelProviderListener>(JpaResourceModelProviderListener.class);
 	
 	protected ResourceStateValidator stateValidator;
 	
@@ -169,15 +169,15 @@ public abstract class AbstractResourceModelProvider
 	}
 
 	public void addListener(JpaResourceModelProviderListener listener) {
-		if (!hasListeners()) {
+		if (this.listenerList.isEmpty()) {
 			engageResource();
 		}
-		listeners.add(listener);
+		this.listenerList.add(listener);
 	}
 	
 	public void removeListener(JpaResourceModelProviderListener listener) {
-		listeners.remove(listener);
-		if (! hasListeners()) {
+		listenerList.remove(listener);
+		if (this.listenerList.isEmpty()) {
 			disengageResource();
 		}
 	}
@@ -194,10 +194,6 @@ public abstract class AbstractResourceModelProvider
 		}
 	}
 	
-	public boolean hasListeners() {
-		return ! listeners.isEmpty();
-	}
-	
 	protected ProjectResourceSet getResourceSet() {
 		return (ProjectResourceSet) WorkbenchResourceHelperBase.getResourceSet(project);
 	}
@@ -207,7 +203,7 @@ public abstract class AbstractResourceModelProvider
 	}
 	
 	protected void resourceIsLoadedChanged(Resource aResource, boolean oldValue, boolean newValue) {
-		if (hasListeners()) {
+		if ( ! this.listenerList.isEmpty()) {
 			int eventType= newValue ? JpaResourceModelProviderEvent.RESOURCE_LOADED : JpaResourceModelProviderEvent.RESOURCE_UNLOADED;
 			JpaResourceModelProviderEvent evt = new JpaResourceModelProviderEvent(this, eventType);
 			notifyListeners(evt);
@@ -216,9 +212,8 @@ public abstract class AbstractResourceModelProvider
 	
 	protected void notifyListeners(JpaResourceModelProviderEvent event) {
 		NotifyRunner notifier = new NotifyRunner(event); 
-		Object[] notifyList = listeners.getListeners(); 
-		for (int i = 0; i < notifyList.length; i++) {
-			notifier.setListener((JpaResourceModelProviderListener) notifyList[i] );
+		for (JpaResourceModelProviderListener listener : this.listenerList.getListeners()) {
+			notifier.setListener(listener);
 			SafeRunner.run(notifier);
 		}
 	}

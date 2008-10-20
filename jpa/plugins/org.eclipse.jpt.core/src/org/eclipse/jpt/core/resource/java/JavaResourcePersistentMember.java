@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.resource.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.MethodSignature;
@@ -24,122 +25,140 @@ import org.eclipse.jpt.utility.MethodSignature;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaResourcePersistentMember extends JavaResourceNode
+public interface JavaResourcePersistentMember
+	extends JavaResourceNode
 {
 
+	// ********** mapping annotations **********
+
 	/**
-	 * Return all <code>JavaResource</code>s that correspond to type
-	 * mapping annotations specified in the source code.  In JPA these could be 
-	 * Entity, MappedSuperclass, Embeddable.
-	 * <p>Does not return duplicate annotations as this error is handled by the java compiler.
+	 * Return the member's mapping annotations.
+	 * Do not return duplicate annotations as this error is handled by the java
+	 * compiler.
+	 * @see #supportingAnnotations()
 	 */
-	<T extends JavaResourceNode> Iterator<T> mappingAnnotations();
-		String MAPPING_ANNOTATIONS_COLLECTION = "mappingAnnotations";
-	
-	int mappingAnnotationsSize();
+	Iterator<Annotation> mappingAnnotations();
+		String MAPPING_ANNOTATIONS_COLLECTION = "mappingAnnotations"; //$NON-NLS-1$
+
 	/**
-	 * Return the <code>JavaResource</code> specified on this JavaPersistentResource
-	 * In the case of multiples the first one will be returned as defined by the order of
-	 * {@link org.eclipse.jpt.core.internal.platform.GenericJpaPlatform#typeMappingAnnotationDefinitions()} or 
-	 * {@link org.eclipse.jpt.core.internal.platform.GenericJpaPlatform#attributeMappingAnnotationDefinitions()}
+	 * Return the number of mapping annotations.
+	 */
+	int mappingAnnotationsSize();
+
+	/**
+	 * Return the member's mapping annotation.
 	 */
 	JavaResourceNode getMappingAnnotation();
 
 	/**
-	 * Returns the <code>JavaResource</code> with this fully qualifed annotation name. 
-	 * In JPA the valid annotations are "javax.persistence.Embedddable", "javax.persistence.Entity", 
-	 * and "javax.persistence.MappedSuperclass"
+	 * Return the mapping annotation with the specified name.
 	 * Return the first if there are duplicates in the source code
-	 * @param annotationName - fully qualified annotation name
 	 */
-	//TODO not sure we need this API, first 2 seem sufficient
 	JavaResourceNode getMappingAnnotation(String annotationName);
 
 	/**
-	 * Use this to change the type mapping annotation.  This will only remove
-	 * other mapping annotations in case there were multiple before.  It
-	 * will not remove any non-mapping annotations
-	 * @param annotationName - fully qualified annotation name
+	 * Change the mapping annotation. Remove any existing mapping annotations.
+	 * Do not remove any non-mapping annotations.
 	 */
 	void setMappingAnnotation(String annotationName);
 
 	/**
-	 * Return all <code>JavaResource</code>s that correspond to annotations in the source code.
-	 * Does not return duplicate annotations as this error is handled by the java compiler.
-	 * No <code>MappingAnnotation</code>s should be included.
-	 * @see #mappingAnnotations()
-	 */
-	<T extends JavaResourceNode> Iterator<T>  annotations();
-	
-		String ANNOTATIONS_COLLECTION = "annotations";
-
-	int annotationsSize();
-
-	//TODO tie the singular and plural annotations together somehow in the resource model so we can give
-	//a validation error for the case of both being specified
-	/**
-	 * Given a nestable and container annotation name return the specified <code>JavaResource</code>s.
-	 * If both the nestable and container annotations are specified on the Type, then only
-	 * return the nestable annotations specified within the container annotation. This is
-	 * only going to return JavaResources that match the nestableAnnotationName
-	 */
-	<T extends JavaResourceNode> ListIterator<T> annotations(String nestableAnnotationName, String containerAnnotationName);
-	
-	
-	/**
-	 * Returns the <code>JavaResource</code> with this fully qualifed annotation name. 
-	 * Return the first if there are duplicates in the source code.
-	 */
-	JavaResourceNode getAnnotation(String annotationName);
-	
-	/**
-	 * Returns the <code>JavaResource</code> with this fully qualifed annotation name. 
-	 * Return the first if there are duplicates in the source code.  Will not return null,
-	 * but a null Object instead if no annotation with this name exists in the java source.
-	 */
-	JavaResourceNode getNonNullAnnotation(String annotationName);
-
-	/**
-	 * Return a null implementation of <code>JavaResourceNode</code> with this fully qualifed annotation name.
-	 * The corresponding AnnotationDefinition needs to implement buildNullAnnotation()
-	 * {@link AnnotationDefinition#buildNullAnnotation(JavaResourcePersistentMember, org.eclipse.jpt.core.internal.jdtutility.Member)}
+	 * Return a null mapping annotation with the specified name.
+	 * The corresponding AnnotationDefinition must implement #buildNullAnnotation()
+	 * {@link AnnotationDefinition#buildNullAnnotation(JavaResourcePersistentMember,
+	 * org.eclipse.jpt.core.utility.jdt.Member)}
 	 */
 	JavaResourceNode getNullMappingAnnotation(String annotationName);
 
-	/**
-	 * Add an annotation for the given fully qualified annotation name
-	 */
-	JavaResourceNode addAnnotation(String annotationName);
-	
-	void removeAnnotation(String annotationName);
+
+	// ********** supporting annotations **********
 
 	/**
-	 * Add a new NestableAnnotation named nestableAnnotationName.  Create a new container annotation
-	 * if necessary and add the nestable annotation to it.  If both nestable and container already
-	 * exist then add to the container annotation leaving the existing nestable annotaion alone.
-	 * If only nestable exists, then create the new container annotation and move the nestable to it
-	 * also adding the new one.  If neither exists, create a new nestable annotation.
-	 * @return the new JavaResource with the name nestableAnnotationName
+	 * Return the member's supporting annotations.
+	 * Do not return duplicate annotations as this error is handled by the java
+	 * compiler. Do not return any mapping annotations.
+	 * @see #mappingAnnotations()
 	 */
-	JavaResourceNode addAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
-	
-	void removeAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
+	Iterator<Annotation> supportingAnnotations();
+		String SUPPORTING_ANNOTATIONS_COLLECTION = "supportingAnnotations"; //$NON-NLS-1$
+
+	/**
+	 * Return the number of supporting annotations.
+	 */
+	int supportingAnnotationsSize();
+
+	/**
+	 * Return the specified supporting nested annotations.
+	 * If both the nestable and container annotations are specified on the
+	 * member directly, return only the nestable annotations specified within
+	 * the container annotation.
+	 */
+	// TODO tie the singular and plural annotations together so we can generate
+	// a validation error when both are specified
+	ListIterator<NestableAnnotation> supportingAnnotations(String nestableAnnotationName, String containerAnnotationName);
+
+	/**
+	 * Return the specified supporting annotation.
+	 * Return the first if there are duplicates in the source code.
+	 */
+	JavaResourceNode getSupportingAnnotation(String annotationName);
+
+	/**
+	 * Return the specified supporting annotation.
+	 * Return the first if there are duplicates in the source code.
+	 * Do not return null, but a Null Object instead if no annotation
+	 * with the specified name exists in the source code.
+	 */
+	JavaResourceNode getNonNullSupportingAnnotation(String annotationName);
+
+	/**
+	 * Add a supporting annotation with the specified name.
+	 */
+	JavaResourceNode addSupportingAnnotation(String annotationName);
 	
 	/**
-	 * Move nestableAnnotation found in the containerAnnotation from the specified source 
-	 * index to the specified target index.    
+	 * Remove the specified supporting annotation.
 	 */
-	void move(int targetIndex, int sourceIndex, String containerAnnotationName);
+	void removeSupportingAnnotation(String annotationName);
+
+	/**
+	 * Add a new supporting nestable annotation with the specified name.
+	 * Create a new container annotation if necessary and add the nestable
+	 * annotation to it.
+	 * If both the nestable annotation and the container annotation already
+	 * exist, then add to the container annotation, leaving the existing
+	 * nestable annotaion alone.
+	 * If only the nestable annotation exists, then create the new container
+	 * annotation and move the existing nestable annotation to it along with
+	 * the new one. If neither annotation exists, then create a new nestable
+	 * annotation.
+	 */
+	JavaResourceNode addSupportingAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
+
+	/**
+	 * Remove the specified supporting nestable annotation.
+	 */
+	void removeSupportingAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
 	
 	/**
-	 * Return whether the underlying JDT member is persistable according to the JPA spec
+	 * Move the supporting nestable annotation found in the specified container
+	 * annotation at the specified source index to the specified target index.
+	 */
+	void moveSupportingAnnotation(int targetIndex, int sourceIndex, String containerAnnotationName);
+	
+
+	// ********** queries **********
+
+	/**
+	 * Return whether the underlying JDT member is persistable according to
+	 * the JPA spec.
 	 */
 	boolean isPersistable();
-		String PERSISTABLE_PROPERTY = "persistable";
+		String PERSISTABLE_PROPERTY = "persistable"; //$NON-NLS-1$
 		
 	/**
-	 * Return whether the underlying JDT member is currently annotated as being persistent
-	 * (equivalent to "is mapped")
+	 * Return whether the underlying JDT member is currently annotated as being
+	 * persistent (equivalent to "is mapped").
 	 */
 	boolean isPersisted();
 
@@ -156,14 +175,17 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	boolean isFor(MethodSignature methodSignature, int occurrence);
 
 	/**
-	 * return the text range for the name of the persistent resource
+	 * Return the text range for the member's name.
 	 */
 	TextRange getNameTextRange(CompilationUnit astRoot);
 	
+
+	// ********** behavior **********
+
 	/**
-	 * Resolve type information that could be dependent on other files being added/removed
+	 * Resolve type information that could be dependent on other files being
+	 * added or removed.
 	 */
 	void resolveTypes(CompilationUnit astRoot);
-
 
 }

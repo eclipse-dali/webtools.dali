@@ -11,13 +11,10 @@ package org.eclipse.jpt.core.internal.platform;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.JpaContextNode;
@@ -114,8 +111,9 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.GenericJpaDataSource;
-import org.eclipse.jpt.core.internal.GenericJpaFile;
 import org.eclipse.jpt.core.internal.GenericJpaProject;
+import org.eclipse.jpt.core.internal.JavaJpaFile;
+import org.eclipse.jpt.core.internal.XmlJpaFile;
 import org.eclipse.jpt.core.internal.context.GenericRootContextNode;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaAssociationOverride;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaAttributeOverride;
@@ -195,13 +193,12 @@ import org.eclipse.jpt.core.internal.context.persistence.GenericPersistence;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
-import org.eclipse.jpt.core.internal.resource.java.JavaResourceModelImpl;
-import org.eclipse.jpt.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
+import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProvider;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
-import org.eclipse.jpt.core.resource.orm.OrmResourceModel;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
@@ -216,21 +213,24 @@ import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
-import org.eclipse.jpt.core.resource.persistence.PersistenceResourceModel;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 
-public class GenericJpaFactory implements JpaFactory
+/**
+ * 
+ */
+public class GenericJpaFactory
+	implements JpaFactory
 {
-	protected GenericJpaFactory() {
+	public GenericJpaFactory() {
 		super();
 	}
 	
 	
-	// **************** Core objects ******************************************
+	// **************** Core Model ******************************************
 	
 	public JpaProject buildJpaProject(JpaProject.Config config) throws CoreException {
 		return new GenericJpaProject(config);
@@ -240,76 +240,40 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericJpaDataSource(jpaProject, connectionProfileName);
 	}
 	
-	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file, ResourceModel resourceModel) {
-		return new GenericJpaFile(jpaProject, file, resourceModel);
+	public JpaFile buildJavaJpaFile(JpaProject jpaProject, IFile file) {
+		return new JavaJpaFile(jpaProject, file);
 	}
 	
-	
-	// **************** Resource objects **************************************
-	
-	public ResourceModel buildResourceModel(JpaProject jpaProject, IFile file, String contentTypeId) {
-		if (JavaCore.JAVA_SOURCE_CONTENT_TYPE.equals(contentTypeId)) {
-			return buildJavaResourceModel(jpaProject, file);
-		}
-		else if (JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE.equals(contentTypeId)) {
-			return buildPersistenceResourceModel(file);
-		}
-		else if (JptCorePlugin.ORM_XML_CONTENT_TYPE.equals(contentTypeId)) {
-			return buildOrmResourceModel(file);
-		}
-		
-		throw new IllegalArgumentException("The file" + file + " with content type id " + contentTypeId + " is not supported");
+	public JpaFile buildPersistenceJpaFile(JpaProject jpaProject, IFile file) {
+		return new XmlJpaFile(jpaProject, file, PersistenceResourceModelProvider.getModelProvider(file).getResource());
 	}
-	
-	protected ResourceModel buildJavaResourceModel(JpaProject jpaProject, IFile file) {
-		return new JavaResourceModelImpl(
-				file, jpaProject.getJpaPlatform().getAnnotationProvider(), 
-				jpaProject.getModifySharedDocumentCommandExecutorProvider(),
-				DefaultAnnotationEditFormatter.instance());
+
+	public JpaFile buildOrmJpaFile(JpaProject jpaProject, IFile file) {
+		return new XmlJpaFile(jpaProject, file, OrmResourceModelProvider.getModelProvider(file).getResource());
 	}
+
 	
-	protected ResourceModel buildPersistenceResourceModel(IFile file) {
-		return new PersistenceResourceModel(file);
-	}
+	// **************** Context Nodes ***************************************
 	
-	protected ResourceModel buildOrmResourceModel(IFile file) {
-		return new OrmResourceModel(file);
-	}
-	
-	
-	// **************** Context objects ***************************************
-	
-	public JpaRootContextNode buildRootContext(JpaProject parent) {
+	public JpaRootContextNode buildRootContextNode(JpaProject parent) {
 		return new GenericRootContextNode(parent);
 	}
 	
-	public XmlContextNode buildContext(JpaContextNode parent, JpaXmlResource resource) {
+	public XmlContextNode buildContextNode(JpaContextNode parent, JpaXmlResource resource) {
 		if (resource instanceof PersistenceResource) {
-			return buildPersistenceXml((JpaRootContextNode) parent, (PersistenceResource) resource);
-		} else if (resource instanceof OrmResource) {
-			return buildOrmXml((MappingFileRef) parent, (OrmResource) resource);
+			return this.buildPersistenceXml((JpaRootContextNode) parent, (PersistenceResource) resource);
+		}
+		if (resource instanceof OrmResource) {
+			return this.buildOrmXml((MappingFileRef) parent, (OrmResource) resource);
 		}
 		return null;
 	}
 	
+
+	// **************** Persistence Context Model ***************************************
+	
 	public PersistenceXml buildPersistenceXml(JpaRootContextNode parent, PersistenceResource persistenceResource) {
 		return new GenericPersistenceXml(parent, persistenceResource);
-	}
-	
-	public OrmXml buildOrmXml(MappingFileRef parent, OrmResource ormResource) {
-		return new OrmXmlImpl(parent, ormResource);
-	}
-	
-	public EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
-		return new GenericEntityMappings(parent, xmlEntityMappings);
-	}
-	
-	public PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent, XmlEntityMappings xmlEntityMappings) {
-		return new GenericPersistenceUnitMetadata(parent, xmlEntityMappings);
-	}
-	
-	public OrmPersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent, XmlEntityMappings xmlEntityMappings) {
-		return new GenericPersistenceUnitDefaults(parent, xmlEntityMappings);
 	}
 	
 	public Persistence buildPersistence(PersistenceXml parent, XmlPersistence xmlPersistence) {
@@ -335,6 +299,155 @@ public class GenericJpaFactory implements JpaFactory
 	public Property buildProperty(PersistenceUnit parent, XmlProperty xmlProperty) {
 		return new GenericProperty(parent, xmlProperty);
 	}
+	
+
+	// **************** ORM Context Model ***************************************
+	
+	public OrmXml buildOrmXml(MappingFileRef parent, OrmResource ormResource) {
+		return new OrmXmlImpl(parent, ormResource);
+	}
+	
+	public EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
+		return new GenericEntityMappings(parent, xmlEntityMappings);
+	}
+	
+	public PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent, XmlEntityMappings xmlEntityMappings) {
+		return new GenericPersistenceUnitMetadata(parent, xmlEntityMappings);
+	}
+	
+	public OrmPersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent, XmlEntityMappings xmlEntityMappings) {
+		return new GenericPersistenceUnitDefaults(parent, xmlEntityMappings);
+	}
+
+	public OrmPersistentType buildOrmPersistentType(OrmPersistentTypeContext parent, String mappingKey) {
+		return new GenericOrmPersistentType(parent, mappingKey);
+	}
+	
+	public OrmEntity buildOrmEntity(OrmPersistentType parent) {
+		return new GenericOrmEntity(parent);
+	}
+	
+	public OrmMappedSuperclass buildOrmMappedSuperclass(OrmPersistentType parent) {
+		return new GenericOrmMappedSuperclass(parent);
+	}
+	
+	public OrmEmbeddable buildOrmEmbeddable(OrmPersistentType parent) {
+		return new GenericOrmEmbeddable(parent);
+	}
+	
+	public OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, String mappingKey) {
+		return new GenericOrmPersistentAttribute(parent, mappingKey);
+	}
+	
+	public OrmTable buildOrmTable(OrmEntity parent) {
+		return new GenericOrmTable(parent);
+	}
+	
+	public OrmSecondaryTable buildOrmSecondaryTable(OrmEntity parent, XmlSecondaryTable xmlSecondaryTable) {
+		return new GenericOrmSecondaryTable(parent, xmlSecondaryTable);
+	}
+	
+	public OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(XmlContextNode parent, OrmBaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
+		return new GenericOrmPrimaryKeyJoinColumn(parent, owner, resourcePkJoinColumn);
+	}
+	
+	public OrmJoinTable buildOrmJoinTable(OrmRelationshipMapping parent) {
+		return new GenericOrmJoinTable(parent);
+	}
+	
+	public OrmJoinColumn buildOrmJoinColumn(XmlContextNode parent, OrmJoinColumn.Owner owner, XmlJoinColumn resourceJoinColumn) {
+		return new GenericOrmJoinColumn(parent, owner, resourceJoinColumn);
+	}
+	
+	public OrmAttributeOverride buildOrmAttributeOverride(XmlContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride) {
+		return new GenericOrmAttributeOverride(parent, owner, xmlAttributeOverride);
+	}
+	
+	public OrmAssociationOverride buildOrmAssociationOverride(XmlContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride xmlAssociationOverride) {
+		return new GenericOrmAssociationOverride(parent, owner, xmlAssociationOverride);
+	}
+	
+	public OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmNamedColumn.Owner owner) {
+		return new GenericOrmDiscriminatorColumn(parent, owner);
+	}
+	
+	public OrmColumn buildOrmColumn(XmlContextNode parent, OrmColumn.Owner owner) {
+		return new GenericOrmColumn(parent, owner);
+	}
+	
+	public OrmGeneratedValue buildOrmGeneratedValue(XmlContextNode parent, XmlGeneratedValue resourceGeneratedValue) {
+		return new GenericOrmGeneratedValue(parent, resourceGeneratedValue);
+	}
+	
+	public OrmSequenceGenerator buildOrmSequenceGenerator(XmlContextNode parent, XmlSequenceGenerator resourceSequenceGenerator) {
+		return new GenericOrmSequenceGenerator(parent, resourceSequenceGenerator);
+	}
+	
+	public OrmTableGenerator buildOrmTableGenerator(XmlContextNode parent, XmlTableGenerator resourceTableGenerator) {
+		return new GenericOrmTableGenerator(parent, resourceTableGenerator);
+	}
+	
+	public OrmNamedNativeQuery buildOrmNamedNativeQuery(XmlContextNode parent, XmlNamedNativeQuery resourceNamedNativeQuery) {
+		return new GenericOrmNamedNativeQuery(parent, resourceNamedNativeQuery);
+	}
+	
+	public OrmNamedQuery buildOrmNamedQuery(XmlContextNode parent, XmlNamedQuery resourceNamedQuery) {
+		return new GenericOrmNamedQuery(parent, resourceNamedQuery);
+	}
+	
+	public OrmQueryHint buildOrmQueryHint(OrmQuery parent, XmlQueryHint resourceQueryHint) {
+		return new GenericOrmQueryHint(parent, resourceQueryHint);
+	}
+	
+	public OrmBasicMapping buildOrmBasicMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmBasicMapping(parent);
+	}
+	
+	public OrmEmbeddedMapping buildOrmEmbeddedMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmEmbeddedMapping(parent);
+	}
+	
+	public OrmEmbeddedIdMapping buildOrmEmbeddedIdMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmEmbeddedIdMapping(parent);
+	}
+	
+	public OrmIdMapping buildOrmIdMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmIdMapping(parent);
+	}
+	
+	public OrmManyToManyMapping buildOrmManyToManyMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmManyToManyMapping(parent);
+	}
+	
+	public OrmManyToOneMapping buildOrmManyToOneMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmManyToOneMapping(parent);
+	}
+	
+	public OrmOneToManyMapping buildOrmOneToManyMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmOneToManyMapping(parent);
+	}
+	
+	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmOneToOneMapping(parent);
+	}
+	
+	public OrmTransientMapping buildOrmTransientMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmTransientMapping(parent);
+	}
+	
+	public OrmVersionMapping buildOrmVersionMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmVersionMapping(parent);
+	}
+	
+	public OrmAttributeMapping buildOrmNullAttributeMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmNullAttributeMapping(parent);
+	}
+	
+	public OrmUniqueConstraint buildOrmUniqueConstraint(XmlContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint) {
+		return new GenericOrmUniqueConstraint(parent, owner, resourceUniqueConstraint);
+	}
+
+	// **************** Java Context Model ***************************************
 	
 	public JavaPersistentType buildJavaPersistentType(PersistentTypeContext parent, JavaResourcePersistentType jrpt) {
 		return new GenericJavaPersistentType(parent, jrpt);
@@ -480,131 +593,4 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericJavaLobConverter(parent, jrpa);
 	}
 	
-	public OrmPersistentType buildOrmPersistentType(OrmPersistentTypeContext parent, String mappingKey) {
-		return new GenericOrmPersistentType(parent, mappingKey);
-	}
-	
-	public OrmEntity buildOrmEntity(OrmPersistentType parent) {
-		return new GenericOrmEntity(parent);
-	}
-	
-	public OrmMappedSuperclass buildOrmMappedSuperclass(OrmPersistentType parent) {
-		return new GenericOrmMappedSuperclass(parent);
-	}
-	
-	public OrmEmbeddable buildOrmEmbeddable(OrmPersistentType parent) {
-		return new GenericOrmEmbeddable(parent);
-	}
-	
-	public OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, String mappingKey) {
-		return new GenericOrmPersistentAttribute(parent, mappingKey);
-	}
-	
-	public OrmTable buildOrmTable(OrmEntity parent) {
-		return new GenericOrmTable(parent);
-	}
-	
-	public OrmSecondaryTable buildOrmSecondaryTable(OrmEntity parent, XmlSecondaryTable xmlSecondaryTable) {
-		return new GenericOrmSecondaryTable(parent, xmlSecondaryTable);
-	}
-	
-	public OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(XmlContextNode parent, OrmBaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
-		return new GenericOrmPrimaryKeyJoinColumn(parent, owner, resourcePkJoinColumn);
-	}
-	
-	public OrmJoinTable buildOrmJoinTable(OrmRelationshipMapping parent) {
-		return new GenericOrmJoinTable(parent);
-	}
-	
-	public OrmJoinColumn buildOrmJoinColumn(XmlContextNode parent, OrmJoinColumn.Owner owner, XmlJoinColumn resourceJoinColumn) {
-		return new GenericOrmJoinColumn(parent, owner, resourceJoinColumn);
-	}
-	
-	public OrmAttributeOverride buildOrmAttributeOverride(XmlContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride) {
-		return new GenericOrmAttributeOverride(parent, owner, xmlAttributeOverride);
-	}
-	
-	public OrmAssociationOverride buildOrmAssociationOverride(XmlContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride xmlAssociationOverride) {
-		return new GenericOrmAssociationOverride(parent, owner, xmlAssociationOverride);
-	}
-	
-	public OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmNamedColumn.Owner owner) {
-		return new GenericOrmDiscriminatorColumn(parent, owner);
-	}
-	
-	public OrmColumn buildOrmColumn(XmlContextNode parent, OrmColumn.Owner owner) {
-		return new GenericOrmColumn(parent, owner);
-	}
-	
-	public OrmGeneratedValue buildOrmGeneratedValue(XmlContextNode parent, XmlGeneratedValue resourceGeneratedValue) {
-		return new GenericOrmGeneratedValue(parent, resourceGeneratedValue);
-	}
-	
-	public OrmSequenceGenerator buildOrmSequenceGenerator(XmlContextNode parent, XmlSequenceGenerator resourceSequenceGenerator) {
-		return new GenericOrmSequenceGenerator(parent, resourceSequenceGenerator);
-	}
-	
-	public OrmTableGenerator buildOrmTableGenerator(XmlContextNode parent, XmlTableGenerator resourceTableGenerator) {
-		return new GenericOrmTableGenerator(parent, resourceTableGenerator);
-	}
-	
-	public OrmNamedNativeQuery buildOrmNamedNativeQuery(XmlContextNode parent, XmlNamedNativeQuery resourceNamedNativeQuery) {
-		return new GenericOrmNamedNativeQuery(parent, resourceNamedNativeQuery);
-	}
-	
-	public OrmNamedQuery buildOrmNamedQuery(XmlContextNode parent, XmlNamedQuery resourceNamedQuery) {
-		return new GenericOrmNamedQuery(parent, resourceNamedQuery);
-	}
-	
-	public OrmQueryHint buildOrmQueryHint(OrmQuery parent, XmlQueryHint resourceQueryHint) {
-		return new GenericOrmQueryHint(parent, resourceQueryHint);
-	}
-	
-	public OrmBasicMapping buildOrmBasicMapping(OrmPersistentAttribute parent) {
-		return new GenericOrmBasicMapping(parent);
-	}
-	
-	public OrmEmbeddedMapping buildOrmEmbeddedMapping(OrmPersistentAttribute parent) {
-		return new GenericOrmEmbeddedMapping(parent);
-	}
-	
-	public OrmEmbeddedIdMapping buildOrmEmbeddedIdMapping(OrmPersistentAttribute parent) {
-		return new GenericOrmEmbeddedIdMapping(parent);
-	}
-	
-	public OrmIdMapping buildOrmIdMapping(OrmPersistentAttribute parent) {
-		return new GenericOrmIdMapping(parent);
-	}
-	
-	public OrmManyToManyMapping buildOrmManyToManyMapping(OrmPersistentAttribute parent) {
-		return new GenericOrmManyToManyMapping(parent);
-	}
-	
-	public OrmManyToOneMapping buildOrmManyToOneMapping(OrmPersistentAttribute parent) {
-		return new GenericOrmManyToOneMapping(parent);
-	}
-	
-	public OrmOneToManyMapping buildOrmOneToManyMapping(OrmPersistentAttribute parent) {
-		return new GenericOrmOneToManyMapping(parent);
-	}
-	
-	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmPersistentAttribute parent) {
-		return new GenericOrmOneToOneMapping(parent);
-	}
-	
-	public OrmTransientMapping buildOrmTransientMapping(OrmPersistentAttribute parent) {
-		return new GenericOrmTransientMapping(parent);
-	}
-	
-	public OrmVersionMapping buildOrmVersionMapping(OrmPersistentAttribute parent) {
-		return new GenericOrmVersionMapping(parent);
-	}
-	
-	public OrmAttributeMapping buildOrmNullAttributeMapping(OrmPersistentAttribute parent) {
-		return new GenericOrmNullAttributeMapping(parent);
-	}
-	
-	public OrmUniqueConstraint buildOrmUniqueConstraint(XmlContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint) {
-		return new GenericOrmUniqueConstraint(parent, owner, resourceUniqueConstraint);
-	}
 }

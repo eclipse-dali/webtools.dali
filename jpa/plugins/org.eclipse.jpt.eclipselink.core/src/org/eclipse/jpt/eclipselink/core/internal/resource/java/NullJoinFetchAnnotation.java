@@ -51,7 +51,7 @@ public class NullJoinFetchAnnotation extends AbstractJavaResourceNode implements
 	}
 	
 	protected JoinFetchAnnotation createJoinFetchAnnotation() {
-		return (JoinFetchAnnotation) getParent().addAnnotation(getAnnotationName());
+		return (JoinFetchAnnotation) getParent().addSupportingAnnotation(getAnnotationName());
 	}
 	
 	public JoinFetchType getValue() {

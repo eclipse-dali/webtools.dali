@@ -34,15 +34,15 @@ public class EclipseLinkJavaReadOnly extends AbstractJavaJpaContextNode implemen
 	}
 	
 	protected ReadOnlyAnnotation getResourceReadOnly() {
-		return (ReadOnlyAnnotation) this.resourcePersistentType.getAnnotation(getReadOnlyAnnotationName());
+		return (ReadOnlyAnnotation) this.resourcePersistentType.getSupportingAnnotation(getReadOnlyAnnotationName());
 	}
 	
 	protected void addResourceReadOnly() {
-		this.resourcePersistentType.addAnnotation(getReadOnlyAnnotationName());
+		this.resourcePersistentType.addSupportingAnnotation(getReadOnlyAnnotationName());
 	}
 	
 	protected void removeResourceReadOnly() {
-		this.resourcePersistentType.removeAnnotation(getReadOnlyAnnotationName());
+		this.resourcePersistentType.removeSupportingAnnotation(getReadOnlyAnnotationName());
 	}
 
 	public boolean isReadOnly() {

@@ -11,15 +11,14 @@ package org.eclipse.jpt.eclipselink.ui.internal.platform;
 
 import java.util.Collection;
 import java.util.List;
+
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.core.resource.orm.OrmResourceModel;
-import org.eclipse.jpt.eclipselink.core.EclipseLinkResourceModel;
-import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactory;
+import org.eclipse.jpt.core.internal.XmlJpaFile;
+import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFile;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactory;
 import org.eclipse.jpt.eclipselink.ui.internal.ddlgen.EclipseLinkDDLGeneratorUi;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToManyMappingUiProvider;
@@ -44,13 +43,12 @@ public class EclipseLinkJpaPlatformUI extends BaseJpaPlatformUi
 	
 	@Override
 	public JpaStructureProvider buildStructureProvider(JpaFile jpaFile) {
-		ResourceModel resourceModel = jpaFile.getResourceModel();
-		String resourceType = resourceModel.getResourceType();
-		
-		if (resourceType == EclipseLinkResourceModel.ECLIPSELINK_ORM_RESOURCE_TYPE) {
-			return new OrmResourceModelStructureProvider((OrmResourceModel) resourceModel);
+		String resourceType = jpaFile.getResourceType();
+
+		if (resourceType == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new OrmResourceModelStructureProvider((XmlJpaFile) jpaFile);
 		}
-		
+
 		return super.buildStructureProvider(jpaFile);
 	}
 	

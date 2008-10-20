@@ -100,7 +100,7 @@ public class GenericJavaJoinTable
 	
 	@Override
 	protected JoinTableAnnotation getResourceTable() {
-		return (JoinTableAnnotation) this.resourceAttribute.getNonNullAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		return (JoinTableAnnotation) this.resourceAttribute.getNonNullSupportingAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 	
 	/**
@@ -108,11 +108,11 @@ public class GenericJavaJoinTable
 	 * Use getResourceTable() if you want a non null implementation
 	 */
 	protected JoinTableAnnotation getResourceJoinTable() {
-		return (JoinTableAnnotation) this.resourceAttribute.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		return (JoinTableAnnotation) this.resourceAttribute.getSupportingAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void addResourceJoinTable() {
-		this.resourceAttribute.addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		this.resourceAttribute.addSupportingAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 	
 	

@@ -88,15 +88,15 @@ public class GenericJavaMappedSuperclass extends AbstractJavaTypeMapping
 	}
 
 	protected IdClassAnnotation getIdClassResource() {
-		return (IdClassAnnotation) this.javaResourcePersistentType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		return (IdClassAnnotation) this.javaResourcePersistentType.getSupportingAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void addResourceIdClass() {
-		this.javaResourcePersistentType.addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.addSupportingAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void removeResourceIdClass() {
-		this.javaResourcePersistentType.removeAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeSupportingAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	
 	@Override
@@ -145,7 +145,7 @@ public class GenericJavaMappedSuperclass extends AbstractJavaTypeMapping
 	}
 
 	protected void initializeIdClass(JavaResourcePersistentType typeResource) {
-		IdClassAnnotation idClassResource = (IdClassAnnotation) typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		IdClassAnnotation idClassResource = (IdClassAnnotation) typeResource.getSupportingAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 		if (idClassResource != null) {
 			this.idClass = idClassResource.getValue();
 		}
@@ -158,7 +158,7 @@ public class GenericJavaMappedSuperclass extends AbstractJavaTypeMapping
 	}
 	
 	protected void updateIdClass(JavaResourcePersistentType typeResource) {
-		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.getSupportingAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 		if (idClass != null) {
 			setIdClass_(idClass.getValue());
 		}

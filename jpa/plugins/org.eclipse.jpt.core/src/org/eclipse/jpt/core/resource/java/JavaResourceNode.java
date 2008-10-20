@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.model.Model;
@@ -26,9 +27,9 @@ public interface JavaResourceNode extends Model {
 
 	void initialize(CompilationUnit astRoot);
 
-	JavaResourceModel getResourceModel();
-
 	JpaCompilationUnit getJpaCompilationUnit();
+
+	IFile getFile();
 
 	void update(CompilationUnit astRoot);
 

@@ -115,7 +115,7 @@ public class OrmXmlImpl
 		if (this.entityMappings == null) {
 			throw new IllegalStateException();
 		}
-		getJpaFile(this.ormResource.getResourceModel()).removeRootStructureNode(this.ormResource);
+		getJpaFile(this.ormResource.getFile()).removeRootStructureNode(this.ormResource);
 		this.entityMappings.dispose();
 		EntityMappings oldEntityMappings = this.entityMappings;
 		
@@ -151,14 +151,14 @@ public class OrmXmlImpl
 		XmlEntityMappings xmlEntityMappings = this.ormResource.getEntityMappings();
 		if (xmlEntityMappings != null) {
 			if (this.entityMappings != null) {
-				this.getJpaFile(this.ormResource.getResourceModel()).addRootStructureNode(this.ormResource, this.entityMappings);
+				this.getJpaFile(this.ormResource.getFile()).addRootStructureNode(this.ormResource, this.entityMappings);
 				this.entityMappings.update(xmlEntityMappings);
 			} else {
 				this.setEntityMappings(this.buildEntityMappings(xmlEntityMappings));
 			}
 		} else {
 			if (this.entityMappings != null) {
-				this.getJpaFile(this.ormResource.getResourceModel()).removeRootStructureNode(this.ormResource);
+				this.getJpaFile(this.ormResource.getFile()).removeRootStructureNode(this.ormResource);
 				this.entityMappings.dispose();
 			}
 			this.setEntityMappings(null);

@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.structure;
 
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.resource.java.JavaResourceModel;
+import org.eclipse.jpt.core.internal.JavaJpaFile;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.platform.generic.JavaPersistentTypeItemContentProvider;
 import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
@@ -24,8 +24,8 @@ public class JavaItemContentProviderFactory extends GeneralJpaMappingItemContent
 	public TreeItemContentProvider buildItemContentProvider(
 			Object item, DelegatingContentAndLabelProvider contentProvider) {
 		DelegatingTreeContentAndLabelProvider treeContentProvider = (DelegatingTreeContentAndLabelProvider) contentProvider;
-		if (item instanceof JavaResourceModel) {
-			return new ResourceModelItemContentProvider((JavaResourceModel) item, treeContentProvider);
+		if (item instanceof JavaJpaFile) {
+			return new ResourceModelItemContentProvider((JavaJpaFile) item, treeContentProvider);
 		}
 		return super.buildItemContentProvider(item, treeContentProvider);
 	}

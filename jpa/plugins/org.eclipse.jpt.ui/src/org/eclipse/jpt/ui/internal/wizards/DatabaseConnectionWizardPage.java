@@ -9,12 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.wizards;
 
-import java.util.Collections;
 import java.util.EventListener;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.SortedSet;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.core.JpaProject;
@@ -28,7 +26,7 @@ import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
+import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -57,7 +55,7 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 
 	final JpaProject jpaProject;
 
-	private final Set<Listener> listeners = Collections.synchronizedSet(new HashSet<Listener>());
+	private final ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
 
 	private DatabaseGroup databaseGroup;
 
@@ -104,31 +102,23 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 	// ********** listeners **********
 
 	public void addListener(Listener listener) {
-		if ( ! this.listeners.add(listener)) {
-			throw new IllegalArgumentException("duplicate listener: " + listener); //$NON-NLS-1$
-		}
+		this.listenerList.add(listener);
 	}
 
 	public void removeListener(Listener listener) {
-		if ( ! this.listeners.remove(listener)) {
-			throw new IllegalArgumentException("missing listener: " + listener); //$NON-NLS-1$
-		}
-	}
-
-	private Iterator<Listener> listeners() {
-		return new CloneIterator<Listener>(this.listeners);
+		this.listenerList.remove(listener);
 	}
 
 	void fireConnectionProfileChanged(ConnectionProfile connectionProfile) {
-		for (Iterator<Listener> stream = this.listeners(); stream.hasNext(); ) {
-			stream.next().selectedConnectionProfileChanged(connectionProfile);
+		for (Listener listener : this.listenerList.getListeners()) {
+			listener.selectedConnectionProfileChanged(connectionProfile);
 		}
 	}
 
 	void fireSchemaChanged(Schema schema) {
 		this.setPageComplete(schema != null);
-		for (Iterator<Listener> stream = this.listeners(); stream.hasNext(); ) {
-			stream.next().selectedSchemaChanged(schema);
+		for (Listener listener : this.listenerList.getListeners()) {
+			listener.selectedSchemaChanged(schema);
 		}
 	}
 

@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class JpaFileTests extends ContextModelTestCase
 {
 	public JpaFileTests(String name) {
@@ -59,7 +60,7 @@ public class JpaFileTests extends ContextModelTestCase
 	public void testGetRootStructureNode() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 
-		IFile file = ormResource().getResourceModel().getFile();
+		IFile file = ormResource().getFile();
 		JpaFile ormXmlJpaFile = JptCorePlugin.getJpaFile(file);
 		
 		assertEquals(entityMappings(), ormXmlJpaFile.rootStructureNodes().next());
@@ -85,7 +86,7 @@ public class JpaFileTests extends ContextModelTestCase
 	}
 	
 	public void testEntityMappingsRootStructureNodeRemoved() throws Exception {
-		IFile file = ormResource().getResourceModel().getFile();
+		IFile file = ormResource().getFile();
 		JpaFile ormXmlJpaFile = JptCorePlugin.getJpaFile(file);
 		assertEquals(entityMappings(), ormXmlJpaFile.rootStructureNodes().next());
 		
@@ -95,7 +96,7 @@ public class JpaFileTests extends ContextModelTestCase
 	}
 
 	public void testImpliedEntityMappingsRootStructureNodeRemoved() throws Exception {
-		IFile file = ormResource().getResourceModel().getFile();
+		IFile file = ormResource().getFile();
 		JpaFile ormXmlJpaFile = JptCorePlugin.getJpaFile(file);
 		
 		assertNull(persistenceUnit().getImpliedMappingFileRef());
@@ -109,7 +110,7 @@ public class JpaFileTests extends ContextModelTestCase
 	}
 	
 	public void testEntityMappingsRootStructureNodeRemovedFromResourceModel() throws Exception {
-		IFile file = ormResource().getResourceModel().getFile();
+		IFile file = ormResource().getFile();
 		JpaFile ormXmlJpaFile = JptCorePlugin.getJpaFile(file);
 		assertEquals(entityMappings(), ormXmlJpaFile.rootStructureNodes().next());
 		
@@ -119,7 +120,7 @@ public class JpaFileTests extends ContextModelTestCase
 	}
 
 	public void testUpdatePersistenceRootStructureNodePersistenceRemoved() throws Exception {
-		IFile file = persistenceResource().getResourceModel().getFile();
+		IFile file = persistenceResource().getFile();
 		JpaFile persistenceXmlJpaFile = JptCorePlugin.getJpaFile(file);
 		assertEquals(getRootContextNode().getPersistenceXml().getPersistence(), persistenceXmlJpaFile.rootStructureNodes().next());
 		
@@ -152,22 +153,13 @@ public class JpaFileTests extends ContextModelTestCase
 	}
 
 	public void testPersistenceRootStructureNodeRemovedFromResourceModel() throws Exception {
-		IFile file = persistenceResource().getResourceModel().getFile();
+		IFile file = persistenceResource().getFile();
 		JpaFile persistenceXmlJpaFile = JptCorePlugin.getJpaFile(file);
 		getRootContextNode().getPersistenceXml().getPersistence();
 		assertEquals(getRootContextNode().getPersistenceXml().getPersistence(), persistenceXmlJpaFile.rootStructureNodes().next());
 		
 		persistenceResource().getContents().remove(persistenceResource().getPersistence());
 		
-		assertFalse(persistenceXmlJpaFile.rootStructureNodes().hasNext());
-	}
-	
-	public void testUpdatePersistenceRootStructureNodePersistenceXmlRemoved() throws Exception {
-		IFile file = persistenceResource().getResourceModel().getFile();
-		JpaFile persistenceXmlJpaFile = JptCorePlugin.getJpaFile(file);
-		assertEquals(getRootContextNode().getPersistenceXml().getPersistence(), persistenceXmlJpaFile.rootStructureNodes().next());
-		
-		getRootContextNode().removePersistenceXml();
 		assertFalse(persistenceXmlJpaFile.rootStructureNodes().hasNext());
 	}
 	
@@ -367,7 +359,7 @@ public class JpaFileTests extends ContextModelTestCase
 		ormPersistentType = ((EntityMappings) persistenceUnit().getImpliedMappingFileRef().getMappingFile().getMappingFileRoot()).ormPersistentTypes().next();
 		assertEquals(ormPersistentType.getJavaPersistentType(), javaJpaFile.rootStructureNodes().next());
 		
-		IFile file = persistenceResource().getResourceModel().getFile();
+		IFile file = persistenceResource().getFile();
 		JpaFile ormXmlJpaFile = JptCorePlugin.getJpaFile(file);		
 		
 		assertEquals(1, ormXmlJpaFile.rootStructureNodesSize());

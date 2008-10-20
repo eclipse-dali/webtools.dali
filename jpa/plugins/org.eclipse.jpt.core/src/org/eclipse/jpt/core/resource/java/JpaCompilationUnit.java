@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
+import java.util.Iterator;
+
+import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
@@ -27,11 +30,7 @@ public interface JpaCompilationUnit extends JavaResourceNode {
 
 	ICompilationUnit getCompilationUnit();
 
-	JavaResourcePersistentType getPersistentType();
-		String PERSISTENT_TYPE_PROPERTY = "persistentType";
-
-	// TODO rename getJavaResourcePersistentType(String)
-	JavaResourcePersistentType getJavaPersistentTypeResource(String typeName);
+	Iterator<JavaResourcePersistentType> persistableTypes();
 
 	JpaAnnotationProvider getAnnotationProvider();
 
@@ -39,13 +38,24 @@ public interface JpaCompilationUnit extends JavaResourceNode {
 	
 	AnnotationEditFormatter getAnnotationEditFormatter();
 
-	void resourceChanged();
+	/**
+	 * Called (via a hook in change notification) whenever anything in the JPA
+	 * compilation unit changes. Forwarded to the JPA file and on to
+	 * various listeners (namely the JPA project).
+	 */
+	void resourceModelChanged();
 	
 	/**
-	 * Resolve type information that could be dependent on other files being added/removed
+	 * Resolve type information that could be dependent on other files being
+	 * added/removed.
 	 */
 	void resolveTypes();
 
-	void updateFromJava();
+	/**
+	 * JDT has fired an event indicating a Java element has changed.
+	 * If it is related to the compilation unit, update it with the changed
+	 * Java source code.
+	 */
+	void javaElementChanged(ElementChangedEvent event);
 
 }

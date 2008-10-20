@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.context.persistence;
 
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.Generator;

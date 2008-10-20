@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
  * 
@@ -21,65 +20,105 @@ import org.eclipse.jpt.core.utility.jdt.Member;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaResourcePersistentType extends JavaResourcePersistentMember
-{	
+public interface JavaResourcePersistentType
+	extends JavaResourcePersistentMember
+{
 	/**
-	 * Return only the immediately nested persistable nestedTypes
-	 */
-	Iterator<JavaResourcePersistentType> nestedTypes();
-		String NESTED_TYPES_COLLECTION = "nestedTypes";
-
-	/**
-	 * Return only the persistable attributes, those that respond true to
-	 * {@link JavaResourcePersistentAttribute#isPersistable()}
-	 * This returns fields and properties
-	 */
-	Iterator<JavaResourcePersistentAttribute> attributes();
-		String ATTRIBUTES_COLLECTION = "attributes";
-	
-	/**
-	 * Return only the persistable fields, those that respond true to
-	 * {@link JavaResourcePersistentAttribute#isPersistable()}
-	 * This returns filters out all properties and only returns fields
-	 */
-	Iterator<JavaResourcePersistentAttribute> fields();
-
-	/**
-	 * Return only the persistable fields, those that respond true to
-	 * {@link JavaResourcePersistentAttribute#isPersistable()}
-	 * This returns filters out all fields and only returns properties
-	 */
-	Iterator<JavaResourcePersistentAttribute> properties();
-	
-	// TODO rename to getJavaResourcePersistentType(String)
-	JavaResourcePersistentType getJavaPersistentTypeResource(String fullyQualifiedTypeName);
-
-	/**
-	 * Return the fully qualified type name
-	 */
-	String getQualifiedName();
-		String QUALIFIED_NAME_PROPERTY = "qualifiedName";
-
-	/**
-	 * Return the fully unqualified type name
+	 * Return the unqualified (short) type name.
 	 */
 	String getName();
-		String NAME_PROPERTY = "name";
+		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 
-	String getSuperClassQualifiedName();
-		String SUPER_CLASS_QUALIFIED_NAME_PROPERTY = "superClassQualifiedName";
-	
-	AccessType getAccess();
-		String ACCESS_PROPERTY = "access";
-		
-	boolean isAbstract();
-		String ABSTRACT_PROPERTY = "abstract";	
-		
-	Member getMember();
-	
 	/**
-	 * Return whether any attributes in this persistentType have
+	 * Return the fully qualified type name.
+	 */
+	String getQualifiedName();
+		String QUALIFIED_NAME_PROPERTY = "qualifiedName"; //$NON-NLS-1$
+
+	/**
+	 * Return the fully qualified name of the type's super class.
+	 */
+	String getSuperClassQualifiedName();
+		String SUPER_CLASS_QUALIFIED_NAME_PROPERTY = "superClassQualifiedName"; //$NON-NLS-1$
+
+	/**
+	 * Return whether the type is abstract.
+	 */
+	boolean isAbstract();
+		String ABSTRACT_PROPERTY = "abstract"; //$NON-NLS-1$
+
+	/**
+	 * Return tye type's access type ("field" or "property").
+	 */
+	AccessType getAccess();
+		String ACCESS_PROPERTY = "access"; //$NON-NLS-1$
+
+	/**
+	 * Return whether the type has any attributes that have
 	 * JPA annotations on them.
 	 */
 	boolean hasAnyAttributeAnnotations();
+
+
+	// ********** types **********
+
+	/**
+	 * Return the immediately nested types (children).
+	 */
+	Iterator<JavaResourcePersistentType> types();
+		String TYPES_COLLECTION = "types"; //$NON-NLS-1$
+
+	/**
+	 * Return all the types; the type itself, its children, its grandchildren,
+	 * etc.
+	 */
+	Iterator<JavaResourcePersistentType> allTypes();
+
+	/**
+	 * Return the immediately nested persistable types.
+	 */
+	Iterator<JavaResourcePersistentType> persistableTypes();
+
+	/**
+	 * Return all the persistable types; the type itself, its children, its
+	 * grandchildren, etc.
+	 */
+	Iterator<JavaResourcePersistentType> allPersistableTypes();
+
+
+	// ********** fields **********
+
+	/**
+	 * Return the type's fields.
+	 */
+	Iterator<JavaResourcePersistentAttribute> fields();
+		String FIELDS_COLLECTION = "fields"; //$NON-NLS-1$
+
+	/**
+	 * Return the type's persistable fields.
+	 */
+	Iterator<JavaResourcePersistentAttribute> persistableFields();
+
+
+	// ********** methods **********
+
+	/**
+	 * Return the type's methods.
+	 */
+	Iterator<JavaResourcePersistentAttribute> methods();
+		String METHODS_COLLECTION = "methods"; //$NON-NLS-1$
+
+	/**
+	 * Return the type's persistable properties.
+	 */
+	Iterator<JavaResourcePersistentAttribute> persistableProperties();
+
+
+	// ********** attributes **********
+
+	/**
+	 * Return the type's persistable fields and properties.
+	 */
+	Iterator<JavaResourcePersistentAttribute> persistableAttributes();
+	
 }

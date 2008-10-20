@@ -33,7 +33,7 @@ public class NullColumn extends NullBaseColumn implements ColumnAnnotation, Anno
 
 	@Override
 	protected ColumnAnnotation createResourceColumn() {
-		return (ColumnAnnotation) getParent().addAnnotation(getAnnotationName());
+		return (ColumnAnnotation) getParent().addSupportingAnnotation(getAnnotationName());
 	}
 
 	public Integer getLength() {

@@ -158,7 +158,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlProperty;
  */
 public interface JpaFactory 
 {
-	// **************** core objects *******************************************
+	// **************** Core Model *******************************************
 	
 	/**
 	 * Construct a JpaProject for the specified config, to be
@@ -168,18 +168,24 @@ public interface JpaFactory
 	JpaProject buildJpaProject(JpaProject.Config config) throws CoreException;
 	
 	JpaDataSource buildJpaDataSource(JpaProject jpaProject, String connectionProfileName);
+
+	/**
+	 * Construct a Java JPA file for the specified JPA project and file.
+	 */
+	JpaFile buildJavaJpaFile(JpaProject jpaProject, IFile file);
 	
 	/**
-	 * Construct a JPA file for the specified file and with the specified resource
-	 * model, to be added to the specified JPA project.
+	 * Construct a Persistence JPA file for the specified JPA project and file.
 	 */
-	JpaFile buildJpaFile(JpaProject jpaProject, IFile file, ResourceModel resourceModel);
+	JpaFile buildPersistenceJpaFile(JpaProject jpaProject, IFile file);
 	
 	/**
-	 * Build a resource model to be associated with the given file, non-null.
-	 * Throws an IllegalArgumentException is contentTypeId is not supported
+	 * Construct an ORM JPA file for the specified JPA project and file.
 	 */
-	ResourceModel buildResourceModel(JpaProject jpaProject, IFile file, String contentTypeId);
+	JpaFile buildOrmJpaFile(JpaProject jpaProject, IFile file);
+	
+
+	// **************** Context Nodes *******************************************
 	
 	/**
 	 * Build a (/an updated) root context node to be associated with the given 
@@ -187,17 +193,17 @@ public interface JpaFactory
 	 * The root context node will be built once, but updated many times.
 	 * @see JpaProject.update(ProgressMonitor)
 	 */
-	JpaRootContextNode buildRootContext(JpaProject jpaProject);
+	JpaRootContextNode buildRootContextNode(JpaProject jpaProject);
 	
 	/**
 	 * Build a context node that is appropriate to the given resource.
-	 * This may return null if the resource can not be associated with an 
+	 * This may return null if the resource cannot be associated with an 
 	 * appropriate context node.
 	 */
-	XmlContextNode buildContext(JpaContextNode parent, JpaXmlResource resource);
+	XmlContextNode buildContextNode(JpaContextNode parent, JpaXmlResource resource);
 	
 	
-	// **************** persistence context objects ****************************
+	// **************** Persistence Context Model ****************************
 	
 	PersistenceXml buildPersistenceXml(JpaRootContextNode parent, PersistenceResource persistenceResource);
 	
@@ -217,7 +223,7 @@ public interface JpaFactory
 	Property buildProperty(PersistenceUnit parent, XmlProperty property);
 	
 	
-	// **************** orm context objects ************************************
+	// **************** ORM Context Model ************************************
 	
 	OrmXml buildOrmXml(MappingFileRef parent, OrmResource ormResource);
 

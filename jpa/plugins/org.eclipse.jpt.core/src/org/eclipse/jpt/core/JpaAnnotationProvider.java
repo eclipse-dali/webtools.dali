@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
-import java.util.Iterator;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -26,67 +26,71 @@ import org.eclipse.jpt.core.utility.jdt.Type;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaAnnotationProvider
-{
-	/**
-	 * Build an Annotation with the given fully qualififed annotation name.
-	 * @param type
-	 * @param mappingAnnotationName
-	 * @return
-	 */
-	Annotation buildTypeMappingAnnotation(JavaResourcePersistentType parent, Type type, String mappingAnnotationName);
+public interface JpaAnnotationProvider {
 
-	Annotation buildNullTypeMappingAnnotation(JavaResourcePersistentType parent, Type type, String mappingAnnotationName);
+	// ********** type annotations **********
 
 	/**
-	 * Build an Annotation with the given fully qualififed annotation name.
-	 * @param type
-	 * @param annotationName
-	 * @return
-	 */
-	Annotation buildTypeAnnotation(JavaResourcePersistentType parent, Type type, String annotationName);
-	
-	Annotation buildNullTypeAnnotation(JavaResourcePersistentType parent, Type type, String annotationName);
-	
-	/**
-	 * Ordered iterator of fully qualified annotation names that can apply to a Type
+	 * Return the names of the mapping annotations that can modify a type.
 	 */
 	ListIterator<String> typeMappingAnnotationNames();
 	
 	/**
-	 * Iterator of fully qualified annotation(non-mapping) names that can apply to a Type
+	 * Build a type mapping annotation with the specified name.
 	 */
-	Iterator<String> typeAnnotationNames();
-	
-	/**
-	 * Build a Annotation with the given fully qualififed annotation name.
-	 * @param attribute
-	 * @param mappingAnnotationName
-	 * @return
-	 */
-	Annotation buildAttributeMappingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String mappingAnnotationName);
-	
-	Annotation buildNullAttributeMappingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String mappingAnnotationName);
+	Annotation buildTypeMappingAnnotation(JavaResourcePersistentType parent, Type type, String annotationName);
 
 	/**
-	 * Build an Annotation with the given fully qualififed annotation name.
-	 * @param attribute
-	 * @param annotationName
-	 * @return
+	 * Build a null type mapping annotation with the specified name.
 	 */
-	Annotation buildAttributeAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName);
-	
-	Annotation buildNullAttributeAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName);
+	Annotation buildNullTypeMappingAnnotation(JavaResourcePersistentType parent, Type type, String annotationName);
 
+	/**
+	 * Return the names of the supporting annotations that can modify a type.
+	 */
+	ListIterator<String> typeSupportingAnnotationNames();
 	
 	/**
-	 * Ordered iterator of fully qualified annotation names that can apply to an Attribute
+	 * Build a type supporting annotation with the specified name.
+	 */
+	Annotation buildTypeSupportingAnnotation(JavaResourcePersistentType parent, Type type, String annotationName);
+	
+	/**
+	 * Build a null type supporting annotation with the specified name.
+	 */
+	Annotation buildNullTypeSupportingAnnotation(JavaResourcePersistentType parent, Type type, String annotationName);
+	
+
+	// ********** attribute annotations **********
+
+	/**
+	 * Return the names of the mapping annotations that can modify an attribute.
 	 */
 	ListIterator<String> attributeMappingAnnotationNames();
 	
 	/**
-	 * Iterator of fully qualified annotation(non-mapping) names that can apply to an Attribute
+	 * Build an attribute mapping annotation with the specified name.
 	 */
-	Iterator<String>  attributeAnnotationNames();
+	Annotation buildAttributeMappingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName);
 
+	/**
+	 * Build a null attribute mapping annotation with the specified name.
+	 */
+	Annotation buildNullAttributeMappingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName);
+
+	/**
+	 * Return the names of the supporting annotations that can modify an attribute.
+	 */
+	ListIterator<String> attributeSupportingAnnotationNames();
+	
+	/**
+	 * Build an attribute supporting annotation with the specified name.
+	 */
+	Annotation buildAttributeSupportingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName);
+	
+	/**
+	 * Build a null attribute supporting annotation with the specified name.
+	 */
+	Annotation buildNullAttributeSupportingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName);
+	
 }

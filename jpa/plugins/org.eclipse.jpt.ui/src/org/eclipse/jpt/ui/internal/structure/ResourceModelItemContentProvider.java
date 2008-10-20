@@ -10,16 +10,14 @@
 package org.eclipse.jpt.ui.internal.structure;
 
 import java.util.Iterator;
+
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -27,9 +25,9 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 public class ResourceModelItemContentProvider extends AbstractTreeItemContentProvider<JpaStructureNode>
 {
 	public ResourceModelItemContentProvider(
-			ResourceModel resourceModel, 
+			JpaFile jpaFile, 
 			DelegatingTreeContentAndLabelProvider contentProvider) {
-		super(resourceModel, contentProvider);
+		super(jpaFile, contentProvider);
 	}
 	
 	@Override
@@ -38,8 +36,8 @@ public class ResourceModelItemContentProvider extends AbstractTreeItemContentPro
 	}
 	
 	@Override
-	public ResourceModel model() {
-		return (ResourceModel) super.model();
+	public JpaFile model() {
+		return (JpaFile) super.model();
 	}
 	
 	@Override
@@ -58,12 +56,6 @@ public class ResourceModelItemContentProvider extends AbstractTreeItemContentPro
 	}
 	
 	protected PropertyValueModel<JpaFile> buildJpaFileValueModel() {
-		return new TransformationPropertyValueModel<ResourceModel, JpaFile>(
-			new SimplePropertyValueModel<ResourceModel>(model())) {
-				@Override
-				protected JpaFile transform_(ResourceModel value) {
-					return JptCorePlugin.getJpaFile(value.getFile());
-				}
-		};
+		return new SimplePropertyValueModel<JpaFile>(this.model());
 	}
 }

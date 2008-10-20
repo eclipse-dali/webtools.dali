@@ -44,7 +44,7 @@ public class GenericJavaTable
 	@Override
 	protected TableAnnotation getResourceTable() {
 		//TODO get the NullTable from the resource model or build it here in the context model??
-		return (TableAnnotation) this.resourcePersistentMember.getNonNullAnnotation(getAnnotationName());
+		return (TableAnnotation) this.resourcePersistentMember.getNonNullSupportingAnnotation(getAnnotationName());
 	}
 
 	@Override

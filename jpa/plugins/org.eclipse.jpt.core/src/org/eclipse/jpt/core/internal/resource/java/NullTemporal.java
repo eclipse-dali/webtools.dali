@@ -49,7 +49,7 @@ public class NullTemporal extends AbstractJavaResourceNode implements TemporalAn
 	}
 	
 	protected TemporalAnnotation createTemporalResource() {
-		return (TemporalAnnotation) getParent().addAnnotation(getAnnotationName());
+		return (TemporalAnnotation) getParent().addSupportingAnnotation(getAnnotationName());
 	}
 
 

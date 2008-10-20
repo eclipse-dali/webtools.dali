@@ -93,7 +93,7 @@ public class NullAssociationOverride extends AbstractJavaResourceNode implements
 	}
 	
 	protected AssociationOverrideAnnotation createAssociationOverrideResource() {
-		return (AssociationOverrideAnnotation) getParent().addAnnotation(getAnnotationName());
+		return (AssociationOverrideAnnotation) getParent().addSupportingAnnotation(getAnnotationName());
 	}
 
 	public void update(CompilationUnit astRoot) {

@@ -54,7 +54,7 @@ public class EclipseLinkJavaVersionMappingImpl extends GenericJavaVersionMapping
 		if (specifiedConverterType != null) {
 			return specifiedConverterType;
 		}
-		if (jrpa.getAnnotation(ConvertAnnotation.ANNOTATION_NAME) != null) {
+		if (jrpa.getSupportingAnnotation(ConvertAnnotation.ANNOTATION_NAME) != null) {
 			return Convert.ECLIPSE_LINK_CONVERTER;
 		}
 		return null;

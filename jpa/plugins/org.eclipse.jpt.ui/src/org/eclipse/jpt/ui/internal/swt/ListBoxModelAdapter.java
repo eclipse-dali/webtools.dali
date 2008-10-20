@@ -12,12 +12,14 @@ package org.eclipse.jpt.ui.internal.swt;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EventListener;
 import java.util.EventObject;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jpt.ui.internal.listeners.SWTCollectionChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
@@ -88,12 +90,14 @@ public class ListBoxModelAdapter<E> {
 	/**
 	 * Clients that are interested in selection change events.
 	 */
-	protected SelectionChangeListener<E>[] selectionChangeListeners;
+	@SuppressWarnings("unchecked")
+	protected final ListenerList<SelectionChangeListener> selectionChangeListenerList;
 
 	/**
 	 * Clients that are interested in double click events.
 	 */
-	protected DoubleClickListener<E>[] doubleClickListeners;
+	@SuppressWarnings("unchecked")
+	protected final ListenerList<DoubleClickListener> doubleClickListenerList;
 
 	/**
 	 * A listener that allows us to stop listening to stuff when the list box
@@ -191,8 +195,8 @@ public class ListBoxModelAdapter<E> {
 		this.listBoxSelectionListener = this.buildListBoxSelectionListener();
 		this.listBox.addSelectionListener(this.listBoxSelectionListener);
 
-		this.selectionChangeListeners = this.buildSelectionChangeListeners();
-		this.doubleClickListeners = this.buildDoubleClickListeners();
+		this.selectionChangeListenerList = this.buildSelectionChangeListenerList();
+		this.doubleClickListenerList = this.buildDoubleClickListenerList();
 
 		this.listBoxDisposeListener = this.buildListBoxDisposeListener();
 		this.listBox.addDisposeListener(this.listBoxDisposeListener);
@@ -275,13 +279,13 @@ public class ListBoxModelAdapter<E> {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected DoubleClickListener<E>[] buildDoubleClickListeners() {
-		return new DoubleClickListener[0];
+	protected ListenerList<DoubleClickListener> buildDoubleClickListenerList() {
+		return new ListenerList<DoubleClickListener>(DoubleClickListener.class);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected SelectionChangeListener<E>[] buildSelectionChangeListeners() {
-		return new SelectionChangeListener[0];
+	protected ListenerList<SelectionChangeListener> buildSelectionChangeListenerList() {
+		return new ListenerList<SelectionChangeListener>(SelectionChangeListener.class);
 	}
 
 	protected DisposeListener buildListBoxDisposeListener() {
@@ -490,10 +494,10 @@ public class ListBoxModelAdapter<E> {
 	// ********** list box events **********
 
 	protected void listBoxSelectionChanged(SelectionEvent event) {
-		if (this.selectionChangeListeners.length > 0) {
+		if (this.selectionChangeListenerList.size() > 0) {
 			@SuppressWarnings("unchecked")
 			SelectionChangeEvent<E> scEvent = new SelectionChangeEvent(this, this.selectedItems());
-			for (SelectionChangeListener<E> selectionChangeListener : this.selectionChangeListeners) {
+			for (SelectionChangeListener<E> selectionChangeListener : this.selectionChangeListenerList.getListeners()) {
 				selectionChangeListener.selectionChanged(scEvent);
 			}
 		}
@@ -515,12 +519,12 @@ public class ListBoxModelAdapter<E> {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
-		if (this.doubleClickListeners.length > 0) {
+		if (this.doubleClickListenerList.size() > 0) {
 			// there should be only a single item selected during a double-click(?)
 			E selection = this.listHolder.get(this.listBox.getSelectionIndex());
 			@SuppressWarnings("unchecked")
 			DoubleClickEvent<E> dcEvent = new DoubleClickEvent(this, selection);
-			for (DoubleClickListener<E> doubleClickListener : this.doubleClickListeners) {
+			for (DoubleClickListener<E> doubleClickListener : this.doubleClickListenerList.getListeners()) {
 				doubleClickListener.doubleClick(dcEvent);
 			}
 		}
@@ -550,14 +554,14 @@ public class ListBoxModelAdapter<E> {
 	// ********** double click support **********
 
 	public void addDoubleClickListener(DoubleClickListener<E> listener) {
-		this.doubleClickListeners = CollectionTools.add(this.doubleClickListeners, listener);
+		this.doubleClickListenerList.add(listener);
 	}
 
 	public void removeDoubleClickListener(DoubleClickListener<E> listener) {
-		this.doubleClickListeners = CollectionTools.remove(this.doubleClickListeners, listener);
+		this.doubleClickListenerList.remove(listener);
 	}
 
-	public interface DoubleClickListener<E> {
+	public interface DoubleClickListener<E> extends EventListener {
 		void doubleClick(DoubleClickEvent<E> event);
 	}
 
@@ -589,14 +593,14 @@ public class ListBoxModelAdapter<E> {
 	// ********** selection support **********
 
 	public void addSelectionChangeListener(SelectionChangeListener<E> listener) {
-		this.selectionChangeListeners = CollectionTools.add(this.selectionChangeListeners, listener);
+		this.selectionChangeListenerList.add(listener);
 	}
 
 	public void removeSelectionChangeListener(SelectionChangeListener<E> listener) {
-		this.selectionChangeListeners = CollectionTools.remove(this.selectionChangeListeners, listener);
+		this.selectionChangeListenerList.remove(listener);
 	}
 
-	public interface SelectionChangeListener<E> {
+	public interface SelectionChangeListener<E> extends EventListener {
 		void selectionChanged(SelectionChangeEvent<E> event);
 	}
 

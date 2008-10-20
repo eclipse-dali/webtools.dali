@@ -10,22 +10,27 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.orm;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaConstants;
+import org.eclipse.jpt.core.internal.resource.JpaResourceModelProviderManager;
 import org.eclipse.jpt.core.resource.AbstractResourceModelProvider;
-import org.eclipse.jpt.core.resource.JpaResourceModelProviderManager;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 
-public class OrmResourceModelProvider extends AbstractResourceModelProvider
+/**
+ * 
+ */
+public class OrmResourceModelProvider
+	extends AbstractResourceModelProvider
 {
 	/**
-	 * (Convenience method) Returns an eclipselink resource model provider for 
+	 * (Convenience method) Returns an ORM resource model provider for 
 	 * the given project in the default location
 	 */
 	public static OrmResourceModelProvider getDefaultModelProvider(IProject project) {
@@ -33,11 +38,19 @@ public class OrmResourceModelProvider extends AbstractResourceModelProvider
 	}
 	
 	/**
-	 * (Convenience method) Returns an eclipselink resource model provider for
+	 * (Convenience method) Returns an ORM resource model provider for 
+	 * the given file.
+	 */
+	public static OrmResourceModelProvider getModelProvider(IFile file) {
+		return getModelProvider(file.getProject(), file.getProjectRelativePath().toString());
+	}
+	
+	/**
+	 * (Convenience method) Returns an ORM resource model provider for
 	 * the given project in the specified location
 	 */
 	public static OrmResourceModelProvider getModelProvider(IProject project, String location) {
-		return (OrmResourceModelProvider) JpaResourceModelProviderManager.getModelProvider(
+		return (OrmResourceModelProvider) JpaResourceModelProviderManager.instance().getModelProvider(
 			project, 
 			new Path(JptCorePlugin.getDeploymentURI(project, location)),
 			JptCorePlugin.ORM_XML_CONTENT_TYPE);

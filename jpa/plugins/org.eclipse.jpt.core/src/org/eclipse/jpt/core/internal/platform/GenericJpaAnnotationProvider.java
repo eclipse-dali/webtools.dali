@@ -10,10 +10,9 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.resource.java.AssociationOverrideImpl.AssociationOverrideAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AssociationOverridesImpl.AssociationOverridesAnnotationDefinition;
@@ -63,47 +62,58 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.Type;
-import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 
-public class GenericJpaAnnotationProvider implements JpaAnnotationProvider
+/**
+ * 
+ */
+public class GenericJpaAnnotationProvider
+	implements JpaAnnotationProvider
 {
 	/**
-	 * Ordered list of possible type mapping annotations.  Ordered because this
+	 * Ordered list of possible type mapping annotations. Ordered because this
 	 * is used to determine the mapping in the case where 2 mapping annotations exist
 	 */
-	private List<AnnotationDefinition> typeMappingAnnotationDefinitions;
+	private AnnotationDefinition[] typeMappingAnnotationDefinitions;
 	
-	private Collection<AnnotationDefinition> typeAnnotationDefinitions;
+	private AnnotationDefinition[] typeSupportingAnnotationDefinitions;
 	
 	/**
-	 * Ordered list of possible attribute mapping annotations.  Ordered because this
+	 * Ordered list of possible attribute mapping annotations. Ordered because this
 	 * is used to determine the mapping in the case where 2 mapping annotations exist
 	 */
-	private List<AnnotationDefinition> attributeMappingAnnotationDefinitions;
+	private AnnotationDefinition[] attributeMappingAnnotationDefinitions;
 	
-	private Collection<AnnotationDefinition> attributeAnnotationDefinitions;
+	private AnnotationDefinition[] attributeSupportingAnnotationDefinitions;
 	
 	
 	protected GenericJpaAnnotationProvider() {
 		super();
 	}
 	
-	
-	protected ListIterator<AnnotationDefinition> typeMappingAnnotationDefinitions() {
+
+	// ********** type annotation definitions **********
+
+	protected synchronized ListIterator<AnnotationDefinition> typeMappingAnnotationDefinitions() {
 		if (this.typeMappingAnnotationDefinitions == null) {
-			this.typeMappingAnnotationDefinitions = new ArrayList<AnnotationDefinition>();
-			this.addTypeMappingAnnotationDefinitionsTo(this.typeMappingAnnotationDefinitions);
+			this.typeMappingAnnotationDefinitions = this.buildTypeMappingAnnotationDefinitions();
 		}
-		return new CloneListIterator<AnnotationDefinition>(this.typeMappingAnnotationDefinitions);
+		return new ArrayListIterator<AnnotationDefinition>(this.typeMappingAnnotationDefinitions);
+	}
+	
+	protected AnnotationDefinition[] buildTypeMappingAnnotationDefinitions() {
+		ArrayList<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
+		this.addTypeMappingAnnotationDefinitionsTo(definitions);
+		return definitions.toArray(new AnnotationDefinition[definitions.size()]);
 	}
 	
 	/**
 	 * Override this to specify more or different type mapping definitions.
-	 * The default includes the JPA spec-defined type mappings of 
-	 * Embeddable, Entity, MappedSuperclass
+	 * The default includes the JPA spec-defined type mappings:
+	 *     Embeddable
+	 *     Entity
+	 *     MappedSuperclass
 	 */
 	protected void addTypeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(EmbeddableAnnotationDefinition.instance());
@@ -111,19 +121,24 @@ public class GenericJpaAnnotationProvider implements JpaAnnotationProvider
 		definitions.add(MappedSuperclassAnnotationDefinition.instance());
 	}
 	
-	protected Iterator<AnnotationDefinition> typeAnnotationDefinitions() {
-		if (this.typeAnnotationDefinitions == null) {
-			this.typeAnnotationDefinitions = new ArrayList<AnnotationDefinition>();
-			this.addTypeAnnotationDefinitionsTo(this.typeAnnotationDefinitions);
+	protected synchronized ListIterator<AnnotationDefinition> typeSupportingAnnotationDefinitions() {
+		if (this.typeSupportingAnnotationDefinitions == null) {
+			this.typeSupportingAnnotationDefinitions = this.buildTypeSupportingAnnotationDefinitions();
 		}
-		return new CloneIterator<AnnotationDefinition>(this.typeAnnotationDefinitions);
+		return new ArrayListIterator<AnnotationDefinition>(this.typeSupportingAnnotationDefinitions);
+	}
+	
+	protected AnnotationDefinition[] buildTypeSupportingAnnotationDefinitions() {
+		ArrayList<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
+		this.addTypeSupportingAnnotationDefinitionsTo(definitions);
+		return definitions.toArray(new AnnotationDefinition[definitions.size()]);
 	}
 	
 	/**
-	 * Override this to specify more or different type annotation definitions.
+	 * Override this to specify more or different type supporting annotation definitions.
 	 * The default includes the JPA spec-defined annotations.
 	 */
-	protected void addTypeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
+	protected void addTypeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(AssociationOverrideAnnotationDefinition.instance());
 		definitions.add(AssociationOverridesAnnotationDefinition.instance());
 		definitions.add(AttributeOverrideAnnotationDefinition.instance());
@@ -146,18 +161,35 @@ public class GenericJpaAnnotationProvider implements JpaAnnotationProvider
 		definitions.add(TableGeneratorAnnotationDefinition.instance());
 	}
 	
-	protected ListIterator<AnnotationDefinition> attributeMappingAnnotationDefinitions() {
+
+	// ********** attribute annotation definitions **********
+
+	protected synchronized ListIterator<AnnotationDefinition> attributeMappingAnnotationDefinitions() {
 		if (this.attributeMappingAnnotationDefinitions == null) {
-			this.attributeMappingAnnotationDefinitions = new ArrayList<AnnotationDefinition>();
-			this.addAttributeMappingAnnotationDefinitionsTo(this.attributeMappingAnnotationDefinitions);
+			this.attributeMappingAnnotationDefinitions = this.buildAttributeMappingAnnotationDefinitions();
 		}
-		return new CloneListIterator<AnnotationDefinition>(this.attributeMappingAnnotationDefinitions);
+		return new ArrayListIterator<AnnotationDefinition>(this.attributeMappingAnnotationDefinitions);
+	}
+	
+	protected AnnotationDefinition[] buildAttributeMappingAnnotationDefinitions() {
+		ArrayList<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
+		this.addAttributeMappingAnnotationDefinitionsTo(definitions);
+		return definitions.toArray(new AnnotationDefinition[definitions.size()]);
 	}
 	
 	/**
 	 * Override this to specify more or different attribute mapping definitions.
-	 * The default includes the JPA spec-defined attribute mappings of 
-	 * Basic, Id, Transient OneToOne, OneToMany, ManyToOne, ManyToMany, Embedded, EmbeddedId, Version.
+	 * The default includes the JPA spec-defined attribute mappings:
+	 *     Basic
+	 *     Embedded
+	 *     EmbeddedId
+	 *     Id
+	 *     ManyToMany
+	 *     ManyToOne
+	 *     OneToMany
+	 *     OneToOne
+	 *     Transient
+	 *     Version
 	 */
 	protected void addAttributeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(BasicAnnotationDefinition.instance());
@@ -172,19 +204,24 @@ public class GenericJpaAnnotationProvider implements JpaAnnotationProvider
 		definitions.add(VersionAnnotationDefinition.instance());
 	}
 	
-	protected Iterator<AnnotationDefinition> attributeAnnotationDefinitions() {
-		if (this.attributeAnnotationDefinitions == null) {
-			this.attributeAnnotationDefinitions = new ArrayList<AnnotationDefinition>();
-			this.addAttributeAnnotationDefinitionsTo(this.attributeAnnotationDefinitions);
+	protected synchronized ListIterator<AnnotationDefinition> attributeSupportingAnnotationDefinitions() {
+		if (this.attributeSupportingAnnotationDefinitions == null) {
+			this.attributeSupportingAnnotationDefinitions = this.buildAttributeSupportingAnnotationDefinitions();
 		}
-		return new CloneIterator<AnnotationDefinition>(this.attributeAnnotationDefinitions);
+		return new ArrayListIterator<AnnotationDefinition>(this.attributeSupportingAnnotationDefinitions);
+	}
+	
+	protected AnnotationDefinition[] buildAttributeSupportingAnnotationDefinitions() {
+		ArrayList<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
+		this.addAttributeSupportingAnnotationDefinitionsTo(definitions);
+		return definitions.toArray(new AnnotationDefinition[definitions.size()]);
 	}
 	
 	/**
-	 * Override this to specify more or different attribute annotation definitions.
+	 * Override this to specify more or different attribute supporting annotation definitions.
 	 * The default includes the JPA spec-defined annotations.
 	 */
-	protected void addAttributeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
+	protected void addAttributeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(AssociationOverrideAnnotationDefinition.instance());
 		definitions.add(AssociationOverridesAnnotationDefinition.instance());
 		definitions.add(AttributeOverrideAnnotationDefinition.instance());
@@ -205,121 +242,96 @@ public class GenericJpaAnnotationProvider implements JpaAnnotationProvider
 		definitions.add(TemporalAnnotationDefinition.instance());
 	}
 	
-	//********************* IJpaPlatform implementation *************************
 
-	public Annotation buildTypeMappingAnnotation(JavaResourcePersistentType parent, Type type, String mappingAnnotationName) {
-		AnnotationDefinition annotationDefinition = typeMappingAnnotationDefinition(mappingAnnotationName);
-		return annotationDefinition.buildAnnotation(parent, type);
-	}
-	
-	public Annotation buildNullTypeMappingAnnotation(JavaResourcePersistentType parent, Type type, String mappingAnnotationName) {
-		AnnotationDefinition annotationDefinition = typeMappingAnnotationDefinition(mappingAnnotationName);
-		return annotationDefinition.buildNullAnnotation(parent, type);
-	}
+	// ********** type annotations **********
 
-	public Annotation buildTypeAnnotation(JavaResourcePersistentType parent, Type type, String annotationName) {
-		AnnotationDefinition annotationDefinition = typeAnnotationDefinition(annotationName);
-		return annotationDefinition.buildAnnotation(parent, type);
-	}
-
-	public Annotation buildNullTypeAnnotation(JavaResourcePersistentType parent, Type type, String annotationName) {
-		AnnotationDefinition annotationDefinition = typeAnnotationDefinition(annotationName);
-		return annotationDefinition.buildNullAnnotation(parent, type);
-	}
-	
 	public ListIterator<String> typeMappingAnnotationNames() {
-		return new TransformationListIterator<AnnotationDefinition, String>(typeMappingAnnotationDefinitions()) {
-			@Override
-			protected String transform(AnnotationDefinition next) {
-				return next.getAnnotationName();
-			}
-		};
+		return annotationNames(this.typeMappingAnnotationDefinitions());
 	}
 	
-	public Iterator<String> typeAnnotationNames() {
-		return new TransformationIterator<AnnotationDefinition, String>(typeAnnotationDefinitions()) {
-			@Override
-			protected String transform(AnnotationDefinition next) {
-				return next.getAnnotationName();
-			}
-		};
+	public Annotation buildTypeMappingAnnotation(JavaResourcePersistentType parent, Type type, String annotationName) {
+		return this.getTypeMappingAnnotationDefinition(annotationName).buildAnnotation(parent, type);
 	}
 	
-	public Annotation buildAttributeMappingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String mappingAnnotationName) {
-		AnnotationDefinition annotationDefinition = attributeMappingAnnotationDefinition(mappingAnnotationName);
-		return annotationDefinition.buildAnnotation(parent, attribute);
+	public Annotation buildNullTypeMappingAnnotation(JavaResourcePersistentType parent, Type type, String annotationName) {
+		return this.getTypeMappingAnnotationDefinition(annotationName).buildNullAnnotation(parent, type);
+	}
+
+	protected AnnotationDefinition getTypeMappingAnnotationDefinition(String annotationName) {
+		return getAnnotationDefinition(annotationName, this.typeMappingAnnotationDefinitions());
+	}
+	
+	public ListIterator<String> typeSupportingAnnotationNames() {
+		return annotationNames(this.typeSupportingAnnotationDefinitions());
+	}
+	
+	public Annotation buildTypeSupportingAnnotation(JavaResourcePersistentType parent, Type type, String annotationName) {
+		return this.getTypeSupportingAnnotationDefinition(annotationName).buildAnnotation(parent, type);
+	}
+
+	public Annotation buildNullTypeSupportingAnnotation(JavaResourcePersistentType parent, Type type, String annotationName) {
+		return this.getTypeSupportingAnnotationDefinition(annotationName).buildNullAnnotation(parent, type);
+	}
+	
+	protected AnnotationDefinition getTypeSupportingAnnotationDefinition(String annotationName) {
+		return getAnnotationDefinition(annotationName, this.typeSupportingAnnotationDefinitions());
+	}
+
+
+	// ********** attribute annotations **********
+
+	public ListIterator<String> attributeMappingAnnotationNames() {
+		return annotationNames(this.attributeMappingAnnotationDefinitions());
+	}
+	
+	public Annotation buildAttributeMappingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName) {
+		return this.attributeMappingAnnotationDefinition(annotationName).buildAnnotation(parent, attribute);
 	}
 	
 	public Annotation buildNullAttributeMappingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName) {
-		AnnotationDefinition annotationDefinition = attributeMappingAnnotationDefinition(annotationName);
-		return annotationDefinition.buildNullAnnotation(parent, attribute);
+		return this.attributeMappingAnnotationDefinition(annotationName).buildNullAnnotation(parent, attribute);
 	}
 	
-	public Annotation buildAttributeAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName) {
-		AnnotationDefinition annotationDefinition = attributeAnnotationDefinition(annotationName);
-		return annotationDefinition.buildAnnotation(parent, attribute);
+	protected AnnotationDefinition attributeMappingAnnotationDefinition(String annotationName) {
+		return getAnnotationDefinition(annotationName, this.attributeMappingAnnotationDefinitions());
 	}
 	
-	public Annotation buildNullAttributeAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName) {
-		AnnotationDefinition annotationDefinition = attributeAnnotationDefinition(annotationName);
-		return annotationDefinition.buildNullAnnotation(parent, attribute);
+	public ListIterator<String> attributeSupportingAnnotationNames() {
+		return annotationNames(this.attributeSupportingAnnotationDefinitions());
 	}
 	
-	public ListIterator<String> attributeMappingAnnotationNames() {
-		return new TransformationListIterator<AnnotationDefinition, String>(attributeMappingAnnotationDefinitions()) {
-			@Override
-			protected String transform(AnnotationDefinition next) {
-				return next.getAnnotationName();
-			}
-		};
+	public Annotation buildAttributeSupportingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName) {
+		return this.getAttributeSupportingAnnotationDefinition(annotationName).buildAnnotation(parent, attribute);
 	}
 	
-	public Iterator<String> attributeAnnotationNames() {
-		return new TransformationIterator<AnnotationDefinition, String>(attributeAnnotationDefinitions()) {
-			@Override
-			protected String transform(AnnotationDefinition next) {
-				return next.getAnnotationName();
-			}
-		};
+	public Annotation buildNullAttributeSupportingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName) {
+		return this.getAttributeSupportingAnnotationDefinition(annotationName).buildNullAnnotation(parent, attribute);
 	}
 	
-	private AnnotationDefinition typeMappingAnnotationDefinition(String mappingAnnotationName) {
-		for (ListIterator<AnnotationDefinition> i = typeMappingAnnotationDefinitions(); i.hasNext(); ) {
-			AnnotationDefinition definition = i.next();
-			if (definition.getAnnotationName().equals(mappingAnnotationName)) {
-				return definition;
-			}
-		}
-		throw new IllegalArgumentException(mappingAnnotationName + " is an unsupported type mapping annotation");
+	protected AnnotationDefinition getAttributeSupportingAnnotationDefinition(String annotationName) {
+		return getAnnotationDefinition(annotationName, this.attributeSupportingAnnotationDefinitions());
 	}
 	
-	private AnnotationDefinition typeAnnotationDefinition(String annotationName) {
-		for (Iterator<AnnotationDefinition> i = typeAnnotationDefinitions(); i.hasNext(); ) {
-			AnnotationDefinition definition = i.next();
-			if (definition.getAnnotationName().equals(annotationName)) {
-				return definition;
-			}
-		}
-		throw new IllegalArgumentException(annotationName + " is an unsupported type annotation");
-	}
 
-	private AnnotationDefinition attributeMappingAnnotationDefinition(String mappingAnnotationName) {
-		for (ListIterator<AnnotationDefinition> i = attributeMappingAnnotationDefinitions(); i.hasNext(); ) {
-			AnnotationDefinition definition = i.next();
-			if (definition.getAnnotationName().equals(mappingAnnotationName)) {
-				return definition;
+	// ********** static methods **********
+
+	protected static ListIterator<String> annotationNames(ListIterator<AnnotationDefinition> annotationDefinitions) {
+		return new TransformationListIterator<AnnotationDefinition, String>(annotationDefinitions) {
+			@Override
+			protected String transform(AnnotationDefinition annotationDefinition) {
+				return annotationDefinition.getAnnotationName();
 			}
-		}
-		throw new IllegalArgumentException(mappingAnnotationName + " is an unsupported attribute mapping annotation");	
+		};
 	}
 	
-	private AnnotationDefinition attributeAnnotationDefinition(String annotationName) {
-		for (Iterator<AnnotationDefinition> i = attributeAnnotationDefinitions(); i.hasNext(); ) {
-			AnnotationDefinition definition = i.next();
-			if (definition.getAnnotationName().equals(annotationName)) {
-				return definition;
+	protected static AnnotationDefinition getAnnotationDefinition(String annotationName, ListIterator<AnnotationDefinition> annotationDefinitions) {
+		while (annotationDefinitions.hasNext()) {
+			AnnotationDefinition annotationDefinition = annotationDefinitions.next();
+			if (annotationDefinition.getAnnotationName().equals(annotationName)) {
+				return annotationDefinition;
 			}
 		}
-		throw new IllegalArgumentException(annotationName + " is an unsupported attribute annotation");
+		throw new IllegalArgumentException("unsupported annotation: " + annotationName); //$NON-NLS-1$
 	}
+	
 }

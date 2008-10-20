@@ -59,11 +59,11 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 	}
 		
 	public void addToResourceModel() {
-		this.resourcePersistentAttribute.addAnnotation(getAnnotationName());
+		this.resourcePersistentAttribute.addSupportingAnnotation(getAnnotationName());
 	}
 	
 	public void removeFromResourceModel() {
-		this.resourcePersistentAttribute.removeAnnotation(getAnnotationName());
+		this.resourcePersistentAttribute.removeSupportingAnnotation(getAnnotationName());
 		if (getConverter() != null) {
 			getConverter().removeFromResourceModel();
 		}
@@ -74,7 +74,7 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 	}
 
 	protected ConvertAnnotation getResourceConvert() {
-		return (ConvertAnnotation) this.resourcePersistentAttribute.getAnnotation(getAnnotationName());
+		return (ConvertAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getAnnotationName());
 	}
 	
 	public String getConverterName() {
@@ -179,16 +179,16 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 	}
 	
 	protected String converterType(JavaResourcePersistentAttribute jrpa) {
-		if (jrpa.getAnnotation(ConverterAnnotation.ANNOTATION_NAME) != null) {
+		if (jrpa.getSupportingAnnotation(ConverterAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConverter.CONVERTER;
 		}
-		else if (jrpa.getAnnotation(TypeConverterAnnotation.ANNOTATION_NAME) != null) {
+		else if (jrpa.getSupportingAnnotation(TypeConverterAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConverter.TYPE_CONVERTER;
 		}
-		else if (jrpa.getAnnotation(ObjectTypeConverterAnnotation.ANNOTATION_NAME) != null) {
+		else if (jrpa.getSupportingAnnotation(ObjectTypeConverterAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConverter.OBJECT_TYPE_CONVERTER;
 		}
-		else if (jrpa.getAnnotation(StructConverterAnnotation.ANNOTATION_NAME) != null) {
+		else if (jrpa.getSupportingAnnotation(StructConverterAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConverter.STRUCT_CONVERTER;
 		}
 		

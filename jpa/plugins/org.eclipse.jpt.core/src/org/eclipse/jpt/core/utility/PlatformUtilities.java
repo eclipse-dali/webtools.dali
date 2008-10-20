@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.utility;
 
 import java.io.IOException;
@@ -27,27 +26,33 @@ public class PlatformUtilities
 	 * Retrieves the content type for the IFile referenced.
 	 * (Makes sure to close the input stream)
 	 */
-	public static IContentType contentType(IFile file) {
+	public static IContentType getContentType(IFile file) {
 		InputStream inputStream = null;
 		try {
 			inputStream = file.getContents();
-			return Platform.getContentTypeManager().findContentTypeFor(inputStream, file.getName());
-		}
-		catch (IOException ex) {
+		} catch (CoreException ex) {
 			JptCorePlugin.log(ex);
+			return null;
 		}
-		catch (CoreException ex) {
+
+		IContentType contentType = null;
+		try {
+			contentType = Platform.getContentTypeManager().findContentTypeFor(inputStream, file.getName());
+		} catch (IOException ex) {
 			JptCorePlugin.log(ex);
-		}
-		finally {
+		} finally {
 			try {
-				if (inputStream != null) {
-					inputStream.close();
-				}
+				inputStream.close();
 			} catch (IOException ex) {
 				JptCorePlugin.log(ex);
 			}
 		}
-		return null;
+		return contentType;
 	}
+
+	private PlatformUtilities() {
+		super();
+		throw new UnsupportedOperationException();
+	}
+
 }

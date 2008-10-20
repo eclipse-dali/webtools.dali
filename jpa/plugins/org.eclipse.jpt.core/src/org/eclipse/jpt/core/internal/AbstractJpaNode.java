@@ -12,6 +12,8 @@ package org.eclipse.jpt.core.internal;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.core.JpaDataSource;
@@ -20,7 +22,6 @@ import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -106,8 +107,8 @@ public abstract class AbstractJpaNode
 		return this.getJpaPlatform().getJpaFactory();
 	}
 
-	protected JpaFile getJpaFile(ResourceModel resourceModel) {
-		return this.getJpaProject().getJpaFile(resourceModel.getFile());
+	protected JpaFile getJpaFile(IFile file) {
+		return this.getJpaProject().getJpaFile(file);
 	}
 
 	protected JpaDataSource getDataSource() {

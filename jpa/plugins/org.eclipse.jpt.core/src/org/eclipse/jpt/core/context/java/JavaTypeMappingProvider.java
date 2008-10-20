@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.JpaFactory;
 
 /**
  * Map a string key to a type mapping and its corresponding
- * Java annotation adapter.
+ * Java annotation.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,19 +24,20 @@ import org.eclipse.jpt.core.JpaFactory;
 public interface JavaTypeMappingProvider {
 
 	/**
-	 * A unique String that corresponds to the IJavaTypeMapping key 
+	 * Return the type mapping's key.
 	 */
 	String getKey();
 
-	String getAnnotationName();
-	
 	/**
-	 * Create an IJavaTypeMapping for the given attribute.  Use the IJpaFactory
-	 * for creation so that extenders can create their own IJpaFactory instead of 
-	 * creating their own typeMappingProvider.
-	 * @param type
-	 * @param jpaFactory
+	 * Return the type mapping's Java annotation name.
 	 */
-	public JavaTypeMapping buildMapping(JavaPersistentType parent, JpaFactory factory);
+	String getAnnotationName();
+
+	/**
+	 * Build a Java type mapping for the specified type. Use the specified
+	 * factory for creation so extenders can simply override the appropriate
+	 * creation method instead of building a provider for the same key.
+	 */
+	public JavaTypeMapping buildMapping(JavaPersistentType type, JpaFactory factory);
 
 }

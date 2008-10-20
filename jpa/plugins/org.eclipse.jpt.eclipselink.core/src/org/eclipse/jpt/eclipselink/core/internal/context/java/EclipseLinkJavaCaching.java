@@ -72,11 +72,11 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 	//You could call more than one setter before this object has received any notification
 	//from the java resource model
 	protected CacheAnnotation getCacheAnnotation() {
-		return (CacheAnnotation) this.resourcePersistentType.getNonNullAnnotation(getCacheAnnotationName());
+		return (CacheAnnotation) this.resourcePersistentType.getNonNullSupportingAnnotation(getCacheAnnotationName());
 	}
 	
 	protected ExistenceCheckingAnnotation getExistenceCheckingAnnotation() {
-		return (ExistenceCheckingAnnotation) this.resourcePersistentType.getAnnotation(getExistenceCheckingAnnotationName());
+		return (ExistenceCheckingAnnotation) this.resourcePersistentType.getSupportingAnnotation(getExistenceCheckingAnnotationName());
 	}
 
 	protected String getCacheAnnotationName() {
@@ -296,10 +296,10 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 		boolean oldExistenceChecking = this.existenceChecking;
 		this.existenceChecking = newExistenceChecking;
 		if (newExistenceChecking) {
-			this.resourcePersistentType.addAnnotation(getExistenceCheckingAnnotationName());
+			this.resourcePersistentType.addSupportingAnnotation(getExistenceCheckingAnnotationName());
 		}
 		else {
-			this.resourcePersistentType.removeAnnotation(getExistenceCheckingAnnotationName());
+			this.resourcePersistentType.removeSupportingAnnotation(getExistenceCheckingAnnotationName());
 		}
 		firePropertyChanged(EXISTENCE_CHECKING_PROPERTY, oldExistenceChecking, newExistenceChecking);
 		setDefaultExistenceType(caclulateDefaultExistenceType());
@@ -391,8 +391,8 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 		if (this.expiryTimeOfDay != null) {
 			throw new IllegalStateException("expiryTimeOfDay already exists, use getExpiryTimeOfDay()"); //$NON-NLS-1$
 		}
-		if (this.resourcePersistentType.getAnnotation(getCacheAnnotationName()) == null) {
-			this.resourcePersistentType.addAnnotation(getCacheAnnotationName());
+		if (this.resourcePersistentType.getSupportingAnnotation(getCacheAnnotationName()) == null) {
+			this.resourcePersistentType.addSupportingAnnotation(getCacheAnnotationName());
 		}
 		JavaExpiryTimeOfDay newExpiryTimeOfDay = getJpaFactory().buildJavaExpiryTimeOfDay(this);
 		this.expiryTimeOfDay = newExpiryTimeOfDay;

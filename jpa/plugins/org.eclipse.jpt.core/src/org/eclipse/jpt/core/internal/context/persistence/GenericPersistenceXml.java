@@ -79,7 +79,7 @@ public class GenericPersistenceXml
 		if (this.persistence == null) {
 			throw new IllegalStateException();
 		}
-		getJpaFile(this.persistenceResource.getResourceModel()).removeRootStructureNode(this.persistenceResource);
+		getJpaFile(this.persistenceResource.getFile()).removeRootStructureNode(this.persistenceResource);
 		this.persistence.dispose();
 		Persistence oldPersistence = this.persistence;
 		this.persistence = null;
@@ -108,7 +108,7 @@ public class GenericPersistenceXml
 		this.persistenceResource = pr;
 		if (pr.getPersistence() != null) {
 			if (this.persistence != null) {
-				this.getJpaFile(this.persistenceResource.getResourceModel()).addRootStructureNode(this.persistenceResource, this.persistence);
+				this.getJpaFile(this.persistenceResource.getFile()).addRootStructureNode(this.persistenceResource, this.persistence);
 				this.persistence.update(pr.getPersistence());
 			}
 			else {
@@ -117,7 +117,7 @@ public class GenericPersistenceXml
 		}
 		else {
 			if (this.persistence != null) {
-				this.getJpaFile(this.persistenceResource.getResourceModel()).removeRootStructureNode(this.persistenceResource);
+				this.getJpaFile(this.persistenceResource.getFile()).removeRootStructureNode(this.persistenceResource);
 				this.persistence.dispose();
 			}
 			setPersistence_(null);

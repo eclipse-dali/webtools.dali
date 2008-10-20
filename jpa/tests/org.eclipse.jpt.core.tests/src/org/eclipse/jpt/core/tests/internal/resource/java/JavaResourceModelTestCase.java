@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceProxy;
 import org.eclipse.core.resources.IResourceProxyVisitor;
@@ -23,22 +22,25 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.ResourceModelListener;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.internal.GenericJpaProject;
 import org.eclipse.jpt.core.internal.SimpleJpaProjectConfig;
-import org.eclipse.jpt.core.internal.resource.java.JavaResourceModelImpl;
+import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitImpl;
 import org.eclipse.jpt.core.internal.utility.jdt.NullAnnotationEditFormatter;
-import org.eclipse.jpt.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
+import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 
+@SuppressWarnings("nls")
 public class JavaResourceModelTestCase extends AnnotationTestCase
 {
 	private JavaElementChangeListener javaElementChangeListener;
-	protected JavaResourceModel javaResourceModel;
+	protected JpaCompilationUnit jpaCompilationUnit;
 	
 
 	public JavaResourceModelTestCase(String name) {
@@ -66,13 +68,17 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 			super();
 		}
 		public void elementChanged(ElementChangedEvent event) {
-			if (JavaResourceModelTestCase.this.javaResourceModel != null) {
-				JavaResourceModelTestCase.this.javaResourceModel.javaElementChanged(event);
-			}
+			JavaResourceModelTestCase.this.javaElementChanged(event);
 		}
 		@Override
 		public String toString() {
 			return StringTools.buildToStringFor(this);
+		}
+	}
+
+	void javaElementChanged(ElementChangedEvent event) {
+		if (this.jpaCompilationUnit != null) {
+			this.jpaCompilationUnit.javaElementChanged(event);
 		}
 	}
 
@@ -136,24 +142,36 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		return config;
 	}
 
-	protected JavaResourcePersistentType buildJavaTypeResource(ICompilationUnit cu) 
-		throws CoreException {
-		this.javaResourceModel = buildJavaResourceModel(cu);
-		this.javaResourceModel.resolveTypes();
-		return this.javaResourceModel.getJpaCompilationUnit().getPersistentType();
-	}	
-	
-	protected JavaResourceModel buildJavaResourceModel(ICompilationUnit cu) throws CoreException {
-		if (this.javaResourceModel != null) {
+	protected JavaResourcePersistentType buildJavaTypeResource(ICompilationUnit cu) throws CoreException {
+		this.jpaCompilationUnit = this.buildJpaCompilationUnit(cu);
+		this.jpaCompilationUnit.resolveTypes();
+		return this.hackJavaResourcePersistentType();
+	}
+
+	protected JavaResourcePersistentType hackJavaResourcePersistentType() {
+		return (JavaResourcePersistentType) ClassTools.fieldValue(this.jpaCompilationUnit, "persistentType");
+	}
+
+	protected JpaCompilationUnit buildJpaCompilationUnit(ICompilationUnit cu) throws CoreException {
+		if (this.jpaCompilationUnit != null) {
 			throw new IllegalStateException();
 		}
-		IFile file = (IFile) cu.getResource();
 		JpaProject jpaProject = buildJpaProject();
-		return new JavaResourceModelImpl(
-			file, 
+		return new JpaCompilationUnitImpl(
+			cu,
 			jpaProject.getJpaPlatform().getAnnotationProvider(),
 			CommandExecutorProvider.Default.instance(),
-			NullAnnotationEditFormatter.instance());
+			NullAnnotationEditFormatter.instance(),
+			this.buildResourceModelListener()
+		);
+	}
+
+	ResourceModelListener buildResourceModelListener() {
+		return new ResourceModelListener() {
+			public void resourceModelChanged() {
+				// ignore
+			}
+		};
 	}
 
 }

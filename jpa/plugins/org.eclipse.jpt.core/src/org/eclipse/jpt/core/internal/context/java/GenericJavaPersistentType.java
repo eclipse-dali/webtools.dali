@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaFile;
@@ -64,7 +65,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	
 	@Override
 	public IResource getResource() {
-		return this.resourcePersistentType.getResourceModel().getJpaCompilationUnit().getCompilationUnit().getResource();
+		return this.resourcePersistentType.getJpaCompilationUnit().getCompilationUnit().getResource();
 	}
 
 	//****************** JpaStructureNode implementation *******************
@@ -115,7 +116,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 			}
 			
 			for (String annotationName : annotationsToRemove) {
-				this.resourcePersistentType.removeAnnotation(annotationName);
+				this.resourcePersistentType.removeSupportingAnnotation(annotationName);
 			}
 		}
 	}
@@ -310,10 +311,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 	
 	public boolean hasAnyAttributeMappingAnnotations() {
-		if (this.resourcePersistentType.hasAnyAttributeAnnotations()) {
-			return true;
-		}
-		return false;
+		return this.resourcePersistentType.hasAnyAttributeAnnotations();
 	}
 	
 	// ******************** Updating **********************
@@ -332,19 +330,18 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 	
 	protected void initializePersistentAttributes(JavaResourcePersistentType jrpt) {
-		Iterator<JavaResourcePersistentAttribute> resourceAttributes = jrpt.fields();
-		if (getAccess() == AccessType.PROPERTY) {
-			resourceAttributes = jrpt.properties();
-		}		
-		
-		while (resourceAttributes.hasNext()) {
-			this.attributes.add(createAttribute(resourceAttributes.next()));
+		for (Iterator<JavaResourcePersistentAttribute> stream = this.persistentAttributes(jrpt); stream.hasNext(); ) {
+			this.attributes.add(this.createAttribute(stream.next()));
 		}
+	}
+
+	protected Iterator<JavaResourcePersistentAttribute> persistentAttributes(JavaResourcePersistentType jrpt) {
+		return (this.getAccess() == AccessType.PROPERTY) ? jrpt.persistableProperties() : jrpt.persistableFields();
 	}
 
 	public void update(JavaResourcePersistentType jrpt) {
 		this.resourcePersistentType = jrpt;
-		getJpaFile(this.resourcePersistentType.getResourceModel()).addRootStructureNode(this.resourcePersistentType.getQualifiedName(), this);
+		getJpaFile(this.resourcePersistentType.getFile()).addRootStructureNode(this.resourcePersistentType.getQualifiedName(), this);
 		updateParentPersistentType(jrpt);
 		updateAccess(jrpt);
 		updateName(jrpt);
@@ -422,16 +419,12 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 
 	protected void updatePersistentAttributes(JavaResourcePersistentType jrpt) {
-		Iterator<JavaResourcePersistentAttribute> resourceAttributes = jrpt.fields();
-		if (getAccess() == AccessType.PROPERTY) {
-			resourceAttributes = jrpt.properties();
-		}
 		Collection<JavaPersistentAttribute> contextAttributesToRemove = CollectionTools.collection(attributes());
 		Collection<JavaPersistentAttribute> contextAttributesToUpdate = new ArrayList<JavaPersistentAttribute>();
 		int resourceIndex = 0;
 		
-		while (resourceAttributes.hasNext()) {
-			JavaResourcePersistentAttribute resourceAttribute = resourceAttributes.next();
+		for (Iterator<JavaResourcePersistentAttribute> stream = this.persistentAttributes(jrpt); stream.hasNext(); ) {
+			JavaResourcePersistentAttribute resourceAttribute = stream.next();
 			boolean contextAttributeFound = false;
 			for (JavaPersistentAttribute contextAttribute : contextAttributesToRemove) {
 				if (contextAttribute.getResourcePersistentAttribute() == resourceAttribute) {
@@ -545,11 +538,9 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 
 	public void dispose() {
-		JpaFile jpaFile = getJpaFile(this.resourcePersistentType.getResourceModel());
-		
+		JpaFile jpaFile = getJpaFile(this.resourcePersistentType.getFile());
 		if (jpaFile != null) {
-			//jpaFile can be null if the .java file was deleted,
-			//rootStructureNodes are cleared in the dispose of JpaFile
+			// the JPA file can be null if the .java file was deleted
 			jpaFile.removeRootStructureNode(this.resourcePersistentType.getQualifiedName());
 		}
 	}

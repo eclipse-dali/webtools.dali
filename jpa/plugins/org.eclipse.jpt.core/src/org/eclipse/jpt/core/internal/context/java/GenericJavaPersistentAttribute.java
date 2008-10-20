@@ -189,7 +189,7 @@ public class GenericJavaPersistentAttribute
 			}
 			
 			for (String annotationName : annotationsToRemove) {
-				this.resourcePersistentAttribute.removeAnnotation(annotationName);
+				this.resourcePersistentAttribute.removeSupportingAnnotation(annotationName);
 			}
 		}
 	}

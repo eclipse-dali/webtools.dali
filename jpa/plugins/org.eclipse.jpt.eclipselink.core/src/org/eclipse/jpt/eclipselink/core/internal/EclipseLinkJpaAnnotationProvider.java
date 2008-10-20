@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal;
 
-import java.util.Collection;
 import java.util.List;
+
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.CacheImpl.CacheAnnotationDefinition;
@@ -35,8 +35,8 @@ public class EclipseLinkJpaAnnotationProvider
 {
 	
 	@Override
-	protected void addTypeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
-		super.addTypeAnnotationDefinitionsTo(definitions);
+	protected void addTypeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		super.addTypeSupportingAnnotationDefinitionsTo(definitions);
 		definitions.add(CacheAnnotationDefinition.instance());
 		definitions.add(ChangeTrackingAnnotationDefinition.instance());
 		definitions.add(ConverterAnnotationDefinition.instance());
@@ -48,16 +48,16 @@ public class EclipseLinkJpaAnnotationProvider
 		definitions.add(TypeConverterAnnotationDefinition.instance());		
 	}
 
+	// 245996 addresses how the attribute mapping annotations should be ordered
 	@Override
-	//bug 245996 addresses how the attribute mapping annotations should be ordered
 	protected void addAttributeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		super.addAttributeMappingAnnotationDefinitionsTo(definitions);
 		definitions.add(TransformationAnnotationDefinition.instance());
 	}
 	
 	@Override
-	protected void addAttributeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
-		super.addAttributeAnnotationDefinitionsTo(definitions);
+	protected void addAttributeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		super.addAttributeSupportingAnnotationDefinitionsTo(definitions);
 		definitions.add(ConvertAnnotationDefinition.instance());
 		definitions.add(ConverterAnnotationDefinition.instance());
 		definitions.add(JoinFetchAnnotationDefinition.instance());

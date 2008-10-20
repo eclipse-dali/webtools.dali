@@ -58,7 +58,7 @@ public class NullDiscriminatorValue extends AbstractJavaResourceNode implements 
 	}
 	
 	protected DiscriminatorValueAnnotation createDiscriminatorValueResource() {
-		return (DiscriminatorValueAnnotation) getParent().addAnnotation(getAnnotationName());
+		return (DiscriminatorValueAnnotation) getParent().addSupportingAnnotation(getAnnotationName());
 	}
 
 	public void update(CompilationUnit astRoot) {

@@ -225,14 +225,14 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 		}
 		
 		for (String orphan : orphans) {
-			JavaResourcePersistentType javaResourcePersistentType = this.jpaProject.getJavaResourcePersistentType(orphan);
+			JavaResourcePersistentType jrpt = this.jpaProject.getJavaResourcePersistentType(orphan);
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CONTEXT,
 						new String[] {persistenceUnit.getName()},
-						javaResourcePersistentType.getResourceModel().getFile(),
-						javaResourcePersistentType.getMappingAnnotation().getTextRange(JDTTools.buildASTRoot(javaResourcePersistentType.getJpaCompilationUnit().getCompilationUnit()))
+						jrpt.getJpaCompilationUnit().getCompilationUnit().getResource(),
+						jrpt.getMappingAnnotation().getTextRange(JDTTools.buildASTRoot(jrpt.getJpaCompilationUnit().getCompilationUnit()))
 					)
 				);
 		}

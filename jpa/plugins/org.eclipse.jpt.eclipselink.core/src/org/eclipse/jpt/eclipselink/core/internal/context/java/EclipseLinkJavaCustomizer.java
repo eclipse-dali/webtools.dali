@@ -42,11 +42,11 @@ public class EclipseLinkJavaCustomizer extends AbstractJavaJpaContextNode implem
 	}
 		
 	protected void addResourceCustomizer() {
-		this.resourcePersistentType.addAnnotation(getAnnotationName());
+		this.resourcePersistentType.addSupportingAnnotation(getAnnotationName());
 	}
 	
 	protected void removeResourceCustomizer() {
-		this.resourcePersistentType.removeAnnotation(getAnnotationName());
+		this.resourcePersistentType.removeSupportingAnnotation(getAnnotationName());
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
@@ -54,7 +54,7 @@ public class EclipseLinkJavaCustomizer extends AbstractJavaJpaContextNode implem
 	}
 
 	protected CustomizerAnnotation getResourceCustomizer() {
-		return (CustomizerAnnotation) this.resourcePersistentType.getAnnotation(getAnnotationName());
+		return (CustomizerAnnotation) this.resourcePersistentType.getSupportingAnnotation(getAnnotationName());
 	}
 	
 	public String getCustomizerClass() {

@@ -20,11 +20,12 @@ import java.util.ListIterator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface Query extends JpaContextNode
+public interface Query
+	extends JpaContextNode
 {
 	// **************** name ***************************************************
 	
-	String NAME_PROPERTY = "nameProperty";
+	String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	
 	String getName();
 	
@@ -33,7 +34,7 @@ public interface Query extends JpaContextNode
 	
 	//************************ query ***********************
 	
-	String QUERY_PROPERTY = "queryProperty";
+	String QUERY_PROPERTY = "query"; //$NON-NLS-1$
 	
 	String getQuery();
 	
@@ -42,7 +43,7 @@ public interface Query extends JpaContextNode
 	
 	//************************ hints ***********************
 	
-	String HINTS_LIST = "hintsList";
+	String HINTS_LIST = "hints"; //$NON-NLS-1$
 	
 	/**
 	 * Return a list iterator of the hints.  This will not be null.
@@ -78,13 +79,13 @@ public interface Query extends JpaContextNode
 	// **************** validation *********************************************
 	
 	/**
-	 * Return true if this query overrides the definition of the given query
-	 * (for example, a query defined in orm.xml overrides one defined in java)
+	 * Return whether the query overrides the definition of the given query
+	 * (e.g. a query defined in orm.xml overrides one defined in java).
 	 */
 	boolean overrides(Query query);
 	
 	/**
-	 * Return true if this query is a duplicate of the given query
+	 * Return whether the query is a duplicate of the given query.
 	 * A query is not a duplicate of another query if is the same exact query,
 	 * if it is a nameless query (which is an error condition), or if it overrides 
 	 * or is overridden by the other query. 

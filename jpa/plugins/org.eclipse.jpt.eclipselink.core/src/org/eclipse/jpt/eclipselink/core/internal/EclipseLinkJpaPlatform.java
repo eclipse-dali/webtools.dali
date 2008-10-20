@@ -10,18 +10,24 @@
 package org.eclipse.jpt.eclipselink.core.internal;
 
 import java.util.List;
+
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFactory;
+import org.eclipse.jpt.core.JpaFileProvider;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingProvider;
 
-public class EclipseLinkJpaPlatform extends GenericJpaPlatform
+/**
+ * EclipseLink platform
+ */
+public class EclipseLinkJpaPlatform
+	extends GenericJpaPlatform
 {
-	public static String ID = "org.eclipse.eclipselink.platform"; //$NON-NLS-1$
+	public static final String ID = "org.eclipse.eclipselink.platform"; //$NON-NLS-1$
 
-	// ********* constructor *********
+
 	public EclipseLinkJpaPlatform() {
 		super();
 	}
@@ -31,22 +37,23 @@ public class EclipseLinkJpaPlatform extends GenericJpaPlatform
 		return EclipseLinkJpaPlatform.ID;
 	}
 
-	// ********* Model construction / updating *********
+	// ********* factory *********
 	@Override
 	protected JpaFactory buildJpaFactory() {
 		return new EclipseLinkJpaFactory();
 	}
 
-	// ********* java annotation support *********	
+	// ********* JPA files *********	
+	@Override
+	protected void addJpaFileProvidersTo(List<JpaFileProvider> providers) {
+		super.addJpaFileProvidersTo(providers);
+		providers.add(EclipseLinkOrmJpaFileProvider.instance());
+	}
+
+	// ********* java annotations *********	
 	@Override
 	protected JpaAnnotationProvider buildAnnotationProvider() {
 		return new EclipseLinkJpaAnnotationProvider();
-	}
-	
-	@Override
-	protected boolean supportsContentType(String contentTypeId) {
-		return contentTypeId.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE) ||
-			super.supportsContentType(contentTypeId);
 	}
 	
 	@Override
@@ -56,4 +63,5 @@ public class EclipseLinkJpaPlatform extends GenericJpaPlatform
 		//add these before calling super, want to check for Basic last in case the reference object is Serializable
 		super.addDefaultJavaAttributeMappingProvidersTo(providers);
 	}
+
 }

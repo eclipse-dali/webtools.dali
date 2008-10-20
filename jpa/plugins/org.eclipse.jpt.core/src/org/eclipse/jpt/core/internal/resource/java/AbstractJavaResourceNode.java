@@ -9,12 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
-import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
-import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.CallbackChangeSupport;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
@@ -68,16 +66,16 @@ public abstract class AbstractJavaResourceNode
 	public JpaCompilationUnit getJpaCompilationUnit() {
 		return this.parent.getJpaCompilationUnit();
 	}
-	
-	public JavaResourceModel getResourceModel() {
-		return this.getJpaCompilationUnit().getResourceModel();
-	}
 
+	public IFile getFile() {
+		return (IFile) this.getJpaCompilationUnit().getCompilationUnit().getResource();
+	}
+	
 
 	// ********** CallbackChangeSupport.Source implementation **********
 	
 	public void aspectChanged(String aspectName) {
-		this.getJpaCompilationUnit().resourceChanged();
+		this.getJpaCompilationUnit().resourceModelChanged();
 	}
 
 
@@ -87,16 +85,8 @@ public abstract class AbstractJavaResourceNode
 		return this.parent;
 	}
 
-	public JpaAnnotationProvider getAnnotationProvider() {
+	protected JpaAnnotationProvider getAnnotationProvider() {
 		return this.getJpaCompilationUnit().getAnnotationProvider();
 	}
 	
-	public CommandExecutorProvider getModifySharedDocumentCommandExecutorProvider() {
-		return this.getJpaCompilationUnit().getModifySharedDocumentCommandExecutorProvider();
-	}
-	
-	public AnnotationEditFormatter getAnnotationEditFormatter()  {
-		return this.getJpaCompilationUnit().getAnnotationEditFormatter();
-	}
-
 }

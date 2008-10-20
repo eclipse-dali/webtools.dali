@@ -7,12 +7,12 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.core;
+package org.eclipse.jpt.core;
 
-import org.eclipse.jpt.core.ResourceModel;
+import org.eclipse.core.resources.IFile;
 
 /**
- * 
+ * Map a content type to a JPA file.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -20,13 +20,19 @@ import org.eclipse.jpt.core.ResourceModel;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface EclipseLinkResourceModel extends ResourceModel
-{
+public interface JpaFileProvider {
+
 	/**
-	 * Constant representing an eclipselink mapping file (e.g. eclipselink-orm.xml) resource type
-	 * @see org.eclipse.jpt.core.ResourceModel#getResourceType()
+	 * Return the JPA file's content type ID.
 	 */
-	static final String ECLIPSELINK_ORM_RESOURCE_TYPE = "ECLIPSELINK_ORM_RESOURCE_TYPE"; //$NON-NLS-1$
+	String getContentId();
+
+	/**
+	 * Build a JPA file for the specified JPA project and file.
+	 * Use the specified factory for creation so extenders can simply override
+	 * the appropriate creation method instead of building a provider for the
+	 * same content.
+	 */
+	JpaFile buildJpaFile(JpaProject jpaProject, IFile file, JpaFactory factory);
 
 }
-

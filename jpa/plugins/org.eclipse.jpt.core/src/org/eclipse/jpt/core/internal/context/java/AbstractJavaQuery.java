@@ -124,31 +124,31 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 		fireItemMoved(Query.HINTS_LIST, targetIndex, sourceIndex);		
 	}
 	
-	protected void initialize(QueryAnnotation resourceQuery) {
-		this.resourceQuery = resourceQuery;
-		this.name = resourceQuery.getName();
-		this.query = resourceQuery.getQuery();
-		this.initializeQueryHints(resourceQuery);
+	protected void initialize(QueryAnnotation queryAnnotation) {
+		this.resourceQuery = queryAnnotation;
+		this.name = queryAnnotation.getName();
+		this.query = queryAnnotation.getQuery();
+		this.initializeQueryHints(queryAnnotation);
 	}
 
-	protected void update(QueryAnnotation resourceQuery) {
-		this.resourceQuery = resourceQuery;
-		this.setName_(resourceQuery.getName());
-		this.setQuery_(resourceQuery.getQuery());
-		this.updateQueryHints(resourceQuery);
+	protected void update(QueryAnnotation queryAnnotation) {
+		this.resourceQuery = queryAnnotation;
+		this.setName_(queryAnnotation.getName());
+		this.setQuery_(queryAnnotation.getQuery());
+		this.updateQueryHints(queryAnnotation);
 	}
 
-	protected void initializeQueryHints(QueryAnnotation resourceQuery) {
-		ListIterator<QueryHintAnnotation> annotations = resourceQuery.hints();
+	protected void initializeQueryHints(QueryAnnotation queryAnnotation) {
+		ListIterator<QueryHintAnnotation> annotations = queryAnnotation.hints();
 		
 		while(annotations.hasNext()) {
 			this.hints.add(createQueryHint(annotations.next()));
 		}
 	}
 	
-	protected void updateQueryHints(QueryAnnotation resourceQuery) {
+	protected void updateQueryHints(QueryAnnotation queryAnnotation) {
 		ListIterator<JavaQueryHint> contextHints = hints();
-		ListIterator<QueryHintAnnotation> resourceHints = resourceQuery.hints();
+		ListIterator<QueryHintAnnotation> resourceHints = queryAnnotation.hints();
 		
 		while (contextHints.hasNext()) {
 			JavaQueryHint hint = contextHints.next();
@@ -179,14 +179,17 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 		return this.resourceQuery.getNameTextRange(astRoot);
 	}
 	
-	public boolean overrides(Query query) {
+	public boolean overrides(Query other) {
 		// java is at the base of the tree
 		return false;
 	}
 	
-	public boolean duplicates(Query query) {
-		return ! StringTools.stringIsEmpty(this.getName()) && getName().equals(query.getName()) 
-			&& ! this.overrides(query) && ! query.overrides(this);
+	public boolean duplicates(Query other) {
+		return (this != other)
+				&& ! StringTools.stringIsEmpty(this.name)
+				&& this.name.equals(other.getName())
+				&& ! this.overrides(other)
+				&& ! other.overrides(this);
 	}
 	
 	@Override

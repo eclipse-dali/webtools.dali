@@ -18,22 +18,23 @@ package org.eclipse.jpt.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface GeneratedValue extends JpaContextNode
+public interface GeneratedValue
+	extends JpaContextNode
 {
 
 	GenerationType getStrategy();
 	GenerationType getDefaultStrategy();
 	GenerationType getSpecifiedStrategy();
 	void setSpecifiedStrategy(GenerationType value);
-		String SPECIFIED_STRATEGY_PROPERTY = "specifiedStrategyProperty";
-		String DEFAULT_STRATEGY_PROPERTY = "defaultStrategyProperty";
+		String SPECIFIED_STRATEGY_PROPERTY = "specifiedStrategy"; //$NON-NLS-1$
+		String DEFAULT_STRATEGY_PROPERTY = "defaultStrategy"; //$NON-NLS-1$
 	
 	String getGenerator();
 	String getDefaultGenerator();
 		GenerationType DEFAULT_STRATEGY = GenerationType.AUTO;
 	String getSpecifiedGenerator();
 	void setSpecifiedGenerator(String value);
-		String SPECIFIED_GENERATOR_PROPERTY = "specifiedGeneratorProperty";
-		String DEFAULT_GENERATOR_PROPERTY = "defaultGeneratorProperty";
+		String SPECIFIED_GENERATOR_PROPERTY = "specifiedGenerator"; //$NON-NLS-1$
+		String DEFAULT_GENERATOR_PROPERTY = "defaultGenerator"; //$NON-NLS-1$
 
 }
