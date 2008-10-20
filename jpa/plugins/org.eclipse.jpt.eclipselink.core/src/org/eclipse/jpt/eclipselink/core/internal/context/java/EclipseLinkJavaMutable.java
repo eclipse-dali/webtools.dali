@@ -48,9 +48,6 @@ public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implement
 
 
 	protected boolean caclulateDefaultMutable() {
-		if (getResourceMutable() != null) {
-			return true;
-		}
 		if (this.resourcePersistentAttribute.typeIsDateOrCalendar()) {
 			//TODO calculate the default based on the persistence.xml mutable 
 			//property setting  for Date and Calendar bug 228042
