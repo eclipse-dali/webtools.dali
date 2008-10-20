@@ -1,7 +1,9 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlMutable;
@@ -20,6 +22,10 @@ public class EclipseLinkOrmMutable extends AbstractXmlContextNode
 		super(parent);
 	}
 	
+	
+	protected OrmAttributeMapping getAttributeMapping() {
+		return (OrmAttributeMapping) getParent();
+	}
 	
 	public boolean isMutable() {
 		return (getSpecifiedMutable() != null) ? getSpecifiedMutable() : isDefaultMutable();
@@ -62,8 +68,18 @@ public class EclipseLinkOrmMutable extends AbstractXmlContextNode
 	}
 	
 	protected boolean calculateDefaultMutable() {
-		// TODO consult persistence.xml property
-		return false;
+		OrmAttributeMapping attributeMapping = getAttributeMapping();
+		JavaPersistentAttribute javaAttribute = attributeMapping.getJavaPersistentAttribute();
+		if (javaAttribute == null) {
+			return false;
+		}
+		JavaResourcePersistentAttribute javaResourceAttribute = javaAttribute.getResourcePersistentAttribute();
+		if (javaResourceAttribute.typeIsDateOrCalendar()) {
+			// TODO - calculate the default based on the persistence.xml mutable 
+			// property setting  for Date and Calendar bug 228042
+			return false;
+		}
+		return javaResourceAttribute.typeIsSerializable();
 	}
 	
 	
