@@ -94,6 +94,19 @@ public interface JpaUiFactory
 		WidgetFactory widgetFactory);
 
 	/**
+	 * Creates a new <code>JpaComposite</code> used to edit an <code>JavaEntity</code>.
+	 *
+	 * @param subjectHolder The holder of the java entity
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create the widgets
+	 * @return A new <code>JpaComposite</code>
+	 */
+	JpaComposite createJavaEntityComposite(
+		PropertyValueModel<JavaEntity> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory);
+
+	/**
 	 * Creates a new <code>JpaComposite</code> used to edit an <code>EmbeddedIdMapping</code>.
 	 *
 	 * @param subjectHolder The holder of the embedded ID mapping
@@ -116,19 +129,6 @@ public interface JpaUiFactory
 	 */
 	JpaComposite createEmbeddedMappingComposite(
 		PropertyValueModel<EmbeddedMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory);
-
-	/**
-	 * Creates a new <code>JpaComposite</code> used to edit an <code>JavaEntity</code>.
-	 *
-	 * @param subjectHolder The holder of the java entity
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create the widgets
-	 * @return A new <code>JpaComposite</code>
-	 */
-	JpaComposite createJavaEntityComposite(
-		PropertyValueModel<JavaEntity> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
 
