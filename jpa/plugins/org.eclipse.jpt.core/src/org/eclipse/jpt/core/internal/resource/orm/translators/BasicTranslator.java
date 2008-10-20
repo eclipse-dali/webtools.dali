@@ -25,6 +25,7 @@ public class BasicTranslator extends Translator
 		super(domNameAndPath, aFeature);
 	}
 	
+	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
 		return OrmFactory.eINSTANCE.createXmlBasicImpl();
@@ -37,7 +38,7 @@ public class BasicTranslator extends Translator
 		}
 		return this.children;
 	}
-		
+	
 	protected Translator[] createChildren() {
 		return new Translator[] {
 			createNameTranslator(),
@@ -50,31 +51,31 @@ public class BasicTranslator extends Translator
 		};
 	}
 	
-	private Translator createNameTranslator() {
+	protected Translator createNameTranslator() {
 		return new Translator(NAME, ORM_PKG.getXmlAttributeMapping_Name(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createFetchTranslator() {
+	protected Translator createFetchTranslator() {
 		return new Translator(FETCH, ORM_PKG.getXmlBasic_Fetch(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createOptionalTranslator() {
+	protected Translator createOptionalTranslator() {
 		return new BooleanTranslator(OPTIONAL, ORM_PKG.getXmlBasic_Optional(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createColumnTranslator() {
+	protected Translator createColumnTranslator() {
 		return new ColumnTranslator(COLUMN, ORM_PKG.getColumnMapping_Column());
 	}
 	
-	private Translator createLobTranslator() {
+	protected Translator createLobTranslator() {
 		return new EmptyTagBooleanTranslator(LOB, ORM_PKG.getXmlConvertibleMapping_Lob());
 	}
 	
-	private Translator createTemporalTranslator() {
+	protected Translator createTemporalTranslator() {
 		return new Translator(TEMPORAL, ORM_PKG.getXmlConvertibleMapping_Temporal());
 	}
 	
-	private Translator createEnumeratedTranslator() {
+	protected Translator createEnumeratedTranslator() {
 		return new Translator(ENUMERATED, ORM_PKG.getXmlConvertibleMapping_Enumerated());
 	}
 }

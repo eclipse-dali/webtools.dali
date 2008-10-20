@@ -46,43 +46,43 @@ public class AttributesTranslator extends Translator
 		};
 	}
 	
-	private Translator createIdTranslator() {
+	protected Translator createIdTranslator() {
 		return new IdTranslator(ID, ORM_PKG.getAttributes_Ids());
 	}
 	
-	private Translator createEmbeddedIdTranslator() {
+	protected Translator createEmbeddedIdTranslator() {
 		return new EmbeddedIdTranslator(EMBEDDED_ID, ORM_PKG.getAttributes_EmbeddedIds());
 	}
 	
-	private Translator createBasicTranslator() {
+	protected Translator createBasicTranslator() {
 		return new BasicTranslator(BASIC, ORM_PKG.getAttributes_Basics());
 	}
 	
-	private Translator createVersionTranslator() {
+	protected Translator createVersionTranslator() {
 		return new VersionTranslator(VERSION, ORM_PKG.getAttributes_Versions());
 	}
 	
-	private Translator createManyToOneTranslator() {
+	protected Translator createManyToOneTranslator() {
 		return new ManyToOneTranslator(MANY_TO_ONE, ORM_PKG.getAttributes_ManyToOnes());
 	}
 	
-	private Translator createOneToManyTranslator() {
+	protected Translator createOneToManyTranslator() {
 		return new OneToManyTranslator(ONE_TO_MANY, ORM_PKG.getAttributes_OneToManys());
 	}
 	
-	private Translator createOneToOneTranslator() {
+	protected Translator createOneToOneTranslator() {
 		return new OneToOneTranslator(ONE_TO_ONE, ORM_PKG.getAttributes_OneToOnes());
 	}
 	
-	private Translator createManyToManyTranslator() {
+	protected Translator createManyToManyTranslator() {
 		return new ManyToManyTranslator(MANY_TO_MANY, ORM_PKG.getAttributes_ManyToManys());
 	}
 	
-	private Translator createEmbeddedTranslator() {
+	protected Translator createEmbeddedTranslator() {
 		return new EmbeddedTranslator(EMBEDDED, ORM_PKG.getAttributes_Embeddeds());
 	}
 	
-	private Translator createTransientTranslator() {
+	protected Translator createTransientTranslator() {
 		return new TransientTranslator(TRANSIENT, ORM_PKG.getAttributes_Transients());
 	}
 }

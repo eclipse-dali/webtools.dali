@@ -47,27 +47,27 @@ public class IdTranslator extends Translator
 		};
 	}
 	
-	private Translator createNameTranslator() {
+	protected Translator createNameTranslator() {
 		return new Translator(NAME, ORM_PKG.getXmlAttributeMapping_Name(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createColumnTranslator() {
+	protected Translator createColumnTranslator() {
 		return new ColumnTranslator(COLUMN, ORM_PKG.getColumnMapping_Column());
 	}
 	
-	private Translator createGeneratedValueTranslator() {
+	protected Translator createGeneratedValueTranslator() {
 		return new GeneratedValueTranslator(GENERATED_VALUE, ORM_PKG.getXmlId_GeneratedValue());
 	}
 	
-	private Translator createTemporalTranslator() {
+	protected Translator createTemporalTranslator() {
 		return new Translator(TEMPORAL, ORM_PKG.getXmlConvertibleMapping_Temporal());
 	}
 	
-	private Translator createTableGeneratorTranslator() {
+	protected Translator createTableGeneratorTranslator() {
 		return new TableGeneratorTranslator(TABLE_GENERATOR, ORM_PKG.getXmlId_TableGenerator());
 	}
 	
-	private Translator createSequenceGeneratorTranslator() {
+	protected Translator createSequenceGeneratorTranslator() {
 		return new SequenceGeneratorTranslator(SEQUENCE_GENERATOR, ORM_PKG.getXmlId_SequenceGenerator());
 	}
 }

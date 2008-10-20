@@ -24,11 +24,12 @@ public class VersionTranslator extends Translator
 		super(domNameAndPath, aFeature);
 	}
 	
+	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
 		return OrmFactory.eINSTANCE.createXmlVersionImpl();
 	}
-
+	
 	@Override
 	public Translator[] getChildren(Object target, int versionID) {
 		if (this.children == null) {
@@ -44,16 +45,16 @@ public class VersionTranslator extends Translator
 			createTemporalTranslator(),
 		};
 	}
-
-	private Translator createNameTranslator() {
+	
+	protected Translator createNameTranslator() {
 		return new Translator(NAME, ORM_PKG.getXmlAttributeMapping_Name(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createColumnTranslator() {
+	protected Translator createColumnTranslator() {
 		return new ColumnTranslator(COLUMN, ORM_PKG.getColumnMapping_Column());
 	}
 	
-	private Translator createTemporalTranslator() {
+	protected Translator createTemporalTranslator() {
 		return new Translator(TEMPORAL, ORM_PKG.getXmlConvertibleMapping_Temporal());
 	}
 }
