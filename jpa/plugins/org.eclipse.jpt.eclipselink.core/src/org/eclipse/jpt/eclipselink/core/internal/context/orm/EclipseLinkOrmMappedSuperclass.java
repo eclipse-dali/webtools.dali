@@ -18,10 +18,9 @@ import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
+import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaCustomizer;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaReadOnly;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
@@ -92,12 +91,12 @@ public class EclipseLinkOrmMappedSuperclass extends GenericOrmMappedSuperclass
 		return (EclipseLinkJavaMappedSuperclass) super.getJavaMappedSuperclassForDefaults();
 	}
 	
-	protected JavaReadOnly getJavaReadOnly() {
+	protected ReadOnly getJavaReadOnly() {
 		EclipseLinkJavaMappedSuperclass javaMappedSuperclass = getJavaMappedSuperclassForDefaults();
 		return (javaMappedSuperclass == null) ? null : javaMappedSuperclass.getReadOnly();
 	}
 	
-	protected JavaCustomizer getJavaCustomizer() {
+	protected Customizer getJavaCustomizer() {
 		EclipseLinkJavaMappedSuperclass javaMappedSuperclass = getJavaMappedSuperclassForDefaults();
 		return (javaMappedSuperclass == null) ? null : javaMappedSuperclass.getCustomizer();
 	}

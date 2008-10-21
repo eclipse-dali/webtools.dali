@@ -14,10 +14,10 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwned;
+import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.java.PrivateOwnedAnnotation;
 
-public class EclipseLinkJavaPrivateOwned extends AbstractJavaJpaContextNode implements JavaPrivateOwned
+public class EclipseLinkJavaPrivateOwned extends AbstractJavaJpaContextNode implements PrivateOwned
 {
 	protected boolean privateOwned;
 	

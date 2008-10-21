@@ -12,12 +12,12 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaExpiryTimeOfDay;
+import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.ExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.resource.java.TimeOfDayAnnotation;
 
 public class EclipseLinkJavaExpiryTimeOfDay extends AbstractJavaJpaContextNode
-	implements JavaExpiryTimeOfDay
+	implements ExpiryTimeOfDay
 {
 	
 	protected Integer hour;
@@ -27,7 +27,7 @@ public class EclipseLinkJavaExpiryTimeOfDay extends AbstractJavaJpaContextNode
 	
 	protected TimeOfDayAnnotation timeOfDay;
 	
-	public EclipseLinkJavaExpiryTimeOfDay(JavaCaching parent) {
+	public EclipseLinkJavaExpiryTimeOfDay(Caching parent) {
 		super(parent);
 	}
 	

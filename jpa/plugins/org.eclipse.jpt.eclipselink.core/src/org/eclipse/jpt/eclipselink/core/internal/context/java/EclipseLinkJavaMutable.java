@@ -15,10 +15,9 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaMutable;
 import org.eclipse.jpt.eclipselink.core.resource.java.MutableAnnotation;
 
-public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implements JavaMutable
+public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implements Mutable
 {
 	protected boolean defaultMutable;
 	protected Boolean specifiedMutable;

@@ -15,10 +15,9 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaReadOnly;
 import org.eclipse.jpt.eclipselink.core.resource.java.ReadOnlyAnnotation;
 
-public class EclipseLinkJavaReadOnly extends AbstractJavaJpaContextNode implements JavaReadOnly
+public class EclipseLinkJavaReadOnly extends AbstractJavaJpaContextNode implements ReadOnly
 {
 	
 	protected Boolean specifiedReadOnly;

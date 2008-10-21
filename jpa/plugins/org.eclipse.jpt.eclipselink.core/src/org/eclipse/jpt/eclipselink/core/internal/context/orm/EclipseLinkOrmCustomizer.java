@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Customizer;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaCustomizer;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizer;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
@@ -88,13 +87,13 @@ public class EclipseLinkOrmCustomizer extends AbstractXmlContextNode
 	
 	// **************** initialize/update **************************************
 	
-	protected void initialize(XmlCustomizerHolder resource, JavaCustomizer javaCustomizer) {
+	protected void initialize(XmlCustomizerHolder resource, Customizer javaCustomizer) {
 		this.resource = resource;
 		this.defaultCustomizerClass = (javaCustomizer == null) ? null : javaCustomizer.getCustomizerClass();
 		this.specifiedCustomizerClass = specifiedCustomizerClass(getResourceCustomizer());
 	}
 	
-	protected void update(XmlCustomizerHolder resource, JavaCustomizer javaCustomizer) {
+	protected void update(XmlCustomizerHolder resource, Customizer javaCustomizer) {
 		this.resource = resource;
 		setDefaultCustomizerClass((javaCustomizer == null) ? null : javaCustomizer.getCustomizerClass());
 		setSpecifiedCustomizerClass_(specifiedCustomizerClass(getResourceCustomizer()));

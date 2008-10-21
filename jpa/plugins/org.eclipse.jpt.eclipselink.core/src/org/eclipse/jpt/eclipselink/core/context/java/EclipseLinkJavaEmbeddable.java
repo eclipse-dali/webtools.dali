@@ -27,9 +27,5 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEmbeddable;
 public interface EclipseLinkJavaEmbeddable extends EclipseLinkEmbeddable, JavaEmbeddable
 {
 	JavaConverterHolder getConverterHolder();
-	
-	JavaCustomizer getCustomizer();
-	
-	JavaChangeTracking getChangeTracking();
 
 }

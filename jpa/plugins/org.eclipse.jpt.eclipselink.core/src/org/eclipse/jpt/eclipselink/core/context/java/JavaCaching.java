@@ -49,12 +49,4 @@ public interface JavaCaching extends Caching, JavaJpaContextNode
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update(JavaResourcePersistentType resourcePersistentType);	
-	
-	
-	//********* covariant overrides ************
-	
-	JavaExpiryTimeOfDay getExpiryTimeOfDay();
-	
-	JavaExpiryTimeOfDay addExpiryTimeOfDay();
-
 }

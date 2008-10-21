@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaConversionValue;
+import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
@@ -22,7 +22,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.ConversionValueAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkJavaConversionValue extends AbstractJavaJpaContextNode implements JavaConversionValue
+public class EclipseLinkJavaConversionValue extends AbstractJavaJpaContextNode implements ConversionValue
 {	
 	private ConversionValueAnnotation resourceConversionValue;
 	

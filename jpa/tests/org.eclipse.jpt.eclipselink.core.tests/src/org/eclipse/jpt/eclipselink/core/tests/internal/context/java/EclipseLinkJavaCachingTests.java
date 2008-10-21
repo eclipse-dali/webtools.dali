@@ -19,7 +19,6 @@ import org.eclipse.jpt.eclipselink.core.context.ExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.ExistenceType;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.ExistenceCheckingAnnotation;
@@ -593,7 +592,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaExpiryTimeOfDay timeOfDayExpiry = caching.addExpiryTimeOfDay();
+		ExpiryTimeOfDay timeOfDayExpiry = caching.addExpiryTimeOfDay();
 		
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.CACHE);
 		assertNotNull(cacheAnnotation.getExpiryTimeOfDay());

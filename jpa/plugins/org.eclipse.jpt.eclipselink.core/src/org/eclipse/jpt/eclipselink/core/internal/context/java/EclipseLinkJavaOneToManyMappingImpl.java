@@ -15,28 +15,21 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToManyMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
+import org.eclipse.jpt.eclipselink.core.context.JoinFetchable;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwned;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.resource.java.PrivateOwnedAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMapping implements EclipseLinkOneToManyMapping
 {
 	
-	protected final JavaJoinFetchable joinFetchable;
-	protected final JavaPrivateOwned privateOwnable;
+	protected final EclipseLinkJavaJoinFetchable joinFetchable;
+	protected final EclipseLinkJavaPrivateOwned privateOwned;
 	
 	public EclipseLinkJavaOneToManyMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
-		this.joinFetchable = getJpaFactory().buildJavaJoinFetchable(this);
-		this.privateOwnable = getJpaFactory().buildJavaPrivateOwnable(this);
-	}
-	
-	@Override
-	protected EclipseLinkJpaFactory getJpaFactory() {
-		return (EclipseLinkJpaFactory) super.getJpaFactory();
+		this.joinFetchable = new EclipseLinkJavaJoinFetchable(this);
+		this.privateOwned = new EclipseLinkJavaPrivateOwned(this);
 	}
 	
 	protected String getPrivateOwnedAnnotationName() {
@@ -55,32 +48,32 @@ public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMap
 		this.resourcePersistentAttribute.removeSupportingAnnotation(getPrivateOwnedAnnotationName());
 	}
 	
-	public JavaJoinFetchable getJoinFetchable() {
+	public JoinFetchable getJoinFetchable() {
 		return this.joinFetchable;
 	}
 
 	public PrivateOwned getPrivateOwned() {
-		return this.privateOwnable;
+		return this.privateOwned;
 	}
 	
 	@Override
 	public void initialize(JavaResourcePersistentAttribute jrpa) {
 		super.initialize(jrpa);
 		this.joinFetchable.initialize(jrpa);
-		this.privateOwnable.initialize(jrpa);
+		this.privateOwned.initialize(jrpa);
 	}
 	
 	@Override
 	public void update(JavaResourcePersistentAttribute jrpa) {
 		super.update(jrpa);
 		this.joinFetchable.update(jrpa);
-		this.privateOwnable.update(jrpa);
+		this.privateOwned.update(jrpa);
 	}
 		
 	@Override
 	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
 		super.validate(messages, astRoot);
 		this.joinFetchable.validate(messages, astRoot);
-		this.privateOwnable.validate(messages, astRoot);
+		this.privateOwned.validate(messages, astRoot);
 	}
 }

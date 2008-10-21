@@ -14,12 +14,12 @@ import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.ChangeTrackingType;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaChangeTracking;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingAnnotation;
 
-public class EclipseLinkJavaChangeTracking extends AbstractJavaJpaContextNode implements JavaChangeTracking
+public class EclipseLinkJavaChangeTracking extends AbstractJavaJpaContextNode implements ChangeTracking
 {
 	
 	protected boolean changeTracking;

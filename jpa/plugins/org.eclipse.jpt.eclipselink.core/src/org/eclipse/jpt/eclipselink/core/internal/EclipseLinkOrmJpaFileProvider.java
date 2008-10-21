@@ -14,6 +14,8 @@ import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaFileProvider;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.internal.XmlJpaFile;
+import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmResourceModelProvider;
 
 /**
  * EclipseLink orm.xml
@@ -44,7 +46,7 @@ public class EclipseLinkOrmJpaFileProvider
 	}
 
 	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file, JpaFactory factory) {
-		return ((EclipseLinkJpaFactory) factory).buildEclipseLinkOrmJpaFile(jpaProject, file);
+		return new XmlJpaFile(jpaProject, file, EclipseLinkOrmResourceModelProvider.getModelProvider(file).getResource());
 	}
 
 }

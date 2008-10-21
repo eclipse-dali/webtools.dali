@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaReadOnly;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly;
 
 public class EclipseLinkOrmReadOnly extends AbstractXmlContextNode
@@ -60,13 +59,13 @@ public class EclipseLinkOrmReadOnly extends AbstractXmlContextNode
 	
 	// **************** initialize/update **************************************
 	
-	protected void initialize(XmlReadOnly resource, JavaReadOnly javaReadOnly) {
+	protected void initialize(XmlReadOnly resource, ReadOnly javaReadOnly) {
 		this.resource = resource;
 		this.defaultReadOnly = (javaReadOnly == null) ? false : javaReadOnly.isReadOnly();
 		this.specifiedReadOnly = resource.getReadOnly();
 	}
 	
-	protected void update(XmlReadOnly resource, JavaReadOnly javaReadOnly) {
+	protected void update(XmlReadOnly resource, ReadOnly javaReadOnly) {
 		this.resource = resource;
 		setDefaultReadOnly((javaReadOnly == null) ? false : javaReadOnly.isReadOnly());
 		setSpecifiedReadOnly(resource.getReadOnly());

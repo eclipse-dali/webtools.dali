@@ -18,8 +18,6 @@ import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEmbeddable;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaCustomizer;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -32,15 +30,9 @@ public class EclipseLinkOrmEmbeddable extends GenericOrmEmbeddable
 	
 	public EclipseLinkOrmEmbeddable(OrmPersistentType parent) {
 		super(parent);
-		this.customizer = getJpaFactory().buildOrmCustomizer(this);
+		this.customizer = new EclipseLinkOrmCustomizer(this);
 	}
 	
-	
-	@Override
-	protected EclipseLinkJpaFactory getJpaFactory() {
-		return (EclipseLinkJpaFactory) super.getJpaFactory();
-	}
-
 	public ChangeTracking getChangeTracking() {
 		// TODO Auto-generated method stub
 		return null;
@@ -80,7 +72,7 @@ public class EclipseLinkOrmEmbeddable extends GenericOrmEmbeddable
 	}
 	
 	
-	protected JavaCustomizer getJavaCustomizer() {
+	protected Customizer getJavaCustomizer() {
 		EclipseLinkJavaEmbeddable javaEmbeddable = getJavaEmbeddableForDefaults();
 		return (javaEmbeddable == null) ? null : javaEmbeddable.getCustomizer();
 	}

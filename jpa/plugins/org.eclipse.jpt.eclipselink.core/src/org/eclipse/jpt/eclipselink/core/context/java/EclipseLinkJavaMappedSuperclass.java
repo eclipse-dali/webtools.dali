@@ -34,12 +34,6 @@ public interface EclipseLinkJavaMappedSuperclass extends EclipseLinkMappedSuperc
 
 	JavaCaching getCaching();
 	
-	JavaReadOnly getReadOnly();
-	
-	JavaCustomizer getCustomizer();
-
-	JavaChangeTracking getChangeTracking();
-
 	Iterator<JavaPersistentAttribute> overridableAttributes();
 	Iterator<JavaPersistentAttribute> overridableAssociations();
 }

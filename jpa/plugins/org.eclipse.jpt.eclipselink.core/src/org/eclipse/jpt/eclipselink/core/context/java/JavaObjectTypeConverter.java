@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context.java;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
 
 /**
@@ -25,8 +24,4 @@ import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
 public interface JavaObjectTypeConverter extends ObjectTypeConverter, EclipseLinkJavaConverter
 {
 
-	//************ covariant overrides ****************
-	
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaConversionValue> conversionValues();
 }

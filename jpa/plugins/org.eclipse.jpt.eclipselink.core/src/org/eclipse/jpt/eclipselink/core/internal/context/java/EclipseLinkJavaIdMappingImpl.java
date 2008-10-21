@@ -16,24 +16,18 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaIdMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaIdMapping;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaMutable;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
+import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkJavaIdMappingImpl extends GenericJavaIdMapping implements EclipseLinkJavaIdMapping
+public class EclipseLinkJavaIdMappingImpl extends GenericJavaIdMapping implements EclipseLinkIdMapping
 {
-	protected final JavaMutable mutable;
+	protected final EclipseLinkJavaMutable mutable;
 	
 	public EclipseLinkJavaIdMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
-		this.mutable = getJpaFactory().buildJavaMutable(this);
-	}
-	
-	@Override
-	protected EclipseLinkJpaFactory getJpaFactory() {
-		return (EclipseLinkJpaFactory) super.getJpaFactory();
+		this.mutable = new EclipseLinkJavaMutable(this);
 	}
 
 	@Override
@@ -43,7 +37,7 @@ public class EclipseLinkJavaIdMappingImpl extends GenericJavaIdMapping implement
 			return javaConverter;
 		}
 		if (converterType == Convert.ECLIPSE_LINK_CONVERTER) {
-			return getJpaFactory().buildJavaConvert(this, this.resourcePersistentAttribute);
+			return new EclipseLinkJavaConvert(this, this.resourcePersistentAttribute);
 		}
 		return null;
 	}
@@ -63,7 +57,7 @@ public class EclipseLinkJavaIdMappingImpl extends GenericJavaIdMapping implement
 	
 	//************ EclipselinkJavaIdMapping implementation ****************
 	
-	public JavaMutable getMutable() {
+	public Mutable getMutable() {
 		return this.mutable;
 	}
 	

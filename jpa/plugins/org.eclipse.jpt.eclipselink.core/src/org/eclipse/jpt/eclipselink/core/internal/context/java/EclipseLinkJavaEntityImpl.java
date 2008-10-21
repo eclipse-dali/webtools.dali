@@ -14,13 +14,12 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaEntity;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
+import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
+import org.eclipse.jpt.eclipselink.core.context.Customizer;
+import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaChangeTracking;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaCustomizer;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaReadOnly;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements EclipseLinkJavaEntity
@@ -29,25 +28,20 @@ public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements Ecli
 	
 	protected final JavaConverterHolder converterHolder;
 	
-	protected final JavaReadOnly readOnly;
+	protected final EclipseLinkJavaReadOnly readOnly;
 	
-	protected final JavaCustomizer customizer;
+	protected final EclipseLinkJavaCustomizer customizer;
 	
-	protected final JavaChangeTracking changeTracking;
+	protected final EclipseLinkJavaChangeTracking changeTracking;
 
 	public EclipseLinkJavaEntityImpl(JavaPersistentType parent) {
 		super(parent);
-		this.eclipseLinkCaching = getJpaFactory().buildJavaCaching(this);
-		this.converterHolder = getJpaFactory().buildJavaConverterHolder(this);
-		this.readOnly = getJpaFactory().buildJavaReadOnly(this);
-		this.changeTracking = getJpaFactory().buildJavaChangeTracking(this);
-		this.customizer = getJpaFactory().buildJavaCustomizer(this);
+		this.eclipseLinkCaching = new EclipseLinkJavaCaching(this);
+		this.converterHolder = new EclipseLinkJavaConverterHolder(this);
+		this.readOnly = new EclipseLinkJavaReadOnly(this);
+		this.changeTracking = new EclipseLinkJavaChangeTracking(this);
+		this.customizer = new EclipseLinkJavaCustomizer(this);
 	}
-	
-	@Override
-	protected EclipseLinkJpaFactory getJpaFactory() {
-		return (EclipseLinkJpaFactory) super.getJpaFactory();
-	}	
 	
 	public JavaCaching getCaching() {
 		return this.eclipseLinkCaching;
@@ -57,15 +51,15 @@ public class EclipseLinkJavaEntityImpl extends GenericJavaEntity implements Ecli
 		return this.converterHolder;
 	}
 	
-	public JavaReadOnly getReadOnly() {
+	public ReadOnly getReadOnly() {
 		return this.readOnly;
 	}
 	
-	public JavaCustomizer getCustomizer() {
+	public Customizer getCustomizer() {
 		return this.customizer;
 	}
 	
-	public JavaChangeTracking getChangeTracking() {
+	public ChangeTracking getChangeTracking() {
 		return this.changeTracking;
 	}
 	

@@ -21,9 +21,7 @@ import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.context.ExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.ExistenceType;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.ExistenceCheckingAnnotation;
@@ -47,7 +45,7 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 	protected CacheCoordinationType specifiedCoordinationType;
 	
 	protected Integer expiry;
-	protected JavaExpiryTimeOfDay expiryTimeOfDay;
+	protected EclipseLinkJavaExpiryTimeOfDay expiryTimeOfDay;
 	
 	
 	protected JavaResourcePersistentType resourcePersistentType;
@@ -59,11 +57,6 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 	@Override
 	public JavaTypeMapping getParent() {
 		return (JavaTypeMapping) super.getParent();
-	}
-	
-	@Override
-	protected EclipseLinkJpaFactory getJpaFactory() {
-		return (EclipseLinkJpaFactory) super.getJpaFactory();
 	}
 	
 
@@ -170,7 +163,7 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 			setSpecifiedDisableHits(null);
 			setSpecifiedCoordinationType(null);
 			setExpiry(null);
-			if (getExpiryTimeOfDay() != null) {
+			if (this.expiryTimeOfDay != null) {
 				removeExpiryTimeOfDay();
 			}
 		}
@@ -372,7 +365,7 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 		this.expiry = newExpiry;
 		getCacheAnnotation().setExpiry(newExpiry);
 		firePropertyChanged(EXPIRY_PROPERTY, oldExpiry, newExpiry);
-		if (newExpiry != null && getExpiryTimeOfDay() != null) {
+		if (newExpiry != null && this.expiryTimeOfDay != null) {
 			removeExpiryTimeOfDay();
 		}
 	}
@@ -383,18 +376,18 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 		firePropertyChanged(EXPIRY_PROPERTY, oldExpiry, newExpiry);
 	}
 	
-	public JavaExpiryTimeOfDay getExpiryTimeOfDay() {
+	public ExpiryTimeOfDay getExpiryTimeOfDay() {
 		return this.expiryTimeOfDay;
 	}
 	
-	public JavaExpiryTimeOfDay addExpiryTimeOfDay() {
+	public ExpiryTimeOfDay addExpiryTimeOfDay() {
 		if (this.expiryTimeOfDay != null) {
 			throw new IllegalStateException("expiryTimeOfDay already exists, use getExpiryTimeOfDay()"); //$NON-NLS-1$
 		}
 		if (this.resourcePersistentType.getSupportingAnnotation(getCacheAnnotationName()) == null) {
 			this.resourcePersistentType.addSupportingAnnotation(getCacheAnnotationName());
 		}
-		JavaExpiryTimeOfDay newExpiryTimeOfDay = getJpaFactory().buildJavaExpiryTimeOfDay(this);
+		EclipseLinkJavaExpiryTimeOfDay newExpiryTimeOfDay = new EclipseLinkJavaExpiryTimeOfDay(this);
 		this.expiryTimeOfDay = newExpiryTimeOfDay;
 		TimeOfDayAnnotation timeOfDayAnnotation = getCacheAnnotation().addExpiryTimeOfDay();
 		newExpiryTimeOfDay.initialize(timeOfDayAnnotation);
@@ -413,8 +406,8 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, oldExpiryTimeOfDay, null);
 	}
 	
-	protected void setExpiryTimeOfDay(JavaExpiryTimeOfDay newExpiryTimeOfDay) {
-		JavaExpiryTimeOfDay oldExpiryTimeOfDay = this.expiryTimeOfDay;
+	protected void setExpiryTimeOfDay(EclipseLinkJavaExpiryTimeOfDay newExpiryTimeOfDay) {
+		EclipseLinkJavaExpiryTimeOfDay oldExpiryTimeOfDay = this.expiryTimeOfDay;
 		this.expiryTimeOfDay = newExpiryTimeOfDay;
 		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, oldExpiryTimeOfDay, newExpiryTimeOfDay);
 	}
@@ -448,7 +441,7 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 		}
 		else {
 			if (cache.getExpiry() == null) { //handle with validation if both expiry and expiryTimeOfDay are set
-				this.expiryTimeOfDay =getJpaFactory().buildJavaExpiryTimeOfDay(this);
+				this.expiryTimeOfDay = new EclipseLinkJavaExpiryTimeOfDay(this);
 				this.expiryTimeOfDay.initialize(cache.getExpiryTimeOfDay());
 			}
 		}
@@ -483,12 +476,12 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 			setExpiry_(cache.getExpiry());
 		}
 		else {
-			if (getExpiryTimeOfDay() != null) {
-				getExpiryTimeOfDay().update(cache.getExpiryTimeOfDay());
+			if (this.expiryTimeOfDay != null) {
+				this.expiryTimeOfDay.update(cache.getExpiryTimeOfDay());
 			}
 			else if (cache.getExpiry() == null){
-				setExpiryTimeOfDay(getJpaFactory().buildJavaExpiryTimeOfDay(this));
-				getExpiryTimeOfDay().initialize(cache.getExpiryTimeOfDay());
+				setExpiryTimeOfDay(new EclipseLinkJavaExpiryTimeOfDay(this));
+				this.expiryTimeOfDay.initialize(cache.getExpiryTimeOfDay());
 			}
 			else { //handle with validation if both expiry and expiryTimeOfDay are set
 				setExpiryTimeOfDay(null);

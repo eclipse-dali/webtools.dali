@@ -12,12 +12,12 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaConvert;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
@@ -27,7 +27,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.TypeConverterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implements JavaConvert
+public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implements Convert, JavaConverter
 {
 	private String specifiedConverterName;
 	

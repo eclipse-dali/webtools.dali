@@ -36,12 +36,6 @@ public interface EclipseLinkJavaEntity extends EclipseLinkEntity, JavaEntity
 	JavaConverterHolder getConverterHolder();
 
 	JavaCaching getCaching();
-
-	JavaReadOnly getReadOnly();
-	
-	JavaCustomizer getCustomizer();
-	
-	JavaChangeTracking getChangeTracking();
 	
 	// included these to prevent warnings on the implementation
 	ListIterator<JavaSecondaryTable> secondaryTables();	

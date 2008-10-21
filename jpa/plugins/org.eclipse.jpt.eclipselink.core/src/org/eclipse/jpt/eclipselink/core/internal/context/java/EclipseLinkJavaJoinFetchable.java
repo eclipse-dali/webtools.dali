@@ -16,10 +16,9 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchable;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
 import org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchAnnotation;
 
-public class EclipseLinkJavaJoinFetchable extends AbstractJavaJpaContextNode implements JavaJoinFetchable
+public class EclipseLinkJavaJoinFetchable extends AbstractJavaJpaContextNode implements JoinFetchable
 {
 	
 	protected boolean joinFetch;	

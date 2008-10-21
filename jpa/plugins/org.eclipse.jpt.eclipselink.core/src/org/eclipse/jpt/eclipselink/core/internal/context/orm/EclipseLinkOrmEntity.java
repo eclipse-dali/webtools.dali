@@ -18,10 +18,9 @@ import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
+import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaCustomizer;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaReadOnly;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
@@ -92,12 +91,12 @@ public class EclipseLinkOrmEntity extends GenericOrmEntity
 		return (EclipseLinkJavaEntity) super.getJavaEntityForDefaults();
 	}
 	
-	protected JavaReadOnly getJavaReadOnly() {
+	protected ReadOnly getJavaReadOnly() {
 		EclipseLinkJavaEntity javaEntity = getJavaEntityForDefaults();
 		return (javaEntity == null) ? null : javaEntity.getReadOnly();
 	}
 	
-	protected JavaCustomizer getJavaCustomizer() {
+	protected Customizer getJavaCustomizer() {
 		EclipseLinkJavaEntity javaEntity = getJavaEntityForDefaults();
 		return (javaEntity == null) ? null : javaEntity.getCustomizer();
 	}

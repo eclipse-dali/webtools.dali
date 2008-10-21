@@ -14,11 +14,10 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaEmbeddable;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
+import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaCustomizer;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaEmbeddableImpl extends GenericJavaEmbeddable implements EclipseLinkJavaEmbeddable
@@ -26,34 +25,28 @@ public class EclipseLinkJavaEmbeddableImpl extends GenericJavaEmbeddable impleme
 	
 	protected final JavaConverterHolder converterHolder;
 	
-	protected final JavaCustomizer customizer;
+	protected final EclipseLinkJavaCustomizer customizer;
 	
-	protected final JavaChangeTracking changeTracking;
+	protected final EclipseLinkJavaChangeTracking changeTracking;
 	
 	public EclipseLinkJavaEmbeddableImpl(JavaPersistentType parent) {
 		super(parent);
-		this.converterHolder = getJpaFactory().buildJavaConverterHolder(this);
-		this.customizer = getJpaFactory().buildJavaCustomizer(this);
-		this.changeTracking = getJpaFactory().buildJavaChangeTracking(this);
+		this.converterHolder = new EclipseLinkJavaConverterHolder(this);
+		this.customizer = new EclipseLinkJavaCustomizer(this);
+		this.changeTracking = new EclipseLinkJavaChangeTracking(this);
 	}
 	
 	public JavaConverterHolder getConverterHolder() {
 		return this.converterHolder;
 	}
 	
-	public JavaCustomizer getCustomizer() {
+	public Customizer getCustomizer() {
 		return this.customizer;
 	}
 	
-	public JavaChangeTracking getChangeTracking() {
+	public ChangeTracking getChangeTracking() {
 		return this.changeTracking;
-	}
-	
-	@Override
-	protected EclipseLinkJpaFactory getJpaFactory() {
-		return (EclipseLinkJpaFactory) super.getJpaFactory();
-	}
-	
+	}	
 	
 	@Override
 	public void initialize(JavaResourcePersistentType jrpt) {

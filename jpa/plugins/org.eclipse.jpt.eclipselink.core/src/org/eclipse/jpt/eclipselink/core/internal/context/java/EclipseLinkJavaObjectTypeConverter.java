@@ -20,9 +20,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConversionValueAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -42,17 +40,12 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 
 	private String defaultObjectValue;
 
-	private final List<JavaConversionValue> conversionValues;
+	private final List<EclipseLinkJavaConversionValue> conversionValues;
 	
 	public EclipseLinkJavaObjectTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
 		super(parent);
-		this.conversionValues = new ArrayList<JavaConversionValue>();
+		this.conversionValues = new ArrayList<EclipseLinkJavaConversionValue>();
 		this.initialize(jrpm);
-	}
-	
-	@Override
-	protected EclipseLinkJpaFactory getJpaFactory() {
-		return (EclipseLinkJpaFactory) super.getJpaFactory();
 	}
 
 	public String getType() {
@@ -130,16 +123,16 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 		firePropertyChanged(OBJECT_TYPE_PROPERTY, oldObjectType, newObjectType);
 	}
 
-	public ListIterator<JavaConversionValue> conversionValues() {
-		return new CloneListIterator<JavaConversionValue>(this.conversionValues);
+	public ListIterator<EclipseLinkJavaConversionValue> conversionValues() {
+		return new CloneListIterator<EclipseLinkJavaConversionValue>(this.conversionValues);
 	}
 	
 	public int conversionValuesSize() {
 		return this.conversionValues.size();
 	}
 	
-	public JavaConversionValue addConversionValue(int index) {
-		JavaConversionValue conversionValue = getJpaFactory().buildJavaConversionValue(this);
+	public EclipseLinkJavaConversionValue addConversionValue(int index) {
+		EclipseLinkJavaConversionValue conversionValue = new EclipseLinkJavaConversionValue(this);
 		this.conversionValues.add(index, conversionValue);
 		ConversionValueAnnotation resourceConversionValue = getResourceConverter().addConversionValue(index);
 		conversionValue.initialize(resourceConversionValue);
@@ -147,15 +140,15 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 		return conversionValue;
 	}
 
-	public JavaConversionValue addConversionValue() {
+	public EclipseLinkJavaConversionValue addConversionValue() {
 		return this.addConversionValue(this.conversionValues.size());
 	}
 	
-	protected void addConversionValue(int index, JavaConversionValue conversionValue) {
+	protected void addConversionValue(int index, EclipseLinkJavaConversionValue conversionValue) {
 		addItemToList(index, conversionValue, this.conversionValues, CONVERSION_VALUES_LIST);
 	}
 	
-	protected void addConversionValue(JavaConversionValue conversionValue) {
+	protected void addConversionValue(EclipseLinkJavaConversionValue conversionValue) {
 		this.addConversionValue(this.conversionValues.size(), conversionValue);
 	}
 	
@@ -164,12 +157,12 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 	}
 	
 	public void removeConversionValue(int index) {
-		JavaConversionValue removedConversionValue = this.conversionValues.remove(index);
+		EclipseLinkJavaConversionValue removedConversionValue = this.conversionValues.remove(index);
 		getResourceConverter().removeConversionValue(index);
 		fireItemRemoved(CONVERSION_VALUES_LIST, index, removedConversionValue);
 	}
 	
-	protected void removeConversionValue_(JavaConversionValue conversionValue) {
+	protected void removeConversionValue_(EclipseLinkJavaConversionValue conversionValue) {
 		removeItemFromList(conversionValue, this.conversionValues, CONVERSION_VALUES_LIST);
 	}
 	
@@ -180,9 +173,9 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 	}
 	
 	public ListIterator<String> dataValues() {
-		return new TransformationListIterator<JavaConversionValue, String>(conversionValues()) {
+		return new TransformationListIterator<EclipseLinkJavaConversionValue, String>(conversionValues()) {
 			@Override
-			protected String transform(JavaConversionValue next) {
+			protected String transform(EclipseLinkJavaConversionValue next) {
 				return next.getDataValue();
 			}
 		};
@@ -226,8 +219,8 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 		}
 	}
 
-	protected JavaConversionValue buildConversionValue(ConversionValueAnnotation resourceConversionValue) {
-		JavaConversionValue conversionValue = getJpaFactory().buildJavaConversionValue(this);
+	protected EclipseLinkJavaConversionValue buildConversionValue(ConversionValueAnnotation resourceConversionValue) {
+		EclipseLinkJavaConversionValue conversionValue = new EclipseLinkJavaConversionValue(this);
 		conversionValue.initialize(resourceConversionValue);
 		return conversionValue;
 	}
@@ -244,10 +237,10 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 
 	
 	protected void updateConversionValues(ObjectTypeConverterAnnotation resourceConverter) {
-		ListIterator<JavaConversionValue> contextConversionValues = conversionValues();
+		ListIterator<EclipseLinkJavaConversionValue> contextConversionValues = conversionValues();
 		ListIterator<ConversionValueAnnotation> resourceConversionValues = resourceConverter.conversionValues();
 		while (contextConversionValues.hasNext()) {
-			JavaConversionValue conversionValues = contextConversionValues.next();
+			EclipseLinkJavaConversionValue conversionValues = contextConversionValues.next();
 			if (resourceConversionValues.hasNext()) {
 				conversionValues.update(resourceConversionValues.next());
 			}
@@ -282,7 +275,7 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 	@Override
 	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
 		super.validate(messages, astRoot);
-		for (Iterator<JavaConversionValue> stream = conversionValues(); stream.hasNext();) {
+		for (Iterator<EclipseLinkJavaConversionValue> stream = conversionValues(); stream.hasNext();) {
 			stream.next().validate(messages, astRoot);
 		}
 	}

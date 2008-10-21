@@ -15,26 +15,20 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaManyToManyMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
+import org.eclipse.jpt.eclipselink.core.context.JoinFetchable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaManyToManyMappingImpl extends GenericJavaManyToManyMapping implements EclipseLinkRelationshipMapping
 {
 	
-	protected final JavaJoinFetchable joinFetchable;
+	protected final EclipseLinkJavaJoinFetchable joinFetchable;
 
 	public EclipseLinkJavaManyToManyMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
-		this.joinFetchable = getJpaFactory().buildJavaJoinFetchable(this);
+		this.joinFetchable = new EclipseLinkJavaJoinFetchable(this);
 	}
 
-	@Override
-	protected EclipseLinkJpaFactory getJpaFactory() {
-		return (EclipseLinkJpaFactory) super.getJpaFactory();
-	}
-
-	public JavaJoinFetchable getJoinFetchable() {
+	public JoinFetchable getJoinFetchable() {
 		return this.joinFetchable;
 	}
 	
