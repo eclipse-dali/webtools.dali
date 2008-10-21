@@ -51,39 +51,39 @@ public class OneToOneTranslator extends Translator
 		};
 	}
 	
-	private Translator createNameTranslator() {
+	protected Translator createNameTranslator() {
 		return new Translator(NAME, ORM_PKG.getXmlAttributeMapping_Name(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createTargetEntityTranslator() {
+	protected Translator createTargetEntityTranslator() {
 		return new Translator(TARGET_ENTITY, ORM_PKG.getXmlRelationshipMapping_TargetEntity(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createFetchTranslator() {
+	protected Translator createFetchTranslator() {
 		return new Translator(FETCH, ORM_PKG.getXmlRelationshipMapping_Fetch(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createOptionalTranslator() {
+	protected Translator createOptionalTranslator() {
 		return new Translator(OPTIONAL, ORM_PKG.getXmlSingleRelationshipMapping_Optional(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createMappedByTranslator() {
+	protected Translator createMappedByTranslator() {
 		return new Translator(MAPPED_BY, ORM_PKG.getXmlOneToOne_MappedBy(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createPrimaryKeyJoinColumnTranslator() {
+	protected Translator createPrimaryKeyJoinColumnTranslator() {
 		return new PrimaryKeyJoinColumnTranslator(PRIMARY_KEY_JOIN_COLUMN, ORM_PKG.getXmlOneToOne_PrimaryKeyJoinColumns());
 	}
 	
-	private Translator createJoinColumnTranslator() {
+	protected Translator createJoinColumnTranslator() {
 		return new JoinColumnTranslator(JOIN_COLUMN, ORM_PKG.getXmlSingleRelationshipMapping_JoinColumns());
 	}
 	
-	private Translator createJoinTableTranslator() {
+	protected Translator createJoinTableTranslator() {
 		return new JoinTableTranslator(JOIN_TABLE, ORM_PKG.getXmlRelationshipMapping_JoinTable());
 	}
 		
-	private Translator createCascadeTranslator() {
+	protected Translator createCascadeTranslator() {
 		return new CascadeTypeTranslator(CASCADE, ORM_PKG.getXmlRelationshipMapping_Cascade());
 	}
 
