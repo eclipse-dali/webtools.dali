@@ -47,6 +47,7 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 			createInheritanceTranslator(),
 			createDiscriminatorValueTranslator(),
 			createDiscriminatorColumnTranslator(),
+			createCacheTranslator(),
 			createSequenceGeneratorTranslator(),
 			createTableGeneratorTranslator(),
 			createNamedQueryTranslator(),
@@ -76,6 +77,10 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 		return new CustomizerTranslator(CUSTOMIZER, ECLIPSELINK_ORM_PKG.getXmlCustomizerHolder_Customizer());
 	}
 	
+	protected Translator createCacheTranslator() {
+		return new CacheTranslator();
+	}
+		
 	@Override
 	protected Translator createAttributesTranslator() {
 		return new EclipseLinkAttributesTranslator(ATTRIBUTES, ORM_PKG.getAbstractXmlTypeMapping_Attributes());

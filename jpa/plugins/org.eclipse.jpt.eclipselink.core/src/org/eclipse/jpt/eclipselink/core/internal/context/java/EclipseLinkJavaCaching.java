@@ -118,11 +118,11 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 		firePropertyChanged(SPECIFIED_TYPE_PROPERTY, oldSpecifiedType, newSpecifiedType);
 	}
 
-	public Integer getSize() {
-		return (this.getSpecifiedSize() == null) ? getDefaultSize() : this.getSpecifiedSize();
+	public int getSize() {
+		return (this.getSpecifiedSize() == null) ? getDefaultSize() : this.getSpecifiedSize().intValue();
 	}
 
-	public Integer getDefaultSize() {
+	public int getDefaultSize() {
 		return Caching.DEFAULT_SIZE;
 	}
 	
@@ -144,11 +144,11 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 	}
 
 
-	public Boolean getShared() {
-		return (this.getSpecifiedShared() == null) ? this.getDefaultShared() : this.getSpecifiedShared();
+	public boolean isShared() {
+		return (this.specifiedShared == null) ? this.isDefaultShared() : this.specifiedShared.booleanValue();
 	}
 	
-	public Boolean getDefaultShared() {
+	public boolean isDefaultShared() {
 		return Caching.DEFAULT_SHARED;
 	}
 	
@@ -182,11 +182,11 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 		firePropertyChanged(Caching.SPECIFIED_SHARED_PROPERTY, oldSpecifiedShared, newSpecifiedShared);
 	}
 
-	public Boolean getAlwaysRefresh() {
-		return (this.getSpecifiedAlwaysRefresh() == null) ? this.getDefaultAlwaysRefresh() : this.getSpecifiedAlwaysRefresh();
+	public boolean isAlwaysRefresh() {
+		return (this.specifiedAlwaysRefresh == null) ? this.isDefaultAlwaysRefresh() : this.specifiedAlwaysRefresh.booleanValue();
 	}
 	
-	public Boolean getDefaultAlwaysRefresh() {
+	public boolean isDefaultAlwaysRefresh() {
 		return Caching.DEFAULT_ALWAYS_REFRESH;
 	}
 	
@@ -207,11 +207,11 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 		firePropertyChanged(Caching.SPECIFIED_ALWAYS_REFRESH_PROPERTY, oldAlwaysRefresh, newSpecifiedAlwaysRefresh);
 	}
 
-	public Boolean getRefreshOnlyIfNewer() {
-		return (this.getSpecifiedRefreshOnlyIfNewer() == null) ? this.getDefaultRefreshOnlyIfNewer() : this.getSpecifiedRefreshOnlyIfNewer();
+	public boolean isRefreshOnlyIfNewer() {
+		return (this.specifiedRefreshOnlyIfNewer == null) ? this.isDefaultRefreshOnlyIfNewer() : this.specifiedRefreshOnlyIfNewer.booleanValue();
 	}
 	
-	public Boolean getDefaultRefreshOnlyIfNewer() {
+	public boolean isDefaultRefreshOnlyIfNewer() {
 		return Caching.DEFAULT_REFRESH_ONLY_IF_NEWER;
 	}
 	
@@ -232,11 +232,11 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 		firePropertyChanged(Caching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY, oldRefreshOnlyIfNewer, newSpecifiedRefreshOnlyIfNewer);
 	}
 
-	public Boolean getDisableHits() {
-		return (this.getSpecifiedDisableHits() == null) ? this.getDefaultDisableHits() : this.getSpecifiedDisableHits();
+	public boolean isDisableHits() {
+		return (this.specifiedDisableHits == null) ? this.isDefaultDisableHits() : this.specifiedDisableHits.booleanValue();
 	}
 	
-	public Boolean getDefaultDisableHits() {
+	public boolean isDefaultDisableHits() {
 		return Caching.DEFAULT_DISABLE_HITS;
 	}
 	

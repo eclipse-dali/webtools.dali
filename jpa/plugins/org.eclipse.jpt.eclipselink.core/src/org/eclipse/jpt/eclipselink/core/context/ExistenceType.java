@@ -67,52 +67,40 @@ public enum ExistenceType {
 	}
 	
 
-//	public static CacheType fromOrmResourceModel(org.eclipse.jpt.core.resource.orm.FetchType ormCacheType) {
-//		if (ormCacheType == null) {
-//			return null;
-//		}
-//		switch (ormCacheType) {
-//			case FULL:
-//				return FULL;
-//			case WEAK:
-//				return WEAK;
-//			case SOFT:
-//				return SOFT;
-//			case SOFT_WEAK:
-//				return SOFT_WEAK;
-//			case HARD_WEAK:
-//				return HARD_WEAK;
-//			case CACHE:
-//				return CACHE;
-//			case NONE:
-//				return NONE;
-//			default:
-//				throw new IllegalArgumentException("unknown cache type: " + ormCacheType);
-//		}
-//	}
-//	
-//	public static org.eclipse.jpt.core.resource.orm.FetchType toOrmResourceModel(CacheType cacheType) {
-//		if (cacheType == null) {
-//			return null;
-//		}
-//		switch (cacheType) {
-//			case FULL:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.FULL;
-//			case WEAK:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.WEAK;
-//			case SOFT:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.SOFT;
-//			case SOFT_WEAK:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.SOFT_WEAK;
-//			case HARD_WEAK:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.HARD_WEAK;
-//			case CACHE:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.CACHE;
-//			case NONE:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.NONE;
-//			default:
-//				throw new IllegalArgumentException("unknown cache type: " + cacheType);
-//		}
-//	}
+	public static ExistenceType fromOrmResourceModel(org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType ormExistenceType) {
+		if (ormExistenceType == null) {
+			return null;
+		}
+		switch (ormExistenceType) {
+			case CHECK_CACHE:
+				return CHECK_CACHE;
+			case CHECK_DATABASE:
+				return CHECK_DATABASE;
+			case ASSUME_EXISTENCE:
+				return ASSUME_EXISTENCE;
+			case ASSUME_NON_EXISTENCE:
+				return ASSUME_NON_EXISTENCE;
+			default:
+				throw new IllegalArgumentException("unknown existence type: " + ormExistenceType); //$NON-NLS-1$
+		}
+	}
+	
+	public static org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType toOrmResourceModel(ExistenceType existenceType) {
+		if (existenceType == null) {
+			return null;
+		}
+		switch (existenceType) {
+			case CHECK_CACHE:
+				return org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType.CHECK_CACHE;
+			case CHECK_DATABASE:
+				return org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType.CHECK_DATABASE;
+			case ASSUME_EXISTENCE:
+				return org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType.ASSUME_EXISTENCE;
+			case ASSUME_NON_EXISTENCE:
+				return org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType.ASSUME_NON_EXISTENCE;
+			default:
+				throw new IllegalArgumentException("unknown existence type: " + existenceType); //$NON-NLS-1$
+		}
+	}
 
 }

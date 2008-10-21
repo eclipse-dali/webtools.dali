@@ -62,57 +62,45 @@ public enum CacheCoordinationType {
 			case NONE:
 				return org.eclipse.jpt.eclipselink.core.resource.java.CacheCoordinationType.NONE;
 			default:
-				throw new IllegalArgumentException("unknown cache type: " + cacheCoordinationType); //$NON-NLS-1$
+				throw new IllegalArgumentException("unknown cache coordination type: " + cacheCoordinationType); //$NON-NLS-1$
 		}
 	}
 	
 
-//	public static CacheType fromOrmResourceModel(org.eclipse.jpt.core.resource.orm.FetchType ormCacheType) {
-//		if (ormCacheType == null) {
-//			return null;
-//		}
-//		switch (ormCacheType) {
-//			case FULL:
-//				return FULL;
-//			case WEAK:
-//				return WEAK;
-//			case SOFT:
-//				return SOFT;
-//			case SOFT_WEAK:
-//				return SOFT_WEAK;
-//			case HARD_WEAK:
-//				return HARD_WEAK;
-//			case CACHE:
-//				return CACHE;
-//			case NONE:
-//				return NONE;
-//			default:
-//				throw new IllegalArgumentException("unknown cache type: " + ormCacheType);
-//		}
-//	}
-//	
-//	public static org.eclipse.jpt.core.resource.orm.FetchType toOrmResourceModel(CacheType cacheType) {
-//		if (cacheType == null) {
-//			return null;
-//		}
-//		switch (cacheType) {
-//			case FULL:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.FULL;
-//			case WEAK:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.WEAK;
-//			case SOFT:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.SOFT;
-//			case SOFT_WEAK:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.SOFT_WEAK;
-//			case HARD_WEAK:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.HARD_WEAK;
-//			case CACHE:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.CACHE;
-//			case NONE:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.NONE;
-//			default:
-//				throw new IllegalArgumentException("unknown cache type: " + cacheType);
-//		}
-//	}
+	public static CacheCoordinationType fromOrmResourceModel(org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType ormCacheCoordinationType) {
+		if (ormCacheCoordinationType == null) {
+			return null;
+		}
+		switch (ormCacheCoordinationType) {
+			case SEND_OBJECT_CHANGES:
+				return SEND_OBJECT_CHANGES;
+			case INVALIDATE_CHANGED_OBJECTS:
+				return INVALIDATE_CHANGED_OBJECTS;
+			case SEND_NEW_OBJECTS_WITH_CHANGES:
+				return SEND_NEW_OBJECTS_WITH_CHANGES;
+			case NONE:
+				return NONE;
+			default:
+				throw new IllegalArgumentException("unknown cache coordination type: " + ormCacheCoordinationType); //$NON-NLS-1$
+		}
+	}
+	
+	public static org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType toOrmResourceModel(CacheCoordinationType cacheCoordinationType) {
+		if (cacheCoordinationType == null) {
+			return null;
+		}
+		switch (cacheCoordinationType) {
+			case SEND_OBJECT_CHANGES:
+				return org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType.SEND_OBJECT_CHANGES;
+			case INVALIDATE_CHANGED_OBJECTS:
+				return org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS;
+			case SEND_NEW_OBJECTS_WITH_CHANGES:
+				return org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES;
+			case NONE:
+				return org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType.NONE;
+			default:
+				throw new IllegalArgumentException("unknown cache coordination type: " + cacheCoordinationType); //$NON-NLS-1$
+		}
+	}
 
 }

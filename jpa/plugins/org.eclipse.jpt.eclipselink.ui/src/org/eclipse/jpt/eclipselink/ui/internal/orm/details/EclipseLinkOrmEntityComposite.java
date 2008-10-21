@@ -19,7 +19,6 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEntity;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CachingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ChangeTrackingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CustomizerComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ReadOnlyComposite;
@@ -57,7 +56,7 @@ public class EclipseLinkOrmEntityComposite extends AbstractEntityComposite<OrmEn
 		container = addCollapsableSection(
 			addSubPane(container, 5),
 			EclipseLinkUiMappingsMessages.EclipseLinkTypeMappingComposite_caching);
-		new CachingComposite(this, buildCachingHolder(), container);
+		new OrmCachingComposite(this, buildCachingHolder(), container);
 	}
 	
 	private PropertyAspectAdapter<OrmEntity, Caching> buildCachingHolder() {

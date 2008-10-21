@@ -14,6 +14,13 @@ import java.util.Collection;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.AlwaysRefreshComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CacheCoordinationTypeComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CacheSizeComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CacheTypeComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.DisableHitsComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ExpiryComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.RefreshOnlyIfNewerComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -56,11 +63,11 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class CachingComposite extends FormPane<Caching>
+public abstract class CachingComposite<T extends Caching> extends FormPane<T>
 {
 
-	public CachingComposite(FormPane<?> parentPane,
-        PropertyValueModel<Caching> subjectHolder,
+	protected CachingComposite(FormPane<?> parentPane,
+        PropertyValueModel<T> subjectHolder,
         Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -95,11 +102,11 @@ public class CachingComposite extends FormPane<Caching>
 		initializeAdvancedPane(addSubPane(advancedSection, 0, 16), panes);
 			
 		new PaneEnabler(buildSharedCacheEnabler(), panes);
-			
-		new ExistenceCheckingComposite(this, addSubPane(container, 8));
+		
+		initializeExistenceCheckingComposite(addSubPane(container, 8));
 	}
 	
-	private void initializeAdvancedPane(Composite container, Collection<Pane<?>> panes) {
+	protected void initializeAdvancedPane(Composite container, Collection<Pane<?>> panes) {
 		panes.add(new ExpiryComposite(this, container));//don't add to panes, will handle its own enablement
 		panes.add(new AlwaysRefreshComposite(this, container));
 		panes.add(new RefreshOnlyIfNewerComposite(this, container));
@@ -107,11 +114,13 @@ public class CachingComposite extends FormPane<Caching>
 		panes.add(new CacheCoordinationTypeComposite(this, container));
 	}
 	
+	protected abstract void initializeExistenceCheckingComposite(Composite parent);
+	
 	private PropertyValueModel<Boolean> buildSharedCacheEnabler() {
 		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.SPECIFIED_SHARED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return this.subject.getShared();
+				return this.subject.isShared();
 			}
 		};
 	}	
@@ -151,7 +160,7 @@ public class CachingComposite extends FormPane<Caching>
 
 				if ((getSubject() != null) && (value == null)) {
 
-					Boolean defaultValue = getSubject().getDefaultShared();
+					Boolean defaultValue = getSubject().isDefaultShared();
 
 					if (defaultValue != null) {
 

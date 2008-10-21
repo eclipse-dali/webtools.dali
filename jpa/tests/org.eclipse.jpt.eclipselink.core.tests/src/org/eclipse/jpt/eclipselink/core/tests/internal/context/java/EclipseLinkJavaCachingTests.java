@@ -25,6 +25,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.ExistenceCheckingAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTestCase
 {	
 	public EclipseLinkJavaCachingTests(String name) {
@@ -105,13 +106,13 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
-		assertEquals(Boolean.TRUE, caching.getShared());
+		assertEquals(true, caching.isShared());
 		
 		caching.setSpecifiedShared(Boolean.FALSE);
 		
 		
 		assertEquals(Boolean.FALSE, entity.getCaching().getSpecifiedShared());
-		assertEquals(Boolean.FALSE, entity.getCaching().getShared());
+		assertEquals(false, entity.getCaching().isShared());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
@@ -174,7 +175,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
-		assertEquals(Boolean.TRUE, caching.getShared());
+		assertEquals(true, caching.isShared());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.addSupportingAnnotation(EclipseLinkJPA.CACHE);
@@ -182,7 +183,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		
 		assertEquals(Boolean.FALSE, cacheAnnotation.getShared());				
 		assertEquals(Boolean.FALSE, entity.getCaching().getSpecifiedShared());
-		assertEquals(Boolean.FALSE, entity.getCaching().getShared());
+		assertEquals(false, entity.getCaching().isShared());
 	}
 	
 	public void testSetSpecifiedType() throws Exception {
@@ -242,13 +243,13 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
-		assertEquals(Boolean.FALSE, caching.getAlwaysRefresh());
+		assertEquals(false, caching.isAlwaysRefresh());
 		
 		caching.setSpecifiedAlwaysRefresh(Boolean.FALSE);
 		
 		
 		assertEquals(Boolean.FALSE, entity.getCaching().getSpecifiedAlwaysRefresh());
-		assertEquals(Boolean.FALSE, entity.getCaching().getAlwaysRefresh());
+		assertEquals(false, entity.getCaching().isAlwaysRefresh());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
@@ -264,7 +265,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
-		assertEquals(Boolean.FALSE, caching.getAlwaysRefresh());
+		assertEquals(false, caching.isAlwaysRefresh());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.addSupportingAnnotation(EclipseLinkJPA.CACHE);
@@ -272,7 +273,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		
 		assertEquals(Boolean.TRUE, cacheAnnotation.getAlwaysRefresh());				
 		assertEquals(Boolean.TRUE, entity.getCaching().getSpecifiedAlwaysRefresh());
-		assertEquals(Boolean.TRUE, entity.getCaching().getAlwaysRefresh());
+		assertEquals(true, entity.getCaching().isAlwaysRefresh());
 	}
 	
 	public void testSetSpecifiedRefreshOnlyIfNewer() throws Exception {
@@ -282,13 +283,13 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
-		assertEquals(Boolean.FALSE, caching.getRefreshOnlyIfNewer());
+		assertEquals(false, caching.isRefreshOnlyIfNewer());
 		
 		caching.setSpecifiedRefreshOnlyIfNewer(Boolean.TRUE);
 		
 		
 		assertEquals(Boolean.TRUE, entity.getCaching().getSpecifiedRefreshOnlyIfNewer());
-		assertEquals(Boolean.TRUE, entity.getCaching().getRefreshOnlyIfNewer());
+		assertEquals(true, entity.getCaching().isRefreshOnlyIfNewer());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
@@ -304,7 +305,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
-		assertEquals(Boolean.FALSE, caching.getRefreshOnlyIfNewer());
+		assertEquals(false, caching.isRefreshOnlyIfNewer());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.addSupportingAnnotation(EclipseLinkJPA.CACHE);
@@ -312,7 +313,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		
 		assertEquals(Boolean.TRUE, cacheAnnotation.getRefreshOnlyIfNewer());				
 		assertEquals(Boolean.TRUE, entity.getCaching().getSpecifiedRefreshOnlyIfNewer());
-		assertEquals(Boolean.TRUE, entity.getCaching().getRefreshOnlyIfNewer());
+		assertEquals(true, entity.getCaching().isRefreshOnlyIfNewer());
 	}
 
 	public void testSetSpecifiedDisableHits() throws Exception {
@@ -322,13 +323,13 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
-		assertEquals(Boolean.FALSE, caching.getDisableHits());
+		assertEquals(false, caching.isDisableHits());
 		
 		caching.setSpecifiedDisableHits(Boolean.TRUE);
 		
 		
 		assertEquals(Boolean.TRUE, entity.getCaching().getSpecifiedDisableHits());
-		assertEquals(Boolean.TRUE, entity.getCaching().getDisableHits());
+		assertEquals(true, entity.getCaching().isDisableHits());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
@@ -344,7 +345,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
-		assertEquals(Boolean.FALSE, caching.getDisableHits());
+		assertEquals(false, caching.isDisableHits());
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.addSupportingAnnotation(EclipseLinkJPA.CACHE);
@@ -352,7 +353,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		
 		assertEquals(Boolean.TRUE, cacheAnnotation.getDisableHits());				
 		assertEquals(Boolean.TRUE, entity.getCaching().getSpecifiedDisableHits());
-		assertEquals(Boolean.TRUE, entity.getCaching().getDisableHits());
+		assertEquals(true, entity.getCaching().isDisableHits());
 	}
 
 	public void testSetSpecifiedCoordinationType() throws Exception {
@@ -639,6 +640,47 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		assertNull(caching.getExpiry());
 		assertNull(cacheAnnotation.getExpiry());
 		assertNotNull(cacheAnnotation.getExpiryTimeOfDay());
+	}
+
+	
+	public void testSetSpecifiedSize() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		JavaCaching caching = entity.getCaching();
+		
+		assertEquals(100, caching.getSize());
+		
+		caching.setSpecifiedSize(new Integer(50));
+		
+		
+		assertEquals(new Integer(50), entity.getCaching().getSpecifiedSize());
+		assertEquals(50, entity.getCaching().getSize());
+		
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		
+		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.CACHE);
+		
+		assertEquals(new Integer(50), cacheAnnotation.getSize());		
+	}
+	
+	public void testGetSpecifiedSize() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		JavaCaching caching = entity.getCaching();
+		
+		assertEquals(100, caching.getSize());
+		
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.addSupportingAnnotation(EclipseLinkJPA.CACHE);
+		cacheAnnotation.setSize(new Integer(50));
+		
+		assertEquals(new Integer(50), cacheAnnotation.getSize());				
+		assertEquals(new Integer(50), entity.getCaching().getSpecifiedSize());
+		assertEquals(50, entity.getCaching().getSize());
 	}
 
 }

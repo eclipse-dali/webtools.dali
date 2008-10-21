@@ -29,6 +29,16 @@ public interface JavaCaching extends Caching, JavaJpaContextNode
 {
 	
 	/**
+	 * Return true if the existence-checking model object exists.  
+	 * Have to have a separate flag for this since the default existence
+	 * type is different depending on whether hasExistenceChecking() returns
+	 * true or false.
+	 */
+	boolean hasExistenceChecking();
+	void setExistenceChecking(boolean existenceChecking);
+		String EXISTENCE_CHECKING_PROPERTY = "existenceCheckingProperty"; //$NON-NLS-1$
+	
+	/**
 	 * Initialize the EclipseLinkJavaCaching context model object to match the CacheAnnotation 
 	 * resource model object. This should be called immediately after object creation.
 	 */

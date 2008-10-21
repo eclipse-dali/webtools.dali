@@ -11,23 +11,25 @@
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
+import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.Customizer;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmMappedSuperclass;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ChangeTrackingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CustomizerComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkMappedSuperclassComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ReadOnlyComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.IdClassComposite;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkOrmMappedSuperclassComposite
-	extends EclipseLinkMappedSuperclassComposite<OrmMappedSuperclass>
+public class EclipseLinkOrmMappedSuperclassComposite extends FormPane<OrmMappedSuperclass> implements JpaComposite
 {
 	public EclipseLinkOrmMappedSuperclassComposite(
 			PropertyValueModel<? extends OrmMappedSuperclass> subjectHolder,
@@ -43,6 +45,27 @@ public class EclipseLinkOrmMappedSuperclassComposite
 //		TODO - initializeConvertersPane(container);
 		initializeAdvancedPane(container);
 	}
+	protected void initializeCachingPane(Composite container) {
+
+		container = addCollapsableSection(
+			addSubPane(container, 5),
+			EclipseLinkUiMappingsMessages.EclipseLinkTypeMappingComposite_caching
+		);
+
+		new OrmCachingComposite(this, buildCachingHolder(), container);
+	}
+
+	private PropertyAspectAdapter<OrmMappedSuperclass, Caching> buildCachingHolder() {
+		return new PropertyAspectAdapter<OrmMappedSuperclass, Caching>(
+			getSubjectHolder())
+		{
+			@Override
+			protected Caching buildValue_() {
+				return ((EclipseLinkMappedSuperclass) this.subject).getCaching();
+			}
+		};
+	}
+	
 	
 	protected void initializeAdvancedPane(Composite container) {
 		container = addCollapsableSection(

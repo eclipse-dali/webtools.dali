@@ -79,7 +79,7 @@ public class DisableHitsComposite extends FormPane<Caching>
 
 				if ((getSubject() != null) && (value == null)) {
 
-					Boolean defaultValue = getSubject().getDefaultDisableHits();
+					Boolean defaultValue = getSubject().isDefaultDisableHits();
 
 					if (defaultValue != null) {
 
@@ -97,10 +97,7 @@ public class DisableHitsComposite extends FormPane<Caching>
 			}
 		};
 	}
-
-	/*
-	 * (non-Javadoc)
-	 */
+	
 	@Override
 	protected void initializeLayout(Composite container) {
 

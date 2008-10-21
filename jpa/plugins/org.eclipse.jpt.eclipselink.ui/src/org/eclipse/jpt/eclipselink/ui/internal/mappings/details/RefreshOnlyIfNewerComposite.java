@@ -79,7 +79,7 @@ public class RefreshOnlyIfNewerComposite extends FormPane<Caching>
 
 				if ((getSubject() != null) && (value == null)) {
 
-					Boolean defaultValue = getSubject().getDefaultRefreshOnlyIfNewer();
+					Boolean defaultValue = getSubject().isDefaultRefreshOnlyIfNewer();
 
 					if (defaultValue != null) {
 
@@ -97,10 +97,7 @@ public class RefreshOnlyIfNewerComposite extends FormPane<Caching>
 			}
 		};
 	}
-
-	/*
-	 * (non-Javadoc)
-	 */
+	
 	@Override
 	protected void initializeLayout(Composite container) {
 

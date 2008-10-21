@@ -40,6 +40,7 @@ public class EclipseLinkMappedSuperclassTranslator extends MappedSuperclassTrans
 			createDescriptionTranslator(),
 			createCustomizerTranslator(),
 			createIdClassTranslator(),
+			createCacheTranslator(),
 			createExcludeDefaultListenersTranslator(),
 			createExcludeSuperclassListenersTranslator(),
 			createEntityListenersTranslator(),
@@ -61,5 +62,8 @@ public class EclipseLinkMappedSuperclassTranslator extends MappedSuperclassTrans
 	protected Translator createCustomizerTranslator() {
 		return new CustomizerTranslator(CUSTOMIZER, ECLIPSELINK_ORM_PKG.getXmlCustomizerHolder_Customizer());
 	}
-
+	
+	protected Translator createCacheTranslator() {
+		return new CacheTranslator();
+	}
 }

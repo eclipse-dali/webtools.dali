@@ -22,7 +22,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-
+@SuppressWarnings("nls")
 public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTestCase
 {
 	public EclipseLinkOrmEmbeddableTests(String name) {
@@ -157,5 +157,4 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertNull(ormContextEmbeddable.getCustomizer().getDefaultCustomizerClass());
 		assertNull(ormContextEmbeddable.getCustomizer().getSpecifiedCustomizerClass());
 	}
-
 }

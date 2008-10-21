@@ -78,10 +78,14 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	public static String EclipseLinkVersionMappingComposite_eclipseLinkConverter;
 	
 	public static String ExistenceCheckingComposite_label;
-	public static String ExistenceCheckingComposite_check_cache;
-	public static String ExistenceCheckingComposite_check_database;
-	public static String ExistenceCheckingComposite_assume_existence;
-	public static String ExistenceCheckingComposite_assume_non_existence;
+	public static String JavaExistenceCheckingComposite_check_cache;
+	public static String JavaExistenceCheckingComposite_check_database;
+	public static String JavaExistenceCheckingComposite_assume_existence;
+	public static String JavaExistenceCheckingComposite_assume_non_existence;
+	public static String OrmExistenceCheckingComposite_check_cache;
+	public static String OrmExistenceCheckingComposite_check_database;
+	public static String OrmExistenceCheckingComposite_assume_existence;
+	public static String OrmExistenceCheckingComposite_assume_non_existence;
 	
 	public static String ExpiryComposite_expirySection;
 	public static String ExpiryComposite_noExpiry;

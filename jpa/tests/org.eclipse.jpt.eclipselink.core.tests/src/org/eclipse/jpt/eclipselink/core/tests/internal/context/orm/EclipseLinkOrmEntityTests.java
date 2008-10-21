@@ -15,19 +15,25 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.eclipselink.core.context.CacheCoordinationType;
+import org.eclipse.jpt.eclipselink.core.context.CacheType;
+import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEntity;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCase
 {
+
+	
 	public EclipseLinkOrmEntityTests(String name) {
 		super(name);
 	}
-	
 	
 	private ICompilationUnit createTestEntityForReadOnly() throws Exception {
 		createReadOnlyAnnotation();
@@ -63,6 +69,70 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 	
 	private void createCustomizerAnnotation() throws Exception{
 		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Customizer", "Class value()");		
+	}
+
+	private ICompilationUnit createTestEntityForCaching() throws Exception {
+		createCacheAnnotation();
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+		});
+	}
+	private void createCacheTypeEnum() throws Exception {
+		this.createEnumAndMembers(EclipseLinkJPA.PACKAGE, "CacheType", "SOFT_WEAK, HARD_WEAK, WEAK, SOFT, FULL, CACHE, NONE;");	
+	}
+	
+	private void createCacheCoordinationTypeEnum() throws Exception {
+		this.createEnumAndMembers(EclipseLinkJPA.PACKAGE, "CacheCoordinationType", "SEND_OBJECT_CHANGES, INVALIDATE_CHANGED_OBJECTS, SEND_NEW_OBJECTS_WITH_CHANGES, NONE;");	
+	}
+	
+	private void createExistenceTypeEnum() throws Exception {
+		this.createEnumAndMembers(EclipseLinkJPA.PACKAGE, "ExistenceType", "CHECK_CACHE, CHECK_DATABASE, ASSUME_EXISTENCE, ASSUME_NON_EXISTENCE;");	
+	}
+	
+	private void createCacheAnnotation() throws Exception {
+		createCacheTypeEnum();
+		createCacheCoordinationTypeEnum();
+		createTimeOfDayAnnotation();
+		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Cache", 
+			"CacheType type() default SOFT_WEAK; " +
+			"int size() default 100; " +
+			"boolean shared() default true; " +
+			"int expiry() default -1; " +
+			"TimeOfDay expiryTimeOfDay() default @TimeOfDay(specified=false); " +
+			"boolean alwaysRefresh() default false; " +
+			"boolean refreshOnlyIfNewer() default false; " +
+			"boolean disableHits() default false; " +
+			"CacheCoordinationType coordinationType() default SEND_OBJECT_CHANGES;");
+	}
+	
+	private void createTimeOfDayAnnotation() throws Exception {
+		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "TimeOfDay", 
+			"int hour() default 0; " +
+			"int minute() default 0; " +
+			"int second() default 0; " +
+			"int millisecond() default 0;");
+	}
+
+	private void createExistenceCheckingAnnotation() throws Exception {
+		createExistenceTypeEnum();
+
+		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ExistenceChecking", 
+			"ExistenceType value() default CHECK_CACHE;; " +
+			"int size() default 100; " +
+			"boolean shared() default true; " +
+			"int expiry() default -1; " +
+			"TimeOfDay expiryTimeOfDay() default @TimeOfDay(specified=false); " +
+			"boolean alwaysRefresh() default false; " +
+			"boolean refreshOnlyIfNewer() default false; " +
+			"boolean disableHits() default false; " +
+			"CacheCoordinationType coordinationType() default SEND_OBJECT_CHANGES;");
 	}
 	
 	public void testUpdateReadOnly() throws Exception {
@@ -328,5 +398,840 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		assertNull(ormContextEntity.getCustomizer().getCustomizerClass());
 		assertNull(ormContextEntity.getCustomizer().getDefaultCustomizerClass());
 		assertNull(ormContextEntity.getCustomizer().getSpecifiedCustomizerClass());
+	}
+	
+	public void testUpdateCacheType() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+
+
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(CacheType.SOFT_WEAK, javaContextCaching.getType());
+		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getType());
+		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
+		assertEquals(null, ormContextCaching.getSpecifiedType());
+		
+		// set xml cache, check defaults
+		resourceEntity.setCache(EclipseLinkOrmFactory.eINSTANCE.createXmlCache());
+		assertEquals(null, resourceEntity.getCache().getType());
+		assertEquals(CacheType.SOFT_WEAK, javaContextCaching.getType());
+		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getType());
+		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
+		assertEquals(null, ormContextCaching.getSpecifiedType());
+
+		
+		// set xml cache type, check settings
+		resourceEntity.getCache().setType(org.eclipse.jpt.eclipselink.core.resource.orm.CacheType.FULL);
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.CacheType.FULL, resourceEntity.getCache().getType());
+		assertEquals(CacheType.SOFT_WEAK, javaContextCaching.getType());
+		assertEquals(CacheType.FULL, ormContextCaching.getType());
+		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
+		assertEquals(CacheType.FULL, ormContextCaching.getSpecifiedType());
+
+			
+		// set java cache type, check defaults
+		
+		javaContextCaching.setSpecifiedType(CacheType.WEAK);
+		
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.CacheType.FULL, resourceEntity.getCache().getType());
+		assertEquals(CacheType.WEAK, javaContextCaching.getType());
+		assertEquals(CacheType.FULL, ormContextCaching.getType());
+		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
+		assertEquals(CacheType.FULL, ormContextCaching.getSpecifiedType());
+
+		// clear xml cache type, check defaults
+		resourceEntity.getCache().setType(null);
+
+		assertEquals(null, resourceEntity.getCache().getType());
+		assertEquals(CacheType.WEAK, javaContextCaching.getType());
+		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getType());
+		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
+		assertEquals(null, ormContextCaching.getSpecifiedType());
+	
+		
+		// clear xml cache, check defaults
+		resourceEntity.setCache(null);
+
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(CacheType.WEAK, javaContextCaching.getType());
+		assertEquals(CacheType.WEAK, ormContextCaching.getType());
+		assertEquals(CacheType.WEAK, ormContextCaching.getDefaultType());
+		assertEquals(null, ormContextCaching.getSpecifiedType());
+	
+		
+		// set metadataComplete to True, check defaults not from java
+
+		ormContextEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(CacheType.WEAK, javaContextCaching.getType());
+		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getType());
+		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
+		assertEquals(null, ormContextCaching.getSpecifiedType());
+
+		ormContextEntity.setSpecifiedMetadataComplete(null);
+	}
+	
+	public void testModifyCacheType() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+		
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getType());
+		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
+		assertEquals(null, ormContextCaching.getSpecifiedType());
+		
+		// set context cache type, check resource
+		
+		ormContextEntity.getCaching().setSpecifiedType(CacheType.HARD_WEAK);
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.CacheType.HARD_WEAK, resourceEntity.getCache().getType());
+		assertEquals(CacheType.HARD_WEAK, ormContextCaching.getType());
+		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
+		assertEquals(CacheType.HARD_WEAK, ormContextCaching.getSpecifiedType());
+				
+		// set context customizer to null, check resource
+		
+		ormContextEntity.getCaching().setSpecifiedType(null);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getType());
+		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
+		assertEquals(null, ormContextCaching.getSpecifiedType());
+	}
+
+	public void testUpdateCacheCoordinationType() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+
+
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, javaContextCaching.getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(null, ormContextCaching.getSpecifiedCoordinationType());
+		
+		// set xml cache, check defaults
+		resourceEntity.setCache(EclipseLinkOrmFactory.eINSTANCE.createXmlCache());
+		assertEquals(null, resourceEntity.getCache().getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, javaContextCaching.getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(null, ormContextCaching.getSpecifiedCoordinationType());
+
+		
+		// set xml cache type, check settings
+		resourceEntity.getCache().setCoordinationType(org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS);
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS, resourceEntity.getCache().getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, javaContextCaching.getCoordinationType());
+		assertEquals(CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS, ormContextCaching.getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS, ormContextCaching.getSpecifiedCoordinationType());
+
+			
+		// set java cache type, check defaults
+		
+		javaContextCaching.setSpecifiedCoordinationType(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES);
+		
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS, resourceEntity.getCache().getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, javaContextCaching.getCoordinationType());
+		assertEquals(CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS, ormContextCaching.getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS, ormContextCaching.getSpecifiedCoordinationType());
+
+		// clear xml cache type, check defaults
+		resourceEntity.getCache().setCoordinationType(null);
+
+		assertEquals(null, resourceEntity.getCache().getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, javaContextCaching.getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(null, ormContextCaching.getSpecifiedCoordinationType());
+	
+		
+		// clear xml cache, check defaults
+		resourceEntity.setCache(null);
+
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, javaContextCaching.getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, ormContextCaching.getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(null, ormContextCaching.getSpecifiedCoordinationType());
+	
+		
+		// set metadataComplete to True, check defaults not from java
+
+		ormContextEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, javaContextCaching.getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(null, ormContextCaching.getSpecifiedCoordinationType());
+
+		ormContextEntity.setSpecifiedMetadataComplete(null);
+	}
+	
+	public void testModifyCacheCoordinationType() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+		
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(null, ormContextCaching.getSpecifiedCoordinationType());
+		
+		// set context cache coordination type, check resource
+		
+		ormContextEntity.getCaching().setSpecifiedCoordinationType(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES);
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, resourceEntity.getCache().getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, ormContextCaching.getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, ormContextCaching.getSpecifiedCoordinationType());
+				
+		// set context coordination type to null, check resource
+		
+		ormContextEntity.getCaching().setSpecifiedCoordinationType(null);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getCoordinationType());
+		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(null, ormContextCaching.getSpecifiedCoordinationType());
+	}
+
+	
+	public void testUpdateCacheSize() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+
+
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(100, javaContextCaching.getSize());
+		assertEquals(100, ormContextCaching.getSize());
+		assertEquals(100, ormContextCaching.getDefaultSize());
+		assertEquals(null, ormContextCaching.getSpecifiedSize());
+		
+		// set xml cache, check defaults
+		resourceEntity.setCache(EclipseLinkOrmFactory.eINSTANCE.createXmlCache());
+		assertEquals(null, resourceEntity.getCache().getSize());
+		assertEquals(100, javaContextCaching.getSize());
+		assertEquals(100, ormContextCaching.getSize());
+		assertEquals(100, ormContextCaching.getDefaultSize());
+		assertEquals(null, ormContextCaching.getSpecifiedSize());
+
+		
+		// set xml cache size, check settings
+		resourceEntity.getCache().setSize(new Integer(105));
+		assertEquals(new Integer(105), resourceEntity.getCache().getSize());
+		assertEquals(100, javaContextCaching.getSize());
+		assertEquals(105, ormContextCaching.getSize());
+		assertEquals(100, ormContextCaching.getDefaultSize());
+		assertEquals(new Integer(105), ormContextCaching.getSpecifiedSize());
+
+			
+		// set java cache size, check defaults
+		
+		javaContextCaching.setSpecifiedSize(new Integer(50));
+		
+		assertEquals(new Integer(105), resourceEntity.getCache().getSize());
+		assertEquals(50, javaContextCaching.getSize());
+		assertEquals(105, ormContextCaching.getSize());
+		assertEquals(50, ormContextCaching.getDefaultSize());
+		assertEquals(new Integer(105), ormContextCaching.getSpecifiedSize());
+
+		// clear xml cache size, check defaults
+		resourceEntity.getCache().setSize(null);
+
+		assertEquals(null, resourceEntity.getCache().getSize());
+		assertEquals(50, javaContextCaching.getSize());
+		assertEquals(50, ormContextCaching.getSize());
+		assertEquals(50, ormContextCaching.getDefaultSize());
+		assertEquals(null, ormContextCaching.getSpecifiedSize());
+	
+		
+		// clear xml cache, check defaults
+		resourceEntity.setCache(null);
+
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(50, javaContextCaching.getSize());
+		assertEquals(50, ormContextCaching.getSize());
+		assertEquals(50, ormContextCaching.getDefaultSize());
+		assertEquals(null, ormContextCaching.getSpecifiedSize());
+	
+		
+		// set metadataComplete to True, check defaults not from java
+
+		ormContextEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(50, javaContextCaching.getSize());
+		assertEquals(100, ormContextCaching.getSize());
+		assertEquals(100, ormContextCaching.getDefaultSize());
+		assertEquals(null, ormContextCaching.getSpecifiedSize());
+
+		ormContextEntity.setSpecifiedMetadataComplete(null);
+	}
+	
+	public void testModifyCacheSize() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+		
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(100, ormContextCaching.getSize());
+		assertEquals(100, ormContextCaching.getDefaultSize());
+		assertEquals(null, ormContextCaching.getSpecifiedSize());
+		
+		// set context cache size, check resource
+		
+		ormContextEntity.getCaching().setSpecifiedSize(new Integer(50));
+		assertEquals(new Integer(50), resourceEntity.getCache().getSize());
+		assertEquals(50, ormContextCaching.getSize());
+		assertEquals(100, ormContextCaching.getDefaultSize());
+		assertEquals(new Integer(50), ormContextCaching.getSpecifiedSize());
+				
+		// set context cache size to null, check resource
+		
+		ormContextEntity.getCaching().setSpecifiedSize(null);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(100, ormContextCaching.getSize());
+		assertEquals(100, ormContextCaching.getDefaultSize());
+		assertEquals(null, ormContextCaching.getSpecifiedSize());
+	}
+
+	public void testUpdateCacheAlwaysRefresh() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+
+
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(false, javaContextCaching.isAlwaysRefresh());
+		assertEquals(false, ormContextCaching.isAlwaysRefresh());
+		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(null, ormContextCaching.getSpecifiedAlwaysRefresh());
+		
+		// set xml cache, check defaults
+		resourceEntity.setCache(EclipseLinkOrmFactory.eINSTANCE.createXmlCache());
+		assertEquals(null, resourceEntity.getCache().getAlwaysRefresh());
+		assertEquals(false, javaContextCaching.isAlwaysRefresh());
+		assertEquals(false, ormContextCaching.isAlwaysRefresh());
+		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(null, ormContextCaching.getSpecifiedAlwaysRefresh());
+
+		
+		// set xml cache always refresh, check settings
+		resourceEntity.getCache().setAlwaysRefresh(Boolean.TRUE);
+		assertEquals(Boolean.TRUE, resourceEntity.getCache().getAlwaysRefresh());
+		assertEquals(false, javaContextCaching.isAlwaysRefresh());
+		assertEquals(true, ormContextCaching.isAlwaysRefresh());
+		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedAlwaysRefresh());
+
+			
+		// set java cache always refresh, check defaults
+		
+		javaContextCaching.setSpecifiedAlwaysRefresh(Boolean.TRUE);
+		
+		assertEquals(Boolean.TRUE, resourceEntity.getCache().getAlwaysRefresh());
+		assertEquals(true, javaContextCaching.isAlwaysRefresh());
+		assertEquals(true, ormContextCaching.isAlwaysRefresh());
+		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedAlwaysRefresh());
+
+		// set xml cache always refresh to false
+		resourceEntity.getCache().setAlwaysRefresh(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, resourceEntity.getCache().getAlwaysRefresh());
+		assertEquals(true, javaContextCaching.isAlwaysRefresh());
+		assertEquals(false, ormContextCaching.isAlwaysRefresh());
+		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(Boolean.FALSE, ormContextCaching.getSpecifiedAlwaysRefresh());
+
+		// clear xml cache always refresh, check defaults
+		resourceEntity.getCache().setAlwaysRefresh(null);
+
+		assertEquals(null, resourceEntity.getCache().getAlwaysRefresh());
+		assertEquals(true, javaContextCaching.isAlwaysRefresh());
+		assertEquals(false, ormContextCaching.isAlwaysRefresh());
+		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(null, ormContextCaching.getSpecifiedAlwaysRefresh());
+	
+		
+		// clear xml cache, check defaults
+		resourceEntity.setCache(null);
+
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(true, javaContextCaching.isAlwaysRefresh());
+		assertEquals(true, ormContextCaching.isAlwaysRefresh());
+		assertEquals(true, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(null, ormContextCaching.getSpecifiedAlwaysRefresh());
+	
+		
+		// set metadataComplete to True, check defaults not from java
+
+		ormContextEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(true, javaContextCaching.isAlwaysRefresh());
+		assertEquals(false, ormContextCaching.isAlwaysRefresh());
+		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(null, ormContextCaching.getSpecifiedAlwaysRefresh());
+
+		
+		// set metadataComplete back to null, check defaults from java
+		ormContextEntity.setSpecifiedMetadataComplete(null);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(true, javaContextCaching.isAlwaysRefresh());
+		assertEquals(true, ormContextCaching.isAlwaysRefresh());
+		assertEquals(true, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(null, ormContextCaching.getSpecifiedAlwaysRefresh());
+	}
+	
+	public void testModifyCacheAlwaysRefresh() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+		
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(false, ormContextCaching.isAlwaysRefresh());
+		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(null, ormContextCaching.getSpecifiedAlwaysRefresh());
+		
+		// set context cache size, check resource
+		
+		ormContextEntity.getCaching().setSpecifiedAlwaysRefresh(Boolean.TRUE);
+		assertEquals(Boolean.TRUE, resourceEntity.getCache().getAlwaysRefresh());
+		assertEquals(true, ormContextCaching.isAlwaysRefresh());
+		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedAlwaysRefresh());
+				
+		// set context cache size to null, check resource
+		
+		ormContextEntity.getCaching().setSpecifiedAlwaysRefresh(null);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(false, ormContextCaching.isAlwaysRefresh());
+		assertEquals(false, ormContextCaching.isDefaultAlwaysRefresh());
+		assertEquals(null, ormContextCaching.getSpecifiedAlwaysRefresh());
+	}
+	
+	public void testUpdateCacheRefreshOnlyIfNewer() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+
+
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(false, javaContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(null, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
+		
+		// set xml cache, check defaults
+		resourceEntity.setCache(EclipseLinkOrmFactory.eINSTANCE.createXmlCache());
+		assertEquals(null, resourceEntity.getCache().getRefreshOnlyIfNewer());
+		assertEquals(false, javaContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(null, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
+
+		
+		// set xml cache size, check settings
+		resourceEntity.getCache().setRefreshOnlyIfNewer(Boolean.TRUE);
+		assertEquals(Boolean.TRUE, resourceEntity.getCache().getRefreshOnlyIfNewer());
+		assertEquals(false, javaContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(true, ormContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
+
+			
+		// set java cache size, check defaults
+		
+		javaContextCaching.setSpecifiedRefreshOnlyIfNewer(Boolean.TRUE);
+		
+		assertEquals(Boolean.TRUE, resourceEntity.getCache().getRefreshOnlyIfNewer());
+		assertEquals(true, javaContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(true, ormContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
+
+		// set xml cache always refresh to false
+		resourceEntity.getCache().setRefreshOnlyIfNewer(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, resourceEntity.getCache().getRefreshOnlyIfNewer());
+		assertEquals(true, javaContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(Boolean.FALSE, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
+
+		// clear xml cache always refresh, check defaults
+		resourceEntity.getCache().setRefreshOnlyIfNewer(null);
+
+		assertEquals(null, resourceEntity.getCache().getRefreshOnlyIfNewer());
+		assertEquals(true, javaContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(null, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
+	
+		
+		// clear xml cache, check defaults
+		resourceEntity.setCache(null);
+
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(true, javaContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(true, ormContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(true, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(null, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
+	
+		
+		// set metadataComplete to True, check defaults not from java
+
+		ormContextEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(true, javaContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(null, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
+
+		
+		// set metadataComplete back to null, check defaults from java
+		ormContextEntity.setSpecifiedMetadataComplete(null);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(true, javaContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(true, ormContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(true, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(null, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
+	}
+	
+	public void testModifyCacheRefreshOnlyIfNewer() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+		
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(false, ormContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(null, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
+		
+		// set context cache size, check resource
+		
+		ormContextEntity.getCaching().setSpecifiedRefreshOnlyIfNewer(Boolean.TRUE);
+		assertEquals(Boolean.TRUE, resourceEntity.getCache().getRefreshOnlyIfNewer());
+		assertEquals(true, ormContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
+				
+		// set context cache size to null, check resource
+		
+		ormContextEntity.getCaching().setSpecifiedRefreshOnlyIfNewer(null);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(false, ormContextCaching.isRefreshOnlyIfNewer());
+		assertEquals(false, ormContextCaching.isDefaultRefreshOnlyIfNewer());
+		assertEquals(null, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
+	}
+	
+	public void testUpdateCacheDisableHits() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+
+
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(false, javaContextCaching.isDisableHits());
+		assertEquals(false, ormContextCaching.isDisableHits());
+		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(null, ormContextCaching.getSpecifiedDisableHits());
+		
+		// set xml cache, check defaults
+		resourceEntity.setCache(EclipseLinkOrmFactory.eINSTANCE.createXmlCache());
+		assertEquals(null, resourceEntity.getCache().getDisableHits());
+		assertEquals(false, javaContextCaching.isDisableHits());
+		assertEquals(false, ormContextCaching.isDisableHits());
+		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(null, ormContextCaching.getSpecifiedDisableHits());
+
+		
+		// set xml cache size, check settings
+		resourceEntity.getCache().setDisableHits(Boolean.TRUE);
+		assertEquals(Boolean.TRUE, resourceEntity.getCache().getDisableHits());
+		assertEquals(false, javaContextCaching.isDisableHits());
+		assertEquals(true, ormContextCaching.isDisableHits());
+		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedDisableHits());
+
+			
+		// set java cache size, check defaults
+		
+		javaContextCaching.setSpecifiedDisableHits(Boolean.TRUE);
+		
+		assertEquals(Boolean.TRUE, resourceEntity.getCache().getDisableHits());
+		assertEquals(true, javaContextCaching.isDisableHits());
+		assertEquals(true, ormContextCaching.isDisableHits());
+		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedDisableHits());
+
+		// set xml cache always refresh to false
+		resourceEntity.getCache().setDisableHits(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, resourceEntity.getCache().getDisableHits());
+		assertEquals(true, javaContextCaching.isDisableHits());
+		assertEquals(false, ormContextCaching.isDisableHits());
+		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(Boolean.FALSE, ormContextCaching.getSpecifiedDisableHits());
+
+		// clear xml cache always refresh, check defaults
+		resourceEntity.getCache().setDisableHits(null);
+
+		assertEquals(null, resourceEntity.getCache().getDisableHits());
+		assertEquals(true, javaContextCaching.isDisableHits());
+		assertEquals(false, ormContextCaching.isDisableHits());
+		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(null, ormContextCaching.getSpecifiedDisableHits());
+	
+		
+		// clear xml cache, check defaults
+		resourceEntity.setCache(null);
+
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(true, javaContextCaching.isDisableHits());
+		assertEquals(true, ormContextCaching.isDisableHits());
+		assertEquals(true, ormContextCaching.isDefaultDisableHits());
+		assertEquals(null, ormContextCaching.getSpecifiedDisableHits());
+	
+		
+		// set metadataComplete to True, check defaults not from java
+
+		ormContextEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(true, javaContextCaching.isDisableHits());
+		assertEquals(false, ormContextCaching.isDisableHits());
+		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(null, ormContextCaching.getSpecifiedDisableHits());
+
+		
+		// set metadataComplete back to null, check defaults from java
+		ormContextEntity.setSpecifiedMetadataComplete(null);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(true, javaContextCaching.isDisableHits());
+		assertEquals(true, ormContextCaching.isDisableHits());
+		assertEquals(true, ormContextCaching.isDefaultDisableHits());
+		assertEquals(null, ormContextCaching.getSpecifiedDisableHits());
+	}
+	
+	public void testModifyCacheDisableHits() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+		
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(false, ormContextCaching.isDisableHits());
+		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(null, ormContextCaching.getSpecifiedDisableHits());
+		
+		// set context cache size, check resource
+		
+		ormContextEntity.getCaching().setSpecifiedDisableHits(Boolean.TRUE);
+		assertEquals(Boolean.TRUE, resourceEntity.getCache().getDisableHits());
+		assertEquals(true, ormContextCaching.isDisableHits());
+		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedDisableHits());
+				
+		// set context cache size to null, check resource
+		
+		ormContextEntity.getCaching().setSpecifiedDisableHits(null);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(false, ormContextCaching.isDisableHits());
+		assertEquals(false, ormContextCaching.isDefaultDisableHits());
+		assertEquals(null, ormContextCaching.getSpecifiedDisableHits());
+	}
+	
+	public void testUpdateCacheShared() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+
+
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(true, javaContextCaching.isShared());
+		assertEquals(true, ormContextCaching.isShared());
+		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(null, ormContextCaching.getSpecifiedShared());
+		
+		// set xml cache, check defaults
+		resourceEntity.setCache(EclipseLinkOrmFactory.eINSTANCE.createXmlCache());
+		assertEquals(null, resourceEntity.getCache().getShared());
+		assertEquals(true, javaContextCaching.isShared());
+		assertEquals(true, ormContextCaching.isShared());
+		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(null, ormContextCaching.getSpecifiedShared());
+
+		
+		// set xml cache size, check settings
+		resourceEntity.getCache().setShared(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, resourceEntity.getCache().getShared());
+		assertEquals(true, javaContextCaching.isShared());
+		assertEquals(false, ormContextCaching.isShared());
+		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(Boolean.FALSE, ormContextCaching.getSpecifiedShared());
+
+			
+		// set java cache size, check defaults
+		
+		javaContextCaching.setSpecifiedShared(Boolean.FALSE);
+		
+		assertEquals(Boolean.FALSE, resourceEntity.getCache().getShared());
+		assertEquals(false, javaContextCaching.isShared());
+		assertEquals(false, ormContextCaching.isShared());
+		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(Boolean.FALSE, ormContextCaching.getSpecifiedShared());
+
+		// set xml cache always refresh to false
+		resourceEntity.getCache().setShared(Boolean.TRUE);
+		assertEquals(Boolean.TRUE, resourceEntity.getCache().getShared());
+		assertEquals(false, javaContextCaching.isShared());
+		assertEquals(true, ormContextCaching.isShared());
+		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(Boolean.TRUE, ormContextCaching.getSpecifiedShared());
+
+		// clear xml cache always refresh, check defaults
+		resourceEntity.getCache().setShared(null);
+
+		assertEquals(null, resourceEntity.getCache().getShared());
+		assertEquals(false, javaContextCaching.isShared());
+		assertEquals(true, ormContextCaching.isShared());
+		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(null, ormContextCaching.getSpecifiedShared());
+	
+		
+		// clear xml cache, check defaults
+		resourceEntity.setCache(null);
+
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(false, javaContextCaching.isShared());
+		assertEquals(false, ormContextCaching.isShared());
+		assertEquals(false, ormContextCaching.isDefaultShared());
+		assertEquals(null, ormContextCaching.getSpecifiedShared());
+	
+		
+		// set metadataComplete to True, check defaults not from java
+
+		ormContextEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(false, javaContextCaching.isShared());
+		assertEquals(true, ormContextCaching.isShared());
+		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(null, ormContextCaching.getSpecifiedShared());
+
+		
+		// set metadataComplete back to null, check defaults from java
+		ormContextEntity.setSpecifiedMetadataComplete(null);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(false, javaContextCaching.isShared());
+		assertEquals(false, ormContextCaching.isShared());
+		assertEquals(false, ormContextCaching.isDefaultShared());
+		assertEquals(null, ormContextCaching.getSpecifiedShared());
+	}
+	
+	public void testModifyCacheShared() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+		
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(true, ormContextCaching.isShared());
+		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(null, ormContextCaching.getSpecifiedShared());
+		
+		// set context cache size, check resource
+		
+		ormContextEntity.getCaching().setSpecifiedShared(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, resourceEntity.getCache().getShared());
+		assertEquals(false, ormContextCaching.isShared());
+		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(Boolean.FALSE, ormContextCaching.getSpecifiedShared());
+				
+		// set context cache size to null, check resource
+		
+		ormContextEntity.getCaching().setSpecifiedShared(null);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(true, ormContextCaching.isShared());
+		assertEquals(true, ormContextCaching.isDefaultShared());
+		assertEquals(null, ormContextCaching.getSpecifiedShared());
 	}
 }

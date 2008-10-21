@@ -80,7 +80,7 @@ public class AlwaysRefreshComposite extends FormPane<Caching>
 
 				if ((getSubject() != null) && (value == null)) {
 
-					Boolean defaultValue = getSubject().getDefaultAlwaysRefresh();
+					Boolean defaultValue = getSubject().isDefaultAlwaysRefresh();
 
 					if (defaultValue != null) {
 
@@ -98,10 +98,7 @@ public class AlwaysRefreshComposite extends FormPane<Caching>
 			}
 		};
 	}
-
-	/*
-	 * (non-Javadoc)
-	 */
+	
 	@Override
 	protected void initializeLayout(Composite container) {
 

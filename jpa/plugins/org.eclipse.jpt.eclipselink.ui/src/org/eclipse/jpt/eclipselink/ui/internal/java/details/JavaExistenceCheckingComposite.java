@@ -6,11 +6,12 @@
  *
  *  Contributors: Oracle. - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
+package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
 import java.util.Collection;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.context.ExistenceType;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -33,7 +34,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class ExistenceCheckingComposite extends FormPane<Caching> {
+public class JavaExistenceCheckingComposite extends FormPane<JavaCaching> {
 
 	/**
 	 * Creates a new <code>ExistenceCheckingComposite</code>.
@@ -41,7 +42,7 @@ public class ExistenceCheckingComposite extends FormPane<Caching> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public ExistenceCheckingComposite(FormPane<? extends Caching> parentPane,
+	public JavaExistenceCheckingComposite(FormPane<? extends JavaCaching> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent);
@@ -88,7 +89,7 @@ public class ExistenceCheckingComposite extends FormPane<Caching> {
 			protected String displayString(ExistenceType value) {
 				return buildDisplayString(
 					EclipseLinkUiMappingsMessages.class,
-					ExistenceCheckingComposite.this,
+					JavaExistenceCheckingComposite.this,
 					value
 				);
 			}
@@ -111,7 +112,7 @@ public class ExistenceCheckingComposite extends FormPane<Caching> {
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildExistenceCheckingHolder() {
-		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.EXISTENCE_CHECKING_PROPERTY) {
+		return new PropertyAspectAdapter<JavaCaching, Boolean>(getSubjectHolder(), JavaCaching.EXISTENCE_CHECKING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.hasExistenceChecking());

@@ -15,15 +15,16 @@ import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ChangeTrackingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CustomizerComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkMappedSuperclassComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ReadOnlyComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.IdClassComposite;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -37,7 +38,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class EclipseLinkJavaMappedSuperclassComposite extends EclipseLinkMappedSuperclassComposite<JavaMappedSuperclass>
+public class EclipseLinkJavaMappedSuperclassComposite extends FormPane<JavaMappedSuperclass>
                                        implements JpaComposite
 {
 	/**
@@ -61,6 +62,27 @@ public class EclipseLinkJavaMappedSuperclassComposite extends EclipseLinkMappedS
 		initializeCachingPane(container);
 		initializeConvertersPane(container);
 		initializeAdvancedPane(container);
+	}
+	
+	protected void initializeCachingPane(Composite container) {
+
+		container = addCollapsableSection(
+			addSubPane(container, 5),
+			EclipseLinkUiMappingsMessages.EclipseLinkTypeMappingComposite_caching
+		);
+
+		new JavaCachingComposite(this, buildCachingHolder(), container);
+	}
+
+	private PropertyAspectAdapter<JavaMappedSuperclass, JavaCaching> buildCachingHolder() {
+		return new PropertyAspectAdapter<JavaMappedSuperclass, JavaCaching>(
+			getSubjectHolder())
+		{
+			@Override
+			protected JavaCaching buildValue_() {
+				return ((EclipseLinkJavaMappedSuperclass) this.subject).getCaching();
+			}
+		};
 	}
 	
 	protected void initializeConvertersPane(Composite container) {

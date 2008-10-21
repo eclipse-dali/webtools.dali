@@ -29,13 +29,13 @@ public interface Caching extends JpaContextNode
 	
 	/**
 	 * This is the combination of defaultShared and specifiedShared.
-	 * If getSpecifiedShared() returns null, then return getDefaultShared()
+	 * If getSpecifiedShared() returns null, then return isDefaultShared()
 	 */
-	Boolean getShared();
+	boolean isShared();
 	
-	Boolean getDefaultShared();
+	boolean isDefaultShared();
 		String DEFAULT_SHARED_PROPERTY = "defaultSharedProperty"; //$NON-NLS-1$
-		Boolean DEFAULT_SHARED = Boolean.TRUE;
+		boolean DEFAULT_SHARED = true;
 	
 	Boolean getSpecifiedShared();
 	
@@ -72,10 +72,10 @@ public interface Caching extends JpaContextNode
 	 * This is the combination of defaultSize and specifiedSize.
 	 * If getSpecifiedSize() returns null, then return getDefaultSize()
 	 */
-	Integer getSize();
+	int getSize();
 
-	Integer getDefaultSize();
-		Integer DEFAULT_SIZE = Integer.valueOf(100);
+	int getDefaultSize();
+	int DEFAULT_SIZE = 100;
 		String DEFAULT_SIZE_PROPERTY = "defaultSizeProperty"; //$NON-NLS-1$
 
 	Integer getSpecifiedSize();
@@ -86,13 +86,13 @@ public interface Caching extends JpaContextNode
 		
 	/**
 	 * This is the combination of defaultAlwaysRefresh and specifiedAlwaysRefresh.
-	 * If getSpecifiedAlwaysRefresh() returns null, then return getDefaultAlwaysRefresh()
+	 * If getSpecifiedAlwaysRefresh() returns null, then return isDefaultAlwaysRefresh()
 	 */
-	Boolean getAlwaysRefresh();
+	boolean isAlwaysRefresh();
 	
-	Boolean getDefaultAlwaysRefresh();
+	boolean isDefaultAlwaysRefresh();
 		String DEFAULT_ALWAYS_REFRESH_PROPERTY = "defaultAlwaysRefreshProperty"; //$NON-NLS-1$
-		Boolean DEFAULT_ALWAYS_REFRESH = Boolean.FALSE;
+		boolean DEFAULT_ALWAYS_REFRESH = false;
 	
 	Boolean getSpecifiedAlwaysRefresh();
 	void setSpecifiedAlwaysRefresh(Boolean newSpecifiedAlwaysRefresh);
@@ -103,13 +103,13 @@ public interface Caching extends JpaContextNode
 		
 	/**
 	 * This is the combination of defaultRefreshOnlyIfNewer and specifiedRefreshOnlyIfNewer.
-	 * If getSpecifiedRefreshOnlyIfNewer() returns null, then return getDefaultRefreshOnlyIfNewer()
+	 * If getSpecifiedRefreshOnlyIfNewer() returns null, then return isDefaultRefreshOnlyIfNewer()
 	 */
-	Boolean getRefreshOnlyIfNewer();
+	boolean isRefreshOnlyIfNewer();
 	
-	Boolean getDefaultRefreshOnlyIfNewer();
+	boolean isDefaultRefreshOnlyIfNewer();
 		String DEFAULT_REFRESH_ONLY_IF_NEWER_PROPERTY = "defaultRefreshOnlyIfNewerProperty"; //$NON-NLS-1$
-		Boolean DEFAULT_REFRESH_ONLY_IF_NEWER = Boolean.FALSE;
+		boolean DEFAULT_REFRESH_ONLY_IF_NEWER = false;
 	
 	Boolean getSpecifiedRefreshOnlyIfNewer();
 	void setSpecifiedRefreshOnlyIfNewer(Boolean newSpecifiedRefreshOnlyIfNewer);
@@ -122,11 +122,11 @@ public interface Caching extends JpaContextNode
 	 * This is the combination of defaultDisableHits and specifiedDisableHits.
 	 * If getSpecifiedDisableHits() returns null, then return getDefaultDisableHits()
 	 */
-	Boolean getDisableHits();
+	boolean isDisableHits();
 	
-	Boolean getDefaultDisableHits();
+	boolean isDefaultDisableHits();
 		String DEFAULT_DISABLE_HITS_PROPERTY = "defaultDisableHitsProperty"; //$NON-NLS-1$
-		Boolean DEFAULT_DISABLE_HITS = Boolean.FALSE;
+		boolean DEFAULT_DISABLE_HITS = false;
 	
 	Boolean getSpecifiedDisableHits();
 	void setSpecifiedDisableHits(Boolean newSpecifiedDisableHits);
@@ -153,16 +153,6 @@ public interface Caching extends JpaContextNode
 	//***************** existence checking ************************
 	
 	/**
-	 * Return true if the existence-checking model object exists.  
-	 * Have to have a separate flag for this since the default existence
-	 * type is different depending on whether hasExistenceChecking() returns
-	 * true or false.
-	 */
-	boolean hasExistenceChecking();
-	void setExistenceChecking(boolean existenceChecking);
-		String EXISTENCE_CHECKING_PROPERTY = "existenceCheckingProperty"; //$NON-NLS-1$
-	
-	/**
 	 * This is the combination of defaultExistenceType and specifiedExistenceType.
 	 * If getSpecifiedExistenceType() returns null, then return getDefaultExistenceType()
 	 */
@@ -170,7 +160,6 @@ public interface Caching extends JpaContextNode
 	
 	ExistenceType getDefaultExistenceType();		
 		String DEFAULT_EXISTENCE_TYPE_PROPERTY = "defaultExistenceTypeProperty"; //$NON-NLS-1$
-		//default if hasExistenceChecking returns false
 		ExistenceType DEFAULT_EXISTENCE_TYPE = ExistenceType.CHECK_DATABASE;
 		
 	ExistenceType getSpecifiedExistenceType();	
