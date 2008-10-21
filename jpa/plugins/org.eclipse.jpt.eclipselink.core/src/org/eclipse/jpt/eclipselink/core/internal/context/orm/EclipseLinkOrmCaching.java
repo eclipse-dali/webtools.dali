@@ -364,28 +364,28 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		return this.defaultExistenceType;
 	}
 	
+	protected void setDefaultExistenceType(ExistenceType newDefaultExistenceType) {
+		ExistenceType oldDefaultExistenceType = this.defaultExistenceType;
+		this.defaultExistenceType = newDefaultExistenceType;
+		firePropertyChanged(DEFAULT_EXISTENCE_TYPE_PROPERTY, oldDefaultExistenceType, newDefaultExistenceType);
+	}
+	
 	public ExistenceType getSpecifiedExistenceType() {
 		return this.specifiedExistenceType;
 	}
 	
 	public void setSpecifiedExistenceType(ExistenceType newSpecifiedExistenceType) {
-//		ExistenceType oldSpecifiedExistenceType = this.specifiedExistenceType;
-//		this.specifiedExistenceType = newSpecifiedExistenceType;
-//		if (oldSpecifiedExistenceType != newSpecifiedExistenceType) {
-//			if (this.getResourceExistenceChecking() != null) {
-//				this.getResourceExistenceChecking().set(ExistenceType.toOrmResourceModel(newSpecifiedExistenceType));						
-//				if (this.getResourceExistenceChecking().isAllFeaturesUnset()) {
-//					removeResourceExistenceChecking();
-//				}
-//			}
-//			else if (newSpecifiedExistenceType != null) {
-//				addResourceExistenceChecking();
-//				getResourceExistenceChecking().setExistenceType(ExistenceType.toOrmResourceModel(newSpecifiedExistenceType));
-//			}
-//		}
-//		firePropertyChanged(SPECIFIED_COORDINATION_TYPE_PROPERTY, oldSpecifiedExistenceType, newSpecifiedExistenceType);		
-		
+		ExistenceType oldSpecifiedExistenceType = this.specifiedExistenceType;
+		this.specifiedExistenceType = newSpecifiedExistenceType;
+		this.resource.setExistenceChecking(ExistenceType.toOrmResourceModel(newSpecifiedExistenceType));
+		firePropertyChanged(SPECIFIED_EXISTENCE_TYPE_PROPERTY, oldSpecifiedExistenceType, newSpecifiedExistenceType);			
 	}
+	
+	protected void setSpecifiedExistenceType_(ExistenceType newSpecifiedExistenceType) {
+		ExistenceType oldSpecifiedExistenceType = this.specifiedExistenceType;
+		this.specifiedExistenceType = newSpecifiedExistenceType;
+		firePropertyChanged(SPECIFIED_EXISTENCE_TYPE_PROPERTY, oldSpecifiedExistenceType, newSpecifiedExistenceType);		
+	}	
 	
 	public Integer getExpiry() {
 		// TODO Auto-generated method stub
@@ -424,17 +424,6 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		this.resource.setCache(null);
 	}
 	
-//	protected XmlExistenceChecking getResourceExistenceChecking() {
-//		return this.resource.getExistenceChecking();
-//	}
-//	
-//	protected void addResourceExistenceChecking() {
-//		this.resource.setExistenceChecking(EclipseLinkOrmFactory.eINSTANCE.createXmlExistenceChecking());		
-//	}
-//	
-//	protected void removeResourceExistenceChecking() {
-//		this.resource.setExistenceChecking(null);
-//	}
 	
 	// **************** initialize/update **************************************
 	
@@ -455,8 +444,8 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		this.specifiedType = this.specifiedType(resourceCache);
 		this.defaultCoordinationType = this.defaultCoordinationType(javaCaching);
 		this.specifiedCoordinationType = this.specifiedCoordinationType(resourceCache);
-//		this.defaultExistenceType = this.defaultExistenceType(javaCaching);
-//		this.specifiedExistenceType = this.specifiedExistenceType(getResourceCache());
+		this.defaultExistenceType = this.defaultExistenceType(javaCaching);
+		this.specifiedExistenceType = this.specifiedExistenceType(resource);
 	}
 	
 	protected void update(XmlCacheHolder resource, JavaCaching javaCaching) {
@@ -476,6 +465,8 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		setSpecifiedType_(this.specifiedType(resourceCache));
 		setDefaultCoordinationType(this.defaultCoordinationType(javaCaching));
 		setSpecifiedCoordinationType_(this.specifiedCoordinationType(resourceCache));
+		setDefaultExistenceType(this.defaultExistenceType(javaCaching));
+		setSpecifiedExistenceType_(this.specifiedExistenceType(resource));
 	}
 	
 	protected int defaultSize(JavaCaching javaCaching) {
@@ -555,10 +546,10 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 	protected ExistenceType defaultExistenceType(JavaCaching javaCaching) {
 		return (javaCaching == null) ? DEFAULT_EXISTENCE_TYPE : javaCaching.getExistenceType();
 	}
-//	
-//	protected ExistenceType specifiedExistenceType(XmlCache resource) {
-//		return (resource == null) ? null : resource.getExistenceType();
-//	}
+	
+	protected ExistenceType specifiedExistenceType(XmlCacheHolder resource) {
+		return (resource == null) ? null : ExistenceType.fromOrmResourceModel(resource.getExistenceChecking());
+	}
 	
 	// **************** validation **************************************
 	

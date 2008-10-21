@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: EclipseLinkOrmPackage.java,v 1.12 2008/10/20 20:09:59 pfullbright Exp $
+ * $Id: EclipseLinkOrmPackage.java,v 1.13 2008/10/21 18:56:42 kmoore Exp $
  */
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
@@ -399,13 +399,22 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_CACHE_HOLDER__CACHE = 0;
 
 	/**
+	 * The feature id for the '<em><b>Existence Checking</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE_HOLDER__EXISTENCE_CHECKING = 1;
+
+	/**
 	 * The number of structural features of the '<em>Xml Cache Holder</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CACHE_HOLDER_FEATURE_COUNT = 1;
+	public static final int XML_CACHE_HOLDER_FEATURE_COUNT = 2;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity <em>Xml Entity</em>}' class.
@@ -715,13 +724,22 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_ENTITY__CACHE = OrmPackage.XML_ENTITY_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Existence Checking</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__EXISTENCE_CHECKING = OrmPackage.XML_ENTITY_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Xml Entity</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_FEATURE_COUNT = OrmPackage.XML_ENTITY_FEATURE_COUNT + 3;
+	public static final int XML_ENTITY_FEATURE_COUNT = OrmPackage.XML_ENTITY_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}' class.
@@ -905,13 +923,22 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_MAPPED_SUPERCLASS__CACHE = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Existence Checking</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__EXISTENCE_CHECKING = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Xml Mapped Superclass</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_FEATURE_COUNT = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 3;
+	public static final int XML_MAPPED_SUPERCLASS_FEATURE_COUNT = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMutable <em>Xml Mutable</em>}' class.
@@ -1716,7 +1743,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlJoinFetchType()
 	 * @generated
 	 */
-	public static final int XML_JOIN_FETCH_TYPE = 21;
+	public static final int XML_JOIN_FETCH_TYPE = 22;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType <em>Existence Type</em>}' enum.
@@ -1726,7 +1753,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getExistenceType()
 	 * @generated
 	 */
-	public static final int EXISTENCE_TYPE = 22;
+	public static final int EXISTENCE_TYPE = 21;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -2294,6 +2321,21 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder#getExistenceChecking <em>Existence Checking</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Existence Checking</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder#getExistenceChecking()
+	 * @see #getXmlCacheHolder()
+	 * @generated
+	 */
+	public EAttribute getXmlCacheHolder_ExistenceChecking()
+	{
+		return (EAttribute)xmlCacheHolderEClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity <em>Xml Entity</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2605,6 +2647,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 		xmlCacheHolderEClass = createEClass(XML_CACHE_HOLDER);
 		createEReference(xmlCacheHolderEClass, XML_CACHE_HOLDER__CACHE);
+		createEAttribute(xmlCacheHolderEClass, XML_CACHE_HOLDER__EXISTENCE_CHECKING);
 
 		xmlEntityEClass = createEClass(XML_ENTITY);
 
@@ -2636,8 +2679,8 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		// Create enums
 		cacheTypeEEnum = createEEnum(CACHE_TYPE);
 		cacheCoordinationTypeEEnum = createEEnum(CACHE_COORDINATION_TYPE);
-		xmlJoinFetchTypeEEnum = createEEnum(XML_JOIN_FETCH_TYPE);
 		existenceTypeEEnum = createEEnum(EXISTENCE_TYPE);
+		xmlJoinFetchTypeEEnum = createEEnum(XML_JOIN_FETCH_TYPE);
 	}
 
 	/**
@@ -2731,6 +2774,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 		initEClass(xmlCacheHolderEClass, XmlCacheHolder.class, "XmlCacheHolder", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlCacheHolder_Cache(), this.getXmlCache(), null, "cache", null, 0, 1, XmlCacheHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlCacheHolder_ExistenceChecking(), this.getExistenceType(), "existenceChecking", "", 0, 1, XmlCacheHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEntityEClass, XmlEntity.class, "XmlEntity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2775,15 +2819,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		addEEnumLiteral(cacheCoordinationTypeEEnum, CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES);
 		addEEnumLiteral(cacheCoordinationTypeEEnum, CacheCoordinationType.NONE);
 
-		initEEnum(xmlJoinFetchTypeEEnum, XmlJoinFetchType.class, "XmlJoinFetchType");
-		addEEnumLiteral(xmlJoinFetchTypeEEnum, XmlJoinFetchType.INNER);
-		addEEnumLiteral(xmlJoinFetchTypeEEnum, XmlJoinFetchType.OUTER);
-
 		initEEnum(existenceTypeEEnum, ExistenceType.class, "ExistenceType");
 		addEEnumLiteral(existenceTypeEEnum, ExistenceType.CHECK_CACHE);
 		addEEnumLiteral(existenceTypeEEnum, ExistenceType.CHECK_DATABASE);
 		addEEnumLiteral(existenceTypeEEnum, ExistenceType.ASSUME_EXISTENCE);
 		addEEnumLiteral(existenceTypeEEnum, ExistenceType.ASSUME_NON_EXISTENCE);
+
+		initEEnum(xmlJoinFetchTypeEEnum, XmlJoinFetchType.class, "XmlJoinFetchType");
+		addEEnumLiteral(xmlJoinFetchTypeEEnum, XmlJoinFetchType.INNER);
+		addEEnumLiteral(xmlJoinFetchTypeEEnum, XmlJoinFetchType.OUTER);
 
 		// Create resource
 		createResource(eNS_URI);
@@ -3008,6 +3052,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference XML_CACHE_HOLDER__CACHE = eINSTANCE.getXmlCacheHolder_Cache();
+
+		/**
+		 * The meta object literal for the '<em><b>Existence Checking</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_CACHE_HOLDER__EXISTENCE_CHECKING = eINSTANCE.getXmlCacheHolder_ExistenceChecking();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity <em>Xml Entity</em>}' class.

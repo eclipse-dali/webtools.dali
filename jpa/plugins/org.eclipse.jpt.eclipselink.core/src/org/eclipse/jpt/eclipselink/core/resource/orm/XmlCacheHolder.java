@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder#getCache <em>Cache</em>}</li>
+ *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder#getExistenceChecking <em>Existence Checking</em>}</li>
  * </ul>
  * </p>
  *
@@ -55,5 +56,35 @@ public interface XmlCacheHolder extends JpaEObject
 	 * @generated
 	 */
 	void setCache(XmlCache value);
+
+	/**
+	 * Returns the value of the '<em><b>Existence Checking</b></em>' attribute.
+	 * The default value is <code>""</code>.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Existence Checking</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Existence Checking</em>' attribute.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType
+	 * @see #setExistenceChecking(ExistenceType)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCacheHolder_ExistenceChecking()
+	 * @model default=""
+	 * @generated
+	 */
+	ExistenceType getExistenceChecking();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder#getExistenceChecking <em>Existence Checking</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Existence Checking</em>' attribute.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType
+	 * @see #getExistenceChecking()
+	 * @generated
+	 */
+	void setExistenceChecking(ExistenceType value);
 
 } // XmlCacheHolder

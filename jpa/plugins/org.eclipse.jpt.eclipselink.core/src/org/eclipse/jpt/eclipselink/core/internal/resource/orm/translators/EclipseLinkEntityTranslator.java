@@ -38,6 +38,7 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 			createAccessTranslator(),
 			createMetadataCompleteTranslator(),
 			createReadOnlyTranslator(),
+			createExistenceCheckingTranslator(),
 			createDescriptionTranslator(),
 			createCustomizerTranslator(),
 			createTableTranslator(),
@@ -73,6 +74,10 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 		return new Translator(READ_ONLY, ECLIPSELINK_ORM_PKG.getXmlReadOnly_ReadOnly(), DOM_ATTRIBUTE);
 	}
 	
+	protected Translator createExistenceCheckingTranslator() {
+		return new Translator(EXISTENCE_CHECKING, ECLIPSELINK_ORM_PKG.getXmlCacheHolder_ExistenceChecking(), DOM_ATTRIBUTE);
+	}
+
 	protected Translator createCustomizerTranslator() {
 		return new CustomizerTranslator(CUSTOMIZER, ECLIPSELINK_ORM_PKG.getXmlCustomizerHolder_Customizer());
 	}

@@ -71,6 +71,22 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	protected XmlCache cache;
 
 	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final ExistenceType EXISTENCE_CHECKING_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getExistenceChecking() <em>Existence Checking</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getExistenceChecking()
+	 * @generated
+	 * @ordered
+	 */
+	protected ExistenceType existenceChecking = EXISTENCE_CHECKING_EDEFAULT;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -247,6 +263,45 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Existence Checking</b></em>' attribute.
+	 * The default value is <code>""</code>.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Existence Checking</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Existence Checking</em>' attribute.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType
+	 * @see #setExistenceChecking(ExistenceType)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCacheHolder_ExistenceChecking()
+	 * @model default=""
+	 * @generated
+	 */
+	public ExistenceType getExistenceChecking()
+	{
+		return existenceChecking;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getExistenceChecking <em>Existence Checking</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Existence Checking</em>' attribute.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType
+	 * @see #getExistenceChecking()
+	 * @generated
+	 */
+	public void setExistenceChecking(ExistenceType newExistenceChecking)
+	{
+		ExistenceType oldExistenceChecking = existenceChecking;
+		existenceChecking = newExistenceChecking == null ? EXISTENCE_CHECKING_EDEFAULT : newExistenceChecking;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__EXISTENCE_CHECKING, oldExistenceChecking, existenceChecking));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -280,6 +335,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return getCustomizer();
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE:
 				return getCache();
+			case EclipseLinkOrmPackage.XML_ENTITY__EXISTENCE_CHECKING:
+				return getExistenceChecking();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -302,6 +359,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE:
 				setCache((XmlCache)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__EXISTENCE_CHECKING:
+				setExistenceChecking((ExistenceType)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -326,6 +386,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE:
 				setCache((XmlCache)null);
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__EXISTENCE_CHECKING:
+				setExistenceChecking(EXISTENCE_CHECKING_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -346,6 +409,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return customizer != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE:
 				return cache != null;
+			case EclipseLinkOrmPackage.XML_ENTITY__EXISTENCE_CHECKING:
+				return existenceChecking != EXISTENCE_CHECKING_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -379,6 +444,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_ENTITY__CACHE: return EclipseLinkOrmPackage.XML_CACHE_HOLDER__CACHE;
+				case EclipseLinkOrmPackage.XML_ENTITY__EXISTENCE_CHECKING: return EclipseLinkOrmPackage.XML_CACHE_HOLDER__EXISTENCE_CHECKING;
 				default: return -1;
 			}
 		}
@@ -414,6 +480,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			switch (baseFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_CACHE_HOLDER__CACHE: return EclipseLinkOrmPackage.XML_ENTITY__CACHE;
+				case EclipseLinkOrmPackage.XML_CACHE_HOLDER__EXISTENCE_CHECKING: return EclipseLinkOrmPackage.XML_ENTITY__EXISTENCE_CHECKING;
 				default: return -1;
 			}
 		}
@@ -433,6 +500,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (readOnly: ");
 		result.append(readOnly);
+		result.append(", existenceChecking: ");
+		result.append(existenceChecking);
 		result.append(')');
 		return result.toString();
 	}

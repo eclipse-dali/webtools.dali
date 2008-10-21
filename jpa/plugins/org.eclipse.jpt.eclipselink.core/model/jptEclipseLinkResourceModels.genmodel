@@ -26,15 +26,15 @@
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheCoordinationType/SEND_NEW_OBJECTS_WITH_CHANGES"/>
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheCoordinationType/NONE"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//XmlJoinFetchType">
-      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlJoinFetchType/INNER"/>
-      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlJoinFetchType/OUTER"/>
-    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//ExistenceType">
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//ExistenceType/CHECK_CACHE"/>
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//ExistenceType/CHECK_DATABASE"/>
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//ExistenceType/ASSUME_EXISTENCE"/>
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//ExistenceType/ASSUME_NON_EXISTENCE"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//XmlJoinFetchType">
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlJoinFetchType/INNER"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlJoinFetchType/OUTER"/>
     </genEnums>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlCustomizer">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCustomizer/customizerClassName"/>
@@ -65,6 +65,7 @@
     </genClasses>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlCacheHolder">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlCacheHolder/cache"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCacheHolder/existenceChecking"/>
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEntity"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlMappedSuperclass"/>

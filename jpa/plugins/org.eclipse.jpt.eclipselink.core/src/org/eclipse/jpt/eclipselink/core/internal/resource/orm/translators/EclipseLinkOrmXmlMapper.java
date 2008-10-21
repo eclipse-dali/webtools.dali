@@ -28,13 +28,15 @@ public interface EclipseLinkOrmXmlMapper
 	String CACHE__COORDINATION_TYPE = "coordination-type";  //$NON-NLS-1$
 	
 	String CUSTOMIZER = "customizer";  //$NON-NLS-1$
+
+	String EXISTENCE_CHECKING = "existence-checking";  //$NON-NLS-1$
 	
 	String EXPIRY_TIME_OF_DAY = "expiry-time-of-day";  //$NON-NLS-1$
 	String EXPIRY_TIME_OF_DAY__HOUR = "hour";  //$NON-NLS-1$
 	String EXPIRY_TIME_OF_DAY__MINUTE = "minute";  //$NON-NLS-1$
 	String EXPIRY_TIME_OF_DAY__SECOND = "second";  //$NON-NLS-1$
 	String EXPIRY_TIME_OF_DAY__MILLISECOND = "millisecond";  //$NON-NLS-1$
-
+	
 	String MUTABLE = "mutable";  //$NON-NLS-1$
 	
 	String PRIVATE_OWNED = "private-owned";  //$NON-NLS-1$

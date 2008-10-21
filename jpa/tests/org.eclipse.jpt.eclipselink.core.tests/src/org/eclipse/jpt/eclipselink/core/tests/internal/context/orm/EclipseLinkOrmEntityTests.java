@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.eclipselink.core.context.CacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.CacheType;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.ExistenceType;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEntity;
@@ -73,6 +74,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 
 	private ICompilationUnit createTestEntityForCaching() throws Exception {
 		createCacheAnnotation();
+		createExistenceCheckingAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -1233,5 +1235,96 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		assertEquals(true, ormContextCaching.isShared());
 		assertEquals(true, ormContextCaching.isDefaultShared());
 		assertEquals(null, ormContextCaching.getSpecifiedShared());
+	}
+	
+	
+	public void testUpdateExistenceChecking() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+
+
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getExistenceChecking());
+		assertEquals(ExistenceType.CHECK_DATABASE, javaContextCaching.getExistenceType());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getExistenceType());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(null, ormContextCaching.getSpecifiedExistenceType());
+		
+		// set xml existence checking, check settings
+		resourceEntity.setExistenceChecking(org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType.ASSUME_EXISTENCE);
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType.ASSUME_EXISTENCE, resourceEntity.getExistenceChecking());
+		assertEquals(ExistenceType.CHECK_DATABASE, javaContextCaching.getExistenceType());
+		assertEquals(ExistenceType.ASSUME_EXISTENCE, ormContextCaching.getExistenceType());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(ExistenceType.ASSUME_EXISTENCE, ormContextCaching.getSpecifiedExistenceType());
+
+			
+		// set java cache existence checking, check defaults
+		
+		javaContextCaching.setSpecifiedExistenceType(ExistenceType.ASSUME_NON_EXISTENCE);
+		
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType.ASSUME_EXISTENCE, resourceEntity.getExistenceChecking());
+		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, javaContextCaching.getExistenceType());
+		assertEquals(ExistenceType.ASSUME_EXISTENCE, ormContextCaching.getExistenceType());
+		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(ExistenceType.ASSUME_EXISTENCE, ormContextCaching.getSpecifiedExistenceType());
+
+		// clear xml existence checking, check defaults
+		resourceEntity.setExistenceChecking(null);
+
+		assertEquals(null, resourceEntity.getExistenceChecking());
+		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, javaContextCaching.getExistenceType());
+		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, ormContextCaching.getExistenceType());
+		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(null, ormContextCaching.getSpecifiedExistenceType());	
+		
+		// set metadataComplete to True, check defaults not from java
+
+		ormContextEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		
+		assertEquals(null, resourceEntity.getExistenceChecking());
+		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, javaContextCaching.getExistenceType());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getExistenceType());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(null, ormContextCaching.getSpecifiedExistenceType());
+
+		ormContextEntity.setSpecifiedMetadataComplete(null);
+	}
+	
+	public void testModifyExistenceChecking() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+		
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getExistenceChecking());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getExistenceType());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(null, ormContextCaching.getSpecifiedExistenceType());
+		
+		// set context cache existence checking, check resource
+		
+		ormContextEntity.getCaching().setSpecifiedExistenceType(ExistenceType.ASSUME_EXISTENCE);
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType.ASSUME_EXISTENCE, resourceEntity.getExistenceChecking());
+		assertEquals(ExistenceType.ASSUME_EXISTENCE, ormContextCaching.getExistenceType());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(ExistenceType.ASSUME_EXISTENCE, ormContextCaching.getSpecifiedExistenceType());
+				
+		// set context existence checking to null, check resource
+		
+		ormContextEntity.getCaching().setSpecifiedExistenceType(null);
+		
+		assertEquals(null, resourceEntity.getExistenceChecking());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getExistenceType());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(null, ormContextCaching.getSpecifiedExistenceType());
 	}
 }

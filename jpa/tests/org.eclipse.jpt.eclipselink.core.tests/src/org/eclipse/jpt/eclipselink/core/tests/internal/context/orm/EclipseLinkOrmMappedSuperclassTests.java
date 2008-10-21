@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.eclipselink.core.context.CacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.CacheType;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.ExistenceType;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmMappedSuperclass;
@@ -72,6 +73,7 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 	
 	private ICompilationUnit createTestMappedSuperclassForCaching() throws Exception {
 		createCacheAnnotation();
+		createExistenceCheckingAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -83,6 +85,7 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 			}
 		});
 	}
+	
 	private void createCacheTypeEnum() throws Exception {
 		this.createEnumAndMembers(EclipseLinkJPA.PACKAGE, "CacheType", "SOFT_WEAK, HARD_WEAK, WEAK, SOFT, FULL, CACHE, NONE;");	
 	}
@@ -1232,4 +1235,95 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		assertEquals(true, ormContextCaching.isDefaultShared());
 		assertEquals(null, ormContextCaching.getSpecifiedShared());
 	}
+	
+	public void testUpdateExistenceChecking() throws Exception {
+		createTestMappedSuperclassForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		JavaCaching javaContextCaching = ((EclipseLinkJavaMappedSuperclass) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextMappedSuperclass.getCaching();
+		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) ormResource().getEntityMappings().getMappedSuperclasses().get(0);
+
+
+		// check defaults
+		
+		assertEquals(null, resourceMappedSuperclass.getExistenceChecking());
+		assertEquals(ExistenceType.CHECK_DATABASE, javaContextCaching.getExistenceType());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getExistenceType());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(null, ormContextCaching.getSpecifiedExistenceType());
+		
+		// set xml existence checking, check settings
+		resourceMappedSuperclass.setExistenceChecking(org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType.ASSUME_EXISTENCE);
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType.ASSUME_EXISTENCE, resourceMappedSuperclass.getExistenceChecking());
+		assertEquals(ExistenceType.CHECK_DATABASE, javaContextCaching.getExistenceType());
+		assertEquals(ExistenceType.ASSUME_EXISTENCE, ormContextCaching.getExistenceType());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(ExistenceType.ASSUME_EXISTENCE, ormContextCaching.getSpecifiedExistenceType());
+
+			
+		// set java cache existence checking, check defaults
+		
+		javaContextCaching.setSpecifiedExistenceType(ExistenceType.ASSUME_NON_EXISTENCE);
+		
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType.ASSUME_EXISTENCE, resourceMappedSuperclass.getExistenceChecking());
+		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, javaContextCaching.getExistenceType());
+		assertEquals(ExistenceType.ASSUME_EXISTENCE, ormContextCaching.getExistenceType());
+		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(ExistenceType.ASSUME_EXISTENCE, ormContextCaching.getSpecifiedExistenceType());
+
+		// clear xml existence checking, check defaults
+		resourceMappedSuperclass.setExistenceChecking(null);
+
+		assertEquals(null, resourceMappedSuperclass.getExistenceChecking());
+		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, javaContextCaching.getExistenceType());
+		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, ormContextCaching.getExistenceType());
+		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(null, ormContextCaching.getSpecifiedExistenceType());	
+		
+		// set metadataComplete to True, check defaults not from java
+
+		ormContextMappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
+		
+		assertEquals(null, resourceMappedSuperclass.getExistenceChecking());
+		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, javaContextCaching.getExistenceType());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getExistenceType());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(null, ormContextCaching.getSpecifiedExistenceType());
+
+		ormContextMappedSuperclass.setSpecifiedMetadataComplete(null);
+	}
+	
+	public void testModifyExistenceChecking() throws Exception {
+		createTestMappedSuperclassForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextMappedSuperclass.getCaching();
+		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) ormResource().getEntityMappings().getMappedSuperclasses().get(0);
+		
+		// check defaults
+		
+		assertEquals(null, resourceMappedSuperclass.getExistenceChecking());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getExistenceType());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(null, ormContextCaching.getSpecifiedExistenceType());
+		
+		// set context cache existence checking, check resource
+		
+		ormContextMappedSuperclass.getCaching().setSpecifiedExistenceType(ExistenceType.ASSUME_EXISTENCE);
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType.ASSUME_EXISTENCE, resourceMappedSuperclass.getExistenceChecking());
+		assertEquals(ExistenceType.ASSUME_EXISTENCE, ormContextCaching.getExistenceType());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(ExistenceType.ASSUME_EXISTENCE, ormContextCaching.getSpecifiedExistenceType());
+				
+		// set context existence checking to null, check resource
+		
+		ormContextMappedSuperclass.getCaching().setSpecifiedExistenceType(null);
+		
+		assertEquals(null, resourceMappedSuperclass.getExistenceChecking());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getExistenceType());
+		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(null, ormContextCaching.getSpecifiedExistenceType());
+	}
+
 }

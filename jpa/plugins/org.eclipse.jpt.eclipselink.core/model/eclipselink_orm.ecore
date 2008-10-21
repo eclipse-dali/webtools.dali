@@ -48,9 +48,17 @@
         defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expiryTimeOfDay" eType="#//XmlTimeOfDay"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ExistenceType">
+    <eLiterals name="CHECK_CACHE"/>
+    <eLiterals name="CHECK_DATABASE" value="1"/>
+    <eLiterals name="ASSUME_EXISTENCE" value="2"/>
+    <eLiterals name="ASSUME_NON_EXISTENCE" value="3"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlCacheHolder" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="cache" eType="#//XmlCache"
         containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="existenceChecking" eType="#//ExistenceType"
+        defaultValueLiteral=""/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntity #//XmlReadOnly #//XmlCustomizerHolder #//XmlCacheHolder"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlMappedSuperclass #//XmlReadOnly #//XmlCustomizerHolder #//XmlCacheHolder"/>
@@ -74,10 +82,4 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlOneToManyImpl #//XmlPrivateOwned #//XmlJoinFetch"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToOne" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToOneImpl #//XmlJoinFetch"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToManyImpl #//XmlJoinFetch"/>
-  <eClassifiers xsi:type="ecore:EEnum" name="ExistenceType">
-    <eLiterals name="CHECK_CACHE"/>
-    <eLiterals name="CHECK_DATABASE" value="1"/>
-    <eLiterals name="ASSUME_EXISTENCE" value="2"/>
-    <eLiterals name="ASSUME_NON_EXISTENCE" value="3"/>
-  </eClassifiers>
 </ecore:EPackage>

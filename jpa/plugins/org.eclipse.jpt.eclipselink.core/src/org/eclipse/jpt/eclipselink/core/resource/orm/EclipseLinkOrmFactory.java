@@ -111,10 +111,10 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 				return createCacheTypeFromString(eDataType, initialValue);
 			case EclipseLinkOrmPackage.CACHE_COORDINATION_TYPE:
 				return createCacheCoordinationTypeFromString(eDataType, initialValue);
-			case EclipseLinkOrmPackage.XML_JOIN_FETCH_TYPE:
-				return createXmlJoinFetchTypeFromString(eDataType, initialValue);
 			case EclipseLinkOrmPackage.EXISTENCE_TYPE:
 				return createExistenceTypeFromString(eDataType, initialValue);
+			case EclipseLinkOrmPackage.XML_JOIN_FETCH_TYPE:
+				return createXmlJoinFetchTypeFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -134,10 +134,10 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 				return convertCacheTypeToString(eDataType, instanceValue);
 			case EclipseLinkOrmPackage.CACHE_COORDINATION_TYPE:
 				return convertCacheCoordinationTypeToString(eDataType, instanceValue);
-			case EclipseLinkOrmPackage.XML_JOIN_FETCH_TYPE:
-				return convertXmlJoinFetchTypeToString(eDataType, instanceValue);
 			case EclipseLinkOrmPackage.EXISTENCE_TYPE:
 				return convertExistenceTypeToString(eDataType, instanceValue);
+			case EclipseLinkOrmPackage.XML_JOIN_FETCH_TYPE:
+				return convertXmlJoinFetchTypeToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
