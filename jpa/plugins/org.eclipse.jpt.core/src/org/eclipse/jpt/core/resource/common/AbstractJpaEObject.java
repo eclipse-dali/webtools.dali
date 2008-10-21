@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.resource.common;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -169,10 +168,11 @@ public abstract class AbstractJpaEObject
 
 
 	// ********** text ranges **********
-
+	
 	/**
 	 * Return a text range for the specified attribute node.
-	 * If the attribute node does not exist, return a text range for the 
+	 * If the attribute node does not exist, return a text range for this object's
+	 * node
 	 */
 	protected TextRange getAttributeTextRange(String attributeName) {
 		IDOMNode attributeNode = this.getAttributeNode(attributeName);
@@ -181,6 +181,29 @@ public abstract class AbstractJpaEObject
 	
 	protected IDOMNode getAttributeNode(String attributeName) {
 		return (IDOMNode) this.node.getAttributes().getNamedItem(attributeName);
+	}
+	
+	/**
+	 * Return a text range for the specified element node.
+	 * If the element node does not exist, return a text range for this object's
+	 * node
+	 */
+	protected TextRange getElementTextRange(String elementName) {
+		IDOMNode elementNode = this.getElementNode(elementName);
+		return (elementNode != null) ? buildTextRange(elementNode) : this.getValidationTextRange();
+	}
+	
+	/**
+	 * Returns the first element node with the given name, if one exists
+	 */
+	protected IDOMNode getElementNode(String elementName) {
+		for (int i = 0; i < this.node.getChildNodes().getLength(); i ++) {
+			IDOMNode node = (IDOMNode) this.node.getChildNodes().item(i);
+			if (node.getNodeType() == IDOMNode.ELEMENT_NODE && elementName.equals(node.getNodeName())) {
+				return node;
+			}
+		}
+		return null;
 	}
 	
 	public TextRange getValidationTextRange() {
@@ -217,9 +240,9 @@ public abstract class AbstractJpaEObject
 		protected void didAdd(int index, E newObject) {
 			super.didAdd(index, newObject);
 			if (newObject instanceof EMF2DOMAdapter) {
-				Object n = ((EMF2DOMAdapter) newObject).getNode();
-				if (newObject instanceof IDOMNode) {
-					AbstractJpaEObject.this.node = (IDOMNode) n;
+				Object node = ((EMF2DOMAdapter) newObject).getNode();
+				if (node instanceof IDOMNode) {
+					AbstractJpaEObject.this.node = (IDOMNode) node;
 				}
 			}
 		}
