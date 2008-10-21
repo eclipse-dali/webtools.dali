@@ -56,15 +56,15 @@ public class EclipseLinkAttributesTranslator extends AttributesTranslator
 //	protected Translator createManyToOneTranslator() {
 //		return new ManyToOneTranslator(MANY_TO_ONE, ORM_PKG.getAttributes_ManyToOnes());
 //	}
-//	
-//	protected Translator createOneToManyTranslator() {
-//		return new OneToManyTranslator(ONE_TO_MANY, ORM_PKG.getAttributes_OneToManys());
-//	}
-//	
-//	protected Translator createOneToOneTranslator() {
-//		return new OneToOneTranslator(ONE_TO_ONE, ORM_PKG.getAttributes_OneToOnes());
-//	}
-//	
+	
+	protected Translator createOneToOneTranslator() {
+		return new EclipseLinkOneToOneTranslator(ONE_TO_ONE, ORM_PKG.getAttributes_OneToOnes());
+	}
+	
+	protected Translator createOneToManyTranslator() {
+		return new EclipseLinkOneToManyTranslator(ONE_TO_MANY, ORM_PKG.getAttributes_OneToManys());
+	}
+	
 //	protected Translator createManyToManyTranslator() {
 //		return new ManyToManyTranslator(MANY_TO_MANY, ORM_PKG.getAttributes_ManyToManys());
 //	}

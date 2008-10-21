@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchable;
-import org.eclipse.jpt.eclipselink.core.context.PrivateOwnable;
+import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -146,11 +146,11 @@ public class EclipselinkOneToManyMappingComposite extends FormPane<OneToManyMapp
 		);
 	}
 	
-	private PropertyValueModel<PrivateOwnable> buildPrivateOwnableHolder() {
-		return new PropertyAspectAdapter<OneToManyMapping, PrivateOwnable>(getSubjectHolder()) {
+	private PropertyValueModel<PrivateOwned> buildPrivateOwnableHolder() {
+		return new PropertyAspectAdapter<OneToManyMapping, PrivateOwned>(getSubjectHolder()) {
 			@Override
-			protected PrivateOwnable buildValue_() {
-				return ((EclipseLinkOneToManyMapping) this.subject).getPrivateOwnable();
+			protected PrivateOwned buildValue_() {
+				return ((EclipseLinkOneToManyMapping) this.subject).getPrivateOwned();
 			}
 		};
 	}

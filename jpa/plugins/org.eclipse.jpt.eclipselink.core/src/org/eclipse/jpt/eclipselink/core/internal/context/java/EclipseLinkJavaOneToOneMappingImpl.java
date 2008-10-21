@@ -15,9 +15,9 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToOneMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
-import org.eclipse.jpt.eclipselink.core.context.PrivateOwnable;
+import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwnable;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwned;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -25,7 +25,7 @@ public class EclipseLinkJavaOneToOneMappingImpl extends GenericJavaOneToOneMappi
 {
 	
 	protected final JavaJoinFetchable joinFetchable;
-	protected final JavaPrivateOwnable privateOwnable;
+	protected final JavaPrivateOwned privateOwnable;
 
 	public EclipseLinkJavaOneToOneMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
@@ -42,7 +42,7 @@ public class EclipseLinkJavaOneToOneMappingImpl extends GenericJavaOneToOneMappi
 		return this.joinFetchable;
 	}
 
-	public PrivateOwnable getPrivateOwnable() {
+	public PrivateOwned getPrivateOwned() {
 		return this.privateOwnable;
 	}
 	

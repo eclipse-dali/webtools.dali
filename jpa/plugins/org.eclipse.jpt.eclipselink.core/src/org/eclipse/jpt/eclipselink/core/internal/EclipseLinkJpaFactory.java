@@ -31,6 +31,8 @@ import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
+import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
@@ -57,7 +59,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.JavaExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaJoinFetchable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaMutable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwnable;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwned;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaStructConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaTypeConverter;
@@ -82,7 +84,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaMut
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingImpl;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaPrivateOwnable;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaPrivateOwned;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaReadOnly;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaStructConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaTypeConverter;
@@ -93,6 +95,8 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEmbed
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEntity;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmIdMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmMappedSuperclass;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToManyMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmVersionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXml;
 import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmResourceModelProvider;
@@ -170,6 +174,16 @@ public class EclipseLinkJpaFactory
 	@Override
 	public OrmVersionMapping buildOrmVersionMapping(OrmPersistentAttribute parent) {
 		return new EclipseLinkOrmVersionMapping(parent);
+	}
+	
+	@Override
+	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmPersistentAttribute parent) {
+		return new EclipseLinkOrmOneToOneMapping(parent);
+	}
+	
+	@Override
+	public OrmOneToManyMapping buildOrmOneToManyMapping(OrmPersistentAttribute parent) {
+		return new EclipseLinkOrmOneToManyMapping(parent);
 	}
 	
 	
@@ -261,8 +275,8 @@ public class EclipseLinkJpaFactory
 		return new EclipseLinkJavaJoinFetchable(parent);
 	}
 	
-	public JavaPrivateOwnable buildJavaPrivateOwnable(JavaAttributeMapping parent) {
-		return new EclipseLinkJavaPrivateOwnable(parent);
+	public JavaPrivateOwned buildJavaPrivateOwnable(JavaAttributeMapping parent) {
+		return new EclipseLinkJavaPrivateOwned(parent);
 	}
 	
 	public JavaConverterHolder buildJavaConverterHolder(JavaTypeMapping parent) {

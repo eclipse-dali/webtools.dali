@@ -2,11 +2,12 @@
  * <copyright>
  * </copyright>
  *
- * $Id: XmlPrivateOwned.java,v 1.1 2008/10/16 21:17:50 pfullbright Exp $
+ * $Id: XmlPrivateOwned.java,v 1.2 2008/10/21 15:45:17 pfullbright Exp $
  */
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import org.eclipse.jpt.core.resource.common.JpaEObject;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <!-- begin-user-doc -->
@@ -52,5 +53,9 @@ public interface XmlPrivateOwned extends JpaEObject
 	 * @generated
 	 */
 	void setPrivateOwned(boolean value);
-
-} // XmlPrivateOwned
+	
+	/**
+	 * Return the {@link TextRange} for the private-owned attibute.
+	 */
+	TextRange getPrivateOwnedTextRange();
+}

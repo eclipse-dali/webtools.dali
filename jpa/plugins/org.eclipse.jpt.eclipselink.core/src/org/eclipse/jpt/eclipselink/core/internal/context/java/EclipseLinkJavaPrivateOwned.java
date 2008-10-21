@@ -14,17 +14,16 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwnable;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaPrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.java.PrivateOwnedAnnotation;
 
-public class EclipseLinkJavaPrivateOwnable extends AbstractJavaJpaContextNode implements JavaPrivateOwnable
+public class EclipseLinkJavaPrivateOwned extends AbstractJavaJpaContextNode implements JavaPrivateOwned
 {
-	
 	protected boolean privateOwned;
 	
 	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
 	
-	public EclipseLinkJavaPrivateOwnable(JavaAttributeMapping parent) {
+	public EclipseLinkJavaPrivateOwned(JavaAttributeMapping parent) {
 		super(parent);
 	}
 	
@@ -44,7 +43,7 @@ public class EclipseLinkJavaPrivateOwnable extends AbstractJavaJpaContextNode im
 		this.resourcePersistentAttribute.removeSupportingAnnotation(getPrivateOwnedAnnotationName());
 	}
 
-	public boolean getPrivateOwned() {
+	public boolean isPrivateOwned() {
 		return this.privateOwned;
 	}
 	

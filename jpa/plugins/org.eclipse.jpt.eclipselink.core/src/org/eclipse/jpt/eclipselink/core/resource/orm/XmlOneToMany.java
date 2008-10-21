@@ -2,17 +2,16 @@
  * <copyright>
  * </copyright>
  *
- * $Id: XmlOneToMany.java,v 1.4 2008/10/17 20:31:16 kmoore Exp $
+ * $Id: XmlOneToMany.java,v 1.5 2008/10/21 15:45:17 pfullbright Exp $
  */
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.jpt.core.resource.orm.XmlOneToManyImpl;
+import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.EclipseLinkOrmXmlMapper;
 
 /**
  * <!-- begin-user-doc -->
@@ -304,5 +303,8 @@ public class XmlOneToMany extends XmlOneToManyImpl implements XmlPrivateOwned, X
 		result.append(')');
 		return result.toString();
 	}
-
-} // XmlOneToMany
+	
+	public TextRange getPrivateOwnedTextRange() {
+		return getElementTextRange(EclipseLinkOrmXmlMapper.PRIVATE_OWNED);
+	}
+}

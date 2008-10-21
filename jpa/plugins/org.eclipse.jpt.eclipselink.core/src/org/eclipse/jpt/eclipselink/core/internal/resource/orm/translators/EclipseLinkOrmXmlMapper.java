@@ -18,6 +18,7 @@ public interface EclipseLinkOrmXmlMapper
 	EclipseLinkOrmPackage ECLIPSELINK_ORM_PKG = EclipseLinkOrmPackage.eINSTANCE;
 	
 	String CUSTOMIZER = "customizer";  //$NON-NLS-1$
-	String READ_ONLY = "read-only";  //$NON-NLS-1$
 	String MUTABLE = "mutable";  //$NON-NLS-1$
+	String PRIVATE_OWNED = "private-owned";  //$NON-NLS-1$
+	String READ_ONLY = "read-only";  //$NON-NLS-1$
 }

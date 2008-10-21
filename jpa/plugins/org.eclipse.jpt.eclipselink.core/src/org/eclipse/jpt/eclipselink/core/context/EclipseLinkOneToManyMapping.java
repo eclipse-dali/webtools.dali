@@ -25,5 +25,5 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
  */
 public interface EclipseLinkOneToManyMapping extends OneToManyMapping, EclipseLinkRelationshipMapping
 {
-	PrivateOwnable getPrivateOwnable();
+	PrivateOwned getPrivateOwned();
 }

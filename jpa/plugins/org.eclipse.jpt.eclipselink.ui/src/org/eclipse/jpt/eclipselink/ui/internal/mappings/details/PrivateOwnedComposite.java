@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
-import org.eclipse.jpt.eclipselink.core.context.PrivateOwnable;
+import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class PrivateOwnedComposite extends FormPane<PrivateOwnable>
+public class PrivateOwnedComposite extends FormPane<PrivateOwned>
 {
 	/**
 	 * Creates a new <code>PrivateOwnedComposite</code>.
@@ -33,19 +33,19 @@ public class PrivateOwnedComposite extends FormPane<PrivateOwnable>
 	 * @param parent The parent container
 	 */
 	public PrivateOwnedComposite(FormPane<?> parentPane, 
-		PropertyValueModel<? extends PrivateOwnable> subjectHolder,
+		PropertyValueModel<? extends PrivateOwned> subjectHolder,
 		Composite parent) {
 
 			super(parentPane, subjectHolder, parent);
 	}
 	
-	private PropertyAspectAdapter<PrivateOwnable, Boolean> buildPrivateOwnedHolder() {
+	private PropertyAspectAdapter<PrivateOwned, Boolean> buildPrivateOwnedHolder() {
 
-		return new PropertyAspectAdapter<PrivateOwnable, Boolean>(getSubjectHolder(), PrivateOwnable.PRIVATE_OWNED_PROPERTY) {
+		return new PropertyAspectAdapter<PrivateOwned, Boolean>(getSubjectHolder(), PrivateOwned.PRIVATE_OWNED_PROPERTY) {
 
 			@Override
 			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.getPrivateOwned());
+				return Boolean.valueOf(this.subject.isPrivateOwned());
 			}
 
 			@Override

@@ -7,34 +7,23 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.context.java;
+package org.eclipse.jpt.eclipselink.core.context;
 
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.eclipselink.core.context.PrivateOwnable;
+import org.eclipse.jpt.core.context.JpaContextNode;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 2.1
+ * @since 2.1
  */
-public interface JavaPrivateOwnable extends JavaJpaContextNode, PrivateOwnable
+public interface PrivateOwned extends JpaContextNode
 {
-	
-	/**
-	 * Initialize the JavaPrivateOwnable context model object to match the PrivateOwnedAnnotation 
-	 * resource model object. This should be called immediately after object creation.
-	 */
-	void initialize(JavaResourcePersistentAttribute jrpa);
-	
-	/**
-	 * Update the JavaPrivateOwnable context model object to match the PrivateOwnedAnnotation 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(JavaResourcePersistentAttribute jrpa);	
-
+	boolean isPrivateOwned();
+	void setPrivateOwned(boolean privateOwned);
+		String PRIVATE_OWNED_PROPERTY = "privateOwnedProperty"; //$NON-NLS-1$
 }

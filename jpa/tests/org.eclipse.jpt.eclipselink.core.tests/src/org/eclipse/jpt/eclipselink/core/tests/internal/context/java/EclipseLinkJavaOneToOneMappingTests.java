@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchable;
-import org.eclipse.jpt.eclipselink.core.context.PrivateOwnable;
+import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.PrivateOwnedAnnotation;
@@ -120,8 +120,8 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		PrivateOwnable privateOwnable = oneToOneMapping.getPrivateOwnable();
-		assertEquals(true, privateOwnable.getPrivateOwned());
+		PrivateOwned privateOwnable = oneToOneMapping.getPrivateOwned();
+		assertEquals(true, privateOwnable.isPrivateOwned());
 	}
 
 	public void testSetPrivateOwned() throws Exception {
@@ -130,19 +130,19 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		PrivateOwnable privateOwnable = oneToOneMapping.getPrivateOwnable();
-		assertEquals(true, privateOwnable.getPrivateOwned());
+		PrivateOwned privateOwnable = oneToOneMapping.getPrivateOwned();
+		assertEquals(true, privateOwnable.isPrivateOwned());
 		
 		privateOwnable.setPrivateOwned(false);
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getSupportingAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME));
-		assertEquals(false, privateOwnable.getPrivateOwned());
+		assertEquals(false, privateOwnable.isPrivateOwned());
 
 		privateOwnable.setPrivateOwned(true);
 		assertNotNull(attributeResource.getSupportingAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME));
-		assertEquals(true, privateOwnable.getPrivateOwned());
+		assertEquals(true, privateOwnable.isPrivateOwned());
 	}
 	
 	public void testPrivateOwnedUpdatesFromResourceModelChange() throws Exception {
@@ -151,18 +151,18 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		PrivateOwnable privateOwnable = oneToOneMapping.getPrivateOwnable();
-		assertEquals(true, privateOwnable.getPrivateOwned());
+		PrivateOwned privateOwnable = oneToOneMapping.getPrivateOwned();
+		assertEquals(true, privateOwnable.isPrivateOwned());
 		
 		
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.removeSupportingAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME);
 		
-		assertEquals(false, privateOwnable.getPrivateOwned());
+		assertEquals(false, privateOwnable.isPrivateOwned());
 		
 		attributeResource.addSupportingAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME);
-		assertEquals(true, privateOwnable.getPrivateOwned());
+		assertEquals(true, privateOwnable.isPrivateOwned());
 	}
 	
 	public void testHasJoinFetch() throws Exception {
