@@ -92,10 +92,7 @@ public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implement
 			}
 		}
 		else {
-			//have to check if annotation exists in case the change is from false to null or vice versa
-			if (getResourceMutable() != null) {
-				removeResourceMutable();
-			}
+			removeResourceMutable();
 		}
 		firePropertyChanged(Mutable.SPECIFIED_MUTABLE_PROPERTY, oldSpecifiedMutable, newSpecifiedMutable);
 	}
