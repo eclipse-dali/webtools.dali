@@ -14,9 +14,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConversionValueAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -30,18 +28,13 @@ public class EclipseLinkJavaConversionValue extends AbstractJavaJpaContextNode i
 	
 	private String objectValue;
 	
-	public EclipseLinkJavaConversionValue(JavaObjectTypeConverter parent) {
+	public EclipseLinkJavaConversionValue(EclipseLinkJavaObjectTypeConverter parent) {
 		super(parent);
 	}
 	
 	@Override
-	public JavaObjectTypeConverter getParent() {
-		return (JavaObjectTypeConverter) super.getParent();
-	}
-	
-	@Override
-	protected EclipseLinkJpaFactory getJpaFactory() {
-		return (EclipseLinkJpaFactory) super.getJpaFactory();
+	public EclipseLinkJavaObjectTypeConverter getParent() {
+		return (EclipseLinkJavaObjectTypeConverter) super.getParent();
 	}
 
 	protected String getAnnotationName() {

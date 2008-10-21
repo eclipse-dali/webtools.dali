@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
@@ -36,28 +35,19 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaStructConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaTypeConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMappingImpl;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEmbeddableImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEntityImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaIdMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaManyToManyMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaManyToOneMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaMappedSuperclassImpl;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingImpl;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaStructConverter;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaTypeConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEmbeddable;
@@ -194,22 +184,5 @@ public class EclipseLinkJpaFactory
 	@Override
 	public JavaManyToOneMapping buildJavaManyToOneMapping(JavaPersistentAttribute parent) {
 		return new EclipseLinkJavaManyToOneMappingImpl(parent);
-	}
-	
-	//TODO revisit to see if we can remove these methods - KFB
-	public JavaConverter buildJavaConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
-		return new EclipseLinkJavaConverter(parent, jrpm);
-	}
-	
-	public JavaObjectTypeConverter buildJavaObjectTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
-		return new EclipseLinkJavaObjectTypeConverter(parent, jrpm);
-	}
-	
-	public JavaStructConverter buildJavaStructConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
-		return new EclipseLinkJavaStructConverter(parent, jrpm);
-	}
-	
-	public JavaTypeConverter buildJavaTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
-		return new EclipseLinkJavaTypeConverter(parent, jrpm);
 	}
 }

@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
@@ -43,11 +42,6 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 	@Override
 	public JavaAttributeMapping getParent() {
 		return (JavaAttributeMapping) super.getParent();
-	}
-	
-	@Override
-	protected EclipseLinkJpaFactory getJpaFactory() {
-		return (EclipseLinkJpaFactory) super.getJpaFactory();
 	}
 
 	public String getType() {
@@ -164,16 +158,16 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 			return null;
 		}
 		if (converterType == EclipseLinkConverter.CONVERTER) {
-			return getJpaFactory().buildJavaConverter(this, this.resourcePersistentAttribute);
+			return new org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConverter(this, this.resourcePersistentAttribute);
 		}
 		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
-			return getJpaFactory().buildJavaTypeConverter(this, this.resourcePersistentAttribute);
+			return new EclipseLinkJavaTypeConverter(this, this.resourcePersistentAttribute);
 		}
 		else if (converterType == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
-			return getJpaFactory().buildJavaObjectTypeConverter(this, this.resourcePersistentAttribute);
+			return new EclipseLinkJavaObjectTypeConverter(this, this.resourcePersistentAttribute);
 		}
 		else if (converterType == EclipseLinkConverter.STRUCT_CONVERTER) {
-			return getJpaFactory().buildJavaStructConverter(this, this.resourcePersistentAttribute);
+			return new EclipseLinkJavaStructConverter(this, this.resourcePersistentAttribute);
 		}
 		return null;
 	}

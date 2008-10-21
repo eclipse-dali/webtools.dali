@@ -20,7 +20,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConversionValueAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -28,7 +29,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNode implements JavaObjectTypeConverter
+public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNode implements ObjectTypeConverter, EclipseLinkJavaConverter
 {	
 	private JavaResourcePersistentMember resourcePersistentMember;
 	

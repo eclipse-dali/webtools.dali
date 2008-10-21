@@ -15,11 +15,11 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaTypeConverter;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
+import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.TypeConverterAnnotation;
 
-public class EclipseLinkJavaTypeConverter extends AbstractJavaJpaContextNode implements JavaTypeConverter
+public class EclipseLinkJavaTypeConverter extends AbstractJavaJpaContextNode implements TypeConverter, EclipseLinkJavaConverter
 {	
 	private JavaResourcePersistentMember resourcePersistentMember;
 	
@@ -32,11 +32,6 @@ public class EclipseLinkJavaTypeConverter extends AbstractJavaJpaContextNode imp
 	public EclipseLinkJavaTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
 		super(parent);
 		this.initialize(jrpm);
-	}
-	
-	@Override
-	protected EclipseLinkJpaFactory getJpaFactory() {
-		return (EclipseLinkJpaFactory) super.getJpaFactory();
 	}
 
 	public String getType() {

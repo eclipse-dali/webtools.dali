@@ -11,6 +11,10 @@ package org.eclipse.jpt.eclipselink.core.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.eclipselink.core.context.Converter;
+import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.StructConverter;
+import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
 
 /**
  * 
@@ -38,23 +42,23 @@ public interface JavaConverterHolder extends JavaJpaContextNode
 	 */
 	void update(JavaResourcePersistentType jrpt);
 	
-	JavaConverter getConverter();
-	JavaConverter addConverter();
+	Converter getConverter();
+	Converter addConverter();
 	void removeConverter();
 	String CONVERTER_PROPERTY = "converterProperty"; //$NON-NLS-1$
 	
-	JavaObjectTypeConverter getObjectTypeConverter();
-	JavaObjectTypeConverter addObjectTypeConverter();
+	ObjectTypeConverter getObjectTypeConverter();
+	ObjectTypeConverter addObjectTypeConverter();
 	void removeObjectTypeConverter();
 	String OBJECT_TYPE_CONVERTER_PROPERTY = "objectTypeConverterProperty"; //$NON-NLS-1$
 	
-	JavaStructConverter getStructConverter();
-	JavaStructConverter addStructConverter();
+	StructConverter getStructConverter();
+	StructConverter addStructConverter();
 	void removeStructConverter();
 	String STRUCT_CONVERTER_PROPERTY = "structConverterProperty"; //$NON-NLS-1$
 	
-	JavaTypeConverter getTypeConverter();
-	JavaTypeConverter addTypeConverter();
+	TypeConverter getTypeConverter();
+	TypeConverter addTypeConverter();
 	void removeTypeConverter();
 	String TYPE_CONVERTER_PROPERTY = "typeCnverterProperty"; //$NON-NLS-1$
 	

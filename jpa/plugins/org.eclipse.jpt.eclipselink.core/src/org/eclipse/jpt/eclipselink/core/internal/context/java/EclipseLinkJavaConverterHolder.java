@@ -15,12 +15,11 @@ import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaStructConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.Converter;
+import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.StructConverter;
+import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.StructConverterAnnotation;
@@ -31,37 +30,32 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 {
 	protected JavaResourcePersistentType resourcePersistentType;
 	
-	protected JavaConverter converter;
-	protected JavaObjectTypeConverter objectTypeConverter;
-	protected JavaStructConverter structConverter;
-	protected JavaTypeConverter typeConverter;
+	protected EclipseLinkJavaConverter converter;
+	protected EclipseLinkJavaObjectTypeConverter objectTypeConverter;
+	protected EclipseLinkJavaStructConverter structConverter;
+	protected EclipseLinkJavaTypeConverter typeConverter;
 	
 	public EclipseLinkJavaConverterHolder(JavaTypeMapping parent) {
 		super(parent);
 	}
 	
-	@Override
-	protected EclipseLinkJpaFactory getJpaFactory() {
-		return (EclipseLinkJpaFactory) super.getJpaFactory();
-	}	
-	
 	//************** converter *************
-	public JavaConverter getConverter() {
+	public Converter getConverter() {
 		return this.converter;
 	}
 	
-	public JavaConverter addConverter() {
+	public Converter addConverter() {
 		if (this.converter != null) {
 			throw new IllegalStateException("converter already exists"); //$NON-NLS-1$
 		}
-		this.converter = getJpaFactory().buildJavaConverter(this, this.resourcePersistentType);
+		this.converter = new EclipseLinkJavaConverter(this, this.resourcePersistentType);
 		this.addResourceConverter();
 		firePropertyChanged(CONVERTER_PROPERTY, null, this.converter);
 		return this.converter;
 	}
 	
 	protected void addConverter_() {
-		this.converter = getJpaFactory().buildJavaConverter(this, this.resourcePersistentType);			
+		this.converter = new EclipseLinkJavaConverter(this, this.resourcePersistentType);			
 		firePropertyChanged(CONVERTER_PROPERTY, null, this.converter);
 	}
 	
@@ -69,7 +63,7 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 		if (this.converter == null) {
 			throw new IllegalStateException("converter is null"); //$NON-NLS-1$			
 		}
-		JavaConverter oldConverter = this.converter;
+		Converter oldConverter = this.converter;
 		this.converter = null;
 		removeResourceConverter();
 		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, null);
@@ -98,22 +92,22 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 	
 	
 	//************** object type converter *************
-	public JavaObjectTypeConverter getObjectTypeConverter() {
+	public ObjectTypeConverter getObjectTypeConverter() {
 		return this.objectTypeConverter;
 	}
 	
-	public JavaObjectTypeConverter addObjectTypeConverter() {
+	public ObjectTypeConverter addObjectTypeConverter() {
 		if (this.objectTypeConverter != null) {
 			throw new IllegalStateException("object type converter already exists"); //$NON-NLS-1$
 		}
-		this.objectTypeConverter = getJpaFactory().buildJavaObjectTypeConverter(this, this.resourcePersistentType);
+		this.objectTypeConverter = new EclipseLinkJavaObjectTypeConverter(this, this.resourcePersistentType);
 		this.addResourceObjectTypeConverter();
 		firePropertyChanged(OBJECT_TYPE_CONVERTER_PROPERTY, null, this.objectTypeConverter);
 		return this.objectTypeConverter;
 	}
 	
 	protected void addObjectTypeConverter_() {
-		this.objectTypeConverter = getJpaFactory().buildJavaObjectTypeConverter(this, this.resourcePersistentType);			
+		this.objectTypeConverter = new EclipseLinkJavaObjectTypeConverter(this, this.resourcePersistentType);			
 		firePropertyChanged(OBJECT_TYPE_CONVERTER_PROPERTY, null, this.objectTypeConverter);
 	}
 	
@@ -121,14 +115,14 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 		if (this.objectTypeConverter == null) {
 			throw new IllegalStateException("object type converter is null"); //$NON-NLS-1$			
 		}
-		JavaObjectTypeConverter oldConverter = this.objectTypeConverter;
+		ObjectTypeConverter oldConverter = this.objectTypeConverter;
 		this.objectTypeConverter = null;
 		removeResourceObjectTypeConverter();
 		firePropertyChanged(OBJECT_TYPE_CONVERTER_PROPERTY, oldConverter, null);
 	}
 
 	protected void removeObjectTypeConverter_() {
-		JavaObjectTypeConverter oldConverter = this.objectTypeConverter;
+		ObjectTypeConverter oldConverter = this.objectTypeConverter;
 		this.objectTypeConverter = null;
 		firePropertyChanged(OBJECT_TYPE_CONVERTER_PROPERTY, oldConverter, null);
 	}
@@ -151,22 +145,22 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 	
 	
 	//************** type converter *************
-	public JavaTypeConverter getTypeConverter() {
+	public TypeConverter getTypeConverter() {
 		return this.typeConverter;
 	}
 	
-	public JavaTypeConverter addTypeConverter() {
+	public TypeConverter addTypeConverter() {
 		if (this.typeConverter != null) {
 			throw new IllegalStateException("type converter already exists"); //$NON-NLS-1$
 		}
-		this.typeConverter = getJpaFactory().buildJavaTypeConverter(this, this.resourcePersistentType);
+		this.typeConverter = new EclipseLinkJavaTypeConverter(this, this.resourcePersistentType);
 		this.addResourceTypeConverter();
 		firePropertyChanged(TYPE_CONVERTER_PROPERTY, null, this.typeConverter);
 		return this.typeConverter;
 	}
 	
 	protected void addTypeConverter_() {
-		this.typeConverter = getJpaFactory().buildJavaTypeConverter(this, this.resourcePersistentType);			
+		this.typeConverter = new EclipseLinkJavaTypeConverter(this, this.resourcePersistentType);			
 		firePropertyChanged(TYPE_CONVERTER_PROPERTY, null, this.typeConverter);
 	}
 	
@@ -174,14 +168,14 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 		if (this.typeConverter == null) {
 			throw new IllegalStateException("type converter is null"); //$NON-NLS-1$			
 		}
-		JavaTypeConverter oldConverter = this.typeConverter;
+		TypeConverter oldConverter = this.typeConverter;
 		this.typeConverter = null;
 		removeResourceTypeConverter();
 		firePropertyChanged(TYPE_CONVERTER_PROPERTY, oldConverter, null);
 	}
 	
 	protected void removeTypeConverter_() {
-		JavaTypeConverter oldConverter = this.typeConverter;
+		TypeConverter oldConverter = this.typeConverter;
 		this.typeConverter = null;
 		firePropertyChanged(TYPE_CONVERTER_PROPERTY, oldConverter, null);
 	}
@@ -204,22 +198,22 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 	
 	
 	//************** struct converter *************
-	public JavaStructConverter getStructConverter() {
+	public StructConverter getStructConverter() {
 		return this.structConverter;
 	}
 	
-	public JavaStructConverter addStructConverter() {
+	public StructConverter addStructConverter() {
 		if (this.structConverter != null) {
 			throw new IllegalStateException("struct converter already exists"); //$NON-NLS-1$
 		}
-		this.structConverter = getJpaFactory().buildJavaStructConverter(this, this.resourcePersistentType);
+		this.structConverter = new EclipseLinkJavaStructConverter(this, this.resourcePersistentType);
 		this.addResourceStructConverter();
 		firePropertyChanged(STRUCT_CONVERTER_PROPERTY, null, this.structConverter);
 		return this.structConverter;
 	}
 	
 	protected void addStructConverter_() {
-		this.structConverter = getJpaFactory().buildJavaStructConverter(this, this.resourcePersistentType);			
+		this.structConverter = new EclipseLinkJavaStructConverter(this, this.resourcePersistentType);			
 		firePropertyChanged(STRUCT_CONVERTER_PROPERTY, null, this.structConverter);
 	}
 	
@@ -227,14 +221,14 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 		if (this.structConverter == null) {
 			throw new IllegalStateException("struct converter is null"); //$NON-NLS-1$			
 		}
-		JavaStructConverter oldConverter = this.structConverter;
+		StructConverter oldConverter = this.structConverter;
 		this.structConverter = null;
 		removeResourceStructConverter();
 		firePropertyChanged(STRUCT_CONVERTER_PROPERTY, oldConverter, null);
 	}
 	
 	protected void removeStructConverter_() {
-		JavaStructConverter oldConverter = this.structConverter;
+		StructConverter oldConverter = this.structConverter;
 		this.structConverter = null;
 		firePropertyChanged(STRUCT_CONVERTER_PROPERTY, oldConverter, null);
 	}
@@ -337,25 +331,25 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 	
 	protected void initializeConverter() {
 		if (getResourceConverter() != null) {
-			this.converter = getJpaFactory().buildJavaConverter(this, this.resourcePersistentType);
+			this.converter = new EclipseLinkJavaConverter(this, this.resourcePersistentType);
 		}		
 	}
 	
 	protected void initializeObjectTypeConverter() {
 		if (getResourceObjectTypeConverter() != null) {
-			this.objectTypeConverter = getJpaFactory().buildJavaObjectTypeConverter(this, this.resourcePersistentType);
+			this.objectTypeConverter = new EclipseLinkJavaObjectTypeConverter(this, this.resourcePersistentType);
 		}		
 	}
 	
 	protected void initializeTypeConverter() {
 		if (getResourceTypeConverter() != null) {
-			this.typeConverter = getJpaFactory().buildJavaTypeConverter(this, this.resourcePersistentType);
+			this.typeConverter = new EclipseLinkJavaTypeConverter(this, this.resourcePersistentType);
 		}		
 	}
 	
 	protected void initializeStructConverter() {
 		if (getResourceStructConverter() != null) {
-			this.structConverter = getJpaFactory().buildJavaStructConverter(this, this.resourcePersistentType);
+			this.structConverter = new EclipseLinkJavaStructConverter(this, this.resourcePersistentType);
 		}		
 	}
 
