@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: XmlOneToOne.java,v 1.5 2008/10/21 15:45:17 pfullbright Exp $
+ * $Id: XmlOneToOne.java,v 1.6 2008/10/22 20:26:47 pfullbright Exp $
  */
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
@@ -306,5 +306,9 @@ public class XmlOneToOne extends XmlOneToOneImpl implements XmlPrivateOwned, Xml
 	
 	public TextRange getPrivateOwnedTextRange() {
 		return getElementTextRange(EclipseLinkOrmXmlMapper.PRIVATE_OWNED);
+	}
+	
+	public TextRange getJoinFetchTextRange() {
+		return getElementTextRange(EclipseLinkOrmXmlMapper.JOIN_FETCH);
 	}
 }

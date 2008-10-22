@@ -41,11 +41,16 @@ public class EclipseLinkOneToOneTranslator extends OneToOneTranslator
 			createJoinColumnTranslator(),
 			createJoinTableTranslator(),
 			createCascadeTranslator(),
-			createPrivateOwnedTranslator()
+			createPrivateOwnedTranslator(),
+			createJoinFetchTranslator()
 		};
 	}
 	
 	protected Translator createPrivateOwnedTranslator() {
 		return new EmptyTagBooleanTranslator(PRIVATE_OWNED, ECLIPSELINK_ORM_PKG.getXmlPrivateOwned_PrivateOwned());
+	}
+	
+	protected Translator createJoinFetchTranslator() {
+		return new Translator(JOIN_FETCH, ECLIPSELINK_ORM_PKG.getXmlJoinFetch_JoinFetch());
 	}
 }

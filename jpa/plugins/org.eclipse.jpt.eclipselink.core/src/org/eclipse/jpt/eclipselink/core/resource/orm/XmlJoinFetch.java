@@ -2,11 +2,12 @@
  * <copyright>
  * </copyright>
  *
- * $Id: XmlJoinFetch.java,v 1.1 2008/10/16 21:17:50 pfullbright Exp $
+ * $Id: XmlJoinFetch.java,v 1.2 2008/10/22 20:26:47 pfullbright Exp $
  */
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import org.eclipse.jpt.core.resource.common.JpaEObject;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <!-- begin-user-doc -->
@@ -55,5 +56,9 @@ public interface XmlJoinFetch extends JpaEObject
 	 * @generated
 	 */
 	void setJoinFetch(XmlJoinFetchType value);
-
-} // XmlJoinFetch
+	
+	/**
+	 * Return the {@link TextRange} for the join-fetch element.
+	 */
+	TextRange getJoinFetchTextRange();
+}

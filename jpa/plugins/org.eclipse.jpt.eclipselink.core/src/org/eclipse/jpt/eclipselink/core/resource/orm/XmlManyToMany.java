@@ -2,17 +2,16 @@
  * <copyright>
  * </copyright>
  *
- * $Id: XmlManyToMany.java,v 1.4 2008/10/17 20:31:16 kmoore Exp $
+ * $Id: XmlManyToMany.java,v 1.5 2008/10/22 20:26:47 pfullbright Exp $
  */
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.jpt.core.resource.orm.XmlManyToManyImpl;
+import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.EclipseLinkOrmXmlMapper;
 
 /**
  * <!-- begin-user-doc -->
@@ -221,5 +220,8 @@ public class XmlManyToMany extends XmlManyToManyImpl implements XmlJoinFetch
 		result.append(')');
 		return result.toString();
 	}
-
-} // XmlManyToMany
+	
+	public TextRange getJoinFetchTextRange() {
+		return getElementTextRange(EclipseLinkOrmXmlMapper.JOIN_FETCH);
+	}
+}

@@ -12,24 +12,23 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.jpt.core.internal.resource.common.translators.EmptyTagBooleanTranslator;
-import org.eclipse.jpt.core.internal.resource.orm.translators.OneToManyTranslator;
+import org.eclipse.jpt.core.internal.resource.orm.translators.ManyToManyTranslator;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
-public class EclipseLinkOneToManyTranslator extends OneToManyTranslator
+public class EclipseLinkManyToManyTranslator extends ManyToManyTranslator
 	implements EclipseLinkOrmXmlMapper
 {
-	public EclipseLinkOneToManyTranslator(String domNameAndPath, EStructuralFeature aFeature) {
+	public EclipseLinkManyToManyTranslator(String domNameAndPath, EStructuralFeature aFeature) {
 		super(domNameAndPath, aFeature);
 	}
 	
 	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return EclipseLinkOrmFactory.eINSTANCE.createXmlOneToMany();
+		return EclipseLinkOrmFactory.eINSTANCE.createXmlManyToOne();
 	}
-	
+		
 	protected Translator[] createChildren() {
 		return new Translator[] {
 			createNameTranslator(),
@@ -39,15 +38,9 @@ public class EclipseLinkOneToManyTranslator extends OneToManyTranslator
 			createOrderByTranslator(),
 			createMapKeyTranslator(),
 			createJoinTableTranslator(),
-			createJoinColumnTranslator(),
 			createCascadeTranslator(),
-			createPrivateOwnedTranslator(),
 			createJoinFetchTranslator()
 		};
-	}
-	
-	protected Translator createPrivateOwnedTranslator() {
-		return new EmptyTagBooleanTranslator(PRIVATE_OWNED, ECLIPSELINK_ORM_PKG.getXmlPrivateOwned_PrivateOwned());
 	}
 	
 	protected Translator createJoinFetchTranslator() {

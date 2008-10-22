@@ -24,6 +24,8 @@ import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
@@ -53,6 +55,8 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmBasic
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEmbeddable;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEntity;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmIdMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmManyToManyMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmManyToOneMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToOneMapping;
@@ -124,13 +128,23 @@ public class EclipseLinkJpaFactory
 	}
 	
 	@Override
-	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmPersistentAttribute parent) {
-		return new EclipseLinkOrmOneToOneMapping(parent);
+	public OrmManyToOneMapping buildOrmManyToOneMapping(OrmPersistentAttribute parent) {
+		return new EclipseLinkOrmManyToOneMapping(parent);
 	}
 	
 	@Override
 	public OrmOneToManyMapping buildOrmOneToManyMapping(OrmPersistentAttribute parent) {
 		return new EclipseLinkOrmOneToManyMapping(parent);
+	}
+	
+	@Override
+	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmPersistentAttribute parent) {
+		return new EclipseLinkOrmOneToOneMapping(parent);
+	}
+	
+	@Override
+	public OrmManyToManyMapping buildOrmManyToManyMapping(OrmPersistentAttribute parent) {
+		return new EclipseLinkOrmManyToManyMapping(parent);
 	}
 	
 	

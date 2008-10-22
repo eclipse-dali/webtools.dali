@@ -37,6 +37,8 @@ public interface EclipseLinkOrmXmlMapper
 	String EXPIRY_TIME_OF_DAY__SECOND = "second";  //$NON-NLS-1$
 	String EXPIRY_TIME_OF_DAY__MILLISECOND = "millisecond";  //$NON-NLS-1$
 	
+	String JOIN_FETCH = "join-fetch";  //$NON-NLS-1$
+	
 	String MUTABLE = "mutable";  //$NON-NLS-1$
 	
 	String PRIVATE_OWNED = "private-owned";  //$NON-NLS-1$

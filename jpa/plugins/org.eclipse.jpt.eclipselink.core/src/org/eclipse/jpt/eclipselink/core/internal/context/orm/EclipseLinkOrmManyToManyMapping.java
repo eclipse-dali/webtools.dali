@@ -12,35 +12,27 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToManyMapping;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmManyToManyMapping;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
-import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetch;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlPrivateOwned;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkOrmOneToManyMapping extends GenericOrmOneToManyMapping
-	implements EclipseLinkOneToManyMapping
+public class EclipseLinkOrmManyToManyMapping
+	extends GenericOrmManyToManyMapping
+	implements EclipseLinkRelationshipMapping
 {
-	protected EclipseLinkOrmPrivateOwned privateOwned;
-	
 	protected EclipseLinkOrmJoinFetch joinFetch;
 	
 	
-	public EclipseLinkOrmOneToManyMapping(OrmPersistentAttribute parent) {
+	public EclipseLinkOrmManyToManyMapping(OrmPersistentAttribute parent) {
 		super(parent);
-		this.privateOwned = new EclipseLinkOrmPrivateOwned(this);
 		this.joinFetch = new EclipseLinkOrmJoinFetch(this);
 	}
 	
-	
-	public PrivateOwned getPrivateOwned() {
-		return this.privateOwned;
-	}
 	
 	public JoinFetch getJoinFetch() {
 		return this.joinFetch;
@@ -50,25 +42,23 @@ public class EclipseLinkOrmOneToManyMapping extends GenericOrmOneToManyMapping
 	// **************** resource-context interaction ***************************
 	
 	@Override
-	public XmlOneToMany addToResourceModel(AbstractXmlTypeMapping typeMapping) {
-		XmlOneToMany oneToMany = EclipseLinkOrmFactory.eINSTANCE.createXmlOneToMany();
-		getPersistentAttribute().initialize(oneToMany);
-		typeMapping.getAttributes().getOneToManys().add(oneToMany);
-		return oneToMany;
+	public XmlManyToMany addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+		XmlManyToMany manyToMany = EclipseLinkOrmFactory.eINSTANCE.createXmlManyToMany();
+		getPersistentAttribute().initialize(manyToMany);
+		typeMapping.getAttributes().getManyToManys().add(manyToMany);
+		return manyToMany;
 	}
 	
 	@Override
-	public void initialize(org.eclipse.jpt.core.resource.orm.XmlOneToMany oneToMany) {
-		super.initialize(oneToMany);	
-		this.privateOwned.initialize((XmlPrivateOwned) oneToMany);
-		this.joinFetch.initialize((XmlJoinFetch) oneToMany);
+	public void initialize(org.eclipse.jpt.core.resource.orm.XmlManyToMany manyToMany) {
+		super.initialize(manyToMany);	
+		this.joinFetch.initialize((XmlJoinFetch) manyToMany);
 	}
 	
 	@Override
-	public void update(org.eclipse.jpt.core.resource.orm.XmlOneToMany oneToMany) {
-		super.update(oneToMany);
-		this.privateOwned.update((XmlPrivateOwned) oneToMany);
-		this.joinFetch.update((XmlJoinFetch) oneToMany);
+	public void update(org.eclipse.jpt.core.resource.orm.XmlManyToMany manyToMany) {
+		super.update(manyToMany);
+		this.joinFetch.update((XmlJoinFetch) manyToMany);
 	}
 	
 	
