@@ -195,7 +195,7 @@ abstract class EnumComboViewer<T extends Model, V> extends Pane<T>
 				String displayString = displayString(defaultValue);
 				return NLS.bind(JptUiMessages.EnumComboViewer_defaultWithDefault, displayString);
 			}
-			return null; //I would rather display nothing than Default()
+			return nullDisplayString();
 		}
 
 		return displayString((V) value);
@@ -254,6 +254,13 @@ abstract class EnumComboViewer<T extends Model, V> extends Pane<T>
 	 * @return The localized text representing the given value
 	 */
 	protected abstract String displayString(V value);
+	
+	/**
+	 * Returns the displayable string for a null value.
+	 */
+	protected String nullDisplayString() {
+		return null; //I would rather display nothing than "Default()"
+	}
 
 	/*
 	 * (non-Javadoc)
