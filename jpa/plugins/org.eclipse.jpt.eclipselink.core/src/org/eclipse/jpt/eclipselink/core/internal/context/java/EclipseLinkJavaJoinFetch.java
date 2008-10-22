@@ -66,13 +66,7 @@ public class EclipseLinkJavaJoinFetch extends AbstractJavaJpaContextNode impleme
 			if (getResourceJoinFetch() == null) {
 				addResourceJoinFetch();
 			}
-			if (newJoinFetchValue == getDefaultValue() 
-					&& JoinFetchType.fromJavaResourceModel(getResourceJoinFetch().getValue()) != getDefaultValue()) {
-				getResourceJoinFetch().setValue(null);
-			}
-			else {
-				getResourceJoinFetch().setValue(JoinFetchType.toJavaResourceModel(newJoinFetchValue));		
-			}
+			getResourceJoinFetch().setValue(JoinFetchType.toJavaResourceModel(newJoinFetchValue));		
 		}
 		else {
 			if (getResourceJoinFetch() != null) {

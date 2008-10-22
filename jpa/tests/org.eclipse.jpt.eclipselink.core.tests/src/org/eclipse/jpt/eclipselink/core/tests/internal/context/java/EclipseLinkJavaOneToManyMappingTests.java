@@ -245,6 +245,14 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkJavaContext
 		
 		assertNull(attributeResource.getSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME));
 		assertNull(contextJoinFetch.getValue());
+		
+		// change context to INNER specifically (this time from no annotation), test resource
+		
+		contextJoinFetch.setValue(JoinFetchType.INNER);
+		joinFetchAnnotation = (JoinFetchAnnotation) attributeResource.getSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME);
+		
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.INNER, joinFetchAnnotation.getValue());
+		assertEquals(JoinFetchType.INNER, contextJoinFetch.getValue());
 	}
 	
 	
