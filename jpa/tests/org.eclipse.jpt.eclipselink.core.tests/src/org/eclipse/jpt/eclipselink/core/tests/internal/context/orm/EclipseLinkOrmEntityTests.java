@@ -1237,7 +1237,6 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		assertEquals(null, ormContextCaching.getSpecifiedShared());
 	}
 	
-	
 	public void testUpdateExistenceChecking() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
@@ -1327,4 +1326,101 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
 		assertEquals(null, ormContextCaching.getSpecifiedExistenceType());
 	}
+	
+	public void testUpdateCacheExpiry() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+
+
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(null, javaContextCaching.getExpiry());
+		assertEquals(null, ormContextCaching.getExpiry());
+		
+		// set xml cache, check defaults
+		resourceEntity.setCache(EclipseLinkOrmFactory.eINSTANCE.createXmlCache());
+		assertEquals(null, resourceEntity.getCache().getExpiry());
+		assertEquals(null, javaContextCaching.getExpiry());
+		assertEquals(null, ormContextCaching.getExpiry());
+
+		
+		// set xml cache expiry, check settings
+		resourceEntity.getCache().setExpiry(new Integer(45));
+		assertEquals(new Integer(45), resourceEntity.getCache().getExpiry());
+		assertEquals(null, javaContextCaching.getExpiry());
+		assertEquals(new Integer(45), ormContextCaching.getExpiry());
+
+			
+		// set java cache expiry, check defaults
+		
+		javaContextCaching.setExpiry(new Integer(55));
+		
+		assertEquals(new Integer(45), resourceEntity.getCache().getExpiry());
+		assertEquals(new Integer(55), javaContextCaching.getExpiry());
+		assertEquals(new Integer(45), ormContextCaching.getExpiry());
+
+		// clear xml cache expiry to null, check defaults
+		resourceEntity.getCache().setExpiry(null);
+
+		assertEquals(null, resourceEntity.getCache().getExpiry());
+		assertEquals(new Integer(55), javaContextCaching.getExpiry());
+		assertEquals(null, ormContextCaching.getExpiry());
+	
+		
+		// clear xml cache, check defaults
+		resourceEntity.setCache(null);
+
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(new Integer(55), javaContextCaching.getExpiry());
+		assertEquals(null, ormContextCaching.getExpiry());
+	
+		
+		// set metadataComplete to True, check defaults not from java
+
+		ormContextEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(new Integer(55), javaContextCaching.getExpiry());
+		assertEquals(null, ormContextCaching.getExpiry());
+
+		
+		// set metadataComplete back to null, check defaults from java
+		ormContextEntity.setSpecifiedMetadataComplete(null);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(new Integer(55), javaContextCaching.getExpiry());
+		assertEquals(null, ormContextCaching.getExpiry());
+	}
+	
+	public void testModifyCacheExpiry() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+		
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(null, ormContextCaching.getExpiry());
+		
+		// set context cache expiry, check resource
+		
+		ormContextEntity.getCaching().setExpiry(new Integer(60));
+		assertEquals(new Integer(60), resourceEntity.getCache().getExpiry());
+		assertEquals(new Integer(60), ormContextCaching.getExpiry());
+				
+		// set context cache size to null, check resource
+		
+		ormContextEntity.getCaching().setExpiry(null);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(null, ormContextCaching.getExpiry());
+	}
+
 }

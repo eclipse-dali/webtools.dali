@@ -52,6 +52,8 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 	protected ExistenceType specifiedExistenceType;
 	protected ExistenceType defaultExistenceType;
 	
+	protected Integer expiry;
+	//protected EclipseLinkOrmExpiryTimeOfDay expiryTimeOfDay;
 	
 	public EclipseLinkOrmCaching(OrmTypeMapping parent) {
 		super(parent);
@@ -388,13 +390,31 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 	}	
 	
 	public Integer getExpiry() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.expiry;
 	}
 	
-	public void setExpiry(Integer expiry) {
-		// TODO Auto-generated method stub
-		
+	public void setExpiry(Integer newExpiry) {
+		Integer oldExpiry = this.expiry;
+		this.expiry = newExpiry;
+		if (oldExpiry != newExpiry) {
+			if (this.getResourceCache() != null) {
+				this.getResourceCache().setExpiry(newExpiry);						
+				if (this.getResourceCache().isAllFeaturesUnset()) {
+					removeResourceCache();
+				}
+			}
+			else if (newExpiry != null) {
+				addResourceCache();
+				this.getResourceCache().setExpiry(newExpiry);						
+			}
+		}
+		firePropertyChanged(EXPIRY_PROPERTY, oldExpiry, newExpiry);
+	}
+	
+	protected void setExpiry_(Integer newExpiry) {
+		Integer oldExpiry = this.expiry;
+		this.expiry = newExpiry;		
+		firePropertyChanged(EXPIRY_PROPERTY, oldExpiry, newExpiry);
 	}
 	
 	public ExpiryTimeOfDay getExpiryTimeOfDay() {
@@ -446,6 +466,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		this.specifiedCoordinationType = this.specifiedCoordinationType(resourceCache);
 		this.defaultExistenceType = this.defaultExistenceType(javaCaching);
 		this.specifiedExistenceType = this.specifiedExistenceType(resource);
+		this.expiry = this.expiry(resourceCache);
 	}
 	
 	protected void update(XmlCacheHolder resource, JavaCaching javaCaching) {
@@ -467,6 +488,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		setSpecifiedCoordinationType_(this.specifiedCoordinationType(resourceCache));
 		setDefaultExistenceType(this.defaultExistenceType(javaCaching));
 		setSpecifiedExistenceType_(this.specifiedExistenceType(resource));
+		setExpiry_(this.expiry(resourceCache));
 	}
 	
 	protected int defaultSize(JavaCaching javaCaching) {
@@ -549,6 +571,10 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 	
 	protected ExistenceType specifiedExistenceType(XmlCacheHolder resource) {
 		return (resource == null) ? null : ExistenceType.fromOrmResourceModel(resource.getExistenceChecking());
+	}
+	
+	protected Integer expiry(XmlCache resource) {
+		return (resource == null) ? null : resource.getExpiry();
 	}
 	
 	// **************** validation **************************************
