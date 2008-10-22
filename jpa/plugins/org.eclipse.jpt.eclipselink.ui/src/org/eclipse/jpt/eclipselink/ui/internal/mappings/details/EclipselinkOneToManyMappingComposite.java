@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetchable;
+import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -155,11 +155,11 @@ public class EclipselinkOneToManyMappingComposite extends FormPane<OneToManyMapp
 		};
 	}
 	
-	private PropertyValueModel<JoinFetchable> buildJoinFetchableHolder() {
-		return new PropertyAspectAdapter<OneToManyMapping, JoinFetchable>(getSubjectHolder()) {
+	private PropertyValueModel<JoinFetch> buildJoinFetchableHolder() {
+		return new PropertyAspectAdapter<OneToManyMapping, JoinFetch>(getSubjectHolder()) {
 			@Override
-			protected JoinFetchable buildValue_() {
-				return ((EclipseLinkOneToManyMapping) this.subject).getJoinFetchable();
+			protected JoinFetch buildValue_() {
+				return ((EclipseLinkOneToManyMapping) this.subject).getJoinFetch();
 			}
 		};
 	}

@@ -9,14 +9,19 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.Collection;
+import org.eclipse.jpt.core.context.Fetchable;
+import org.eclipse.jpt.core.internal.JptCoreMessages;
+import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetchable;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.details.BasicMappingComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.ManyToManyMappingComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.ManyToOneMappingComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.OneToManyMappingComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.OneToOneMappingComposite;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -38,7 +43,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class JoinFetchComposite extends FormPane<JoinFetchable> {
+public class JoinFetchComposite extends FormPane<JoinFetch> {
 
 	/**
 	 * Creates a new <code>JoinFetchComposite</code>.
@@ -47,7 +52,7 @@ public class JoinFetchComposite extends FormPane<JoinFetchable> {
 	 * @param parent The parent container
 	 */
 	public JoinFetchComposite(FormPane<?> parentPane, 
-								PropertyValueModel<? extends JoinFetchable> subjectHolder,
+								PropertyValueModel<? extends JoinFetch> subjectHolder,
 								Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -57,39 +62,35 @@ public class JoinFetchComposite extends FormPane<JoinFetchable> {
 	protected void initializeLayout(Composite container) {
 		addLabeledComposite( 
             container, 
-            addCheckBox( 
+            addLabel( 
                  container, 
-                 EclipseLinkUiMappingsMessages.JoinFetchComposite_label, 
-                 buildJoinFetchHolder(), 
-                 null 
-            ), 
-            addJoinFetchTypeCombo(container).getControl(), 
+                 EclipseLinkUiMappingsMessages.JoinFetchComposite_label), 
+            addJoinFetchTypeCombo(container).getControl(),
             null 
        );
 	}
 	
 
-	private EnumFormComboViewer<JoinFetchable, JoinFetchType> addJoinFetchTypeCombo(Composite container) {
+	private EnumFormComboViewer<JoinFetch, JoinFetchType> addJoinFetchTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<JoinFetchable, JoinFetchType>(this, container) {
+		return new EnumFormComboViewer<JoinFetch, JoinFetchType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(JoinFetchable.DEFAULT_JOIN_FETCH_PROPERTY);
-				propertyNames.add(JoinFetchable.SPECIFIED_JOIN_FETCH_PROPERTY);
+				propertyNames.add(JoinFetch.VALUE_PROPERTY);
 			}
 
 			@Override
 			protected JoinFetchType[] getChoices() {
 				return JoinFetchType.values();
 			}
-
+			
 			@Override
 			protected JoinFetchType getDefaultValue() {
-				return getSubject().getDefaultJoinFetch();
+				return null;
 			}
-
+			
 			@Override
 			protected String displayString(JoinFetchType value) {
 				return buildDisplayString(
@@ -98,29 +99,20 @@ public class JoinFetchComposite extends FormPane<JoinFetchable> {
 					value
 				);
 			}
+			
+			@Override
+			protected String nullDisplayString() {
+				return JptCoreMessages.NONE;
+			}
 
 			@Override
 			protected JoinFetchType getValue() {
-				return getSubject().getSpecifiedJoinFetch();
+				return getSubject().getValue();
 			}
 
 			@Override
 			protected void setValue(JoinFetchType value) {
-				getSubject().setSpecifiedJoinFetch(value);
-			}
-		};
-	}
-	
-	private WritablePropertyValueModel<Boolean> buildJoinFetchHolder() {
-		return new PropertyAspectAdapter<JoinFetchable, Boolean>(getSubjectHolder(), JoinFetchable.JOIN_FETCH_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.hasJoinFetch());
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				this.subject.setJoinFetch(value.booleanValue());
+				getSubject().setValue(value);
 			}
 		};
 	}
