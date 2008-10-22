@@ -15,20 +15,20 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaManyToOneMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetchable;
+import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaManyToOneMappingImpl extends GenericJavaManyToOneMapping implements EclipseLinkRelationshipMapping
 {
 	
-	protected final EclipseLinkJavaJoinFetchable joinFetchable;
+	protected final EclipseLinkJavaJoinFetch joinFetchable;
 
 	public EclipseLinkJavaManyToOneMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
-		this.joinFetchable = new EclipseLinkJavaJoinFetchable(this);
+		this.joinFetchable = new EclipseLinkJavaJoinFetch(this);
 	}
 	
-	public JoinFetchable getJoinFetchable() {
+	public JoinFetch getJoinFetch() {
 		return this.joinFetchable;
 	}
 	

@@ -25,5 +25,5 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
  */
 public interface EclipseLinkRelationshipMapping extends RelationshipMapping
 {
-	JoinFetchable getJoinFetchable();
+	JoinFetch getJoinFetch();
 }

@@ -19,14 +19,15 @@ import org.eclipse.jpt.eclipselink.core.resource.java.ReadOnlyAnnotation;
 
 public class EclipseLinkJavaReadOnly extends AbstractJavaJpaContextNode implements ReadOnly
 {
-	
 	protected Boolean specifiedReadOnly;
 	
 	protected JavaResourcePersistentType resourcePersistentType;
 	
+	
 	public EclipseLinkJavaReadOnly(JavaTypeMapping parent) {
 		super(parent);
 	}
+	
 	
 	protected String getReadOnlyAnnotationName() {
 		return ReadOnlyAnnotation.ANNOTATION_NAME;
@@ -45,7 +46,7 @@ public class EclipseLinkJavaReadOnly extends AbstractJavaJpaContextNode implemen
 	}
 
 	public boolean isReadOnly() {
-		return (this.getSpecifiedReadOnly() == null) ? this.isDefaultReadOnly() : this.getSpecifiedReadOnly().booleanValue();
+		return (this.getSpecifiedReadOnly() != null) ? this.getSpecifiedReadOnly().booleanValue() : this.isDefaultReadOnly();
 	}
 	
 	public boolean isDefaultReadOnly() {
@@ -99,5 +100,4 @@ public class EclipseLinkJavaReadOnly extends AbstractJavaJpaContextNode implemen
 		ReadOnlyAnnotation resourceReadOnly = this.getResourceReadOnly();
 		return resourceReadOnly == null ? null : resourceReadOnly.getTextRange(astRoot);
 	}
-
 }

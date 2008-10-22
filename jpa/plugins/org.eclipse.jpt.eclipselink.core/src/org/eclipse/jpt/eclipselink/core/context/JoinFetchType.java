@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context;
 
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType;
+
 /**
  * 
  * 
@@ -48,37 +50,37 @@ public enum JoinFetchType {
 			case OUTER:
 				return org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.OUTER;
 			default:
-				throw new IllegalArgumentException("unknown fetch type: " + joinFetchType); //$NON-NLS-1$
+				throw new IllegalArgumentException("unknown join fetch type: " + joinFetchType); //$NON-NLS-1$
 		}
 	}
 	
-//
-//	public static JoinFetchType fromOrmResourceModel(org.eclipse.jpt.core.resource.orm.FetchType ormFetchType) {
-//		if (ormFetchType == null) {
-//			return null;
-//		}
-//		switch (ormFetchType) {
-//			case EAGER:
-//				return INNER;
-//			case LAZY:
-//				return OUTER;
-//			default:
-//				throw new IllegalArgumentException("unknown fetch type: " + ormFetchType);
-//		}
-//	}
-//	
-//	public static org.eclipse.jpt.core.resource.orm.FetchType toOrmResourceModel(JoinFetchType fetchType) {
-//		if (fetchType == null) {
-//			return null;
-//		}
-//		switch (fetchType) {
-//			case INNER:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.EAGER;
-//			case OUTER:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.LAZY;
-//			default:
-//				throw new IllegalArgumentException("unknown fetch type: " + fetchType);
-//		}
-//	}
+
+	public static JoinFetchType fromOrmResourceModel(XmlJoinFetchType ormJoinFetchType) {
+		if (ormJoinFetchType == null) {
+			return null;
+		}
+		switch (ormJoinFetchType) {
+			case INNER:
+				return INNER;
+			case OUTER:
+				return OUTER;
+			default:
+				throw new IllegalArgumentException("unknown join fetch type: " + ormJoinFetchType); //$NON-NLS-1$
+		}
+	}
+	
+	public static XmlJoinFetchType toOrmResourceModel(JoinFetchType fetchType) {
+		if (fetchType == null) {
+			return null;
+		}
+		switch (fetchType) {
+			case INNER:
+				return XmlJoinFetchType.INNER;
+			case OUTER:
+				return XmlJoinFetchType.OUTER;
+			default:
+				throw new IllegalArgumentException("unknown join fetch type: " + fetchType); //$NON-NLS-1$
+		}
+	}
 
 }

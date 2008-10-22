@@ -15,23 +15,23 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToOneMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetchable;
+import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaOneToOneMappingImpl extends GenericJavaOneToOneMapping implements EclipseLinkOneToOneMapping
 {
 	
-	protected final EclipseLinkJavaJoinFetchable joinFetchable;
+	protected final EclipseLinkJavaJoinFetch joinFetchable;
 	protected final EclipseLinkJavaPrivateOwned privateOwned;
 
 	public EclipseLinkJavaOneToOneMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
-		this.joinFetchable = new EclipseLinkJavaJoinFetchable(this);
+		this.joinFetchable = new EclipseLinkJavaJoinFetch(this);
 		this.privateOwned = new EclipseLinkJavaPrivateOwned(this);
 	}
 	
-	public JoinFetchable getJoinFetchable() {
+	public JoinFetch getJoinFetch() {
 		return this.joinFetchable;
 	}
 

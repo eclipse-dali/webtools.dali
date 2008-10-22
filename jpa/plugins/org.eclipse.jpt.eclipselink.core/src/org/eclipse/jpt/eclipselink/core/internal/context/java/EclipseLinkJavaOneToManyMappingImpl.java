@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToManyMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetchable;
+import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.java.PrivateOwnedAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -23,12 +23,12 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMapping implements EclipseLinkOneToManyMapping
 {
 	
-	protected final EclipseLinkJavaJoinFetchable joinFetchable;
+	protected final EclipseLinkJavaJoinFetch joinFetchable;
 	protected final EclipseLinkJavaPrivateOwned privateOwned;
 	
 	public EclipseLinkJavaOneToManyMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
-		this.joinFetchable = new EclipseLinkJavaJoinFetchable(this);
+		this.joinFetchable = new EclipseLinkJavaJoinFetch(this);
 		this.privateOwned = new EclipseLinkJavaPrivateOwned(this);
 	}
 	
@@ -48,7 +48,7 @@ public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMap
 		this.resourcePersistentAttribute.removeSupportingAnnotation(getPrivateOwnedAnnotationName());
 	}
 	
-	public JoinFetchable getJoinFetchable() {
+	public JoinFetch getJoinFetch() {
 		return this.joinFetchable;
 	}
 

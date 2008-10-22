@@ -12,35 +12,15 @@ package org.eclipse.jpt.eclipselink.core.context;
 import org.eclipse.jpt.core.context.JpaContextNode;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JoinFetchable extends JpaContextNode
+public interface JoinFetch extends JpaContextNode
 {
-	
-	/**
-	 * Return true if the join-fetch model object exists.  
-	 * Have to have a separate flag for this since the default join fetch type
-	 * is different depending on whether hasJoinFetch() returns true or false.
-	 */
-	boolean hasJoinFetch();
-	void setJoinFetch(boolean joinFetch);
-		String JOIN_FETCH_PROPERTY = "joinFetchProperty"; //$NON-NLS-1$
-
-	JoinFetchType getJoinFetch();
-
-	JoinFetchType getDefaultJoinFetch();
-		String DEFAULT_JOIN_FETCH_PROPERTY = "defaultJoinFetchProperty"; //$NON-NLS-1$
-		//default if hasJoinFetch returns false
-		JoinFetchType DEFAULT_JOIN_FETCH_TYPE = JoinFetchType.INNER;
-		
-	JoinFetchType getSpecifiedJoinFetch();
-	void setSpecifiedJoinFetch(JoinFetchType newSpecifiedJoinFetch);
-		String SPECIFIED_JOIN_FETCH_PROPERTY = "specifiedJoinFetchProperty"; //$NON-NLS-1$
-	
+	JoinFetchType getValue();
+	void setValue(JoinFetchType newJoinFetchValue);
+		String VALUE_PROPERTY = "JoinFetch.valueProperty"; //$NON-NLS-1$
 }
