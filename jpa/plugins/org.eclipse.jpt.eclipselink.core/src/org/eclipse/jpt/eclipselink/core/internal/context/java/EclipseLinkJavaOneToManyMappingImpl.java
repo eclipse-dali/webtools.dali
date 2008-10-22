@@ -22,15 +22,17 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMapping implements EclipseLinkOneToManyMapping
 {
+	protected final EclipseLinkJavaJoinFetch joinFetch;
 	
-	protected final EclipseLinkJavaJoinFetch joinFetchable;
 	protected final EclipseLinkJavaPrivateOwned privateOwned;
+	
 	
 	public EclipseLinkJavaOneToManyMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
-		this.joinFetchable = new EclipseLinkJavaJoinFetch(this);
+		this.joinFetch = new EclipseLinkJavaJoinFetch(this);
 		this.privateOwned = new EclipseLinkJavaPrivateOwned(this);
 	}
+	
 	
 	protected String getPrivateOwnedAnnotationName() {
 		return PrivateOwnedAnnotation.ANNOTATION_NAME;
@@ -49,7 +51,7 @@ public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMap
 	}
 	
 	public JoinFetch getJoinFetch() {
-		return this.joinFetchable;
+		return this.joinFetch;
 	}
 
 	public PrivateOwned getPrivateOwned() {
@@ -59,21 +61,21 @@ public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMap
 	@Override
 	public void initialize(JavaResourcePersistentAttribute jrpa) {
 		super.initialize(jrpa);
-		this.joinFetchable.initialize(jrpa);
+		this.joinFetch.initialize(jrpa);
 		this.privateOwned.initialize(jrpa);
 	}
 	
 	@Override
 	public void update(JavaResourcePersistentAttribute jrpa) {
 		super.update(jrpa);
-		this.joinFetchable.update(jrpa);
+		this.joinFetch.update(jrpa);
 		this.privateOwned.update(jrpa);
 	}
 		
 	@Override
 	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
 		super.validate(messages, astRoot);
-		this.joinFetchable.validate(messages, astRoot);
+		this.joinFetch.validate(messages, astRoot);
 		this.privateOwned.validate(messages, astRoot);
 	}
 }
