@@ -30,6 +30,7 @@ public interface ReadOnly extends JpaContextNode
 	boolean isDefaultReadOnly();
 		String DEFAULT_READ_ONLY_PROPERTY = "defaultReadOnly"; //$NON-NLS-1$
 		boolean DEFAULT_READ_ONLY = false;
+	
 	Boolean getSpecifiedReadOnly();
 	void setSpecifiedReadOnly(Boolean newSpecifiedReadOnly);
 		String SPECIFIED_READ_ONLY_PROPERTY = "specifiedReadOnly"; //$NON-NLS-1$
