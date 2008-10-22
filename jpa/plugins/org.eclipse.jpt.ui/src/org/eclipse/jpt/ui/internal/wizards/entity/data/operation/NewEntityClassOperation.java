@@ -11,6 +11,8 @@
  ***********************************************************************/
 package org.eclipse.jpt.ui.internal.wizards.entity.data.operation;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +32,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.codegen.jet.JETEmitter;
 import org.eclipse.emf.codegen.jet.JETException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -64,12 +68,17 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.internal.wizards.entity.AnnotatedEntityTemplate;
+import org.eclipse.jpt.ui.internal.wizards.entity.EntityTemplate;
 import org.eclipse.jpt.ui.internal.wizards.entity.EntityWizardMsg;
+import org.eclipse.jpt.ui.internal.wizards.entity.IdClassTemplate;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.model.CreateEntityTemplateModel;
 import org.eclipse.jst.common.internal.annotations.controller.AnnotationsController;
 import org.eclipse.jst.common.internal.annotations.controller.AnnotationsControllerManager;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
+import org.eclipse.jst.j2ee.internal.plugin.J2EEPlugin;
 import org.eclipse.jst.j2ee.internal.project.WTPJETEmitter;
+import org.eclipse.wst.common.componentcore.internal.operation.ArtifactEditProviderOperation;
 import org.eclipse.wst.common.componentcore.internal.operation.IArtifactEditOperationDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -107,7 +116,11 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 	protected static final String BUILDER_ID = "builderId"; //$NON-NLS-1$
 	private static final String EMPTY_STRING = "";//$NON-NLS-1$
 	private static final String SINGLE_TABLE = "SINGLE_TABLE";//$NON-NLS-1$
-
+	
+	/**
+	 * Method name of template implementation classes. 
+	 */
+	protected static final String GENERATE_METHOD = "generate"; //$NON-NLS-1$
 
 	/**
 	 * This is the constructor which should be used when creating a NewEntityClassOperation. 
@@ -202,21 +215,23 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 	 * @throws WFTWrappedException
 	 */
 	protected void generateUsingTemplates(IProgressMonitor monitor, IPackageFragment fragment) throws WFTWrappedException, CoreException {
-	    // Create the filter template model
+	    // Create the entity template model
 	    CreateEntityTemplateModel tempModel = createTemplateModel();
         IProject project = getTargetProject();
         String entityClassSource = null;
         String idClassSource = null;
-        // Using the WTPJetEmitter, generate the java source based on the filter template model
+        // Generate the java source based on the entity template models
         try {
         	if (tempModel.isArtifactsAnnotated()) {
-        		entityClassSource = generateTemplateSource(tempModel, monitor, ANNOTATED_ENTITY_TEMPLATE_FILE);
+        		AnnotatedEntityTemplate tempImpl = AnnotatedEntityTemplate.create(null);
+        		entityClassSource = generateTemplateSource(tempModel, ANNOTATED_ENTITY_TEMPLATE_FILE, tempImpl, monitor);
         	} else {
-        		entityClassSource = generateTemplateSource(tempModel, monitor, ENTITY_TEMPLATE_FILE);
+        		EntityTemplate tempImpl = EntityTemplate.create(null);
+        		entityClassSource = generateTemplateSource(tempModel, ENTITY_TEMPLATE_FILE, tempImpl, monitor);
         	}
             if (tempModel.isCompositePK()) {
-            	idClassSource = generateTemplateSource(tempModel, monitor, IDCLASS_TEMPLATE_FILE);
-            	
+            	IdClassTemplate tempImpl = IdClassTemplate.create(null);
+            	idClassSource = generateTemplateSource(tempModel, IDCLASS_TEMPLATE_FILE, tempImpl, monitor);
             }
         } catch (Exception e) {
             throw new WFTWrappedException(e);
@@ -288,19 +303,31 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
      *      java.lang.Object[])
      * @see CreateEntityTemplateModel
      * 
-     * @param tempModel
+     * @param templateModel
      * @param monitor
      * @param template_file 
      * @return String the source for the java file
      * @throws JETException
+     * @throws NoSuchMethodException 
+     * @throws SecurityException 
+     * @throws InvocationTargetException 
+     * @throws IllegalAccessException  
      */
-    private String generateTemplateSource(CreateEntityTemplateModel tempModel, IProgressMonitor monitor, String template_file) throws JETException {
-        URL templateURL = FileLocator.find(JptUiPlugin.getPlugin().getBundle(), new Path(template_file), null);
-        cleanUpOldEmitterProject();
-        WTPJETEmitter emitter = new WTPJETEmitter(templateURL.toString(), this.getClass().getClassLoader());
-        emitter.setIntelligentLinkingEnabled(true);
-        emitter.addVariable(WTP_CUSTOMIZATION_PLUGIN, JptUiPlugin.PLUGIN_ID);
-        return emitter.generate(monitor, new Object[] { tempModel });
+    private String generateTemplateSource(CreateEntityTemplateModel templateModel, String templateFile, Object templateImpl, IProgressMonitor monitor) 
+    		throws JETException, SecurityException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    	Preferences preferences = J2EEPlugin.getDefault().getPluginPreferences();
+		boolean dynamicTranslation = preferences.getBoolean(J2EEPlugin.DYNAMIC_TRANSLATION_OF_JET_TEMPLATES_PREF_KEY);
+		if (dynamicTranslation) {
+	        URL templateURL = FileLocator.find(JptUiPlugin.getPlugin().getBundle(), new Path(templateFile), null);
+	        cleanUpOldEmitterProject();
+	        WTPJETEmitter emitter = new WTPJETEmitter(templateURL.toString(), this.getClass().getClassLoader());
+	        emitter.setIntelligentLinkingEnabled(true);
+	        emitter.addVariable(WTP_CUSTOMIZATION_PLUGIN, JptUiPlugin.PLUGIN_ID);
+	        return emitter.generate(monitor, new Object[] { templateModel });
+		} else {
+			Method method = templateImpl.getClass().getMethod(GENERATE_METHOD, new Class[] { Object.class });
+			return (String) method.invoke(templateImpl, templateModel);
+		}
     }
     
 	/**
