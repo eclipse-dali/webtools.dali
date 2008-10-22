@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.PersistentAttribute;
@@ -20,8 +19,9 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
+import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetchable;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchAnnotation;
@@ -165,132 +165,87 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		assertEquals(true, privateOwnable.isPrivateOwned());
 	}
 	
-	public void testHasJoinFetch() throws Exception {
+	public void testGetJoinFetchValue() throws Exception {
 		createTestEntityWithJoinFetchOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		JoinFetchable joinFetchable = oneToOneMapping.getJoinFetchable();
-		assertEquals(true, joinFetchable.hasJoinFetch());
-		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		attributeResource.removeSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME);
-		
-		assertEquals(false, joinFetchable.hasJoinFetch());
-		
-		attributeResource.addSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME);
-		assertEquals(true, joinFetchable.hasJoinFetch());
-	}
-	
-	public void testSetJoinFetch() throws Exception {
-		createTestEntityWithJoinFetchOneToOne();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		JoinFetchable joinFetchable = oneToOneMapping.getJoinFetchable();
-		assertEquals(true, joinFetchable.hasJoinFetch());
-		
-		joinFetchable.setJoinFetch(false);
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME));
-		assertFalse(joinFetchable.hasJoinFetch());
-		
-		joinFetchable.setJoinFetch(true);
-		assertNotNull(attributeResource.getSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME));
-		assertTrue(joinFetchable.hasJoinFetch());
-	}
-	
-	public void testGetSpecifiedJoinFetch() throws Exception {
-		createTestEntityWithJoinFetchOneToOne();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		JoinFetchable joinFetchable = oneToOneMapping.getJoinFetchable();
-		assertEquals(null, joinFetchable.getSpecifiedJoinFetch());
-		
+		EclipseLinkRelationshipMapping manyToManyMapping = (EclipseLinkRelationshipMapping) persistentAttribute.getSpecifiedMapping();
+		JoinFetch contextJoinFetch = manyToManyMapping.getJoinFetch();
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		JoinFetchAnnotation joinFetchAnnotation = (JoinFetchAnnotation) attributeResource.getSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME);
+		
+		// base annotated, test context value
+		
+		assertNull(joinFetchAnnotation.getValue());
+		assertEquals(JoinFetchType.INNER, contextJoinFetch.getValue());
+		
+		// change resource to INNER specifically, test context
+		
 		joinFetchAnnotation.setValue(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.INNER);
 		
-		assertEquals(JoinFetchType.INNER, joinFetchable.getSpecifiedJoinFetch());
-
-		joinFetchAnnotation.setValue(null);
-		assertEquals(null, joinFetchable.getSpecifiedJoinFetch());
-
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.INNER, joinFetchAnnotation.getValue());
+		assertEquals(JoinFetchType.INNER, contextJoinFetch.getValue());
+		
+		// change resource to OUTER, test context
+		
 		joinFetchAnnotation.setValue(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.OUTER);
-		assertEquals(JoinFetchType.OUTER, joinFetchable.getSpecifiedJoinFetch());
+		
+		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.OUTER, joinFetchAnnotation.getValue());
+		assertEquals(JoinFetchType.OUTER, contextJoinFetch.getValue());
+		
+		// remove value from resource, test context
+		
+		joinFetchAnnotation.setValue(null);
+		
+		assertNull(joinFetchAnnotation.getValue());
+		assertEquals(JoinFetchType.INNER, contextJoinFetch.getValue());
+		
+		// remove annotation, text context
 		
 		attributeResource.removeSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME);
-		assertEquals(null, joinFetchable.getSpecifiedJoinFetch());
+		
+		assertNull(joinFetchAnnotation.getValue());
+		assertNull(contextJoinFetch.getValue());
 	}
 	
-	public void testSetSpecifiedJoinFetch() throws Exception {
+	public void testSetJoinFetchValue() throws Exception {
 		createTestEntityWithJoinFetchOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		JoinFetchable joinFetchable = oneToOneMapping.getJoinFetchable();
-		assertEquals(null, joinFetchable.getSpecifiedJoinFetch());
-		
+		EclipseLinkRelationshipMapping manyToManyMapping = (EclipseLinkRelationshipMapping) persistentAttribute.getSpecifiedMapping();
+		JoinFetch contextJoinFetch = manyToManyMapping.getJoinFetch();
 		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		JoinFetchAnnotation joinFetchAnnotation = (JoinFetchAnnotation) attributeResource.getSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME);
-		assertEquals(null, joinFetchAnnotation.getValue());
 		
-		joinFetchable.setSpecifiedJoinFetch(JoinFetchType.INNER);	
-		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.INNER, joinFetchAnnotation.getValue());
-
-		joinFetchable.setSpecifiedJoinFetch(null);
-		assertEquals(null, joinFetchAnnotation.getValue());
+		// base annotated, test resource value
 		
-		joinFetchable.setSpecifiedJoinFetch(JoinFetchType.OUTER);	
+		assertNull(joinFetchAnnotation.getValue());
+		assertEquals(JoinFetchType.INNER, contextJoinFetch.getValue());
+		
+		// change context to INNER specifically, test resource
+		
+		contextJoinFetch.setValue(JoinFetchType.INNER);
+		
+		assertNull(joinFetchAnnotation.getValue());
+		assertEquals(JoinFetchType.INNER, contextJoinFetch.getValue());
+		
+		// change context to OUTER, test resource
+		
+		contextJoinFetch.setValue(JoinFetchType.OUTER);
+		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.OUTER, joinFetchAnnotation.getValue());
+		assertEquals(JoinFetchType.OUTER, contextJoinFetch.getValue());
 		
-		joinFetchable.setJoinFetch(false);
+		// set context to null, test resource
+		
+		contextJoinFetch.setValue(null);
+		
 		assertNull(attributeResource.getSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME));
-	}
-	
-	public void testGetDefaultJoinFetch() throws Exception {
-		createTestEntityWithJoinFetchOneToOne();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		JoinFetchable joinFetchable = oneToOneMapping.getJoinFetchable();
-		assertEquals(JoinFetchable.DEFAULT_JOIN_FETCH_TYPE, joinFetchable.getDefaultJoinFetch());
-		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		attributeResource.removeSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME);
-		assertEquals(null, joinFetchable.getDefaultJoinFetch());
-		
-		joinFetchable.setSpecifiedJoinFetch(JoinFetchType.INNER);	
-		assertEquals(JoinFetchable.DEFAULT_JOIN_FETCH_TYPE, joinFetchable.getDefaultJoinFetch());
-	}
-	
-	public void testGetJoinFetch() throws Exception {
-		createTestEntityWithJoinFetchOneToOne();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
-		JoinFetchable joinFetchable = oneToOneMapping.getJoinFetchable();
-		assertEquals(JoinFetchable.DEFAULT_JOIN_FETCH_TYPE, joinFetchable.getJoinFetch());
-		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		attributeResource.removeSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME);
-		assertEquals(null, joinFetchable.getJoinFetch());
-		
-		joinFetchable.setSpecifiedJoinFetch(JoinFetchType.INNER);	
-		assertEquals(JoinFetchType.INNER, joinFetchable.getJoinFetch());
+		assertNull(contextJoinFetch.getValue());
 	}
 	
 	public void testDefaultOneToOne() throws Exception {

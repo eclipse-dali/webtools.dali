@@ -14,7 +14,9 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne;
 
 public class EclipseLinkOrmOneToOneMappingTests
@@ -84,5 +86,83 @@ public class EclipseLinkOrmOneToOneMappingTests
 		// set context private owned back to false, check resource
 		
 		contextOneToOne.getPrivateOwned().setPrivateOwned(false);
+	}
+	
+	public void testUpdateJoinFetch() throws Exception {
+		OrmPersistentType ormPersistentType = 
+			entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute =
+			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOne");
+		EclipseLinkOneToOneMapping contextOneToOne = 
+			(EclipseLinkOneToOneMapping) ormPersistentAttribute.getMapping();
+		XmlEntity resourceEntity = 
+			(XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+		XmlOneToOne resourceOneToOne = 
+			(XmlOneToOne) resourceEntity.getAttributes().getOneToOnes().get(0);
+		
+		// check defaults
+		
+		assertNull(resourceOneToOne.getJoinFetch());
+		assertNull(contextOneToOne.getJoinFetch().getValue());
+		
+		// set xml join fetch to INNER, check context
+		
+		resourceOneToOne.setJoinFetch(XmlJoinFetchType.INNER);
+		
+		assertEquals(XmlJoinFetchType.INNER, resourceOneToOne.getJoinFetch());
+		assertEquals(JoinFetchType.INNER, contextOneToOne.getJoinFetch().getValue());
+		
+		// set xml join fetch to OUTER, check context
+		
+		resourceOneToOne.setJoinFetch(XmlJoinFetchType.OUTER);
+		
+		assertEquals(XmlJoinFetchType.OUTER, resourceOneToOne.getJoinFetch());
+		assertEquals(JoinFetchType.OUTER, contextOneToOne.getJoinFetch().getValue());
+		
+		// set xml join fetch to null, check context
+		
+		resourceOneToOne.setJoinFetch(null);
+		
+		assertNull(resourceOneToOne.getJoinFetch());
+		assertNull(contextOneToOne.getJoinFetch().getValue());
+	}
+	
+	public void testModifyJoinFetch() throws Exception {
+		OrmPersistentType ormPersistentType = 
+			entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute =
+			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOne");
+		EclipseLinkOneToOneMapping contextOneToOne = 
+			(EclipseLinkOneToOneMapping) ormPersistentAttribute.getMapping();
+		XmlEntity resourceEntity = 
+			(XmlEntity)ormResource().getEntityMappings().getEntities().get(0);
+		XmlOneToOne resourceOneToOne = 
+			(XmlOneToOne) resourceEntity.getAttributes().getOneToOnes().get(0);
+		
+		// check defaults
+		
+		assertNull(resourceOneToOne.getJoinFetch());
+		assertNull(contextOneToOne.getJoinFetch().getValue());
+		
+		// set context join fetch to INNER, check resource
+		
+		contextOneToOne.getJoinFetch().setValue(JoinFetchType.INNER);
+		
+		assertEquals(XmlJoinFetchType.INNER, resourceOneToOne.getJoinFetch());
+		assertEquals(JoinFetchType.INNER, contextOneToOne.getJoinFetch().getValue());
+		
+		// set context join fetch to OUTER, check resource
+		
+		contextOneToOne.getJoinFetch().setValue(JoinFetchType.OUTER);
+		
+		assertEquals(XmlJoinFetchType.OUTER, resourceOneToOne.getJoinFetch());
+		assertEquals(JoinFetchType.OUTER, contextOneToOne.getJoinFetch().getValue());
+		
+		// set context join fetch to null, check resource
+		
+		contextOneToOne.getJoinFetch().setValue(null);
+		
+		assertNull(resourceOneToOne.getJoinFetch());
+		assertNull(contextOneToOne.getJoinFetch().getValue());
 	}
 }
