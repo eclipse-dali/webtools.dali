@@ -28,6 +28,8 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface OrmAttributeMapping extends AttributeMapping, XmlContextNode
 {
 	OrmPersistentAttribute getPersistentAttribute();
+	
+	XmlAttributeMapping getResourceAttributeMapping();
 
 	String getName();
 	void setName(String newName);
@@ -77,8 +79,20 @@ public interface OrmAttributeMapping extends AttributeMapping, XmlContextNode
 	void initializeFromOrmOneToOneMapping(OrmOneToOneMapping oldMapping);
 
 	void initializeFromOrmManyToManyMapping(OrmManyToManyMapping oldMapping);
-
+	
 	boolean contains(int textOffset);
 
 	TextRange getSelectionTextRange();
+	
+	
+	//******************* initialization/updating *******************
+
+	void initialize(XmlAttributeMapping resourceAttributeMapping);
+
+	/**
+	 * Update the OrmAttributeMapping context model object to match the 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update();
+
 }

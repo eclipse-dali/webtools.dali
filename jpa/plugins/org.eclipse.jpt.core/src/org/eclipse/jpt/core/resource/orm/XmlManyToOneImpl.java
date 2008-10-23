@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.MappingKeys;
 
 /**
  * <!-- begin-user-doc -->
@@ -630,5 +631,8 @@ public class XmlManyToOneImpl extends AbstractXmlAttributeMapping implements Xml
 		result.append(')');
 		return result.toString();
 	}
-
+	
+	public String getMappingKey() {
+		return MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY;
+	}
 } // ManyToOne

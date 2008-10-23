@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.jpt.core.context.java.JavaGeneratorHolder;
 import org.eclipse.jpt.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
@@ -22,22 +23,26 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlTableGenerator
 {
-	JavaTableGenerator javaTableGenerator;
+	JavaGeneratorHolder javaGeneratorHolder;
 
 	protected boolean metadataComplete;
 	
 		
-	public VirtualXmlTableGenerator(JavaTableGenerator javaTableGenerator, boolean metadataComplete) {
+	public VirtualXmlTableGenerator(JavaGeneratorHolder javaGeneratorHolder, boolean metadataComplete) {
 		super();
-		this.javaTableGenerator = javaTableGenerator;
+		this.javaGeneratorHolder = javaGeneratorHolder;
 		this.metadataComplete = metadataComplete;
 	}
 
+	protected JavaTableGenerator getJavaTableGenerator() {
+		return this.javaGeneratorHolder.getTableGenerator();
+	}
+	
 	public String getCatalog() {
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.javaTableGenerator.getCatalog();
+		return this.getJavaTableGenerator().getCatalog();
 	}
 
 	public void setCatalog(String value) {
@@ -48,7 +53,7 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.javaTableGenerator.getPkColumnName();
+		return this.getJavaTableGenerator().getPkColumnName();
 	}
 
 	public void setPkColumnName(String value) {
@@ -59,7 +64,7 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.javaTableGenerator.getPkColumnValue();
+		return this.getJavaTableGenerator().getPkColumnValue();
 	}
 
 	public void setPkColumnValue(String value) {
@@ -70,7 +75,7 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.javaTableGenerator.getSchema();
+		return this.getJavaTableGenerator().getSchema();
 	}
 
 	public void setSchema(String value) {
@@ -81,7 +86,7 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.javaTableGenerator.getTable();
+		return this.getJavaTableGenerator().getTable();
 	}
 
 	public void setTable(String value) {
@@ -92,7 +97,7 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.javaTableGenerator.getValueColumnName();
+		return this.getJavaTableGenerator().getValueColumnName();
 	}
 
 	public void setValueColumnName(String value) {
@@ -103,7 +108,7 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.javaTableGenerator.getAllocationSize();
+		return this.getJavaTableGenerator().getAllocationSize();
 	}
 
 	public void setAllocationSize(Integer value) {
@@ -114,7 +119,7 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.javaTableGenerator.getInitialValue();
+		return this.getJavaTableGenerator().getInitialValue();
 	}
 
 	public void setInitialValue(Integer value) {
@@ -125,7 +130,7 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.javaTableGenerator.getName();
+		return this.getJavaTableGenerator().getName();
 	}
 
 	public void setName(String value) {
@@ -137,16 +142,12 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 	public EList<XmlUniqueConstraint> getUniqueConstraints() {
 		EList<XmlUniqueConstraint> xmlUniqueConstraints = new EObjectContainmentEList<XmlUniqueConstraint>(XmlUniqueConstraint.class, this, OrmPackage.XML_TABLE_GENERATOR__UNIQUE_CONSTRAINTS);
 
-		for (JavaUniqueConstraint uniqueConstraint : CollectionTools.iterable(this.javaTableGenerator.uniqueConstraints())) {
+		for (JavaUniqueConstraint uniqueConstraint : CollectionTools.iterable(this.getJavaTableGenerator().uniqueConstraints())) {
 			XmlUniqueConstraint xmlUniqueConstraint = new VirtualXmlUniqueConstraint(uniqueConstraint, this.metadataComplete);
 			xmlUniqueConstraints.add(xmlUniqueConstraint);
 		}
 
 		return xmlUniqueConstraints;
-	}
-
-	public void update(JavaTableGenerator javaTableGenerator) {
-		this.javaTableGenerator = javaTableGenerator;
 	}
 	
 	public TextRange getNameTextRange() {

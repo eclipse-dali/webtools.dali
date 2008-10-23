@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.jpt.core.MappingKeys;
 
 /**
  * <!-- begin-user-doc -->
@@ -49,5 +50,8 @@ public class XmlTransientImpl extends AbstractXmlAttributeMapping implements Xml
 	{
 		return OrmPackage.Literals.XML_TRANSIENT_IMPL;
 	}
-
+	
+	public String getMappingKey() {
+		return MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
+	}
 } // Transient

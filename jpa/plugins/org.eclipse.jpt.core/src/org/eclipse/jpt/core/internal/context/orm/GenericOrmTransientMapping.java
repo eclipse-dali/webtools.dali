@@ -45,20 +45,9 @@ public class GenericOrmTransientMapping extends AbstractOrmAttributeMapping<XmlT
 	}
 	
 	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getTransients().remove(this.getAttributeMapping());
+		typeMapping.getAttributes().getTransients().remove(this.resourceAttributeMapping);
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}
 	}
-	
-	@Override
-	public void initialize(XmlTransient transientResource) {
-		super.initialize(transientResource);
-	}
-	
-	@Override
-	public void update(XmlTransient transientResource) {
-		super.update(transientResource);
-	}
-
 }

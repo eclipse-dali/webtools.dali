@@ -4,6 +4,7 @@ import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToOneMapping;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
@@ -48,17 +49,17 @@ public class EclipseLinkOrmOneToOneMapping extends GenericOrmOneToOneMapping
 	}
 	
 	@Override
-	public void initialize(org.eclipse.jpt.core.resource.orm.XmlOneToOne oneToOne) {
-		super.initialize(oneToOne);	
-		this.privateOwned.initialize((XmlPrivateOwned) oneToOne);
-		this.joinFetch.initialize((XmlJoinFetch) oneToOne);
+	public void initialize(XmlAttributeMapping attributeMapping) {
+		super.initialize(attributeMapping);	
+		this.privateOwned.initialize((XmlPrivateOwned) this.resourceAttributeMapping);
+		this.joinFetch.initialize((XmlJoinFetch) this.resourceAttributeMapping);
 	}
 	
 	@Override
-	public void update(org.eclipse.jpt.core.resource.orm.XmlOneToOne oneToOne) {
-		super.update(oneToOne);
-		this.privateOwned.update((XmlPrivateOwned) oneToOne);
-		this.joinFetch.update((XmlJoinFetch) oneToOne);
+	public void update() {
+		super.update();
+		this.privateOwned.update();
+		this.joinFetch.update();
 	}
 	
 	

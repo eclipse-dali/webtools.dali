@@ -13,6 +13,9 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.GeneratedValue;
+import org.eclipse.jpt.core.context.GenerationType;
+import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
@@ -114,4 +117,37 @@ public class OrmGeneratedValueTests extends ContextModelTestCase
 		assertNull(ormGeneratedValue.getSpecifiedGenerator());
 	}
 
+	public void testDefaultsFromJava() throws Exception {
+		createTestEntity();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		OrmPersistentAttribute ormIdAttribute = ormPersistentType.virtualAttributes().next();
+		IdMapping ormIdMapping = (IdMapping) ormIdAttribute.getMapping();
+		assertEquals(null, ormIdMapping.getGeneratedValue());
+		
+		IdMapping javaIdMapping = (IdMapping) ormPersistentType.getJavaPersistentType().attributes().next().getMapping();
+		GeneratedValue javaGeneratedValue = javaIdMapping.addGeneratedValue();
+		javaGeneratedValue.setSpecifiedGenerator("Foo");
+		javaGeneratedValue.setSpecifiedStrategy(GenerationType.SEQUENCE);
+		
+		assertEquals("Foo", ormIdMapping.getGeneratedValue().getSpecifiedGenerator());
+		assertEquals(GenerationType.SEQUENCE, ormIdMapping.getGeneratedValue().getSpecifiedStrategy());
+		assertEquals("Foo", javaGeneratedValue.getSpecifiedGenerator());
+		assertEquals(GenerationType.SEQUENCE, javaGeneratedValue.getSpecifiedStrategy());
+		
+		ormIdAttribute.makeSpecified();
+		ormIdAttribute = ormPersistentType.specifiedAttributes().next();
+		ormIdMapping = (IdMapping) ormIdAttribute.getMapping();
+		assertEquals(null, ormIdMapping.getGeneratedValue());
+		assertEquals("Foo", javaGeneratedValue.getSpecifiedGenerator());
+		assertEquals(GenerationType.SEQUENCE, javaGeneratedValue.getSpecifiedStrategy());
+		
+		ormIdAttribute.makeVirtual();
+		ormIdAttribute = ormPersistentType.virtualAttributes().next();
+		ormIdMapping = (IdMapping) ormIdAttribute.getMapping();
+		assertEquals("Foo", ormIdMapping.getGeneratedValue().getSpecifiedGenerator());
+		assertEquals(GenerationType.SEQUENCE, ormIdMapping.getGeneratedValue().getSpecifiedStrategy());
+		assertEquals("Foo", javaGeneratedValue.getSpecifiedGenerator());
+		assertEquals(GenerationType.SEQUENCE, javaGeneratedValue.getSpecifiedStrategy());
+	}
 }

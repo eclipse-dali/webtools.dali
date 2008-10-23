@@ -30,20 +30,21 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 	
 	protected Column column;
 
-	protected boolean metadataComplete;
-
 	protected OrmTypeMapping ormTypeMapping;
 	
 	
-	protected VirtualXmlColumn(OrmTypeMapping ormTypeMapping, Column column, boolean metadataComplete) {
+	protected VirtualXmlColumn(OrmTypeMapping ormTypeMapping, Column column) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.column = column;
-		this.metadataComplete = metadataComplete;
 	}
 	
+	protected boolean isOrmMetadataComplete() {
+		return this.ormTypeMapping.isMetadataComplete();
+	}
+
 	public String getColumnDefinition() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
 		return this.column.getColumnDefinition();
@@ -54,7 +55,7 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 	}
 
 	public Boolean getInsertable() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return this.column.getDefaultInsertable();
 		}
 		return this.column.getInsertable();
@@ -65,7 +66,7 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 	}
 
 	public Integer getLength() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return this.column.getDefaultLength();
 		}
 		return this.column.getLength();
@@ -76,7 +77,7 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 	}
 
 	public String getName() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return this.column.getDefaultName();
 		}
 		return this.column.getName();
@@ -87,7 +88,7 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 	}
 
 	public Boolean getNullable() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return this.column.getDefaultNullable();
 		}
 		return this.column.getNullable();
@@ -98,7 +99,7 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 	}
 
 	public Integer getPrecision() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return this.column.getDefaultPrecision();
 		}
 		return this.column.getPrecision();
@@ -109,7 +110,7 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 	}
 
 	public Integer getScale() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return this.column.getDefaultScale();
 		}
 		return this.column.getScale();
@@ -120,7 +121,7 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 	}
 
 	public String getTable() {
-		if (!this.metadataComplete) {
+		if (!this.isOrmMetadataComplete()) {
 			if (this.column.getSpecifiedTable() != null) {
 				return this.column.getSpecifiedTable();
 			}	
@@ -133,7 +134,7 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 	}
 
 	public Boolean getUnique() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return this.column.getDefaultUnique();
 		}
 		return this.column.getUnique();
@@ -144,7 +145,7 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 	}
 
 	public Boolean getUpdatable() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return this.column.getDefaultUpdatable();
 		}
 		return this.column.getUpdatable();

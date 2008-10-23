@@ -16,32 +16,12 @@ import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
-import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
-import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
-import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
-import org.eclipse.jpt.core.context.orm.OrmIdMapping;
-import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
-import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
-import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
-import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
-import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
-import org.eclipse.jpt.core.resource.orm.XmlBasic;
-import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
-import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
-import org.eclipse.jpt.core.resource.orm.XmlId;
-import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
-import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
-import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
-import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
-import org.eclipse.jpt.core.resource.orm.XmlTransient;
-import org.eclipse.jpt.core.resource.orm.XmlVersion;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -59,6 +39,7 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 		this.attributeMappingProviders = buildAttributeMappingProviders();
 		this.attributeMapping = buildAttributeMapping(mappingKey);
 	}
+	
 
 	protected List<OrmAttributeMappingProvider> buildAttributeMappingProviders() {
 		List<OrmAttributeMappingProvider> list = new ArrayList<OrmAttributeMappingProvider>();
@@ -191,128 +172,12 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 		return this.getMapping().isIdMapping();
 	}
 	
-	//TODO is there a way to avoid a method for every mapping type?
-	//I am trying to take adavantage of generics here, but it sure is
-	//leading to a lot of duplicated code. - KFM
-	public void initialize(XmlBasic basic) {
-		((OrmBasicMapping) getMapping()).initialize(basic);
+	public void initialize(XmlAttributeMapping attributeMapping) {
+		getMapping().initialize(attributeMapping);
 	}
 	
-	public void initialize(XmlEmbedded embedded) {
-		((OrmEmbeddedMapping) getMapping()).initialize(embedded);
-	}
-	
-	public void initialize(XmlVersion version) {
-		((OrmVersionMapping) getMapping()).initialize(version);
-	}
-	
-	public void initialize(XmlManyToOne manyToOne) {
-		((OrmManyToOneMapping) getMapping()).initialize(manyToOne);
-	}
-	
-	public void initialize(XmlOneToMany oneToMany) {
-		((OrmOneToManyMapping) getMapping()).initialize(oneToMany);
-	}
-	
-	public void initialize(XmlOneToOne oneToOne) {
-		((OrmOneToOneMapping) getMapping()).initialize(oneToOne);
-	}
-	
-	public void initialize(XmlManyToMany manyToMany) {
-		((OrmManyToManyMapping) getMapping()).initialize(manyToMany);
-	}
-	
-	public void initialize(XmlId id) {
-		((OrmIdMapping) getMapping()).initialize(id);
-	}
-	
-	public void initialize(XmlEmbeddedId embeddedId) {
-		((OrmEmbeddedIdMapping) getMapping()).initialize(embeddedId);
-	}
-	
-	public void initialize(XmlTransient transientResource) {
-		((OrmTransientMapping) getMapping()).initialize(transientResource);
-	}
-	
-	public void initialize(XmlNullAttributeMapping xmlNullAttributeMapping) {
-		((GenericOrmNullAttributeMapping) getMapping()).initialize(xmlNullAttributeMapping);
-	}
-	
-	public void update(XmlId id) {
-		if (getMappingKey() != MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
-			setSpecifiedMappingKey_(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
-		}
-		((OrmIdMapping) getMapping()).update(id);
-	}
-	
-	public void update(XmlEmbeddedId embeddedId) {
-		if (getMappingKey() != MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
-			setSpecifiedMappingKey_(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
-		}
-		((OrmEmbeddedIdMapping) getMapping()).update(embeddedId);
-	}
-
-	public void update(XmlBasic basic) {
-		if (getMappingKey() != MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
-			setSpecifiedMappingKey_(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-		}
-		((OrmBasicMapping) getMapping()).update(basic);
-	}
-	
-	public void update(XmlVersion version) {
-		if (getMappingKey() != MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY) {
-			setSpecifiedMappingKey_(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
-		}
-		((OrmVersionMapping) getMapping()).update(version);
-	}
-	
-	public void update(XmlManyToOne manyToOne) {
-		if (getMappingKey() != MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
-			setSpecifiedMappingKey_(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		}
-		((OrmManyToOneMapping) getMapping()).update(manyToOne);
-	}
-	
-	public void update(XmlOneToMany oneToMany) {
-		if (getMappingKey() != MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
-			setSpecifiedMappingKey_(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-		}
-		((OrmOneToManyMapping) getMapping()).update(oneToMany);
-	}
-	
-	public void update(XmlOneToOne oneToOne) {
-		if (getMappingKey() != MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
-			setSpecifiedMappingKey_(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		}
-		((OrmOneToOneMapping) getMapping()).update(oneToOne);
-	}
-	
-	public void update(XmlManyToMany manyToMany) {
-		if (getMappingKey() != MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
-			setSpecifiedMappingKey_(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-		}
-		((OrmManyToManyMapping) getMapping()).update(manyToMany);
-	}
-
-	public void update(XmlEmbedded embedded) {
-		if (getMappingKey() != MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY) {
-			setSpecifiedMappingKey_(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
-		}
-		((OrmEmbeddedMapping) getMapping()).update(embedded);
-	}
-	
-	public void update(XmlTransient transientResource) {
-		if (getMappingKey() != MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
-			setSpecifiedMappingKey_(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
-		}
-		((OrmTransientMapping) getMapping()).update(transientResource);
-	}
-
-	public void update(XmlNullAttributeMapping xmlNullAttributeMapping) {
-		if (getMappingKey() != MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
-			setSpecifiedMappingKey_(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
-		}
-		((GenericOrmNullAttributeMapping) getMapping()).update(xmlNullAttributeMapping);
+	public void update() {
+		getMapping().update();
 	}
 	
 	public JpaStructureNode getStructureNode(int offset) {

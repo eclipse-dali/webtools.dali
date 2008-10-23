@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
@@ -57,7 +58,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	public void setSpecifiedTargetEntity(String targetEntity) {
 		String old = this.specifiedTargetEntity;
 		this.specifiedTargetEntity = targetEntity;
-		this.getAttributeMapping().setTargetEntity(targetEntity);
+		this.resourceAttributeMapping.setTargetEntity(targetEntity);
 		this.firePropertyChanged(SPECIFIED_TARGET_ENTITY_PROPERTY, old, targetEntity);
 	}
 
@@ -108,7 +109,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	public void setSpecifiedFetch(FetchType fetch) {
 		FetchType old = this.specifiedFetch;
 		this.specifiedFetch = fetch;
-		this.getAttributeMapping().setFetch(FetchType.toOrmResourceModel(fetch));
+		this.resourceAttributeMapping.setFetch(FetchType.toOrmResourceModel(fetch));
 		this.firePropertyChanged(SPECIFIED_FETCH_PROPERTY, old, fetch);
 	}
 
@@ -122,27 +123,27 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	// ********** resource => context **********
 
 	@Override
-	public void initialize(T relationshipMapping) {
+	public void initialize(XmlAttributeMapping relationshipMapping) {
 		super.initialize(relationshipMapping);
-		this.specifiedTargetEntity = relationshipMapping.getTargetEntity();
+		this.specifiedTargetEntity = this.resourceAttributeMapping.getTargetEntity();
 		this.defaultTargetEntity = this.buildDefaultTargetEntity();
 		this.resolvedTargetEntity = this.buildResolvedTargetEntity();
-		this.specifiedFetch = this.buildSpecifiedFetch(relationshipMapping);
-		this.cascade.initialize(relationshipMapping);
+		this.specifiedFetch = this.buildSpecifiedFetch();
+		this.cascade.initialize(this.resourceAttributeMapping);
 	}
 	
 	@Override
-	public void update(T relationshipMapping) {
-		super.update(relationshipMapping);
-		this.setSpecifiedTargetEntity_(relationshipMapping.getTargetEntity());
+	public void update() {
+		super.update();
+		this.setSpecifiedTargetEntity_(this.resourceAttributeMapping.getTargetEntity());
 		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
 		this.setResolvedTargetEntity(this.buildResolvedTargetEntity());
-		this.setSpecifiedFetch_(this.buildSpecifiedFetch(relationshipMapping));
-		this.cascade.update(relationshipMapping);
+		this.setSpecifiedFetch_(this.buildSpecifiedFetch());
+		this.cascade.update();
 	}
 	
-	protected FetchType buildSpecifiedFetch(XmlRelationshipMapping relationshipMapping) {
-		return FetchType.fromOrmResourceModel(relationshipMapping.getFetch());
+	protected FetchType buildSpecifiedFetch() {
+		return FetchType.fromOrmResourceModel(this.resourceAttributeMapping.getFetch());
 	}
 	
 	protected String buildDefaultTargetEntity() {

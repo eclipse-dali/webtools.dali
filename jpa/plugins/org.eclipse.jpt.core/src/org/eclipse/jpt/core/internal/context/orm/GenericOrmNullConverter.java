@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
-import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 
 public class GenericOrmNullConverter extends AbstractXmlContextNode
@@ -37,7 +36,7 @@ public class GenericOrmNullConverter extends AbstractXmlContextNode
 		return null;
 	}
 	
-	public void update(XmlConvertibleMapping resourceConvertableMapping) {
+	public void update() {
 		// do nothing, null implementation		
 	}
 	

@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.EnumeratedConverter;
 import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.EnumType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
@@ -26,23 +25,19 @@ import org.eclipse.jpt.core.utility.TextRange;
  * VirtualBasic is an implementation of Basic used when there is 
  * no tag in the orm.xml and an underlying javaBasicMapping exists.
  */
-public class VirtualXmlBasic extends AbstractJpaEObject implements XmlBasic
+public class VirtualXmlBasic extends VirtualXmlAttributeMapping<JavaBasicMapping> implements XmlBasic
 {
-	JavaBasicMapping javaBasicMapping;
 
 	protected final VirtualXmlColumn column;
-
-	protected boolean metadataComplete;
 		
-	public VirtualXmlBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping, boolean metadataComplete) {
-		super();
-		this.javaBasicMapping = javaBasicMapping;
-		this.metadataComplete = metadataComplete;
-		this.column = new VirtualXmlColumn(ormTypeMapping, javaBasicMapping.getColumn(), metadataComplete);
+	public VirtualXmlBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping) {
+		super(ormTypeMapping, javaBasicMapping);
+		this.column = new VirtualXmlColumn(ormTypeMapping, javaBasicMapping.getColumn());
 	}
 
+	
 	public String getName() {
-		return this.javaBasicMapping.getPersistentAttribute().getName();
+		return this.javaAttributeMapping.getPersistentAttribute().getName();
 	}
 
 	public void setName(String newName) {
@@ -58,10 +53,10 @@ public class VirtualXmlBasic extends AbstractJpaEObject implements XmlBasic
 	}
 	
 	public FetchType getFetch() {
-		if (this.metadataComplete) {
-			return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaBasicMapping.getDefaultFetch());
+		if (this.isOrmMetadataComplete()) {
+			return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaAttributeMapping.getDefaultFetch());
 		}
-		return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaBasicMapping.getFetch());
+		return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaAttributeMapping.getFetch());
 	}
 
 	public void setFetch(FetchType newFetch) {
@@ -69,10 +64,10 @@ public class VirtualXmlBasic extends AbstractJpaEObject implements XmlBasic
 	}
 
 	public Boolean getOptional() {
-		if (this.metadataComplete) {
-			return this.javaBasicMapping.getDefaultOptional();
+		if (this.isOrmMetadataComplete()) {
+			return this.javaAttributeMapping.getDefaultOptional();
 		}
-		return this.javaBasicMapping.getOptional();
+		return this.javaAttributeMapping.getOptional();
 	}
 
 	public void setOptional(Boolean newOptional) {
@@ -80,10 +75,10 @@ public class VirtualXmlBasic extends AbstractJpaEObject implements XmlBasic
 	}
 
 	public boolean isLob() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return false;
 		}
-		return this.javaBasicMapping.getConverter().getType() == Converter.LOB_CONVERTER;
+		return this.javaAttributeMapping.getConverter().getType() == Converter.LOB_CONVERTER;
 	}
 
 	public void setLob(boolean newLob) {
@@ -91,11 +86,11 @@ public class VirtualXmlBasic extends AbstractJpaEObject implements XmlBasic
 	}
 
 	public TemporalType getTemporal() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		if (this.javaBasicMapping.getConverter().getType() == Converter.TEMPORAL_CONVERTER) {
-			org.eclipse.jpt.core.context.TemporalType javaTemporalType = ((TemporalConverter) this.javaBasicMapping.getConverter()).getTemporalType();
+		if (this.javaAttributeMapping.getConverter().getType() == Converter.TEMPORAL_CONVERTER) {
+			org.eclipse.jpt.core.context.TemporalType javaTemporalType = ((TemporalConverter) this.javaAttributeMapping.getConverter()).getTemporalType();
 			return org.eclipse.jpt.core.context.TemporalType.toOrmResourceModel(javaTemporalType);
 		}
 		return null;
@@ -106,30 +101,24 @@ public class VirtualXmlBasic extends AbstractJpaEObject implements XmlBasic
 	}
 
 	public EnumType getEnumerated() {
-		if (this.javaBasicMapping.getConverter().getType() != Converter.ENUMERATED_CONVERTER) {
+		if (this.javaAttributeMapping.getConverter().getType() != Converter.ENUMERATED_CONVERTER) {
 			return null;
 		}
 		org.eclipse.jpt.core.context.EnumType javaEnumeratedType;
-		if (this.metadataComplete) {
-			if (this.javaBasicMapping.getDefaultConverter().getType() != Converter.ENUMERATED_CONVERTER) {
+		if (this.isOrmMetadataComplete()) {
+			if (this.javaAttributeMapping.getDefaultConverter().getType() != Converter.ENUMERATED_CONVERTER) {
 				return null;
 			}
-			javaEnumeratedType = ((EnumeratedConverter) this.javaBasicMapping.getDefaultConverter()).getSpecifiedEnumType();
+			javaEnumeratedType = ((EnumeratedConverter) this.javaAttributeMapping.getDefaultConverter()).getSpecifiedEnumType();
 		}
 		else {
-			javaEnumeratedType = ((EnumeratedConverter) this.javaBasicMapping.getConverter()).getEnumType();
+			javaEnumeratedType = ((EnumeratedConverter) this.javaAttributeMapping.getConverter()).getEnumType();
 		}
 		return org.eclipse.jpt.core.context.EnumType.toOrmResourceModel(javaEnumeratedType);
 	}
 
 	public void setEnumerated(EnumType newEnumerated) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
-	}
-
-
-	public void update(JavaBasicMapping javaBasicMapping) {
-		this.javaBasicMapping = javaBasicMapping;
-		this.column.update(javaBasicMapping.getColumn());
 	}
 	
 	public TextRange getNameTextRange() {

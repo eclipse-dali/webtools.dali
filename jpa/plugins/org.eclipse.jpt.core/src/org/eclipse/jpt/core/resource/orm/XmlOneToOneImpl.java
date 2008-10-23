@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -752,5 +753,9 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 
 	public TextRange getMappedByTextRange() {
 		return getAttributeTextRange(OrmXmlMapper.MAPPED_BY);
+	}
+	
+	public String getMappingKey() {
+		return MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
 } // OneToOne

@@ -47,7 +47,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 {
 	protected String name;
 	
-	protected T attributeMapping;
+	protected T resourceAttributeMapping;
 
 	protected JavaPersistentAttribute javaPersistentAttribute;
 	
@@ -73,7 +73,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	public void setName(String name) {
 		String old = this.name;
 		this.name = name;
-		this.attributeMapping.setName(name);
+		this.resourceAttributeMapping.setName(name);
 		this.firePropertyChanged(NAME_PROPERTY, old, name);
 		this.getPersistentAttribute().nameChanged(old, name);
 	}
@@ -189,19 +189,18 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return false;
 	}
 
-	protected T getAttributeMapping() {
-		return this.attributeMapping;
+	public T getResourceAttributeMapping() {
+		return this.resourceAttributeMapping;
 	}
 
-	public void initialize(T xmlAttributeMapping) {
-		this.attributeMapping = xmlAttributeMapping;
-		this.name = xmlAttributeMapping.getName();
+	public void initialize(XmlAttributeMapping resourceAttributeMapping) {
+		this.resourceAttributeMapping = (T) resourceAttributeMapping;
+		this.name = resourceAttributeMapping.getName();
 		this.javaPersistentAttribute = findJavaPersistentAttribute();
 	}
 	
-	public void update(T xmlAttributeMapping) {
-		this.attributeMapping = xmlAttributeMapping;
-		this.setName_(xmlAttributeMapping.getName());
+	public void update() {
+		this.setName_(this.resourceAttributeMapping.getName());
 		this.setJavaPersistentAttribute(findJavaPersistentAttribute());
 	}
 	
@@ -219,19 +218,19 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 
 	public boolean contains(int textOffset) {
-		return this.attributeMapping.containsOffset(textOffset);
+		return this.resourceAttributeMapping.containsOffset(textOffset);
 	}
 	
 	public TextRange getSelectionTextRange() {
-		return this.attributeMapping.getSelectionTextRange();
+		return this.resourceAttributeMapping.getSelectionTextRange();
 	}	
 	
 	public TextRange getValidationTextRange() {
-		return (this.getPersistentAttribute().isVirtual()) ? this.getTypeMapping().getAttributesTextRange() : this.attributeMapping.getValidationTextRange();
+		return (this.getPersistentAttribute().isVirtual()) ? this.getTypeMapping().getAttributesTextRange() : this.resourceAttributeMapping.getValidationTextRange();
 	}
 	
 	public TextRange getNameTextRange() {
-		return this.attributeMapping.getNameTextRange();
+		return this.resourceAttributeMapping.getNameTextRange();
 	}
 
 
@@ -275,11 +274,10 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		if (this.getKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
 			return;
 		}
-		JavaPersistentAttribute jpa = this.getJavaPersistentAttribute();
-		if (jpa == null) {
+		if (this.javaPersistentAttribute == null) {
 			return;
 		}
-		JavaResourcePersistentAttribute jrpa = jpa.getResourcePersistentAttribute();
+		JavaResourcePersistentAttribute jrpa = this.javaPersistentAttribute.getResourcePersistentAttribute();
 
 		if (jrpa.isForField()) {
 			if (jrpa.isFinal()) {

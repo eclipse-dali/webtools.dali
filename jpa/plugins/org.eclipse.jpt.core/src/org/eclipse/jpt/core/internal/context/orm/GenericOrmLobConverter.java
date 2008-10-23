@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public class GenericOrmLobConverter extends AbstractXmlContextNode
 	implements LobConverter, OrmConverter
 {
-	private XmlConvertibleMapping resourceConvertableMapping;
+	private XmlConvertibleMapping resourceConvertibleMapping;
 	
 	public GenericOrmLobConverter(OrmAttributeMapping parent, XmlBasic resourceBasic) {
 		super(parent);
@@ -37,23 +37,22 @@ public class GenericOrmLobConverter extends AbstractXmlContextNode
 		return Converter.LOB_CONVERTER;
 	}
 	
-	public void initialize(XmlConvertibleMapping resourceConvertableMapping) {
-		this.resourceConvertableMapping = resourceConvertableMapping;
+	public void initialize(XmlConvertibleMapping resourceConvertibleMapping) {
+		this.resourceConvertibleMapping = resourceConvertibleMapping;
 	}
 	
-	public void update(XmlConvertibleMapping resourceConvertableMapping) {
-		this.resourceConvertableMapping = resourceConvertableMapping;		
+	public void update() {	
 	}
 	
 	public TextRange getValidationTextRange() {
-		return this.resourceConvertableMapping.getLobTextRange();
+		return this.resourceConvertibleMapping.getLobTextRange();
 	}
 	
 	public void addToResourceModel() {
-		this.resourceConvertableMapping.setLob(true);
+		this.resourceConvertibleMapping.setLob(true);
 	}
 	
 	public void removeFromResourceModel() {
-		this.resourceConvertableMapping.setLob(false);
+		this.resourceConvertibleMapping.setLob(false);
 	}
 }

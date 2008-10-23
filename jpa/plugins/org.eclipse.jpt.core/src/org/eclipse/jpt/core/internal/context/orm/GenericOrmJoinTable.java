@@ -326,8 +326,7 @@ public class GenericOrmJoinTable
 		this.initialize(this.getResourceTable());
 	}
 	
-	public void update(XmlRelationshipMapping relationshipMapping) {
-		this.relationshipMappingResource = relationshipMapping;
+	public void update() {
 		this.update(this.getResourceTable());
 	}
 

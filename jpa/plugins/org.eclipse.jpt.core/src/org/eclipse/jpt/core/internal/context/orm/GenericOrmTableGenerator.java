@@ -339,14 +339,14 @@ public class GenericOrmTableGenerator
 		this.specifiedPkColumnName = xmlTableGenerator.getPkColumnName();
 		this.specifiedValueColumnName = xmlTableGenerator.getValueColumnName();
 		this.specifiedPkColumnValue = xmlTableGenerator.getPkColumnValue();
-		this.initializeUniqueContraints(xmlTableGenerator);
+		this.initializeUniqueContraints();
 	}
 	
-	protected void initializeUniqueContraints(XmlTableGenerator xmlTableGenerator) {
-		if (xmlTableGenerator == null) {
+	protected void initializeUniqueContraints() {
+		if (this.resourceGenerator == null) {
 			return;
 		}
-		for (XmlUniqueConstraint uniqueConstraint : xmlTableGenerator.getUniqueConstraints()) {
+		for (XmlUniqueConstraint uniqueConstraint : this.resourceGenerator.getUniqueConstraints()) {
 			this.uniqueConstraints.add(this.buildUniqueConstraint(uniqueConstraint));
 		}
 	}
@@ -363,7 +363,7 @@ public class GenericOrmTableGenerator
 		this.setSpecifiedValueColumnName_(xmlTableGenerator.getValueColumnName());
 		this.setSpecifiedPkColumnValue_(xmlTableGenerator.getPkColumnValue());
 		// TODO defaults
-		this.updateUniqueConstraints(xmlTableGenerator);
+		this.updateUniqueConstraints();
 	}
 	
 	protected String buildDefaultSchema() {
@@ -374,11 +374,11 @@ public class GenericOrmTableGenerator
 		return this.getContextDefaultCatalog();
 	}
 
-	protected void updateUniqueConstraints(XmlTableGenerator tableGenerator) {
+	protected void updateUniqueConstraints() {
 		ListIterator<OrmUniqueConstraint> contextConstraints = uniqueConstraints();
 		ListIterator<XmlUniqueConstraint> resourceConstraints = EmptyListIterator.instance();
-		if (tableGenerator != null) {
-			resourceConstraints = new CloneListIterator<XmlUniqueConstraint>(tableGenerator.getUniqueConstraints());//prevent ConcurrentModificiationException
+		if (this.resourceGenerator != null) {
+			resourceConstraints = new CloneListIterator<XmlUniqueConstraint>(this.resourceGenerator.getUniqueConstraints());//prevent ConcurrentModificiationException
 		}
 		
 		while (contextConstraints.hasNext()) {

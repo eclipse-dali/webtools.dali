@@ -26,12 +26,12 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -62,7 +62,7 @@ public class GenericOrmOneToOneMapping
 	public void setMappedBy(String mappedBy) {
 		String old = this.mappedBy;
 		this.mappedBy = mappedBy;
-		this.getAttributeMapping().setMappedBy(mappedBy);
+		this.resourceAttributeMapping.setMappedBy(mappedBy);
 		this.firePropertyChanged(MAPPED_BY_PROPERTY, old, mappedBy);
 	}
 	
@@ -77,7 +77,7 @@ public class GenericOrmOneToOneMapping
 	}
 
 	public TextRange getMappedByTextRange() {
-		TextRange mappedByTextRange = getAttributeMapping().getMappedByTextRange();
+		TextRange mappedByTextRange = this.resourceAttributeMapping.getMappedByTextRange();
 		return mappedByTextRange != null ? mappedByTextRange : getValidationTextRange();
 	}
 
@@ -96,7 +96,7 @@ public class GenericOrmOneToOneMapping
 		XmlPrimaryKeyJoinColumn resourcePkJoinColumn = OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl();
 		OrmPrimaryKeyJoinColumn contextPkJoinColumn = this.buildPrimaryKeyJoinColumn(resourcePkJoinColumn);
 		this.primaryKeyJoinColumns.add(index, contextPkJoinColumn);
-		this.getAttributeMapping().getPrimaryKeyJoinColumns().add(index, resourcePkJoinColumn);
+		this.resourceAttributeMapping.getPrimaryKeyJoinColumns().add(index, resourcePkJoinColumn);
 		this.fireItemAdded(PRIMARY_KEY_JOIN_COLUMNS_LIST, index, contextPkJoinColumn);
 		return contextPkJoinColumn;
 	}
@@ -115,7 +115,7 @@ public class GenericOrmOneToOneMapping
 	
 	public void removePrimaryKeyJoinColumn(int index) {
 		OrmPrimaryKeyJoinColumn removedPkJoinColumn = this.primaryKeyJoinColumns.remove(index);
-		this.getAttributeMapping().getPrimaryKeyJoinColumns().remove(index);
+		this.resourceAttributeMapping.getPrimaryKeyJoinColumns().remove(index);
 		this.fireItemRemoved(PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPkJoinColumn);
 	}
 
@@ -125,7 +125,7 @@ public class GenericOrmOneToOneMapping
 	
 	public void movePrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.primaryKeyJoinColumns, targetIndex, sourceIndex);
-		this.getAttributeMapping().getPrimaryKeyJoinColumns().move(targetIndex, sourceIndex);
+		this.resourceAttributeMapping.getPrimaryKeyJoinColumns().move(targetIndex, sourceIndex);
 		fireItemMoved(PRIMARY_KEY_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -170,7 +170,7 @@ public class GenericOrmOneToOneMapping
 	}
 	
 	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getOneToOnes().remove(this.getAttributeMapping());
+		typeMapping.getAttributes().getOneToOnes().remove(this.resourceAttributeMapping);
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}
@@ -187,15 +187,15 @@ public class GenericOrmOneToOneMapping
 	// ********** resource => context **********
 
 	@Override
-	public void initialize(XmlOneToOne oneToOne) {
-		super.initialize(oneToOne);
-		this.mappedBy = oneToOne.getMappedBy();
-		this.initializePrimaryKeyJoinColumns(oneToOne);
+	public void initialize(XmlAttributeMapping attributeMapping) {
+		super.initialize(attributeMapping);
+		this.mappedBy = this.resourceAttributeMapping.getMappedBy();
+		this.initializePrimaryKeyJoinColumns();
 	}
 	
-	protected void initializePrimaryKeyJoinColumns(XmlOneToOne oneToOne) {
-		if (oneToOne != null) {
-			for (XmlPrimaryKeyJoinColumn resourcePkJoinColumn : oneToOne.getPrimaryKeyJoinColumns()) {
+	protected void initializePrimaryKeyJoinColumns() {
+		if (this.resourceAttributeMapping != null) {
+			for (XmlPrimaryKeyJoinColumn resourcePkJoinColumn : this.resourceAttributeMapping.getPrimaryKeyJoinColumns()) {
 				this.primaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn(resourcePkJoinColumn));
 			}
 		}
@@ -207,19 +207,16 @@ public class GenericOrmOneToOneMapping
 
 	
 	@Override
-	public void update(XmlOneToOne oneToOne) {
-		super.update(oneToOne);
-		this.setMappedBy_(oneToOne.getMappedBy());
-		this.updatePrimaryKeyJoinColumns(oneToOne);
+	public void update() {
+		super.update();
+		this.setMappedBy_(this.resourceAttributeMapping.getMappedBy());
+		this.updatePrimaryKeyJoinColumns();
 	}
 	
 	
-	protected void updatePrimaryKeyJoinColumns(XmlOneToOne oneToOne) {
+	protected void updatePrimaryKeyJoinColumns() {
 		ListIterator<OrmPrimaryKeyJoinColumn> contextPkJoinColumns = primaryKeyJoinColumns();
-		ListIterator<XmlPrimaryKeyJoinColumn> resourcePkJoinColumns = EmptyListIterator.instance();
-		if (oneToOne != null) {
-			resourcePkJoinColumns = new CloneListIterator<XmlPrimaryKeyJoinColumn>(oneToOne.getPrimaryKeyJoinColumns());//prevent ConcurrentModificiationException
-		}
+		ListIterator<XmlPrimaryKeyJoinColumn> resourcePkJoinColumns = new CloneListIterator<XmlPrimaryKeyJoinColumn>(this.resourceAttributeMapping.getPrimaryKeyJoinColumns());//prevent ConcurrentModificiationException
 		
 		while (contextPkJoinColumns.hasNext()) {
 			OrmPrimaryKeyJoinColumn pkJoinColumn = contextPkJoinColumns.next();

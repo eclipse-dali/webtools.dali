@@ -49,8 +49,7 @@ public class EclipseLinkOrmJoinFetch extends AbstractXmlContextNode
 		this.joinFetchValue = JoinFetchType.fromOrmResourceModel(resource.getJoinFetch());
 	}
 	
-	protected void update(XmlJoinFetch xmlJoinFetch) {
-		this.resource = xmlJoinFetch;
+	protected void update() {
 		setValue(JoinFetchType.fromOrmResourceModel(resource.getJoinFetch()));
 	}
 	

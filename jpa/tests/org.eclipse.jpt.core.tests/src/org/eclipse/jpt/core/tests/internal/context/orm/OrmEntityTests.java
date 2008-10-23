@@ -1385,7 +1385,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		specifiedPkJoinColumn.setSpecifiedReferencedColumnName("BAR");		
 		assertFalse(childEntity.defaultPrimaryKeyJoinColumns().hasNext());
 		//now remove the pkJoinColumn from the resource model, verify context model updates and has a default pkJoinColumn
-		((XmlEntity)childEntity.getTypeMappingResource()).getPrimaryKeyJoinColumns().remove(0);
+		((XmlEntity)childEntity.getResourceTypeMapping()).getPrimaryKeyJoinColumns().remove(0);
 		assertTrue(childEntity.defaultPrimaryKeyJoinColumns().hasNext());
 		assertEquals("id", childEntity.defaultPrimaryKeyJoinColumns().next().getDefaultName());
 		assertEquals("id", childEntity.defaultPrimaryKeyJoinColumns().next().getDefaultReferencedColumnName());

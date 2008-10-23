@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.db.Table;
@@ -113,7 +114,7 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	}
 	
 	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getVersions().remove(this.getAttributeMapping());
+		typeMapping.getAttributes().getVersions().remove(this.resourceAttributeMapping);
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}
@@ -132,34 +133,34 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	}
 	
 	@Override
-	public void initialize(XmlVersion version) {
-		super.initialize(version);
-		this.column.initialize(version.getColumn());
+	public void initialize(XmlAttributeMapping attributeMapping) {
+		super.initialize(attributeMapping);
+		this.column.initialize(this.resourceAttributeMapping.getColumn());
 		this.defaultConverter = new GenericOrmNullConverter(this);
-		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType(version));
+		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType());
 	}
 	
 	@Override
-	public void update(XmlVersion version) {
-		super.update(version);
-		this.column.update(version.getColumn());
-		if (specifiedConverterType(version) == getSpecifedConverterType()) {
-			getSpecifiedConverter().update(version);
+	public void update() {
+		super.update();
+		this.column.update(this.resourceAttributeMapping.getColumn());
+		if (specifiedConverterType() == getSpecifedConverterType()) {
+			getSpecifiedConverter().update();
 		}
 		else {
-			setSpecifiedConverter(buildSpecifiedConverter(specifiedConverterType(version)));
+			setSpecifiedConverter(buildSpecifiedConverter(specifiedConverterType()));
 		}
 	}
 	
 	protected OrmConverter buildSpecifiedConverter(String converterType) {
 		if (converterType == Converter.TEMPORAL_CONVERTER) {
-			return new GenericOrmTemporalConverter(this, this.attributeMapping);
+			return new GenericOrmTemporalConverter(this, this.resourceAttributeMapping);
 		}
 		return null;
 	}
 	
-	protected String specifiedConverterType(XmlVersion resourceVersion) {
-		if (resourceVersion.getTemporal() != null) {
+	protected String specifiedConverterType() {
+		if (this.resourceAttributeMapping.getTemporal() != null) {
 			return Converter.TEMPORAL_CONVERTER;
 		}
 		
@@ -169,15 +170,15 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	//***************** XmlColumn.Owner implementation ****************
 	
 	public XmlColumn getResourceColumn() {
-		return this.getAttributeMapping().getColumn();
+		return this.resourceAttributeMapping.getColumn();
 	}
 	
 	public void addResourceColumn() {
-		this.getAttributeMapping().setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
+		this.resourceAttributeMapping.setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
 	}
 	
 	public void removeResourceColumn() {
-		this.getAttributeMapping().setColumn(null);
+		this.resourceAttributeMapping.setColumn(null);
 	}
 	
 	// ****************** validation ****************

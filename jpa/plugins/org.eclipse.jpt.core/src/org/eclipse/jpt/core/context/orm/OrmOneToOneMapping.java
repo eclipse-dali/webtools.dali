@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.OneToOneMapping;
-import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 
 /**
  * 
@@ -24,15 +23,6 @@ import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
  */
 public interface OrmOneToOneMapping extends OneToOneMapping, OrmSingleRelationshipMapping
 {
-
-	void initialize(XmlOneToOne oneToOne);
-
-	/**
-	 * Update the OrmOneToOneMapping context model object to match the XmlOneToOne 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlOneToOne oneToOne);
-	
 	
 	// ********** covariant overrides **********
 	ListIterator<OrmJoinColumn> joinColumns();

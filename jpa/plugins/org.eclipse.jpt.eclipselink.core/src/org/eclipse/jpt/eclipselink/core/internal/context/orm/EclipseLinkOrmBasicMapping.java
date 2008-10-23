@@ -14,6 +14,7 @@ import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmBasicMapping;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
@@ -49,15 +50,15 @@ public class EclipseLinkOrmBasicMapping extends GenericOrmBasicMapping
 	}
 	
 	@Override
-	public void initialize(org.eclipse.jpt.core.resource.orm.XmlBasic basic) {
-		super.initialize(basic);	
-		this.mutable.initialize((XmlMutable) basic);
+	public void initialize(XmlAttributeMapping attributeMapping) {
+		super.initialize(attributeMapping);	
+		this.mutable.initialize((XmlMutable) this.resourceAttributeMapping);
 	}
 	
 	@Override
-	public void update(org.eclipse.jpt.core.resource.orm.XmlBasic basic) {
-		super.update(basic);
-		this.mutable.update((XmlMutable) basic);
+	public void update() {
+		super.update();
+		this.mutable.update();
 	}
 	
 	

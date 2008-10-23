@@ -30,13 +30,13 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -134,7 +134,7 @@ public class GenericOrmIdMapping
 		}
 		XmlGeneratedValue resourceGeneratedValue = OrmFactory.eINSTANCE.createXmlGeneratedValueImpl();
 		this.generatedValue = buildGeneratedValue(resourceGeneratedValue);
-		this.getAttributeMapping().setGeneratedValue(resourceGeneratedValue);
+		this.resourceAttributeMapping.setGeneratedValue(resourceGeneratedValue);
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, null, this.generatedValue);
 		return this.generatedValue;
 	}
@@ -145,7 +145,7 @@ public class GenericOrmIdMapping
 		}
 		OrmGeneratedValue oldGeneratedValue = this.generatedValue;
 		this.generatedValue = null;
-		this.getAttributeMapping().setGeneratedValue(null);
+		this.resourceAttributeMapping.setGeneratedValue(null);
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, oldGeneratedValue, null);
 	}
 	
@@ -165,7 +165,7 @@ public class GenericOrmIdMapping
 		}
 		XmlSequenceGenerator resourceSequenceGenerator = OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
 		this.sequenceGenerator = buildSequenceGenerator(resourceSequenceGenerator);
-		this.getAttributeMapping().setSequenceGenerator(resourceSequenceGenerator);
+		this.resourceAttributeMapping.setSequenceGenerator(resourceSequenceGenerator);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
 		return this.sequenceGenerator;
 	}
@@ -176,7 +176,7 @@ public class GenericOrmIdMapping
 		}
 		OrmSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
 		this.sequenceGenerator = null;
-		this.getAttributeMapping().setSequenceGenerator(null);
+		this.resourceAttributeMapping.setSequenceGenerator(null);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, null);
 	}
 	
@@ -196,7 +196,7 @@ public class GenericOrmIdMapping
 		}
 		XmlTableGenerator resourceTableGenerator = OrmFactory.eINSTANCE.createXmlTableGeneratorImpl();
 		this.tableGenerator = buildTableGenerator(resourceTableGenerator);
-		this.getAttributeMapping().setTableGenerator(resourceTableGenerator);
+		this.resourceAttributeMapping.setTableGenerator(resourceTableGenerator);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
 		return this.tableGenerator;
 	}
@@ -207,7 +207,7 @@ public class GenericOrmIdMapping
 		}
 		OrmTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = null;
-		this.getAttributeMapping().setTableGenerator(null);
+		this.resourceAttributeMapping.setTableGenerator(null);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, null);	
 	}
 	
@@ -259,7 +259,7 @@ public class GenericOrmIdMapping
 	}
 	
 	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getIds().remove(this.getAttributeMapping());
+		typeMapping.getAttributes().getIds().remove(this.resourceAttributeMapping);
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}
@@ -278,20 +278,20 @@ public class GenericOrmIdMapping
 	}
 	
 	@Override
-	public void initialize(XmlId id) {
-		super.initialize(id);
-		this.column.initialize(id.getColumn());
-		this.initializeSequenceGenerator(id);
-		this.initializeTableGenerator(id);
-		this.initializeGeneratedValue(id);
+	public void initialize(XmlAttributeMapping attributeMapping) {
+		super.initialize(attributeMapping);
+		this.column.initialize(this.resourceAttributeMapping.getColumn());
+		this.initializeSequenceGenerator();
+		this.initializeTableGenerator();
+		this.initializeGeneratedValue();
 		this.updatePersistenceUnitGenerators();
 		this.defaultConverter = new GenericOrmNullConverter(this);
-		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType(id));
+		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType());
 	}
 	
-	protected void initializeSequenceGenerator(XmlId id) {
-		if (id.getSequenceGenerator() != null) {
-			this.sequenceGenerator = buildSequenceGenerator(id.getSequenceGenerator());
+	protected void initializeSequenceGenerator() {
+		if (this.resourceAttributeMapping.getSequenceGenerator() != null) {
+			this.sequenceGenerator = buildSequenceGenerator(this.resourceAttributeMapping.getSequenceGenerator());
 		}
 	}
 	
@@ -299,9 +299,9 @@ public class GenericOrmIdMapping
 		return getJpaFactory().buildOrmSequenceGenerator(this, resourceSequenceGenerator);
 	}
 
-	protected void initializeTableGenerator(XmlId id) {
-		if (id.getTableGenerator() != null) {
-			this.tableGenerator = buildTableGenerator(id.getTableGenerator());
+	protected void initializeTableGenerator() {
+		if (this.resourceAttributeMapping.getTableGenerator() != null) {
+			this.tableGenerator = buildTableGenerator(this.resourceAttributeMapping.getTableGenerator());
 		}
 	}
 	
@@ -309,9 +309,9 @@ public class GenericOrmIdMapping
 		return getJpaFactory().buildOrmTableGenerator(this, resourceTableGenerator);
 	}
 
-	protected void initializeGeneratedValue(XmlId id) {
-		if (id.getGeneratedValue() != null) {
-			this.generatedValue = buildGeneratedValue(id.getGeneratedValue());
+	protected void initializeGeneratedValue() {
+		if (this.resourceAttributeMapping.getGeneratedValue() != null) {
+			this.generatedValue = buildGeneratedValue(this.resourceAttributeMapping.getGeneratedValue());
 		}
 	}
 	
@@ -319,65 +319,65 @@ public class GenericOrmIdMapping
 		return getJpaFactory().buildOrmGeneratedValue(this, resourceGeneratedValue);
 	}
 	@Override
-	public void update(XmlId id) {
-		super.update(id);
-		this.column.update(id.getColumn());
-		this.updateSequenceGenerator(id);
-		this.updateTableGenerator(id);
-		this.updateGeneratedValue(id);
+	public void update() {
+		super.update();
+		this.column.update(this.resourceAttributeMapping.getColumn());
+		this.updateSequenceGenerator();
+		this.updateTableGenerator();
+		this.updateGeneratedValue();
 		this.updatePersistenceUnitGenerators();
-		if (specifiedConverterType(id) == getSpecifedConverterType()) {
-			getSpecifiedConverter().update(id);
+		if (specifiedConverterType() == getSpecifedConverterType()) {
+			getSpecifiedConverter().update();
 		}
 		else {
-			setSpecifiedConverter(buildSpecifiedConverter(specifiedConverterType(id)));
+			setSpecifiedConverter(buildSpecifiedConverter(specifiedConverterType()));
 		}
 	}
 	
-	protected void updateSequenceGenerator(XmlId id) {
-		if (id.getSequenceGenerator() == null) {
+	protected void updateSequenceGenerator() {
+		if (this.resourceAttributeMapping.getSequenceGenerator() == null) {
 			if (getSequenceGenerator() != null) {
 				setSequenceGenerator(null);
 			}
 		}
 		else {
 			if (getSequenceGenerator() == null) {
-				setSequenceGenerator(buildSequenceGenerator(id.getSequenceGenerator()));
+				setSequenceGenerator(buildSequenceGenerator(this.resourceAttributeMapping.getSequenceGenerator()));
 			}
 			else {
-				getSequenceGenerator().update(id.getSequenceGenerator());
+				getSequenceGenerator().update(this.resourceAttributeMapping.getSequenceGenerator());
 			}
 		}
 	}
 	
-	protected void updateTableGenerator(XmlId id) {
-		if (id.getTableGenerator() == null) {
+	protected void updateTableGenerator() {
+		if (this.resourceAttributeMapping.getTableGenerator() == null) {
 			if (getTableGenerator() != null) {
 				setTableGenerator(null);
 			}
 		}
 		else {
 			if (getTableGenerator() == null) {
-				setTableGenerator(buildTableGenerator(id.getTableGenerator()));
+				setTableGenerator(buildTableGenerator(this.resourceAttributeMapping.getTableGenerator()));
 			}
 			else {
-				getTableGenerator().update(id.getTableGenerator());
+				getTableGenerator().update(this.resourceAttributeMapping.getTableGenerator());
 			}
 		}
 	}
 	
-	protected void updateGeneratedValue(XmlId id) {
-		if (id.getGeneratedValue() == null) {
+	protected void updateGeneratedValue() {
+		if (this.resourceAttributeMapping.getGeneratedValue() == null) {
 			if (getGeneratedValue() != null) {
 				setGeneratedValue(null);
 			}
 		}
 		else {
 			if (getGeneratedValue() == null) {
-				setGeneratedValue(buildGeneratedValue(id.getGeneratedValue()));
+				setGeneratedValue(buildGeneratedValue(this.resourceAttributeMapping.getGeneratedValue()));
 			}
 			else {
-				getGeneratedValue().update(id.getGeneratedValue());
+				getGeneratedValue().update(this.resourceAttributeMapping.getGeneratedValue());
 			}
 		}
 	}
@@ -394,13 +394,13 @@ public class GenericOrmIdMapping
 	
 	protected OrmConverter buildSpecifiedConverter(String converterType) {
 		if (converterType == Converter.TEMPORAL_CONVERTER) {
-			return new GenericOrmTemporalConverter(this, this.attributeMapping);
+			return new GenericOrmTemporalConverter(this, this.resourceAttributeMapping);
 		}
 		return null;
 	}
 	
-	protected String specifiedConverterType(XmlId xmlId) {
-		if (xmlId.getTemporal() != null) {
+	protected String specifiedConverterType() {
+		if (this.resourceAttributeMapping.getTemporal() != null) {
 			return Converter.TEMPORAL_CONVERTER;
 		}
 		
@@ -410,15 +410,15 @@ public class GenericOrmIdMapping
 	//***************** XmlColumn.Owner implementation ****************
 	
 	public XmlColumn getResourceColumn() {
-		return this.getAttributeMapping().getColumn();
+		return this.resourceAttributeMapping.getColumn();
 	}
 	
 	public void addResourceColumn() {
-		this.getAttributeMapping().setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
+		this.resourceAttributeMapping.setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
 	}
 	
 	public void removeResourceColumn() {
-		this.getAttributeMapping().setColumn(null);
+		this.resourceAttributeMapping.setColumn(null);
 	}
 	
 	// ****************** validation ****************

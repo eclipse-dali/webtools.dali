@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
+import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.GenerationType;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
@@ -17,15 +18,19 @@ import org.eclipse.jpt.core.utility.TextRange;
 
 public class VirtualXmlGeneratedValue extends AbstractJpaEObject implements XmlGeneratedValue
 {
-	JavaGeneratedValue javaGeneratedValue;
+	JavaIdMapping javaIdMapping;
 
 	protected boolean metadataComplete;
 	
 		
-	public VirtualXmlGeneratedValue(JavaGeneratedValue javaGeneratedValue, boolean metadataComplete) {
+	public VirtualXmlGeneratedValue(JavaIdMapping javaIdMapping, boolean metadataComplete) {
 		super();
-		this.javaGeneratedValue = javaGeneratedValue;
+		this.javaIdMapping = javaIdMapping;
 		this.metadataComplete = metadataComplete;
+	}
+
+	protected JavaGeneratedValue getJavaGeneratedValue() {
+		return this.javaIdMapping.getGeneratedValue();
 	}
 
 
@@ -33,14 +38,14 @@ public class VirtualXmlGeneratedValue extends AbstractJpaEObject implements XmlG
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.javaGeneratedValue.getGenerator();
+		return this.getJavaGeneratedValue().getGenerator();
 	}
 
 	public GenerationType getStrategy() {
 		if (this.metadataComplete) {
 			return null;
 		}
-		return org.eclipse.jpt.core.context.GenerationType.toOrmResourceModel(this.javaGeneratedValue.getStrategy());
+		return org.eclipse.jpt.core.context.GenerationType.toOrmResourceModel(this.getJavaGeneratedValue().getStrategy());
 	}
 
 	public void setGenerator(String value) {
@@ -53,9 +58,5 @@ public class VirtualXmlGeneratedValue extends AbstractJpaEObject implements XmlG
 
 	public TextRange getGeneratorTextRange() {
 		return null;
-	}
-
-	public void update(JavaGeneratedValue javaGeneratedValue) {
-		this.javaGeneratedValue = javaGeneratedValue;
 	}
 }

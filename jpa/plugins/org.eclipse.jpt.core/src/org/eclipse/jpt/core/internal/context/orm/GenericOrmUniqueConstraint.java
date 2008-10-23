@@ -84,11 +84,11 @@ public class GenericOrmUniqueConstraint extends AbstractXmlContextNode
 	
 	protected void initialize(XmlUniqueConstraint resourceUniqueConstraint) {
 		this.resourceUniqueConstraint = resourceUniqueConstraint;
-		this.initializeColumnNames(resourceUniqueConstraint);
+		this.initializeColumnNames();
 	}
 	
-	protected void initializeColumnNames(XmlUniqueConstraint uniqueConstraint) {
-		ListIterator<String> xmlColumnNames = new CloneListIterator<String>(uniqueConstraint.getColumnNames());
+	protected void initializeColumnNames() {
+		ListIterator<String> xmlColumnNames = new CloneListIterator<String>(this.resourceUniqueConstraint.getColumnNames());
 		
 		for (String annotationColumnName : CollectionTools.iterable(xmlColumnNames)) {
 			this.columnNames.add(annotationColumnName);
@@ -97,11 +97,11 @@ public class GenericOrmUniqueConstraint extends AbstractXmlContextNode
 	
 	public void update(XmlUniqueConstraint resourceUniqueConstraint) {
 		this.resourceUniqueConstraint = resourceUniqueConstraint;
-		this.updateColumnNames(resourceUniqueConstraint);
+		this.updateColumnNames();
 	}
 	
-	protected void updateColumnNames(XmlUniqueConstraint resourceUniqueConstraint) {
-		ListIterator<String> xmlColumnNames = new CloneListIterator<String>(resourceUniqueConstraint.getColumnNames());
+	protected void updateColumnNames() {
+		ListIterator<String> xmlColumnNames = new CloneListIterator<String>(this.resourceUniqueConstraint.getColumnNames());
 		
 		int index = 0;
 		for (String xmlColumnName : CollectionTools.iterable(xmlColumnNames)) {

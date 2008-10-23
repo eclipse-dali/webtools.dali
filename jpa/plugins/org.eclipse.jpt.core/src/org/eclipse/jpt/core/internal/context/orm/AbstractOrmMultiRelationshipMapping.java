@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -75,7 +76,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 	public void setMappedBy(String newMappedBy) {
 		String oldMappedBy = this.mappedBy;
 		this.mappedBy = newMappedBy;
-		getAttributeMapping().setMappedBy(newMappedBy);
+		this.resourceAttributeMapping.setMappedBy(newMappedBy);
 		firePropertyChanged(MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
 	}
 	
@@ -92,7 +93,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 	public void setOrderBy(String newOrderBy) {
 		String oldOrderBy = this.orderBy;
 		this.orderBy = newOrderBy;
-		getAttributeMapping().setOrderBy(newOrderBy);
+		this.resourceAttributeMapping.setOrderBy(newOrderBy);
 		firePropertyChanged(ORDER_BY_PROPERTY, oldOrderBy, newOrderBy);
 	}
 	
@@ -110,7 +111,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 		boolean oldNoOrdering = this.isNoOrdering;
 		this.isNoOrdering = newNoOrdering;
 		if (newNoOrdering) {
-			getAttributeMapping().setOrderBy(null);
+			this.resourceAttributeMapping.setOrderBy(null);
 		}
 		firePropertyChanged(NO_ORDERING_PROPERTY, oldNoOrdering, newNoOrdering);			
 	}
@@ -129,7 +130,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 		boolean oldPkOrdering = this.isPkOrdering;
 		this.isPkOrdering = newPkOrdering;
 		if (newPkOrdering) {
-			getAttributeMapping().setOrderBy(""); //$NON-NLS-1$
+			this.resourceAttributeMapping.setOrderBy(""); //$NON-NLS-1$
 		}
 		firePropertyChanged(PK_ORDERING_PROPERTY, oldPkOrdering, newPkOrdering);	
 	}
@@ -196,15 +197,15 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 	}
 	
 	protected MapKey getResourceMapKey() {
-		return getAttributeMapping().getMapKey();
+		return this.resourceAttributeMapping.getMapKey();
 	}
 	
 	protected void removeResourceMapKey() {
-		getAttributeMapping().setMapKey(null);
+		this.resourceAttributeMapping.setMapKey(null);
 	}
 	
 	protected void addResourceMapKey() {
-		getAttributeMapping().setMapKey(OrmFactory.eINSTANCE.createMapKeyImpl());
+		this.resourceAttributeMapping.setMapKey(OrmFactory.eINSTANCE.createMapKeyImpl());
 	}
 
 	public Iterator<String> candidateMapKeyNames() {
@@ -245,31 +246,31 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 //	}
 	
 	public TextRange getMappedByTextRange() {
-		TextRange mappedByTextRange = getAttributeMapping().getMappedByTextRange();
+		TextRange mappedByTextRange = this.resourceAttributeMapping.getMappedByTextRange();
 		return mappedByTextRange != null ? mappedByTextRange : getValidationTextRange();
 	}
 	
 	@Override
-	public void initialize(T multiRelationshipMapping) {
-		super.initialize(multiRelationshipMapping);
-		this.mappedBy = multiRelationshipMapping.getMappedBy();
-		this.mapKey = this.mapKey(multiRelationshipMapping);
-		this.orderBy = this.orderBy(multiRelationshipMapping);
+	public void initialize(XmlAttributeMapping attributeMapping) {
+		super.initialize(attributeMapping);
+		this.mappedBy = this.resourceAttributeMapping.getMappedBy();
+		this.mapKey = this.mapKey();
+		this.orderBy = this.orderBy();
 		if (this.orderBy == null) { 
 			this.isNoOrdering = true;
 		}
 		else {
 			this.isCustomOrdering = true;
 		}
-		this.joinTable.initialize(multiRelationshipMapping);
+		this.joinTable.initialize(this.resourceAttributeMapping);
 	}
 	
 	@Override
-	public void update(T multiRelationshipMapping) {
-		super.update(multiRelationshipMapping);
-		this.setMappedBy_(multiRelationshipMapping.getMappedBy());
-		this.setMapKey_(this.mapKey(multiRelationshipMapping));
-		this.setOrderBy_(this.orderBy(multiRelationshipMapping));
+	public void update() {
+		super.update();
+		this.setMappedBy_(this.resourceAttributeMapping.getMappedBy());
+		this.setMapKey_(this.mapKey());
+		this.setOrderBy_(this.orderBy());
 		if (getOrderBy() == null) { 
 			setNoOrdering_(true);
 			setPkOrdering_(false);
@@ -280,15 +281,15 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 			setPkOrdering_(false);
 			setCustomOrdering_(true);
 		}
-		this.joinTable.update(multiRelationshipMapping);
+		this.joinTable.update();
 	}
 	
-	protected String mapKey(T multiRelationshipMapping) {
-		return multiRelationshipMapping.getMapKey() == null ? null : multiRelationshipMapping.getMapKey().getName();
+	protected String mapKey() {
+		return this.resourceAttributeMapping.getMapKey() == null ? null : this.resourceAttributeMapping.getMapKey().getName();
 	}
 	
-	protected String orderBy(T multiRelationshipMapping) {
-		return multiRelationshipMapping.getOrderBy();
+	protected String orderBy() {
+		return this.resourceAttributeMapping.getOrderBy();
 	}
 	
 	@Override

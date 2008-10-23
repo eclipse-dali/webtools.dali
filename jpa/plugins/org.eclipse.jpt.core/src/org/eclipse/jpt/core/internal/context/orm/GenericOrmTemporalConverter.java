@@ -23,7 +23,7 @@ public class GenericOrmTemporalConverter extends AbstractXmlContextNode
 {
 	private TemporalType temporalType;
 	
-	private XmlConvertibleMapping resourceConvertableMapping;
+	private XmlConvertibleMapping resourceConvertibleMapping;
 	
 	public GenericOrmTemporalConverter(OrmAttributeMapping parent, XmlConvertibleMapping resourceConvertableMapping) {
 		super(parent);
@@ -46,7 +46,7 @@ public class GenericOrmTemporalConverter extends AbstractXmlContextNode
 	public void setTemporalType(TemporalType newTemporalType) {
 		TemporalType oldTemporalType = this.temporalType;
 		this.temporalType = newTemporalType;
-		this.resourceConvertableMapping.setTemporal(TemporalType.toOrmResourceModel(newTemporalType));
+		this.resourceConvertibleMapping.setTemporal(TemporalType.toOrmResourceModel(newTemporalType));
 		firePropertyChanged(TEMPORAL_TYPE_PROPERTY, oldTemporalType, newTemporalType);
 	}
 	
@@ -57,31 +57,30 @@ public class GenericOrmTemporalConverter extends AbstractXmlContextNode
 	}
 
 	
-	protected void initialize(XmlConvertibleMapping resourceConvertableMapping) {
-		this.resourceConvertableMapping = resourceConvertableMapping;
-		this.temporalType = this.temporalType(this.resourceConvertableMapping);
+	protected void initialize(XmlConvertibleMapping resourceConvertibleMapping) {
+		this.resourceConvertibleMapping = resourceConvertibleMapping;
+		this.temporalType = this.temporalType();
 	}
 	
-	public void update(XmlConvertibleMapping resourceConvertableMapping) {
-		this.resourceConvertableMapping = resourceConvertableMapping;		
-		this.setTemporalType_(this.temporalType(this.resourceConvertableMapping));
+	public void update() {		
+		this.setTemporalType_(this.temporalType());
 	}
 	
-	protected TemporalType temporalType(XmlConvertibleMapping resourceConvertableMapping) {
-		return TemporalType.fromOrmResourceModel(resourceConvertableMapping.getTemporal());
+	protected TemporalType temporalType() {
+		return TemporalType.fromOrmResourceModel(this.resourceConvertibleMapping.getTemporal());
 	}
 
 	
 	public TextRange getValidationTextRange() {
-		return this.resourceConvertableMapping.getTemporalTextRange();
+		return this.resourceConvertibleMapping.getTemporalTextRange();
 	}
 	
 	public void addToResourceModel() {
-		this.resourceConvertableMapping.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.DATE);
+		this.resourceConvertibleMapping.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.DATE);
 	}
 	
 	public void removeFromResourceModel() {
-		this.resourceConvertableMapping.setTemporal(null);
+		this.resourceConvertibleMapping.setTemporal(null);
 	}
 
 }

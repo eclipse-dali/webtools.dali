@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.db.Table;
@@ -65,7 +66,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
 		FetchType oldFetch = this.specifiedFetch;
 		this.specifiedFetch = newSpecifiedFetch;
-		this.getAttributeMapping().setFetch(FetchType.toOrmResourceModel(newSpecifiedFetch));
+		this.resourceAttributeMapping.setFetch(FetchType.toOrmResourceModel(newSpecifiedFetch));
 		firePropertyChanged(Fetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
 
@@ -90,7 +91,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	public void setSpecifiedOptional(Boolean newSpecifiedOptional) {
 		Boolean oldOptional = this.specifiedOptional;
 		this.specifiedOptional = newSpecifiedOptional;
-		this.getAttributeMapping().setOptional(newSpecifiedOptional);
+		this.resourceAttributeMapping.setOptional(newSpecifiedOptional);
 		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
 	}
 	
@@ -183,58 +184,58 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	}
 	
 	@Override
-	public void initialize(XmlBasic basic) {
-		super.initialize(basic);
-		this.specifiedFetch = this.specifiedFetch(basic);
-		this.specifiedOptional = this.specifiedOptional(basic);
-		this.column.initialize(basic.getColumn());
+	public void initialize(XmlAttributeMapping attributeMapping) {
+		super.initialize(attributeMapping);
+		this.specifiedFetch = this.specifiedFetch();
+		this.specifiedOptional = this.specifiedOptional();
+		this.column.initialize(this.resourceAttributeMapping.getColumn());
 		this.defaultConverter = new GenericOrmNullConverter(this);
-		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType(basic));
+		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType());
 	}
 	
 	@Override
-	public void update(XmlBasic basic) {
-		super.update(basic);
-		this.setSpecifiedFetch_(this.specifiedFetch(basic));
-		this.setSpecifiedOptional_(this.specifiedOptional(basic));
-		this.column.update(basic.getColumn());
-		if (specifiedConverterType(basic) == getSpecifedConverterType()) {
-			getSpecifiedConverter().update(basic);
+	public void update() {
+		super.update();
+		this.setSpecifiedFetch_(this.specifiedFetch());
+		this.setSpecifiedOptional_(this.specifiedOptional());
+		this.column.update(this.resourceAttributeMapping.getColumn());
+		if (specifiedConverterType() == getSpecifedConverterType()) {
+			getSpecifiedConverter().update();
 		}
 		else {
-			setSpecifiedConverter(buildSpecifiedConverter(specifiedConverterType(basic)));
+			setSpecifiedConverter(buildSpecifiedConverter(specifiedConverterType()));
 		}
 	}
 	
-	protected Boolean specifiedOptional(XmlBasic basic) {
-		return basic.getOptional();
+	protected Boolean specifiedOptional() {
+		return this.resourceAttributeMapping.getOptional();
 	}
 	
-	protected FetchType specifiedFetch(XmlBasic basic) {
-		return FetchType.fromOrmResourceModel(basic.getFetch());
+	protected FetchType specifiedFetch() {
+		return FetchType.fromOrmResourceModel(this.resourceAttributeMapping.getFetch());
 	}
 	
 	protected OrmConverter buildSpecifiedConverter(String converterType) {
 		if (converterType == Converter.ENUMERATED_CONVERTER) {
-			return new GenericOrmEnumeratedConverter(this, this.attributeMapping);
+			return new GenericOrmEnumeratedConverter(this, this.resourceAttributeMapping);
 		}
 		else if (converterType == Converter.TEMPORAL_CONVERTER) {
-			return new GenericOrmTemporalConverter(this, this.attributeMapping);
+			return new GenericOrmTemporalConverter(this, this.resourceAttributeMapping);
 		}
 		else if (converterType == Converter.LOB_CONVERTER) {
-			return new GenericOrmLobConverter(this, this.attributeMapping);
+			return new GenericOrmLobConverter(this, this.resourceAttributeMapping);
 		}
 		return null;
 	}
 	
-	protected String specifiedConverterType(XmlBasic xmlBasic) {
-		if (xmlBasic.getEnumerated() != null) {
+	protected String specifiedConverterType() {
+		if (this.resourceAttributeMapping.getEnumerated() != null) {
 			return Converter.ENUMERATED_CONVERTER;
 		}
-		else if (xmlBasic.getTemporal() != null) {
+		else if (this.resourceAttributeMapping.getTemporal() != null) {
 			return Converter.TEMPORAL_CONVERTER;
 		}
-		else if (xmlBasic.isLob()) {
+		else if (this.resourceAttributeMapping.isLob()) {
 			return Converter.LOB_CONVERTER;
 		}
 		
@@ -249,7 +250,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	}
 	
 	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getBasics().remove(this.getAttributeMapping());
+		typeMapping.getAttributes().getBasics().remove(this.resourceAttributeMapping);
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}
@@ -258,15 +259,15 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	//***************** XmlColumn.Owner implementation ****************
 	
 	public XmlColumn getResourceColumn() {
-		return this.getAttributeMapping().getColumn();
+		return this.resourceAttributeMapping.getColumn();
 	}
 	
 	public void addResourceColumn() {
-		this.getAttributeMapping().setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
+		this.resourceAttributeMapping.setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
 	}
 	
 	public void removeResourceColumn() {
-		this.getAttributeMapping().setColumn(null);
+		this.resourceAttributeMapping.setColumn(null);
 	}
 	
 	// ****************** validation ****************

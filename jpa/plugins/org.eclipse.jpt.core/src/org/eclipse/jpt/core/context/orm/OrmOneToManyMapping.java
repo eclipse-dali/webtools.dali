@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.OneToManyMapping;
-import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 
 /**
  * 
@@ -24,12 +23,4 @@ import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 public interface OrmOneToManyMapping extends OneToManyMapping, OrmMultiRelationshipMapping
 {
 
-	void initialize(XmlOneToMany xmlOneToMany);
-
-	/**
-	 * Update the OrmOneToManyMapping context model object to match the XmlOneToMany 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlOneToMany xmlOneToMany);
-	
 }

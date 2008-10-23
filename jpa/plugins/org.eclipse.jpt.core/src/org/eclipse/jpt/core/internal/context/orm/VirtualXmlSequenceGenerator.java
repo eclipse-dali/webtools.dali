@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.context.java.JavaGeneratorHolder;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
@@ -16,22 +17,26 @@ import org.eclipse.jpt.core.utility.TextRange;
 
 public class VirtualXmlSequenceGenerator extends AbstractJpaEObject implements XmlSequenceGenerator
 {
-	JavaSequenceGenerator javaSequenceGenerator;
+	JavaGeneratorHolder javaGeneratorHolder;
 
 	protected boolean metadataComplete;
 	
 		
-	public VirtualXmlSequenceGenerator(JavaSequenceGenerator javaSequenceGenerator, boolean metadataComplete) {
+	public VirtualXmlSequenceGenerator(JavaGeneratorHolder javaGeneratorHolder, boolean metadataComplete) {
 		super();
-		this.javaSequenceGenerator = javaSequenceGenerator;
+		this.javaGeneratorHolder = javaGeneratorHolder;
 		this.metadataComplete = metadataComplete;
+	}
+
+	protected JavaSequenceGenerator getJavaSequenceGenerator() {
+		return this.javaGeneratorHolder.getSequenceGenerator();
 	}
 
 	public String getSequenceName() {
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.javaSequenceGenerator.getSequenceName();
+		return this.getJavaSequenceGenerator().getSequenceName();
 	}
 
 	public void setSequenceName(String value) {
@@ -42,7 +47,7 @@ public class VirtualXmlSequenceGenerator extends AbstractJpaEObject implements X
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.javaSequenceGenerator.getAllocationSize();
+		return this.getJavaSequenceGenerator().getAllocationSize();
 	}
 
 	public void setAllocationSize(Integer value) {
@@ -53,7 +58,7 @@ public class VirtualXmlSequenceGenerator extends AbstractJpaEObject implements X
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.javaSequenceGenerator.getInitialValue();
+		return this.getJavaSequenceGenerator().getInitialValue();
 	}
 
 	public void setInitialValue(Integer value) {
@@ -64,15 +69,11 @@ public class VirtualXmlSequenceGenerator extends AbstractJpaEObject implements X
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.javaSequenceGenerator.getName();
+		return this.getJavaSequenceGenerator().getName();
 	}
 
 	public void setName(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
-	}
-
-	public void update(JavaSequenceGenerator javaSequenceGenerator) {
-		this.javaSequenceGenerator = javaSequenceGenerator;
 	}
 	
 	public TextRange getNameTextRange() {

@@ -145,11 +145,11 @@ public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 	protected void initialize(XmlAssociationOverride resourceAssociationOverride) {
 		this.resourceAssociationOverride = resourceAssociationOverride;
 		this.name = resourceAssociationOverride.getName();
-		initializeSpecifiedJoinColumns(resourceAssociationOverride);
+		initializeSpecifiedJoinColumns();
 	}
 	
-	protected void initializeSpecifiedJoinColumns(XmlAssociationOverride resourceAssociationOverride) {
-		for (XmlJoinColumn joinColumn : resourceAssociationOverride.getJoinColumns()) {
+	protected void initializeSpecifiedJoinColumns() {
+		for (XmlJoinColumn joinColumn : this.resourceAssociationOverride.getJoinColumns()) {
 			this.specifiedJoinColumns.add(buildJoinColumn(joinColumn));
 		}
 	}
@@ -157,12 +157,12 @@ public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 	public void update(XmlAssociationOverride resourceAssociationOverride) {
 		this.resourceAssociationOverride = resourceAssociationOverride;
 		this.setName(resourceAssociationOverride.getName());
-		updateSpecifiedJoinColumns(resourceAssociationOverride);
+		updateSpecifiedJoinColumns();
 	}	
 	
-	protected void updateSpecifiedJoinColumns(XmlAssociationOverride resourceAssociationOverride) {
+	protected void updateSpecifiedJoinColumns() {
 		ListIterator<OrmJoinColumn> contextJoinColumns = specifiedJoinColumns();
-		ListIterator<XmlJoinColumn> resourceJoinColumns = new CloneListIterator<XmlJoinColumn>(resourceAssociationOverride.getJoinColumns());//prevent ConcurrentModificiationException
+		ListIterator<XmlJoinColumn> resourceJoinColumns = new CloneListIterator<XmlJoinColumn>(this.resourceAssociationOverride.getJoinColumns());//prevent ConcurrentModificiationException
 		
 		while (contextJoinColumns.hasNext()) {
 			OrmJoinColumn contextJoinColumn = contextJoinColumns.next();

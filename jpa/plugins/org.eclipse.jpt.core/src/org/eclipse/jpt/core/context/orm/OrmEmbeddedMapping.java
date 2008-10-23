@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.EmbeddedMapping;
-import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
 
 /**
  * 
@@ -27,12 +26,4 @@ public interface OrmEmbeddedMapping extends EmbeddedMapping, OrmBaseEmbeddedMapp
 	ListIterator<OrmAttributeOverride> attributeOverrides();
 	ListIterator<OrmAttributeOverride> virtualAttributeOverrides();
 	ListIterator<OrmAttributeOverride> specifiedAttributeOverrides();
-
-	void initialize(XmlEmbedded embedded);
-
-	/**
-	 * Update the OrmEmbeddedMapping context model object to match the XmlEmbedded 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlEmbedded embedded);
 }

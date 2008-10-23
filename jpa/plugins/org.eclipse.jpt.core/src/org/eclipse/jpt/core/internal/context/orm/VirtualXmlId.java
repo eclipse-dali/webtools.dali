@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.EnumType;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
@@ -27,12 +26,8 @@ import org.eclipse.jpt.core.utility.TextRange;
  * VirtualId is an implementation of Id used when there is 
  * no tag in the orm.xml and an underlying javaIdMapping exists.
  */
-public class VirtualXmlId extends AbstractJpaEObject implements XmlId
+public class VirtualXmlId extends VirtualXmlAttributeMapping<JavaIdMapping> implements XmlId
 {
-	JavaIdMapping javaIdMapping;
-
-	protected boolean metadataComplete;
-
 	protected final VirtualXmlColumn column;
 
 	protected final VirtualXmlGeneratedValue virtualGeneratedValue;
@@ -41,20 +36,17 @@ public class VirtualXmlId extends AbstractJpaEObject implements XmlId
 	
 	protected final VirtualXmlSequenceGenerator virtualSequenceGenerator;
 	
-
 		
-	public VirtualXmlId(OrmTypeMapping ormTypeMapping, JavaIdMapping javaIdMapping, boolean metadataComplete) {
-		super();
-		this.javaIdMapping = javaIdMapping;
-		this.metadataComplete = metadataComplete;
-		this.column = new VirtualXmlColumn(ormTypeMapping, javaIdMapping.getColumn(), metadataComplete);
-		this.virtualGeneratedValue = new VirtualXmlGeneratedValue(javaIdMapping.getGeneratedValue(), metadataComplete);
-		this.virtualTableGenerator = new VirtualXmlTableGenerator(javaIdMapping.getTableGenerator(), metadataComplete);
-		this.virtualSequenceGenerator = new VirtualXmlSequenceGenerator(javaIdMapping.getSequenceGenerator(), metadataComplete);
+	public VirtualXmlId(OrmTypeMapping ormTypeMapping, JavaIdMapping javaIdMapping) {
+		super(ormTypeMapping, javaIdMapping);
+		this.column = new VirtualXmlColumn(ormTypeMapping, javaIdMapping.getColumn());
+		this.virtualGeneratedValue = new VirtualXmlGeneratedValue(javaIdMapping, this.isOrmMetadataComplete());
+		this.virtualTableGenerator = new VirtualXmlTableGenerator(javaIdMapping, this.isOrmMetadataComplete());
+		this.virtualSequenceGenerator = new VirtualXmlSequenceGenerator(javaIdMapping, this.isOrmMetadataComplete());
 	}
 
 	public String getName() {
-		return this.javaIdMapping.getPersistentAttribute().getName();
+		return this.javaAttributeMapping.getPersistentAttribute().getName();
 	}
 
 	public void setName(String newName) {
@@ -70,11 +62,11 @@ public class VirtualXmlId extends AbstractJpaEObject implements XmlId
 	}
 
 	public TemporalType getTemporal() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		if (this.javaIdMapping.getConverter().getType() == Converter.TEMPORAL_CONVERTER) {
-			org.eclipse.jpt.core.context.TemporalType javaTemporalType = ((TemporalConverter) this.javaIdMapping.getConverter()).getTemporalType();
+		if (this.javaAttributeMapping.getConverter().getType() == Converter.TEMPORAL_CONVERTER) {
+			org.eclipse.jpt.core.context.TemporalType javaTemporalType = ((TemporalConverter) this.javaAttributeMapping.getConverter()).getTemporalType();
 			return  org.eclipse.jpt.core.context.TemporalType.toOrmResourceModel(javaTemporalType);
 		}
 		return null;
@@ -86,10 +78,10 @@ public class VirtualXmlId extends AbstractJpaEObject implements XmlId
 
 
 	public XmlGeneratedValue getGeneratedValue() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		if (this.javaIdMapping.getGeneratedValue() != null) {
+		if (this.javaAttributeMapping.getGeneratedValue() != null) {
 			return this.virtualGeneratedValue;
 		}
 		return null;
@@ -100,10 +92,10 @@ public class VirtualXmlId extends AbstractJpaEObject implements XmlId
 	}
 
 	public XmlSequenceGenerator getSequenceGenerator() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		if (this.javaIdMapping.getSequenceGenerator() != null) {
+		if (this.javaAttributeMapping.getSequenceGenerator() != null) {
 			return this.virtualSequenceGenerator;
 		}
 		return null;
@@ -114,10 +106,10 @@ public class VirtualXmlId extends AbstractJpaEObject implements XmlId
 	}
 
 	public XmlTableGenerator getTableGenerator() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		if (this.javaIdMapping.getTableGenerator() != null) {
+		if (this.javaAttributeMapping.getTableGenerator() != null) {
 			return this.virtualTableGenerator;
 		}
 		return null;
@@ -141,15 +133,6 @@ public class VirtualXmlId extends AbstractJpaEObject implements XmlId
 	
 	public void setLob(boolean value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
-	}
-	
-	
-	public void update(JavaIdMapping javaIdMapping) {
-		this.javaIdMapping = javaIdMapping;
-		this.column.update(javaIdMapping.getColumn());
-		this.virtualGeneratedValue.update(javaIdMapping.getGeneratedValue());
-		this.virtualTableGenerator.update(javaIdMapping.getTableGenerator());
-		this.virtualSequenceGenerator.update(javaIdMapping.getSequenceGenerator());
 	}
 	
 	public TextRange getNameTextRange() {

@@ -65,4 +65,6 @@ public interface XmlAttributeMapping extends JpaEObject
 
 	TextRange getNameTextRange();
 	
+	//TODO unsure about this api, might change soon
+	String getMappingKey();
 } // AttributeMapping

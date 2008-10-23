@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlSingleRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -91,7 +92,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 		XmlJoinColumn resourceJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumnImpl();
 		OrmJoinColumn contextJoinColumn = this.buildJoinColumn(resourceJoinColumn);
 		this.specifiedJoinColumns.add(index, contextJoinColumn);
-		this.getAttributeMapping().getJoinColumns().add(index, resourceJoinColumn);
+		this.resourceAttributeMapping.getJoinColumns().add(index, resourceJoinColumn);
 		this.fireItemAdded(SPECIFIED_JOIN_COLUMNS_LIST, index, contextJoinColumn);
 		if (oldDefaultJoinColumn != null) {
 			this.firePropertyChanged(DEFAULT_JOIN_COLUMN, oldDefaultJoinColumn, null);
@@ -119,7 +120,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 			//in the UI because the change notifications end up in the wrong order.
 			this.defaultJoinColumn = this.buildJoinColumn(null);
 		}
-		this.getAttributeMapping().getJoinColumns().remove(index);
+		this.resourceAttributeMapping.getJoinColumns().remove(index);
 		this.fireItemRemoved(SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 		if (this.defaultJoinColumn != null) {
 			//fire change notification if a defaultJoinColumn was created above
@@ -133,7 +134,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedJoinColumns, targetIndex, sourceIndex);
-		this.getAttributeMapping().getJoinColumns().move(targetIndex, sourceIndex);
+		this.resourceAttributeMapping.getJoinColumns().move(targetIndex, sourceIndex);
 		fireItemMoved(SPECIFIED_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 
@@ -172,7 +173,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	public void setSpecifiedOptional(Boolean optional) {
 		Boolean old = this.specifiedOptional;
 		this.specifiedOptional = optional;
-		this.getAttributeMapping().setOptional(optional);
+		this.resourceAttributeMapping.setOptional(optional);
 		this.firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, old, optional);
 	}
 	
@@ -190,17 +191,17 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	// ********** resource => context **********
 
 	@Override
-	public void initialize(T singleRelationshipMapping) {
-		super.initialize(singleRelationshipMapping);
-		this.specifiedOptional = singleRelationshipMapping.getOptional();
+	public void initialize(XmlAttributeMapping attributeMapping) {
+		super.initialize(attributeMapping);
+		this.specifiedOptional = this.resourceAttributeMapping.getOptional();
 		//TODO defaultOptional
-		this.initializeSpecifiedJoinColumns(singleRelationshipMapping);
+		this.initializeSpecifiedJoinColumns();
 		this.initializeDefaultJoinColumn();
 	}
 	
-	protected void initializeSpecifiedJoinColumns(T singleRelationshipMapping) {
-		if (singleRelationshipMapping != null) {
-			for (XmlJoinColumn resourceJoinColumn : singleRelationshipMapping.getJoinColumns()) {
+	protected void initializeSpecifiedJoinColumns() {
+		if (this.resourceAttributeMapping != null) {
+			for (XmlJoinColumn resourceJoinColumn : this.resourceAttributeMapping.getJoinColumns()) {
 				this.specifiedJoinColumns.add(buildJoinColumn(resourceJoinColumn));
 			}
 		}
@@ -221,19 +222,16 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	}	
 
 	@Override
-	public void update(T singleRelationshipMapping) {
-		super.update(singleRelationshipMapping);
-		this.setSpecifiedOptional_(singleRelationshipMapping.getOptional());
-		this.updateSpecifiedJoinColumns(singleRelationshipMapping);
+	public void update() {
+		super.update();
+		this.setSpecifiedOptional_(this.resourceAttributeMapping.getOptional());
+		this.updateSpecifiedJoinColumns();
 		this.updateDefaultJoinColumn();
 	}
 	
-	protected void updateSpecifiedJoinColumns(T singleRelationshipMapping) {
+	protected void updateSpecifiedJoinColumns() {
 		ListIterator<OrmJoinColumn> contextJoinColumns = specifiedJoinColumns();
-		ListIterator<XmlJoinColumn> resourceJoinColumns = EmptyListIterator.instance();
-		if (singleRelationshipMapping != null) {
-			resourceJoinColumns = new CloneListIterator<XmlJoinColumn>(singleRelationshipMapping.getJoinColumns());//prevent ConcurrentModificiationException
-		}
+		ListIterator<XmlJoinColumn> resourceJoinColumns = new CloneListIterator<XmlJoinColumn>(this.resourceAttributeMapping.getJoinColumns());//prevent ConcurrentModificiationException
 		
 		while (contextJoinColumns.hasNext()) {
 			OrmJoinColumn contextJoinColumn = contextJoinColumns.next();

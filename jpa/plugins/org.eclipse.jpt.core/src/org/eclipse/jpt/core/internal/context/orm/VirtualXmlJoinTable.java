@@ -113,10 +113,6 @@ public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTa
 		return xmlUniqueConstraints;
 	}
 	
-	public void update(JavaJoinTable javaJoinTable) {
-		this.javaJoinTable = javaJoinTable;
-	}
-	
 	public TextRange getNameTextRange() {
 		return null;
 	}

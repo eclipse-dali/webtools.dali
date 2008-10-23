@@ -211,8 +211,7 @@ public class OrmCascade extends AbstractXmlContextNode implements Cascade, XmlCo
 		this.refresh = this.refresh(cascade);
 	}
 	
-	public void update(XmlRelationshipMapping relationshipMapping) {
-		this.relationshipMapping = relationshipMapping;
+	public void update() {
 		CascadeType cascade = getCascadeResource();
 		this.setAll_(this.all(cascade));
 		this.setPersist_(this.persist(cascade));

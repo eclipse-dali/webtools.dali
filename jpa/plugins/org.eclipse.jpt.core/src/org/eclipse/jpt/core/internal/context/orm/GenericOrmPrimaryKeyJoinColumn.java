@@ -127,7 +127,7 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	protected void initialize(XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
 		this.resourcePkJoinColumn = resourcePkJoinColumn;
 		super.initialize(resourcePkJoinColumn);
-		this.specifiedReferencedColumnName = specifiedReferencedColumnName(resourcePkJoinColumn);
+		this.specifiedReferencedColumnName = specifiedReferencedColumnName();
 		this.defaultReferencedColumnName = defaultReferencedColumnName();
 	}
 	
@@ -135,12 +135,12 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	public void update(XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
 		this.resourcePkJoinColumn = resourcePkJoinColumn;
 		super.update(resourcePkJoinColumn);
-		this.setSpecifiedReferencedColumnName_(specifiedReferencedColumnName(resourcePkJoinColumn));
+		this.setSpecifiedReferencedColumnName_(specifiedReferencedColumnName());
 		this.setDefaultReferencedColumnName(defaultReferencedColumnName());
 	}
 	
-	protected String specifiedReferencedColumnName(XmlPrimaryKeyJoinColumn column) {
-		return column == null ? null : column.getReferencedColumnName();
+	protected String specifiedReferencedColumnName() {
+		return this.resourcePkJoinColumn == null ? null : this.resourcePkJoinColumn.getReferencedColumnName();
 	}
 	
 	//TODO not correct when we start supporting primaryKeyJoinColumns in 1-1 mappings

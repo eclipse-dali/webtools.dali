@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.MappingKeys;
 
 /**
  * <!-- begin-user-doc -->
@@ -224,5 +225,8 @@ public class XmlEmbeddedImpl extends AbstractXmlAttributeMapping implements XmlE
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
-
+	
+	public String getMappingKey() {
+		return MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
+	}
 } // Embedded

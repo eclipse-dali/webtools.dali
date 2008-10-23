@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
-import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -18,30 +18,20 @@ import org.eclipse.jpt.core.utility.TextRange;
  * VirtualTransient is an implementation of Transient used when there is 
  * no tag in the orm.xml and an underlying javaTransientMapping exists.
  */
-public class VirtualXmlTransient extends AbstractJpaEObject implements XmlTransient
+public class VirtualXmlTransient extends VirtualXmlAttributeMapping<JavaTransientMapping> implements XmlTransient
 {
-	JavaTransientMapping javaTransientMapping;
-
-	protected boolean metadataComplete;
 	
-	public VirtualXmlTransient(JavaTransientMapping javaTransientMapping, boolean metadataComplete) {
-		super();
-		this.javaTransientMapping = javaTransientMapping;
-		this.metadataComplete = metadataComplete;
+	public VirtualXmlTransient(OrmTypeMapping ormTypeMapping, JavaTransientMapping javaTransientMapping) {
+		super(ormTypeMapping, javaTransientMapping);
 	}
 
 	public String getName() {
-		return this.javaTransientMapping.getPersistentAttribute().getName();
+		return this.javaAttributeMapping.getPersistentAttribute().getName();
 	}
 
 	public void setName(String newName) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
-	}
-
-	public void update(JavaTransientMapping javaTransientMapping) {
-		this.javaTransientMapping = javaTransientMapping;
-	}
-	
+	}	
 	
 	public TextRange getNameTextRange() {
 		return null;

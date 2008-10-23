@@ -98,9 +98,4 @@ public class VirtualXmlSecondaryTable extends AbstractJpaEObject implements XmlS
 	public TextRange getSchemaTextRange() {
 		return null;
 	}
-		
-	public void update(JavaSecondaryTable javaSecondaryTable) {
-		this.javaSecondaryTable = javaSecondaryTable;
-	}
-
 }

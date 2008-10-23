@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
-import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 
 /**
  * 
@@ -27,13 +26,4 @@ public interface OrmManyToOneMapping extends ManyToOneMapping, OrmSingleRelation
 	ListIterator<OrmJoinColumn> joinColumns();
 	
 	ListIterator<OrmJoinColumn> specifiedJoinColumns();
-
-	void initialize(XmlManyToOne xmlManyToOne);
-
-	/**
-	 * Update the OrmManyToOneMapping context model object to match the XmlManyToOne 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlManyToOne xmlManyToOne);
-
 }

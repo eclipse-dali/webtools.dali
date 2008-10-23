@@ -120,11 +120,11 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractXmlCo
 		this.resourceQuery = xmlQuery;
 		this.name = xmlQuery.getName();
 		this.query = xmlQuery.getQuery();
-		this.initializeHints(xmlQuery);
+		this.initializeHints();
 	}
 	
-	protected void initializeHints(E xmlQuery) {
-		for (XmlQueryHint resourceQueryHint : xmlQuery.getHints()) {
+	protected void initializeHints() {
+		for (XmlQueryHint resourceQueryHint : this.resourceQuery.getHints()) {
 			this.hints.add(buildQueryHint(resourceQueryHint));
 		}
 	}
@@ -137,12 +137,12 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractXmlCo
 		this.resourceQuery = xmlQuery;
 		this.setName(xmlQuery.getName());
 		this.setQuery(xmlQuery.getQuery());
-		this.updateHints(xmlQuery);
+		this.updateHints();
 	}
 	
-	protected void updateHints(E xmlQuery) {
+	protected void updateHints() {
 		ListIterator<OrmQueryHint> contextHints = hints();
-		ListIterator<XmlQueryHint> resourceHints = new CloneListIterator<XmlQueryHint>(xmlQuery.getHints());//prevent ConcurrentModificiationException
+		ListIterator<XmlQueryHint> resourceHints = new CloneListIterator<XmlQueryHint>(this.resourceQuery.getHints());//prevent ConcurrentModificiationException
 		
 		while (contextHints.hasNext()) {
 			OrmQueryHint contextHint = contextHints.next();

@@ -78,7 +78,7 @@ public class GenericOrmEmbeddable extends AbstractOrmTypeMapping<XmlEmbeddable> 
 	}
 	
 	public void removeFromResourceModel(XmlEntityMappings entityMappings) {
-		entityMappings.getEmbeddables().remove(this.getTypeMappingResource());
+		entityMappings.getEmbeddables().remove(this.resourceTypeMapping);
 	}
 
 	public XmlEmbeddable addToResourceModel(XmlEntityMappings entityMappings) {

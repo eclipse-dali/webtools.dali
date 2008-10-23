@@ -14,6 +14,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -509,5 +510,8 @@ public class XmlVersionImpl extends AbstractXmlAttributeMapping implements XmlVe
 	public TextRange getTemporalTextRange() {
 		throw new UnsupportedOperationException("temporal not supported by version mappings");
 	}
-
+	
+	public String getMappingKey() {
+		return MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
+	}
 } // Version

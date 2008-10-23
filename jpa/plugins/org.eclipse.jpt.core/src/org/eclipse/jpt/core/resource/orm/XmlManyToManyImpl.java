@@ -14,6 +14,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -735,5 +736,9 @@ public class XmlManyToManyImpl extends AbstractXmlAttributeMapping implements Xm
 
 	public TextRange getMappedByTextRange() {
 		return getAttributeTextRange(OrmXmlMapper.MAPPED_BY);
+	}
+	
+	public String getMappingKey() {
+		return MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 }

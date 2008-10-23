@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.VersionMapping;
-import org.eclipse.jpt.core.resource.orm.XmlVersion;
 
 /**
  * 
@@ -23,13 +22,6 @@ import org.eclipse.jpt.core.resource.orm.XmlVersion;
  */
 public interface OrmVersionMapping extends VersionMapping, OrmColumnMapping, OrmAttributeMapping
 {
-	void initialize(XmlVersion version);
-
-	/**
-	 * Update the OrmVersionMapping context model object to match the XmlVersion 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlVersion version);
 	
 	//********* covariant overrides **********
 	OrmConverter getDefaultConverter();

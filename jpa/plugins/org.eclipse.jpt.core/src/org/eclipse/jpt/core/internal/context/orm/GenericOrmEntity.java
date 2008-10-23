@@ -256,7 +256,7 @@ public class GenericOrmEntity
 	public void setSpecifiedName(String newSpecifiedName) {
 		String oldSpecifiedName = this.specifiedName;
 		this.specifiedName = newSpecifiedName;
-		this.getTypeMappingResource().setName(newSpecifiedName);
+		this.resourceTypeMapping.setName(newSpecifiedName);
 		firePropertyChanged(SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
 	}
 
@@ -319,7 +319,7 @@ public class GenericOrmEntity
 		XmlSecondaryTable secondaryTableResource = OrmFactory.eINSTANCE.createXmlSecondaryTableImpl();
 		OrmSecondaryTable secondaryTable =  buildSecondaryTable(secondaryTableResource);
 		this.specifiedSecondaryTables.add(index, secondaryTable);
-		getTypeMappingResource().getSecondaryTables().add(index, secondaryTableResource);
+		this.resourceTypeMapping.getSecondaryTables().add(index, secondaryTableResource);
 		fireItemAdded(Entity.SPECIFIED_SECONDARY_TABLES_LIST, index, secondaryTable);
 		return secondaryTable;
 	}
@@ -342,7 +342,7 @@ public class GenericOrmEntity
 	
 	public void removeSpecifiedSecondaryTable(int index) {
 		OrmSecondaryTable removedSecondaryTable = this.specifiedSecondaryTables.remove(index);
-		getTypeMappingResource().getSecondaryTables().remove(index);
+		this.resourceTypeMapping.getSecondaryTables().remove(index);
 		fireItemRemoved(Entity.SPECIFIED_SECONDARY_TABLES_LIST, index, removedSecondaryTable);
 	}
 	
@@ -352,7 +352,7 @@ public class GenericOrmEntity
 	
 	public void moveSpecifiedSecondaryTable(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedSecondaryTables, targetIndex, sourceIndex);
-		this.getTypeMappingResource().getSecondaryTables().move(targetIndex, sourceIndex);
+		this.resourceTypeMapping.getSecondaryTables().move(targetIndex, sourceIndex);
 		fireItemMoved(Entity.SPECIFIED_SECONDARY_TABLES_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -419,7 +419,7 @@ public class GenericOrmEntity
 				XmlSecondaryTable secondaryTableResource = OrmFactory.eINSTANCE.createXmlSecondaryTableImpl();
 				OrmSecondaryTable specifiedSecondaryTable =  buildSecondaryTable(secondaryTableResource);
 				this.specifiedSecondaryTables.add(specifiedSecondaryTable);
-				getTypeMappingResource().getSecondaryTables().add(secondaryTableResource);
+				this.resourceTypeMapping.getSecondaryTables().add(secondaryTableResource);
 				specifiedSecondaryTable.initializeFrom(virtualSecondaryTable);
 			}
 			//fire change notification at the end
@@ -437,7 +437,7 @@ public class GenericOrmEntity
 				if (this.specifiedSecondaryTables.size() == 0) {
 					initializeVirtualSecondaryTables();
 				}
-				getTypeMappingResource().getSecondaryTables().remove(index);
+				this.resourceTypeMapping.getSecondaryTables().remove(index);
 			}
 			fireItemsRemoved(Entity.SPECIFIED_SECONDARY_TABLES_LIST, 0, specifiedSecondaryTablesCopy);
 			if (this.virtualSecondaryTables.size() != 0) {
@@ -515,15 +515,15 @@ public class GenericOrmEntity
 		InheritanceType oldInheritanceType = this.specifiedInheritanceStrategy;
 		this.specifiedInheritanceStrategy = newInheritanceType;
 		if (oldInheritanceType != newInheritanceType) {
-			if (this.inheritanceResource() != null) {
-				this.inheritanceResource().setStrategy(InheritanceType.toOrmResourceModel(newInheritanceType));						
-				if (this.inheritanceResource().isAllFeaturesUnset()) {
-					removeInheritanceResource();
+			if (this.getResourceInheritance() != null) {
+				this.getResourceInheritance().setStrategy(InheritanceType.toOrmResourceModel(newInheritanceType));						
+				if (this.getResourceInheritance().isAllFeaturesUnset()) {
+					removeResourceInheritance();
 				}
 			}
 			else if (newInheritanceType != null) {
-				addInheritanceResource();
-				inheritanceResource().setStrategy(InheritanceType.toOrmResourceModel(newInheritanceType));
+				addResourceInheritance();
+				getResourceInheritance().setStrategy(InheritanceType.toOrmResourceModel(newInheritanceType));
 			}
 		}
 		firePropertyChanged(SPECIFIED_INHERITANCE_STRATEGY_PROPERTY, oldInheritanceType, newInheritanceType);
@@ -535,16 +535,16 @@ public class GenericOrmEntity
 		firePropertyChanged(SPECIFIED_INHERITANCE_STRATEGY_PROPERTY, oldInheritanceType, newInheritanceType);
 	}
 
-	protected Inheritance inheritanceResource() {
-		return getTypeMappingResource().getInheritance();
+	protected Inheritance getResourceInheritance() {
+		return this.resourceTypeMapping.getInheritance();
 	}
 	
-	protected void addInheritanceResource() {
-		getTypeMappingResource().setInheritance(OrmFactory.eINSTANCE.createInheritance());		
+	protected void addResourceInheritance() {
+		this.resourceTypeMapping.setInheritance(OrmFactory.eINSTANCE.createInheritance());		
 	}
 	
-	protected void removeInheritanceResource() {
-		getTypeMappingResource().setInheritance(null);
+	protected void removeResourceInheritance() {
+		this.resourceTypeMapping.setInheritance(null);
 	}
 
 	public OrmDiscriminatorColumn getDiscriminatorColumn() {
@@ -557,7 +557,7 @@ public class GenericOrmEntity
 		}
 		XmlSequenceGenerator resourceSequenceGenerator = OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
 		this.sequenceGenerator = buildSequenceGenerator(resourceSequenceGenerator);
-		getTypeMappingResource().setSequenceGenerator(resourceSequenceGenerator);
+		this.resourceTypeMapping.setSequenceGenerator(resourceSequenceGenerator);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
 		return this.sequenceGenerator;
 	}
@@ -568,7 +568,7 @@ public class GenericOrmEntity
 		}
 		OrmSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
 		this.sequenceGenerator = null;
-		this.getTypeMappingResource().setSequenceGenerator(null);
+		this.resourceTypeMapping.setSequenceGenerator(null);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, null);
 	}
 	
@@ -588,7 +588,7 @@ public class GenericOrmEntity
 		}
 		XmlTableGenerator resourceTableGenerator = OrmFactory.eINSTANCE.createXmlTableGeneratorImpl();
 		this.tableGenerator = buildTableGenerator(resourceTableGenerator);
-		getTypeMappingResource().setTableGenerator(resourceTableGenerator);
+		this.resourceTypeMapping.setTableGenerator(resourceTableGenerator);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
 		return this.tableGenerator;
 	}
@@ -599,7 +599,7 @@ public class GenericOrmEntity
 		}
 		OrmTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = null;
-		this.getTypeMappingResource().setTableGenerator(null);
+		this.resourceTypeMapping.setTableGenerator(null);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, null);
 	}
 	
@@ -645,7 +645,7 @@ public class GenericOrmEntity
 	public void setSpecifiedDiscriminatorValue(String newSpecifiedDiscriminatorValue) {
 		String oldSpecifiedDiscriminatorValue = this.specifiedDiscriminatorValue;
 		this.specifiedDiscriminatorValue = newSpecifiedDiscriminatorValue;
-		getTypeMappingResource().setDiscriminatorValue(newSpecifiedDiscriminatorValue);
+		this.resourceTypeMapping.setDiscriminatorValue(newSpecifiedDiscriminatorValue);
 		firePropertyChanged(SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY, oldSpecifiedDiscriminatorValue, newSpecifiedDiscriminatorValue);
 	}
 
@@ -710,7 +710,7 @@ public class GenericOrmEntity
 		XmlPrimaryKeyJoinColumn resourcePkJoinColumn = OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl();
 		OrmPrimaryKeyJoinColumn contextPkJoinColumn = buildPrimaryKeyJoinColumn(resourcePkJoinColumn);
 		this.specifiedPrimaryKeyJoinColumns.add(index, contextPkJoinColumn);
-		this.getTypeMappingResource().getPrimaryKeyJoinColumns().add(index, resourcePkJoinColumn);
+		this.resourceTypeMapping.getPrimaryKeyJoinColumns().add(index, resourcePkJoinColumn);
 
 		this.fireItemAdded(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, contextPkJoinColumn);
 		this.fireListCleared(OrmEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST);
@@ -741,7 +741,7 @@ public class GenericOrmEntity
 			//in the UI because the change notifications end up in the wrong order.
 			initializeDefaultPrimaryKeyJoinColumns();
 		}
-		this.getTypeMappingResource().getPrimaryKeyJoinColumns().remove(index);
+		this.resourceTypeMapping.getPrimaryKeyJoinColumns().remove(index);
 		fireItemRemoved(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
 		if (!this.defaultPrimaryKeyJoinColumns.isEmpty()) {
 			fireListChanged(OrmEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST);
@@ -754,7 +754,7 @@ public class GenericOrmEntity
 	
 	public void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedPrimaryKeyJoinColumns, targetIndex, sourceIndex);
-		this.getTypeMappingResource().getPrimaryKeyJoinColumns().move(targetIndex, sourceIndex);
+		this.resourceTypeMapping.getPrimaryKeyJoinColumns().move(targetIndex, sourceIndex);
 		fireItemMoved(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -812,7 +812,7 @@ public class GenericOrmEntity
 			}
 		}
 
-		getTypeMappingResource().getAttributeOverrides().remove(index);
+		this.resourceTypeMapping.getAttributeOverrides().remove(index);
 		fireItemRemoved(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		
 		if (virtualAttributeOverride != null) {
@@ -827,7 +827,7 @@ public class GenericOrmEntity
 		OrmAttributeOverride newAttributeOverride = getJpaFactory().buildOrmAttributeOverride(this, createAttributeOverrideOwner(), xmlAttributeOverride);
 		this.specifiedAttributeOverrides.add(index, newAttributeOverride);
 		
-		getTypeMappingResource().getAttributeOverrides().add(xmlAttributeOverride);
+		this.resourceTypeMapping.getAttributeOverrides().add(xmlAttributeOverride);
 		
 		int defaultIndex = this.virtualAttributeOverrides.indexOf(oldAttributeOverride);
 		this.virtualAttributeOverrides.remove(defaultIndex);
@@ -863,7 +863,7 @@ public class GenericOrmEntity
 	
 	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedAttributeOverrides, targetIndex, sourceIndex);
-		this.getTypeMappingResource().getAttributeOverrides().move(targetIndex, sourceIndex);
+		this.resourceTypeMapping.getAttributeOverrides().move(targetIndex, sourceIndex);
 		fireItemMoved(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 
@@ -906,7 +906,7 @@ public class GenericOrmEntity
 	
 	public void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedAssociationOverrides, targetIndex, sourceIndex);
-		this.getTypeMappingResource().getAssociationOverrides().move(targetIndex, sourceIndex);
+		this.resourceTypeMapping.getAssociationOverrides().move(targetIndex, sourceIndex);
 		fireItemMoved(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 
@@ -972,7 +972,7 @@ public class GenericOrmEntity
 		XmlNamedQuery resourceNamedQuery = OrmFactory.eINSTANCE.createXmlNamedQuery();
 		OrmNamedQuery contextNamedQuery = buildNamedQuery(resourceNamedQuery);
 		this.namedQueries.add(index, contextNamedQuery);
-		this.getTypeMappingResource().getNamedQueries().add(index, resourceNamedQuery);
+		this.resourceTypeMapping.getNamedQueries().add(index, resourceNamedQuery);
 		this.fireItemAdded(QueryHolder.NAMED_QUERIES_LIST, index, contextNamedQuery);
 		return contextNamedQuery;
 	}
@@ -991,7 +991,7 @@ public class GenericOrmEntity
 	
 	public void removeNamedQuery(int index) {
 		OrmNamedQuery namedQuery = this.namedQueries.remove(index);
-		this.getTypeMappingResource().getNamedQueries().remove(index);
+		this.resourceTypeMapping.getNamedQueries().remove(index);
 		fireItemRemoved(QueryHolder.NAMED_QUERIES_LIST, index, namedQuery);
 	}
 	
@@ -1001,7 +1001,7 @@ public class GenericOrmEntity
 	
 	public void moveNamedQuery(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.namedQueries, targetIndex, sourceIndex);
-		this.getTypeMappingResource().getNamedQueries().move(targetIndex, sourceIndex);
+		this.resourceTypeMapping.getNamedQueries().move(targetIndex, sourceIndex);
 		fireItemMoved(QueryHolder.NAMED_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -1017,7 +1017,7 @@ public class GenericOrmEntity
 		XmlNamedNativeQuery resourceNamedNativeQuery = OrmFactory.eINSTANCE.createXmlNamedNativeQuery();
 		OrmNamedNativeQuery contextNamedNativeQuery = buildNamedNativeQuery(resourceNamedNativeQuery);
 		this.namedNativeQueries.add(index, contextNamedNativeQuery);
-		this.getTypeMappingResource().getNamedNativeQueries().add(index, resourceNamedNativeQuery);
+		this.resourceTypeMapping.getNamedNativeQueries().add(index, resourceNamedNativeQuery);
 		this.fireItemAdded(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, contextNamedNativeQuery);
 		return contextNamedNativeQuery;
 	}
@@ -1036,7 +1036,7 @@ public class GenericOrmEntity
 	
 	public void removeNamedNativeQuery(int index) {
 		OrmNamedNativeQuery namedNativeQuery = this.namedNativeQueries.remove(index);
-		this.getTypeMappingResource().getNamedNativeQueries().remove(index);
+		this.resourceTypeMapping.getNamedNativeQueries().remove(index);
 		fireItemRemoved(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
 	}
 
@@ -1046,7 +1046,7 @@ public class GenericOrmEntity
 		
 	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.namedNativeQueries, targetIndex, sourceIndex);
-		this.getTypeMappingResource().getNamedNativeQueries().move(targetIndex, sourceIndex);
+		this.resourceTypeMapping.getNamedNativeQueries().move(targetIndex, sourceIndex);
 		fireItemMoved(QueryHolder.NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -1063,15 +1063,15 @@ public class GenericOrmEntity
 		String oldIdClass = this.idClass;
 		this.idClass = newIdClass;
 		if (oldIdClass != newIdClass) {
-			if (this.idClassResource() != null) {
-				this.idClassResource().setClassName(newIdClass);						
-				if (this.idClassResource().isAllFeaturesUnset()) {
-					removeIdClassResource();
+			if (this.getResourceIdClass() != null) {
+				this.getResourceIdClass().setClassName(newIdClass);						
+				if (this.getResourceIdClass().isAllFeaturesUnset()) {
+					removeResourceIdClass();
 				}
 			}
 			else if (newIdClass != null) {
-				addIdClassResource();
-				idClassResource().setClassName(newIdClass);
+				addResourceIdClass();
+				getResourceIdClass().setClassName(newIdClass);
 			}
 		}
 		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
@@ -1083,16 +1083,16 @@ public class GenericOrmEntity
 		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 
-	protected XmlIdClass idClassResource() {
-		return getTypeMappingResource().getIdClass();
+	protected XmlIdClass getResourceIdClass() {
+		return this.resourceTypeMapping.getIdClass();
 	}
 	
-	protected void addIdClassResource() {
-		getTypeMappingResource().setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());		
+	protected void addResourceIdClass() {
+		this.resourceTypeMapping.setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());		
 	}
 	
-	protected void removeIdClassResource() {
-		getTypeMappingResource().setIdClass(null);
+	protected void removeResourceIdClass() {
+		this.resourceTypeMapping.setIdClass(null);
 	}
 
 	public Entity getParentEntity() {
@@ -1327,7 +1327,7 @@ public class GenericOrmEntity
 		super.initialize(entity);
 		this.specifiedName = entity.getName();
 		this.defaultName = this.buildDefaultName();
-		this.initializeInheritance(this.inheritanceResource());
+		this.initializeInheritance(this.getResourceInheritance());
 		this.discriminatorColumn.initialize(entity);
 		this.specifiedDiscriminatorValue = entity.getDiscriminatorValue();
 		this.defaultDiscriminatorValue = this.defaultDiscriminatorValue();
@@ -1344,7 +1344,7 @@ public class GenericOrmEntity
 		this.initializeSpecifiedAssociationOverrides(entity);
 		this.initializeNamedQueries(entity);
 		this.initializeNamedNativeQueries(entity);
-		this.initializeIdClass(this.idClassResource());
+		this.initializeIdClass(this.getResourceIdClass());
 		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
 	
@@ -1451,10 +1451,10 @@ public class GenericOrmEntity
 		XmlColumn xmlColumn;
 		if (javaAttributeOverride == null) {
 			ColumnMapping columnMapping = (ColumnMapping) persistentAttribute.getMapping();
-			xmlColumn = new VirtualXmlColumn(this, columnMapping.getColumn(), false);		
+			xmlColumn = new VirtualXmlColumn(this, columnMapping.getColumn());		
 		}
 		else {
-			xmlColumn = new VirtualXmlColumn(this, javaAttributeOverride.getColumn(), isMetadataComplete());
+			xmlColumn = new VirtualXmlColumn(this, javaAttributeOverride.getColumn());
 		}
 		return new VirtualXmlAttributeOverride(persistentAttribute.getName(), xmlColumn);
 	}
@@ -1490,7 +1490,7 @@ public class GenericOrmEntity
 		super.update(entity);
 		this.setSpecifiedName(entity.getName());
 		this.setDefaultName(this.buildDefaultName());
-		this.updateInheritance(this.inheritanceResource());
+		this.updateInheritance(this.getResourceInheritance());
 		this.discriminatorColumn.update(entity);
 		this.setSpecifiedDiscriminatorValue(entity.getDiscriminatorValue());
 		this.setDefaultDiscriminatorValue(defaultDiscriminatorValue());
@@ -1507,7 +1507,7 @@ public class GenericOrmEntity
 		this.updateSpecifiedAssociationOverrides(entity);
 		this.updateNamedQueries(entity);
 		this.updateNamedNativeQueries(entity);
-		this.updateIdClass(this.idClassResource());
+		this.updateIdClass(this.getResourceIdClass());
 		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
 
@@ -1632,7 +1632,7 @@ public class GenericOrmEntity
 	}
 	
 	protected InheritanceType defaultInheritanceStrategy() {
-		if ((this.inheritanceResource() == null)
+		if ((this.getResourceInheritance() == null)
 				&& ! this.isMetadataComplete()
 				&& (this.getJavaEntity() != null)) {
 			return this.getJavaEntity().getInheritanceStrategy();
@@ -1890,7 +1890,7 @@ public class GenericOrmEntity
 	}
 	
 	public void removeFromResourceModel(XmlEntityMappings entityMappings) {
-		entityMappings.getEntities().remove(this.getTypeMappingResource());
+		entityMappings.getEntities().remove(this.resourceTypeMapping);
 	}
 	
 	public XmlEntity addToResourceModel(XmlEntityMappings entityMappings) {

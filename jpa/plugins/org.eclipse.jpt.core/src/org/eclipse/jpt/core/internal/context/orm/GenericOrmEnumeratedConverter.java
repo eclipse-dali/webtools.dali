@@ -24,7 +24,7 @@ public class GenericOrmEnumeratedConverter extends AbstractXmlContextNode
 {
 	private EnumType specifiedEnumType;
 	
-	private XmlConvertibleMapping resourceConvertableMapping;
+	private XmlConvertibleMapping resourceConvertibleMapping;
 	
 	public GenericOrmEnumeratedConverter(OrmAttributeMapping parent, XmlBasic resourceBasic) {
 		super(parent);
@@ -57,7 +57,7 @@ public class GenericOrmEnumeratedConverter extends AbstractXmlContextNode
 	public void setSpecifiedEnumType(EnumType newSpecifiedEnumType) {
 		EnumType oldSpecifiedEnumType = this.specifiedEnumType;
 		this.specifiedEnumType = newSpecifiedEnumType;
-		this.resourceConvertableMapping.setEnumerated(EnumType.toOrmResourceModel(newSpecifiedEnumType));
+		this.resourceConvertibleMapping.setEnumerated(EnumType.toOrmResourceModel(newSpecifiedEnumType));
 		firePropertyChanged(EnumeratedConverter.SPECIFIED_ENUM_TYPE_PROPERTY, oldSpecifiedEnumType, newSpecifiedEnumType);
 	}
 
@@ -67,30 +67,29 @@ public class GenericOrmEnumeratedConverter extends AbstractXmlContextNode
 		firePropertyChanged(EnumeratedConverter.SPECIFIED_ENUM_TYPE_PROPERTY, oldSpecifiedEnumType, newSpecifiedEnumType);
 	}
 	
-	protected void initialize(XmlConvertibleMapping resourceConvertableMapping) {
-		this.resourceConvertableMapping = resourceConvertableMapping;
-		this.specifiedEnumType = this.specifiedEnumType(this.resourceConvertableMapping);
+	protected void initialize(XmlConvertibleMapping resourceConvertibleMapping) {
+		this.resourceConvertibleMapping = resourceConvertibleMapping;
+		this.specifiedEnumType = this.specifiedEnumType();
 	}
 	
-	public void update(XmlConvertibleMapping resourceConvertableMapping) {
-		this.resourceConvertableMapping = resourceConvertableMapping;		
-		this.setSpecifiedEnumType_(this.specifiedEnumType(this.resourceConvertableMapping));
+	public void update() {
+		this.setSpecifiedEnumType_(this.specifiedEnumType());
 	}
 	
-	protected EnumType specifiedEnumType(XmlConvertibleMapping resourceConvertableMapping) {
-		return EnumType.fromOrmResourceModel(resourceConvertableMapping.getEnumerated());
+	protected EnumType specifiedEnumType() {
+		return EnumType.fromOrmResourceModel(this.resourceConvertibleMapping.getEnumerated());
 	}
 	
 	public TextRange getValidationTextRange() {
-		return this.resourceConvertableMapping.getEnumeratedTextRange();
+		return this.resourceConvertibleMapping.getEnumeratedTextRange();
 	}
 
 	public void addToResourceModel() {
-		this.resourceConvertableMapping.setEnumerated(org.eclipse.jpt.core.resource.orm.EnumType.ORDINAL);
+		this.resourceConvertibleMapping.setEnumerated(org.eclipse.jpt.core.resource.orm.EnumType.ORDINAL);
 	}
 	
 	public void removeFromResourceModel() {
-		this.resourceConvertableMapping.setEnumerated(null);
+		this.resourceConvertibleMapping.setEnumerated(null);
 	}
 	
 }

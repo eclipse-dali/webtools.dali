@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.ManyToManyMapping;
-import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 
 /**
  * 
@@ -24,11 +23,4 @@ import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 public interface OrmManyToManyMapping extends ManyToManyMapping, OrmMultiRelationshipMapping
 {
 
-	void initialize(XmlManyToMany xmlManyToMany);
-
-	/**
-	 * Update the OrmManyToManyMapping context model object to match the XmlManyToMany 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlManyToMany xmlManyToMany);
 }

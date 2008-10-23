@@ -11,17 +11,7 @@ package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.resource.orm.XmlBasic;
-import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
-import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
-import org.eclipse.jpt.core.resource.orm.XmlId;
-import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
-import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
-import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
-import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
-import org.eclipse.jpt.core.resource.orm.XmlTransient;
-import org.eclipse.jpt.core.resource.orm.XmlVersion;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 
 /**
  * 
@@ -93,92 +83,12 @@ public interface OrmPersistentAttribute extends PersistentAttribute, XmlContextN
 	
 	//******************* initialization/updating *******************
 
-	void initialize(XmlBasic basic);
-	
-	void initialize(XmlEmbedded embedded);
-	
-	void initialize(XmlVersion version);
-	
-	void initialize(XmlManyToOne manyToOne);
-	
-	void initialize(XmlOneToMany oneToMany);
-	
-	void initialize(XmlOneToOne oneToOne);
-	
-	void initialize(XmlManyToMany manyToMany);
-	
-	void initialize(XmlId id);
-	
-	void initialize(XmlEmbeddedId embeddedId);
-	
-	void initialize(XmlTransient transientResource);
-	
-	void initialize(XmlNullAttributeMapping xmlNullAttributeMapping);
+	void initialize(XmlAttributeMapping attributeMapping);
 	
 	/**
-	 * Update the OrmPersistentAttribute context model object to match the XmlId 
+	 * Update the OrmPersistentAttribute context model object to match the 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
-	void update(XmlId id);
-	
-	/**
-	 * Update the OrmPersistentAttribute context model object to match the XmlEmbeddedId 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlEmbeddedId embeddedId);
-
-	/**
-	 * Update the OrmPersistentAttribute context model object to match the XmlBasic 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlBasic basic);
-	
-	/**
-	 * Update the OrmPersistentAttribute context model object to match the XmlVersion 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlVersion version);
-	
-	/**
-	 * Update the OrmPersistentAttribute context model object to match the XmlManyToOne 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlManyToOne manyToOne);
-	
-	/**
-	 * Update the OrmPersistentAttribute context model object to match the XmlOneToMany 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlOneToMany oneToMany);
-	
-	/**
-	 * Update the OrmPersistentAttribute context model object to match the XmlOneToOne 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlOneToOne oneToOne);
-	
-	/**
-	 * Update the OrmPersistentAttribute context model object to match the XmlManyToMany 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlManyToMany manyToMany);
-
-	/**
-	 * Update the OrmPersistentAttribute context model object to match the XmlEmbedded 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlEmbedded embedded);
-	
-	/**
-	 * Update the OrmPersistentAttribute context model object to match the XmlTransient 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlTransient transientResource);
-	
-	/**
-	 * Update the OrmPersistentAttribute context model object to match the XmlNullAttributeMapping 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlNullAttributeMapping xmlNullAttributeMapping);
+	void update();
 
 }

@@ -13,7 +13,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
-import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
@@ -27,25 +27,20 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  * VirtualManyToOne is an implementation of ManyToOne used when there is 
  * no tag in the orm.xml and an underlying javaManyToOneMapping exists.
  */
-public class VirtualXmlManyToOne extends AbstractJpaEObject implements XmlManyToOne
+public class VirtualXmlManyToOne extends VirtualXmlAttributeMapping<JavaManyToOneMapping> implements XmlManyToOne
 {
-	JavaManyToOneMapping javaManyToOneMapping;
-
-	protected boolean metadataComplete;
 	
 //	protected VirtualJoinTable virtualJoinTable;
 	
 	protected final VirtualCascadeType virtualCascadeType;
 
-	public VirtualXmlManyToOne(JavaManyToOneMapping javaManyToOneMapping, boolean metadataComplete) {
-		super();
-		this.javaManyToOneMapping = javaManyToOneMapping;
-		this.metadataComplete = metadataComplete;
-		this.virtualCascadeType = new VirtualCascadeType(javaManyToOneMapping.getCascade(), this.metadataComplete);
+	public VirtualXmlManyToOne(OrmTypeMapping ormTypeMapping, JavaManyToOneMapping javaManyToOneMapping) {
+		super(ormTypeMapping, javaManyToOneMapping);
+		this.virtualCascadeType = new VirtualCascadeType(javaManyToOneMapping.getCascade(), this.isOrmMetadataComplete());
 	}
-	
+
 	public String getName() {
-		return this.javaManyToOneMapping.getPersistentAttribute().getName();
+		return this.javaAttributeMapping.getPersistentAttribute().getName();
 	}
 
 	public void setName(String newName) {
@@ -53,10 +48,10 @@ public class VirtualXmlManyToOne extends AbstractJpaEObject implements XmlManyTo
 	}
 	
 	public FetchType getFetch() {
-		if (this.metadataComplete) {
-			return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaManyToOneMapping.getDefaultFetch());
+		if (this.isOrmMetadataComplete()) {
+			return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaAttributeMapping.getDefaultFetch());
 		}
-		return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaManyToOneMapping.getFetch());
+		return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaAttributeMapping.getFetch());
 	}
 
 	public void setFetch(FetchType newFetch) {
@@ -64,10 +59,10 @@ public class VirtualXmlManyToOne extends AbstractJpaEObject implements XmlManyTo
 	}
 
 	public Boolean getOptional() {
-		if (this.metadataComplete) {
-			return this.javaManyToOneMapping.getDefaultOptional();
+		if (this.isOrmMetadataComplete()) {
+			return this.javaAttributeMapping.getDefaultOptional();
 		}
-		return this.javaManyToOneMapping.getOptional();
+		return this.javaAttributeMapping.getOptional();
 	}
 
 	public void setOptional(Boolean newOptional) {
@@ -77,8 +72,8 @@ public class VirtualXmlManyToOne extends AbstractJpaEObject implements XmlManyTo
 	public EList<XmlJoinColumn> getJoinColumns() {
 		EList<XmlJoinColumn> joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__JOIN_COLUMNS);
 		//TODO here i'm using joinColumns() while VirtualXmlJoinTable uses specifiedJoinColumns()???
-		for (JavaJoinColumn joinColumn : CollectionTools.iterable(this.javaManyToOneMapping.joinColumns())) {
-			XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, this.metadataComplete);
+		for (JavaJoinColumn joinColumn : CollectionTools.iterable(this.javaAttributeMapping.joinColumns())) {
+			XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, this.isOrmMetadataComplete());
 			joinColumns.add(xmlJoinColumn);
 		}
 		return joinColumns;
@@ -102,21 +97,16 @@ public class VirtualXmlManyToOne extends AbstractJpaEObject implements XmlManyTo
 	}
 	
 	public String getTargetEntity() {
-		if (this.metadataComplete) {
-			return this.javaManyToOneMapping.getDefaultTargetEntity();
+		if (this.isOrmMetadataComplete()) {
+			return this.javaAttributeMapping.getDefaultTargetEntity();
 		}
-		return this.javaManyToOneMapping.getTargetEntity();
+		return this.javaAttributeMapping.getTargetEntity();
 	}
 
 	public void setTargetEntity(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
 	}
 
-	public void update(JavaManyToOneMapping javaManyToOneMapping) {
-		this.javaManyToOneMapping = javaManyToOneMapping;
-		this.virtualCascadeType.update(javaManyToOneMapping.getCascade());
-	}
-	
 	public TextRange getNameTextRange() {
 		return null;
 	}

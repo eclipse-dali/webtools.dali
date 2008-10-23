@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.BasicMapping;
-import org.eclipse.jpt.core.resource.orm.XmlBasic;
 
 /**
  * 
@@ -23,13 +22,6 @@ import org.eclipse.jpt.core.resource.orm.XmlBasic;
  */
 public interface OrmBasicMapping extends BasicMapping, OrmAttributeMapping, OrmColumnMapping
 {
-	void initialize(XmlBasic basic);
-
-	/**
-	 * Update the OrmBasicMapping context model object to match the XmlBasic 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlBasic basic);
 	
 	//********* covariant overrides **********
 	OrmConverter getDefaultConverter();

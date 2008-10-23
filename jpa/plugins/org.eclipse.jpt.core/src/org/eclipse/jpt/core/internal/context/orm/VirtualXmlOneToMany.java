@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
@@ -25,11 +25,8 @@ import org.eclipse.jpt.core.utility.TextRange;
  * VirtualOneToMany is an implementation of OneToMany used when there is 
  * no tag in the orm.xml and an underlying javaOneToManyMapping exists.
  */
-public class VirtualXmlOneToMany extends AbstractJpaEObject implements XmlOneToMany
+public class VirtualXmlOneToMany extends VirtualXmlAttributeMapping<JavaOneToManyMapping> implements XmlOneToMany
 {
-	JavaOneToManyMapping javaOneToManyMapping;
-
-	protected boolean metadataComplete;
 	
 	protected final VirtualXmlJoinTable virtualJoinTable;
 	
@@ -40,14 +37,12 @@ public class VirtualXmlOneToMany extends AbstractJpaEObject implements XmlOneToM
 	//TODO joinColumns not yet supported in the context model
 //	protected EList<JoinColumn> virtualJoinColumns;
 
-	public VirtualXmlOneToMany(OrmPersistentAttribute ormPersistentAttribute, JavaOneToManyMapping javaOneToManyMapping, boolean metadataComplete) {
-		super();
-		this.javaOneToManyMapping = javaOneToManyMapping;
-		this.metadataComplete = metadataComplete;
+	public VirtualXmlOneToMany(OrmTypeMapping ormTypeMapping, OrmPersistentAttribute ormPersistentAttribute, JavaOneToManyMapping javaOneToManyMapping) {
+		super(ormTypeMapping, javaOneToManyMapping);
 //		this.initializeJoinColumns(javaOneToManyMapping);
-		this.virtualCascadeType = new VirtualCascadeType(javaOneToManyMapping.getCascade(), this.metadataComplete);
-		this.virtualJoinTable = new VirtualXmlJoinTable(ormPersistentAttribute, javaOneToManyMapping.getJoinTable(), metadataComplete);
-		this.mapKey = new VirtualMapKey(javaOneToManyMapping, metadataComplete);
+		this.virtualCascadeType = new VirtualCascadeType(javaOneToManyMapping.getCascade(), this.isOrmMetadataComplete());
+		this.virtualJoinTable = new VirtualXmlJoinTable(ormPersistentAttribute, javaOneToManyMapping.getJoinTable(), this.isOrmMetadataComplete());
+		this.mapKey = new VirtualMapKey(javaOneToManyMapping, this.isOrmMetadataComplete());
 	}
 	
 //	protected void initializeJoinColumns(IJavaOneToManyMapping javaOneToManyMapping) {
@@ -66,7 +61,7 @@ public class VirtualXmlOneToMany extends AbstractJpaEObject implements XmlOneToM
 //	}
 	
 	public String getName() {
-		return this.javaOneToManyMapping.getPersistentAttribute().getName();
+		return this.javaAttributeMapping.getPersistentAttribute().getName();
 	}
 
 	public void setName(String newName) {
@@ -74,10 +69,10 @@ public class VirtualXmlOneToMany extends AbstractJpaEObject implements XmlOneToM
 	}
 	
 	public FetchType getFetch() {
-		if (this.metadataComplete) {
-			return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaOneToManyMapping.getDefaultFetch());
+		if (this.isOrmMetadataComplete()) {
+			return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaAttributeMapping.getDefaultFetch());
 		}
-		return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaOneToManyMapping.getFetch());
+		return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaAttributeMapping.getFetch());
 	}
 
 	public void setFetch(FetchType newFetch) {
@@ -105,10 +100,10 @@ public class VirtualXmlOneToMany extends AbstractJpaEObject implements XmlOneToM
 	}
 	
 	public String getTargetEntity() {
-		if (this.metadataComplete) {
-			return this.javaOneToManyMapping.getDefaultTargetEntity();
+		if (this.isOrmMetadataComplete()) {
+			return this.javaAttributeMapping.getDefaultTargetEntity();
 		}
-		return this.javaOneToManyMapping.getTargetEntity();
+		return this.javaAttributeMapping.getTargetEntity();
 	}
 
 	public void setTargetEntity(String value) {
@@ -116,10 +111,10 @@ public class VirtualXmlOneToMany extends AbstractJpaEObject implements XmlOneToM
 	}
 	
 	public String getMappedBy() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		return this.javaOneToManyMapping.getMappedBy();
+		return this.javaAttributeMapping.getMappedBy();
 	}
 	
 	public void setMappedBy(String value) {
@@ -136,48 +131,15 @@ public class VirtualXmlOneToMany extends AbstractJpaEObject implements XmlOneToM
 	}
 	
 	public String getOrderBy() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		return this.javaOneToManyMapping.getOrderBy();
+		return this.javaAttributeMapping.getOrderBy();
 	}
 	
 	public void setOrderBy(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
 	}
-	
-	public void update(JavaOneToManyMapping javaOneToManyMapping) {
-		this.javaOneToManyMapping = javaOneToManyMapping;
-		this.virtualCascadeType.update(javaOneToManyMapping.getCascade());
-		this.virtualJoinTable.update(javaOneToManyMapping.getJoinTable());
-//		this.updateJoinColumns(javaOneToManyMapping);
-	}
-	
-//	protected void updateJoinColumns(IJavaOneToManyMapping javaOneToManyMapping) {
-//		ListIterator<IJavaJoinColumn> javaJoinColumns;
-//		ListIterator<JoinColumn> virtualJoinColumns = this.virtualJoinColumns.listIterator();
-//		if (this.metadataComplete) {
-//			javaJoinColumns = this.javaOneToManyMapping.defaultJoinColumns();
-//		}
-//		else {
-//			javaJoinColumns = this.javaOneToManyMapping.joinColumns();			
-//		}
-//		
-//		while (javaJoinColumns.hasNext()) {
-//			IJavaJoinColumn javaJoinColumn = javaJoinColumns.next();
-//			if (virtualJoinColumns.hasNext()) {
-//				VirtualJoinColumn virtualJoinColumn = (VirtualJoinColumn) virtualJoinColumns.next();
-//				virtualJoinColumn.update(javaJoinColumn);
-//			}
-//			else {
-//				this.virtualJoinColumns.add(new VirtualJoinColumn(javaJoinColumn, this.metadataComplete));
-//			}
-//		}
-//		
-//		while(virtualJoinColumns.hasNext()) {
-//			this.virtualJoinColumns.remove(virtualJoinColumns.next());
-//		}
-//	}
 	
 	public TextRange getNameTextRange() {
 		return null;

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.TransientMapping;
-import org.eclipse.jpt.core.resource.orm.XmlTransient;
 
 /**
  * 
@@ -23,11 +22,4 @@ import org.eclipse.jpt.core.resource.orm.XmlTransient;
  */
 public interface OrmTransientMapping extends TransientMapping, OrmAttributeMapping
 {
-	void initialize(XmlTransient transientResource);
-
-	/**
-	 * Update the OrmTransientMapping context model object to match the XmlTransient 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlTransient transientResource);
 }

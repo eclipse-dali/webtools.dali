@@ -113,10 +113,6 @@ public class VirtualXmlJoinColumn extends AbstractJpaEObject implements XmlJoinC
 	public void setUpdatable(Boolean value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
 	}
-	
-	public void update(JavaJoinColumn javaJoinColumn) {
-		this.javaJoinColumn = javaJoinColumn;
-	}
 
 	public TextRange getNameTextRange() {
 		return null;

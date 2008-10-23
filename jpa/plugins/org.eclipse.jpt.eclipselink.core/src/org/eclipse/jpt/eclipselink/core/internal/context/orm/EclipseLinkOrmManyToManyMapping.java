@@ -14,6 +14,7 @@ import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmManyToManyMapping;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
@@ -50,15 +51,15 @@ public class EclipseLinkOrmManyToManyMapping
 	}
 	
 	@Override
-	public void initialize(org.eclipse.jpt.core.resource.orm.XmlManyToMany manyToMany) {
-		super.initialize(manyToMany);	
-		this.joinFetch.initialize((XmlJoinFetch) manyToMany);
+	public void initialize(XmlAttributeMapping attributeMapping) {
+		super.initialize(attributeMapping);	
+		this.joinFetch.initialize((XmlJoinFetch) this.resourceAttributeMapping);
 	}
 	
 	@Override
-	public void update(org.eclipse.jpt.core.resource.orm.XmlManyToMany manyToMany) {
-		super.update(manyToMany);
-		this.joinFetch.update((XmlJoinFetch) manyToMany);
+	public void update() {
+		super.update();
+		this.joinFetch.update();
 	}
 	
 	

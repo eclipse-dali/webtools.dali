@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
-import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
 
 /**
  * 
@@ -28,11 +27,4 @@ public interface OrmEmbeddedIdMapping extends EmbeddedIdMapping, OrmBaseEmbedded
 	ListIterator<OrmAttributeOverride> virtualAttributeOverrides();
 	ListIterator<OrmAttributeOverride> specifiedAttributeOverrides();
 
-	void initialize(XmlEmbeddedId embeddedId);
-
-	/**
-	 * Update the OrmEmbeddedIdMapping context model object to match the XmlEmbeddedId 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlEmbeddedId embeddedId);
 }

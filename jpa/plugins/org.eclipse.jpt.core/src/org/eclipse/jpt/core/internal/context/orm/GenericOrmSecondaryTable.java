@@ -201,12 +201,12 @@ public class GenericOrmSecondaryTable
 	protected void initialize(XmlSecondaryTable xst) {
 		this.secondaryTable = xst;
 		super.initialize(xst);
-		this.initializeSpecifiedPrimaryKeyJoinColumns(xst);
+		this.initializeSpecifiedPrimaryKeyJoinColumns();
 		this.initializeDefaultPrimaryKeyJoinColumn();
 	}
 	
-	protected void initializeSpecifiedPrimaryKeyJoinColumns(XmlSecondaryTable xst) {
-		for (XmlPrimaryKeyJoinColumn resourcePkJoinColumn : xst.getPrimaryKeyJoinColumns()) {
+	protected void initializeSpecifiedPrimaryKeyJoinColumns() {
+		for (XmlPrimaryKeyJoinColumn resourcePkJoinColumn : this.secondaryTable.getPrimaryKeyJoinColumns()) {
 			this.specifiedPrimaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn(resourcePkJoinColumn));
 		}
 	}
@@ -225,13 +225,13 @@ public class GenericOrmSecondaryTable
 	public void update(XmlSecondaryTable xst) {
 		this.secondaryTable = xst;
 		super.update(xst);
-		this.updateSpecifiedPrimaryKeyJoinColumns(xst);
+		this.updateSpecifiedPrimaryKeyJoinColumns();
 		this.updateDefaultPrimaryKeyJoinColumn();
 	}
 		
-	protected void updateSpecifiedPrimaryKeyJoinColumns(XmlSecondaryTable xst) {
+	protected void updateSpecifiedPrimaryKeyJoinColumns() {
 		ListIterator<OrmPrimaryKeyJoinColumn> contextPKJoinColumns = specifiedPrimaryKeyJoinColumns();
-		ListIterator<XmlPrimaryKeyJoinColumn> resourcePKJoinColumns = new CloneListIterator<XmlPrimaryKeyJoinColumn>(xst.getPrimaryKeyJoinColumns());//prevent ConcurrentModificiationException
+		ListIterator<XmlPrimaryKeyJoinColumn> resourcePKJoinColumns = new CloneListIterator<XmlPrimaryKeyJoinColumn>(this.secondaryTable.getPrimaryKeyJoinColumns());//prevent ConcurrentModificiationException
 		
 		while (contextPKJoinColumns.hasNext()) {
 			OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = contextPKJoinColumns.next();

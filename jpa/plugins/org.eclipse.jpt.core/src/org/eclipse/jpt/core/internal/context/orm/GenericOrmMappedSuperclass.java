@@ -62,15 +62,15 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 		String oldIdClass = this.idClass;
 		this.idClass = newIdClass;
 		if (oldIdClass != newIdClass) {
-			if (this.idClassResource() != null) {
-				this.idClassResource().setClassName(newIdClass);						
-				if (this.idClassResource().isAllFeaturesUnset()) {
-					removeIdClassResource();
+			if (this.getResourceIdClass() != null) {
+				this.getResourceIdClass().setClassName(newIdClass);						
+				if (this.getResourceIdClass().isAllFeaturesUnset()) {
+					removeResourceIdClass();
 				}
 			}
 			else if (newIdClass != null) {
-				addIdClassResource();
-				idClassResource().setClassName(newIdClass);
+				addResourceIdClass();
+				getResourceIdClass().setClassName(newIdClass);
 			}
 		}
 		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
@@ -82,16 +82,16 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 
-	protected XmlIdClass idClassResource() {
-		return getTypeMappingResource().getIdClass();
+	protected XmlIdClass getResourceIdClass() {
+		return this.resourceTypeMapping.getIdClass();
 	}
 	
-	protected void addIdClassResource() {
-		getTypeMappingResource().setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());		
+	protected void addResourceIdClass() {
+		this.resourceTypeMapping.setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());		
 	}
 	
-	protected void removeIdClassResource() {
-		getTypeMappingResource().setIdClass(null);
+	protected void removeResourceIdClass() {
+		this.resourceTypeMapping.setIdClass(null);
 	}
 
 	public String getKey() {
@@ -162,7 +162,7 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 	}
 	
 	public void removeFromResourceModel(XmlEntityMappings entityMappings) {
-		entityMappings.getMappedSuperclasses().remove(this.getTypeMappingResource());
+		entityMappings.getMappedSuperclasses().remove(this.resourceTypeMapping);
 	}
 	
 	public XmlMappedSuperclass addToResourceModel(XmlEntityMappings entityMappings) {
@@ -177,7 +177,7 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 	@Override
 	public void initialize(XmlMappedSuperclass mappedSuperclass) {
 		super.initialize(mappedSuperclass);
-		this.initializeIdClass(this.idClassResource());
+		this.initializeIdClass(this.getResourceIdClass());
 	}
 	
 	protected void initializeIdClass(XmlIdClass idClassResource) {
@@ -187,7 +187,7 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 	@Override
 	public void update(XmlMappedSuperclass mappedSuperclass) {
 		super.update(mappedSuperclass);
-		this.updateIdClass(this.idClassResource());
+		this.updateIdClass(this.getResourceIdClass());
 	}
 	
 	protected void updateIdClass(XmlIdClass idClassResource) {

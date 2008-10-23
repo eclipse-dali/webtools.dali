@@ -72,7 +72,7 @@ public interface OrmTypeMapping extends TypeMapping, XmlContextNode, PersistentT
 
 	void initializeFrom(OrmTypeMapping oldMapping);
 
-	AbstractXmlTypeMapping getTypeMappingResource();
+	AbstractXmlTypeMapping getResourceTypeMapping();
 	
 	JavaPersistentType getJavaPersistentType();
 

@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaBaseEmbeddedMapping;
 import org.eclipse.jpt.core.resource.orm.BaseXmlEmbedded;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -98,7 +99,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl();
 		OrmAttributeOverride attributeOverride = buildAttributeOverride(xmlAttributeOverride);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
-		this.getAttributeMapping().getAttributeOverrides().add(index, xmlAttributeOverride);
+		this.resourceAttributeMapping.getAttributeOverrides().add(index, xmlAttributeOverride);
 		this.fireItemAdded(BaseEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
 	}
@@ -117,7 +118,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 	
 	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedAttributeOverrides, targetIndex, sourceIndex);
-		this.getAttributeMapping().getAttributeOverrides().move(targetIndex, sourceIndex);
+		this.resourceAttributeMapping.getAttributeOverrides().move(targetIndex, sourceIndex);
 		fireItemMoved(BaseEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 
@@ -174,7 +175,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 			}
 		}
 
-		getAttributeMapping().getAttributeOverrides().remove(index);
+		this.resourceAttributeMapping.getAttributeOverrides().remove(index);
 		fireItemRemoved(BaseEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		
 		if (virtualAttributeOverride != null) {
@@ -189,7 +190,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 		OrmAttributeOverride newAttributeOverride = getJpaFactory().buildOrmAttributeOverride(this, this, xmlAttributeOverride);
 		this.specifiedAttributeOverrides.add(index, newAttributeOverride);
 		
-		getAttributeMapping().getAttributeOverrides().add(xmlAttributeOverride);
+		this.resourceAttributeMapping.getAttributeOverrides().add(xmlAttributeOverride);
 		
 		int defaultIndex = this.virtualAttributeOverrides.indexOf(oldAttributeOverride);
 		this.virtualAttributeOverrides.remove(defaultIndex);
@@ -233,23 +234,22 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 	}
 
 	public AbstractJavaBaseEmbeddedMapping<?> getJavaEmbeddedMapping() {
-		JavaPersistentAttribute javaPersistentAttribute = getJavaPersistentAttribute();
-		if (javaPersistentAttribute != null && javaPersistentAttribute.getMappingKey() == getKey()) {
-			return (AbstractJavaBaseEmbeddedMapping<?>) javaPersistentAttribute.getMapping();
+		if (this.javaPersistentAttribute != null && this.javaPersistentAttribute.getMappingKey() == getKey()) {
+			return (AbstractJavaBaseEmbeddedMapping<?>) this.javaPersistentAttribute.getMapping();
 		}
 		return null;
 	}
 	
 	@Override
-	public void initialize(T embedded) {
-		super.initialize(embedded);
+	public void initialize(XmlAttributeMapping xmlAttributeMapping) {
+		super.initialize(xmlAttributeMapping);
 		this.embeddable = embeddableFor(findJavaPersistentAttribute());
-		this.initializeSpecifiedAttributeOverrides(embedded);
+		this.initializeSpecifiedAttributeOverrides();
 		this.initializeVirtualAttributeOverrides();
 	}
 	
-	protected void initializeSpecifiedAttributeOverrides(T embedded) {
-		for (XmlAttributeOverride attributeOverride : embedded.getAttributeOverrides()) {
+	protected void initializeSpecifiedAttributeOverrides() {
+		for (XmlAttributeOverride attributeOverride : this.resourceAttributeMapping.getAttributeOverrides()) {
 			this.specifiedAttributeOverrides.add(buildAttributeOverride(attributeOverride));
 		}
 	}
@@ -279,10 +279,10 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 		XmlColumn xmlColumn;
 		if (javaAttributeOverride == null) {
 			ColumnMapping columnMapping = (ColumnMapping) persistentAttribute.getMapping();
-			xmlColumn = new VirtualXmlColumn(getTypeMapping(), columnMapping.getColumn(), false);			
+			xmlColumn = new VirtualXmlColumn(getTypeMapping(), columnMapping.getColumn());			
 		}
 		else {
-			xmlColumn = new VirtualXmlColumn(getTypeMapping(), javaAttributeOverride.getColumn(), true);
+			xmlColumn = new VirtualXmlColumn(getTypeMapping(), javaAttributeOverride.getColumn());
 		}
 		return new VirtualXmlAttributeOverride(persistentAttribute.getName(), xmlColumn);
 	}
@@ -292,16 +292,16 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 	}
 	
 	@Override
-	public void update(T embedded) {
-		super.update(embedded);
+	public void update() {
+		super.update();
 		this.embeddable = embeddableFor(findJavaPersistentAttribute());
-		this.updateSpecifiedAttributeOverrides(embedded);
+		this.updateSpecifiedAttributeOverrides();
 		this.updateVirtualAttributeOverrides();
 	}
 	
-	protected void updateSpecifiedAttributeOverrides(T embedded) {
+	protected void updateSpecifiedAttributeOverrides() {
 		ListIterator<OrmAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
-		ListIterator<XmlAttributeOverride> resourceAttributeOverrides = new CloneListIterator<XmlAttributeOverride>(embedded.getAttributeOverrides());//prevent ConcurrentModificiationException
+		ListIterator<XmlAttributeOverride> resourceAttributeOverrides = new CloneListIterator<XmlAttributeOverride>(this.resourceAttributeMapping.getAttributeOverrides());//prevent ConcurrentModificiationException
 		
 		while (attributeOverrides.hasNext()) {
 			OrmAttributeOverride attributeOverride = attributeOverrides.next();

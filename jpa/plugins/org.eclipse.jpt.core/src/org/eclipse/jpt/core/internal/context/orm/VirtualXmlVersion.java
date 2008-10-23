@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.EnumType;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
@@ -24,23 +23,18 @@ import org.eclipse.jpt.core.utility.TextRange;
  * VirtualVersion is an implementation of Version used when there is 
  * no tag in the orm.xml and an underlying javaVersionMapping exists.
  */
-public class VirtualXmlVersion extends AbstractJpaEObject implements XmlVersion
+public class VirtualXmlVersion extends VirtualXmlAttributeMapping<JavaVersionMapping> implements XmlVersion
 {
-	JavaVersionMapping javaVersionMapping;
 
 	protected final VirtualXmlColumn column;
-
-	protected boolean metadataComplete;
 	
-	public VirtualXmlVersion(OrmTypeMapping ormTypeMapping, JavaVersionMapping javaVersionMapping, boolean metadataComplete) {
-		super();
-		this.javaVersionMapping = javaVersionMapping;
-		this.metadataComplete = metadataComplete;
-		this.column = new VirtualXmlColumn(ormTypeMapping, javaVersionMapping.getColumn(), metadataComplete);
+	public VirtualXmlVersion(OrmTypeMapping ormTypeMapping, JavaVersionMapping javaVersionMapping) {
+		super(ormTypeMapping, javaVersionMapping);
+		this.column = new VirtualXmlColumn(ormTypeMapping, javaVersionMapping.getColumn());
 	}
 
 	public String getName() {
-		return this.javaVersionMapping.getPersistentAttribute().getName();
+		return this.javaAttributeMapping.getPersistentAttribute().getName();
 	}
 
 	public void setName(String newName) {
@@ -56,11 +50,11 @@ public class VirtualXmlVersion extends AbstractJpaEObject implements XmlVersion
 	}
 
 	public TemporalType getTemporal() {
-		if (this.metadataComplete) {
+		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		if (this.javaVersionMapping.getConverter().getType() == Converter.TEMPORAL_CONVERTER) {
-			org.eclipse.jpt.core.context.TemporalType javaTemporalType = ((TemporalConverter) this.javaVersionMapping.getConverter()).getTemporalType();
+		if (this.javaAttributeMapping.getConverter().getType() == Converter.TEMPORAL_CONVERTER) {
+			org.eclipse.jpt.core.context.TemporalType javaTemporalType = ((TemporalConverter) this.javaAttributeMapping.getConverter()).getTemporalType();
 			return  org.eclipse.jpt.core.context.TemporalType.toOrmResourceModel(javaTemporalType);
 		}
 		return null;
@@ -84,14 +78,7 @@ public class VirtualXmlVersion extends AbstractJpaEObject implements XmlVersion
 	
 	public void setLob(boolean value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
-	}
-	
-
-	public void update(JavaVersionMapping javaVersionMapping) {
-		this.javaVersionMapping = javaVersionMapping;
-		this.column.update(javaVersionMapping.getColumn());
-	}
-	
+	}	
 	
 	public TextRange getNameTextRange() {
 		return null;
