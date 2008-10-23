@@ -25,6 +25,7 @@ import org.eclipse.jpt.eclipselink.core.tests.internal.schema.generation.JptEcli
 /**
  * decentralize test creation code
  */
+@SuppressWarnings("nls")
 public class JptEclipseLinkCoreTests
 {
 	private static final String JPA_JAR_PROPERTY = TestJpaProject.JPA_JAR_NAME_SYSTEM_PROPERTY;
