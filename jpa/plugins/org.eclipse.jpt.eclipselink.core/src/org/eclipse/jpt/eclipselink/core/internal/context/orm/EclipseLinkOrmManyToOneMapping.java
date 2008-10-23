@@ -43,7 +43,7 @@ public class EclipseLinkOrmManyToOneMapping extends GenericOrmManyToOneMapping
 	
 	@Override
 	public XmlManyToOne addToResourceModel(AbstractXmlTypeMapping typeMapping) {
-		XmlManyToOne manyToOne = EclipseLinkOrmFactory.eINSTANCE.createXmlManyToOne();
+		XmlManyToOne manyToOne = EclipseLinkOrmFactory.eINSTANCE.createXmlManyToOneImpl();
 		getPersistentAttribute().initialize(manyToOne);
 		typeMapping.getAttributes().getManyToOnes().add(manyToOne);
 		return manyToOne;

@@ -27,9 +27,10 @@ public class EclipseLinkOneToOneTranslator extends OneToOneTranslator
 	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return EclipseLinkOrmFactory.eINSTANCE.createXmlOneToOne();
+		return EclipseLinkOrmFactory.eINSTANCE.createXmlOneToOneImpl();
 	}
 	
+	@Override
 	protected Translator[] createChildren() {
 		return new Translator[] {
 			createNameTranslator(),

@@ -43,7 +43,7 @@ public class EclipseLinkOrmBasicMapping extends GenericOrmBasicMapping
 	
 	@Override
 	public XmlBasic addToResourceModel(AbstractXmlTypeMapping typeMapping) {
-		XmlBasic basic = EclipseLinkOrmFactory.eINSTANCE.createXmlBasic();
+		XmlBasic basic = EclipseLinkOrmFactory.eINSTANCE.createXmlBasicImpl();
 		getPersistentAttribute().initialize(basic);
 		typeMapping.getAttributes().getBasics().add(basic);
 		return basic;

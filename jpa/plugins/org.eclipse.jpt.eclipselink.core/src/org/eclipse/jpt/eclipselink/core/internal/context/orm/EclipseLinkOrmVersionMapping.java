@@ -43,7 +43,7 @@ public class EclipseLinkOrmVersionMapping extends GenericOrmVersionMapping
 	
 	@Override
 	public XmlVersion addToResourceModel(AbstractXmlTypeMapping typeMapping) {
-		XmlVersion version = EclipseLinkOrmFactory.eINSTANCE.createXmlVersion();
+		XmlVersion version = EclipseLinkOrmFactory.eINSTANCE.createXmlVersionImpl();
 		getPersistentAttribute().initialize(version);
 		typeMapping.getAttributes().getVersions().add(version);
 		return version;

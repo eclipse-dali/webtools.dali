@@ -73,8 +73,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlMutable/mutable"/>
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlId"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlIdImpl"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlBasic"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlBasicImpl"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlVersion"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlVersionImpl"/>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlPrivateOwned">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlPrivateOwned/privateOwned"/>
     </genClasses>
@@ -82,8 +85,12 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlJoinFetch/joinFetch"/>
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlOneToOne"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlOneToOneImpl"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlOneToMany"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlOneToManyImpl"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToOne"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToOneImpl"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToMany"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToManyImpl"/>
   </genPackages>
 </genmodel:GenModel>

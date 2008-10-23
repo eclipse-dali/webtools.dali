@@ -26,9 +26,10 @@ public class EclipseLinkIdTranslator extends IdTranslator
 	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return EclipseLinkOrmFactory.eINSTANCE.createXmlId();
+		return EclipseLinkOrmFactory.eINSTANCE.createXmlIdImpl();
 	}
 	
+	@Override
 	protected Translator[] createChildren() {
 		return new Translator[] {
 			createNameTranslator(),

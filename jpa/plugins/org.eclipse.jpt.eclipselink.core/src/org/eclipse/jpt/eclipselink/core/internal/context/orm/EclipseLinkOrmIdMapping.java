@@ -43,7 +43,7 @@ public class EclipseLinkOrmIdMapping extends GenericOrmIdMapping
 	
 	@Override
 	public XmlId addToResourceModel(AbstractXmlTypeMapping typeMapping) {
-		XmlId id = EclipseLinkOrmFactory.eINSTANCE.createXmlId();
+		XmlId id = EclipseLinkOrmFactory.eINSTANCE.createXmlIdImpl();
 		getPersistentAttribute().initialize(id);
 		typeMapping.getAttributes().getIds().add(id);
 		return id;

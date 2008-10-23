@@ -42,7 +42,7 @@ public class EclipseLinkOrmOneToOneMapping extends GenericOrmOneToOneMapping
 	
 	@Override
 	public XmlOneToOne addToResourceModel(AbstractXmlTypeMapping typeMapping) {
-		XmlOneToOne oneToOne = EclipseLinkOrmFactory.eINSTANCE.createXmlOneToOne();
+		XmlOneToOne oneToOne = EclipseLinkOrmFactory.eINSTANCE.createXmlOneToOneImpl();
 		getPersistentAttribute().initialize(oneToOne);
 		typeMapping.getAttributes().getOneToOnes().add(oneToOne);
 		return oneToOne;

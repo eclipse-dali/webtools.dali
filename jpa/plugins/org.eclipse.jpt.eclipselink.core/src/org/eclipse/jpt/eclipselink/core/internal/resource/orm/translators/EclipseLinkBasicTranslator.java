@@ -26,9 +26,10 @@ public class EclipseLinkBasicTranslator extends BasicTranslator
 	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return EclipseLinkOrmFactory.eINSTANCE.createXmlBasic();
+		return EclipseLinkOrmFactory.eINSTANCE.createXmlBasicImpl();
 	}
 	
+	@Override
 	protected Translator[] createChildren() {
 		return new Translator[] {
 			createNameTranslator(),

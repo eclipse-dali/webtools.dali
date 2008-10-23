@@ -85,13 +85,13 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_CACHE: return (EObject)createXmlCache();
 			case EclipseLinkOrmPackage.XML_ENTITY: return (EObject)createXmlEntity();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
-			case EclipseLinkOrmPackage.XML_ID: return (EObject)createXmlId();
-			case EclipseLinkOrmPackage.XML_BASIC: return (EObject)createXmlBasic();
-			case EclipseLinkOrmPackage.XML_VERSION: return (EObject)createXmlVersion();
-			case EclipseLinkOrmPackage.XML_ONE_TO_ONE: return (EObject)createXmlOneToOne();
-			case EclipseLinkOrmPackage.XML_ONE_TO_MANY: return (EObject)createXmlOneToMany();
-			case EclipseLinkOrmPackage.XML_MANY_TO_ONE: return (EObject)createXmlManyToOne();
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY: return (EObject)createXmlManyToMany();
+			case EclipseLinkOrmPackage.XML_ID_IMPL: return (EObject)createXmlIdImpl();
+			case EclipseLinkOrmPackage.XML_BASIC_IMPL: return (EObject)createXmlBasicImpl();
+			case EclipseLinkOrmPackage.XML_VERSION_IMPL: return (EObject)createXmlVersionImpl();
+			case EclipseLinkOrmPackage.XML_ONE_TO_ONE_IMPL: return (EObject)createXmlOneToOneImpl();
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY_IMPL: return (EObject)createXmlOneToManyImpl();
+			case EclipseLinkOrmPackage.XML_MANY_TO_ONE_IMPL: return (EObject)createXmlManyToOneImpl();
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY_IMPL: return (EObject)createXmlManyToManyImpl();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -192,10 +192,10 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlId createXmlId()
+	public XmlIdImpl createXmlIdImpl()
 	{
-		XmlId xmlId = new XmlId();
-		return xmlId;
+		XmlIdImpl xmlIdImpl = new XmlIdImpl();
+		return xmlIdImpl;
 	}
 
 	/**
@@ -203,10 +203,10 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlBasic createXmlBasic()
+	public XmlBasicImpl createXmlBasicImpl()
 	{
-		XmlBasic xmlBasic = new XmlBasic();
-		return xmlBasic;
+		XmlBasicImpl xmlBasicImpl = new XmlBasicImpl();
+		return xmlBasicImpl;
 	}
 
 	/**
@@ -214,10 +214,10 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlVersion createXmlVersion()
+	public XmlVersionImpl createXmlVersionImpl()
 	{
-		XmlVersion xmlVersion = new XmlVersion();
-		return xmlVersion;
+		XmlVersionImpl xmlVersionImpl = new XmlVersionImpl();
+		return xmlVersionImpl;
 	}
 
 	/**
@@ -225,10 +225,10 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlOneToOne createXmlOneToOne()
+	public XmlOneToOneImpl createXmlOneToOneImpl()
 	{
-		XmlOneToOne xmlOneToOne = new XmlOneToOne();
-		return xmlOneToOne;
+		XmlOneToOneImpl xmlOneToOneImpl = new XmlOneToOneImpl();
+		return xmlOneToOneImpl;
 	}
 
 	/**
@@ -236,10 +236,10 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlOneToMany createXmlOneToMany()
+	public XmlOneToManyImpl createXmlOneToManyImpl()
 	{
-		XmlOneToMany xmlOneToMany = new XmlOneToMany();
-		return xmlOneToMany;
+		XmlOneToManyImpl xmlOneToManyImpl = new XmlOneToManyImpl();
+		return xmlOneToManyImpl;
 	}
 
 	/**
@@ -247,10 +247,10 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlManyToOne createXmlManyToOne()
+	public XmlManyToOneImpl createXmlManyToOneImpl()
 	{
-		XmlManyToOne xmlManyToOne = new XmlManyToOne();
-		return xmlManyToOne;
+		XmlManyToOneImpl xmlManyToOneImpl = new XmlManyToOneImpl();
+		return xmlManyToOneImpl;
 	}
 
 	/**
@@ -258,10 +258,10 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlManyToMany createXmlManyToMany()
+	public XmlManyToManyImpl createXmlManyToManyImpl()
 	{
-		XmlManyToMany xmlManyToMany = new XmlManyToMany();
-		return xmlManyToMany;
+		XmlManyToManyImpl xmlManyToManyImpl = new XmlManyToManyImpl();
+		return xmlManyToManyImpl;
 	}
 
 	/**

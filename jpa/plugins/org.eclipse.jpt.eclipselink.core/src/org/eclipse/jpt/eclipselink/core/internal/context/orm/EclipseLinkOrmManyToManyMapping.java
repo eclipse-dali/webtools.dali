@@ -44,7 +44,7 @@ public class EclipseLinkOrmManyToManyMapping
 	
 	@Override
 	public XmlManyToMany addToResourceModel(AbstractXmlTypeMapping typeMapping) {
-		XmlManyToMany manyToMany = EclipseLinkOrmFactory.eINSTANCE.createXmlManyToMany();
+		XmlManyToMany manyToMany = EclipseLinkOrmFactory.eINSTANCE.createXmlManyToManyImpl();
 		getPersistentAttribute().initialize(manyToMany);
 		typeMapping.getAttributes().getManyToManys().add(manyToMany);
 		return manyToMany;

@@ -26,8 +26,9 @@ public class EclipseLinkVersionTranslator extends VersionTranslator
 	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return EclipseLinkOrmFactory.eINSTANCE.createXmlVersion();
+		return EclipseLinkOrmFactory.eINSTANCE.createXmlVersionImpl();
 	}
+	@Override
 	
 	protected Translator[] createChildren() {
 		return new Translator[] {
