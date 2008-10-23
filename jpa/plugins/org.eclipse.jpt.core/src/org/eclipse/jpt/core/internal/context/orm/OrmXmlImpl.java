@@ -50,7 +50,7 @@ public class OrmXmlImpl
 	
 	@Override
 	public IResource getResource() {
-		return ormResource.getFile();
+		return this.ormResource.getFile();
 	}
 	
 	
@@ -141,13 +141,11 @@ public class OrmXmlImpl
 	}
 
 	public void update(JpaXmlResource resource) {
-		OrmResource ormResource;
 		try {
-			ormResource = (OrmResource) resource;
+			this.ormResource = (OrmResource) resource;
 		} catch (ClassCastException cce) {
 			throw new IllegalArgumentException(resource.toString());
 		}
-		this.ormResource = ormResource;
 		XmlEntityMappings xmlEntityMappings = this.ormResource.getEntityMappings();
 		if (xmlEntityMappings != null) {
 			if (this.entityMappings != null) {
