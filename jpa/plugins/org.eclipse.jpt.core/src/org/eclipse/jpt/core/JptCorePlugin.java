@@ -26,7 +26,6 @@ import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
-import org.eclipse.jpt.core.internal.prefs.JpaPreferenceInitializer;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
@@ -121,9 +120,9 @@ public class JptCorePlugin extends Plugin {
 	 */
 	public static final String WEB_PROJECT_DEPLOY_PREFIX = J2EEConstants.WEB_INF_CLASSES;
 
-	public static final String DEFAULT_PERSISTENCE_XML_FILE_PATH = "META-INF/persistence.xml";
+	public static final String DEFAULT_PERSISTENCE_XML_FILE_PATH = "META-INF/persistence.xml"; //$NON-NLS-1$
 
-	public static final String DEFAULT_ORM_XML_FILE_PATH = "META-INF/orm.xml";
+	public static final String DEFAULT_ORM_XML_FILE_PATH = "META-INF/orm.xml"; //$NON-NLS-1$
 
 
 	// ********** singleton **********
@@ -230,7 +229,7 @@ public class JptCorePlugin extends Plugin {
 	 */
 	public static String getDeploymentURI(IProject project, String defaultURI) {
 		return projectHasWebFacet(project) ?
-				WEB_PROJECT_DEPLOY_PREFIX + "/" + defaultURI
+				WEB_PROJECT_DEPLOY_PREFIX + '/' + defaultURI
 			:
 				defaultURI;
 	}

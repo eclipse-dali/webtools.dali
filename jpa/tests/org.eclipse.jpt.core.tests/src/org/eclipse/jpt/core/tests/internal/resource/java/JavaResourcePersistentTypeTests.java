@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -29,7 +28,6 @@ import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.core.utility.jdt.Member.Editor;
-import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 

@@ -291,7 +291,7 @@ public class GenericJpaModel
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append("JPA projects size: " + this.jpaProjectsSize());
+		sb.append("JPA projects size: " + this.jpaProjectsSize()); //$NON-NLS-1$
 	}
 
 
@@ -409,9 +409,9 @@ public class GenericJpaModel
 		}
 
 		private JpaProject buildJpaProject() throws CoreException {
-			JpaProject jpaProject = this.config.getJpaPlatform().getJpaFactory().buildJpaProject(this.config);
-			jpaProject.setUpdater(new AsynchronousJpaProjectUpdater(jpaProject));
-			return jpaProject;
+			JpaProject result = this.config.getJpaPlatform().getJpaFactory().buildJpaProject(this.config);
+			result.setUpdater(new AsynchronousJpaProjectUpdater(result));
+			return result;
 		}
 
 		public void synchronizeJpaFiles(IResourceDelta delta) throws CoreException {
@@ -500,10 +500,10 @@ public class GenericJpaModel
 				// skip the first 3 elements - those are this method and 2 methods in Thread
 				for (int i = 3; i < stackTrace.length; i++) {
 					StackTraceElement element = stackTrace[i];
-					if (element.getMethodName().equals("invoke0")) {
+					if (element.getMethodName().equals("invoke0")) { //$NON-NLS-1$
 						break;  // skip all elements outside of the JUnit test
 					}
-					System.out.println("\t" + element);
+					System.out.println("\t" + element); //$NON-NLS-1$
 				}
 			}
 		}

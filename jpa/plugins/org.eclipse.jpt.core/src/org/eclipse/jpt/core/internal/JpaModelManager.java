@@ -133,7 +133,7 @@ public class JpaModelManager {
 	 * internal - called by JptCorePlugin
 	 */
 	public synchronized void start() throws Exception {
-		debug("*** START JPA model manager ***");
+		debug("*** START JPA model manager ***"); //$NON-NLS-1$
 		try {
 			this.jpaModel = new GenericJpaModel();
 			ResourcesPlugin.getWorkspace().addResourceChangeListener(this.resourceChangeListener);
@@ -150,7 +150,7 @@ public class JpaModelManager {
 	 * internal - called by JptCorePlugin
 	 */
 	public synchronized void stop() throws Exception {
-		debug("*** STOP JPA model manager ***");
+		debug("*** STOP JPA model manager ***"); //$NON-NLS-1$
 		JptCorePlugin.instance().getPluginPreferences().removePropertyChangeListener(this.preferencesListener);
 		JavaCore.removeElementChangedListener(this.javaElementChangeListener);
 		FacetedProjectFramework.removeListener(this.facetedProjectListener);
@@ -249,7 +249,7 @@ public class JpaModelManager {
 	 * JPA project if appropriate.
 	 */
 	private void resourcePreDelete(IResourceChangeEvent event) {
-		debug("Resource (Project) PRE_DELETE: " + event.getResource());
+		debug("Resource (Project) PRE_DELETE: " + event.getResource()); //$NON-NLS-1$
 		this.jpaModel.projectPreDelete((IProject) event.getResource());
 	}
 
@@ -260,7 +260,7 @@ public class JpaModelManager {
 	 * changed files.)
 	 */
 	private void resourcePostChange(IResourceChangeEvent event) {
-		debug("Resource POST_CHANGE");
+		debug("Resource POST_CHANGE"); //$NON-NLS-1$
 		this.synchronizeFiles(event.getDelta());
 		this.checkForOpenedProjects(event.getDelta());
 	}
@@ -351,7 +351,7 @@ public class JpaModelManager {
 	 */
 	private void checkDeltaFlagsForOpenedProject(IProject project, IResourceDelta delta) {
 		if (BitTools.flagIsSet(delta.getFlags(), IResourceDelta.OPEN) && project.isOpen()) {
-			debug("\tProject CHANGED - OPEN: " + project.getName());
+			debug("\tProject CHANGED - OPEN: " + project.getName()); //$NON-NLS-1$
 			this.jpaModel.checkForTransition(project);
 		}
 	}
@@ -362,7 +362,7 @@ public class JpaModelManager {
 	 */
 	private void checkDeltaFlagsForRenamedProject(IProject project, IResourceDelta delta) {
 		if (BitTools.flagIsSet(delta.getFlags(), IResourceDelta.MOVED_FROM) && project.isOpen()) {
-			debug("\tProject ADDED - MOVED_FROM: " + delta.getMovedFromPath());
+			debug("\tProject ADDED - MOVED_FROM: " + delta.getMovedFromPath()); //$NON-NLS-1$
 			this.jpaModel.checkForTransition(project);
 		}
 	}
@@ -393,14 +393,14 @@ public class JpaModelManager {
 	}
 
 	private void facetedProjectPostInstall(IProjectFacetActionEvent event) {
-		debug("Facet POST_INSTALL: " + event.getProjectFacet());
+		debug("Facet POST_INSTALL: " + event.getProjectFacet()); //$NON-NLS-1$
 		if (event.getProjectFacet().getId().equals(JptCorePlugin.FACET_ID)) {
 			this.jpaModel.jpaFacetedProjectPostInstall(event);
 		}
 	}
 
 	private void facetedProjectPreUninstall(IProjectFacetActionEvent event) {
-		debug("Facet PRE_UNINSTALL: " + event.getProjectFacet());
+		debug("Facet PRE_UNINSTALL: " + event.getProjectFacet()); //$NON-NLS-1$
 		if (event.getProjectFacet().getId().equals(JptCorePlugin.FACET_ID)) {
 			this.jpaModel.jpaFacetedProjectPreUninstall(event);
 		}
@@ -414,7 +414,7 @@ public class JpaModelManager {
 	 *   - one of a project's (facet) metadata files is edited directly
 	 */
 	private void facetedProjectModified(IProject project) {
-		debug("Facet PROJECT_MODIFIED: " + project.getName());
+		debug("Facet PROJECT_MODIFIED: " + project.getName()); //$NON-NLS-1$
 		this.jpaModel.checkForTransition(project);
 	}
 
@@ -466,7 +466,7 @@ public class JpaModelManager {
 	/* private */ void preferenceChanged(PropertyChangeEvent event) {
 		if (event.getProperty() == JpaPreferenceConstants.PREF_DEFAULT_JPA_LIB) {
 			try {
-				JavaCore.setClasspathVariable("DEFAULT_JPA_LIB", new Path((String) event.getNewValue()), null);
+				JavaCore.setClasspathVariable("DEFAULT_JPA_LIB", new Path((String) event.getNewValue()), null); //$NON-NLS-1$
 			} catch (JavaModelException ex) {
 				this.log(ex);  // not sure what would cause this...
 			}
@@ -557,7 +557,7 @@ public class JpaModelManager {
 
 	private static void debug(String message) {
 		if (DEBUG) {
-			System.out.println(Thread.currentThread().getName() + ": " + message);
+			System.out.println(Thread.currentThread().getName() + ": " + message); //$NON-NLS-1$
 		}
 	}
 

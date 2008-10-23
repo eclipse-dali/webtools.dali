@@ -45,6 +45,7 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
  * before calling any of the various helper methods (i.e. the type is *not*
  * created during #setUp()).
  */
+@SuppressWarnings("nls")
 public abstract class AnnotationTestCase extends TestCase {
 	protected TestJavaProject javaProject;
 
@@ -223,7 +224,7 @@ public abstract class AnnotationTestCase extends TestCase {
 	}
 
 	protected JDTType buildType(String name, int occurrence, ICompilationUnit cu) {
-		return this.buildType(null, name, 1, cu);
+		return this.buildType(null, name, occurrence, cu);
 	}
 
 	protected JDTType buildType(Type declaringType, String name, int occurrence, ICompilationUnit cu) {
