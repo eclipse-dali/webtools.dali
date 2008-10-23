@@ -134,7 +134,7 @@ public class TransformationImpl extends AbstractResourceAnnotation<Attribute> im
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private TransformationAnnotationDefinition() {
 			super();

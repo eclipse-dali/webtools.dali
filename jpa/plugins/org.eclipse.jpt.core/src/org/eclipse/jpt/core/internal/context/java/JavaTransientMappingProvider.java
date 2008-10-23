@@ -31,7 +31,7 @@ public class JavaTransientMappingProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private JavaTransientMappingProvider() {
 		super();

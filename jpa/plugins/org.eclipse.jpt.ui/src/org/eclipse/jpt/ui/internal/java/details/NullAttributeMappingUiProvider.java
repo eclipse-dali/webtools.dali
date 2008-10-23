@@ -37,7 +37,7 @@ public class NullAttributeMappingUiProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private NullAttributeMappingUiProvider() {
 		super();

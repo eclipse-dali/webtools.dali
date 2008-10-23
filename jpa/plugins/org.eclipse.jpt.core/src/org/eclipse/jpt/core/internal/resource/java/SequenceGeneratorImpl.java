@@ -135,7 +135,7 @@ public class SequenceGeneratorImpl
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private SequenceGeneratorAnnotationDefinition() {
 			super();

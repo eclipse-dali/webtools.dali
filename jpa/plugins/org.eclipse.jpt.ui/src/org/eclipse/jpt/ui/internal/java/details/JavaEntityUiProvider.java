@@ -34,7 +34,7 @@ public class JavaEntityUiProvider implements TypeMappingUiProvider<JavaEntity>
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private JavaEntityUiProvider() {
 		super();

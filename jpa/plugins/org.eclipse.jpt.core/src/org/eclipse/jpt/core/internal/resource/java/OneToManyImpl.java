@@ -139,7 +139,7 @@ public class OneToManyImpl extends AbstractRelationshipMappingAnnotation impleme
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private OneToManyAnnotationDefinition() {
 			super();

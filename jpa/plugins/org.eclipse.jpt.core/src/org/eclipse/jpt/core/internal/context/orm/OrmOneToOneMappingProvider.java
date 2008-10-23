@@ -28,7 +28,7 @@ public class OrmOneToOneMappingProvider implements OrmAttributeMappingProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private OrmOneToOneMappingProvider() {
 		super();

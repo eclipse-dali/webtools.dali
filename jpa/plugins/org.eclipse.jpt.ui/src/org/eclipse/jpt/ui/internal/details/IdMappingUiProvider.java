@@ -35,7 +35,7 @@ public class IdMappingUiProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private IdMappingUiProvider() {
 		super();

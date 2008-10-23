@@ -31,7 +31,7 @@ public class JavaManyToManyMappingProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private JavaManyToManyMappingProvider() {
 		super();

@@ -101,7 +101,7 @@ public class ExistenceCheckingImpl extends AbstractResourceAnnotation<Type> impl
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private ExistenceCheckingAnnotationDefinition() {
 			super();

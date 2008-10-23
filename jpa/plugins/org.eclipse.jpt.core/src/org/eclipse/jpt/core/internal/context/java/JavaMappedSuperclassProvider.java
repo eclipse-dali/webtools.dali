@@ -31,7 +31,7 @@ public class JavaMappedSuperclassProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private JavaMappedSuperclassProvider() {
 		super();

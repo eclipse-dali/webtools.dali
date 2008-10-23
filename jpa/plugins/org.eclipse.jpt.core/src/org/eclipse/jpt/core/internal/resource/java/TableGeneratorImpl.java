@@ -503,7 +503,7 @@ public class TableGeneratorImpl
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private TableGeneratorAnnotationDefinition() {
 			super();

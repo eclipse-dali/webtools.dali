@@ -99,7 +99,7 @@ public class MutableImpl extends AbstractResourceAnnotation<Attribute> implement
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private MutableAnnotationDefinition() {
 			super();

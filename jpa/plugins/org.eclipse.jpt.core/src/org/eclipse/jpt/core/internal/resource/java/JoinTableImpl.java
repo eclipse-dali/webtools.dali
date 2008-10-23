@@ -378,7 +378,7 @@ public class JoinTableImpl extends AbstractResourceTable implements JoinTableAnn
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private JoinTableAnnotationDefinition() {
 			super();

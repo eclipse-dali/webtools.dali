@@ -41,7 +41,10 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 /**
  * 
  */
-public abstract class AbstractJavaResourcePersistentMember<E extends Member> extends AbstractJavaResourceNode implements JavaResourcePersistentMember {
+public abstract class AbstractJavaResourcePersistentMember<E extends Member>
+	extends AbstractJavaResourceNode
+	implements JavaResourcePersistentMember
+{
 	private final E member;
 
 	/**

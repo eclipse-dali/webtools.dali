@@ -133,7 +133,7 @@ public class StructConverterImpl extends AbstractResourceAnnotation<Member> impl
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private StructConverterAnnotationDefinition() {
 			super();

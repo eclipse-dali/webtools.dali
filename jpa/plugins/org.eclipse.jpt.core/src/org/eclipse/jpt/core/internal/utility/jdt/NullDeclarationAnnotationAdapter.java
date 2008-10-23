@@ -35,7 +35,7 @@ public final class NullDeclarationAnnotationAdapter
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private NullDeclarationAnnotationAdapter() {
 		super();

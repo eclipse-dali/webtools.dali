@@ -198,7 +198,7 @@ public class WriteTransformerImpl extends AbstractResourceAnnotation<Attribute> 
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private WriteTransformerAnnotationDefinition() {
 			super();

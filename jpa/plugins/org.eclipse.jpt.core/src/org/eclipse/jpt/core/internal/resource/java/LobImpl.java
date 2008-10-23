@@ -54,7 +54,7 @@ public class LobImpl extends AbstractResourceAnnotation<Attribute> implements Lo
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private LobAnnotationDefinition() {
 			super();

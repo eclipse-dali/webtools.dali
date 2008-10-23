@@ -31,7 +31,7 @@ public class JavaBasicMappingProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private JavaBasicMappingProvider() {
 		super();

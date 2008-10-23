@@ -311,7 +311,7 @@ public class SecondaryTableImpl extends AbstractResourceTable implements Nestabl
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private SecondaryTableAnnotationDefinition() {
 			super();

@@ -166,7 +166,7 @@ public class TypeConverterImpl extends AbstractResourceAnnotation<Member> implem
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private TypeConverterAnnotationDefinition() {
 			super();

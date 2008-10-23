@@ -28,7 +28,7 @@ public class OrmNullAttributeMappingProvider implements OrmAttributeMappingProvi
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private OrmNullAttributeMappingProvider() {
 		super();

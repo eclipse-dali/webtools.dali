@@ -135,7 +135,7 @@ public class NamedNativeQueriesImpl extends AbstractResourceAnnotation<Type> imp
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private NamedNativeQueriesAnnotationDefinition() {
 			super();

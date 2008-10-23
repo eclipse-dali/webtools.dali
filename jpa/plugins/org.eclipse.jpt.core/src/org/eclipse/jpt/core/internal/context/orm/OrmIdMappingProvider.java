@@ -28,7 +28,7 @@ public class OrmIdMappingProvider implements OrmAttributeMappingProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private OrmIdMappingProvider() {
 		super();

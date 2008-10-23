@@ -56,7 +56,7 @@ public class PrivateOwnedImpl extends AbstractResourceAnnotation<Attribute> impl
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private PrivateOwnedAnnotationDefinition() {
 			super();

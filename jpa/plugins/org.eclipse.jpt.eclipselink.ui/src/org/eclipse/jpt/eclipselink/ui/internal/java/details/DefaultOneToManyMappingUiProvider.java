@@ -35,7 +35,7 @@ public class DefaultOneToManyMappingUiProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private DefaultOneToManyMappingUiProvider() {
 		super();

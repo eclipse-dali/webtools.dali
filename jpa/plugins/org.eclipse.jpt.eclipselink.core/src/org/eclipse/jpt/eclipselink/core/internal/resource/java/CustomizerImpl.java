@@ -120,7 +120,7 @@ public class CustomizerImpl extends AbstractResourceAnnotation<Type> implements 
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private CustomizerAnnotationDefinition() {
 			super();

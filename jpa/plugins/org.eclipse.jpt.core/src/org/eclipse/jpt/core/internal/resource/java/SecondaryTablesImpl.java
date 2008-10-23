@@ -138,7 +138,7 @@ public class SecondaryTablesImpl extends AbstractResourceAnnotation<Member> impl
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private SecondaryTablesAnnotationDefinition() {
 			super();

@@ -34,7 +34,7 @@ public class JavaEntityProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private JavaEntityProvider() {
 		super();

@@ -34,7 +34,7 @@ public class OrmMappedSuperclassUiProvider implements TypeMappingUiProvider<OrmM
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private OrmMappedSuperclassUiProvider() {
 		super();

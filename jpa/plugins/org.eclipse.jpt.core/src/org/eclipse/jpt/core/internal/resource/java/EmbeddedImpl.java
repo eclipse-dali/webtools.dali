@@ -54,7 +54,7 @@ public class EmbeddedImpl extends AbstractResourceAnnotation<Attribute> implemen
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private EmbeddedAnnotationDefinition() {
 			super();

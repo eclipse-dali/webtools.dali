@@ -53,7 +53,7 @@ public class TransientImpl extends AbstractResourceAnnotation<Attribute> impleme
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private TransientAnnotationDefinition() {
 			super();

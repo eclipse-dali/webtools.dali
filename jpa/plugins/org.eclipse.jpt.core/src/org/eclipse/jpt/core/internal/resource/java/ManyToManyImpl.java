@@ -143,7 +143,7 @@ public class ManyToManyImpl extends AbstractRelationshipMappingAnnotation implem
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private ManyToManyAnnotationDefinition() {
 			super();

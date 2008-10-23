@@ -82,7 +82,7 @@ public class TableImpl extends AbstractResourceTable
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private TableAnnotationDefinition() {
 			super();

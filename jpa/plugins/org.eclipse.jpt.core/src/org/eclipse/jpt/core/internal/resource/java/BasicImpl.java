@@ -133,7 +133,7 @@ public class BasicImpl extends AbstractResourceAnnotation<Attribute> implements 
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private BasicAnnotationDefinition() {
 			super();

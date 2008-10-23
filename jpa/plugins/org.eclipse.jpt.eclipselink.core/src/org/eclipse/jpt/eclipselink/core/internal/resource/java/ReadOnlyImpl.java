@@ -56,7 +56,7 @@ public class ReadOnlyImpl extends AbstractResourceAnnotation<Type> implements Re
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private ReadOnlyAnnotationDefinition() {
 			super();

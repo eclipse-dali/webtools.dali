@@ -28,7 +28,7 @@ public class OrmEmbeddedMappingProvider implements OrmAttributeMappingProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private OrmEmbeddedMappingProvider() {
 		super();

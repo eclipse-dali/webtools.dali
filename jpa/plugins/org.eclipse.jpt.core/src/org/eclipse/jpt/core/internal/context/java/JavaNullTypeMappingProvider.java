@@ -34,7 +34,7 @@ public class JavaNullTypeMappingProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private JavaNullTypeMappingProvider() {
 		super();

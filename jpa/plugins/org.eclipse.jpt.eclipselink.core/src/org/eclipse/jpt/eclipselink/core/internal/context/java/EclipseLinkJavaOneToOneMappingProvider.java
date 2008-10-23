@@ -30,7 +30,7 @@ public class EclipseLinkJavaOneToOneMappingProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private EclipseLinkJavaOneToOneMappingProvider() {
 		super();

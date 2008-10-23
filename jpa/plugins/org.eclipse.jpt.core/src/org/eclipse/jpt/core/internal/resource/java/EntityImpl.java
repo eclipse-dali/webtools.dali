@@ -103,7 +103,7 @@ public class EntityImpl extends AbstractResourceAnnotation<Type> implements Enti
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private EntityAnnotationDefinition() {
 			super();

@@ -147,7 +147,7 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private DiscriminatorColumnAnnotationDefinition() {
 			super();

@@ -142,7 +142,7 @@ public class AttributeOverrideImpl
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private AttributeOverrideAnnotationDefinition() {
 			super();

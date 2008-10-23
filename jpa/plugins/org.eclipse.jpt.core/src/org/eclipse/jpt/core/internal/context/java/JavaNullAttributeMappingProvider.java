@@ -34,7 +34,7 @@ public class JavaNullAttributeMappingProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private JavaNullAttributeMappingProvider() {
 		super();

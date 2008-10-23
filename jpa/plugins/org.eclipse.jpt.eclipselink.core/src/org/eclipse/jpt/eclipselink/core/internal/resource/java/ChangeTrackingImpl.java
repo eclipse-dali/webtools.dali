@@ -101,7 +101,7 @@ public class ChangeTrackingImpl extends AbstractResourceAnnotation<Type> impleme
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private ChangeTrackingAnnotationDefinition() {
 			super();

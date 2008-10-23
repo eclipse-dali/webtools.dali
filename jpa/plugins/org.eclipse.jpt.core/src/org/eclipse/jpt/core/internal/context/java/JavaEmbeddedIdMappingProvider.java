@@ -32,7 +32,7 @@ public class JavaEmbeddedIdMappingProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private JavaEmbeddedIdMappingProvider() {
 		super();

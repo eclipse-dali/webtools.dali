@@ -401,7 +401,7 @@ public class CacheImpl extends AbstractResourceAnnotation<Type> implements Cache
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private CacheAnnotationDefinition() {
 			super();

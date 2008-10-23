@@ -54,7 +54,7 @@ public class IdImpl extends AbstractResourceAnnotation<Attribute> implements IdA
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private IdAnnotationDefinition() {
 			super();

@@ -31,7 +31,7 @@ public class JavaEmbeddableProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private JavaEmbeddableProvider() {
 		super();

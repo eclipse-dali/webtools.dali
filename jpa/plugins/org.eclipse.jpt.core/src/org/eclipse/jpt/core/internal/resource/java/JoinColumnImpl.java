@@ -204,7 +204,7 @@ public class JoinColumnImpl extends BaseColumnImpl implements NestableJoinColumn
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private JoinColumnAnnotationDefinition() {
 			super();

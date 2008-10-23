@@ -54,7 +54,7 @@ public class MappedSuperclassImpl extends AbstractResourceAnnotation<Type> imple
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private MappedSuperclassAnnotationDefinition() {
 			super();

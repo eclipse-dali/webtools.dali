@@ -155,7 +155,7 @@ public class ConverterImpl extends AbstractResourceAnnotation<Member> implements
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private ConverterAnnotationDefinition() {
 			super();

@@ -104,7 +104,7 @@ public class MapKeyImpl extends AbstractResourceAnnotation<Attribute> implements
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private MapKeyAnnotationDefinition() {
 			super();

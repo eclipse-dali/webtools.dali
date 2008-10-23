@@ -35,7 +35,7 @@ public class DefaultEmbeddedMappingUiProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private DefaultEmbeddedMappingUiProvider() {
 		super();

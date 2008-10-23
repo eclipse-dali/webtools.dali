@@ -221,7 +221,7 @@ public class ColumnImpl extends BaseColumnImpl implements ColumnAnnotation, Nest
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private ColumnAnnotationDefinition() {
 			super();

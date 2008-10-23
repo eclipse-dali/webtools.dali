@@ -31,7 +31,7 @@ public class JavaOneToOneMappingProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private JavaOneToOneMappingProvider() {
 		super();

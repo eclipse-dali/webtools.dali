@@ -34,7 +34,7 @@ public class OrmEmbeddableUiProvider implements TypeMappingUiProvider<OrmEmbedda
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private OrmEmbeddableUiProvider() {
 		super();

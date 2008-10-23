@@ -27,7 +27,7 @@ public class JavaTestAttributeMappingProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private JavaTestAttributeMappingProvider() {
 		super();

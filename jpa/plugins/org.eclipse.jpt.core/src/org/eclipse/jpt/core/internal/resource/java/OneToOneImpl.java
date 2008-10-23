@@ -182,7 +182,7 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private OneToOneAnnotationDefinition() {
 			super();

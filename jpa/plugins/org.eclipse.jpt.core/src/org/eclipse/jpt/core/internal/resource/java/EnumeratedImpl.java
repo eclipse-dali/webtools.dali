@@ -94,7 +94,7 @@ public class EnumeratedImpl extends AbstractResourceAnnotation<Attribute> implem
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private EnumeratedAnnotationDefinition() {
 			super();

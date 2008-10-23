@@ -31,7 +31,7 @@ public class JavaIdMappingProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private JavaIdMappingProvider() {
 		super();

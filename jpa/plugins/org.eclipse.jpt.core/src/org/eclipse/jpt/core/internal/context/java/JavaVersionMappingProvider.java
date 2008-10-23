@@ -31,7 +31,7 @@ public class JavaVersionMappingProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private JavaVersionMappingProvider() {
 		super();

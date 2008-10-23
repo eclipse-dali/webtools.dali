@@ -29,7 +29,7 @@ public class BasicMappingUiProvider
 	private static final BasicMappingUiProvider INSTANCE = new BasicMappingUiProvider();
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private BasicMappingUiProvider() {
 		super();

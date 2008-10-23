@@ -36,7 +36,7 @@ public class EmbeddedIdMappingUiProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private EmbeddedIdMappingUiProvider() {
 		super();

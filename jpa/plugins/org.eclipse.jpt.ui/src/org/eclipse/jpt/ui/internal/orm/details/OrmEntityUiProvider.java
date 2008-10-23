@@ -34,7 +34,7 @@ public class OrmEntityUiProvider implements TypeMappingUiProvider<OrmEntity>
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private OrmEntityUiProvider() {
 		super();

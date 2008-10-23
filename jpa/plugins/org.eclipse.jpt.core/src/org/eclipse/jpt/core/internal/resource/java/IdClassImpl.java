@@ -117,7 +117,7 @@ public class IdClassImpl extends AbstractResourceAnnotation<Type> implements IdC
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private IdClassAnnotationDefinition() {
 			super();

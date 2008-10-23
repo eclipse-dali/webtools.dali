@@ -131,7 +131,7 @@ public class GeneratedValueImpl extends AbstractResourceAnnotation<Member> imple
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private GeneratedValueAnnotationDefinition() {
 			super();

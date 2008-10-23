@@ -28,7 +28,7 @@ public class OrmTransientMappingProvider implements OrmAttributeMappingProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private OrmTransientMappingProvider() {
 		super();

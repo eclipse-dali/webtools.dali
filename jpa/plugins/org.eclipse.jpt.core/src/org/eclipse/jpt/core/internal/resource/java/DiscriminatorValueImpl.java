@@ -94,7 +94,7 @@ public class DiscriminatorValueImpl extends AbstractResourceAnnotation<Type> imp
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private DiscriminatorValueAnnotationDefinition() {
 			super();

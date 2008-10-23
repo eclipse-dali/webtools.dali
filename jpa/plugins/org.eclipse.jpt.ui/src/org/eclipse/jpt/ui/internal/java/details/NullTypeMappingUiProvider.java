@@ -36,7 +36,7 @@ public class NullTypeMappingUiProvider implements TypeMappingUiProvider<TypeMapp
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private NullTypeMappingUiProvider() {
 		super();

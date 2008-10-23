@@ -36,7 +36,7 @@ public class OneToOneMappingUiProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private OneToOneMappingUiProvider() {
 		super();

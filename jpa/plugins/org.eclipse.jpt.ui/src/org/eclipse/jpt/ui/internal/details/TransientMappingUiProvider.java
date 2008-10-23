@@ -36,7 +36,7 @@ public class TransientMappingUiProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private TransientMappingUiProvider() {
 		super();

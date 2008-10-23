@@ -30,7 +30,7 @@ public class JavaTestTypeMappingProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private JavaTestTypeMappingProvider() {
 		super();

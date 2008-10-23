@@ -54,7 +54,7 @@ public class EmbeddedIdImpl extends AbstractResourceAnnotation<Attribute> implem
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private EmbeddedIdAnnotationDefinition() {
 			super();

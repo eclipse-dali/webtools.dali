@@ -34,7 +34,7 @@ public class JavaEmbeddableUiProvider implements TypeMappingUiProvider<JavaEmbed
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private JavaEmbeddableUiProvider() {
 		super();

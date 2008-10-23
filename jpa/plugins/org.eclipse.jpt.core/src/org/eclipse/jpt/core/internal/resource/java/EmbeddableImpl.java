@@ -55,7 +55,7 @@ public class EmbeddableImpl extends AbstractResourceAnnotation<Type> implements 
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private EmbeddableAnnotationDefinition() {
 			super();

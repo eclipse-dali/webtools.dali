@@ -101,7 +101,7 @@ public class JoinFetchImpl extends AbstractResourceAnnotation<Attribute> impleme
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private JoinFetchAnnotationDefinition() {
 			super();

@@ -133,7 +133,7 @@ public class AttributeOverridesImpl extends AbstractResourceAnnotation<Member> i
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private AttributeOverridesAnnotationDefinition() {
 			super();

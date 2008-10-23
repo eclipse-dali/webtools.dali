@@ -90,7 +90,7 @@ public class NamedQueryImpl extends AbstractNamedQuery
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private NamedQueryAnnotationDefinition() {
 			super();

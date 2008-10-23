@@ -36,7 +36,7 @@ public class VersionMappingUiProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private VersionMappingUiProvider() {
 		super();

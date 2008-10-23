@@ -135,7 +135,7 @@ public class PrimaryKeyJoinColumnsImpl extends AbstractResourceAnnotation<Member
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private PrimaryKeyJoinColumnsAnnotationDefinition() {
 			super();

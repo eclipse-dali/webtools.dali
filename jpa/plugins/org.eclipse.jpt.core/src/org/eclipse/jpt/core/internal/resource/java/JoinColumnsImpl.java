@@ -135,7 +135,7 @@ public class JoinColumnsImpl extends AbstractResourceAnnotation<Member> implemen
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private JoinColumnsAnnotationDefinition() {
 			super();

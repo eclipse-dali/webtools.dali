@@ -93,7 +93,7 @@ public class InheritanceImpl extends AbstractResourceAnnotation<Type> implements
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private InheritanceAnnotationDefinition() {
 			super();

@@ -95,7 +95,7 @@ public class OrderByImpl extends AbstractResourceAnnotation<Attribute> implement
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private OrderByAnnotationDefinition() {
 			super();

@@ -216,7 +216,7 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private NamedNativeQueryAnnotationDefinition() {
 			super();

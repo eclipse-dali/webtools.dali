@@ -28,7 +28,7 @@ public class OrmVersionMappingProvider implements OrmAttributeMappingProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private OrmVersionMappingProvider() {
 		super();

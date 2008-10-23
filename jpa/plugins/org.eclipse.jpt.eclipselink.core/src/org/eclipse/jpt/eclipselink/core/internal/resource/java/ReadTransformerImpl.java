@@ -130,7 +130,7 @@ public class ReadTransformerImpl extends AbstractResourceAnnotation<Attribute> i
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private ReadTransformerAnnotationDefinition() {
 			super();

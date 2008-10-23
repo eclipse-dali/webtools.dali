@@ -163,7 +163,7 @@ public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements Nes
 		}
 
 		/**
-		 * Ensure non-instantiability.
+		 * Ensure single instance.
 		 */
 		private PrimaryKeyJoinColumnAnnotationDefinition() {
 			super();

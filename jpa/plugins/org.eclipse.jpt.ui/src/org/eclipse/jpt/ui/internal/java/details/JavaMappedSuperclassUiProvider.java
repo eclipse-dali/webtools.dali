@@ -34,7 +34,7 @@ public class JavaMappedSuperclassUiProvider implements TypeMappingUiProvider<Jav
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private JavaMappedSuperclassUiProvider() {
 		super();
