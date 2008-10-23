@@ -417,7 +417,7 @@ public class EntityRowTableWizardSection extends Composite {
 				return entity.getName();
 			}
 			if (columnIndex == TYPE_COLUMN) {
-				return entity.getType();
+				return entity.getFqnTypeName();
 			}		
 			if (entity.couldBeKey()) {
 				mTableViewer.setChecked(entity, entity.isKey());
