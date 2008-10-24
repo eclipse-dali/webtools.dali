@@ -57,9 +57,10 @@ public class EclipseLinkAttributesTranslator extends AttributesTranslator
 		return new EclipseLinkVersionTranslator(VERSION, ORM_PKG.getAttributes_Versions());
 	}
 	
-//	protected Translator createManyToOneTranslator() {
-//		return new ManyToOneTranslator(MANY_TO_ONE, ORM_PKG.getAttributes_ManyToOnes());
-//	}
+	@Override
+	protected Translator createManyToOneTranslator() {
+		return new EclipseLinkManyToOneTranslator(MANY_TO_ONE, ORM_PKG.getAttributes_ManyToOnes());
+	}
 	
 	@Override
 	protected Translator createOneToOneTranslator() {
@@ -71,10 +72,11 @@ public class EclipseLinkAttributesTranslator extends AttributesTranslator
 		return new EclipseLinkOneToManyTranslator(ONE_TO_MANY, ORM_PKG.getAttributes_OneToManys());
 	}
 	
-//	protected Translator createManyToManyTranslator() {
-//		return new ManyToManyTranslator(MANY_TO_MANY, ORM_PKG.getAttributes_ManyToManys());
-//	}
-//	
+	@Override
+	protected Translator createManyToManyTranslator() {
+		return new EclipseLinkManyToManyTranslator(MANY_TO_MANY, ORM_PKG.getAttributes_ManyToManys());
+	}
+	
 //	protected Translator createEmbeddedTranslator() {
 //		return new EmbeddedTranslator(EMBEDDED, ORM_PKG.getAttributes_Embeddeds());
 //	}
