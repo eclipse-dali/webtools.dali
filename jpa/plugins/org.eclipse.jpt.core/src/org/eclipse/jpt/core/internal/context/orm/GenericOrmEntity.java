@@ -1328,22 +1328,22 @@ public class GenericOrmEntity
 		this.specifiedName = entity.getName();
 		this.defaultName = this.buildDefaultName();
 		this.initializeInheritance(this.getResourceInheritance());
-		this.discriminatorColumn.initialize(entity);
-		this.specifiedDiscriminatorValue = entity.getDiscriminatorValue();
+		this.discriminatorColumn.initialize(this.resourceTypeMapping);
+		this.specifiedDiscriminatorValue = this.resourceTypeMapping.getDiscriminatorValue();
 		this.defaultDiscriminatorValue = this.defaultDiscriminatorValue();
 		this.discriminatorValueAllowed = this.discriminatorValueIsAllowed();
-		this.table.initialize(entity);
-		this.initializeSpecifiedSecondaryTables(entity);
+		this.table.initialize(this.resourceTypeMapping);
+		this.initializeSpecifiedSecondaryTables();
 		this.initializeVirtualSecondaryTables();
-		this.initializeSequenceGenerator(entity);
-		this.initializeTableGenerator(entity);
-		this.initializeSpecifiedPrimaryKeyJoinColumns(entity);
+		this.initializeSequenceGenerator();
+		this.initializeTableGenerator();
+		this.initializeSpecifiedPrimaryKeyJoinColumns();
 		this.initializeDefaultPrimaryKeyJoinColumns();
-		this.initializeSpecifiedAttributeOverrides(entity);
+		this.initializeSpecifiedAttributeOverrides();
 		this.initializeVirtualAttributeOverrides();
-		this.initializeSpecifiedAssociationOverrides(entity);
-		this.initializeNamedQueries(entity);
-		this.initializeNamedNativeQueries(entity);
+		this.initializeSpecifiedAssociationOverrides();
+		this.initializeNamedQueries();
+		this.initializeNamedNativeQueries();
 		this.initializeIdClass(this.getResourceIdClass());
 		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
@@ -1353,8 +1353,8 @@ public class GenericOrmEntity
 		this.defaultInheritanceStrategy = this.defaultInheritanceStrategy();
 	}
 
-	protected void initializeSpecifiedSecondaryTables(XmlEntity entity) {
-		for (XmlSecondaryTable secondaryTable : entity.getSecondaryTables()) {
+	protected void initializeSpecifiedSecondaryTables() {
+		for (XmlSecondaryTable secondaryTable : this.resourceTypeMapping.getSecondaryTables()) {
 			this.specifiedSecondaryTables.add(buildSecondaryTable(secondaryTable));
 		}
 	}
@@ -1398,9 +1398,9 @@ public class GenericOrmEntity
 		}
 	}
 
-	protected void initializeTableGenerator(XmlEntity entity) {
-		if (entity.getTableGenerator() != null) {
-			this.tableGenerator = buildTableGenerator(entity.getTableGenerator());
+	protected void initializeTableGenerator() {
+		if (this.resourceTypeMapping.getTableGenerator() != null) {
+			this.tableGenerator = buildTableGenerator(this.resourceTypeMapping.getTableGenerator());
 		}
 	}
 	
@@ -1408,9 +1408,9 @@ public class GenericOrmEntity
 		return getJpaFactory().buildOrmTableGenerator(this, resourceTableGenerator);
 	}
 
-	protected void initializeSequenceGenerator(XmlEntity entity) {
-		if (entity.getSequenceGenerator() != null) {
-			this.sequenceGenerator = buildSequenceGenerator(entity.getSequenceGenerator());
+	protected void initializeSequenceGenerator() {
+		if (this.resourceTypeMapping.getSequenceGenerator() != null) {
+			this.sequenceGenerator = buildSequenceGenerator(this.resourceTypeMapping.getSequenceGenerator());
 		}
 	}
 	
@@ -1418,14 +1418,14 @@ public class GenericOrmEntity
 		return getJpaFactory().buildOrmSequenceGenerator(this, resourceSequenceGenerator);
 	}
 
-	protected void initializeSpecifiedPrimaryKeyJoinColumns(XmlEntity entity) {
-		for (XmlPrimaryKeyJoinColumn resourcePkJoinColumn : entity.getPrimaryKeyJoinColumns()) {
+	protected void initializeSpecifiedPrimaryKeyJoinColumns() {
+		for (XmlPrimaryKeyJoinColumn resourcePkJoinColumn : this.resourceTypeMapping.getPrimaryKeyJoinColumns()) {
 			this.specifiedPrimaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn(resourcePkJoinColumn));
 		}
 	}
 	
-	protected void initializeSpecifiedAttributeOverrides(XmlEntity entity) {
-		for (XmlAttributeOverride attributeOverride : entity.getAttributeOverrides()) {
+	protected void initializeSpecifiedAttributeOverrides() {
+		for (XmlAttributeOverride attributeOverride : this.resourceTypeMapping.getAttributeOverrides()) {
 			this.specifiedAttributeOverrides.add(buildAttributeOverride(attributeOverride));
 		}
 	}
@@ -1459,20 +1459,20 @@ public class GenericOrmEntity
 		return new VirtualXmlAttributeOverride(persistentAttribute.getName(), xmlColumn);
 	}
 	
-	protected void initializeSpecifiedAssociationOverrides(XmlEntity entity) {
-		for (XmlAssociationOverride associationOverride : entity.getAssociationOverrides()) {
+	protected void initializeSpecifiedAssociationOverrides() {
+		for (XmlAssociationOverride associationOverride : this.resourceTypeMapping.getAssociationOverrides()) {
 			this.specifiedAssociationOverrides.add(buildAssociationOverride(associationOverride));
 		}
 	}
 	
-	protected void initializeNamedQueries(XmlEntity entity) {
-		for (XmlNamedQuery namedQuery : entity.getNamedQueries()) {
+	protected void initializeNamedQueries() {
+		for (XmlNamedQuery namedQuery : this.resourceTypeMapping.getNamedQueries()) {
 			this.namedQueries.add(buildNamedQuery(namedQuery));
 		}
 	}
 	
-	protected void initializeNamedNativeQueries(XmlEntity entity) {
-		for (XmlNamedNativeQuery namedNativeQuery : entity.getNamedNativeQueries()) {
+	protected void initializeNamedNativeQueries() {
+		for (XmlNamedNativeQuery namedNativeQuery : this.resourceTypeMapping.getNamedNativeQueries()) {
 			this.namedNativeQueries.add(buildNamedNativeQuery(namedNativeQuery));
 		}
 	}
@@ -1488,25 +1488,25 @@ public class GenericOrmEntity
 	@Override
 	public void update(XmlEntity entity) {
 		super.update(entity);
-		this.setSpecifiedName(entity.getName());
+		this.setSpecifiedName(this.resourceTypeMapping.getName());
 		this.setDefaultName(this.buildDefaultName());
 		this.updateInheritance(this.getResourceInheritance());
-		this.discriminatorColumn.update(entity);
-		this.setSpecifiedDiscriminatorValue(entity.getDiscriminatorValue());
+		this.discriminatorColumn.update(this.resourceTypeMapping);
+		this.setSpecifiedDiscriminatorValue(this.resourceTypeMapping.getDiscriminatorValue());
 		this.setDefaultDiscriminatorValue(defaultDiscriminatorValue());
 		this.setDiscriminatorValueAllowed(this.discriminatorValueIsAllowed());
-		this.table.update(entity);
-		this.updateSpecifiedSecondaryTables(entity);
+		this.table.update(this.resourceTypeMapping);
+		this.updateSpecifiedSecondaryTables();
 		this.updateVirtualSecondaryTables();
-		this.updateSequenceGenerator(entity);
-		this.updateTableGenerator(entity);
-		this.updateSpecifiedPrimaryKeyJoinColumns(entity);
+		this.updateSequenceGenerator();
+		this.updateTableGenerator();
+		this.updateSpecifiedPrimaryKeyJoinColumns();
 		this.updateDefaultPrimaryKeyJoinColumns();
-		this.updateSpecifiedAttributeOverrides(entity);
+		this.updateSpecifiedAttributeOverrides();
 		this.updateVirtualAttributeOverrides();
-		this.updateSpecifiedAssociationOverrides(entity);
-		this.updateNamedQueries(entity);
-		this.updateNamedNativeQueries(entity);
+		this.updateSpecifiedAssociationOverrides();
+		this.updateNamedQueries();
+		this.updateNamedNativeQueries();
 		this.updateIdClass(this.getResourceIdClass());
 		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
@@ -1540,9 +1540,9 @@ public class GenericOrmEntity
 		this.setDefaultInheritanceStrategy(this.defaultInheritanceStrategy());
 	}
 	
-	protected void updateSpecifiedSecondaryTables(XmlEntity entity) {
+	protected void updateSpecifiedSecondaryTables() {
 		ListIterator<OrmSecondaryTable> secondaryTables = specifiedSecondaryTables();
-		ListIterator<XmlSecondaryTable> resourceSecondaryTables = new CloneListIterator<XmlSecondaryTable>(entity.getSecondaryTables());//prevent ConcurrentModificiationException
+		ListIterator<XmlSecondaryTable> resourceSecondaryTables = new CloneListIterator<XmlSecondaryTable>(this.resourceTypeMapping.getSecondaryTables());//prevent ConcurrentModificiationException
 		
 		while (secondaryTables.hasNext()) {
 			OrmSecondaryTable secondaryTable = secondaryTables.next();
@@ -1592,34 +1592,34 @@ public class GenericOrmEntity
 		return buildSecondaryTable(new VirtualXmlSecondaryTable(javaSecondaryTable));
 	}
 	
-	protected void updateTableGenerator(XmlEntity resourceEntity) {
-		if (resourceEntity.getTableGenerator() == null) {
+	protected void updateTableGenerator() {
+		if (this.resourceTypeMapping.getTableGenerator() == null) {
 			if (getTableGenerator() != null) {
 				setTableGenerator(null);
 			}
 		}
 		else {
 			if (getTableGenerator() == null) {
-				setTableGenerator(buildTableGenerator(resourceEntity.getTableGenerator()));
+				setTableGenerator(buildTableGenerator(this.resourceTypeMapping.getTableGenerator()));
 			}
 			else {
-				getTableGenerator().update(resourceEntity.getTableGenerator());
+				getTableGenerator().update(this.resourceTypeMapping.getTableGenerator());
 			}
 		}
 	}
 	
-	protected void updateSequenceGenerator(XmlEntity resourceEntity) {
-		if (resourceEntity.getSequenceGenerator() == null) {
+	protected void updateSequenceGenerator() {
+		if (this.resourceTypeMapping.getSequenceGenerator() == null) {
 			if (getSequenceGenerator() != null) {
 				setSequenceGenerator(null);
 			}
 		}
 		else {
 			if (getSequenceGenerator() == null) {
-				setSequenceGenerator(buildSequenceGenerator(resourceEntity.getSequenceGenerator()));
+				setSequenceGenerator(buildSequenceGenerator(this.resourceTypeMapping.getSequenceGenerator()));
 			}
 			else {
-				getSequenceGenerator().update(resourceEntity.getSequenceGenerator());
+				getSequenceGenerator().update(this.resourceTypeMapping.getSequenceGenerator());
 			}
 		}
 	}
@@ -1640,9 +1640,9 @@ public class GenericOrmEntity
 		return this.isRoot() ? InheritanceType.SINGLE_TABLE : this.getRootEntity().getInheritanceStrategy();
 	}
 	
-	protected void updateSpecifiedPrimaryKeyJoinColumns(XmlEntity entity) {
+	protected void updateSpecifiedPrimaryKeyJoinColumns() {
 		ListIterator<OrmPrimaryKeyJoinColumn> contextPkJoinColumns = specifiedPrimaryKeyJoinColumns();
-		ListIterator<XmlPrimaryKeyJoinColumn> resourcePkJoinColumns = new CloneListIterator<XmlPrimaryKeyJoinColumn>(entity.getPrimaryKeyJoinColumns());//prevent ConcurrentModificiationException
+		ListIterator<XmlPrimaryKeyJoinColumn> resourcePkJoinColumns = new CloneListIterator<XmlPrimaryKeyJoinColumn>(this.resourceTypeMapping.getPrimaryKeyJoinColumns());//prevent ConcurrentModificiationException
 		
 		while (contextPkJoinColumns.hasNext()) {
 			OrmPrimaryKeyJoinColumn contextPkJoinColumn = contextPkJoinColumns.next();
@@ -1703,9 +1703,9 @@ public class GenericOrmEntity
 		return getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner(), resourcePkJoinColumn);
 	}
 
-	protected void updateSpecifiedAttributeOverrides(XmlEntity entity) {
+	protected void updateSpecifiedAttributeOverrides() {
 		ListIterator<OrmAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
-		ListIterator<XmlAttributeOverride> resourceAttributeOverrides = new CloneListIterator<XmlAttributeOverride>(entity.getAttributeOverrides());//prevent ConcurrentModificiationException
+		ListIterator<XmlAttributeOverride> resourceAttributeOverrides = new CloneListIterator<XmlAttributeOverride>(this.resourceTypeMapping.getAttributeOverrides());//prevent ConcurrentModificiationException
 		
 		while (attributeOverrides.hasNext()) {
 			OrmAttributeOverride attributeOverride = attributeOverrides.next();
@@ -1761,9 +1761,9 @@ public class GenericOrmEntity
 		return new AttributeOverrideOwner();
 	}
 
-	protected void updateSpecifiedAssociationOverrides(XmlEntity entity) {
+	protected void updateSpecifiedAssociationOverrides() {
 		ListIterator<OrmAssociationOverride> associationOverrides = specifiedAssociationOverrides();
-		ListIterator<XmlAssociationOverride> resourceAssociationOverrides = new CloneListIterator<XmlAssociationOverride>(entity.getAssociationOverrides());//prevent ConcurrentModificiationException
+		ListIterator<XmlAssociationOverride> resourceAssociationOverrides = new CloneListIterator<XmlAssociationOverride>(this.resourceTypeMapping.getAssociationOverrides());//prevent ConcurrentModificiationException
 		
 		while (associationOverrides.hasNext()) {
 			OrmAssociationOverride associationOverride = associationOverrides.next();
@@ -1788,9 +1788,9 @@ public class GenericOrmEntity
 		return new AssociationOverrideOwner();
 	}
 	
-	protected void updateNamedQueries(XmlEntity entity) {
+	protected void updateNamedQueries() {
 		ListIterator<OrmNamedQuery> queries = namedQueries();
-		ListIterator<XmlNamedQuery> resourceNamedQueries = new CloneListIterator<XmlNamedQuery>(entity.getNamedQueries());//prevent ConcurrentModificiationException
+		ListIterator<XmlNamedQuery> resourceNamedQueries = new CloneListIterator<XmlNamedQuery>(this.resourceTypeMapping.getNamedQueries());//prevent ConcurrentModificiationException
 		
 		while (queries.hasNext()) {
 			OrmNamedQuery namedQuery = queries.next();
@@ -1811,9 +1811,9 @@ public class GenericOrmEntity
 		return getJpaFactory().buildOrmNamedQuery(this, resourceNamedQuery);
 	}
 
-	protected void updateNamedNativeQueries(XmlEntity entity) {
+	protected void updateNamedNativeQueries() {
 		ListIterator<OrmNamedNativeQuery> queries = namedNativeQueries();
-		ListIterator<XmlNamedNativeQuery> resourceNamedNativeQueries = new CloneListIterator<XmlNamedNativeQuery>(entity.getNamedNativeQueries());//prevent ConcurrentModificiationException
+		ListIterator<XmlNamedNativeQuery> resourceNamedNativeQueries = new CloneListIterator<XmlNamedNativeQuery>(this.resourceTypeMapping.getNamedNativeQueries());//prevent ConcurrentModificiationException
 		
 		while (queries.hasNext()) {
 			OrmNamedNativeQuery namedQuery = queries.next();
