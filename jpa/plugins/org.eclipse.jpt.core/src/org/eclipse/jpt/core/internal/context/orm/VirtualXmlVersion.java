@@ -64,6 +64,7 @@ public class VirtualXmlVersion extends VirtualXmlAttributeMapping<JavaVersionMap
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	//see eclipselink bug 247078 for info one why I made the interface XmlConvertibleMapping
 	public EnumType getEnumerated() {
 		throw new UnsupportedOperationException("enumerated not supported on version mappings"); //$NON-NLS-1$
 	}
@@ -72,6 +73,7 @@ public class VirtualXmlVersion extends VirtualXmlAttributeMapping<JavaVersionMap
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	//see eclipselink bug 247078 for info one why I made the interface XmlConvertibleMapping
 	public boolean isLob() {
 		throw new UnsupportedOperationException("lob not supported on version mappings"); //$NON-NLS-1$
 	}
