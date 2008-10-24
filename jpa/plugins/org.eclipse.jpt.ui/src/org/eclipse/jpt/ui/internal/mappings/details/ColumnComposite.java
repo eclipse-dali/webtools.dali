@@ -138,7 +138,7 @@ public class ColumnComposite extends FormPane<Column> {
 		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets, parentManagePane);
 	}
 
-	private ColumnCombo<Column> buildColumnCombo(Composite container) {
+	private ColumnCombo<Column> addColumnCombo(Composite container) {
 
 		return new ColumnCombo<Column>(this, container) {
 
@@ -179,6 +179,10 @@ public class ColumnComposite extends FormPane<Column> {
 			@Override
 			protected String getValue() {
 				return getSubject().getSpecifiedName();
+			}
+			@Override
+			public String toString() {
+				return "ColumnComposite.columnCombo"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -541,6 +545,10 @@ public class ColumnComposite extends FormPane<Column> {
 			protected Iterator<String> values() {
 				return this.getSubject().getOwner().getTypeMapping().associatedTableNamesIncludingInherited();
 			}
+			@Override
+			public String toString() {
+				return "ColumnComposite.tableCombo"; //$NON-NLS-1$
+			}
 		};
 	}
 
@@ -764,7 +772,7 @@ public class ColumnComposite extends FormPane<Column> {
 		addLabeledComposite(
 			container,
 			JptUiMappingsMessages.ColumnComposite_name,
-			buildColumnCombo(container),
+			addColumnCombo(container),
 			JpaHelpContextIds.MAPPING_COLUMN
 		);
 
