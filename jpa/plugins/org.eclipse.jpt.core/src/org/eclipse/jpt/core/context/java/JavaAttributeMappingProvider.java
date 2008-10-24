@@ -38,6 +38,6 @@ public interface JavaAttributeMappingProvider {
 	 * factory for creation so extenders can simply override the appropriate
 	 * creation method instead of building a provider for the same key.
 	 */
-	public JavaAttributeMapping buildMapping(JavaPersistentAttribute attribute, JpaFactory factory);
+	JavaAttributeMapping buildMapping(JavaPersistentAttribute attribute, JpaFactory factory);
 
 }
