@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaQuery;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryHint;
-import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlQuery;
 import org.eclipse.jpt.core.resource.orm.XmlQueryHint;

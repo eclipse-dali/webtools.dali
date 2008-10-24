@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.persistence;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
+import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 import org.eclipse.jpt.core.utility.TextRange;
 

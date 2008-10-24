@@ -22,10 +22,12 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
  */
 public interface OrmXml extends XmlContextNode, MappingFile
 {
+	// **************** JpaNode override ***************************************
 	
 	MappingFileRef getParent();
 	
-	// **************** persistence *******************************************
+	
+	// **************** persistence ********************************************
 	
 	/**
 	 * String constant associated with changes to the entity-mappings property

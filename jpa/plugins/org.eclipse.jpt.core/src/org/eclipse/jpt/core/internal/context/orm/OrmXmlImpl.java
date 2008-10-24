@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.internal.context.persistence.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
@@ -60,6 +60,14 @@ public class OrmXmlImpl
 	public MappingFileRoot getMappingFileRoot() {
 		// TODO Auto-generated method stub
 		return getEntityMappings();
+	}
+	
+	
+	// **************** XmlContextNode impl ************************************
+	
+	@Override
+	public JpaXmlResource getEResource() {
+		return this.ormResource;
 	}
 	
 	

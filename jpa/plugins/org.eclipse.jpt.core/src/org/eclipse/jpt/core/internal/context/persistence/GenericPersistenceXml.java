@@ -17,8 +17,10 @@ import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
@@ -42,10 +44,8 @@ public class GenericPersistenceXml
 		this.initialize(persistenceResource);
 	}
 	
-	public String getId() {
-		// isn't actually displayed, so needs no details page
-		return null;
-	}
+	
+	// **************** JpaNode impl *******************************************
 	
 	@Override
 	public JpaRootContextNode getParent() {
@@ -56,6 +56,23 @@ public class GenericPersistenceXml
 	public IResource getResource() {
 		return this.persistenceResource.getFile();
 	}
+	
+	
+	// **************** XmlContextNode impl ************************************
+	
+	@Override
+	public JpaXmlResource getEResource() {
+		return this.persistenceResource;
+	}
+	
+	
+	// **************** JpaStructureNode impl **********************************
+	
+	public String getId() {
+		// isn't actually displayed, so needs no details page
+		return null;
+	}
+	
 	
 	// **************** persistence ********************************************
 	

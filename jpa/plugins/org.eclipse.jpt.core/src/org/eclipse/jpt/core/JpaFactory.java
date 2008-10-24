@@ -180,7 +180,7 @@ public interface JpaFactory
 	JpaProject buildJpaProject(JpaProject.Config config) throws CoreException;
 	
 	JpaDataSource buildJpaDataSource(JpaProject jpaProject, String connectionProfileName);
-
+	
 	/**
 	 * Construct a Java JPA file for the specified JPA project and file.
 	 */
@@ -196,7 +196,7 @@ public interface JpaFactory
 	 */
 	JpaFile buildOrmJpaFile(JpaProject jpaProject, IFile file);
 	
-
+	
 	// **************** Context Nodes *******************************************
 	
 	/**
@@ -231,14 +231,14 @@ public interface JpaFactory
 	ClassRef buildClassRef(PersistenceUnit parent, XmlJavaClassRef xmlClassRef);
 	
 	ClassRef buildClassRef(PersistenceUnit parent, String className);
-
+	
 	Property buildProperty(PersistenceUnit parent, XmlProperty property);
 	
 	
 	// **************** ORM Context Model ************************************
 	
 	OrmXml buildOrmXml(MappingFileRef parent, OrmResource ormResource);
-
+	
 	EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings entityMappings);
 	
 	PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent, XmlEntityMappings entityMappings);
@@ -268,7 +268,7 @@ public interface JpaFactory
 	OrmAttributeOverride buildOrmAttributeOverride(XmlContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride);
 	
 	OrmAssociationOverride buildOrmAssociationOverride(XmlContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride associationOverride);
-
+	
 	OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmNamedColumn.Owner owner);
 	
 	OrmColumn buildOrmColumn(XmlContextNode parent, OrmColumn.Owner owner);
@@ -280,11 +280,11 @@ public interface JpaFactory
 	OrmTableGenerator buildOrmTableGenerator(XmlContextNode parent, XmlTableGenerator resourceTableGenerator);
 	
 	OrmNamedNativeQuery buildOrmNamedNativeQuery(XmlContextNode parent, XmlNamedNativeQuery resourceNamedQuery);
-
+	
 	OrmNamedQuery buildOrmNamedQuery(XmlContextNode parent, XmlNamedQuery resourceNamedQuery);
 	
 	OrmQueryHint buildOrmQueryHint(OrmQuery parent, XmlQueryHint resourceQueryhint);
-
+	
 	OrmBasicMapping buildOrmBasicMapping(OrmPersistentAttribute parent);
 	
 	OrmManyToManyMapping buildOrmManyToManyMapping(OrmPersistentAttribute parent);
@@ -309,8 +309,9 @@ public interface JpaFactory
 	
 	OrmUniqueConstraint buildOrmUniqueConstraint(XmlContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint);
 	
+	
 	// **************** orm virtual resource model ***********************************
-
+	
 	XmlBasic buildVirtualXmlBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping);
 	
 	XmlEmbeddedId buildVirtualXmlEmbeddedId(OrmTypeMapping ormTypeMapping, JavaEmbeddedIdMapping javaEmbeddedIdMapping);
@@ -334,7 +335,6 @@ public interface JpaFactory
 	XmlNullAttributeMapping buildVirtualXmlNullAttributeMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping);
 	
 	
-	
 	// **************** java context objects ***********************************
 	
 	JavaPersistentType buildJavaPersistentType(PersistentTypeContext parent, JavaResourcePersistentType jrpt);
@@ -348,7 +348,7 @@ public interface JpaFactory
 	JavaTypeMapping buildJavaNullTypeMapping(JavaPersistentType parent);
 	
 	JavaPersistentAttribute buildJavaPersistentAttribute(JavaPersistentType parent, JavaResourcePersistentAttribute jrpa);
-
+	
 	JavaBasicMapping buildJavaBasicMapping(JavaPersistentAttribute parent);
 	
 	JavaEmbeddedIdMapping buildJavaEmbeddedIdMapping(JavaPersistentAttribute parent);
@@ -364,7 +364,7 @@ public interface JpaFactory
 	JavaOneToManyMapping buildJavaOneToManyMapping(JavaPersistentAttribute parent);
 	
 	JavaOneToOneMapping buildJavaOneToOneMapping(JavaPersistentAttribute parent);
-
+	
 	JavaTransientMapping buildJavaTransientMapping(JavaPersistentAttribute parent);
 	
 	JavaVersionMapping buildJavaVersionMapping(JavaPersistentAttribute parent);
@@ -376,11 +376,11 @@ public interface JpaFactory
 	JavaJoinTable buildJavaJoinTable(JavaRelationshipMapping parent);
 	
 	JavaColumn buildJavaColumn(JavaJpaContextNode parent, JavaColumn.Owner owner);
-
+	
 	JavaDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, JavaNamedColumn.Owner owner);
 	
 	JavaJoinColumn buildJavaJoinColumn(JavaJpaContextNode parent, JavaJoinColumn.Owner owner);
-
+	
 	JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent);
 	
 	JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent);
@@ -394,7 +394,7 @@ public interface JpaFactory
 	JavaAttributeOverride buildJavaAttributeOverride(JavaJpaContextNode parent, AttributeOverride.Owner owner);
 	
 	JavaAssociationOverride buildJavaAssociationOverride(JavaJpaContextNode parent, AssociationOverride.Owner owner);
-
+	
 	JavaNamedQuery buildJavaNamedQuery(JavaJpaContextNode parent);
 	
 	JavaNamedNativeQuery buildJavaNamedNativeQuery(JavaJpaContextNode parent);
