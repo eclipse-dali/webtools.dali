@@ -46,7 +46,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="disableHits" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="coordinationType" eType="#//CacheCoordinationType"
         defaultValueLiteral=""/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expiryTimeOfDay" eType="#//XmlTimeOfDay"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expiryTimeOfDay" eType="#//XmlTimeOfDay"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="ExistenceType">
     <eLiterals name="CHECK_CACHE"/>

@@ -22,6 +22,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay;
 
 public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 	implements Caching
@@ -53,7 +54,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 	protected ExistenceType defaultExistenceType;
 	
 	protected Integer expiry;
-	//protected EclipseLinkOrmExpiryTimeOfDay expiryTimeOfDay;
+	protected EclipseLinkOrmExpiryTimeOfDay expiryTimeOfDay;
 	
 	public EclipseLinkOrmCaching(OrmTypeMapping parent) {
 		super(parent);
@@ -418,18 +419,43 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 	}
 	
 	public ExpiryTimeOfDay getExpiryTimeOfDay() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.expiryTimeOfDay;
 	}
 	
 	public ExpiryTimeOfDay addExpiryTimeOfDay() {
-		// TODO Auto-generated method stub
-		return null;
+		if (this.expiryTimeOfDay != null) {
+			throw new IllegalStateException("expiryTimeOfDay already exists, use getExpiryTimeOfDay()"); //$NON-NLS-1$
+		}
+		if (getResourceCache() == null) {
+			addResourceCache();
+		}
+		EclipseLinkOrmExpiryTimeOfDay newExpiryTimeOfDay = new EclipseLinkOrmExpiryTimeOfDay(this);
+		this.expiryTimeOfDay = newExpiryTimeOfDay;
+		XmlTimeOfDay resourceTimeOfDay = EclipseLinkOrmFactory.eINSTANCE.createXmlTimeOfDay();
+		newExpiryTimeOfDay.initialize(resourceTimeOfDay);
+		getResourceCache().setExpiryTimeOfDay(resourceTimeOfDay);
+		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, null, newExpiryTimeOfDay);
+		setExpiry(null);
+		return newExpiryTimeOfDay;
 	}
 	
 	public void removeExpiryTimeOfDay() {
-		// TODO Auto-generated method stub
-		
+		if (this.expiryTimeOfDay == null) {
+			throw new IllegalStateException("timeOfDayExpiry does not exist"); //$NON-NLS-1$
+		}
+		ExpiryTimeOfDay oldExpiryTimeOfDay = this.expiryTimeOfDay;
+		this.expiryTimeOfDay = null;
+		getResourceCache().setExpiryTimeOfDay(null);
+		if (this.getResourceCache().isAllFeaturesUnset()) {
+			removeResourceCache();
+		}
+		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, oldExpiryTimeOfDay, null);
+	}
+	
+	protected void setExpiryTimeOfDay(EclipseLinkOrmExpiryTimeOfDay newExpiryTimeOfDay) {
+		EclipseLinkOrmExpiryTimeOfDay oldExpiryTimeOfDay = this.expiryTimeOfDay;
+		this.expiryTimeOfDay = newExpiryTimeOfDay;
+		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, oldExpiryTimeOfDay, newExpiryTimeOfDay);
 	}
 	
 	protected XmlCache getResourceCache() {
@@ -466,9 +492,24 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		this.specifiedCoordinationType = this.specifiedCoordinationType(resourceCache);
 		this.defaultExistenceType = this.defaultExistenceType(javaCaching);
 		this.specifiedExistenceType = this.specifiedExistenceType(resource);
-		this.expiry = this.expiry(resourceCache);
+		this.initializeExpiry(resourceCache);
 	}
-	
+
+	protected void initializeExpiry(XmlCache resourceCache) {
+		if (resourceCache == null) {
+			return;
+		}
+		if (resourceCache.getExpiryTimeOfDay() == null) {
+			this.expiry = resourceCache.getExpiry();
+		}
+		else {
+			if (resourceCache.getExpiry() == null) { //handle with validation if both expiry and expiryTimeOfDay are set
+				this.expiryTimeOfDay = new EclipseLinkOrmExpiryTimeOfDay(this);
+				this.expiryTimeOfDay.initialize(resourceCache.getExpiryTimeOfDay());
+			}
+		}
+	}
+
 	protected void update(XmlCacheHolder resource, JavaCaching javaCaching) {
 		this.resource = resource;
 		XmlCache resourceCache = getResourceCache();
@@ -488,7 +529,31 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		setSpecifiedCoordinationType_(this.specifiedCoordinationType(resourceCache));
 		setDefaultExistenceType(this.defaultExistenceType(javaCaching));
 		setSpecifiedExistenceType_(this.specifiedExistenceType(resource));
-		setExpiry_(this.expiry(resourceCache));
+		this.updateExpiry(resourceCache);
+	}
+	
+	protected void updateExpiry(XmlCache resourceCache) {
+		if (resourceCache == null) {
+			setExpiryTimeOfDay(null);
+			setExpiry_(null);
+			return;
+		}
+		if (resourceCache.getExpiryTimeOfDay() == null) {
+			setExpiryTimeOfDay(null);
+			setExpiry_(resourceCache.getExpiry());
+		}
+		else {
+			if (this.expiryTimeOfDay != null) {
+				this.expiryTimeOfDay.update(resourceCache.getExpiryTimeOfDay());
+			}
+			else if (resourceCache.getExpiry() == null){
+				setExpiryTimeOfDay(new EclipseLinkOrmExpiryTimeOfDay(this));
+				this.expiryTimeOfDay.initialize(resourceCache.getExpiryTimeOfDay());
+			}
+			else { //handle with validation if both expiry and expiryTimeOfDay are set
+				setExpiryTimeOfDay(null);
+			}
+		}
 	}
 	
 	protected int defaultSize(JavaCaching javaCaching) {

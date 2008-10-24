@@ -47,7 +47,7 @@ public class CacheTranslator extends Translator
 	}
 	
 	protected Translator createExpiryTimeOfDayTranslator() {
-		return new Translator(EXPIRY_TIME_OF_DAY, ECLIPSELINK_ORM_PKG.getXmlCache_ExpiryTimeOfDay());
+		return new ExpiryTimeOfDayTranslator();
 	}
 	
 	protected Translator createSizeTranslator() {

@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -200,7 +201,7 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	protected CacheCoordinationType coordinationType = COORDINATION_TYPE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getExpiryTimeOfDay() <em>Expiry Time Of Day</em>}' reference.
+	 * The cached value of the '{@link #getExpiryTimeOfDay() <em>Expiry Time Of Day</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getExpiryTimeOfDay()
@@ -518,31 +519,21 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Expiry Time Of Day</b></em>' reference.
+	 * Returns the value of the '<em><b>Expiry Time Of Day</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Expiry Time Of Day</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Expiry Time Of Day</em>' reference.
+	 * @return the value of the '<em>Expiry Time Of Day</em>' containment reference.
 	 * @see #setExpiryTimeOfDay(XmlTimeOfDay)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCache_ExpiryTimeOfDay()
-	 * @model
+	 * @model containment="true"
 	 * @generated
 	 */
 	public XmlTimeOfDay getExpiryTimeOfDay()
 	{
-		if (expiryTimeOfDay != null && ((EObject)expiryTimeOfDay).eIsProxy())
-		{
-			InternalEObject oldExpiryTimeOfDay = (InternalEObject)expiryTimeOfDay;
-			expiryTimeOfDay = (XmlTimeOfDay)eResolveProxy(oldExpiryTimeOfDay);
-			if (expiryTimeOfDay != oldExpiryTimeOfDay)
-			{
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, EclipseLinkOrmPackage.XML_CACHE__EXPIRY_TIME_OF_DAY, oldExpiryTimeOfDay, expiryTimeOfDay));
-			}
-		}
 		return expiryTimeOfDay;
 	}
 
@@ -551,25 +542,56 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlTimeOfDay basicGetExpiryTimeOfDay()
+	public NotificationChain basicSetExpiryTimeOfDay(XmlTimeOfDay newExpiryTimeOfDay, NotificationChain msgs)
 	{
-		return expiryTimeOfDay;
+		XmlTimeOfDay oldExpiryTimeOfDay = expiryTimeOfDay;
+		expiryTimeOfDay = newExpiryTimeOfDay;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_CACHE__EXPIRY_TIME_OF_DAY, oldExpiryTimeOfDay, newExpiryTimeOfDay);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getExpiryTimeOfDay <em>Expiry Time Of Day</em>}' reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache#getExpiryTimeOfDay <em>Expiry Time Of Day</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Expiry Time Of Day</em>' reference.
+	 * @param value the new value of the '<em>Expiry Time Of Day</em>' containment reference.
 	 * @see #getExpiryTimeOfDay()
 	 * @generated
 	 */
 	public void setExpiryTimeOfDay(XmlTimeOfDay newExpiryTimeOfDay)
 	{
-		XmlTimeOfDay oldExpiryTimeOfDay = expiryTimeOfDay;
-		expiryTimeOfDay = newExpiryTimeOfDay;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_CACHE__EXPIRY_TIME_OF_DAY, oldExpiryTimeOfDay, expiryTimeOfDay));
+		if (newExpiryTimeOfDay != expiryTimeOfDay)
+		{
+			NotificationChain msgs = null;
+			if (expiryTimeOfDay != null)
+				msgs = ((InternalEObject)expiryTimeOfDay).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_CACHE__EXPIRY_TIME_OF_DAY, null, msgs);
+			if (newExpiryTimeOfDay != null)
+				msgs = ((InternalEObject)newExpiryTimeOfDay).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_CACHE__EXPIRY_TIME_OF_DAY, null, msgs);
+			msgs = basicSetExpiryTimeOfDay(newExpiryTimeOfDay, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_CACHE__EXPIRY_TIME_OF_DAY, newExpiryTimeOfDay, newExpiryTimeOfDay));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+	{
+		switch (featureID)
+		{
+			case EclipseLinkOrmPackage.XML_CACHE__EXPIRY_TIME_OF_DAY:
+				return basicSetExpiryTimeOfDay(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -599,8 +621,7 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 			case EclipseLinkOrmPackage.XML_CACHE__COORDINATION_TYPE:
 				return getCoordinationType();
 			case EclipseLinkOrmPackage.XML_CACHE__EXPIRY_TIME_OF_DAY:
-				if (resolve) return getExpiryTimeOfDay();
-				return basicGetExpiryTimeOfDay();
+				return getExpiryTimeOfDay();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}

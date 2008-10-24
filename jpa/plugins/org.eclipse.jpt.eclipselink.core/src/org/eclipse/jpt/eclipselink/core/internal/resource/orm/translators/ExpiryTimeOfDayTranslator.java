@@ -8,7 +8,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators;
 
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 public class ExpiryTimeOfDayTranslator extends Translator
@@ -17,8 +16,8 @@ public class ExpiryTimeOfDayTranslator extends Translator
 	private Translator[] children;	
 	
 	
-	public ExpiryTimeOfDayTranslator(String domNameAndPath, EStructuralFeature aFeature) {
-		super(domNameAndPath, aFeature);
+	public ExpiryTimeOfDayTranslator() {
+		super(EXPIRY_TIME_OF_DAY, ECLIPSELINK_ORM_PKG.getXmlCache_ExpiryTimeOfDay());
 	}
 	
 	@Override
@@ -38,18 +37,18 @@ public class ExpiryTimeOfDayTranslator extends Translator
 		};
 	}
 	protected Translator createHourTranslator() {
-		return new Translator(EXPIRY_TIME_OF_DAY__HOUR, ECLIPSELINK_ORM_PKG.getXmlCache_Size(), DOM_ATTRIBUTE);
+		return new Translator(EXPIRY_TIME_OF_DAY__HOUR, ECLIPSELINK_ORM_PKG.getXmlTimeOfDay_Hour(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createMinuteTranslator() {
-		return new Translator(EXPIRY_TIME_OF_DAY__MINUTE, ECLIPSELINK_ORM_PKG.getXmlCache_Shared(), DOM_ATTRIBUTE);
+		return new Translator(EXPIRY_TIME_OF_DAY__MINUTE, ECLIPSELINK_ORM_PKG.getXmlTimeOfDay_Minute(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createSecondTranslator() {
-		return new Translator(EXPIRY_TIME_OF_DAY__SECOND, ECLIPSELINK_ORM_PKG.getXmlCache_Shared(), DOM_ATTRIBUTE);
+		return new Translator(EXPIRY_TIME_OF_DAY__SECOND, ECLIPSELINK_ORM_PKG.getXmlTimeOfDay_Second(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createMillisecondTranslator() {
-		return new Translator(EXPIRY_TIME_OF_DAY__MILLISECOND, ECLIPSELINK_ORM_PKG.getXmlCache_AlwaysRefresh(), DOM_ATTRIBUTE);
+		return new Translator(EXPIRY_TIME_OF_DAY__MILLISECOND, ECLIPSELINK_ORM_PKG.getXmlTimeOfDay_Millisecond(), DOM_ATTRIBUTE);
 	}
 }

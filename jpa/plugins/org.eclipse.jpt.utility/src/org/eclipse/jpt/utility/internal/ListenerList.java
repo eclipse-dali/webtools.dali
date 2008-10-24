@@ -55,7 +55,7 @@ public class ListenerList<L extends EventListener>
 			throw new NullPointerException();
 		}
 		if (CollectionTools.contains(this.listeners, listener)) {
-			throw new IllegalArgumentException("duplicate listener: " + listener); //$NON-NLS-1$
+			return;//throw new IllegalArgumentException("duplicate listener: " + listener); //$NON-NLS-1$
 		}
 		this.listeners = CollectionTools.add(this.listeners, listener);
 	}
@@ -66,7 +66,7 @@ public class ListenerList<L extends EventListener>
 		}
 		int index = CollectionTools.indexOf(this.listeners, listener);
 		if (index == -1) {
-			throw new IllegalArgumentException("unregistered listener: " + listener); //$NON-NLS-1$
+			return;//throw new IllegalArgumentException("unregistered listener: " + listener); //$NON-NLS-1$
 		}
 		this.listeners = CollectionTools.removeElementAtIndex(this.listeners, index);
 	}

@@ -1422,5 +1422,111 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		assertEquals(null, resourceEntity.getCache());
 		assertEquals(null, ormContextCaching.getExpiry());
 	}
+	
+	public void testUpdateCacheExpiryTimeOfDay() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+
+
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(null, javaContextCaching.getExpiryTimeOfDay());
+		assertEquals(null, ormContextCaching.getExpiryTimeOfDay());
+		
+		// set xml cache, check defaults
+		resourceEntity.setCache(EclipseLinkOrmFactory.eINSTANCE.createXmlCache());
+		assertEquals(null, resourceEntity.getCache().getExpiryTimeOfDay());
+		assertEquals(null, javaContextCaching.getExpiryTimeOfDay());
+		assertEquals(null, ormContextCaching.getExpiryTimeOfDay());
+
+		
+		// set xml cache expiry, check settings
+		resourceEntity.getCache().setExpiryTimeOfDay(EclipseLinkOrmFactory.eINSTANCE.createXmlTimeOfDay());
+		resourceEntity.getCache().getExpiryTimeOfDay().setHour(new Integer(10));
+		assertEquals(new Integer(10), resourceEntity.getCache().getExpiryTimeOfDay().getHour());
+		assertEquals(null, javaContextCaching.getExpiryTimeOfDay());
+		assertEquals(new Integer(10), ormContextCaching.getExpiryTimeOfDay().getHour());
+
+			
+		// set java cache expiry, check defaults
+		
+		javaContextCaching.addExpiryTimeOfDay();
+		javaContextCaching.getExpiryTimeOfDay().setHour(new Integer(12));
+		
+		assertEquals(new Integer(10), resourceEntity.getCache().getExpiryTimeOfDay().getHour());
+		assertEquals(new Integer(12), javaContextCaching.getExpiryTimeOfDay().getHour());
+		assertEquals(new Integer(10), ormContextCaching.getExpiryTimeOfDay().getHour());
+
+		// clear xml cache expiry to null, check defaults
+		resourceEntity.getCache().setExpiryTimeOfDay(null);
+
+		assertEquals(null, resourceEntity.getCache().getExpiryTimeOfDay());
+		assertEquals(new Integer(12), javaContextCaching.getExpiryTimeOfDay().getHour());
+		assertEquals(null, ormContextCaching.getExpiryTimeOfDay());
+	
+		
+		// clear xml cache, check defaults
+		resourceEntity.setCache(null);
+
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(new Integer(12), javaContextCaching.getExpiryTimeOfDay().getHour());
+		assertEquals(null, ormContextCaching.getExpiryTimeOfDay());
+	
+		
+		// set metadataComplete to True, check defaults not from java
+
+		ormContextEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(new Integer(12), javaContextCaching.getExpiryTimeOfDay().getHour());
+		assertEquals(null, ormContextCaching.getExpiryTimeOfDay());
+
+		
+		// set metadataComplete back to null, check defaults from java
+		ormContextEntity.setSpecifiedMetadataComplete(null);
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(new Integer(12), javaContextCaching.getExpiryTimeOfDay().getHour());
+		assertEquals(null, ormContextCaching.getExpiryTimeOfDay());
+	}
+	
+	public void testModifyCacheExpiryTimeOfDay() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+		
+		// check defaults
+		
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(null, ormContextCaching.getExpiryTimeOfDay());
+		
+		// set context cache expiry, check resource
+		
+		ormContextEntity.getCaching().addExpiryTimeOfDay().setHour(new Integer(12));
+		assertEquals(new Integer(12), resourceEntity.getCache().getExpiryTimeOfDay().getHour());
+		assertEquals(new Integer(12), ormContextCaching.getExpiryTimeOfDay().getHour());
+				
+		// set context expiry time of day minute, check resource
+		
+		ormContextEntity.getCaching().getExpiryTimeOfDay().setMinute(new Integer(35));
+		
+		assertEquals(new Integer(12), resourceEntity.getCache().getExpiryTimeOfDay().getHour());
+		assertEquals(new Integer(12), ormContextCaching.getExpiryTimeOfDay().getHour());
+		assertEquals(new Integer(35), resourceEntity.getCache().getExpiryTimeOfDay().getMinute());
+		assertEquals(new Integer(35), ormContextCaching.getExpiryTimeOfDay().getMinute());
+		
+		// set context expiry time of day null, check resource
+		
+		ormContextEntity.getCaching().removeExpiryTimeOfDay();
+		assertEquals(null, resourceEntity.getCache());
+		assertEquals(null, ormContextCaching.getExpiryTimeOfDay());
+	}
 
 }
