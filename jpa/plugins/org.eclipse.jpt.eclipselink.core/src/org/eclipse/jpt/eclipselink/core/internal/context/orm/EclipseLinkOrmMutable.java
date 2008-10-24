@@ -28,7 +28,7 @@ public class EclipseLinkOrmMutable extends AbstractXmlContextNode
 	}
 	
 	public boolean isMutable() {
-		return (getSpecifiedMutable() != null) ? getSpecifiedMutable() : isDefaultMutable();
+		return (this.specifiedMutable != null) ? this.specifiedMutable.booleanValue() : this.defaultMutable;
 	}
 	
 	public boolean isDefaultMutable() {
@@ -52,6 +52,12 @@ public class EclipseLinkOrmMutable extends AbstractXmlContextNode
 		firePropertyChanged(SPECIFIED_MUTABLE_PROPERTY, oldSpecifiedMutable, newSpecifiedMutable);
 	}
 	
+	protected void setSpecifiedMutable_(Boolean newSpecifiedMutable) {
+		Boolean oldSpecifiedMutable = this.specifiedMutable;
+		this.specifiedMutable = newSpecifiedMutable;
+		firePropertyChanged(SPECIFIED_MUTABLE_PROPERTY, oldSpecifiedMutable, newSpecifiedMutable);
+	}
+	
 	
 	// **************** initialize/update **************************************
 	
@@ -63,7 +69,7 @@ public class EclipseLinkOrmMutable extends AbstractXmlContextNode
 	
 	protected void update() {
 		setDefaultMutable(calculateDefaultMutable());
-		setSpecifiedMutable(resource.getMutable());
+		setSpecifiedMutable_(this.resource.getMutable());
 	}
 	
 	protected boolean calculateDefaultMutable() {

@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.JpaFactory;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 
 /**
  * 
@@ -24,6 +26,8 @@ public interface OrmAttributeMappingProvider
 {
 	String getKey();
 	
-	OrmAttributeMapping buildAttributeMapping(JpaFactory factory, OrmPersistentAttribute parent);
+	OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory);
+	
+	XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory);
 
 }

@@ -23,18 +23,8 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PersistentTypeContext;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.core.context.java.JavaBasicMapping;
-import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
-import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
-import org.eclipse.jpt.core.context.java.JavaIdMapping;
-import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
-import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
-import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
-import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.context.java.JavaTransientMapping;
-import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
@@ -50,19 +40,9 @@ import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
-import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
-import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
-import org.eclipse.jpt.core.resource.orm.XmlId;
-import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
-import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
-import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
-import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
-import org.eclipse.jpt.core.resource.orm.XmlTransient;
-import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
@@ -123,7 +103,7 @@ public class GenericOrmPersistentType
 	}
 	
 	protected OrmTypeMapping buildOrmTypeMapping(String key) {
-		return getTypeMappingProvider(key).buildTypeMapping(getJpaFactory(), this);
+		return getTypeMappingProvider(key).buildMapping(this, getJpaFactory());
 	}
 
 	protected Collection<OrmTypeMappingProvider> buildTypeMappingProviders() {
@@ -229,7 +209,7 @@ public class GenericOrmPersistentType
 		JavaPersistentAttribute javaPersistentAttribute = ormPersistentAttribute.getMapping().getJavaPersistentAttribute();
 		OrmPersistentAttribute virtualPersistentAttribute = null;
 		if (javaPersistentAttribute != null) {
-			virtualPersistentAttribute = createVirtualPersistentAttribute(javaPersistentAttribute);
+			virtualPersistentAttribute = buildVirtualOrmPersistentAttribute(javaPersistentAttribute);
 			this.virtualPersistentAttributes.add(virtualPersistentAttribute);
 		}
 		this.removeSpecifiedPersistentAttribute(ormPersistentAttribute);
@@ -250,7 +230,7 @@ public class GenericOrmPersistentType
 			throw new IllegalStateException("Use makePersistentAttributeSpecified(OrmPersistentAttribute, String) instead and specify a mapping type"); //$NON-NLS-1$
 		}
 			
-		OrmPersistentAttribute newPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, mappingKey);
+		OrmPersistentAttribute newPersistentAttribute = buildOrmPersistentAttribute(mappingKey);
 		if (getMapping().getResourceTypeMapping().getAttributes() == null) {
 			getMapping().getResourceTypeMapping().setAttributes(OrmFactory.eINSTANCE.createAttributes());
 		}
@@ -369,7 +349,7 @@ public class GenericOrmPersistentType
 	}
 	
 	public OrmPersistentAttribute addSpecifiedPersistentAttribute(String mappingKey, String attributeName) {
-		OrmPersistentAttribute persistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, mappingKey);
+		OrmPersistentAttribute persistentAttribute = buildOrmPersistentAttribute(mappingKey);
 		int index = insertionIndex(persistentAttribute);
 		if (getMapping().getResourceTypeMapping().getAttributes() == null) {
 			getMapping().getResourceTypeMapping().setAttributes(OrmFactory.eINSTANCE.createAttributes());
@@ -465,62 +445,21 @@ public class GenericOrmPersistentType
 	}
 	
 	protected void initializePersistentAttributes(AbstractXmlTypeMapping typeMapping) {
-		Attributes attributes = typeMapping.getAttributes();
-		if (attributes != null) {
-			this.initializeSpecifiedPersistentAttributes(attributes);
-		}
+		this.initializeSpecifiedPersistentAttributes(typeMapping.getAttributes());
 		this.initializeVirtualPersistentAttributes();
 	}
 	
+	protected OrmPersistentAttribute buildOrmPersistentAttribute(String mappingKey) {
+		return getJpaFactory().buildOrmPersistentAttribute(this, mappingKey);
+	}
+	
 	protected void initializeSpecifiedPersistentAttributes(Attributes attributes) {
-		for (XmlId id : attributes.getIds()) {
-			OrmPersistentAttribute ormPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
-			ormPersistentAttribute.initialize(id);
-			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
+		if (attributes == null) {
+			return;
 		}
-		for (XmlEmbeddedId embeddedId : attributes.getEmbeddedIds()) {
-			OrmPersistentAttribute ormPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
-			ormPersistentAttribute.initialize(embeddedId);
-			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
-		}
-		for (XmlBasic basic : attributes.getBasics()) {
-			OrmPersistentAttribute ormPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-			ormPersistentAttribute.initialize(basic);
-			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
-		}
-		for (XmlVersion version : attributes.getVersions()) {
-			OrmPersistentAttribute ormPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
-			ormPersistentAttribute.initialize(version);
-			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
-		}
-		for (XmlManyToOne manyToOne : attributes.getManyToOnes()) {
-			OrmPersistentAttribute ormPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-			ormPersistentAttribute.initialize(manyToOne);
-			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
-		}
-		for (XmlOneToMany oneToMany : attributes.getOneToManys()) {
-			OrmPersistentAttribute ormPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-			ormPersistentAttribute.initialize(oneToMany);
-			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
-		}
-		for (XmlOneToOne oneToOne : attributes.getOneToOnes()) {
-			OrmPersistentAttribute ormPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-			ormPersistentAttribute.initialize(oneToOne);
-			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
-		}
-		for (XmlManyToMany manyToMany : attributes.getManyToManys()) {
-			OrmPersistentAttribute ormPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-			ormPersistentAttribute.initialize(manyToMany);
-			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
-		}
-		for (XmlEmbedded embedded : attributes.getEmbeddeds()) {
-			OrmPersistentAttribute ormPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
-			ormPersistentAttribute.initialize(embedded);
-			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
-		}
-		for (XmlTransient transientResource : attributes.getTransients()) {
-			OrmPersistentAttribute ormPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
-			ormPersistentAttribute.initialize(transientResource);
+		for (XmlAttributeMapping resourceMapping : attributes.getAttributeMappings()) {
+			OrmPersistentAttribute ormPersistentAttribute = buildOrmPersistentAttribute(resourceMapping.getMappingKey());
+			ormPersistentAttribute.initialize(resourceMapping);
 			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
 		}
 	}
@@ -531,7 +470,7 @@ public class GenericOrmPersistentType
 		while (javaAttributes.hasNext()) {
 			JavaPersistentAttribute javaPersistentAttribute = javaAttributes.next();
 			if (specifiedAttributeNamed(javaPersistentAttribute.getName()) == null) {
-				OrmPersistentAttribute ormPersistentAttribute = createVirtualPersistentAttribute(javaPersistentAttribute);
+				OrmPersistentAttribute ormPersistentAttribute = buildVirtualOrmPersistentAttribute(javaPersistentAttribute);
 				this.virtualPersistentAttributes.add(ormPersistentAttribute);
 			}
 		}
@@ -584,22 +523,19 @@ public class GenericOrmPersistentType
 		JavaPersistentType javaPersistentType = getJavaPersistentType();
 		setParentPersistentType(javaPersistentType == null ? null : javaPersistentType.getParentPersistentType());
 	}
-
-	protected OrmPersistentAttribute createPersistentAttribute(XmlAttributeMapping resourceMapping) {
-		OrmPersistentAttribute ormPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, resourceMapping.getMappingKey());
-		ormPersistentAttribute.initialize(resourceMapping);
-		return ormPersistentAttribute;
-	}
 	
 	protected void updatePersistentAttributes(AbstractXmlTypeMapping typeMapping) {
+		this.updateSpecifiedPersistentAttributes(typeMapping.getAttributes());
+		this.updateVirtualPersistentAttributes();
+	}
+
+	protected void updateSpecifiedPersistentAttributes(Attributes attributes) {
 		Collection<OrmPersistentAttribute> contextAttributesToRemove = CollectionTools.collection(specifiedAttributes());
 		Collection<OrmPersistentAttribute> contextAttributesToUpdate = new ArrayList<OrmPersistentAttribute>();
 		int resourceIndex = 0;
-
 		
-		if (typeMapping.getAttributes() != null) {
-			List<XmlAttributeMapping> attributeMappings = getAttributeMappings(typeMapping.getAttributes());
-			for (XmlAttributeMapping resourceMapping : attributeMappings) {
+		if (attributes != null) {
+			for (XmlAttributeMapping resourceMapping : attributes.getAttributeMappings()) {
 				boolean contextAttributeFound = false;
 				for (OrmPersistentAttribute contextAttribute : contextAttributesToRemove) {
 					if (contextAttribute.getMapping().getResourceAttributeMapping() == resourceMapping) {
@@ -611,7 +547,9 @@ public class GenericOrmPersistentType
 					}
 				}
 				if (!contextAttributeFound) {
-					addSpecifiedPersistentAttribute_(createPersistentAttribute(resourceMapping));
+					OrmPersistentAttribute ormPersistentAttribute = buildOrmPersistentAttribute(resourceMapping.getMappingKey());
+					ormPersistentAttribute.initialize(resourceMapping);
+					addSpecifiedPersistentAttribute_(ormPersistentAttribute);
 				}
 				resourceIndex++;
 			}
@@ -624,61 +562,14 @@ public class GenericOrmPersistentType
 		for (OrmPersistentAttribute contextAttribute : contextAttributesToUpdate) {
 			contextAttribute.update();
 		}	
-		this.updateVirtualPersistentAttributes();
 	}
 	
 	//TODO move this to Attributes, so that eclipselink can implement this as well?
-	protected List<XmlAttributeMapping> getAttributeMappings(Attributes attributes) {
-		List<XmlAttributeMapping> attributeMappings = new ArrayList<XmlAttributeMapping>();
-		ListIterator<XmlId> ids = new CloneListIterator<XmlId>(attributes.getIds());//prevent ConcurrentModificiationException
-		for (XmlId mapping : CollectionTools.iterable(ids)) {
-			attributeMappings.add(mapping);
-		}
-		ListIterator<XmlEmbeddedId> embeddedIds = new CloneListIterator<XmlEmbeddedId>(attributes.getEmbeddedIds());//prevent ConcurrentModificiationException
-		for (XmlEmbeddedId mapping : CollectionTools.iterable(embeddedIds)) {
-			attributeMappings.add(mapping);
-		}
-		ListIterator<XmlBasic> basics = new CloneListIterator<XmlBasic>(attributes.getBasics());//prevent ConcurrentModificiationException
-		for (XmlBasic mapping : CollectionTools.iterable(basics)) {
-			attributeMappings.add(mapping);
-		}
-		ListIterator<XmlVersion> versions = new CloneListIterator<XmlVersion>(attributes.getVersions());//prevent ConcurrentModificiationException
-		for (XmlVersion mapping : CollectionTools.iterable(versions)) {
-			attributeMappings.add(mapping);
-		}
-		ListIterator<XmlManyToOne> manyToOnes = new CloneListIterator<XmlManyToOne>(attributes.getManyToOnes());//prevent ConcurrentModificiationException
-		for (XmlManyToOne mapping : CollectionTools.iterable(manyToOnes)) {
-			attributeMappings.add(mapping);
-		}
-		ListIterator<XmlOneToMany> oneToManys = new CloneListIterator<XmlOneToMany>(attributes.getOneToManys());//prevent ConcurrentModificiationException
-		for (XmlOneToMany mapping : CollectionTools.iterable(oneToManys)) {
-			attributeMappings.add(mapping);
-		}
-		ListIterator<XmlOneToOne> oneToOnes = new CloneListIterator<XmlOneToOne>(attributes.getOneToOnes());//prevent ConcurrentModificiationException
-		for (XmlOneToOne mapping : CollectionTools.iterable(oneToOnes)) {
-			attributeMappings.add(mapping);
-		}
-		ListIterator<XmlManyToMany> manyToManys = new CloneListIterator<XmlManyToMany>(attributes.getManyToManys());//prevent ConcurrentModificiationException
-		for (XmlManyToMany mapping : CollectionTools.iterable(manyToManys)) {
-			attributeMappings.add(mapping);
-		}
-		ListIterator<XmlEmbedded> embeddeds = new CloneListIterator<XmlEmbedded>(attributes.getEmbeddeds());//prevent ConcurrentModificiationException
-		for (XmlEmbedded mapping : CollectionTools.iterable(embeddeds)) {
-			attributeMappings.add(mapping);
-		}
-		ListIterator<XmlTransient> transients = new CloneListIterator<XmlTransient>(attributes.getTransients());//prevent ConcurrentModificiationException
-		for (XmlTransient mapping : CollectionTools.iterable(transients)) {
-			attributeMappings.add(mapping);
-		}
-		return attributeMappings;
-	}
 	
 	protected void updateVirtualPersistentAttributes() {
 		Collection<OrmPersistentAttribute> contextAttributesToRemove = CollectionTools.collection(virtualAttributes());
 		Collection<OrmPersistentAttribute> contextAttributesToUpdate = new ArrayList<OrmPersistentAttribute>();
 		int resourceIndex = 0;
-
-
 		
 		ListIterator<JavaPersistentAttribute> javaAttributes = this.javaPersistentAttributes();
 		for (JavaPersistentAttribute javaAttribute : CollectionTools.iterable(javaAttributes)) {
@@ -713,55 +604,22 @@ public class GenericOrmPersistentType
 		for (OrmPersistentAttribute contextAttribute : contextAttributesToUpdate) {
 			contextAttribute.update();
 		}
-
 	}
 
 	protected void addVirtualPersistentAttribute(JavaPersistentAttribute javaAttribute) {
-		addVirtualPersistentAttribute(createVirtualPersistentAttribute(javaAttribute));
+		addVirtualPersistentAttribute(buildVirtualOrmPersistentAttribute(javaAttribute));
 	}
 	
-	protected OrmPersistentAttribute createVirtualPersistentAttribute(JavaPersistentAttribute javaAttribute) {
+	protected OrmPersistentAttribute buildVirtualOrmPersistentAttribute(JavaPersistentAttribute javaAttribute) {
 		String javaMappingKey = javaAttribute.getMappingKey();
 		JavaAttributeMapping javaAttributeMapping = javaAttribute.getMapping();
 		if (getMapping().isMetadataComplete()) {
 			javaMappingKey = javaAttribute.getDefaultMappingKey();
 			javaAttributeMapping = javaAttribute.getDefaultMapping();
 		}
-		OrmPersistentAttribute ormPersistentAttribute = getJpaFactory().buildOrmPersistentAttribute(this, javaMappingKey);
-		
-		if (javaMappingKey == MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlBasic(getMapping(), (JavaBasicMapping) javaAttributeMapping));
-		}
-		else if (javaMappingKey == MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlEmbeddedId(getMapping(), (JavaEmbeddedIdMapping) javaAttributeMapping));
-		}
-		else if (javaMappingKey == MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlEmbedded(getMapping(), (JavaEmbeddedMapping) javaAttributeMapping));
-		}
-		else if (javaMappingKey == MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlId(getMapping(), (JavaIdMapping) javaAttributeMapping));
-		}
-		else if (javaMappingKey == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlManyToMany(getMapping(), ormPersistentAttribute, (JavaManyToManyMapping) javaAttributeMapping));
-		}
-		else if (javaMappingKey == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlManyToOne(getMapping(), (JavaManyToOneMapping) javaAttributeMapping));
-		}
-		else if (javaMappingKey == MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlOneToMany(getMapping(), ormPersistentAttribute, (JavaOneToManyMapping) javaAttributeMapping));
-		}
-		else if (javaMappingKey == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlOneToOne(getMapping(), (JavaOneToOneMapping) javaAttributeMapping));
-		}
-		else if (javaMappingKey == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlTransient(getMapping(), (JavaTransientMapping) javaAttributeMapping));
-		}
-		else if (javaMappingKey == MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlVersion(getMapping(), (JavaVersionMapping) javaAttributeMapping));
-		}
-		else if (javaMappingKey == MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
-			ormPersistentAttribute.initialize(new VirtualXmlNullAttributeMapping(getMapping(), javaAttributeMapping));
-		}
+		OrmPersistentAttribute ormPersistentAttribute = buildOrmPersistentAttribute(javaMappingKey);
+		XmlAttributeMapping resourceMapping = getJpaPlatform().buildVirtualOrmResourceMappingFromMappingKey(javaMappingKey, getMapping(), javaAttributeMapping);
+		ormPersistentAttribute.initialize(resourceMapping);
 		return ormPersistentAttribute;
 	}
 	

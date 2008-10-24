@@ -31,12 +31,20 @@ import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
+import org.eclipse.jpt.core.resource.orm.XmlBasic;
+import org.eclipse.jpt.core.resource.orm.XmlId;
+import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
+import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
+import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
+import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
+import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
@@ -62,6 +70,13 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmOneTo
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmVersionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXml;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlBasic;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlId;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlManyToMany;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlManyToOne;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlOneToMany;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlOneToOne;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualEclipseLinkXmlVersion;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
 
 public class EclipseLinkJpaFactory
@@ -95,6 +110,42 @@ public class EclipseLinkJpaFactory
 	}
 	
 	
+	// **************** orm resource objects ************************
+	
+	@Override
+	public XmlBasic buildVirtualXmlBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping) {
+		return new VirtualEclipseLinkXmlBasic(ormTypeMapping, javaBasicMapping);
+	}
+	
+	@Override
+	public XmlId buildVirtualXmlId(OrmTypeMapping ormTypeMapping, JavaIdMapping javaIdMapping) {
+		return new VirtualEclipseLinkXmlId(ormTypeMapping, javaIdMapping);
+	}
+	
+	@Override
+	public XmlManyToMany buildVirtualXmlManyToMany(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
+		return new VirtualEclipseLinkXmlManyToMany(ormTypeMapping, javaManyToManyMapping);
+	}
+	
+	@Override
+	public XmlManyToOne buildVirtualXmlManyToOne(OrmTypeMapping ormTypeMapping, JavaManyToOneMapping javaManyToOneMapping) {
+		return new VirtualEclipseLinkXmlManyToOne(ormTypeMapping, javaManyToOneMapping);
+	}
+	
+	@Override
+	public XmlOneToMany buildVirtualXmlOneToMany(OrmTypeMapping ormTypeMapping, JavaOneToManyMapping javaOneToManyMapping) {
+		return new VirtualEclipseLinkXmlOneToMany(ormTypeMapping, javaOneToManyMapping);
+	}
+	
+	@Override
+	public XmlOneToOne buildVirtualXmlOneToOne(OrmTypeMapping ormTypeMapping, JavaOneToOneMapping javaOneToOneMapping) {
+		return new VirtualEclipseLinkXmlOneToOne(ormTypeMapping, javaOneToOneMapping);
+	}
+	
+	@Override
+	public XmlVersion buildVirtualXmlVersion(OrmTypeMapping ormTypeMapping, JavaVersionMapping javaVersionMapping) {
+		return new VirtualEclipseLinkXmlVersion(ormTypeMapping, javaVersionMapping);
+	}
 	// **************** eclipselink orm context objects ************************
 	
 	@Override

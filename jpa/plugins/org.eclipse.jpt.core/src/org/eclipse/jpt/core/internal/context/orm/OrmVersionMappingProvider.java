@@ -11,9 +11,13 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
+import org.eclipse.jpt.core.resource.orm.XmlVersion;
 
 public class OrmVersionMappingProvider implements OrmAttributeMappingProvider
 {
@@ -38,7 +42,11 @@ public class OrmVersionMappingProvider implements OrmAttributeMappingProvider
 		return MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public OrmVersionMapping buildAttributeMapping(JpaFactory factory, OrmPersistentAttribute parent) {
+	public OrmVersionMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory) {
 		return factory.buildOrmVersionMapping(parent);
+	}
+	
+	public XmlVersion buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
+		return factory.buildVirtualXmlVersion(ormTypeMapping, (JavaVersionMapping) javaAttributeMapping);
 	}
 }

@@ -51,7 +51,7 @@ public class EclipseLinkJavaJoinFetch extends AbstractJavaJpaContextNode impleme
 	}
 	
 	protected JoinFetchType getDefaultValue() {
-		return JoinFetchType.INNER;
+		return JoinFetch.DEFAULT_VALUE;
 	}
 	
 	public void setValue(JoinFetchType newJoinFetchValue) {

@@ -9,13 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
@@ -29,44 +26,15 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 	implements OrmPersistentAttribute
 {
-
-	protected List<OrmAttributeMappingProvider> attributeMappingProviders;
-
 	protected OrmAttributeMapping attributeMapping;
 	
 	public GenericOrmPersistentAttribute(OrmPersistentType parent, String mappingKey) {
 		super(parent);
-		this.attributeMappingProviders = buildAttributeMappingProviders();
 		this.attributeMapping = buildAttributeMapping(mappingKey);
-	}
-	
-
-	protected List<OrmAttributeMappingProvider> buildAttributeMappingProviders() {
-		List<OrmAttributeMappingProvider> list = new ArrayList<OrmAttributeMappingProvider>();
-		list.add(OrmEmbeddedMappingProvider.instance()); //bug 190344 need to test default embedded before basic
-		list.add(OrmBasicMappingProvider.instance());
-		list.add(OrmTransientMappingProvider.instance());
-		list.add(OrmIdMappingProvider.instance());
-		list.add(OrmManyToManyMappingProvider.instance());
-		list.add(OrmOneToManyMappingProvider.instance());
-		list.add(OrmManyToOneMappingProvider.instance());
-		list.add(OrmOneToOneMappingProvider.instance());
-		list.add(OrmVersionMappingProvider.instance());
-		list.add(OrmEmbeddedIdMappingProvider.instance());
-		return list;
-	}
-	
-	protected OrmAttributeMappingProvider attributeMappingProvider(String key) {
-		for (OrmAttributeMappingProvider provider : this.attributeMappingProviders) {
-			if (provider.getKey().equals(key)) {
-				return provider;
-			}
-		}
-		return OrmNullAttributeMappingProvider.instance();
 	}
 
 	protected OrmAttributeMapping buildAttributeMapping(String key) {
-		return this.attributeMappingProvider(key).buildAttributeMapping(getJpaFactory(), this);
+		return getJpaPlatform().buildOrmAttributeMappingFromMappingKey(key, this);
 	}
 	
 	public String getId() {
@@ -74,7 +42,7 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 	}
 
 	public String getName() {
-		return getMapping().getName();
+		return this.attributeMapping.getName();
 	}
 
 	public void nameChanged(String oldName, String newName) {
@@ -90,7 +58,7 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 	}
 
 	public String getMappingKey() {
-		return this.getMapping().getKey();
+		return this.attributeMapping.getKey();
 	}
 
 	public String getDefaultMappingKey() {
@@ -101,7 +69,7 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 		if (this.getMappingKey() == newMappingKey) {
 			return;
 		}
-		OrmAttributeMapping oldMapping = getMapping();
+		OrmAttributeMapping oldMapping = this.attributeMapping;
 		this.attributeMapping = buildAttributeMapping(newMappingKey);
 		getPersistentType().changeMapping(this, oldMapping, this.attributeMapping);
 		firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, oldMapping, this.attributeMapping);
@@ -111,13 +79,9 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 		if (this.getMappingKey() == newMappingKey) {
 			return;
 		}
-		OrmAttributeMapping oldMapping = getMapping();
+		OrmAttributeMapping oldMapping = this.attributeMapping;
 		this.attributeMapping = buildAttributeMapping(newMappingKey);
 		firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, oldMapping, this.attributeMapping);
-	}
-
-	public Collection<OrmAttributeMappingProvider> attributeMappingProviders() {
-		return this.attributeMappingProviders;
 	}
 
 	public OrmPersistentType getPersistentType() {
@@ -134,53 +98,53 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 
 	public void makeVirtual() {
 		if (isVirtual()) {
-			throw new IllegalStateException("Attribute is already virtual");
+			throw new IllegalStateException("Attribute is already virtual"); //$NON-NLS-1$
 		}
 		getPersistentType().makePersistentAttributeVirtual(this);
 	}
 	
 	public void makeSpecified() {
 		if (!isVirtual()) {
-			throw new IllegalStateException("Attribute is already specified");
+			throw new IllegalStateException("Attribute is already specified"); //$NON-NLS-1$
 		}
 		if (getMappingKey() == MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
-			throw new IllegalStateException("Use makeSpecified(String) instead and specify a mapping type");
+			throw new IllegalStateException("Use makeSpecified(String) instead and specify a mapping type"); //$NON-NLS-1$
 		}
 		getPersistentType().makePersistentAttributeSpecified(this);
 	}
 	
 	public void makeSpecified(String mappingKey) {
 		if (!isVirtual()) {
-			throw new IllegalStateException("Attribute is already specified");
+			throw new IllegalStateException("Attribute is already specified"); //$NON-NLS-1$
 		}
 		getPersistentType().makePersistentAttributeSpecified(this, mappingKey);
 	}
 	
 	public String getPrimaryKeyColumnName() {
-		return getMapping().getPrimaryKeyColumnName();
+		return this.attributeMapping.getPrimaryKeyColumnName();
 	}
 
 	public boolean isOverridableAttribute() {
-		return this.getMapping().isOverridableAttributeMapping();
+		return this.attributeMapping.isOverridableAttributeMapping();
 	}
 
 	public boolean isOverridableAssociation() {
-		return this.getMapping().isOverridableAssociationMapping();
+		return this.attributeMapping.isOverridableAssociationMapping();
 	}
 
 	public boolean isIdAttribute() {
-		return this.getMapping().isIdMapping();
+		return this.attributeMapping.isIdMapping();
 	}
 	
 	public void initialize(XmlAttributeMapping attributeMapping) {
-		getMapping().initialize(attributeMapping);
+		this.attributeMapping.initialize(attributeMapping);
 	}
 	
 	public void update() {
-		getMapping().update();
+		this.attributeMapping.update();
 	}
 	
-	public JpaStructureNode getStructureNode(int offset) {
+	public JpaStructureNode getStructureNode(@SuppressWarnings("unused") int offset) {
 		return this;
 	}
 

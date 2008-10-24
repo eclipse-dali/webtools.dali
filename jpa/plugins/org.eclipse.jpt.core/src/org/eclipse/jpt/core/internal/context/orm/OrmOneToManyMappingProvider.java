@@ -11,9 +11,13 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 
 public class OrmOneToManyMappingProvider implements OrmAttributeMappingProvider
 {
@@ -38,7 +42,11 @@ public class OrmOneToManyMappingProvider implements OrmAttributeMappingProvider
 		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public OrmOneToManyMapping buildAttributeMapping(JpaFactory factory, OrmPersistentAttribute parent) {
+	public OrmOneToManyMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory) {
 		return factory.buildOrmOneToManyMapping(parent);
+	}
+	
+	public XmlOneToMany buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
+		return factory.buildVirtualXmlOneToMany(ormTypeMapping, (JavaOneToManyMapping) javaAttributeMapping);
 	}
 }

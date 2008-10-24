@@ -23,4 +23,5 @@ public interface JoinFetch extends JpaContextNode
 	JoinFetchType getValue();
 	void setValue(JoinFetchType newJoinFetchValue);
 		String VALUE_PROPERTY = "JoinFetch.valueProperty"; //$NON-NLS-1$
+		JoinFetchType DEFAULT_VALUE = JoinFetchType.INNER;
 }

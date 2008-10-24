@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 public class OrmEmbeddableProvider implements OrmTypeMappingProvider
 {
 
-	public OrmEmbeddable buildTypeMapping(JpaFactory factory, OrmPersistentType parent) {
+	public OrmEmbeddable buildMapping(OrmPersistentType parent, JpaFactory factory) {
 		return factory.buildOrmEmbeddable(parent);
 	}
 

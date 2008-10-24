@@ -40,16 +40,22 @@ public class EclipseLinkOrmPrivateOwned extends AbstractXmlContextNode
 		firePropertyChanged(PRIVATE_OWNED_PROPERTY, oldPrivateOwned, newPrivateOwned);
 	}
 	
+	protected void setPrivateOwned_(boolean newPrivateOwned) {
+		boolean oldPrivateOwned = this.privateOwned;
+		this.privateOwned = newPrivateOwned;
+		firePropertyChanged(PRIVATE_OWNED_PROPERTY, oldPrivateOwned, newPrivateOwned);
+	}
+	
 	
 	// **************** initialize/update **************************************
 	
 	protected void initialize(XmlPrivateOwned xmlPrivateOwned) {
 		this.resource = xmlPrivateOwned;
-		this.privateOwned = resource.isPrivateOwned();
+		this.privateOwned = this.resource.isPrivateOwned();
 	}
 	
 	protected void update() {
-		setPrivateOwned(resource.isPrivateOwned());
+		setPrivateOwned_(this.resource.isPrivateOwned());
 	}
 	
 	

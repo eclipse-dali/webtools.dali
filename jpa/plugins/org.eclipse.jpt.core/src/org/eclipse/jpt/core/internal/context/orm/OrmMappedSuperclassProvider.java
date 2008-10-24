@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 
 public class OrmMappedSuperclassProvider implements OrmTypeMappingProvider
 {	
-	public OrmMappedSuperclass buildTypeMapping(JpaFactory factory, OrmPersistentType parent) {
+	public OrmMappedSuperclass buildMapping(OrmPersistentType parent, JpaFactory factory) {
 		return factory.buildOrmMappedSuperclass(parent);
 	}
 

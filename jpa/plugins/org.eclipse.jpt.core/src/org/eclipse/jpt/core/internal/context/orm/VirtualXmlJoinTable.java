@@ -14,9 +14,6 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
-import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
@@ -31,32 +28,24 @@ public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTa
 	protected JavaJoinTable javaJoinTable;
 
 	protected boolean metadataComplete;
-
-	protected OrmPersistentAttribute ormPersistentAttribute;
 	
 
-	protected VirtualXmlJoinTable(OrmPersistentAttribute ormPersistentAttribute, JavaJoinTable javaJoinTable, boolean metadataComplete) {
+	protected VirtualXmlJoinTable(JavaJoinTable javaJoinTable, boolean metadataComplete) {
 		super();
-		this.ormPersistentAttribute = ormPersistentAttribute;
 		this.javaJoinTable = javaJoinTable;
 		this.metadataComplete = metadataComplete;
 	}
-
-	protected OrmRelationshipMapping ormRelationshipMapping() {
-		return (OrmRelationshipMapping) this.ormPersistentAttribute.getMapping();
-	}
 	
 	public String getName() {
-		if (!this.metadataComplete) {
-			if (this.javaJoinTable.getSpecifiedName() != null) {
-				return this.javaJoinTable.getSpecifiedName();
-			}	
-		}
-		return MappingTools.buildJoinTableDefaultName(ormRelationshipMapping());
+		//TODO EclipseLink is different since it has a default 1-m mapping
+		//in core, the metadataComplete flag is useless since you will never
+		//have a virtual 1-m if metadata complete.  In eclipselink it is needed
+		//but since it can change we need to get it from the typeMapping.
+		return this.javaJoinTable.getName();
 	}
 
-	public void setName(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setName(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public String getCatalog() {
@@ -66,8 +55,8 @@ public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTa
 		return this.javaJoinTable.getCatalog();
 	}
 
-	public void setCatalog(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setCatalog(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public String getSchema() {
@@ -77,8 +66,8 @@ public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTa
 		return this.javaJoinTable.getSchema();
 	}
 
-	public void setSchema(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setSchema(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	//VirtualXmlJoinTable is rebuilt every time, so just rebuilding the joinColumns list as well

@@ -11,9 +11,13 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlId;
 
 public class OrmIdMappingProvider implements OrmAttributeMappingProvider
 {
@@ -37,7 +41,11 @@ public class OrmIdMappingProvider implements OrmAttributeMappingProvider
 		return MappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public OrmIdMapping buildAttributeMapping(JpaFactory factory, OrmPersistentAttribute parent) {
+	public OrmIdMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory) {
 		return factory.buildOrmIdMapping(parent);
+	}
+	
+	public XmlId buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
+		return factory.buildVirtualXmlId(ormTypeMapping, (JavaIdMapping) javaAttributeMapping);
 	}
 }

@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
@@ -33,6 +32,10 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.JavaJpaFileProvider;
 import org.eclipse.jpt.core.internal.OrmJpaFileProvider;
 import org.eclipse.jpt.core.internal.PersistenceJpaFileProvider;
@@ -51,6 +54,18 @@ import org.eclipse.jpt.core.internal.context.java.JavaOneToManyMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaOneToOneMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmBasicMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmEmbeddedIdMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmEmbeddedMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmIdMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmManyToManyMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmManyToOneMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmNullAttributeMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmOneToManyMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmOneToOneMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmTransientMappingProvider;
+import org.eclipse.jpt.core.internal.context.orm.OrmVersionMappingProvider;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.DatabaseFinder;
 import org.eclipse.jpt.db.JptDbPlugin;
@@ -77,6 +92,7 @@ public class GenericJpaPlatform
 
 	private DefaultJavaAttributeMappingProvider[] defaultJavaAttributeMappingProviders;
 
+	private OrmAttributeMappingProvider[] ormAttributeMappingProviders;
 
 	/**
 	 * zero-argument constructor
@@ -366,6 +382,57 @@ public class GenericJpaPlatform
 		return JavaNullAttributeMappingProvider.instance();
 	}
 
+	// ********** ORM attribute mappings **********
+
+
+	public OrmAttributeMapping buildOrmAttributeMappingFromMappingKey(String key, OrmPersistentAttribute attribute) {
+		return this.getOrmAttributeMappingProviderForMappingKey(key).buildMapping(attribute, this.getJpaFactory());
+	}
+	
+	public XmlAttributeMapping buildVirtualOrmResourceMappingFromMappingKey(String key, OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping) {
+		return this.getOrmAttributeMappingProviderForMappingKey(key).buildVirtualResourceMapping(ormTypeMapping, javaAttributeMapping, this.getJpaFactory());
+	}
+	
+
+	protected synchronized OrmAttributeMappingProvider[] getOrmAttributeMappingProviders() {
+		if (this.ormAttributeMappingProviders == null) {
+			this.ormAttributeMappingProviders = this.buildOrmAttributeMappingProviders();
+		}
+		return this.ormAttributeMappingProviders;
+	}
+
+	protected OrmAttributeMappingProvider[] buildOrmAttributeMappingProviders() {
+		ArrayList<OrmAttributeMappingProvider> providers = new ArrayList<OrmAttributeMappingProvider>();
+		this.addOrmAttributeMappingProvidersTo(providers);
+		return providers.toArray(new OrmAttributeMappingProvider[providers.size()]);
+	}
+
+	/**
+	 * Override this to specify more or different attribute mapping providers.
+	 * The default includes the JPA spec-defined attribute mappings of 
+	 * Basic, Id, Transient OneToOne, OneToMany, ManyToOne, ManyToMany, Embeddable, EmbeddedId, Version.
+	 */
+	protected void addOrmAttributeMappingProvidersTo(List<OrmAttributeMappingProvider> providers) {
+		providers.add(OrmEmbeddedMappingProvider.instance()); //bug 190344 need to test default embedded before basic
+		providers.add(OrmBasicMappingProvider.instance());
+		providers.add(OrmTransientMappingProvider.instance());
+		providers.add(OrmIdMappingProvider.instance());
+		providers.add(OrmManyToManyMappingProvider.instance());
+		providers.add(OrmOneToManyMappingProvider.instance());
+		providers.add(OrmManyToOneMappingProvider.instance());
+		providers.add(OrmOneToOneMappingProvider.instance());
+		providers.add(OrmVersionMappingProvider.instance());
+		providers.add(OrmEmbeddedIdMappingProvider.instance());
+	}
+
+	protected OrmAttributeMappingProvider getOrmAttributeMappingProviderForMappingKey(String key) {
+		for (OrmAttributeMappingProvider provider : this.getOrmAttributeMappingProviders()) {
+			if (provider.getKey() == key) {
+				return provider;
+			}
+		}
+		return OrmNullAttributeMappingProvider.instance();
+	}
 
 	// ********** database **********
 

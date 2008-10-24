@@ -14,6 +14,10 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.DatabaseFinder;
 
@@ -133,7 +137,23 @@ public interface JpaPlatform
 	 */
 	String getDefaultJavaAttributeMappingKey(JavaPersistentAttribute attribute);
 
+	
+	// ********** ORM attribute mappings **********
 
+	/**
+	 * Build an ORM attribute mapping for the specified key and persistent attribute.
+	 * Use identity when comparing keys; so clients must use the same key
+	 * constants as the providers.
+	 */
+	OrmAttributeMapping buildOrmAttributeMappingFromMappingKey(String key, OrmPersistentAttribute attribute);
+
+	/**
+	 * Build a virtual resource attribute mapping to be used when the mapping is not specified in the orm.xml
+	 * file.  There is no XmlAttributeMapping in this case, so we build one that delegates to the 
+	 * JavaAttributeMapping as necessary
+	 */
+	XmlAttributeMapping buildVirtualOrmResourceMappingFromMappingKey(String key, OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping);
+	
 	// ********** database **********
 
 	/**

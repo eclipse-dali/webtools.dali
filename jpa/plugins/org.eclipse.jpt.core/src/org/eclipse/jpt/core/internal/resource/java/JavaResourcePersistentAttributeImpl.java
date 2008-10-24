@@ -488,6 +488,9 @@ public class JavaResourcePersistentAttributeImpl
 	 * Return whether the specified type implements java.io.Serializable.
 	 */
 	private static boolean typeImplementsSerializable(ITypeBinding typeBinding, AST ast) {
+		if (typeBinding == null) {
+			return false;
+		}
 		ITypeBinding serializableTypeBinding = ast.resolveWellKnownType(SERIALIZABLE_TYPE_NAME);
 		return typeBinding.isAssignmentCompatible(serializableTypeBinding);
 	}
@@ -505,6 +508,9 @@ public class JavaResourcePersistentAttributeImpl
 	 * Return whether the specified type implements java.util.Date.
 	 */
 	private static boolean typeImplementsDate(ITypeBinding typeBinding) {
+		if (typeBinding == null) {
+			return false;
+		}
 		return JDTTools.findTypeInHierarchy(typeBinding, DATE_TYPE_NAME) != null;
 	}
 
@@ -514,6 +520,9 @@ public class JavaResourcePersistentAttributeImpl
 	 * Return whether the specified type implements java.util.Calendar.
 	 */
 	private static boolean typeImplementsCalendar(ITypeBinding typeBinding) {
+		if (typeBinding == null) {
+			return false;
+		}
 		return JDTTools.findTypeInHierarchy(typeBinding, CALENDAR_TYPE_NAME) != null;
 	}
 

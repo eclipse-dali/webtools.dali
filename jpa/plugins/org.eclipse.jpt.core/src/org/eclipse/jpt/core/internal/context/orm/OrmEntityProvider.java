@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 
 public class OrmEntityProvider implements OrmTypeMappingProvider
 {	
-	public OrmEntity buildTypeMapping(JpaFactory factory, OrmPersistentType parent) {
+	public OrmEntity buildMapping(OrmPersistentType parent, JpaFactory factory) {
 		return factory.buildOrmEntity(parent);
 	}
 

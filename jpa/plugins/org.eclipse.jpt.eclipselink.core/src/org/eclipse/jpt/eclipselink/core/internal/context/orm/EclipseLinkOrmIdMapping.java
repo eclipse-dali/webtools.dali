@@ -50,8 +50,8 @@ public class EclipseLinkOrmIdMapping extends GenericOrmIdMapping
 	}
 	
 	@Override
-	public void initialize(XmlAttributeMapping attributeMapping) {
-		super.initialize(attributeMapping);	
+	public void initialize(XmlAttributeMapping xmlAttributeMapping) {
+		super.initialize(xmlAttributeMapping);	
 		this.mutable.initialize((XmlMutable) this.resourceAttributeMapping);
 	}
 	

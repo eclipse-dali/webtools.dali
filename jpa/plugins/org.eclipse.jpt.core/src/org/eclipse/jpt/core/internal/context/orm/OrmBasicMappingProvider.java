@@ -11,9 +11,13 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlBasic;
 
 public class OrmBasicMappingProvider implements OrmAttributeMappingProvider
 {
@@ -38,7 +42,11 @@ public class OrmBasicMappingProvider implements OrmAttributeMappingProvider
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public OrmBasicMapping buildAttributeMapping(JpaFactory factory, OrmPersistentAttribute parent) {
+	public OrmBasicMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory) {
 		return factory.buildOrmBasicMapping(parent);
+	}
+	
+	public XmlBasic buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
+		return factory.buildVirtualXmlBasic(ormTypeMapping, (JavaBasicMapping) javaAttributeMapping);
 	}
 }

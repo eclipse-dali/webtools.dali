@@ -11,9 +11,13 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
 
 public class OrmEmbeddedIdMappingProvider implements OrmAttributeMappingProvider
 {
@@ -34,11 +38,15 @@ public class OrmEmbeddedIdMappingProvider implements OrmAttributeMappingProvider
 		super();
 	}
 
-	public OrmEmbeddedIdMapping buildAttributeMapping(JpaFactory factory, OrmPersistentAttribute parent) {
+	public OrmEmbeddedIdMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory) {
 		return factory.buildOrmEmbeddedIdMapping(parent);
 	}
 
 	public String getKey() {
 		return MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY;
+	}
+	
+	public XmlEmbeddedId buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
+		return factory.buildVirtualXmlEmbeddedId(ormTypeMapping, (JavaEmbeddedIdMapping) javaAttributeMapping);
 	}
 }

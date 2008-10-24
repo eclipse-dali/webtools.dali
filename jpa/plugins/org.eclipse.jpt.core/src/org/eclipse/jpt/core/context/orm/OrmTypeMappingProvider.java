@@ -24,6 +24,6 @@ public interface OrmTypeMappingProvider
 {
 	String getKey();
 	
-	OrmTypeMapping buildTypeMapping(JpaFactory factory, OrmPersistentType parent);
+	OrmTypeMapping buildMapping(OrmPersistentType parent, JpaFactory factory);
 	
 }

@@ -11,9 +11,13 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
 
 public class OrmEmbeddedMappingProvider implements OrmAttributeMappingProvider
 {
@@ -34,11 +38,15 @@ public class OrmEmbeddedMappingProvider implements OrmAttributeMappingProvider
 		super();
 	}
 
-	public OrmEmbeddedMapping buildAttributeMapping(JpaFactory factory, OrmPersistentAttribute parent) {
+	public OrmEmbeddedMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory) {
 		return factory.buildOrmEmbeddedMapping(parent);
 	}
 
 	public String getKey() {
 		return MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
+	}
+	
+	public XmlEmbedded buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
+		return factory.buildVirtualXmlEmbedded(ormTypeMapping, (JavaEmbeddedMapping) javaAttributeMapping);
 	}
 }

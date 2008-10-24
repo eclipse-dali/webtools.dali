@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
@@ -36,6 +35,8 @@ public abstract class VirtualXmlAttributeMapping<T extends JavaAttributeMapping>
 	}
 	
 	public String getMappingKey() {
-		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;//TODO unsure about this
+		//TODO unsure about this, but don't believe we should be asking a virtual mapping for it's mapping key
+		//or maybe we should be asking the javaAttributeMapping for its default or specified mapping key?
+		throw new UnsupportedOperationException();
 	}
 }
