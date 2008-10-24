@@ -50,8 +50,8 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return this.column.getColumnDefinition();
 	}
 
-	public void setColumnDefinition(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setColumnDefinition(@SuppressWarnings("unused")String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public Boolean getInsertable() {
@@ -61,8 +61,8 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return this.column.getInsertable();
 	}
 
-	public void setInsertable(Boolean value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setInsertable(@SuppressWarnings("unused")Boolean value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public Integer getLength() {
@@ -72,8 +72,8 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return this.column.getLength();
 	}
 
-	public void setLength(Integer value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setLength(@SuppressWarnings("unused")Integer value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public String getName() {
@@ -83,8 +83,8 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return this.column.getName();
 	}
 
-	public void setName(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setName(@SuppressWarnings("unused")String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public Boolean getNullable() {
@@ -94,8 +94,8 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return this.column.getNullable();
 	}
 
-	public void setNullable(Boolean value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setNullable(@SuppressWarnings("unused")Boolean value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public Integer getPrecision() {
@@ -105,8 +105,8 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return this.column.getPrecision();
 	}
 
-	public void setPrecision(Integer value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setPrecision(@SuppressWarnings("unused")Integer value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public Integer getScale() {
@@ -116,8 +116,8 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return this.column.getScale();
 	}
 
-	public void setScale(Integer value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setScale(@SuppressWarnings("unused")Integer value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public String getTable() {
@@ -129,8 +129,8 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return this.ormTypeMapping.getPrimaryTableName();
 	}
 
-	public void setTable(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setTable(@SuppressWarnings("unused")String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public Boolean getUnique() {
@@ -140,8 +140,8 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return this.column.getUnique();
 	}
 
-	public void setUnique(Boolean value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setUnique(@SuppressWarnings("unused")Boolean value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public Boolean getUpdatable() {
@@ -151,8 +151,8 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return this.column.getUpdatable();
 	}
 
-	public void setUpdatable(Boolean value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setUpdatable(@SuppressWarnings("unused")Boolean value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	public void update(Column column) {

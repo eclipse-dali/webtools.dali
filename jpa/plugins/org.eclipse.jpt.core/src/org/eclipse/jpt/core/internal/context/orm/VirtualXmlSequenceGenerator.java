@@ -39,8 +39,8 @@ public class VirtualXmlSequenceGenerator extends AbstractJpaEObject implements X
 		return this.getJavaSequenceGenerator().getSequenceName();
 	}
 
-	public void setSequenceName(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setSequenceName(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	public Integer getAllocationSize() {
@@ -50,8 +50,8 @@ public class VirtualXmlSequenceGenerator extends AbstractJpaEObject implements X
 		return this.getJavaSequenceGenerator().getAllocationSize();
 	}
 
-	public void setAllocationSize(Integer value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setAllocationSize(@SuppressWarnings("unused") Integer value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public Integer getInitialValue() {
@@ -61,8 +61,8 @@ public class VirtualXmlSequenceGenerator extends AbstractJpaEObject implements X
 		return this.getJavaSequenceGenerator().getInitialValue();
 	}
 
-	public void setInitialValue(Integer value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setInitialValue(@SuppressWarnings("unused") Integer value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public String getName() {
@@ -72,8 +72,8 @@ public class VirtualXmlSequenceGenerator extends AbstractJpaEObject implements X
 		return this.getJavaSequenceGenerator().getName();
 	}
 
-	public void setName(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setName(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	public TextRange getNameTextRange() {

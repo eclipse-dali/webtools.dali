@@ -30,8 +30,8 @@ public class VirtualXmlAttributeOverride extends AbstractJpaEObject implements X
 		return this.name;
 	}
 
-	public void setName(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setName(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 
@@ -39,7 +39,7 @@ public class VirtualXmlAttributeOverride extends AbstractJpaEObject implements X
 		return this.column;
 	}
 
-	public void setColumn(XmlColumn value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setColumn(@SuppressWarnings("unused") XmlColumn value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 }

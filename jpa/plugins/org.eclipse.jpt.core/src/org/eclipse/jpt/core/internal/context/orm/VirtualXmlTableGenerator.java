@@ -45,8 +45,8 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.getJavaTableGenerator().getCatalog();
 	}
 
-	public void setCatalog(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setCatalog(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public String getPkColumnName() {
@@ -56,8 +56,8 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.getJavaTableGenerator().getPkColumnName();
 	}
 
-	public void setPkColumnName(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setPkColumnName(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public String getPkColumnValue() {
@@ -67,8 +67,8 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.getJavaTableGenerator().getPkColumnValue();
 	}
 
-	public void setPkColumnValue(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setPkColumnValue(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public String getSchema() {
@@ -78,8 +78,8 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.getJavaTableGenerator().getSchema();
 	}
 
-	public void setSchema(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setSchema(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public String getTable() {
@@ -89,8 +89,8 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.getJavaTableGenerator().getTable();
 	}
 
-	public void setTable(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setTable(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public String getValueColumnName() {
@@ -100,8 +100,8 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.getJavaTableGenerator().getValueColumnName();
 	}
 
-	public void setValueColumnName(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setValueColumnName(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public Integer getAllocationSize() {
@@ -111,8 +111,8 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.getJavaTableGenerator().getAllocationSize();
 	}
 
-	public void setAllocationSize(Integer value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setAllocationSize(@SuppressWarnings("unused") Integer value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public Integer getInitialValue() {
@@ -122,8 +122,8 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.getJavaTableGenerator().getInitialValue();
 	}
 
-	public void setInitialValue(Integer value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setInitialValue(@SuppressWarnings("unused") Integer value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public String getName() {
@@ -133,8 +133,8 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.getJavaTableGenerator().getName();
 	}
 
-	public void setName(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setName(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 

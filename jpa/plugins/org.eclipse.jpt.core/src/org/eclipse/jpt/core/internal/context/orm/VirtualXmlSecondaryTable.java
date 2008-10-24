@@ -44,24 +44,24 @@ public class VirtualXmlSecondaryTable extends AbstractJpaEObject implements XmlS
 		return this.javaSecondaryTable.getSpecifiedName();
 	}
 
-	public void setName(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setName(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public String getCatalog() {
 		return this.javaSecondaryTable.getSpecifiedCatalog();
 	}
 	
-	public void setCatalog(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setCatalog(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	public String getSchema() {
 		return this.javaSecondaryTable.getSpecifiedSchema();
 	}
 	
-	public void setSchema(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setSchema(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	//VirtualXmlSecondaryTable is rebuilt everytime, so rebuilding the joinColumns list as well

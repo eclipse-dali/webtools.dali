@@ -33,8 +33,8 @@ public class VirtualXmlJoinColumn extends AbstractJpaEObject implements XmlJoinC
 		return this.javaJoinColumn.getColumnDefinition();
 	}
 
-	public void setColumnDefinition(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setColumnDefinition(@SuppressWarnings("unused")String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public Boolean getInsertable() {
@@ -44,8 +44,8 @@ public class VirtualXmlJoinColumn extends AbstractJpaEObject implements XmlJoinC
 		return this.javaJoinColumn.getInsertable();
 	}
 
-	public void setInsertable(Boolean value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setInsertable(@SuppressWarnings("unused")Boolean value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public String getName() {
@@ -55,8 +55,8 @@ public class VirtualXmlJoinColumn extends AbstractJpaEObject implements XmlJoinC
 		return this.javaJoinColumn.getName();
 	}
 
-	public void setName(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setName(@SuppressWarnings("unused")String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public String getReferencedColumnName() {
@@ -66,8 +66,8 @@ public class VirtualXmlJoinColumn extends AbstractJpaEObject implements XmlJoinC
 		return this.javaJoinColumn.getReferencedColumnName();
 	}
 
-	public void setReferencedColumnName(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setReferencedColumnName(@SuppressWarnings("unused")String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	public Boolean getNullable() {
@@ -77,8 +77,8 @@ public class VirtualXmlJoinColumn extends AbstractJpaEObject implements XmlJoinC
 		return this.javaJoinColumn.getNullable();
 	}
 
-	public void setNullable(Boolean value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setNullable(@SuppressWarnings("unused")Boolean value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public String getTable() {
@@ -88,8 +88,8 @@ public class VirtualXmlJoinColumn extends AbstractJpaEObject implements XmlJoinC
 		return this.javaJoinColumn.getTable();
 	}
 
-	public void setTable(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setTable(@SuppressWarnings("unused")String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public Boolean getUnique() {
@@ -99,8 +99,8 @@ public class VirtualXmlJoinColumn extends AbstractJpaEObject implements XmlJoinC
 		return this.javaJoinColumn.getUnique();
 	}
 
-	public void setUnique(Boolean value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setUnique(@SuppressWarnings("unused")Boolean value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public Boolean getUpdatable() {
@@ -110,8 +110,8 @@ public class VirtualXmlJoinColumn extends AbstractJpaEObject implements XmlJoinC
 		return this.javaJoinColumn.getUpdatable();
 	}
 
-	public void setUpdatable(Boolean value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setUpdatable(@SuppressWarnings("unused") Boolean value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public TextRange getNameTextRange() {

@@ -37,24 +37,24 @@ public class VirtualXmlPrimaryKeyJoinColumn extends AbstractJpaEObject implement
 		return this.javaPrimaryKeyJoinColumn.getName();
 	}
 
-	public void setName(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setName(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public String getColumnDefinition() {
 		return this.javaPrimaryKeyJoinColumn.getColumnDefinition();
 	}
 	
-	public void setColumnDefinition(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setColumnDefinition(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	public String getReferencedColumnName() {
 		return this.javaPrimaryKeyJoinColumn.getReferencedColumnName();
 	}
 	
-	public void setReferencedColumnName(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setReferencedColumnName(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	public TextRange getNameTextRange() {

@@ -37,16 +37,16 @@ public class VirtualXmlVersion extends VirtualXmlAttributeMapping<JavaVersionMap
 		return this.javaAttributeMapping.getPersistentAttribute().getName();
 	}
 
-	public void setName(String newName) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setName(@SuppressWarnings("unused") String newName) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public XmlColumn getColumn() {
 		return this.column;
 	}
 
-	public void setColumn(XmlColumn value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setColumn(@SuppressWarnings("unused") XmlColumn value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public TemporalType getTemporal() {
@@ -60,24 +60,24 @@ public class VirtualXmlVersion extends VirtualXmlAttributeMapping<JavaVersionMap
 		return null;
 	}
 
-	public void setTemporal(TemporalType newTemporal){
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setTemporal(@SuppressWarnings("unused") TemporalType newTemporal){
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	public EnumType getEnumerated() {
-		throw new UnsupportedOperationException("enumerated not supported on version mappings");
+		throw new UnsupportedOperationException("enumerated not supported on version mappings"); //$NON-NLS-1$
 	}
 	
-	public void setEnumerated(EnumType value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setEnumerated(@SuppressWarnings("unused") EnumType value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	public boolean isLob() {
-		throw new UnsupportedOperationException("lob not supported on version mappings");
+		throw new UnsupportedOperationException("lob not supported on version mappings"); //$NON-NLS-1$
 	}
 	
-	public void setLob(boolean value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setLob(@SuppressWarnings("unused") boolean value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}	
 	
 	public TextRange getNameTextRange() {

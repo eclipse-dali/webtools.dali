@@ -36,8 +36,8 @@ public class VirtualCascadeType extends AbstractJpaEObject implements CascadeTyp
 		return this.javaCascade.isAll();
 	}
 
-	public void setCascadeAll(boolean value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setCascadeAll(@SuppressWarnings("unused") boolean value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public boolean isCascadeMerge() {
@@ -47,8 +47,8 @@ public class VirtualCascadeType extends AbstractJpaEObject implements CascadeTyp
 		return this.javaCascade.isMerge();
 	}
 
-	public void setCascadeMerge(boolean value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setCascadeMerge(@SuppressWarnings("unused") boolean value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public boolean isCascadePersist() {
@@ -58,8 +58,8 @@ public class VirtualCascadeType extends AbstractJpaEObject implements CascadeTyp
 		return this.javaCascade.isPersist();
 	}
 
-	public void setCascadePersist(boolean value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setCascadePersist(@SuppressWarnings("unused") boolean value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public boolean isCascadeRefresh() {
@@ -69,8 +69,8 @@ public class VirtualCascadeType extends AbstractJpaEObject implements CascadeTyp
 		return this.javaCascade.isRefresh();
 	}
 
-	public void setCascadeRefresh(boolean value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setCascadeRefresh(@SuppressWarnings("unused") boolean value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public boolean isCascadeRemove() {
@@ -80,7 +80,7 @@ public class VirtualCascadeType extends AbstractJpaEObject implements CascadeTyp
 		return this.javaCascade.isRemove();
 	}
 
-	public void setCascadeRemove(boolean value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setCascadeRemove(@SuppressWarnings("unused") boolean value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 }

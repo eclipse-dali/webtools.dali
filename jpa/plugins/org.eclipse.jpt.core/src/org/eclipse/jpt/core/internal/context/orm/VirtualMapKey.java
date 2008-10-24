@@ -32,8 +32,8 @@ public class VirtualMapKey extends AbstractJpaEObject implements MapKey
 		return this.javaMultiRelationshipMapping.getMapKey();
 	}
 
-	public void setName(String newName) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setName(@SuppressWarnings("unused") String newName) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public void update(JavaMultiRelationshipMapping javaMultiRelationshipMapping) {

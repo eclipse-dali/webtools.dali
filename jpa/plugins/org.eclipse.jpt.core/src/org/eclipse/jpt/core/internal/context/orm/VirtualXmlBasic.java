@@ -40,16 +40,16 @@ public class VirtualXmlBasic extends VirtualXmlAttributeMapping<JavaBasicMapping
 		return this.javaAttributeMapping.getPersistentAttribute().getName();
 	}
 
-	public void setName(String newName) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setName(@SuppressWarnings("unused")String newName) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public XmlColumn getColumn() {
 		return this.column;
 	}
 
-	public void setColumn(XmlColumn value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setColumn(@SuppressWarnings("unused")XmlColumn value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	public FetchType getFetch() {
@@ -59,8 +59,8 @@ public class VirtualXmlBasic extends VirtualXmlAttributeMapping<JavaBasicMapping
 		return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaAttributeMapping.getFetch());
 	}
 
-	public void setFetch(FetchType newFetch) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setFetch(@SuppressWarnings("unused")FetchType newFetch) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public Boolean getOptional() {
@@ -70,8 +70,8 @@ public class VirtualXmlBasic extends VirtualXmlAttributeMapping<JavaBasicMapping
 		return this.javaAttributeMapping.getOptional();
 	}
 
-	public void setOptional(Boolean newOptional) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setOptional(@SuppressWarnings("unused")Boolean newOptional) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public boolean isLob() {
@@ -81,8 +81,8 @@ public class VirtualXmlBasic extends VirtualXmlAttributeMapping<JavaBasicMapping
 		return this.javaAttributeMapping.getConverter().getType() == Converter.LOB_CONVERTER;
 	}
 
-	public void setLob(boolean newLob) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setLob(@SuppressWarnings("unused")boolean newLob) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public TemporalType getTemporal() {
@@ -96,8 +96,8 @@ public class VirtualXmlBasic extends VirtualXmlAttributeMapping<JavaBasicMapping
 		return null;
 	}
 
-	public void setTemporal(TemporalType newTemporal){
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setTemporal(@SuppressWarnings("unused")TemporalType newTemporal){
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public EnumType getEnumerated() {
@@ -117,8 +117,8 @@ public class VirtualXmlBasic extends VirtualXmlAttributeMapping<JavaBasicMapping
 		return org.eclipse.jpt.core.context.EnumType.toOrmResourceModel(javaEnumeratedType);
 	}
 
-	public void setEnumerated(EnumType newEnumerated) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setEnumerated(@SuppressWarnings("unused")EnumType newEnumerated) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	public TextRange getNameTextRange() {

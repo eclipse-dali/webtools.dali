@@ -43,8 +43,8 @@ public class VirtualXmlManyToOne extends VirtualXmlAttributeMapping<JavaManyToOn
 		return this.javaAttributeMapping.getPersistentAttribute().getName();
 	}
 
-	public void setName(String newName) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setName(@SuppressWarnings("unused") String newName) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	public FetchType getFetch() {
@@ -54,8 +54,8 @@ public class VirtualXmlManyToOne extends VirtualXmlAttributeMapping<JavaManyToOn
 		return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaAttributeMapping.getFetch());
 	}
 
-	public void setFetch(FetchType newFetch) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setFetch(@SuppressWarnings("unused") FetchType newFetch) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public Boolean getOptional() {
@@ -65,8 +65,8 @@ public class VirtualXmlManyToOne extends VirtualXmlAttributeMapping<JavaManyToOn
 		return this.javaAttributeMapping.getOptional();
 	}
 
-	public void setOptional(Boolean newOptional) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setOptional(@SuppressWarnings("unused") Boolean newOptional) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public EList<XmlJoinColumn> getJoinColumns() {
@@ -83,8 +83,8 @@ public class VirtualXmlManyToOne extends VirtualXmlAttributeMapping<JavaManyToOn
 		return this.virtualCascadeType;
 	}
 	
-	public void setCascade(CascadeType value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setCascade(@SuppressWarnings("unused") CascadeType value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	public XmlJoinTable getJoinTable() {
@@ -92,8 +92,8 @@ public class VirtualXmlManyToOne extends VirtualXmlAttributeMapping<JavaManyToOn
 		return null;//this.virtualJoinTable;
 	}
 
-	public void setJoinTable(XmlJoinTable value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setJoinTable(@SuppressWarnings("unused") XmlJoinTable value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	public String getTargetEntity() {
@@ -103,8 +103,8 @@ public class VirtualXmlManyToOne extends VirtualXmlAttributeMapping<JavaManyToOn
 		return this.javaAttributeMapping.getTargetEntity();
 	}
 
-	public void setTargetEntity(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setTargetEntity(@SuppressWarnings("unused") String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public TextRange getNameTextRange() {

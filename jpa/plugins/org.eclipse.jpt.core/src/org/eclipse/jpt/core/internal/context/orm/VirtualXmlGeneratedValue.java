@@ -48,12 +48,12 @@ public class VirtualXmlGeneratedValue extends AbstractJpaEObject implements XmlG
 		return org.eclipse.jpt.core.context.GenerationType.toOrmResourceModel(this.getJavaGeneratedValue().getStrategy());
 	}
 
-	public void setGenerator(String value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setGenerator(@SuppressWarnings("unused")String value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
-	public void setStrategy(GenerationType value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
+	public void setStrategy(@SuppressWarnings("unused")GenerationType value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public TextRange getGeneratorTextRange() {
