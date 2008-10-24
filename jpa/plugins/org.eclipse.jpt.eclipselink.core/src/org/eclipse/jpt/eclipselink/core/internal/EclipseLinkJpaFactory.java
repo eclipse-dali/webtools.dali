@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
@@ -46,6 +47,7 @@ import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFile;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
@@ -91,7 +93,7 @@ public class EclipseLinkJpaFactory
 	
 	@Override
 	public XmlContextNode buildContextNode(JpaContextNode parent, JpaXmlResource resource) {
-		if (resource instanceof EclipseLinkOrmResource) {
+		if (resource.getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
 			return buildEclipseLinkOrmXml((MappingFileRef) parent, (EclipseLinkOrmResource) resource);
 		}
 		return super.buildContextNode(parent, resource);
@@ -110,92 +112,145 @@ public class EclipseLinkJpaFactory
 	}
 	
 	
-	// **************** orm resource objects ************************
+	// **************** orm resource objects ***********************************
 	
 	@Override
 	public XmlBasic buildVirtualXmlBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping) {
-		return new VirtualEclipseLinkXmlBasic(ormTypeMapping, javaBasicMapping);
+		if (ormTypeMapping.getEResource().getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new VirtualEclipseLinkXmlBasic(ormTypeMapping, javaBasicMapping);
+		}
+		return super.buildVirtualXmlBasic(ormTypeMapping, javaBasicMapping);
 	}
 	
 	@Override
 	public XmlId buildVirtualXmlId(OrmTypeMapping ormTypeMapping, JavaIdMapping javaIdMapping) {
-		return new VirtualEclipseLinkXmlId(ormTypeMapping, javaIdMapping);
+		if (ormTypeMapping.getEResource().getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new VirtualEclipseLinkXmlId(ormTypeMapping, javaIdMapping);
+		}
+		return super.buildVirtualXmlId(ormTypeMapping, javaIdMapping);
 	}
 	
 	@Override
 	public XmlManyToMany buildVirtualXmlManyToMany(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
-		return new VirtualEclipseLinkXmlManyToMany(ormTypeMapping, javaManyToManyMapping);
+		if (ormTypeMapping.getEResource().getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new VirtualEclipseLinkXmlManyToMany(ormTypeMapping, javaManyToManyMapping);
+		}
+		return super.buildVirtualXmlManyToMany(ormTypeMapping, javaManyToManyMapping);
 	}
 	
 	@Override
 	public XmlManyToOne buildVirtualXmlManyToOne(OrmTypeMapping ormTypeMapping, JavaManyToOneMapping javaManyToOneMapping) {
-		return new VirtualEclipseLinkXmlManyToOne(ormTypeMapping, javaManyToOneMapping);
+		if (ormTypeMapping.getEResource().getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new VirtualEclipseLinkXmlManyToOne(ormTypeMapping, javaManyToOneMapping);
+		}
+		return super.buildVirtualXmlManyToOne(ormTypeMapping, javaManyToOneMapping);
 	}
 	
 	@Override
 	public XmlOneToMany buildVirtualXmlOneToMany(OrmTypeMapping ormTypeMapping, JavaOneToManyMapping javaOneToManyMapping) {
-		return new VirtualEclipseLinkXmlOneToMany(ormTypeMapping, javaOneToManyMapping);
+		if (ormTypeMapping.getEResource().getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new VirtualEclipseLinkXmlOneToMany(ormTypeMapping, javaOneToManyMapping);
+		}
+		return super.buildVirtualXmlOneToMany(ormTypeMapping, javaOneToManyMapping);
 	}
 	
 	@Override
 	public XmlOneToOne buildVirtualXmlOneToOne(OrmTypeMapping ormTypeMapping, JavaOneToOneMapping javaOneToOneMapping) {
-		return new VirtualEclipseLinkXmlOneToOne(ormTypeMapping, javaOneToOneMapping);
+		if (ormTypeMapping.getEResource().getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new VirtualEclipseLinkXmlOneToOne(ormTypeMapping, javaOneToOneMapping);
+		}
+		return super.buildVirtualXmlOneToOne(ormTypeMapping, javaOneToOneMapping);
 	}
 	
 	@Override
 	public XmlVersion buildVirtualXmlVersion(OrmTypeMapping ormTypeMapping, JavaVersionMapping javaVersionMapping) {
-		return new VirtualEclipseLinkXmlVersion(ormTypeMapping, javaVersionMapping);
+		if (ormTypeMapping.getEResource().getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new VirtualEclipseLinkXmlVersion(ormTypeMapping, javaVersionMapping);
+		}
+		return super.buildVirtualXmlVersion(ormTypeMapping, javaVersionMapping);
 	}
+	
+	
 	// **************** eclipselink orm context objects ************************
 	
 	@Override
 	public OrmEmbeddable buildOrmEmbeddable(OrmPersistentType parent) {
-		return new EclipseLinkOrmEmbeddable(parent);
+		if (parent.getEResource().getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new EclipseLinkOrmEmbeddable(parent);
+		}
+		return super.buildOrmEmbeddable(parent);
 	}
 	
 	@Override
-	public EclipseLinkOrmEntity buildOrmEntity(OrmPersistentType parent) {
-		return new EclipseLinkOrmEntity(parent);
+	public OrmEntity buildOrmEntity(OrmPersistentType parent) {
+		if (parent.getEResource().getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new EclipseLinkOrmEntity(parent);
+		}
+		return super.buildOrmEntity(parent);
 	}
 	
 	@Override
 	public OrmMappedSuperclass buildOrmMappedSuperclass(OrmPersistentType parent) {
-		return new EclipseLinkOrmMappedSuperclass(parent);
+		if (parent.getEResource().getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new EclipseLinkOrmMappedSuperclass(parent);
+		}
+		return super.buildOrmMappedSuperclass(parent);
 	}
 	
 	@Override
 	public OrmIdMapping buildOrmIdMapping(OrmPersistentAttribute parent) {
-		return new EclipseLinkOrmIdMapping(parent);
+		if (parent.getEResource().getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new EclipseLinkOrmIdMapping(parent);
+		}
+		return super.buildOrmIdMapping(parent);
 	}
 	
 	@Override
 	public OrmBasicMapping buildOrmBasicMapping(OrmPersistentAttribute parent) {
-		return new EclipseLinkOrmBasicMapping(parent);
+		if (parent.getEResource().getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new EclipseLinkOrmBasicMapping(parent);
+		}
+		return super.buildOrmBasicMapping(parent);
 	}
 	
 	@Override
 	public OrmVersionMapping buildOrmVersionMapping(OrmPersistentAttribute parent) {
-		return new EclipseLinkOrmVersionMapping(parent);
+		if (parent.getEResource().getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new EclipseLinkOrmVersionMapping(parent);
+		}
+		return super.buildOrmVersionMapping(parent);
 	}
 	
 	@Override
 	public OrmManyToOneMapping buildOrmManyToOneMapping(OrmPersistentAttribute parent) {
-		return new EclipseLinkOrmManyToOneMapping(parent);
+		if (parent.getEResource().getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new EclipseLinkOrmManyToOneMapping(parent);
+		}
+		return super.buildOrmManyToOneMapping(parent);
 	}
 	
 	@Override
 	public OrmOneToManyMapping buildOrmOneToManyMapping(OrmPersistentAttribute parent) {
-		return new EclipseLinkOrmOneToManyMapping(parent);
+		if (parent.getEResource().getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new EclipseLinkOrmOneToManyMapping(parent);
+		}
+		return super.buildOrmOneToManyMapping(parent);
 	}
 	
 	@Override
 	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmPersistentAttribute parent) {
-		return new EclipseLinkOrmOneToOneMapping(parent);
+		if (parent.getEResource().getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new EclipseLinkOrmOneToOneMapping(parent);
+		}
+		return super.buildOrmOneToOneMapping(parent);
 	}
 	
 	@Override
 	public OrmManyToManyMapping buildOrmManyToManyMapping(OrmPersistentAttribute parent) {
-		return new EclipseLinkOrmManyToManyMapping(parent);
+		if (parent.getEResource().getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new EclipseLinkOrmManyToManyMapping(parent);
+		}
+		return super.buildOrmManyToManyMapping(parent);
 	}
 	
 	
