@@ -29,7 +29,7 @@ public class PersistentTypeItemLabelProvider extends AbstractItemLabelProvider
 		return new PropertyAspectAdapter<PersistentType, String>(PersistentType.NAME_PROPERTY, (PersistentType) model()) {
 			@Override
 			protected String buildValue_() {
-				return subject.getName();
+				return subject.getShortName();
 			}
 		};
 	}

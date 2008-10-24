@@ -84,6 +84,10 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		return this.name;
 	}
 	
+	public String getShortName(){
+		return getName().substring(getName().lastIndexOf('.') + 1);
+	}
+	
 	protected void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;

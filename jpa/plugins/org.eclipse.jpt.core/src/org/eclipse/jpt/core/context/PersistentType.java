@@ -33,6 +33,8 @@ public interface PersistentType extends JpaContextNode, JpaStructureNode
 	
 	String getName();
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
+		
+	String getShortName();
 	
 	AccessType getAccess();
 		String ACCESS_PROPERTY = "access"; //$NON-NLS-1$

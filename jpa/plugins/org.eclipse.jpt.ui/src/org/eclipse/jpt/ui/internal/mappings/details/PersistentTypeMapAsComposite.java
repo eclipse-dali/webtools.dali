@@ -82,7 +82,7 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 			}
 
 			public String getName() {
-				return getSubject().getName();
+				return getSubject().getShortName();
 			}
 
 			public Iterator<? extends MappingUiProvider<?>> providers() {

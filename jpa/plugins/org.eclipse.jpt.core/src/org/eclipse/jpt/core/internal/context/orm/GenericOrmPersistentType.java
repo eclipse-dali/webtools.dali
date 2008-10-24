@@ -405,6 +405,10 @@ public class GenericOrmPersistentType
 	public String getName() {
 		return getMapping().getClass_();
 	}
+	
+	public String getShortName(){
+		return getName().substring(getName().lastIndexOf('.') + 1);
+	}
 
 	public void classChanged(String oldClass, String newClass) {
 		firePropertyChanged(NAME_PROPERTY, oldClass, newClass);
