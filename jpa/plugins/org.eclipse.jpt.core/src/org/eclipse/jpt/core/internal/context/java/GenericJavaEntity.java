@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;

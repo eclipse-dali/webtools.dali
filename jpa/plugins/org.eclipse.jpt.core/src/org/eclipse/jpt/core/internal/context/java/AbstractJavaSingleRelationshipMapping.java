@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
@@ -28,7 +27,6 @@ import org.eclipse.jpt.core.context.java.JavaSingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinColumn;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinColumnsAnnotation;

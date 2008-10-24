@@ -14,6 +14,7 @@ import java.util.List;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
