@@ -29,10 +29,10 @@ public interface Converter extends JpaContextNode
 	 */
 	String getType();
 	
-	String NO_CONVERTER = "noConverter";
-	String LOB_CONVERTER = "lobConverter";
-	String ENUMERATED_CONVERTER = "enumeratedConverter";
-	String TEMPORAL_CONVERTER = "temporalConverter";
+	String NO_CONVERTER = "noConverter"; //$NON-NLS-1$
+	String LOB_CONVERTER = "lobConverter"; //$NON-NLS-1$
+	String ENUMERATED_CONVERTER = "enumeratedConverter"; //$NON-NLS-1$
+	String TEMPORAL_CONVERTER = "temporalConverter"; //$NON-NLS-1$
 	
 	/**
 	 * Remove the Converter from the resource model
