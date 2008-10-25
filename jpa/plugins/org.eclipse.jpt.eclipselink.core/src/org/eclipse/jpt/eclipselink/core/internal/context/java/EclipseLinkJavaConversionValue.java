@@ -81,22 +81,22 @@ public class EclipseLinkJavaConversionValue extends AbstractJavaJpaContextNode i
 
 	public void initialize(ConversionValueAnnotation resourceConversionValue) {
 		this.resourceConversionValue = resourceConversionValue;
-		this.dataValue = this.dataValue(resourceConversionValue);
-		this.objectValue = this.objectValue(resourceConversionValue);
+		this.dataValue = this.dataValue();
+		this.objectValue = this.objectValue();
 	}
 	
 	public void update(ConversionValueAnnotation resourceConversionValue) {
 		this.resourceConversionValue = resourceConversionValue;
-		this.setDataValue_(this.dataValue(resourceConversionValue));
-		this.setObjectValue_(this.objectValue(resourceConversionValue));
+		this.setDataValue_(this.dataValue());
+		this.setObjectValue_(this.objectValue());
 	}
 
-	protected String dataValue(ConversionValueAnnotation resourceConversionValue) {
-		return resourceConversionValue.getDataValue();
+	protected String dataValue() {
+		return this.resourceConversionValue.getDataValue();
 	}
 
-	protected String objectValue(ConversionValueAnnotation resourceConversionValue) {
-		return resourceConversionValue.getObjectValue();
+	protected String objectValue() {
+		return this.resourceConversionValue.getObjectValue();
 	}
 
 	public TextRange getDataValueTextRange(CompilationUnit astRoot) {
