@@ -66,14 +66,54 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlMutable" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mutable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlConvertibleMapping" abstract="true"
+      interface="true" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlConvertibleMapping">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="convert" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlConverter">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTypeConverter">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dataType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="objectType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlConversionValue">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dataValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="objectValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlObjectTypeConverter">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conversionValues" upperBound="-1"
+        eType="#//XmlConversionValue" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultObjectValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dataType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="objectType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlStructConverter">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="converter" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlConverterHolder" abstract="true"
+      interface="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="converter" eType="#//XmlConverter"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeConverter" eType="#//XmlTypeConverter"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="objectTypeConverter" eType="#//XmlObjectTypeConverter"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="structConverter" eType="#//XmlStructConverter"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlId" abstract="true" interface="true"
-      eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlId #//XmlMutable"/>
+      eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlId #//XmlMutable #//XmlConvertibleMapping #//XmlConverterHolder"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlIdImpl" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlIdImpl #//XmlId"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlBasic" abstract="true" interface="true"
-      eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlBasic #//XmlMutable"/>
+      eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlBasic #//XmlMutable #//XmlConvertibleMapping #//XmlConverterHolder"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlBasicImpl" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlBasicImpl #//XmlBasic"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlVersion" abstract="true" interface="true"
-      eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlVersion #//XmlMutable"/>
+      eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlVersion #//XmlMutable #//XmlConvertibleMapping #//XmlConverterHolder"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlVersionImpl" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlVersionImpl #//XmlVersion"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlPrivateOwned" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="privateOwned" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>

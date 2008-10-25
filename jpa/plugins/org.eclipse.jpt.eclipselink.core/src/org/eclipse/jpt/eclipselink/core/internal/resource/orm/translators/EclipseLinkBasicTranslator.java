@@ -39,11 +39,37 @@ public class EclipseLinkBasicTranslator extends BasicTranslator
 			createColumnTranslator(), 
 			createLobTranslator(),
 			createTemporalTranslator(),
-			createEnumeratedTranslator()
+			createEnumeratedTranslator(),
+			createConvertTranslator(),
+			createConverterTranslator(),
+			createTypeConverterTranslator(),
+			createObjectTypeConverterTranslator(),
+			createStructConverterTranslator(),
+			
 		};
 	}
 	
 	protected Translator createMutableTranslator() {
 		return new Translator(MUTABLE, ECLIPSELINK_ORM_PKG.getXmlMutable_Mutable(), DOM_ATTRIBUTE);
+	}
+		
+	protected Translator createConvertTranslator() {
+		return new Translator(CONVERT, ECLIPSELINK_ORM_PKG.getXmlConvertibleMapping_Convert());
+	}
+	
+	protected Translator createConverterTranslator() {
+		return new Translator(CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConverterHolder_Converter());
+	}
+	
+	protected Translator createTypeConverterTranslator() {
+		return new Translator(TYPE_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConverterHolder_TypeConverter());
+	}
+	
+	protected Translator createObjectTypeConverterTranslator() {
+		return new Translator(OBJECT_TYPE_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConverterHolder_ObjectTypeConverter());
+	}
+	
+	protected Translator createStructConverterTranslator() {
+		return new Translator(STRUCT_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConverterHolder_StructConverter());
 	}
 }
