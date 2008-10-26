@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlId;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaIdMappingImpl;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlId;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
@@ -35,7 +35,8 @@ public class VirtualEclipseLinkXmlId extends VirtualXmlId implements XmlId
 	}
 
 	public Boolean getMutable() {
-		return Boolean.valueOf(((EclipseLinkJavaIdMappingImpl) this.javaAttributeMapping).getMutable().isMutable());
+		//don't need isOrmMetadataComplete() check because there is no default Id mapping
+		return Boolean.valueOf(((EclipseLinkIdMapping) this.javaAttributeMapping).getMutable().isMutable());
 	}
 	
 	public void setMutable(@SuppressWarnings("unused") Boolean value) {
@@ -43,6 +44,7 @@ public class VirtualEclipseLinkXmlId extends VirtualXmlId implements XmlId
 	}
 
 	public String getConvert() {
+		//don't need isOrmMetadataComplete() check because there is no default Id mapping
 		Converter converter = ((ConvertibleMapping) this.javaAttributeMapping).getConverter();
 		if (converter.getType() == Convert.ECLIPSE_LINK_CONVERTER) {
 			return ((Convert) converter).getConverterName();

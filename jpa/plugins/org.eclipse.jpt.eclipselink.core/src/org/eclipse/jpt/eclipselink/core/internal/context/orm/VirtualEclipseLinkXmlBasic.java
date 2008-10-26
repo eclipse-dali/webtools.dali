@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlBasic;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMappingImpl;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
@@ -33,7 +33,10 @@ public class VirtualEclipseLinkXmlBasic extends VirtualXmlBasic implements XmlBa
 	}
 
 	public Boolean getMutable() {
-		return Boolean.valueOf(((EclipseLinkJavaBasicMappingImpl) this.javaAttributeMapping).getMutable().isMutable());
+		if (isOrmMetadataComplete()) {
+			return Boolean.valueOf(((EclipseLinkBasicMapping) this.javaAttributeMapping).getMutable().isDefaultMutable());
+		}
+		return Boolean.valueOf(((EclipseLinkBasicMapping) this.javaAttributeMapping).getMutable().isMutable());
 	}
 	
 	public void setMutable(@SuppressWarnings("unused") Boolean value) {
@@ -41,6 +44,9 @@ public class VirtualEclipseLinkXmlBasic extends VirtualXmlBasic implements XmlBa
 	}
 
 	public String getConvert() {
+		if (isOrmMetadataComplete()) {
+			return null;
+		}
 		if (this.javaAttributeMapping.getConverter().getType() == Convert.ECLIPSE_LINK_CONVERTER) {
 			return ((Convert) this.javaAttributeMapping.getConverter()).getConverterName();
 		}

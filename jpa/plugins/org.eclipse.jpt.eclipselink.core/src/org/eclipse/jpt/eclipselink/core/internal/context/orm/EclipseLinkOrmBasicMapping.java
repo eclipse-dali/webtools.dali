@@ -11,10 +11,12 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmBasicMapping;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
@@ -36,6 +38,30 @@ public class EclipseLinkOrmBasicMapping extends GenericOrmBasicMapping
 	
 	public Mutable getMutable() {
 		return this.mutable;
+	}
+
+	@Override
+	protected OrmConverter buildSpecifiedConverter(String converterType) {
+		OrmConverter ormConverter = super.buildSpecifiedConverter(converterType);
+		if (ormConverter != null) {
+			return ormConverter;
+		}
+		if (converterType == Convert.ECLIPSE_LINK_CONVERTER) {
+			return new EclipseLinkOrmConvert(this, (XmlBasic) this.resourceAttributeMapping);
+		}
+		return null;
+	}
+
+	@Override
+	protected String specifiedConverterType() {
+		String specifiedConverterType = super.specifiedConverterType();
+		if (specifiedConverterType != null) {
+			return specifiedConverterType;
+		}
+		if (((XmlBasic) this.resourceAttributeMapping).getConvert() != null) {
+			return Convert.ECLIPSE_LINK_CONVERTER;
+		}
+		return null;
 	}
 	
 	

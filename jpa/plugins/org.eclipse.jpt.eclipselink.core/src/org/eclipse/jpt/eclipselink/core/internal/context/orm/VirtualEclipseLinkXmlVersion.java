@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlVersion;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingImpl;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
@@ -35,7 +35,8 @@ public class VirtualEclipseLinkXmlVersion extends VirtualXmlVersion implements X
 	}
 
 	public Boolean getMutable() {
-		return Boolean.valueOf(((EclipseLinkJavaVersionMappingImpl) this.javaAttributeMapping).getMutable().isMutable());
+		//don't need isOrmMetadataComplete() check because there is no default Id mapping
+		return Boolean.valueOf(((EclipseLinkVersionMapping) this.javaAttributeMapping).getMutable().isMutable());
 	}
 	
 	public void setMutable(@SuppressWarnings("unused") Boolean value) {
