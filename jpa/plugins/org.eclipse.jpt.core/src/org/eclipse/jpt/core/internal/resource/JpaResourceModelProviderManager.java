@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.resource;
 
 import java.util.HashMap;
 import java.util.Iterator;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -143,7 +142,7 @@ public class JpaResourceModelProviderManager {
 	 */
 	public JpaResourceModelProvider getModelProvider(IFile file) {
 		IProject project = file.getProject();
-		IPath path = file.getProjectRelativePath();
+		IPath path = file.getFullPath();
 
 		IContentType contentType = PlatformUtilities.getContentType(file);
 		while (contentType != null) {

@@ -124,7 +124,7 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 		String filePath = getDataModel().getStringProperty(FILE_PATH);
 		IFile file = folder.getFile(new Path(filePath));
 		final OrmResourceModelProvider modelProvider =
-			OrmResourceModelProvider.getModelProvider(getProject(), file.getProjectRelativePath().toString());
+			OrmResourceModelProvider.getModelProvider(file);
 		
 		modelProvider.modify(new Runnable() {
 				public void run() {

@@ -28,28 +28,33 @@ public class EclipseLinkOrmResourceModelProvider extends AbstractResourceModelPr
 {
 	/**
 	 * (Convenience method) Returns an EclipseLink ORM resource model provider for 
-	 * the given project in the default location
+	 * the given file.
+	 */
+	public static EclipseLinkOrmResourceModelProvider getModelProvider(IFile file) {
+		return getModelProvider_(file.getProject(), file.getFullPath().toString());
+	}
+	
+	/**
+	 * (Convenience method) Returns an EclipseLink ORM resource model provider for
+	 * the given project in the specified deploy location
+	 */
+	public static EclipseLinkOrmResourceModelProvider getModelProvider(IProject project, String deployLocation) {
+		return getModelProvider_(project, JptCorePlugin.getDeploymentURI(project, deployLocation));
+		
+	}
+	
+	/**
+	 * (Convenience method) Returns an EclipseLink ORM resource model provider for 
+	 * the given project in the default deploy location
 	 */
 	public static EclipseLinkOrmResourceModelProvider getDefaultModelProvider(IProject project) {
 		return getModelProvider(project, JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH);
 	}
 	
-	/**
-	 * (Convenience method) Returns an EclipseLink ORM resource model provider for 
-	 * the given file.
-	 */
-	public static EclipseLinkOrmResourceModelProvider getModelProvider(IFile file) {
-		return getModelProvider(file.getProject(), file.getProjectRelativePath().toString());
-	}
-	
-	/**
-	 * (Convenience method) Returns an EclipseLink ORM resource model provider for
-	 * the given project in the specified location
-	 */
-	public static EclipseLinkOrmResourceModelProvider getModelProvider(IProject project, String location) {
+	private static EclipseLinkOrmResourceModelProvider getModelProvider_(IProject project, String location) {
 		return (EclipseLinkOrmResourceModelProvider) JpaResourceModelProviderManager.instance().getModelProvider(
 			project, 
-			new Path(JptCorePlugin.getDeploymentURI(project, location)),
+			new Path(location),
 			JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE);
 	}
 	

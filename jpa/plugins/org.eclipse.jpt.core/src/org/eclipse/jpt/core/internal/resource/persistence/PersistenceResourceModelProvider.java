@@ -24,38 +24,40 @@ import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 
-/**
- * 
- */
 public class PersistenceResourceModelProvider
 	extends AbstractResourceModelProvider
 {
 	/**
 	 * (Convenience method) Returns a persistence resource model provider for 
-	 * the given project in the default location
+	 * the given file.
+	 */
+	public static PersistenceResourceModelProvider getModelProvider(IFile file) {
+		return getModelProvider_(file.getProject(), file.getFullPath().toString());
+	}
+	
+	/**
+	 * (Convenience method) Returns an persistence resource model provider for
+	 * the given project in the specified deploy location
+	 */
+	public static PersistenceResourceModelProvider getModelProvider(IProject project, String deployLocation) {
+		return getModelProvider_(project, JptCorePlugin.getDeploymentURI(project, deployLocation));
+	}
+	
+	/**
+	 * (Convenience method) Returns a persistence resource model provider for 
+	 * the given project in the default deploy location
 	 */
 	public static PersistenceResourceModelProvider getDefaultModelProvider(IProject project) {
 		return getModelProvider(project, JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH);
 	}
 	
-	/**
-	 * (Convenience method) Returns a persistence resource model provider for 
-	 * the given file.
-	 */
-	public static PersistenceResourceModelProvider getModelProvider(IFile file) {
-		return getModelProvider(file.getProject(), file.getProjectRelativePath().toString());
-	}
-	
-	/**
-	 * (Convenience method) Returns an persistence resource model provider for
-	 * the given project in the specified location
-	 */
-	public static PersistenceResourceModelProvider getModelProvider(IProject project, String location) {
+	private static PersistenceResourceModelProvider getModelProvider_(IProject project, String location) {
 		return (PersistenceResourceModelProvider) JpaResourceModelProviderManager.instance().getModelProvider(
 			project, 
-			new Path(JptCorePlugin.getDeploymentURI(project, location)),
+			new Path(location),
 			JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE);
 	}
+	
 	
 	public PersistenceResourceModelProvider(IProject project) {
 		this(project, new Path(JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH));

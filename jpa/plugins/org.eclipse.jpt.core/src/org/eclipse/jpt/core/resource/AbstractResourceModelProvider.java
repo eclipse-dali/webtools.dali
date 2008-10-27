@@ -43,7 +43,6 @@ import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.utility.internal.ListenerList;
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.componentcore.internal.impl.ModuleURIUtil;
 import org.eclipse.wst.common.componentcore.internal.impl.PlatformURLModuleConnection;
 import org.eclipse.wst.common.componentcore.internal.impl.WTPResourceFactoryRegistry;
@@ -69,6 +68,14 @@ public abstract class AbstractResourceModelProvider
 	protected ResourceStateValidator stateValidator;
 	
 	
+	/**
+	 * Create a new AbstractResourceModelProvider for the given project and 
+	 * resourcePath.  The resourcePath may be either a) an absolute platform 
+	 * resource path (e.g. "MyProject/src/META-INF/foobar.xml") or b) a relative 
+	 * deploy path (e.g. "META-INF/foobar.xml".)  In either case, 
+	 * {@link #buildFileUri(IPath)} will attempt to build an absolutely pathed 
+	 * URI for the given path.
+	 */
 	public AbstractResourceModelProvider(IProject project, IPath resourcePath) {
 		super();
 		this.project = project;
@@ -77,12 +84,13 @@ public abstract class AbstractResourceModelProvider
 	
 	
 	protected URI buildFileUri(IPath resourcePath) {
-		URI resourceUri = URI.createURI(resourcePath.toString());
+		URI resourceUri = null;
 		
-		// figure out if path is relative (deployment) or absolute (platform file)
-		
-		if (StringTools.stringIsEmpty(resourceUri.scheme())) {
-			resourceUri = getModuleURI(resourceUri);
+		if (resourcePath.isAbsolute()) {
+			resourceUri = URI.createPlatformResourceURI(resourcePath.toString(), false);
+		}
+		else {
+			resourceUri = getModuleURI(URI.createURI(resourcePath.toString()));
 		}
 		
 		URIConverter uriConverter = getResourceSet().getURIConverter();

@@ -23,36 +23,37 @@ import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 
-/**
- * 
- */
 public class OrmResourceModelProvider
 	extends AbstractResourceModelProvider
 {
 	/**
 	 * (Convenience method) Returns an ORM resource model provider for 
-	 * the given project in the default location
+	 * the given file.
+	 */
+	public static OrmResourceModelProvider getModelProvider(IFile file) {
+		return getModelProvider_(file.getProject(), file.getFullPath().toString());
+	}
+	
+	/**
+	 * (Convenience method) Returns an ORM resource model provider for
+	 * the given project in the specified deploy location
+	 */
+	public static OrmResourceModelProvider getModelProvider(IProject project, String deployLocation) {
+		return getModelProvider_(project, JptCorePlugin.getDeploymentURI(project, deployLocation));
+	}
+	
+	/**
+	 * (Convenience method) Returns an ORM resource model provider for 
+	 * the given project in the default deploy location
 	 */
 	public static OrmResourceModelProvider getDefaultModelProvider(IProject project) {
 		return getModelProvider(project, JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 	}
 	
-	/**
-	 * (Convenience method) Returns an ORM resource model provider for 
-	 * the given file.
-	 */
-	public static OrmResourceModelProvider getModelProvider(IFile file) {
-		return getModelProvider(file.getProject(), file.getProjectRelativePath().toString());
-	}
-	
-	/**
-	 * (Convenience method) Returns an ORM resource model provider for
-	 * the given project in the specified location
-	 */
-	public static OrmResourceModelProvider getModelProvider(IProject project, String location) {
+	private static OrmResourceModelProvider getModelProvider_(IProject project, String location) {
 		return (OrmResourceModelProvider) JpaResourceModelProviderManager.instance().getModelProvider(
 			project, 
-			new Path(JptCorePlugin.getDeploymentURI(project, location)),
+			new Path(location),
 			JptCorePlugin.ORM_XML_CONTENT_TYPE);
 	}
 	
