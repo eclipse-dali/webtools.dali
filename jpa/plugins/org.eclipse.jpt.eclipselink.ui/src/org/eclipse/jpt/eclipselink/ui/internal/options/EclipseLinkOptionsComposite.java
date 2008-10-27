@@ -57,8 +57,12 @@ public class EclipseLinkOptionsComposite
 		return;
 	}
 	
-	private void initializeMiscellaneousPane(Composite parent) {
-		Composite composite = this.addSection(parent, 
+	private void initializeMiscellaneousPane(Composite container) {	
+		
+		this.updateGridData(container);
+		this.updateGridData(container.getParent());
+		
+		Composite composite = this.addSection(container, 
 				EclipseLinkUiMessages.PersistenceXmlOptionsTab_miscellaneousSectionTitle,
 				EclipseLinkUiMessages.PersistenceXmlOptionsTab_miscellaneousSectionDescription);
 		
