@@ -17,12 +17,13 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Converter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkJavaConverter extends AbstractJavaJpaContextNode implements Converter, org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter
+public class EclipseLinkJavaConverterImpl extends AbstractJavaJpaContextNode implements Converter, EclipseLinkJavaConverter
 {	
 	private JavaResourcePersistentMember resourcePersistentMember;
 	
@@ -30,7 +31,7 @@ public class EclipseLinkJavaConverter extends AbstractJavaJpaContextNode impleme
 	
 	private String converterClass;
 	
-	public EclipseLinkJavaConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
+	public EclipseLinkJavaConverterImpl(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
 		super(parent);
 		this.initialize(jrpm);
 	}

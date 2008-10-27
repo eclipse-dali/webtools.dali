@@ -158,7 +158,7 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 			return null;
 		}
 		if (converterType == EclipseLinkConverter.CONVERTER) {
-			return new org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConverter(this, this.resourcePersistentAttribute);
+			return new EclipseLinkJavaConverterImpl(this, this.resourcePersistentAttribute);
 		}
 		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
 			return new EclipseLinkJavaTypeConverter(this, this.resourcePersistentAttribute);

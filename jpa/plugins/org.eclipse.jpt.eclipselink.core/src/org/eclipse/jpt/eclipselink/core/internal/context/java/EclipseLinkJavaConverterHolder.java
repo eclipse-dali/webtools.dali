@@ -30,7 +30,7 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 {
 	protected JavaResourcePersistentType resourcePersistentType;
 	
-	protected EclipseLinkJavaConverter converter;
+	protected EclipseLinkJavaConverterImpl converter;
 	protected EclipseLinkJavaObjectTypeConverter objectTypeConverter;
 	protected EclipseLinkJavaStructConverter structConverter;
 	protected EclipseLinkJavaTypeConverter typeConverter;
@@ -48,14 +48,14 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 		if (this.converter != null) {
 			throw new IllegalStateException("converter already exists"); //$NON-NLS-1$
 		}
-		this.converter = new EclipseLinkJavaConverter(this, this.resourcePersistentType);
+		this.converter = new EclipseLinkJavaConverterImpl(this, this.resourcePersistentType);
 		this.addResourceConverter();
 		firePropertyChanged(CONVERTER_PROPERTY, null, this.converter);
 		return this.converter;
 	}
 	
 	protected void addConverter_() {
-		this.converter = new EclipseLinkJavaConverter(this, this.resourcePersistentType);			
+		this.converter = new EclipseLinkJavaConverterImpl(this, this.resourcePersistentType);			
 		firePropertyChanged(CONVERTER_PROPERTY, null, this.converter);
 	}
 	
@@ -331,7 +331,7 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 	
 	protected void initializeConverter() {
 		if (getResourceConverter() != null) {
-			this.converter = new EclipseLinkJavaConverter(this, this.resourcePersistentType);
+			this.converter = new EclipseLinkJavaConverterImpl(this, this.resourcePersistentType);
 		}		
 	}
 	
