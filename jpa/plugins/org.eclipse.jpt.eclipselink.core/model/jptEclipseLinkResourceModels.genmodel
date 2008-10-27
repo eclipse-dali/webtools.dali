@@ -72,22 +72,22 @@
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlMutable">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlMutable/mutable"/>
     </genClasses>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlConvertibleMapping">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlConvertibleMapping/convert"/>
-    </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlConverter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlConverter/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlConverter/className"/>
     </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlConverterImpl"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlTypeConverter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTypeConverter/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTypeConverter/dataType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTypeConverter/objectType"/>
     </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlTypeConverterImpl"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlConversionValue">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlConversionValue/dataValue"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlConversionValue/objectValue"/>
     </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlConversionValueImpl"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlObjectTypeConverter">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlObjectTypeConverter/conversionValues"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlObjectTypeConverter/defaultObjectValue"/>
@@ -95,15 +95,20 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlObjectTypeConverter/dataType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlObjectTypeConverter/objectType"/>
     </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlObjectTypeConverterImpl"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlStructConverter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlStructConverter/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlStructConverter/converter"/>
     </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlStructConverterImpl"/>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlConverterHolder">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterHolder/converter"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterHolder/typeConverter"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterHolder/objectTypeConverter"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterHolder/structConverter"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlConvertibleMapping">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlConvertibleMapping/convert"/>
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlId"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlIdImpl"/>

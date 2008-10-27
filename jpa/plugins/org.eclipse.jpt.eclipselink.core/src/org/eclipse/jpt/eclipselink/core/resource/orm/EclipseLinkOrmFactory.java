@@ -85,11 +85,11 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_CACHE: return (EObject)createXmlCache();
 			case EclipseLinkOrmPackage.XML_ENTITY: return (EObject)createXmlEntity();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
-			case EclipseLinkOrmPackage.XML_CONVERTER: return (EObject)createXmlConverter();
-			case EclipseLinkOrmPackage.XML_TYPE_CONVERTER: return (EObject)createXmlTypeConverter();
-			case EclipseLinkOrmPackage.XML_CONVERSION_VALUE: return (EObject)createXmlConversionValue();
-			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER: return (EObject)createXmlObjectTypeConverter();
-			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER: return (EObject)createXmlStructConverter();
+			case EclipseLinkOrmPackage.XML_CONVERTER_IMPL: return (EObject)createXmlConverterImpl();
+			case EclipseLinkOrmPackage.XML_TYPE_CONVERTER_IMPL: return (EObject)createXmlTypeConverterImpl();
+			case EclipseLinkOrmPackage.XML_CONVERSION_VALUE_IMPL: return (EObject)createXmlConversionValueImpl();
+			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL: return (EObject)createXmlObjectTypeConverterImpl();
+			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER_IMPL: return (EObject)createXmlStructConverterImpl();
 			case EclipseLinkOrmPackage.XML_ID_IMPL: return (EObject)createXmlIdImpl();
 			case EclipseLinkOrmPackage.XML_BASIC_IMPL: return (EObject)createXmlBasicImpl();
 			case EclipseLinkOrmPackage.XML_VERSION_IMPL: return (EObject)createXmlVersionImpl();
@@ -197,6 +197,61 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public XmlConverterImpl createXmlConverterImpl()
+	{
+		XmlConverterImpl xmlConverterImpl = new XmlConverterImpl();
+		return xmlConverterImpl;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlTypeConverterImpl createXmlTypeConverterImpl()
+	{
+		XmlTypeConverterImpl xmlTypeConverterImpl = new XmlTypeConverterImpl();
+		return xmlTypeConverterImpl;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlConversionValueImpl createXmlConversionValueImpl()
+	{
+		XmlConversionValueImpl xmlConversionValueImpl = new XmlConversionValueImpl();
+		return xmlConversionValueImpl;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlObjectTypeConverterImpl createXmlObjectTypeConverterImpl()
+	{
+		XmlObjectTypeConverterImpl xmlObjectTypeConverterImpl = new XmlObjectTypeConverterImpl();
+		return xmlObjectTypeConverterImpl;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlStructConverterImpl createXmlStructConverterImpl()
+	{
+		XmlStructConverterImpl xmlStructConverterImpl = new XmlStructConverterImpl();
+		return xmlStructConverterImpl;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public XmlIdImpl createXmlIdImpl()
 	{
 		XmlIdImpl xmlIdImpl = new XmlIdImpl();
@@ -267,61 +322,6 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlManyToManyImpl xmlManyToManyImpl = new XmlManyToManyImpl();
 		return xmlManyToManyImpl;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlConverter createXmlConverter()
-	{
-		XmlConverter xmlConverter = new XmlConverter();
-		return xmlConverter;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlTypeConverter createXmlTypeConverter()
-	{
-		XmlTypeConverter xmlTypeConverter = new XmlTypeConverter();
-		return xmlTypeConverter;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlConversionValue createXmlConversionValue()
-	{
-		XmlConversionValue xmlConversionValue = new XmlConversionValue();
-		return xmlConversionValue;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlObjectTypeConverter createXmlObjectTypeConverter()
-	{
-		XmlObjectTypeConverter xmlObjectTypeConverter = new XmlObjectTypeConverter();
-		return xmlObjectTypeConverter;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlStructConverter createXmlStructConverter()
-	{
-		XmlStructConverter xmlStructConverter = new XmlStructConverter();
-		return xmlStructConverter;
 	}
 
 	/**

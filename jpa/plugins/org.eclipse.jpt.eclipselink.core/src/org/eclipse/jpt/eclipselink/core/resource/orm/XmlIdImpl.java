@@ -50,26 +50,6 @@ public class XmlIdImpl extends org.eclipse.jpt.core.resource.orm.XmlIdImpl imple
 	protected Boolean mutable = MUTABLE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getConvert() <em>Convert</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConvert()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String CONVERT_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getConvert() <em>Convert</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConvert()
-	 * @generated
-	 * @ordered
-	 */
-	protected String convert = CONVERT_EDEFAULT;
-
-	/**
 	 * The cached value of the '{@link #getConverter() <em>Converter</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -108,6 +88,26 @@ public class XmlIdImpl extends org.eclipse.jpt.core.resource.orm.XmlIdImpl imple
 	 * @ordered
 	 */
 	protected XmlStructConverter structConverter;
+
+	/**
+	 * The default value of the '{@link #getConvert() <em>Convert</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConvert()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String CONVERT_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getConvert() <em>Convert</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConvert()
+	 * @generated
+	 * @ordered
+	 */
+	protected String convert = CONVERT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -474,8 +474,6 @@ public class XmlIdImpl extends org.eclipse.jpt.core.resource.orm.XmlIdImpl imple
 		{
 			case EclipseLinkOrmPackage.XML_ID_IMPL__MUTABLE:
 				return getMutable();
-			case EclipseLinkOrmPackage.XML_ID_IMPL__CONVERT:
-				return getConvert();
 			case EclipseLinkOrmPackage.XML_ID_IMPL__CONVERTER:
 				return getConverter();
 			case EclipseLinkOrmPackage.XML_ID_IMPL__TYPE_CONVERTER:
@@ -484,6 +482,8 @@ public class XmlIdImpl extends org.eclipse.jpt.core.resource.orm.XmlIdImpl imple
 				return getObjectTypeConverter();
 			case EclipseLinkOrmPackage.XML_ID_IMPL__STRUCT_CONVERTER:
 				return getStructConverter();
+			case EclipseLinkOrmPackage.XML_ID_IMPL__CONVERT:
+				return getConvert();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -501,9 +501,6 @@ public class XmlIdImpl extends org.eclipse.jpt.core.resource.orm.XmlIdImpl imple
 			case EclipseLinkOrmPackage.XML_ID_IMPL__MUTABLE:
 				setMutable((Boolean)newValue);
 				return;
-			case EclipseLinkOrmPackage.XML_ID_IMPL__CONVERT:
-				setConvert((String)newValue);
-				return;
 			case EclipseLinkOrmPackage.XML_ID_IMPL__CONVERTER:
 				setConverter((XmlConverter)newValue);
 				return;
@@ -515,6 +512,9 @@ public class XmlIdImpl extends org.eclipse.jpt.core.resource.orm.XmlIdImpl imple
 				return;
 			case EclipseLinkOrmPackage.XML_ID_IMPL__STRUCT_CONVERTER:
 				setStructConverter((XmlStructConverter)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ID_IMPL__CONVERT:
+				setConvert((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -533,9 +533,6 @@ public class XmlIdImpl extends org.eclipse.jpt.core.resource.orm.XmlIdImpl imple
 			case EclipseLinkOrmPackage.XML_ID_IMPL__MUTABLE:
 				setMutable(MUTABLE_EDEFAULT);
 				return;
-			case EclipseLinkOrmPackage.XML_ID_IMPL__CONVERT:
-				setConvert(CONVERT_EDEFAULT);
-				return;
 			case EclipseLinkOrmPackage.XML_ID_IMPL__CONVERTER:
 				setConverter((XmlConverter)null);
 				return;
@@ -547,6 +544,9 @@ public class XmlIdImpl extends org.eclipse.jpt.core.resource.orm.XmlIdImpl imple
 				return;
 			case EclipseLinkOrmPackage.XML_ID_IMPL__STRUCT_CONVERTER:
 				setStructConverter((XmlStructConverter)null);
+				return;
+			case EclipseLinkOrmPackage.XML_ID_IMPL__CONVERT:
+				setConvert(CONVERT_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -564,8 +564,6 @@ public class XmlIdImpl extends org.eclipse.jpt.core.resource.orm.XmlIdImpl imple
 		{
 			case EclipseLinkOrmPackage.XML_ID_IMPL__MUTABLE:
 				return MUTABLE_EDEFAULT == null ? mutable != null : !MUTABLE_EDEFAULT.equals(mutable);
-			case EclipseLinkOrmPackage.XML_ID_IMPL__CONVERT:
-				return CONVERT_EDEFAULT == null ? convert != null : !CONVERT_EDEFAULT.equals(convert);
 			case EclipseLinkOrmPackage.XML_ID_IMPL__CONVERTER:
 				return converter != null;
 			case EclipseLinkOrmPackage.XML_ID_IMPL__TYPE_CONVERTER:
@@ -574,6 +572,8 @@ public class XmlIdImpl extends org.eclipse.jpt.core.resource.orm.XmlIdImpl imple
 				return objectTypeConverter != null;
 			case EclipseLinkOrmPackage.XML_ID_IMPL__STRUCT_CONVERTER:
 				return structConverter != null;
+			case EclipseLinkOrmPackage.XML_ID_IMPL__CONVERT:
+				return CONVERT_EDEFAULT == null ? convert != null : !CONVERT_EDEFAULT.equals(convert);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -594,14 +594,6 @@ public class XmlIdImpl extends org.eclipse.jpt.core.resource.orm.XmlIdImpl imple
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlConvertibleMapping.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_ID_IMPL__CONVERT: return EclipseLinkOrmPackage.XML_CONVERTIBLE_MAPPING__CONVERT;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlConverterHolder.class)
 		{
 			switch (derivedFeatureID)
@@ -610,6 +602,14 @@ public class XmlIdImpl extends org.eclipse.jpt.core.resource.orm.XmlIdImpl imple
 				case EclipseLinkOrmPackage.XML_ID_IMPL__TYPE_CONVERTER: return EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__TYPE_CONVERTER;
 				case EclipseLinkOrmPackage.XML_ID_IMPL__OBJECT_TYPE_CONVERTER: return EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__OBJECT_TYPE_CONVERTER;
 				case EclipseLinkOrmPackage.XML_ID_IMPL__STRUCT_CONVERTER: return EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__STRUCT_CONVERTER;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlConvertibleMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ID_IMPL__CONVERT: return EclipseLinkOrmPackage.XML_CONVERTIBLE_MAPPING__CONVERT;
 				default: return -1;
 			}
 		}
@@ -639,14 +639,6 @@ public class XmlIdImpl extends org.eclipse.jpt.core.resource.orm.XmlIdImpl imple
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlConvertibleMapping.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_CONVERTIBLE_MAPPING__CONVERT: return EclipseLinkOrmPackage.XML_ID_IMPL__CONVERT;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlConverterHolder.class)
 		{
 			switch (baseFeatureID)
@@ -655,6 +647,14 @@ public class XmlIdImpl extends org.eclipse.jpt.core.resource.orm.XmlIdImpl imple
 				case EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__TYPE_CONVERTER: return EclipseLinkOrmPackage.XML_ID_IMPL__TYPE_CONVERTER;
 				case EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__OBJECT_TYPE_CONVERTER: return EclipseLinkOrmPackage.XML_ID_IMPL__OBJECT_TYPE_CONVERTER;
 				case EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__STRUCT_CONVERTER: return EclipseLinkOrmPackage.XML_ID_IMPL__STRUCT_CONVERTER;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlConvertibleMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_CONVERTIBLE_MAPPING__CONVERT: return EclipseLinkOrmPackage.XML_ID_IMPL__CONVERT;
 				default: return -1;
 			}
 		}

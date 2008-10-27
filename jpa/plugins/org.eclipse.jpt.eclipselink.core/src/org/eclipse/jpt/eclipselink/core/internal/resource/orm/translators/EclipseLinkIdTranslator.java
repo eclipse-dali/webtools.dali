@@ -55,18 +55,18 @@ public class EclipseLinkIdTranslator extends IdTranslator
 	}
 	
 	protected Translator createConverterTranslator() {
-		return new Translator(CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConverterHolder_Converter());
+		return new ConverterTranslator(CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConverterHolder_Converter());
 	}
 	
 	protected Translator createTypeConverterTranslator() {
-		return new Translator(TYPE_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConverterHolder_TypeConverter());
+		return new TypeConverterTranslator(TYPE_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConverterHolder_TypeConverter());
 	}
 	
 	protected Translator createObjectTypeConverterTranslator() {
-		return new Translator(OBJECT_TYPE_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConverterHolder_ObjectTypeConverter());
+		return new ObjectTypeConverterTranslator(OBJECT_TYPE_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConverterHolder_ObjectTypeConverter());
 	}
 	
 	protected Translator createStructConverterTranslator() {
-		return new Translator(STRUCT_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConverterHolder_StructConverter());
+		return new StructConverterTranslator(STRUCT_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConverterHolder_StructConverter());
 	}
 }

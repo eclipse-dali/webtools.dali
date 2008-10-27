@@ -51,7 +51,7 @@ public interface EclipseLinkOrmXmlMapper
 	
 	String MUTABLE = "mutable";  //$NON-NLS-1$
 	
-	String OBJECT_TYPE_CONVERTER = "type-converter"; //$NON-NLS-1$
+	String OBJECT_TYPE_CONVERTER = "object-type-converter"; //$NON-NLS-1$
 	String OBJECT_TYPE_CONVERTER__NAME = "name"; //$NON-NLS-1$
 	String OBJECT_TYPE_CONVERTER__DATA_TYPE = "data-type"; //$NON-NLS-1$
 	String OBJECT_TYPE_CONVERTER__OBJECT_TYPE = "object-type"; //$NON-NLS-1$

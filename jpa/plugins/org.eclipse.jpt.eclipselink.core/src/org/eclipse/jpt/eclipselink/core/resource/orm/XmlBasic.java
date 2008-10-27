@@ -20,6 +20,6 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic, XmlMutable, XmlConvertibleMapping, XmlConverterHolder
+public interface XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic, XmlMutable, XmlConvertibleMapping
 {
 } // XmlBasic

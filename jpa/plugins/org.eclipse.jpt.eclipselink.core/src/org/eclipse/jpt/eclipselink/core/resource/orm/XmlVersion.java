@@ -20,6 +20,6 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlVersion extends org.eclipse.jpt.core.resource.orm.XmlVersion, XmlMutable, XmlConvertibleMapping, XmlConverterHolder
+public interface XmlVersion extends org.eclipse.jpt.core.resource.orm.XmlVersion, XmlMutable, XmlConvertibleMapping
 {
 } // XmlVersion

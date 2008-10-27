@@ -9,13 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
-import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.ecore.EClass;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.common.JpaEObject;
 
 /**
@@ -32,73 +25,12 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * </p>
  *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStructConverter()
- * @model kind="class"
+ * @model kind="class" interface="true" abstract="true"
  * @extends JpaEObject
  * @generated
  */
-public class XmlStructConverter extends AbstractJpaEObject implements JpaEObject
+public interface XmlStructConverter extends JpaEObject
 {
-	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getConverter() <em>Converter</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConverter()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String CONVERTER_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getConverter() <em>Converter</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConverter()
-	 * @generated
-	 * @ordered
-	 */
-	protected String converter = CONVERTER_EDEFAULT;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected XmlStructConverter()
-	{
-		super();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EClass eStaticClass()
-	{
-		return EclipseLinkOrmPackage.Literals.XML_STRUCT_CONVERTER;
-	}
-
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -113,10 +45,7 @@ public class XmlStructConverter extends AbstractJpaEObject implements JpaEObject
 	 * @model
 	 * @generated
 	 */
-	public String getName()
-	{
-		return name;
-	}
+	String getName();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter#getName <em>Name</em>}' attribute.
@@ -126,13 +55,7 @@ public class XmlStructConverter extends AbstractJpaEObject implements JpaEObject
 	 * @see #getName()
 	 * @generated
 	 */
-	public void setName(String newName)
-	{
-		String oldName = name;
-		name = newName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__NAME, oldName, name));
-	}
+	void setName(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Converter</b></em>' attribute.
@@ -148,10 +71,7 @@ public class XmlStructConverter extends AbstractJpaEObject implements JpaEObject
 	 * @model
 	 * @generated
 	 */
-	public String getConverter()
-	{
-		return converter;
-	}
+	String getConverter();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter#getConverter <em>Converter</em>}' attribute.
@@ -161,107 +81,6 @@ public class XmlStructConverter extends AbstractJpaEObject implements JpaEObject
 	 * @see #getConverter()
 	 * @generated
 	 */
-	public void setConverter(String newConverter)
-	{
-		String oldConverter = converter;
-		converter = newConverter;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__CONVERTER, oldConverter, converter));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object eGet(int featureID, boolean resolve, boolean coreType)
-	{
-		switch (featureID)
-		{
-			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__NAME:
-				return getName();
-			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__CONVERTER:
-				return getConverter();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eSet(int featureID, Object newValue)
-	{
-		switch (featureID)
-		{
-			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__NAME:
-				setName((String)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__CONVERTER:
-				setConverter((String)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eUnset(int featureID)
-	{
-		switch (featureID)
-		{
-			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__NAME:
-				setName(NAME_EDEFAULT);
-				return;
-			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__CONVERTER:
-				setConverter(CONVERTER_EDEFAULT);
-				return;
-		}
-		super.eUnset(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public boolean eIsSet(int featureID)
-	{
-		switch (featureID)
-		{
-			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER__CONVERTER:
-				return CONVERTER_EDEFAULT == null ? converter != null : !CONVERTER_EDEFAULT.equals(converter);
-		}
-		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString()
-	{
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
-		result.append(", converter: ");
-		result.append(converter);
-		result.append(')');
-		return result.toString();
-	}
+	void setConverter(String value);
 
 } // XmlStructConverter

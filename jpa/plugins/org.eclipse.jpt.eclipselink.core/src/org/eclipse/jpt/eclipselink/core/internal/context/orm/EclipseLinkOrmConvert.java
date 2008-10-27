@@ -25,7 +25,7 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 	
 	protected XmlConvertibleMapping resourceMapping;
 	
-//	protected EclipseLinkOrmConverter converter;
+	protected EclipseLinkOrmConverter converter;
 	
 	public EclipseLinkOrmConvert(OrmAttributeMapping parent, XmlConvertibleMapping resourceMapping) {
 		super(parent);
@@ -78,55 +78,55 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 		firePropertyChanged(SPECIFIED_CONVERTER_NAME_PROPERTY, oldSpecifiedConverterName, newSpecifiedConverterName);
 	}
 
-	public EclipseLinkConverter getConverter() {
-		return null;
+	public EclipseLinkOrmConverter getConverter() {
+		return this.converter;
 	}
 	
 	protected String getConverterType() {
-		//if (this.converter == null) {
+		if (this.converter == null) {
 			return EclipseLinkConverter.NO_CONVERTER;
-		//}
-		//return this.converter.getType();
+		}
+		return this.converter.getType();
 	}
 
 	public void setConverter(String converterType) {
-//		if (getConverterType() == converterType) {
-//			return;
-//		}
-//		EclipseLinkOrmConverter oldConverter = this.converter;
-//		EclipseLinkOrmConverter newConverter = buildConverter(converterType);
-//		this.converter = null;
-//		if (oldConverter != null) {
-//			oldConverter.removeFromResourceModel();
-//		}
-//		this.converter = newConverter;
-//		if (newConverter != null) {
-//			newConverter.addToResourceModel();
-//		}
-//		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
+		if (getConverterType() == converterType) {
+			return;
+		}
+		EclipseLinkOrmConverter oldConverter = this.converter;
+		EclipseLinkOrmConverter newConverter = buildConverter(converterType);
+		this.converter = null;
+		if (oldConverter != null) {
+			oldConverter.removeFromResourceModel();
+		}
+		this.converter = newConverter;
+		if (newConverter != null) {
+			newConverter.addToResourceModel();
+		}
+		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
 	}
-//	
-//	protected void setConverter(EclipseLinkOrmConverter newConverter) {
-//		EclipseLinkOrmConverter oldConverter = this.converter;
-//		this.converter = newConverter;
-//		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
-//	}
+	
+	protected void setConverter(EclipseLinkOrmConverter newConverter) {
+		EclipseLinkOrmConverter oldConverter = this.converter;
+		this.converter = newConverter;
+		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
+	}
 	
 	protected void initialize(XmlConvertibleMapping resourceMapping) {
 		this.resourceMapping = resourceMapping;
 		this.specifiedConverterName = this.specifiedConverterName();
-//		this.converter = this.buildConverter(this.converterType());
+		this.converter = this.buildConverter(this.converterType());
 	}
 	
 	public void update() {
 		this.setSpecifiedConverterName_(this.specifiedConverterName());
-//		if (converterType() == getConverterType()) {
-//			getConverter().update(jrpa);
-//		}
-//		else {
-//			EclipseLinkOrmConverter javaConverter = buildConverter(converterType());
-//			setConverter(javaConverter);
-//		}
+		if (converterType() == getConverterType()) {
+			this.converter.update();
+		}
+		else {
+			EclipseLinkOrmConverter javaConverter = buildConverter(converterType());
+			setConverter(javaConverter);
+		}
 	}
 	
 	protected String specifiedConverterName() {
@@ -134,38 +134,38 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 	}
 
 	
-//	protected EclipseLinkOrmConverter buildConverter(String converterType) {
-//		if (converterType == EclipseLinkConverter.NO_CONVERTER) {
-//			return null;
-//		}
-//		if (converterType == EclipseLinkConverter.CONVERTER) {
-//			return new org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConverter(this, this.resourcePersistentAttribute);
-//		}
-//		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
-//			return new EclipseLinkOrmTypeConverter(this, this.resourcePersistentAttribute);
-//		}
-//		else if (converterType == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
-//			return new EclipseLinkOrmObjectTypeConverter(this, this.resourcePersistentAttribute);
-//		}
-//		else if (converterType == EclipseLinkConverter.STRUCT_CONVERTER) {
-//			return new EclipseLinkOrmStructConverter(this, this.resourcePersistentAttribute);
-//		}
-//		return null;
-//	}
+	protected EclipseLinkOrmConverter buildConverter(String converterType) {
+		if (converterType == EclipseLinkConverter.NO_CONVERTER) {
+			return null;
+		}
+		if (converterType == EclipseLinkConverter.CONVERTER) {
+			return new EclipseLinkOrmConverterImpl(this, this.resourceMapping);
+		}
+		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
+			return new EclipseLinkOrmTypeConverter(this, this.resourceMapping);
+		}
+		else if (converterType == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
+			return new EclipseLinkOrmObjectTypeConverter(this, this.resourceMapping);
+		}
+		else if (converterType == EclipseLinkConverter.STRUCT_CONVERTER) {
+			return new EclipseLinkOrmStructConverter(this, this.resourceMapping);
+		}
+		return null;
+	}
 	
 	protected String converterType() {
-//		if (jrpa.getSupportingAnnotation(ConverterAnnotation.ANNOTATION_NAME) != null) {
-//			return EclipseLinkConverter.CONVERTER;
-//		}
-//		else if (jrpa.getSupportingAnnotation(TypeConverterAnnotation.ANNOTATION_NAME) != null) {
-//			return EclipseLinkConverter.TYPE_CONVERTER;
-//		}
-//		else if (jrpa.getSupportingAnnotation(ObjectTypeConverterAnnotation.ANNOTATION_NAME) != null) {
-//			return EclipseLinkConverter.OBJECT_TYPE_CONVERTER;
-//		}
-//		else if (jrpa.getSupportingAnnotation(StructConverterAnnotation.ANNOTATION_NAME) != null) {
-//			return EclipseLinkConverter.STRUCT_CONVERTER;
-//		}
+		if (this.resourceMapping.getConverter() != null) {
+			return EclipseLinkConverter.CONVERTER;
+		}
+		else if (this.resourceMapping.getTypeConverter() != null) {
+			return EclipseLinkConverter.TYPE_CONVERTER;
+		}
+		else if (this.resourceMapping.getObjectTypeConverter() != null) {
+			return EclipseLinkConverter.OBJECT_TYPE_CONVERTER;
+		}
+		else if (this.resourceMapping.getStructConverter() != null) {
+			return EclipseLinkConverter.STRUCT_CONVERTER;
+		}
 		
 		return null;
 	}
@@ -173,8 +173,8 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 	@Override
 	public void validate(List<IMessage> messages) {
 		super.validate(messages);
-//		if (getConverter() != null) {
-//			getConverter().validate(messages);
-//		}
+		if (getConverter() != null) {
+			getConverter().validate(messages);
+		}
 	}
 }

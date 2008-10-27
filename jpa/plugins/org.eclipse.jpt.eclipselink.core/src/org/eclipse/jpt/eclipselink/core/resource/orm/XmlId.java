@@ -20,6 +20,6 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlId extends org.eclipse.jpt.core.resource.orm.XmlId, XmlMutable, XmlConvertibleMapping, XmlConverterHolder
+public interface XmlId extends org.eclipse.jpt.core.resource.orm.XmlId, XmlMutable, XmlConvertibleMapping
 {
 } // XmlId

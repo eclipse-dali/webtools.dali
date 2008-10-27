@@ -44,7 +44,7 @@ public class ObjectTypeConverterTranslator extends Translator
 	}
 	
 	protected Translator createDefaultObjectValueTranslator() {
-		return new Translator(OBJECT_TYPE_CONVERTER__DEFAULT_OBJECT_VALUE, ECLIPSELINK_ORM_PKG.getXmlTypeConverter_Name(), DOM_ATTRIBUTE);
+		return new Translator(OBJECT_TYPE_CONVERTER__DEFAULT_OBJECT_VALUE, ECLIPSELINK_ORM_PKG.getXmlObjectTypeConverter_DefaultObjectValue());
 	}
 	
 	protected Translator createNameTranslator() {

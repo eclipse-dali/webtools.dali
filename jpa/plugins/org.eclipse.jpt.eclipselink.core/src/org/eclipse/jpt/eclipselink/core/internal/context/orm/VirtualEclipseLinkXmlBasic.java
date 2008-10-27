@@ -14,7 +14,12 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlBasic;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
+import org.eclipse.jpt.eclipselink.core.context.Converter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.StructConverter;
+import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
@@ -66,42 +71,70 @@ public class VirtualEclipseLinkXmlBasic extends VirtualXmlBasic implements XmlBa
 	}
 
 	public XmlConverter getConverter() {
-		// TODO Auto-generated method stub
+		if (isOrmMetadataComplete()) {
+			return null;
+		}
+		if (this.javaAttributeMapping.getConverter().getType() == Convert.ECLIPSE_LINK_CONVERTER) {
+			EclipseLinkConverter converter = ((Convert) this.javaAttributeMapping.getConverter()).getConverter();
+			if (converter != null && converter.getType() == EclipseLinkConverter.CONVERTER) {
+				return new EclipseLinkVirtualXmlConverter(this.ormTypeMapping, (Converter) ((Convert) this.javaAttributeMapping.getConverter()).getConverter());
+			}
+		}
 		return null;
 	}
 
 	public XmlObjectTypeConverter getObjectTypeConverter() {
-		// TODO Auto-generated method stub
+		if (isOrmMetadataComplete()) {
+			return null;
+		}
+		if (this.javaAttributeMapping.getConverter().getType() == Convert.ECLIPSE_LINK_CONVERTER) {
+			EclipseLinkConverter converter = ((Convert) this.javaAttributeMapping.getConverter()).getConverter();
+			if (converter != null && converter.getType() == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
+				return new EclipseLinkVirtualXmlObjectTypeConverter(this.ormTypeMapping, (ObjectTypeConverter) ((Convert) this.javaAttributeMapping.getConverter()).getConverter());
+			}
+		}
 		return null;
 	}
 
 	public XmlStructConverter getStructConverter() {
-		// TODO Auto-generated method stub
+		if (isOrmMetadataComplete()) {
+			return null;
+		}
+		if (this.javaAttributeMapping.getConverter().getType() == Convert.ECLIPSE_LINK_CONVERTER) {
+			EclipseLinkConverter converter = ((Convert) this.javaAttributeMapping.getConverter()).getConverter();
+			if (converter != null && converter.getType() == EclipseLinkConverter.STRUCT_CONVERTER) {
+				return new EclipseLinkVirtualXmlStructConverter(this.ormTypeMapping, (StructConverter) ((Convert) this.javaAttributeMapping.getConverter()).getConverter());
+			}
+		}
 		return null;
 	}
 
 	public XmlTypeConverter getTypeConverter() {
-		// TODO Auto-generated method stub
+		if (isOrmMetadataComplete()) {
+			return null;
+		}
+		if (this.javaAttributeMapping.getConverter().getType() == Convert.ECLIPSE_LINK_CONVERTER) {
+			EclipseLinkConverter converter = ((Convert) this.javaAttributeMapping.getConverter()).getConverter();
+			if (converter != null && converter.getType() == EclipseLinkConverter.TYPE_CONVERTER) {
+				return new EclipseLinkVirtualXmlTypeConverter(this.ormTypeMapping, (TypeConverter) ((Convert) this.javaAttributeMapping.getConverter()).getConverter());
+			}
+		}
 		return null;
 	}
 
 	public void setConverter(XmlConverter value) {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public void setObjectTypeConverter(XmlObjectTypeConverter value) {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public void setStructConverter(XmlStructConverter value) {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public void setTypeConverter(XmlTypeConverter value) {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 }

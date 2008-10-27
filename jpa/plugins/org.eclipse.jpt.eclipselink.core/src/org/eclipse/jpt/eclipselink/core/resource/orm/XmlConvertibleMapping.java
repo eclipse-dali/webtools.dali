@@ -28,7 +28,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlConvertibleMapping extends org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping
+public interface XmlConvertibleMapping extends org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping, XmlConverterHolder
 {
 	/**
 	 * Returns the value of the '<em><b>Convert</b></em>' attribute.
