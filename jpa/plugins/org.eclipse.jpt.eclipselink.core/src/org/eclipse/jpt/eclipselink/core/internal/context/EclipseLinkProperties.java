@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
+import org.eclipse.jpt.eclipselink.core.internal.context.general.GeneralProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.internal.context.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
@@ -21,20 +22,23 @@ import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.Schem
  */
 public interface EclipseLinkProperties extends PersistenceUnitProperties
 {
-	Caching getCaching();
-		static final String CACHING_PROPERTY = "cachingProperty";
-		
+	GeneralProperties getGeneralProperties();
+		static final String GENERAL_PROPERTY = "generalProperties";
+
 	Connection getConnection();
-	static final String CONNECTION_PROPERTY = "connectionProperty";
+		static final String CONNECTION_PROPERTY = "connectionProperty";
 	
 	Customization getCustomization();
 		static final String CUSTOMIZATION_PROPERTY = "customizationProperty";
+	
+	Caching getCaching();
+		static final String CACHING_PROPERTY = "cachingProperty";
 		
-		Logging getLogging();
-			static final String LOGGING_PROPERTY = "loggingProperty";
-			
-		Options getOptions();
-			static final String OPTIONS_PROPERTY = "optionsProperty";
+	Logging getLogging();
+		static final String LOGGING_PROPERTY = "loggingProperty";
+		
+	Options getOptions();
+		static final String OPTIONS_PROPERTY = "optionsProperty";
 		
 	SchemaGeneration getSchemaGeneration();
 		static final String SCHEMA_GENERATION_PROPERTY = "schemaGenerationProperty";

@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
+import org.eclipse.jpt.eclipselink.core.internal.context.general.GeneralProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.internal.context.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
@@ -33,10 +34,10 @@ public class EclipseLinkPersistenceUnit extends GenericPersistenceUnit
 	}
 
 	// ******** Behavior *********
-	public Caching getCaching() {
-		return this.eclipseLinkProperties.getCaching();
+	public GeneralProperties getGeneralProperties() {
+		return this.eclipseLinkProperties.getGeneralProperties();
 	}
-	
+
 	public Connection getConnection() {
 		return this.eclipseLinkProperties.getConnection();
 	}
@@ -45,16 +46,20 @@ public class EclipseLinkPersistenceUnit extends GenericPersistenceUnit
 		return this.eclipseLinkProperties.getCustomization();
 	}
 
+	public Caching getCaching() {
+		return this.eclipseLinkProperties.getCaching();
+	}
+	
 	public Logging getLogging() {
 		return this.eclipseLinkProperties.getLogging();
+	}
+	
+	public Options getOptions() {
+		return this.eclipseLinkProperties.getOptions();
 	}
 
 	public SchemaGeneration getSchemaGeneration() {
 		return this.eclipseLinkProperties.getSchemaGeneration();
-	}
-
-	public Options getOptions() {
-		return this.eclipseLinkProperties.getOptions();
 	}
 
 }
