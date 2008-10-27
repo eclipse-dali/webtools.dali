@@ -41,6 +41,29 @@ public class EclipseLinkUiMessages extends NLS
 	public static String PersistenceXmlGeneralTab_browse;
 	public static String PersistenceXmlGeneralTab_description;
 
+	// General
+	public static String PersistenceXmlGeneralTab_title;
+	public static String PersistenceXmlGeneralTab_generalSectionTitle;
+	public static String PersistenceXmlGeneralTab_mappedClassesSectionTitle;
+	public static String PersistenceXmlGeneralTab_mappedClassesSectionDescription;
+	public static String PersistenceXmlGeneralTab_xmlMappingFilesSectionTitle;
+	public static String PersistenceXmlGeneralTab_xmlMappingFilesSectionDescription;
+	
+	public static String PersistenceXmlGeneralTab_nameLabel;
+	public static String PersistenceXmlGeneralTab_persistenceProviderLabel;
+	public static String PersistenceXmlGeneralTab_descriptionLabel;
+	
+	public static String PersistenceXmlGeneralTab_excludeUnlistedMappedClasses;
+	public static String PersistenceXmlGeneralTab_excludeUnlistedMappedClassesWithDefault;
+	public static String PersistenceXmlGeneralTab_mappedClassesNoName;
+	public static String PersistenceXmlGeneralTab_open;
+	
+	public static String PersistenceXmlGeneralTab_xmlMappingFilesDialog_title;
+	public static String PersistenceXmlGeneralTab_xmlMappingFilesDialog_message;
+	public static String PersistenceXmlGeneralTab_ormNoName;
+	public static String PersistenceXmlGeneralTab_excludeEclipselinkOrm;
+	public static String PersistenceXmlGeneralTab_excludeEclipselinkOrmWithDefault;
+
 	// Connection
 	public static String PersistenceXmlConnectionTab_title;
 	public static String PersistenceXmlConnectionTab_sectionTitle;
