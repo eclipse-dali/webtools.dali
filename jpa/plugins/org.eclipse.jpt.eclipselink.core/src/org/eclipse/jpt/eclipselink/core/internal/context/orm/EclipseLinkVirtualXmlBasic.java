@@ -30,10 +30,10 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
  * VirtualBasic is an implementation of Basic used when there is 
  * no tag in the orm.xml and an underlying javaBasicMapping exists.
  */
-public class VirtualEclipseLinkXmlBasic extends VirtualXmlBasic implements XmlBasic
+public class EclipseLinkVirtualXmlBasic extends VirtualXmlBasic implements XmlBasic
 {
 		
-	public VirtualEclipseLinkXmlBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping) {
+	public EclipseLinkVirtualXmlBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping) {
 		super(ormTypeMapping, javaBasicMapping);
 	}
 

@@ -27,10 +27,10 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersion;
  * VirtualBasic is an implementation of Basic used when there is 
  * no tag in the orm.xml and an underlying javaBasicMapping exists.
  */
-public class VirtualEclipseLinkXmlVersion extends VirtualXmlVersion implements XmlVersion
+public class EclipseLinkVirtualXmlVersion extends VirtualXmlVersion implements XmlVersion
 {
 		
-	public VirtualEclipseLinkXmlVersion(OrmTypeMapping ormTypeMapping, JavaVersionMapping javaVersionMapping) {
+	public EclipseLinkVirtualXmlVersion(OrmTypeMapping ormTypeMapping, JavaVersionMapping javaVersionMapping) {
 		super(ormTypeMapping, javaVersionMapping);
 	}
 

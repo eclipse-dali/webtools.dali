@@ -23,10 +23,10 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany;
  * VirtualBasic is an implementation of Basic used when there is 
  * no tag in the orm.xml and an underlying javaBasicMapping exists.
  */
-public class VirtualEclipseLinkXmlManyToMany extends VirtualXmlManyToMany implements XmlManyToMany
+public class EclipseLinkVirtualXmlManyToMany extends VirtualXmlManyToMany implements XmlManyToMany
 {
 		
-	public VirtualEclipseLinkXmlManyToMany(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
+	public EclipseLinkVirtualXmlManyToMany(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
 		super(ormTypeMapping, javaManyToManyMapping);
 	}
 
