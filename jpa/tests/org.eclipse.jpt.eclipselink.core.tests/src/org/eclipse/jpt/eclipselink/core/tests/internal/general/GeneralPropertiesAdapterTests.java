@@ -1,0 +1,366 @@
+/*******************************************************************************
+* Copyright (c) 2008 Oracle. All rights reserved.
+* This program and the accompanying materials are made available under the
+* terms of the Eclipse Public License v1.0, which accompanies this distribution
+* and is available at http://www.eclipse.org/legal/epl-v10.html.
+* 
+* Contributors:
+*     Oracle - initial API and implementation
+*******************************************************************************/
+package org.eclipse.jpt.eclipselink.core.tests.internal.general;
+
+import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.context.persistence.Property;
+import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
+import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkJpaProperties;
+import org.eclipse.jpt.eclipselink.core.internal.context.PersistenceUnitProperties;
+import org.eclipse.jpt.eclipselink.core.internal.context.PersistenceUnitPropertyListListener;
+import org.eclipse.jpt.eclipselink.core.internal.context.general.EclipseLinkGeneralProperties;
+import org.eclipse.jpt.eclipselink.core.internal.context.general.GeneralProperties;
+import org.eclipse.jpt.eclipselink.core.tests.internal.PersistenceUnitTestCase;
+import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.listener.ListChangeListener;
+import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
+
+/**
+ *  GeneralAdapterTests
+ */
+public class GeneralPropertiesAdapterTests extends PersistenceUnitTestCase
+{
+	private GeneralProperties generalProperties;
+	private ListChangeEvent mappedClassesEvent;
+	private ListChangeEvent mappingFilesEvent;
+
+	public static final String EXCLUDE_ECLIPSELINK_ORM_KEY = GeneralProperties.ECLIPSELINK_EXCLUDE_ECLIPSELINK_ORM;
+	public static final Boolean EXCLUDE_ECLIPSELINK_ORM_TEST_VALUE = false;
+	public static final Boolean EXCLUDE_ECLIPSELINK_ORM_TEST_VALUE_2 = ! EXCLUDE_ECLIPSELINK_ORM_TEST_VALUE;
+
+	private static final String NAME_TEST_VALUE = "name.test";
+	private static final String NAME_TEST_VALUE_2 = "name-2.test";
+	
+	private static final String PROVIDER_TEST_VALUE = "provider.test";
+	private static final String PROVIDER_TEST_VALUE_2 = "provider-2.test";
+	
+	private static final String DESCRIPTION_TEST_VALUE = "description.test";
+	private static final String DESCRIPTION_TEST_VALUE_2 = "description-2.test";
+	
+	private static final Boolean EXCLUDE_UNLISTED_CLASSES_TEST_VALUE = true;
+	private static final Boolean EXCLUDE_UNLISTED_CLASSES_TEST_VALUE_2 = ! EXCLUDE_UNLISTED_CLASSES_TEST_VALUE;
+	
+	public GeneralPropertiesAdapterTests(String name) {
+		super(name);
+	}
+
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		this.generalProperties = this.persistenceUnitProperties.getGeneralProperties();
+		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
+
+		this.generalProperties.addPropertyChangeListener(GeneralProperties.NAME_PROPERTY, propertyChangeListener);
+		this.generalProperties.addPropertyChangeListener(GeneralProperties.PROVIDER_PROPERTY, propertyChangeListener);
+		this.generalProperties.addPropertyChangeListener(GeneralProperties.DESCRIPTION_PROPERTY, propertyChangeListener);
+		this.generalProperties.addPropertyChangeListener(GeneralProperties.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY, propertyChangeListener);
+
+		ListChangeListener mappedClassesChangeListener = this.buildMappedClassesChangeListener();
+		this.generalProperties.addListChangeListener(GeneralProperties.SPECIFIED_CLASS_REFS_LIST, mappedClassesChangeListener);
+		
+		ListChangeListener mappingFilesChangeListener = this.buildMappingFilesChangeListener();
+		this.generalProperties.addListChangeListener(GeneralProperties.SPECIFIED_MAPPING_FILE_REFS_LIST, mappingFilesChangeListener);
+		
+		this.generalProperties.addPropertyChangeListener(GeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY, propertyChangeListener);
+
+		this.clearEvent();
+	}
+
+	/**
+	 * Initializes directly the PU properties before testing.
+	 */
+	@Override
+	protected void populatePu() {
+		this.modelPropertiesSizeOriginal = 1;
+		this.propertiesTotal = this.modelPropertiesSizeOriginal + 2; // misc properties
+		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
+		
+		this.persistenceUnitPut("misc.property.1", "value.1");
+		this.persistenceUnitPut(EXCLUDE_ECLIPSELINK_ORM_KEY, EXCLUDE_ECLIPSELINK_ORM_TEST_VALUE.toString());
+		this.persistenceUnitPut("misc.property.2", "value.2");
+
+		// Initializes PU property
+		this.persistenceUnit().setName(NAME_TEST_VALUE);
+		this.persistenceUnit().setProvider(PROVIDER_TEST_VALUE);
+		this.persistenceUnit().setDescription(DESCRIPTION_TEST_VALUE);
+		
+		this.persistenceUnit().setSpecifiedExcludeUnlistedClasses(EXCLUDE_UNLISTED_CLASSES_TEST_VALUE);
+
+		return;
+	}
+
+	// ********** Listeners **********
+	
+	private ListChangeListener buildMappedClassesChangeListener() {
+		return new ListChangeListener() {
+			public void itemsAdded(ListChangeEvent e) {
+				GeneralPropertiesAdapterTests.this.throwUnsupportedOperationException(e);
+			}
+
+			public void itemsRemoved(ListChangeEvent e) {
+				GeneralPropertiesAdapterTests.this.throwUnsupportedOperationException(e);
+			}
+
+			public void itemsReplaced(ListChangeEvent e) {
+				GeneralPropertiesAdapterTests.this.throwUnsupportedOperationException(e);
+			}
+
+			public void itemsMoved(ListChangeEvent e) {
+				GeneralPropertiesAdapterTests.this.throwUnsupportedOperationException(e);
+			}
+
+			public void listCleared(ListChangeEvent e) {
+				GeneralPropertiesAdapterTests.this.throwUnsupportedOperationException(e);
+			}
+
+			public void listChanged(ListChangeEvent e) {
+				GeneralPropertiesAdapterTests.this.mappedClassesChanged(e);
+			}
+		};
+	}
+	
+	private ListChangeListener buildMappingFilesChangeListener() {
+		return new ListChangeListener() {
+			public void itemsAdded(ListChangeEvent e) {
+				GeneralPropertiesAdapterTests.this.throwUnsupportedOperationException(e);
+			}
+			
+			public void itemsRemoved(ListChangeEvent e) {
+				GeneralPropertiesAdapterTests.this.throwUnsupportedOperationException(e);
+			}
+			
+			public void itemsReplaced(ListChangeEvent e) {
+				GeneralPropertiesAdapterTests.this.throwUnsupportedOperationException(e);
+			}
+			
+			public void itemsMoved(ListChangeEvent e) {
+				GeneralPropertiesAdapterTests.this.throwUnsupportedOperationException(e);
+			}
+			
+			public void listCleared(ListChangeEvent e) {
+				GeneralPropertiesAdapterTests.this.throwUnsupportedOperationException(e);
+			}
+			
+			public void listChanged(ListChangeEvent e) {
+				GeneralPropertiesAdapterTests.this.mappingFilesChanged(e);
+			}
+		};
+	}
+
+	@Override
+	protected void clearEvent() {
+		super.clearEvent();
+		this.mappedClassesEvent = null;
+		this.mappingFilesEvent = null;
+	}
+
+	void mappedClassesChanged(ListChangeEvent e) {
+		this.mappedClassesEvent = e;
+	}
+	
+	void mappingFilesChanged(ListChangeEvent e) {
+		this.mappingFilesEvent = e;
+	}
+	
+	// ********** Listeners tests **********
+	public void testHasListeners() throws Exception {
+		// new
+		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = 
+			(ListAspectAdapter<PersistenceUnit, Property>) ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertiesAdapter();
+		GenericProperty ctdProperty = (GenericProperty) this.persistenceUnit().getProperty(EXCLUDE_ECLIPSELINK_ORM_KEY);
+		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
+		
+		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
+		assertTrue(ctdProperty.hasAnyPropertyChangeListeners(Property.VALUE_PROPERTY));
+		this.verifyHasListeners(this.generalProperties, GeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY);
+		this.verifyHasListeners(this.generalProperties, GeneralProperties.NAME_PROPERTY);
+		this.verifyHasListeners(this.generalProperties, GeneralProperties.PROVIDER_PROPERTY);
+		this.verifyHasListeners(this.generalProperties, GeneralProperties.DESCRIPTION_PROPERTY);
+		this.verifyHasListeners(this.generalProperties, GeneralProperties.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY);
+		this.verifyHasListeners(propertyListAdapter);
+		
+		EclipseLinkGeneralProperties elGeneralProperties = (EclipseLinkGeneralProperties) this.generalProperties;
+		PersistenceUnitPropertyListListener propertyListListener = elGeneralProperties.propertyListListener();
+		propertyListAdapter.removeListChangeListener(ListValueModel.LIST_VALUES, propertyListListener);
+		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES)); // other properties are still listening
+		this.verifyHasListeners(this.generalProperties, GeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY);
+		this.verifyHasListeners(this.generalProperties, GeneralProperties.NAME_PROPERTY);
+		this.verifyHasListeners(this.generalProperties, GeneralProperties.PROVIDER_PROPERTY);
+		this.verifyHasListeners(this.generalProperties, GeneralProperties.DESCRIPTION_PROPERTY);
+		this.verifyHasListeners(this.generalProperties, GeneralProperties.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY);
+	}
+
+	// ********** ExcludeEclipselinkOrm tests **********
+	public void testSetExcludeEclipselinkOrm() throws Exception {
+		this.verifyModelInitialized(
+			EXCLUDE_ECLIPSELINK_ORM_KEY,
+			EXCLUDE_ECLIPSELINK_ORM_TEST_VALUE);
+		this.verifySetProperty(
+			EXCLUDE_ECLIPSELINK_ORM_KEY,
+			EXCLUDE_ECLIPSELINK_ORM_TEST_VALUE,
+			EXCLUDE_ECLIPSELINK_ORM_TEST_VALUE_2);
+	}
+
+	public void testAddRemoveExcludeEclipselinkOrm() throws Exception {
+		this.verifyAddRemoveProperty(
+			EXCLUDE_ECLIPSELINK_ORM_KEY,
+			EXCLUDE_ECLIPSELINK_ORM_TEST_VALUE,
+			EXCLUDE_ECLIPSELINK_ORM_TEST_VALUE_2);
+	}
+	
+	// ********** Name tests **********
+	public void testSetName() throws Exception {
+		this.verifySetPersistenceUnitProperty(GeneralProperties.NAME_PROPERTY,
+			NAME_TEST_VALUE,
+			NAME_TEST_VALUE_2);
+	}
+
+	// ********** Provider tests **********
+	public void testSetProvider() throws Exception {
+		this.verifySetPersistenceUnitProperty(GeneralProperties.PROVIDER_PROPERTY,
+			PROVIDER_TEST_VALUE,
+			PROVIDER_TEST_VALUE_2);
+	}
+	
+	// ********** Description tests **********
+	public void testSetDescription() throws Exception {
+		this.verifySetPersistenceUnitProperty(GeneralProperties.DESCRIPTION_PROPERTY,
+			DESCRIPTION_TEST_VALUE,
+			DESCRIPTION_TEST_VALUE_2);
+	}
+	
+	// ********** ExcludeUnlistedClasses tests **********
+	public void testSetExcludeUnlistedClasses() throws Exception {
+		this.verifySetPersistenceUnitProperty(GeneralProperties.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY,
+			EXCLUDE_UNLISTED_CLASSES_TEST_VALUE,
+			EXCLUDE_UNLISTED_CLASSES_TEST_VALUE_2);
+	}
+
+	// ********** MappedClasses list **********
+	public void testMappedClassesList() throws Exception {
+		// add
+		this.clearEvent();
+		ClassRef classRef = this.generalProperties.addSpecifiedClassRef();
+		
+		// verify event received
+		assertNotNull("No Event Fired.", this.mappedClassesEvent);
+		// verify event for the expected property
+		assertEquals("Wrong Event.", this.mappedClassesEvent.getAspectName(), GeneralProperties.SPECIFIED_CLASS_REFS_LIST);
+		
+		// remove
+		this.clearEvent();
+		
+		this.generalProperties.removeSpecifiedClassRef(classRef);
+		// verify event received
+		assertNotNull("No Event Fired.", this.mappedClassesEvent);
+		// verify event for the expected property
+		assertEquals("Wrong Event.", this.mappedClassesEvent.getAspectName(), GeneralProperties.SPECIFIED_CLASS_REFS_LIST);
+	}
+	
+	// ********** MappingFiles list **********
+	public void testMappingFilesList() throws Exception {
+		// add
+		this.clearEvent();
+		MappingFileRef mappingFileRef = this.generalProperties.addSpecifiedMappingFileRef();
+		
+		// verify event received
+		assertNotNull("No Event Fired.", this.mappingFilesEvent);
+		// verify event for the expected property
+		assertEquals("Wrong Event.", this.mappingFilesEvent.getAspectName(), GeneralProperties.SPECIFIED_MAPPING_FILE_REFS_LIST);
+		
+		// remove
+		this.clearEvent();
+		
+		this.generalProperties.removeSpecifiedMappingFileRef(mappingFileRef);
+		// verify event received
+		assertNotNull("No Event Fired.", this.mappingFilesEvent);
+		// verify event for the expected property
+		assertEquals("Wrong Event.", this.mappingFilesEvent.getAspectName(), GeneralProperties.SPECIFIED_MAPPING_FILE_REFS_LIST);
+	}
+
+
+
+	// ********** get/set property **********
+	@Override
+	protected Object getProperty(String propertyName) throws NoSuchFieldException {
+		Object modelValue = null;
+		if (propertyName.equals(GeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY))
+			modelValue = this.generalProperties.getExcludeEclipselinkOrm();
+		else if (propertyName.equals(GeneralProperties.NAME_PROPERTY))
+			modelValue = this.generalProperties.getName();
+		else if (propertyName.equals(GeneralProperties.PROVIDER_PROPERTY))
+			modelValue = this.generalProperties.getProvider();
+		else if (propertyName.equals(GeneralProperties.DESCRIPTION_PROPERTY))
+			modelValue = this.generalProperties.getDescription();
+		else if (propertyName.equals(GeneralProperties.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY))
+			modelValue = this.generalProperties.getSpecifiedExcludeUnlistedClasses();
+		else
+			this.throwMissingDefinition("getProperty", propertyName);
+		return modelValue;
+	}
+
+	@Override
+	protected void setProperty(String propertyName, Object newValue) throws Exception {
+		if (propertyName.equals(GeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY))
+			this.generalProperties.setExcludeEclipselinkOrm((Boolean) newValue);
+		else if (propertyName.equals(GeneralProperties.NAME_PROPERTY))
+			this.generalProperties.setName((String) newValue);
+		else if (propertyName.equals(GeneralProperties.PROVIDER_PROPERTY))
+			this.generalProperties.setProvider((String) newValue);
+		else if (propertyName.equals(GeneralProperties.DESCRIPTION_PROPERTY))
+			this.generalProperties.setDescription((String) newValue);
+		else if (propertyName.equals(GeneralProperties.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY))
+			this.generalProperties.setSpecifiedExcludeUnlistedClasses((Boolean) newValue);
+		else
+			this.throwMissingDefinition("setProperty", propertyName);
+	}
+	
+	@Override
+	protected PersistenceUnitProperties model() {
+		return this.generalProperties;
+	}
+	
+	@Override
+	protected Object getPersistenceUnitProperty(String propertyName) throws NoSuchFieldException {
+		if (propertyName.equals(GeneralProperties.NAME_PROPERTY)) {
+			return this.persistenceUnit().getName();
+		}
+		else if (propertyName.equals(GeneralProperties.PROVIDER_PROPERTY)) {
+			return this.persistenceUnit().getProvider();
+		}
+		else if (propertyName.equals(GeneralProperties.DESCRIPTION_PROPERTY)) {
+			return this.persistenceUnit().getDescription();
+		}
+		else if (propertyName.equals(GeneralProperties.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY)) {
+			return this.persistenceUnit().getSpecifiedExcludeUnlistedClasses();
+		}
+		this.throwMissingDefinition("getPersistenceUnitProperty", propertyName);
+		return null;
+	}
+	
+	@Override
+	protected void setPersistenceUnitProperty(String propertyName, Object newValue) throws NoSuchFieldException {
+		if (propertyName.equals(GeneralProperties.NAME_PROPERTY))
+			this.persistenceUnit().setName((String) newValue);
+		else if (propertyName.equals(GeneralProperties.PROVIDER_PROPERTY))
+			this.persistenceUnit().setProvider((String) newValue);
+		else if (propertyName.equals(GeneralProperties.DESCRIPTION_PROPERTY))
+			this.persistenceUnit().setDescription((String) newValue);
+		else if (propertyName.equals(GeneralProperties.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY))
+			this.persistenceUnit().setSpecifiedExcludeUnlistedClasses((Boolean) newValue);
+		else
+			this.throwMissingDefinition("setPersistenceUnitProperty", propertyName);
+	}
+
+}
