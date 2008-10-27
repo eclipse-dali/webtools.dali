@@ -155,10 +155,6 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
-	public void update(Column column) {
-		this.column = column;
-	}
-	
 	public TextRange getNameTextRange() {
 		return null;
 	}

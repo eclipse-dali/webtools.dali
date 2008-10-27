@@ -25,10 +25,6 @@ public class VirtualCascadeType extends AbstractJpaEObject implements CascadeTyp
 		this.metadataComplete = metadataComplete;
 	}
 
-	public void update(Cascade javaCascade) {
-		this.javaCascade = javaCascade;
-	}
-
 	public boolean isCascadeAll() {
 		if (this.metadataComplete) {
 			return false;
