@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * @model kind="class"
  * @generated
  */
-public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddable implements XmlCustomizerHolder
+public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddable implements XmlCustomizerHolder, XmlChangeTrackingHolder
 {
 	/**
 	 * The cached value of the '{@link #getCustomizer() <em>Customizer</em>}' containment reference.
@@ -38,6 +38,16 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	 * @ordered
 	 */
 	protected XmlCustomizer customizer;
+
+	/**
+	 * The cached value of the '{@link #getChangeTracking() <em>Change Tracking</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getChangeTracking()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlChangeTracking changeTracking;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -121,6 +131,66 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Change Tracking</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Change Tracking</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Change Tracking</em>' containment reference.
+	 * @see #setChangeTracking(XmlChangeTracking)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlChangeTrackingHolder_ChangeTracking()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlChangeTracking getChangeTracking()
+	{
+		return changeTracking;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetChangeTracking(XmlChangeTracking newChangeTracking, NotificationChain msgs)
+	{
+		XmlChangeTracking oldChangeTracking = changeTracking;
+		changeTracking = newChangeTracking;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING, oldChangeTracking, newChangeTracking);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getChangeTracking <em>Change Tracking</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Change Tracking</em>' containment reference.
+	 * @see #getChangeTracking()
+	 * @generated
+	 */
+	public void setChangeTracking(XmlChangeTracking newChangeTracking)
+	{
+		if (newChangeTracking != changeTracking)
+		{
+			NotificationChain msgs = null;
+			if (changeTracking != null)
+				msgs = ((InternalEObject)changeTracking).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING, null, msgs);
+			if (newChangeTracking != null)
+				msgs = ((InternalEObject)newChangeTracking).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING, null, msgs);
+			msgs = basicSetChangeTracking(newChangeTracking, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING, newChangeTracking, newChangeTracking));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -132,6 +202,8 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 		{
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				return basicSetCustomizer(null, msgs);
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
+				return basicSetChangeTracking(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -148,6 +220,8 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 		{
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				return getCustomizer();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
+				return getChangeTracking();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -164,6 +238,9 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 		{
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				setCustomizer((XmlCustomizer)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
+				setChangeTracking((XmlChangeTracking)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -182,6 +259,9 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				setCustomizer((XmlCustomizer)null);
 				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
+				setChangeTracking((XmlChangeTracking)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -198,6 +278,8 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 		{
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				return customizer != null;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
+				return changeTracking != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -218,6 +300,14 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlChangeTrackingHolder.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING: return EclipseLinkOrmPackage.XML_CHANGE_TRACKING_HOLDER__CHANGE_TRACKING;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -234,6 +324,14 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 			switch (baseFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_CUSTOMIZER_HOLDER__CUSTOMIZER: return EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlChangeTrackingHolder.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_CHANGE_TRACKING_HOLDER__CHANGE_TRACKING: return EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING;
 				default: return -1;
 			}
 		}

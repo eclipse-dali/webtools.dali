@@ -26,6 +26,8 @@ public interface EclipseLinkOrmXmlMapper
 	String CACHE__REFRESH_ONLY_IF_NEWER = "refresh-only-if-newer";  //$NON-NLS-1$
 	String CACHE__DISABLE_HITS = "disable-hits";  //$NON-NLS-1$
 	String CACHE__COORDINATION_TYPE = "coordination-type";  //$NON-NLS-1$
+	
+	String CHANGE_TRACKING = "change-tracking";  //$NON-NLS-1$
 		
 	String CONVERSION_VALUE = "conversion-value"; //$NON-NLS-1$
 	String CONVERSION_VALUE__DATA_VALUE = "data-value"; //$NON-NLS-1$
@@ -65,9 +67,10 @@ public interface EclipseLinkOrmXmlMapper
 	String STRUCT_CONVERTER__NAME = "name"; //$NON-NLS-1$
 	String STRUCT_CONVERTER__CONVERTER = "converter"; //$NON-NLS-1$
 	
+	String TYPE = "type";  //$NON-NLS-1$
+	
 	String TYPE_CONVERTER = "type-converter"; //$NON-NLS-1$
 	String TYPE_CONVERTER__NAME = "name"; //$NON-NLS-1$
 	String TYPE_CONVERTER__DATA_TYPE = "data-type"; //$NON-NLS-1$
 	String TYPE_CONVERTER__OBJECT_TYPE = "object-type"; //$NON-NLS-1$
-
 }

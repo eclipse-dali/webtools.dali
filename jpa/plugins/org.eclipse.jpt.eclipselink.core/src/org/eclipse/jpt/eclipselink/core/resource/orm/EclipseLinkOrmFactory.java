@@ -80,6 +80,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 		switch (eClass.getClassifierID())
 		{
 			case EclipseLinkOrmPackage.XML_CUSTOMIZER: return (EObject)createXmlCustomizer();
+			case EclipseLinkOrmPackage.XML_CHANGE_TRACKING: return (EObject)createXmlChangeTracking();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE: return (EObject)createXmlEmbeddable();
 			case EclipseLinkOrmPackage.XML_TIME_OF_DAY: return (EObject)createXmlTimeOfDay();
 			case EclipseLinkOrmPackage.XML_CACHE: return (EObject)createXmlCache();
@@ -112,6 +113,8 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		switch (eDataType.getClassifierID())
 		{
+			case EclipseLinkOrmPackage.XML_CHANGE_TRACKING_TYPE:
+				return createXmlChangeTrackingTypeFromString(eDataType, initialValue);
 			case EclipseLinkOrmPackage.CACHE_TYPE:
 				return createCacheTypeFromString(eDataType, initialValue);
 			case EclipseLinkOrmPackage.CACHE_COORDINATION_TYPE:
@@ -135,6 +138,8 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		switch (eDataType.getClassifierID())
 		{
+			case EclipseLinkOrmPackage.XML_CHANGE_TRACKING_TYPE:
+				return convertXmlChangeTrackingTypeToString(eDataType, instanceValue);
 			case EclipseLinkOrmPackage.CACHE_TYPE:
 				return convertCacheTypeToString(eDataType, instanceValue);
 			case EclipseLinkOrmPackage.CACHE_COORDINATION_TYPE:
@@ -157,6 +162,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlCustomizer xmlCustomizer = new XmlCustomizer();
 		return xmlCustomizer;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlChangeTracking createXmlChangeTracking()
+	{
+		XmlChangeTracking xmlChangeTracking = new XmlChangeTracking();
+		return xmlChangeTracking;
 	}
 
 	/**
@@ -322,6 +338,28 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlManyToManyImpl xmlManyToManyImpl = new XmlManyToManyImpl();
 		return xmlManyToManyImpl;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlChangeTrackingType createXmlChangeTrackingTypeFromString(EDataType eDataType, String initialValue)
+	{
+		XmlChangeTrackingType result = XmlChangeTrackingType.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertXmlChangeTrackingTypeToString(EDataType eDataType, Object instanceValue)
+	{
+		return instanceValue == null ? null : instanceValue.toString();
 	}
 
 	/**

@@ -41,6 +41,7 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 			createExistenceCheckingTranslator(),
 			createDescriptionTranslator(),
 			createCustomizerTranslator(),
+			createChangeTrackingTranslator(),
 			createTableTranslator(),
 			createSecondaryTableTranslator(),
 			createPrimaryKeyJoinColumnTranslator(),
@@ -80,6 +81,10 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 
 	protected Translator createCustomizerTranslator() {
 		return new CustomizerTranslator(CUSTOMIZER, ECLIPSELINK_ORM_PKG.getXmlCustomizerHolder_Customizer());
+	}
+	
+	protected Translator createChangeTrackingTranslator() {
+		return new EclipseLinkChangeTrackingTranslator(CHANGE_TRACKING, ECLIPSELINK_ORM_PKG.getXmlChangeTrackingHolder_ChangeTracking());
 	}
 	
 	protected Translator createCacheTranslator() {

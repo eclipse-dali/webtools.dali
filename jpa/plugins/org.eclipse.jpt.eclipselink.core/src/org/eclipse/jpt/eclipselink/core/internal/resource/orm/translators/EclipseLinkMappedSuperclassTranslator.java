@@ -40,6 +40,7 @@ public class EclipseLinkMappedSuperclassTranslator extends MappedSuperclassTrans
 			createExistenceCheckingTranslator(),
 			createDescriptionTranslator(),
 			createCustomizerTranslator(),
+			createChangeTrackingTranslator(),
 			createIdClassTranslator(),
 			createCacheTranslator(),
 			createExcludeDefaultListenersTranslator(),
@@ -66,6 +67,10 @@ public class EclipseLinkMappedSuperclassTranslator extends MappedSuperclassTrans
 	
 	protected Translator createCustomizerTranslator() {
 		return new CustomizerTranslator(CUSTOMIZER, ECLIPSELINK_ORM_PKG.getXmlCustomizerHolder_Customizer());
+	}
+	
+	protected Translator createChangeTrackingTranslator() {
+		return new EclipseLinkChangeTrackingTranslator(CHANGE_TRACKING, ECLIPSELINK_ORM_PKG.getXmlChangeTrackingHolder_ChangeTracking());
 	}
 	
 	protected Translator createCacheTranslator() {

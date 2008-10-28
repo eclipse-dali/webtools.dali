@@ -11,6 +11,12 @@
   <foreignModel>eclipselink_orm.ecore</foreignModel>
   <genPackages prefix="EclipseLinkOrm" basePackage="org.eclipse.jpt.eclipselink.core.resource"
       disposableProviderFactory="true" adapterFactory="false" ecorePackage="eclipselink_orm.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//XmlChangeTrackingType">
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlChangeTrackingType/ATTRIBUTE"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlChangeTrackingType/OBJECT"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlChangeTrackingType/DEFERRED"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlChangeTrackingType/AUTO"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//CacheType">
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheType/FULL"/>
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheType/WEAK"/>
@@ -41,6 +47,12 @@
     </genClasses>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlCustomizerHolder">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlCustomizerHolder/customizer"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlChangeTracking">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlChangeTracking/type"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlChangeTrackingHolder">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlChangeTrackingHolder/changeTracking"/>
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEmbeddable"/>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlReadOnly">

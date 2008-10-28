@@ -127,6 +127,62 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_CUSTOMIZER_HOLDER_FEATURE_COUNT = 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTracking <em>Xml Change Tracking</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTracking
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlChangeTracking()
+	 * @generated
+	 */
+	public static final int XML_CHANGE_TRACKING = 2;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CHANGE_TRACKING__TYPE = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Change Tracking</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CHANGE_TRACKING_FEATURE_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder <em>Xml Change Tracking Holder</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlChangeTrackingHolder()
+	 * @generated
+	 */
+	public static final int XML_CHANGE_TRACKING_HOLDER = 3;
+
+	/**
+	 * The feature id for the '<em><b>Change Tracking</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CHANGE_TRACKING_HOLDER__CHANGE_TRACKING = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Change Tracking Holder</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CHANGE_TRACKING_HOLDER_FEATURE_COUNT = 1;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable <em>Xml Embeddable</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -134,7 +190,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable()
 	 * @generated
 	 */
-	public static final int XML_EMBEDDABLE = 2;
+	public static final int XML_EMBEDDABLE = 4;
 
 	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
@@ -191,13 +247,22 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_EMBEDDABLE__CUSTOMIZER = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Change Tracking</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__CHANGE_TRACKING = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Xml Embeddable</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_EMBEDDABLE_FEATURE_COUNT = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 1;
+	public static final int XML_EMBEDDABLE_FEATURE_COUNT = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly <em>Xml Read Only</em>}' class.
@@ -207,7 +272,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlReadOnly()
 	 * @generated
 	 */
-	public static final int XML_READ_ONLY = 3;
+	public static final int XML_READ_ONLY = 5;
 
 	/**
 	 * The feature id for the '<em><b>Read Only</b></em>' attribute.
@@ -235,7 +300,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTimeOfDay()
 	 * @generated
 	 */
-	public static final int XML_TIME_OF_DAY = 4;
+	public static final int XML_TIME_OF_DAY = 6;
 
 	/**
 	 * The feature id for the '<em><b>Hour</b></em>' attribute.
@@ -290,7 +355,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCache()
 	 * @generated
 	 */
-	public static final int XML_CACHE = 5;
+	public static final int XML_CACHE = 7;
 
 	/**
 	 * The feature id for the '<em><b>Expiry</b></em>' attribute.
@@ -390,7 +455,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCacheHolder()
 	 * @generated
 	 */
-	public static final int XML_CACHE_HOLDER = 6;
+	public static final int XML_CACHE_HOLDER = 8;
 
 	/**
 	 * The feature id for the '<em><b>Cache</b></em>' containment reference.
@@ -427,7 +492,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity()
 	 * @generated
 	 */
-	public static final int XML_ENTITY = 7;
+	public static final int XML_ENTITY = 9;
 
 	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
@@ -718,13 +783,22 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_ENTITY__CUSTOMIZER = OrmPackage.XML_ENTITY_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Change Tracking</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__CHANGE_TRACKING = OrmPackage.XML_ENTITY_FEATURE_COUNT + 2;
+
+	/**
 	 * The feature id for the '<em><b>Cache</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__CACHE = OrmPackage.XML_ENTITY_FEATURE_COUNT + 2;
+	public static final int XML_ENTITY__CACHE = OrmPackage.XML_ENTITY_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Existence Checking</b></em>' attribute.
@@ -733,7 +807,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__EXISTENCE_CHECKING = OrmPackage.XML_ENTITY_FEATURE_COUNT + 3;
+	public static final int XML_ENTITY__EXISTENCE_CHECKING = OrmPackage.XML_ENTITY_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Xml Entity</em>' class.
@@ -742,7 +816,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_FEATURE_COUNT = OrmPackage.XML_ENTITY_FEATURE_COUNT + 4;
+	public static final int XML_ENTITY_FEATURE_COUNT = OrmPackage.XML_ENTITY_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}' class.
@@ -752,7 +826,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass()
 	 * @generated
 	 */
-	public static final int XML_MAPPED_SUPERCLASS = 8;
+	public static final int XML_MAPPED_SUPERCLASS = 10;
 
 	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
@@ -917,13 +991,22 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_MAPPED_SUPERCLASS__CUSTOMIZER = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Change Tracking</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__CHANGE_TRACKING = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 2;
+
+	/**
 	 * The feature id for the '<em><b>Cache</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS__CACHE = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 2;
+	public static final int XML_MAPPED_SUPERCLASS__CACHE = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Existence Checking</b></em>' attribute.
@@ -932,7 +1015,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS__EXISTENCE_CHECKING = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 3;
+	public static final int XML_MAPPED_SUPERCLASS__EXISTENCE_CHECKING = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Xml Mapped Superclass</em>' class.
@@ -941,7 +1024,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_FEATURE_COUNT = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 4;
+	public static final int XML_MAPPED_SUPERCLASS_FEATURE_COUNT = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMutable <em>Xml Mutable</em>}' class.
@@ -951,7 +1034,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMutable()
 	 * @generated
 	 */
-	public static final int XML_MUTABLE = 9;
+	public static final int XML_MUTABLE = 11;
 
 	/**
 	 * The feature id for the '<em><b>Mutable</b></em>' attribute.
@@ -979,7 +1062,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConvertibleMapping()
 	 * @generated
 	 */
-	public static final int XML_CONVERTIBLE_MAPPING = 21;
+	public static final int XML_CONVERTIBLE_MAPPING = 23;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlId <em>Xml Id</em>}' class.
@@ -989,7 +1072,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlId()
 	 * @generated
 	 */
-	public static final int XML_ID = 22;
+	public static final int XML_ID = 24;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlIdImpl <em>Xml Id Impl</em>}' class.
@@ -999,7 +1082,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlIdImpl()
 	 * @generated
 	 */
-	public static final int XML_ID_IMPL = 23;
+	public static final int XML_ID_IMPL = 25;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic <em>Xml Basic</em>}' class.
@@ -1009,7 +1092,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasic()
 	 * @generated
 	 */
-	public static final int XML_BASIC = 24;
+	public static final int XML_BASIC = 26;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicImpl <em>Xml Basic Impl</em>}' class.
@@ -1019,7 +1102,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasicImpl()
 	 * @generated
 	 */
-	public static final int XML_BASIC_IMPL = 25;
+	public static final int XML_BASIC_IMPL = 27;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersion <em>Xml Version</em>}' class.
@@ -1029,7 +1112,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlVersion()
 	 * @generated
 	 */
-	public static final int XML_VERSION = 26;
+	public static final int XML_VERSION = 28;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersionImpl <em>Xml Version Impl</em>}' class.
@@ -1039,7 +1122,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlVersionImpl()
 	 * @generated
 	 */
-	public static final int XML_VERSION_IMPL = 27;
+	public static final int XML_VERSION_IMPL = 29;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlPrivateOwned <em>Xml Private Owned</em>}' class.
@@ -1049,7 +1132,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPrivateOwned()
 	 * @generated
 	 */
-	public static final int XML_PRIVATE_OWNED = 28;
+	public static final int XML_PRIVATE_OWNED = 30;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetch <em>Xml Join Fetch</em>}' class.
@@ -1059,7 +1142,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlJoinFetch()
 	 * @generated
 	 */
-	public static final int XML_JOIN_FETCH = 29;
+	public static final int XML_JOIN_FETCH = 31;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne <em>Xml One To One</em>}' class.
@@ -1069,7 +1152,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToOne()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_ONE = 30;
+	public static final int XML_ONE_TO_ONE = 32;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOneImpl <em>Xml One To One Impl</em>}' class.
@@ -1079,7 +1162,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToOneImpl()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_ONE_IMPL = 31;
+	public static final int XML_ONE_TO_ONE_IMPL = 33;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany <em>Xml One To Many</em>}' class.
@@ -1089,7 +1172,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToMany()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY = 32;
+	public static final int XML_ONE_TO_MANY = 34;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToManyImpl <em>Xml One To Many Impl</em>}' class.
@@ -1099,7 +1182,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToManyImpl()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY_IMPL = 33;
+	public static final int XML_ONE_TO_MANY_IMPL = 35;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOne <em>Xml Many To One</em>}' class.
@@ -1109,7 +1192,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlManyToOne()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_ONE = 34;
+	public static final int XML_MANY_TO_ONE = 36;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOneImpl <em>Xml Many To One Impl</em>}' class.
@@ -1119,7 +1202,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlManyToOneImpl()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_ONE_IMPL = 35;
+	public static final int XML_MANY_TO_ONE_IMPL = 37;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany <em>Xml Many To Many</em>}' class.
@@ -1129,7 +1212,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlManyToMany()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_MANY = 36;
+	public static final int XML_MANY_TO_MANY = 38;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToManyImpl <em>Xml Many To Many Impl</em>}' class.
@@ -1139,7 +1222,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlManyToManyImpl()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_MANY_IMPL = 37;
+	public static final int XML_MANY_TO_MANY_IMPL = 39;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter <em>Xml Converter</em>}' class.
@@ -1149,7 +1232,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverter()
 	 * @generated
 	 */
-	public static final int XML_CONVERTER = 10;
+	public static final int XML_CONVERTER = 12;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter <em>Xml Type Converter</em>}' class.
@@ -1159,7 +1242,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTypeConverter()
 	 * @generated
 	 */
-	public static final int XML_TYPE_CONVERTER = 12;
+	public static final int XML_TYPE_CONVERTER = 14;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlConversionValue <em>Xml Conversion Value</em>}' class.
@@ -1169,7 +1252,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConversionValue()
 	 * @generated
 	 */
-	public static final int XML_CONVERSION_VALUE = 14;
+	public static final int XML_CONVERSION_VALUE = 16;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter <em>Xml Object Type Converter</em>}' class.
@@ -1179,7 +1262,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlObjectTypeConverter()
 	 * @generated
 	 */
-	public static final int XML_OBJECT_TYPE_CONVERTER = 16;
+	public static final int XML_OBJECT_TYPE_CONVERTER = 18;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter <em>Xml Struct Converter</em>}' class.
@@ -1189,7 +1272,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStructConverter()
 	 * @generated
 	 */
-	public static final int XML_STRUCT_CONVERTER = 18;
+	public static final int XML_STRUCT_CONVERTER = 20;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverterHolder <em>Xml Converter Holder</em>}' class.
@@ -1199,7 +1282,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterHolder()
 	 * @generated
 	 */
-	public static final int XML_CONVERTER_HOLDER = 20;
+	public static final int XML_CONVERTER_HOLDER = 22;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1236,7 +1319,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterImpl()
 	 * @generated
 	 */
-	public static final int XML_CONVERTER_IMPL = 11;
+	public static final int XML_CONVERTER_IMPL = 13;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1309,7 +1392,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTypeConverterImpl()
 	 * @generated
 	 */
-	public static final int XML_TYPE_CONVERTER_IMPL = 13;
+	public static final int XML_TYPE_CONVERTER_IMPL = 15;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1382,7 +1465,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConversionValueImpl()
 	 * @generated
 	 */
-	public static final int XML_CONVERSION_VALUE_IMPL = 15;
+	public static final int XML_CONVERSION_VALUE_IMPL = 17;
 
 	/**
 	 * The feature id for the '<em><b>Data Value</b></em>' attribute.
@@ -1473,7 +1556,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlObjectTypeConverterImpl()
 	 * @generated
 	 */
-	public static final int XML_OBJECT_TYPE_CONVERTER_IMPL = 17;
+	public static final int XML_OBJECT_TYPE_CONVERTER_IMPL = 19;
 
 	/**
 	 * The feature id for the '<em><b>Conversion Values</b></em>' containment reference list.
@@ -1564,7 +1647,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStructConverterImpl()
 	 * @generated
 	 */
-	public static final int XML_STRUCT_CONVERTER_IMPL = 19;
+	public static final int XML_STRUCT_CONVERTER_IMPL = 21;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3268,6 +3351,16 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_MANY_IMPL_FEATURE_COUNT = OrmPackage.XML_MANY_TO_MANY_IMPL_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingType <em>Xml Change Tracking Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingType
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlChangeTrackingType()
+	 * @generated
+	 */
+	public static final int XML_CHANGE_TRACKING_TYPE = 40;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.CacheType <em>Cache Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3275,7 +3368,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCacheType()
 	 * @generated
 	 */
-	public static final int CACHE_TYPE = 38;
+	public static final int CACHE_TYPE = 41;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType <em>Cache Coordination Type</em>}' enum.
@@ -3285,7 +3378,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCacheCoordinationType()
 	 * @generated
 	 */
-	public static final int CACHE_COORDINATION_TYPE = 39;
+	public static final int CACHE_COORDINATION_TYPE = 42;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType <em>Xml Join Fetch Type</em>}' enum.
@@ -3295,7 +3388,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlJoinFetchType()
 	 * @generated
 	 */
-	public static final int XML_JOIN_FETCH_TYPE = 41;
+	public static final int XML_JOIN_FETCH_TYPE = 44;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType <em>Existence Type</em>}' enum.
@@ -3305,7 +3398,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getExistenceType()
 	 * @generated
 	 */
-	public static final int EXISTENCE_TYPE = 40;
+	public static final int EXISTENCE_TYPE = 43;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -3320,6 +3413,20 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlCustomizerHolderEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlChangeTrackingEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlChangeTrackingHolderEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -3495,6 +3602,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlManyToManyImplEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum xmlChangeTrackingTypeEEnum = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -3729,6 +3843,64 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	{
 		return (EReference)xmlCustomizerHolderEClass.getEStructuralFeatures().get(0);
 	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTracking <em>Xml Change Tracking</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Change Tracking</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTracking
+	 * @generated
+	 */
+	public EClass getXmlChangeTracking()
+	{
+		return xmlChangeTrackingEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTracking#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTracking#getType()
+	 * @see #getXmlChangeTracking()
+	 * @generated
+	 */
+	public EAttribute getXmlChangeTracking_Type()
+	{
+		return (EAttribute)xmlChangeTrackingEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder <em>Xml Change Tracking Holder</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Change Tracking Holder</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder
+	 * @generated
+	 */
+	public EClass getXmlChangeTrackingHolder()
+	{
+		return xmlChangeTrackingHolderEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder#getChangeTracking <em>Change Tracking</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Change Tracking</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder#getChangeTracking()
+	 * @see #getXmlChangeTrackingHolder()
+	 * @generated
+	 */
+	public EReference getXmlChangeTrackingHolder_ChangeTracking()
+	{
+		return (EReference)xmlChangeTrackingHolderEClass.getEStructuralFeatures().get(0);
+	}
+
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable <em>Xml Embeddable</em>}'.
@@ -4346,6 +4518,20 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for enum '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingType <em>Xml Change Tracking Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Xml Change Tracking Type</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingType
+	 * @generated
+	 */
+	public EEnum getXmlChangeTrackingType()
+	{
+		return xmlChangeTrackingTypeEEnum;
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter <em>Xml Converter</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4859,6 +5045,12 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlCustomizerHolderEClass = createEClass(XML_CUSTOMIZER_HOLDER);
 		createEReference(xmlCustomizerHolderEClass, XML_CUSTOMIZER_HOLDER__CUSTOMIZER);
 
+		xmlChangeTrackingEClass = createEClass(XML_CHANGE_TRACKING);
+		createEAttribute(xmlChangeTrackingEClass, XML_CHANGE_TRACKING__TYPE);
+
+		xmlChangeTrackingHolderEClass = createEClass(XML_CHANGE_TRACKING_HOLDER);
+		createEReference(xmlChangeTrackingHolderEClass, XML_CHANGE_TRACKING_HOLDER__CHANGE_TRACKING);
+
 		xmlEmbeddableEClass = createEClass(XML_EMBEDDABLE);
 
 		xmlReadOnlyEClass = createEClass(XML_READ_ONLY);
@@ -4970,6 +5162,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlManyToManyImplEClass = createEClass(XML_MANY_TO_MANY_IMPL);
 
 		// Create enums
+		xmlChangeTrackingTypeEEnum = createEEnum(XML_CHANGE_TRACKING_TYPE);
 		cacheTypeEEnum = createEEnum(CACHE_TYPE);
 		cacheCoordinationTypeEEnum = createEEnum(CACHE_COORDINATION_TYPE);
 		existenceTypeEEnum = createEEnum(EXISTENCE_TYPE);
@@ -5011,13 +5204,16 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		// Add supertypes to classes
 		xmlEmbeddableEClass.getESuperTypes().add(theOrmPackage.getXmlEmbeddable());
 		xmlEmbeddableEClass.getESuperTypes().add(this.getXmlCustomizerHolder());
+		xmlEmbeddableEClass.getESuperTypes().add(this.getXmlChangeTrackingHolder());
 		xmlEntityEClass.getESuperTypes().add(theOrmPackage.getXmlEntity());
 		xmlEntityEClass.getESuperTypes().add(this.getXmlReadOnly());
 		xmlEntityEClass.getESuperTypes().add(this.getXmlCustomizerHolder());
+		xmlEntityEClass.getESuperTypes().add(this.getXmlChangeTrackingHolder());
 		xmlEntityEClass.getESuperTypes().add(this.getXmlCacheHolder());
 		xmlMappedSuperclassEClass.getESuperTypes().add(theOrmPackage.getXmlMappedSuperclass());
 		xmlMappedSuperclassEClass.getESuperTypes().add(this.getXmlReadOnly());
 		xmlMappedSuperclassEClass.getESuperTypes().add(this.getXmlCustomizerHolder());
+		xmlMappedSuperclassEClass.getESuperTypes().add(this.getXmlChangeTrackingHolder());
 		xmlMappedSuperclassEClass.getESuperTypes().add(this.getXmlCacheHolder());
 		xmlConverterImplEClass.getESuperTypes().add(this.getXmlConverter());
 		xmlTypeConverterImplEClass.getESuperTypes().add(this.getXmlTypeConverter());
@@ -5066,6 +5262,12 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 		initEClass(xmlCustomizerHolderEClass, XmlCustomizerHolder.class, "XmlCustomizerHolder", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlCustomizerHolder_Customizer(), this.getXmlCustomizer(), null, "customizer", null, 0, 1, XmlCustomizerHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlChangeTrackingEClass, XmlChangeTracking.class, "XmlChangeTracking", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlChangeTracking_Type(), this.getXmlChangeTrackingType(), "type", null, 0, 1, XmlChangeTracking.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlChangeTrackingHolderEClass, XmlChangeTrackingHolder.class, "XmlChangeTrackingHolder", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlChangeTrackingHolder_ChangeTracking(), this.getXmlChangeTracking(), null, "changeTracking", null, 0, 1, XmlChangeTrackingHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEmbeddableEClass, XmlEmbeddable.class, "XmlEmbeddable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -5178,6 +5380,12 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		initEClass(xmlManyToManyImplEClass, XmlManyToManyImpl.class, "XmlManyToManyImpl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Initialize enums and add enum literals
+		initEEnum(xmlChangeTrackingTypeEEnum, XmlChangeTrackingType.class, "XmlChangeTrackingType");
+		addEEnumLiteral(xmlChangeTrackingTypeEEnum, XmlChangeTrackingType.ATTRIBUTE);
+		addEEnumLiteral(xmlChangeTrackingTypeEEnum, XmlChangeTrackingType.OBJECT);
+		addEEnumLiteral(xmlChangeTrackingTypeEEnum, XmlChangeTrackingType.DEFERRED);
+		addEEnumLiteral(xmlChangeTrackingTypeEEnum, XmlChangeTrackingType.AUTO);
+
 		initEEnum(cacheTypeEEnum, CacheType.class, "CacheType");
 		addEEnumLiteral(cacheTypeEEnum, CacheType.FULL);
 		addEEnumLiteral(cacheTypeEEnum, CacheType.WEAK);
@@ -5256,6 +5464,42 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference XML_CUSTOMIZER_HOLDER__CUSTOMIZER = eINSTANCE.getXmlCustomizerHolder_Customizer();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTracking <em>Xml Change Tracking</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTracking
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlChangeTracking()
+		 * @generated
+		 */
+		public static final EClass XML_CHANGE_TRACKING = eINSTANCE.getXmlChangeTracking();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_CHANGE_TRACKING__TYPE = eINSTANCE.getXmlChangeTracking_Type();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder <em>Xml Change Tracking Holder</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlChangeTrackingHolder()
+		 * @generated
+		 */
+		public static final EClass XML_CHANGE_TRACKING_HOLDER = eINSTANCE.getXmlChangeTrackingHolder();
+
+		/**
+		 * The meta object literal for the '<em><b>Change Tracking</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_CHANGE_TRACKING_HOLDER__CHANGE_TRACKING = eINSTANCE.getXmlChangeTrackingHolder_ChangeTracking();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable <em>Xml Embeddable</em>}' class.
@@ -5666,6 +5910,16 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_MANY_TO_MANY_IMPL = eINSTANCE.getXmlManyToManyImpl();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingType <em>Xml Change Tracking Type</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingType
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlChangeTrackingType()
+		 * @generated
+		 */
+		public static final EEnum XML_CHANGE_TRACKING_TYPE = eINSTANCE.getXmlChangeTrackingType();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter <em>Xml Converter</em>}' class.

@@ -36,6 +36,7 @@ public class EclipseLinkEmbeddableTranslator extends EmbeddableTranslator
 			createMetadataCompleteTranslator(),
 			createDescriptionTranslator(),
 			createCustomizerTranslator(),
+			createChangeTrackingTranslator(),
 			createAttributesTranslator()
 		};
 	}
@@ -43,5 +44,8 @@ public class EclipseLinkEmbeddableTranslator extends EmbeddableTranslator
 	protected Translator createCustomizerTranslator() {
 		return new CustomizerTranslator(CUSTOMIZER, ECLIPSELINK_ORM_PKG.getXmlCustomizerHolder_Customizer());
 	}
-
+	
+	protected Translator createChangeTrackingTranslator() {
+		return new EclipseLinkChangeTrackingTranslator(CHANGE_TRACKING, ECLIPSELINK_ORM_PKG.getXmlChangeTrackingHolder_ChangeTracking());
+	}
 }

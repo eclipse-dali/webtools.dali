@@ -28,7 +28,7 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.Eclips
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity implements XmlReadOnly, XmlCustomizerHolder, XmlCacheHolder
+public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity implements XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder
 {
 	/**
 	 * The default value of the '{@link #getReadOnly() <em>Read Only</em>}' attribute.
@@ -59,6 +59,16 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * @ordered
 	 */
 	protected XmlCustomizer customizer;
+
+	/**
+	 * The cached value of the '{@link #getChangeTracking() <em>Change Tracking</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getChangeTracking()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlChangeTracking changeTracking;
 
 	/**
 	 * The cached value of the '{@link #getCache() <em>Cache</em>}' containment reference.
@@ -203,6 +213,66 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Change Tracking</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Change Tracking</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Change Tracking</em>' containment reference.
+	 * @see #setChangeTracking(XmlChangeTracking)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlChangeTrackingHolder_ChangeTracking()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlChangeTracking getChangeTracking()
+	{
+		return changeTracking;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetChangeTracking(XmlChangeTracking newChangeTracking, NotificationChain msgs)
+	{
+		XmlChangeTracking oldChangeTracking = changeTracking;
+		changeTracking = newChangeTracking;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__CHANGE_TRACKING, oldChangeTracking, newChangeTracking);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getChangeTracking <em>Change Tracking</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Change Tracking</em>' containment reference.
+	 * @see #getChangeTracking()
+	 * @generated
+	 */
+	public void setChangeTracking(XmlChangeTracking newChangeTracking)
+	{
+		if (newChangeTracking != changeTracking)
+		{
+			NotificationChain msgs = null;
+			if (changeTracking != null)
+				msgs = ((InternalEObject)changeTracking).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__CHANGE_TRACKING, null, msgs);
+			if (newChangeTracking != null)
+				msgs = ((InternalEObject)newChangeTracking).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__CHANGE_TRACKING, null, msgs);
+			msgs = basicSetChangeTracking(newChangeTracking, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__CHANGE_TRACKING, newChangeTracking, newChangeTracking));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Cache</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -313,6 +383,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 		{
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
 				return basicSetCustomizer(null, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__CHANGE_TRACKING:
+				return basicSetChangeTracking(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE:
 				return basicSetCache(null, msgs);
 		}
@@ -333,6 +405,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return getReadOnly();
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
 				return getCustomizer();
+			case EclipseLinkOrmPackage.XML_ENTITY__CHANGE_TRACKING:
+				return getChangeTracking();
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE:
 				return getCache();
 			case EclipseLinkOrmPackage.XML_ENTITY__EXISTENCE_CHECKING:
@@ -356,6 +430,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
 				setCustomizer((XmlCustomizer)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__CHANGE_TRACKING:
+				setChangeTracking((XmlChangeTracking)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE:
 				setCache((XmlCache)newValue);
@@ -383,6 +460,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
 				setCustomizer((XmlCustomizer)null);
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__CHANGE_TRACKING:
+				setChangeTracking((XmlChangeTracking)null);
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE:
 				setCache((XmlCache)null);
 				return;
@@ -407,6 +487,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return READ_ONLY_EDEFAULT == null ? readOnly != null : !READ_ONLY_EDEFAULT.equals(readOnly);
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
 				return customizer != null;
+			case EclipseLinkOrmPackage.XML_ENTITY__CHANGE_TRACKING:
+				return changeTracking != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE:
 				return cache != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__EXISTENCE_CHECKING:
@@ -436,6 +518,14 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER: return EclipseLinkOrmPackage.XML_CUSTOMIZER_HOLDER__CUSTOMIZER;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlChangeTrackingHolder.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY__CHANGE_TRACKING: return EclipseLinkOrmPackage.XML_CHANGE_TRACKING_HOLDER__CHANGE_TRACKING;
 				default: return -1;
 			}
 		}
@@ -472,6 +562,14 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			switch (baseFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_CUSTOMIZER_HOLDER__CUSTOMIZER: return EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlChangeTrackingHolder.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_CHANGE_TRACKING_HOLDER__CHANGE_TRACKING: return EclipseLinkOrmPackage.XML_ENTITY__CHANGE_TRACKING;
 				default: return -1;
 			}
 		}
