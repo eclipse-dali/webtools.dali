@@ -21,7 +21,6 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConversionValue;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -30,7 +29,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkOrmObjectTypeConverter extends AbstractXmlContextNode implements ObjectTypeConverter, EclipseLinkOrmConverter
 {	
-	private XmlConvertibleMapping resourceMapping;
+	private XmlObjectTypeConverter resourceConverter;
 	
 	private String name;
 	
@@ -42,26 +41,14 @@ public class EclipseLinkOrmObjectTypeConverter extends AbstractXmlContextNode im
 
 	private final List<EclipseLinkOrmConversionValue> conversionValues;
 
-	public EclipseLinkOrmObjectTypeConverter(XmlContextNode parent, XmlConvertibleMapping resourceMapping) {
+	public EclipseLinkOrmObjectTypeConverter(XmlContextNode parent, XmlObjectTypeConverter resourceConverter) {
 		super(parent);
 		this.conversionValues = new ArrayList<EclipseLinkOrmConversionValue>();
-		this.initialize(resourceMapping);
+		this.initialize(resourceConverter);
 	}
 
 	public String getType() {
 		return EclipseLinkConverter.OBJECT_TYPE_CONVERTER;
-	}
-		
-	public void addToResourceModel() {
-		this.resourceMapping.setObjectTypeConverter(EclipseLinkOrmFactory.eINSTANCE.createXmlObjectTypeConverterImpl());
-	}
-	
-	public void removeFromResourceModel() {
-		this.resourceMapping.setObjectTypeConverter(null);
-	}
-
-	protected XmlObjectTypeConverter getResourceConverter() {
-		return this.resourceMapping.getObjectTypeConverter();
 	}
 
 	public String getName() {
@@ -71,7 +58,7 @@ public class EclipseLinkOrmObjectTypeConverter extends AbstractXmlContextNode im
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		getResourceConverter().setName(newName);
+		this.resourceConverter.setName(newName);
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 
@@ -88,7 +75,7 @@ public class EclipseLinkOrmObjectTypeConverter extends AbstractXmlContextNode im
 	public void setDataType(String newDataType) {
 		String oldDataType = this.dataType;
 		this.dataType = newDataType;
-		getResourceConverter().setDataType(newDataType);
+		this.resourceConverter.setDataType(newDataType);
 		firePropertyChanged(DATA_TYPE_PROPERTY, oldDataType, newDataType);
 	}
 	
@@ -105,7 +92,7 @@ public class EclipseLinkOrmObjectTypeConverter extends AbstractXmlContextNode im
 	public void setObjectType(String newObjectType) {
 		String oldObjectType = this.objectType;
 		this.objectType = newObjectType;
-		getResourceConverter().setObjectType(newObjectType);
+		this.resourceConverter.setObjectType(newObjectType);
 		firePropertyChanged(OBJECT_TYPE_PROPERTY, oldObjectType, newObjectType);
 	}
 	
@@ -127,7 +114,7 @@ public class EclipseLinkOrmObjectTypeConverter extends AbstractXmlContextNode im
 		XmlConversionValue resourceConversionValue = EclipseLinkOrmFactory.eINSTANCE.createXmlConversionValueImpl();
 		EclipseLinkOrmConversionValue contextConversionValue = buildConversionValue(resourceConversionValue);
 		this.conversionValues.add(index, contextConversionValue);
-		this.getResourceConverter().getConversionValues().add(index, resourceConversionValue);
+		this.resourceConverter.getConversionValues().add(index, resourceConversionValue);
 		this.fireItemAdded(CONVERSION_VALUES_LIST, index, contextConversionValue);
 		return contextConversionValue;
 	}
@@ -146,7 +133,7 @@ public class EclipseLinkOrmObjectTypeConverter extends AbstractXmlContextNode im
 	
 	public void removeConversionValue(int index) {
 		EclipseLinkOrmConversionValue removedJoinColumn = this.conversionValues.remove(index);
-		this.getResourceConverter().getConversionValues().remove(index);
+		this.resourceConverter.getConversionValues().remove(index);
 		fireItemRemoved(CONVERSION_VALUES_LIST, index, removedJoinColumn);
 	}
 
@@ -160,7 +147,7 @@ public class EclipseLinkOrmObjectTypeConverter extends AbstractXmlContextNode im
 	
 	public void moveConversionValue(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.conversionValues, targetIndex, sourceIndex);
-		this.getResourceConverter().getConversionValues().move(targetIndex, sourceIndex);
+		this.resourceConverter.getConversionValues().move(targetIndex, sourceIndex);
 		fireItemMoved(CONVERSION_VALUES_LIST, targetIndex, sourceIndex);		
 	}
 
@@ -180,7 +167,7 @@ public class EclipseLinkOrmObjectTypeConverter extends AbstractXmlContextNode im
 	public void setDefaultObjectValue(String newDefaultObjectValue) {
 		String oldDefaultObjectValue = this.defaultObjectValue;
 		this.defaultObjectValue = newDefaultObjectValue;
-		getResourceConverter().setDefaultObjectValue(newDefaultObjectValue);
+		this.resourceConverter.setDefaultObjectValue(newDefaultObjectValue);
 		firePropertyChanged(DEFAULT_OBJECT_VALUE_PROPERTY, oldDefaultObjectValue, newDefaultObjectValue);
 	}
 	
@@ -191,8 +178,8 @@ public class EclipseLinkOrmObjectTypeConverter extends AbstractXmlContextNode im
 	}
 	
 	
-	protected void initialize(XmlConvertibleMapping resourceMapping) {
-		this.resourceMapping = resourceMapping;
+	protected void initialize(XmlObjectTypeConverter resourceConverter) {
+		this.resourceConverter = resourceConverter;
 		this.name = this.name();
 		this.dataType = this.dataType();
 		this.objectType = this.objectType();
@@ -200,12 +187,8 @@ public class EclipseLinkOrmObjectTypeConverter extends AbstractXmlContextNode im
 		this.initializeConversionValues();
 	}
 	
-	protected void initializeConversionValues() {
-		if (getResourceConverter() == null) {
-			return;
-		}
-	
-		for (XmlConversionValue resourceConversionValue : getResourceConverter().getConversionValues()) {
+	protected void initializeConversionValues() {	
+		for (XmlConversionValue resourceConversionValue : this.resourceConverter.getConversionValues()) {
 			this.conversionValues.add(buildConversionValue(resourceConversionValue));
 		}
 	}
@@ -220,7 +203,7 @@ public class EclipseLinkOrmObjectTypeConverter extends AbstractXmlContextNode im
 	
 	protected void updateConversionValues( ) {
 		ListIterator<EclipseLinkOrmConversionValue> contextConversionValues = conversionValues();
-		ListIterator<XmlConversionValue> resourceConversionValues = new CloneListIterator<XmlConversionValue>(getResourceConverter().getConversionValues());//prevent ConcurrentModificiationException
+		ListIterator<XmlConversionValue> resourceConversionValues = new CloneListIterator<XmlConversionValue>(this.resourceConverter.getConversionValues());//prevent ConcurrentModificiationException
 		while (contextConversionValues.hasNext()) {
 			EclipseLinkOrmConversionValue conversionValues = contextConversionValues.next();
 			if (resourceConversionValues.hasNext()) {
@@ -243,23 +226,23 @@ public class EclipseLinkOrmObjectTypeConverter extends AbstractXmlContextNode im
 	}
 
 	protected String name() {
-		return getResourceConverter() == null ? null : getResourceConverter().getName();
+		return this.resourceConverter.getName();
 	}
 
 	protected String dataType() {
-		return getResourceConverter() == null ? null : getResourceConverter().getDataType();
+		return this.resourceConverter.getDataType();
 	}
 
 	protected String objectType() {
-		return getResourceConverter() == null ? null : getResourceConverter().getObjectType();
+		return this.resourceConverter.getObjectType();
 	}
 
 	protected String defaultObjectValue() {
-		return getResourceConverter() == null ? null : getResourceConverter().getDefaultObjectValue();
+		return this.resourceConverter.getDefaultObjectValue();
 	}
 
 	public TextRange getValidationTextRange() {
-		return getResourceConverter().getValidationTextRange();
+		return this.resourceConverter.getValidationTextRange();
 	}
 	
 

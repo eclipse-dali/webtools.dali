@@ -14,13 +14,11 @@ import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
 
 public class EclipseLinkOrmTypeConverter extends AbstractXmlContextNode implements TypeConverter, EclipseLinkOrmConverter
 {	
-	private XmlConvertibleMapping resourceMapping;
+	private XmlTypeConverter resourceConverter;
 	
 	private String name;
 	
@@ -28,27 +26,15 @@ public class EclipseLinkOrmTypeConverter extends AbstractXmlContextNode implemen
 	
 	private String objectType;
 
-	public EclipseLinkOrmTypeConverter(XmlContextNode parent, XmlConvertibleMapping resourceMapping) {
+	public EclipseLinkOrmTypeConverter(XmlContextNode parent, XmlTypeConverter resourceConverter) {
 		super(parent);
-		this.initialize(resourceMapping);
+		this.initialize(resourceConverter);
 	}
 
 	public String getType() {
 		return EclipseLinkConverter.TYPE_CONVERTER;
 	}
-		
-	public void addToResourceModel() {
-		this.resourceMapping.setTypeConverter(EclipseLinkOrmFactory.eINSTANCE.createXmlTypeConverterImpl());
-	}
 	
-	public void removeFromResourceModel() {
-		this.resourceMapping.setTypeConverter(null);
-	}
-
-	protected XmlTypeConverter getResourceConverter() {
-		return this.resourceMapping.getTypeConverter();
-	}
-
 	public String getName() {
 		return this.name;
 	}
@@ -56,7 +42,7 @@ public class EclipseLinkOrmTypeConverter extends AbstractXmlContextNode implemen
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		getResourceConverter().setName(newName);
+		this.resourceConverter.setName(newName);
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 
@@ -73,7 +59,7 @@ public class EclipseLinkOrmTypeConverter extends AbstractXmlContextNode implemen
 	public void setDataType(String newDataType) {
 		String oldDataType = this.dataType;
 		this.dataType = newDataType;
-		getResourceConverter().setDataType(newDataType);
+		this.resourceConverter.setDataType(newDataType);
 		firePropertyChanged(DATA_TYPE_PROPERTY, oldDataType, newDataType);
 	}
 	
@@ -90,7 +76,7 @@ public class EclipseLinkOrmTypeConverter extends AbstractXmlContextNode implemen
 	public void setObjectType(String newObjectType) {
 		String oldObjectType = this.objectType;
 		this.objectType = newObjectType;
-		getResourceConverter().setObjectType(newObjectType);
+		this.resourceConverter.setObjectType(newObjectType);
 		firePropertyChanged(OBJECT_TYPE_PROPERTY, oldObjectType, newObjectType);
 	}
 	
@@ -100,8 +86,8 @@ public class EclipseLinkOrmTypeConverter extends AbstractXmlContextNode implemen
 		firePropertyChanged(OBJECT_TYPE_PROPERTY, oldObjectType, newObjectType);
 	}
 
-	protected void initialize(XmlConvertibleMapping resourceMapping) {
-		this.resourceMapping = resourceMapping;
+	protected void initialize(XmlTypeConverter resourceConverter) {
+		this.resourceConverter = resourceConverter;
 		this.name = this.name();
 		this.dataType = this.dataType();
 		this.objectType = this.objectType();
@@ -114,18 +100,18 @@ public class EclipseLinkOrmTypeConverter extends AbstractXmlContextNode implemen
 	}
 
 	protected String name() {
-		return getResourceConverter() == null ? null : getResourceConverter().getName();
+		return this.resourceConverter.getName();
 	}
 
 	protected String dataType() {
-		return getResourceConverter() == null ? null : getResourceConverter().getDataType();
+		return this.resourceConverter.getDataType();
 	}
 
 	protected String objectType() {
-		return getResourceConverter() == null ? null : getResourceConverter().getObjectType();
+		return this.resourceConverter.getObjectType();
 	}
 
 	public TextRange getValidationTextRange() {
-		return getResourceConverter().getValidationTextRange();
+		return this.resourceConverter.getValidationTextRange();
 	}
 }

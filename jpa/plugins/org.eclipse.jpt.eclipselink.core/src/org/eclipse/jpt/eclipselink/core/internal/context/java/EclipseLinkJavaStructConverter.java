@@ -36,16 +36,8 @@ public class EclipseLinkJavaStructConverter extends AbstractJavaJpaContextNode i
 		return EclipseLinkConverter.STRUCT_CONVERTER;
 	}
 
-	protected String getAnnotationName() {
+	public String getAnnotationName() {
 		return StructConverterAnnotation.ANNOTATION_NAME;
-	}
-		
-	public void addToResourceModel() {
-		this.resourcePersistentMember.addSupportingAnnotation(getAnnotationName());
-	}
-	
-	public void removeFromResourceModel() {
-		this.resourcePersistentMember.removeSupportingAnnotation(getAnnotationName());
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {

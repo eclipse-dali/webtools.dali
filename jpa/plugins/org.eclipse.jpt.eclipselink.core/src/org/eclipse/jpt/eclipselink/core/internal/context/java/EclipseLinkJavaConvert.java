@@ -59,7 +59,7 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 	public void removeFromResourceModel() {
 		this.resourcePersistentAttribute.removeSupportingAnnotation(getAnnotationName());
 		if (getConverter() != null) {
-			getConverter().removeFromResourceModel();
+			this.resourcePersistentAttribute.removeSupportingAnnotation(getConverter().getAnnotationName());
 		}
 	}
 
@@ -115,11 +115,11 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 		EclipseLinkJavaConverter newConverter = buildConverter(converterType);
 		this.converter = null;
 		if (oldConverter != null) {
-			oldConverter.removeFromResourceModel();
+			this.resourcePersistentAttribute.removeSupportingAnnotation(oldConverter.getAnnotationName());
 		}
 		this.converter = newConverter;
 		if (newConverter != null) {
-			newConverter.addToResourceModel();
+			this.resourcePersistentAttribute.addSupportingAnnotation(newConverter.getAnnotationName());
 		}
 		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
 	}

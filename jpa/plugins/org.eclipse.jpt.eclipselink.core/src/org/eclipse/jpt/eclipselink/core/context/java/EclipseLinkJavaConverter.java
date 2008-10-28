@@ -31,4 +31,6 @@ public interface EclipseLinkJavaConverter extends EclipseLinkConverter, JavaJpaC
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update(JavaResourcePersistentMember jrpm);
+	
+	String getAnnotationName();
 }

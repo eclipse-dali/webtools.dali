@@ -13,10 +13,16 @@ import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.resource.common.JpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertibleMapping;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Convert, OrmConverter
@@ -94,18 +100,86 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 			return;
 		}
 		EclipseLinkOrmConverter oldConverter = this.converter;
-		EclipseLinkOrmConverter newConverter = buildConverter(converterType);
-		this.converter = null;
 		if (oldConverter != null) {
-			oldConverter.removeFromResourceModel();
+			this.converter = null; //set to null now to avoid update triggering events
+			removeConverter(oldConverter.getType());
 		}
+		JpaEObject resourceConverter = buildResourceConverter(converterType);
+		EclipseLinkOrmConverter newConverter = buildConverter(converterType, resourceConverter);
 		this.converter = newConverter;
 		if (newConverter != null) {
-			newConverter.addToResourceModel();
+			addConverter(converterType, resourceConverter);
 		}
 		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
 	}
+
+	//TODO yes, i know, many if/else type checks in the methods below.
+	//will look at factoring this out when I have time after M3!  Also EclipseLinkJavaConvert
+	protected void removeConverter(String converterType) {
+		if (converterType == EclipseLinkConverter.CONVERTER) {
+			this.resourceMapping.setConverter(null);
+		}
+		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
+			this.resourceMapping.setTypeConverter(null);
+		}
+		else if (converterType == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
+			this.resourceMapping.setObjectTypeConverter(null);
+		}
+		else if (converterType == EclipseLinkConverter.STRUCT_CONVERTER) {
+			this.resourceMapping.setStructConverter(null);
+		}
+	}
 	
+	protected JpaEObject buildResourceConverter(String converterType) {
+		if (converterType == EclipseLinkConverter.CONVERTER) {
+			return EclipseLinkOrmFactory.eINSTANCE.createXmlConverterImpl();
+		}
+		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
+			return EclipseLinkOrmFactory.eINSTANCE.createXmlTypeConverterImpl();
+		}
+		else if (converterType == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
+			return EclipseLinkOrmFactory.eINSTANCE.createXmlObjectTypeConverterImpl();
+		}
+		else if (converterType == EclipseLinkConverter.STRUCT_CONVERTER) {
+			return EclipseLinkOrmFactory.eINSTANCE.createXmlStructConverterImpl();
+		}
+		return null;
+	}
+
+	protected void addConverter(String converterType, JpaEObject resourceConverter) {
+		if (converterType == EclipseLinkConverter.CONVERTER) {
+			this.resourceMapping.setConverter((XmlConverter) resourceConverter);
+		}
+		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
+			this.resourceMapping.setTypeConverter((XmlTypeConverter) resourceConverter);
+		}
+		else if (converterType == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
+			this.resourceMapping.setObjectTypeConverter((XmlObjectTypeConverter) resourceConverter);
+		}
+		else if (converterType == EclipseLinkConverter.STRUCT_CONVERTER) {
+			this.resourceMapping.setStructConverter((XmlStructConverter) resourceConverter);
+		}
+	}
+	
+	protected EclipseLinkOrmConverter buildConverter(String converterType, JpaEObject resourceConverter) {
+		if (converterType == EclipseLinkConverter.NO_CONVERTER) {
+			return null;
+		}
+		if (converterType == EclipseLinkConverter.CONVERTER) {
+			return new EclipseLinkOrmConverterImpl(this, (XmlConverter) resourceConverter);
+		}
+		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
+			return new EclipseLinkOrmTypeConverter(this, (XmlTypeConverter) resourceConverter);
+		}
+		else if (converterType == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
+			return new EclipseLinkOrmObjectTypeConverter(this, (XmlObjectTypeConverter) resourceConverter);
+		}
+		else if (converterType == EclipseLinkConverter.STRUCT_CONVERTER) {
+			return new EclipseLinkOrmStructConverter(this, (XmlStructConverter) resourceConverter);
+		}
+		return null;
+	}
+
 	protected void setConverter(EclipseLinkOrmConverter newConverter) {
 		EclipseLinkOrmConverter oldConverter = this.converter;
 		this.converter = newConverter;
@@ -115,7 +189,7 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 	protected void initialize(XmlConvertibleMapping resourceMapping) {
 		this.resourceMapping = resourceMapping;
 		this.specifiedConverterName = this.specifiedConverterName();
-		this.converter = this.buildConverter(this.converterType());
+		this.converter = this.buildConverter();
 	}
 	
 	public void update() {
@@ -124,8 +198,7 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 			this.converter.update();
 		}
 		else {
-			EclipseLinkOrmConverter javaConverter = buildConverter(converterType());
-			setConverter(javaConverter);
+			setConverter(buildConverter());
 		}
 	}
 	
@@ -133,26 +206,6 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 		return this.resourceMapping == null ? null : this.resourceMapping.getConvert();
 	}
 
-	
-	protected EclipseLinkOrmConverter buildConverter(String converterType) {
-		if (converterType == EclipseLinkConverter.NO_CONVERTER) {
-			return null;
-		}
-		if (converterType == EclipseLinkConverter.CONVERTER) {
-			return new EclipseLinkOrmConverterImpl(this, this.resourceMapping);
-		}
-		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
-			return new EclipseLinkOrmTypeConverter(this, this.resourceMapping);
-		}
-		else if (converterType == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
-			return new EclipseLinkOrmObjectTypeConverter(this, this.resourceMapping);
-		}
-		else if (converterType == EclipseLinkConverter.STRUCT_CONVERTER) {
-			return new EclipseLinkOrmStructConverter(this, this.resourceMapping);
-		}
-		return null;
-	}
-	
 	protected String converterType() {
 		if (this.resourceMapping.getConverter() != null) {
 			return EclipseLinkConverter.CONVERTER;
@@ -169,6 +222,23 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 		
 		return null;
 	}
+	protected EclipseLinkOrmConverter buildConverter() {
+		if (this.resourceMapping.getConverter() != null) {
+			return new EclipseLinkOrmConverterImpl(this, this.resourceMapping.getConverter());
+		}
+		else if (this.resourceMapping.getTypeConverter() != null) {
+			return new EclipseLinkOrmTypeConverter(this, this.resourceMapping.getTypeConverter());
+		}
+		else if (this.resourceMapping.getObjectTypeConverter() != null) {
+			return new EclipseLinkOrmObjectTypeConverter(this, this.resourceMapping.getObjectTypeConverter());
+		}
+		else if (this.resourceMapping.getStructConverter() != null) {
+			return new EclipseLinkOrmStructConverter(this, this.resourceMapping.getStructConverter());
+		}
+		
+		return null;
+	}
+
 
 	@Override
 	public void validate(List<IMessage> messages) {

@@ -41,15 +41,4 @@ public interface EclipseLinkConverter extends JpaContextNode
 	String getName();	
 	void setName(String name);
 		String NAME_PROPERTY = "nameProperty"; //$NON-NLS-1$
-
-	/**
-	 * Remove the EclipseLinkNamedConverter from the resource model
-	 */
-	void removeFromResourceModel();
-	
-	/**
-	 * Add the appropriate EclipseLinkNamedConverter to the resource model
-	 */
-	void addToResourceModel();
-
 }

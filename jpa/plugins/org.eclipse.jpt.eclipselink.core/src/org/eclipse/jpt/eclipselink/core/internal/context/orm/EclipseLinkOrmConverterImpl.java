@@ -15,38 +15,24 @@ import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Converter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkOrmConverterImpl extends AbstractXmlContextNode implements Converter, EclipseLinkOrmConverter
 {	
-	private XmlConvertibleMapping resourceMapping;
+	private XmlConverter resourceConverter;
 	
 	private String name;
 	
 	private String converterClass;
 	
-	public EclipseLinkOrmConverterImpl(XmlContextNode parent, XmlConvertibleMapping resourceMapping) {
+	public EclipseLinkOrmConverterImpl(XmlContextNode parent, XmlConverter resourceConverter) {
 		super(parent);
-		this.initialize(resourceMapping);
+		this.initialize(resourceConverter);
 	}
 
 	public String getType() {
 		return EclipseLinkConverter.CONVERTER;
-	}
-		
-	public void addToResourceModel() {
-		this.resourceMapping.setConverter(EclipseLinkOrmFactory.eINSTANCE.createXmlConverterImpl());
-	}
-	
-	public void removeFromResourceModel() {
-		this.resourceMapping.setConverter(null);
-	}
-
-	protected XmlConverter getResourceConverter() {
-		return this.resourceMapping.getConverter();
 	}
 	
 	public String getConverterClass() {
@@ -56,7 +42,7 @@ public class EclipseLinkOrmConverterImpl extends AbstractXmlContextNode implemen
 	public void setConverterClass(String newConverterClass) {
 		String oldConverterClass = this.converterClass;
 		this.converterClass = newConverterClass;
-		getResourceConverter().setClassName(newConverterClass);
+		this.resourceConverter.setClassName(newConverterClass);
 		firePropertyChanged(CONVERTER_CLASS_PROPERTY, oldConverterClass, newConverterClass);
 	}
 	
@@ -73,7 +59,7 @@ public class EclipseLinkOrmConverterImpl extends AbstractXmlContextNode implemen
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		getResourceConverter().setName(newName);
+		this.resourceConverter.setName(newName);
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 
@@ -83,8 +69,8 @@ public class EclipseLinkOrmConverterImpl extends AbstractXmlContextNode implemen
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
-	protected void initialize(XmlConvertibleMapping resourceMapping) {
-		this.resourceMapping = resourceMapping;
+	protected void initialize(XmlConverter resourceConverter) {
+		this.resourceConverter = resourceConverter;
 		this.name = this.name();
 		this.converterClass = this.converterClass();
 	}
@@ -95,11 +81,11 @@ public class EclipseLinkOrmConverterImpl extends AbstractXmlContextNode implemen
 	}
 
 	protected String name() {
-		return getResourceConverter() == null ? null : getResourceConverter().getName();
+		return this.resourceConverter.getName();
 	}
 	
 	protected String converterClass() {
-		return getResourceConverter() == null ? null : getResourceConverter().getClassName();
+		return this.resourceConverter.getClassName();
 	}
 	
 	//************ validation ***************
@@ -129,7 +115,6 @@ public class EclipseLinkOrmConverterImpl extends AbstractXmlContextNode implemen
 //	}
 
 	public TextRange getValidationTextRange() {
-		return getResourceConverter().getValidationTextRange();
+		return this.resourceConverter.getValidationTextRange();
 	}
-
 }

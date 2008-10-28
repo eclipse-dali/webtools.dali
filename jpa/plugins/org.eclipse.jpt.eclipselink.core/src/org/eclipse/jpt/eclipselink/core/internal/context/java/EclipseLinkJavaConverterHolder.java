@@ -49,7 +49,7 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 			throw new IllegalStateException("converter already exists"); //$NON-NLS-1$
 		}
 		this.converter = new EclipseLinkJavaConverterImpl(this, this.resourcePersistentType);
-		this.addResourceConverter();
+		this.resourcePersistentType.addSupportingAnnotation(this.converter.getAnnotationName());
 		firePropertyChanged(CONVERTER_PROPERTY, null, this.converter);
 		return this.converter;
 	}
@@ -63,9 +63,9 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 		if (this.converter == null) {
 			throw new IllegalStateException("converter is null"); //$NON-NLS-1$			
 		}
-		Converter oldConverter = this.converter;
+		EclipseLinkJavaConverterImpl oldConverter = this.converter;
 		this.converter = null;
-		removeResourceConverter();
+		this.resourcePersistentType.removeSupportingAnnotation(oldConverter.getAnnotationName());
 		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, null);
 	}
 	
@@ -82,14 +82,6 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 		return (ConverterAnnotation) this.resourcePersistentType.getSupportingAnnotation(getConverterAnnotationName());
 	}
 	
-	protected void removeResourceConverter() {
-		this.resourcePersistentType.removeSupportingAnnotation(getConverterAnnotationName());
-	}
-	
-	protected void addResourceConverter() {
-		this.resourcePersistentType.addSupportingAnnotation(getConverterAnnotationName());
-	}
-	
 	
 	//************** object type converter *************
 	public ObjectTypeConverter getObjectTypeConverter() {
@@ -101,7 +93,7 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 			throw new IllegalStateException("object type converter already exists"); //$NON-NLS-1$
 		}
 		this.objectTypeConverter = new EclipseLinkJavaObjectTypeConverter(this, this.resourcePersistentType);
-		this.addResourceObjectTypeConverter();
+		this.resourcePersistentType.addSupportingAnnotation(this.objectTypeConverter.getAnnotationName());
 		firePropertyChanged(OBJECT_TYPE_CONVERTER_PROPERTY, null, this.objectTypeConverter);
 		return this.objectTypeConverter;
 	}
@@ -115,9 +107,9 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 		if (this.objectTypeConverter == null) {
 			throw new IllegalStateException("object type converter is null"); //$NON-NLS-1$			
 		}
-		ObjectTypeConverter oldConverter = this.objectTypeConverter;
+		EclipseLinkJavaObjectTypeConverter oldConverter = this.objectTypeConverter;
 		this.objectTypeConverter = null;
-		removeResourceObjectTypeConverter();
+		this.resourcePersistentType.removeSupportingAnnotation(oldConverter.getAnnotationName());
 		firePropertyChanged(OBJECT_TYPE_CONVERTER_PROPERTY, oldConverter, null);
 	}
 
@@ -135,14 +127,6 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 		return (ObjectTypeConverterAnnotation) this.resourcePersistentType.getSupportingAnnotation(getObjectTypeConverterAnnotationName());
 	}
 	
-	protected void removeResourceObjectTypeConverter() {
-		this.resourcePersistentType.removeSupportingAnnotation(getObjectTypeConverterAnnotationName());
-	}
-	
-	protected void addResourceObjectTypeConverter() {
-		this.resourcePersistentType.addSupportingAnnotation(getObjectTypeConverterAnnotationName());
-	}
-	
 	
 	//************** type converter *************
 	public TypeConverter getTypeConverter() {
@@ -154,7 +138,7 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 			throw new IllegalStateException("type converter already exists"); //$NON-NLS-1$
 		}
 		this.typeConverter = new EclipseLinkJavaTypeConverter(this, this.resourcePersistentType);
-		this.addResourceTypeConverter();
+		this.resourcePersistentType.addSupportingAnnotation(this.typeConverter.getAnnotationName());
 		firePropertyChanged(TYPE_CONVERTER_PROPERTY, null, this.typeConverter);
 		return this.typeConverter;
 	}
@@ -168,9 +152,9 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 		if (this.typeConverter == null) {
 			throw new IllegalStateException("type converter is null"); //$NON-NLS-1$			
 		}
-		TypeConverter oldConverter = this.typeConverter;
+		EclipseLinkJavaTypeConverter oldConverter = this.typeConverter;
 		this.typeConverter = null;
-		removeResourceTypeConverter();
+		this.resourcePersistentType.removeSupportingAnnotation(oldConverter.getAnnotationName());
 		firePropertyChanged(TYPE_CONVERTER_PROPERTY, oldConverter, null);
 	}
 	
@@ -188,14 +172,6 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 		return (TypeConverterAnnotation) this.resourcePersistentType.getSupportingAnnotation(getTypeConverterAnnotationName());
 	}
 	
-	protected void removeResourceTypeConverter() {
-		this.resourcePersistentType.removeSupportingAnnotation(getTypeConverterAnnotationName());
-	}
-	
-	protected void addResourceTypeConverter() {
-		this.resourcePersistentType.addSupportingAnnotation(getTypeConverterAnnotationName());
-	}
-	
 	
 	//************** struct converter *************
 	public StructConverter getStructConverter() {
@@ -207,7 +183,7 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 			throw new IllegalStateException("struct converter already exists"); //$NON-NLS-1$
 		}
 		this.structConverter = new EclipseLinkJavaStructConverter(this, this.resourcePersistentType);
-		this.addResourceStructConverter();
+		this.resourcePersistentType.addSupportingAnnotation(this.structConverter.getAnnotationName());
 		firePropertyChanged(STRUCT_CONVERTER_PROPERTY, null, this.structConverter);
 		return this.structConverter;
 	}
@@ -221,9 +197,9 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 		if (this.structConverter == null) {
 			throw new IllegalStateException("struct converter is null"); //$NON-NLS-1$			
 		}
-		StructConverter oldConverter = this.structConverter;
+		EclipseLinkJavaStructConverter oldConverter = this.structConverter;
 		this.structConverter = null;
-		removeResourceStructConverter();
+		this.resourcePersistentType.removeSupportingAnnotation(oldConverter.getAnnotationName());
 		firePropertyChanged(STRUCT_CONVERTER_PROPERTY, oldConverter, null);
 	}
 	
@@ -239,14 +215,6 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 	
 	protected StructConverterAnnotation getResourceStructConverter() {
 		return (StructConverterAnnotation) this.resourcePersistentType.getSupportingAnnotation(getStructConverterAnnotationName());
-	}
-	
-	protected void removeResourceStructConverter() {
-		this.resourcePersistentType.removeSupportingAnnotation(getStructConverterAnnotationName());
-	}
-	
-	protected void addResourceStructConverter() {
-		this.resourcePersistentType.addSupportingAnnotation(getStructConverterAnnotationName());
 	}
 	
 	public void update(JavaResourcePersistentType jrpt) {
