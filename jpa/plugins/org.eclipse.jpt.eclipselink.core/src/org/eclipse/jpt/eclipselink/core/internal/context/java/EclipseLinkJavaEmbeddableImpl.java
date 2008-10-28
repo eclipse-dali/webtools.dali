@@ -64,6 +64,7 @@ public class EclipseLinkJavaEmbeddableImpl extends GenericJavaEmbeddable impleme
 		this.changeTracking.update(jrpt);
 	}
 	
+	
 	//********** Validation ********************************************
 
 	@Override

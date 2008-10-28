@@ -21,11 +21,10 @@ import org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingAnnotation;
 
 public class EclipseLinkJavaChangeTracking extends AbstractJavaJpaContextNode implements ChangeTracking
 {
-	
-	protected boolean changeTracking;
-	protected ChangeTrackingType specifiedChangeTrackingType;
-	
 	protected JavaResourcePersistentType resourcePersistentType;
+	
+	protected ChangeTrackingType specifiedType;
+	
 	
 	public EclipseLinkJavaChangeTracking(JavaTypeMapping parent) {
 		super(parent);
@@ -41,61 +40,54 @@ public class EclipseLinkJavaChangeTracking extends AbstractJavaJpaContextNode im
 		return (EclipseLinkJpaFactory) super.getJpaFactory();
 	}
 	
-	protected ChangeTrackingAnnotation getChangeTrackingAnnotation() {
-		return (ChangeTrackingAnnotation) this.resourcePersistentType.getSupportingAnnotation(getChangeTrackingAnnotationName());
-	}
-	
 	protected String getChangeTrackingAnnotationName() {
 		return ChangeTrackingAnnotation.ANNOTATION_NAME;
 	}
 	
-	public boolean hasChangeTracking() {
-		return this.changeTracking;
+	protected ChangeTrackingAnnotation getChangeTrackingAnnotation() {
+		return (ChangeTrackingAnnotation) this.resourcePersistentType.getSupportingAnnotation(getChangeTrackingAnnotationName());
 	}
 	
-	public void setChangeTracking(boolean newChangeTracking) {
-		boolean oldChangeTracking = this.changeTracking;
-		this.changeTracking = newChangeTracking;
-		if (newChangeTracking) {
-			this.resourcePersistentType.addSupportingAnnotation(getChangeTrackingAnnotationName());
+	protected void addChangeTrackingAnnotation() {
+		this.resourcePersistentType.addSupportingAnnotation(getChangeTrackingAnnotationName());
+	}
+	
+	protected void removeChangeTrackingAnnotation() {
+		this.resourcePersistentType.removeSupportingAnnotation(getChangeTrackingAnnotationName());
+	}
+	
+	public ChangeTrackingType getType() {
+		return (this.getSpecifiedType() != null) ? this.getSpecifiedType() : this.getDefaultType();
+	}
+	
+	public ChangeTrackingType getDefaultType() {
+		return DEFAULT_TYPE;
+	}
+	
+	public ChangeTrackingType getSpecifiedType() {
+		return this.specifiedType;
+	}
+	
+	public void setSpecifiedType(ChangeTrackingType newSpecifiedType) {
+		if (this.specifiedType == newSpecifiedType) {
+			return;
+		}
+		
+		ChangeTrackingType oldSpecifiedType = this.specifiedType;
+		this.specifiedType = newSpecifiedType;
+		
+		if (newSpecifiedType != null) {
+			if (getChangeTrackingAnnotation() == null) {
+				addChangeTrackingAnnotation();
+			}
+			getChangeTrackingAnnotation().setValue(ChangeTrackingType.toJavaResourceModel(newSpecifiedType));
 		}
 		else {
-			this.resourcePersistentType.removeSupportingAnnotation(getChangeTrackingAnnotationName());
-		}
-		firePropertyChanged(CHANGE_TRACKING_PROPERTY, oldChangeTracking, newChangeTracking);
-	}
-	
-	protected void setChangeTracking_(boolean newChangeTracking) {
-		boolean oldChangeTracking = this.changeTracking;
-		this.changeTracking = newChangeTracking;
-		firePropertyChanged(CHANGE_TRACKING_PROPERTY, oldChangeTracking, newChangeTracking);
-	}
-	
-	public ChangeTrackingType getChangeTrackingType() {
-		return (this.getSpecifiedChangeTrackingType() == null) ? this.getDefaultChangeTrackingType() : this.getSpecifiedChangeTrackingType();
-	}
-
-	public ChangeTrackingType getDefaultChangeTrackingType() {
-		return DEFAULT_CHANGE_TRACKING_TYPE;
-	}
-	
-	public ChangeTrackingType getSpecifiedChangeTrackingType() {
-		return this.specifiedChangeTrackingType;
-	}
-	
-	public void setSpecifiedChangeTrackingType(ChangeTrackingType newSpecifiedChangeTrackingType) {
-		if (!hasChangeTracking()) {
-			if (newSpecifiedChangeTrackingType != null) {
-				setChangeTracking(true);
-			}
-			else {
-				return;
+			if (getChangeTrackingAnnotation() != null) {
+				removeChangeTrackingAnnotation();
 			}
 		}
-		ChangeTrackingType oldSpecifiedChangeTrackingType = this.specifiedChangeTrackingType;
-		this.specifiedChangeTrackingType = newSpecifiedChangeTrackingType;
-		this.getChangeTrackingAnnotation().setValue(ChangeTrackingType.toJavaResourceModel(newSpecifiedChangeTrackingType));
-		firePropertyChanged(SPECIFIED_CHANGE_TRACKING_TYPE_PROPERTY, oldSpecifiedChangeTrackingType, newSpecifiedChangeTrackingType);
+		firePropertyChanged(SPECIFIED_TYPE_PROPERTY, oldSpecifiedType, newSpecifiedType);
 	}
 	
 	/**
@@ -104,41 +96,36 @@ public class EclipseLinkJavaChangeTracking extends AbstractJavaJpaContextNode im
 	 * when you set a value from the UI and the annotation doesn't exist yet.
 	 * Adding the annotation causes an update to occur and then the exception.
 	 */
-	protected void setSpecifiedChangeTrackingType_(ChangeTrackingType newSpecifiedChangeTrackingType) {
-		ChangeTrackingType oldSpecifiedChangeTrackingType = this.specifiedChangeTrackingType;
-		this.specifiedChangeTrackingType = newSpecifiedChangeTrackingType;
-		firePropertyChanged(SPECIFIED_CHANGE_TRACKING_TYPE_PROPERTY, oldSpecifiedChangeTrackingType, newSpecifiedChangeTrackingType);
+	protected void setSpecifiedType_(ChangeTrackingType newSpecifiedType) {
+		ChangeTrackingType oldSpecifiedType = this.specifiedType;
+		this.specifiedType = newSpecifiedType;
+		firePropertyChanged(SPECIFIED_TYPE_PROPERTY, oldSpecifiedType, newSpecifiedType);
 	}
-
 	
 	public void initialize(JavaResourcePersistentType resourcePersistentType) {
 		this.resourcePersistentType = resourcePersistentType;
-		initialize(getChangeTrackingAnnotation());
-	}
-	
-	protected void initialize(ChangeTrackingAnnotation changeTracking) {
-		this.changeTracking = changeTracking != null;
-		this.specifiedChangeTrackingType = specifiedChangeTrackingType(changeTracking);
+		ChangeTrackingAnnotation changeTrackingAnnotation = this.getChangeTrackingAnnotation();
+		this.specifiedType = changeTrackingType(changeTrackingAnnotation);
 	}
 	
 	public void update(JavaResourcePersistentType resourcePersistentType) {
 		this.resourcePersistentType = resourcePersistentType;
-		update(getChangeTrackingAnnotation());
-	}
-
-	protected void update(ChangeTrackingAnnotation changeTracking) {
-		setChangeTracking_(changeTracking != null);
-		setSpecifiedChangeTrackingType_(specifiedChangeTrackingType(changeTracking));
+		ChangeTrackingAnnotation changeTrackingAnnotation = this.getChangeTrackingAnnotation();
+		this.setSpecifiedType_(changeTrackingType(changeTrackingAnnotation));
 	}
 	
-	protected ChangeTrackingType specifiedChangeTrackingType(ChangeTrackingAnnotation changeTracking) {
+	protected ChangeTrackingType changeTrackingType(ChangeTrackingAnnotation changeTracking) {
 		if (changeTracking == null) {
 			return null;
 		}
-		return ChangeTrackingType.fromJavaResourceModel(changeTracking.getValue());
+		else if (changeTracking.getValue() == null) {
+			return ChangeTracking.DEFAULT_TYPE;
+		}
+		else {
+			return ChangeTrackingType.fromJavaResourceModel(changeTracking.getValue());
+		}
 	}
-
-
+	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		ChangeTrackingAnnotation changeTrackingAnnotation = getChangeTrackingAnnotation();
 		TextRange textRange = changeTrackingAnnotation == null ? null : changeTrackingAnnotation.getTextRange(astRoot);

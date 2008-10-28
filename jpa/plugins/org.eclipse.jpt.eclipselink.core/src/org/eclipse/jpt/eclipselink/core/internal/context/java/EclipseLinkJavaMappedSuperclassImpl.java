@@ -63,7 +63,6 @@ public class EclipseLinkJavaMappedSuperclassImpl extends GenericJavaMappedSuperc
 		return this.changeTracking;
 	}
 	
-	
 	@Override
 	public void initialize(JavaResourcePersistentType jrpt) {
 		super.initialize(jrpt);
@@ -83,6 +82,7 @@ public class EclipseLinkJavaMappedSuperclassImpl extends GenericJavaMappedSuperc
 		this.customizer.update(jrpt);
 		this.changeTracking.update(jrpt);
 	}
+	
 	
 	//********** Validation ********************************************
 

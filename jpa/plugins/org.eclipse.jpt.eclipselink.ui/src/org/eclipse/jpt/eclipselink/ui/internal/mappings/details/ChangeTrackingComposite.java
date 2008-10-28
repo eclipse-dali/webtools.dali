@@ -14,9 +14,7 @@ import org.eclipse.jpt.eclipselink.core.context.ChangeTrackingType;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -24,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
  * <pre>
  * -------------------------------------------------------------------------
  * |       			  		---------------------------------------------- |
- * | x Change Tracking :    |                                          |v| |
+ * | Change Tracking :      |                                          |v| |
  * |       					---------------------------------------------- |
  * -------------------------------------------------------------------------</pre>
  *
@@ -52,13 +50,10 @@ public class ChangeTrackingComposite extends FormPane<ChangeTracking> {
 	protected void initializeLayout(Composite container) {
 
 		addLabeledComposite( 
-            container, 
-            addCheckBox( 
+            container,
+            addLabel( 
                  container, 
-                 EclipseLinkUiMappingsMessages.ChangeTrackingComposite_label, 
-                 buildChangeTrackingHolder(), 
-                 null 
-            ), 
+                 EclipseLinkUiMappingsMessages.ChangeTrackingComposite_label), 
             addChangeTrackingTypeCombo(container).getControl(), 
             null 
        );
@@ -71,8 +66,8 @@ public class ChangeTrackingComposite extends FormPane<ChangeTracking> {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ChangeTracking.DEFAULT_CHANGE_TRACKING_TYPE_PROPERTY);
-				propertyNames.add(ChangeTracking.SPECIFIED_CHANGE_TRACKING_TYPE_PROPERTY);
+				propertyNames.add(ChangeTracking.DEFAULT_TYPE_PROPERTY);
+				propertyNames.add(ChangeTracking.SPECIFIED_TYPE_PROPERTY);
 			}
 
 			@Override
@@ -82,7 +77,7 @@ public class ChangeTrackingComposite extends FormPane<ChangeTracking> {
 
 			@Override
 			protected ChangeTrackingType getDefaultValue() {
-				return getSubject().getDefaultChangeTrackingType();
+				return getSubject().getDefaultType();
 			}
 
 			@Override
@@ -96,12 +91,12 @@ public class ChangeTrackingComposite extends FormPane<ChangeTracking> {
 
 			@Override
 			protected ChangeTrackingType getValue() {
-				return getSubject().getSpecifiedChangeTrackingType();
+				return getSubject().getSpecifiedType();
 			}
 
 			@Override
 			protected void setValue(ChangeTrackingType value) {
-				getSubject().setSpecifiedChangeTrackingType(value);
+				getSubject().setSpecifiedType(value);
 			}
 			
 			@Override
@@ -110,19 +105,4 @@ public class ChangeTrackingComposite extends FormPane<ChangeTracking> {
 			}
 		};
 	}
-	
-	private WritablePropertyValueModel<Boolean> buildChangeTrackingHolder() {
-		return new PropertyAspectAdapter<ChangeTracking, Boolean>(getSubjectHolder(), ChangeTracking.CHANGE_TRACKING_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.hasChangeTracking());
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				this.subject.setChangeTracking(value.booleanValue());
-			}
-		};
-	}
-
 }

@@ -12,8 +12,6 @@ package org.eclipse.jpt.eclipselink.core.context;
 import org.eclipse.jpt.core.context.JpaContextNode;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,29 +23,17 @@ import org.eclipse.jpt.core.context.JpaContextNode;
  */
 public interface ChangeTracking extends JpaContextNode
 {
-
 	/**
-	 * Return true if the existence-checking model object exists.  
-	 * Have to have a separate flag for this since the default existence
-	 * type is different depending on whether hasExistenceChecking() returns
-	 * true or false.
+	 * This is the combination of defaultType and specifiedType.
+	 * If getSpecifiedType() returns null, then return getDefaultType()
 	 */
-	boolean hasChangeTracking();
-	void setChangeTracking(boolean changeTracking);
-		String CHANGE_TRACKING_PROPERTY = "changeTrackingProperty"; //$NON-NLS-1$
+	ChangeTrackingType getType();
 	
-	/**
-	 * This is the combination of defaultExistenceType and specifiedExistenceType.
-	 * If getSpecifiedExistenceType() returns null, then return getDefaultExistenceType()
-	 */
-	ChangeTrackingType getChangeTrackingType();
-	
-	ChangeTrackingType getDefaultChangeTrackingType();		
-		String DEFAULT_CHANGE_TRACKING_TYPE_PROPERTY = "defaultChangeTrackinProperty"; //$NON-NLS-1$
-		ChangeTrackingType DEFAULT_CHANGE_TRACKING_TYPE = ChangeTrackingType.AUTO;
+	ChangeTrackingType getDefaultType();		
+		String DEFAULT_TYPE_PROPERTY = "defaultTypeProperty"; //$NON-NLS-1$
+		ChangeTrackingType DEFAULT_TYPE = ChangeTrackingType.AUTO;
 		
-	ChangeTrackingType getSpecifiedChangeTrackingType();	
-	void setSpecifiedChangeTrackingType(ChangeTrackingType newSpecifiedChangeTrackingType);
-		String SPECIFIED_CHANGE_TRACKING_TYPE_PROPERTY = "specifiedChangeTrackingTypeProperty"; //$NON-NLS-1$
-
+	ChangeTrackingType getSpecifiedType();	
+	void setSpecifiedType(ChangeTrackingType newSpecifiedType);
+		String SPECIFIED_TYPE_PROPERTY = "specifiedTypeProperty"; //$NON-NLS-1$
 }
