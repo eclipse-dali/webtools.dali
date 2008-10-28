@@ -1,4 +1,4 @@
-<%@ jet	package="org.eclipse.jpt.ui" 
+<%@ jet	package="org.eclipse.jpt.ui.internal.wizards.entity" 
 	imports="org.eclipse.jpt.ui.internal.wizards.entity.data.model.* java.util.* " 
 	class="IdClassTemplate" 
 %>
