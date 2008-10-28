@@ -61,7 +61,7 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 		String projectName = (String) getDataModel().getProperty(PROJECT_NAME);
 		IProject project = ProjectUtilities.getProject(projectName);
 		if (project == null) {
-			throw new ExecutionException("No project name specified");
+			throw new ExecutionException("No project name specified"); //$NON-NLS-1$
 		}
 		return project;
 	}
@@ -70,7 +70,7 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 		IProject project = getProject();
 		JpaProject jpaProject = JptCorePlugin.getJpaProject(project);
 		if (jpaProject == null) {
-			throw new ExecutionException("Project does not have JPA content");
+			throw new ExecutionException("Project does not have JPA content"); //$NON-NLS-1$
 		}
 		return jpaProject;
 	}
@@ -80,11 +80,11 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 		JpaProject jpaProject = getJpaProject();
 		PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
 		if (persistenceXml == null) {
-			throw new ExecutionException("Project does not have a persistence.xml file");
+			throw new ExecutionException("Project does not have a persistence.xml file"); //$NON-NLS-1$
 		}
 		Persistence persistence = persistenceXml.getPersistence();
 		if (persistence == null) {
-			throw new ExecutionException("persistence.xml does not have a persistence node.");
+			throw new ExecutionException("persistence.xml does not have a persistence node."); //$NON-NLS-1$
 		}
 		for (Iterator<PersistenceUnit> stream = persistence.persistenceUnits(); stream.hasNext(); ) {
 			PersistenceUnit pUnit = stream.next();
@@ -92,7 +92,7 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 				return pUnit;
 			}
 		}
-		throw new ExecutionException("persistence.xml does not have persistence unit named \'" + pUnitName + "\'");
+		throw new ExecutionException("persistence.xml does not have persistence unit named \'" + pUnitName + "\'"); //$NON-NLS-1$
 	}
 	
 	/**
@@ -112,7 +112,7 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 			try {
 				folder.create(true, true, null);
 			} catch (CoreException e) {
-				throw new ExecutionException("Could not create folder", e);
+				throw new ExecutionException("Could not create folder", e); //$NON-NLS-1$
 			}
 		}
 		// Return the source folder
@@ -120,7 +120,7 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected void createMappingFile(IFolder folder) throws ExecutionException {
+	protected void createMappingFile(IFolder folder) {
 		String filePath = getDataModel().getStringProperty(FILE_PATH);
 		IFile file = folder.getFile(new Path(filePath));
 		final OrmResourceModelProvider modelProvider =
@@ -131,7 +131,7 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 					OrmResource ormResource = modelProvider.getResource();
 					
 					XmlEntityMappings entityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
-					entityMappings.setVersion("1.0");
+					entityMappings.setVersion("1.0"); //$NON-NLS-1$
 					ormResource.getContents().add(entityMappings);
 					
 					AccessType defaultAccess = (AccessType) getDataModel().getProperty(DEFAULT_ACCESS); 

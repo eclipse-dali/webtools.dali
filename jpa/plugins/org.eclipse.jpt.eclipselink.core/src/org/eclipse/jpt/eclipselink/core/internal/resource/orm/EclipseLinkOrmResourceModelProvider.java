@@ -18,10 +18,10 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.resource.JpaResourceModelProviderManager;
 import org.eclipse.jpt.core.resource.AbstractResourceModelProvider;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkConstants;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
 
 public class EclipseLinkOrmResourceModelProvider extends AbstractResourceModelProvider
@@ -75,7 +75,7 @@ public class EclipseLinkOrmResourceModelProvider extends AbstractResourceModelPr
 	
 	@Override
 	protected void populateRoot(JpaXmlResource resource) {
-		XmlEntityMappings entityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
+		XmlEntityMappings entityMappings = EclipseLinkOrmFactory.eINSTANCE.createXmlEntityMappings();
 		entityMappings.setVersion(EclipseLinkConstants.VERSION_1_0_TEXT);
 		getResourceContents(resource).add(entityMappings);
 	}

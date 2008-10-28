@@ -30,9 +30,13 @@ public class EclipseLinkOrmTypeConverter extends AbstractXmlContextNode implemen
 		super(parent);
 		this.initialize(resourceConverter);
 	}
-
+	
 	public String getType() {
 		return EclipseLinkConverter.TYPE_CONVERTER;
+	}
+
+	public XmlTypeConverter getResourceConverter() {
+		return this.resourceConverter;
 	}
 	
 	public String getName() {

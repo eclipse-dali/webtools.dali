@@ -31,6 +31,11 @@ public class EclipseLinkOrmResource
 	}
 
 	@Override
+	public XmlEntityMappings getEntityMappings() {
+		return (XmlEntityMappings) super.getEntityMappings();
+	}
+	
+	@Override
 	public Translator getRootTranslator() {
 		return EclipseLinkEntityMappingsTranslator.INSTANCE;
 	}

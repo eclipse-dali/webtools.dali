@@ -112,11 +112,15 @@ public class OrmXmlImpl
 			throw new IllegalStateException();
 		}
 		
-		XmlEntityMappings xmlEntityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
+		XmlEntityMappings xmlEntityMappings = buildEntityMappingsResource();
 		this.entityMappings = buildEntityMappings(xmlEntityMappings);
 		this.ormResource.getContents().add(xmlEntityMappings);
 		firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, null, this.entityMappings);
 		return this.entityMappings;
+	}
+	
+	protected XmlEntityMappings buildEntityMappingsResource() {
+		return OrmFactory.eINSTANCE.createXmlEntityMappings();
 	}
 	
 	public void removeEntityMappings() {

@@ -19,9 +19,36 @@ public class EclipseLinkEntityMappingsTranslator extends EntityMappingsTranslato
 	
 	
 	public EclipseLinkEntityMappingsTranslator() {
-		super(ENTITY_MAPPINGS, ORM_PKG.getXmlEntityMappings());
+		super(ENTITY_MAPPINGS, ECLIPSELINK_ORM_PKG.getXmlEntityMappings());
 	}
 	
+	@Override
+	protected Translator[] createChildren() {
+		return new Translator[] {
+			createVersionTranslator(),
+			createNamespaceTranslator(),
+			createSchemaNamespaceTranslator(),
+			createSchemaLocationTranslator(),
+			createDescriptionTranslator(),
+			createPersistenceUnitMetadataTranslator(),
+			createPackageTranslator(),
+			createSchemaTranslator(),
+			createCatalogTranslator(),
+			createAccessTranslator(),
+			createConverterTranslator(),
+			createTypeConverterTranslator(),
+			createObjectTypeConverterTranslator(),
+			createStructConverterTranslator(),
+			createSequenceGeneratorTranslator(),
+			createTableGeneratorTranslator(),
+			createNamedQueryTranslator(),
+			createNamedNativeQueryTranslator(),
+			createSqlResultSetMappingTranslator(),
+			createMappedSuperclassTranslator(),
+			createEntityTranslator(),
+			createEmbeddableTranslator()
+		};
+	}
 	
 	@Override
 	protected Translator createNamespaceTranslator() {
@@ -46,5 +73,22 @@ public class EclipseLinkEntityMappingsTranslator extends EntityMappingsTranslato
 	@Override
 	protected Translator createMappedSuperclassTranslator() {
 		return new EclipseLinkMappedSuperclassTranslator(MAPPED_SUPERCLASS, ORM_PKG.getXmlEntityMappings_MappedSuperclasses());
+	}
+	
+	
+	protected Translator createConverterTranslator() {
+		return new ConverterTranslator(CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConvertersHolder_Converters());
+	}
+	
+	protected Translator createTypeConverterTranslator() {
+		return new TypeConverterTranslator(TYPE_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConvertersHolder_TypeConverters());
+	}
+	
+	protected Translator createObjectTypeConverterTranslator() {
+		return new ObjectTypeConverterTranslator(OBJECT_TYPE_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConvertersHolder_ObjectTypeConverters());
+	}
+	
+	protected Translator createStructConverterTranslator() {
+		return new StructConverterTranslator(STRUCT_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConvertersHolder_StructConverters());
 	}
 }

@@ -79,6 +79,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		switch (eClass.getClassifierID())
 		{
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS: return (EObject)createXmlEntityMappings();
 			case EclipseLinkOrmPackage.XML_CUSTOMIZER: return (EObject)createXmlCustomizer();
 			case EclipseLinkOrmPackage.XML_CHANGE_TRACKING: return (EObject)createXmlChangeTracking();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE: return (EObject)createXmlEmbeddable();
@@ -151,6 +152,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlEntityMappings createXmlEntityMappings()
+	{
+		XmlEntityMappings xmlEntityMappings = new XmlEntityMappings();
+		return xmlEntityMappings;
 	}
 
 	/**

@@ -11,9 +11,9 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.core.context.MappingFile;
-import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
 import org.eclipse.jpt.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationOperation;
 import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmResourceModelProvider;
@@ -60,12 +60,14 @@ public abstract class EclipseLinkOrmContextModelTestCase
 		super.tearDown();
 	}
 	
+	@Override
 	protected EclipseLinkOrmResource ormResource() {
 		return this.eclipseLinkOrmResourceModelProvider.getResource();
 	}
 	
-	protected EntityMappings entityMappings() {
+	@Override
+	protected EclipseLinkEntityMappings entityMappings() {
 		MappingFile mappingFile = persistenceUnit().mappingFileRefs().next().getMappingFile();
-		return (mappingFile == null) ? null : (EntityMappings) mappingFile.getRoot();
+		return (mappingFile == null) ? null : (EclipseLinkEntityMappings) mappingFile.getRoot();
 	}
 }

@@ -35,6 +35,10 @@ public class EclipseLinkOrmStructConverter extends AbstractXmlContextNode implem
 		return EclipseLinkConverter.STRUCT_CONVERTER;
 	}
 	
+	public XmlStructConverter getResourceConverter() {
+		return this.resourceConverter;
+	}
+	
 	public String getConverterClass() {
 		return this.converterClass;
 	}

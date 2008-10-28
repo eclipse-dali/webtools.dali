@@ -23,12 +23,10 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 		super(domNameAndPath, aFeature);
 	}
 	
-	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
 		return EclipseLinkOrmFactory.eINSTANCE.createXmlEntity();
 	}
-	
 	
 	@Override
 	protected Translator[] createChildren() {
@@ -50,6 +48,10 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 			createDiscriminatorValueTranslator(),
 			createDiscriminatorColumnTranslator(),
 			createCacheTranslator(),
+			createConverterTranslator(),
+			createTypeConverterTranslator(),
+			createObjectTypeConverterTranslator(),
+			createStructConverterTranslator(),
 			createSequenceGeneratorTranslator(),
 			createTableGeneratorTranslator(),
 			createNamedQueryTranslator(),
@@ -90,7 +92,23 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 	protected Translator createCacheTranslator() {
 		return new CacheTranslator();
 	}
-		
+	
+	protected Translator createConverterTranslator() {
+		return new ConverterTranslator(CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConvertersHolder_Converters());
+	}
+	
+	protected Translator createTypeConverterTranslator() {
+		return new TypeConverterTranslator(TYPE_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConvertersHolder_TypeConverters());
+	}
+	
+	protected Translator createObjectTypeConverterTranslator() {
+		return new ObjectTypeConverterTranslator(OBJECT_TYPE_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConvertersHolder_ObjectTypeConverters());
+	}
+	
+	protected Translator createStructConverterTranslator() {
+		return new StructConverterTranslator(STRUCT_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConvertersHolder_StructConverters());
+	}
+	
 	@Override
 	protected Translator createAttributesTranslator() {
 		return new EclipseLinkAttributesTranslator(ATTRIBUTES, ORM_PKG.getAbstractXmlTypeMapping_Attributes());

@@ -42,6 +42,13 @@
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlJoinFetchType/INNER"/>
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlJoinFetchType/OUTER"/>
     </genEnums>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlConvertersHolder">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConvertersHolder/converters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConvertersHolder/typeConverters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConvertersHolder/objectTypeConverters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConvertersHolder/structConverters"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEntityMappings"/>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlCustomizer">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCustomizer/customizerClassName"/>
     </genClasses>

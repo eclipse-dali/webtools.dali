@@ -3,6 +3,18 @@
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="orm"
     nsURI="jpt.eclipselink.orm.xmi" nsPrefix="org.eclipse.jpt.eclipselink.core.resource.orm">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlConvertersHolder" abstract="true"
+      interface="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="converters" upperBound="-1"
+        eType="#//XmlConverter" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeConverters" upperBound="-1"
+        eType="#//XmlTypeConverter" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="objectTypeConverters" upperBound="-1"
+        eType="#//XmlObjectTypeConverter" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="structConverters" upperBound="-1"
+        eType="#//XmlStructConverter" containment="true" resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntityMappings #//XmlConvertersHolder"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlCustomizer">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="customizerClassName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
@@ -25,7 +37,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="changeTracking" eType="#//XmlChangeTracking"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEmbeddable #//XmlCustomizerHolder #//XmlChangeTrackingHolder"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEmbeddable #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlConvertersHolder"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlReadOnly" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="readOnly" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
   </eClassifiers>
@@ -75,8 +87,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="existenceChecking" eType="#//ExistenceType"
         defaultValueLiteral=""/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntity #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlMappedSuperclass #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntity #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder #//XmlConvertersHolder"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlMappedSuperclass #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder #//XmlConvertersHolder"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlMutable" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mutable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
   </eClassifiers>
@@ -116,13 +128,13 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlConverterHolder" abstract="true"
       interface="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="converter" eType="#//XmlConverter"
-        containment="true"/>
+        containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="typeConverter" eType="#//XmlTypeConverter"
-        containment="true"/>
+        containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="objectTypeConverter" eType="#//XmlObjectTypeConverter"
-        containment="true"/>
+        containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="structConverter" eType="#//XmlStructConverter"
-        containment="true"/>
+        containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlConvertibleMapping" abstract="true"
       interface="true" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlConvertibleMapping #//XmlConverterHolder">

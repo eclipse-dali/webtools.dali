@@ -9,90 +9,22 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
-import java.util.List;
-import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddable;
-import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
-import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
-import org.eclipse.jpt.eclipselink.core.context.Customizer;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEmbeddable;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkOrmEmbeddable extends GenericOrmEmbeddable
-	implements EclipseLinkEmbeddable
+/**
+ * 
+ * 
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 2.1
+ * @since 2.1
+ */
+public interface EclipseLinkOrmEmbeddable extends EclipseLinkEmbeddable, OrmEmbeddable
 {
-	protected final EclipseLinkOrmCustomizer customizer;
-	
-	protected final EclipseLinkOrmChangeTracking changeTracking;
-	
-	
-	public EclipseLinkOrmEmbeddable(OrmPersistentType parent) {
-		super(parent);
-		this.customizer = new EclipseLinkOrmCustomizer(this);
-		this.changeTracking = new EclipseLinkOrmChangeTracking(this);
-	}
-	
-	
-	public Customizer getCustomizer() {
-		return this.customizer;
-	}
-
-	public ChangeTracking getChangeTracking() {
-		return this.changeTracking;
-	}
-	
-	
-	// **************** resource-context interaction ***************************
-	
-	@Override
-	public XmlEmbeddable addToResourceModel(XmlEntityMappings entityMappings) {
-		XmlEmbeddable embeddable = EclipseLinkOrmFactory.eINSTANCE.createXmlEmbeddable();
-		getPersistentType().initialize(embeddable);
-		entityMappings.getEmbeddables().add(embeddable);
-		return embeddable;
-	}
-	
-	@Override
-	public void initialize(XmlEmbeddable embeddable) {
-		super.initialize(embeddable);
-		this.customizer.initialize((XmlCustomizerHolder) embeddable, getJavaCustomizer());
-		this.changeTracking.initialize((XmlChangeTrackingHolder) embeddable, getJavaChangeTracking());
-	}
-	
-	@Override
-	public void update(XmlEmbeddable embeddable) {
-		super.update(embeddable);
-		this.customizer.update((XmlCustomizerHolder) embeddable, getJavaCustomizer());
-		this.changeTracking.update((XmlChangeTrackingHolder) embeddable, getJavaChangeTracking());
-	}
-	
-	@Override
-	protected EclipseLinkJavaEmbeddable getJavaEmbeddableForDefaults() {
-		return (EclipseLinkJavaEmbeddable) super.getJavaEmbeddableForDefaults();
-	}
-	
-	protected Customizer getJavaCustomizer() {
-		EclipseLinkJavaEmbeddable javaEmbeddable = getJavaEmbeddableForDefaults();
-		return (javaEmbeddable == null) ? null : javaEmbeddable.getCustomizer();
-	}
-	
-	protected ChangeTracking getJavaChangeTracking() {
-		EclipseLinkJavaEmbeddable javaEmbeddable = getJavaEmbeddableForDefaults();
-		return (javaEmbeddable == null) ? null : javaEmbeddable.getChangeTracking();
-	}
-	
-	
-	// **************** validation **************************************
-	
-	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
-		this.customizer.validate(messages);
-		this.changeTracking.validate(messages);
-	}
+	ConverterHolder getConverterHolder();
 }

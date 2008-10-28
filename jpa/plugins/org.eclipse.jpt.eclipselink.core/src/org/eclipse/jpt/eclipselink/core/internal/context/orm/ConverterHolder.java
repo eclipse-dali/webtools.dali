@@ -7,23 +7,15 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.context;
+package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.eclipselink.core.context.Converter;
+import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.StructConverter;
+import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
 
-/**
- * 
- * 
- * Provisional API: This interface is part of an interim API that is still
- * under development and expected to change significantly before reaching
- * stability. It is available at this early stage to solicit feedback from
- * pioneering adopters on the understanding that any code that uses this API
- * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * @version 2.1
- * @since 2.1
- */
 public interface ConverterHolder extends JpaContextNode
 {
 	//************ converters *********************
@@ -78,7 +70,7 @@ public interface ConverterHolder extends JpaContextNode
 	/**
 	 * Add a object type converter to the converter holder, return the object representing it.
 	 */
-	Converter addObjectTypeConverter(int index);
+	ObjectTypeConverter addObjectTypeConverter(int index);
 
 	/**
 	 * Remove the object type converter at the index from the converter holder.
@@ -150,7 +142,7 @@ public interface ConverterHolder extends JpaContextNode
 	/**
 	 * Add a type converter to the converter holder, return the object representing it.
 	 */
-	StructConverter addTypeConverter(int index);
+	TypeConverter addTypeConverter(int index);
 
 	/**
 	 * Remove the type converter at the index from the converter holder.

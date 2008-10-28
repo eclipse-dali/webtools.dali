@@ -9,13 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
+import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,7 +31,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * @model kind="class"
  * @generated
  */
-public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddable implements XmlCustomizerHolder, XmlChangeTrackingHolder
+public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddable implements XmlCustomizerHolder, XmlChangeTrackingHolder, XmlConvertersHolder
 {
 	/**
 	 * The cached value of the '{@link #getCustomizer() <em>Customizer</em>}' containment reference.
@@ -48,6 +52,46 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	 * @ordered
 	 */
 	protected XmlChangeTracking changeTracking;
+
+	/**
+	 * The cached value of the '{@link #getConverters() <em>Converters</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConverters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlConverter> converters;
+
+	/**
+	 * The cached value of the '{@link #getTypeConverters() <em>Type Converters</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTypeConverters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlTypeConverter> typeConverters;
+
+	/**
+	 * The cached value of the '{@link #getObjectTypeConverters() <em>Object Type Converters</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getObjectTypeConverters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlObjectTypeConverter> objectTypeConverters;
+
+	/**
+	 * The cached value of the '{@link #getStructConverters() <em>Struct Converters</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStructConverters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlStructConverter> structConverters;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -191,6 +235,98 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Converters</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Converters</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Converters</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConvertersHolder_Converters()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlConverter> getConverters()
+	{
+		if (converters == null)
+		{
+			converters = new EObjectContainmentEList<XmlConverter>(XmlConverter.class, this, EclipseLinkOrmPackage.XML_EMBEDDABLE__CONVERTERS);
+		}
+		return converters;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Type Converters</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Type Converters</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Type Converters</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConvertersHolder_TypeConverters()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlTypeConverter> getTypeConverters()
+	{
+		if (typeConverters == null)
+		{
+			typeConverters = new EObjectContainmentEList<XmlTypeConverter>(XmlTypeConverter.class, this, EclipseLinkOrmPackage.XML_EMBEDDABLE__TYPE_CONVERTERS);
+		}
+		return typeConverters;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Object Type Converters</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Object Type Converters</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Object Type Converters</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConvertersHolder_ObjectTypeConverters()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlObjectTypeConverter> getObjectTypeConverters()
+	{
+		if (objectTypeConverters == null)
+		{
+			objectTypeConverters = new EObjectContainmentEList<XmlObjectTypeConverter>(XmlObjectTypeConverter.class, this, EclipseLinkOrmPackage.XML_EMBEDDABLE__OBJECT_TYPE_CONVERTERS);
+		}
+		return objectTypeConverters;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Struct Converters</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Struct Converters</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Struct Converters</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConvertersHolder_StructConverters()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlStructConverter> getStructConverters()
+	{
+		if (structConverters == null)
+		{
+			structConverters = new EObjectContainmentEList<XmlStructConverter>(XmlStructConverter.class, this, EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT_CONVERTERS);
+		}
+		return structConverters;
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -204,6 +340,14 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 				return basicSetCustomizer(null, msgs);
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
 				return basicSetChangeTracking(null, msgs);
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CONVERTERS:
+				return ((InternalEList<?>)getConverters()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__TYPE_CONVERTERS:
+				return ((InternalEList<?>)getTypeConverters()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__OBJECT_TYPE_CONVERTERS:
+				return ((InternalEList<?>)getObjectTypeConverters()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT_CONVERTERS:
+				return ((InternalEList<?>)getStructConverters()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -222,6 +366,14 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 				return getCustomizer();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
 				return getChangeTracking();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CONVERTERS:
+				return getConverters();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__TYPE_CONVERTERS:
+				return getTypeConverters();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__OBJECT_TYPE_CONVERTERS:
+				return getObjectTypeConverters();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT_CONVERTERS:
+				return getStructConverters();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -231,6 +383,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue)
 	{
@@ -241,6 +394,22 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
 				setChangeTracking((XmlChangeTracking)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CONVERTERS:
+				getConverters().clear();
+				getConverters().addAll((Collection<? extends XmlConverter>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__TYPE_CONVERTERS:
+				getTypeConverters().clear();
+				getTypeConverters().addAll((Collection<? extends XmlTypeConverter>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__OBJECT_TYPE_CONVERTERS:
+				getObjectTypeConverters().clear();
+				getObjectTypeConverters().addAll((Collection<? extends XmlObjectTypeConverter>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT_CONVERTERS:
+				getStructConverters().clear();
+				getStructConverters().addAll((Collection<? extends XmlStructConverter>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -262,6 +431,18 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
 				setChangeTracking((XmlChangeTracking)null);
 				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CONVERTERS:
+				getConverters().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__TYPE_CONVERTERS:
+				getTypeConverters().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__OBJECT_TYPE_CONVERTERS:
+				getObjectTypeConverters().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT_CONVERTERS:
+				getStructConverters().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -280,6 +461,14 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 				return customizer != null;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
 				return changeTracking != null;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CONVERTERS:
+				return converters != null && !converters.isEmpty();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__TYPE_CONVERTERS:
+				return typeConverters != null && !typeConverters.isEmpty();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__OBJECT_TYPE_CONVERTERS:
+				return objectTypeConverters != null && !objectTypeConverters.isEmpty();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT_CONVERTERS:
+				return structConverters != null && !structConverters.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -308,6 +497,17 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlConvertersHolder.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_EMBEDDABLE__CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__CONVERTERS;
+				case EclipseLinkOrmPackage.XML_EMBEDDABLE__TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__TYPE_CONVERTERS;
+				case EclipseLinkOrmPackage.XML_EMBEDDABLE__OBJECT_TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__OBJECT_TYPE_CONVERTERS;
+				case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT_CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__STRUCT_CONVERTERS;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -332,6 +532,17 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 			switch (baseFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_CHANGE_TRACKING_HOLDER__CHANGE_TRACKING: return EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlConvertersHolder.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__CONVERTERS: return EclipseLinkOrmPackage.XML_EMBEDDABLE__CONVERTERS;
+				case EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_EMBEDDABLE__TYPE_CONVERTERS;
+				case EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__OBJECT_TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_EMBEDDABLE__OBJECT_TYPE_CONVERTERS;
+				case EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__STRUCT_CONVERTERS: return EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT_CONVERTERS;
 				default: return -1;
 			}
 		}

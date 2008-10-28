@@ -9,10 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
+import org.eclipse.jpt.core.context.orm.EntityMappings;
 
-public interface EclipseLinkOrmMappedSuperclass extends EclipseLinkMappedSuperclass, OrmMappedSuperclass
+public interface EclipseLinkEntityMappings 
+	extends EntityMappings
 {
+	
 	ConverterHolder getConverterHolder();
+
 }
