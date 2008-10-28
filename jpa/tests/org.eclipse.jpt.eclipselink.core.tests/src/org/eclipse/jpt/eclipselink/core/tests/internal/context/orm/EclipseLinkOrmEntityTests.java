@@ -18,12 +18,14 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.eclipselink.core.context.CacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.CacheType;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.ChangeTrackingType;
 import org.eclipse.jpt.eclipselink.core.context.ExistenceType;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEntity;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingType;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -72,6 +74,30 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Customizer", "Class value()");		
 	}
 
+	private ICompilationUnit createTestEntityForChangeTracking() throws Exception {
+		createChangeTrackingAnnotation();
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, EclipseLinkJPA.CHANGE_TRACKING);
+			}
+			
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+		});
+	}
+	
+	private void createChangeTrackingAnnotation() throws Exception{
+		createChangeTrackingTypeEnum();
+		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ChangeTracking", "ChangeTrackingType value() default ChangeTrackingType.AUTO");		
+	}
+	
+	private void createChangeTrackingTypeEnum() throws Exception {
+		this.createEnumAndMembers(EclipseLinkJPA.PACKAGE, "ChangeTrackingType", "ATTRIBUTE, OBJECT, DEFERRED, AUTO;");	
+	}
+	
 	private ICompilationUnit createTestEntityForCaching() throws Exception {
 		createCacheAnnotation();
 		createExistenceCheckingAnnotation();
@@ -400,6 +426,155 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		assertNull(ormContextEntity.getCustomizer().getCustomizerClass());
 		assertNull(ormContextEntity.getCustomizer().getDefaultCustomizerClass());
 		assertNull(ormContextEntity.getCustomizer().getSpecifiedCustomizerClass());
+	}
+	
+	public void testUpdateChangeTracking() throws Exception {
+		createTestEntityForChangeTracking();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkJavaEntity javaContextEntity = (EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping();
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+		
+		// check defaults
+		
+		assertNull(resourceEntity.getChangeTracking());
+		assertEquals(ChangeTrackingType.AUTO, javaContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertNull(ormContextEntity.getChangeTracking().getSpecifiedType());
+		
+		// set xml type to ATTRIBUTE, check context
+		
+		resourceEntity.setChangeTracking(EclipseLinkOrmFactory.eINSTANCE.createXmlChangeTracking());
+		resourceEntity.getChangeTracking().setType(XmlChangeTrackingType.ATTRIBUTE);
+		
+		assertEquals(XmlChangeTrackingType.ATTRIBUTE, resourceEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, javaContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getSpecifiedType());
+		
+		// set xml type to OBJECT, check context
+		
+		resourceEntity.getChangeTracking().setType(XmlChangeTrackingType.OBJECT);
+		
+		assertEquals(XmlChangeTrackingType.OBJECT, resourceEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, javaContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.OBJECT, ormContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(ChangeTrackingType.OBJECT, ormContextEntity.getChangeTracking().getSpecifiedType());
+		
+		// set xml type to DEFERRED, check context
+		
+		resourceEntity.getChangeTracking().setType(XmlChangeTrackingType.DEFERRED);
+		
+		assertEquals(XmlChangeTrackingType.DEFERRED, resourceEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, javaContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.DEFERRED, ormContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(ChangeTrackingType.DEFERRED, ormContextEntity.getChangeTracking().getSpecifiedType());
+		
+		// set xml type to AUTO, check context
+		
+		resourceEntity.getChangeTracking().setType(XmlChangeTrackingType.AUTO);
+		
+		assertEquals(XmlChangeTrackingType.AUTO, resourceEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, javaContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getSpecifiedType());
+		
+		// clear xml change tracking, set java change tracking, check defaults
+		
+		resourceEntity.setChangeTracking(null);
+		javaContextEntity.getChangeTracking().setSpecifiedType(ChangeTrackingType.ATTRIBUTE);
+		
+		assertNull(resourceEntity.getChangeTracking());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, javaContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getDefaultType());
+		assertNull(ormContextEntity.getChangeTracking().getSpecifiedType());
+		
+		// set metadataComplete to True, check defaults not from java
+
+		ormContextEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		
+		assertNull(resourceEntity.getChangeTracking());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, javaContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertNull(ormContextEntity.getChangeTracking().getSpecifiedType());
+		
+		// unset metadataComplete, set xml change tracking to OBJECT, check context
+		
+		ormContextEntity.setSpecifiedMetadataComplete(null);
+		resourceEntity.setChangeTracking(EclipseLinkOrmFactory.eINSTANCE.createXmlChangeTracking());
+		resourceEntity.getChangeTracking().setType(XmlChangeTrackingType.OBJECT);
+		
+		assertEquals(XmlChangeTrackingType.OBJECT, resourceEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, javaContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.OBJECT, ormContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(ChangeTrackingType.OBJECT, ormContextEntity.getChangeTracking().getSpecifiedType());
+	}
+	
+	public void testModifyChangeTracking() throws Exception  {
+		createTestEntityForChangeTracking();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+		
+		// check defaults
+		
+		assertNull(resourceEntity.getChangeTracking());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertNull(ormContextEntity.getChangeTracking().getSpecifiedType());
+		
+		// set context change tracking to ATTRIBUTE, check resource
+		
+		ormContextEntity.getChangeTracking().setSpecifiedType(ChangeTrackingType.ATTRIBUTE);
+		
+		assertEquals(XmlChangeTrackingType.ATTRIBUTE, resourceEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getSpecifiedType());
+				
+		// set context change tracking to OBJECT, check resource
+		
+		ormContextEntity.getChangeTracking().setSpecifiedType(ChangeTrackingType.OBJECT);
+		
+		assertEquals(XmlChangeTrackingType.OBJECT, resourceEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.OBJECT, ormContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(ChangeTrackingType.OBJECT, ormContextEntity.getChangeTracking().getSpecifiedType());
+				
+		// set context change tracking to DEFERRED, check resource
+		
+		ormContextEntity.getChangeTracking().setSpecifiedType(ChangeTrackingType.DEFERRED);
+		
+		assertEquals(XmlChangeTrackingType.DEFERRED, resourceEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.DEFERRED, ormContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(ChangeTrackingType.DEFERRED, ormContextEntity.getChangeTracking().getSpecifiedType());
+				
+		// set context change tracking to AUTO, check resource
+		
+		ormContextEntity.getChangeTracking().setSpecifiedType(ChangeTrackingType.AUTO);
+		
+		assertEquals(XmlChangeTrackingType.AUTO, resourceEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getSpecifiedType());
+				
+		// set context change tracking to null, check resource
+		
+		ormContextEntity.getChangeTracking().setSpecifiedType(null);
+		
+		assertNull(resourceEntity.getChangeTracking());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertNull(ormContextEntity.getChangeTracking().getSpecifiedType());
 	}
 	
 	public void testUpdateCacheType() throws Exception {

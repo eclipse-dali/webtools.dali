@@ -18,12 +18,14 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.eclipselink.core.context.CacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.CacheType;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.ChangeTrackingType;
 import org.eclipse.jpt.eclipselink.core.context.ExistenceType;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingType;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -69,6 +71,30 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 	
 	private void createCustomizerAnnotation() throws Exception{
 		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Customizer", "Class value()");		
+	}
+	
+	private ICompilationUnit createTestMappedSuperclassForChangeTracking() throws Exception {
+		createChangeTrackingAnnotation();
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.MAPPED_SUPERCLASS, EclipseLinkJPA.CHANGE_TRACKING);
+			}
+			
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@MappedSuperclass").append(CR);
+			}
+		});
+	}
+	
+	private void createChangeTrackingAnnotation() throws Exception{
+		createChangeTrackingTypeEnum();
+		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ChangeTracking", "ChangeTrackingType value() default ChangeTrackingType.AUTO");		
+	}
+	
+	private void createChangeTrackingTypeEnum() throws Exception {
+		this.createEnumAndMembers(EclipseLinkJPA.PACKAGE, "ChangeTrackingType", "ATTRIBUTE, OBJECT, DEFERRED, AUTO;");	
 	}
 	
 	private ICompilationUnit createTestMappedSuperclassForCaching() throws Exception {
@@ -399,8 +425,156 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		assertNull(ormContextMappedSuperclass.getCustomizer().getDefaultCustomizerClass());
 		assertNull(ormContextMappedSuperclass.getCustomizer().getSpecifiedCustomizerClass());
 	}
+	
+	public void testUpdateChangeTracking() throws Exception {
+		createTestMappedSuperclassForChangeTracking();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkJavaMappedSuperclass javaContextMappedSuperclass = (EclipseLinkJavaMappedSuperclass) ormPersistentType.getJavaPersistentType().getMapping();
+		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
+		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) ormResource().getEntityMappings().getMappedSuperclasses().get(0);
+		
+		// check defaults
+		
+		assertNull(resourceMappedSuperclass.getChangeTracking());
+		assertEquals(ChangeTrackingType.AUTO, javaContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getDefaultType());
+		assertNull(ormContextMappedSuperclass.getChangeTracking().getSpecifiedType());
+		
+		// set xml type to ATTRIBUTE, check context
+		
+		resourceMappedSuperclass.setChangeTracking(EclipseLinkOrmFactory.eINSTANCE.createXmlChangeTracking());
+		resourceMappedSuperclass.getChangeTracking().setType(XmlChangeTrackingType.ATTRIBUTE);
+		
+		assertEquals(XmlChangeTrackingType.ATTRIBUTE, resourceMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, javaContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getDefaultType());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextMappedSuperclass.getChangeTracking().getSpecifiedType());
+		
+		// set xml type to OBJECT, check context
+		
+		resourceMappedSuperclass.getChangeTracking().setType(XmlChangeTrackingType.OBJECT);
+		
+		assertEquals(XmlChangeTrackingType.OBJECT, resourceMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, javaContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.OBJECT, ormContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getDefaultType());
+		assertEquals(ChangeTrackingType.OBJECT, ormContextMappedSuperclass.getChangeTracking().getSpecifiedType());
+		
+		// set xml type to DEFERRED, check context
+		
+		resourceMappedSuperclass.getChangeTracking().setType(XmlChangeTrackingType.DEFERRED);
+		
+		assertEquals(XmlChangeTrackingType.DEFERRED, resourceMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, javaContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.DEFERRED, ormContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getDefaultType());
+		assertEquals(ChangeTrackingType.DEFERRED, ormContextMappedSuperclass.getChangeTracking().getSpecifiedType());
+		
+		// set xml type to AUTO, check context
+		
+		resourceMappedSuperclass.getChangeTracking().setType(XmlChangeTrackingType.AUTO);
+		
+		assertEquals(XmlChangeTrackingType.AUTO, resourceMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, javaContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getDefaultType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getSpecifiedType());
+		
+		// clear xml change tracking, set java change tracking, check defaults
+		
+		resourceMappedSuperclass.setChangeTracking(null);
+		javaContextMappedSuperclass.getChangeTracking().setSpecifiedType(ChangeTrackingType.ATTRIBUTE);
+		
+		assertNull(resourceMappedSuperclass.getChangeTracking());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, javaContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextMappedSuperclass.getChangeTracking().getDefaultType());
+		assertNull(ormContextMappedSuperclass.getChangeTracking().getSpecifiedType());
+		
+		// set metadataComplete to True, check defaults not from java
 
-
+		ormContextMappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
+		
+		assertNull(resourceMappedSuperclass.getChangeTracking());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, javaContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getDefaultType());
+		assertNull(ormContextMappedSuperclass.getChangeTracking().getSpecifiedType());
+		
+		// unset metadataComplete, set xml change tracking to OBJECT, check context
+		
+		ormContextMappedSuperclass.setSpecifiedMetadataComplete(null);
+		resourceMappedSuperclass.setChangeTracking(EclipseLinkOrmFactory.eINSTANCE.createXmlChangeTracking());
+		resourceMappedSuperclass.getChangeTracking().setType(XmlChangeTrackingType.OBJECT);
+		
+		assertEquals(XmlChangeTrackingType.OBJECT, resourceMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, javaContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.OBJECT, ormContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextMappedSuperclass.getChangeTracking().getDefaultType());
+		assertEquals(ChangeTrackingType.OBJECT, ormContextMappedSuperclass.getChangeTracking().getSpecifiedType());
+	}
+	
+	public void testModifyChangeTracking() throws Exception  {
+		createTestMappedSuperclassForChangeTracking();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
+		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) ormResource().getEntityMappings().getMappedSuperclasses().get(0);
+		
+		// check defaults
+		
+		assertNull(resourceMappedSuperclass.getChangeTracking());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getDefaultType());
+		assertNull(ormContextMappedSuperclass.getChangeTracking().getSpecifiedType());
+		
+		// set context change tracking to ATTRIBUTE, check resource
+		
+		ormContextMappedSuperclass.getChangeTracking().setSpecifiedType(ChangeTrackingType.ATTRIBUTE);
+		
+		assertEquals(XmlChangeTrackingType.ATTRIBUTE, resourceMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getDefaultType());
+		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextMappedSuperclass.getChangeTracking().getSpecifiedType());
+				
+		// set context change tracking to OBJECT, check resource
+		
+		ormContextMappedSuperclass.getChangeTracking().setSpecifiedType(ChangeTrackingType.OBJECT);
+		
+		assertEquals(XmlChangeTrackingType.OBJECT, resourceMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.OBJECT, ormContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getDefaultType());
+		assertEquals(ChangeTrackingType.OBJECT, ormContextMappedSuperclass.getChangeTracking().getSpecifiedType());
+				
+		// set context change tracking to DEFERRED, check resource
+		
+		ormContextMappedSuperclass.getChangeTracking().setSpecifiedType(ChangeTrackingType.DEFERRED);
+		
+		assertEquals(XmlChangeTrackingType.DEFERRED, resourceMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.DEFERRED, ormContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getDefaultType());
+		assertEquals(ChangeTrackingType.DEFERRED, ormContextMappedSuperclass.getChangeTracking().getSpecifiedType());
+				
+		// set context change tracking to AUTO, check resource
+		
+		ormContextMappedSuperclass.getChangeTracking().setSpecifiedType(ChangeTrackingType.AUTO);
+		
+		assertEquals(XmlChangeTrackingType.AUTO, resourceMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getDefaultType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getSpecifiedType());
+				
+		// set context change tracking to null, check resource
+		
+		ormContextMappedSuperclass.getChangeTracking().setSpecifiedType(null);
+		
+		assertNull(resourceMappedSuperclass.getChangeTracking());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getType());
+		assertEquals(ChangeTrackingType.AUTO, ormContextMappedSuperclass.getChangeTracking().getDefaultType());
+		assertNull(ormContextMappedSuperclass.getChangeTracking().getSpecifiedType());
+	}
+	
 	public void testUpdateCacheType() throws Exception {
 		createTestMappedSuperclassForCaching();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);

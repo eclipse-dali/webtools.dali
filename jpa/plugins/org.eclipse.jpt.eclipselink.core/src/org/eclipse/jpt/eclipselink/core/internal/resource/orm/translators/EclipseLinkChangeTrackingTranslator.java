@@ -19,8 +19,8 @@ public class EclipseLinkChangeTrackingTranslator extends Translator
 	private Translator[] children;	
 	
 	
-	public EclipseLinkChangeTrackingTranslator(String domNameAndPath, EStructuralFeature aFeature) {
-		super(domNameAndPath, aFeature);
+	public EclipseLinkChangeTrackingTranslator(String domNameAndPath, EStructuralFeature aFeature, int style) {
+		super(domNameAndPath, aFeature, style);
 	}
 	
 	

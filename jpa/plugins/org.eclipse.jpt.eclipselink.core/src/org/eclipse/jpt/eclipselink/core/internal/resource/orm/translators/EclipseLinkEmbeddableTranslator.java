@@ -46,6 +46,6 @@ public class EclipseLinkEmbeddableTranslator extends EmbeddableTranslator
 	}
 	
 	protected Translator createChangeTrackingTranslator() {
-		return new EclipseLinkChangeTrackingTranslator(CHANGE_TRACKING, ECLIPSELINK_ORM_PKG.getXmlChangeTrackingHolder_ChangeTracking());
+		return new EclipseLinkChangeTrackingTranslator(CHANGE_TRACKING, ECLIPSELINK_ORM_PKG.getXmlChangeTrackingHolder_ChangeTracking(), END_TAG_NO_INDENT);
 	}
 }

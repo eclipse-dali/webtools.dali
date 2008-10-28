@@ -19,6 +19,7 @@ import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEmbeddable;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -27,21 +28,23 @@ public class EclipseLinkOrmEmbeddable extends GenericOrmEmbeddable
 {
 	protected final EclipseLinkOrmCustomizer customizer;
 	
+	protected final EclipseLinkOrmChangeTracking changeTracking;
+	
 	
 	public EclipseLinkOrmEmbeddable(OrmPersistentType parent) {
 		super(parent);
 		this.customizer = new EclipseLinkOrmCustomizer(this);
+		this.changeTracking = new EclipseLinkOrmChangeTracking(this);
 	}
 	
-	public ChangeTracking getChangeTracking() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	public Customizer getCustomizer() {
 		return this.customizer;
 	}
 
+	public ChangeTracking getChangeTracking() {
+		return this.changeTracking;
+	}
 	
 	
 	// **************** resource-context interaction ***************************
@@ -55,15 +58,17 @@ public class EclipseLinkOrmEmbeddable extends GenericOrmEmbeddable
 	}
 	
 	@Override
-	public void initialize(XmlEmbeddable mappedSuperclass) {
-		super.initialize(mappedSuperclass);
-		this.customizer.initialize((XmlCustomizerHolder) mappedSuperclass, getJavaCustomizer());
+	public void initialize(XmlEmbeddable embeddable) {
+		super.initialize(embeddable);
+		this.customizer.initialize((XmlCustomizerHolder) embeddable, getJavaCustomizer());
+		this.changeTracking.initialize((XmlChangeTrackingHolder) embeddable, getJavaChangeTracking());
 	}
 	
 	@Override
-	public void update(XmlEmbeddable mappedSuperclass) {
-		super.update(mappedSuperclass);
-		this.customizer.update((XmlCustomizerHolder) mappedSuperclass, getJavaCustomizer());
+	public void update(XmlEmbeddable embeddable) {
+		super.update(embeddable);
+		this.customizer.update((XmlCustomizerHolder) embeddable, getJavaCustomizer());
+		this.changeTracking.update((XmlChangeTrackingHolder) embeddable, getJavaChangeTracking());
 	}
 	
 	@Override
@@ -71,10 +76,14 @@ public class EclipseLinkOrmEmbeddable extends GenericOrmEmbeddable
 		return (EclipseLinkJavaEmbeddable) super.getJavaEmbeddableForDefaults();
 	}
 	
-	
 	protected Customizer getJavaCustomizer() {
 		EclipseLinkJavaEmbeddable javaEmbeddable = getJavaEmbeddableForDefaults();
 		return (javaEmbeddable == null) ? null : javaEmbeddable.getCustomizer();
+	}
+	
+	protected ChangeTracking getJavaChangeTracking() {
+		EclipseLinkJavaEmbeddable javaEmbeddable = getJavaEmbeddableForDefaults();
+		return (javaEmbeddable == null) ? null : javaEmbeddable.getChangeTracking();
 	}
 	
 	
@@ -84,5 +93,6 @@ public class EclipseLinkOrmEmbeddable extends GenericOrmEmbeddable
 	public void validate(List<IMessage> messages) {
 		super.validate(messages);
 		this.customizer.validate(messages);
+		this.changeTracking.validate(messages);
 	}
 }

@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context;
 
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingType;
+
 
 /**
  * 
@@ -66,53 +68,39 @@ public enum ChangeTrackingType {
 		}
 	}
 	
-
-//	public static CacheType fromOrmResourceModel(org.eclipse.jpt.core.resource.orm.FetchType ormCacheType) {
-//		if (ormCacheType == null) {
-//			return null;
-//		}
-//		switch (ormCacheType) {
-//			case FULL:
-//				return FULL;
-//			case WEAK:
-//				return WEAK;
-//			case SOFT:
-//				return SOFT;
-//			case SOFT_WEAK:
-//				return SOFT_WEAK;
-//			case HARD_WEAK:
-//				return HARD_WEAK;
-//			case CACHE:
-//				return CACHE;
-//			case NONE:
-//				return NONE;
-//			default:
-//				throw new IllegalArgumentException("unknown cache type: " + ormCacheType);
-//		}
-//	}
-//	
-//	public static org.eclipse.jpt.core.resource.orm.FetchType toOrmResourceModel(CacheType cacheType) {
-//		if (cacheType == null) {
-//			return null;
-//		}
-//		switch (cacheType) {
-//			case FULL:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.FULL;
-//			case WEAK:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.WEAK;
-//			case SOFT:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.SOFT;
-//			case SOFT_WEAK:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.SOFT_WEAK;
-//			case HARD_WEAK:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.HARD_WEAK;
-//			case CACHE:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.CACHE;
-//			case NONE:
-//				return org.eclipse.jpt.core.resource.orm.FetchType.NONE;
-//			default:
-//				throw new IllegalArgumentException("unknown cache type: " + cacheType);
-//		}
-//	}
-
+	public static ChangeTrackingType fromOrmResourceModel(XmlChangeTrackingType ormChangeTrackingType) {
+		if (ormChangeTrackingType == null) {
+			return null;
+		}
+		switch (ormChangeTrackingType) {
+			case ATTRIBUTE:
+				return ATTRIBUTE;
+			case OBJECT:
+				return OBJECT;
+			case DEFERRED:
+				return DEFERRED;
+			case AUTO:
+				return AUTO;
+			default:
+				throw new IllegalArgumentException("unknown change tracking type: " + ormChangeTrackingType);
+		}
+	}
+	
+	public static XmlChangeTrackingType toOrmResourceModel(ChangeTrackingType changeTrackingType) {
+		if (changeTrackingType == null) {
+			return null;
+		}
+		switch (changeTrackingType) {
+			case ATTRIBUTE:
+				return XmlChangeTrackingType.ATTRIBUTE;
+			case OBJECT:
+				return XmlChangeTrackingType.OBJECT;
+			case DEFERRED:
+				return XmlChangeTrackingType.DEFERRED;
+			case AUTO:
+				return XmlChangeTrackingType.AUTO;
+			default:
+				throw new IllegalArgumentException("unknown change tracking type: " + changeTrackingType);
+		}
+	}
 }

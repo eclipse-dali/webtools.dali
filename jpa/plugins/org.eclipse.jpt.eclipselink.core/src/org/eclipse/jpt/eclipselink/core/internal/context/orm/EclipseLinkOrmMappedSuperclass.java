@@ -23,15 +23,21 @@ import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperc
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+
 
 public class EclipseLinkOrmMappedSuperclass extends GenericOrmMappedSuperclass
 	implements EclipseLinkMappedSuperclass
 {
 	protected final EclipseLinkOrmReadOnly readOnly;
+	
 	protected final EclipseLinkOrmCustomizer customizer;
+	
+	protected final EclipseLinkOrmChangeTracking changeTracking;
+	
 	protected final EclipseLinkOrmCaching caching;
 	
 	
@@ -39,6 +45,7 @@ public class EclipseLinkOrmMappedSuperclass extends GenericOrmMappedSuperclass
 		super(parent);
 		this.readOnly = new EclipseLinkOrmReadOnly(this);
 		this.customizer = new EclipseLinkOrmCustomizer(this);
+		this.changeTracking = new EclipseLinkOrmChangeTracking(this);
 		this.caching = new EclipseLinkOrmCaching(this);
 	}
 	
@@ -46,13 +53,12 @@ public class EclipseLinkOrmMappedSuperclass extends GenericOrmMappedSuperclass
 		return this.caching;
 	}
 
-	public ChangeTracking getChangeTracking() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Customizer getCustomizer() {
 		return this.customizer;
+	}
+
+	public ChangeTracking getChangeTracking() {
+		return this.changeTracking;
 	}
 
 	public EclipseLinkOrmReadOnly getReadOnly() {
@@ -75,6 +81,7 @@ public class EclipseLinkOrmMappedSuperclass extends GenericOrmMappedSuperclass
 		super.initialize(mappedSuperclass);
 		this.readOnly.initialize((XmlReadOnly) mappedSuperclass, getJavaReadOnly());
 		this.customizer.initialize((XmlCustomizerHolder) mappedSuperclass, getJavaCustomizer());
+		this.changeTracking.initialize((XmlChangeTrackingHolder) mappedSuperclass, getJavaChangeTracking());
 		this.caching.initialize((XmlCacheHolder) mappedSuperclass, getJavaCaching());
 	}
 	
@@ -83,6 +90,7 @@ public class EclipseLinkOrmMappedSuperclass extends GenericOrmMappedSuperclass
 		super.update(mappedSuperclass);
 		this.readOnly.update((XmlReadOnly) mappedSuperclass, getJavaReadOnly());
 		this.customizer.update((XmlCustomizerHolder) mappedSuperclass, getJavaCustomizer());
+		this.changeTracking.update((XmlChangeTrackingHolder) mappedSuperclass, getJavaChangeTracking());
 		this.caching.update((XmlCacheHolder) mappedSuperclass, getJavaCaching());
 	}
 	
@@ -101,6 +109,11 @@ public class EclipseLinkOrmMappedSuperclass extends GenericOrmMappedSuperclass
 		return (javaMappedSuperclass == null) ? null : javaMappedSuperclass.getCustomizer();
 	}
 	
+	protected ChangeTracking getJavaChangeTracking() {
+		EclipseLinkJavaMappedSuperclass javaMappedSuperclass = getJavaMappedSuperclassForDefaults();
+		return (javaMappedSuperclass == null) ? null : javaMappedSuperclass.getChangeTracking();
+	}
+	
 	protected JavaCaching getJavaCaching() {
 		EclipseLinkJavaMappedSuperclass javaMappedSuperclass = getJavaMappedSuperclassForDefaults();
 		return (javaMappedSuperclass == null) ? null : javaMappedSuperclass.getCaching();
@@ -114,6 +127,7 @@ public class EclipseLinkOrmMappedSuperclass extends GenericOrmMappedSuperclass
 		super.validate(messages);
 		this.readOnly.validate(messages);
 		this.customizer.validate(messages);
+		this.changeTracking.validate(messages);
 		this.caching.validate(messages);
 	}
 }

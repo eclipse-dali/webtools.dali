@@ -23,6 +23,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -31,7 +32,11 @@ public class EclipseLinkOrmEntity extends GenericOrmEntity
 	implements EclipseLinkEntity
 {
 	protected final EclipseLinkOrmReadOnly readOnly;
+	
 	protected final EclipseLinkOrmCustomizer customizer;
+	
+	protected final EclipseLinkOrmChangeTracking changeTracking;
+	
 	protected final EclipseLinkOrmCaching caching;
 	
 	
@@ -39,6 +44,7 @@ public class EclipseLinkOrmEntity extends GenericOrmEntity
 		super(parent);
 		this.readOnly = new EclipseLinkOrmReadOnly(this);
 		this.customizer = new EclipseLinkOrmCustomizer(this);
+		this.changeTracking = new EclipseLinkOrmChangeTracking(this);
 		this.caching = new EclipseLinkOrmCaching(this);
 	}
 	
@@ -46,13 +52,12 @@ public class EclipseLinkOrmEntity extends GenericOrmEntity
 		return this.caching;
 	}
 
-	public ChangeTracking getChangeTracking() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Customizer getCustomizer() {
 		return this.customizer;
+	}
+
+	public ChangeTracking getChangeTracking() {
+		return this.changeTracking;
 	}
 
 	public EclipseLinkOrmReadOnly getReadOnly() {
@@ -75,6 +80,7 @@ public class EclipseLinkOrmEntity extends GenericOrmEntity
 		super.initialize(entity);		
 		this.readOnly.initialize((XmlReadOnly) entity, getJavaReadOnly());
 		this.customizer.initialize((XmlCustomizerHolder) entity, getJavaCustomizer());
+		this.changeTracking.initialize((XmlChangeTrackingHolder) entity, getJavaChangeTracking());
 		this.caching.initialize((XmlCacheHolder) entity, getJavaCaching());
 	}
 	
@@ -83,6 +89,7 @@ public class EclipseLinkOrmEntity extends GenericOrmEntity
 		super.update(entity);
 		this.readOnly.update((XmlReadOnly) entity, getJavaReadOnly());
 		this.customizer.update((XmlCustomizerHolder) entity, getJavaCustomizer());
+		this.changeTracking.update((XmlChangeTrackingHolder) entity, getJavaChangeTracking());
 		this.caching.update((XmlCacheHolder) entity, getJavaCaching());
 	}
 	
@@ -101,6 +108,11 @@ public class EclipseLinkOrmEntity extends GenericOrmEntity
 		return (javaEntity == null) ? null : javaEntity.getCustomizer();
 	}
 	
+	protected ChangeTracking getJavaChangeTracking() {
+		EclipseLinkJavaEntity javaEntity = getJavaEntityForDefaults();
+		return (javaEntity == null) ? null : javaEntity.getChangeTracking();
+	}
+	
 	protected JavaCaching getJavaCaching() {
 		EclipseLinkJavaEntity javaEntity = getJavaEntityForDefaults();
 		return (javaEntity == null) ? null : javaEntity.getCaching();
@@ -114,6 +126,7 @@ public class EclipseLinkOrmEntity extends GenericOrmEntity
 		super.validate(messages);
 		this.readOnly.validate(messages);
 		this.customizer.validate(messages);
+		this.changeTracking.validate(messages);
 		this.caching.validate(messages);
 	}
 }
