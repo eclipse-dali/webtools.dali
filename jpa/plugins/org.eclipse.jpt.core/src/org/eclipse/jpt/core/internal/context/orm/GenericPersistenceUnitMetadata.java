@@ -72,15 +72,14 @@ public class GenericPersistenceUnitMetadata extends AbstractXmlContextNode
 		}
 	}
 	
-	public void update(XmlEntityMappings entityMappings) {
-		this.entityMappings = entityMappings;
+	public void update() {
 		if (this.persistenceUnitMetadata() != null) {
 			setXmlMappingMetadataComplete_(this.persistenceUnitMetadata().isXmlMappingMetadataComplete());
 		}
 		else {
 			setXmlMappingMetadataComplete_(false);
 		}
-		this.persistenceUnitDefaults.update(entityMappings);
+		this.persistenceUnitDefaults.update();
 	}
 	
 	protected XmlPersistenceUnitMetadata persistenceUnitMetadata() {

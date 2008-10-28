@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.context.orm;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
@@ -63,7 +62,7 @@ public interface OrmPersistenceUnitDefaults
 	 * Update the OrmPersistenceUnitDefaults context model object to match the XmlEntityMappings 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
-	void update(XmlEntityMappings entityMappings);
+	void update();
 	
 	/**
 	 * Return whether the underlying resource exists for the OrmPersistenceUnitDefaults object

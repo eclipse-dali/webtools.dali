@@ -573,121 +573,120 @@ public class GenericEntityMappings
 	
 	protected void initialize(XmlEntityMappings entityMappings) {
 		this.xmlEntityMappings = entityMappings;
-		this.version = entityMappings.getVersion();
-		this.description = entityMappings.getDescription();
-		this.package_ = entityMappings.getPackage();
+		this.version = this.xmlEntityMappings.getVersion();
+		this.description = this.xmlEntityMappings.getDescription();
+		this.package_ = this.xmlEntityMappings.getPackage();
 
 		this.defaultAccess = this.getPersistenceUnit().getDefaultAccess();
-		this.specifiedAccess = this.buildSpecifiedAccess(entityMappings);
+		this.specifiedAccess = this.buildSpecifiedAccess();
 
 		this.defaultCatalog = this.getPersistenceUnit().getDefaultCatalog();
-		this.specifiedCatalog = entityMappings.getCatalog();
+		this.specifiedCatalog = this.xmlEntityMappings.getCatalog();
 
 		this.defaultSchema = this.getPersistenceUnit().getDefaultSchema();
-		this.specifiedSchema = entityMappings.getSchema();
+		this.specifiedSchema = this.xmlEntityMappings.getSchema();
 
-		this.initializePersistentTypes(entityMappings);
-		this.initializeTableGenerators(entityMappings);
-		this.initializeSequenceGenerators(entityMappings);
-		this.initializeNamedQueries(entityMappings);
-		this.initializeNamedNativeQueries(entityMappings);
+		this.initializePersistentTypes();
+		this.initializeTableGenerators();
+		this.initializeSequenceGenerators();
+		this.initializeNamedQueries();
+		this.initializeNamedNativeQueries();
 		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
 	
-	protected void initializePersistentTypes(XmlEntityMappings entityMappings) {
-		this.initializeMappedSuperclasses(entityMappings);
-		this.initializeEntities(entityMappings);
-		this.initializeEmbeddables(entityMappings);
+	protected void initializePersistentTypes() {
+		this.initializeMappedSuperclasses();
+		this.initializeEntities();
+		this.initializeEmbeddables();
 	}
 	
-	protected void initializeMappedSuperclasses(XmlEntityMappings entityMappings) {
-		for (XmlMappedSuperclass mappedSuperclass : entityMappings.getMappedSuperclasses()) {
+	protected void initializeMappedSuperclasses() {
+		for (XmlMappedSuperclass mappedSuperclass : this.xmlEntityMappings.getMappedSuperclasses()) {
 			OrmPersistentType ormPersistentType = getJpaFactory().buildOrmPersistentType(this, MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
 			ormPersistentType.initialize(mappedSuperclass);
 			this.persistentTypes.add(ormPersistentType);
 		}	
 	}
 	
-	protected void initializeEntities(XmlEntityMappings entityMappings) {
-		for (XmlEntity entity : entityMappings.getEntities()) {
+	protected void initializeEntities() {
+		for (XmlEntity entity : this.xmlEntityMappings.getEntities()) {
 			OrmPersistentType ormPersistentType = getJpaFactory().buildOrmPersistentType(this, MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 			ormPersistentType.initialize(entity);
 			this.persistentTypes.add(ormPersistentType);
 		}				
 	}
 	
-	protected void initializeEmbeddables(XmlEntityMappings entityMappings) {
-		for (XmlEmbeddable embeddable : entityMappings.getEmbeddables()) {
+	protected void initializeEmbeddables() {
+		for (XmlEmbeddable embeddable : this.xmlEntityMappings.getEmbeddables()) {
 			OrmPersistentType ormPersistentType = getJpaFactory().buildOrmPersistentType(this, MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 			ormPersistentType.initialize(embeddable);
 			this.persistentTypes.add(ormPersistentType);
 		}
 	}
 	
-	protected void initializeTableGenerators(XmlEntityMappings entityMappings) {
-		for (XmlTableGenerator tableGenerator : entityMappings.getTableGenerators()) {
+	protected void initializeTableGenerators() {
+		for (XmlTableGenerator tableGenerator : this.xmlEntityMappings.getTableGenerators()) {
 			this.tableGenerators.add(buildTableGenerator(tableGenerator));
 		}
 	}
 	
-	protected void initializeSequenceGenerators(XmlEntityMappings entityMappings) {
-		for (XmlSequenceGenerator sequenceGenerator : entityMappings.getSequenceGenerators()) {
+	protected void initializeSequenceGenerators() {
+		for (XmlSequenceGenerator sequenceGenerator : this.xmlEntityMappings.getSequenceGenerators()) {
 			this.sequenceGenerators.add(buildSequenceGenerator(sequenceGenerator));
 		}
 	}
 	
-	protected void initializeNamedQueries(XmlEntityMappings entityMappings) {
-		for (XmlNamedQuery namedQuery : entityMappings.getNamedQueries()) {
+	protected void initializeNamedQueries() {
+		for (XmlNamedQuery namedQuery : this.xmlEntityMappings.getNamedQueries()) {
 			this.namedQueries.add(buildNamedQuery(namedQuery));
 		}
 	}
 	
-	protected void initializeNamedNativeQueries(XmlEntityMappings entityMappings) {
-		for (XmlNamedNativeQuery namedNativeQuery : entityMappings.getNamedNativeQueries()) {
+	protected void initializeNamedNativeQueries() {
+		for (XmlNamedNativeQuery namedNativeQuery : this.xmlEntityMappings.getNamedNativeQueries()) {
 			this.namedNativeQueries.add(buildNamedNativeQuery(namedNativeQuery));
 		}
 	}
 
-	public void update(XmlEntityMappings entityMappings) {
-		this.xmlEntityMappings = entityMappings;
-		this.setDescription(entityMappings.getDescription());
-		this.setPackage(entityMappings.getPackage());
+	public void update() {
+		this.setDescription(this.xmlEntityMappings.getDescription());
+		this.setPackage(this.xmlEntityMappings.getPackage());
 
 		this.setDefaultAccess(this.getPersistenceUnit().getDefaultAccess());
-		this.setSpecifiedAccess(this.buildSpecifiedAccess(entityMappings));
+		this.setSpecifiedAccess(this.buildSpecifiedAccess());
 
 		this.setDefaultCatalog(this.getPersistenceUnit().getDefaultCatalog());
-		this.setSpecifiedCatalog(entityMappings.getCatalog());
+		this.setSpecifiedCatalog(this.xmlEntityMappings.getCatalog());
 
 		this.setDefaultSchema(this.getPersistenceUnit().getDefaultSchema());
-		this.setSpecifiedSchema(entityMappings.getSchema());
+		this.setSpecifiedSchema(this.xmlEntityMappings.getSchema());
 
-		this.persistenceUnitMetadata.update(entityMappings);
-		this.updatePersistentTypes(entityMappings);
-		this.updateTableGenerators(entityMappings);
-		this.updateSequenceGenerators(entityMappings);
-		this.updateNamedQueries(entityMappings);
-		this.updateNamedNativeQueries(entityMappings);
+		this.persistenceUnitMetadata.update();
+		this.updatePersistentTypes();
+		this.updateTableGenerators();
+		this.updateSequenceGenerators();
+		this.updateNamedQueries();
+		this.updateNamedNativeQueries();
 		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
 	
-	protected AccessType buildSpecifiedAccess(XmlEntityMappings entityMappings) {
-		return AccessType.fromXmlResourceModel(entityMappings.getAccess());
+	protected AccessType buildSpecifiedAccess() {
+		return AccessType.fromXmlResourceModel(this.xmlEntityMappings.getAccess());
 	}
 	
-	protected void updatePersistentTypes(XmlEntityMappings entityMappings) {
+	protected void updatePersistentTypes() {
 		ListIterator<OrmPersistentType> ormPersistentTypes = this.ormPersistentTypes();
-		this.updateMappedSuperclasses(entityMappings, ormPersistentTypes);
-		this.updateEntities(entityMappings, ormPersistentTypes);
-		this.updateEmbeddables(entityMappings, ormPersistentTypes);
+		this.updateMappedSuperclasses(ormPersistentTypes);
+		this.updateEntities(ormPersistentTypes);
+		this.updateEmbeddables(ormPersistentTypes);
 		
 		while (ormPersistentTypes.hasNext()) {
 			this.removeOrmPersistentType_(ormPersistentTypes.next());
 		}		
 	}
 	
-	protected void updateMappedSuperclasses(XmlEntityMappings entityMappings, ListIterator<OrmPersistentType> ormPersistentTypes) {
-		ListIterator<XmlMappedSuperclass> mappedSuperclasses = new CloneListIterator<XmlMappedSuperclass>(entityMappings.getMappedSuperclasses());//prevent ConcurrentModificiationException
+	protected void updateMappedSuperclasses(ListIterator<OrmPersistentType> ormPersistentTypes) {
+		ListIterator<XmlMappedSuperclass> mappedSuperclasses = new CloneListIterator<XmlMappedSuperclass>(this.xmlEntityMappings.getMappedSuperclasses());//prevent ConcurrentModificiationException
 		for (XmlMappedSuperclass mappedSuperclass :  CollectionTools.iterable(mappedSuperclasses)) {
 			if (ormPersistentTypes.hasNext()) {
 				ormPersistentTypes.next().update(mappedSuperclass);
@@ -700,8 +699,8 @@ public class GenericEntityMappings
 		}
 	}
 	
-	protected void updateEntities(XmlEntityMappings entityMappings, ListIterator<OrmPersistentType> ormPersistentTypes) {
-		ListIterator<XmlEntity> entities = new CloneListIterator<XmlEntity>(entityMappings.getEntities());//prevent ConcurrentModificiationException
+	protected void updateEntities(ListIterator<OrmPersistentType> ormPersistentTypes) {
+		ListIterator<XmlEntity> entities = new CloneListIterator<XmlEntity>(this.xmlEntityMappings.getEntities());//prevent ConcurrentModificiationException
 		for (XmlEntity entity : CollectionTools.iterable(entities)) {
 			if (ormPersistentTypes.hasNext()) {
 				ormPersistentTypes.next().update(entity);
@@ -714,8 +713,8 @@ public class GenericEntityMappings
 		}
 	}
 	
-	protected void updateEmbeddables(XmlEntityMappings entityMappings, ListIterator<OrmPersistentType> ormPersistentTypes) {
-		ListIterator<XmlEmbeddable> embeddables = new CloneListIterator<XmlEmbeddable>(entityMappings.getEmbeddables());//prevent ConcurrentModificiationException
+	protected void updateEmbeddables(ListIterator<OrmPersistentType> ormPersistentTypes) {
+		ListIterator<XmlEmbeddable> embeddables = new CloneListIterator<XmlEmbeddable>(this.xmlEntityMappings.getEmbeddables());//prevent ConcurrentModificiationException
 		for (XmlEmbeddable embeddable : CollectionTools.iterable(embeddables)) {
 			if (ormPersistentTypes.hasNext()) {
 				ormPersistentTypes.next().update(embeddable);
@@ -728,9 +727,9 @@ public class GenericEntityMappings
 		}
 	}
 	
-	protected void updateTableGenerators(XmlEntityMappings entityMappings) {
+	protected void updateTableGenerators() {
 		ListIterator<OrmTableGenerator> contextTableGenerators = tableGenerators();
-		ListIterator<XmlTableGenerator> resourceTableGenerators = new CloneListIterator<XmlTableGenerator>(entityMappings.getTableGenerators());//prevent ConcurrentModificiationException
+		ListIterator<XmlTableGenerator> resourceTableGenerators = new CloneListIterator<XmlTableGenerator>(this.xmlEntityMappings.getTableGenerators());//prevent ConcurrentModificiationException
 		while (contextTableGenerators.hasNext()) {
 			OrmTableGenerator contextTableGenerator = contextTableGenerators.next();
 			if (resourceTableGenerators.hasNext()) {
@@ -750,9 +749,9 @@ public class GenericEntityMappings
 		return getJpaFactory().buildOrmTableGenerator(this, resourceTableGenerator);
 	}
 
-	protected void updateSequenceGenerators(XmlEntityMappings entityMappings) {
+	protected void updateSequenceGenerators() {
 		ListIterator<OrmSequenceGenerator> contextSequenceGenerators = sequenceGenerators();
-		ListIterator<XmlSequenceGenerator> resourceSequenceGenerators = new CloneListIterator<XmlSequenceGenerator>(entityMappings.getSequenceGenerators());//prevent ConcurrentModificiationException
+		ListIterator<XmlSequenceGenerator> resourceSequenceGenerators = new CloneListIterator<XmlSequenceGenerator>(this.xmlEntityMappings.getSequenceGenerators());//prevent ConcurrentModificiationException
 		while (contextSequenceGenerators.hasNext()) {
 			OrmSequenceGenerator contextSequenceGenerator = contextSequenceGenerators.next();
 			if (resourceSequenceGenerators.hasNext()) {
@@ -772,9 +771,9 @@ public class GenericEntityMappings
 		return getJpaFactory().buildOrmSequenceGenerator(this, resourceSequenceGenerator);
 	}
 	
-	protected void updateNamedQueries(XmlEntityMappings entityMappings) {
+	protected void updateNamedQueries() {
 		ListIterator<OrmNamedQuery> contextNamedQueries = namedQueries();
-		ListIterator<XmlNamedQuery> resourceNamedQueries = new CloneListIterator<XmlNamedQuery>(entityMappings.getNamedQueries());//prevent ConcurrentModificiationException
+		ListIterator<XmlNamedQuery> resourceNamedQueries = new CloneListIterator<XmlNamedQuery>(this.xmlEntityMappings.getNamedQueries());//prevent ConcurrentModificiationException
 		
 		while (contextNamedQueries.hasNext()) {
 			OrmNamedQuery contextNamedQuery = contextNamedQueries.next();
@@ -795,9 +794,9 @@ public class GenericEntityMappings
 		return getJpaFactory().buildOrmNamedQuery(this, resourceNamedQuery);
 	}
 
-	protected void updateNamedNativeQueries(XmlEntityMappings entityMappings) {
+	protected void updateNamedNativeQueries() {
 		ListIterator<OrmNamedNativeQuery> contextQueries = namedNativeQueries();
-		ListIterator<XmlNamedNativeQuery> resourceQueries = new CloneListIterator<XmlNamedNativeQuery>(entityMappings.getNamedNativeQueries());//prevent ConcurrentModificiationException
+		ListIterator<XmlNamedNativeQuery> resourceQueries = new CloneListIterator<XmlNamedNativeQuery>(this.xmlEntityMappings.getNamedNativeQueries());//prevent ConcurrentModificiationException
 		
 		while (contextQueries.hasNext()) {
 			OrmNamedNativeQuery namedQuery = contextQueries.next();

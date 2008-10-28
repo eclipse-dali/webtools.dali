@@ -257,8 +257,7 @@ public class GenericPersistenceUnitDefaults
 		}
 	}
 	
-	public void update(XmlEntityMappings xmlEntityMappings) {
-		this.entityMappings = xmlEntityMappings;
+	public void update() {
 		XmlPersistenceUnitDefaults resourceDefaults = this.getResourceDefaults();
 		if (resourceDefaults == null) {
 			this.setAccess_(null);

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 
 /**
  * 
@@ -25,7 +24,7 @@ public interface PersistenceUnitMetadata extends XmlContextNode
 {
 	boolean isXmlMappingMetadataComplete();
 	void setXmlMappingMetadataComplete(boolean value);
-		String XML_MAPPING_METADATA_COMPLETE_PROPERTY = "xmlMappingMetadataCompleteProperty";
+		String XML_MAPPING_METADATA_COMPLETE_PROPERTY = "xmlMappingMetadataCompleteProperty"; //$NON-NLS-1$
 
 	OrmPersistenceUnitDefaults getPersistenceUnitDefaults();
 		
@@ -33,6 +32,6 @@ public interface PersistenceUnitMetadata extends XmlContextNode
 	 * Update the PersistenceUnitMetadata context model object to match the XmlEntityMappings 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
-	void update(XmlEntityMappings entityMappings);
+	void update();
 
 }

@@ -158,7 +158,7 @@ public class OrmXmlImpl
 		if (xmlEntityMappings != null) {
 			if (this.entityMappings != null) {
 				this.getJpaFile(this.ormResource.getFile()).addRootStructureNode(this.ormResource, this.entityMappings);
-				this.entityMappings.update(xmlEntityMappings);
+				this.entityMappings.update();
 			} else {
 				this.setEntityMappings(this.buildEntityMappings(xmlEntityMappings));
 			}
