@@ -115,7 +115,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 		
 		return pages.listIterator();
 	}
-
+	
 	private PropertyValueModel<EclipseLinkPersistenceUnit> buildEclipseLinkPersistenceUnitHolder(
 				PropertyValueModel<PersistenceUnit> subjectHolder) {
 		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkPersistenceUnit>(subjectHolder) {
@@ -125,7 +125,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 			}
 		};
 	}
-
+	
 	private PropertyValueModel<GeneralProperties> buildGeneralPropertyHolder(
 				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
 		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, GeneralProperties>(subjectHolder) {
@@ -135,7 +135,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 			}
 		};
 	}
-
+	
 	private PropertyValueModel<Connection> buildConnectionHolder(
 				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
 		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Connection>(subjectHolder) {
@@ -145,7 +145,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 			}
 		};
 	}
-
+	
 	private PropertyValueModel<Customization> buildCustomizationHolder(
 				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
 		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Customization>(subjectHolder) {
@@ -155,7 +155,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 			}
 		};
 	}
-
+	
 	private PropertyValueModel<Caching> buildCachingHolder(
 				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
 		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Caching>(subjectHolder) {
@@ -165,7 +165,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 			}
 		};
 	}
-
+	
 	private PropertyValueModel<Logging> buildLoggingHolder(
 				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
 		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Logging>(subjectHolder) {
@@ -175,7 +175,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 			}
 		};
 	}
-
+	
 	private PropertyValueModel<Options> buildOptionsHolder(
 				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
 		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Options>(subjectHolder) {
@@ -185,7 +185,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 			}
 		};
 	}
-
+	
 	private PropertyValueModel<SchemaGeneration> buildSchemaGenerationHolder(
 				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
 		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, SchemaGeneration>(subjectHolder) {
@@ -207,7 +207,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 
 		return new EclipseLinkBasicMappingComposite(subjectHolder, parent, widgetFactory);
 	}
-
+	
 	@Override
 	public JpaComposite createIdMappingComposite(
 		PropertyValueModel<IdMapping> subjectHolder,
@@ -222,7 +222,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 		PropertyValueModel<VersionMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory) {
-
+		
 		return new EclipseLinkVersionMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
@@ -231,7 +231,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 		PropertyValueModel<OneToOneMapping> subjectHolder, 
 		Composite parent, 
 		WidgetFactory widgetFactory) {
-
+		
 		return new EclipselinkOneToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
@@ -240,7 +240,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 		PropertyValueModel<OneToManyMapping> subjectHolder, 
 		Composite parent, 
 		WidgetFactory widgetFactory) {
-
+		
 		return new EclipselinkOneToManyMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
@@ -249,7 +249,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 		PropertyValueModel<ManyToManyMapping> subjectHolder, 
 		Composite parent, 
 		WidgetFactory widgetFactory) {
-
+		
 		return new EclipseLinkManyToManyMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
@@ -258,7 +258,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 		PropertyValueModel<ManyToOneMapping> subjectHolder, 
 		Composite parent, 
 		WidgetFactory widgetFactory) {
-
+		
 		return new EclipseLinkManyToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
@@ -278,7 +278,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 			Composite parent, WidgetFactory widgetFactory) {
 		return new EclipseLinkJavaEntityComposite(subjectHolder, parent, widgetFactory);
 	}
-
+	
 	@Override
 	public JpaComposite createJavaMappedSuperclassComposite(
 			PropertyValueModel<JavaMappedSuperclass> subjectHolder,

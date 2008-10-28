@@ -24,41 +24,40 @@ import org.eclipse.swt.widgets.Composite;
 public class BasicMappingUiProvider
 	implements AttributeMappingUiProvider<BasicMapping>
 {
-
 	// singleton
 	private static final BasicMappingUiProvider INSTANCE = new BasicMappingUiProvider();
-
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private BasicMappingUiProvider() {
 		super();
 	}
-
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static AttributeMappingUiProvider<BasicMapping> instance() {
 		return INSTANCE;
 	}
-
+	
 	public JpaComposite buildAttributeMappingComposite(
 		JpaUiFactory factory,
 		PropertyValueModel<BasicMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory) {
-
+		
 		return factory.createBasicMappingComposite(subjectHolder, parent, widgetFactory);
 	}
-
+	
 	public Image getImage() {
 		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
 	}
-
+	
 	public String getLabel() {
 		return JptUiMappingsMessages.BasicMappingUiProvider_label;
 	}
-
+	
 	public String getLinkLabel() {
 		return JptUiMappingsMessages.BasicMappingUiProvider_linkLabel;
 	}

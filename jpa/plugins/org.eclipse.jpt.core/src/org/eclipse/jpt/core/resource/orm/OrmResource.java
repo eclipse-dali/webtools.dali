@@ -30,30 +30,30 @@ public class OrmResource
 	public OrmResource(URI uri, Renderer renderer) {
 		super(uri, renderer);
 	}
-
+	
+	
 	public Translator getRootTranslator() {
 		return EntityMappingsTranslator.INSTANCE;
 	}
-
+	
 	@Override
 	public String getType() {
 		return JpaFile.ORM_RESOURCE_TYPE;
 	}
-
+	
 	public XmlEntityMappings getEntityMappings() {
 		return (XmlEntityMappings) this.getRootObject();
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public EList eAdapters() {
 		return super.eAdapters();
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public EList getContents() {
 		return super.getContents();
 	}
-
 }
