@@ -41,7 +41,7 @@ public class EclipseLinkVirtualXmlStructConverter extends AbstractJpaEObject imp
 		return this.javaConverter.getConverterClass();
 	}
 	
-	public void setConverter(String value) {
+	public void setConverter(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
@@ -52,7 +52,7 @@ public class EclipseLinkVirtualXmlStructConverter extends AbstractJpaEObject imp
 		return this.javaConverter.getName();
 	}
 	
-	public void setName(String value) {
+	public void setName(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 }

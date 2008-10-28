@@ -41,7 +41,7 @@ public class EclipseLinkVirtualXmlTypeConverter extends AbstractJpaEObject imple
 		return this.javaConverter.getName();
 	}
 	
-	public void setName(String value) {
+	public void setName(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
@@ -52,7 +52,7 @@ public class EclipseLinkVirtualXmlTypeConverter extends AbstractJpaEObject imple
 		return this.javaConverter.getDataType();
 	}
 	
-	public void setDataType(String value) {
+	public void setDataType(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
@@ -63,7 +63,7 @@ public class EclipseLinkVirtualXmlTypeConverter extends AbstractJpaEObject imple
 		return this.javaConverter.getObjectType();
 	}
 	
-	public void setObjectType(String value) {
+	public void setObjectType(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 }
