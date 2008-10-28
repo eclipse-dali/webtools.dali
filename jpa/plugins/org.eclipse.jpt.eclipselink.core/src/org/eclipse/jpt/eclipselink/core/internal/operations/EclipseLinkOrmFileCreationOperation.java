@@ -36,7 +36,7 @@ public class EclipseLinkOrmFileCreationOperation extends OrmFileCreationOperatio
 		String filePath = getDataModel().getStringProperty(FILE_PATH);
 		IFile file = folder.getFile(new Path(filePath));
 		final EclipseLinkOrmResourceModelProvider modelProvider =
-			EclipseLinkOrmResourceModelProvider.getModelProvider(getProject(), file.getProjectRelativePath().toString());
+			EclipseLinkOrmResourceModelProvider.getModelProvider(file);
 		
 		modelProvider.modify(new Runnable() {
 				public void run() {
