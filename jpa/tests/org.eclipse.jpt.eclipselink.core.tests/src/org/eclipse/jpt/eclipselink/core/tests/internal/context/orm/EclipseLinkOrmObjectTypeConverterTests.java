@@ -11,6 +11,7 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.orm;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
@@ -18,12 +19,16 @@ import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConvert;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConversionValue;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -36,7 +41,12 @@ public class EclipseLinkOrmObjectTypeConverterTests
 	}
 
 	private void createObjectTypeConverterAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ObjectTypeConverter", "String name(); String converterClass();");		
+		createConversionValueAnnotation();
+		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ObjectTypeConverter", "String name(); Class dataType() default void.class; Class objectType() default void.class; ConversionValue[] conversionValues();String defaultObjectValue() default \"\";");		
+	}
+	
+	private void createConversionValueAnnotation() throws Exception {
+		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ConversionValue", "String dataValue(); String objectValue();");		
 	}
 	
 	private ICompilationUnit createTestEntityWithBasicMapping() throws Exception {
@@ -346,4 +356,200 @@ public class EclipseLinkOrmObjectTypeConverterTests
 		assertEquals(null, converterResource.getDefaultObjectValue());
 	}
 
+	
+	public void testUpdateConversionValues() throws Exception {
+		createTestEntityWithBasicMapping();
+		
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "id");
+		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping(); 
+		ormBasicMapping.setSpecifiedConverter(Convert.ECLIPSE_LINK_CONVERTER);
+		((Convert) ormBasicMapping.getConverter()).setConverter(EclipseLinkConverter.OBJECT_TYPE_CONVERTER);
+		ObjectTypeConverter ormConverter = (ObjectTypeConverter) ((Convert) ormBasicMapping.getConverter()).getConverter();
+		XmlObjectTypeConverter converterResource = ((XmlBasic) ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0)).getObjectTypeConverter();
+		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("id").getMapping();
+
+		assertEquals(0, ormConverter.conversionValuesSize());
+		assertEquals(0, converterResource.getConversionValues().size());
+		
+		//add conversion value to resource model, check context model
+		XmlConversionValue resourceConversionValue = EclipseLinkOrmFactory.eINSTANCE.createXmlConversionValueImpl();
+		converterResource.getConversionValues().add(resourceConversionValue);
+		resourceConversionValue.setDataValue("foo");
+		resourceConversionValue.setObjectValue("bar");
+		
+		assertEquals(1, ormConverter.conversionValuesSize());
+		ListIterator<ConversionValue> contextConversionValues = ormConverter.conversionValues();
+		ConversionValue contextConversionValue = contextConversionValues.next();
+		assertEquals("foo", contextConversionValue.getDataValue());
+		assertEquals("bar", contextConversionValue.getObjectValue());
+		assertEquals(1, converterResource.getConversionValues().size());
+		assertEquals("foo", converterResource.getConversionValues().get(0).getDataValue());
+		assertEquals("bar", converterResource.getConversionValues().get(0).getObjectValue());
+		
+		//add a conversion to the beginning of the resource model list
+		XmlConversionValue xmlConversionValue2 = EclipseLinkOrmFactory.eINSTANCE.createXmlConversionValueImpl();
+		converterResource.getConversionValues().add(0, xmlConversionValue2);
+		xmlConversionValue2.setDataValue("foo2");
+		xmlConversionValue2.setObjectValue("bar2");
+
+		assertEquals(2, ormConverter.conversionValuesSize());
+		contextConversionValues = ormConverter.conversionValues();
+		contextConversionValue = contextConversionValues.next();
+		assertEquals("foo2", contextConversionValue.getDataValue());
+		assertEquals("bar2", contextConversionValue.getObjectValue());
+		contextConversionValue = contextConversionValues.next();
+		assertEquals("foo", contextConversionValue.getDataValue());
+		assertEquals("bar", contextConversionValue.getObjectValue());
+		assertEquals(2, converterResource.getConversionValues().size());
+		assertEquals("foo2", converterResource.getConversionValues().get(0).getDataValue());
+		assertEquals("bar2", converterResource.getConversionValues().get(0).getObjectValue());
+		assertEquals("foo", converterResource.getConversionValues().get(1).getDataValue());
+		assertEquals("bar", converterResource.getConversionValues().get(1).getObjectValue());
+
+		//move a conversion value in the resource model list
+		
+		converterResource.getConversionValues().move(0, 1);
+		assertEquals(2, ormConverter.conversionValuesSize());
+		contextConversionValues = ormConverter.conversionValues();
+		contextConversionValue = contextConversionValues.next();
+		assertEquals("foo", contextConversionValue.getDataValue());
+		assertEquals("bar", contextConversionValue.getObjectValue());
+		contextConversionValue = contextConversionValues.next();
+		assertEquals("foo2", contextConversionValue.getDataValue());
+		assertEquals("bar2", contextConversionValue.getObjectValue());
+		assertEquals(2, converterResource.getConversionValues().size());
+		assertEquals("foo", converterResource.getConversionValues().get(0).getDataValue());
+		assertEquals("bar", converterResource.getConversionValues().get(0).getObjectValue());
+		assertEquals("foo2", converterResource.getConversionValues().get(1).getDataValue());
+		assertEquals("bar2", converterResource.getConversionValues().get(1).getObjectValue());
+
+		//remove a conversion value from the resource model list
+
+		converterResource.getConversionValues().remove(0);
+		assertEquals(1, ormConverter.conversionValuesSize());
+		contextConversionValues = ormConverter.conversionValues();
+		contextConversionValue = contextConversionValues.next();
+		assertEquals("foo2", contextConversionValue.getDataValue());
+		assertEquals("bar2", contextConversionValue.getObjectValue());
+		assertEquals(1, converterResource.getConversionValues().size());
+		assertEquals("foo2", converterResource.getConversionValues().get(0).getDataValue());
+		assertEquals("bar2", converterResource.getConversionValues().get(0).getObjectValue());
+
+		//clear the conversion value resource model list
+		converterResource.getConversionValues().clear();
+		assertEquals(0, ormConverter.conversionValuesSize());
+		assertEquals(0, converterResource.getConversionValues().size());
+		
+		//add conversion value to java context model, verify does not affect orm context model
+	
+		ObjectTypeConverter javaConverter = (ObjectTypeConverter) ((EclipseLinkJavaConvert) javaBasicMapping.getConverter()).getConverter();
+		ConversionValue javaConversionValue = javaConverter.addConversionValue();
+		javaConversionValue.setDataValue("baz");
+		
+		assertEquals(0, ormConverter.conversionValuesSize());
+		assertEquals(0, converterResource.getConversionValues().size());
+		assertEquals(1, javaConverter.conversionValuesSize());
+		
+		//remove orm attribute mapping, verify virtual mapping has conversion values from java
+		
+		ormPersistentType.removeSpecifiedPersistentAttribute(ormPersistentAttribute);
+		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
+		ormConverter = (ObjectTypeConverter) ((Convert) ormBasicMapping.getConverter()).getConverter();
+		
+		assertEquals(1, ormConverter.conversionValuesSize());
+		contextConversionValues = ormConverter.conversionValues();
+		contextConversionValue = contextConversionValues.next();
+		assertEquals("baz", contextConversionValue.getDataValue());
+		assertEquals(0, converterResource.getConversionValues().size());
+		assertEquals(1, javaConverter.conversionValuesSize());
+		
+		//set metadata-complete to true, verify virtual mapping ignores the conversion values from java
+		
+		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
+		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
+		assertEquals(EclipseLinkConverter.NO_CONVERTER, ormBasicMapping.getConverter().getType());
+	}
+	
+	public void testModifyConversionValues() throws Exception {
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "id");
+		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping(); 
+		ormBasicMapping.setSpecifiedConverter(Convert.ECLIPSE_LINK_CONVERTER);
+		((Convert) ormBasicMapping.getConverter()).setConverter(EclipseLinkConverter.OBJECT_TYPE_CONVERTER);
+		ObjectTypeConverter ormConverter = (ObjectTypeConverter) ((Convert) ormBasicMapping.getConverter()).getConverter();
+		XmlObjectTypeConverter converterResource = ((XmlBasic) ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0)).getObjectTypeConverter();
+		
+		assertEquals(0, ormConverter.conversionValuesSize());
+		assertEquals(0, converterResource.getConversionValues().size());
+		
+		//add conversion value to context model, check resource model
+		ConversionValue contextConversionValue = ormConverter.addConversionValue();
+		contextConversionValue.setDataValue("foo");
+		contextConversionValue.setObjectValue("bar");
+
+		assertEquals(1, ormConverter.conversionValuesSize());
+		ListIterator<ConversionValue> contextConversionValues = ormConverter.conversionValues();
+		contextConversionValue = contextConversionValues.next();
+		assertEquals("foo", contextConversionValue.getDataValue());
+		assertEquals("bar", contextConversionValue.getObjectValue());
+		assertEquals(1, converterResource.getConversionValues().size());
+		assertEquals("foo", converterResource.getConversionValues().get(0).getDataValue());
+		assertEquals("bar", converterResource.getConversionValues().get(0).getObjectValue());
+
+		//add a conversion to the beginning of the context model list
+		ConversionValue contextConversionValue2 = ormConverter.addConversionValue(0);
+		contextConversionValue2.setDataValue("foo2");
+		contextConversionValue2.setObjectValue("bar2");
+
+		assertEquals(2, ormConverter.conversionValuesSize());
+		contextConversionValues = ormConverter.conversionValues();
+		contextConversionValue = contextConversionValues.next();
+		assertEquals("foo2", contextConversionValue.getDataValue());
+		assertEquals("bar2", contextConversionValue.getObjectValue());
+		contextConversionValue = contextConversionValues.next();
+		assertEquals("foo", contextConversionValue.getDataValue());
+		assertEquals("bar", contextConversionValue.getObjectValue());
+		assertEquals(2, converterResource.getConversionValues().size());
+		assertEquals("foo2", converterResource.getConversionValues().get(0).getDataValue());
+		assertEquals("bar2", converterResource.getConversionValues().get(0).getObjectValue());
+		assertEquals("foo", converterResource.getConversionValues().get(1).getDataValue());
+		assertEquals("bar", converterResource.getConversionValues().get(1).getObjectValue());
+
+		//move a conversion value in the context model list
+		
+		ormConverter.moveConversionValue(0, 1);
+		assertEquals(2, ormConverter.conversionValuesSize());
+		contextConversionValues = ormConverter.conversionValues();
+		contextConversionValue = contextConversionValues.next();
+		assertEquals("foo", contextConversionValue.getDataValue());
+		assertEquals("bar", contextConversionValue.getObjectValue());
+		contextConversionValue = contextConversionValues.next();
+		assertEquals("foo2", contextConversionValue.getDataValue());
+		assertEquals("bar2", contextConversionValue.getObjectValue());
+		assertEquals(2, converterResource.getConversionValues().size());
+		assertEquals("foo", converterResource.getConversionValues().get(0).getDataValue());
+		assertEquals("bar", converterResource.getConversionValues().get(0).getObjectValue());
+		assertEquals("foo2", converterResource.getConversionValues().get(1).getDataValue());
+		assertEquals("bar2", converterResource.getConversionValues().get(1).getObjectValue());
+
+		//remove a conversion value from the context model list
+
+		ormConverter.removeConversionValue(0);
+		assertEquals(1, ormConverter.conversionValuesSize());
+		contextConversionValues = ormConverter.conversionValues();
+		contextConversionValue = contextConversionValues.next();
+		assertEquals("foo2", contextConversionValue.getDataValue());
+		assertEquals("bar2", contextConversionValue.getObjectValue());
+		assertEquals(1, converterResource.getConversionValues().size());
+		assertEquals("foo2", converterResource.getConversionValues().get(0).getDataValue());
+		assertEquals("bar2", converterResource.getConversionValues().get(0).getObjectValue());
+
+		//clear the conversion value resource model list
+		ormConverter.removeConversionValue(0);
+		assertEquals(0, ormConverter.conversionValuesSize());
+		assertEquals(0, converterResource.getConversionValues().size());
+	}
 }

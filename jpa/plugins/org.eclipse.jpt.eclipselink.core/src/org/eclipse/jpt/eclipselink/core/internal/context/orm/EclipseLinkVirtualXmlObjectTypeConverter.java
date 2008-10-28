@@ -10,11 +10,15 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
+import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConversionValue;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * VirtualBasic is an implementation of Basic used when there is 
@@ -43,7 +47,7 @@ public class EclipseLinkVirtualXmlObjectTypeConverter extends AbstractJpaEObject
 		return this.javaConverter.getName();
 	}
 	
-	public void setName(String value) {
+	public void setName(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
@@ -54,7 +58,7 @@ public class EclipseLinkVirtualXmlObjectTypeConverter extends AbstractJpaEObject
 		return this.javaConverter.getDataType();
 	}
 	
-	public void setDataType(String value) {
+	public void setDataType(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
@@ -65,7 +69,7 @@ public class EclipseLinkVirtualXmlObjectTypeConverter extends AbstractJpaEObject
 		return this.javaConverter.getObjectType();
 	}
 	
-	public void setObjectType(String value) {
+	public void setObjectType(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
@@ -76,13 +80,20 @@ public class EclipseLinkVirtualXmlObjectTypeConverter extends AbstractJpaEObject
 		return this.javaConverter.getDefaultObjectValue();
 	}
 
-	public void setDefaultObjectValue(String value) {
+	public void setDefaultObjectValue(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	public EList<XmlConversionValue> getConversionValues() {
-		// TODO Auto-generated method stub
-		return null;
+		EList<XmlConversionValue> conversionValues = new EObjectContainmentEList<XmlConversionValue>(XmlConversionValue.class, this, EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER__CONVERSION_VALUES);
+		if (isOrmMetadataComplete()) {
+			return conversionValues;
+		}
+		for (ConversionValue javaConversionValue : CollectionTools.iterable(this.javaConverter.conversionValues())) {
+			XmlConversionValue xmlConversionValue = new EclipseLinkVirtualXmlConversionValue(this.ormTypeMapping, javaConversionValue);
+			conversionValues.add(xmlConversionValue);
+		}
+		return conversionValues;
 	}
 
 }

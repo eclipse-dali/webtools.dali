@@ -58,7 +58,7 @@ public class EclipseLinkVirtualXmlBasic extends VirtualXmlBasic implements XmlBa
 		return null;
 	}
 	
-	public void setConvert(String value) {
+	public void setConvert(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
@@ -83,6 +83,10 @@ public class EclipseLinkVirtualXmlBasic extends VirtualXmlBasic implements XmlBa
 		return null;
 	}
 
+	public void setConverter(@SuppressWarnings("unused") XmlConverter value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+
 	public XmlObjectTypeConverter getObjectTypeConverter() {
 		if (isOrmMetadataComplete()) {
 			return null;
@@ -94,6 +98,10 @@ public class EclipseLinkVirtualXmlBasic extends VirtualXmlBasic implements XmlBa
 			}
 		}
 		return null;
+	}
+
+	public void setObjectTypeConverter(@SuppressWarnings("unused") XmlObjectTypeConverter value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	public XmlStructConverter getStructConverter() {
@@ -109,6 +117,10 @@ public class EclipseLinkVirtualXmlBasic extends VirtualXmlBasic implements XmlBa
 		return null;
 	}
 
+	public void setStructConverter(@SuppressWarnings("unused") XmlStructConverter value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+
 	public XmlTypeConverter getTypeConverter() {
 		if (isOrmMetadataComplete()) {
 			return null;
@@ -122,19 +134,7 @@ public class EclipseLinkVirtualXmlBasic extends VirtualXmlBasic implements XmlBa
 		return null;
 	}
 
-	public void setConverter(XmlConverter value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
-	}
-
-	public void setObjectTypeConverter(XmlObjectTypeConverter value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
-	}
-
-	public void setStructConverter(XmlStructConverter value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
-	}
-
-	public void setTypeConverter(XmlTypeConverter value) {
+	public void setTypeConverter(@SuppressWarnings("unused") XmlTypeConverter value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 }

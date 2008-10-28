@@ -9,14 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.Converter;
-import org.eclipse.jpt.core.context.ConvertibleMapping;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlId;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
+import org.eclipse.jpt.eclipselink.core.context.Converter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
+import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.StructConverter;
+import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlId;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
@@ -45,16 +48,76 @@ public class EclipseLinkVirtualXmlId extends VirtualXmlId implements XmlId
 
 	public String getConvert() {
 		//don't need isOrmMetadataComplete() check because there is no default Id mapping
-		Converter converter = ((ConvertibleMapping) this.javaAttributeMapping).getConverter();
-		if (converter.getType() == Convert.ECLIPSE_LINK_CONVERTER) {
-			return ((Convert) converter).getConverterName();
+		if (this.javaAttributeMapping.getConverter().getType() == Convert.ECLIPSE_LINK_CONVERTER) {
+			return ((Convert) this.javaAttributeMapping.getConverter()).getConverterName();
 		}
 		return null;
 	}
 	
-	public void setConvert(String value) {
+	public void setConvert(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
+	
+	public XmlConverter getConverter() {
+		//don't need isOrmMetadataComplete() check because there is no default Id mapping
+		if (this.javaAttributeMapping.getConverter().getType() == Convert.ECLIPSE_LINK_CONVERTER) {
+			EclipseLinkConverter converter = ((Convert) this.javaAttributeMapping.getConverter()).getConverter();
+			if (converter != null && converter.getType() == EclipseLinkConverter.CONVERTER) {
+				return new EclipseLinkVirtualXmlConverter(this.ormTypeMapping, (Converter) ((Convert) this.javaAttributeMapping.getConverter()).getConverter());
+			}
+		}
+		return null;
+	}
+
+	public void setConverter(@SuppressWarnings("unused") XmlConverter value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+
+	public XmlObjectTypeConverter getObjectTypeConverter() {
+		//don't need isOrmMetadataComplete() check because there is no default Id mapping
+		if (this.javaAttributeMapping.getConverter().getType() == Convert.ECLIPSE_LINK_CONVERTER) {
+			EclipseLinkConverter converter = ((Convert) this.javaAttributeMapping.getConverter()).getConverter();
+			if (converter != null && converter.getType() == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
+				return new EclipseLinkVirtualXmlObjectTypeConverter(this.ormTypeMapping, (ObjectTypeConverter) ((Convert) this.javaAttributeMapping.getConverter()).getConverter());
+			}
+		}
+		return null;
+	}
+
+	public void setObjectTypeConverter(@SuppressWarnings("unused") XmlObjectTypeConverter value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+
+	public XmlStructConverter getStructConverter() {
+		//don't need isOrmMetadataComplete() check because there is no default Id mapping
+		if (this.javaAttributeMapping.getConverter().getType() == Convert.ECLIPSE_LINK_CONVERTER) {
+			EclipseLinkConverter converter = ((Convert) this.javaAttributeMapping.getConverter()).getConverter();
+			if (converter != null && converter.getType() == EclipseLinkConverter.STRUCT_CONVERTER) {
+				return new EclipseLinkVirtualXmlStructConverter(this.ormTypeMapping, (StructConverter) ((Convert) this.javaAttributeMapping.getConverter()).getConverter());
+			}
+		}
+		return null;
+	}
+
+	public void setStructConverter(@SuppressWarnings("unused") XmlStructConverter value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+
+	public XmlTypeConverter getTypeConverter() {
+		//don't need isOrmMetadataComplete() check because there is no default Id mapping
+		if (this.javaAttributeMapping.getConverter().getType() == Convert.ECLIPSE_LINK_CONVERTER) {
+			EclipseLinkConverter converter = ((Convert) this.javaAttributeMapping.getConverter()).getConverter();
+			if (converter != null && converter.getType() == EclipseLinkConverter.TYPE_CONVERTER) {
+				return new EclipseLinkVirtualXmlTypeConverter(this.ormTypeMapping, (TypeConverter) ((Convert) this.javaAttributeMapping.getConverter()).getConverter());
+			}
+		}
+		return null;
+	}
+
+	public void setTypeConverter(@SuppressWarnings("unused") XmlTypeConverter value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+	
 
 	public TextRange getMutableTextRange() {
 		return null;
@@ -63,44 +126,5 @@ public class EclipseLinkVirtualXmlId extends VirtualXmlId implements XmlId
 	public TextRange getConvertTextRange() {
 		return null;
 	}
-	
-	public XmlConverter getConverter() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	public XmlObjectTypeConverter getObjectTypeConverter() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public XmlStructConverter getStructConverter() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public XmlTypeConverter getTypeConverter() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void setConverter(XmlConverter value) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setObjectTypeConverter(XmlObjectTypeConverter value) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setStructConverter(XmlStructConverter value) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setTypeConverter(XmlTypeConverter value) {
-		// TODO Auto-generated method stub
-		
-	}
 }
