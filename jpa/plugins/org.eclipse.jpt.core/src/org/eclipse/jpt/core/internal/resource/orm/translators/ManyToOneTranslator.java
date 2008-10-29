@@ -29,7 +29,7 @@ public class ManyToOneTranslator extends Translator
 	}
 
 	@Override
-	public Translator[] getChildren(Object target, int versionID) {
+	protected Translator[] getChildren() {
 		if (this.children == null) {
 			this.children = createChildren();
 		}
