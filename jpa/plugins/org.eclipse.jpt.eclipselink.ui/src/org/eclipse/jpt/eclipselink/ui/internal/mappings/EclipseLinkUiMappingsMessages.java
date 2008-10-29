@@ -137,6 +137,13 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	public static String DefaultOneToOneMappingUiProvider_linkLabel;
 	public static String DefaultOneToManyMappingUiProvider_linkLabel;
 	
+	public static String ConvertersComposite_Label;
+	public static String EclipseLinkConverterDialog_name;
+	public static String EclipseLinkConverterDialog_converterType;
+	public static String EclipseLinkConverterDialog_addConverter;
+	public static String EclipseLinkConverterDialog_addConverterDescriptionTitle;
+	public static String EclipseLinkConverterDialog_addConverterDescription;
+	
 	static {
 		NLS.initializeMessages("eclipselink_ui_mappings", EclipseLinkUiMappingsMessages.class);
 	}

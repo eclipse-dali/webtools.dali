@@ -27,13 +27,13 @@ public class PersistenceDetailsProvider implements JpaDetailsProvider
 	
 	public JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(
 								Composite parent,
-								Object contentNodeId,
+								JpaStructureNode structureNode,
 								WidgetFactory widgetFactory) {
 		
-		if (contentNodeId == PersistenceStructureNodes.PERSISTENCE_ID) {
+		if (structureNode.getId() == PersistenceStructureNodes.PERSISTENCE_ID) {
 			return new PersistenceXmlDetailsPage(parent, widgetFactory);
 		}
-		else if (contentNodeId == PersistenceStructureNodes.PERSISTENCE_UNIT_ID) {
+		else if (structureNode.getId() == PersistenceStructureNodes.PERSISTENCE_UNIT_ID) {
 			return new PersistenceXmlDetailsPage(parent, widgetFactory);
 		}
 		return null;

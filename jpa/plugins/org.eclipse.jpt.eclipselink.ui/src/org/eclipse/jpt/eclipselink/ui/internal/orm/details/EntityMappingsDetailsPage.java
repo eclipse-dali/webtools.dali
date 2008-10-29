@@ -7,22 +7,20 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal.orm.details;
+package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
-import java.util.Collection;
-
-import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
-import org.eclipse.jpt.db.SchemaContainer;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.ConverterHolder;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappings;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.AbstractJpaDetailsPage;
-import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
-import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
-import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.ui.internal.orm.details.OrmGeneratorsComposite;
+import org.eclipse.jpt.ui.internal.orm.details.OrmPackageChooser;
+import org.eclipse.jpt.ui.internal.orm.details.OrmQueriesComposite;
+import org.eclipse.jpt.ui.internal.orm.details.PersistenceUnitMetadataComposite;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -60,6 +58,11 @@ import org.eclipse.swt.widgets.Composite;
  * | | OrmQueriesComposite                                                   | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | ConvertersComposite                                                   | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see EntityMappings
@@ -72,10 +75,10 @@ import org.eclipse.swt.widgets.Composite;
  * @see PersistenceUnitMetadataComposite
  * @see SchemaCombo
  *
- * @version 2.0
- * @since 2.0
+ * @version 2.1
+ * @since 2.1
  */
-public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMappings>
+public class EntityMappingsDetailsPage extends org.eclipse.jpt.ui.internal.orm.details.EntityMappingsDetailsPage
 {
 	/**
 	 * Creates a new <code>XmlEntityMappingsDetailsPage</code>.
@@ -89,122 +92,7 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 		super(parent, widgetFactory);
 	}
 
-	protected EnumFormComboViewer<EntityMappings, AccessType> addAccessTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<EntityMappings, AccessType>(this, container) {
-
-			@Override
-			protected void addPropertyNames(Collection<String> propertyNames) {
-				super.addPropertyNames(propertyNames);
-				propertyNames.add(EntityMappings.DEFAULT_ACCESS_PROPERTY);
-				propertyNames.add(EntityMappings.SPECIFIED_ACCESS_PROPERTY);
-			}
-
-			@Override
-			protected AccessType[] getChoices() {
-				return AccessType.values();
-			}
-
-			@Override
-			protected AccessType getDefaultValue() {
-				return getSubject().getDefaultAccess();
-			}
-
-			@Override
-			protected String displayString(AccessType value) {
-				return buildDisplayString(
-					JptUiOrmMessages.class,
-					EntityMappingsDetailsPage.this,
-					value
-				);
-			}
-
-			@Override
-			protected AccessType getValue() {
-				return getSubject().getAccess();
-			}
-
-			@Override
-			protected void setValue(AccessType value) {
-				getSubject().setSpecifiedAccess(value);
-			}
-		};
-	}
-
-	protected CatalogCombo<EntityMappings> addCatalogCombo(Composite container) {
-
-		return new CatalogCombo<EntityMappings>(this, container) {
-
-			@Override
-			protected void addPropertyNames(Collection<String> propertyNames) {
-				super.addPropertyNames(propertyNames);
-				propertyNames.add(EntityMappings.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(EntityMappings.SPECIFIED_CATALOG_PROPERTY);
-			}
-
-			@Override
-			protected String getDefaultValue() {
-				return getSubject().getDefaultCatalog();
-			}
-
-			@Override
-			protected void setValue(String value) {
-				getSubject().setSpecifiedCatalog(value);
-			}
-
-			@Override
-			protected String getValue() {
-				return getSubject().getSpecifiedCatalog();
-			}
-		};
-	}
-
-	protected PropertyValueModel<PersistenceUnitMetadata> buildPersistentUnitMetadataHolder() {
-		return new TransformationPropertyValueModel<EntityMappings, PersistenceUnitMetadata>(getSubjectHolder()) {
-			@Override
-			protected PersistenceUnitMetadata transform_(EntityMappings value) {
-				return value.getPersistenceUnitMetadata();
-			}
-		};
-	}
-
-	protected SchemaCombo<EntityMappings> addSchemaCombo(Composite container) {
-
-		return new SchemaCombo<EntityMappings>(this, container) {
-
-			@Override
-			protected void addPropertyNames(Collection<String> propertyNames) {
-				super.addPropertyNames(propertyNames);
-				propertyNames.add(EntityMappings.DEFAULT_SCHEMA_PROPERTY);
-				propertyNames.add(EntityMappings.SPECIFIED_SCHEMA_PROPERTY);
-			}
-
-			@Override
-			protected String getDefaultValue() {
-				return getSubject().getDefaultSchema();
-			}
-
-			@Override
-			protected void setValue(String value) {
-				getSubject().setSpecifiedSchema(value);
-			}
-
-			@Override
-			protected String getValue() {
-				return getSubject().getSpecifiedSchema();
-			}
-
-			@Override
-			protected SchemaContainer getDbSchemaContainer_() {
-				return this.getSubject().getDbSchemaContainer();
-			}
-
-		};
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -253,5 +141,27 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 			this,
 			container
 		);
+		
+		// Converters section
+		container = addCollapsableSection(
+			container,
+			EclipseLinkUiMappingsMessages.ConvertersComposite_Label
+		);
+		
+		new ConvertersComposite(
+			this,
+			buildConverterHolder(),
+			container
+		);
 	}
+	
+	private PropertyValueModel<ConverterHolder> buildConverterHolder() {
+		return new PropertyAspectAdapter<EntityMappings, ConverterHolder>(getSubjectHolder()) {
+			@Override
+			protected ConverterHolder buildValue_() {
+				return ((EclipseLinkEntityMappings) this.subject).getConverterHolder();
+			}
+		};
+	}
+
 }

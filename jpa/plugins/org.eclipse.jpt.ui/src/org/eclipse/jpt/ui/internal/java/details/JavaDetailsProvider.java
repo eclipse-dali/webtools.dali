@@ -38,14 +38,14 @@ public class JavaDetailsProvider
 	 */
 	public JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(
 		Composite parent,
-		Object contentNodeId,
+		JpaStructureNode structureNode,
 		WidgetFactory widgetFactory) {
 
-		if (contentNodeId == JavaStructureNodes.PERSISTENT_TYPE_ID) {
+		if (structureNode.getId() == JavaStructureNodes.PERSISTENT_TYPE_ID) {
 			return new JavaPersistentTypeDetailsPage(parent, widgetFactory);
 		}
 
-		if (contentNodeId == JavaStructureNodes.PERSISTENT_ATTRIBUTE_ID) {
+		if (structureNode.getId() == JavaStructureNodes.PERSISTENT_ATTRIBUTE_ID) {
 			return new JavaPersistentAttributeDetailsPage(parent, widgetFactory);
 		}
 

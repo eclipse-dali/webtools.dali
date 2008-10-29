@@ -40,6 +40,6 @@ public interface JpaDetailsProvider
 	 */
 	JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(
 		Composite parent,
-		Object contentNodeId,
+		JpaStructureNode structureNode,
 		WidgetFactory widgetFactory);
 }

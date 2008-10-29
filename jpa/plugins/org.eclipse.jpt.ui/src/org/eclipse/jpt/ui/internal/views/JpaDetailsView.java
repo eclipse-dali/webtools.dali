@@ -69,7 +69,7 @@ public class JpaDetailsView extends AbstractJpaView
 
 		JpaDetailsPage<? extends JpaStructureNode> page = detailsProvider.buildDetailsPage(
 			container,
-			id,
+			structureNode,
 			getWidgetFactory()
 		);
 

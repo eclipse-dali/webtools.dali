@@ -23,10 +23,12 @@ import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactory;
 import org.eclipse.jpt.eclipselink.ui.internal.ddlgen.EclipseLinkDDLGeneratorUi;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToManyMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToOneMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.OrmDetailsProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.persistencexml.details.PersistenceDetailsProvider;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaDetailsProvider;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.structure.OrmResourceModelStructureProvider;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
@@ -72,7 +74,11 @@ public class EclipseLinkJpaPlatformUI extends BaseJpaPlatformUi
 
 	@Override
 	protected void addDetailsProvidersTo(Collection<JpaDetailsProvider> providers) {
-		super.addDetailsProvidersTo(providers);
+		//using a different OrmDetailsProvider and the one in BaseJpaPlatformUi.
+		//This is not the best solution here, just trying to make it work for M3.
+		//TODO JpaPlatformUi really needs a complete overhaul
+		providers.add(new JavaDetailsProvider());
+		providers.add(new OrmDetailsProvider());
 		providers.add(new PersistenceDetailsProvider());
 	}
 
