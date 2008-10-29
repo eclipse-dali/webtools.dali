@@ -58,7 +58,7 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 {
 
 	/**
-	 * Creates a new <code>ConverterComposite</code>.
+	 * Creates a new <code>ObjectTypeConverterComposite</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container

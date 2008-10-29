@@ -42,7 +42,7 @@ public class StructConverterComposite extends FormPane<StructConverter>
 {
 
 	/**
-	 * Creates a new <code>ConverterComposite</code>.
+	 * Creates a new <code>StructConverterComposite</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container

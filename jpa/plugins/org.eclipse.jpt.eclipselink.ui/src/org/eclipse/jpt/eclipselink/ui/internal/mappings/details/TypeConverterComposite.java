@@ -42,7 +42,7 @@ public class TypeConverterComposite extends FormPane<TypeConverter>
 {
 
 	/**
-	 * Creates a new <code>ConverterComposite</code>.
+	 * Creates a new <code>TypeConverterComposite</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
