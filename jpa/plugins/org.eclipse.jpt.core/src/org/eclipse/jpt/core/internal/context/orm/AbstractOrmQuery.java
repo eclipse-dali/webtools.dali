@@ -121,6 +121,7 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractXmlCo
 		this.name = xmlQuery.getName();
 		this.query = xmlQuery.getQuery();
 		this.initializeHints();
+		getPersistenceUnit().addQuery(this);
 	}
 	
 	protected void initializeHints() {
@@ -138,6 +139,7 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractXmlCo
 		this.setName(xmlQuery.getName());
 		this.setQuery(xmlQuery.getQuery());
 		this.updateHints();
+		getPersistenceUnit().addQuery(this);
 	}
 	
 	protected void updateHints() {

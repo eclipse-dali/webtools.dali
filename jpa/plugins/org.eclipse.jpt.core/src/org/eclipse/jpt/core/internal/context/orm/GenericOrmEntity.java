@@ -1344,7 +1344,6 @@ public class GenericOrmEntity
 		this.initializeNamedQueries();
 		this.initializeNamedNativeQueries();
 		this.initializeIdClass(this.getResourceIdClass());
-		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
 	
 	protected void initializeInheritance(Inheritance inheritanceResource) {
@@ -1507,7 +1506,6 @@ public class GenericOrmEntity
 		this.updateNamedQueries();
 		this.updateNamedNativeQueries();
 		this.updateIdClass(this.getResourceIdClass());
-		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
 
 	protected String buildDefaultName() {
@@ -1835,24 +1833,6 @@ public class GenericOrmEntity
 	
 	protected void updateIdClass(XmlIdClass idClassResource) {
 		this.setIdClass_(this.idClass(idClassResource));
-	}
-	
-	protected void updatePersistenceUnitGeneratorsAndQueries() {
-		if (getTableGenerator() != null) {
-			getPersistenceUnit().addGenerator(getTableGenerator());
-		}
-		
-		if (getSequenceGenerator() != null) {
-			getPersistenceUnit().addGenerator(getSequenceGenerator());
-		}
-		
-		for (Query query : CollectionTools.iterable(namedQueries())) {
-			getPersistenceUnit().addQuery(query);
-		}
-		
-		for (Query query : CollectionTools.iterable(namedNativeQueries())) {
-			getPersistenceUnit().addQuery(query);
-		}
 	}
 	
 	

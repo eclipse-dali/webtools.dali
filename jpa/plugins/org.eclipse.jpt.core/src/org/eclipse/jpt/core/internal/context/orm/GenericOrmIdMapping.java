@@ -283,7 +283,6 @@ public class GenericOrmIdMapping
 		this.initializeSequenceGenerator();
 		this.initializeTableGenerator();
 		this.initializeGeneratedValue();
-		this.updatePersistenceUnitGenerators();
 		this.defaultConverter = new GenericOrmNullConverter(this);
 		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType());
 	}
@@ -324,7 +323,6 @@ public class GenericOrmIdMapping
 		this.updateSequenceGenerator();
 		this.updateTableGenerator();
 		this.updateGeneratedValue();
-		this.updatePersistenceUnitGenerators();
 		if (specifiedConverterType() == getSpecifedConverterType()) {
 			getSpecifiedConverter().update();
 		}
@@ -378,16 +376,6 @@ public class GenericOrmIdMapping
 			else {
 				getGeneratedValue().update(this.resourceAttributeMapping.getGeneratedValue());
 			}
-		}
-	}
-	
-	protected void updatePersistenceUnitGenerators() {
-		if (getTableGenerator() != null) {
-			getPersistenceUnit().addGenerator(getTableGenerator());
-		}
-		
-		if (getSequenceGenerator() != null) {
-			getPersistenceUnit().addGenerator(getSequenceGenerator());
 		}
 	}
 	

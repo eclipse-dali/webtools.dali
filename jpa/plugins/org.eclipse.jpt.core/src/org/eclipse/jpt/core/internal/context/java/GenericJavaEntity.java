@@ -211,7 +211,6 @@ public class GenericJavaEntity
 		this.initializeNamedQueries(resourcePersistentType);
 		this.initializeNamedNativeQueries(resourcePersistentType);
 		this.initializeIdClass(resourcePersistentType);
-		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
 	
 	protected void initializeSecondaryTables(JavaResourcePersistentType resourcePersistentType) {
@@ -1419,7 +1418,6 @@ public class GenericJavaEntity
 		this.updateNamedQueries(resourcePersistentType);
 		this.updateNamedNativeQueries(resourcePersistentType);
 		this.updateIdClass(resourcePersistentType);
-		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
 		
 	protected String specifiedName(EntityAnnotation entityAnnotation) {
@@ -1765,24 +1763,6 @@ public class GenericJavaEntity
 		}
 		else {
 			setIdClass_(null);
-		}
-	}
-	
-	protected void updatePersistenceUnitGeneratorsAndQueries() {
-		if (getTableGenerator() != null) {
-			getPersistenceUnit().addGenerator(getTableGenerator());
-		}
-		
-		if (getSequenceGenerator() != null) {
-			getPersistenceUnit().addGenerator(getSequenceGenerator());
-		}
-		
-		for (Query query : CollectionTools.iterable(namedQueries())) {
-			getPersistenceUnit().addQuery(query);
-		}
-		
-		for (Query query : CollectionTools.iterable(namedNativeQueries())) {
-			getPersistenceUnit().addQuery(query);
 		}
 	}
 

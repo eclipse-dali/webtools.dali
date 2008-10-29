@@ -139,6 +139,7 @@ public abstract class AbstractJavaGenerator
 		this.name = generatorAnnotation.getName();
 		this.specifiedInitialValue =  generatorAnnotation.getInitialValue();
 		this.specifiedAllocationSize = generatorAnnotation.getAllocationSize();
+		getPersistenceUnit().addGenerator(this);
 	}
 	
 	protected void update(GeneratorAnnotation generatorAnnotation) {
@@ -146,6 +147,7 @@ public abstract class AbstractJavaGenerator
 		this.setName_(generatorAnnotation.getName());
 		this.setSpecifiedInitialValue_(generatorAnnotation.getInitialValue());
 		this.setSpecifiedAllocationSize_(generatorAnnotation.getAllocationSize());
+		getPersistenceUnit().addGenerator(this);
 	}
 	
 

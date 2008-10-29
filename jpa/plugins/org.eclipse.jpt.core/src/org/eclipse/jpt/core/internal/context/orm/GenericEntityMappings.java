@@ -591,7 +591,6 @@ public class GenericEntityMappings
 		this.initializeSequenceGenerators();
 		this.initializeNamedQueries();
 		this.initializeNamedNativeQueries();
-		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
 	
 	protected void initializePersistentTypes() {
@@ -667,7 +666,6 @@ public class GenericEntityMappings
 		this.updateSequenceGenerators();
 		this.updateNamedQueries();
 		this.updateNamedNativeQueries();
-		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
 	
 	protected AccessType buildSpecifiedAccess() {
@@ -816,25 +814,6 @@ public class GenericEntityMappings
 	protected OrmNamedNativeQuery buildNamedNativeQuery(XmlNamedNativeQuery resourceNamedQuery) {
 		return getJpaFactory().buildOrmNamedNativeQuery(this, resourceNamedQuery);
 	}
-	
-	protected void updatePersistenceUnitGeneratorsAndQueries() {
-		for (Generator generator : CollectionTools.iterable(tableGenerators())) {
-			getPersistenceUnit().addGenerator(generator);
-		}
-		
-		for (Generator generator : CollectionTools.iterable(sequenceGenerators())) {
-			getPersistenceUnit().addGenerator(generator);
-		}
-		
-		for (Query query : CollectionTools.iterable(namedQueries())) {
-			getPersistenceUnit().addQuery(query);
-		}
-		
-		for (Query query : CollectionTools.iterable(namedNativeQueries())) {
-			getPersistenceUnit().addQuery(query);
-		}
-	}
-
 
 	public JpaStructureNode getStructureNode(int textOffset) {
 		for (OrmPersistentType persistentType: CollectionTools.iterable(ormPersistentTypes())) {

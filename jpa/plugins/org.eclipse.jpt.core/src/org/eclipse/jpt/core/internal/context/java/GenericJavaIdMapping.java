@@ -75,7 +75,6 @@ public class GenericJavaIdMapping
 		this.initializeTableGenerator(jrpa);
 		this.initializeSequenceGenerator(jrpa);
 		this.initializeGeneratedValue(jrpa);
-		this.updatePersistenceUnitGenerators();
 		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType(jrpa));
 	}
 	
@@ -287,7 +286,6 @@ public class GenericJavaIdMapping
 		this.updateTableGenerator(jrpa);
 		this.updateSequenceGenerator(jrpa);
 		this.updateGeneratedValue(jrpa);
-		this.updatePersistenceUnitGenerators();
 		if (specifiedConverterType(jrpa) == getSpecifedConverterType()) {
 			getSpecifiedConverter().update(jrpa);
 		}
@@ -376,16 +374,6 @@ public class GenericJavaIdMapping
 	
 	protected GeneratedValueAnnotation getResourceGeneratedValue(JavaResourcePersistentAttribute jrpa) {
 		return (GeneratedValueAnnotation) jrpa.getSupportingAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
-	}
-	
-	protected void updatePersistenceUnitGenerators() {
-		if (getTableGenerator() != null) {
-			getPersistenceUnit().addGenerator(getTableGenerator());
-		}
-		
-		if (getSequenceGenerator() != null) {
-			getPersistenceUnit().addGenerator(getSequenceGenerator());
-		}
 	}
 	
 	protected JavaConverter buildSpecifiedConverter(String converterType) {

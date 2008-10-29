@@ -157,6 +157,7 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 		this.name = xmlResourceGenerator.getName();
 		this.specifiedInitialValue = xmlResourceGenerator.getInitialValue();
 		this.specifiedAllocationSize = xmlResourceGenerator.getAllocationSize();
+		getPersistenceUnit().addGenerator(this);
 		//TODO defaults
 	}
 	
@@ -165,6 +166,7 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 		this.setName_(xmlResourceGenerator.getName());
 		this.setSpecifiedInitialValue_(xmlResourceGenerator.getInitialValue());
 		this.setSpecifiedAllocationSize_(xmlResourceGenerator.getAllocationSize());
+		getPersistenceUnit().addGenerator(this);
 		//TODO defaults
 	}
 	
