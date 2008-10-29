@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.Database;
+import org.eclipse.jpt.db.DatabaseFinder;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -358,7 +359,7 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 	}
 
 	private ConnectionProfile buildConnectionProfile(String name) {
-		return this.getConnectionProfileFactory().buildConnectionProfile(name);
+		return this.getConnectionProfileFactory().buildConnectionProfile(name, DatabaseFinder.Default.instance());
 	}
 
 	private boolean connectionIsActive() {
