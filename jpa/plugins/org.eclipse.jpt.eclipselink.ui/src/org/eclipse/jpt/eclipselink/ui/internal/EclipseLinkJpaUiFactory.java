@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.ui.internal;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.ManyToManyMapping;
@@ -50,9 +49,12 @@ import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkVersi
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipselinkOneToManyMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipselinkOneToOneMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.options.PersistenceXmlOptionsTab;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmBasicMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmEmbeddableComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmEntityComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmIdMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmMappedSuperclassComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmVersionMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.schema.generation.PersistenceXmlSchemaGenerationTab;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -200,7 +202,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 	// **************** mapping UI *********************************************
 	
 	@Override
-	public JpaComposite createBasicMappingComposite(
+	public JpaComposite createJavaBasicMappingComposite(
 		PropertyValueModel<BasicMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory) {
@@ -209,7 +211,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 	}
 	
 	@Override
-	public JpaComposite createIdMappingComposite(
+	public JpaComposite createJavaIdMappingComposite(
 		PropertyValueModel<IdMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory) {
@@ -218,12 +220,38 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 	}
 	
 	@Override
-	public JpaComposite createVersionMappingComposite(
+	public JpaComposite createJavaVersionMappingComposite(
 		PropertyValueModel<VersionMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory) {
 		
 		return new EclipseLinkVersionMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	@Override
+	public JpaComposite createOrmBasicMappingComposite(
+		PropertyValueModel<BasicMapping> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
+
+		return new EclipseLinkOrmBasicMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createOrmIdMappingComposite(
+		PropertyValueModel<IdMapping> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
+
+		return new EclipseLinkOrmIdMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createOrmVersionMappingComposite(
+		PropertyValueModel<VersionMapping> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
+		
+		return new EclipseLinkOrmVersionMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override

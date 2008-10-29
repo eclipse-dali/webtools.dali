@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal.java.details;
+package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BasicMapping;
@@ -21,47 +21,48 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-public class DefaultBasicMappingUiProvider
+public class EclipseLinkOrmBasicMappingUiProvider
 	implements AttributeMappingUiProvider<BasicMapping>
 {
 	// singleton
-	private static final DefaultBasicMappingUiProvider INSTANCE = new DefaultBasicMappingUiProvider();
-
+	private static final EclipseLinkOrmBasicMappingUiProvider INSTANCE = new EclipseLinkOrmBasicMappingUiProvider();
+	
+	/**
+	 * Ensure single instance.
+	 */
+	private EclipseLinkOrmBasicMappingUiProvider() {
+		super();
+	}
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static AttributeMappingUiProvider<BasicMapping> instance() {
 		return INSTANCE;
 	}
-
-	/**
-	 * Ensure single instance.
-	 */
-	private DefaultBasicMappingUiProvider() {
-		super();
-	}
-
-	public String getMappingKey() {
-		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
-	}
-
-	public String getLabel() {
-		return JptUiMappingsMessages.DefaultBasicMappingUiProvider_label;
-	}
-
-	public String getLinkLabel() {
-		return JptUiMappingsMessages.DefaultBasicMappingUiProvider_linkLabel;
-	}
-
-	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
-	}
-
-	public JpaComposite buildAttributeMappingComposite(JpaUiFactory factory,
+	
+	public JpaComposite buildAttributeMappingComposite(
+		JpaUiFactory factory,
 		PropertyValueModel<BasicMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory) {
-
-		return factory.createJavaBasicMappingComposite(subjectHolder, parent, widgetFactory);
+		
+		return factory.createOrmBasicMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public Image getImage() {
+		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
+	}
+	
+	public String getLabel() {
+		return JptUiMappingsMessages.BasicMappingUiProvider_label;
+	}
+	
+	public String getLinkLabel() {
+		return JptUiMappingsMessages.BasicMappingUiProvider_linkLabel;
+	}
+	
+	public String getMappingKey() {
+		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
 }

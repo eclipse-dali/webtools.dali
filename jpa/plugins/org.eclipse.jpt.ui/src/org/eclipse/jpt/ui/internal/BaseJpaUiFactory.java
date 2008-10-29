@@ -63,7 +63,15 @@ import org.eclipse.swt.widgets.Composite;
  */
 public abstract class BaseJpaUiFactory implements JpaUiFactory
 {
-	public JpaComposite createBasicMappingComposite(
+	public JpaComposite createJavaBasicMappingComposite(
+		PropertyValueModel<BasicMapping> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
+
+		return new BasicMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createOrmBasicMappingComposite(
 		PropertyValueModel<BasicMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory) {
@@ -119,7 +127,15 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 		return new OrmEntityComposite(subjectHolder, parent, widgetFactory);
 	}
 
-	public JpaComposite createIdMappingComposite(
+	public JpaComposite createJavaIdMappingComposite(
+		PropertyValueModel<IdMapping> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
+
+		return new IdMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+
+	public JpaComposite createOrmIdMappingComposite(
 		PropertyValueModel<IdMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory) {
@@ -198,7 +214,15 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 		return new TransientMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 
-	public JpaComposite createVersionMappingComposite(
+	public JpaComposite createJavaVersionMappingComposite(
+		PropertyValueModel<VersionMapping> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
+
+		return new VersionMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createOrmVersionMappingComposite(
 		PropertyValueModel<VersionMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory) {

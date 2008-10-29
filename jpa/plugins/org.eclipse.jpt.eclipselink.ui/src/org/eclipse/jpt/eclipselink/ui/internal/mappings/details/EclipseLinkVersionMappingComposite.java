@@ -20,7 +20,6 @@ import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.ColumnComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TemporalTypeComposite;
@@ -95,7 +94,7 @@ public class EclipseLinkVersionMappingComposite extends FormPane<VersionMapping>
 		initializeConversionPane(container);
 	}
 	
-	private void initializeGeneralPane(Composite container) {
+	protected void initializeGeneralPane(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
 
 		// Column widgets

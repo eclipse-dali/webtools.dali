@@ -21,7 +21,6 @@ import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.ColumnComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.EnumTypeComposite;
@@ -101,7 +100,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EclipseLinkBasicMappingComposite(PropertyValueModel<BasicMapping> subjectHolder,
+	public EclipseLinkBasicMappingComposite(PropertyValueModel<? extends BasicMapping> subjectHolder,
 	                             Composite parent,
 	                             WidgetFactory widgetFactory) {
 
@@ -114,7 +113,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		initializeConversionPane(container);
 	}
 	
-	private void initializeGeneralPane(Composite container) {
+	protected void initializeGeneralPane(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
 
 		new ColumnComposite(this, buildColumnHolder(), container);

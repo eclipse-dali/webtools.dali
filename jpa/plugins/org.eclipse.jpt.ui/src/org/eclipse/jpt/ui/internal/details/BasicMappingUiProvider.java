@@ -47,7 +47,7 @@ public class BasicMappingUiProvider
 		Composite parent,
 		WidgetFactory widgetFactory) {
 		
-		return factory.createBasicMappingComposite(subjectHolder, parent, widgetFactory);
+		return factory.createJavaBasicMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	public Image getImage() {

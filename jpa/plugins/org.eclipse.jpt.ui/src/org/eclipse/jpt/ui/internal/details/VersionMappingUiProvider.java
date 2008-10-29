@@ -64,6 +64,6 @@ public class VersionMappingUiProvider
 		Composite parent,
 		WidgetFactory widgetFactory) {
 
-		return factory.createVersionMappingComposite(subjectHolder, parent, widgetFactory);
+		return factory.createJavaVersionMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

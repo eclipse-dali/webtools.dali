@@ -62,7 +62,20 @@ public interface JpaUiFactory
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite createBasicMappingComposite(
+	JpaComposite createJavaBasicMappingComposite(
+		PropertyValueModel<BasicMapping> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory);
+	
+	/**
+	 * Creates a new <code>JpaComposite</code> used to edit a <code>BasicMapping</code>.
+	 *
+	 * @param subjectHolder The holder of the basic mapping
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create the widgets
+	 * @return A new <code>JpaComposite</code>
+	 */
+	JpaComposite createOrmBasicMappingComposite(
 		PropertyValueModel<BasicMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
@@ -153,7 +166,20 @@ public interface JpaUiFactory
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite createIdMappingComposite(
+	JpaComposite createJavaIdMappingComposite(
+		PropertyValueModel<IdMapping> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory);
+	
+	/**
+	 * Creates a new <code>JpaComposite</code> used to edit an <code>IdMapping</code>.
+	 *
+	 * @param subjectHolder The holder of the ID mapping
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create the widgets
+	 * @return A new <code>JpaComposite</code>
+	 */
+	JpaComposite createOrmIdMappingComposite(
 		PropertyValueModel<IdMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
@@ -272,7 +298,20 @@ public interface JpaUiFactory
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite createVersionMappingComposite(
+	JpaComposite createJavaVersionMappingComposite(
+		PropertyValueModel<VersionMapping> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory);
+	
+	/**
+	 * Creates a new <code>JpaComposite</code> used to edit a <code>VersionMapping</code>.
+	 *
+	 * @param subjectHolder The holder of the version mapping
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create the widgets
+	 * @return A new <code>JpaComposite</code>
+	 */
+	JpaComposite createOrmVersionMappingComposite(
 		PropertyValueModel<VersionMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
