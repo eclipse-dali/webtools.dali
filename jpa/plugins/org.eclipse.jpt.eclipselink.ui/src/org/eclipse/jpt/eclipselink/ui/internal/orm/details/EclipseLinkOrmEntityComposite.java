@@ -17,6 +17,7 @@ import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.ConverterHolder;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEntity;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ChangeTrackingComposite;
@@ -47,7 +48,7 @@ public class EclipseLinkOrmEntityComposite extends AbstractEntityComposite<OrmEn
 		initializeInheritancePane(container);
 		initializeAttributeOverridesPane(container);
 		initializeGeneratorsPane(container);
-//		TODO - initializeConvertersPane(container);
+		initializeConvertersPane(container);
 		initializeSecondaryTablesPane(container);
 		initializeAdvancedPane(container);
 	}
@@ -76,6 +77,25 @@ public class EclipseLinkOrmEntityComposite extends AbstractEntityComposite<OrmEn
 	@Override
 	protected void addSecondaryTablesComposite(Composite container) {
 		new OrmSecondaryTablesComposite(this, container);
+	}
+
+	protected void initializeConvertersPane(Composite container) {
+
+		container = addCollapsableSection(
+			container,
+			EclipseLinkUiMappingsMessages.ConvertersComposite_Label
+		);
+
+		new ConvertersComposite(this, buildConverterHolder(), container);
+	}
+	
+	private PropertyValueModel<ConverterHolder> buildConverterHolder() {
+		return new PropertyAspectAdapter<OrmEntity, ConverterHolder>(getSubjectHolder()) {
+			@Override
+			protected ConverterHolder buildValue_() {
+				return ((EclipseLinkOrmEntity) this.subject).getConverterHolder();
+			}
+		};
 	}
 	
 	protected void initializeAdvancedPane(Composite container) {

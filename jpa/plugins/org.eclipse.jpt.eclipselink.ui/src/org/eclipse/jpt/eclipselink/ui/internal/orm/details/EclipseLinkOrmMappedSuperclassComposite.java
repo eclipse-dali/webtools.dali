@@ -16,6 +16,7 @@ import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.ConverterHolder;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmMappedSuperclass;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ChangeTrackingComposite;
@@ -42,7 +43,7 @@ public class EclipseLinkOrmMappedSuperclassComposite extends FormPane<OrmMappedS
 	protected void initializeLayout(Composite container) {
 		new IdClassComposite(this, container);
 		initializeCachingPane(container);
-//		TODO - initializeConvertersPane(container);
+		initializeConvertersPane(container);
 		initializeAdvancedPane(container);
 	}
 	protected void initializeCachingPane(Composite container) {
@@ -62,6 +63,25 @@ public class EclipseLinkOrmMappedSuperclassComposite extends FormPane<OrmMappedS
 			@Override
 			protected Caching buildValue_() {
 				return ((EclipseLinkMappedSuperclass) this.subject).getCaching();
+			}
+		};
+	}
+
+	protected void initializeConvertersPane(Composite container) {
+
+		container = addCollapsableSection(
+			container,
+			EclipseLinkUiMappingsMessages.ConvertersComposite_Label
+		);
+
+		new ConvertersComposite(this, buildConverterHolder(), container);
+	}
+	
+	private PropertyValueModel<ConverterHolder> buildConverterHolder() {
+		return new PropertyAspectAdapter<OrmMappedSuperclass, ConverterHolder>(getSubjectHolder()) {
+			@Override
+			protected ConverterHolder buildValue_() {
+				return ((EclipseLinkOrmMappedSuperclass) this.subject).getConverterHolder();
 			}
 		};
 	}

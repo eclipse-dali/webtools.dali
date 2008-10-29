@@ -13,6 +13,8 @@ import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEmbeddable;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.ConverterHolder;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEmbeddable;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ChangeTrackingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CustomizerComposite;
@@ -52,29 +54,28 @@ public class EclipseLinkOrmEmbeddableComposite extends FormPane<OrmEmbeddable>
 
 	@Override
 	protected void initializeLayout(Composite container) {
-//		initializeConvertersPane(container);
+		initializeConvertersPane(container);
 		initializeAdvancedPane(container);
 	}
-//
-//	protected void initializeConvertersPane(Composite container) {
-//
-//		container = addCollapsableSection(
-//			addSubPane(container, 5),
-//			EclipseLinkUiMappingsMessages.EclipseLinkTypeMappingComposite_converters
-//		);
-//
-//		new ConvertersComposite(this, buildConverterHolderValueModel(), container);
-//	}
-//
-//	protected PropertyValueModel<JavaConverterHolder> buildConverterHolderValueModel() {
-//		return new PropertyAspectAdapter<JavaEmbeddable, JavaConverterHolder>(getSubjectHolder()) {
-//			@Override
-//			protected JavaConverterHolder buildValue_() {
-//				return ((EclipseLinkJavaEmbeddable) this.subject).getConverterHolder();
-//			}	
-//		};
-//	}
+
+	protected void initializeConvertersPane(Composite container) {
+
+		container = addCollapsableSection(
+			container,
+			EclipseLinkUiMappingsMessages.ConvertersComposite_Label
+		);
+
+		new ConvertersComposite(this, buildConverterHolder(), container);
+	}
 	
+	private PropertyValueModel<ConverterHolder> buildConverterHolder() {
+		return new PropertyAspectAdapter<OrmEmbeddable, ConverterHolder>(getSubjectHolder()) {
+			@Override
+			protected ConverterHolder buildValue_() {
+				return ((EclipseLinkOrmEmbeddable) this.subject).getConverterHolder();
+			}
+		};
+	}
 	
 	protected void initializeAdvancedPane(Composite container) {
 		container = addCollapsableSection(
