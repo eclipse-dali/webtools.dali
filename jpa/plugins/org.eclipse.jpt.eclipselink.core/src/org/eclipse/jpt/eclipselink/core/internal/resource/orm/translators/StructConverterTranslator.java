@@ -20,7 +20,7 @@ public class StructConverterTranslator extends Translator
 	
 	
 	public StructConverterTranslator(String domNameAndPath, EStructuralFeature aFeature) {
-		super(domNameAndPath, aFeature);
+		super(domNameAndPath, aFeature, END_TAG_NO_INDENT);
 	}
 	
 	@Override

@@ -20,7 +20,7 @@ public class TypeConverterTranslator extends Translator
 	
 	
 	public TypeConverterTranslator(String domNameAndPath, EStructuralFeature aFeature) {
-		super(domNameAndPath, aFeature);
+		super(domNameAndPath, aFeature, END_TAG_NO_INDENT);
 	}
 	
 	@Override

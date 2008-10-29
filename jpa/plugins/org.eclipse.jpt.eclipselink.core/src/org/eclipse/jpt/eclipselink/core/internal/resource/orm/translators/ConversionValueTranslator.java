@@ -19,8 +19,9 @@ public class ConversionValueTranslator extends Translator
 	
 	
 	public ConversionValueTranslator() {
-		super(CONVERSION_VALUE, ECLIPSELINK_ORM_PKG.getXmlObjectTypeConverter_ConversionValues());
+		super(CONVERSION_VALUE, ECLIPSELINK_ORM_PKG.getXmlObjectTypeConverter_ConversionValues(), END_TAG_NO_INDENT);
 	}
+	
 	@Override
 	public EObject createEMFObject(@SuppressWarnings("unused") String nodeName, @SuppressWarnings("unused") String readAheadName) {
 		return EclipseLinkOrmFactory.eINSTANCE.createXmlConversionValueImpl();
