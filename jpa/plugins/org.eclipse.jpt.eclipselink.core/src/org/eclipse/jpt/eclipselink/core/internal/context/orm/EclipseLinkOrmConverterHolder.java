@@ -109,7 +109,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 		EclipseLinkOrmObjectTypeConverter contextObjectTypeConverter = new EclipseLinkOrmObjectTypeConverter(this, resourceObjectTypeConverter);
 		this.objectTypeConverters.add(index, contextObjectTypeConverter);
 		this.resourceConvertersHolder.getObjectTypeConverters().add(index, resourceObjectTypeConverter);
-		this.fireItemAdded(STRUCT_CONVERTERS_LIST, index, contextObjectTypeConverter);
+		this.fireItemAdded(OBJECT_TYPE_CONVERTERS_LIST, index, contextObjectTypeConverter);
 		return contextObjectTypeConverter;
 	}
 
