@@ -45,14 +45,11 @@ public class EclipseLinkJavaBasicMappingImpl extends GenericJavaBasicMapping imp
 	
 	@Override
 	protected String specifiedConverterType(JavaResourcePersistentAttribute jrpa) {
-		String specifiedConverterType = super.specifiedConverterType(jrpa);
-		if (specifiedConverterType != null) {
-			return specifiedConverterType;
-		}
+		//check @Convert first, this is the order that EclipseLink searches
 		if (jrpa.getSupportingAnnotation(ConvertAnnotation.ANNOTATION_NAME) != null) {
 			return Convert.ECLIPSE_LINK_CONVERTER;
 		}
-		return null;
+		return super.specifiedConverterType(jrpa);
 	}
 	
 	//************ EclipselinkJavaBasicMapping implementation ****************

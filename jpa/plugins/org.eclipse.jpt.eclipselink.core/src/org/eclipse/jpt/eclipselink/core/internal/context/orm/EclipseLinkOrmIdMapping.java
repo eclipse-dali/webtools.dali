@@ -54,14 +54,11 @@ public class EclipseLinkOrmIdMapping extends GenericOrmIdMapping
 	
 	@Override
 	protected String specifiedConverterType() {
-		String specifiedConverterType = super.specifiedConverterType();
-		if (specifiedConverterType != null) {
-			return specifiedConverterType;
-		}
+		//check @Convert first, this is the order that EclipseLink searches
 		if (((XmlId) this.resourceAttributeMapping).getConvert() != null) {
 			return Convert.ECLIPSE_LINK_CONVERTER;
 		}
-		return null;
+		return super.specifiedConverterType();
 	}
 	
 	// **************** resource-context interaction ***************************

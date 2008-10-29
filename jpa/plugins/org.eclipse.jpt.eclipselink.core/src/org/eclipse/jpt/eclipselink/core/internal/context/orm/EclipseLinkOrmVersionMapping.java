@@ -54,14 +54,11 @@ public class EclipseLinkOrmVersionMapping extends GenericOrmVersionMapping
 	
 	@Override
 	protected String specifiedConverterType() {
-		String specifiedConverterType = super.specifiedConverterType();
-		if (specifiedConverterType != null) {
-			return specifiedConverterType;
-		}
+		//check @Convert first, this is the order that EclipseLink searches
 		if (((XmlVersion) this.resourceAttributeMapping).getConvert() != null) {
 			return Convert.ECLIPSE_LINK_CONVERTER;
 		}
-		return null;
+		return super.specifiedConverterType();
 	}
 	
 	// **************** resource-context interaction ***************************
