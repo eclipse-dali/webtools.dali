@@ -9,70 +9,46 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.StructConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.StructConverterAnnotation;
 
-public class EclipseLinkJavaStructConverter extends AbstractJavaJpaContextNode implements StructConverter, EclipseLinkJavaConverter
+public class EclipseLinkJavaStructConverter extends EclipseLinkJavaConverter
+	implements StructConverter
 {	
-	private JavaResourcePersistentMember resourcePersistentMember;
-	
-	private String name;
-	
 	private String converterClass;
 	
+	
 	public EclipseLinkJavaStructConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
-		super(parent);
-		this.initialize(jrpm);
+		super(parent, jrpm);
 	}
-
+	
+	
 	public String getType() {
 		return EclipseLinkConverter.STRUCT_CONVERTER;
 	}
-
+	
 	public String getAnnotationName() {
 		return StructConverterAnnotation.ANNOTATION_NAME;
 	}
-
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getResourceConverter().getTextRange(astRoot);
+	
+	protected StructConverterAnnotation getAnnotation() {
+		return (StructConverterAnnotation) super.getAnnotation();
 	}
-
-	protected StructConverterAnnotation getResourceConverter() {
-		return (StructConverterAnnotation) this.resourcePersistentMember.getSupportingAnnotation(getAnnotationName());
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		getResourceConverter().setName(newName);
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
-	}
-
-	protected void setName_(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
-	}
+	
+	
+	// **************** converter class ****************************************
 	
 	public String getConverterClass() {
 		return this.converterClass;
 	}
-
+	
 	public void setConverterClass(String newConverterClass) {
 		String oldConverterClass = this.converterClass;
 		this.converterClass = newConverterClass;
-		getResourceConverter().setConverter(newConverterClass);
+		getAnnotation().setConverter(newConverterClass);
 		firePropertyChanged(CONVERTER_CLASS_PROPERTY, oldConverterClass, newConverterClass);
 	}
 	
@@ -81,28 +57,21 @@ public class EclipseLinkJavaStructConverter extends AbstractJavaJpaContextNode i
 		this.converterClass = newConverterClass;
 		firePropertyChanged(CONVERTER_CLASS_PROPERTY, oldConverterClass, newConverterClass);
 	}
-
-
+	
+	
+	// **************** resource interaction ***********************************
+	
 	protected void initialize(JavaResourcePersistentMember jrpm) {
-		this.resourcePersistentMember = jrpm;
-		StructConverterAnnotation resourceConverter = getResourceConverter();
-		this.name = this.name(resourceConverter);
-		this.converterClass = this.converterClass(resourceConverter);
+		super.initialize(jrpm);
+		this.converterClass = this.converterClass(getAnnotation());
 	}
 	
 	public void update(JavaResourcePersistentMember jrpm) {
-		this.resourcePersistentMember = jrpm;
-		StructConverterAnnotation resourceConverter = getResourceConverter();
-		this.setName_(this.name(resourceConverter));
-		this.setConverterClass_(this.converterClass(resourceConverter));
-	}
-
-	protected String name(StructConverterAnnotation resourceConverter) {
-		return resourceConverter == null ? null : resourceConverter.getName();
+		super.update(jrpm);
+		this.setConverterClass_(this.converterClass(getAnnotation()));
 	}
 	
 	protected String converterClass(StructConverterAnnotation resourceConverter) {
 		return resourceConverter == null ? null : resourceConverter.getConverter();
 	}
-
 }

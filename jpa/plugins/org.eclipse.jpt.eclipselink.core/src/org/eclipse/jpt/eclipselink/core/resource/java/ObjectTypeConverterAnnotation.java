@@ -28,9 +28,8 @@ import org.eclipse.jpt.core.utility.TextRange;
  */
 public interface ObjectTypeConverterAnnotation extends TypeConverterAnnotation
 {
-	
 	String ANNOTATION_NAME = EclipseLinkJPA.OBJECT_TYPE_CONVERTER;
-
+	
 	/**
 	 * Corresponds to the conversionValues element of the ObjectTypeConverter annotation.
 	 * Returns an empty iterator if the conversionValues element does not exist in java.
@@ -42,7 +41,7 @@ public interface ObjectTypeConverterAnnotation extends TypeConverterAnnotation
 	int indexOfConversionValue(ConversionValueAnnotation conversionValue);
 	
 	int conversionValuesSize();
-
+	
 	ConversionValueAnnotation addConversionValue(int index);
 	
 	void removeConversionValue(int index);
@@ -50,7 +49,6 @@ public interface ObjectTypeConverterAnnotation extends TypeConverterAnnotation
 	void moveConversionValue(int targetIndex, int sourceIndex);
 	
 		String CONVERSION_VALUES_LIST = "conversionValuesList"; //$NON-NLS-1$
-		
 		
 	/**
 	 * Corresponds to the defaultObjectValue element of the ObjectTypeConverter annotation.
@@ -70,5 +68,4 @@ public interface ObjectTypeConverterAnnotation extends TypeConverterAnnotation
 	 * does not exist return the {@link TextRange} for the ObjectTypeConverter annotation.
 	 */
 	TextRange getDefaultObjectValueTextRange(CompilationUnit astRoot);
-	
 }

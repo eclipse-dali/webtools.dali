@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.context;
 import org.eclipse.jpt.core.context.JpaContextNode;
 
 /**
- * Corresponds to a *Converter resource model object
+ * Corresponds to a *CustomConverter resource model object
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -27,16 +27,15 @@ public interface EclipseLinkConverter extends JpaContextNode
 {
 	/**
 	 * Return a string that represents the type of converter.
-	 * Possibilities are below, NO_CONVERTER, CONVERTER, 
+	 * Possibilities are below, NO_CONVERTER, CUSTOM_CONVERTER, 
 	 * OBJECT_TYPE_CONVERTER, STRUCT_CONVERTER, TYPE_CONVERTER
 	 */
 	String getType();
-	
-	String CONVERTER = "converter"; //$NON-NLS-1$
-	String NO_CONVERTER = "noConverter"; //$NON-NLS-1$
-	String OBJECT_TYPE_CONVERTER = "objectTypeConverter"; //$NON-NLS-1$
-	String STRUCT_CONVERTER = "structConverter"; //$NON-NLS-1$
-	String TYPE_CONVERTER = "typeConverter"; //$NON-NLS-1$
+		String NO_CONVERTER = "noConverter"; //$NON-NLS-1$
+		String CUSTOM_CONVERTER = "customConverter"; //$NON-NLS-1$
+		String OBJECT_TYPE_CONVERTER = "objectTypeConverter"; //$NON-NLS-1$
+		String STRUCT_CONVERTER = "structConverter"; //$NON-NLS-1$
+		String TYPE_CONVERTER = "typeConverter"; //$NON-NLS-1$
 	
 	String getName();	
 	void setName(String name);

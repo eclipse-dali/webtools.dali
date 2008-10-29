@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -26,33 +25,18 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @version 2.1
  * @since 2.1
  */
-public interface ConverterAnnotation extends JavaResourceNode
+public interface ConverterAnnotation extends NamedConverterAnnotation
 {
-	
 	String ANNOTATION_NAME = EclipseLinkJPA.CONVERTER;
-	
 		
 	/**
-	 * Corresponds to the name element of the Converter annotation.
-	 * Returns null if the name element does not exist in java.
-	 */
-	String getName();
-	
-	/**
-	 * Corresponds to the name element of the Converter annotation.
-	 * Set to null to remove the name element.
-	 */
-	void setName(String value);
-		String NAME_PROPERTY = "nameProperty"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the converterClass element of the Converter annotation.
+	 * Corresponds to the converterClass element of the CustomConverter annotation.
 	 * Returns null if the converterClass element does not exist in java.
 	 */
 	String getConverterClass();
 	
 	/**
-	 * Corresponds to the converterClass element of the Converter annotation.
+	 * Corresponds to the converterClass element of the CustomConverter annotation.
 	 * Set to null to remove the converterClass element.
 	 */
 	void setConverterClass(String value);
@@ -68,15 +52,8 @@ public interface ConverterAnnotation extends JavaResourceNode
 		String ECLIPSELINK_CONVERTER_CLASS_NAME = "org.eclipse.persistence.mappings.converters.Converter"; //$NON-NLS-1$
 
 	/**
-	 * Return the {@link TextRange} for the name element.  If the name element 
-	 * does not exist return the {@link TextRange} for the Converter annotation.
-	 */
-	TextRange getNameTextRange(CompilationUnit astRoot);
-
-	/**
 	 * Return the {@link TextRange} for the converterClass element.  If the converterClass element 
-	 * does not exist return the {@link TextRange} for the Converter annotation.
+	 * does not exist return the {@link TextRange} for the CustomConverter annotation.
 	 */
 	TextRange getConverterClassTextRange(CompilationUnit astRoot);
-
 }

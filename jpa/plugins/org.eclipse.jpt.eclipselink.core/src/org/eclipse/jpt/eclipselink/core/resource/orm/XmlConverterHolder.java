@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Xml Converter Holder</b></em>'.
+ * A representation of the model object '<em><b>Xml CustomConverter Holder</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
@@ -37,7 +37,7 @@ public interface XmlConverterHolder extends JpaEObject
 	 * Returns the value of the '<em><b>Converter</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Converter</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>CustomConverter</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
@@ -63,7 +63,7 @@ public interface XmlConverterHolder extends JpaEObject
 	 * Returns the value of the '<em><b>Type Converter</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Type Converter</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Type CustomConverter</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
@@ -89,7 +89,7 @@ public interface XmlConverterHolder extends JpaEObject
 	 * Returns the value of the '<em><b>Object Type Converter</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Object Type Converter</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Object Type CustomConverter</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
@@ -115,7 +115,7 @@ public interface XmlConverterHolder extends JpaEObject
 	 * Returns the value of the '<em><b>Struct Converter</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Struct Converter</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Struct CustomConverter</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->

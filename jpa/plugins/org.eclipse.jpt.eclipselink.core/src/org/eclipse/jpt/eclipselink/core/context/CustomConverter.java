@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.context;
 
 /**
- * Corresponds to a Converter resource model object
+ * Corresponds to a CustomConverter resource model object
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,7 +21,7 @@ package org.eclipse.jpt.eclipselink.core.context;
  * @version 2.1
  * @since 2.1
  */
-public interface Converter extends EclipseLinkConverter
+public interface CustomConverter extends EclipseLinkConverter
 {
 		
 	String getConverterClass();	

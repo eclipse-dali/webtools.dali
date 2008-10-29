@@ -11,42 +11,42 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.Converter;
+import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkOrmConverterImpl extends AbstractXmlContextNode implements Converter, EclipseLinkOrmConverter
+public class EclipseLinkOrmCustomConverter extends EclipseLinkOrmConverter
+	implements CustomConverter
 {	
-	private XmlConverter resourceConverter;
-	
-	private String name;
-	
 	private String converterClass;
 	
-	public EclipseLinkOrmConverterImpl(XmlContextNode parent, XmlConverter resourceConverter) {
-		super(parent);
-		this.initialize(resourceConverter);
-	}
-
-	public XmlConverter getResourceConverter() {
-		return this.resourceConverter;
+	
+	public EclipseLinkOrmCustomConverter(XmlContextNode parent, XmlConverter xmlResource) {
+		super(parent, xmlResource);
 	}
 	
+	
 	public String getType() {
-		return EclipseLinkConverter.CONVERTER;
+		return EclipseLinkConverter.CUSTOM_CONVERTER;
 	}
+	
+	@Override
+	protected XmlConverter getXmlResource() {
+		return (XmlConverter) super.getXmlResource();
+	}
+	
+	
+	// **************** converter class ****************************************
 	
 	public String getConverterClass() {
 		return this.converterClass;
 	}
-
+	
 	public void setConverterClass(String newConverterClass) {
 		String oldConverterClass = this.converterClass;
 		this.converterClass = newConverterClass;
-		this.resourceConverter.setClassName(newConverterClass);
+		getXmlResource().setClassName(newConverterClass);
 		firePropertyChanged(CONVERTER_CLASS_PROPERTY, oldConverterClass, newConverterClass);
 	}
 	
@@ -55,44 +55,26 @@ public class EclipseLinkOrmConverterImpl extends AbstractXmlContextNode implemen
 		this.converterClass = newConverterClass;
 		firePropertyChanged(CONVERTER_CLASS_PROPERTY, oldConverterClass, newConverterClass);
 	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		this.resourceConverter.setName(newName);
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
-	}
-
-	protected void setName_(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
-	}
 	
-	protected void initialize(XmlConverter resourceConverter) {
-		this.resourceConverter = resourceConverter;
-		this.name = this.name();
-		this.converterClass = this.converterClass();
+	
+	// **************** resource interaction ***********************************
+	
+	protected void initialize(XmlConverter xmlResource) {
+		super.initialize(xmlResource);
+		this.converterClass = calculateConverterClass();
 	}
 	
 	public void update() {
-		this.setName_(this.name());
-		this.setConverterClass_(this.converterClass());
-	}
-
-	protected String name() {
-		return this.resourceConverter.getName();
+		super.update();
+		setConverterClass_(calculateConverterClass());
 	}
 	
-	protected String converterClass() {
-		return this.resourceConverter.getClassName();
+	protected String calculateConverterClass() {
+		return getXmlResource().getClassName();
 	}
 	
-	//************ validation ***************
+	
+	// **************** validation *********************************************
 	
 	@Override
 	public void validate(List<IMessage> messages) {
@@ -117,8 +99,4 @@ public class EclipseLinkOrmConverterImpl extends AbstractXmlContextNode implemen
 //	public TextRange getConverterClassTextRange() {
 //		return getResourceConverter().getClassNameTextRange();
 //	}
-
-	public TextRange getValidationTextRange() {
-		return this.resourceConverter.getValidationTextRange();
-	}
 }

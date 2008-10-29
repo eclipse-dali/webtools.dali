@@ -29,7 +29,7 @@ public class StructConverterTranslator extends Translator
 	}
 	
 	@Override
-	public Translator[] getChildren(@SuppressWarnings("unused") Object target, @SuppressWarnings("unused") int versionID) {
+	protected Translator[] getChildren() {
 		if (this.children == null) {
 			this.children = createChildren();
 		}
@@ -44,7 +44,7 @@ public class StructConverterTranslator extends Translator
 	}
 	
 	protected Translator createNameTranslator() {
-		return new Translator(STRUCT_CONVERTER__NAME, ECLIPSELINK_ORM_PKG.getXmlStructConverter_Name(), DOM_ATTRIBUTE);
+		return new Translator(STRUCT_CONVERTER__NAME, ECLIPSELINK_ORM_PKG.getXmlNamedConverter_Name(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createConverterTranslator() {

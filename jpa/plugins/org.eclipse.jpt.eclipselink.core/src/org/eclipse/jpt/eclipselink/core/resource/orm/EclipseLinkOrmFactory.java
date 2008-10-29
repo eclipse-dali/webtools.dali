@@ -79,6 +79,11 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		switch (eClass.getClassifierID())
 		{
+			case EclipseLinkOrmPackage.XML_CONVERTER_IMPL: return (EObject)createXmlConverterImpl();
+			case EclipseLinkOrmPackage.XML_TYPE_CONVERTER_IMPL: return (EObject)createXmlTypeConverterImpl();
+			case EclipseLinkOrmPackage.XML_CONVERSION_VALUE_IMPL: return (EObject)createXmlConversionValueImpl();
+			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL: return (EObject)createXmlObjectTypeConverterImpl();
+			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER_IMPL: return (EObject)createXmlStructConverterImpl();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS: return (EObject)createXmlEntityMappings();
 			case EclipseLinkOrmPackage.XML_CUSTOMIZER: return (EObject)createXmlCustomizer();
 			case EclipseLinkOrmPackage.XML_CHANGE_TRACKING: return (EObject)createXmlChangeTracking();
@@ -87,11 +92,6 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_CACHE: return (EObject)createXmlCache();
 			case EclipseLinkOrmPackage.XML_ENTITY: return (EObject)createXmlEntity();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
-			case EclipseLinkOrmPackage.XML_CONVERTER_IMPL: return (EObject)createXmlConverterImpl();
-			case EclipseLinkOrmPackage.XML_TYPE_CONVERTER_IMPL: return (EObject)createXmlTypeConverterImpl();
-			case EclipseLinkOrmPackage.XML_CONVERSION_VALUE_IMPL: return (EObject)createXmlConversionValueImpl();
-			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL: return (EObject)createXmlObjectTypeConverterImpl();
-			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER_IMPL: return (EObject)createXmlStructConverterImpl();
 			case EclipseLinkOrmPackage.XML_ID_IMPL: return (EObject)createXmlIdImpl();
 			case EclipseLinkOrmPackage.XML_BASIC_IMPL: return (EObject)createXmlBasicImpl();
 			case EclipseLinkOrmPackage.XML_VERSION_IMPL: return (EObject)createXmlVersionImpl();

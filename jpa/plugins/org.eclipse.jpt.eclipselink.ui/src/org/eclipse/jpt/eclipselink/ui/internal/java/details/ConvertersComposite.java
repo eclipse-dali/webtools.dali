@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
-import org.eclipse.jpt.eclipselink.core.context.Converter;
+import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.StructConverter;
 import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ConverterComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CustomConverterComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ObjectTypeConverterComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.StructConverterComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.TypeConverterComposite;
@@ -30,11 +30,11 @@ import org.eclipse.swt.widgets.Composite;
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
- * | X Converter                                                               |
+ * | X CustomConverter                                                         |
  * |                                                                           |
  * |   ----------------------------------------------------------------------- |
  * |   |                                                                     | |
- * |   | ConverterComposite                                                  | |
+ * |   | CustomConverterComposite                                            | |
  * |   |                                                                     | |
  * |   ----------------------------------------------------------------------- |
  * |                                                                           |
@@ -98,9 +98,9 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 			null
 		);
 
-		// Converter pane
-		new ConverterComposite(
-			buildConverterHolder(),
+		// Custom Converter pane
+		new CustomConverterComposite(
+			buildCustomConverterHolder(),
 			addSubPane(container, 0, converterCheckBox.getBorderWidth() + 16),
 			getWidgetFactory()
 		);
@@ -170,10 +170,10 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 		};
 	}
 	
-	private PropertyValueModel<Converter> buildConverterHolder() {
-		return new PropertyAspectAdapter<JavaConverterHolder, Converter>(getSubjectHolder(), JavaConverterHolder.CONVERTER_PROPERTY) {
+	private PropertyValueModel<CustomConverter> buildCustomConverterHolder() {
+		return new PropertyAspectAdapter<JavaConverterHolder, CustomConverter>(getSubjectHolder(), JavaConverterHolder.CONVERTER_PROPERTY) {
 			@Override
-			protected Converter buildValue_() {
+			protected CustomConverter buildValue_() {
 				return this.subject.getConverter();
 			}
 		};

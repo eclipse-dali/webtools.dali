@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlVersion;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
-import org.eclipse.jpt.eclipselink.core.context.Converter;
+import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
@@ -70,8 +70,8 @@ public class EclipseLinkVirtualXmlVersion extends VirtualXmlVersion implements X
 		//don't need isOrmMetadataComplete() check because there is no default Id mapping
 		if (this.javaAttributeMapping.getConverter().getType() == Convert.ECLIPSE_LINK_CONVERTER) {
 			EclipseLinkConverter converter = ((Convert) this.javaAttributeMapping.getConverter()).getConverter();
-			if (converter != null && converter.getType() == EclipseLinkConverter.CONVERTER) {
-				return new EclipseLinkVirtualXmlConverter(this.ormTypeMapping, (Converter) ((Convert) this.javaAttributeMapping.getConverter()).getConverter());
+			if (converter != null && converter.getType() == EclipseLinkConverter.CUSTOM_CONVERTER) {
+				return new EclipseLinkVirtualXmlConverter(this.ormTypeMapping, (CustomConverter) ((Convert) this.javaAttributeMapping.getConverter()).getConverter());
 			}
 		}
 		return null;

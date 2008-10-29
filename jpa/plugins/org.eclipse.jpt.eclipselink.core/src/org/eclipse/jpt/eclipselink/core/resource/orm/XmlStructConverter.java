@@ -13,55 +13,27 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Xml Struct Converter</b></em>'.
+ * A representation of the model object '<em><b>Xml Struct CustomConverter</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter#getConverter <em>Converter</em>}</li>
  * </ul>
  * </p>
  *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStructConverter()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
  * @generated
  */
-public interface XmlStructConverter extends JpaEObject
+public interface XmlStructConverter extends XmlNamedConverter
 {
-	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see #setName(String)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStructConverter_Name()
-	 * @model
-	 * @generated
-	 */
-	String getName();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter#getName <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Name</em>' attribute.
-	 * @see #getName()
-	 * @generated
-	 */
-	void setName(String value);
-
 	/**
 	 * Returns the value of the '<em><b>Converter</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Converter</em>' attribute isn't clear,
+	 * If the meaning of the '<em>CustomConverter</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->

@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
@@ -157,8 +156,8 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 		if (converterType == EclipseLinkConverter.NO_CONVERTER) {
 			return null;
 		}
-		if (converterType == EclipseLinkConverter.CONVERTER) {
-			return new EclipseLinkJavaConverterImpl(this, this.resourcePersistentAttribute);
+		if (converterType == EclipseLinkConverter.CUSTOM_CONVERTER) {
+			return new EclipseLinkJavaCustomConverter(this, this.resourcePersistentAttribute);
 		}
 		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
 			return new EclipseLinkJavaTypeConverter(this, this.resourcePersistentAttribute);
@@ -174,7 +173,7 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 	
 	protected String converterType(JavaResourcePersistentAttribute jrpa) {
 		if (jrpa.getSupportingAnnotation(ConverterAnnotation.ANNOTATION_NAME) != null) {
-			return EclipseLinkConverter.CONVERTER;
+			return EclipseLinkConverter.CUSTOM_CONVERTER;
 		}
 		else if (jrpa.getSupportingAnnotation(TypeConverterAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConverter.TYPE_CONVERTER;

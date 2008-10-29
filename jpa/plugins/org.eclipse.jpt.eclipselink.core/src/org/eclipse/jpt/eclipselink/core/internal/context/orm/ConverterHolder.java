@@ -11,47 +11,47 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JpaContextNode;
-import org.eclipse.jpt.eclipselink.core.context.Converter;
+import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.StructConverter;
 import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
 
 public interface ConverterHolder extends JpaContextNode
 {
-	//************ converters *********************
+	//************ customConverters *********************
 	
 	/**
-	 * Return a list iterator of the converters.
+	 * Return a list iterator of the custom converters.
 	 * This will not be null.
 	 */
-	<T extends Converter> ListIterator<T> converters();
+	<T extends CustomConverter> ListIterator<T> customConverters();
 
 	/**
-	 * Return the number of converters.
+	 * Return the number of custom converters.
 	 */
-	int convertersSize();
+	int customConvertersSize();
 
 	/**
-	 * Add a converter to the converter holder, return the object representing it.
+	 * Add a custom converter to the converter holder, return the object representing it.
 	 */
-	Converter addConverter(int index);
+	CustomConverter addCustomConverter(int index);
 
 	/**
-	 * Remove the converter at the index from the converter holder.
+	 * Remove the custom converter at the index from the converter holder.
 	 */
-	void removeConverter(int index);
+	void removeCustomConverter(int index);
 
 	/**
-	 * Remove the converter at from the converter holder.
+	 * Remove the custom converter at from the converter holder.
 	 */
-	void removeConverter(Converter converter);
+	void removeCustomConverter(CustomConverter converter);
 
 	/**
-	 * Move the converter from the source index to the target index.
+	 * Move the custom converter from the source index to the target index.
 	 */
-	void moveConverter(int targetIndex, int sourceIndex);
+	void moveCustomConverter(int targetIndex, int sourceIndex);
 
-	String CONVERTERS_LIST = "convertersList"; //$NON-NLS-1$
+	String CUSTOM_CONVERTERS_LIST = "customConvertersList"; //$NON-NLS-1$
 
 	
 	//************ object type converters *********************

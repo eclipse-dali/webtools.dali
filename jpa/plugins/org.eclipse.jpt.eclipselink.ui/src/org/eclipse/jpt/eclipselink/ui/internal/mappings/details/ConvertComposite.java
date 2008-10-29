@@ -10,7 +10,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.ArrayList;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
-import org.eclipse.jpt.eclipselink.core.context.Converter;
+import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.StructConverter;
@@ -102,13 +102,13 @@ public class ConvertComposite extends FormPane<Convert>
 			buildNoConverterHolder(), 
 			null);
 		PropertyValueModel<EclipseLinkConverter> converterHolder = buildConverterHolder();
-		// Converter
+		// CustomConverter
 		addRadioButton(
 			subSection, 
 			EclipseLinkUiMappingsMessages.ConvertComposite_converter, 
-			buildConverterHolder(EclipseLinkConverter.CONVERTER), 
+			buildConverterHolder(EclipseLinkConverter.CUSTOM_CONVERTER), 
 			null);
-		ConverterComposite converterComposite = new ConverterComposite(buildConverterHolder(converterHolder), subSection, getWidgetFactory());
+		CustomConverterComposite converterComposite = new CustomConverterComposite(buildCustomConverterHolder(converterHolder), subSection, getWidgetFactory());
 		GridData gridData = (GridData) converterComposite.getControl().getLayoutData();
 		gridData.horizontalIndent = 20;
 		registerSubPane(converterComposite);
@@ -287,11 +287,11 @@ public class ConvertComposite extends FormPane<Convert>
 		};
 	}
 	
-	private PropertyValueModel<Converter> buildConverterHolder(PropertyValueModel<EclipseLinkConverter> converterHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkConverter, Converter>(converterHolder) {
+	private PropertyValueModel<CustomConverter> buildCustomConverterHolder(PropertyValueModel<EclipseLinkConverter> converterHolder) {
+		return new TransformationPropertyValueModel<EclipseLinkConverter, CustomConverter>(converterHolder) {
 			@Override
-			protected Converter transform_(EclipseLinkConverter converter) {
-				return (converter != null && converter.getType() == EclipseLinkConverter.CONVERTER) ? (Converter) converter : null;
+			protected CustomConverter transform_(EclipseLinkConverter converter) {
+				return (converter != null && converter.getType() == EclipseLinkConverter.CUSTOM_CONVERTER) ? (CustomConverter) converter : null;
 			}
 		};
 	}

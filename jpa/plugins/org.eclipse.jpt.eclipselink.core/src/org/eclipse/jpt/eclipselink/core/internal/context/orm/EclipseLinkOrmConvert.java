@@ -116,7 +116,7 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 	//TODO yes, i know, many if/else type checks in the methods below.
 	//will look at factoring this out when I have time after M3!  Also EclipseLinkJavaConvert
 	protected void removeConverter(String converterType) {
-		if (converterType == EclipseLinkConverter.CONVERTER) {
+		if (converterType == EclipseLinkConverter.CUSTOM_CONVERTER) {
 			this.resourceMapping.setConverter(null);
 		}
 		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
@@ -131,7 +131,7 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 	}
 	
 	protected JpaEObject buildResourceConverter(String converterType) {
-		if (converterType == EclipseLinkConverter.CONVERTER) {
+		if (converterType == EclipseLinkConverter.CUSTOM_CONVERTER) {
 			return EclipseLinkOrmFactory.eINSTANCE.createXmlConverterImpl();
 		}
 		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
@@ -147,7 +147,7 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 	}
 
 	protected void addConverter(String converterType, JpaEObject resourceConverter) {
-		if (converterType == EclipseLinkConverter.CONVERTER) {
+		if (converterType == EclipseLinkConverter.CUSTOM_CONVERTER) {
 			this.resourceMapping.setConverter((XmlConverter) resourceConverter);
 		}
 		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
@@ -165,8 +165,8 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 		if (converterType == EclipseLinkConverter.NO_CONVERTER) {
 			return null;
 		}
-		if (converterType == EclipseLinkConverter.CONVERTER) {
-			return new EclipseLinkOrmConverterImpl(this, (XmlConverter) resourceConverter);
+		if (converterType == EclipseLinkConverter.CUSTOM_CONVERTER) {
+			return new EclipseLinkOrmCustomConverter(this, (XmlConverter) resourceConverter);
 		}
 		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
 			return new EclipseLinkOrmTypeConverter(this, (XmlTypeConverter) resourceConverter);
@@ -208,7 +208,7 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 
 	protected String converterType() {
 		if (this.resourceMapping.getConverter() != null) {
-			return EclipseLinkConverter.CONVERTER;
+			return EclipseLinkConverter.CUSTOM_CONVERTER;
 		}
 		else if (this.resourceMapping.getTypeConverter() != null) {
 			return EclipseLinkConverter.TYPE_CONVERTER;
@@ -224,7 +224,7 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 	}
 	protected EclipseLinkOrmConverter buildConverter() {
 		if (this.resourceMapping.getConverter() != null) {
-			return new EclipseLinkOrmConverterImpl(this, this.resourceMapping.getConverter());
+			return new EclipseLinkOrmCustomConverter(this, this.resourceMapping.getConverter());
 		}
 		else if (this.resourceMapping.getTypeConverter() != null) {
 			return new EclipseLinkOrmTypeConverter(this, this.resourceMapping.getTypeConverter());

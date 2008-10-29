@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -26,25 +25,10 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @version 2.1
  * @since 2.1
  */
-public interface StructConverterAnnotation extends JavaResourceNode
+public interface StructConverterAnnotation extends NamedConverterAnnotation
 {
-	
 	String ANNOTATION_NAME = EclipseLinkJPA.STRUCT_CONVERTER;
 	
-		
-	/**
-	 * Corresponds to the name element of the StructConverter annotation.
-	 * Returns null if the name element does not exist in java.
-	 */
-	String getName();
-	
-	/**
-	 * Corresponds to the name element of the StructConverter annotation.
-	 * Set to null to remove the name element.
-	 */
-	void setName(String value);
-		String NAME_PROPERTY = "nameProperty"; //$NON-NLS-1$
-
 	/**
 	 * Corresponds to the converter element of the StructConverter annotation.
 	 * Returns null if the converter element does not exist in java.
@@ -57,17 +41,9 @@ public interface StructConverterAnnotation extends JavaResourceNode
 	 */
 	void setConverter(String value);
 		String CONVERTER_PROPERTY = "converterProperty"; //$NON-NLS-1$
-
-	/**
-	 * Return the {@link TextRange} for the name element.  If the name element 
-	 * does not exist return the {@link TextRange} for the StructConverter annotation.
-	 */
-	TextRange getNameTextRange(CompilationUnit astRoot);
-
 	/**
 	 * Return the {@link TextRange} for the converter element.  If the converter element 
 	 * does not exist return the {@link TextRange} for the StructConverter annotation.
 	 */
 	TextRange getConverterTextRange(CompilationUnit astRoot);
-
 }

@@ -41,7 +41,7 @@ public interface Convert extends JpaContextNode, Converter
 	
 	/**
 	 * Reserved name for specifying a serialized object converter.  In this
-	 * case there does not need to be a corresponding @Converter defined.
+	 * case there does not need to be a corresponding @CustomConverter defined.
 	 */
 	String SERIALIZED_CONVERTER = "serialized"; //$NON-NLS-1$
 	
@@ -50,14 +50,14 @@ public interface Convert extends JpaContextNode, Converter
 	 * on the associated mapping.  When using a ClassInstanceConverter the database representation is a 
 	 * String representing the Class name and the object-model representation is an instance 
 	 * of that class built with a no-args constructor
-	 * In this case there does not need to be a corresponding @Converter defined.
+	 * In this case there does not need to be a corresponding @CustomConverter defined.
 	 */
 	String CLASS_INSTANCE_CONVERTER = "class-instance"; //$NON-NLS-1$
 	
 	/**
 	 * Reserved name for specifying no converter.  This can be used to override a situation where either 
 	 *  another converter is defaulted or another converter is set.
-	 *  In this case there does not need to be a corresponding @Converter defined.
+	 *  In this case there does not need to be a corresponding @CustomConverter defined.
 	 */
 	String NO_CONVERTER = "none"; //$NON-NLS-1$
 	
@@ -76,7 +76,7 @@ public interface Convert extends JpaContextNode, Converter
 	 * Possible values for converter type are:
 	 * {@value EclipseLinkNamedConverter#TYPE_CONVERTER}
 	 * {@value EclipseLinkNamedConverter#STRUCT_CONVERTER}
-	 * {@value EclipseLinkNamedConverter#CONVERTER}
+	 * {@value EclipseLinkNamedConverter#CUSTOM_CONVERTER}
 	 * {@value EclipseLinkNamedConverter#NO_CONVERTER}
 	 * {@value EclipseLinkNamedConverter#OBJECT_TYPE_CONVERTER}
 	 * @param converterType

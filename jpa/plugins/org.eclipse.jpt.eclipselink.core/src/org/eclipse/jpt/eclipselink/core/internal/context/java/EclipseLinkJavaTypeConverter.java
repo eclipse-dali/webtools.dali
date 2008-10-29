@@ -9,72 +9,47 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.TypeConverterAnnotation;
 
-public class EclipseLinkJavaTypeConverter extends AbstractJavaJpaContextNode implements TypeConverter, EclipseLinkJavaConverter
+public class EclipseLinkJavaTypeConverter extends EclipseLinkJavaConverter
+	implements TypeConverter
 {	
-	private JavaResourcePersistentMember resourcePersistentMember;
-	
-	private String name;
-	
 	private String dataType;
 	
 	private String objectType;
-
+	
+	
 	public EclipseLinkJavaTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
-		super(parent);
-		this.initialize(jrpm);
+		super(parent, jrpm);
 	}
-
+	
 	public String getType() {
 		return EclipseLinkConverter.TYPE_CONVERTER;
 	}
-
+	
 	public String getAnnotationName() {
 		return TypeConverterAnnotation.ANNOTATION_NAME;
 	}
-
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getResourceConverter().getTextRange(astRoot);
+	
+	protected TypeConverterAnnotation getAnnotation() {
+		return (TypeConverterAnnotation) super.getAnnotation();
 	}
-
-	protected TypeConverterAnnotation getResourceConverter() {
-		return (TypeConverterAnnotation) this.resourcePersistentMember.getSupportingAnnotation(getAnnotationName());
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		getResourceConverter().setName(newName);
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
-	}
-
-	protected void setName_(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
-	}
+	
+	
+	// **************** data type **********************************************
 	
 	public String getDataType() {
 		return this.dataType;
 	}
-
+	
 	public void setDataType(String newDataType) {
 		String oldDataType = this.dataType;
 		this.dataType = newDataType;
-		getResourceConverter().setDataType(newDataType);
+		getAnnotation().setDataType(newDataType);
 		firePropertyChanged(DATA_TYPE_PROPERTY, oldDataType, newDataType);
 	}
 	
@@ -84,14 +59,17 @@ public class EclipseLinkJavaTypeConverter extends AbstractJavaJpaContextNode imp
 		firePropertyChanged(DATA_TYPE_PROPERTY, oldDataType, newDataType);
 	}
 	
+	
+	// **************** object type ********************************************
+	
 	public String getObjectType() {
 		return this.objectType;
 	}
-
+	
 	public void setObjectType(String newObjectType) {
 		String oldObjectType = this.objectType;
 		this.objectType = newObjectType;
-		getResourceConverter().setObjectType(newObjectType);
+		getAnnotation().setObjectType(newObjectType);
 		firePropertyChanged(OBJECT_TYPE_PROPERTY, oldObjectType, newObjectType);
 	}
 	
@@ -100,33 +78,29 @@ public class EclipseLinkJavaTypeConverter extends AbstractJavaJpaContextNode imp
 		this.objectType = newObjectType;
 		firePropertyChanged(OBJECT_TYPE_PROPERTY, oldObjectType, newObjectType);
 	}
-
+	
+	
+	// **************** resource interaction ***********************************
+	
 	protected void initialize(JavaResourcePersistentMember jrpm) {
-		this.resourcePersistentMember = jrpm;
-		TypeConverterAnnotation resourceConverter = getResourceConverter();
-		this.name = this.name(resourceConverter);
+		super.initialize(jrpm);
+		TypeConverterAnnotation resourceConverter = getAnnotation();
 		this.dataType = this.dataType(resourceConverter);
 		this.objectType = this.objectType(resourceConverter);
 	}
 	
 	public void update(JavaResourcePersistentMember jrpm) {
-		this.resourcePersistentMember = jrpm;
-		TypeConverterAnnotation resourceConverter = getResourceConverter();
-		this.setName_(this.name(resourceConverter));
+		super.update(jrpm);
+		TypeConverterAnnotation resourceConverter = getAnnotation();
 		this.setDataType_(this.dataType(resourceConverter));
 		this.setObjectType_(this.objectType(resourceConverter));
 	}
-
-	protected String name(TypeConverterAnnotation resourceConverter) {
-		return resourceConverter == null ? null : resourceConverter.getName();
-	}
-
+	
 	protected String dataType(TypeConverterAnnotation resourceConverter) {
 		return resourceConverter == null ? null : resourceConverter.getDataType();
 	}
-
+	
 	protected String objectType(TypeConverterAnnotation resourceConverter) {
 		return resourceConverter == null ? null : resourceConverter.getObjectType();
 	}
-
 }

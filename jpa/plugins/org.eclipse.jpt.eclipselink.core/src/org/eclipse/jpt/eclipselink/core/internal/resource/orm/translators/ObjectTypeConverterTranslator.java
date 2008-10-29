@@ -29,7 +29,7 @@ public class ObjectTypeConverterTranslator extends Translator
 	}
 	
 	@Override
-	public Translator[] getChildren(@SuppressWarnings("unused") Object target, @SuppressWarnings("unused") int versionID) {
+	protected Translator[] getChildren() {
 		if (this.children == null) {
 			this.children = createChildren();
 		}
@@ -55,7 +55,7 @@ public class ObjectTypeConverterTranslator extends Translator
 	}
 	
 	protected Translator createNameTranslator() {
-		return new Translator(OBJECT_TYPE_CONVERTER__NAME, ECLIPSELINK_ORM_PKG.getXmlObjectTypeConverter_Name(), DOM_ATTRIBUTE);
+		return new Translator(OBJECT_TYPE_CONVERTER__NAME, ECLIPSELINK_ORM_PKG.getXmlNamedConverter_Name(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createDataTypeTranslator() {

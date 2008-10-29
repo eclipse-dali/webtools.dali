@@ -56,7 +56,7 @@ public class StructConverterImpl extends AbstractResourceAnnotation<Member> impl
 		return ANNOTATION_NAME;
 	}
 	
-	//*************** Converter implementation ****************
+	//*************** CustomConverter implementation ****************
 	public String getName() {
 		return this.name;
 	}

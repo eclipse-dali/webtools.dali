@@ -12,45 +12,40 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.Converter;
+import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkJavaConverterImpl extends AbstractJavaJpaContextNode implements Converter, EclipseLinkJavaConverter
-{	
-	private JavaResourcePersistentMember resourcePersistentMember;
-	
-	private String name;
-	
+public class EclipseLinkJavaCustomConverter extends EclipseLinkJavaConverter 
+	implements CustomConverter
+{
 	private String converterClass;
 	
-	public EclipseLinkJavaConverterImpl(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
-		super(parent);
-		this.initialize(jrpm);
+	public EclipseLinkJavaCustomConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
+		super(parent, jrpm);
 	}
-
+	
+	
 	public String getType() {
-		return EclipseLinkConverter.CONVERTER;
+		return EclipseLinkConverter.CUSTOM_CONVERTER;
 	}
-
+	
 	public String getAnnotationName() {
 		return ConverterAnnotation.ANNOTATION_NAME;
 	}
-
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getResourceConverter().getTextRange(astRoot);
+	
+	@Override
+	protected ConverterAnnotation getAnnotation() {
+		return (ConverterAnnotation) super.getAnnotation();
 	}
-
-	protected ConverterAnnotation getResourceConverter() {
-		return (ConverterAnnotation) this.resourcePersistentMember.getSupportingAnnotation(getAnnotationName());
-	}
+	
+	
+	// **************** converter class ****************************************
 	
 	public String getConverterClass() {
 		return this.converterClass;
@@ -59,7 +54,7 @@ public class EclipseLinkJavaConverterImpl extends AbstractJavaJpaContextNode imp
 	public void setConverterClass(String newConverterClass) {
 		String oldConverterClass = this.converterClass;
 		this.converterClass = newConverterClass;
-		getResourceConverter().setConverterClass(newConverterClass);
+		getAnnotation().setConverterClass(newConverterClass);
 		firePropertyChanged(CONVERTER_CLASS_PROPERTY, oldConverterClass, newConverterClass);
 	}
 	
@@ -69,39 +64,17 @@ public class EclipseLinkJavaConverterImpl extends AbstractJavaJpaContextNode imp
 		firePropertyChanged(CONVERTER_CLASS_PROPERTY, oldConverterClass, newConverterClass);
 	}
 
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		getResourceConverter().setName(newName);
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
-	}
-
-	protected void setName_(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
-	}
+	
+	// **************** resource interaction ***********************************
 	
 	protected void initialize(JavaResourcePersistentMember jrpm) {
-		this.resourcePersistentMember = jrpm;
-		ConverterAnnotation resourceConverter = getResourceConverter();
-		this.name = this.name(resourceConverter);
-		this.converterClass = this.converterClass(resourceConverter);
+		super.initialize(jrpm);
+		this.converterClass = this.converterClass(getAnnotation());
 	}
 	
 	public void update(JavaResourcePersistentMember jrpm) {
-		this.resourcePersistentMember = jrpm;
-		ConverterAnnotation resourceConverter = getResourceConverter();
-		this.setName_(this.name(resourceConverter));
-		this.setConverterClass_(this.converterClass(resourceConverter));
-	}
-
-	protected String name(ConverterAnnotation resourceConverter) {
-		return resourceConverter == null ? null : resourceConverter.getName();
+		super.update(jrpm);
+		this.setConverterClass_(this.converterClass(getAnnotation()));
 	}
 	
 	protected String converterClass(ConverterAnnotation resourceConverter) {
@@ -109,8 +82,9 @@ public class EclipseLinkJavaConverterImpl extends AbstractJavaJpaContextNode imp
 	}
 
 	public TextRange getConverterClassTextRange(CompilationUnit astRoot) {
-		return getResourceConverter().getConverterClassTextRange(astRoot);
+		return getAnnotation().getConverterClassTextRange(astRoot);
 	}
+	
 	
 	//************ validation ***************
 	
@@ -121,7 +95,7 @@ public class EclipseLinkJavaConverterImpl extends AbstractJavaJpaContextNode imp
 	}
 	
 	protected void validateConverterClass(List<IMessage> messages, CompilationUnit astRoot) {
-		if (!getResourceConverter().implementsConverter()) {
+		if (! getAnnotation().implementsConverter()) {
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

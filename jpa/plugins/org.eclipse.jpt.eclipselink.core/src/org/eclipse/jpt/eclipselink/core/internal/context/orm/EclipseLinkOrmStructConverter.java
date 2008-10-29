@@ -11,42 +11,42 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.StructConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkOrmStructConverter extends AbstractXmlContextNode implements StructConverter, EclipseLinkOrmConverter
+public class EclipseLinkOrmStructConverter extends EclipseLinkOrmConverter
+	implements StructConverter
 {	
-	private XmlStructConverter resourceConverter;
-	
-	private String name;
-	
 	private String converterClass;
 	
-	public EclipseLinkOrmStructConverter(XmlContextNode parent, XmlStructConverter resourceConverter) {
-		super(parent);
-		this.initialize(resourceConverter);
+	
+	public EclipseLinkOrmStructConverter(XmlContextNode parent, XmlStructConverter xmlResource) {
+		super(parent, xmlResource);
 	}
-
+	
+	
 	public String getType() {
 		return EclipseLinkConverter.STRUCT_CONVERTER;
 	}
 	
-	public XmlStructConverter getResourceConverter() {
-		return this.resourceConverter;
+	@Override
+	protected XmlStructConverter getXmlResource() {
+		return (XmlStructConverter) super.getXmlResource();
 	}
+	
+	
+	// **************** converter class ****************************************
 	
 	public String getConverterClass() {
 		return this.converterClass;
 	}
-
+	
 	public void setConverterClass(String newConverterClass) {
 		String oldConverterClass = this.converterClass;
 		this.converterClass = newConverterClass;
-		this.resourceConverter.setConverter(newConverterClass);
+		getXmlResource().setConverter(newConverterClass);
 		firePropertyChanged(CONVERTER_CLASS_PROPERTY, oldConverterClass, newConverterClass);
 	}
 	
@@ -55,50 +55,33 @@ public class EclipseLinkOrmStructConverter extends AbstractXmlContextNode implem
 		this.converterClass = newConverterClass;
 		firePropertyChanged(CONVERTER_CLASS_PROPERTY, oldConverterClass, newConverterClass);
 	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		this.resourceConverter.setName(newName);
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
-	}
-
-	protected void setName_(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
-	}
 	
-	protected void initialize(XmlStructConverter resourceConverter) {
-		this.resourceConverter = resourceConverter;
-		this.name = this.name();
-		this.converterClass = this.converterClass();
+	
+	// **************** resource interaction ***********************************
+	
+	protected void initialize(XmlStructConverter xmlResource) {
+		super.initialize(xmlResource);
+		this.converterClass = calculateConverterClass();
 	}
 	
 	public void update() {
-		this.setName_(this.name());
-		this.setConverterClass_(this.converterClass());
-	}
-
-	protected String name() {
-		return this.resourceConverter.getName();
+		super.update();
+		setConverterClass_(calculateConverterClass());
 	}
 	
-	protected String converterClass() {
-		return this.resourceConverter.getConverter();
+	protected String calculateConverterClass() {
+		return getXmlResource().getConverter();
 	}
 	
-	//************ validation ***************
+	
+	// **************** validation *********************************************
 	
 	@Override
 	public void validate(List<IMessage> messages) {
 		super.validate(messages);
 		validateConverterClass(messages);
 	}
+	
 //TODO validate converter class	
 	protected void validateConverterClass(List<IMessage> messages) {
 //		if (!getResourceConverter().implementsConverter()) {
@@ -117,8 +100,4 @@ public class EclipseLinkOrmStructConverter extends AbstractXmlContextNode implem
 //	public TextRange getConverterClassTextRange() {
 //		return getResourceConverter().getClassNameTextRange();
 //	}
-
-	public TextRange getValidationTextRange() {
-		return this.resourceConverter.getValidationTextRange();
-	}
 }

@@ -15,26 +15,24 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Xml Object Type Converter</b></em>'.
+ * A representation of the model object '<em><b>Xml Object Type CustomConverter</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter#getConversionValues <em>Conversion Values</em>}</li>
- *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter#getDefaultObjectValue <em>Default Object Value</em>}</li>
- *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter#getDataType <em>Data Type</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter#getObjectType <em>Object Type</em>}</li>
+ *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter#getConversionValues <em>Conversion Values</em>}</li>
+ *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter#getDefaultObjectValue <em>Default Object Value</em>}</li>
  * </ul>
  * </p>
  *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlObjectTypeConverter()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
  * @generated
  */
-public interface XmlObjectTypeConverter extends JpaEObject
+public interface XmlObjectTypeConverter extends XmlNamedConverter
 {
 	/**
 	 * Returns the value of the '<em><b>Conversion Values</b></em>' containment reference list.
@@ -77,32 +75,6 @@ public interface XmlObjectTypeConverter extends JpaEObject
 	 * @generated
 	 */
 	void setDefaultObjectValue(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see #setName(String)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlObjectTypeConverter_Name()
-	 * @model
-	 * @generated
-	 */
-	String getName();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter#getName <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Name</em>' attribute.
-	 * @see #getName()
-	 * @generated
-	 */
-	void setName(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Data Type</b></em>' attribute.

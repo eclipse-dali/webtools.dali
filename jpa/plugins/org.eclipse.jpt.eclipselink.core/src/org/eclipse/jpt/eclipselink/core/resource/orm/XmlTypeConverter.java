@@ -13,13 +13,12 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Xml Type Converter</b></em>'.
+ * A representation of the model object '<em><b>Xml Type CustomConverter</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter#getDataType <em>Data Type</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter#getObjectType <em>Object Type</em>}</li>
  * </ul>
@@ -27,37 +26,10 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTypeConverter()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
  * @generated
  */
-public interface XmlTypeConverter extends JpaEObject
+public interface XmlTypeConverter extends XmlNamedConverter
 {
-	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see #setName(String)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTypeConverter_Name()
-	 * @model
-	 * @generated
-	 */
-	String getName();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter#getName <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Name</em>' attribute.
-	 * @see #getName()
-	 * @generated
-	 */
-	void setName(String value);
-
 	/**
 	 * Returns the value of the '<em><b>Data Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->

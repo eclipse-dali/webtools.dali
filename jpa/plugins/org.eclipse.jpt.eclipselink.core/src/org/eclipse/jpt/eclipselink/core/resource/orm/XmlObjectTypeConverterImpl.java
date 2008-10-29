@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Xml Object Type Converter</b></em>'.
+ * A representation of the model object '<em><b>Xml Object Type CustomConverter</b></em>'.
  * <!-- end-user-doc -->
  *
  *
@@ -36,36 +36,6 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  */
 public class XmlObjectTypeConverterImpl extends AbstractJpaEObject implements XmlObjectTypeConverter
 {
-	/**
-	 * The cached value of the '{@link #getConversionValues() <em>Conversion Values</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConversionValues()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlConversionValue> conversionValues;
-
-	/**
-	 * The default value of the '{@link #getDefaultObjectValue() <em>Default Object Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDefaultObjectValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String DEFAULT_OBJECT_VALUE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getDefaultObjectValue() <em>Default Object Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDefaultObjectValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected String defaultObjectValue = DEFAULT_OBJECT_VALUE_EDEFAULT;
-
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -127,6 +97,36 @@ public class XmlObjectTypeConverterImpl extends AbstractJpaEObject implements Xm
 	protected String objectType = OBJECT_TYPE_EDEFAULT;
 
 	/**
+	 * The cached value of the '{@link #getConversionValues() <em>Conversion Values</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConversionValues()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlConversionValue> conversionValues;
+
+	/**
+	 * The default value of the '{@link #getDefaultObjectValue() <em>Default Object Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDefaultObjectValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String DEFAULT_OBJECT_VALUE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDefaultObjectValue() <em>Default Object Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDefaultObjectValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected String defaultObjectValue = DEFAULT_OBJECT_VALUE_EDEFAULT;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -157,7 +157,7 @@ public class XmlObjectTypeConverterImpl extends AbstractJpaEObject implements Xm
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlObjectTypeConverter_Name()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedConverter_Name()
 	 * @model
 	 * @generated
 	 */
@@ -336,16 +336,16 @@ public class XmlObjectTypeConverterImpl extends AbstractJpaEObject implements Xm
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__CONVERSION_VALUES:
-				return getConversionValues();
-			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__DEFAULT_OBJECT_VALUE:
-				return getDefaultObjectValue();
 			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__NAME:
 				return getName();
 			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__DATA_TYPE:
 				return getDataType();
 			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__OBJECT_TYPE:
 				return getObjectType();
+			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__CONVERSION_VALUES:
+				return getConversionValues();
+			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__DEFAULT_OBJECT_VALUE:
+				return getDefaultObjectValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -361,13 +361,6 @@ public class XmlObjectTypeConverterImpl extends AbstractJpaEObject implements Xm
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__CONVERSION_VALUES:
-				getConversionValues().clear();
-				getConversionValues().addAll((Collection<? extends XmlConversionValue>)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__DEFAULT_OBJECT_VALUE:
-				setDefaultObjectValue((String)newValue);
-				return;
 			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__NAME:
 				setName((String)newValue);
 				return;
@@ -376,6 +369,13 @@ public class XmlObjectTypeConverterImpl extends AbstractJpaEObject implements Xm
 				return;
 			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__OBJECT_TYPE:
 				setObjectType((String)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__CONVERSION_VALUES:
+				getConversionValues().clear();
+				getConversionValues().addAll((Collection<? extends XmlConversionValue>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__DEFAULT_OBJECT_VALUE:
+				setDefaultObjectValue((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -391,12 +391,6 @@ public class XmlObjectTypeConverterImpl extends AbstractJpaEObject implements Xm
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__CONVERSION_VALUES:
-				getConversionValues().clear();
-				return;
-			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__DEFAULT_OBJECT_VALUE:
-				setDefaultObjectValue(DEFAULT_OBJECT_VALUE_EDEFAULT);
-				return;
 			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -405,6 +399,12 @@ public class XmlObjectTypeConverterImpl extends AbstractJpaEObject implements Xm
 				return;
 			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__OBJECT_TYPE:
 				setObjectType(OBJECT_TYPE_EDEFAULT);
+				return;
+			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__CONVERSION_VALUES:
+				getConversionValues().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__DEFAULT_OBJECT_VALUE:
+				setDefaultObjectValue(DEFAULT_OBJECT_VALUE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -420,16 +420,16 @@ public class XmlObjectTypeConverterImpl extends AbstractJpaEObject implements Xm
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__CONVERSION_VALUES:
-				return conversionValues != null && !conversionValues.isEmpty();
-			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__DEFAULT_OBJECT_VALUE:
-				return DEFAULT_OBJECT_VALUE_EDEFAULT == null ? defaultObjectValue != null : !DEFAULT_OBJECT_VALUE_EDEFAULT.equals(defaultObjectValue);
 			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__DATA_TYPE:
 				return DATA_TYPE_EDEFAULT == null ? dataType != null : !DATA_TYPE_EDEFAULT.equals(dataType);
 			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__OBJECT_TYPE:
 				return OBJECT_TYPE_EDEFAULT == null ? objectType != null : !OBJECT_TYPE_EDEFAULT.equals(objectType);
+			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__CONVERSION_VALUES:
+				return conversionValues != null && !conversionValues.isEmpty();
+			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL__DEFAULT_OBJECT_VALUE:
+				return DEFAULT_OBJECT_VALUE_EDEFAULT == null ? defaultObjectValue != null : !DEFAULT_OBJECT_VALUE_EDEFAULT.equals(defaultObjectValue);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -445,14 +445,14 @@ public class XmlObjectTypeConverterImpl extends AbstractJpaEObject implements Xm
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (defaultObjectValue: ");
-		result.append(defaultObjectValue);
-		result.append(", name: ");
+		result.append(" (name: ");
 		result.append(name);
 		result.append(", dataType: ");
 		result.append(dataType);
 		result.append(", objectType: ");
 		result.append(objectType);
+		result.append(", defaultObjectValue: ");
+		result.append(defaultObjectValue);
 		result.append(')');
 		return result.toString();
 	}

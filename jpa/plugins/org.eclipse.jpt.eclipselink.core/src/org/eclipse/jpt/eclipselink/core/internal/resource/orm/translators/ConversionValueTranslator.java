@@ -27,7 +27,7 @@ public class ConversionValueTranslator extends Translator
 	}
 	
 	@Override
-	public Translator[] getChildren(@SuppressWarnings("unused") Object target, @SuppressWarnings("unused") int versionID) {
+	protected Translator[] getChildren() {
 		if (this.children == null) {
 			this.children = createChildren();
 		}

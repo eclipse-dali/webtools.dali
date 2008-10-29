@@ -60,7 +60,7 @@ public class ConverterImpl extends AbstractResourceAnnotation<Member> implements
 		return ANNOTATION_NAME;
 	}
 	
-	//*************** Converter implementation ****************
+	//*************** CustomConverter implementation ****************
 	public String getName() {
 		return this.name;
 	}

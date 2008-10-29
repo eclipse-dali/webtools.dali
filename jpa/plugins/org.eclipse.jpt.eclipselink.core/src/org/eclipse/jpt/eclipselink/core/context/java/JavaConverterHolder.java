@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.eclipselink.core.context.Converter;
+import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.StructConverter;
 import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
@@ -42,8 +42,8 @@ public interface JavaConverterHolder extends JavaJpaContextNode
 	 */
 	void update(JavaResourcePersistentType jrpt);
 	
-	Converter getConverter();
-	Converter addConverter();
+	CustomConverter getConverter();
+	CustomConverter addConverter();
 	void removeConverter();
 	String CONVERTER_PROPERTY = "converterProperty"; //$NON-NLS-1$
 	

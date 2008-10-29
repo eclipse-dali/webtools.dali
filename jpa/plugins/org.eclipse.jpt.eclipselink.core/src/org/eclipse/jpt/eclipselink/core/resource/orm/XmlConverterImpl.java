@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Xml Converter</b></em>'.
+ * A representation of the model object '<em><b>Xml CustomConverter</b></em>'.
  * <!-- end-user-doc -->
  *
  *
@@ -101,7 +101,7 @@ public class XmlConverterImpl extends AbstractJpaEObject implements XmlConverter
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverter_Name()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedConverter_Name()
 	 * @model
 	 * @generated
 	 */

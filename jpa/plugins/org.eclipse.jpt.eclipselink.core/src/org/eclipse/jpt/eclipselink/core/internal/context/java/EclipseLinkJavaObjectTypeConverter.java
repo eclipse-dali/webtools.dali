@@ -15,13 +15,10 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConversionValueAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -29,26 +26,24 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNode implements ObjectTypeConverter, EclipseLinkJavaConverter
+public class EclipseLinkJavaObjectTypeConverter extends EclipseLinkJavaConverter
+	implements ObjectTypeConverter
 {	
-	private JavaResourcePersistentMember resourcePersistentMember;
-	
-	private String name;
-	
 	private String dataType;
 	
 	private String objectType;
-
+	
 	private String defaultObjectValue;
-
+	
 	private final List<EclipseLinkJavaConversionValue> conversionValues;
 	
+	
 	public EclipseLinkJavaObjectTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
-		super(parent);
+		super(parent, jrpm);
 		this.conversionValues = new ArrayList<EclipseLinkJavaConversionValue>();
-		this.initialize(jrpm);
 	}
-
+	
+	
 	public String getType() {
 		return EclipseLinkConverter.OBJECT_TYPE_CONVERTER;
 	}
@@ -56,40 +51,22 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 	public String getAnnotationName() {
 		return ObjectTypeConverterAnnotation.ANNOTATION_NAME;
 	}
-
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getResourceConverter().getTextRange(astRoot);
+	
+	protected ObjectTypeConverterAnnotation getAnnotation() {
+		return (ObjectTypeConverterAnnotation) super.getAnnotation();
 	}
-
-	protected ObjectTypeConverterAnnotation getResourceConverter() {
-		return (ObjectTypeConverterAnnotation) this.resourcePersistentMember.getSupportingAnnotation(getAnnotationName());
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		getResourceConverter().setName(newName);
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
-	}
-
-	protected void setName_(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
-	}
+	
+	
+	// **************** data type **********************************************
 	
 	public String getDataType() {
 		return this.dataType;
 	}
-
+	
 	public void setDataType(String newDataType) {
 		String oldDataType = this.dataType;
 		this.dataType = newDataType;
-		getResourceConverter().setDataType(newDataType);
+		getAnnotation().setDataType(newDataType);
 		firePropertyChanged(DATA_TYPE_PROPERTY, oldDataType, newDataType);
 	}
 	
@@ -99,14 +76,17 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 		firePropertyChanged(DATA_TYPE_PROPERTY, oldDataType, newDataType);
 	}
 	
+	
+	// **************** object type ********************************************
+	
 	public String getObjectType() {
 		return this.objectType;
 	}
-
+	
 	public void setObjectType(String newObjectType) {
 		String oldObjectType = this.objectType;
 		this.objectType = newObjectType;
-		getResourceConverter().setObjectType(newObjectType);
+		getAnnotation().setObjectType(newObjectType);
 		firePropertyChanged(OBJECT_TYPE_PROPERTY, oldObjectType, newObjectType);
 	}
 	
@@ -115,7 +95,10 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 		this.objectType = newObjectType;
 		firePropertyChanged(OBJECT_TYPE_PROPERTY, oldObjectType, newObjectType);
 	}
-
+	
+	
+	// **************** conversion values **************************************
+	
 	public ListIterator<EclipseLinkJavaConversionValue> conversionValues() {
 		return new CloneListIterator<EclipseLinkJavaConversionValue>(this.conversionValues);
 	}
@@ -127,12 +110,12 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 	public EclipseLinkJavaConversionValue addConversionValue(int index) {
 		EclipseLinkJavaConversionValue conversionValue = new EclipseLinkJavaConversionValue(this);
 		this.conversionValues.add(index, conversionValue);
-		ConversionValueAnnotation resourceConversionValue = getResourceConverter().addConversionValue(index);
+		ConversionValueAnnotation resourceConversionValue = getAnnotation().addConversionValue(index);
 		conversionValue.initialize(resourceConversionValue);
 		fireItemAdded(CONVERSION_VALUES_LIST, index, conversionValue);
 		return conversionValue;
 	}
-
+	
 	public EclipseLinkJavaConversionValue addConversionValue() {
 		return this.addConversionValue(this.conversionValues.size());
 	}
@@ -151,7 +134,7 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 	
 	public void removeConversionValue(int index) {
 		EclipseLinkJavaConversionValue removedConversionValue = this.conversionValues.remove(index);
-		getResourceConverter().removeConversionValue(index);
+		getAnnotation().removeConversionValue(index);
 		fireItemRemoved(CONVERSION_VALUES_LIST, index, removedConversionValue);
 	}
 	
@@ -161,7 +144,7 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 	
 	public void moveConversionValue(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.conversionValues, targetIndex, sourceIndex);
-		getResourceConverter().moveConversionValue(targetIndex, sourceIndex);
+		getAnnotation().moveConversionValue(targetIndex, sourceIndex);
 		fireItemMoved(CONVERSION_VALUES_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -173,7 +156,10 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 			}
 		};
 	}
-		
+	
+	
+	// **************** default object value ***********************************
+	
 	public String getDefaultObjectValue() {
 		return this.defaultObjectValue;
 	}
@@ -181,7 +167,7 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 	public void setDefaultObjectValue(String newDefaultObjectValue) {
 		String oldDefaultObjectValue = this.defaultObjectValue;
 		this.defaultObjectValue = newDefaultObjectValue;
-		getResourceConverter().setDefaultObjectValue(newDefaultObjectValue);
+		getAnnotation().setDefaultObjectValue(newDefaultObjectValue);
 		firePropertyChanged(DEFAULT_OBJECT_VALUE_PROPERTY, oldDefaultObjectValue, newDefaultObjectValue);
 	}
 	
@@ -191,10 +177,12 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 		firePropertyChanged(DEFAULT_OBJECT_VALUE_PROPERTY, oldDefaultObjectValue, newDefaultObjectValue);
 	}
 	
+	
+	// **************** resource interaction ***********************************
+	
 	protected void initialize(JavaResourcePersistentMember jrpm) {
-		this.resourcePersistentMember = jrpm;
-		ObjectTypeConverterAnnotation resourceConverter = getResourceConverter();
-		this.name = this.name(resourceConverter);
+		super.initialize(jrpm);
+		ObjectTypeConverterAnnotation resourceConverter = getAnnotation();
 		this.dataType = this.dataType(resourceConverter);
 		this.objectType = this.objectType(resourceConverter);
 		this.defaultObjectValue = this.defaultObjectValue(resourceConverter);
@@ -217,17 +205,15 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 		conversionValue.initialize(resourceConversionValue);
 		return conversionValue;
 	}
-
+	
 	public void update(JavaResourcePersistentMember jrpm) {
-		this.resourcePersistentMember = jrpm;
-		ObjectTypeConverterAnnotation resourceConverter = getResourceConverter();
-		this.setName_(this.name(resourceConverter));
+		super.update(jrpm);
+		ObjectTypeConverterAnnotation resourceConverter = getAnnotation();
 		this.setDataType_(this.dataType(resourceConverter));
 		this.setObjectType_(this.objectType(resourceConverter));
 		this.setDefaultObjectValue_(this.defaultObjectValue(resourceConverter));
 		this.updateConversionValues(resourceConverter);
 	}
-
 	
 	protected void updateConversionValues(ObjectTypeConverterAnnotation resourceConverter) {
 		ListIterator<EclipseLinkJavaConversionValue> contextConversionValues = conversionValues();
@@ -246,24 +232,21 @@ public class EclipseLinkJavaObjectTypeConverter extends AbstractJavaJpaContextNo
 			addConversionValue(buildConversionValue(resourceConversionValues.next()));
 		}
 	}
-
-	protected String name(ObjectTypeConverterAnnotation resourceConverter) {
-		return resourceConverter == null ? null : resourceConverter.getName();
-	}
-
+	
 	protected String dataType(ObjectTypeConverterAnnotation resourceConverter) {
 		return resourceConverter == null ? null : resourceConverter.getDataType();
 	}
-
+	
 	protected String objectType(ObjectTypeConverterAnnotation resourceConverter) {
 		return resourceConverter == null ? null : resourceConverter.getObjectType();
 	}
-
+	
 	protected String defaultObjectValue(ObjectTypeConverterAnnotation resourceConverter) {
 		return resourceConverter == null ? null : resourceConverter.getDefaultObjectValue();
 	}
-
-	// ********** validation **********
+	
+	
+	// **************** validation *********************************************
 	
 	@Override
 	public void validate(List<IMessage> messages, CompilationUnit astRoot) {

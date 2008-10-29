@@ -10,7 +10,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.eclipselink.core.context.Converter;
+import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class ConverterComposite extends FormPane<Converter>
+public class CustomConverterComposite extends FormPane<CustomConverter>
 {
 
 	/**
@@ -47,7 +47,7 @@ public class ConverterComposite extends FormPane<Converter>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public ConverterComposite(PropertyValueModel<? extends Converter> subjectHolder,
+	public CustomConverterComposite(PropertyValueModel<? extends CustomConverter> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 
@@ -68,7 +68,7 @@ public class ConverterComposite extends FormPane<Converter>
 	}
 	
 	protected WritablePropertyValueModel<String> buildNameTextHolder() {
-		return new PropertyAspectAdapter<Converter, String>(
+		return new PropertyAspectAdapter<CustomConverter, String>(
 				getSubjectHolder(), EclipseLinkConverter.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -86,13 +86,13 @@ public class ConverterComposite extends FormPane<Converter>
 	}
 
 	
-	private ClassChooserPane<Converter> addClassChooser(Composite container) {
+	private ClassChooserPane<CustomConverter> addClassChooser(Composite container) {
 
-		return new ClassChooserPane<Converter>(this, container) {
+		return new ClassChooserPane<CustomConverter>(this, container) {
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<Converter, String>(getSubjectHolder(), Converter.CONVERTER_CLASS_PROPERTY) {
+				return new PropertyAspectAdapter<CustomConverter, String>(getSubjectHolder(), CustomConverter.CONVERTER_CLASS_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return this.subject.getConverterClass();
@@ -139,9 +139,9 @@ public class ConverterComposite extends FormPane<Converter>
 
 
 	protected PropertyValueModel<Boolean> buildBooleanHolder() {
-		return new TransformationPropertyValueModel<Converter, Boolean>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<CustomConverter, Boolean>(getSubjectHolder()) {
 			@Override
-			protected Boolean transform(Converter value) {
+			protected Boolean transform(CustomConverter value) {
 //				if (getSubject() != null && getSubject().getParent().getPersistentAttribute().isVirtual()) {
 //					return Boolean.FALSE;
 //				}

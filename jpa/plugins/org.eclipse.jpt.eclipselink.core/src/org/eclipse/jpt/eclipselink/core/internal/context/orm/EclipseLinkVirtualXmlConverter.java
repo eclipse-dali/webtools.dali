@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
-import org.eclipse.jpt.eclipselink.core.context.Converter;
+import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
 
 /**
@@ -22,9 +22,9 @@ public class EclipseLinkVirtualXmlConverter extends AbstractJpaEObject implement
 {
 	protected OrmTypeMapping ormTypeMapping;
 	
-	protected Converter javaConverter;
+	protected CustomConverter javaConverter;
 	
-	public EclipseLinkVirtualXmlConverter(OrmTypeMapping ormTypeMapping, Converter javaConverter) {
+	public EclipseLinkVirtualXmlConverter(OrmTypeMapping ormTypeMapping, CustomConverter javaConverter) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaConverter = javaConverter;

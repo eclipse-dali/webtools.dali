@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Xml Struct Converter</b></em>'.
+ * A representation of the model object '<em><b>Xml Struct CustomConverter</b></em>'.
  * <!-- end-user-doc -->
  *
  *
@@ -101,7 +101,7 @@ public class XmlStructConverterImpl extends AbstractJpaEObject implements XmlStr
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStructConverter_Name()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedConverter_Name()
 	 * @model
 	 * @generated
 	 */
@@ -130,7 +130,7 @@ public class XmlStructConverterImpl extends AbstractJpaEObject implements XmlStr
 	 * Returns the value of the '<em><b>Converter</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Converter</em>' attribute isn't clear,
+	 * If the meaning of the '<em>CustomConverter</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
