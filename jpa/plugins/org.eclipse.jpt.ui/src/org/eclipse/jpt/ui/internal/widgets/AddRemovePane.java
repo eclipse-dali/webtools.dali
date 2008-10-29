@@ -637,10 +637,7 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	 * @category UpdateButtons
 	 */
 	protected void updateAddButton(Button addButton) {
-		addButton.setEnabled(
-			enabled &&
-			getSubject() != null
-		);
+		addButton.setEnabled(enabled);
 	}
 
 	/**
