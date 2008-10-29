@@ -8,7 +8,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 public class ConverterTranslator extends Translator
@@ -19,6 +21,11 @@ public class ConverterTranslator extends Translator
 	
 	public ConverterTranslator(String domNameAndPath, EStructuralFeature aFeature) {
 		super(domNameAndPath, aFeature);
+	}
+	
+	@Override
+	public EObject createEMFObject(@SuppressWarnings("unused") String nodeName, @SuppressWarnings("unused") String readAheadName) {
+		return EclipseLinkOrmFactory.eINSTANCE.createXmlConverterImpl();
 	}
 	
 	@Override
