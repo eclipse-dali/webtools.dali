@@ -9,12 +9,14 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.StructConverter;
 import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
+import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -24,6 +26,7 @@ import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -172,6 +175,7 @@ public class ConvertComposite extends FormPane<Convert>
 		java.util.List<ListValueModel<String>> list = new ArrayList<ListValueModel<String>>();
 		list.add(buildDefaultNameListHolder());
 		list.add(buildReservedConverterNameListHolder());
+		list.add(buildConverterNameListHolder());
 		return new CompositeListValueModel<ListValueModel<String>, String>(list);
 	}
 	
@@ -237,9 +241,29 @@ public class ConvertComposite extends FormPane<Convert>
 		};
 	}
 
-	//TODO converter name repository, have another ListValueModel for these
 	protected ListValueModel<String> buildReservedConverterNameListHolder() {
 		return new StaticListValueModel<String>(CollectionTools.list(Convert.RESERVED_CONVERTER_NAMES));
+	}
+	
+	protected ListValueModel<String> buildConverterNameListHolder() {
+		return new ListAspectAdapter<EclipseLinkPersistenceUnit, String>(
+			buildPersistenceUnitHolder(),
+			EclipseLinkPersistenceUnit.CONVERTERS_LIST)//TODO need EclipseLinkPersistenceUnit interface
+		{
+			@Override
+			protected ListIterator<String> listIterator_() {
+				return CollectionTools.listIterator(CollectionTools.sort(this.subject.uniqueConverterNames()));
+			}
+		};
+	}
+	
+	protected PropertyValueModel<EclipseLinkPersistenceUnit> buildPersistenceUnitHolder() {
+		return new PropertyAspectAdapter<Convert, EclipseLinkPersistenceUnit>(getSubjectHolder()) {
+			@Override
+			protected EclipseLinkPersistenceUnit buildValue_() {
+				return (EclipseLinkPersistenceUnit) getSubject().getPersistenceUnit();
+			}
+		};
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildNoConverterHolder() {

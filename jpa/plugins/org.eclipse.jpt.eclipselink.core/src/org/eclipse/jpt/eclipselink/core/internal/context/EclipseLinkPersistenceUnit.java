@@ -94,7 +94,7 @@ public class EclipseLinkPersistenceUnit extends GenericPersistenceUnit
 	 * Note that there are no granular changes to this list.  There is only
 	 * notification that the entire list has changed.
 	 */
-	public String CONVERTERS_LIST = "converters"; //$NON-NLS-1$
+	public static final String CONVERTERS_LIST = "converters"; //$NON-NLS-1$
 	
 	/**
 	 * Add the converter definition (defined elsewhere) to the list of converters
