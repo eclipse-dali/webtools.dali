@@ -696,7 +696,7 @@ public abstract class AbstractComboModelAdapterTest {
 	private static class Model extends AbstractModel {
 
 		private SimpleDisplayable item;
-		private List<SimpleDisplayable> items;
+		private List<SimpleDisplayable> items = new ArrayList<SimpleDisplayable>();
 		private boolean setItemCalled;
 
 		static final String ITEM_PROPERTY = "item";
@@ -716,12 +716,6 @@ public abstract class AbstractComboModelAdapterTest {
 
 		SimpleDisplayable getItem() {
 			return item;
-		}
-
-		@Override
-		protected void initialize() {
-			super.initialize();
-			items = new ArrayList<SimpleDisplayable>();
 		}
 
 		boolean isSetItemCalled() {

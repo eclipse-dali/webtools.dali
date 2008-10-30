@@ -110,6 +110,7 @@ public abstract class AbstractNode
 	 */
 	protected AbstractNode(Node parent) {
 		super();
+		this.initialize();
 		this.initialize(parent);
 	}
 
@@ -120,10 +121,8 @@ public abstract class AbstractNode
 	 * Initialize a newly-created instance.
 	 * @see #initialize(Node)
 	 */
-	@Override
 	protected void initialize() {
-		super.initialize();
-		this.comment = "";
+		this.comment = ""; //$NON-NLS-1$
 
 		// a new object is dirty, by definition
 		this.dirty = true;

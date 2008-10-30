@@ -39,7 +39,7 @@ public abstract class ValueAspectAdapter<T>
 	extends PropertyValueModelWrapper<T>
 	implements WritablePropertyValueModel<T>
 {
-	/** Cache the value so we can disengage. */
+	/** Cache the value so we can disengage. Null until we have a listener*/
 	protected T value;
 
 
@@ -50,12 +50,6 @@ public abstract class ValueAspectAdapter<T>
 	 */
 	protected ValueAspectAdapter(WritablePropertyValueModel<T> valueHolder) {
 		super(valueHolder);
-	}
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.value = null;
 	}
 
 	/**

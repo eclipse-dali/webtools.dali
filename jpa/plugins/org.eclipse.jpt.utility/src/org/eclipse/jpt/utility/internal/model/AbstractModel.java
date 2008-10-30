@@ -50,11 +50,6 @@ public abstract class AbstractModel implements Model, Serializable {
 	 */
 	protected AbstractModel() {
 		super();
-		this.initialize();
-	}
-
-	protected void initialize() {
-		// do nothing by default
 	}
 
 	/**
