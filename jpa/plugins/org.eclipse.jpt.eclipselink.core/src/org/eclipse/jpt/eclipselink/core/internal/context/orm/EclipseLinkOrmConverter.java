@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlNamedConverter;
 
 public abstract class EclipseLinkOrmConverter
@@ -32,6 +33,11 @@ public abstract class EclipseLinkOrmConverter
 	
 	protected XmlNamedConverter getXmlResource() {
 		return this.xmlResource;
+	}
+	
+	@Override
+	public EclipseLinkPersistenceUnit getPersistenceUnit() {
+		return (EclipseLinkPersistenceUnit) super.getPersistenceUnit();
 	}
 	
 	
@@ -60,10 +66,12 @@ public abstract class EclipseLinkOrmConverter
 	protected void initialize(XmlNamedConverter resource) {
 		this.xmlResource = resource;
 		this.name = calculateName();
+		getPersistenceUnit().addConverter(this);
 	}
 	
 	public void update() {
 		this.setName_(calculateName());
+		getPersistenceUnit().addConverter(this);
 	}
 	
 	protected String calculateName() {
