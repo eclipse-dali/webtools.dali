@@ -174,7 +174,7 @@ public class ConvertersComposite extends Pane<ConverterHolder>
 		return new AddRemoveListPane.AbstractAdapter() {
 
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				addConverter(listSelectionModel);
+				addConverter();
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
@@ -196,16 +196,15 @@ public class ConvertersComposite extends Pane<ConverterHolder>
 		};
 	}
 
-	private void addConverter(ObjectListSelectionModel listSelectionModel) {
-		EclipseLinkConverterDialog dialog = buildEclipseLinkConverterDialog();
-		addEclipseLinkConverterFromDialog(dialog, listSelectionModel);
+	private void addConverter() {
+		addEclipseLinkConverterFromDialog(buildEclipseLinkConverterDialog());
 	}
 	
 	protected EclipseLinkConverterDialog buildEclipseLinkConverterDialog() {
 		return new EclipseLinkConverterDialog(getControl().getShell());
 	}
 
-	protected void addEclipseLinkConverterFromDialog(EclipseLinkConverterDialog dialog, ObjectListSelectionModel listSelectionModel) {
+	protected void addEclipseLinkConverterFromDialog(EclipseLinkConverterDialog dialog) {
 		if (dialog.open() != Window.OK) {
 			return;
 		}
@@ -227,8 +226,7 @@ public class ConvertersComposite extends Pane<ConverterHolder>
 			throw new IllegalArgumentException();
 		}
 		converter.setName(dialog.getName());
-
-		listSelectionModel.setSelectedValue(converter);
+		this.selectedConverterHolder.setValue(converter);//so that it gets selected in the List for the user to edit
 	}
 
 	private Transformer<EclipseLinkConverter, Control> buildPaneTransformer() {
