@@ -15,7 +15,9 @@ import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlNamedConverter;
+import org.eclipse.jpt.utility.internal.StringTools;
 
 public abstract class EclipseLinkOrmConverter
 	extends AbstractXmlContextNode implements EclipseLinkConverter
@@ -80,6 +82,22 @@ public abstract class EclipseLinkOrmConverter
 	
 	
 	// **************** validation *********************************************
+	
+	public boolean overrides(EclipseLinkConverter converter) {
+		if (getName() == null) {
+			return false;
+		}
+		// this isn't ideal, but it will have to do until we have further adopter input
+		return this.getName().equals(converter.getName()) && converter instanceof EclipseLinkJavaConverter;
+	}
+	
+	public boolean duplicates(EclipseLinkConverter converter) {
+		return (this != converter)
+				&& ! StringTools.stringIsEmpty(this.name)
+				&& this.name.equals(converter.getName())
+				&& ! this.overrides(converter)
+				&& ! converter.overrides(this);
+	}
 	
 	public TextRange getValidationTextRange() {
 		return getXmlResource().getValidationTextRange();

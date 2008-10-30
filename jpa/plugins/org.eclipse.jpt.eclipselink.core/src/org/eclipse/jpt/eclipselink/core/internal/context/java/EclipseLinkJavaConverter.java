@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.java.NamedConverterAnnotation;
+import org.eclipse.jpt.utility.internal.StringTools;
 
 public abstract class EclipseLinkJavaConverter extends AbstractJavaJpaContextNode
 	implements EclipseLinkConverter
@@ -85,6 +86,19 @@ public abstract class EclipseLinkJavaConverter extends AbstractJavaJpaContextNod
 	
 	
 	// **************** validation *********************************************
+	
+	public boolean overrides(EclipseLinkConverter converter) {
+		// java is at the base of the tree
+		return false;
+	}
+	
+	public boolean duplicates(EclipseLinkConverter converter) {
+		return (this != converter)
+				&& ! StringTools.stringIsEmpty(this.name)
+				&& this.name.equals(converter.getName())
+				&& ! this.overrides(converter)
+				&& ! converter.overrides(this);
+	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return getAnnotation().getTextRange(astRoot);

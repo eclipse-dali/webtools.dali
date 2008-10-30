@@ -40,4 +40,19 @@ public interface EclipseLinkConverter extends JpaContextNode
 	String getName();	
 	void setName(String name);
 		String NAME_PROPERTY = "nameProperty"; //$NON-NLS-1$
+	
+	/**
+	 * Return whether the converter definition overrides the definition of the 
+	 * given converter
+	 * (e.g. a converter defined in orm.xml overrides one defined in java).
+	 */
+	boolean overrides(EclipseLinkConverter converter);
+	
+	/**
+	 * Return whether the converter is a duplicate of the given converter.
+	 * A converter is not a duplicate of another converter if is the same exact converter,
+	 * if it is a nameless converter (which is an error condition), or if it overrides 
+	 * or is overridden by the other converter. 
+	 */
+	boolean duplicates(EclipseLinkConverter converter);
 }
