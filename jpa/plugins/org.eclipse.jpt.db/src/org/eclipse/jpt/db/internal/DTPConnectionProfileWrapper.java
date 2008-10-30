@@ -10,14 +10,12 @@
 package org.eclipse.jpt.db.internal;
 
 import java.text.Collator;
-import java.util.Iterator;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.datatools.connectivity.ConnectEvent;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.IManagedConnection;
 import org.eclipse.datatools.connectivity.IManagedConnectionOfflineListener;
-import org.eclipse.datatools.connectivity.drivers.DriverInstance;
 import org.eclipse.datatools.connectivity.drivers.DriverManager;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.datatools.connectivity.sqm.core.connection.ConnectionInfo;
@@ -27,11 +25,8 @@ import org.eclipse.jpt.db.ConnectionListener;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.DatabaseFinder;
 import org.eclipse.jpt.db.DatabaseObject;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
  *  Wrap a DTP ConnectionProfile
@@ -172,37 +167,6 @@ final class DTPConnectionProfileWrapper
 		return DriverManager.getInstance().getDriverInstanceByID(this.getDriverDefinitionID()).getJarList();
 	}
 
-	public String getDriverJarList(String driverName) {
-		return DriverManager.getInstance().getDriverInstanceByName(driverName).getJarList();
-	}
-
-	public Iterator<String> sortedDriverNames() {
-		return CollectionTools.sort(this.driverNames());
-	}
-	
-	public Iterator<String> driverNames() {
-		return new TransformationIterator<DriverInstance, String>(this.driverInstances()) {
-			@Override
-			protected String transform(DriverInstance next) {
-				return next.getPropertySet().getName();
-			}
-		};
-	}
-	
-	public int driverNamesSize() {
-		return this.getDriverInstances().length;
-	}
-
-	private Iterator<DriverInstance> driverInstances() {
-		return new ArrayIterator<DriverInstance>(this.getDriverInstances());
-	}
-	
-	private DriverInstance[] getDriverInstances() {
-		DriverInstance[] driverInstances = DriverManager.getInstance().getAllDriverInstances();
-
-		return (driverInstances == null) ? new DriverInstance[0] : driverInstances;
-	}
-	
 	public String getDriverName() {
 		return DriverManager.getInstance().getDriverInstanceByID(this.getDriverDefinitionID()).getName();
 	}

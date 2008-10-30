@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.db;
 
-import java.util.Iterator;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 
@@ -88,42 +86,21 @@ public interface ConnectionProfile
 	String getUserPassword();
 
 	/**
-	 * Return the driver definition ID.
+	 * Return the ID of the associated Driver definition.
 	 */
 	String getDriverDefinitionID();
 
 	/**
-	 * Return the jar list for the connection's driver as a 
+	 * Return the jar list for the associated Driver as a 
 	 * comma-delimited string.
 	 */
 	String getDriverJarList();
 
 	/**
-	 * Return the jar list for the given driver as a 
-	 * comma-delimited string.
-	 */
-	String getDriverJarList(String driverName);
-	
-	/**
-	 * Return the name of the connection's driver definition
+	 * Return the name of the associated Driver definition.
 	 */
 	String getDriverName();
 
-	/**
-	 * Return the driver's names sorted.
-	 */
-	Iterator<String> sortedDriverNames();
-	
-	/**
-	 * Return the names of driver definitions for the connection.
-	 */
-	Iterator<String> driverNames();
-	
-	/**
-	 * Return the number of driver definitions for the connection.
-	 */
-	int driverNamesSize();
-	
 	// ********** connection **********
 
 	/**

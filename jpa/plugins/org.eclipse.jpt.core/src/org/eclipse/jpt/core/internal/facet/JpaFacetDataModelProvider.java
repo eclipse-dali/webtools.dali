@@ -28,6 +28,7 @@ import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.componentcore.datamodel.FacetInstallDataModelProvider;
@@ -384,7 +385,7 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (cp == null) {
 			return null;
 		}
-		return cp.getDriverJarList(this.getStringProperty(DB_DRIVER_NAME));
+		return cp.getDriverJarList();
 	}
 
 	private Iterator<String> connectionNames() {
@@ -437,21 +438,10 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 	
 	private Iterator<String> driverNames() {
 		String setValue = getStringProperty(DB_DRIVER_NAME);
-		List<String> driverNames = this.buildSortedDriverNames();
 		
-		if (StringTools.stringIsEmpty(setValue) || driverNames.contains(setValue)) {
-			return driverNames.iterator();
-		}
-		return new CompositeIterator<String>(setValue, driverNames.iterator());
+		return new CompositeIterator<String>(setValue, EmptyIterator.<String> instance());
 	}
 
-	private List<String> buildSortedDriverNames() {
-		ConnectionProfile cp = this.getConnectionProfile();
-		if (cp == null) {
-			return Collections.emptyList();
-		}
-		return CollectionTools.list(cp.sortedDriverNames());
-	}
 
 	// ********** validation **********
 
