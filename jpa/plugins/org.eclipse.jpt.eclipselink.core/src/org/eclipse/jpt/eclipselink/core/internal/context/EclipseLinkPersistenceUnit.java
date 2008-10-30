@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 import org.eclipse.jpt.core.context.persistence.Persistence;
-import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
@@ -34,20 +34,18 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 /**
  * EclipseLinkPersistenceUnit
  */
-public class EclipseLinkPersistenceUnit extends GenericPersistenceUnit
+public class EclipseLinkPersistenceUnit extends AbstractPersistenceUnit
 {
-	private final EclipseLinkProperties eclipseLinkProperties;
+	protected final EclipseLinkProperties eclipseLinkProperties = new EclipseLinkJpaProperties(this);
 	
 	/* global converter definitions, defined elsewhere in model */
-	protected final List<EclipseLinkConverter> converters;
+	protected final List<EclipseLinkConverter> converters= new ArrayList<EclipseLinkConverter>();
 	
 	
 	public EclipseLinkPersistenceUnit(Persistence parent, XmlPersistenceUnit persistenceUnit) {
-		super(parent, persistenceUnit);
-		this.eclipseLinkProperties = new EclipseLinkJpaProperties(this);
-		this.converters = new ArrayList<EclipseLinkConverter>();
+		super(parent);
+		this.initialize(persistenceUnit);
 	}
-	
 	
 	@Override
 	protected void addNonUpdateAspectNamesTo(Set<String> nonUpdateAspectNames) {
