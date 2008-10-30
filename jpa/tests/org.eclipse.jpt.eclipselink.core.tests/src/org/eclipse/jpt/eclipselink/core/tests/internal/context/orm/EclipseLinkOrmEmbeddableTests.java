@@ -425,11 +425,11 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 	
 	public void testUpdateCustomConverters() throws Exception {
 		createTestEmbeddableForCustomConverters();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
 		EclipseLinkPersistenceUnit persistenceUnit = (EclipseLinkPersistenceUnit) persistenceUnit();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEmbeddable.getConverterHolder();
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.customConvertersSize());
 		assertEquals(0, resourceEmbeddable.getConverters().size());
@@ -583,14 +583,15 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 	
 	public void testUpdateTypeConverters() throws Exception {
 		createTestEmbeddableForTypeConverters();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
 		EclipseLinkPersistenceUnit persistenceUnit = (EclipseLinkPersistenceUnit) persistenceUnit();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEmbeddable.getConverterHolder();
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.typeConvertersSize());
 		assertEquals(0, resourceEmbeddable.getTypeConverters().size());
+		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//add a converter to the resource model, check context model
 		XmlTypeConverter resourceTypeConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlTypeConverterImpl();
@@ -604,7 +605,8 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertEquals("Foo", ormContextTypeConverter.getDataType());
 		assertEquals("myTypeConverter", ormContextTypeConverter.getName());
 		assertEquals(1, resourceEmbeddable.getTypeConverters().size());
-
+		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));
+		
 		//add another converter to the resource model, check context model
 		XmlTypeConverter resourceTypeConverter2 = EclipseLinkOrmFactory.eINSTANCE.createXmlTypeConverterImpl();
 		resourceEmbeddable.getTypeConverters().add(0, resourceTypeConverter2);
@@ -620,6 +622,7 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertEquals("Foo", ormContextTypeConverter.getDataType());
 		assertEquals("myTypeConverter", ormContextTypeConverter.getName());
 		assertEquals(2, resourceEmbeddable.getTypeConverters().size());
+		assertEquals(2, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//move a converter in the resource model, check context model
 		resourceEmbeddable.getTypeConverters().move(0, 1);
@@ -633,6 +636,7 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertEquals("Foo2", ormContextTypeConverter.getDataType());
 		assertEquals("myTypeConverter2", ormContextTypeConverter.getName());
 		assertEquals(2, resourceEmbeddable.getTypeConverters().size());
+		assertEquals(2, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//remove a converter from the resource model, check context model
 		resourceEmbeddable.getTypeConverters().remove(0);
@@ -643,7 +647,7 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertEquals("Foo2", ormContextTypeConverter.getDataType());
 		assertEquals("myTypeConverter2", ormContextTypeConverter.getName());
 		assertEquals(1, resourceEmbeddable.getTypeConverters().size());
-		
+		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//remove a converter from the resource model, check context model
 		resourceEmbeddable.getTypeConverters().remove(resourceTypeConverter2);
@@ -651,18 +655,20 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertEquals(0, ormContextConverterHolder.typeConvertersSize());
 		assertFalse(ormContextConverterHolder.typeConverters().hasNext());
 		assertEquals(0, resourceEmbeddable.getTypeConverters().size());
+		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));	
 	}
 
 	public void testModifyTypeConverters() throws Exception {
 		createTestEmbeddableForTypeConverters();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
 		EclipseLinkPersistenceUnit persistenceUnit = (EclipseLinkPersistenceUnit) persistenceUnit();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEmbeddable.getConverterHolder();
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.typeConvertersSize());
 		assertEquals(0, resourceEmbeddable.getTypeConverters().size());
+		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//add a converter to the context model, check resource model
 		TypeConverter contextTypeConverter = ormContextConverterHolder.addTypeConverter(0);
@@ -677,7 +683,8 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		TypeConverter ormContextTypeConverter = ormContextTypeConverters.next();
 		assertEquals("Foo", ormContextTypeConverter.getDataType());
 		assertEquals("myTypeConverter", ormContextTypeConverter.getName());
-	
+		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));
+		
 		//add another converter to the context model, check resource model
 		TypeConverter contextTypeConverter2 = ormContextConverterHolder.addTypeConverter(0);
 		contextTypeConverter2.setDataType("Foo2");
@@ -696,7 +703,8 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		ormContextTypeConverter = ormContextTypeConverters.next();
 		assertEquals("Foo", ormContextTypeConverter.getDataType());
 		assertEquals("myTypeConverter", ormContextTypeConverter.getName());
-	
+		assertEquals(2, CollectionTools.size(persistenceUnit.allConverters()));
+		
 		//move a converter in the context model, check resource model
 		ormContextConverterHolder.moveTypeConverter(0, 1);
 		
@@ -713,6 +721,7 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		ormContextTypeConverter = ormContextTypeConverters.next();
 		assertEquals("Foo2", ormContextTypeConverter.getDataType());
 		assertEquals("myTypeConverter2", ormContextTypeConverter.getName());
+		assertEquals(2, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//remove a converter from the context model, check resource model
 		ormContextConverterHolder.removeTypeConverter(0);
@@ -725,7 +734,7 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		ormContextTypeConverter = ormContextTypeConverters.next();
 		assertEquals("Foo2", ormContextTypeConverter.getDataType());
 		assertEquals("myTypeConverter2", ormContextTypeConverter.getName());
-		
+		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//remove a converter from the context model, check resource model
 		ormContextConverterHolder.removeTypeConverter(contextTypeConverter2);
@@ -733,18 +742,20 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertEquals(0, ormContextConverterHolder.typeConvertersSize());
 		assertFalse(ormContextConverterHolder.typeConverters().hasNext());
 		assertEquals(0, resourceEmbeddable.getTypeConverters().size());
+		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 	}
 	
 	public void testUpdateObjectTypeConverters() throws Exception {
 		createTestEmbeddableForObjectTypeConverters();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
 		EclipseLinkPersistenceUnit persistenceUnit = (EclipseLinkPersistenceUnit) persistenceUnit();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEmbeddable.getConverterHolder();
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.objectTypeConvertersSize());
 		assertEquals(0, resourceEmbeddable.getObjectTypeConverters().size());
+		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//add a converter to the resource model, check context model
 		XmlObjectTypeConverter resourceObjectTypeConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlObjectTypeConverterImpl();
@@ -758,7 +769,8 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertEquals("Foo", ormContextObjectTypeConverter.getDataType());
 		assertEquals("myObjectTypeConverter", ormContextObjectTypeConverter.getName());
 		assertEquals(1, resourceEmbeddable.getObjectTypeConverters().size());
-
+		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));
+		
 		//add another converter to the resource model, check context model
 		XmlObjectTypeConverter resourceObjectTypeConverter2 = EclipseLinkOrmFactory.eINSTANCE.createXmlObjectTypeConverterImpl();
 		resourceEmbeddable.getObjectTypeConverters().add(0, resourceObjectTypeConverter2);
@@ -774,6 +786,7 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertEquals("Foo", ormContextObjectTypeConverter.getDataType());
 		assertEquals("myObjectTypeConverter", ormContextObjectTypeConverter.getName());
 		assertEquals(2, resourceEmbeddable.getObjectTypeConverters().size());
+		assertEquals(2, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//move a converter in the resource model, check context model
 		resourceEmbeddable.getObjectTypeConverters().move(0, 1);
@@ -787,6 +800,7 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertEquals("Foo2", ormContextObjectTypeConverter.getDataType());
 		assertEquals("myObjectTypeConverter2", ormContextObjectTypeConverter.getName());
 		assertEquals(2, resourceEmbeddable.getObjectTypeConverters().size());
+		assertEquals(2, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//remove a converter from the resource model, check context model
 		resourceEmbeddable.getObjectTypeConverters().remove(0);
@@ -797,7 +811,7 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertEquals("Foo2", ormContextObjectTypeConverter.getDataType());
 		assertEquals("myObjectTypeConverter2", ormContextObjectTypeConverter.getName());
 		assertEquals(1, resourceEmbeddable.getObjectTypeConverters().size());
-		
+		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//remove a converter from the resource model, check context model
 		resourceEmbeddable.getObjectTypeConverters().remove(resourceObjectTypeConverter2);
@@ -805,15 +819,16 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertEquals(0, ormContextConverterHolder.objectTypeConvertersSize());
 		assertFalse(ormContextConverterHolder.objectTypeConverters().hasNext());
 		assertEquals(0, resourceEmbeddable.getObjectTypeConverters().size());
+		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 	}
 
 	public void testModifyObjectTypeConverters() throws Exception {
 		createTestEmbeddableForObjectTypeConverters();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
 		EclipseLinkPersistenceUnit persistenceUnit = (EclipseLinkPersistenceUnit) persistenceUnit();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEmbeddable.getConverterHolder();
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.objectTypeConvertersSize());
 		assertEquals(0, resourceEmbeddable.getObjectTypeConverters().size());
@@ -832,7 +847,8 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		ObjectTypeConverter ormContextObjectTypeConverter = ormContextObjectTypeConverters.next();
 		assertEquals("Foo", ormContextObjectTypeConverter.getDataType());
 		assertEquals("myObjectTypeConverter", ormContextObjectTypeConverter.getName());
-	
+		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));
+		
 		//add another converter to the context model, check resource model
 		ObjectTypeConverter contextObjectTypeConverter2 = ormContextConverterHolder.addObjectTypeConverter(0);
 		contextObjectTypeConverter2.setDataType("Foo2");
@@ -851,7 +867,8 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		ormContextObjectTypeConverter = ormContextObjectTypeConverters.next();
 		assertEquals("Foo", ormContextObjectTypeConverter.getDataType());
 		assertEquals("myObjectTypeConverter", ormContextObjectTypeConverter.getName());
-	
+		assertEquals(2, CollectionTools.size(persistenceUnit.allConverters()));
+		
 		//move a converter in the context model, check resource model
 		ormContextConverterHolder.moveObjectTypeConverter(0, 1);
 		
@@ -868,6 +885,7 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		ormContextObjectTypeConverter = ormContextObjectTypeConverters.next();
 		assertEquals("Foo2", ormContextObjectTypeConverter.getDataType());
 		assertEquals("myObjectTypeConverter2", ormContextObjectTypeConverter.getName());
+		assertEquals(2, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//remove a converter from the context model, check resource model
 		ormContextConverterHolder.removeObjectTypeConverter(0);
@@ -880,7 +898,7 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		ormContextObjectTypeConverter = ormContextObjectTypeConverters.next();
 		assertEquals("Foo2", ormContextObjectTypeConverter.getDataType());
 		assertEquals("myObjectTypeConverter2", ormContextObjectTypeConverter.getName());
-		
+		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//remove a converter from the context model, check resource model
 		ormContextConverterHolder.removeObjectTypeConverter(contextObjectTypeConverter2);
@@ -888,18 +906,20 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertEquals(0, ormContextConverterHolder.objectTypeConvertersSize());
 		assertFalse(ormContextConverterHolder.objectTypeConverters().hasNext());
 		assertEquals(0, resourceEmbeddable.getObjectTypeConverters().size());
+		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 	}
 	
 	public void testUpdateStructConverters() throws Exception {
 		createTestEmbeddableForStructConverters();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
 		EclipseLinkPersistenceUnit persistenceUnit = (EclipseLinkPersistenceUnit) persistenceUnit();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEmbeddable.getConverterHolder();
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.structConvertersSize());
 		assertEquals(0, resourceEmbeddable.getStructConverters().size());
+		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//add a converter to the resource model, check context model
 		XmlStructConverter resourceStructConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlStructConverterImpl();
@@ -913,7 +933,8 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertEquals("Foo", ormContextStructConverter.getConverterClass());
 		assertEquals("myStructConverter", ormContextStructConverter.getName());
 		assertEquals(1, resourceEmbeddable.getStructConverters().size());
-
+		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));
+		
 		//add another converter to the resource model, check context model
 		XmlStructConverter resourceStructConverter2 = EclipseLinkOrmFactory.eINSTANCE.createXmlStructConverterImpl();
 		resourceEmbeddable.getStructConverters().add(0, resourceStructConverter2);
@@ -929,6 +950,7 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertEquals("Foo", ormContextStructConverter.getConverterClass());
 		assertEquals("myStructConverter", ormContextStructConverter.getName());
 		assertEquals(2, resourceEmbeddable.getStructConverters().size());
+		assertEquals(2, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//move a converter in the resource model, check context model
 		resourceEmbeddable.getStructConverters().move(0, 1);
@@ -942,6 +964,7 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertEquals("Foo2", ormContextStructConverter.getConverterClass());
 		assertEquals("myStructConverter2", ormContextStructConverter.getName());
 		assertEquals(2, resourceEmbeddable.getStructConverters().size());
+		assertEquals(2, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//remove a converter from the resource model, check context model
 		resourceEmbeddable.getStructConverters().remove(0);
@@ -952,7 +975,7 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertEquals("Foo2", ormContextStructConverter.getConverterClass());
 		assertEquals("myStructConverter2", ormContextStructConverter.getName());
 		assertEquals(1, resourceEmbeddable.getStructConverters().size());
-		
+		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//remove a converter from the resource model, check context model
 		resourceEmbeddable.getStructConverters().remove(resourceStructConverter2);
@@ -960,18 +983,20 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertEquals(0, ormContextConverterHolder.structConvertersSize());
 		assertFalse(ormContextConverterHolder.structConverters().hasNext());
 		assertEquals(0, resourceEmbeddable.getStructConverters().size());
+		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 	}
 
 	public void testModifyStructConverters() throws Exception {
 		createTestEmbeddableForStructConverters();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
 		EclipseLinkPersistenceUnit persistenceUnit = (EclipseLinkPersistenceUnit) persistenceUnit();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEmbeddable.getConverterHolder();
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.structConvertersSize());
 		assertEquals(0, resourceEmbeddable.getStructConverters().size());
+		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//add a converter to the context model, check resource model
 		StructConverter contextStructConverter = ormContextConverterHolder.addStructConverter(0);
@@ -986,7 +1011,8 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		StructConverter ormContextStructConverter = ormContextStructConverters.next();
 		assertEquals("Foo", ormContextStructConverter.getConverterClass());
 		assertEquals("myStructConverter", ormContextStructConverter.getName());
-	
+		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));
+		
 		//add another converter to the context model, check resource model
 		StructConverter contextStructConverter2 = ormContextConverterHolder.addStructConverter(0);
 		contextStructConverter2.setConverterClass("Foo2");
@@ -1005,7 +1031,8 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		ormContextStructConverter = ormContextStructConverters.next();
 		assertEquals("Foo", ormContextStructConverter.getConverterClass());
 		assertEquals("myStructConverter", ormContextStructConverter.getName());
-	
+		assertEquals(2, CollectionTools.size(persistenceUnit.allConverters()));
+		
 		//move a converter in the context model, check resource model
 		ormContextConverterHolder.moveStructConverter(0, 1);
 		
@@ -1022,6 +1049,7 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		ormContextStructConverter = ormContextStructConverters.next();
 		assertEquals("Foo2", ormContextStructConverter.getConverterClass());
 		assertEquals("myStructConverter2", ormContextStructConverter.getName());
+		assertEquals(2, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//remove a converter from the context model, check resource model
 		ormContextConverterHolder.removeStructConverter(0);
@@ -1034,7 +1062,7 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		ormContextStructConverter = ormContextStructConverters.next();
 		assertEquals("Foo2", ormContextStructConverter.getConverterClass());
 		assertEquals("myStructConverter2", ormContextStructConverter.getName());
-		
+		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//remove a converter from the context model, check resource model
 		ormContextConverterHolder.removeStructConverter(contextStructConverter2);
@@ -1042,5 +1070,6 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 		assertEquals(0, ormContextConverterHolder.structConvertersSize());
 		assertFalse(ormContextConverterHolder.structConverters().hasNext());
 		assertEquals(0, resourceEmbeddable.getStructConverters().size());
+		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 	}
 }
