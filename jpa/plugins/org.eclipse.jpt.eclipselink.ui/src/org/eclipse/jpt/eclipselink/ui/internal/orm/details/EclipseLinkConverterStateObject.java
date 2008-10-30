@@ -17,15 +17,15 @@ import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.jpt.utility.internal.node.Problem;
 
 /**
- * This is the state object used by the <code>NewNameDialog</code>, which stores
+ * This is the state object used by the <code>EclipseLinkConverterDialog</code>, which stores
  * the current name and validates it when it is modified.
  *
- * @see NewNameDialog
+ * @see EclipseLinkConverterDialog
  *
  * @version 2.1
  * @since 2.1
  */
-final class EclipseLinkStateObject extends AbstractNode
+final class EclipseLinkConverterStateObject extends AbstractNode
 {
 	/**
 	 * The initial name or <code>null</code>
@@ -60,20 +60,20 @@ final class EclipseLinkStateObject extends AbstractNode
 	 * @param names The collection of names that can't be used or an empty
 	 * collection if none are available
 	 */
-	EclipseLinkStateObject() {
+	EclipseLinkConverterStateObject() {
 		super(null);
 
 	}
 
 	private void addNameProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.stringIsEmpty(this.name)) {
-			currentProblems.add(buildProblem(EclipseLinkUiMappingsMessages.ConversionValueStateObject_dataValueMustBeSpecified));
+			currentProblems.add(buildProblem(EclipseLinkUiMappingsMessages.EclipseLinkConverterStateObject_nameMustBeSpecified));
 		}
 	}
 
 	private void addConverterTypeProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.stringIsEmpty(this.converterType)) {
-			currentProblems.add(buildProblem(EclipseLinkUiMappingsMessages.ConversionValueStateObject_objectValueMustBeSpecified));
+			currentProblems.add(buildProblem(EclipseLinkUiMappingsMessages.EclipseLinkConverterStateObject_typeMustBeSpecified));
 		}
 	}
 

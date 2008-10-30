@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Text;
  * @version 2.1
  * @since 2.1
  */
-public class EclipseLinkConverterDialog extends ValidatingDialog<EclipseLinkStateObject> {
+public class EclipseLinkConverterDialog extends ValidatingDialog<EclipseLinkConverterStateObject> {
 
 	
 	// ********** constructors **********
@@ -46,8 +46,8 @@ public class EclipseLinkConverterDialog extends ValidatingDialog<EclipseLinkStat
 	}
 
 	@Override
-	protected EclipseLinkStateObject buildStateObject() {
-		return new EclipseLinkStateObject();
+	protected EclipseLinkConverterStateObject buildStateObject() {
+		return new EclipseLinkConverterStateObject();
 	}
 
 	// ********** open **********
@@ -74,7 +74,7 @@ public class EclipseLinkConverterDialog extends ValidatingDialog<EclipseLinkStat
 	}
 	
 	@Override
-	protected DialogPane<EclipseLinkStateObject> buildLayout(Composite container) {
+	protected DialogPane<EclipseLinkConverterStateObject> buildLayout(Composite container) {
 		return new ConversionValueDialogPane(container);
 	}
 	
@@ -105,7 +105,7 @@ public class EclipseLinkConverterDialog extends ValidatingDialog<EclipseLinkStat
 		return getSubject().getConverterType();
 	}
 	
-	private class ConversionValueDialogPane extends DialogPane<EclipseLinkStateObject> {
+	private class ConversionValueDialogPane extends DialogPane<EclipseLinkConverterStateObject> {
 
 		private Text nameText;
 
@@ -161,7 +161,7 @@ public class EclipseLinkConverterDialog extends ValidatingDialog<EclipseLinkStat
 		}
 		
 		private WritablePropertyValueModel<String> buildNameHolder() {
-			return new PropertyAspectAdapter<EclipseLinkStateObject, String>(getSubjectHolder(), EclipseLinkStateObject.NAME_PROPERTY) {
+			return new PropertyAspectAdapter<EclipseLinkConverterStateObject, String>(getSubjectHolder(), EclipseLinkConverterStateObject.NAME_PROPERTY) {
 				@Override
 				protected String buildValue_() {
 					return this.subject.getName();
@@ -175,7 +175,7 @@ public class EclipseLinkConverterDialog extends ValidatingDialog<EclipseLinkStat
 		}
 
 		private WritablePropertyValueModel<String> buildConverterTypeHolder() {
-			return new PropertyAspectAdapter<EclipseLinkStateObject, String>(getSubjectHolder(), EclipseLinkStateObject.CONVERTER_TYPE_PROPERTY) {
+			return new PropertyAspectAdapter<EclipseLinkConverterStateObject, String>(getSubjectHolder(), EclipseLinkConverterStateObject.CONVERTER_TYPE_PROPERTY) {
 				@Override
 				protected String buildValue_() {
 					return this.subject.getConverterType();
