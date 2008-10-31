@@ -48,6 +48,7 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class JavaManyToManyMappingTests extends ContextModelTestCase
 {
 
@@ -163,6 +164,56 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 				sb.append("    @Id").append(CR);				
 			}
 		});
+	}
+
+	private void createTestDepartment() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ").append(JPA.ENTITY).append(";");
+					sb.append(CR);
+					sb.append("import ").append(JPA.ID).append(";");
+					sb.append(CR);
+					sb.append("import java.util.Map;");
+					sb.append(CR);
+					sb.append("import ").append(JPA.MANY_TO_MANY).append(";");
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class ").append("Department").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private int id;").append(CR);
+				sb.append(CR);
+				sb.append("    @ManyToMany").append(CR);
+				sb.append("    private Map<Integer, Employee> employees;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Department.java", sourceWriter);
+	}
+
+	private void createTestEmployee() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ").append(JPA.ENTITY).append(";");
+					sb.append(CR);
+					sb.append("import ").append(JPA.ID).append(";");
+					sb.append(CR);
+			sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class ").append("Employee").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private int empId;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Employee.java", sourceWriter);
 	}
 
 	public JavaManyToManyMappingTests(String name) {
@@ -898,5 +949,15 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertFalse(manyToManyMapping.isCustomOrdering());
 		assertNull(attributeResource.getSupportingAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
-
+	
+	public void testDefaultTargetEntityForMap() throws Exception {
+		createTestEmployee();
+		createTestDepartment();
+		addXmlClassRef(PACKAGE_NAME + ".Department");
+		addXmlClassRef(PACKAGE_NAME + ".Employee");
+		
+		JavaPersistentType departmentPersistentType = javaPersistentType();
+		ManyToManyMapping employeesMapping = (ManyToManyMapping) departmentPersistentType.getAttributeNamed("employees").getSpecifiedMapping();
+		assertEquals(PACKAGE_NAME + ".Employee", employeesMapping.getTargetEntity());
+	}
 }

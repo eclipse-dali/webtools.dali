@@ -330,10 +330,16 @@ public class JavaResourcePersistentAttributeImpl
 		}
 
 		ITypeBinding[] typeArguments = typeBinding.getTypeArguments();
-		if (typeArguments.length != 1) {
+		ITypeBinding elementTypeBinding;
+		if (typeArguments.length == 1) {
+			elementTypeBinding = typeArguments[0];
+		}
+		else if (typeArguments.length == 2 && typeNamedIsMap(buildQualifiedTypeName(astRoot))) {
+			elementTypeBinding = typeArguments[1];
+		}
+		else {
 			return null;
 		}
-		ITypeBinding elementTypeBinding = typeArguments[0];
 		String elementTypeName = buildReferenceEntityTypeName(elementTypeBinding);
 		return typeNamedIsContainer(elementTypeName) ? null : elementTypeName;
 	}
@@ -353,6 +359,16 @@ public class JavaResourcePersistentAttributeImpl
 		return (typeName == null) ? false : typeNamedIsContainer(typeName);
 	}
 	
+	private static final String MAP_TYPE_NAME = java.util.Map.class.getName();
+
+	/**
+	 * return whether the specified non-array type is one of the container
+	 * types allowed by the JPA spec
+	 */
+	public static boolean typeNamedIsMap(String typeName) {
+		return MAP_TYPE_NAME.equals(typeName);
+	}
+	
 	/**
 	 * return whether the specified non-array type is one of the container
 	 * types allowed by the JPA spec
@@ -365,8 +381,9 @@ public class JavaResourcePersistentAttributeImpl
 		java.util.Collection.class.getName(),
 		java.util.Set.class.getName(),
 		java.util.List.class.getName(),
-		java.util.Map.class.getName()
+		MAP_TYPE_NAME,
 	};
+	
 	
 	protected String buildQualifiedTypeName(CompilationUnit astRoot) {
 		ITypeBinding typeBinding = this.getMember().getTypeBinding(astRoot);
