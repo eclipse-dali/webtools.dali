@@ -12,7 +12,6 @@
 package org.eclipse.jpt.ui.internal.wizards.entity;
 
 import java.io.File;
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -24,19 +23,20 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.resource.JpaResourceModelProviderManager;
+import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
+import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.internal.wizard.NewJavaClassWizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -45,18 +45,15 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
-import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
-import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
@@ -64,8 +61,6 @@ import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 public class EntityClassWizardPage extends NewJavaClassWizardPage{
 
 	private static final String JPA_FACET = "jpt.jpa";//$NON-NLS-1$
-	private static final String XML_EXTENSION = ".xml";//$NON-NLS-1$
-	private static final String PERSISTENCE_XML = "persistence.xml";//$NON-NLS-1$
 	private static final String META_INF = "META-INF";//$NON-NLS-1$
 	private static final String EMPTY = "";//$NON-NLS-1$
 	private static final char SLASH = '/'; //$NON-NLS-1$
@@ -90,6 +85,14 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 	public EntityClassWizardPage(IDataModel model, String pageName,
 			String pageDesc, String pageTitle, String moduleType) {
 		super(model, pageName, pageDesc, pageTitle, moduleType);
+	}
+	
+	
+	@Override
+	protected String[] getValidationPropertyNames() {
+		return CollectionTools.addAll(
+				super.getValidationPropertyNames(), 
+				new String[] {IEntityDataModelProperties.XML_NAME, IEntityDataModelProperties.XML_SUPPORT});
 	}
 
 	/* Create top level composite (class properties) and add the entity's specific inheritance group
@@ -119,15 +122,11 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				boolean isChecked = xmlSupportButton.getSelection();
-				ormXmlName.setEnabled(isChecked);	
-				browseButton.setEnabled(isChecked);
+				enableMappingXMLChooseGroup(isChecked);
 				if (isFirstCheck) {
 					ormXmlName.setText(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 					isFirstCheck = false;
 				}
-				//Disable the choose alternative XML : see enhancement request 152461
-				//The creation of alternative mapping is problematic 
-				disableMappingXMLChooseGroup();
 			}
 		});		
 		return composite;
@@ -255,10 +254,8 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 			}
 		});
 		synchHelper.synchText(ormXmlName, property, /*dependentControls*/null);
-		ormXmlName.setEnabled(false);
-		//Disable the choose alternative XML : see enhancement request 152461
-		//The creation of alternative mapping is problematic
-		disableMappingXMLChooseGroup();		
+		
+		enableMappingXMLChooseGroup(false);		
 	}
 	
 	/**
@@ -271,12 +268,10 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 		if (project == null) {
 			return;
 		}
-		ISelectionStatusValidator validator = getDialogSelectionValidator();		
 		ViewerFilter filter = getDialogViewerFilter();
 		ITreeContentProvider contentProvider = new WorkbenchContentProvider();
 		ILabelProvider labelProvider = new DecoratingLabelProvider(new WorkbenchLabelProvider(), PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator());
 		SelectMappingXMLDialog dialog = new SelectMappingXMLDialog(getShell(), labelProvider, contentProvider);
-		dialog.setValidator(validator);
 		dialog.setTitle(EntityWizardMsg.MAPPING_XML_TITLE);
 		dialog.setMessage(EntityWizardMsg.CHOOSE_MAPPING_XML_MESSAGE);
 		dialog.addFilter(filter);
@@ -290,20 +285,6 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 			ormXmlName.setText(dialog.getChosenName());
 			model.validateProperty(IEntityDataModelProperties.XML_NAME);
 		}		
-	}
-	
-	/**
-	 * This method can be extended by subclasses, as it does some basic validation. 
-	 * @return new instance of the Selection validator for the SelectMappingXMLDialog
-	 */
-	protected ISelectionStatusValidator getDialogSelectionValidator() {
-		return new ISelectionStatusValidator() {
-			public IStatus validate(Object[] selection) {
-				if (selection != null && selection.length > 0 && selection[0] != null && !(selection[0] instanceof IProject))
-					return WTPCommonPlugin.OK_STATUS;
-				return WTPCommonPlugin.createErrorStatus(EntityWizardMsg.INCORRECT_XML_NAME);
-			}
-		};
 	}
 	
 	/**
@@ -323,7 +304,7 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 					return false;
 				} else if (element instanceof IFile) {
 					IFile file = (IFile) element;
-					if (file.getName().endsWith(XML_EXTENSION) && !file.getName().equals(PERSISTENCE_XML)) {
+					if (JpaResourceModelProviderManager.instance().getModelProvider(file) instanceof OrmResourceModelProvider) {
 						return true;
 					}
 				}
@@ -332,12 +313,10 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 		};
 	}
 	
-	private void disableMappingXMLChooseGroup() {
-		//Disable the choose alternative XML : see enhancement request 152461
-		//The creation of alternative mapping is problematic
-		displayNameLabel.setEnabled(false);
-		ormXmlName.setEnabled(false);
-		browseButton.setEnabled(false);
+	private void enableMappingXMLChooseGroup(boolean enabled) {
+		displayNameLabel.setEnabled(enabled);
+		ormXmlName.setEnabled(enabled);
+		browseButton.setEnabled(enabled);
 
 	}
 	
@@ -365,45 +344,17 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 		return (project.isAccessible() && fProject != null && fProject.hasProjectFacet(jpaFacet));	
 	}
 	
-	private class SelectMappingXMLDialog extends ElementTreeSelectionDialog{
-		
-		private Text newXmlName;
+	private class SelectMappingXMLDialog extends ElementTreeSelectionDialog
+	{	
 		private String xmlName = EMPTY;
-		private IStatus currentStatus = new Status(IStatus.OK, PlatformUI.PLUGIN_ID, IStatus.OK, EMPTY, null);
+		
 		
 		public SelectMappingXMLDialog(Shell parent, ILabelProvider labelProvider, ITreeContentProvider contentProvider) {
 			super(parent, labelProvider, contentProvider);			
-		}		
+		}
 		
-	    /*
-	     * @see Dialog#createDialogArea(Composite)
-	     */
-	    @Override
-		protected Control createDialogArea(Composite parent) {
-	    	Composite composite = (Composite)super.createDialogArea(parent);	    	
-			Label fileNameLabel = new Label(composite, SWT.LEFT);
-			fileNameLabel.setText(EntityWizardMsg.XML_NAME_TITLE);
-			fileNameLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
-			newXmlName = new Text(composite, SWT.SINGLE | SWT.BORDER);
-			newXmlName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));			
-			newXmlName.addKeyListener(new KeyAdapter() {
-				@Override
-				public void keyReleased(KeyEvent e) {					
-					super.keyReleased(e);					
-					xmlName = newXmlName.getText();
-					TreeSelection selection = (TreeSelection)getTreeViewer().getSelection();	
-					IResource selectedResource = (IResource)selection.getFirstElement();
-					if (selectedResource instanceof IFile) {
-						getTreeViewer().setSelection(new TreeSelection(new TreePath(getSegments(selectedResource.getParent()))));
-					}
-					updateOKStatus();
-				}
-				
-			});			
-	        return composite;
-	    }		
-	    
-	    /**
+		
+		/**
 	     * @return the name of the alternative mapping XML
 	     */
 	    public String getChosenName() {
@@ -426,20 +377,14 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 	     */
 		protected void updateOKStatus() {
 			super.updateOKStatus();
-			TreeSelection selection = (TreeSelection)getTreeViewer().getSelection();	
-			IResource selectedResource = (IResource)selection.getFirstElement();
+			TreeSelection selection = (TreeSelection)getTreeViewer().getSelection();
+			IResource selectedResource = (IResource) selection.getFirstElement();
 			if (selectedResource instanceof IFile) {
-				IFile file = (IFile)selectedResource;
-				xmlName = file.getName();
-				newXmlName.setText(xmlName);												
-				currentStatus = new Status(IStatus.OK, PlatformUI.PLUGIN_ID, IStatus.OK, EMPTY, null);				
+				updateStatus(new Status(IStatus.OK, JptUiPlugin.PLUGIN_ID, ""));
 			}
-			if (!xmlName.endsWith(XML_EXTENSION)) {
-				currentStatus = new Status(IStatus.ERROR, PlatformUI.PLUGIN_ID, IStatus.ERROR, EntityWizardMsg.INCORRECT_XML_NAME, null);
-			} else {
-				currentStatus = new Status(IStatus.OK, PlatformUI.PLUGIN_ID, IStatus.OK, EMPTY, null);
-			}		
-			updateStatus(currentStatus);	    
+			else {
+				updateStatus(new Status(IStatus.ERROR, JptUiPlugin.PLUGIN_ID, ""));
+			}
 		}
 		
 		/** 
@@ -452,20 +397,5 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 			output = output.replace(File.separatorChar, SLASH);
 			return output;
 		}
-		
-		/**
-		 * This method is for internal purposes only. It is intended to create correct
-		 * selection of the resource resource
-		 * @param resource
-		 * @return the segments of the resource
-		 */
-		private Object[] getSegments(IResource resource) {
-			Object[] segments = new Object[resource.getFullPath().segments().length];
-			for (int i = segments.length - 1; i > -1; i--) {
-				segments[i] = resource;
-				resource = resource.getParent();
-			}
-			return segments;
-		}	    
 	}	
 }

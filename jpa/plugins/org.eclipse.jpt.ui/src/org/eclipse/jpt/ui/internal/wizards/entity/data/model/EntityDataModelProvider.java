@@ -13,14 +13,20 @@ package org.eclipse.jpt.ui.internal.wizards.entity.data.model;
 
 import java.util.ArrayList;
 import java.util.Set;
-
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaConventions;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
+import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.wizards.entity.EntityWizardMsg;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.operation.NewEntityClassOperation;
 import org.eclipse.jst.j2ee.internal.common.J2EECommonMessages;
 import org.eclipse.jst.j2ee.internal.common.operations.NewJavaClassDataModelProvider;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
 import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
 
 public class EntityDataModelProvider extends NewJavaClassDataModelProvider implements IEntityDataModelProperties{
@@ -36,8 +42,6 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 	 * 
 	 * @see org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider#getPropertyNames()
 	 */
-	
-	
 	@Override
 	public Set getPropertyNames() {		
 		Set propertyNames = super.getPropertyNames();
@@ -101,6 +105,15 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 		// Otherwise check super for default value for property
 		return super.getDefaultProperty(propertyName);
 	}
+	
+	@Override
+	public boolean propertySet(String propertyName, Object propertyValue) {
+		boolean ok = super.propertySet(propertyName, propertyValue);
+		if (propertyName.equals(PROJECT_NAME) || propertyName.equals(XML_SUPPORT)) {
+			this.model.notifyPropertyChange(XML_NAME, IDataModel.VALID_VALUES_CHG);
+		}
+		return ok;
+	}
 
 	/* Adds additional check to the model validation
 	 * @see org.eclipse.jst.j2ee.internal.common.operations.NewJavaClassDataModelProvider#validate(java.lang.String)
@@ -115,9 +128,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 			return WTPCommonPlugin.OK_STATUS;
 		}
 		if (propertyName.equals(XML_NAME)) {
-//			String xmlName = getStringProperty(propertyName);
-//			xmlName = xmlName.substring(xmlName.lastIndexOf(File.separator) + 1);
-//			return ResourcesPlugin.getWorkspace().validateName(xmlName, IResource.FILE);
+			return validateXmlName(getStringProperty(propertyName));
 		}
 		if (propertyName.equals(ENTITY_FIELDS)) {
 			return validateFieldsList((ArrayList<EntityRow>) getProperty(propertyName));
@@ -150,6 +161,34 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 		}		
 		// java package name is valid
 		return WTPCommonPlugin.OK_STATUS;
+	}
+	
+	/**
+	 * This method is intended for internal use only.  It will be used to validate 
+	 * the correctness of xml file location. 
+	 * This method will accept a null parameter. 
+	 * 
+	 * @see NewFilterClassDataModelProvider#validate(String)
+	 * 
+	 * @param xmlName
+	 * @return IStatus is the package name satisfies Java convention requirements
+	 */
+	private IStatus validateXmlName(String xmlName) {
+		if (getBooleanProperty(XML_SUPPORT)) {
+			String projectName = model.getStringProperty(PROJECT_NAME);
+			IProject project = ProjectUtilities.getProject(projectName);
+			if (project != null) {
+				OrmResourceModelProvider modelProvider = OrmResourceModelProvider.getModelProvider(project, xmlName);
+				try {
+					modelProvider.getResource();
+				} catch (Exception e) {
+					return new Status(
+						IStatus.ERROR, JptUiPlugin.PLUGIN_ID,
+						EntityWizardMsg.INVALID_XML_NAME);
+				}
+			}
+		}
+		return Status.OK_STATUS;
 	}
 	
 	

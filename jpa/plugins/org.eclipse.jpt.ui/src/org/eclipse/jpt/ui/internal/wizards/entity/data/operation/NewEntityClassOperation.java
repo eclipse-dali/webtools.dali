@@ -264,7 +264,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
                        
         if (!tempModel.isArtifactsAnnotated()) {
         	if (tempModel.isNonEntitySuperclass()) { 
-        		addMappedSuperclassToXLM(tempModel, project).schedule();
+        		addMappedSuperclassToXML(tempModel, project).schedule();
         	} else {
         		addEntityToXML(tempModel, project).schedule();
         	}
@@ -479,7 +479,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 	 * @param project JPA project in which the entity will be created
 	 * @return the created job
 	 */
-	private Job addMappedSuperclassToXLM(final CreateEntityTemplateModel model, final IProject project) {
+	private Job addMappedSuperclassToXML(final CreateEntityTemplateModel model, final IProject project) {
 		Job job = new Job(EntityWizardMsg.ADD_MAPPED_SUPERCLASS_TO_XML) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {

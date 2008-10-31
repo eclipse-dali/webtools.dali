@@ -36,7 +36,7 @@ public class EntityWizardMsg extends NLS {
     public static String CHOOSE_XML;
     public static String MAPPING_XML_TITLE;
     public static String XML_NAME_TITLE;
-    public static String INCORRECT_XML_NAME;
+    public static String INVALID_XML_NAME;
     public static String CHOOSE_MAPPING_XML_MESSAGE;
     public static String TYPE_DIALOG_TITLE;
     public static String TYPE_DIALOG_DESCRIPTION;

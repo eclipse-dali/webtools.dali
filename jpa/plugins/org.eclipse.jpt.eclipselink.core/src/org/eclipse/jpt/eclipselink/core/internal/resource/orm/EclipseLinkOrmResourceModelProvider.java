@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.resource.JpaResourceModelProviderManager;
-import org.eclipse.jpt.core.resource.AbstractResourceModelProvider;
+import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkConstants;
@@ -24,7 +24,7 @@ import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
 
-public class EclipseLinkOrmResourceModelProvider extends AbstractResourceModelProvider
+public class EclipseLinkOrmResourceModelProvider extends OrmResourceModelProvider
 {
 	/**
 	 * (Convenience method) Returns an EclipseLink ORM resource model provider for 
