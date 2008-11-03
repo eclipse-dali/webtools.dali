@@ -39,13 +39,13 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.validation.JpaHelper;
 import org.eclipse.jpt.core.internal.validation.JpaValidator;
 import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
-import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
-import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
-import org.eclipse.jpt.eclipselink.core.internal.context.logging.LoggingLevel;
-import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.DdlGenerationType;
-import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.OutputMode;
-import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.Logging;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.LoggingLevel;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.DdlGenerationType;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.OutputMode;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.wst.validation.internal.operations.ValidatorJob;
 
 /**

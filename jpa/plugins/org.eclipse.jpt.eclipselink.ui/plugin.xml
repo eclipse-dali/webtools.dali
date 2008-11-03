@@ -77,19 +77,20 @@
 				class="org.eclipse.jst.j2ee.navigator.internal.J2EEViewerSorter" />
 			
 			-->
-			
 		
 	</extension>
- <extension
-       point="org.eclipse.ui.perspectiveExtensions">
-    <perspectiveExtension
-          targetID="org.eclipse.jpt.ui.jpaPerspective">
-       <newWizardShortcut
-             id="org.eclipse.jpt.eclipselink.ui.wizard.newEclipseLinkMappingFile">
-       </newWizardShortcut>
-    </perspectiveExtension>
- </extension>
-
-
-
+	
+	
+	<extension
+		point="org.eclipse.ui.perspectiveExtensions">
+		
+		<perspectiveExtension
+			targetID="org.eclipse.jpt.ui.jpaPerspective">
+			<newWizardShortcut
+				id="org.eclipse.jpt.eclipselink.ui.wizard.newEclipseLinkMappingFile">
+			</newWizardShortcut>
+		</perspectiveExtension>
+		
+	</extension>
+	
 </plugin>
