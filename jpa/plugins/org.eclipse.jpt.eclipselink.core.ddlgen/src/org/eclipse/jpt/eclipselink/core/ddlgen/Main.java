@@ -17,11 +17,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Map.Entry;
-
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-
-import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.SchemaGeneration;
 
 /** 
  * This class creates a EclipseLink <code>EntityManagerFactory</code>, 
