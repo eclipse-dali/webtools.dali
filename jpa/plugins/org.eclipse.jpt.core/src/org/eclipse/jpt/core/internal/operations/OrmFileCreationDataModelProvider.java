@@ -452,18 +452,12 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	}
 	
 	protected Iterator<PersistenceUnit> persistenceUnits() {
-		return new CompositeIterator<PersistenceUnit>(
-			new TransformationIterator<IProject, Iterator<PersistenceUnit>>(jpaIProjects()) {
-				@Override
-				protected Iterator<PersistenceUnit> transform(IProject jpaIProject) {
-					JpaProject jpaProject = JptCorePlugin.getJpaProject(jpaIProject);
-					PersistenceXml persistenceXml = 
-						(jpaProject == null) ? null : jpaProject.getRootContextNode().getPersistenceXml();
-					Persistence persistence = 
-						(persistenceXml == null) ? null : persistenceXml.getPersistence();
-					return (persistence == null) ? EmptyIterator.<PersistenceUnit>instance() : persistence.persistenceUnits();
-				}
-			});
+		//only get the persistence units for the selected JpaProject, 
+		//if no jpa project is selected, then no persistence units will be listed in the combo
+		JpaProject jpaProject = getJpaProject();
+		PersistenceXml persistenceXml = (jpaProject == null) ? null : jpaProject.getRootContextNode().getPersistenceXml();
+		Persistence persistence = (persistenceXml == null) ? null : persistenceXml.getPersistence();
+		return (persistence == null) ? EmptyIterator.<PersistenceUnit>instance() : persistence.persistenceUnits();
 	}
 	
 	protected Iterator<String> persistenceUnitNames() {
