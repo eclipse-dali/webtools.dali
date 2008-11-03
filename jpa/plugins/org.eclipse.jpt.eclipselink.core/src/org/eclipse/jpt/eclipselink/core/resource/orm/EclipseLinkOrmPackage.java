@@ -14,15 +14,13 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
-
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 
 /**
  * <!-- begin-user-doc -->
+ * 
  * The <b>Package</b> for the model.
  * It contains accessors for the meta objects to represent
  * <ul>
@@ -31,7 +29,18 @@ import org.eclipse.jpt.core.resource.orm.OrmPackage;
  *   <li>each enum,</li>
  *   <li>and each data type</li>
  * </ul>
+ *  
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 2.1
+ * @since 2.1
+ * 
  * <!-- end-user-doc -->
+ * 
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory
  * @model kind="package"
  * @generated

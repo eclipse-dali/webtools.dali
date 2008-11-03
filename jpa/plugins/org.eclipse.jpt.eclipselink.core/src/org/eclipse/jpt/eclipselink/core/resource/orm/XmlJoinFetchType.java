@@ -2,21 +2,32 @@
  * <copyright>
  * </copyright>
  *
- * $Id: XmlJoinFetchType.java,v 1.1 2008/10/16 21:17:50 pfullbright Exp $
+ * $Id: XmlJoinFetchType.java,v 1.2 2008/11/03 16:58:54 pfullbright Exp $
  */
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import org.eclipse.emf.common.util.Enumerator;
 
 /**
  * <!-- begin-user-doc -->
+ * 
  * A representation of the literals of the enumeration '<em><b>Xml Join Fetch Type</b></em>',
  * and utility methods for working with them.
+ *  
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 2.1
+ * @since 2.1
+ * 
  * <!-- end-user-doc -->
+ * 
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlJoinFetchType()
  * @model
  * @generated
