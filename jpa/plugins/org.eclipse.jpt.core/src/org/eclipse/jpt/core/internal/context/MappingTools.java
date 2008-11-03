@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
 
 /**
@@ -120,11 +119,11 @@ public class MappingTools {
 		// (the spec implies that the referenced column is always the
 		// primary key column of the target entity)
 		// Column targetColumn = joinColumn.getTargetPrimaryKeyDbColumn();
-		Column targetColumn = joinColumn.getReferencedDbColumn();
-		if (targetColumn == null) {
+		String targetColumnName = joinColumn.getReferencedColumnName();
+		if (targetColumnName == null) {
 			return null;
 		}
-		String name = prefix + '_' + targetColumn.getName();
+		String name = prefix + '_' + targetColumnName;
 		// not sure which of these is correct...
 		// converting the name to an identifier will result in the identifier
 		// being delimited nearly every time (at least on non-Sybase/MS
