@@ -39,7 +39,7 @@ public class VirtualXmlOneToMany extends VirtualXmlAttributeMapping<JavaOneToMan
 	public VirtualXmlOneToMany(OrmTypeMapping ormTypeMapping, JavaOneToManyMapping javaOneToManyMapping) {
 		super(ormTypeMapping, javaOneToManyMapping);
 		this.virtualCascadeType = new VirtualCascadeType(javaOneToManyMapping.getCascade(), this.isOrmMetadataComplete());
-		this.virtualJoinTable = new VirtualXmlJoinTable(javaOneToManyMapping.getJoinTable(), this.isOrmMetadataComplete());
+		this.virtualJoinTable = new VirtualXmlJoinTable(ormTypeMapping, javaOneToManyMapping.getJoinTable());
 		this.mapKey = new VirtualMapKey(javaOneToManyMapping, this.isOrmMetadataComplete());
 	}
 	

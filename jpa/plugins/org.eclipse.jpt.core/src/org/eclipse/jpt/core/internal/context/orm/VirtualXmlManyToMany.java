@@ -38,7 +38,7 @@ public class VirtualXmlManyToMany extends VirtualXmlAttributeMapping<JavaManyToM
 	public VirtualXmlManyToMany(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
 		super(ormTypeMapping, javaManyToManyMapping);
 		this.virtualCascadeType = new VirtualCascadeType(javaManyToManyMapping.getCascade(), this.isOrmMetadataComplete());
-		this.virtualJoinTable = new VirtualXmlJoinTable(javaManyToManyMapping.getJoinTable(), isOrmMetadataComplete());
+		this.virtualJoinTable = new VirtualXmlJoinTable(ormTypeMapping, javaManyToManyMapping.getJoinTable());
 		this.mapKey = new VirtualMapKey(javaManyToManyMapping, this.isOrmMetadataComplete());
 	}
 	
