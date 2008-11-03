@@ -597,7 +597,7 @@
           id="org.eclipse.jpt.ui.jpaPerspective"
           name="%jpaPerspective">
        <description>
-          description body text
+          %jpaPerspectiveDescription
        </description>
     </perspective>
  </extension>
