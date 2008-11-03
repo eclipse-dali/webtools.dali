@@ -107,30 +107,30 @@ public class MappingFileWizardPage extends DataModelWizardPage
 		data.widthHint = 300;
 		composite.setLayoutData(data);
 		
-		projectNameLabel = new Label(composite, SWT.NONE);
-		projectNameLabel.setText(JptUiMessages.MappingFileWizardPage_projectLabel); //$NON-NLS-1$
+		this.projectNameLabel = new Label(composite, SWT.NONE);
+		this.projectNameLabel.setText(JptUiMessages.MappingFileWizardPage_projectLabel);
 		data = new GridData();
-		projectNameLabel.setLayoutData(data);
+		this.projectNameLabel.setLayoutData(data);
 		
-		projectNameCombo = new Combo(composite, SWT.BORDER | SWT.READ_ONLY);
+		this.projectNameCombo = new Combo(composite, SWT.BORDER | SWT.READ_ONLY);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.widthHint = 300;
 		data.horizontalSpan = 1;
-		projectNameCombo.setLayoutData(data);
-		synchHelper.synchCombo(projectNameCombo, PROJECT_NAME, null);
+		this.projectNameCombo.setLayoutData(data);
+		this.synchHelper.synchCombo(this.projectNameCombo, PROJECT_NAME, null);
 		new Label(composite, SWT.NONE);
 		
-		sourceFolderLabel = new Label(composite, SWT.NONE);
-		sourceFolderLabel.setText(JptUiMessages.MappingFileWizardPage_sourceFolderLabel); //$NON-NLS-1$
+		this.sourceFolderLabel = new Label(composite, SWT.NONE);
+		this.sourceFolderLabel.setText(JptUiMessages.MappingFileWizardPage_sourceFolderLabel);
 		data = new GridData();
-		sourceFolderLabel.setLayoutData(data);
+		this.sourceFolderLabel.setLayoutData(data);
 		
-		sourceFolderText = new Text(composite, SWT.BORDER);
+		this.sourceFolderText = new Text(composite, SWT.BORDER);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.widthHint = 300;
 		data.horizontalSpan = 1;
-		sourceFolderText.setLayoutData(data);
-		synchHelper.synchText(sourceFolderText, SOURCE_FOLDER, null);
+		this.sourceFolderText.setLayoutData(data);
+		this.synchHelper.synchText(this.sourceFolderText, SOURCE_FOLDER, null);
 		
 		Button sourceFolderButton = new Button(composite, SWT.PUSH);
 		sourceFolderButton.setText(JptUiMessages.General_browse);
@@ -147,50 +147,50 @@ public class MappingFileWizardPage extends DataModelWizardPage
 				}
 			});
 		
-		filePathLabel = new Label(composite, SWT.NONE);
-		filePathLabel.setText(JptUiMessages.MappingFileWizardPage_filePathLabel); //$NON-NLS-1$
+		this.filePathLabel = new Label(composite, SWT.NONE);
+		this.filePathLabel.setText(JptUiMessages.MappingFileWizardPage_filePathLabel);
 		data = new GridData();
-		filePathLabel.setLayoutData(data);
+		this.filePathLabel.setLayoutData(data);
 		
-		filePathText = new Text(composite, SWT.BORDER);
+		this.filePathText = new Text(composite, SWT.BORDER);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.widthHint = 300;
 		data.horizontalSpan = 1;
-		filePathText.setLayoutData(data);
-		synchHelper.synchText(filePathText, FILE_PATH, null);
+		this.filePathText.setLayoutData(data);
+		this.synchHelper.synchText(this.filePathText, FILE_PATH, null);
 		new Label(composite, SWT.NONE);
 		
-		accessLabel = new Label(composite, SWT.NONE);
-		accessLabel.setText(JptUiMessages.MappingFileWizardPage_accessLabel); //$NON-NLS-1$
+		this.accessLabel = new Label(composite, SWT.NONE);
+		this.accessLabel.setText(JptUiMessages.MappingFileWizardPage_accessLabel);
 		data = new GridData();
-		accessLabel.setLayoutData(data);
+		this.accessLabel.setLayoutData(data);
 		
-		accessCombo = new Combo(composite, SWT.BORDER | SWT.READ_ONLY);
+		this.accessCombo = new Combo(composite, SWT.BORDER | SWT.READ_ONLY);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.widthHint = 300;
 		data.horizontalSpan = 1;
-		accessCombo.setLayoutData(data);
-		synchHelper.synchCombo(accessCombo, DEFAULT_ACCESS, null);
+		this.accessCombo.setLayoutData(data);
+		this.synchHelper.synchCombo(this.accessCombo, DEFAULT_ACCESS, null);
 		new Label(composite, SWT.NONE);
 		
-		addToPersistenceUnitButton = new Button(composite, SWT.CHECK | SWT.BEGINNING);
-		addToPersistenceUnitButton.setText(JptUiMessages.MappingFileWizardPage_addToPersistenceUnitButton);
+		this.addToPersistenceUnitButton = new Button(composite, SWT.CHECK | SWT.BEGINNING);
+		this.addToPersistenceUnitButton.setText(JptUiMessages.MappingFileWizardPage_addToPersistenceUnitButton);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 3;
-		addToPersistenceUnitButton.setLayoutData(data);
-		synchHelper.synchCheckbox(addToPersistenceUnitButton, ADD_TO_PERSISTENCE_UNIT, null);
+		this.addToPersistenceUnitButton.setLayoutData(data);
+		this.synchHelper.synchCheckbox(this.addToPersistenceUnitButton, ADD_TO_PERSISTENCE_UNIT, null);
 		
-		persistenceUnitLabel = new Label(composite, SWT.NONE);
-		persistenceUnitLabel.setText(JptUiMessages.MappingFileWizardPage_persistenceUnitLabel); //$NON-NLS-1$
+		this.persistenceUnitLabel = new Label(composite, SWT.NONE);
+		this.persistenceUnitLabel.setText(JptUiMessages.MappingFileWizardPage_persistenceUnitLabel);
 		data = new GridData();
-		persistenceUnitLabel.setLayoutData(data);
+		this.persistenceUnitLabel.setLayoutData(data);
 		
-		persistenceUnitCombo = new Combo(composite, SWT.BORDER | SWT.READ_ONLY);
+		this.persistenceUnitCombo = new Combo(composite, SWT.BORDER | SWT.READ_ONLY);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.widthHint = 300;
 		data.horizontalSpan = 1;
-		persistenceUnitCombo.setLayoutData(data);
-		synchHelper.synchCombo(persistenceUnitCombo, PERSISTENCE_UNIT, null);
+		this.persistenceUnitCombo.setLayoutData(data);
+		this.synchHelper.synchCombo(this.persistenceUnitCombo, PERSISTENCE_UNIT, null);
 		
 		new Label(composite, SWT.NONE);
 		
@@ -237,13 +237,14 @@ public class MappingFileWizardPage extends DataModelWizardPage
 				if (selection != null && selection[0] != null && ! (selection[0] instanceof IProject)) {
 					return Status.OK_STATUS;
 				}
-				return new Status(Status.ERROR, JptUiPlugin.PLUGIN_ID, JptUiMessages.MappingFileWizardPage_incorrectSourceFolderError);
+				return new Status(IStatus.ERROR, JptUiPlugin.PLUGIN_ID, JptUiMessages.MappingFileWizardPage_incorrectSourceFolderError);
 			}
 		};
 	}
 	
 	private ViewerFilter getSourceFolderDialogViewerFilter() {
 		return new ViewerFilter() {
+			@Override
 			public boolean select(Viewer viewer, Object parent, Object element) {
 				if (element instanceof IProject) {
 					IProject project = (IProject) element;
