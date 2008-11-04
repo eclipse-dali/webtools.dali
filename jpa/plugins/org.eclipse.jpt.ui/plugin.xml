@@ -701,6 +701,9 @@
        <viewShortcut
              id="org.eclipse.jpt.ui.jpaDetailsView">
        </viewShortcut>
+       <viewShortcut
+             id="org.eclipse.datatools.connectivity.DataSourceExplorerNavigator">
+       </viewShortcut>
     </perspectiveExtension>
     <perspectiveExtension
           targetID="org.eclipse.jst.j2ee.J2EEPerspective">
