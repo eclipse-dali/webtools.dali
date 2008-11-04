@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Converter;
+import org.eclipse.jpt.core.context.ConvertibleMapping;
 import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -89,14 +90,14 @@ public class VersionMappingComposite extends FormPane<VersionMapping>
 
 		container = addCollapsableSection(
 			container,
-			JptUiMappingsMessages.VersionMappingComposite_conversion
+			JptUiMappingsMessages.TypeSection_type
 		);
 		((GridLayout) container.getLayout()).numColumns = 2;
 
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
-			JptUiMappingsMessages.VersionMappingComposite_noConverter, 
+			JptUiMappingsMessages.TypeSection_default, 
 			buildNoConverterHolder(), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
@@ -105,7 +106,7 @@ public class VersionMappingComposite extends FormPane<VersionMapping>
 		// Temporal
 		addRadioButton(
 			container, 
-			JptUiMappingsMessages.VersionMappingComposite_temporalConverter, 
+			JptUiMappingsMessages.TypeSection_temporal, 
 			buildTemporalBooleanHolder(), 
 			null);
 		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
@@ -113,7 +114,7 @@ public class VersionMappingComposite extends FormPane<VersionMapping>
 	
 
 	private WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
-		return new PropertyAspectAdapter<VersionMapping, Boolean>(getSubjectHolder(), VersionMapping.SPECIFIED_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<VersionMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getSpecifiedConverter() == null);
@@ -130,7 +131,7 @@ public class VersionMappingComposite extends FormPane<VersionMapping>
 
 
 	private WritablePropertyValueModel<Boolean> buildTemporalBooleanHolder() {
-		return new PropertyAspectAdapter<VersionMapping, Boolean>(getSubjectHolder(), VersionMapping.SPECIFIED_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<VersionMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getSpecifiedConverter();
@@ -150,7 +151,7 @@ public class VersionMappingComposite extends FormPane<VersionMapping>
 	}
 
 	private PropertyValueModel<Converter> buildSpecifiedConverterHolder() {
-		return new PropertyAspectAdapter<VersionMapping, Converter>(getSubjectHolder(), VersionMapping.SPECIFIED_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<VersionMapping, Converter>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
 			@Override
 			protected Converter buildValue_() {
 				return this.subject.getSpecifiedConverter();

@@ -110,7 +110,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 	@Override
 	protected void initializeLayout(Composite container) {
 		initializeGeneralPane(container);
-		initializeConversionPane(container);
+		initializeTypePane(container);
 	}
 	
 	protected void initializeGeneralPane(Composite container) {
@@ -128,18 +128,18 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		new MutableComposite(this, buildMutableHolder(), container);
 	}
 	
-	private void initializeConversionPane(Composite container) {
+	protected void initializeTypePane(Composite container) {
 
 		container = addCollapsableSection(
 			container,
-			JptUiMappingsMessages.BasicMappingComposite_conversion
+			JptUiMappingsMessages.TypeSection_type
 		);
 		((GridLayout) container.getLayout()).numColumns = 2;
 
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
-			JptUiMappingsMessages.BasicMappingComposite_noConverter, 
+			JptUiMappingsMessages.TypeSection_default, 
 			buildNoConverterHolder(), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
@@ -147,7 +147,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		// Lob
 		Button lobButton = addRadioButton(
 			container, 
-			JptUiMappingsMessages.BasicMappingComposite_lobConverter, 
+			JptUiMappingsMessages.TypeSection_lob, 
 			buildConverterBooleanHolder(Converter.LOB_CONVERTER), 
 			null);
 		((GridData) lobButton.getLayoutData()).horizontalSpan = 2;
@@ -156,7 +156,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		// Temporal
 		addRadioButton(
 			container, 
-			JptUiMappingsMessages.BasicMappingComposite_temporalConverter, 
+			JptUiMappingsMessages.TypeSection_temporal, 
 			buildConverterBooleanHolder(Converter.TEMPORAL_CONVERTER), 
 			null);
 		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
@@ -165,7 +165,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		// Enumerated
 		addRadioButton(
 			container, 
-			JptUiMappingsMessages.BasicMappingComposite_enumeratedConverter, 
+			JptUiMappingsMessages.TypeSection_enumerated, 
 			buildConverterBooleanHolder(Converter.ENUMERATED_CONVERTER), 
 			null);
 		registerSubPane(new EnumTypeComposite(buildEnumeratedConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
@@ -173,7 +173,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		// EclipseLink Converter
 		Button elConverterButton = addRadioButton(
 			container, 
-			EclipseLinkUiMappingsMessages.EclipseLinkBasicMappingComposite_eclipseLinkConverter, 
+			EclipseLinkUiMappingsMessages.TypeSection_converted, 
 			buildConverterBooleanHolder(Convert.ECLIPSE_LINK_CONVERTER), 
 			null);
 		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
@@ -203,7 +203,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		};
 	}
 	
-	private PropertyValueModel<Converter> buildSpecifiedConverterHolder() {
+	protected PropertyValueModel<Converter> buildSpecifiedConverterHolder() {
 		return new PropertyAspectAdapter<BasicMapping, Converter>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
 			@Override
 			protected Converter buildValue_() {
@@ -212,7 +212,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		};
 	}
 	
-	private PropertyValueModel<TemporalConverter> buildTemporalConverterHolder(PropertyValueModel<Converter> converterHolder) {
+	protected PropertyValueModel<TemporalConverter> buildTemporalConverterHolder(PropertyValueModel<Converter> converterHolder) {
 		return new TransformationPropertyValueModel<Converter, TemporalConverter>(converterHolder) {
 			@Override
 			protected TemporalConverter transform_(Converter converter) {
@@ -221,7 +221,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		};
 	}
 	
-	private PropertyValueModel<EnumeratedConverter> buildEnumeratedConverterHolder(PropertyValueModel<Converter> converterHolder) {
+	protected PropertyValueModel<EnumeratedConverter> buildEnumeratedConverterHolder(PropertyValueModel<Converter> converterHolder) {
 		return new TransformationPropertyValueModel<Converter, EnumeratedConverter>(converterHolder) {
 			@Override
 			protected EnumeratedConverter transform_(Converter converter) {
@@ -230,7 +230,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		};
 	}
 	
-	private PropertyValueModel<Convert> buildEclipseLinkConverterHolder(PropertyValueModel<Converter> converterHolder) {
+	protected PropertyValueModel<Convert> buildEclipseLinkConverterHolder(PropertyValueModel<Converter> converterHolder) {
 		return new TransformationPropertyValueModel<Converter, Convert>(converterHolder) {
 			@Override
 			protected Convert transform_(Converter converter) {
@@ -239,7 +239,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		};
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
+	protected WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
 		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -255,7 +255,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		};
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildConverterBooleanHolder(final String converterType) {
+	protected WritablePropertyValueModel<Boolean> buildConverterBooleanHolder(final String converterType) {
 		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {

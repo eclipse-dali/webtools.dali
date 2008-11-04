@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Converter;
+import org.eclipse.jpt.core.context.ConvertibleMapping;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -88,25 +89,25 @@ public class IdMappingComposite extends FormPane<IdMapping>
 		// Column widgets
 		new ColumnComposite(this, buildColumnHolder(), container);
 
-		initializeConversionPane(container);
+		initializeTypePane(container);
 
 		// Generation pane
 		new GenerationComposite(this, addSubPane(container, 10));
 	}
 	
 	
-	private void initializeConversionPane(Composite container) {
+	private void initializeTypePane(Composite container) {
 
 		container = addCollapsableSection(
 			container,
-			JptUiMappingsMessages.IdMappingComposite_conversion
+			JptUiMappingsMessages.TypeSection_type
 		);
 		((GridLayout) container.getLayout()).numColumns = 2;
 
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
-			JptUiMappingsMessages.IdMappingComposite_noConverter, 
+			JptUiMappingsMessages.TypeSection_default, 
 			buildNoConverterHolder(), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
@@ -115,7 +116,7 @@ public class IdMappingComposite extends FormPane<IdMapping>
 		// Temporal
 		addRadioButton(
 			container, 
-			JptUiMappingsMessages.IdMappingComposite_temporalConverter, 
+			JptUiMappingsMessages.TypeSection_temporal, 
 			buildTemporalBooleanHolder(), 
 			null);
 		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
@@ -123,7 +124,7 @@ public class IdMappingComposite extends FormPane<IdMapping>
 	
 
 	private WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
-		return new PropertyAspectAdapter<IdMapping, Boolean>(getSubjectHolder(), IdMapping.SPECIFIED_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<IdMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getSpecifiedConverter() == null);
@@ -140,7 +141,7 @@ public class IdMappingComposite extends FormPane<IdMapping>
 
 
 	private WritablePropertyValueModel<Boolean> buildTemporalBooleanHolder() {
-		return new PropertyAspectAdapter<IdMapping, Boolean>(getSubjectHolder(), IdMapping.SPECIFIED_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<IdMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getSpecifiedConverter();
@@ -160,7 +161,7 @@ public class IdMappingComposite extends FormPane<IdMapping>
 	}
 
 	private PropertyValueModel<Converter> buildSpecifiedConverterHolder() {
-		return new PropertyAspectAdapter<IdMapping, Converter>(getSubjectHolder(), IdMapping.SPECIFIED_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<IdMapping, Converter>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
 			@Override
 			protected Converter buildValue_() {
 				return this.subject.getSpecifiedConverter();

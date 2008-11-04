@@ -55,13 +55,13 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	public static String ChangeTrackingComposite_deferred;
 	public static String ChangeTrackingComposite_auto;
 	
-	public static String ConvertComposite_convertNameLabel;
+	public static String ConvertComposite_converterNameLabel;
 	public static String ConvertComposite_defineConverterSection;
-	public static String ConvertComposite_noConverter;
-	public static String ConvertComposite_converter;
-	public static String ConvertComposite_typeConverter;
-	public static String ConvertComposite_objectTypeConverter;
-	public static String ConvertComposite_structConverter;
+	public static String ConvertComposite_default;
+	public static String ConvertComposite_custom;
+	public static String ConvertComposite_type;
+	public static String ConvertComposite_objectType;
+	public static String ConvertComposite_struct;
 	
 	public static String ConverterComposite_nameTextLabel;
 	public static String ConverterComposite_classLabel;
@@ -73,9 +73,7 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	
 	public static String CustomizerComposite_classLabel;
 		
-	public static String EclipseLinkBasicMappingComposite_eclipseLinkConverter;
-	public static String EclipseLinkIdMappingComposite_eclipseLinkConverter;
-	public static String EclipseLinkVersionMappingComposite_eclipseLinkConverter;
+	public static String TypeSection_converted;
 	
 	public static String ExistenceCheckingComposite_label;
 	public static String JavaExistenceCheckingComposite_check_cache;

@@ -31,11 +31,11 @@ public class JptUiMappingsMessages {
 	public static String BasicGeneralSection_optionalLabel;
 	public static String BasicGeneralSection_optionalLabelDefault;
 	public static String BasicGeneralSection_temporalLabel;
-	public static String BasicMappingComposite_conversion;
-	public static String BasicMappingComposite_noConverter;
-	public static String BasicMappingComposite_lobConverter;
-	public static String BasicMappingComposite_temporalConverter;
-	public static String BasicMappingComposite_enumeratedConverter;
+	public static String TypeSection_type;
+	public static String TypeSection_default;
+	public static String TypeSection_lob;
+	public static String TypeSection_temporal;
+	public static String TypeSection_enumerated;
 	public static String Boolean_False;
 	public static String Boolean_True;
 	public static String CascadeComposite_all;
@@ -103,9 +103,6 @@ public class JptUiMappingsMessages {
 	public static String IdMappingComposite_sequenceGeneratorSection;
 	public static String IdMappingComposite_tableGeneratorCheckBox;
 	public static String IdMappingComposite_tableGeneratorSection;
-	public static String IdMappingComposite_conversion;
-	public static String IdMappingComposite_noConverter;
-	public static String IdMappingComposite_temporalConverter;
 	public static String AbstractInheritanceComposite_char;
 	public static String InheritanceComposite_detailsGroupBox;
 	public static String InheritanceComposite_discriminatorColumnGroupBox;
@@ -311,9 +308,6 @@ public class JptUiMappingsMessages {
 	public static String TemporalTypeComposite_date;
 	public static String TemporalTypeComposite_time;
 	public static String TemporalTypeComposite_timestamp;
-	public static String VersionMappingComposite_conversion;
-	public static String VersionMappingComposite_noConverter;
-	public static String VersionMappingComposite_temporalConverter;
 
 	private static final String BUNDLE_NAME = "jpt_ui_mappings"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptUiMappingsMessages.class;

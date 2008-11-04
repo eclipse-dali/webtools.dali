@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Converter;
+import org.eclipse.jpt.core.context.ConvertibleMapping;
 import org.eclipse.jpt.core.context.EnumeratedConverter;
 import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -95,7 +96,7 @@ public class BasicMappingComposite extends FormPane<BasicMapping>
 	@Override
 	protected void initializeLayout(Composite container) {
 		initializeGeneralPane(container);
-		initializeConversionPane(container);
+		initializeTypePane(container);
 	}
 	
 	private void initializeGeneralPane(Composite container) {
@@ -110,18 +111,18 @@ public class BasicMappingComposite extends FormPane<BasicMapping>
 		new OptionalComposite(this, addSubPane(container, 4));
 
 	}
-	private void initializeConversionPane(Composite container) {
+	private void initializeTypePane(Composite container) {
 
 		container = addCollapsableSection(
 			container,
-			JptUiMappingsMessages.BasicMappingComposite_conversion
+			JptUiMappingsMessages.TypeSection_type
 		);
 		((GridLayout) container.getLayout()).numColumns = 2;
 
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
-			JptUiMappingsMessages.BasicMappingComposite_noConverter, 
+			JptUiMappingsMessages.TypeSection_default, 
 			buildNoConverterHolder(), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
@@ -129,7 +130,7 @@ public class BasicMappingComposite extends FormPane<BasicMapping>
 		// Lob
 		Button lobButton = addRadioButton(
 			container, 
-			JptUiMappingsMessages.BasicMappingComposite_lobConverter, 
+			JptUiMappingsMessages.TypeSection_lob, 
 			buildLobConverterHolder(), 
 			null);
 		((GridData) lobButton.getLayoutData()).horizontalSpan = 2;
@@ -138,7 +139,7 @@ public class BasicMappingComposite extends FormPane<BasicMapping>
 		// Temporal
 		addRadioButton(
 			container, 
-			JptUiMappingsMessages.BasicMappingComposite_temporalConverter, 
+			JptUiMappingsMessages.TypeSection_temporal, 
 			buildTemporalBooleanHolder(), 
 			null);
 		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
@@ -147,7 +148,7 @@ public class BasicMappingComposite extends FormPane<BasicMapping>
 		// Enumerated
 		addRadioButton(
 			container, 
-			JptUiMappingsMessages.BasicMappingComposite_enumeratedConverter, 
+			JptUiMappingsMessages.TypeSection_enumerated, 
 			buildEnumeratedBooleanHolder(), 
 			null);
 		registerSubPane(new EnumTypeComposite(buildEnumeratedConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
@@ -163,7 +164,7 @@ public class BasicMappingComposite extends FormPane<BasicMapping>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
-		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), BasicMapping.SPECIFIED_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getSpecifiedConverter() == null);
@@ -179,7 +180,7 @@ public class BasicMappingComposite extends FormPane<BasicMapping>
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildLobConverterHolder() {
-		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), BasicMapping.SPECIFIED_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getSpecifiedConverter();
@@ -199,7 +200,7 @@ public class BasicMappingComposite extends FormPane<BasicMapping>
 	}
 	
 	private PropertyValueModel<Converter> buildSpecifiedConverterHolder() {
-		return new PropertyAspectAdapter<BasicMapping, Converter>(getSubjectHolder(), BasicMapping.SPECIFIED_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<BasicMapping, Converter>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
 			@Override
 			protected Converter buildValue_() {
 				return this.subject.getSpecifiedConverter();

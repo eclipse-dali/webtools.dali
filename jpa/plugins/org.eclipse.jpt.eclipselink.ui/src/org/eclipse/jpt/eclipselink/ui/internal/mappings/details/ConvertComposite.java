@@ -85,7 +85,7 @@ public class ConvertComposite extends FormPane<Convert>
 	protected void initializeLayout(Composite container) {
 		CCombo combo = addLabeledEditableCCombo(
 			container,
-			EclipseLinkUiMappingsMessages.ConvertComposite_convertNameLabel,
+			EclipseLinkUiMappingsMessages.ConvertComposite_converterNameLabel,
 			buildConvertNameListHolder(),
 			buildConvertNameHolder(),
 			buildNameConverter(),
@@ -101,14 +101,14 @@ public class ConvertComposite extends FormPane<Convert>
 		// No Converter
 		addRadioButton(
 			subSection, 
-			EclipseLinkUiMappingsMessages.ConvertComposite_noConverter, 
+			EclipseLinkUiMappingsMessages.ConvertComposite_default, 
 			buildNoConverterHolder(), 
 			null);
 		PropertyValueModel<EclipseLinkConverter> converterHolder = buildConverterHolder();
 		// CustomConverter
 		addRadioButton(
 			subSection, 
-			EclipseLinkUiMappingsMessages.ConvertComposite_converter, 
+			EclipseLinkUiMappingsMessages.ConvertComposite_custom, 
 			buildConverterHolder(EclipseLinkConverter.CUSTOM_CONVERTER), 
 			null);
 		CustomConverterComposite converterComposite = new CustomConverterComposite(buildCustomConverterHolder(converterHolder), subSection, getWidgetFactory());
@@ -119,7 +119,7 @@ public class ConvertComposite extends FormPane<Convert>
 		// Type Converter
 		addRadioButton(
 			subSection, 
-			EclipseLinkUiMappingsMessages.ConvertComposite_typeConverter, 
+			EclipseLinkUiMappingsMessages.ConvertComposite_type, 
 			buildConverterHolder(EclipseLinkConverter.TYPE_CONVERTER), 
 			null);
 		TypeConverterComposite typeConverterComposite = new TypeConverterComposite(buildTypeConverterHolder(converterHolder), subSection, getWidgetFactory());
@@ -130,7 +130,7 @@ public class ConvertComposite extends FormPane<Convert>
 		// Object Type Converter
 		addRadioButton(
 			subSection, 
-			EclipseLinkUiMappingsMessages.ConvertComposite_objectTypeConverter, 
+			EclipseLinkUiMappingsMessages.ConvertComposite_objectType, 
 			buildConverterHolder(EclipseLinkConverter.OBJECT_TYPE_CONVERTER), 
 			null);
 		ObjectTypeConverterComposite objectTypeConverterComposite = new ObjectTypeConverterComposite(buildObjectTypeConverterHolder(converterHolder), subSection, getWidgetFactory());
@@ -141,7 +141,7 @@ public class ConvertComposite extends FormPane<Convert>
 		// Struct Converter
 		addRadioButton(
 			subSection, 
-			EclipseLinkUiMappingsMessages.ConvertComposite_structConverter, 
+			EclipseLinkUiMappingsMessages.ConvertComposite_struct, 
 			buildConverterHolder(EclipseLinkConverter.STRUCT_CONVERTER), 
 			null);
 		StructConverterComposite structConverterComposite = new StructConverterComposite(buildStructConverterHolder(converterHolder), subSection, getWidgetFactory());
