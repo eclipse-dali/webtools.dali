@@ -9,13 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.EntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
@@ -24,7 +20,6 @@ import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaFileProvider;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
@@ -66,6 +61,7 @@ import org.eclipse.jpt.core.internal.context.orm.OrmOneToOneMappingProvider;
 import org.eclipse.jpt.core.internal.context.orm.OrmTransientMappingProvider;
 import org.eclipse.jpt.core.internal.context.orm.OrmVersionMappingProvider;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.utility.PlatformUtilities;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.DatabaseFinder;
 import org.eclipse.jpt.db.JptDbPlugin;
@@ -178,32 +174,8 @@ public class GenericJpaPlatform
 	}
 
 	protected String getContentTypeId(IFile file) {
-		IContentType contentType = this.getContentType(file);
+		IContentType contentType = PlatformUtilities.getContentType(file);
 		return (contentType == null) ? null : contentType.getId();
-	}
-
-	protected IContentType getContentType(IFile file) {
-		InputStream inputStream = null;
-		try {
-			inputStream = file.getContents();
-		} catch (CoreException ex) {
-			JptCorePlugin.log(ex);
-			return null;  // cannot find the file
-		}
-
-		IContentType contentType = null;
-		try {
-			contentType = Platform.getContentTypeManager().findContentTypeFor(inputStream, file.getName());
-		} catch (IOException ex) {
-			JptCorePlugin.log(ex);
-		} finally {
-			try {
-				inputStream.close();
-			} catch (IOException ex) {
-				JptCorePlugin.log(ex);
-			}
-		}
-		return contentType;
 	}
 
 
