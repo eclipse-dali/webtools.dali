@@ -9,17 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
-import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkVersionMappingComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.mappings.details.TemporalTypeComposite;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 //Temporary to remove the Converters section from orm basic mapping.
@@ -40,30 +36,10 @@ public class EclipseLinkOrmVersionMappingComposite extends EclipseLinkVersionMap
 		super(subjectHolder, parent, widgetFactory);
 	}
 
+
 	@Override
-	protected void initializeTypePane(Composite container) {
-
-		container = addCollapsableSection(
-			container,
-			JptUiMappingsMessages.TypeSection_type
-		);
-		((GridLayout) container.getLayout()).numColumns = 2;
-
-		// No converter
-		Button noConverterButton = addRadioButton(
-			container, 
-			JptUiMappingsMessages.TypeSection_default, 
-			buildNoConverterHolder(), 
-			null);
-		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
-				
-		PropertyValueModel<Converter> specifiedConverterHolder = buildSpecifiedConverterHolder();
-		// Temporal
-		addRadioButton(
-			container, 
-			JptUiMappingsMessages.TypeSection_temporal, 
-			buildTemporalBooleanHolder(), 
-			null);
-		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
+	//everything but the 'Defaine Converter' section.  This is not supported in eclipselink 1.0, but is in 1.1
+	protected Pane<Convert> buildConvertComposite(PropertyValueModel<Convert> convertHolder, Composite container) {
+		return new OrmConvertComposite(convertHolder, container, getWidgetFactory());
 	}
 }

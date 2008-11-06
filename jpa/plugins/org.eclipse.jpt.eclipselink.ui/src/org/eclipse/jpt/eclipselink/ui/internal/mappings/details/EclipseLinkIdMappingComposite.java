@@ -25,6 +25,7 @@ import org.eclipse.jpt.ui.internal.mappings.details.ColumnComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.GenerationComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TemporalTypeComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -145,13 +146,16 @@ public class EclipseLinkIdMappingComposite extends FormPane<IdMapping>
 			null);
 		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
 
-		ConvertComposite convertComposite = new ConvertComposite(buildEclipseLinkConverterHolder(specifiedConverterHolder), container, getWidgetFactory());
+		Pane<Convert> convertComposite = buildConvertComposite(buildEclipseLinkConverterHolder(specifiedConverterHolder), container);
 		GridData gridData = (GridData) convertComposite.getControl().getLayoutData();
 		gridData.horizontalSpan = 2;
 		gridData.horizontalIndent = 20;
 		registerSubPane(convertComposite);
 	}
 	
+	protected Pane<Convert> buildConvertComposite(PropertyValueModel<Convert> convertHolder, Composite container) {
+		return new ConvertComposite(convertHolder, container, getWidgetFactory());
+	}
 
 	protected WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
 		return new PropertyAspectAdapter<IdMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
