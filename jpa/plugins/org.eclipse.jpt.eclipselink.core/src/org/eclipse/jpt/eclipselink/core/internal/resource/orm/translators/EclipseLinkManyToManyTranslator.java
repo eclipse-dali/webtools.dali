@@ -26,7 +26,7 @@ public class EclipseLinkManyToManyTranslator extends ManyToManyTranslator
 	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return EclipseLinkOrmFactory.eINSTANCE.createXmlManyToOneImpl();
+		return EclipseLinkOrmFactory.eINSTANCE.createXmlManyToManyImpl();
 	}
 		
 	@Override
