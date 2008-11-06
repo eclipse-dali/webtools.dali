@@ -96,4 +96,9 @@ public class EclipseLinkMappedSuperclassTranslator extends MappedSuperclassTrans
 	protected Translator createStructConverterTranslator() {
 		return new StructConverterTranslator(STRUCT_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConvertersHolder_StructConverters());
 	}
+	
+	@Override
+	protected Translator createAttributesTranslator() {
+		return new EclipseLinkAttributesTranslator(ATTRIBUTES, ORM_PKG.getAbstractXmlTypeMapping_Attributes());
+	}
 }
