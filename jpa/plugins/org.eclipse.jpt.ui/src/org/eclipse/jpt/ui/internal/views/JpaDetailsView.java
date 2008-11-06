@@ -10,7 +10,9 @@ package org.eclipse.jpt.ui.internal.views;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.utility.PlatformUtilities;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
@@ -43,16 +45,26 @@ public class JpaDetailsView extends AbstractJpaView
 	 */
 	private JpaSelection currentSelection;
 
-	/**
-	 * key: Object content node id,  value: Composite page.
-	 */
-	private Map<Object, JpaDetailsPage<? extends JpaStructureNode>> detailsPages;
+	//TODO this is crap, a Map of Maps of Maps. Needs to be done differently, the factory/platform should handle caching instead
+	// key1 platform id
+	// key2 content type id
+	// key3 structure node type
+	// value Composite page
+	private Map<String, Map<String, Map<String, JpaDetailsPage<? extends JpaStructureNode>>>> detailsPages;
 
 	/**
 	 * Creates a new <code>JpaDetailsView</code>.
 	 */
 	public JpaDetailsView() {
 		super(JptUiMessages.JpaDetailsView_viewNotAvailable);
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+
+		this.currentSelection = JpaSelection.NULL_SELECTION;
+		this.detailsPages     = new HashMap<String, Map<String, Map<String, JpaDetailsPage<? extends JpaStructureNode>>>>();
 	}
 
 	private JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(JpaStructureNode structureNode) {
@@ -74,36 +86,64 @@ public class JpaDetailsView extends AbstractJpaView
 		);
 
 		if (page != null) {
-			this.detailsPages.put(id, page);
+			String platformId = structureNode.getJpaProject().getJpaPlatform().getId();
+			this.detailsPages.get(platformId);
+			Map<String, Map<String, JpaDetailsPage<? extends JpaStructureNode>>> platformDetailsPages = this.detailsPages.get(platformId);
+			if (platformDetailsPages == null) {
+				platformDetailsPages = new HashMap<String, Map<String, JpaDetailsPage<? extends JpaStructureNode>>>();
+				this.detailsPages.put(platformId, platformDetailsPages);
+			}
+			//not sure how this couldn't be a file, at least not if we are in JpaDetailsView trying to view it
+			IFile file = (IFile) structureNode.getResource();
+			//also, don't see how the contentType can be null, so not checking, can't have a JpaStructureNode without a contentType
+			String contentTypeId = PlatformUtilities.getContentType(file).getId();
+			Map<String, JpaDetailsPage<? extends JpaStructureNode>> contentTypeDetailsPages = platformDetailsPages.get(contentTypeId);
+			if (contentTypeDetailsPages == null) {
+				contentTypeDetailsPages = new HashMap<String, JpaDetailsPage<? extends JpaStructureNode>>();
+				platformDetailsPages.put(contentTypeId, contentTypeDetailsPages);
+			}
+			contentTypeDetailsPages.put(id, page);
 		}
 
 		return page;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public void dispose() {
 
-		detailsPages.clear();
+		this.detailsPages.clear();
 
-		currentSelection = JpaSelection.NULL_SELECTION;
-		currentPage = null;
+		this.currentSelection = JpaSelection.NULL_SELECTION;
+		this.currentPage = null;
 
 		super.dispose();
 	}
 
+	protected String getContentTypeId(JpaStructureNode structureNode) {
+		//not sure how this couldn't be a file, at least not if we are in JpaDetailsView trying to view it
+		IFile file = (IFile) structureNode.getResource();
+		//also, don't see how the contentType can be null, so not checking, can't have a JpaStructureNode without a contentType
+		return PlatformUtilities.getContentType(file).getId();
+	}
+	
 	private JpaDetailsPage<? extends JpaStructureNode> getDetailsPage(JpaStructureNode structureNode) {
-		if (detailsPages.containsKey(structureNode.getId())) {
-			JpaDetailsPage<? extends JpaStructureNode> page =  detailsPages.get(structureNode.getId());
-
-			if ((page != null) &&
-					(page.getControl().isDisposed())) {
-				detailsPages.remove(structureNode.getId());
-			}
-			else {
-				return page;
+		String platformId = structureNode.getJpaProject().getJpaPlatform().getId();
+		if (this.detailsPages.containsKey(platformId)) {
+			Map<String, Map<String, JpaDetailsPage<? extends JpaStructureNode>>> platformDetailsPages = this.detailsPages.get(platformId);
+			String contentTypeId = getContentTypeId(structureNode);
+			if (platformDetailsPages.containsKey(contentTypeId)) {
+				Map<String, JpaDetailsPage<? extends JpaStructureNode>> contentTypeDetailsPages = platformDetailsPages.get(contentTypeId);	
+				if (contentTypeDetailsPages.containsKey(structureNode.getId())) {
+					JpaDetailsPage<? extends JpaStructureNode> page =  contentTypeDetailsPages.get(structureNode.getId());
+		
+					if ((page != null) &&
+							(page.getControl().isDisposed())) {
+						platformDetailsPages.remove(structureNode.getId());
+					}
+					else {
+						return page;
+					}
+				}
 			}
 		}
 		return buildDetailsPage(structureNode);
@@ -114,24 +154,10 @@ public class JpaDetailsView extends AbstractJpaView
 		String platformId = structureNode.getJpaProject().getJpaPlatform().getId();
 		JpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
 		return jpaPlatformUI.getDetailsProvider(structureNode);
-
-		//TODO this view and the detailsProviders Map is not created on a per project basis.
-		//the detailsProviders and their fileContentTypes could overlap across project, this would cause problems with storing this map.
 	}
 
 	public JpaSelection getSelection() {
-		return currentSelection;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initialize() {
-		super.initialize();
-
-		this.currentSelection = JpaSelection.NULL_SELECTION;
-		this.detailsPages     = new HashMap<Object, JpaDetailsPage<? extends JpaStructureNode>>();
+		return this.currentSelection;
 	}
 
 	private void log(String message) {
@@ -140,16 +166,13 @@ public class JpaDetailsView extends AbstractJpaView
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public void select(JpaSelection jpaSelection) {
-		if (jpaSelection.equals(currentSelection)) {
+		if (jpaSelection.equals(this.currentSelection)) {
 			return;
 		}
 
-		currentSelection = jpaSelection;
+		this.currentSelection = jpaSelection;
 
 		if (jpaSelection != JpaSelection.NULL_SELECTION) {
 			JpaStructureNode newNode = jpaSelection.getSelectedNode();
@@ -170,11 +193,11 @@ public class JpaDetailsView extends AbstractJpaView
 	private void setCurrentPage(JpaDetailsPage<? extends JpaStructureNode> page) {
 
 		// Unpopulate old page
-		if (currentPage != null) {
+		if (this.currentPage != null) {
 			try {
 				log("JpaDetailsView.setCurrentPage() : disposing of current page");
 
-				currentPage.setSubject(null);
+				this.currentPage.setSubject(null);
 			}
 			catch (Exception e) {
 				JptUiPlugin.log(e);
@@ -187,7 +210,7 @@ public class JpaDetailsView extends AbstractJpaView
 		if (page != null) {
 			try {
 				log("JpaDetailsView.setCurrentPage() : populating new page");
-				newPage.setSubject(currentSelection.getSelectedNode());
+				newPage.setSubject(this.currentSelection.getSelectedNode());
 			}
 			catch (Exception e) {
 				// Show error page
@@ -200,10 +223,10 @@ public class JpaDetailsView extends AbstractJpaView
 		}
 
 		//no need to show the page again if it is still the same
-		if (newPage != null && currentPage == newPage) {
+		if (newPage != null && this.currentPage == newPage) {
 			return;
 		}
-		currentPage = newPage;
+		this.currentPage = newPage;
 
 		// Show new page
 		if (page == null) {
