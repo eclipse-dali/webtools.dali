@@ -76,7 +76,7 @@ public class OrmPackageChooser extends FormPane<EntityMappings>
 
 					@Override
 					protected void setValue_(String value) {
-						subject.setPackage(value);
+						subject.setPackage(value == "" ? null : value); //$NON-NLS-1$
 					}
 				};
 			}
