@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
@@ -58,7 +59,30 @@ public class EclipseLinkOrmBasicMappingTests
 			}
 		});
 	}
-
+	
+	private ICompilationUnit createTestEntityWithMutableBasicDate() throws Exception {
+		createMutableAnnotation();
+		
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.BASIC, EclipseLinkJPA.MUTABLE, "java.util.Date");
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@Basic").append(CR);
+				sb.append("    @Mutable").append(CR);
+				sb.append("    private Date myDate;").append(CR);
+				sb.append(CR);
+				sb.append("    ");
+			}
+		});
+	}
 	
 	public EclipseLinkOrmBasicMappingTests(String name) {
 		super(name);
@@ -148,6 +172,105 @@ public class EclipseLinkOrmBasicMappingTests
 		assertFalse(javaBasicMapping.getMutable().isMutable());
 	}
 	
+	public void testUpdateMutableDate() throws Exception {
+		createTestEntityWithMutableBasicDate();
+		OrmPersistentType ormPersistentType = 
+			entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute =
+			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "myDate");
+		EclipseLinkOrmBasicMapping contextBasic = 
+			(EclipseLinkOrmBasicMapping) ormPersistentAttribute.getMapping();
+		XmlEntity resourceEntity = 
+			(XmlEntity)ormResource().getEntityMappings().getEntities().get(0);
+		XmlBasic resourceBasic = 
+			(XmlBasic) resourceEntity.getAttributes().getBasics().get(0);
+		EclipseLinkBasicMapping javaBasicMapping = (EclipseLinkBasicMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("myDate").getMapping();
+		
+		// check defaults
+		
+		assertNull(resourceBasic.getMutable());
+		assertFalse(contextBasic.getMutable().isDefaultMutable());
+		assertNull(contextBasic.getMutable().getSpecifiedMutable());
+		assertFalse(contextBasic.getMutable().isMutable());
+		
+		// set xml mutable to false, check context
+		
+		resourceBasic.setMutable(Boolean.FALSE);
+		
+		assertEquals(Boolean.FALSE, resourceBasic.getMutable());
+		assertFalse(contextBasic.getMutable().isDefaultMutable());
+		assertEquals(Boolean.FALSE, contextBasic.getMutable().getSpecifiedMutable());
+		assertFalse(contextBasic.getMutable().isMutable());
+		
+		// set xml mutable to true, check context
+		
+		resourceBasic.setMutable(Boolean.TRUE);
+		
+		assertEquals(Boolean.TRUE, resourceBasic.getMutable());
+		assertFalse(contextBasic.getMutable().isDefaultMutable());
+		assertEquals(Boolean.TRUE, contextBasic.getMutable().getSpecifiedMutable());
+		assertTrue(contextBasic.getMutable().isMutable());
+		
+		// clear xml mutable, check context
+		
+		resourceBasic.setMutable(null);
+		
+		assertNull(resourceBasic.getMutable());
+		assertFalse(contextBasic.getMutable().isDefaultMutable());
+		assertNull(contextBasic.getMutable().getSpecifiedMutable());
+		assertFalse(contextBasic.getMutable().isMutable());
+		
+		
+		((EclipseLinkPersistenceUnit) persistenceUnit()).getOptions().setTemporalMutable(Boolean.TRUE);
+		assertNull(resourceBasic.getMutable());
+		assertTrue(contextBasic.getMutable().isDefaultMutable());
+		assertNull(contextBasic.getMutable().getSpecifiedMutable());
+		assertTrue(contextBasic.getMutable().isMutable());
+		
+		((EclipseLinkPersistenceUnit) persistenceUnit()).getOptions().setTemporalMutable(Boolean.FALSE);
+		assertNull(resourceBasic.getMutable());
+		assertFalse(contextBasic.getMutable().isDefaultMutable());
+		assertNull(contextBasic.getMutable().getSpecifiedMutable());
+		assertFalse(contextBasic.getMutable().isMutable());
+		
+		((EclipseLinkPersistenceUnit) persistenceUnit()).getOptions().setTemporalMutable(null);
+		assertNull(resourceBasic.getMutable());
+		assertFalse(contextBasic.getMutable().isDefaultMutable());
+		assertNull(contextBasic.getMutable().getSpecifiedMutable());
+		assertFalse(contextBasic.getMutable().isMutable());
+		
+		// set mutable on java basic mapping
+		
+		javaBasicMapping.getMutable().setSpecifiedMutable(Boolean.TRUE);
+		assertNull(resourceBasic.getMutable());
+		assertFalse(contextBasic.getMutable().isDefaultMutable());
+		assertNull(contextBasic.getMutable().getSpecifiedMutable());
+		assertFalse(contextBasic.getMutable().isMutable());
+		assertTrue(javaBasicMapping.getMutable().isMutable());
+		
+		// remove attribute from xml, test default mutable from java
+		
+		ormPersistentType.removeSpecifiedPersistentAttribute(ormPersistentAttribute);
+		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		contextBasic = (EclipseLinkOrmBasicMapping) ormPersistentAttribute.getMapping();
+		
+		assertNull(resourceBasic.getMutable());
+		assertFalse(contextBasic.getMutable().isDefaultMutable());
+		assertEquals(Boolean.TRUE, contextBasic.getMutable().getSpecifiedMutable());
+		assertTrue(contextBasic.getMutable().isMutable());
+		assertTrue(javaBasicMapping.getMutable().isMutable());
+		
+		// set metadata complete
+		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
+		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		contextBasic = (EclipseLinkOrmBasicMapping) ormPersistentAttribute.getMapping();
+		assertNull(resourceBasic.getMutable());
+		assertFalse(contextBasic.getMutable().isDefaultMutable());
+		assertEquals(Boolean.FALSE, contextBasic.getMutable().getSpecifiedMutable());
+		assertFalse(contextBasic.getMutable().isMutable());
+		assertTrue(javaBasicMapping.getMutable().isMutable());
+	}
+
 	public void testModifyMutable() throws Exception {
 		OrmPersistentType ormPersistentType = 
 			entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
@@ -185,7 +308,7 @@ public class EclipseLinkOrmBasicMappingTests
 		assertEquals(Boolean.FALSE, contextBasic.getMutable().getSpecifiedMutable());
 		assertFalse(contextBasic.getMutable().isMutable());
 		
-		// set context read only to null, check resource
+		// set context mutable to null, check resource
 		
 		contextBasic.getMutable().setSpecifiedMutable(null);
 		

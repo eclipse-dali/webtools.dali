@@ -23,6 +23,7 @@ import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmVersionMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersion;
@@ -64,6 +65,29 @@ public class EclipseLinkOrmVersionMappingTests
 		});
 	}
 	
+	private ICompilationUnit createTestEntityWithMutableVersionDate() throws Exception {
+		createMutableAnnotation();
+		
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.VERSION, EclipseLinkJPA.MUTABLE, "java.util.Date");
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@Version").append(CR);
+				sb.append("    @Mutable").append(CR);
+				sb.append("    private Date myDate;").append(CR);
+				sb.append(CR);
+				sb.append("    ");
+			}
+		});
+	}
 	
 	public void testUpdateMutable() throws Exception {
 		createTestEntityWithVersionMapping();
@@ -146,6 +170,105 @@ public class EclipseLinkOrmVersionMappingTests
 		assertEquals(Boolean.TRUE, contextBasic.getMutable().getSpecifiedMutable());
 		assertTrue(contextBasic.getMutable().isMutable());
 		assertFalse(javaVersionMapping.getMutable().isMutable());
+	}
+	
+	public void testUpdateMutableDate() throws Exception {
+		createTestEntityWithMutableVersionDate();
+		OrmPersistentType ormPersistentType = 
+			entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute =
+			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "myDate");
+		EclipseLinkOrmVersionMapping contextVersion = 
+			(EclipseLinkOrmVersionMapping) ormPersistentAttribute.getMapping();
+		XmlEntity resourceEntity = 
+			(XmlEntity)ormResource().getEntityMappings().getEntities().get(0);
+		XmlVersion resourceVersion = 
+			(XmlVersion) resourceEntity.getAttributes().getVersions().get(0);
+		EclipseLinkVersionMapping javaVersionMapping = (EclipseLinkVersionMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("myDate").getMapping();
+		
+		// check defaults
+		
+		assertNull(resourceVersion.getMutable());
+		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertNull(contextVersion.getMutable().getSpecifiedMutable());
+		assertFalse(contextVersion.getMutable().isMutable());
+		
+		// set xml mutable to false, check context
+		
+		resourceVersion.setMutable(Boolean.FALSE);
+		
+		assertEquals(Boolean.FALSE, resourceVersion.getMutable());
+		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertEquals(Boolean.FALSE, contextVersion.getMutable().getSpecifiedMutable());
+		assertFalse(contextVersion.getMutable().isMutable());
+		
+		// set xml mutable to true, check context
+		
+		resourceVersion.setMutable(Boolean.TRUE);
+		
+		assertEquals(Boolean.TRUE, resourceVersion.getMutable());
+		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertEquals(Boolean.TRUE, contextVersion.getMutable().getSpecifiedMutable());
+		assertTrue(contextVersion.getMutable().isMutable());
+		
+		// clear xml mutable, check context
+		
+		resourceVersion.setMutable(null);
+		
+		assertNull(resourceVersion.getMutable());
+		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertNull(contextVersion.getMutable().getSpecifiedMutable());
+		assertFalse(contextVersion.getMutable().isMutable());
+		
+		
+		((EclipseLinkPersistenceUnit) persistenceUnit()).getOptions().setTemporalMutable(Boolean.TRUE);
+		assertNull(resourceVersion.getMutable());
+		assertTrue(contextVersion.getMutable().isDefaultMutable());
+		assertNull(contextVersion.getMutable().getSpecifiedMutable());
+		assertTrue(contextVersion.getMutable().isMutable());
+		
+		((EclipseLinkPersistenceUnit) persistenceUnit()).getOptions().setTemporalMutable(Boolean.FALSE);
+		assertNull(resourceVersion.getMutable());
+		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertNull(contextVersion.getMutable().getSpecifiedMutable());
+		assertFalse(contextVersion.getMutable().isMutable());
+		
+		((EclipseLinkPersistenceUnit) persistenceUnit()).getOptions().setTemporalMutable(null);
+		assertNull(resourceVersion.getMutable());
+		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertNull(contextVersion.getMutable().getSpecifiedMutable());
+		assertFalse(contextVersion.getMutable().isMutable());
+		
+		// set mutable on java version mapping
+		
+		javaVersionMapping.getMutable().setSpecifiedMutable(Boolean.TRUE);
+		assertNull(resourceVersion.getMutable());
+		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertNull(contextVersion.getMutable().getSpecifiedMutable());
+		assertFalse(contextVersion.getMutable().isMutable());
+		assertTrue(javaVersionMapping.getMutable().isMutable());
+		
+		// remove attribute from xml, test default mutable from java
+		
+		ormPersistentType.removeSpecifiedPersistentAttribute(ormPersistentAttribute);
+		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		contextVersion = (EclipseLinkOrmVersionMapping) ormPersistentAttribute.getMapping();
+		
+		assertNull(resourceVersion.getMutable());
+		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertEquals(Boolean.TRUE, contextVersion.getMutable().getSpecifiedMutable());
+		assertTrue(contextVersion.getMutable().isMutable());
+		assertTrue(javaVersionMapping.getMutable().isMutable());
+		
+		// set metadata complete
+		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
+		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		contextVersion = (EclipseLinkOrmVersionMapping) ormPersistentAttribute.getMapping();
+		assertNull(resourceVersion.getMutable());
+		assertFalse(contextVersion.getMutable().isDefaultMutable());
+		assertEquals(Boolean.FALSE, contextVersion.getMutable().getSpecifiedMutable());
+		assertFalse(contextVersion.getMutable().isMutable());
+		assertTrue(javaVersionMapping.getMutable().isMutable());
 	}
 	
 	public void testModifyMutable() throws Exception {

@@ -6,6 +6,7 @@ import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlMutable;
 
 public class EclipseLinkOrmMutable extends AbstractXmlContextNode 
@@ -21,7 +22,11 @@ public class EclipseLinkOrmMutable extends AbstractXmlContextNode
 	public EclipseLinkOrmMutable(OrmAttributeMapping parent) {
 		super(parent);
 	}
-	
+		
+	@Override
+	public EclipseLinkPersistenceUnit getPersistenceUnit() {
+		return (EclipseLinkPersistenceUnit) super.getPersistenceUnit();
+	}
 	
 	protected OrmAttributeMapping getAttributeMapping() {
 		return (OrmAttributeMapping) getParent();
@@ -80,9 +85,8 @@ public class EclipseLinkOrmMutable extends AbstractXmlContextNode
 		}
 		JavaResourcePersistentAttribute javaResourceAttribute = javaAttribute.getResourcePersistentAttribute();
 		if (javaResourceAttribute.typeIsDateOrCalendar()) {
-			// TODO - calculate the default based on the persistence.xml mutable 
-			// property setting  for Date and Calendar bug 228042
-			return false;
+			Boolean persistenceUnitDefaultMutable = getPersistenceUnit().getOptions().getTemporalMutable();
+			return persistenceUnitDefaultMutable == null ? false : persistenceUnitDefaultMutable.booleanValue();
 		}
 		return javaResourceAttribute.typeIsSerializable();
 	}

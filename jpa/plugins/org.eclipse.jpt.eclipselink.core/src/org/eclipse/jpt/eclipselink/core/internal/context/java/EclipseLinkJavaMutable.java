@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.java.MutableAnnotation;
 
 public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implements Mutable
@@ -26,6 +27,11 @@ public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implement
 	
 	public EclipseLinkJavaMutable(JavaAttributeMapping parent) {
 		super(parent);
+	}
+	
+	@Override
+	public EclipseLinkPersistenceUnit getPersistenceUnit() {
+		return (EclipseLinkPersistenceUnit) super.getPersistenceUnit();
 	}
 	
 	protected String getMutableAnnotationName() {
@@ -46,9 +52,8 @@ public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implement
 
 	protected boolean calculateDefaultMutable() {
 		if (this.resourcePersistentAttribute.typeIsDateOrCalendar()) {
-			//TODO calculate the default based on the persistence.xml mutable 
-			//property setting  for Date and Calendar bug 228042
-			return false;
+			Boolean persistenceUnitDefaultMutable = getPersistenceUnit().getOptions().getTemporalMutable();
+			return persistenceUnitDefaultMutable == null ? false : persistenceUnitDefaultMutable.booleanValue();
 		}
 		return this.resourcePersistentAttribute.typeIsSerializable();
 	}

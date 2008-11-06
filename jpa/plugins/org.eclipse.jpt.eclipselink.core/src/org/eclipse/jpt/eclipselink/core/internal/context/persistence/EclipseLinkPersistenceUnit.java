@@ -43,7 +43,6 @@ import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAd
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
 /**
  * EclipseLinkPersistenceUnit
@@ -68,19 +67,16 @@ public class EclipseLinkPersistenceUnit extends AbstractPersistenceUnit
 	
 	public EclipseLinkPersistenceUnit(Persistence parent, XmlPersistenceUnit persistenceUnit) {
 		super(parent);
-		this.initialize(persistenceUnit);
-		PropertyValueModel<PersistenceUnit> persistenceUnitHolder = 
-			new SimplePropertyValueModel<PersistenceUnit>(this);
-		
-		this.propertiesAdapter = this.buildPropertiesAdapter(persistenceUnitHolder);
+		this.propertiesAdapter = this.buildPropertiesAdapter();
 		this.propertyListAdapter = this.buildPropertyListAdapter(this.propertiesAdapter);		
-		this.generalProperties = this.buildGeneralProperties();
-		this.connection = this.buildConnection();
-		this.customization = this.buildCustomization();
-		this.caching = this.buildCaching();
-		this.logging = this.buildLogging();
-		this.options = this.buildOptions();
-		this.schemaGeneration = this.buildSchemaGeneration();
+		this.generalProperties = new EclipseLinkGeneralProperties(this, this.propertyListAdapter);
+		this.connection = new EclipseLinkConnection(this, this.propertyListAdapter);
+		this.customization = new EclipseLinkCustomization(this, this.propertyListAdapter);
+		this.caching = new EclipseLinkCaching(this, this.propertyListAdapter);
+		this.logging = new EclipseLinkLogging(this, this.propertyListAdapter);
+		this.options = new EclipseLinkOptions(this, this.propertyListAdapter);
+		this.schemaGeneration = new EclipseLinkSchemaGeneration(this, this.propertyListAdapter);
+		this.initialize(persistenceUnit);
 	}
 
 	// ********** internal methods **********
@@ -89,8 +85,8 @@ public class EclipseLinkPersistenceUnit extends AbstractPersistenceUnit
 		return new ItemPropertyListValueModelAdapter<Property>(propertiesAdapter, Property.VALUE_PROPERTY);
 	}
 
-	private ListValueModel<Property> buildPropertiesAdapter(PropertyValueModel<PersistenceUnit> subjectHolder) {
-		return new ListAspectAdapter<PersistenceUnit, Property>(subjectHolder, PersistenceUnit.PROPERTIES_LIST) {
+	private ListValueModel<Property> buildPropertiesAdapter() {
+		return new ListAspectAdapter<PersistenceUnit, Property>(new SimplePropertyValueModel<PersistenceUnit>(this), PersistenceUnit.PROPERTIES_LIST) {
 			@Override
 			protected ListIterator<Property> listIterator_() {
 				return this.subject.properties();
@@ -101,34 +97,6 @@ public class EclipseLinkPersistenceUnit extends AbstractPersistenceUnit
 				return this.subject.propertiesSize();
 			}
 		};
-	}
-	
-	private GeneralProperties buildGeneralProperties() {
-		return new EclipseLinkGeneralProperties(this, this.propertyListAdapter);
-	}
-	
-	private Connection buildConnection() {
-		return new EclipseLinkConnection(this, this.propertyListAdapter);
-	}
-
-	private Customization buildCustomization() {
-		return new EclipseLinkCustomization(this, this.propertyListAdapter);
-	}
-	
-	private Caching buildCaching() {
-		return new EclipseLinkCaching(this, this.propertyListAdapter);
-	}
-
-	private Logging buildLogging() {
-		return new EclipseLinkLogging(this, this.propertyListAdapter);
-	}
-
-	private Options buildOptions() {
-		return new EclipseLinkOptions(this, this.propertyListAdapter);
-	}
-
-	private SchemaGeneration buildSchemaGeneration() {
-		return new EclipseLinkSchemaGeneration(this, this.propertyListAdapter);
 	}
 	
 	@Override

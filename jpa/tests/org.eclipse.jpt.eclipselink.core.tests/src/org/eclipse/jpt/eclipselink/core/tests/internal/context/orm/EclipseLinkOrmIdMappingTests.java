@@ -23,6 +23,7 @@ import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmIdMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlId;
@@ -64,7 +65,30 @@ public class EclipseLinkOrmIdMappingTests
 		});
 	}
 	
-	
+	private ICompilationUnit createTestEntityWithMutableIdDate() throws Exception {
+		createMutableAnnotation();
+		
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, EclipseLinkJPA.MUTABLE, "java.util.Date");
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@Id").append(CR);
+				sb.append("    @Mutable").append(CR);
+				sb.append("    private Date myDate;").append(CR);
+				sb.append(CR);
+				sb.append("    ");
+			}
+		});
+	}
+
 	public void testUpdateMutable() throws Exception {
 		createTestEntityWithIdMapping();
 		OrmPersistentType ormPersistentType = 
@@ -148,6 +172,105 @@ public class EclipseLinkOrmIdMappingTests
 		assertFalse(javaIdMapping.getMutable().isMutable());
 	}
 	
+	public void testUpdateMutableDate() throws Exception {
+		createTestEntityWithMutableIdDate();
+		OrmPersistentType ormPersistentType = 
+			entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute =
+			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "myDate");
+		EclipseLinkOrmIdMapping contextId = 
+			(EclipseLinkOrmIdMapping) ormPersistentAttribute.getMapping();
+		XmlEntity resourceEntity = 
+			(XmlEntity)ormResource().getEntityMappings().getEntities().get(0);
+		XmlId resourceId = 
+			(XmlId) resourceEntity.getAttributes().getIds().get(0);
+		EclipseLinkIdMapping javaIdMapping = (EclipseLinkIdMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("myDate").getMapping();
+		
+		// check defaults
+		
+		assertNull(resourceId.getMutable());
+		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertNull(contextId.getMutable().getSpecifiedMutable());
+		assertFalse(contextId.getMutable().isMutable());
+		
+		// set xml mutable to false, check context
+		
+		resourceId.setMutable(Boolean.FALSE);
+		
+		assertEquals(Boolean.FALSE, resourceId.getMutable());
+		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertEquals(Boolean.FALSE, contextId.getMutable().getSpecifiedMutable());
+		assertFalse(contextId.getMutable().isMutable());
+		
+		// set xml mutable to true, check context
+		
+		resourceId.setMutable(Boolean.TRUE);
+		
+		assertEquals(Boolean.TRUE, resourceId.getMutable());
+		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertEquals(Boolean.TRUE, contextId.getMutable().getSpecifiedMutable());
+		assertTrue(contextId.getMutable().isMutable());
+		
+		// clear xml mutable, check context
+		
+		resourceId.setMutable(null);
+		
+		assertNull(resourceId.getMutable());
+		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertNull(contextId.getMutable().getSpecifiedMutable());
+		assertFalse(contextId.getMutable().isMutable());
+		
+		
+		((EclipseLinkPersistenceUnit) persistenceUnit()).getOptions().setTemporalMutable(Boolean.TRUE);
+		assertNull(resourceId.getMutable());
+		assertTrue(contextId.getMutable().isDefaultMutable());
+		assertNull(contextId.getMutable().getSpecifiedMutable());
+		assertTrue(contextId.getMutable().isMutable());
+		
+		((EclipseLinkPersistenceUnit) persistenceUnit()).getOptions().setTemporalMutable(Boolean.FALSE);
+		assertNull(resourceId.getMutable());
+		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertNull(contextId.getMutable().getSpecifiedMutable());
+		assertFalse(contextId.getMutable().isMutable());
+		
+		((EclipseLinkPersistenceUnit) persistenceUnit()).getOptions().setTemporalMutable(null);
+		assertNull(resourceId.getMutable());
+		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertNull(contextId.getMutable().getSpecifiedMutable());
+		assertFalse(contextId.getMutable().isMutable());
+		
+		// set mutable on java id mapping
+		
+		javaIdMapping.getMutable().setSpecifiedMutable(Boolean.TRUE);
+		assertNull(resourceId.getMutable());
+		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertNull(contextId.getMutable().getSpecifiedMutable());
+		assertFalse(contextId.getMutable().isMutable());
+		assertTrue(javaIdMapping.getMutable().isMutable());
+		
+		// remove attribute from xml, test default mutable from java
+		
+		ormPersistentType.removeSpecifiedPersistentAttribute(ormPersistentAttribute);
+		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		contextId = (EclipseLinkOrmIdMapping) ormPersistentAttribute.getMapping();
+		
+		assertNull(resourceId.getMutable());
+		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertEquals(Boolean.TRUE, contextId.getMutable().getSpecifiedMutable());
+		assertTrue(contextId.getMutable().isMutable());
+		assertTrue(javaIdMapping.getMutable().isMutable());
+		
+		// set metadata complete
+		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
+		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		contextId = (EclipseLinkOrmIdMapping) ormPersistentAttribute.getMapping();
+		assertNull(resourceId.getMutable());
+		assertFalse(contextId.getMutable().isDefaultMutable());
+		assertEquals(Boolean.FALSE, contextId.getMutable().getSpecifiedMutable());
+		assertFalse(contextId.getMutable().isMutable());
+		assertTrue(javaIdMapping.getMutable().isMutable());
+	}
+
 	public void testModifyMutable() throws Exception {
 		OrmPersistentType ormPersistentType = 
 			entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);

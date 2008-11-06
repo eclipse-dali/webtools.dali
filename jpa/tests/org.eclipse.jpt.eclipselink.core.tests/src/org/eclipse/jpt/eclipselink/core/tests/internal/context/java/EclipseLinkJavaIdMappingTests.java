@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.MutableAnnotation;
@@ -99,6 +100,30 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkJavaContextModelTe
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Id").append(CR);
 				sb.append("@Mutable").append(CR);
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityWithMutableIdDate() throws Exception {
+		createMutableAnnotation();
+		
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, EclipseLinkJPA.MUTABLE, "java.util.Date");
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@Id").append(CR);
+				sb.append("    @Mutable").append(CR);
+				sb.append("    private Date myDate;").append(CR);
+				sb.append(CR);
+				sb.append("    ");
 			}
 		});
 	}
@@ -253,6 +278,38 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkJavaContextModelTe
 		
 		mutable.setSpecifiedMutable(Boolean.FALSE);	
 		assertTrue(mutable.isDefaultMutable());
+		
+		//set mutable default to false in the persistence unit properties, verify default in java still true since this is not a Date/Calendar
+		((EclipseLinkPersistenceUnit) persistenceUnit()).getOptions().setTemporalMutable(Boolean.FALSE);
+		assertTrue(mutable.isDefaultMutable());
+	}
+	
+	public void testIsDefaultMutableForDate() throws Exception {
+		createTestEntityWithMutableIdDate();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		EclipseLinkIdMapping idMapping = (EclipseLinkIdMapping) persistentAttribute.getSpecifiedMapping();
+		Mutable mutable = idMapping.getMutable();
+		assertFalse(mutable.isDefaultMutable());
+		
+		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		attributeResource.removeSupportingAnnotation(MutableAnnotation.ANNOTATION_NAME);
+		assertFalse(mutable.isDefaultMutable());
+		
+		mutable.setSpecifiedMutable(Boolean.TRUE);	
+		assertFalse(mutable.isDefaultMutable());
+		
+		//set mutable default to false in the persistence unit properties, verify default in java still true since this is not a Date/Calendar
+		((EclipseLinkPersistenceUnit) persistenceUnit()).getOptions().setTemporalMutable(Boolean.TRUE);
+		assertTrue(mutable.isDefaultMutable());
+		
+		((EclipseLinkPersistenceUnit) persistenceUnit()).getOptions().setTemporalMutable(Boolean.FALSE);
+		assertFalse(mutable.isDefaultMutable());
+		
+		((EclipseLinkPersistenceUnit) persistenceUnit()).getOptions().setTemporalMutable(null);
+		assertFalse(mutable.isDefaultMutable());
 	}
 	
 	public void testIsMutable() throws Exception {
