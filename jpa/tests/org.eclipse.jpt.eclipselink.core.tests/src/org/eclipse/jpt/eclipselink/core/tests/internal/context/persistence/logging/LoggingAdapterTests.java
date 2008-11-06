@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.logg
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkJpaProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitPropertyListListener;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.EclipseLinkLogging;
@@ -67,7 +66,7 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.logging = this.persistenceUnitProperties.getLogging();
+		this.logging = this.subject.getLogging();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 		
 		this.logging.addPropertyChangeListener(Logging.LEVEL_PROPERTY, propertyChangeListener);
@@ -110,9 +109,9 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 	public void testHasListeners() throws Exception {
 		// new
 		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = 
-			(ListAspectAdapter<PersistenceUnit, Property>) ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertiesAdapter();
+			(ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
 		GenericProperty ctdProperty = (GenericProperty) this.persistenceUnit().getProperty(TIMESTAMP_KEY);
-		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
+		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		
 		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(ctdProperty.hasAnyPropertyChangeListeners(Property.VALUE_PROPERTY));
@@ -349,6 +348,7 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 		super.verifyPutProperty(propertyName, expectedValue_);
 	}
 	
+	@Override
 	protected PersistenceUnitProperties model() {
 		return this.logging;
 	}

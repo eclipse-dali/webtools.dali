@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkJpaProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitPropertyListListener;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
@@ -32,6 +31,7 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
  * Tests the update of model objects by the Customization adapter when the
  * PersistenceUnit changes.
  */
+@SuppressWarnings("nls")
 public class CustomizationAdapterTests extends PersistenceUnitTestCase
 {
 	private Customization customization;
@@ -76,7 +76,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.customization = this.persistenceUnitProperties.getCustomization();
+		this.customization = this.subject.getCustomization();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 		
 		this.customization.addPropertyChangeListener(Customization.THROW_EXCEPTIONS_PROPERTY, propertyChangeListener);
@@ -237,9 +237,9 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	public void testHasListeners() throws Exception {
 		// new
 		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = 
-			(ListAspectAdapter<PersistenceUnit, Property>) ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertiesAdapter();
+			(ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
 		GenericProperty ctdProperty = (GenericProperty) this.persistenceUnit().getProperty(THROW_EXCEPTIONS_KEY);
-		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
+		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		
 		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(ctdProperty.hasAnyPropertyChangeListeners(Property.VALUE_PROPERTY));
@@ -404,7 +404,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 
 	// ********** verify SessionCustomizer property **********
 	protected void verifySetSessionCustomizationProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
-		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
+		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		// Basic
 		this.verifyInitialState(propertyName, key, propertyListAdapter);
 		
@@ -416,7 +416,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	}
 	
 	protected void verifyAddRemoveSessionCustomizationProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
-		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
+		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		// Remove
 		this.clearEvent();
 		--this.propertiesTotal;
@@ -449,7 +449,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	
 	// ********** verify entity property **********
 	protected void verifySetCustomizationProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
-		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
+		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		// Basic
 		this.verifyInitialState(propertyName, key, propertyListAdapter);
 		
@@ -466,7 +466,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	}
 
 	protected void verifyAddRemoveCustomizationProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
-		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
+		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		// Remove
 		this.clearEvent();
 		--this.propertiesTotal;
@@ -558,6 +558,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		return modelValue;
 	}
 
+	@Override
 	protected PersistenceUnitProperties model() {
 		return this.customization;
 	}

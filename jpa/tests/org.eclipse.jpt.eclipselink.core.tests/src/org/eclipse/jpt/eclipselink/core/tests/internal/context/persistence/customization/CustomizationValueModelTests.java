@@ -41,7 +41,7 @@ public class CustomizationValueModelTests extends PersistenceUnitTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.customization = this.persistenceUnitProperties.getCustomization(); // Subject
+		this.customization = this.subject.getCustomization(); // Subject
 		PropertyValueModel<Customization> customizationHolder = new SimplePropertyValueModel<Customization>(this.customization);
 		
 		this.throwExceptionsHolder = this.buildThrowExceptionsAA(customizationHolder);
@@ -66,6 +66,7 @@ public class CustomizationValueModelTests extends PersistenceUnitTestCase
 	/**
 	 * Initializes directly the PU properties before testing. 
 	 */
+	@Override
 	protected void populatePu() {
 		this.persistenceUnitPut(
 			Customization.ECLIPSELINK_THROW_EXCEPTIONS, 
@@ -73,6 +74,7 @@ public class CustomizationValueModelTests extends PersistenceUnitTestCase
 		return;
 	}
 
+	@Override
 	protected PersistenceUnitProperties model() {
 		return this.customization;
 	}

@@ -24,6 +24,7 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 /**
  * CachingValueModelTests
  */
+@SuppressWarnings("nls")
 public class CachingValueModelTests extends PersistenceUnitTestCase
 {
 	private Caching caching;
@@ -58,7 +59,7 @@ public class CachingValueModelTests extends PersistenceUnitTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.caching = this.persistenceUnitProperties.getCaching(); // Subject
+		this.caching = this.subject.getCaching(); // Subject
 		this.cachingHolder = new SimplePropertyValueModel<Caching>(this.caching);
 		
 		this.cacheTypeHolder = this.buildCacheTypeAA(this.cachingHolder);
@@ -124,6 +125,7 @@ public class CachingValueModelTests extends PersistenceUnitTestCase
 	/**
 	 * Initializes directly the PU properties before testing.
 	 */
+	@Override
 	protected void populatePu() {
 		this.persistenceUnitPut(
 			Caching.ECLIPSELINK_CACHE_TYPE + ENTITY_NAME_TEST_VALUE, 
@@ -140,6 +142,7 @@ public class CachingValueModelTests extends PersistenceUnitTestCase
 		return;
 	}
 
+	@Override
 	protected PersistenceUnitProperties model() {
 		return this.caching;
 	}

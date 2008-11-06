@@ -29,7 +29,6 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLink
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.general.GeneralProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.SchemaGeneration;
@@ -52,7 +51,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmVersion
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.caching.PersistenceXmlCachingTab;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.connection.PersistenceXmlConnectionTab;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.customization.PersistenceXmlCustomizationTab;
-import org.eclipse.jpt.eclipselink.ui.internal.persistence.general.PersistenceXmlGeneralTab;
+import org.eclipse.jpt.eclipselink.ui.internal.persistence.general.EclipseLinkPersistenceUnitGeneralComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.logging.PersistenceXmlLoggingTab;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.options.PersistenceXmlOptionsTab;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.schema.generation.PersistenceXmlSchemaGenerationTab;
@@ -85,9 +84,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 		ArrayList<JpaPageComposite> pages = 
 			new ArrayList<JpaPageComposite>(8);
 
-		PropertyValueModel<GeneralProperties> generalPropertyHolder = 
-			this.buildGeneralPropertyHolder(eclipseLinkPersistenceUnitHolder);
-		pages.add(new PersistenceXmlGeneralTab(generalPropertyHolder, parent, widgetFactory));
+		pages.add(new EclipseLinkPersistenceUnitGeneralComposite(eclipseLinkPersistenceUnitHolder, parent, widgetFactory));
 		
 		PropertyValueModel<Connection> connectionHolder = 
 			this.buildConnectionHolder(eclipseLinkPersistenceUnitHolder);
@@ -124,16 +121,6 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 			@Override
 			protected EclipseLinkPersistenceUnit transform_(PersistenceUnit value) {
 				return (EclipseLinkPersistenceUnit) value;
-			}
-		};
-	}
-	
-	private PropertyValueModel<GeneralProperties> buildGeneralPropertyHolder(
-				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, GeneralProperties>(subjectHolder) {
-			@Override
-			protected GeneralProperties transform_(EclipseLinkPersistenceUnit value) {
-				return value.getGeneralProperties();
 			}
 		};
 	}

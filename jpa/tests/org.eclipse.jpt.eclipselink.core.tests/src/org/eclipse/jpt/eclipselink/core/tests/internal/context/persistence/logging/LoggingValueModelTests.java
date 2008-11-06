@@ -23,6 +23,7 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 /**
  * LoggingValueModelTests
  */
+@SuppressWarnings("nls")
 public class LoggingValueModelTests extends PersistenceUnitTestCase
 {
 	private Logging logging;
@@ -40,7 +41,7 @@ public class LoggingValueModelTests extends PersistenceUnitTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.logging = this.persistenceUnitProperties.getLogging(); // Subject
+		this.logging = this.subject.getLogging(); // Subject
 		PropertyValueModel<Logging> loggingHolder = new SimplePropertyValueModel<Logging>(this.logging);
 		
 		this.timestampHolder = this.buildTimestampAA(loggingHolder);
@@ -65,6 +66,7 @@ public class LoggingValueModelTests extends PersistenceUnitTestCase
 	/**
 	 * Initializes directly the PU properties before testing. 
 	 */
+	@Override
 	protected void populatePu() {
 		this.persistenceUnitPut(
 			Logging.ECLIPSELINK_TIMESTAMP, 
@@ -72,6 +74,7 @@ public class LoggingValueModelTests extends PersistenceUnitTestCase
 		return;
 	}
 
+	@Override
 	protected PersistenceUnitProperties model() {
 		return this.logging;
 	}

@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.sche
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkJpaProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitPropertyListListener;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.DdlGenerationType;
@@ -28,6 +27,7 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
  * Tests the update of OutputMode model object by the SchemaGeneration adapter
  * when the PersistenceUnit changes.
  */
+@SuppressWarnings("nls")
 public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 {
 	private SchemaGeneration schemaGeneration;
@@ -59,7 +59,7 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.schemaGeneration = this.persistenceUnitProperties.getSchemaGeneration();
+		this.schemaGeneration = this.subject.getSchemaGeneration();
 		
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration.OUTPUT_MODE_PROPERTY, propertyChangeListener);
@@ -93,10 +93,10 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 	}
 
 	public void testHasListeners() throws Exception {
-		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = (ListAspectAdapter<PersistenceUnit, Property>) ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertiesAdapter();
+		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = (ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
 		GenericProperty outputModeProperty = (GenericProperty) this.persistenceUnit().getProperty(OUTPUT_MODE_KEY);
 		GenericProperty ddlGenTypeProperty = (GenericProperty) this.persistenceUnit().getProperty(DDL_GENERATION_TYPE_KEY);
-		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
+		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 
 		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(outputModeProperty.hasAnyPropertyChangeListeners(Property.VALUE_PROPERTY));
@@ -259,6 +259,7 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 		return modelValue;
 	}
 
+	@Override
 	protected PersistenceUnitProperties model() {
 		return this.schemaGeneration;
 	}

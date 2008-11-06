@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkJpaProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitPropertyListListener;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.BatchWriting;
@@ -27,6 +26,7 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 /**
  *  ConnectionAdapterTests
  */
+@SuppressWarnings("nls")
 public class ConnectionAdapterTests extends PersistenceUnitTestCase
 {
 	private Connection connection;
@@ -103,7 +103,7 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.connection = this.persistenceUnitProperties.getConnection();
+		this.connection = this.subject.getConnection();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 		
 		this.connection.addPropertyChangeListener(Connection.TRANSACTION_TYPE_PROPERTY, propertyChangeListener);
@@ -167,9 +167,9 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	public void testHasListeners() throws Exception {
 		// new
 		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = 
-			(ListAspectAdapter<PersistenceUnit, Property>) ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertiesAdapter();
+			(ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
 		GenericProperty ctdProperty = (GenericProperty) this.persistenceUnit().getProperty(NATIVE_SQL_KEY);
-		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
+		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		
 		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(ctdProperty.hasAnyPropertyChangeListeners(Property.VALUE_PROPERTY));
@@ -580,6 +580,7 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 			this.throwMissingDefinition("setPersistenceUnitProperty", propertyName);
 	}
 	
+	@Override
 	protected PersistenceUnitProperties model() {
 		return this.connection;
 	}

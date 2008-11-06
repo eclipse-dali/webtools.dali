@@ -23,6 +23,7 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 /**
  * GeneralPropertyValueModelTests
  */
+@SuppressWarnings("nls")
 public class GeneralPropertiesValueModelTests extends PersistenceUnitTestCase
 {
 	private GeneralProperties generalProperty;
@@ -40,7 +41,7 @@ public class GeneralPropertiesValueModelTests extends PersistenceUnitTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.generalProperty = this.persistenceUnitProperties.getGeneralProperties(); // Subject
+		this.generalProperty = this.subject.getGeneralProperties(); // Subject
 		PropertyValueModel<GeneralProperties> generalPropertyHolder = new SimplePropertyValueModel<GeneralProperties>(this.generalProperty);
 		
 		this.excludeEclipselinkOrmHolder = this.buildExcludeEclipselinkOrmAA(generalPropertyHolder);
@@ -65,6 +66,7 @@ public class GeneralPropertiesValueModelTests extends PersistenceUnitTestCase
 	/**
 	 * Initializes directly the PU properties before testing. 
 	 */
+	@Override
 	protected void populatePu() {
 		this.persistenceUnitPut(
 			GeneralProperties.ECLIPSELINK_EXCLUDE_ECLIPSELINK_ORM, 
@@ -72,6 +74,7 @@ public class GeneralPropertiesValueModelTests extends PersistenceUnitTestCase
 		return;
 	}
 
+	@Override
 	protected PersistenceUnitProperties model() {
 		return this.generalProperty;
 	}

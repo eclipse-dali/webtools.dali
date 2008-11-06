@@ -40,7 +40,7 @@ public class OptionsValueModelTests extends PersistenceUnitTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.options = this.persistenceUnitProperties.getOptions(); // Subject
+		this.options = this.subject.getOptions(); // Subject
 		PropertyValueModel<Options> optionsHolder = new SimplePropertyValueModel<Options>(this.options);
 		
 		this.includeDescriptorQueriesHolder = this.buildIncludeDescriptorQueriesAA(optionsHolder);
@@ -65,6 +65,7 @@ public class OptionsValueModelTests extends PersistenceUnitTestCase
 	/**
 	 * Initializes directly the PU properties before testing. 
 	 */
+	@Override
 	protected void populatePu() {
 		this.persistenceUnitPut(
 			Options.ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES, 
@@ -72,6 +73,7 @@ public class OptionsValueModelTests extends PersistenceUnitTestCase
 		return;
 	}
 
+	@Override
 	protected PersistenceUnitProperties model() {
 		return this.options;
 	}

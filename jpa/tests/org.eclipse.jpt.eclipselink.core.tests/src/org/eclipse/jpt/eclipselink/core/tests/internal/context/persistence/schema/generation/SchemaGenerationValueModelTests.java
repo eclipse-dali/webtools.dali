@@ -48,7 +48,7 @@ public class SchemaGenerationValueModelTests extends PersistenceUnitTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.schemaGen = this.persistenceUnitProperties.getSchemaGeneration(); // Subject
+		this.schemaGen = this.subject.getSchemaGeneration(); // Subject
 		this.schemaGenHolder = new SimplePropertyValueModel<SchemaGeneration>(this.schemaGen);
 		
 		this.ddlGenerationTypeHolder = this.buildDdlGenerationTypeAA(this.schemaGenHolder);
@@ -77,6 +77,7 @@ public class SchemaGenerationValueModelTests extends PersistenceUnitTestCase
 		return;
 	}
 
+	@Override
 	protected PersistenceUnitProperties model() {
 		return this.schemaGen;
 	}

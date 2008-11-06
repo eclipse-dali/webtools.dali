@@ -13,6 +13,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitPropertyListListener;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.DdlGenerationType;
@@ -51,7 +52,7 @@ public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		this.schemaGeneration = this.persistenceUnitProperties.getSchemaGeneration();
+		this.schemaGeneration = this.subject.getSchemaGeneration();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration.OUTPUT_MODE_PROPERTY, propertyChangeListener);
 		this.schemaGeneration.addPropertyChangeListener(SchemaGeneration.DDL_GENERATION_TYPE_PROPERTY, propertyChangeListener);
@@ -160,12 +161,13 @@ public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
 	}
 
 	// ****** convenience methods *******
+	@Override
 	protected PersistenceUnitProperties model() {
 		return this.schemaGeneration;
 	}
 
-	private ListValueModel<Property> buildPropertiesAdapter(PropertyValueModel<PersistenceUnit> subjectHolder) {
-		return new ListAspectAdapter<PersistenceUnit, Property>(subjectHolder, PersistenceUnit.PROPERTIES_LIST) {
+	private ListValueModel<Property> buildPropertiesAdapter(PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
+		return new ListAspectAdapter<EclipseLinkPersistenceUnit, Property>(subjectHolder, PersistenceUnit.PROPERTIES_LIST) {
 			@Override
 			protected ListIterator<Property> listIterator_() {
 				return this.subject.properties();

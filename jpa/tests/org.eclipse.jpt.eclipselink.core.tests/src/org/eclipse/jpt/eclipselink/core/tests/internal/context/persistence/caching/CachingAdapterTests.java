@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.cach
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkJpaProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitPropertyListListener;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.CacheProperties;
@@ -30,6 +29,7 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
  * Tests the update of model objects by the Caching adapter when the
  * PersistenceUnit changes.
  */
+@SuppressWarnings("nls")
 public class CachingAdapterTests extends PersistenceUnitTestCase
 {
 	private Caching caching;
@@ -69,7 +69,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.caching = this.persistenceUnitProperties.getCaching();
+		this.caching = this.persistenceUnit().getCaching();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 		
 		this.caching.addPropertyChangeListener(Caching.CACHE_TYPE_DEFAULT_PROPERTY, propertyChangeListener);
@@ -169,9 +169,9 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	public void testHasListeners() throws Exception {
 		// new
 		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = 
-			(ListAspectAdapter<PersistenceUnit, Property>) ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertiesAdapter();
+			(ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
 		GenericProperty ctdProperty = (GenericProperty) this.persistenceUnit().getProperty(CACHE_TYPE_DEFAULT_KEY);
-		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
+		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		
 		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(ctdProperty.hasAnyPropertyChangeListeners(Property.VALUE_PROPERTY));
@@ -320,12 +320,13 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	}
 
 	// ****** convenience methods *******
+	@Override
 	protected PersistenceUnitProperties model() {
 		return this.caching;
 	}
 
 	protected void verifySetCachingProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
-		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
+		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		// Basic
 		this.verifyInitialState(propertyName, key, propertyListAdapter);
 		
@@ -342,7 +343,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	}
 
 	protected void verifyAddRemoveCachingProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
-		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
+		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		// Remove
 		this.clearEvent();
 		--this.propertiesTotal;

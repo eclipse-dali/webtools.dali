@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.opti
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkJpaProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitPropertyListListener;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.EclipseLinkOptions;
@@ -67,7 +66,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.options = this.persistenceUnitProperties.getOptions();
+		this.options = this.subject.getOptions();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 
 		this.options.addPropertyChangeListener(Options.SESSION_NAME_PROPERTY, propertyChangeListener);
@@ -111,9 +110,9 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	public void testHasListeners() throws Exception {
 		// new
 		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = 
-			(ListAspectAdapter<PersistenceUnit, Property>) ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertiesAdapter();
+			(ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
 		GenericProperty ctdProperty = (GenericProperty) this.persistenceUnit().getProperty(INCLUDE_DESCRIPTOR_QUERIES_KEY);
-		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
+		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		
 		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(ctdProperty.hasAnyPropertyChangeListeners(Property.VALUE_PROPERTY));
@@ -410,6 +409,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 				expectedValue); // already a EclipseLinkStringValue
 	}
 	
+	@Override
 	protected PersistenceUnitProperties model() {
 		return this.options;
 	}

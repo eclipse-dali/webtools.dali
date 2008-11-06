@@ -9,12 +9,13 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence;
 
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
+import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
+import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkJpaProperties;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatform;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -23,17 +24,18 @@ import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 /**
  * PersistenceUnitTestCase
  */
+@SuppressWarnings("nls")
 public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 {
-	protected PersistenceUnit subject;
+	protected EclipseLinkPersistenceUnit subject;
 
-	protected PropertyValueModel<PersistenceUnit> subjectHolder;
-
-	protected EclipseLinkProperties persistenceUnitProperties;
+	protected PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder;
 
 	protected PropertyChangeEvent propertyChangedEvent;
 
@@ -53,11 +55,23 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.subject = this.persistenceUnit();
-		this.subjectHolder = new SimplePropertyValueModel<PersistenceUnit>(this.subject);
-		this.persistenceUnitProperties = new EclipseLinkJpaProperties(this.subject);
+		this.subjectHolder = new SimplePropertyValueModel<EclipseLinkPersistenceUnit>(this.subject);
 		this.populatePu();
 	}
 
+	@Override
+	protected IDataModel buildJpaConfigDataModel() {
+		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetDataModelProvider());		
+		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, EclipseLinkJpaPlatform.ID);
+		dataModel.setProperty(JpaFacetDataModelProperties.CREATE_ORM_XML, Boolean.FALSE);
+		return dataModel;
+	}
+	
+	@Override
+	protected EclipseLinkPersistenceUnit persistenceUnit() {
+		return (EclipseLinkPersistenceUnit) super.persistenceUnit();
+	}
+	
 	// ****** abstract methods *******
 	protected abstract PersistenceUnitProperties model();
 
@@ -229,7 +243,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	 * 3. adapter setProperty<br>
 	 */
 	protected void verifySetProperty(String elKey, Object testValue1, Object testValue2) throws Exception {
-		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
+		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		Property property = this.persistenceUnit().getProperty(elKey);
 		String propertyName = this.model().propertyIdFor(property);
 
@@ -255,7 +269,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	 * 3. performs a replace with putProperty<br>
 	 */
 	protected void verifyAddRemoveProperty(String elKey, Object testValue1, Object testValue2) throws Exception {
-		ListValueModel<Property> propertyListAdapter = ((EclipseLinkJpaProperties) this.persistenceUnitProperties).propertyListAdapter();
+		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		Property property = this.persistenceUnit().getProperty(elKey);
 		String propertyName = this.model().propertyIdFor(property);
 

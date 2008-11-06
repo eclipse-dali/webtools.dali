@@ -12,8 +12,6 @@ package org.eclipse.jpt.ui.internal.persistence.details;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ListIterator;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -22,6 +20,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
@@ -30,9 +29,10 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
+import org.eclipse.jpt.core.utility.PlatformUtilities;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
@@ -81,7 +81,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public class PersistenceUnitMappingFilesComposite extends Pane<PersistenceUnit>
+public abstract class PersistenceUnitMappingFilesComposite extends Pane<PersistenceUnit>
 {
 	/**
 	 * Creates a new <code>PersistenceUnitMappingFilesComposite</code>.
@@ -93,6 +93,31 @@ public class PersistenceUnitMappingFilesComposite extends Pane<PersistenceUnit>
 	                                            Composite parent) {
 
 		super(parentPane, parent);
+	}
+	
+	protected void addMappingFilesList(Composite container) {
+		// List pane
+		new AddRemoveListPane<PersistenceUnit>(
+			this,
+			container,
+			buildAdapter(),
+			buildItemListHolder(),
+			buildSelectedItemHolder(),
+			buildLabelProvider()
+		) {
+			@Override
+			protected Composite addContainer(Composite parent) {
+				parent = super.addContainer(parent);
+				updateGridData(parent);
+				return parent;
+			}
+	
+			@Override
+			protected void initializeLayout(Composite container) {
+				super.initializeLayout(container);
+				updateGridData(getContainer());
+			}
+		};
 	}
 
 	/**
@@ -192,12 +217,12 @@ public class PersistenceUnitMappingFilesComposite extends Pane<PersistenceUnit>
 		return new ListAspectAdapter<PersistenceUnit, MappingFileRef>(getSubjectHolder(), PersistenceUnit.SPECIFIED_MAPPING_FILE_REFS_LIST) {
 			@Override
 			protected ListIterator<MappingFileRef> listIterator_() {
-				return subject.specifiedMappingFileRefs();
+				return this.subject.specifiedMappingFileRefs();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.specifiedMappingFileRefsSize();
+				return this.subject.specifiedMappingFileRefsSize();
 			}
 		};
 	}
@@ -244,36 +269,6 @@ public class PersistenceUnitMappingFilesComposite extends Pane<PersistenceUnit>
 				}
 
 				return new Status(IStatus.OK, JptUiPlugin.PLUGIN_ID, "");
-			}
-		};
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		// List pane
-		new AddRemoveListPane<PersistenceUnit>(
-			this,
-			container,
-			buildAdapter(),
-			buildItemListHolder(),
-			buildSelectedItemHolder(),
-			buildLabelProvider()
-		) {
-			@Override
-			protected Composite addContainer(Composite parent) {
-				parent = super.addContainer(parent);
-				updateGridData(parent);
-				return parent;
-			}
-
-			@Override
-			protected void initializeLayout(Composite container) {
-				super.initializeLayout(container);
-				updateGridData(getContainer());
 			}
 		};
 	}
@@ -335,7 +330,7 @@ public class PersistenceUnitMappingFilesComposite extends Pane<PersistenceUnit>
 		private String rootTagName;
 
 		public String getRootTagName() {
-			return rootTagName;
+			return this.rootTagName;
 		}
 
 		@Override
@@ -358,12 +353,16 @@ public class PersistenceUnitMappingFilesComposite extends Pane<PersistenceUnit>
 		}
 	}
 
+	protected boolean isMappingFile(String contentTypeId) {
+		return contentTypeId.equals(JptCorePlugin.ORM_XML_CONTENT_TYPE);
+	}
+	
 	/**
 	 * This filter will deny showing any file that are not XML files or folders
 	 * that don't contain any XML files in its sub-hierarchy. The XML files are
 	 * partially parsed to only accept JPA mapping descriptors.
 	 */
-	private static class XmlFileViewerFilter extends ViewerFilter {
+	private class XmlFileViewerFilter extends ViewerFilter {
 
 		private final IJavaProject javaProject;
 
@@ -374,32 +373,11 @@ public class PersistenceUnitMappingFilesComposite extends Pane<PersistenceUnit>
 
 		/**
 		 * Determines whether the given file (an XML file) is a JPA mapping
-		 * descriptor file. It has to be a valid XML file with a root element
-		 * named "entity-mappings".
-		 *
-		 * @param file The file to parse and see if it's a mapping descriptor file
-		 * @return <code>true</code> if the given file is a valid XML file with a
-		 * root element named "entity-mappings"; <code>false</code> in any other
-		 * case
+		 * descriptor file. 
 		 */
 		private boolean isMappingFile(IFile file) {
-			try {
-				SAXParserFactory factory = SAXParserFactory.newInstance();
-				SAXParser saxParser = factory.newSAXParser();
-				SAXHandler handler = new SAXHandler();
-				try {
-					saxParser.parse(file.getRawLocationURI().toURL().openStream(), handler);
-				}
-				catch (Exception e) {
-					// Ignore since it's caused by SAXHandler to stop the parsing
-					// the moment the local name is retrieved
-				}
-				return OrmXmlMapper.ENTITY_MAPPINGS.equalsIgnoreCase(handler.getRootTagName());
-			}
-			catch (Exception e) {
-				JptUiPlugin.log(e);
-				return false;
-			}
+			IContentType contentType = PlatformUtilities.getContentType(file);
+			return (contentType == null) ? false : PersistenceUnitMappingFilesComposite.this.isMappingFile(contentType.getId());
 		}
 
 		private boolean isXmlFile(IFile file) {
@@ -419,16 +397,15 @@ public class PersistenceUnitMappingFilesComposite extends Pane<PersistenceUnit>
 				IFolder folder = (IFolder) element;
 
 				try {
-					for (IClasspathEntry entry : javaProject.getRawClasspath()) {
+					for (IClasspathEntry entry : this.javaProject.getRawClasspath()) {
 						if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-							if (!entry.getPath().isPrefixOf(folder.getFullPath().makeRelative()))
-								return false;
-						}
-					}
-
-					for (IResource resource : folder.members()) {
-						if (select(viewer, folder, resource)) {
-							return true;
+							if (entry.getPath().isPrefixOf(folder.getFullPath().makeRelative())) {
+								for (IResource resource : folder.members()) {
+									if (select(viewer, folder, resource)) {
+										return true;
+									}
+								}
+							}
 						}
 					}
 				}
