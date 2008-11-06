@@ -129,7 +129,7 @@ public class EntityListComposite extends Pane<Customization>
 	
 	private String getEntityName(String fullyQualifiedTypeName) {
 
-		Entity entity = getSubject().persistenceUnit().getEntity(fullyQualifiedTypeName);
+		Entity entity = getSubject().getPersistenceUnit().getEntity(fullyQualifiedTypeName);
 		return entity != null ? entity.getName() : null;
 	}
 	

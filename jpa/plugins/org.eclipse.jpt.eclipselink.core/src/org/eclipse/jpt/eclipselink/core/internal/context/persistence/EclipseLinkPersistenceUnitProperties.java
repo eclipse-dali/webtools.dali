@@ -68,7 +68,7 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	protected abstract void initializeProperties();
 
 	// ********** behavior **********
-	public PersistenceUnit persistenceUnit() {
+	public PersistenceUnit getPersistenceUnit() {
 		return this.persistenceUnit;
 	}
 	
@@ -133,9 +133,9 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 
 	protected String getStringValue(String key, String keySuffix) {
 		String elKey = (keySuffix == null) ? key : key + keySuffix;
-		if (this.persistenceUnit().containsProperty(elKey)) {
+		if (this.getPersistenceUnit().containsProperty(elKey)) {
 			// TOREVIEW - handle incorrect String in persistence.xml
-			return this.persistenceUnit().getProperty(elKey).getValue();
+			return this.getPersistenceUnit().getProperty(elKey).getValue();
 		}
 		return null;
 	}
@@ -176,10 +176,10 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	protected void putStringValue(String key, String keySuffix, String newValue, boolean allowDuplicate) {
 		String elKey = (keySuffix == null) ? key : key + keySuffix;
 		if (newValue == null) {
-			this.persistenceUnit().removeProperty(elKey);
+			this.getPersistenceUnit().removeProperty(elKey);
 		}
 		else {
-			this.persistenceUnit().putProperty(elKey, newValue, allowDuplicate);
+			this.getPersistenceUnit().putProperty(elKey, newValue, allowDuplicate);
 		}
 	}
 
@@ -193,8 +193,8 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 
 	protected Integer getIntegerValue(String key, String keySuffix) {
 		String elKey = (keySuffix == null) ? key : key + keySuffix;
-		if (this.persistenceUnit().containsProperty(elKey)) {
-			String eclipseLinkValue = this.persistenceUnit().getProperty(elKey).getValue();
+		if (this.getPersistenceUnit().containsProperty(elKey)) {
+			String eclipseLinkValue = this.getPersistenceUnit().getProperty(elKey).getValue();
 			// TOREVIEW - handle incorrect eclipseLinkValue String in
 			// persistence.xml
 			return getIntegerValueOf(eclipseLinkValue);
@@ -238,10 +238,10 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	protected void putIntegerValue(String key, String keySuffix, Integer newValue, boolean allowDuplicate) {
 		String elKey = (keySuffix == null) ? key : key + keySuffix;
 		if (newValue == null) {
-			this.persistenceUnit().removeProperty(elKey);
+			this.getPersistenceUnit().removeProperty(elKey);
 		}
 		else {
-			this.persistenceUnit().putProperty(elKey, newValue.toString(), allowDuplicate);
+			this.getPersistenceUnit().putProperty(elKey, newValue.toString(), allowDuplicate);
 		}
 	}
 
@@ -258,8 +258,8 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	 */
 	protected Boolean getBooleanValue(String key, String keySuffix) {
 		String elKey = (keySuffix == null) ? key : key + keySuffix;
-		if (this.persistenceUnit().containsProperty(elKey)) {
-			String eclipseLinkValue = this.persistenceUnit().getProperty(elKey).getValue();
+		if (this.getPersistenceUnit().containsProperty(elKey)) {
+			String eclipseLinkValue = this.getPersistenceUnit().getProperty(elKey).getValue();
 			// TOREVIEW - handle incorrect eclipseLinkValue String in
 			// persistence.xml
 			return getBooleanValueOf(eclipseLinkValue);
@@ -303,10 +303,10 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	protected void putBooleanValue(String key, String keySuffix, Boolean newValue, boolean allowDuplicate) {
 		String elKey = (keySuffix == null) ? key : key + keySuffix;
 		if (newValue == null) {
-			this.persistenceUnit().removeProperty(elKey);
+			this.getPersistenceUnit().removeProperty(elKey);
 		}
 		else {
-			this.persistenceUnit().putProperty(elKey, newValue.toString(), allowDuplicate);
+			this.getPersistenceUnit().putProperty(elKey, newValue.toString(), allowDuplicate);
 		}
 	}
 
@@ -320,8 +320,8 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 
 	protected <T extends Enum<T>> T getEnumValue(String key, String keySuffix, T[] enumValues) {
 		String elKey = (keySuffix == null) ? key : key + keySuffix;
-		if (this.persistenceUnit().containsProperty(elKey)) {
-			String elStringValue = this.persistenceUnit().getProperty(elKey).getValue();
+		if (this.getPersistenceUnit().containsProperty(elKey)) {
+			String elStringValue = this.getPersistenceUnit().getProperty(elKey).getValue();
 			// TOREVIEW - handle incorrect eclipseLinkValue String in persistence.xml
 			return getEnumValueOf(elStringValue, enumValues);
 		}
@@ -345,10 +345,10 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	protected <T extends Enum<T>> void putEnumValue(String key, String keySuffix, T newValue, boolean allowDuplicate) {
 		String elKey = (keySuffix == null) ? key : key + keySuffix;
 		if (newValue == null) {
-			this.persistenceUnit().removeProperty(elKey);
+			this.getPersistenceUnit().removeProperty(elKey);
 		}
 		else {
-			this.persistenceUnit().putProperty(elKey, getEclipseLinkStringValueOf(newValue), allowDuplicate);
+			this.getPersistenceUnit().putProperty(elKey, getEclipseLinkStringValueOf(newValue), allowDuplicate);
 		}
 	}
 
@@ -377,7 +377,7 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	}
 
 	private void putEclipseLinkProperty(String key, Object value, boolean allowDuplicates) {
-		this.persistenceUnit().putProperty(key, value.toString(), allowDuplicates);
+		this.getPersistenceUnit().putProperty(key, value.toString(), allowDuplicates);
 	}
 
 	/**
@@ -387,7 +387,7 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	 *            EclipseLink key
 	 */
 	private void removeEclipseLinkProperty(String elKey) {
-		this.persistenceUnit().removeProperty(elKey);
+		this.getPersistenceUnit().removeProperty(elKey);
 	}
 	
 	/**
@@ -401,11 +401,11 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	protected void removeProperty(String key, String value) {
 		String elKey = this.eclipseLinkKeyFor(key);
 		
-		this.persistenceUnit().removeProperty(elKey, value);
+		this.getPersistenceUnit().removeProperty(elKey, value);
 	}
 
 	protected Set<Property> getPropertiesSetWithPrefix(String keyPrefix) {
-		return CollectionTools.set(this.persistenceUnit().propertiesWithPrefix(keyPrefix));
+		return CollectionTools.set(this.getPersistenceUnit().propertiesWithPrefix(keyPrefix));
 	}
 
 	/**

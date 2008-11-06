@@ -57,7 +57,7 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 			this.getStringValue(ECLIPSELINK_LOG_FILE_LOCATION);
 		
 		Logger standardLogger = this.getEnumValue(ECLIPSELINK_LOGGER, Logger.values());
-		if( ! this.persistenceUnit().containsProperty(ECLIPSELINK_LOGGER)) {
+		if( ! this.getPersistenceUnit().containsProperty(ECLIPSELINK_LOGGER)) {
 			this.logger = null;
 		}
 		else if(standardLogger == null) {

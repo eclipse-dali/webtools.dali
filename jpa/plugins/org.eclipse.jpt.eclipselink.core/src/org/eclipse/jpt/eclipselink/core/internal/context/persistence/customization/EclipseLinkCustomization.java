@@ -94,7 +94,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 				}
 				ClassRef classRef = 
 					this.getJpaProject().getJpaPlatform().getJpaFactory().buildClassRef(
-						this.persistenceUnit(), sessionCustomizerClass.getFullyQualifiedName());
+						this.getPersistenceUnit(), sessionCustomizerClass.getFullyQualifiedName());
 				this.sessionCustomizers.add(classRef);
 			}
 			catch (Exception e) {
@@ -327,7 +327,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		if( ! this.sessionCustomizerExists(newSessionCustomizerClassName)) {
 			ClassRef classRef = 
 				this.getJpaProject().getJpaPlatform().getJpaFactory().buildClassRef(
-					this.persistenceUnit(), newSessionCustomizerClassName);
+					this.getPersistenceUnit(), newSessionCustomizerClassName);
 			this.sessionCustomizers.add(classRef);
 			this.putProperty(SESSION_CUSTOMIZER_PROPERTY, classRef.getClassName(), true);
 			this.fireListChanged(SESSION_CUSTOMIZER_LIST_PROPERTY);

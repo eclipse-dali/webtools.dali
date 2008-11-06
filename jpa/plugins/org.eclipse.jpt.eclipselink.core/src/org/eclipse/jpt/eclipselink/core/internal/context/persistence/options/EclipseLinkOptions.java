@@ -61,7 +61,7 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	protected String getTargetDatabaseFromPersistenceXml() {
 
 		TargetDatabase standardTargetDatabase = this.getEnumValue(ECLIPSELINK_TARGET_DATABASE, TargetDatabase.values());
-		if( ! this.persistenceUnit().containsProperty(ECLIPSELINK_TARGET_DATABASE)) {
+		if( ! this.getPersistenceUnit().containsProperty(ECLIPSELINK_TARGET_DATABASE)) {
 			return(null);
 		}
 		else if(standardTargetDatabase == null) {
@@ -75,7 +75,7 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	protected String getTargetServerFromPersistenceXml() {
 
 		TargetServer standardTargetServer = this.getEnumValue(ECLIPSELINK_TARGET_SERVER, TargetServer.values());
-		if( ! this.persistenceUnit().containsProperty(ECLIPSELINK_TARGET_SERVER)) {
+		if( ! this.getPersistenceUnit().containsProperty(ECLIPSELINK_TARGET_SERVER)) {
 			return(null);
 		}
 		else if(standardTargetServer == null) {

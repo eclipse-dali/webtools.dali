@@ -101,31 +101,31 @@ public class EclipseLinkJpaProperties extends AbstractModel
 	}
 	
 	private GeneralProperties buildGeneralProperties() {
-		return new EclipseLinkGeneralProperties(this.persistenceUnit(), this.propertyListAdapter());
+		return new EclipseLinkGeneralProperties(this.getPersistenceUnit(), this.propertyListAdapter());
 	}
 	
 	private Connection buildConnection() {
-		return new EclipseLinkConnection(this.persistenceUnit(), this.propertyListAdapter());
+		return new EclipseLinkConnection(this.getPersistenceUnit(), this.propertyListAdapter());
 	}
 
 	private Customization buildCustomization() {
-		return new EclipseLinkCustomization(this.persistenceUnit(), this.propertyListAdapter());
+		return new EclipseLinkCustomization(this.getPersistenceUnit(), this.propertyListAdapter());
 	}
 	
 	private Caching buildCaching() {
-		return new EclipseLinkCaching(this.persistenceUnit(), this.propertyListAdapter());
+		return new EclipseLinkCaching(this.getPersistenceUnit(), this.propertyListAdapter());
 	}
 
 	private Logging buildLogging() {
-		return new EclipseLinkLogging(this.persistenceUnit(), this.propertyListAdapter());
+		return new EclipseLinkLogging(this.getPersistenceUnit(), this.propertyListAdapter());
 	}
 
 	private Options buildOptions() {
-		return new EclipseLinkOptions(this.persistenceUnit(), this.propertyListAdapter());
+		return new EclipseLinkOptions(this.getPersistenceUnit(), this.propertyListAdapter());
 	}
 
 	private SchemaGeneration buildSchemaGeneration() {
-		return new EclipseLinkSchemaGeneration(this.persistenceUnit(), this.propertyListAdapter());
+		return new EclipseLinkSchemaGeneration(this.getPersistenceUnit(), this.propertyListAdapter());
 	}
 
 	// ********** queries **********
@@ -158,7 +158,7 @@ public class EclipseLinkJpaProperties extends AbstractModel
 		return this.schemaGeneration;
 	}
 
-	public PersistenceUnit persistenceUnit() {
+	public PersistenceUnit getPersistenceUnit() {
 		return this.persistenceUnit;
 	}
 	

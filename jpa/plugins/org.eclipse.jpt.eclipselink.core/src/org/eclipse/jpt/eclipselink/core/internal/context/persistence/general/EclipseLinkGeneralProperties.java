@@ -55,27 +55,27 @@ public class EclipseLinkGeneralProperties extends EclipseLinkPersistenceUnitProp
 	protected void initialize(PersistenceUnit parent, ListValueModel<Property> propertyListAdapter) {
 		super.initialize(parent, propertyListAdapter);
 
-		this.persistenceUnit().addPropertyChangeListener(
+		this.getPersistenceUnit().addPropertyChangeListener(
 			PersistenceUnit.NAME_PROPERTY,
 			this.buildNameChangeListener());
 
-		this.persistenceUnit().addPropertyChangeListener(
+		this.getPersistenceUnit().addPropertyChangeListener(
 			PersistenceUnit.PROVIDER_PROPERTY,
 			this.buildProviderChangeListener());
 
-		this.persistenceUnit().addPropertyChangeListener(
+		this.getPersistenceUnit().addPropertyChangeListener(
 			PersistenceUnit.DESCRIPTION_PROPERTY,
 			this.buildDescriptionChangeListener());
 
-		this.persistenceUnit().addListChangeListener(
+		this.getPersistenceUnit().addListChangeListener(
 			PersistenceUnit.SPECIFIED_CLASS_REFS_LIST,
 			this.buildClassRefsChangeListener());
 
-		this.persistenceUnit().addListChangeListener(
+		this.getPersistenceUnit().addListChangeListener(
 			PersistenceUnit.SPECIFIED_MAPPING_FILE_REFS_LIST,
 			this.buildMappingFileRefsChangeListener());
 		
-		this.persistenceUnit().addPropertyChangeListener(
+		this.getPersistenceUnit().addPropertyChangeListener(
 			PersistenceUnit.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY,
 			this.buildExcludeUnlistedClassesChangeListener());
 	}
@@ -108,11 +108,11 @@ public class EclipseLinkGeneralProperties extends EclipseLinkPersistenceUnitProp
 	
 	// ********** Name **********
 	public String getName() {
-		return this.persistenceUnit().getName();
+		return this.getPersistenceUnit().getName();
 	}
 	
 	public void setName(String newName) {
-		this.persistenceUnit().setName( newName);
+		this.getPersistenceUnit().setName( newName);
 	}
 
 	private void nameChanged(PropertyChangeEvent event) {
@@ -134,11 +134,11 @@ public class EclipseLinkGeneralProperties extends EclipseLinkPersistenceUnitProp
 	// ********** Provider **********
 	
 	public String getProvider() {
-		return this.persistenceUnit().getProvider();
+		return this.getPersistenceUnit().getProvider();
 	}
 	
 	public void setProvider(String newProvider) {
-		this.persistenceUnit().setProvider( newProvider);
+		this.getPersistenceUnit().setProvider( newProvider);
 	}
 
 	private void providerChanged(PropertyChangeEvent event) {
@@ -160,11 +160,11 @@ public class EclipseLinkGeneralProperties extends EclipseLinkPersistenceUnitProp
 	// ********** Description **********
 	
 	public String getDescription() {
-		return this.persistenceUnit().getDescription();
+		return this.getPersistenceUnit().getDescription();
 	}
 	
 	public void setDescription(String newDescription) {
-		this.persistenceUnit().setDescription( newDescription);
+		this.getPersistenceUnit().setDescription( newDescription);
 	}
 
 	private void descriptionChanged(PropertyChangeEvent event) {
@@ -186,11 +186,11 @@ public class EclipseLinkGeneralProperties extends EclipseLinkPersistenceUnitProp
 	// ********** ExcludeUnlistedClasses **********
 	
 	public Boolean getSpecifiedExcludeUnlistedClasses() {
-		return this.persistenceUnit().getSpecifiedExcludeUnlistedClasses();
+		return this.getPersistenceUnit().getSpecifiedExcludeUnlistedClasses();
 	}
 	
 	public void setSpecifiedExcludeUnlistedClasses(Boolean newExcludeUnlistedClasses) {
-		this.persistenceUnit().setSpecifiedExcludeUnlistedClasses( newExcludeUnlistedClasses);
+		this.getPersistenceUnit().setSpecifiedExcludeUnlistedClasses( newExcludeUnlistedClasses);
 	}
 
 	private void excludeUnlistedClassesChanged(PropertyChangeEvent event) {
@@ -198,7 +198,7 @@ public class EclipseLinkGeneralProperties extends EclipseLinkPersistenceUnitProp
 	}
 	
 	public Boolean getDefaultExcludeUnlistedClasses() {
-		return this.persistenceUnit().getDefaultExcludeUnlistedClasses();
+		return this.getPersistenceUnit().getDefaultExcludeUnlistedClasses();
 	}
 
 	protected PropertyChangeListener buildExcludeUnlistedClassesChangeListener() {
@@ -212,19 +212,19 @@ public class EclipseLinkGeneralProperties extends EclipseLinkPersistenceUnitProp
 	// ****** MappedClasses list *******
 	
 	public ListIterator<ClassRef> specifiedClassRefs() {
-		return this.persistenceUnit().specifiedClassRefs();
+		return this.getPersistenceUnit().specifiedClassRefs();
 	}
 
 	public int specifiedClassRefsSize() {
-		return this.persistenceUnit().specifiedClassRefsSize();
+		return this.getPersistenceUnit().specifiedClassRefsSize();
 	}
 
 	public ClassRef addSpecifiedClassRef() {
-		return this.persistenceUnit().addSpecifiedClassRef();
+		return this.getPersistenceUnit().addSpecifiedClassRef();
 	}
 	
 	public void removeSpecifiedClassRef(ClassRef classRef) {
-		this.persistenceUnit().removeSpecifiedClassRef(classRef);
+		this.getPersistenceUnit().removeSpecifiedClassRef(classRef);
 	}
 
 	private void specifiedClassRefsChanged(ListChangeEvent event) {
@@ -262,23 +262,23 @@ public class EclipseLinkGeneralProperties extends EclipseLinkPersistenceUnitProp
 	// ****** MappingFileRefs list *******
 	
 	public ListIterator<MappingFileRef> specifiedMappingFileRefs() {
-		return this.persistenceUnit().specifiedMappingFileRefs();
+		return this.getPersistenceUnit().specifiedMappingFileRefs();
 	}
 
 	public int specifiedMappingFileRefsSize() {
-		return this.persistenceUnit().specifiedMappingFileRefsSize();
+		return this.getPersistenceUnit().specifiedMappingFileRefsSize();
 	}
 	
 	public MappingFileRef addSpecifiedMappingFileRef() {
-		return this.persistenceUnit().addSpecifiedMappingFileRef();
+		return this.getPersistenceUnit().addSpecifiedMappingFileRef();
 	}
 
 	public MappingFileRef addSpecifiedMappingFileRef(int index) {
-		return this.persistenceUnit().addSpecifiedMappingFileRef(index);
+		return this.getPersistenceUnit().addSpecifiedMappingFileRef(index);
 	}
 	
 	public void removeSpecifiedMappingFileRef(MappingFileRef mappingFileRef) {
-		this.persistenceUnit().removeSpecifiedMappingFileRef(mappingFileRef);
+		this.getPersistenceUnit().removeSpecifiedMappingFileRef(mappingFileRef);
 	}
 
 	private void specifiedMappingFileRefsChanged(ListChangeEvent event) {

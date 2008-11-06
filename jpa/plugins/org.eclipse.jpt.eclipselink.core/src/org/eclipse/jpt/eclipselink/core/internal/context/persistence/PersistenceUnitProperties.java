@@ -33,7 +33,7 @@ public interface PersistenceUnitProperties extends Model, PropertyChangeListener
 	/**
 	 * Return the PersistenceUnit of this Properties.
 	 */
-	PersistenceUnit persistenceUnit();
+	PersistenceUnit getPersistenceUnit();
 	
 	/**
 	 * Return the JPA project the PersistenceUnit belongs to.

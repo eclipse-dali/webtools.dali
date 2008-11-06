@@ -59,11 +59,11 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	protected void initializeProperties() {
 		// TOREVIEW - handle incorrect String in persistence.xml
 		this.transactionType = 
-			this.persistenceUnit().getSpecifiedTransactionType();
+			this.getPersistenceUnit().getSpecifiedTransactionType();
 		this.jtaDataSource = 
-			this.persistenceUnit().getJtaDataSource();
+			this.getPersistenceUnit().getJtaDataSource();
 		this.nonJtaDataSource = 
-			this.persistenceUnit().getNonJtaDataSource();
+			this.getPersistenceUnit().getNonJtaDataSource();
 		this.batchWriting = 
 			this.getEnumValue(ECLIPSELINK_BATCH_WRITING, BatchWriting.values());
 		this.nativeSql = 
@@ -102,13 +102,13 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	protected void initialize(PersistenceUnit parent, ListValueModel<Property> propertyListAdapter) {
 		super.initialize(parent, propertyListAdapter);
 
-		this.persistenceUnit().addPropertyChangeListener(
+		this.getPersistenceUnit().addPropertyChangeListener(
 			PersistenceUnit.SPECIFIED_TRANSACTION_TYPE_PROPERTY, 
 			this.buildTransactionTypeChangeListener());
-		this.persistenceUnit().addPropertyChangeListener(
+		this.getPersistenceUnit().addPropertyChangeListener(
 			PersistenceUnit.JTA_DATA_SOURCE_PROPERTY,
 			this.buildJtaDataSourceChangeListener());
-		this.persistenceUnit().addPropertyChangeListener(
+		this.getPersistenceUnit().addPropertyChangeListener(
 			PersistenceUnit.NON_JTA_DATA_SOURCE_PROPERTY,
 			this.buildNonJtaDataSourceChangeListener());
 	}
@@ -221,7 +221,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		PersistenceUnitTransactionType old = this.transactionType;
 		this.transactionType = newTransactionType;
 		
-		this.persistenceUnit().setSpecifiedTransactionType( newTransactionType);
+		this.getPersistenceUnit().setSpecifiedTransactionType( newTransactionType);
 		this.firePropertyChanged(TRANSACTION_TYPE_PROPERTY, old, newTransactionType);
 	}
 
@@ -254,7 +254,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		String old = this.jtaDataSource;
 		this.jtaDataSource = newJtaDataSource;
 		
-		this.persistenceUnit().setJtaDataSource( newJtaDataSource);
+		this.getPersistenceUnit().setJtaDataSource( newJtaDataSource);
 		this.firePropertyChanged(JTA_DATA_SOURCE_PROPERTY, old, newJtaDataSource);
 	}
 
@@ -287,7 +287,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		String old = this.nonJtaDataSource;
 		this.nonJtaDataSource = newNonJtaDataSource;
 		
-		this.persistenceUnit().setNonJtaDataSource( newNonJtaDataSource);
+		this.getPersistenceUnit().setNonJtaDataSource( newNonJtaDataSource);
 		this.firePropertyChanged(NON_JTA_DATA_SOURCE_PROPERTY, old, newNonJtaDataSource);
 	}
 
