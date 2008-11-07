@@ -14,31 +14,29 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.osgi.util.NLS;
 
 /**
  * This updater will "update" the project in a job that executes in a separate
  * thread and allows calls to #update() to return immediately.
  */
 public class AsynchronousJpaProjectUpdater implements JpaProject.Updater {
-	protected final JpaProject jpaProject;
 	protected final UpdateJob job;
 
 	public AsynchronousJpaProjectUpdater(JpaProject jpaProject) {
 		super();
-		this.jpaProject = jpaProject;
-		this.job = this.buildJob();
+		this.job = this.buildJob(jpaProject);
 	}
 
-	protected UpdateJob buildJob() {
-		return new UpdateJob();
+	protected UpdateJob buildJob(JpaProject jpaProject) {
+		return new UpdateJob(jpaProject);
 	}
 
 	/**
-	 * Allow the job to be scheduled and execute an "update".
+	 * Allow the job to be scheduled, but delay the first "update" until requested.
 	 */
 	public void start() {
 		this.job.start();
-		this.update();
 	}
 
 	/**
@@ -55,7 +53,7 @@ public class AsynchronousJpaProjectUpdater implements JpaProject.Updater {
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.jpaProject);
+		return StringTools.buildToStringFor(this, this.job);
 	}
 
 
@@ -64,22 +62,25 @@ public class AsynchronousJpaProjectUpdater implements JpaProject.Updater {
 	 * When the job is run it tells the JPA project to "update".
 	 * Only a single instance of this job per project can run at a time.
 	 */
-	protected class UpdateJob extends Job {
+	protected static class UpdateJob extends Job {
+		protected final JpaProject jpaProject;
+
 		/**
 		 * When this flag is set to false, the job does not stop immediately;
 		 * but it cannot be scheduled to run again.
 		 */
 		protected boolean shouldSchedule;
 
-		protected UpdateJob() {
-			super("Update JPA project: " + AsynchronousJpaProjectUpdater.this.jpaProject.getName());  // TODO i18n
+		protected UpdateJob(JpaProject jpaProject) {
+			super(buildName(jpaProject));
+			this.jpaProject = jpaProject;
 			this.shouldSchedule = false;
-			this.setRule(AsynchronousJpaProjectUpdater.this.jpaProject.getProject());
+			this.setRule(jpaProject.getProject());
 		}
 
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
-			return AsynchronousJpaProjectUpdater.this.jpaProject.update(monitor);
+			return this.jpaProject.update(monitor);
 		}
 
 		@Override
@@ -89,7 +90,7 @@ public class AsynchronousJpaProjectUpdater implements JpaProject.Updater {
 
 		protected void start() {
 			if (this.shouldSchedule) {
-				throw new IllegalStateException("The Updater was not stopped.");
+				throw new IllegalStateException("The Updater was not stopped."); //$NON-NLS-1$
 			}
 			this.shouldSchedule = true;
 		}
@@ -109,6 +110,10 @@ public class AsynchronousJpaProjectUpdater implements JpaProject.Updater {
 			} catch (InterruptedException ex) {
 				// the job thread was interrupted while waiting - ignore
 			}
+		}
+
+		protected static String buildName(JpaProject jpaProject) {
+			return NLS.bind(JptCoreMessages.UPDATE_JOB_NAME, jpaProject.getName());
 		}
 
 	}

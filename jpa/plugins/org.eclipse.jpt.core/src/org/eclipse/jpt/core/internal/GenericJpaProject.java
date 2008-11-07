@@ -114,15 +114,16 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	protected final CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
 
 	/**
-	 * A pluggable updater that can be used to "update" the project either
-	 * synchronously or asynchronously (or not at all). An asynchronous
-	 * updater is the default and is used when the project is being manipulated
-	 * by the UI. A synchronous updater is used when the project is being
-	 * manipulated by a "batch" (or non-UI) client (e.g. when testing the
-	 * "update" behavior). A null updater is used during tests that
-	 * do not care whether "updates" occur. Clients will need to explicitly
-	 * configure the updater if they require something other than an
-	 * asynchronous updater.
+	 * A pluggable updater that can be used to "update" the JPA project either
+	 * synchronously or asynchronously (or not at all). A synchronous updater
+	 * is the default, allowing a newly-constructed JPA project to be "updated"
+	 * upon return from the constructor. For performance reasons, a UI should
+	 * immediately change this to an asynchronous updater. A synchronous
+	 * updater can be used when the project is being manipulated by a "batch"
+	 * (or non-UI) client (e.g. when testing the "update" behavior). A null
+	 * updater can used during tests that do not care whether "updates" occur.
+	 * Clients will need to explicitly configure the updater if they require
+	 * something other than a synchronous updater.
 	 */
 	protected Updater updater;
 
@@ -156,6 +157,9 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		this.project.accept(this.buildInitialResourceProxyVisitor(), IResource.NONE);
 
 		this.rootContextNode = this.buildRootContextNode();
+
+		// "update" the project before returning
+		this.setUpdater_(new SynchronousJpaProjectUpdater(this));
 	}
 
 	@Override
@@ -578,9 +582,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	// ********** dispose **********
 
 	public void dispose() {
-		if (this.updater != null) {
-			this.updater.dispose();
-		}
+		this.updater.dispose();
 		this.dataSource.dispose();
 	}
 
@@ -705,9 +707,14 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	}
 
 	public void setUpdater(Updater updater) {
-		if (this.updater != null) {  // first time through, the updater will be null
-			this.updater.dispose();
+		if (updater == null) {
+			throw new NullPointerException();
 		}
+		this.updater.dispose();
+		this.setUpdater_(updater);
+	}
+
+	protected void setUpdater_(Updater updater) {
 		this.updater = updater;
 		this.updater.start();
 	}
@@ -716,9 +723,6 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	 * Delegate to the updater so clients can configure how updates occur.
 	 */
 	public void update() {
-		if (this.updater == null) {
-			throw new IllegalStateException("updater is null, use #setUpdater(Updater) after construction of GenericJpaProject"); //$NON-NLS-1$
-		}
 		this.updater.update();
 	}
 

@@ -70,9 +70,12 @@ public class SynchronousJpaProjectUpdater implements JpaProject.Updater {
 		protected boolean again = false;
 		protected boolean stop = true;
 
+		/**
+		 * Simply clear the 'stop' flag.
+		 */
 		protected synchronized void start() {
 			if ( ! this.stop) {
-				throw new IllegalStateException("The Updater was not stopped.");
+				throw new IllegalStateException("The Updater was not stopped."); //$NON-NLS-1$
 			}
 			this.stop = false;
 		}
@@ -81,8 +84,9 @@ public class SynchronousJpaProjectUpdater implements JpaProject.Updater {
 		 * A client has requested an "update";
 		 * return whether the updater can start an "update".
 		 * Side-effects:
-		 *   - If we are currently updating, set the 'again' flag.
-		 *   - If we are not currently updating, set the 'updating' flag and clear the 'again' flag.
+		 *   - If we are supposed to stop, both the 'updating' and 'again' flags are cleared in #dispose().
+		 *   - If we are currently "updating", set the 'again' flag.
+		 *   - If we are not currently "updating", set the 'updating' flag and clear the 'again' flag.
 		 */
 		protected synchronized boolean updateCanStart() {
 			if (this.stop) {
@@ -101,12 +105,15 @@ public class SynchronousJpaProjectUpdater implements JpaProject.Updater {
 		 * The "update" has finished;
 		 * return whether the updater must execute another "update".
 		 * Side-effects:
-		 *   - If we are supposed to stop, clear the both the 'updating' and 'again' flags.
+		 *   - If we are supposed to stop,
+		 *       the 'again' flag was cleared in #dispose();
+		 *       clear the 'updating' flag so #dispose() can complete.
 		 *   - If we have to "update" again, clear the 'again' flag and leave the 'updating' flag set.
-		 *   - If we are finished, clear the 'updating' flag.
+		 *   - If we are finished (i.e. no recursive "update" requests occurred), clear the 'updating' flag.
 		 */
 		protected synchronized boolean updateMustExecuteAgain() {
 			if (this.stop) {
+				this.updating.setFalse();
 				return false;
 			}
 			if (this.again) {
@@ -117,6 +124,9 @@ public class SynchronousJpaProjectUpdater implements JpaProject.Updater {
 			return false;
 		}
 
+		/**
+		 * Restore our start-up state and wait for any current update to complete.
+		 */
 		protected synchronized void dispose() {
 			this.stop = true;
 			this.again = false;
