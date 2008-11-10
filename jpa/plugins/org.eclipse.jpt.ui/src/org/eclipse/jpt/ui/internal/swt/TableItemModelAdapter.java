@@ -20,7 +20,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
@@ -165,8 +165,9 @@ public class TableItemModelAdapter {
 
 	private void layoutTable() {
 		// Refresh the table in order to show the scrollbar if required
-		Point size = this.tableItem.getParent().getParent().computeSize(SWT.DEFAULT, SWT.DEFAULT);
-		this.tableItem.getParent().setSize(size);
+		Composite container = this.tableItem.getParent().getParent();
+		container.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		container.layout();
 	}
 
 	// ********** dispose **********

@@ -18,6 +18,7 @@ import org.eclipse.jpt.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.ui.internal.swt.TableModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.TableModelAdapter.SelectionChangeEvent;
 import org.eclipse.jpt.ui.internal.swt.TableModelAdapter.SelectionChangeListener;
+import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
@@ -128,7 +129,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		      labelProvider,
 		      helpId);
 	}
-	
+
 	/**
 	 * Creates a new <code>AddRemoveListPane</code>.
 	 *
@@ -244,49 +245,51 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	@Override
 	protected void itemsAdded(ListChangeEvent e) {
 		super.itemsAdded(e);
-		if (!this.table.isDisposed()) {
-			this.table.getParent().layout();
-		}		
+		revalidateLayout();
 	}
-	
+
 	@Override
 	protected void itemsMoved(ListChangeEvent e) {
 		super.itemsMoved(e);
-		if (!this.table.isDisposed()) {
-			this.table.getParent().layout();
-		}		
+		revalidateLayout();
 	}
-	
+
 	@Override
 	protected void itemsRemoved(ListChangeEvent e) {
 		super.itemsRemoved(e);
-		if (!this.table.isDisposed()) {
-			this.table.getParent().layout();
-		}		
+		revalidateLayout();
 	}
-	
+
 	@Override
 	protected void itemsReplaced(ListChangeEvent e) {
 		super.itemsReplaced(e);
-		if (!this.table.isDisposed()) {
-			this.table.getParent().layout();
-		}		
+		revalidateLayout();
 	}
-	
+
 	@Override
 	protected void listChanged(ListChangeEvent e) {
 		super.listChanged(e);
-		if (!this.table.isDisposed()) {
-			this.table.getParent().layout();
-		}				
+		revalidateLayout();
 	}
-	
+
 	@Override
 	protected void listCleared(ListChangeEvent e) {
 		super.listCleared(e);
-		if (!this.table.isDisposed()) {
-			this.table.getParent().layout();
-		}		
+		revalidateLayout();
+	}
+
+	/**
+	 * Revalidates the table layout after the list of items has changed. The
+	 * layout has to be done in a new UI thread because our listener might be
+	 * notified before the table has been updated (table column added or removed).
+	 */
+	private void revalidateLayout() {
+		SWTUtil.asyncExec(new Runnable() { public void run() {
+			if (!table.isDisposed()) {
+				table.getParent().computeSize(SWT.DEFAULT, SWT.DEFAULT);
+				table.getParent().layout();
+			}
+		}});
 	}
 
 	private SimplePropertyValueModel<Object> buildSelectedItemHolder() {
@@ -353,6 +356,8 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 			                            boolean flushCache) {
 
 				Table table = (Table) composite.getChildren()[0];
+				TableColumn tableColumn = table.getColumn(0);
+				int columnWidth = tableColumn.getWidth();
 				packColumn(table);
 
 				// Calculate the table size and adjust it with the hints
@@ -365,6 +370,13 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 				if (heightHint != SWT.DEFAULT) {
 					size.y = heightHint;
 				}
+
+				// Revert the column's width to its current value
+				table.setRedraw(false);
+				table.setLayoutDeferred(true);
+				tableColumn.setWidth(columnWidth);
+				table.setLayoutDeferred(false);
+				table.setRedraw(true);
 
 				return size;
 			}
