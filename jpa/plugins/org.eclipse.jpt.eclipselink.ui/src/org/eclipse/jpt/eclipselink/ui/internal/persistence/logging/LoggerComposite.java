@@ -227,7 +227,7 @@ public class LoggerComposite extends Pane<Logging>
 	protected Button addBrowseButton(Composite parent) {
 		return this.addPushButton(
 			parent,
-			EclipseLinkUiMessages.PersistenceXmlLoggingTabb_browse,
+			EclipseLinkUiMessages.PersistenceXmlLoggingTab_browse,
 			this.buildBrowseAction()
 		);
 	}
