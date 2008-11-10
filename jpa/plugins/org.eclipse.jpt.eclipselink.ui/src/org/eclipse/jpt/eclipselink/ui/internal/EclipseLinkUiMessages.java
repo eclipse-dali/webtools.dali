@@ -185,6 +185,8 @@ public class EclipseLinkUiMessages extends NLS
 	public static String PersistenceXmlCustomizationTab_title;
 	public static String PersistenceXmlCustomizationTab_sectionTitle;
 	public static String PersistenceXmlCustomizationTab_sectionDescription;
+	public static String PersistenceXmlCustomizationTab_defaultWithOneParam;
+	public static String PersistenceXmlCustomizationTab_defaultEmpty;
 
 	public static String PersistenceXmlCustomizationTab_throwExceptionsLabelDefault;
 	public static String PersistenceXmlCustomizationTab_throwExceptionsLabel;
@@ -200,6 +202,12 @@ public class EclipseLinkUiMessages extends NLS
 	public static String PersistenceXmlCustomizationTab_weavingFetchGroupsLabelDefault;
 	public static String PersistenceXmlCustomizationTab_weavingFetchGroupsLabel;
 
+	public static String PersistenceXmlCustomizationTab_weavingInternalLabelDefault;
+	public static String PersistenceXmlCustomizationTab_weavingInternalLabel;
+
+	public static String PersistenceXmlCustomizationTab_weavingEagerLabelDefault;
+	public static String PersistenceXmlCustomizationTab_weavingEagerLabel;
+
 	public static String WeavingComposite_true_;
 	public static String WeavingComposite_false_;
 	public static String WeavingComposite_static_;
@@ -213,6 +221,14 @@ public class EclipseLinkUiMessages extends NLS
 	public static String PersistenceXmlCustomizationTab_customizerLabel;
 	public static String PersistenceXmlCustomizationTab_sessionCustomizerLabel;
 	public static String PersistenceXmlCustomizationTab_noName;
+	
+	public static String PersistenceXmlCustomizationTab_profilerLabel;
+	public static String PersistenceXmlCustomizationTab_browse;
+	
+	public static String ProfilerComposite_dms_performance_profiler;
+	public static String ProfilerComposite_performance_profiler;
+	public static String ProfilerComposite_query_monitor;
+	public static String ProfilerComposite_no_profiler;
 
 	// Logging
 	public static String PersistenceXmlLoggingTab_title;
@@ -233,7 +249,7 @@ public class EclipseLinkUiMessages extends NLS
 	public static String LoggingLevelComposite_finest;
 
 	public static String PersistenceXmlLoggingTab_loggerLabel;
-	public static String PersistenceXmlLoggingTabb_browse;
+	public static String PersistenceXmlLoggingTab_browse;
 
 	public static String LoggerComposite_default_logger;
 	public static String LoggerComposite_java_logger;

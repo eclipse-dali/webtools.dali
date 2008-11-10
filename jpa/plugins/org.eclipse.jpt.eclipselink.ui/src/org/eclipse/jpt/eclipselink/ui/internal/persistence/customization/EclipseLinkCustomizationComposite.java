@@ -56,6 +56,12 @@ public class EclipseLinkCustomizationComposite extends FormPane<Customization>
 		// Weaving Fetch Groups
 		new WeavingFetchGroupsComposite(this, defaultPane);
 
+		// Weaving Internal
+		new WeavingInternalComposite(this, defaultPane);
+
+		// Weaving Eager
+		new WeavingEagerComposite(this, defaultPane);
+
 		// Weaving Change Tracking
 		new WeavingChangeTrackingComposite(this, defaultPane);
 
@@ -67,5 +73,8 @@ public class EclipseLinkCustomizationComposite extends FormPane<Customization>
 
 		// EntitiesList
 		new EntityListComposite(this, composite);
+		
+		// Profiler:
+		new ProfilerComposite(this, composite);
 	}
 }
