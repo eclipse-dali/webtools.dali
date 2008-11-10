@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.ui.internal.platform;
 
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
@@ -25,9 +24,10 @@ import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToManyMapp
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToOneMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmBasicMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmIdMappingUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.orm.details.OrmDetailsProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmVersionMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.OrmDetailsProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.persistencexml.details.PersistenceDetailsProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.structure.EclipseLinkPersistenceResourceModelStructureProvider;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
@@ -59,6 +59,9 @@ public class EclipseLinkJpaPlatformUI extends BaseJpaPlatformUi
 
 		if (resourceType == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
 			return new OrmResourceModelStructureProvider((XmlJpaFile) jpaFile);
+		}
+		if (resourceType == JpaFile.PERSISTENCE_RESOURCE_TYPE) {
+			return new EclipseLinkPersistenceResourceModelStructureProvider((XmlJpaFile) jpaFile);
 		}
 
 		return super.buildStructureProvider(jpaFile);
