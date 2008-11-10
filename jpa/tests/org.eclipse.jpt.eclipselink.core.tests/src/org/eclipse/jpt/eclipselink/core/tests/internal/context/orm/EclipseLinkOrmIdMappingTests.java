@@ -177,7 +177,7 @@ public class EclipseLinkOrmIdMappingTests
 		OrmPersistentType ormPersistentType = 
 			entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
-			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "myDate");
+			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "myDate");
 		EclipseLinkOrmIdMapping contextId = 
 			(EclipseLinkOrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
@@ -263,11 +263,11 @@ public class EclipseLinkOrmIdMappingTests
 		// set metadata complete
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
-		contextId = (EclipseLinkOrmIdMapping) ormPersistentAttribute.getMapping();
+		EclipseLinkOrmBasicMapping contextBasic = (EclipseLinkOrmBasicMapping) ormPersistentAttribute.getMapping();
 		assertNull(resourceId.getMutable());
-		assertFalse(contextId.getMutable().isDefaultMutable());
-		assertEquals(Boolean.FALSE, contextId.getMutable().getSpecifiedMutable());
-		assertFalse(contextId.getMutable().isMutable());
+		assertFalse(contextBasic.getMutable().isDefaultMutable());
+		assertEquals(Boolean.FALSE, contextBasic.getMutable().getSpecifiedMutable());
+		assertFalse(contextBasic.getMutable().isMutable());
 		assertTrue(javaIdMapping.getMutable().isMutable());
 	}
 
