@@ -19,6 +19,7 @@ public class JptEclipseLinkCorePersistenceContextModelTests extends TestCase
 
 	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptEclipseLinkCorePersistenceContextModelTests.class.getName());
+		suite.addTestSuite(EclipseLinkPersistenceUnitTests.class);
 		suite.addTest(JptEclipseLinkPersistenceGeneralTests.suite());
 		suite.addTest(JptEclipseLinkPersistenceConnectionTests.suite());
 		suite.addTest(JptEclipseLinkPersistenceCustomizationTests.suite());
