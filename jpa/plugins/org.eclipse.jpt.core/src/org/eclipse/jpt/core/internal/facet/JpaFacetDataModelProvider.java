@@ -129,7 +129,7 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 			return Boolean.valueOf(connectionIsActive());
 		}
 		if (propertyName.equals(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)) {
-			return Boolean.valueOf(connectionIsActive());
+			return Boolean.FALSE;
 		}
 		if (propertyName.equals(DB_DRIVER_NAME)) {
 			return getDefaultDriverName();
