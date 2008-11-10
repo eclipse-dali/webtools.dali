@@ -20,7 +20,6 @@ import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
@@ -39,14 +38,6 @@ public class VirtualXmlManyToOne extends VirtualXmlAttributeMapping<JavaManyToOn
 		this.virtualCascadeType = new VirtualCascadeType(javaManyToOneMapping.getCascade(), this.isOrmMetadataComplete());
 	}
 
-	public String getName() {
-		return this.javaAttributeMapping.getPersistentAttribute().getName();
-	}
-
-	public void setName(@SuppressWarnings("unused") String newName) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
-	}
-	
 	public FetchType getFetch() {
 		if (this.isOrmMetadataComplete()) {
 			return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaAttributeMapping.getDefaultFetch());
@@ -105,9 +96,5 @@ public class VirtualXmlManyToOne extends VirtualXmlAttributeMapping<JavaManyToOn
 
 	public void setTargetEntity(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
-	}
-
-	public TextRange getNameTextRange() {
-		return null;
 	}
 }

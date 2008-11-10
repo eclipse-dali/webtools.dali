@@ -45,14 +45,6 @@ public class VirtualXmlId extends VirtualXmlAttributeMapping<JavaIdMapping> impl
 		this.virtualSequenceGenerator = new VirtualXmlSequenceGenerator(javaIdMapping, this.isOrmMetadataComplete());
 	}
 
-	public String getName() {
-		return this.javaAttributeMapping.getPersistentAttribute().getName();
-	}
-
-	public void setName(@SuppressWarnings("unused")String newName) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
-	}
-
 	public XmlColumn getColumn() {
 		return this.column;
 	}
@@ -135,10 +127,6 @@ public class VirtualXmlId extends VirtualXmlAttributeMapping<JavaIdMapping> impl
 	
 	public void setLob(@SuppressWarnings("unused")boolean value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
-	}
-	
-	public TextRange getNameTextRange() {
-		return null;
 	}
 	
 	public TextRange getEnumeratedTextRange() {

@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * VirtualVersion is an implementation of Version used when there is 
@@ -23,17 +22,5 @@ public class VirtualXmlNullAttributeMapping extends VirtualXmlAttributeMapping<J
 	
 	public VirtualXmlNullAttributeMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping) {
 		super(ormTypeMapping, javaAttributeMapping);
-	}
-
-	public String getName() {
-		return this.javaAttributeMapping.getPersistentAttribute().getName();
-	}
-
-	public void setName(@SuppressWarnings("unused") String newName) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
-	}
-	
-	public TextRange getNameTextRange() {
-		return null;
 	}
 }

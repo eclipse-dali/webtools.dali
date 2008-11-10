@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
@@ -33,14 +32,6 @@ public class VirtualXmlEmbedded extends VirtualXmlAttributeMapping<JavaEmbeddedM
 		super(ormTypeMapping, javaEmbeddedMapping);
 	}
 	
-	public String getName() {
-		return this.javaAttributeMapping.getPersistentAttribute().getName();
-	}
-
-	public void setName(@SuppressWarnings("unused")String newName) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
-	}
-
 	public EList<XmlAttributeOverride> getAttributeOverrides() {
 		EList<XmlAttributeOverride> attributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.XML_EMBEDDED__ATTRIBUTE_OVERRIDES);
 		ListIterator<JavaAttributeOverride> javaAttributeOverrides;
@@ -56,9 +47,5 @@ public class VirtualXmlEmbedded extends VirtualXmlAttributeMapping<JavaEmbeddedM
 			attributeOverrides.add(xmlAttributeOverride);
 		}
 		return attributeOverrides;
-	}
-
-	public TextRange getNameTextRange() {
-		return null;
 	}
 }

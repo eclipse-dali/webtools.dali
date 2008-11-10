@@ -35,15 +35,6 @@ public class VirtualXmlBasic extends VirtualXmlAttributeMapping<JavaBasicMapping
 		this.column = new VirtualXmlColumn(ormTypeMapping, javaBasicMapping.getColumn());
 	}
 
-	
-	public String getName() {
-		return this.javaAttributeMapping.getPersistentAttribute().getName();
-	}
-
-	public void setName(@SuppressWarnings("unused")String newName) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
-	}
-
 	public XmlColumn getColumn() {
 		return this.column;
 	}
@@ -119,10 +110,6 @@ public class VirtualXmlBasic extends VirtualXmlAttributeMapping<JavaBasicMapping
 
 	public void setEnumerated(@SuppressWarnings("unused")EnumType newEnumerated) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
-	}
-	
-	public TextRange getNameTextRange() {
-		return null;
 	}
 	
 	public TextRange getEnumeratedTextRange() {

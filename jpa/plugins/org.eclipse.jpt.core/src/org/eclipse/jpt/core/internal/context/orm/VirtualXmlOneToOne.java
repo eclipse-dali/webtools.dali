@@ -40,14 +40,6 @@ public class VirtualXmlOneToOne extends VirtualXmlAttributeMapping<JavaOneToOneM
 		super(ormTypeMapping, javaOneToOneMapping);
 		this.virtualCascadeType = new VirtualCascadeType(javaOneToOneMapping.getCascade(), this.isOrmMetadataComplete());
 	}
-
-	public String getName() {
-		return this.javaAttributeMapping.getPersistentAttribute().getName();
-	}
-
-	public void setName(@SuppressWarnings("unused") String newName) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
-	}
 	
 	public FetchType getFetch() {
 		if (this.isOrmMetadataComplete()) {
@@ -130,10 +122,6 @@ public class VirtualXmlOneToOne extends VirtualXmlAttributeMapping<JavaOneToOneM
 			}
 		}
 		return joinColumns;
-	}
-	
-	public TextRange getNameTextRange() {
-		return null;
 	}
 	
 	public TextRange getMappedByTextRange() {

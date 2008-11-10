@@ -43,14 +43,6 @@ public class VirtualXmlOneToMany extends VirtualXmlAttributeMapping<JavaOneToMan
 		this.mapKey = new VirtualMapKey(javaOneToManyMapping, this.isOrmMetadataComplete());
 	}
 	
-	public String getName() {
-		return this.javaAttributeMapping.getPersistentAttribute().getName();
-	}
-
-	public void setName(@SuppressWarnings("unused") String newName) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
-	}
-	
 	public FetchType getFetch() {
 		if (this.isOrmMetadataComplete()) {
 			return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaAttributeMapping.getDefaultFetch());
@@ -122,10 +114,6 @@ public class VirtualXmlOneToMany extends VirtualXmlAttributeMapping<JavaOneToMan
 	
 	public void setOrderBy(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
-	}
-	
-	public TextRange getNameTextRange() {
-		return null;
 	}
 	
 	public TextRange getMappedByTextRange() {

@@ -13,6 +13,7 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.utility.TextRange;
 
 public abstract class VirtualXmlAttributeMapping<T extends JavaAttributeMapping> extends AbstractJpaEObject implements XmlAttributeMapping
 {
@@ -39,4 +40,17 @@ public abstract class VirtualXmlAttributeMapping<T extends JavaAttributeMapping>
 		//or maybe we should be asking the javaAttributeMapping for its default or specified mapping key?
 		throw new UnsupportedOperationException();
 	}
+	
+	public String getName() {
+		return this.javaAttributeMapping.getPersistentAttribute().getName();
+	}
+
+	public void setName(@SuppressWarnings("unused")String newName) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+	
+	public TextRange getNameTextRange() {
+		return null;
+	}
+
 }
