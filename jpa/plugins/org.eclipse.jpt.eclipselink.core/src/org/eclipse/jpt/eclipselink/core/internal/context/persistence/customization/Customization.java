@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.persistence.customizat
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
 
 /**
@@ -57,7 +58,23 @@ public interface Customization extends PersistenceUnitProperties
 		// EclipseLink key string
 		static final String ECLIPSELINK_WEAVING_FETCH_GROUPS = "eclipselink.weaving.fetchgroups";
 		static final Boolean DEFAULT_WEAVING_FETCH_GROUPS = Boolean.TRUE;
-	
+
+	Boolean getDefaultWeavingInternal();
+	Boolean getWeavingInternal();
+	void setWeavingInternal(Boolean newWeavingInternal);
+		static final String WEAVING_INTERNAL_PROPERTY = "weavingInternalProperty";
+		// EclipseLink key string
+		static final String ECLIPSELINK_WEAVING_INTERNAL = "eclipselink.weaving.internal";
+		static final Boolean DEFAULT_WEAVING_INTERNAL = Boolean.TRUE;
+
+	Boolean getDefaultWeavingEager();
+	Boolean getWeavingEager();
+	void setWeavingEager(Boolean newWeavingEager);
+		static final String WEAVING_EAGER_PROPERTY = "weavingEagerProperty";
+		// EclipseLink key string
+		static final String ECLIPSELINK_WEAVING_EAGER = "eclipselink.weaving.eager";
+		static final Boolean DEFAULT_WEAVING_EAGER = Boolean.FALSE;
+
 	String getDefaultDescriptorCustomizer();
 	String getDescriptorCustomizer(String entityName);
 	void setDescriptorCustomizer(String newDescriptorCustomizer, String entityName);
@@ -82,5 +99,15 @@ public interface Customization extends PersistenceUnitProperties
 	String addEntity(String entity);
 	void removeEntity(String entity);
 		static final String ENTITIES_LIST_PROPERTY = "entitiesListProperty";
+		
+	String getDefaultProfiler();
+	String getProfiler();
+	void setProfiler(String newProfiler);
+	void setProfiler(Profiler newProfiler);
+		static final String PROFILER_PROPERTY = "profilerProperty";
+		// EclipseLink key string
+		static final String ECLIPSELINK_PROFILER = "eclipselink.profiler";
+		static final String DEFAULT_PROFILER = 
+			EclipseLinkPersistenceUnitProperties.getEclipseLinkStringValueOf(Profiler.no_profiler);
 
 }

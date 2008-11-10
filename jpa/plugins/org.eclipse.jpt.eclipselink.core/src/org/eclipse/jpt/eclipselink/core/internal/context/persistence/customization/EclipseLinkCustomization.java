@@ -37,7 +37,10 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	private Boolean weavingLazy;
 	private Boolean weavingChangeTracking;
 	private Boolean weavingFetchGroups;
+	private Boolean weavingInternal;
+	private Boolean weavingEager;
 	private ArrayList<ClassRef> sessionCustomizers;
+	private String profiler; // storing EclipseLinkStringValue since value can be Profiler or custom class
 
 	// key = Entity name ; value = Customizer properties
 	private Map<String, CustomizerProperties> entitiesCustomizerProperties;
@@ -69,11 +72,17 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			this.getBooleanValue(ECLIPSELINK_WEAVING_CHANGE_TRACKING);
 		this.weavingFetchGroups = 
 			this.getBooleanValue(ECLIPSELINK_WEAVING_FETCH_GROUPS);
+		this.weavingInternal = 
+			this.getBooleanValue(ECLIPSELINK_WEAVING_INTERNAL);
+		this.weavingEager = 
+			this.getBooleanValue(ECLIPSELINK_WEAVING_EAGER);
 		this.initializeSessionCustomizersFromPersistenceUnit();
 
 		Set<Property> properties = 
 			this.getPropertiesSetWithPrefix(ECLIPSELINK_DESCRIPTOR_CUSTOMIZER);
 		this.initializeEntitiesCustomizerClass(properties);
+		
+		this.profiler = this.getProfilerProtertyValue();
 	}
 
 	private void initializeSessionCustomizersFromPersistenceUnit() {
@@ -110,6 +119,23 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		}
 	}
 
+	/**
+	 * Gets the Profiler property from the persistence unit.
+	 */
+	private String getProfilerProtertyValue() {
+
+		Profiler standardProfiler = this.getEnumValue(ECLIPSELINK_PROFILER, Profiler.values());
+		if( ! this.persistenceUnit().containsProperty(ECLIPSELINK_PROFILER)) {
+			return null;	// no property found
+		}
+		else if(standardProfiler == null) {
+			return this.getStringValue(ECLIPSELINK_PROFILER); // custom profiler
+		}
+		else {
+			return getEclipseLinkStringValueOf(standardProfiler); // a Profiler
+		}
+	}
+
 	// ********** behavior **********
 	/**
 	 * Adds property names key/value pairs, where: 
@@ -134,8 +160,17 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			ECLIPSELINK_WEAVING_FETCH_GROUPS,
 			WEAVING_FETCH_GROUPS_PROPERTY);
 		propertyNames.put(
+			ECLIPSELINK_WEAVING_INTERNAL,
+			WEAVING_INTERNAL_PROPERTY);
+		propertyNames.put(
+			ECLIPSELINK_WEAVING_EAGER,
+			WEAVING_EAGER_PROPERTY);
+		propertyNames.put(
 			ECLIPSELINK_SESSION_CUSTOMIZER,
 			SESSION_CUSTOMIZER_PROPERTY);
+		propertyNames.put(
+			ECLIPSELINK_PROFILER,
+			PROFILER_PROPERTY);
 
 		// Don't need to initialize propertyNames for: 
 		// descriptorCustomizerProperty
@@ -190,11 +225,20 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		else if (aspectName.equals(WEAVING_FETCH_GROUPS_PROPERTY)) {
 			this.weavingFetchGroupsChanged(event);
 		}
+		else if (aspectName.equals(WEAVING_INTERNAL_PROPERTY)) {
+			this.weavingInternalChanged(event);
+		}
+		else if (aspectName.equals(WEAVING_EAGER_PROPERTY)) {
+			this.weavingEagerChanged(event);
+		}
 		else if (aspectName.equals(SESSION_CUSTOMIZER_PROPERTY)) {
 			this.sessionCustomizersChanged(event);
 		}
 		else if (aspectName.equals(DESCRIPTOR_CUSTOMIZER_PROPERTY)) {
 			this.descriptorCustomizerChanged(event);
+		}
+		else if (aspectName.equals(PROFILER_PROPERTY)) {
+			this.profilerChanged(event);
 		}
 		else {
 			throw new IllegalArgumentException("Illegal event received - property not applicable: " + aspectName);
@@ -301,6 +345,56 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 
 	public Boolean getDefaultWeavingFetchGroups() {
 		return DEFAULT_WEAVING_FETCH_GROUPS;
+	}
+
+	// ********** WeavingInternal **********
+	public Boolean getWeavingInternal() {
+		return this.weavingInternal;
+	}
+
+	public void setWeavingInternal(Boolean newWeavingInternal) {
+		Boolean old = this.weavingInternal;
+		this.weavingInternal = newWeavingInternal;
+		this.putProperty(WEAVING_INTERNAL_PROPERTY, newWeavingInternal);
+		this.firePropertyChanged(WEAVING_INTERNAL_PROPERTY, old, newWeavingInternal);
+	}
+
+	private void weavingInternalChanged(PropertyChangeEvent event) {
+		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		Boolean newValue = getBooleanValueOf(stringValue);
+		
+		Boolean old = this.weavingInternal;
+		this.weavingInternal = newValue;
+		this.firePropertyChanged(event.getAspectName(), old, newValue);
+	}
+
+	public Boolean getDefaultWeavingInternal() {
+		return DEFAULT_WEAVING_INTERNAL;
+	}
+
+	// ********** WeavingEager **********
+	public Boolean getWeavingEager() {
+		return this.weavingEager;
+	}
+
+	public void setWeavingEager(Boolean newWeavingEager) {
+		Boolean old = this.weavingEager;
+		this.weavingEager = newWeavingEager;
+		this.putProperty(WEAVING_EAGER_PROPERTY, newWeavingEager);
+		this.firePropertyChanged(WEAVING_EAGER_PROPERTY, old, newWeavingEager);
+	}
+
+	private void weavingEagerChanged(PropertyChangeEvent event) {
+		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		Boolean newValue = getBooleanValueOf(stringValue);
+		
+		Boolean old = this.weavingEager;
+		this.weavingEager = newValue;
+		this.firePropertyChanged(event.getAspectName(), old, newValue);
+	}
+
+	public Boolean getDefaultWeavingEager() {
+		return DEFAULT_WEAVING_EAGER;
 	}
 
 	// ********** SessionCustomizers **********
@@ -536,5 +630,67 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		this.entitiesCustomizerProperties.remove(entity);
 		this.fireListChanged(ENTITIES_LIST_PROPERTY);
 	}
+
+	// ********** Profiler **********
+	/**
+	 * Returns Profiler or custom profiler class.
+	 * 
+	 * @return EclipseLink string value for Profiler enum or custom profiler class
+	 */
+	public String getProfiler() {
+		return this.profiler;
+	}
+
+	/**
+	 * Sets EclipseLink profiler.
+	 * 
+	 * @param newProfiler - Profiler
+	 */
+	public void setProfiler(Profiler newProfiler) {
+		if( newProfiler == null) {
+			this.setProfiler_((String) null);
+			return;
+		}
+		this.setProfiler_(getEclipseLinkStringValueOf(newProfiler));
+	}
+
+	/**
+	 * Sets EclipseLink profiler or custom profiler.
+	 * 
+	 * @param newProfiler -
+	 *            Can be a EclipseLink profiler literal or
+	 *            a fully qualified class name of a custom profiler.
+	 */
+	public void setProfiler(String newProfiler) {
+		if( newProfiler == null) {
+			this.setProfiler_((String) null);
+			return;
+		}
+		Profiler profiler = Profiler.getProfilerFor(newProfiler);
+		if(profiler == null) {	// custom profiler class
+			this.setProfiler_(newProfiler);
+		}
+		else {
+			this.setProfiler(profiler);
+		}
+	}
 	
+	private void setProfiler_(String newProfiler) {
+		String old = this.profiler;
+		this.profiler = newProfiler;
+		this.putProperty(PROFILER_PROPERTY, newProfiler);
+		this.firePropertyChanged(PROFILER_PROPERTY, old, newProfiler);
+	}
+
+	private void profilerChanged(PropertyChangeEvent event) {
+		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String old = this.profiler;
+		this.profiler = newValue;
+		this.firePropertyChanged(event.getAspectName(), old, newValue);
+	}
+
+	public String getDefaultProfiler() {
+		return DEFAULT_PROFILER;
+	}
+
 }

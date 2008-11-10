@@ -19,6 +19,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.Persistence
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.CustomizerProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.EclipseLinkCustomization;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Profiler;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Weaving;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -57,6 +58,14 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	public static final Boolean WEAVING_FETCH_GROUPS_TEST_VALUE = false;
 	public static final Boolean WEAVING_FETCH_GROUPS_TEST_VALUE_2 = ! WEAVING_FETCH_GROUPS_TEST_VALUE;
 
+	public static final String WEAVING_INTERNAL_KEY = Customization.ECLIPSELINK_WEAVING_INTERNAL;
+	public static final Boolean WEAVING_INTERNAL_TEST_VALUE = false;
+	public static final Boolean WEAVING_INTERNAL_TEST_VALUE_2 = ! WEAVING_INTERNAL_TEST_VALUE;
+
+	public static final String WEAVING_EAGER_KEY = Customization.ECLIPSELINK_WEAVING_EAGER;
+	public static final Boolean WEAVING_EAGER_TEST_VALUE = true;
+	public static final Boolean WEAVING_EAGER_TEST_VALUE_2 = ! WEAVING_EAGER_TEST_VALUE;
+
 	private static final String SESSION_CUSTOMIZER_KEY = Customization.ECLIPSELINK_SESSION_CUSTOMIZER;
 	private static final String SESSION_CUSTOMIZER_TEST_VALUE = "java.lang.String";
 	private static final String SESSION_CUSTOMIZER_TEST_VALUE_2 = "java.lang.Boolean";
@@ -69,6 +78,10 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	public static final String CUSTOMIZER_TEST_VALUE = "acme.sessions.DescriptorCustomizer";
 	public static final String CUSTOMIZER_TEST_VALUE_2 = "acme.sessions.Customizer";
 
+	private static final String PROFILER_KEY = Customization.ECLIPSELINK_PROFILER;
+	private static final Profiler PROFILER_TEST_VALUE = Profiler.query_monitor;
+	private static final String PROFILER_TEST_VALUE_2 = "custom.profiler.test";
+	
 	public CustomizationAdapterTests(String name) {
 		super(name);
 	}
@@ -83,11 +96,12 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.customization.addPropertyChangeListener(Customization.WEAVING_LAZY_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.WEAVING_CHANGE_TRACKING_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.WEAVING_FETCH_GROUPS_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(Customization.WEAVING_INTERNAL_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(Customization.WEAVING_EAGER_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.WEAVING_PROPERTY, propertyChangeListener);
-		
 		this.customization.addPropertyChangeListener(Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY, propertyChangeListener);
-		
 		this.customization.addPropertyChangeListener(Customization.SESSION_CUSTOMIZER_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(Customization.PROFILER_PROPERTY, propertyChangeListener);
 
 		ListChangeListener sessionCustomizersChangeListener = this.buildSessionCustomizersChangeListener();
 		this.customization.addListChangeListener(Customization.SESSION_CUSTOMIZER_LIST_PROPERTY, sessionCustomizersChangeListener);
@@ -102,7 +116,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	 */
 	@Override
 	protected void populatePu() {
-		this.modelPropertiesSizeOriginal = 7;
+		this.modelPropertiesSizeOriginal = 10;
 		this.propertiesTotal = this.modelPropertiesSizeOriginal + 4; // 4 misc properties
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
@@ -111,12 +125,15 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.persistenceUnitPut(WEAVING_LAZY_KEY, WEAVING_LAZY_TEST_VALUE.toString());
 		this.persistenceUnitPut(WEAVING_CHANGE_TRACKING_KEY, WEAVING_CHANGE_TRACKING_TEST_VALUE.toString());
 		this.persistenceUnitPut(WEAVING_FETCH_GROUPS_KEY, WEAVING_FETCH_GROUPS_TEST_VALUE.toString());
+		this.persistenceUnitPut(WEAVING_INTERNAL_KEY, WEAVING_INTERNAL_TEST_VALUE.toString());
+		this.persistenceUnitPut(WEAVING_EAGER_KEY, WEAVING_EAGER_TEST_VALUE.toString());
 		this.persistenceUnitPut("misc.property.2", "value.2");
 		this.persistenceUnitPut(SESSION_CUSTOMIZER_KEY, SESSION_CUSTOMIZER_TEST_VALUE.toString());
 		this.persistenceUnitPut(WEAVING_KEY, WEAVING_TEST_VALUE);
 		this.persistenceUnitPut("misc.property.3", "value.3");
 		this.persistenceUnitPut("misc.property.4", "value.4");
 		this.persistenceUnitPut(CUSTOMIZER_KEY, CUSTOMIZER_TEST_VALUE);
+		this.persistenceUnitPut(PROFILER_KEY, PROFILER_TEST_VALUE);
 		return;
 	}
 
@@ -333,6 +350,42 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 			WEAVING_FETCH_GROUPS_TEST_VALUE_2);
 	}
 
+	// ********** WeavingInternal tests **********
+	public void testSetWeavingInternal() throws Exception {
+		this.verifyModelInitialized(
+			WEAVING_INTERNAL_KEY,
+			WEAVING_INTERNAL_TEST_VALUE);
+		this.verifySetProperty(
+			WEAVING_INTERNAL_KEY,
+			WEAVING_INTERNAL_TEST_VALUE,
+			WEAVING_INTERNAL_TEST_VALUE_2);
+	}
+
+	public void testAddRemoveWeavingInternal() throws Exception {
+		this.verifyAddRemoveProperty(
+			WEAVING_INTERNAL_KEY,
+			WEAVING_INTERNAL_TEST_VALUE,
+			WEAVING_INTERNAL_TEST_VALUE_2);
+	}
+
+	// ********** WeavingEager tests **********
+	public void testSetWeavingEager() throws Exception {
+		this.verifyModelInitialized(
+			WEAVING_EAGER_KEY,
+			WEAVING_EAGER_TEST_VALUE);
+		this.verifySetProperty(
+			WEAVING_EAGER_KEY,
+			WEAVING_EAGER_TEST_VALUE,
+			WEAVING_EAGER_TEST_VALUE_2);
+	}
+
+	public void testAddRemoveWeavingEager() throws Exception {
+		this.verifyAddRemoveProperty(
+			WEAVING_EAGER_KEY,
+			WEAVING_EAGER_TEST_VALUE,
+			WEAVING_EAGER_TEST_VALUE_2);
+	}
+
 	// ********** SessionCustomizer tests **********
 	public void testSetSessionCustomizer() throws Exception {
 		this.verifyModelInitialized(
@@ -398,6 +451,61 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 			CUSTOMIZER_TEST_VALUE,
 			CUSTOMIZER_TEST_VALUE_2);
 	}
+	
+	// ********** Profiler tests **********
+	public void testSetProfiler() throws Exception {
+		this.verifyModelInitialized(
+			PROFILER_KEY,
+			this.getEclipseLinkStringValueOf(PROFILER_TEST_VALUE)); // model is storing EclipseLinkStringValue
+		// verify set enum value
+		this.verifySetProperty(
+			PROFILER_KEY,
+			PROFILER_TEST_VALUE,
+			PROFILER_TEST_VALUE_2);
+		// verify set custom and literal value
+		this.verifySetProfiler(
+			PROFILER_KEY,
+			PROFILER_TEST_VALUE,
+			PROFILER_TEST_VALUE_2);
+	}
+
+	public void testAddRemoveProfiler() throws Exception {
+		this.verifyAddRemoveProperty(
+			PROFILER_KEY,
+			PROFILER_TEST_VALUE,
+			PROFILER_TEST_VALUE_2);
+	}
+	
+	/**
+	 * Verifies setting custom profiler and literals.
+	 */
+	protected void verifySetProfiler(String elKey, Object testValue1, Object testValue2) throws Exception {
+		Property property = this.persistenceUnit().getProperty(elKey);
+		String propertyName = this.model().propertyIdFor(property);
+		// test set custom profiler.
+		this.clearEvent();
+		this.setProperty(propertyName, testValue2);
+		this.verifyPutProperty(propertyName, testValue2);
+
+		// test set (Profiler) null
+		this.clearEvent();
+		this.customization.setProfiler((Profiler) null);
+		assertFalse(this.persistenceUnit().containsProperty(elKey));
+		this.verifyPutProperty(propertyName, null);
+		
+		// test set enum literal
+		this.clearEvent();
+		this.setProperty(propertyName, testValue1.toString());
+		assertTrue(this.persistenceUnit().containsProperty(elKey));
+		this.verifyPutProperty(propertyName, this.getEclipseLinkStringValueOf(testValue1));
+
+		// test set (String) null
+		this.clearEvent();
+		this.customization.setProfiler((String) null);
+		assertFalse(this.persistenceUnit().containsProperty(elKey));
+		this.verifyPutProperty(propertyName, null);
+	}
+
 
 
 	// ****** convenience methods *******
@@ -524,10 +632,20 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 			this.customization.setWeavingChangeTracking((Boolean) newValue);
 		else if (propertyName.equals(Customization.WEAVING_FETCH_GROUPS_PROPERTY))
 			this.customization.setWeavingFetchGroups((Boolean) newValue);
+		else if (propertyName.equals(Customization.WEAVING_INTERNAL_PROPERTY))
+			this.customization.setWeavingInternal((Boolean) newValue);
+		else if (propertyName.equals(Customization.WEAVING_EAGER_PROPERTY))
+			this.customization.setWeavingEager((Boolean) newValue);
 		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY))
 			this.customization.addSessionCustomizer((String) newValue);
 		else if (propertyName.equals(Customization.WEAVING_PROPERTY))
 			this.customization.setWeaving((Weaving) newValue);
+		else if (propertyName.equals(Customization.PROFILER_PROPERTY)) {
+			if (newValue.getClass().isEnum())
+				this.customization.setProfiler((Profiler) newValue);
+			else
+				this.customization.setProfiler((String) newValue);
+		}
 		else
 			this.throwMissingDefinition("setProperty", propertyName);
 	}
@@ -545,6 +663,12 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 			modelValue = this.customization.getWeavingChangeTracking();
 		else if (propertyName.equals(Customization.WEAVING_FETCH_GROUPS_PROPERTY))
 			modelValue = this.customization.getWeavingFetchGroups();
+		else if (propertyName.equals(Customization.WEAVING_INTERNAL_PROPERTY))
+			modelValue = this.customization.getWeavingInternal();
+		else if (propertyName.equals(Customization.WEAVING_EAGER_PROPERTY))
+			modelValue = this.customization.getWeavingEager();
+		else if (propertyName.equals(Customization.PROFILER_PROPERTY))
+			modelValue = this.customization.getProfiler();
 		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY)) {
 			ListIterator<ClassRef> iterator = this.customization.sessionCustomizers();
 			if(iterator.hasNext()) {
@@ -556,6 +680,18 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		else
 			this.throwMissingDefinition("getProperty", propertyName);
 		return modelValue;
+	}
+	
+	@Override
+	protected void verifyPutProperty(String propertyName, Object expectedValue) throws Exception {
+		Object expectedValue_ = expectedValue;
+		if (propertyName.equals(Customization.PROFILER_PROPERTY)) {
+			
+			expectedValue_ = (expectedValue != null && expectedValue.getClass().isEnum()) ?
+				this.getEclipseLinkStringValueOf(PROFILER_TEST_VALUE) : // model is storing EclipseLinkStringValue
+				expectedValue;
+		}
+		super.verifyPutProperty(propertyName, expectedValue_);
 	}
 
 	@Override
