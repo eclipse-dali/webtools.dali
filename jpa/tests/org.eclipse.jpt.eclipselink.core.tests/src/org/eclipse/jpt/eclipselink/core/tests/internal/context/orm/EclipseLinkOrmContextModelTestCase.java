@@ -44,14 +44,19 @@ public abstract class EclipseLinkOrmContextModelTestCase
 	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild, IDataModel jpaConfig) throws Exception {
 		TestJpaProject testJpaProject = super.buildJpaProject(projectName, autoBuild, jpaConfig);
 		
+		EclipseLinkOrmFileCreationOperation operation = 
+			new EclipseLinkOrmFileCreationOperation(buildEclipseLinkOrmConfig(testJpaProject));
+		operation.execute(null, null);
+		
+		return testJpaProject;
+	}
+	
+	protected IDataModel buildEclipseLinkOrmConfig(TestJpaProject testJpaProject) {
 		IDataModel dataModel = 
 			DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider());		
 		dataModel.setProperty(OrmFileCreationDataModelProperties.PROJECT_NAME, testJpaProject.getProject().getName());
 		dataModel.setProperty(OrmFileCreationDataModelProperties.ADD_TO_PERSISTENCE_UNIT, Boolean.TRUE);
-		EclipseLinkOrmFileCreationOperation operation = new EclipseLinkOrmFileCreationOperation(dataModel);
-		operation.execute(null, null);
-		
-		return testJpaProject;
+		return dataModel;
 	}
 	
 	@Override
