@@ -125,7 +125,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	private String getProfilerProtertyValue() {
 
 		Profiler standardProfiler = this.getEnumValue(ECLIPSELINK_PROFILER, Profiler.values());
-		if( ! this.persistenceUnit().containsProperty(ECLIPSELINK_PROFILER)) {
+		if( ! this.getPersistenceUnit().containsProperty(ECLIPSELINK_PROFILER)) {
 			return null;	// no property found
 		}
 		else if(standardProfiler == null) {
