@@ -229,6 +229,13 @@ public class JpaProjectPropertiesPage
 			
 			platformCombo = createCombo(group, 1, true);
 			synchHelper.synchCombo(platformCombo, PLATFORM_ID, null);
+			platformCombo.addSelectionListener(
+				new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						JpaProjectPropertiesPage.this.connectionGroup.updateConnectLink();
+					}
+				});
 			
 			performDefaults();
 		}
@@ -342,7 +349,7 @@ public class JpaProjectPropertiesPage
 			this.updateConnectLink(this.getConnectionProfile());
 		}
 		
-		private ConnectionProfile getConnectionProfile() {
+		ConnectionProfile getConnectionProfile() {
 			// we just use the connection profile to log in, so go to the db plug-in
 			return JptDbPlugin.instance().getConnectionProfileFactory().buildConnectionProfile(model.getStringProperty(CONNECTION));
 		}
