@@ -99,7 +99,7 @@ public class GenericNavigatorItemContentProviderFactory
 			return new CompositeListValueModel<ListValueModel<? extends JpaContextNode>, JpaContextNode>(list);
 		}
 		
-		private ListValueModel<JpaContextNode> buildSpecifiedOrmXmlLvm() {
+		protected ListValueModel<JpaContextNode> buildSpecifiedOrmXmlLvm() {
 			return new CollectionListValueModelAdapter<JpaContextNode>(
 				new FilteringCollectionValueModel<MappingFile>(
 					new ListCollectionValueModelAdapter<MappingFile>(
@@ -134,7 +134,7 @@ public class GenericNavigatorItemContentProviderFactory
 				});
 		}
 		
-		private ListValueModel<MappingFile> buildImpliedMappingFileLvm() {
+		protected ListValueModel<MappingFile> buildImpliedMappingFileLvm() {
 			return new PropertyListValueModelAdapter<MappingFile>(
 				new PropertyAspectAdapter<MappingFileRef, MappingFile>(
 						new PropertyAspectAdapter<PersistenceUnit, MappingFileRef>(
@@ -154,7 +154,7 @@ public class GenericNavigatorItemContentProviderFactory
 			);
 		}
 		
-		private ListValueModel<JpaContextNode> buildPersistentTypeLvm() {
+		protected ListValueModel<JpaContextNode> buildPersistentTypeLvm() {
 			return new CollectionListValueModelAdapter<JpaContextNode>(
 				new FilteringCollectionValueModel<PersistentType>(
 					new ListCollectionValueModelAdapter<PersistentType>(
@@ -177,14 +177,14 @@ public class GenericNavigatorItemContentProviderFactory
 				});
 		}
 		
-		private ListValueModel<ClassRef> buildClassRefLvm() {
+		protected ListValueModel<ClassRef> buildClassRefLvm() {
 			ArrayList<ListValueModel<ClassRef>> holders = new ArrayList<ListValueModel<ClassRef>>(2);
 			holders.add(buildSpecifiedClassRefLvm());
 			holders.add(buildImpliedClassRefLvm());
 			return new CompositeListValueModel<ListValueModel<ClassRef>, ClassRef>(holders);
 		}
 		
-		private ListValueModel<ClassRef> buildSpecifiedClassRefLvm() {
+		protected ListValueModel<ClassRef> buildSpecifiedClassRefLvm() {
 			return new ListAspectAdapter<PersistenceUnit, ClassRef>(
 				PersistenceUnit.SPECIFIED_CLASS_REFS_LIST, model()) {
 					@Override
@@ -198,7 +198,7 @@ public class GenericNavigatorItemContentProviderFactory
 			};
 		}
 		
-		private ListValueModel<ClassRef> buildImpliedClassRefLvm() {
+		protected ListValueModel<ClassRef> buildImpliedClassRefLvm() {
 			return new ListAspectAdapter<PersistenceUnit, ClassRef>(
 				PersistenceUnit.IMPLIED_CLASS_REFS_LIST, model()) {
 					@Override
