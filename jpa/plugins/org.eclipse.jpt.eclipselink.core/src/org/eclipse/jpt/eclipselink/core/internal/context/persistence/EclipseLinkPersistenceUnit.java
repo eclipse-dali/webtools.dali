@@ -15,12 +15,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
@@ -35,9 +37,12 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Ecl
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.SchemaGeneration;
+import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmResourceModelProvider;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -49,6 +54,7 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
  */
 public class EclipseLinkPersistenceUnit extends AbstractPersistenceUnit
 {
+	protected MappingFileRef impliedEclipseLinkMappingFileRef;
 	
 	private final GeneralProperties generalProperties;
 	private final Connection connection;
@@ -103,6 +109,59 @@ public class EclipseLinkPersistenceUnit extends AbstractPersistenceUnit
 	protected void addNonUpdateAspectNamesTo(Set<String> nonUpdateAspectNames) {
 		super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
 		nonUpdateAspectNames.add(CONVERTERS_LIST);
+	}
+	
+	
+	// **************** mapping file refs **************************************
+	
+	@Override
+	public ListIterator<MappingFileRef> mappingFileRefs() {
+		if (impliedEclipseLinkMappingFileRef == null) {
+			return super.mappingFileRefs();
+		}
+		return new ReadOnlyCompositeListIterator<MappingFileRef>(
+			super.mappingFileRefs(), impliedEclipseLinkMappingFileRef);
+	}
+	
+	@Override
+	public int mappingFileRefsSize() {
+		if (impliedEclipseLinkMappingFileRef == null) {
+			return super.mappingFileRefsSize();
+		}
+		return 1 + super.mappingFileRefsSize();
+	}
+	
+	
+	// **************** implied eclipselink mapping file ref *******************
+	
+	/**
+	 * String constant associated with changes to the implied eclipselink mapping file ref
+	 */
+	public final static String IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY = "impliedEclipseLinkMappingFileRef"; //$NON-NLS-1$
+	
+	
+	public MappingFileRef getImpliedEclipseLinkMappingFileRef() {
+		return impliedEclipseLinkMappingFileRef;
+	}
+	
+	protected MappingFileRef setImpliedEclipseLinkMappingFileRef() {
+		if (impliedEclipseLinkMappingFileRef != null) {
+			throw new IllegalStateException("The implied eclipselink mapping file ref is already set."); //$NON-NLS-1$
+		}
+		MappingFileRef mappingFileRef = new EclipseLinkImpliedMappingFileRef(this);
+		impliedEclipseLinkMappingFileRef = mappingFileRef;
+		firePropertyChanged(IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, null, mappingFileRef);
+		return mappingFileRef;
+	}
+	
+	protected void unsetImpliedEclipseLinkMappingFileRef() {
+		if (impliedEclipseLinkMappingFileRef == null) {
+			throw new IllegalStateException("The implied eclipselink mapping file ref is already unset."); //$NON-NLS-1$
+		}
+		MappingFileRef mappingFileRef = impliedEclipseLinkMappingFileRef;
+		impliedEclipseLinkMappingFileRef.dispose();
+		impliedEclipseLinkMappingFileRef = null;
+		firePropertyChanged(IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, mappingFileRef, null);
 	}
 	
 	
@@ -209,6 +268,65 @@ public class EclipseLinkPersistenceUnit extends AbstractPersistenceUnit
 		this.converters.clear();
 		super.update(persistenceUnit);
 		convertersUpdated();
+	}
+	
+	@Override
+	protected void initializeMappingFileRefs(XmlPersistenceUnit xpu) {
+		super.initializeMappingFileRefs(xpu);
+		
+		// use implied mapping file if 
+		// a) properties does not exclude it
+		// b) it isn't otherwise specified
+		// c) the file actually exists
+		if (! impliedEclipseLinkMappingFileIsExcluded()
+				&& ! impliedEclipseLinkMappingFileIsSpecified()
+				&& impliedEclipseLinkMappingFileExists()) {
+		
+			impliedEclipseLinkMappingFileRef = new EclipseLinkImpliedMappingFileRef(this);
+		}
+	}
+	
+	@Override
+	protected void updateMappingFileRefs(XmlPersistenceUnit persistenceUnit) {
+		super.updateMappingFileRefs(persistenceUnit);
+		
+		// use implied mapping file if 
+		// a) properties does not exclude it
+		// b) it isn't otherwise specified
+		// c) the file actually exists
+		if (! impliedEclipseLinkMappingFileIsExcluded()
+				&& ! impliedEclipseLinkMappingFileIsSpecified()
+				&& impliedEclipseLinkMappingFileExists()) {
+			
+			if (impliedEclipseLinkMappingFileRef == null) {
+				setImpliedEclipseLinkMappingFileRef();
+			}
+			getImpliedEclipseLinkMappingFileRef().update(null);
+		}
+		else if (impliedEclipseLinkMappingFileRef != null) {
+			unsetImpliedEclipseLinkMappingFileRef();
+		}
+	}
+	
+	protected boolean impliedEclipseLinkMappingFileIsExcluded() {
+		return getGeneralProperties().getExcludeEclipselinkOrm() == Boolean.TRUE;
+	}
+	
+	protected boolean impliedEclipseLinkMappingFileIsSpecified() {
+		String impliedMappingFile = JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH;
+		for (Iterator<MappingFileRef> stream = specifiedMappingFileRefs(); stream.hasNext(); ) {
+			if (impliedMappingFile.equals(stream.next().getFileName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	protected boolean impliedEclipseLinkMappingFileExists() {
+		EclipseLinkOrmResourceModelProvider modelProvider = 
+			EclipseLinkOrmResourceModelProvider.getDefaultModelProvider(getJpaProject().getProject());
+		EclipseLinkOrmResource resource = modelProvider.getResource();
+		return resource != null && resource.exists();
 	}
 	
 	// This is called after the persistence unit has been updated to ensure
