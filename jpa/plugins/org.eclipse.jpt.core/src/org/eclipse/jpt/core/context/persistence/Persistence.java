@@ -25,6 +25,9 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
  */
 public interface Persistence extends XmlContextNode, JpaStructureNode
 {
+	
+	PersistenceXml getParent();
+	
 	// **************** persistence units **************************************
 	
 	/**

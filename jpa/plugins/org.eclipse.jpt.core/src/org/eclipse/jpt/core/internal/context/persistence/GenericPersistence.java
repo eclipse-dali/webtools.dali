@@ -47,6 +47,10 @@ public class GenericPersistence extends AbstractXmlContextNode
 		return PersistenceStructureNodes.PERSISTENCE_ID;
 	}
 
+	@Override
+	public PersistenceXml getParent() {
+		return (PersistenceXml) super.getParent();
+	}
 	
 	// **************** persistence units **************************************
 	
