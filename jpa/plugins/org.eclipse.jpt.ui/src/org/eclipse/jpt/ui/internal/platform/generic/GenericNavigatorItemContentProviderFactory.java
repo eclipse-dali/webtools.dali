@@ -87,9 +87,9 @@ public class GenericNavigatorItemContentProviderFactory
 		
 		@Override
 		public PersistenceXml getParent() {
-			return (PersistenceXml) model().getPersistenceUnit().getParent();
+			return model().getParent().getParent();
 		}
-		
+	
 		@Override
 		protected ListValueModel<JpaContextNode> buildChildrenModel() {
 			List<ListValueModel<? extends JpaContextNode>> list = new ArrayList<ListValueModel<? extends JpaContextNode>>();
