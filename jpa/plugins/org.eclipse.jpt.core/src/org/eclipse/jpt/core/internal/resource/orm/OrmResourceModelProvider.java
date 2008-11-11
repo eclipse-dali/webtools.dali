@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaConstants;
 import org.eclipse.jpt.core.internal.resource.JpaResourceModelProviderManager;
@@ -24,7 +25,7 @@ import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 
 public class OrmResourceModelProvider
-	extends AbstractResourceModelProvider
+	extends AbstractResourceModelProvider<OrmResource>
 {
 	/**
 	 * (Convenience method) Returns an ORM resource model provider for 
@@ -80,7 +81,7 @@ public class OrmResourceModelProvider
 	}
 	
 	@Override
-	public OrmResource getResource() {
-		return (OrmResource) super.getResource();
+	protected OrmResource ensureCorrectType(Resource resource) throws ClassCastException {
+		return (OrmResource) resource;
 	}
 }
