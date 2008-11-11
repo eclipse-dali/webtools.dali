@@ -14,7 +14,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaConstants;
 import org.eclipse.jpt.core.internal.resource.JpaResourceModelProviderManager;
@@ -26,7 +25,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 
 public class PersistenceResourceModelProvider
-	extends AbstractResourceModelProvider<PersistenceResource>
+	extends AbstractResourceModelProvider
 {
 	/**
 	 * (Convenience method) Returns a persistence resource model provider for 
@@ -85,7 +84,7 @@ public class PersistenceResourceModelProvider
 	}
 	
 	@Override
-	protected PersistenceResource ensureCorrectType(Resource resource) throws ClassCastException {
-		return (PersistenceResource) resource;
+	public PersistenceResource getResource() {
+		return (PersistenceResource) super.getResource();
 	}
 }
