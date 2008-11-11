@@ -23,8 +23,13 @@ public class PersistentAttributeItemContentProvider extends AbstractTreeItemCont
 	}
 	
 	@Override
+	public PersistentAttribute model() {
+		return (PersistentAttribute) super.model();
+	}
+	
+	@Override
 	public Object getParent() {
-		return ((PersistentAttribute) model()).getParent();
+		return model().getParent();
 	}
 	
 	@Override

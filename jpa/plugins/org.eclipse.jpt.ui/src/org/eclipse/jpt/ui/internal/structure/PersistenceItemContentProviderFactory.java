@@ -180,8 +180,13 @@ public class PersistenceItemContentProviderFactory
 		}
 		
 		@Override
+		public MappingFileRef model() {
+			return (MappingFileRef) super.model();
+		}
+		
+		@Override
 		public Object getParent() {
-			return ((MappingFileRef) model()).getPersistenceUnit();
+			return model().getPersistenceUnit();
 		}
 		
 		@Override
@@ -199,8 +204,13 @@ public class PersistenceItemContentProviderFactory
 		}
 		
 		@Override
+		public ClassRef model() {
+			return (ClassRef) super.model();
+		}
+		
+		@Override
 		public Object getParent() {
-			return ((ClassRef) model()).getPersistenceUnit();
+			return model().getPersistenceUnit();
 		}
 		
 		@Override

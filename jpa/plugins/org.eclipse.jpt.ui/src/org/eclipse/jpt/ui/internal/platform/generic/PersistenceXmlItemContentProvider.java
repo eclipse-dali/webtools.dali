@@ -29,17 +29,21 @@ public class PersistenceXmlItemContentProvider
 		super(persistenceXml, contentProvider);
 	}
 	
+	@Override
+	public PersistenceXml model() {
+		return (PersistenceXml) super.model();
+	}
 	
 	@Override
 	public JpaRootContextNode getParent() {
-		return (JpaRootContextNode) ((PersistenceXml) model()).getParent();
+		return (JpaRootContextNode) model().getParent();
 	}
 	
 	@Override
 	protected ListValueModel<PersistenceUnit> buildChildrenModel() {
 		return new ListAspectAdapter<Persistence, PersistenceUnit>(
 				new PropertyAspectAdapter<PersistenceXml, Persistence>(
-						PersistenceXml.PERSISTENCE_PROPERTY, (PersistenceXml) model()) {
+						PersistenceXml.PERSISTENCE_PROPERTY, model()) {
 					@Override
 					protected Persistence buildValue_() {
 						return subject.getPersistence();
