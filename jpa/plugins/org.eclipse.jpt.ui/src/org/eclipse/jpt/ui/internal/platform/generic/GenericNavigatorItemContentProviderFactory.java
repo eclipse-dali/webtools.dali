@@ -81,13 +81,13 @@ public class GenericNavigatorItemContentProviderFactory
 		}
 		
 		@Override
-		public PersistenceUnit model() {
-			return (PersistenceUnit) super.model();
+		public PersistenceUnit getModel() {
+			return (PersistenceUnit) super.getModel();
 		}
 		
 		@Override
 		public PersistenceXml getParent() {
-			return model().getParent().getParent();
+			return getModel().getParent().getParent();
 		}
 	
 		@Override
@@ -107,7 +107,7 @@ public class GenericNavigatorItemContentProviderFactory
 							new ItemPropertyListValueModelAdapter<MappingFileRef>(
 								new ListAspectAdapter<PersistenceUnit, MappingFileRef>(
 										PersistenceUnit.SPECIFIED_MAPPING_FILE_REFS_LIST,
-										model()) {
+										getModel()) {
 									@Override
 									protected ListIterator<MappingFileRef> listIterator_() {
 										return subject.specifiedMappingFileRefs();
@@ -139,7 +139,7 @@ public class GenericNavigatorItemContentProviderFactory
 				new PropertyAspectAdapter<MappingFileRef, MappingFile>(
 						new PropertyAspectAdapter<PersistenceUnit, MappingFileRef>(
 								PersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY,
-								model()) {
+								getModel()) {
 							@Override
 							protected MappingFileRef buildValue_() {
 								return subject.getImpliedMappingFileRef();
@@ -186,7 +186,7 @@ public class GenericNavigatorItemContentProviderFactory
 		
 		protected ListValueModel<ClassRef> buildSpecifiedClassRefLvm() {
 			return new ListAspectAdapter<PersistenceUnit, ClassRef>(
-				PersistenceUnit.SPECIFIED_CLASS_REFS_LIST, model()) {
+				PersistenceUnit.SPECIFIED_CLASS_REFS_LIST, getModel()) {
 					@Override
 					protected ListIterator<ClassRef> listIterator_() {
 						return subject.specifiedClassRefs();
@@ -200,7 +200,7 @@ public class GenericNavigatorItemContentProviderFactory
 		
 		protected ListValueModel<ClassRef> buildImpliedClassRefLvm() {
 			return new ListAspectAdapter<PersistenceUnit, ClassRef>(
-				PersistenceUnit.IMPLIED_CLASS_REFS_LIST, model()) {
+				PersistenceUnit.IMPLIED_CLASS_REFS_LIST, getModel()) {
 					@Override
 					protected ListIterator<ClassRef> listIterator_() {
 						return subject.impliedClassRefs();

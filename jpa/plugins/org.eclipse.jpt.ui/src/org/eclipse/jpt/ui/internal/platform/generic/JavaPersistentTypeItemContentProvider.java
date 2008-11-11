@@ -27,18 +27,18 @@ public class JavaPersistentTypeItemContentProvider extends AbstractTreeItemConte
 	}
 	
 	@Override
-	public JavaPersistentType model() {
-		return (JavaPersistentType) super.model();
+	public JavaPersistentType getModel() {
+		return (JavaPersistentType) super.getModel();
 	}
 	
 	@Override
 	public Object getParent() {
-		return model().getParent();
+		return getModel().getParent();
 	}
 	
 	@Override
 	protected ListValueModel<JavaPersistentAttribute> buildChildrenModel() {
-		return new ListAspectAdapter<JavaPersistentType, JavaPersistentAttribute>(PersistentType.SPECIFIED_ATTRIBUTES_LIST, model()) {
+		return new ListAspectAdapter<JavaPersistentType, JavaPersistentAttribute>(PersistentType.SPECIFIED_ATTRIBUTES_LIST, getModel()) {
 			@Override
 			protected ListIterator<JavaPersistentAttribute> listIterator_() {
 				return subject.attributes();

@@ -31,13 +31,13 @@ public class OrmXmlItemContentProvider
 	}
 	
 	@Override
-	public OrmXml model() {
-		return (OrmXml) super.model();
+	public OrmXml getModel() {
+		return (OrmXml) super.getModel();
 	}
 	
 	@Override
 	public PersistenceUnit getParent() {
-		return model().getPersistenceUnit();
+		return getModel().getPersistenceUnit();
 	}
 	
 	@Override
@@ -58,7 +58,7 @@ public class OrmXmlItemContentProvider
 	
 	protected PropertyValueModel<EntityMappings> buildEntityMappingsHolder() {
 		return new PropertyAspectAdapter<OrmXml, EntityMappings>(
-				OrmXml.ENTITY_MAPPINGS_PROPERTY, model()) {
+				OrmXml.ENTITY_MAPPINGS_PROPERTY, getModel()) {
 			@Override
 			protected EntityMappings buildValue_() {
 				return subject.getEntityMappings();

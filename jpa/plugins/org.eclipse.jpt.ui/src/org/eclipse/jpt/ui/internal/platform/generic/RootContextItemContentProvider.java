@@ -28,13 +28,13 @@ public class RootContextItemContentProvider
 	}
 	
 	@Override
-	public JpaRootContextNode model() {
-		return (JpaRootContextNode) super.model();
+	public JpaRootContextNode getModel() {
+		return (JpaRootContextNode) super.getModel();
 	}
 	
 	@Override
 	public IProject getParent() {
-		return model().getJpaProject().getProject();
+		return getModel().getJpaProject().getProject();
 	}
 	
 	@Override
@@ -42,7 +42,7 @@ public class RootContextItemContentProvider
 		return new PropertyListValueModelAdapter<PersistenceXml>(
 				new PropertyAspectAdapter<JpaRootContextNode, PersistenceXml>(
 						JpaRootContextNode.PERSISTENCE_XML_PROPERTY,
-						model()) {
+						getModel()) {
 					 @Override
 					protected PersistenceXml buildValue_() {
 						return subject.getPersistenceXml();

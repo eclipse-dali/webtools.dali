@@ -63,8 +63,8 @@ public class PersistenceItemContentProviderFactory
 		}
 			
 		@Override
-		public Persistence model() {
-			return (Persistence) super.model();
+		public Persistence getModel() {
+			return (Persistence) super.getModel();
 		}
 		
 		@Override
@@ -77,7 +77,7 @@ public class PersistenceItemContentProviderFactory
 		@Override
 		protected ListValueModel<PersistenceUnit> buildChildrenModel() {
 			return new ListAspectAdapter<Persistence, PersistenceUnit>(
-					Persistence.PERSISTENCE_UNITS_LIST, model()) {
+					Persistence.PERSISTENCE_UNITS_LIST, getModel()) {
 				@Override
 				protected ListIterator<PersistenceUnit> listIterator_() {
 					return subject.persistenceUnits();
@@ -99,13 +99,13 @@ public class PersistenceItemContentProviderFactory
 		}
 		
 		@Override
-		public PersistenceUnit model() {
-			return (PersistenceUnit) super.model();
+		public PersistenceUnit getModel() {
+			return (PersistenceUnit) super.getModel();
 		}
 		
 		@Override
 		public Persistence getParent() {
-			return model().getParent();
+			return getModel().getParent();
 		}
 		
 		@Override
@@ -113,7 +113,7 @@ public class PersistenceItemContentProviderFactory
 			ListValueModel<MappingFileRef> specifiedMappingFileLvm = 
 				new ListAspectAdapter<PersistenceUnit, MappingFileRef>(
 						PersistenceUnit.SPECIFIED_MAPPING_FILE_REFS_LIST,
-						model()) {
+						getModel()) {
 					@Override
 					protected ListIterator<MappingFileRef> listIterator_() {
 						return subject.specifiedMappingFileRefs();
@@ -128,7 +128,7 @@ public class PersistenceItemContentProviderFactory
 				new PropertyListValueModelAdapter<MappingFileRef>(
 					new PropertyAspectAdapter<PersistenceUnit, MappingFileRef>(
 							PersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY,
-							model()) {
+							getModel()) {
 						@Override
 						protected MappingFileRef buildValue_() {
 							return subject.getImpliedMappingFileRef();
@@ -138,7 +138,7 @@ public class PersistenceItemContentProviderFactory
 			ListValueModel<ClassRef> specifiedClassLvm = 
 				new ListAspectAdapter<PersistenceUnit, ClassRef>(
 						PersistenceUnit.SPECIFIED_CLASS_REFS_LIST,
-						model()) {
+						getModel()) {
 					@Override
 					protected ListIterator<ClassRef> listIterator_() {
 						return subject.specifiedClassRefs();
@@ -151,7 +151,7 @@ public class PersistenceItemContentProviderFactory
 			ListValueModel<ClassRef> impliedClassLvm = 
 				new ListAspectAdapter<PersistenceUnit, ClassRef>(
 						PersistenceUnit.IMPLIED_CLASS_REFS_LIST,
-						model()) {
+						getModel()) {
 					@Override
 					protected ListIterator<ClassRef> listIterator_() {
 						return subject.impliedClassRefs();
@@ -180,13 +180,13 @@ public class PersistenceItemContentProviderFactory
 		}
 		
 		@Override
-		public MappingFileRef model() {
-			return (MappingFileRef) super.model();
+		public MappingFileRef getModel() {
+			return (MappingFileRef) super.getModel();
 		}
 		
 		@Override
 		public Object getParent() {
-			return model().getPersistenceUnit();
+			return getModel().getPersistenceUnit();
 		}
 		
 		@Override
@@ -204,13 +204,13 @@ public class PersistenceItemContentProviderFactory
 		}
 		
 		@Override
-		public ClassRef model() {
-			return (ClassRef) super.model();
+		public ClassRef getModel() {
+			return (ClassRef) super.getModel();
 		}
 		
 		@Override
 		public Object getParent() {
-			return model().getPersistenceUnit();
+			return getModel().getPersistenceUnit();
 		}
 		
 		@Override

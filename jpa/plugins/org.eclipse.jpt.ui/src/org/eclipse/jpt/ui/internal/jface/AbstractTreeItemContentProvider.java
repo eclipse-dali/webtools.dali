@@ -67,36 +67,36 @@ public abstract class AbstractTreeItemContentProvider<E>
 	protected ListChangeListener buildChildrenListener() {
 		return new ListChangeListener() {
 			public void itemsAdded(ListChangeEvent event) {
-				treeContentProvider().updateContent(model());
+				getTreeContentProvider().updateContent(getModel());
 			}
 			
 			public void itemsMoved(ListChangeEvent event) {
-				treeContentProvider().updateContent(model());
+				getTreeContentProvider().updateContent(getModel());
 			}
 			
 			public void itemsRemoved(ListChangeEvent event) {
-				treeContentProvider().updateContent(model());
+				getTreeContentProvider().updateContent(getModel());
 				for (Iterator<?> stream = event.items(); stream.hasNext(); ) {
-					treeContentProvider().dispose(stream.next());
+					getTreeContentProvider().dispose(stream.next());
 				}
 			}
 			
 			public void itemsReplaced(ListChangeEvent event) {
-				treeContentProvider().updateContent(model());
+				getTreeContentProvider().updateContent(getModel());
 				for (Iterator<?> stream = event.replacedItems(); stream.hasNext(); ) {
-					treeContentProvider().dispose(stream.next());
+					getTreeContentProvider().dispose(stream.next());
 				}
 			}
 			
 			public void listChanged(ListChangeEvent event) {
-				treeContentProvider().updateContent(model());
+				getTreeContentProvider().updateContent(getModel());
 				// in the case of a list changed event, we don't have 
 				// access to the removed objects, so we can't dispose them.
 				// keep a watch on this to see if this becomes a problem.
 			}
 			
 			public void listCleared(ListChangeEvent event) {
-				treeContentProvider().updateContent(model());
+				getTreeContentProvider().updateContent(getModel());
 				// in the case of a list cleared event, we don't have 
 				// access to the removed objects, so we can't dispose them.
 				// keep a watch on this to see if this becomes a problem.
@@ -108,20 +108,19 @@ public abstract class AbstractTreeItemContentProvider<E>
 	 * Return the children model
 	 * (lazy and just-in-time initialized)
 	 */
-	protected ListValueModel<E> childrenModel() {
-		if (childrenModel == null) {
-			childrenModel = buildChildrenModel();
+	protected ListValueModel<E> getChildrenModel() {
+		if (this.childrenModel == null) {
+			this.childrenModel = buildChildrenModel();
 			engageChildren();
 		}
-		return childrenModel;
+		return this.childrenModel;
 	}
 	
 	/**
 	 * Construct a children model
 	 */
-	@SuppressWarnings("unchecked")
 	protected ListValueModel<E> buildChildrenModel() {
-		return new NullListValueModel();
+		return new NullListValueModel<E>();
 	}
 	
 	/**
@@ -147,15 +146,15 @@ public abstract class AbstractTreeItemContentProvider<E>
 	/**
 	 * Return the model object represented by this node
 	 */
-	public Model model() {
-		return model;
+	public Model getModel() {
+		return this.model;
 	}
 	
 	/**
 	 * Return the tree content provider that delegates to this node
 	 */
-	public DelegatingTreeContentAndLabelProvider treeContentProvider() {
-		return treeContentProvider;
+	public DelegatingTreeContentAndLabelProvider getTreeContentProvider() {
+		return this.treeContentProvider;
 	}
 	
 	public Object getParent() {
@@ -167,14 +166,14 @@ public abstract class AbstractTreeItemContentProvider<E>
 	}
 	
 	public Object[] getChildren() {
-		return CollectionTools.array(childrenModel().listIterator());
+		return CollectionTools.array(getChildrenModel().listIterator());
 	}
 	
 	/**
 	 * Override with potentially more efficient logic
 	 */
 	public boolean hasChildren() {
-		return childrenModel().listIterator().hasNext();
+		return getChildrenModel().listIterator().hasNext();
 	}
 	
 	/**
@@ -182,7 +181,7 @@ public abstract class AbstractTreeItemContentProvider<E>
 	 */
 	public void dispose() {
 		for (Object child : getChildren()) {
-			treeContentProvider().dispose(child);
+			getTreeContentProvider().dispose(child);
 		}
 		disengageChildren();
 	}
@@ -192,7 +191,7 @@ public abstract class AbstractTreeItemContentProvider<E>
 	 * subclass logic 
 	 */
 	protected void engageChildren() {
-		childrenModel.addListChangeListener(ListValueModel.LIST_VALUES, childrenListener);
+		this.childrenModel.addListChangeListener(ListValueModel.LIST_VALUES, this.childrenListener);
 	}
 	
 	/** 
@@ -200,8 +199,8 @@ public abstract class AbstractTreeItemContentProvider<E>
 	 * subclass logic 
 	 */
 	protected void disengageChildren() {
-		if (childrenModel != null) {
-			childrenModel.removeListChangeListener(ListValueModel.LIST_VALUES, childrenListener);
+		if (this.childrenModel != null) {
+			this.childrenModel.removeListChangeListener(ListValueModel.LIST_VALUES, this.childrenListener);
 		}
 	}
 }

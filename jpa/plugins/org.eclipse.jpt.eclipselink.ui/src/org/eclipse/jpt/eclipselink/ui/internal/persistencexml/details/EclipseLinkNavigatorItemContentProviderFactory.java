@@ -56,8 +56,8 @@ public class EclipseLinkNavigatorItemContentProviderFactory
 		}
 		
 		@Override
-		public EclipseLinkPersistenceUnit model() {
-			return (EclipseLinkPersistenceUnit) super.model();
+		public EclipseLinkPersistenceUnit getModel() {
+			return (EclipseLinkPersistenceUnit) super.getModel();
 		}
 		
 		@Override
@@ -75,7 +75,7 @@ public class EclipseLinkNavigatorItemContentProviderFactory
 				new PropertyAspectAdapter<MappingFileRef, MappingFile>(
 						new PropertyAspectAdapter<EclipseLinkPersistenceUnit, MappingFileRef>(
 								EclipseLinkPersistenceUnit.IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY,
-								model()) {
+								getModel()) {
 							@Override
 							protected MappingFileRef buildValue_() {
 								return subject.getImpliedEclipseLinkMappingFileRef();

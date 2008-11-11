@@ -51,8 +51,8 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 		}
 		
 		@Override
-		public EntityMappings model() {
-			return (EntityMappings) super.model();
+		public EntityMappings getModel() {
+			return (EntityMappings) super.getModel();
 		}
 		
 		@Override
@@ -65,7 +65,7 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 		@Override
 		protected ListValueModel<OrmPersistentType> buildChildrenModel() {
 			return new ListAspectAdapter<EntityMappings, OrmPersistentType>(
-					EntityMappings.PERSISTENT_TYPES_LIST, model()) {
+					EntityMappings.PERSISTENT_TYPES_LIST, getModel()) {
 				@Override
 				protected ListIterator<OrmPersistentType> listIterator_() {
 					return subject.ormPersistentTypes();

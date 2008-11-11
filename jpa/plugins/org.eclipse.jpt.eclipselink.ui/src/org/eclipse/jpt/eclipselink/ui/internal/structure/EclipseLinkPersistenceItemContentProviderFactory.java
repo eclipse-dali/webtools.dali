@@ -51,8 +51,8 @@ public class EclipseLinkPersistenceItemContentProviderFactory
 		}
 		
 		@Override
-		public EclipseLinkPersistenceUnit model() {
-			return (EclipseLinkPersistenceUnit) super.model();
+		public EclipseLinkPersistenceUnit getModel() {
+			return (EclipseLinkPersistenceUnit) super.getModel();
 		}
 		
 		@Override
@@ -60,7 +60,7 @@ public class EclipseLinkPersistenceItemContentProviderFactory
 			ListValueModel<MappingFileRef> specifiedMappingFileLvm = 
 				new ListAspectAdapter<PersistenceUnit, MappingFileRef>(
 						PersistenceUnit.SPECIFIED_MAPPING_FILE_REFS_LIST,
-						model()) {
+						getModel()) {
 					@Override
 					protected ListIterator<MappingFileRef> listIterator_() {
 						return subject.specifiedMappingFileRefs();
@@ -75,7 +75,7 @@ public class EclipseLinkPersistenceItemContentProviderFactory
 				new PropertyListValueModelAdapter<MappingFileRef>(
 					new PropertyAspectAdapter<PersistenceUnit, MappingFileRef>(
 							PersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY,
-							model()) {
+							getModel()) {
 						@Override
 						protected MappingFileRef buildValue_() {
 							return subject.getImpliedMappingFileRef();
@@ -86,7 +86,7 @@ public class EclipseLinkPersistenceItemContentProviderFactory
 				new PropertyListValueModelAdapter<MappingFileRef>(
 					new PropertyAspectAdapter<EclipseLinkPersistenceUnit, MappingFileRef>(
 							EclipseLinkPersistenceUnit.IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY,
-							model()) {
+							getModel()) {
 						@Override
 						protected MappingFileRef buildValue_() {
 							return subject.getImpliedEclipseLinkMappingFileRef();
@@ -96,7 +96,7 @@ public class EclipseLinkPersistenceItemContentProviderFactory
 			ListValueModel<ClassRef> specifiedClassLvm = 
 				new ListAspectAdapter<PersistenceUnit, ClassRef>(
 						PersistenceUnit.SPECIFIED_CLASS_REFS_LIST,
-						model()) {
+						getModel()) {
 					@Override
 					protected ListIterator<ClassRef> listIterator_() {
 						return subject.specifiedClassRefs();
@@ -109,7 +109,7 @@ public class EclipseLinkPersistenceItemContentProviderFactory
 			ListValueModel<ClassRef> impliedClassLvm = 
 				new ListAspectAdapter<PersistenceUnit, ClassRef>(
 						PersistenceUnit.IMPLIED_CLASS_REFS_LIST,
-						model()) {
+						getModel()) {
 					@Override
 					protected ListIterator<ClassRef> listIterator_() {
 						return subject.impliedClassRefs();

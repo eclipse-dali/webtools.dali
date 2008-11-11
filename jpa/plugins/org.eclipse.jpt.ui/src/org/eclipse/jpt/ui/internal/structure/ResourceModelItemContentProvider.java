@@ -36,8 +36,8 @@ public class ResourceModelItemContentProvider extends AbstractTreeItemContentPro
 	}
 	
 	@Override
-	public JpaFile model() {
-		return (JpaFile) super.model();
+	public JpaFile getModel() {
+		return (JpaFile) super.getModel();
 	}
 	
 	@Override
@@ -56,6 +56,6 @@ public class ResourceModelItemContentProvider extends AbstractTreeItemContentPro
 	}
 	
 	protected PropertyValueModel<JpaFile> buildJpaFileValueModel() {
-		return new SimplePropertyValueModel<JpaFile>(this.model());
+		return new SimplePropertyValueModel<JpaFile>(this.getModel());
 	}
 }

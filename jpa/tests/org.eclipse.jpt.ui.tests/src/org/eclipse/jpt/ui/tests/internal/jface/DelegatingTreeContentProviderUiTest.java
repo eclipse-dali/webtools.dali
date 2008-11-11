@@ -326,7 +326,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		}
 
 		protected TreeNode treeNode() {
-			return (TreeNode) model();
+			return (TreeNode) getModel();
 		}
 
 		@Override

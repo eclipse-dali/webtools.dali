@@ -30,13 +30,13 @@ public class OrmPersistentTypeItemContentProvider extends AbstractTreeItemConten
 		}
 		
 		@Override
-		public OrmPersistentType model() {
-			return (OrmPersistentType) super.model();
+		public OrmPersistentType getModel() {
+			return (OrmPersistentType) super.getModel();
 		}
 		
 		@Override
 		public Object getParent() {
-			return model().getParent();
+			return getModel().getParent();
 		}
 		
 		@Override
@@ -49,7 +49,7 @@ public class OrmPersistentTypeItemContentProvider extends AbstractTreeItemConten
 		
 
 		protected ListValueModel<OrmPersistentAttribute> buildSpecifiedPersistentAttributesListHolder() {
-			return new ListAspectAdapter<OrmPersistentType, OrmPersistentAttribute>(PersistentType.SPECIFIED_ATTRIBUTES_LIST, model()) {
+			return new ListAspectAdapter<OrmPersistentType, OrmPersistentAttribute>(PersistentType.SPECIFIED_ATTRIBUTES_LIST, getModel()) {
 				@Override
 				protected ListIterator<OrmPersistentAttribute> listIterator_() {
 					return subject.specifiedAttributes();
@@ -62,7 +62,7 @@ public class OrmPersistentTypeItemContentProvider extends AbstractTreeItemConten
 		}
 		
 		protected ListValueModel<OrmPersistentAttribute> buildVirtualPersistentAttributesListHolder() {
-			return new ListAspectAdapter<OrmPersistentType, OrmPersistentAttribute>(OrmPersistentType.VIRTUAL_ATTRIBUTES_LIST, model()) {
+			return new ListAspectAdapter<OrmPersistentType, OrmPersistentAttribute>(OrmPersistentType.VIRTUAL_ATTRIBUTES_LIST, getModel()) {
 				@Override
 				protected ListIterator<OrmPersistentAttribute> listIterator_() {
 					return subject.virtualAttributes();
