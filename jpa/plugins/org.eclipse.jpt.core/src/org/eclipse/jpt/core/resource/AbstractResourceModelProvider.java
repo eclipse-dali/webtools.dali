@@ -52,14 +52,21 @@ import org.eclipse.wst.common.internal.emfworkbench.validateedit.ResourceStateVa
 import org.eclipse.wst.common.internal.emfworkbench.validateedit.ResourceStateValidatorImpl;
 import org.eclipse.wst.common.internal.emfworkbench.validateedit.ResourceStateValidatorPresenter;
 
-public abstract class AbstractResourceModelProvider 
+/**
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ */
+public abstract class AbstractResourceModelProvider<R extends JpaXmlResource> 
 	implements JpaResourceModelProvider, ResourceStateInputProvider, ResourceStateValidator
 {
 	protected IProject project;
 	
 	protected URI fileUri;
 	
-	protected JpaXmlResource resource;
+	protected R resource;
 	
 	protected final ResourceAdapter resourceAdapter = new ResourceAdapter();
 	
@@ -102,23 +109,29 @@ public abstract class AbstractResourceModelProvider
 	 * this will return a stub resource.  You must call #createResource() to 
 	 * create the file on the file system.
 	 */
-	public JpaXmlResource getResource() {
+	public R getResource() {
 		if (this.resource == null) {
 			try {
-				this.resource = 
-					(JpaXmlResource) WorkbenchResourceHelper.getOrCreateResource(this.fileUri, getResourceSet());
+				this.resource = ensureCorrectType(WorkbenchResourceHelper.getOrCreateResource(this.fileUri, getResourceSet()));
 			}
 			catch (ClassCastException cce) {
 				Resource.Factory resourceFactory = 
 					WTPResourceFactoryRegistry.INSTANCE.getFactory(fileUri, getContentType(getContentTypeDescriber()));
 				this.resource = 
-					(JpaXmlResource)((FlexibleProjectResourceSet) getResourceSet()).createResource(fileUri, resourceFactory);
+					(R)((FlexibleProjectResourceSet) getResourceSet()).createResource(fileUri, resourceFactory);
 			}
 		}
 		return this.resource;
 	}
 	
-	public JpaXmlResource createResource() throws CoreException {
+	/**
+	 * Ensure that the given resource is of the expected type for this resource
+	 * model provider.
+	 * Return it if so, throw a ClassCastException otherwise.
+	 */
+	protected abstract R ensureCorrectType(Resource resource) throws ClassCastException;
+	
+	public R createResource() throws CoreException {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {
