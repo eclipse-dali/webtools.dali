@@ -327,13 +327,18 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 		}
 		
 		@Override
+		public Root model() {
+			return (Root) super.model();
+		}
+		
+		@Override
 		public Object getParent() {
 			return null;
 		}
 		
 		@Override
 		protected ListValueModel<Vehicle> buildChildrenModel() {
-			return new StaticListValueModel<Vehicle>(CollectionTools.list(((Root) model()).vehicles()));
+			return new StaticListValueModel<Vehicle>(CollectionTools.list(model().vehicles()));
 		}
 	}
 	
@@ -345,8 +350,13 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 		}
 		
 		@Override
+		public Vehicle model() {
+			return (Vehicle) super.model();
+		}
+		
+		@Override
 		public Object getParent() {
-			return ((Vehicle) model()).parent();
+			return model().parent();
 		}
 		
 		@Override
