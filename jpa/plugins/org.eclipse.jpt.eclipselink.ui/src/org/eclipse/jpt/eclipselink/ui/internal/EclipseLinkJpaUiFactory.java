@@ -25,6 +25,9 @@ import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.context.BasicCollectionMapping;
+import org.eclipse.jpt.eclipselink.core.context.BasicMapMapping;
+import org.eclipse.jpt.eclipselink.core.context.TransformationMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
@@ -35,10 +38,13 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.gene
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.EclipseLinkJavaEmbeddableComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.EclipseLinkJavaEntityComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.EclipseLinkJavaMappedSuperclassComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.BasicCollectionMappingComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.BasicMapMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkBasicMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkIdMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkManyToManyMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkManyToOneMappingComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.TransformationMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkVersionMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipselinkOneToManyMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipselinkOneToOneMappingComposite;
@@ -277,7 +283,28 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 		return new EclipseLinkManyToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
+	public JpaComposite createBasicCollectionMappingComposite(
+		PropertyValueModel<BasicCollectionMapping> subjectHolder, 
+		Composite parent, 
+		WidgetFactory widgetFactory) {
+		
+		return new BasicCollectionMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	public JpaComposite createBasicMapMappingComposite(
+		PropertyValueModel<BasicMapMapping> subjectHolder, 
+		Composite parent, 
+		WidgetFactory widgetFactory) {
+		
+		return new BasicMapMappingComposite(subjectHolder, parent, widgetFactory);
+	}
 	
+	public JpaComposite createTransformationMappingComposite(
+		PropertyValueModel<TransformationMapping> subjectHolder, 
+		Composite parent, 
+		WidgetFactory widgetFactory) {
+		
+		return new TransformationMappingComposite(subjectHolder, parent, widgetFactory);
+	}
 	// **************** java-specific mapping UI *******************************
 	
 	@Override

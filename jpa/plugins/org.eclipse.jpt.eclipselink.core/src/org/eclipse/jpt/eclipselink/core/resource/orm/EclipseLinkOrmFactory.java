@@ -30,7 +30,6 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
  * @since 2.1
  * 
  * <!-- end-user-doc -->
- * 
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage
  * @generated
  */
@@ -108,6 +107,10 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY_IMPL: return (EObject)createXmlOneToManyImpl();
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE_IMPL: return (EObject)createXmlManyToOneImpl();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY_IMPL: return (EObject)createXmlManyToManyImpl();
+			case EclipseLinkOrmPackage.ATTRIBUTES: return (EObject)createAttributes();
+			case EclipseLinkOrmPackage.XML_BASIC_COLLECTION_IMPL: return (EObject)createXmlBasicCollectionImpl();
+			case EclipseLinkOrmPackage.XML_BASIC_MAP_IMPL: return (EObject)createXmlBasicMapImpl();
+			case EclipseLinkOrmPackage.XML_TRANSFORMATION_IMPL: return (EObject)createXmlTransformationImpl();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -359,6 +362,50 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlManyToManyImpl xmlManyToManyImpl = new XmlManyToManyImpl();
 		return xmlManyToManyImpl;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Attributes createAttributes()
+	{
+		Attributes attributes = new Attributes();
+		return attributes;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlBasicCollectionImpl createXmlBasicCollectionImpl()
+	{
+		XmlBasicCollectionImpl xmlBasicCollectionImpl = new XmlBasicCollectionImpl();
+		return xmlBasicCollectionImpl;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlBasicMapImpl createXmlBasicMapImpl()
+	{
+		XmlBasicMapImpl xmlBasicMapImpl = new XmlBasicMapImpl();
+		return xmlBasicMapImpl;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlTransformationImpl createXmlTransformationImpl()
+	{
+		XmlTransformationImpl xmlTransformationImpl = new XmlTransformationImpl();
+		return xmlTransformationImpl;
 	}
 
 	/**

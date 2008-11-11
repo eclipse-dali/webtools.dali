@@ -30,7 +30,7 @@ public class GenericOrmEmbeddedMapping extends AbstractOrmBaseEmbeddedMapping<Xm
 	}
 
 	public int getXmlSequence() {
-		return 8;
+		return 80;
 	}
 
 	public String getKey() {
@@ -46,8 +46,5 @@ public class GenericOrmEmbeddedMapping extends AbstractOrmBaseEmbeddedMapping<Xm
 
 	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getEmbeddeds().remove(this.resourceAttributeMapping);
-		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
-			typeMapping.setAttributes(null);
-		}
 	}
 }

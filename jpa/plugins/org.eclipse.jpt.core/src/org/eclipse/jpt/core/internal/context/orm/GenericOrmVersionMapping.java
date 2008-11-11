@@ -43,7 +43,7 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	}
 
 	public int getXmlSequence() {
-		return 3;
+		return 30;
 	}
 
 	public String getKey() {
@@ -115,9 +115,6 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	
 	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getVersions().remove(this.resourceAttributeMapping);
-		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
-			typeMapping.setAttributes(null);
-		}
 	}
 
 	public String getDefaultColumnName() {		

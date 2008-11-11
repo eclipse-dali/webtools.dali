@@ -22,6 +22,9 @@ import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactory;
 import org.eclipse.jpt.eclipselink.ui.internal.ddlgen.EclipseLinkDDLGeneratorUi;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToManyMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToOneMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.BasicCollectionMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.BasicMapMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.TransformationMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmBasicMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmIdMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmVersionMappingUiProvider;
@@ -99,6 +102,9 @@ public class EclipseLinkJpaPlatformUI extends BaseJpaPlatformUi
 	protected void addJavaAttributeMappingUiProvidersTo(
 							List<AttributeMappingUiProvider<? extends AttributeMapping>> providers) {
 		super.addJavaAttributeMappingUiProvidersTo(providers);
+		providers.add(BasicCollectionMappingUiProvider.instance());
+		providers.add(BasicMapMappingUiProvider.instance());
+		providers.add(TransformationMappingUiProvider.instance());
 	}
 
 	@Override
@@ -118,6 +124,8 @@ public class EclipseLinkJpaPlatformUI extends BaseJpaPlatformUi
 	@Override
 	protected void addOrmAttributeMappingUiProvidersTo(List<AttributeMappingUiProvider<? extends AttributeMapping>> providers) {
 		providers.add(EclipseLinkOrmBasicMappingUiProvider.instance());
+		providers.add(BasicCollectionMappingUiProvider.instance());
+		providers.add(BasicMapMappingUiProvider.instance());
 		providers.add(EmbeddedMappingUiProvider.instance());
 		providers.add(EmbeddedIdMappingUiProvider.instance());
 		providers.add(EclipseLinkOrmIdMappingUiProvider.instance());
@@ -125,6 +133,7 @@ public class EclipseLinkJpaPlatformUI extends BaseJpaPlatformUi
 		providers.add(ManyToOneMappingUiProvider.instance());
 		providers.add(OneToManyMappingUiProvider.instance());
 		providers.add(OneToOneMappingUiProvider.instance());
+		providers.add(TransformationMappingUiProvider.instance());
 		providers.add(TransientMappingUiProvider.instance());
 		providers.add(EclipseLinkOrmVersionMappingUiProvider.instance());
 	}

@@ -30,7 +30,7 @@ public class GenericOrmTransientMapping extends AbstractOrmAttributeMapping<XmlT
 	}
 
 	public int getXmlSequence() {
-		return 9;
+		return 90;
 	}
 
 	public String getKey() {
@@ -46,8 +46,5 @@ public class GenericOrmTransientMapping extends AbstractOrmAttributeMapping<XmlT
 	
 	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getTransients().remove(this.resourceAttributeMapping);
-		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
-			typeMapping.setAttributes(null);
-		}
 	}
 }

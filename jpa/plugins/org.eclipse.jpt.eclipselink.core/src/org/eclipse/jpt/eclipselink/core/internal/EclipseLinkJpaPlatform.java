@@ -10,14 +10,21 @@
 package org.eclipse.jpt.eclipselink.core.internal;
 
 import java.util.List;
-
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFileProvider;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicCollectionMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicMapMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaTransformationMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmBasicCollectionMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmBasicMapMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmTransformationMappingProvider;
 
 /**
  * EclipseLink platform
@@ -57,11 +64,26 @@ public class EclipseLinkJpaPlatform
 	}
 	
 	@Override
+	protected void addJavaAttributeMappingProvidersTo(List<JavaAttributeMappingProvider> providers) {
+		super.addJavaAttributeMappingProvidersTo(providers);
+		providers.add(JavaBasicCollectionMappingProvider.instance());
+		providers.add(JavaBasicMapMappingProvider.instance());
+		providers.add(JavaTransformationMappingProvider.instance());
+	}
+	
+	@Override
 	protected void addDefaultJavaAttributeMappingProvidersTo(List<DefaultJavaAttributeMappingProvider> providers) {
 		providers.add(EclipseLinkJavaOneToOneMappingProvider.instance());
 		providers.add(EclipseLinkJavaOneToManyMappingProvider.instance());
 		//add these before calling super, want to check for Basic last in case the reference object is Serializable
 		super.addDefaultJavaAttributeMappingProvidersTo(providers);
 	}
-
+	
+	@Override
+	protected void addOrmAttributeMappingProvidersTo(List<OrmAttributeMappingProvider> providers) {
+		super.addOrmAttributeMappingProvidersTo(providers);
+		providers.add(OrmBasicCollectionMappingProvider.instance());
+		providers.add(OrmBasicMapMappingProvider.instance());
+		providers.add(OrmTransformationMappingProvider.instance());
+	}
 }

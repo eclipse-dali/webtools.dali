@@ -16,11 +16,12 @@ import org.eclipse.jpt.ui.jface.ItemLabelProvider;
 
 public class OrmItemLabelProviderFactory extends GeneralJpaMappingItemLabelProviderFactory
 {
+	@Override
 	public ItemLabelProvider buildItemLabelProvider(
 			Object item, DelegatingContentAndLabelProvider labelProvider) {
 		if (item instanceof EntityMappings) {
 			return new EntityMappingsItemLabelProvider((EntityMappings) item, labelProvider);
 		}
-		else return super.buildItemLabelProvider(item, labelProvider);
+		return super.buildItemLabelProvider(item, labelProvider);
 	}
 }

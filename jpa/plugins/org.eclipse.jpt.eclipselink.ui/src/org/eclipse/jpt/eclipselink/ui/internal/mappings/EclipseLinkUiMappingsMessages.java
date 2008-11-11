@@ -20,6 +20,15 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("nls")
 public class EclipseLinkUiMappingsMessages extends NLS {
 
+	public static String BasicCollectionMappingUiProvider_label;
+	public static String BasicCollectionMappingUiProvider_linkLabel;
+	
+	public static String BasicMapMappingUiProvider_label;
+	public static String BasicMapMappingUiProvider_linkLabel;
+	
+	public static String TransformationMappingUiProvider_label;
+	public static String TransformationMappingUiProvider_linkLabel;
+
 	public static String CacheTypeComposite_label;
 	public static String CacheTypeComposite_full;
 	public static String CacheTypeComposite_weak;

@@ -13,6 +13,8 @@ import java.util.List;
 
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.BasicCollectionImpl.BasicCollectionAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.BasicMapImpl.BasicMapAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.CacheImpl.CacheAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.ChangeTrackingImpl.ChangeTrackingAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.ConvertImpl.ConvertAnnotationDefinition;
@@ -52,6 +54,8 @@ public class EclipseLinkJpaAnnotationProvider
 	@Override
 	protected void addAttributeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		super.addAttributeMappingAnnotationDefinitionsTo(definitions);
+		definitions.add(BasicCollectionAnnotationDefinition.instance());
+		definitions.add(BasicMapAnnotationDefinition.instance());
 		definitions.add(TransformationAnnotationDefinition.instance());
 	}
 	

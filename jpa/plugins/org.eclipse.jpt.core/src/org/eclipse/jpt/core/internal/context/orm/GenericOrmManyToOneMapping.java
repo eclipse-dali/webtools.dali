@@ -27,7 +27,7 @@ public class GenericOrmManyToOneMapping extends AbstractOrmSingleRelationshipMap
 	}
 
 	public int getXmlSequence() {
-		return 4;
+		return 40;
 	}
 
 	public String getKey() {
@@ -57,8 +57,5 @@ public class GenericOrmManyToOneMapping extends AbstractOrmSingleRelationshipMap
 	
 	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getManyToOnes().remove(this.resourceAttributeMapping);
-		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
-			typeMapping.setAttributes(null);
-		}
 	}
 }

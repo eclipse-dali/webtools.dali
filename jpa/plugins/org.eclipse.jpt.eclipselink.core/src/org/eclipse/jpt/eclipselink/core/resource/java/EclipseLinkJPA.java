@@ -33,6 +33,10 @@ public interface EclipseLinkJPA {
 	// ********** API **********
 
 	// JPA annotations
+	String BASIC_COLLECTION = PACKAGE_ + "BasicCollection";
+	
+	String BASIC_MAP = PACKAGE_ + "BasicMap";
+	
 	String CACHE = PACKAGE_ + "Cache";
 		String CACHE__SHARED = "shared";
 		String CACHE__EXPIRY = "expiry";

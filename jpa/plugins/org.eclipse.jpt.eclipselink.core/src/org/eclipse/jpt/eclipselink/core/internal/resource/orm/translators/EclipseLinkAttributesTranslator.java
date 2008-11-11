@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.resource.orm.translators.AttributesTranslator;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 public class EclipseLinkAttributesTranslator extends AttributesTranslator
@@ -21,19 +23,26 @@ public class EclipseLinkAttributesTranslator extends AttributesTranslator
 		super(domNameAndPath, aFeature);
 	}
 	
-	
+	@Override
+	public EObject createEMFObject(String nodeName, String readAheadName) {
+		return EclipseLinkOrmFactory.eINSTANCE.createAttributes();
+		
+	}
 	@Override
 	protected Translator[] createChildren() {
 		return new Translator[] {
 			createIdTranslator(),
 			createEmbeddedIdTranslator(),
 			createBasicTranslator(),
+			createBasicCollectionTranslator(),
+			createBasicMapTranslator(),
 			createVersionTranslator(),
 			createManyToOneTranslator(),
 			createOneToManyTranslator(),
 			createOneToOneTranslator(),
 			createManyToManyTranslator(),
 			createEmbeddedTranslator(),
+			createTransformationTranslator(),
 			createTransientTranslator()
 		};
 	}
@@ -84,4 +93,17 @@ public class EclipseLinkAttributesTranslator extends AttributesTranslator
 //	protected Translator createTransientTranslator() {
 //		return new TransientTranslator(TRANSIENT, ORM_PKG.getAttributes_Transients());
 //	}
+	
+
+	protected Translator createBasicCollectionTranslator() {
+		return new BasicCollectionTranslator(BASIC_COLLECTION, ECLIPSELINK_ORM_PKG.getAttributes_BasicCollections());
+	}
+	
+	protected Translator createBasicMapTranslator() {
+		return new BasicMapTranslator(BASIC_MAP, ECLIPSELINK_ORM_PKG.getAttributes_BasicMaps());
+	}
+	
+	protected Translator createTransformationTranslator() {
+		return new TransformationTranslator(TRANSFORMATION, ECLIPSELINK_ORM_PKG.getAttributes_Transformations());
+	}
 }

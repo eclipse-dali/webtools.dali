@@ -159,7 +159,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	}
 
 	public int getXmlSequence() {
-		return 2;
+		return 20;
 	}
 
 	@Override
@@ -251,9 +251,6 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	
 	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getBasics().remove(this.resourceAttributeMapping);
-		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
-			typeMapping.setAttributes(null);
-		}
 	}
 	
 	//***************** XmlColumn.Owner implementation ****************

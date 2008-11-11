@@ -185,21 +185,13 @@ public class GenericOrmPersistentType
 	
 	public void changeMapping(OrmPersistentAttribute ormPersistentAttribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping) {
 		int sourceIndex = this.specifiedPersistentAttributes.indexOf(ormPersistentAttribute);
-		if (sourceIndex != -1) {
-			this.specifiedPersistentAttributes.remove(sourceIndex);
-			oldMapping.removeFromResourceModel(getMapping().getResourceTypeMapping());
-		}
-		if (getMapping().getResourceTypeMapping().getAttributes() == null) {
-			getMapping().getResourceTypeMapping().setAttributes(OrmFactory.eINSTANCE.createAttributes());
-		}
+		this.specifiedPersistentAttributes.remove(sourceIndex);
+		oldMapping.removeFromResourceModel(this.ormTypeMapping.getResourceTypeMapping());
 		int targetIndex = insertionIndex(ormPersistentAttribute);
 		this.specifiedPersistentAttributes.add(targetIndex, ormPersistentAttribute);
 		newMapping.addToResourceModel(getMapping().getResourceTypeMapping());
 		oldMapping.initializeOn(newMapping);
-		if (sourceIndex != -1) {
-			//TODO are the source and target correct in this case, or is target off by one???
-			fireItemMoved(SPECIFIED_ATTRIBUTES_LIST, targetIndex, sourceIndex);
-		}
+		fireItemMoved(SPECIFIED_ATTRIBUTES_LIST, targetIndex, sourceIndex);
 	}
 
 	public void makePersistentAttributeVirtual(OrmPersistentAttribute ormPersistentAttribute) {
@@ -232,7 +224,7 @@ public class GenericOrmPersistentType
 			
 		OrmPersistentAttribute newPersistentAttribute = buildOrmPersistentAttribute(mappingKey);
 		if (getMapping().getResourceTypeMapping().getAttributes() == null) {
-			getMapping().getResourceTypeMapping().setAttributes(OrmFactory.eINSTANCE.createAttributes());
+			getMapping().getResourceTypeMapping().setAttributes(createAttributesResource());
 		}
 		int insertionIndex = insertionIndex(newPersistentAttribute);
 		this.specifiedPersistentAttributes.add(insertionIndex, newPersistentAttribute);
@@ -246,6 +238,10 @@ public class GenericOrmPersistentType
 		fireItemRemoved(VIRTUAL_ATTRIBUTES_LIST, removalIndex, ormPersistentAttribute);
 	}
 
+	protected Attributes createAttributesResource() {
+		return OrmFactory.eINSTANCE.createAttributes();
+	}
+	
 	public Iterator<String> allAttributeNames() {
 		return this.attributeNames(this.allAttributes());
 	}
@@ -352,7 +348,7 @@ public class GenericOrmPersistentType
 		OrmPersistentAttribute persistentAttribute = buildOrmPersistentAttribute(mappingKey);
 		int index = insertionIndex(persistentAttribute);
 		if (getMapping().getResourceTypeMapping().getAttributes() == null) {
-			getMapping().getResourceTypeMapping().setAttributes(OrmFactory.eINSTANCE.createAttributes());
+			getMapping().getResourceTypeMapping().setAttributes(createAttributesResource());
 		}
 		this.specifiedPersistentAttributes.add(index, persistentAttribute);
 		persistentAttribute.getMapping().addToResourceModel(getMapping().getResourceTypeMapping());
@@ -399,6 +395,9 @@ public class GenericOrmPersistentType
 		int index = this.specifiedPersistentAttributes.indexOf(ormPersistentAttribute);
 		this.specifiedPersistentAttributes.remove(ormPersistentAttribute);
 		ormPersistentAttribute.getMapping().removeFromResourceModel(this.ormTypeMapping.getResourceTypeMapping());
+		if (this.ormTypeMapping.getResourceTypeMapping().getAttributes().isAllFeaturesUnset()) {
+			this.ormTypeMapping.getResourceTypeMapping().setAttributes(null);
+		}
 		fireItemRemoved(PersistentType.SPECIFIED_ATTRIBUTES_LIST, index, ormPersistentAttribute);		
 	}
 

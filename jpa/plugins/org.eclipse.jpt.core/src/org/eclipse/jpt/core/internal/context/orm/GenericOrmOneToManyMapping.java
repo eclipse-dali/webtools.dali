@@ -43,7 +43,7 @@ public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapp
 	}
 
 	public int getXmlSequence() {
-		return 5;
+		return 50;
 	}
 
 	// ********** NonOwningMapping implementation **********
@@ -61,8 +61,5 @@ public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapp
 	
 	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getOneToManys().remove(this.resourceAttributeMapping);
-		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
-			typeMapping.setAttributes(null);
-		}
 	}
 }

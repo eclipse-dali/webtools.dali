@@ -172,4 +172,21 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" abstract="true" interface="true"
       eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToMany #//XmlJoinFetch"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToManyImpl" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToManyImpl #//XmlManyToMany"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Attributes" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//Attributes">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="basicCollections" upperBound="-1"
+        eType="#//XmlBasicCollection" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="basicMaps" upperBound="-1"
+        eType="#//XmlBasicMap" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transformations" upperBound="-1"
+        eType="#//XmlTransformation" containment="true" resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlBasicCollection" abstract="true"
+      interface="true" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlBasicCollectionImpl" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//AbstractXmlAttributeMapping #//XmlBasicCollection"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlBasicMap" abstract="true" interface="true"
+      eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlBasicMapImpl" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//AbstractXmlAttributeMapping #//XmlBasicMap"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTransformation" abstract="true" interface="true"
+      eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTransformationImpl" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//AbstractXmlAttributeMapping #//XmlTransformation"/>
 </ecore:EPackage>

@@ -17,6 +17,10 @@ public interface EclipseLinkOrmXmlMapper
 {
 	EclipseLinkOrmPackage ECLIPSELINK_ORM_PKG = EclipseLinkOrmPackage.eINSTANCE;
 	
+	String BASIC_COLLECTION = "basic-collection";  //$NON-NLS-1$
+	
+	String BASIC_MAP = "basic-map";  //$NON-NLS-1$
+	
 	String CACHE = "cache";  //$NON-NLS-1$
 	String CACHE__EXPIRY = "expiry";  //$NON-NLS-1$
 	String CACHE__SIZE = "size";  //$NON-NLS-1$
@@ -67,6 +71,8 @@ public interface EclipseLinkOrmXmlMapper
 	String STRUCT_CONVERTER__NAME = "name"; //$NON-NLS-1$
 	String STRUCT_CONVERTER__CONVERTER = "converter"; //$NON-NLS-1$
 	
+	String TRANSFORMATION = "transformation";  //$NON-NLS-1$
+
 	String TYPE = "type";  //$NON-NLS-1$
 	
 	String TYPE_CONVERTER = "type-converter"; //$NON-NLS-1$

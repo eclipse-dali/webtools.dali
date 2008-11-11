@@ -66,6 +66,7 @@ public class JpaMappingImageHelper
 		else if (MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
 			return JptUiPlugin.getImage(JptUiIcons.TRANSIENT);
 		}
-		return null;
+		//return the JPA_CONTENT icon instead of null, might as well have an icon if one is not defined
+		return JptUiPlugin.getImage(JptUiIcons.JPA_CONTENT);
 	}
 }

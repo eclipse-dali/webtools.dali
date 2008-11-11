@@ -148,7 +148,7 @@ public class GenericOrmOneToOneMapping
 	}
 
 	public int getXmlSequence() {
-		return 6;
+		return 60;
 	}
 
 	@Override
@@ -171,9 +171,6 @@ public class GenericOrmOneToOneMapping
 	
 	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getOneToOnes().remove(this.resourceAttributeMapping);
-		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
-			typeMapping.setAttributes(null);
-		}
 	}	
 
 

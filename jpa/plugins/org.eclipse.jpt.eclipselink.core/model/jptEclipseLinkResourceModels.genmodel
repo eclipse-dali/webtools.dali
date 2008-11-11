@@ -148,5 +148,16 @@
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToOneImpl"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToMany"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToManyImpl"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//Attributes">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//Attributes/basicCollections"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//Attributes/basicMaps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//Attributes/transformations"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlBasicCollection"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlBasicCollectionImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlBasicMap"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlBasicMapImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlTransformation"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlTransformationImpl"/>
   </genPackages>
 </genmodel:GenModel>

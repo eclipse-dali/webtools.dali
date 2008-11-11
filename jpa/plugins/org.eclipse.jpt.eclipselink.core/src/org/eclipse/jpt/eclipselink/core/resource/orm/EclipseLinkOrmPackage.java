@@ -40,7 +40,6 @@ import org.eclipse.jpt.core.resource.orm.OrmPackage;
  * @since 2.1
  * 
  * <!-- end-user-doc -->
- * 
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory
  * @model kind="package"
  * @generated
@@ -3741,6 +3740,310 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_MANY_IMPL_FEATURE_COUNT = OrmPackage.XML_MANY_TO_MANY_IMPL_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.Attributes <em>Attributes</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.Attributes
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getAttributes()
+	 * @generated
+	 */
+	public static final int ATTRIBUTES = 43;
+
+	/**
+	 * The feature id for the '<em><b>Ids</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ATTRIBUTES__IDS = OrmPackage.ATTRIBUTES__IDS;
+
+	/**
+	 * The feature id for the '<em><b>Embedded Ids</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ATTRIBUTES__EMBEDDED_IDS = OrmPackage.ATTRIBUTES__EMBEDDED_IDS;
+
+	/**
+	 * The feature id for the '<em><b>Basics</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ATTRIBUTES__BASICS = OrmPackage.ATTRIBUTES__BASICS;
+
+	/**
+	 * The feature id for the '<em><b>Versions</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ATTRIBUTES__VERSIONS = OrmPackage.ATTRIBUTES__VERSIONS;
+
+	/**
+	 * The feature id for the '<em><b>Many To Ones</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ATTRIBUTES__MANY_TO_ONES = OrmPackage.ATTRIBUTES__MANY_TO_ONES;
+
+	/**
+	 * The feature id for the '<em><b>One To Manys</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ATTRIBUTES__ONE_TO_MANYS = OrmPackage.ATTRIBUTES__ONE_TO_MANYS;
+
+	/**
+	 * The feature id for the '<em><b>One To Ones</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ATTRIBUTES__ONE_TO_ONES = OrmPackage.ATTRIBUTES__ONE_TO_ONES;
+
+	/**
+	 * The feature id for the '<em><b>Many To Manys</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ATTRIBUTES__MANY_TO_MANYS = OrmPackage.ATTRIBUTES__MANY_TO_MANYS;
+
+	/**
+	 * The feature id for the '<em><b>Embeddeds</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ATTRIBUTES__EMBEDDEDS = OrmPackage.ATTRIBUTES__EMBEDDEDS;
+
+	/**
+	 * The feature id for the '<em><b>Transients</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ATTRIBUTES__TRANSIENTS = OrmPackage.ATTRIBUTES__TRANSIENTS;
+
+	/**
+	 * The feature id for the '<em><b>Basic Collections</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ATTRIBUTES__BASIC_COLLECTIONS = OrmPackage.ATTRIBUTES_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Basic Maps</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ATTRIBUTES__BASIC_MAPS = OrmPackage.ATTRIBUTES_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Transformations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ATTRIBUTES__TRANSFORMATIONS = OrmPackage.ATTRIBUTES_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Attributes</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ATTRIBUTES_FEATURE_COUNT = OrmPackage.ATTRIBUTES_FEATURE_COUNT + 3;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection <em>Xml Basic Collection</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasicCollection()
+	 * @generated
+	 */
+	public static final int XML_BASIC_COLLECTION = 44;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC_COLLECTION__NAME = OrmPackage.XML_ATTRIBUTE_MAPPING__NAME;
+
+	/**
+	 * The number of structural features of the '<em>Xml Basic Collection</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC_COLLECTION_FEATURE_COUNT = OrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollectionImpl <em>Xml Basic Collection Impl</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollectionImpl
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasicCollectionImpl()
+	 * @generated
+	 */
+	public static final int XML_BASIC_COLLECTION_IMPL = 45;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC_COLLECTION_IMPL__NAME = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING__NAME;
+
+	/**
+	 * The number of structural features of the '<em>Xml Basic Collection Impl</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC_COLLECTION_IMPL_FEATURE_COUNT = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap <em>Xml Basic Map</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasicMap()
+	 * @generated
+	 */
+	public static final int XML_BASIC_MAP = 46;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC_MAP__NAME = OrmPackage.XML_ATTRIBUTE_MAPPING__NAME;
+
+	/**
+	 * The number of structural features of the '<em>Xml Basic Map</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC_MAP_FEATURE_COUNT = OrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMapImpl <em>Xml Basic Map Impl</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMapImpl
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasicMapImpl()
+	 * @generated
+	 */
+	public static final int XML_BASIC_MAP_IMPL = 47;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC_MAP_IMPL__NAME = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING__NAME;
+
+	/**
+	 * The number of structural features of the '<em>Xml Basic Map Impl</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC_MAP_IMPL_FEATURE_COUNT = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation <em>Xml Transformation</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTransformation()
+	 * @generated
+	 */
+	public static final int XML_TRANSFORMATION = 48;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TRANSFORMATION__NAME = OrmPackage.XML_ATTRIBUTE_MAPPING__NAME;
+
+	/**
+	 * The number of structural features of the '<em>Xml Transformation</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TRANSFORMATION_FEATURE_COUNT = OrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformationImpl <em>Xml Transformation Impl</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformationImpl
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTransformationImpl()
+	 * @generated
+	 */
+	public static final int XML_TRANSFORMATION_IMPL = 49;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TRANSFORMATION_IMPL__NAME = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING__NAME;
+
+	/**
+	 * The number of structural features of the '<em>Xml Transformation Impl</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TRANSFORMATION_IMPL_FEATURE_COUNT = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingType <em>Xml Change Tracking Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3748,7 +4051,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlChangeTrackingType()
 	 * @generated
 	 */
-	public static final int XML_CHANGE_TRACKING_TYPE = 43;
+	public static final int XML_CHANGE_TRACKING_TYPE = 50;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.CacheType <em>Cache Type</em>}' enum.
@@ -3758,7 +4061,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCacheType()
 	 * @generated
 	 */
-	public static final int CACHE_TYPE = 44;
+	public static final int CACHE_TYPE = 51;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType <em>Cache Coordination Type</em>}' enum.
@@ -3768,7 +4071,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCacheCoordinationType()
 	 * @generated
 	 */
-	public static final int CACHE_COORDINATION_TYPE = 45;
+	public static final int CACHE_COORDINATION_TYPE = 52;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType <em>Xml Join Fetch Type</em>}' enum.
@@ -3778,7 +4081,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlJoinFetchType()
 	 * @generated
 	 */
-	public static final int XML_JOIN_FETCH_TYPE = 47;
+	public static final int XML_JOIN_FETCH_TYPE = 54;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -3795,7 +4098,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getExistenceType()
 	 * @generated
 	 */
-	public static final int EXISTENCE_TYPE = 46;
+	public static final int EXISTENCE_TYPE = 53;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -4013,6 +4316,55 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlManyToManyImplEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass attributesEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlBasicCollectionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlBasicCollectionImplEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlBasicMapEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlBasicMapImplEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlTransformationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlTransformationImplEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -5046,6 +5398,149 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.Attributes <em>Attributes</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Attributes</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.Attributes
+	 * @generated
+	 */
+	public EClass getAttributes()
+	{
+		return attributesEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.eclipselink.core.resource.orm.Attributes#getBasicCollections <em>Basic Collections</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Basic Collections</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.Attributes#getBasicCollections()
+	 * @see #getAttributes()
+	 * @generated
+	 */
+	public EReference getAttributes_BasicCollections()
+	{
+		return (EReference)attributesEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.eclipselink.core.resource.orm.Attributes#getBasicMaps <em>Basic Maps</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Basic Maps</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.Attributes#getBasicMaps()
+	 * @see #getAttributes()
+	 * @generated
+	 */
+	public EReference getAttributes_BasicMaps()
+	{
+		return (EReference)attributesEClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.eclipselink.core.resource.orm.Attributes#getTransformations <em>Transformations</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Transformations</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.Attributes#getTransformations()
+	 * @see #getAttributes()
+	 * @generated
+	 */
+	public EReference getAttributes_Transformations()
+	{
+		return (EReference)attributesEClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection <em>Xml Basic Collection</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Basic Collection</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection
+	 * @generated
+	 */
+	public EClass getXmlBasicCollection()
+	{
+		return xmlBasicCollectionEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollectionImpl <em>Xml Basic Collection Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Basic Collection Impl</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollectionImpl
+	 * @generated
+	 */
+	public EClass getXmlBasicCollectionImpl()
+	{
+		return xmlBasicCollectionImplEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap <em>Xml Basic Map</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Basic Map</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap
+	 * @generated
+	 */
+	public EClass getXmlBasicMap()
+	{
+		return xmlBasicMapEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMapImpl <em>Xml Basic Map Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Basic Map Impl</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMapImpl
+	 * @generated
+	 */
+	public EClass getXmlBasicMapImpl()
+	{
+		return xmlBasicMapImplEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation <em>Xml Transformation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Transformation</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation
+	 * @generated
+	 */
+	public EClass getXmlTransformation()
+	{
+		return xmlTransformationEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformationImpl <em>Xml Transformation Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Transformation Impl</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformationImpl
+	 * @generated
+	 */
+	public EClass getXmlTransformationImpl()
+	{
+		return xmlTransformationImplEClass;
+	}
+
+
+	/**
 	 * Returns the meta object for enum '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingType <em>Xml Change Tracking Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5636,6 +6131,23 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 		xmlManyToManyImplEClass = createEClass(XML_MANY_TO_MANY_IMPL);
 
+		attributesEClass = createEClass(ATTRIBUTES);
+		createEReference(attributesEClass, ATTRIBUTES__BASIC_COLLECTIONS);
+		createEReference(attributesEClass, ATTRIBUTES__BASIC_MAPS);
+		createEReference(attributesEClass, ATTRIBUTES__TRANSFORMATIONS);
+
+		xmlBasicCollectionEClass = createEClass(XML_BASIC_COLLECTION);
+
+		xmlBasicCollectionImplEClass = createEClass(XML_BASIC_COLLECTION_IMPL);
+
+		xmlBasicMapEClass = createEClass(XML_BASIC_MAP);
+
+		xmlBasicMapImplEClass = createEClass(XML_BASIC_MAP_IMPL);
+
+		xmlTransformationEClass = createEClass(XML_TRANSFORMATION);
+
+		xmlTransformationImplEClass = createEClass(XML_TRANSFORMATION_IMPL);
+
 		// Create enums
 		xmlChangeTrackingTypeEEnum = createEEnum(XML_CHANGE_TRACKING_TYPE);
 		cacheTypeEEnum = createEEnum(CACHE_TYPE);
@@ -5739,6 +6251,16 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlManyToManyEClass.getESuperTypes().add(this.getXmlJoinFetch());
 		xmlManyToManyImplEClass.getESuperTypes().add(theOrmPackage.getXmlManyToManyImpl());
 		xmlManyToManyImplEClass.getESuperTypes().add(this.getXmlManyToMany());
+		attributesEClass.getESuperTypes().add(theOrmPackage.getAttributes());
+		xmlBasicCollectionEClass.getESuperTypes().add(theOrmPackage.getXmlAttributeMapping());
+		xmlBasicCollectionImplEClass.getESuperTypes().add(theOrmPackage.getAbstractXmlAttributeMapping());
+		xmlBasicCollectionImplEClass.getESuperTypes().add(this.getXmlBasicCollection());
+		xmlBasicMapEClass.getESuperTypes().add(theOrmPackage.getXmlAttributeMapping());
+		xmlBasicMapImplEClass.getESuperTypes().add(theOrmPackage.getAbstractXmlAttributeMapping());
+		xmlBasicMapImplEClass.getESuperTypes().add(this.getXmlBasicMap());
+		xmlTransformationEClass.getESuperTypes().add(theOrmPackage.getXmlAttributeMapping());
+		xmlTransformationImplEClass.getESuperTypes().add(theOrmPackage.getAbstractXmlAttributeMapping());
+		xmlTransformationImplEClass.getESuperTypes().add(this.getXmlTransformation());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(xmlNamedConverterEClass, XmlNamedConverter.class, "XmlNamedConverter", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -5869,6 +6391,23 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		initEClass(xmlManyToManyEClass, XmlManyToMany.class, "XmlManyToMany", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlManyToManyImplEClass, XmlManyToManyImpl.class, "XmlManyToManyImpl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(attributesEClass, Attributes.class, "Attributes", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getAttributes_BasicCollections(), this.getXmlBasicCollection(), null, "basicCollections", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAttributes_BasicMaps(), this.getXmlBasicMap(), null, "basicMaps", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAttributes_Transformations(), this.getXmlTransformation(), null, "transformations", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlBasicCollectionEClass, XmlBasicCollection.class, "XmlBasicCollection", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(xmlBasicCollectionImplEClass, XmlBasicCollectionImpl.class, "XmlBasicCollectionImpl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(xmlBasicMapEClass, XmlBasicMap.class, "XmlBasicMap", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(xmlBasicMapImplEClass, XmlBasicMapImpl.class, "XmlBasicMapImpl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(xmlTransformationEClass, XmlTransformation.class, "XmlTransformation", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(xmlTransformationImplEClass, XmlTransformationImpl.class, "XmlTransformationImpl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Initialize enums and add enum literals
 		initEEnum(xmlChangeTrackingTypeEEnum, XmlChangeTrackingType.class, "XmlChangeTrackingType");
@@ -6471,6 +7010,100 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_MANY_TO_MANY_IMPL = eINSTANCE.getXmlManyToManyImpl();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.Attributes <em>Attributes</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.Attributes
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getAttributes()
+		 * @generated
+		 */
+		public static final EClass ATTRIBUTES = eINSTANCE.getAttributes();
+
+		/**
+		 * The meta object literal for the '<em><b>Basic Collections</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference ATTRIBUTES__BASIC_COLLECTIONS = eINSTANCE.getAttributes_BasicCollections();
+
+		/**
+		 * The meta object literal for the '<em><b>Basic Maps</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference ATTRIBUTES__BASIC_MAPS = eINSTANCE.getAttributes_BasicMaps();
+
+		/**
+		 * The meta object literal for the '<em><b>Transformations</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference ATTRIBUTES__TRANSFORMATIONS = eINSTANCE.getAttributes_Transformations();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection <em>Xml Basic Collection</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasicCollection()
+		 * @generated
+		 */
+		public static final EClass XML_BASIC_COLLECTION = eINSTANCE.getXmlBasicCollection();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollectionImpl <em>Xml Basic Collection Impl</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollectionImpl
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasicCollectionImpl()
+		 * @generated
+		 */
+		public static final EClass XML_BASIC_COLLECTION_IMPL = eINSTANCE.getXmlBasicCollectionImpl();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap <em>Xml Basic Map</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasicMap()
+		 * @generated
+		 */
+		public static final EClass XML_BASIC_MAP = eINSTANCE.getXmlBasicMap();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMapImpl <em>Xml Basic Map Impl</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMapImpl
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasicMapImpl()
+		 * @generated
+		 */
+		public static final EClass XML_BASIC_MAP_IMPL = eINSTANCE.getXmlBasicMapImpl();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation <em>Xml Transformation</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTransformation()
+		 * @generated
+		 */
+		public static final EClass XML_TRANSFORMATION = eINSTANCE.getXmlTransformation();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformationImpl <em>Xml Transformation Impl</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformationImpl
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTransformationImpl()
+		 * @generated
+		 */
+		public static final EClass XML_TRANSFORMATION_IMPL = eINSTANCE.getXmlTransformationImpl();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingType <em>Xml Change Tracking Type</em>}' enum.

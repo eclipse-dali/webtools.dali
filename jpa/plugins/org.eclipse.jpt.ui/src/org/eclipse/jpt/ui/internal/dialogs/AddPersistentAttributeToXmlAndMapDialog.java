@@ -20,19 +20,11 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.details.BasicMappingUiProvider;
-import org.eclipse.jpt.ui.internal.details.EmbeddedIdMappingUiProvider;
-import org.eclipse.jpt.ui.internal.details.EmbeddedMappingUiProvider;
-import org.eclipse.jpt.ui.internal.details.IdMappingUiProvider;
-import org.eclipse.jpt.ui.internal.details.ManyToManyMappingUiProvider;
-import org.eclipse.jpt.ui.internal.details.ManyToOneMappingUiProvider;
-import org.eclipse.jpt.ui.internal.details.OneToManyMappingUiProvider;
-import org.eclipse.jpt.ui.internal.details.OneToOneMappingUiProvider;
-import org.eclipse.jpt.ui.internal.details.TransientMappingUiProvider;
-import org.eclipse.jpt.ui.internal.details.VersionMappingUiProvider;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -85,18 +77,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 				public void dispose() {}
 
 				public Object[] getElements(Object inputElement) {
-					return new Object[] {
-						BasicMappingUiProvider.instance(),
-						EmbeddedMappingUiProvider.instance(),
-						EmbeddedIdMappingUiProvider.instance(),
-						IdMappingUiProvider.instance(),
-						ManyToManyMappingUiProvider.instance(),
-						ManyToOneMappingUiProvider.instance(),
-						OneToManyMappingUiProvider.instance(),
-						OneToOneMappingUiProvider.instance(),
-						TransientMappingUiProvider.instance(),
-						VersionMappingUiProvider.instance()
-					};
+					return CollectionTools.array(((JpaPlatformUi) inputElement).ormAttributeMappingUiProviders());
 				}
 
 				public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}
@@ -113,7 +94,8 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 				validate();
 			}
 		});
-		mappingCombo.setInput("FOO");
+		JpaPlatformUi jpaPlatformUi = JptUiPlugin.getPlugin().jpaPlatformUi(this.unmappedPersistentAttribute.getJpaProject().getJpaPlatform());
+		mappingCombo.setInput(jpaPlatformUi);
 		mappingCombo.getCombo().select(0);  // select Basic to begin
 
 		// TODO - F1 Help
