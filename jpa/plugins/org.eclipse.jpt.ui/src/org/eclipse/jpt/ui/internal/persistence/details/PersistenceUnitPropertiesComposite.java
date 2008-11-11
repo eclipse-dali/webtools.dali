@@ -21,16 +21,17 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.swt.ColumnAdapter;
+import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveTablePane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -169,6 +170,7 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 		);
 
 		tablePane = new TablePane(container);
+		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 	}
 
 	private static class PropertyColumnAdapter implements ColumnAdapter<Property> {
@@ -283,6 +285,13 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 					buildPropertyLabelProvider());
 		}
 
+		@Override
+		protected Composite addContainer(Composite parent) {
+			Composite container = super.addContainer(parent);
+			container.setLayoutData(new GridData(GridData.FILL_BOTH));
+			return container;
+		}
+
 		private CellEditor[] buildCellEditors(Table table) {
 			return new CellEditor[] {
 				null,
@@ -350,13 +359,6 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 			};
 		}
 
-		@Override
-		protected Composite addContainer(Composite parent) {
-			Composite container = super.addContainer(parent);
-			container.setLayoutData(new GridData(GridData.FILL_BOTH));
-			return container;
-		}
-
 		TableViewer getTableViewer() {
 			return tableViewer;
 		}
@@ -379,6 +381,7 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 			);
 
 			Table table = getMainControl();
+			table.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 			// Make the selection column non-resizable since it's only used to
 			// ease the selection of rows
@@ -391,9 +394,40 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 			tableViewer.setCellEditors(buildCellEditors(table));
 			tableViewer.setCellModifier(buildCellModifier());
 			tableViewer.setColumnProperties(buildColumnProperties());
+		}
 
-			getContainer().setLayoutData(new GridData(GridData.FILL_BOTH));
-			table.setLayoutData(new GridData(GridData.FILL_BOTH));
+		@Override
+		protected void itemsAdded(ListChangeEvent e) {
+			super.itemsAdded(e);
+			revalidateLayout();
+		}
+
+		@Override
+		protected void itemsRemoved(ListChangeEvent e) {
+			super.itemsRemoved(e);
+			revalidateLayout();
+		}
+
+		@Override
+		protected void listChanged(ListChangeEvent e) {
+			super.listChanged(e);
+			revalidateLayout();
+		}
+
+		/**
+		 * Revalidates the table layout after the list of items has changed. The
+		 * layout has to be done in a new UI thread because our listener might be
+		 * notified before the table has been updated (table column added or removed).
+		 */
+		private void revalidateLayout() {
+			SWTUtil.asyncExec(new Runnable() { public void run() {
+				Table table = getMainControl();
+				if (!table.isDisposed()) {
+					// We have to do a total relayout of the tab otherwise the
+					// table might become cut off at the bottom
+					SWTUtil.reflow(table);
+				}
+			}});
 		}
 	}
 }
