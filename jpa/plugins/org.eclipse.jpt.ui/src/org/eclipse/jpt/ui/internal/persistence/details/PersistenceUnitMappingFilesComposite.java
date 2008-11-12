@@ -244,14 +244,27 @@ public abstract class PersistenceUnitMappingFilesComposite extends Pane<Persiste
 				for (Object result : dialog.getResult()) {
 					IFile file = (IFile) result;
 					IPath filePath = removeSourcePath(file);
-
+					String fileName = filePath.toPortableString();
+					if(mappingFileRefExists(fileName)) {
+						continue;
+					}
 					MappingFileRef mappingFileRef = getSubject().addSpecifiedMappingFileRef(index++);
-					mappingFileRef.setFileName(filePath.toPortableString());
+					mappingFileRef.setFileName(fileName);
 
 					listSelectionModel.addSelectedValue(mappingFileRef);
 				}
 			}
 		};
+	}
+	
+	private boolean mappingFileRefExists(String fileName) {
+		for ( ListIterator<MappingFileRef> i = getSubject().specifiedMappingFileRefs(); i.hasNext(); ) {
+			MappingFileRef mappingFileRef = i.next();
+			if( mappingFileRef.getFileName().equals(fileName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private ISelectionStatusValidator buildValidator() {

@@ -32,8 +32,8 @@ import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -98,10 +98,24 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 		IType type = chooseType();
 
 		if (type != null) {
+			String className = type.getFullyQualifiedName('.');
+			if(classRefExists(className)) {
+				return;
+			}
 			ClassRef classRef = getSubject().addSpecifiedClassRef();
-			classRef.setClassName(type.getFullyQualifiedName('.'));
+			classRef.setClassName(className);
 			listSelectionModel.setSelectedValue(classRef);
 		}
+	}
+	
+	private boolean classRefExists(String className) {
+		for ( ListIterator<ClassRef> i = getSubject().specifiedClassRefs(); i.hasNext(); ) {
+			ClassRef classRef = i.next();
+			if( classRef.getClassName().equals(className)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private Adapter buildAdapter() {
