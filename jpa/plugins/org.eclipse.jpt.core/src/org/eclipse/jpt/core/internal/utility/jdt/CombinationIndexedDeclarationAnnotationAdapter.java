@@ -93,6 +93,9 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	 */
 	private final NestedIndexedDeclarationAnnotationAdapter zeroNestedAnnotationAdapter;
 
+	// reduce NLS checks
+	protected static final String VALUE = "value"; //$NON-NLS-1$
+
 
 	// ********** constructors **********
 
@@ -104,7 +107,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	 * </pre>
 	 */
 	public CombinationIndexedDeclarationAnnotationAdapter(String annotationName, String containerAnnotationName, int index) {
-		this(annotationName, containerAnnotationName, "value", index);
+		this(annotationName, containerAnnotationName, VALUE, index);
 	}
 
 	public CombinationIndexedDeclarationAnnotationAdapter(String annotationName, String containerAnnotationName, String elementName, int index) {
@@ -120,7 +123,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 			int index, 
 			String nestedAnnotationName
 	) {
-		this(standAloneAnnotationAdapter, containerAnnotationAdapter, "value", index, nestedAnnotationName);
+		this(standAloneAnnotationAdapter, containerAnnotationAdapter, VALUE, index, nestedAnnotationName);
 	}
 
 	public CombinationIndexedDeclarationAnnotationAdapter(
@@ -231,7 +234,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 				// we are moving a 'null' entry on top of the standalone, so remove it
 				this.removeStandAloneAnnotation(declaration);
 			} else {
-				throw new IllegalStateException("old index = " + oldIndex + "; new index = " + newIndex);
+				throw new IllegalStateException("old index = " + oldIndex + "; new index = " + newIndex); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 	}
@@ -286,7 +289,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	private void moveStandAloneAnnotationToContainerAnnotation(ModifiedDeclaration declaration) {
 		Annotation standAloneAnnotation = this.getStandAloneAnnotation(declaration);
 		if (standAloneAnnotation == null) {
-			throw new IllegalStateException("the stand-alone annotation is missing");
+			throw new IllegalStateException("the stand-alone annotation is missing"); //$NON-NLS-1$
 		}
 		this.moveStandAloneAnnotationToContainerAnnotation(standAloneAnnotation, declaration);
 	}
@@ -309,7 +312,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 				values.add((MemberValuePair) ASTNode.copySubtree(pair.getAST(), pair));
 			}
 		} else {
-			throw new IllegalStateException("unknown annotation type: " + standAloneAnnotation);
+			throw new IllegalStateException("unknown annotation type: " + standAloneAnnotation); //$NON-NLS-1$
 		}
 		this.removeStandAloneAnnotation(declaration);
 	}
@@ -334,7 +337,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 			return false;
 		}
 		if (containerAnnotation.isSingleMemberAnnotation()) {
-			if (this.getElementName().equals("value")) {
+			if (this.getElementName().equals(VALUE)) {
 				return (((SingleMemberAnnotation) containerAnnotation).getValue().getNodeType() != ASTNode.ARRAY_INITIALIZER)
 						&& (this.zeroNestedAnnotationAdapter.getAnnotation(declaration) != null);
 			}
@@ -355,7 +358,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 			}
 			return false;
 		}
-		throw new IllegalStateException("unknown annotation type: " + containerAnnotation);
+		throw new IllegalStateException("unknown annotation type: " + containerAnnotation); //$NON-NLS-1$
 	}
 
 	/**
@@ -365,7 +368,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	private void convertLastElementAnnotationToStandAloneAnnotation(ModifiedDeclaration declaration) {
 		Annotation last = this.zeroNestedAnnotationAdapter.getAnnotation(declaration);
 		if (last == null) {
-			throw new IllegalStateException("the last nested annotation is missing");
+			throw new IllegalStateException("the last nested annotation is missing"); //$NON-NLS-1$
 		} else if (last.isMarkerAnnotation()) {
 			this.newStandAloneMarkerAnnotation(declaration);
 		} else if (last.isSingleMemberAnnotation()) {
@@ -379,7 +382,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 				values.add((MemberValuePair) ASTNode.copySubtree(pair.getAST(), pair));
 			}
 		} else {
-			throw new IllegalStateException("unknown annotation type: " + last);
+			throw new IllegalStateException("unknown annotation type: " + last); //$NON-NLS-1$
 		}
 		this.zeroNestedAnnotationAdapter.removeAnnotation(declaration);
 	}
@@ -466,7 +469,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 		}
 		@Override
 		public String toString() {
-			return "MarkerAnnotationFactory";
+			return "MarkerAnnotationFactory"; //$NON-NLS-1$
 		}
 	};
 
@@ -476,7 +479,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 		}
 		@Override
 		public String toString() {
-			return "SingleMemberAnnotationFactory";
+			return "SingleMemberAnnotationFactory"; //$NON-NLS-1$
 		}
 	};
 
@@ -486,7 +489,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 		}
 		@Override
 		public String toString() {
-			return "NormalAnnotationFactory";
+			return "NormalAnnotationFactory"; //$NON-NLS-1$
 		}
 	};
 

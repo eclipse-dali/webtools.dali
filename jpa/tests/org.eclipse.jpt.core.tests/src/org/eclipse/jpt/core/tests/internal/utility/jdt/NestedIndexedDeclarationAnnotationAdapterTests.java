@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 
+@SuppressWarnings("nls")
 public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTestCase {
 
 	public NestedIndexedDeclarationAnnotationAdapterTests(String name) {

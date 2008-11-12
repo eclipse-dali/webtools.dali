@@ -60,9 +60,18 @@ public abstract class AbstractDeclarationAnnotationAdapter implements Declaratio
 	 * name before adding it to the declaration.
 	 */
 	protected void addAnnotationAndImport(ModifiedDeclaration declaration, Annotation annotation) {
-		declaration.addImport(this.annotationName);
-		annotation.setTypeName(declaration.getAst().newName(this.shortAnnotationName()));
+		annotation.setTypeName(declaration.getAst().newName(this.getSourceCodeAnnotationName(declaration)));
 		this.addAnnotation(declaration, annotation);
+	}
+
+	/**
+	 * Return the annotation's name as it can be used in source code;
+	 * i.e. if we can add it to the compilation unit's imports, return the short
+	 * name; if we can't (because of a collision), return the fully-qualified name.
+	 * NB: an import may be added as a side-effect :-(
+	 */
+	protected String getSourceCodeAnnotationName(ModifiedDeclaration declaration) {
+		return declaration.addImport(this.annotationName) ? this.getShortAnnotationName() : this.annotationName;
 	}
 
 	@Override
@@ -79,6 +88,10 @@ public abstract class AbstractDeclarationAnnotationAdapter implements Declaratio
 
 	// ********** public methods **********
 
+	/**
+	 * This is 'public' because we use it in CombinationIndexedDeclarationAnnotationAdapter
+	 * to get the annotation name from a NestedIndexedDeclarationAnnotationAdapter.
+	 */
 	public String getAnnotationName() {
 		return this.annotationName;
 	}
@@ -124,11 +137,11 @@ public abstract class AbstractDeclarationAnnotationAdapter implements Declaratio
 		return annotation;
 	}
 
-	protected String shortAnnotationName() {
-		return this.shortName(this.annotationName);
+	protected String getShortAnnotationName() {
+		return convertToShortName(this.annotationName);
 	}
 	
-	protected String shortName(String name) {
+	protected static String convertToShortName(String name) {
 		return name.substring(name.lastIndexOf('.') + 1);
 	}
 	

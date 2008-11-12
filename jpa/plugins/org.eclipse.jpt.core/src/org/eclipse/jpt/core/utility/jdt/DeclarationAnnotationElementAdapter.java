@@ -28,6 +28,11 @@ import org.eclipse.jdt.core.dom.Expression;
 public interface DeclarationAnnotationElementAdapter<T> {
 
 	/**
+	 * Reduce the number of NLS warnings.
+	 */
+	String VALUE = "value"; //$NON-NLS-1$
+
+	/**
 	 * Given the specified declaration, return the value of the
 	 * annotation element. Return null or an empty array
 	 * if the element is not present.

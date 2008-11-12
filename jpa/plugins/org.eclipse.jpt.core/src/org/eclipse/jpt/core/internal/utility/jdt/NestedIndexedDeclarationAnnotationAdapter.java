@@ -181,7 +181,7 @@ public class NestedIndexedDeclarationAnnotationAdapter
 	 */
 	private void addInnerToExpressions(Annotation inner, List<Expression> expressions) {
 		if (expressions.size() > this.index) {
-			throw new IllegalStateException("expressions size is greater than index - size: " + expressions.size() + " - index: " + this.index);
+			throw new IllegalStateException("expressions size is greater than index - size: " + expressions.size() + " - index: " + this.index); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		while (expressions.size() < this.index) {
 			expressions.add(inner.getAST().newNullLiteral());
@@ -253,7 +253,7 @@ public class NestedIndexedDeclarationAnnotationAdapter
 		} else if (outer.isSingleMemberAnnotation()) {
 			((SingleMemberAnnotation) outer).setValue(lastValue);
 		} else {
-			throw new IllegalArgumentException("unexpected annotation type: " + outer);
+			throw new IllegalArgumentException("unexpected annotation type: " + outer); //$NON-NLS-1$
 		}
 	}
 
@@ -314,7 +314,7 @@ public class NestedIndexedDeclarationAnnotationAdapter
 		}
 		@Override
 		public String toString() {
-			return "MemberValuePairExpressionProvider";
+			return "MemberValuePairExpressionProvider"; //$NON-NLS-1$
 		}
 	};
 
@@ -327,7 +327,7 @@ public class NestedIndexedDeclarationAnnotationAdapter
 		}
 		@Override
 		public String toString() {
-			return "SingleMemberAnnotationExpressionProvider";
+			return "SingleMemberAnnotationExpressionProvider"; //$NON-NLS-1$
 		}
 	};
 

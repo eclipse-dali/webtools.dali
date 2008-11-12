@@ -63,21 +63,42 @@ public interface ModifiedDeclaration {
 
 	/**
 	 * Add the specified import to the declaration's compilation unit.
+	 * Return whether the appropriate import was added to or already present in
+	 * the declaration's compilation unit (i.e. the specified class can be
+	 * subsequently referenced using a "short" name).
+	 * Also return true if an import was unnecessary (i.e. the specified class
+	 * is part of the "default" package).
+	 * This does not support adding a "wildcard" import (e.g. "java.util.*").
 	 */
-	void addImport(String importName);
+	boolean addImport(String className);
 
 	/**
 	 * Add the specified static import to the declaration's compilation unit.
+	 * Return whether the appropriate import was added to or already present in
+	 * the declaration's compilation unit (i.e. the specified constant can be
+	 * subsequently referenced using a "short" name).
+	 * Also return true if an import was unnecessary (i.e. the specified enum
+	 * is part of the "default" package).
+	 * This does not support adding a "wildcard" import (e.g. "java.lang.annotation.ElementType.*").
 	 */
-	void addStaticImport(String importName);
+	boolean addStaticImport(String enumConstantName);
 
 	/**
 	 * Add the specified import to the declaration's compilation unit.
+	 * Return whether the appropriate import was added to or already present in
+	 * the declaration's compilation unit (i.e. the specified name can be
+	 * subsequently referenced using a "short" name).
+	 * Also return true if an import was unnecessary (i.e. the specified class
+	 * or enum is part of the "default" package).
+	 * This does not support adding a "wildcard" import (e.g. "java.util.*").
 	 */
-	void addImport(String importName, boolean static_);
+	boolean addImport(String importName, boolean static_);
 
 	/**
-	 * Return whether the specified annotation has the specified name.
+	 * Return whether the specified annotation has the specified
+	 * (fully-qualified) name within the declaration's context; i.e. attempt
+	 * to resolve the annotation's name (using imports etc.) and return
+	 * whether it matches the specified name.
 	 */
 	boolean annotationIsNamed(Annotation annotation, String name);
 

@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 
+@SuppressWarnings("nls")
 public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase {
 
 	public SimpleDeclarationAnnotationAdapterTests(String name) {
@@ -32,7 +33,11 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 	}
 
 	private void createAnnotation(String annotationName) throws Exception {
-		this.javaProject.createCompilationUnit("annot", annotationName + ".java", "public @interface " + annotationName + " {}");
+		this.createAnnotation("annot", annotationName);
+	}
+
+	private void createAnnotation(String packageName, String annotationName) throws Exception {
+		this.javaProject.createCompilationUnit(packageName, annotationName + ".java", "public @interface " + annotationName + " {}");
 	}
 
 	public void testAnnotation1() throws Exception {
@@ -132,7 +137,8 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 	public void testNewMarkerAnnotation1() throws Exception {
 		this.createAnnotation("Foo");
 		ICompilationUnit cu = this.createTestType();
-		this.assertSourceDoesNotContain("@annot.Foo", cu);
+		this.assertSourceDoesNotContain("import annot.Foo;", cu);
+		this.assertSourceDoesNotContain("@Foo", cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
@@ -200,6 +206,69 @@ public class SimpleDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		annotation = daa.newNormalAnnotation(declaration);
 		MemberValuePair mvp = this.newMemberValuePair(annotation.getAST(), "bar", "test string literal");
 		this.values(annotation).add(mvp);
+	}
+
+	public void testImportCollision1() throws Exception {
+		this.createAnnotation("annot1", "Foo");
+		this.createAnnotation("annot2", "Foo");
+		ICompilationUnit cu = this.createTestType();
+		this.assertSourceDoesNotContain("@Foo", cu);
+		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot1.Foo");
+		DeclarationAnnotationAdapter daa2 = new SimpleDeclarationAnnotationAdapter("annot2.Foo");
+
+		AnnotationAdapter aa1 = new MemberAnnotationAdapter(this.idField(cu), daa1);
+		Annotation annotation1 = aa1.getAnnotation(this.buildASTRoot(cu));
+		assertNull(annotation1);
+
+		AnnotationAdapter aa2 = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		Annotation annotation2 = aa2.getAnnotation(this.buildASTRoot(cu));
+		assertNull(annotation2);
+
+		aa1.newMarkerAnnotation();
+		this.assertSourceContains("import annot1.Foo;", cu);
+		this.assertSourceContains("@Foo", cu);
+
+		aa2.newMarkerAnnotation();
+		this.assertSourceDoesNotContain("import annot2.Foo;", cu);
+		this.assertSourceContains("@annot2.Foo", cu);
+	}
+
+	public void testImportCollision2() throws Exception {
+		this.createAnnotation("annot1", "Foo");
+		this.createAnnotation("annot2", "Foo");
+		ICompilationUnit cu = this.createTestType("annot1.*", "@Foo");
+		this.assertSourceContains("import annot1.*;", cu);
+		this.assertSourceContains("@Foo", cu);
+		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot1.Foo");
+		DeclarationAnnotationAdapter daa2 = new SimpleDeclarationAnnotationAdapter("annot2.Foo");
+
+		AnnotationAdapter aa1 = new MemberAnnotationAdapter(this.idField(cu), daa1);
+		Annotation annotation1 = aa1.getAnnotation(this.buildASTRoot(cu));
+		assertNotNull(annotation1);
+
+		AnnotationAdapter aa2 = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		Annotation annotation2 = aa2.getAnnotation(this.buildASTRoot(cu));
+		assertNull(annotation2);
+
+		aa2.newMarkerAnnotation();
+		this.assertSourceDoesNotContain("import annot2.Foo;", cu);
+		this.assertSourceContains("@annot2.Foo", cu);
+	}
+
+	public void testImportWildCard() throws Exception {
+		this.createAnnotation("Foo");
+		ICompilationUnit cu = this.createTestType("annot.*", "");
+		this.assertSourceContains("import annot.*;", cu);
+		this.assertSourceDoesNotContain("@Foo", cu);
+		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
+
+		AnnotationAdapter aa1 = new MemberAnnotationAdapter(this.idField(cu), daa1);
+		Annotation annotation1 = aa1.getAnnotation(this.buildASTRoot(cu));
+		assertNull(annotation1);
+
+		aa1.newMarkerAnnotation();
+		this.assertSourceDoesNotContain("import annot.Foo;", cu);
+		this.assertSourceContains("@Foo", cu);
 	}
 
 }

@@ -31,6 +31,9 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 	private final String elementName;
 	private final boolean removeOuterAnnotationWhenEmpty;
 
+	// reduce NLS checks
+	protected static final String VALUE = "value"; //$NON-NLS-1$
+
 
 	// ********** constructors **********
 
@@ -39,7 +42,7 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 	 * default behavior is to remove the outer annotation when it is empty
 	 */
 	protected AbstractNestedDeclarationAnnotationAdapter(DeclarationAnnotationAdapter outerAnnotationAdapter, String annotationName) {
-		this(outerAnnotationAdapter, "value", annotationName);
+		this(outerAnnotationAdapter, VALUE, annotationName);
 	}
 
 	/**
@@ -117,7 +120,7 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 		} else if (outer.isNormalAnnotation()) {
 			this.modifyAnnotation(declaration, (NormalAnnotation) outer, inner);
 		} else {
-			throw new IllegalStateException("unknown annotation type: " + outer);
+			throw new IllegalStateException("unknown annotation type: " + outer); //$NON-NLS-1$
 		}
 	}
 
@@ -190,7 +193,7 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 		} else if (outer.isMarkerAnnotation()) {
 			this.removeElementAndNormalize(declaration, (MarkerAnnotation) outer);
 		} else {
-			throw new IllegalArgumentException("unknown annotation type: " + outer);
+			throw new IllegalArgumentException("unknown annotation type: " + outer); //$NON-NLS-1$
 		}
 	}
 
@@ -240,7 +243,7 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 				break;
 			case 1:
 				MemberValuePair pair = values.get(0);
-				if (pair.getName().getFullyQualifiedName().equals("value")) {
+				if (pair.getName().getFullyQualifiedName().equals(VALUE)) {
 					// if the last remaining element is 'value', convert the annotation to a single member annotation
 					Expression vv = pair.getValue();
 					vv = (Expression) ASTNode.copySubtree(vv.getAST(), vv);
@@ -257,8 +260,8 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 	 * Convert the specified single member annotation to a marker annotation
 	 * if the adapter's element name is "value".
 	 */
-	protected void removeElementAndNormalize(ModifiedDeclaration declaration, SingleMemberAnnotation outer) {
-		if (this.elementName.equals("value")) {
+	protected void removeElementAndNormalize(ModifiedDeclaration declaration, @SuppressWarnings("unused") SingleMemberAnnotation outer) {
+		if (this.elementName.equals(VALUE)) {
 			if (this.removeOuterAnnotationWhenEmpty) {
 				this.outerAnnotationAdapter.removeAnnotation(declaration);
 			} else {
@@ -268,7 +271,7 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 		}
 	}
 
-	protected void removeElementAndNormalize(ModifiedDeclaration declaration, MarkerAnnotation outer) {
+	protected void removeElementAndNormalize(ModifiedDeclaration declaration, @SuppressWarnings("unused") MarkerAnnotation outer) {
 		if (this.removeOuterAnnotationWhenEmpty) {
 			this.outerAnnotationAdapter.removeAnnotation(declaration);
 		}
@@ -301,7 +304,7 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 	 * annotation, otherwise return null.
 	 */
 	protected Expression elementValue(SingleMemberAnnotation annotation) {
-		return this.elementName.equals("value") ? annotation.getValue() : null;
+		return this.elementName.equals(VALUE) ? annotation.getValue() : null;
 	}
 
 	/**
@@ -329,7 +332,7 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 	 * </pre>
 	 */
 	protected void buildNewOuterAnnotation(ModifiedDeclaration declaration, Annotation inner) {
-		if (this.elementName.equals("value")) {
+		if (this.elementName.equals(VALUE)) {
 			this.outerAnnotationAdapter.newSingleMemberAnnotation(declaration).setValue(this.buildNewInnerExpression(inner));
 		} else {
 			List<MemberValuePair> values = this.values(this.outerAnnotationAdapter.newNormalAnnotation(declaration));
@@ -365,7 +368,7 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 	/**
 	 * Add the specified inner annotation to the marker annotation.
 	 */
-	protected void modifyAnnotation(ModifiedDeclaration declaration, MarkerAnnotation outer, Annotation inner) {
+	protected void modifyAnnotation(ModifiedDeclaration declaration, @SuppressWarnings("unused") MarkerAnnotation outer, Annotation inner) {
 		this.buildNewOuterAnnotation(declaration, inner);
 	}
 
@@ -373,7 +376,7 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 	 * Add the specified inner annotation to the single member annotation.
 	 */
 	protected void modifyAnnotation(ModifiedDeclaration declaration, SingleMemberAnnotation outer, Annotation inner) {
-		if (this.elementName.equals("value")) {
+		if (this.elementName.equals(VALUE)) {
 			this.modifyAnnotationValue(outer, inner);
 		} else {
 			this.modifyAnnotationNonValue(declaration, outer, inner);
@@ -392,7 +395,7 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 		vv = (Expression) ASTNode.copySubtree(vv.getAST(), vv);
 		NormalAnnotation newOuter = this.outerAnnotationAdapter.newNormalAnnotation(declaration);
 		List<MemberValuePair> values = this.values(newOuter);
-		values.add(this.newMemberValuePair("value", vv));
+		values.add(this.newMemberValuePair(VALUE, vv));
 		values.add(this.newMemberValuePair(this.buildNewInnerExpression(inner)));
 	}
 
@@ -406,7 +409,7 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 	 *     &#64;Outer(foo=&#64;Inner("lorem ipsum")) => &#64;Outer(foo=&#64;Inner)
 	 * </pre>
 	 */
-	protected void modifyAnnotation(ModifiedDeclaration declaration, NormalAnnotation outer, Annotation inner) {
+	protected void modifyAnnotation(@SuppressWarnings("unused") ModifiedDeclaration declaration, NormalAnnotation outer, Annotation inner) {
 		MemberValuePair pair = this.memberValuePair(outer);
 		if (pair == null) {
 			List<MemberValuePair> values = this.values(outer);

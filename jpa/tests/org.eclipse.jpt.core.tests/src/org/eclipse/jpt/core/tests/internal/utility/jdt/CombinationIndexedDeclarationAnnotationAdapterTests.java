@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 
+@SuppressWarnings("nls")
 public class CombinationIndexedDeclarationAnnotationAdapterTests extends AnnotationTestCase {
 
 	public CombinationIndexedDeclarationAnnotationAdapterTests(String name) {

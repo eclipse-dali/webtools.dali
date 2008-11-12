@@ -40,7 +40,7 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 	 * remove the annotation when the last element is removed.
 	 */
 	public EnumArrayDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter) {
-		this(annotationAdapter, "value");
+		this(annotationAdapter, VALUE);
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 	}
 
 	public void setValue(String[] value, ModifiedDeclaration declaration) {
-		this.adapter.setValue(this.convertToShortNames(value, declaration), declaration);
+		this.adapter.setValue(this.convertToSourceCodeNames(value, declaration), declaration);
 	}
 
 	public Expression getExpression(ModifiedDeclaration declaration) {
@@ -112,7 +112,7 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 		}
 	}
 
-	protected String[] resolveArray(ArrayInitializer ai, ModifiedDeclaration declaration) {
+	protected String[] resolveArray(ArrayInitializer ai, @SuppressWarnings("unused") ModifiedDeclaration declaration) {
 		List<Expression> expressions = this.expressions(ai);
 		int len = expressions.size();
 		String[] enums = new String[len];
@@ -122,7 +122,7 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 		return enums;
 	}
 
-	protected String[] resolveSingleElement(Expression enumExpression, ModifiedDeclaration declaration) {
+	protected String[] resolveSingleElement(Expression enumExpression, @SuppressWarnings("unused") ModifiedDeclaration declaration) {
 		return new String[] {this.resolveEnum(enumExpression)};
 	}
 
@@ -130,34 +130,30 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 		return JDTTools.resolveEnum(expression);
 	}
 
+	// minimize scope of suppressd warnings
 	@SuppressWarnings("unchecked")
 	private List<Expression> expressions(ArrayInitializer arrayInitializer) {
 		return arrayInitializer.expressions();
 	}
 
 	/**
-	 * convert the fully-qualified enums to static imports and short names;
-	 * NB: the imports are added as a side-effect :-(
+	 * convert the fully-qualified enums to names that can be inserted in source code
+	 * NB: imports may be added as a side-effect :-(
 	 */
-	protected String[] convertToShortNames(String[] enums, ModifiedDeclaration declaration) {
+	protected String[] convertToSourceCodeNames(String[] enums, ModifiedDeclaration declaration) {
 		if (enums == null) {
 			return null;
 		}
 		int len = enums.length;
-		String[] shortNames = new String[len];
-		for (int i = len; i-- > 0; ) {
-			declaration.addStaticImport(enums[i]);  // e.g. "javax.persistence.CascadeType.REFRESH"
-			shortNames[i] = this.shortName(enums[i]);  // e.g. "EAGER"
+		String[] sourceCodeNames = new String[len];
+		for (int i = 0; i < len; i++) {
+			sourceCodeNames[i] = this.convertToSourceCodeName(enums[i], declaration);
 		}
-		return shortNames;
+		return sourceCodeNames;
 	}
 
-	protected String shortTypeName(String name) {
-		return name.substring(0, name.lastIndexOf('.'));
-	}
-
-	protected String shortName(String name) {
-		return name.substring(name.lastIndexOf('.') + 1);
+	protected String convertToSourceCodeName(String enum_, ModifiedDeclaration declaration) {
+		return EnumDeclarationAnnotationElementAdapter.convertToSourceCodeName(enum_, declaration);
 	}
 
 }

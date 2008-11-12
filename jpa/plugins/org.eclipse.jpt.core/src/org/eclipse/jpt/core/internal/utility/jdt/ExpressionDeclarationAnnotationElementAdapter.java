@@ -56,14 +56,14 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 	 * remove the annotation when the last element is removed.
 	 */
 	public ExpressionDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter) {
-		this(annotationAdapter, "value");
+		this(annotationAdapter, VALUE);
 	}
 
 	/**
 	 * The default element name is "value".
 	 */
 	public ExpressionDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, boolean removeAnnotationWhenEmpty) {
-		this(annotationAdapter, "value", removeAnnotationWhenEmpty);
+		this(annotationAdapter, VALUE, removeAnnotationWhenEmpty);
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 		if (annotation.isNormalAnnotation()) {
 			return this.expressionNormalAnnotation((NormalAnnotation) annotation);
 		}
-		throw new IllegalArgumentException("unknown annotation type: " + annotation);
+		throw new IllegalArgumentException("unknown annotation type: " + annotation); //$NON-NLS-1$
 	}
 
 	protected E expressionNoAnnotation() {
@@ -142,7 +142,7 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 	 * with the adapter's element name.
 	 * Return null if the annotation has no such element.
 	 */
-	protected E expressionMarkerAnnotation(MarkerAnnotation annotation) {
+	protected E expressionMarkerAnnotation(@SuppressWarnings("unused") MarkerAnnotation annotation) {
 		return null;
 	}
 
@@ -152,7 +152,7 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 	 * Return null if the annotation has no such element.
 	 */
 	protected E expressionSingleMemberAnnotation(SingleMemberAnnotation annotation) {
-		return this.downcast(this.elementName.equals("value") ? annotation.getValue() : null);
+		return this.downcast(this.elementName.equals(VALUE) ? annotation.getValue() : null);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -193,7 +193,7 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 			this.setValueNormalAnnotation(value, (NormalAnnotation) annotation, declaration);
 		}
 		else {
-			throw new IllegalArgumentException("unknown annotation type: " + annotation);
+			throw new IllegalArgumentException("unknown annotation type: " + annotation); //$NON-NLS-1$
 		}
 	}
 
@@ -201,7 +201,7 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 	 * add non-null, non-empty value
 	 */
 	protected void setValueNoAnnotation(Expression value, ModifiedDeclaration declaration) {
-		if (this.elementName.equals("value")) {
+		if (this.elementName.equals(VALUE)) {
 			// @Foo("xxx")
 			this.annotationAdapter.newSingleMemberAnnotation(declaration).setValue(value);
 		} else {
@@ -223,7 +223,7 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 		values.add(pair);
 	}
 	
-	protected void setValueMarkerAnnotation(Expression value, MarkerAnnotation annotation, ModifiedDeclaration declaration) {
+	protected void setValueMarkerAnnotation(Expression value, @SuppressWarnings("unused") MarkerAnnotation annotation, ModifiedDeclaration declaration) {
 		// @Foo => @Foo("xxx")
 		//     or
 		// @Foo => @Foo(bar="xxx")
@@ -231,7 +231,7 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 	}
 
 	protected void setValueSingleMemberAnnotation(Expression value, SingleMemberAnnotation annotation, ModifiedDeclaration declaration) {
-		if (this.elementName.equals("value")) {
+		if (this.elementName.equals(VALUE)) {
 			// @Foo("yyy") => @Foo("xxx")
 			annotation.setValue(value);
 		} else {
@@ -239,12 +239,12 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 			Expression vv = annotation.getValue();
 			vv = (Expression) ASTNode.copySubtree(vv.getAST(), vv);
 			NormalAnnotation normalAnnotation = this.annotationAdapter.newNormalAnnotation(declaration);
-			this.addValue(vv, normalAnnotation, "value");
+			this.addValue(vv, normalAnnotation, VALUE);
 			this.addValue(value, normalAnnotation);
 		}
 	}
 
-	protected void setValueNormalAnnotation(Expression value, NormalAnnotation annotation, ModifiedDeclaration declaration) {
+	protected void setValueNormalAnnotation(Expression value, NormalAnnotation annotation, @SuppressWarnings("unused") ModifiedDeclaration declaration) {
 		MemberValuePair pair = this.memberValuePair(annotation);
 		if (pair == null) {
 			this.addValue(value, annotation);
@@ -270,20 +270,20 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 			this.removeElementNormalAnnotation((NormalAnnotation) annotation, declaration);
 		}
 		else {
-			throw new IllegalArgumentException("unknown annotation type: " + annotation);
+			throw new IllegalArgumentException("unknown annotation type: " + annotation); //$NON-NLS-1$
 		}
 	}
 
-	protected void removeElementNoAnnotation(ModifiedDeclaration declaration) {
+	protected void removeElementNoAnnotation(@SuppressWarnings("unused") ModifiedDeclaration declaration) {
 		// the element is already gone (?)
 	}
 
-	protected void removeElementMarkerAnnotation(MarkerAnnotation annotation, ModifiedDeclaration declaration) {
+	protected void removeElementMarkerAnnotation(@SuppressWarnings("unused") MarkerAnnotation annotation, @SuppressWarnings("unused") ModifiedDeclaration declaration) {
 		// the element is already gone (?)
 	}
 
-	protected void removeElementSingleMemberAnnotation(SingleMemberAnnotation annotation, ModifiedDeclaration declaration) {
-		if (this.elementName.equals("value")) {
+	protected void removeElementSingleMemberAnnotation(@SuppressWarnings("unused") SingleMemberAnnotation annotation, ModifiedDeclaration declaration) {
+		if (this.elementName.equals(VALUE)) {
 			if (this.removeAnnotationWhenEmpty) {
 				// @Foo("xxx") => 
 				this.annotationAdapter.removeAnnotation(declaration);
@@ -310,7 +310,7 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 			this.removeElement(annotation);
 			if (values.size() == 1) {
 				MemberValuePair pair = values.get(0);
-				if (pair.getName().getFullyQualifiedName().equals("value")) {
+				if (pair.getName().getFullyQualifiedName().equals(VALUE)) {
 					// @Foo(bar="xxx", value="yyy") => @Foo("yyy")
 					Expression vv = pair.getValue();
 					vv = (Expression) ASTNode.copySubtree(vv.getAST(), vv);
