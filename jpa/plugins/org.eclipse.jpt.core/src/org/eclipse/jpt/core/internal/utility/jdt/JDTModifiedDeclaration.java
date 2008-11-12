@@ -353,6 +353,11 @@ public class JDTModifiedDeclaration
 		return name;
 	}
 
+	/**
+	 * Attempt to resolve the specified "short" name against the declaration's
+	 * imports. Return the name unchanged if we can't resolve it (perhaps it is
+	 * in the "default" package).
+	 */
 	protected String resolveAgainstImports(String shortName, boolean static_) {
 		for (ImportDeclaration importDeclaration : this.getImports()) {
 			if (importDeclaration.isStatic() == static_) {
@@ -366,9 +371,9 @@ public class JDTModifiedDeclaration
 	}
 
 	/**
-	 * TODO handle wildcards?
-	 * ignoring wildcards will work most of them time, since *we* added the
-	 * explicit import for the container annotation earlier
+	 * Attempt to resolve the specified "short" name against the specified
+	 * import. Return the resolved name if the import resolves it; otherwise
+	 * return null.
 	 */
 	protected String resolveAgainstImport(ImportDeclaration importDeclaration, String shortName) {
 		String idn = importDeclaration.getName().getFullyQualifiedName();
