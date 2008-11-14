@@ -50,7 +50,6 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -995,37 +994,48 @@ public class AbstractPersistenceUnit extends AbstractXmlContextNode
 	protected void updateExcludeUnlistedClasses(XmlPersistenceUnit persistenceUnit) {
 		setSpecifiedExcludeUnlistedClasses(persistenceUnit.getExcludeUnlistedClasses());
 	}
-	
+
 	protected void updateProperties(XmlPersistenceUnit persistenceUnit) {
-		XmlProperties xmlProperties = persistenceUnit.getProperties();
+		List<XmlProperty> xmlProperties = 	this.buildXmlProperties(persistenceUnit);
 		
-		Iterator<Property> stream = properties();
-		Iterator<XmlProperty> stream2;
-		
-		if (xmlProperties == null) {
-			stream2 = EmptyIterator.instance();
-		}
-		else {
-			stream2 = new CloneIterator<XmlProperty>(xmlProperties.getProperties());//avoid ConcurrentModificationException
-		}
-		
+		Iterator<Property> stream = this.properties();
 		while (stream.hasNext()) {
 			Property property = stream.next();
-			if (stream2.hasNext()) {
-				property.update(stream2.next());
+			XmlProperty xmlProperty = this.getXmlPropertyNamed(property.getName(), xmlProperties);
+			if (xmlProperty != null) {
+				property.update(xmlProperty);
+				
+				xmlProperties.remove(xmlProperty);
 			}
 			else {
-				removeProperty_(property);
+				this.removeProperty_(property);
 			}
 		}
-		
-		while (stream2.hasNext()) {
-			addProperty_(buildProperty(stream2.next()));
+
+		for (XmlProperty xmlProperty : xmlProperties) {
+			this.addProperty_(this.buildProperty(xmlProperty));
 		}
 	}
 	
 	protected Property buildProperty(XmlProperty xmlProperty) {
 		return getJpaFactory().buildProperty(this, xmlProperty);
+	}
+
+	protected List<XmlProperty> buildXmlProperties(XmlPersistenceUnit persistenceUnit) {
+		if (persistenceUnit.getProperties() == null) {
+			return new ArrayList<XmlProperty>();
+		}
+		return CollectionTools.list(persistenceUnit.getProperties().getProperties());
+	}
+	
+	protected XmlProperty getXmlPropertyNamed(String name, List<XmlProperty> xmlProperties) {
+		for(XmlProperty xmlProperty : xmlProperties) {
+			String xmlPropertyName = xmlProperty.getName();
+			if(xmlPropertyName == name || xmlPropertyName.equals(name)) {
+				return xmlProperty;
+			};
+		}
+		return null;
 	}
 		
 	protected void updatePersistenceUnitDefaults() {
