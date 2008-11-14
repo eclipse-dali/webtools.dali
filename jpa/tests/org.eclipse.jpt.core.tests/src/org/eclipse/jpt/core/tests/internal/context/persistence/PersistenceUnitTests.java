@@ -991,74 +991,69 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertNull(persistenceUnit.getProperty("notExist"));
 	}
 	
+	private Property persistenceUnitFirstProperty() {
+		return persistenceUnit().properties().next();
+	}
+
 	public void testUpdatePropertyName() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
 		
 		// add property for testing
 		XmlProperties xmlProperties = PersistenceFactory.eINSTANCE.createXmlProperties();
 		xmlPersistenceUnit.setProperties(xmlProperties);
 		XmlProperty xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
 		xmlProperties.getProperties().add(xmlProperty);
-		Property property = persistenceUnit.properties().next();
 		
 		// test that names are initially equal
-		assertEquals(xmlProperty.getName(), property.getName());
+		assertEquals(xmlProperty.getName(), persistenceUnitFirstProperty().getName());
 		
 		// set name to different name, test equality
 		xmlProperty.setName("newName");
-		
-		assertEquals(xmlProperty.getName(), property.getName());
+
+		assertEquals(xmlProperty.getName(), persistenceUnitFirstProperty().getName());
 		
 		// set name to empty string, test equality
 		xmlProperty.setName("");
-		
-		assertEquals(xmlProperty.getName(), property.getName());
-		
-		// set name to null, test equality
-		xmlProperty.setName(null);
-		
-		assertEquals(xmlProperty.getName(), property.getName());
+
+		assertEquals(xmlProperty.getName(), persistenceUnitFirstProperty().getName());
 		
 		// set name back to non-null, test equality
 		xmlProperty.setName("newName");
-		
-		assertEquals(xmlProperty.getName(), property.getName());
+
+		assertEquals(xmlProperty.getName(), persistenceUnitFirstProperty().getName());
 	}
 	
 	public void testUpdatePropertyValue() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
 		
 		// add property for testing
 		XmlProperties xmlProperties = PersistenceFactory.eINSTANCE.createXmlProperties();
 		xmlPersistenceUnit.setProperties(xmlProperties);
 		XmlProperty xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
 		xmlProperties.getProperties().add(xmlProperty);
-		Property property = persistenceUnit.properties().next();
 		
 		// test that values are initially equal
-		assertEquals(xmlProperty.getValue(), property.getValue());
+		assertEquals(xmlProperty.getValue(), persistenceUnitFirstProperty().getValue());
 		
 		// set value to different value, test equality
 		xmlProperty.setValue("newValue");
 		
-		assertEquals(xmlProperty.getValue(), property.getValue());
+		assertEquals(xmlProperty.getValue(), persistenceUnitFirstProperty().getValue());
 		
 		// set value to empty string, test equality
 		xmlProperty.setValue("");
 		
-		assertEquals(xmlProperty.getValue(), property.getValue());
+		assertEquals(xmlProperty.getValue(), persistenceUnitFirstProperty().getValue());
 		
 		// set value to null, test equality
 		xmlProperty.setValue(null);
 		
-		assertEquals(xmlProperty.getValue(), property.getValue());
+		assertEquals(xmlProperty.getValue(), persistenceUnitFirstProperty().getValue());
 		
 		// set value back to non-null, test equality
 		xmlProperty.setValue("newValue");
 		
-		assertEquals(xmlProperty.getValue(), property.getValue());
+		assertEquals(xmlProperty.getValue(), persistenceUnitFirstProperty().getValue());
 	}
 	
 	
